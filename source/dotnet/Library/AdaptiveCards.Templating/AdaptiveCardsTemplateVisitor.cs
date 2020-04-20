@@ -49,6 +49,7 @@ namespace AdaptiveCards.Templating
 
                 targetJObj[key] = jtoken; 
             }
+
             public JObject GetDataAtIndex(int index)
             {
                 if (IsArrayType)
@@ -208,7 +209,6 @@ namespace AdaptiveCards.Templating
             result.Append("\"");
 
             return result;
-
         }
 
         public override AdaptiveCardsTemplateResult VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context)
@@ -442,7 +442,7 @@ namespace AdaptiveCards.Templating
                 // TODO log erros here
                 return true;
             }
-        }    
+        }
 
         public override AdaptiveCardsTemplateResult VisitChildren([NotNull] IRuleNode node)
         {

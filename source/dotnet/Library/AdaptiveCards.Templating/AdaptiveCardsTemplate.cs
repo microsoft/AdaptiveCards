@@ -27,7 +27,7 @@ namespace AdaptiveCards.Templating
             }
         }
 
-        public string Expand(AdaptiveCardEvaluationContext context)
+        public string Expand(AdaptiveCardsEvaluationContext context)
         {
             string jsonData = "";
 

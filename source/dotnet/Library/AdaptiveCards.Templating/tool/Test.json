@@ -1,0 +1,35 @@
+{
+    "type": "AdaptiveCard",
+    "$data": {
+        "key": "1.2"
+    },
+    "body": [
+        {
+            "type": "Container",
+            "$data": {
+                "key": "2"
+            },
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "$data": {
+                        "key": "3"
+                    },
+                    "text": "key should be 3, actual:{key}",
+                    "size": "Medium",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "key should be 2, actual:{key}",
+                    "size": "Medium",
+                    "wrap": true
+                }
+            ],
+            "style": "good",
+            "bleed": true
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "{key}"
+}

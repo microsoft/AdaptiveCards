@@ -38,7 +38,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -90,7 +90,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -141,7 +141,7 @@ namespace AdaptiveCards.Templating.Test
     }
 }";
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -191,7 +191,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -277,7 +277,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
@@ -354,7 +354,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
@@ -408,7 +408,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
@@ -454,7 +454,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(expectedString, cardJson);
@@ -537,7 +537,7 @@ namespace AdaptiveCards.Templating.Test
         var expectedString =
         @"{ ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""type"":""AdaptiveCard"",""version"":""1.0"",""body"":[{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-1""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1.10762 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.17%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-2""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""1578.205 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.68%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-3""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""51.475 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-0.23%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▲"",""color"":""good""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-4""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""28324 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""0.35%"",""color"":""good""}],""horizontalAlignment"":""Right""}]}]},{""type"":""Container"",""items"":[{""type"":""ColumnSet"",""columns"":[{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""▼"",""color"":""attention""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""Object-5""}]},{""type"":""Column"",""width"":""stretch"",""items"":[{""type"":""TextBlock"",""text"":""9338.87 "",""horizontalAlignment"":""Center""}],""horizontalAlignment"":""Center""},{""type"":""Column"",""width"":""auto"",""items"":[{""type"":""TextBlock"",""text"":""-1.04%"",""color"":""attention""}],""horizontalAlignment"":""Right""}]}]}]}"; 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = templateData
             };
@@ -1073,7 +1073,7 @@ namespace AdaptiveCards.Templating.Test
       ""version"": ""1.2""
 }";
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = templateData
             };
@@ -1105,7 +1105,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
@@ -1145,7 +1145,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
@@ -1183,7 +1183,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
@@ -1220,7 +1220,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
@@ -1262,7 +1262,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1347,7 +1347,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1408,7 +1408,7 @@ namespace AdaptiveCards.Templating.Test
         }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
 
             AssertJsonEqual(@"{
@@ -1471,7 +1471,7 @@ namespace AdaptiveCards.Templating.Test
 }"; 
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(cardJson, expectedString);
         }
@@ -1513,7 +1513,7 @@ namespace AdaptiveCards.Templating.Test
 }"; 
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(cardJson, expectedString);
         }
@@ -1557,7 +1557,7 @@ namespace AdaptiveCards.Templating.Test
 }"; 
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(testString);
-            var context = new AdaptiveCardEvaluationContext();
+            var context = new AdaptiveCardsEvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
         }
@@ -1592,7 +1592,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1650,7 +1650,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1704,7 +1704,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1763,7 +1763,7 @@ namespace AdaptiveCards.Templating.Test
 }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1809,7 +1809,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1867,7 +1867,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };
@@ -1921,7 +1921,7 @@ namespace AdaptiveCards.Templating.Test
             }";
 
             AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
-            var context = new AdaptiveCardEvaluationContext
+            var context = new AdaptiveCardsEvaluationContext
             {
                 Root = jsonData
             };

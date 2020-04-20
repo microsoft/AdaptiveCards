@@ -25,17 +25,14 @@ NUMBER
    : '-'? INT ('.' [0-9] +)? EXP?
    ;
 
+// no leading zeros
 fragment INT
    : '0' | [1-9] [0-9]*
    ;
 
-// no leading zeros
-
 fragment EXP
    : [Ee] [+\-]? INT
    ;
-
-// \- since - means "range" inside [...]
 
 WS
    : [ \t\n\r] + -> skip

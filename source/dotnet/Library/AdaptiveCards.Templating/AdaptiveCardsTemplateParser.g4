@@ -1,6 +1,6 @@
 /** Taken from "The Definitive ANTLR 4 Reference" by Terence Parr */
-
 // Derived from http://json.org
+
 parser grammar AdaptiveCardsTemplateParser;
 options { tokenVocab=AdaptiveCardsTemplateLexer; }
 
@@ -48,4 +48,3 @@ templateRoot
 templateExpression
    : StringDeclOpen TEMPLATELITERAL CLOSE # valueTemplateExpression
    ;
-

@@ -16,9 +16,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="js\**" />
+    <Antlr4 Remove="tool\**" />
+    <Compile Remove="tool\**" />
     <EmbeddedResource Remove="js\**" />
-    <None Remove="js\**" />
+    <EmbeddedResource Remove="tool\**" />
+    <None Remove="tool\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,10 +28,6 @@
     <Compile Remove="AdaptiveCardsTemplatingLexer.cs" />
     <Compile Remove="AdaptiveCardsTemplatingParser.cs" />
     <Compile Remove="AdaptiveCardsTemplatingVisitor.cs" />
-    <Compile Remove="JSONLexer.cs" />
-    <Compile Remove="JSONParser.cs" />
-    <Compile Remove="JSONParserBaseVisitor.cs" />
-    <Compile Remove="JSONParserVisitor.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,10 +35,6 @@
     <None Remove="AdaptiveCardsTemplating.tokens" />
     <None Remove="AdaptiveCardsTemplatingLexer.interp" />
     <None Remove="AdaptiveCardsTemplatingLexer.tokens" />
-    <None Remove="JSONLexer.interp" />
-    <None Remove="JSONLexer.tokens" />
-    <None Remove="JSONParser.interp" />
-    <None Remove="JSONParser.tokens" />
   </ItemGroup>
 
   <ItemGroup>
