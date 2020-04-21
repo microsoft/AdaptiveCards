@@ -70,81 +70,44 @@ There is another concern, however, which must be balanced against the desire to 
 
 This conflict speaks to a general tension inherent in the design of Adaptive Cards. There's always going to be a trade off between giving the author more power, and letting the host control the experience for their users. We need to determine what balance we want to strike in this case.
 
-In order to gather more data to help us balance the needs of the card authors and hosts, we sent a survey to customers who have expressed an interest in improving out input story. The following options are under consideration, and will be evaluated against survey data to determine which if any will be included in our v1 implementation.
+In order to gather more data to help us balance the needs of the card authors and hosts, we sent a survey to customers who have expressed an interest in improving out input story. The survey sent included 10 questions including the topics of input validation and input labels, for this spec we will only review the 4 questions that focus on the former topic. The results for this questions were used to leverage on some of the decisions taken on this spec document and can be found in the [Appendix](Appendix).
 
-The survey sent included 10 questions including the topics of input validation and input labels, for this spec we will only review the 4 questions that focus on the former topic. The results for this questions were used to leverage on some of the decisions taken on this spec document and can be found in the [Appendix](Appendix).
+### Default rendering for labels
 
-> ### Default formatting for labels
->
-> Reviewing the results from Q8 of the survey, we can see that most voters usually have a good experience with the default rendering of a TextBlock for rendering a label. From this result we can decide that string label rendering should be performed as if we were rendering a default TextBlock.
->
-> This would allow authors to emulate writing a simple TextBlock element by simply defining the label as a string, making the string version look like this
->
-> ```json
-> {
->	"type": "Input.Text",
->	"id": "textInput",
->	"label": "Label for Input"
-> }
-> ```
->
-> While the same rendering experience using a TextBlock would look like this
->
-> ```json
-> {
->	"type": "Input.Text",
->	"id": "textInput",
->	"label": {
->		"type": "TextBlock",
->		"text": "Label for Input"
->	}
-> }
-> ```
->
-> Both of the afore mentioned cards would produce the same rendered result that would look like  this:
-> 
-> ![img](assets/InputLabels/LabelDefault.PNG)
->
-> It is important to note that wrapping should always be performed for this type of labels as not doing so would provide a bad user experience. If users can't read the whole label for an input they may not be able to provide a correct answer.
->
+Reviewing the results from Q8 of the survey, we can see that most voters usually have a good experience with the default rendering of a TextBlock for rendering a label. From this result we can decide that string label rendering should be performed as if we were rendering a default TextBlock.
 
-### Host Formatting
-
-Based on the results from Q9 of the survey, we will add the option to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
-
-#### Text formatting
- We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
-
- ```json
-"inputLabelFormatting": 
+This would allow authors to emulate writing a simple TextBlock element by simply defining the label as a string, making the string version look like this
+```json
 {
-	"requiredInputs": {
-		"weight": "Bolder"
-	},
-	"optionalInputs": {
-		"isSubtle":true
+	"type": "Input.Text",
+	"id": "textInput",
+	"label": "Label for Input"
+}
+```
+
+While the same rendering experience using a TextBlock would look like this
+```json
+{
+	"type": "Input.Text",
+	"id": "textInput",
+	"label": {
+		"type": "TextBlock",
+		"text": "Label for Input"
 	}
 }
 ```
 
-The full set of properties to be modified using full text formatting will be:
+Both of the afore mentioned cards would produce the same rendered result that would look like  this:
+ 
+![img](assets/InputLabels/LabelDefault.PNG)
 
-| Property | Default Value |
-| --- | --- | --- | --- |
-| spacing | "default" | 
-| size | "default" | 
-| color | "default" |
+It is important to note that wrapping should always be performed for this type of labels as not doing so would provide a bad user experience. If users can't read the whole label for an input they may not be able to provide a correct answer.
 
-While it's mentioned that we should allow almost all TextBlock properties to be modified by the label property, some of them must stay out of bounds for hosts as they would provide a bad user experience:
-* maxLines and wrap: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
-* isVisible: labels should always be visible as long as the associated input is
-* height: input elements should control the height for the whole set of label, input and error message 
+While it's been mentioned that we'll render a string label as a default TextBlock we should take control of the wrap property to be always set to true. This measure will allow authors and users to have a better experience using labels. 
 
-Allowing the control of this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc) may also be required but will be set out of scope for v1 of this feature. This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
+#### Required indicators
 
-#### Required and Optional indicators
-
- By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the words "required" or "optional". Consider a host config similar to the below:
+ By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the word "required". Consider a host config similar to the below:
 
   ```json
 "inputLabelFormatting": 
@@ -152,18 +115,9 @@ Allowing the control of this styling via support of native styling on required a
 	"requiredInputs": {
 		"suffix":"*",
 		"weight": "Bolder",
-	},
-	"optionalInputs": {
-		"suffix":"(optional)",
-		"isSubtle":true
 	}
 }
 ```
-If we want even more detailed control, we could allow the host to specify something like `{labelName} (optional)` or `(optional) {labelName}` in order to allow them to position their indicators as they wish. We could make use of the common expression language being used for templating to support this functionality, but that would require taking a dependency on the common expression language implementation that would not otherwise be required for hosts not using templating.
-
-> One concern with allowing hosts to specify arbitrary label templates or suffixes, is that it opens up a localization issue.  Whatever word they provide should be localized into the language of the card. If we introduce this functionality, we should make sure we have a localization story that covers this scenario. 
-
-> When using these host properties, we would need to only apply them if all inputs on the card have labels so that required fields are marked consistently. We don't want to end up in a situation where some inputs in the card are marked as required in the label and others on the field itself, as this may lead to a confusing user experience.
 
 ### Card Author Formatting
 
@@ -191,8 +145,6 @@ One option would be to add support for TextBlock and/or RichTextBlock labels to 
 ```
 
 The problem with this approach, however, is that if we allow the host to specify formatting, there could be a conflict between the formatting provided by the card author and that provided by the host. For example, if the card author makes all their labels bold, the host's indication that required labels should be bold will not provide any additional information, and the end user will not see any indication of which fields are required.
-
-
 
 #### Option 2 – LabelFor Property on TextBlocks/RichTextBlocks
 Another option would be to allow card authors who wish to format their labels to alternatively use a labelFor property on their TextBlocks instead of using the label property on Inputs. This would opt them out of host formatting, but still allow them to provide the association that would allow us to correctly mark the input for accessibility and interactivity:
@@ -225,27 +177,20 @@ Another option would be to allow card authors who wish to format their labels to
 
 The downside of this is that it provides a less clean story to our card authors. They would now have two ways to specify a label, and without reading the documentation it would not be clear that one option results in host formatting being applied and the other doesn't. If, for example, a card author wants to emphasize a particular word, and uses a RichTextBlock to highlight that word, they might unknowingly opt themselves out of host formatting. 
 
-##### Non-adjacent labels
-Another note about labelFor is that this approach doesn’t require the label to be near the input it labels. In many cases, this may be confusing to users if use incorrectly by card authors. However, we should consider if there are valid scenarios for this use case. Possible scenarios that I could come up with include:
+#### Final conclussion 
 
-![img](assets/InputLabels/LabelsToTheLeft.png)
-
-I built this card using a series of column sets. Although it is an acceptable UI, this is probably not the approach we want for card authors to label their inputs on the side. The card authoring is fairly non-intuitive to get a good result. If we want to support labels to the left of the input, we should probably do this as a first-class explicit property (```"labelPosition"``` or ```"allowHorizontalLabels"```). 
-
-This card is another possible example of a use case for non-adjacent labels, where there is additional information between the label and the input:
-
-![img](assets/InputLabels/AdditionalLabelContent.png)
-
-This scenario could be covered by a RichTextBlock that contains both pieces of text being used as the label (arguably the entire text should be read as the accessibility label for the input); this scenario also opens the doors to cards where there may be elements between the label and the card, just in the prior example card authors may want to have the required hint in the first line rather than having it next to the hint on how to fill in the field:
-
-![img](assets/InputLabels/InputLabelWithMiddleElement.png)
-
-This scenario is possible but it would break the accessibility story of the form as people using a screen reader would not know the extra piece of information that is not part of the label. This type of behaviors should not be encouraged as it would provoke a big issue with the accessibility story of our product.
+After multiple days of deliberation, going over the pros and cons of each option and doing an internal voting in the team, the conclussion reached was to follow the schema proposed in "Option 1 – Allow TextBlocks and RichTextBlocks as Labels" which includes the following considerations:
+* The label property can contain a markdown supported string, TextBlock or RichTextBlock so authors can modify how labels look
+* No HostConfig modifications for text formatting are done for the string label scenario in v1 of this feature  
+* Some properties will have to be managed for TextBlock and RichTextBlock elements to provide a nice user experience:
+	* **maxLines** and **wrap**: Labels should be descriptive enough so users can provide the information needed, if the user can't read the whole question the information they will not be able to provide a correct answer
+	* **isVisible**: labels should always have the same visibility as their associated input
+	* **height**: input elements should control the height for the whole set of label, input and error message 
 
 ## Backwards Compatibility
-On earlier versions of renderers the label would be completely dropped, leading to a bad user experience. The card may be completely unusable if without the labels the user cannot deduce what information is meant to be provided in the unlabeled inputs.
+On earlier versions of renderers the label will be completely dropped, leading to a bad user experience. The card may be completely unusable if without the labels the user cannot deduce what information is meant to be provided in the unlabeled inputs.
 
-Because the label is a property, not a new type, card authors would not be able to use type to trigger fallback to an independent text block and input. To support this, the card author would need to use requires as follows:
+Because the label is a property, not a new type, card authors will not be able to use type to trigger fallback to an independent text block and input. To support this, the card author would need to use requires as follows:
 
 ```json
 {
@@ -270,15 +215,15 @@ Because the label is a property, not a new type, card authors would not be able 
     }
 }
 ```
+
 We could also possibly add a specific named feature to the requires dictionary to allow card authors to address it directly using something like:
 ```json
 "requires": {
 	"inputLabels": "1.0"
 }
 ```
-Either of these approaches would allow card authors who know their cards will be hitting platforms targeting both 1.2 and 1.3 to take advantage of the labels for accessibility or interactivity purposes in 1.3 without breaking their experience on 1.2 clients. That this will not help card authors who are targeting 1.0 or 1.1 hosts where fallback is not supported. Card authors who know their hosts support version 1.3 (or any future version) will not need to worry about this concern.
 
-In the case of a host using the `labelFor` property there would be no negative impact on down-level platforms other than not providing the association. Because the TextBlock will still exist, only the association will be dropped when rendered on a platform that doesn't support this feature.
+Either of these approaches would allow card authors who know their cards will be hitting platforms targeting both 1.2 and 1.3 to take advantage of the labels for accessibility or interactivity purposes in 1.3 without breaking their experience on 1.2 clients. That this will not help card authors who are targeting 1.0 or 1.1 hosts where fallback is not supported. Card authors who know their hosts support version 1.3 (or any future version) will not need to worry about this concern.
 
 ## Placeholders
 
@@ -286,7 +231,7 @@ Based on the answers from Q7, no users answered to using placeholders only for l
 
 ## Label Position
 
-As alluded to above, we should consider how the label position is determined. One of the goals of this feature is to allow us to someday intelligently reflow inputs, so it may be the case that we want to maintain control of label positioning. Today we would always draw the label above the input, but in the future we may put it to the side if our rendering space is wide enough, or push it into placeholders if our space is constrained. For the time being, we can consider label position to be work for the future so it can line with intelligent reflowing so on v1 it's not going to be considered. 
+As alluded to above, we should consider how the label position is determined. One of the goals of this feature is to allow us to someday intelligently reflow inputs, so it may be the case that we want to maintain control of label positioning. Today we would always draw the label above the input, but in the future we may put it to the side if our rendering space is wide enough, or push it into placeholders if our space is constrained. For the time being, we can consider label position to be work for the future so it can line with intelligent reflowing but for v1 it's not going to be considered. 
 
 ## Other Input Types
 
@@ -467,3 +412,112 @@ This results in the label being associated with the input both for interactivity
 
  ## Accessibility Labels
 Both Xaml and HTML have accessibility labels which can be used to address accessibility issues related to inputs (AutomationProperties and aria- properties respectively). In both cases, setting these properties addresses accessibility issues, but does not semantically associate the label with the input for interactivity behavior. Additionally, these properties are not input specific, and can be used on other elements as well as inputs. We should consider whether we want generic accessibility labels such as these, but such a feature should apply to all elements and is outside the scope of this document.
+
+## Cost estimation
+
+This feature focuses on adding a text element to an input element which will have to be implemented in all of our renderers and the designer. It's important to note that this feature covers the accessibility aspect which should be reviewed by people who have expertise in this aspect.
+
+For the development of this feature the following costs have been estimated for all platforms like this:
+
+| Task | Cost (days) | Previous requirements | Includes |
+| --- | --- | --- | --- |
+| C++ Object Model | 2 | Spec completion | Tests |
+| UWP Implementation | 2 | C++ Object Model | Tests and override sample |
+| Android Implementation | 2 | C++ Object Model | Tests and override sample | 
+| iOS Implementation | 2 | C++ Object Model | Override sample |
+| C# Object Model | 2 | Spec completion | Tests |
+| .NET Implemenation | 2 | C# Object Model | Override sample |
+| HTML Implementation | 2 | C# Object Model | Tests | 
+| JavaScript Implementation | 10 | Spec completion | Changes to designer |
+| Documentation | 4 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
+| Total cost | 28 | | |
+
+Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature.
+
+It's also important to note that using the approach we went with, we must make sure our TextBlock and RichTextBlock rendering methods are open for consumption and are easy to use to any developer who has to override input rendering.
+
+### Follow ups
+
+As mentioned before, this feature tackles a big issue Adaptive Cards has with accessibility, as such, we'll need some guidance from the Accessibility Team at Microsoft to make sure the implementation we made was correct and provides a good experience for people using a screen reader application. I didn't account this in the total cost as this process may take anything from a day to multiple weeks and may fall in the category of bug fixing.
+
+## Work for labels to be considered for a future iteration
+
+### Host Formatting
+
+Based on the results from Q9 of the survey, we will want to revisit the option of adding the option to allow the host to control formatting of the labels, either in general or for required inputs, we need a way for them to specify the desired format. There are two main things we may want to include:
+
+#### Text formatting
+ We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
+
+ ```json
+"inputLabelFormatting": 
+{
+	"requiredInputs": {
+		"weight": "Bolder"
+	},
+	"optionalInputs": {
+		"isSubtle":true
+	}
+}
+```
+
+The full set of properties to be modified using full text formatting will be:
+
+| Property | Default Value |
+| --- | --- | --- | --- |
+| spacing | "default" | 
+| size | "default" | 
+| color | "default" |
+
+Allowing the control of this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc) may also be required but will be set out of scope for v1 of this feature. This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
+
+#### Required indicators
+
+For following iterations of this feature, we may want to provide even more detailed control, we could allow the host to specify something like `{labelName} (required)` or `(required) {labelName}` in order to allow them to position their indicators as they wish. We could make use of the common expression language being used for templating to support this functionality, but that would require taking a dependency on the common expression language implementation that would not otherwise be required for hosts not using templating.
+
+One concern with allowing hosts to specify arbitrary label templates or suffixes, is that it opens up a localization issue.  Whatever word they provide should be localized into the language of the card. If we introduce this functionality, we should make sure we have a localization story that covers this scenario.
+
+### Label positioning
+
+One of the goals of this feature is to allow us to someday intelligently reflow inputs, so it may be the case that we want to maintain control of label positioning. Today we would always draw the label above the input, but in the future we may put it to the side if our rendering space is wide enough, or push it into placeholders if our space is constrained.	
+
+That said, it may be desirable let either the card author or the host configure the position of the label. The tradeoff is more layout power to the card author or host, and less flexibility to us to reflow in the future. Because of this, we will not introduce this with v1 of this feature, and consider it only if we get customer feedback or requests to allow positioning of labels.	
+
+##### Label Above	
+```json	
+{	
+	"type": "Input.Text",	
+	"id": "nameInput",	
+	"label": "Please enter your name:",	
+	"labelPosition": "Above",	
+	"placeholder": "Last, First"	
+}	
+```	
+![img](assets/InputLabels/LabelPositionAbove.PNG)	
+
+##### Label to the Side	
+
+```json	
+{	
+	"type": "Input.Text",	
+	"id": "nameInput",	
+	"label": "Please enter your name:",	
+	"labelPosition": "Side",	
+	"placeholder": "Last, First"	
+}	
+```	
+![img](assets/InputLabels/LabelPositionSide.PNG)	
+
+> Note on side positioning: With a form full of labels a card author likely would want the inputs to be lined up, which by default would not happen if the labels were different lengths. To properly support side labels we might need a way to group them so that all labels in a group are formatted consistently. Alternatively, we could consider whether we could devise an algorithm for lining up input labels.	
+##### Label as Placeholder	
+
+```json	
+{	
+	"type": "Input.Text",	
+	"id": "nameInput",	
+	"label": "Please enter your name",	
+	"labelPosition": "Placeholder",	
+	"placeholder": "Last, First"	
+}	
+```	
+![img](assets/InputLabels/LabelPositionPlaceholder.PNG)
