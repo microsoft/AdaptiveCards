@@ -8,7 +8,7 @@ using System;
 namespace AdaptiveCards.Templating.Test
 {
     [TestClass]
-    public class TestTemplate
+    public sealed class TestTemplate
     {
         [TestMethod]
         public void TestBasic()
@@ -1563,7 +1563,7 @@ namespace AdaptiveCards.Templating.Test
         }
     }
     [TestClass]
-    public class TestRootKeyword
+    public sealed class TestRootKeyword
     {
         [TestMethod]
         public void TestRootInDataContext()
@@ -1733,7 +1733,7 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
-    public class TestDataKeyword
+    public sealed class TestDataKeyword
     {
         [TestMethod]
         public void TestBasic()
@@ -1741,12 +1741,6 @@ namespace AdaptiveCards.Templating.Test
             string jsonTemplate = @"{
     ""type"": ""AdaptiveCard"",
     ""version"": ""1.0"",
-    ""$data"": {
-                ""person"": {
-                    ""firstName"": ""Andrew"",
-                    ""lastName"": ""Leader""
-                }
-     },
     ""body"": [
         {
             ""type"": ""TextBlock"",
@@ -1950,7 +1944,7 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
-    public class TestPartialResult
+    public sealed class TestPartialResult
     {
         [TestMethod]
         public void TestCreation()
@@ -1996,26 +1990,11 @@ namespace AdaptiveCards.Templating.Test
 
             Assert.AreEqual(result1.ToString(), "hello{name}!");
         }
-        public void TestCreationOfWhen()
-        {
-            AdaptiveCardsTemplateResult result1 = new AdaptiveCardsTemplateResult();
-            result1.Append("hello");
 
-            AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
-            result2.Append("name", false);
-
-            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
-            result3.Append("!");
-
-            result1.Append(result2);
-            result1.Append(result3);
-
-            Assert.AreEqual(result1.ToString(), "hello{name}!");
-        }
     }
 
     [TestClass]
-    public class TestCEL
+    public sealed class TestCEL
     {
         [TestMethod]
         public void TestCreation()

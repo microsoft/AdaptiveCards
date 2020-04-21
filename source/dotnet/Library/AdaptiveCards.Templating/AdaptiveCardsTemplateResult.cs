@@ -5,7 +5,7 @@ using System;
 
 namespace AdaptiveCards.Templating
 {
-    public class AdaptiveCardsTemplateResult
+    public sealed class AdaptiveCardsTemplateResult
     {
         public enum EvaluationResult
         {
@@ -14,7 +14,7 @@ namespace AdaptiveCards.Templating
             EvaluatedToFalse
         }
 
-        private class AdaptiveCardsTemplatePartialResult
+        private sealed class AdaptiveCardsTemplatePartialResult
         {
             public StringBuilder StringResult { get; set; }
             public bool IsExpanded { get; set; }
@@ -45,7 +45,7 @@ namespace AdaptiveCards.Templating
                 if (isWhen)
                 {
                     // object is "$when" type and its evaluation failes, so return
-                    if (!evaluator.IsTrue(predicate, data))
+                    if (!AdaptiveCardsTemplateVisitor.IsTrue(predicate, data))
                     {
                         whenEvaluationResult = EvaluationResult.EvaluatedToFalse;
                         return "";
@@ -65,7 +65,7 @@ namespace AdaptiveCards.Templating
                     enumerator.MoveNext();
                     var headOfWhen = enumerator.Current;
                     bool areAllElementsExpanded = true;
-                    if (evaluator.IsTrue(headOfWhen.predicate, data))
+                    if (AdaptiveCardsTemplateVisitor.IsTrue(headOfWhen.predicate, data))
                     {
                         while(enumerator.MoveNext())
                         {
@@ -87,7 +87,7 @@ namespace AdaptiveCards.Templating
                 }
                 else
                 {
-                    expandedStringResult.Append(evaluator.Expand(StringResult.ToString(), data, isTemplatedString)).Append(output);
+                    expandedStringResult.Append(AdaptiveCardsTemplateVisitor.Expand(StringResult.ToString(), data, isTemplatedString)).Append(output);
                 }
 
                 return expandedStringResult.ToString(); 
@@ -98,7 +98,7 @@ namespace AdaptiveCards.Templating
         private bool isPair;
 
 
-        public bool ShouldTryRemoveComman;
+        public bool ShouldTryRemoveComman { get; set; }
         public bool IsExpanded
         {
             get
@@ -150,7 +150,7 @@ namespace AdaptiveCards.Templating
         public AdaptiveCardsTemplateResult(string capturedString, string predicate)
         {
             bool isExpanded = false;
-            if (predicate.Length == 0)
+            if (predicate == null || predicate.Length == 0)
             {
                 isExpanded = true;
             }
@@ -206,9 +206,9 @@ namespace AdaptiveCards.Templating
             }
             return false;
         }
-        public void TryRemoveCommarAtTheEndFromStringBuilder(StringBuilder input)
+        public static void TryRemoveCommarAtTheEndFromStringBuilder(StringBuilder input)
         {
-            if (input.Length <= 0)
+            if (input == null || input.Length <= 0)
             {
                 return;
             }
@@ -245,15 +245,16 @@ namespace AdaptiveCards.Templating
 
         public void Append(AdaptiveCardsTemplateResult result)
         {
+            if (result == null)
+            {
+                return;
+            }
+
             if (result.ShouldTryRemoveComman)
             {
                 TryRemoveACommaAtEnd();
             }
 
-            if (result == null)
-            {
-                return;
-            }
             var tail = GetTail().Value;
             var headOfResult = result.GetHead().Value;
 
@@ -314,11 +315,16 @@ namespace AdaptiveCards.Templating
 
         public string Expand(AdaptiveCardsTemplateVisitor evaluator, JObject data)
         {
+            if (evaluator == null)
+            {
+                throw new ArgumentNullException(nameof(evaluator));
+            }
+
             var enumerator =  partialResultLinkedList.GetEnumerator();
             if (IsWhen)
             {
                 // object is "$when" type and its evaluation failes, so return
-                if(!evaluator.IsTrue(Predicate, data))
+                if(!AdaptiveCardsTemplateVisitor.IsTrue(Predicate, data))
                 {
                     return "";
                 }

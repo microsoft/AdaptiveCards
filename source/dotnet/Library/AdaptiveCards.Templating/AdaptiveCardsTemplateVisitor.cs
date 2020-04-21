@@ -6,12 +6,13 @@ using System;
 using AdaptiveExpressions.Properties;
 using AdaptiveExpressions;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards.Templating
 {
-    public class AdaptiveCardsTemplateVisitor : AdaptiveCardsTemplateParserBaseVisitor<AdaptiveCardsTemplateResult>
+    public sealed class AdaptiveCardsTemplateVisitor : AdaptiveCardsTemplateParserBaseVisitor<AdaptiveCardsTemplateResult>
     {
-        class DataContext
+        private sealed class DataContext
         {
             public JToken token;
             public bool IsArrayType = false;
@@ -21,9 +22,10 @@ namespace AdaptiveCards.Templating
             public const string dataKeyword = "$data";
             public const string indexKeyword = "$index";
 
-            public DataContext (string text, JToken rootDataContext) : this(JToken.Parse(text), rootDataContext)
+            public DataContext(string text, JToken rootDataContext) : this(JToken.Parse(text), rootDataContext)
             {
             }
+
             public DataContext (JToken jtoken, JToken rootDataContext)
             {
                 token = jtoken;
@@ -61,12 +63,13 @@ namespace AdaptiveCards.Templating
                     jobject[indexKeyword] = index;
                     return jobject;
                 }
-                return null;
+                return new JObject();
             }
         }
 
         private Stack<DataContext> _dataContext = new Stack<DataContext>();
         private readonly JToken root;
+        private readonly Options options; 
 
         private DataContext GetCurrentDataContext()
         { 
@@ -94,9 +97,10 @@ namespace AdaptiveCards.Templating
                     _dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
                 }
             }
-            catch (Exception)
+            catch (JsonException)
             {
                 // we swallow up the error here
+                // no data context will be set, and won't be evaluated using the given data context
             }
         }
 
@@ -110,17 +114,36 @@ namespace AdaptiveCards.Templating
             return _dataContext.Count != 0;
         }
 
-        public AdaptiveCardsTemplateVisitor(string data = null)
+        public AdaptiveCardsTemplateVisitor(Func<string, object> nullSubstitutionOption, string data = null)
         {
             if(data != null && data.Length != 0)
             {
                 root = JToken.Parse(data);
                 PushDataContext(data, root);
             }
+
+            if (nullSubstitutionOption == null)
+            {
+                options = new Options
+                {
+                    NullSubstitution = (path) => $"${{{path}}}" 
+                };
+            }
+            else
+            {
+                options = new Options
+                {
+                    NullSubstitution = nullSubstitutionOption
+                };
+            }
         }
 
         public override  AdaptiveCardsTemplateResult VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // [ '{', '$data', ':', ',', 'val'] 
@@ -141,24 +164,36 @@ namespace AdaptiveCards.Templating
                 PushTemplatedDataContext(templateLiteral.GetText());
             }
 
-            return null;
+            return new AdaptiveCardsTemplateResult();
         }
 
         public override AdaptiveCardsTemplateResult VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             return Visit(context.TEMPLATEROOT());
         }
 
         public override AdaptiveCardsTemplateResult VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             var child = context.templateRoot();
             PushTemplatedDataContext(child.GetText());
-            return null;
+            return new AdaptiveCardsTemplateResult();
         }
 
 
         public override AdaptiveCardsTemplateResult VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context)
         {                 
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // ['"', 'templated expression'] 
@@ -181,6 +216,10 @@ namespace AdaptiveCards.Templating
         }
         public override AdaptiveCardsTemplateResult VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
             var templateStringContexts = context.templateString();
             if (templateStringContexts.Length == 1)
@@ -213,6 +252,10 @@ namespace AdaptiveCards.Templating
 
         public override AdaptiveCardsTemplateResult VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             var hasDataContext = false;
             var isArrayType = false;
             // vist the first data context availble, the rest ignored
@@ -340,6 +383,11 @@ namespace AdaptiveCards.Templating
 
         public override AdaptiveCardsTemplateResult VisitTerminal(ITerminalNode node)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             if (node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATELITERAL || node.Symbol.Type == AdaptiveCardsTemplateLexer.TEMPLATEROOT)
             {
                 return ExpandTemplatedString(node);
@@ -350,6 +398,11 @@ namespace AdaptiveCards.Templating
 
         public AdaptiveCardsTemplateResult ExpandTemplatedString(ITerminalNode node, bool isTemplatedString = false)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             if (HasDataContext())
             {
                 DataContext currentDataContext = GetCurrentDataContext();
@@ -367,14 +420,24 @@ namespace AdaptiveCards.Templating
             return new AdaptiveCardsTemplateResult(node.GetText());
         }
 
-        public string Expand(string unboundString, JToken data, bool isTemplatedString = false)
+        public static string Expand(string unboundString, JToken data, bool isTemplatedString = false)
         {
+            if (unboundString == null)
+            {
+                return "";
+            }
+
             Expression exp;
             try
             {
                 exp = Expression.Parse(unboundString.Substring(2, unboundString.Length - 3));
             }
+            // AEL can throw any errors, for example, System.Data.Syntax error will be thrown from AEL's ANTLR 
+            // when AEL encounters unknown functions.
+            // We can't possibly know all errors and we simply want to leave the expression as it is when there are any exceptions
+#pragma warning disable CA1031 // Do not catch general exception types
             catch (Exception)
+#pragma warning restore CA1031 // Do not catch general exception types
             {
                 return unboundString;
             }
@@ -385,25 +448,22 @@ namespace AdaptiveCards.Templating
             };
 
             StringBuilder result = new StringBuilder();
-            try
+            var (value, error) = exp.TryEvaluate(data, options);
+            if (error == null)
             {
-                var aelEvalResult = exp.TryEvaluate(data, options);
-                if (aelEvalResult.error == null)
+                if (value is string && isTemplatedString)
                 {
-                    if (aelEvalResult.value is string && isTemplatedString)
-                    {
-                        result.Append("\"");
-                    }
+                    result.Append("\"");
+                }
 
-                    result.Append(aelEvalResult.value.ToString());
+                result.Append(value.ToString());
 
-                    if (aelEvalResult.value is string && isTemplatedString)
-                    {
-                        result.Append("\"");
-                    }
+                if (value is string && isTemplatedString)
+                {
+                    result.Append("\"");
                 }
             }
-            catch (Exception)
+            else
             {
                 result.Append("${" + unboundString + "}");
             }
@@ -418,6 +478,10 @@ namespace AdaptiveCards.Templating
         /// <returns></returns>
         public override AdaptiveCardsTemplateResult VisitTemplateWhen([NotNull] AdaptiveCardsTemplateParser.TemplateWhenContext context)
         {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
             // when this node is visited, the children of this node is shown as below: 
             // this node is visited only when parsing was correctly done
             // [ '{', '$when', ':', ',', 'expression'] 
@@ -426,26 +490,23 @@ namespace AdaptiveCards.Templating
             return result;
         }
 
-        public bool IsTrue(string predicate, JToken data)
+        public static bool IsTrue(string predicate, JToken data)
         {
-            try
+            var (value, error) = new ValueExpression(predicate).TryGetValue(data);
+            if (error == null)
             {
-                var (value, error) = new ValueExpression(predicate).TryGetValue(data);
-                if (error == null)
-                {
-                    return bool.Parse(value as string);
-                }
-                return true;
+                return bool.Parse(value as string);
             }
-            catch
-            {
-                // TODO log erros here
-                return true;
-            }
+            return true;
         }
 
         public override AdaptiveCardsTemplateResult VisitChildren([NotNull] IRuleNode node)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
+
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
 
             for(int i = 0; i < node.ChildCount; i++)
