@@ -323,6 +323,29 @@ This document has primarily focused on `Input.Text` in it's examples, but the la
 ```
 ![img](assets/InputLabels/Input.Toggle.PNG)
 
+## Cost estimation
+
+This feature focuses on adding a text element to an input element which will have to be implemented in all of our renderers and the designer. It's important to note that this feature covers the accessibility aspect which should be reviewed by people who have expertise in this aspect.
+
+For the development of this feature the following costs have been estimated for all platforms like this:
+
+| Task | Cost (days) | Previous requirements | Includes |
+| --- | --- | --- | --- |
+| C++ Object Model | 2 | Spec completion | Tests |
+| UWP Implementation | 2 | C++ Object Model | Tests and override sample |
+| Android Implementation | 2 | C++ Object Model | Tests and override sample | 
+| iOS Implementation | 2 | C++ Object Model | Override sample |
+| C# Object Model | 2 | Spec completion | Tests |
+| .NET Implemenation | 2 | C# Object Model | Override sample |
+| HTML Implementation | 2 | C# Object Model | Tests | 
+| JavaScript Implementation | 10 | Spec completion | Changes to designer |
+| Documentation | 4 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
+| Total cost | 28 | | |
+
+Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
+
+It's also important to note that using the approach we went with, we must make sure our TextBlock and RichTextBlock rendering methods are open for consumption and are easy to use to any developer who has to override input rendering.
+
 # Appendix
 
 ## Survey results
@@ -412,29 +435,6 @@ This results in the label being associated with the input both for interactivity
 
  ## Accessibility Labels
 Both Xaml and HTML have accessibility labels which can be used to address accessibility issues related to inputs (AutomationProperties and aria- properties respectively). In both cases, setting these properties addresses accessibility issues, but does not semantically associate the label with the input for interactivity behavior. Additionally, these properties are not input specific, and can be used on other elements as well as inputs. We should consider whether we want generic accessibility labels such as these, but such a feature should apply to all elements and is outside the scope of this document.
-
-## Cost estimation
-
-This feature focuses on adding a text element to an input element which will have to be implemented in all of our renderers and the designer. It's important to note that this feature covers the accessibility aspect which should be reviewed by people who have expertise in this aspect.
-
-For the development of this feature the following costs have been estimated for all platforms like this:
-
-| Task | Cost (days) | Previous requirements | Includes |
-| --- | --- | --- | --- |
-| C++ Object Model | 2 | Spec completion | Tests |
-| UWP Implementation | 2 | C++ Object Model | Tests and override sample |
-| Android Implementation | 2 | C++ Object Model | Tests and override sample | 
-| iOS Implementation | 2 | C++ Object Model | Override sample |
-| C# Object Model | 2 | Spec completion | Tests |
-| .NET Implemenation | 2 | C# Object Model | Override sample |
-| HTML Implementation | 2 | C# Object Model | Tests | 
-| JavaScript Implementation | 10 | Spec completion | Changes to designer |
-| Documentation | 4 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
-| Total cost | 28 | | |
-
-Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature.
-
-It's also important to note that using the approach we went with, we must make sure our TextBlock and RichTextBlock rendering methods are open for consumption and are easy to use to any developer who has to override input rendering.
 
 ### Follow ups
 
