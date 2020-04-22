@@ -1,3 +1,35 @@
+# Table of Contents
+1. [Input Validation](#Input-Validation)
+    1. [Schema Additions to Inputs for Validation](#Schema-Additions-to-Inputs-for-Validation)
+    2. [Validation Rendering](#Validation-Rendering)
+        1. [Host side styling](#Host-side-styling)
+    3. [Input Validation Behavior](#Input-Validation-Behavior)
+        1. [When to Validate](#When-to-Validate)
+        2. [Validation for ChoiceSet and Toggle Inputs](#Validation-for-ChoiceSet-and-Toggle-Inputs)
+        3. [Which Input Properties to Validate](#Which-Input-Properties-to-Validate)
+        4. [Which Inputs to Validate](#Which-Inputs-to-Validate)
+            1. [Validating all fields](#Validating-all-fields)
+            2. [Only validate visible fields](#Only-validate-visible-fields)
+            3. [Making hidden element visible on submit](#Making-hidden-element-visible-on-submit)
+            4. [Current Card/Container](#Current-Card/Container)
+            5. [Card Author Control](#Card-Author-Control)
+            6. [On Not Adding a Form Type](#On-Not-Adding-a-Form-Type)
+            7. [Defaulting to All](#Defaulting-to-All)
+        5. [Validation and Actions](#Validation-and-Actions)
+            1. [Action Types](#Action-Types)
+                1. [Submit Actions](#Submit-Actions)
+                2. [Toggle and ShowCard Actions](#Toggle-and-ShowCard-Actions)
+                3. [OpenUrl](#OpenUrl)
+            2. [Disabling Actions](#Disabling-Actions)
+    4. [Custom Rendering Error Messages](#Custom-Rendering-Error-Messages)
+    5. [Backwards Compatibility](#Backwards-Compatibility)
+    6. [Future and Out of Scope Features](#Future-and-Out-of-Scope-Features)
+        1. [Success Indicators](#Success-Indicators)
+        2. [Cross field validation](#Cross-field-validation)
+2. [Annex](#Annex)
+    1. [Examples of invalid inputs](#Examples-of-invalid-inputs)
+
+
 # Input Validation
 
 Input validation was originally spec'd in issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081). This document covers the basics from that spec, and continues the discussion of additional concerns that it raised.
@@ -298,9 +330,9 @@ There are many scenarios where validation that specifies relationships between f
 
 While this is an area we should investigate in the future, supporting cross field validation is out of scope for v1 of this feature.
 
-## Annex
+# Annex
 
-### Examples of invalid inputs
+## Examples of invalid inputs
 
 The following is a list of examples on how multiple websites render invalid inputs.
 
