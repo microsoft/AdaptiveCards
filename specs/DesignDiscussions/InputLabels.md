@@ -1,3 +1,48 @@
+# Table of Contents
+1. [Input/Label Associations](#InputLabel-Associations)
+	1. [Basic Label Support in Adaptive Cards](#Basic-Label-Support-in-Adaptive-Cards) 
+	2. [Formatting](#Formatting)
+		1. [Default rendering for labels](#Default-rendering-for-labels)
+		2. [Required indicators](#Required-indicators) 
+		3. [Card Author Formatting](#Card-Author-Formatting)
+			1. [Option 1 – Allow TextBlocks and RichTextBlocks as Labels](#Option-1-–-Allow-TextBlocks-and-RichTextBlocks-as-Labels)
+			2. [Option 2 – LabelFor Property on TextBlocks/RichTextBlocks]([#Option-2-–-LabelFor-Property-on-TextBlocks/RichTextBlocks])
+			3. [Final Conclussion](#Final-conclussion)
+	3. [Backwards Compatibility](#Backwards-Compatibility)
+	4. [Placeholders](#Placeholders)
+	5. [Label Position](#Label-Position)
+	6. [Other Input Types](#Other-Input-Types)
+		1. [Date Input](#Date-Input)
+		2. [Time Input](#Time-Input)
+		3. [Number Input](#Number-Input)
+		4. [Choice Set](#Choice-Set)
+			1. [Expanded](#Expanded)
+			2. [Compact](#Compact)
+		5. [Toggle Inputs](#Toggle-Inputs)
+	7. [Feature Cost Estimation](#Feature-Cost-Estimation)
+		1. [Follow ups](#Follow-ups) 
+2. [Appendix](#Appendix)
+	1. [Survey results](#Survey-results)
+		1. [Q6. How would you expect a user to know the difference between required and optional inputs?](#Q6-How-would-you-expect-a-user-to-know-the-difference-between-required-and-optional-inputs)
+		2. [Q7. How do you currently label your input fields?](#Q7-How-do-you-currently-label-your-input-fields)
+		3. [Q8. If you use a TextBlock to label your input, how frequently do you change the default TextBlock style? (size, weight, color, etc.)](#Q8-If-you-use-a-TextBlock-to-label-your-input-how-frequently-do-you-change-the-default-TextBlock-style-(size-weight-color-etc))
+		4. [Q9. If you are a Host App that renders Adaptive Cards authored by others in your own app, how important to you is the ability to control the following?](#Q9-If-you-are-a-Host-App-that-renders-Adaptive-Cards-authored-by-others-in-your-own-app-how-important-to-you-is-the-ability-to-control-the-following)
+	2. [Comparisons to other platforms](#Comparisons-to-other-platforms)
+		1. [XAML](#XAML)
+			1. [Header](#Header)
+			2. [AutomationProperties](#AutomationProperties)
+		2. [HTML](#HTML)
+			1. [Label](#Label)
+			2. [Aria](#Aria)
+	3. [Accessibility Labels](#Accessibility-Labels)
+	4. [Work for labels to be considered for a future iteration](#Work-for-labels-to-be-considered-for-a-future-iteration)
+		1. [Host Formatting](#Host-Formatting)
+			1. [Required indicators](#Required-indicators)
+		2. [Label positioning](#Label-positioning)
+			1. [Label Above](#Label-Above)
+			2. [Label to the Side](#Label-to-the-Side)
+			3. [Label as Placeholder](#Label-as-Placeholder)	
+
 # Input/Label Associations
 
 This document covers design considerations related to issue [#203](https://github.com/microsoft/AdaptiveCards/issues/203).
@@ -105,9 +150,13 @@ It is important to note that wrapping should always be performed for this type o
 
 While it's been mentioned that we'll render a string label as a default TextBlock we should take control of the wrap property to be always set to true. This measure will allow authors and users to have a better experience using labels. 
 
-#### Required indicators
+### Required indicators
 
- By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the word "required". Consider a host config similar to the below:
+As has been mentioned in the Input.Validation spec, all input elements will support a new property called ```isRequired```. This property as its name implies, the input element will only be valid if some data has been inputted into it; to facilitate the users to discern whether an input is required or not we will render a "required" hint next to the labels for the required inputs. 
+
+![img](assets/InputLabels/InputRequiredHint.PNG)
+
+By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the word "required". Consider a host config similar to the below:
 
   ```json
 "inputLabelFormatting": 
@@ -323,7 +372,7 @@ This document has primarily focused on `Input.Text` in it's examples, but the la
 ```
 ![img](assets/InputLabels/Input.Toggle.PNG)
 
-## Cost estimation
+## Feature Cost estimation
 
 This feature focuses on adding a text element to an input element which will have to be implemented in all of our renderers and the designer. It's important to note that this feature covers the accessibility aspect which should be reviewed by people who have expertise in this aspect.
 
@@ -331,44 +380,48 @@ For the development of this feature the following costs have been estimated for 
 
 | Task | Cost (days) | Previous requirements | Includes |
 | --- | --- | --- | --- |
-| C++ Object Model | 2 | Spec completion | Tests |
-| UWP Implementation | 2 | C++ Object Model | Tests and override sample |
-| Android Implementation | 2 | C++ Object Model | Tests and override sample | 
-| iOS Implementation | 2 | C++ Object Model | Override sample |
-| C# Object Model | 2 | Spec completion | Tests |
-| .NET Implemenation | 2 | C# Object Model | Override sample |
-| HTML Implementation | 2 | C# Object Model | Tests | 
-| JavaScript Implementation | 10 | Spec completion | Changes to designer |
-| Documentation | 4 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
-| Total cost | 28 | | |
+| C++ Object Model | 4 | Spec completion | Tests |
+| UWP Implementation | 4 | C++ Object Model | Tests and override sample |
+| Android Implementation | 4 | C++ Object Model | Tests and override sample | 
+| iOS Implementation | 4 | C++ Object Model | Override sample |
+| C# Object Model | 4 | Spec completion | Tests |
+| .NET Implemenation | 4 | C# Object Model | Override sample |
+| HTML Implementation | 4 | C# Object Model | Tests | 
+| JavaScript Implementation | 14 | Spec completion | Changes to designer |
+| Documentation | 6 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
+| Total cost | 48 | | |
 
 Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
 
 It's also important to note that using the approach we went with, we must make sure our TextBlock and RichTextBlock rendering methods are open for consumption and are easy to use to any developer who has to override input rendering.
 
+### Follow ups
+
+As mentioned before, this feature tackles a big issue Adaptive Cards has with accessibility, as such, we'll need some guidance from the Accessibility Team at Microsoft to make sure the implementation we made was correct and provides a good experience for people using a screen reader application. I didn't account this in the total cost as this process may take anything from a day to multiple weeks and may fall in the category of bug fixing.
+
 # Appendix
 
 ## Survey results
 
-#### Q6. How would you expect a user to know trhe difference between required and optional inputs?
+### Q6. How would you expect a user to know the difference between required and optional inputs?
 
 ![img](assets/InputLabels/Survey1.png)
 
 Most of the voters are fine with using an asterisk next to the inputs or labels. The options under other vary from card authors "thinking an asterisk is a bit crude" or adding the asterisk by themselves.
 
-#### Q7. How do you currently label your input fields?
+### Q7. How do you currently label your input fields?
 
 ![img](assets/InputLabels/Survey2.png)
 
 Most of the voters use a text label and a placeholder for labeling their input text. The remaining voters only use a TextBlock on top of the input to label them. It's important to note that none of the voters only use placeholders for labeling.
 
-#### Q8. If you use a TextBlock to label your input, how frequently do you change the default TextBlock style? (size, weight, color, etc.)
+### Q8. If you use a TextBlock to label your input, how frequently do you change the default TextBlock style? (size, weight, color, etc.)
 
 ![img](assets/InputLabels/Survey3.png)
 
 Most of the voters "Rarely" change the default style for TextBlocks that label their inputs. A thing to note here is that no voter commented that they never style the TextBlocks.
 
-#### Q9. If you are a Host App that renders Adaptive Cards authored by others in your own app, how important to you is the ability to control the following?
+### Q9. If you are a Host App that renders Adaptive Cards authored by others in your own app, how important to you is the ability to control the following?
 
 ![img](assets/InputLabels/Survey4.png)
 
