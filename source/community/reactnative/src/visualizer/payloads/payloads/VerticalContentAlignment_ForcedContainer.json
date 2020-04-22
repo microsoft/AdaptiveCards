@@ -15,7 +15,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet...",
+							"text": "Adaptive Cards are platform-agnostic snippets of UI, authored in JSON, that apps and services can openly exchange. When delivered to a specific app, the JSON is transformed into native UI that automatically adapts to its surroundings. It helps design and integrate light-weight UI for all major platforms and frameworks.There's an ecosystem of developers out there who want to integrate with your apps, but how can you do so safely and without their content sticking out like a sore thumb? Adaptive Cards are always native and blend seamlessly into the surrounding UI - and they work on every major platform!",
 							"wrap": true
 						}
 					]
@@ -23,6 +23,7 @@
 				{
 					"type": "Column",
 					"width": 1,
+					"separator": true,
 					"items": [
 						{
 							"type": "Container",
@@ -41,6 +42,7 @@
 				{
 					"type": "Column",
 					"width": 1,
+					"separator": true,
 					"items": [
 						{
 							"type": "Container",
@@ -59,6 +61,7 @@
 				{
 					"type": "Column",
 					"width": 1,
+					"separator": true,
 					"items": [
 						{
 							"type": "Container",

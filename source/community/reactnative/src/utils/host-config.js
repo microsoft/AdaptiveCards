@@ -439,7 +439,7 @@ export class HostConfig {
 
 	separator = {
 		lineThickness: 1,
-		lineColor: "#D9D9D9"
+		lineColor: "#A9A9A9"
 	};
 
 	fontSizes = {
