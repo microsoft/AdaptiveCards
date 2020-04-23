@@ -935,6 +935,24 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
         }
 
+        // Set accessibility properties
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationPropertiesStatics));
+
+        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+        RETURN_IF_FAILED(inputUIElementParentContainer.As(&inputUIElementAsDependencyObject));
+
+        // Set label to input so users have more context
+        if (label != nullptr)
+        {
+            RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
+        }
+
+        // Set requirement for input to be filled
+        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
+
         return S_OK;
     }
 }
