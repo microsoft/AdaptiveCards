@@ -40,21 +40,21 @@
                  priority:(unsigned int)priority
                  location:(ACRBleedDirection)location;
 
-- (UIView *)getLastArrangedSubview;
+- (UIView *_Nullable)getLastArrangedSubview;
 
 // return the largest width from the given subviews Excluding the view
-- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *)view;
+- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
 
 // return the largest height from the given subviews Excluding the view
-- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *)view;
+- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
 
-- (void)increaseIntrinsicContentSize:(UIView *)view;
+- (void)increaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
-- (void)decreaseIntrinsicContentSize:(UIView *)view;
+- (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
 - (void)hideIfSubviewsAreAllHidden;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nonnull)parent;
 
-- (void)removeViewFromContentStackView:(UIView *)view;
+- (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
 @end

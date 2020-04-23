@@ -1,6 +1,6 @@
 {
   "name": "hexo-theme-adaptivecards",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "private": true,
   "devDependencies": {
     "copy-webpack-plugin": "^4.6.0",

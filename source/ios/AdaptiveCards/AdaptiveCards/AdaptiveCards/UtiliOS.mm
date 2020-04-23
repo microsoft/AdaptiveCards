@@ -84,12 +84,10 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [containerView addSubview:imgView];
-            [containerView sendSubviewToBack:imgView];
+            [containerView insertSubview:imgView atIndex:0];
 
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                // (ACRView::observeValueForKeyPath)
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
             }
         }
@@ -303,7 +301,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 isDeficientInHeight = YES;
             }
 
-            if (isDeficientInWidth and isDeficientInWidth) {
+            if (isDeficientInWidth and isDeficientInHeight) {
                 CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
                 CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
                 // we choose one with bigger difficienty in ratio, and by increasing the
@@ -497,7 +495,7 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet)
+                                   UIStackView *actionSet)
 {
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;
