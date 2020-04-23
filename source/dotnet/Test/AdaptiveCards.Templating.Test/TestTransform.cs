@@ -447,6 +447,14 @@ namespace AdaptiveCards.Templating.Test
                             {
                                 ""type"": ""TextBlock"",
                                 ""text"": ""Hello World!""
+                            },
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Hello World!""
+                            },
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Hello World!""
                             }
                         ]
                     }
@@ -1980,15 +1988,11 @@ namespace AdaptiveCards.Templating.Test
             result1.Append("hello");
 
             AdaptiveCardsTemplateResult result2 = new AdaptiveCardsTemplateResult();
-            result2.Append("name", false);
-
-            AdaptiveCardsTemplateResult result3 = new AdaptiveCardsTemplateResult();
-            result3.Append("!");
+            result2.Append("!");
 
             result1.Append(result2);
-            result1.Append(result3);
 
-            Assert.AreEqual(result1.ToString(), "hello{name}!");
+            Assert.AreEqual(result1.ToString(), "hello!");
         }
 
     }
