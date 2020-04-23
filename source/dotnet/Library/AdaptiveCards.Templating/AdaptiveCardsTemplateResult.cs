@@ -43,7 +43,7 @@ namespace AdaptiveCards.Templating
         /// <summary>
         /// Indicates the result of evaluation result of $when expression
         /// </summary>
-        public EvaluationResult WhenEvaluationResult { get; set;  }
+        public EvaluationResult WhenEvaluationResult { get; set; }
 
         /// <summary>
         /// constructor for <c>AdaptiveCardsTemplateResult</c> class

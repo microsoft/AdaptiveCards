@@ -1,4 +1,3 @@
-using AdaptiveExpressions;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Tree;
 using Newtonsoft.Json;
@@ -51,7 +50,7 @@ namespace AdaptiveCards.Templating
         {
             if (jsonTemplate != null)
             {
-                jsonTemplateString = (jsonTemplate is string)? jsonTemplate as string : JsonConvert.SerializeObject(jsonTemplate);
+                jsonTemplateString = (jsonTemplate is string) ? jsonTemplate as string : JsonConvert.SerializeObject(jsonTemplate);
 
                 AntlrInputStream stream = new AntlrInputStream(jsonTemplateString);
                 ITokenSource lexer = new AdaptiveCardsTemplateLexer(stream);

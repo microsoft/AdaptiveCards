@@ -1,12 +1,12 @@
+using AdaptiveExpressions;
+using AdaptiveExpressions.Properties;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
-using System;
-using AdaptiveExpressions.Properties;
-using AdaptiveExpressions;
-using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace AdaptiveCards.Templating
 {
@@ -17,7 +17,7 @@ namespace AdaptiveCards.Templating
     {
         private Stack<DataContext> dataContext = new Stack<DataContext>();
         private readonly JToken root;
-        private readonly Options options; 
+        private readonly Options options;
 
         /// <summary>
         /// maintains data context
@@ -37,7 +37,7 @@ namespace AdaptiveCards.Templating
             /// </summary>
             /// <param name="jtoken">new data to kept as data context</param>
             /// <param name="rootDataContext">root data context</param>
-            public DataContext (JToken jtoken, JToken rootDataContext)
+            public DataContext(JToken jtoken, JToken rootDataContext)
             {
                 token = jtoken;
                 RootDataContext = rootDataContext;
@@ -76,7 +76,7 @@ namespace AdaptiveCards.Templating
                     return;
                 }
 
-                targetJObj[key] = jtoken; 
+                targetJObj[key] = jtoken;
             }
 
             /// <summary>
@@ -111,7 +111,7 @@ namespace AdaptiveCards.Templating
         /// <param name="data">json data in string which will be set as a root data context</param>
         public AdaptiveCardsTemplateVisitor(Func<string, object> nullSubstitutionOption, string data = null)
         {
-            if(data != null && data.Length != 0)
+            if (data != null && data.Length != 0)
             {
                 // set data as root data context
                 root = JToken.Parse(data);
@@ -123,7 +123,7 @@ namespace AdaptiveCards.Templating
             {
                 options = new Options
                 {
-                    NullSubstitution = (path) => $"${{{path}}}" 
+                    NullSubstitution = (path) => $"${{{path}}}"
                 };
             }
             else
@@ -140,7 +140,7 @@ namespace AdaptiveCards.Templating
         /// </summary>
         /// <returns><see cref="DataContext"/></returns>
         private DataContext GetCurrentDataContext()
-        { 
+        {
             return dataContext.Count == 0 ? null : dataContext.Peek();
         }
 
@@ -208,7 +208,7 @@ namespace AdaptiveCards.Templating
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>
-        public override  AdaptiveCardsTemplateResult VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context)
+        public override AdaptiveCardsTemplateResult VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context)
         {
             if (context == null)
             {
@@ -304,7 +304,7 @@ namespace AdaptiveCards.Templating
         /// <param name="context"></param>
         /// <returns>AdaptiveCardsTemplateResult</returns>
         public override AdaptiveCardsTemplateResult VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context)
-        {                 
+        {
             if (context == null)
             {
                 throw new ArgumentNullException(nameof(context));
@@ -355,7 +355,7 @@ namespace AdaptiveCards.Templating
 
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
             var templateStrings = context.templateString();
-            if (templateStrings .Length == 1)
+            if (templateStrings.Length == 1)
             {
                 var templatedStringContext = templateStrings.GetValue(0) as AdaptiveCardsTemplateParser.TemplatedStringContext;
                 // strictly, this check is not needed since the only children the context can have is this type
@@ -373,7 +373,7 @@ namespace AdaptiveCards.Templating
 
             result.Append(context.StringDeclOpen().GetText());
 
-            foreach (var templateString in templateStrings) 
+            foreach (var templateString in templateStrings)
             {
                 result.Append(Visit(templateString));
             }
@@ -431,7 +431,7 @@ namespace AdaptiveCards.Templating
             // find and set data context
             // visit the first data context available, the rest is ignored
             foreach (var pair in pairs)
-            { 
+            {
                 if (pair is AdaptiveCardsTemplateParser.TemplateDataContext || pair is AdaptiveCardsTemplateParser.TemplateRootDataContext)
                 {
                     if (pair.exception == null)
@@ -604,7 +604,7 @@ namespace AdaptiveCards.Templating
 
             var options = new Options
             {
-                NullSubstitution = (path) => $"${{{path}}}" 
+                NullSubstitution = (path) => $"${{{path}}}"
             };
 
             StringBuilder result = new StringBuilder();
@@ -671,7 +671,7 @@ namespace AdaptiveCards.Templating
             var arrayDelimiters = context.COMMA();
 
             // visit each json value in json array and integrate parsed result
-            for(int i = 0; i < values.Length; i++)
+            for (int i = 0; i < values.Length; i++)
             {
                 var value = context.value(i);
                 var parsedResult = Visit(value);
@@ -717,7 +717,7 @@ namespace AdaptiveCards.Templating
 
             AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult();
 
-            for(int i = 0; i < node.ChildCount; i++)
+            for (int i = 0; i < node.ChildCount; i++)
             {
                 result.Append(Visit(node.GetChild(i)));
             }
