@@ -28,7 +28,7 @@ namespace AdaptiveCards.Templating
         /// <para>Once created, it will contain a parsed tree based on jsonTemplate</para>
         /// <para>Data is bound by calling <c>Expand</c> on the object</para>
         /// <para>The intance can be rebound with different data by calling <c>Expand</c></para>
-        /// <see cref="Expand(AdaptiveCardsEvaluationContext)"/>
+        /// <see cref="Expand(AdaptiveCardsEvaluationContext, Func{string, object})"/>
         /// </remarks>
         /// <example>
         /// <code>
@@ -46,7 +46,7 @@ namespace AdaptiveCards.Templating
         /// var template = new AdaptiveCardsTemplate(jsonTemplate);
         /// </code>
         /// </example>
-        /// <param name="jsonTemplate"></param>
+        /// <param name="jsonTemplate">string in json or seriazable object</param>
         public AdaptiveCardsTemplate(object jsonTemplate)
         {
             if (jsonTemplate != null)
@@ -72,11 +72,11 @@ namespace AdaptiveCards.Templating
         /// <para> Data can be also inlined in AdaptiveCardsTemplate payload</para>
         /// <para> Expand can be called multiple times with different or same <paramref name="context"/></para>
         /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
-        /// <para> Defines behavior when no suitable data is found for a template entry</para>
+        /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
         /// <para> Default behavior is leaving templated string unchanged</para>
         /// </remarks>
         /// <param name="context">provides data context</param>
-        /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry<string,</param>
+        /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
         /// var template = new AdaptiveCardsTemplate(jsonTemplate);

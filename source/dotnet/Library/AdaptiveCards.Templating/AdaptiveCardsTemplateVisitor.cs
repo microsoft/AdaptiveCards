@@ -83,7 +83,7 @@ namespace AdaptiveCards.Templating
             /// retrieve a <see cref="JObject"/> from this DataContext instance if <see cref="JToken"/> is a <see cref="JArray"/> at <paramref name="index"/>
             /// </summary>
             /// <param name="index"></param>
-            /// <returns><see cref="JObject"> at<paramref name="index"/> of a <see cref="JArray"/></returns>
+            /// <returns><see cref="JObject"/> at<paramref name="index"/> of a <see cref="JArray"/></returns>
             public JToken GetDataAtIndex(int index)
             {
                 if (IsArrayType)
@@ -573,6 +573,13 @@ namespace AdaptiveCards.Templating
             return new AdaptiveCardsTemplateResult(node.GetText());
         }
 
+        /// <summary>
+        /// Expands template expression using Adaptive Expression Library (AEL)
+        /// </summary>
+        /// <param name="unboundString"></param>
+        /// <param name="data"></param>
+        /// <param name="isTemplatedString"></param>
+        /// <returns><c>string</c></returns>
         public static string Expand(string unboundString, JToken data, bool isTemplatedString = false)
         {
             if (unboundString == null)
@@ -680,6 +687,12 @@ namespace AdaptiveCards.Templating
 
             return result;
         }
+        /// <summary>
+        /// Evaluates a predicate
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="data"></param>
+        /// <returns><c>true</c> if predicate is evaluated to <c>true</c></returns>
         public static bool IsTrue(string predicate, JToken data)
         {
             var (value, error) = new ValueExpression(predicate).TryGetValue(data);
@@ -690,6 +703,11 @@ namespace AdaptiveCards.Templating
             return true;
         }
 
+        /// <summary>
+        /// Visits each children in IRuleNode
+        /// </summary>
+        /// <param name="node"></param>
+        /// <returns></returns>
         public override AdaptiveCardsTemplateResult VisitChildren([NotNull] IRuleNode node)
         {
             if (node == null)
