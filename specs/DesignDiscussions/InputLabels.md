@@ -21,6 +21,10 @@
 		5. [Toggle Inputs](#Toggle-Inputs)
 	7. [Feature Cost Estimation](#Feature-Cost-Estimation)
 		1. [Follow ups](#Follow-ups) 
+	8. [Accessibility](#Accessibility)
+		1. [1.3.1 Info and Relationships](#131-Info-and-Relationships)
+		2. [2.4.6 Headings and Labels](#246-Headings-and-Labels)
+		3. [3.3.2 Labels and Instructions](#332-Labels-and-Instructions)
 2. [Appendix](#Appendix)
 	1. [Survey results](#Survey-results)
 		1. [Q6. How would you expect a user to know the difference between required and optional inputs?](#Q6-How-would-you-expect-a-user-to-know-the-difference-between-required-and-optional-inputs)
@@ -398,6 +402,28 @@ It's also important to note that using the approach we went with, we must make s
 ### Follow ups
 
 As mentioned before, this feature tackles a big issue Adaptive Cards has with accessibility, as such, we'll need some guidance from the Accessibility Team at Microsoft to make sure the implementation we made was correct and provides a good experience for people using a screen reader application. I didn't account this in the total cost as this process may take anything from a day to multiple weeks and may fall in the category of bug fixing.
+
+## Accessibility
+
+The label property for inputs opens up a way where we can fix or help fix some parts of the accessibility story for forms rendered using Adaptive Cards. The guidelines we used were the [Web Content Accessibility Guidelines (WDGA) 2.0](https://www.w3.org/TR/WCAG20/) where we identified the following guidelines that could help guide our design and could help card authors to provide a better accessible experience using our product:
+
+### 1.3.1 Info and Relationships
+
+[Original guideline](https://www.w3.org/TR/UNDERSTANDING-WCAG20/content-structure-separation-programmatic.html)
+
+Our design supports the use of a "required hint" which will allow cards to be standarized on what word or symbol the host application uses for marking a required input.
+
+### 2.4.6 Headings and Labels
+
+[Original guideline](https://www.w3.org/TR/UNDERSTANDING-WCAG20/navigation-mechanisms-descriptive.html)
+
+This guideline will have to be taken care by card authors but by providing a simple way to specify label for input elements we hope to ease the design of input forms which in turn will make the labels to be more descriptive.
+
+### 3.3.2 Labels and Instructions
+
+[Original guideline](https://www.w3.org/TR/UNDERSTANDING-WCAG20/minimize-error-cues.html)
+
+As part of this feature we'll support the vinculation of inputs with labels which in turn will allow inputs read the contents of the label they are linked with. Also, the rendering of labels will always be executed next to the input fields so people using screen magnifiers will be presented with minimal issues. 
 
 # Appendix
 
