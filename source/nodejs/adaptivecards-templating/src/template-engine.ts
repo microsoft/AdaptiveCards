@@ -318,61 +318,70 @@ export class Template {
             }
         }
         else if (typeof node === "object" && node !== null) {
-            let dropObject = false;
             let when = node["$when"];
+            let dataContext = node["$data"];
+            let dataContexts: any[];
 
-            if (when instanceof AEL.Expression) {
-                let evaluationResult = Template.internalTryEvaluateExpression(when, this._context, false);
-                let whenValue: boolean = false;
-                
-                // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
-                if (!evaluationResult.error) {
-                    whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
-                }
-                dropObject = !whenValue;
-            }
-
-            if (!dropObject) {
-                let dataContext = node["$data"];
-
-                if (dataContext !== undefined) {
-                    if (dataContext instanceof AEL.Expression) {
-                        let evaluationResult = Template.internalTryEvaluateExpression(dataContext, this._context, true);
-
-                        if (!evaluationResult.error) {
-                            dataContext = evaluationResult.value;
-                        }
-                        else {
-                            throw new Error(evaluationResult.error);
-                        }
-                    }
-
-                    if (Array.isArray(dataContext)) {
-                        result = [];
-
-                        for (let i = 0; i < dataContext.length; i++) {
-                            this._context.$data = dataContext[i];
-                            this._context.$index = i;
-
-                            let expandedObject = this.expandSingleObject(node);
-
-                            if (expandedObject !== null) {
-                                result.push(expandedObject);
-                            }
-                        }
-                    }
-                    else {
-                        this._context.$data = dataContext;
-
-                        result = this.expandSingleObject(node);
-                    }
-                }
-                else {
-                    result = this.expandSingleObject(node);
-                }
+            if (dataContext === undefined) {
+                dataContexts = [ undefined ];
             }
             else {
+                if (dataContext instanceof AEL.Expression) {
+                    let evaluationResult = Template.internalTryEvaluateExpression(dataContext, this._context, true);
+
+                    if (!evaluationResult.error) {
+                        dataContext = evaluationResult.value;
+                    }
+                    else {
+                        throw new Error(evaluationResult.error);
+                    }
+                }
+
+                if (Array.isArray(dataContext)) {
+                    dataContexts = dataContext;
+                }
+                else {
+                    dataContexts = [ dataContext ];
+                }
+            }
+
+            result = [];
+
+            for (let i = 0; i < dataContexts.length; i++) {
+                this._context.$index = i;
+
+                if (dataContexts[i] !== undefined) {
+                    this._context.$data = dataContext[i];
+                }
+
+                let dropObject = false;
+
+                if (when instanceof AEL.Expression) {
+                    let evaluationResult = Template.internalTryEvaluateExpression(when, this._context, false);
+                    let whenValue: boolean = false;
+                    
+                    // If $when fails to evaluate or evaluates to anything but a boolean, consider it is false
+                    if (!evaluationResult.error) {
+                        whenValue = typeof evaluationResult.value === "boolean" && evaluationResult.value;
+                    }
+
+                    dropObject = !whenValue;
+                }
+
+                if (!dropObject) {
+                    let expandedObject = this.expandSingleObject(node);
+
+                    if (expandedObject !== null) {
+                        result.push(expandedObject);
+                    }
+                }
+            }
+
+            if (result.length === 0) {
                 result = null;
+            }
+            else if (result.length === 1) {
+                result = result[0];
             }
         }
         else {

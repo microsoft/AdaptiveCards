@@ -302,7 +302,7 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
                             if (!wasCancelled) {
-                                this.setPropertyValue(context, "{" + fieldPicker.selectedField.getPath() + "}");
+                                this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
 
                                 context.peer.changed(true);
                             }
@@ -2027,7 +2027,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
                             let fieldPicker = new FieldPicker(context.dataStructure);
                             fieldPicker.onClose = (sender, wasCancelled) => {
                                 if (!wasCancelled) {
-                                    this.cardElement.url = "{" + fieldPicker.selectedField.getPath() + "}";
+                                    this.cardElement.url = fieldPicker.selectedField.asExpression();
 
                                     this.changed(true);
                                 }
@@ -2473,7 +2473,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
                             let fieldPicker = new FieldPicker(context.dataStructure);
                             fieldPicker.onClose = (sender, wasCancelled) => {
                                 if (!wasCancelled) {
-                                    this.cardElement.text = "{" + fieldPicker.selectedField.getPath() + "}";
+                                    this.cardElement.text = fieldPicker.selectedField.asExpression();
 
                                     this.changed(true);
                                 }
