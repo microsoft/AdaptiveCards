@@ -4,28 +4,53 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+export function isMobileOS(): boolean {
+    let userAgent = window.navigator.userAgent;
+
+    return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
+}
+
+/**
+ * Generate a UUID prepended with "__ac-"
+ */
 export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }
 
+/**
+ * @param value - string to test
+ * @return `true` if `string` is `undefined`, `null`, or `""`
+ */
 export function isNullOrEmpty(value: string): boolean {
     return value === undefined || value === null || value === "";
 }
 
+/**
+ * Appends `child` to `node` if `child` is valid
+ */
 export function appendChild(node: Node, child: Node) {
     if (child != null && child != undefined) {
         node.appendChild(child);
     }
 }
 
+/**
+ * @return `obj.toString()` if `obj` is of type `string`. Otherwise, returns `defaultValue || undefined`
+ */
 export function getStringValue(obj: any, defaultValue: string = undefined): string {
     return typeof obj === "string" ? obj.toString() : defaultValue;
 }
 
+/**
+ * @return `obj` if `obj` is of type `number`. Otherwise, returns `defaultValue || undefined`
+ */
 export function getNumberValue(obj: any, defaultValue: number = undefined): number {
     return typeof obj === "number" ? obj : defaultValue;
 }
 
+/**
+ * @return `value` if it's a `boolean` or if it's `"true"` or `"false"`. Otherwise returns `defaultValue || undefined`
+ */
 export function getBoolValue(value: any, defaultValue: boolean): boolean {
     if (typeof value === "boolean") {
         return value;
@@ -44,6 +69,22 @@ export function getBoolValue(value: any, defaultValue: boolean): boolean {
     return defaultValue;
 }
 
+/**
+ * Convert from a `string` to an `enum` value
+ * ``` typescript
+ * enum Test {
+ *      Pass,
+ *      Fail,
+ *      Unknown
+ * }
+ * getEnumValue(Test, "Fail", Test.Unknown); // returns 1 (Test.Fail)
+ * getEnumValue(Test, "Not an enum value", Test.Unknown); // returns 2 (Test.Unknown)
+ * ```
+ * @param targetEnum - `enum` to resolve against
+ * @param name - `string` to look up
+ * @param defaultValue - value to use if lookup fails
+ * @return Numeric `enum` value if lookup succeeded. Otherwise `defaultValue`
+ */
 export function getEnumValue(targetEnum: { [s: number]: string }, name: string, defaultValue: number): number {
     if (isNullOrEmpty(name)) {
         return defaultValue;
@@ -66,6 +107,12 @@ export function getEnumValue(targetEnum: { [s: number]: string }, name: string, 
     return defaultValue;
 }
 
+/**
+ * @param target - `object` to set property on
+ * @param propertyName - Name of property to set
+ * @param propertyValue - Value to set property to
+ * @param defaultValue - Value to use if `propertyValue` isn't valid
+ */
 export function setProperty(target: object, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
         delete target[propertyName];
@@ -75,6 +122,12 @@ export function setProperty(target: object, propertyName: string, propertyValue:
     }
 }
 
+/**
+ * @param target - `object` to set property on
+ * @param propertyName - Name of property to set
+ * @param propertyValue - Value to set property to
+ * @param defaultValue - Value to use if `propertyValue` isn't valid
+ */
 export function setNumberProperty(target: object, propertyName: string, propertyValue: number, defaultValue: number = undefined) {
     if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
         delete target[propertyName];

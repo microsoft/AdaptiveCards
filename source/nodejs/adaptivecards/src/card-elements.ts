@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import * as Shared from "./shared";
@@ -88,6 +88,14 @@ function createCardObjectInstance<T extends CardObject>(
     return result;
 }
 
+/**
+ * Instantiates an {@linkcode Action} for a {@linkcode CardElement}
+ * @param parent - The {@linkcode CardElement} for which to create an {@linkcode Action}
+ * @param json - A json object containing {@linkcode Action} properties
+ * @param forbiddenActionTypes - A list of action types that are not allowed to be created
+ * @param allowFallback - Whether to allow element fallback to occur
+ * @param errors - A list of validation errors encountered while parsing the action
+ */
 export function createActionInstance(
     parent: CardElement,
     json: any,
@@ -117,6 +125,13 @@ export function createActionInstance(
         errors);
 }
 
+/**
+ * Instantiates a {@linkcode CardElement}
+ * @param parent - The parent of this {@linkcode CardElement}
+ * @param json - A json object containing {@linkcode CardElement} properties
+ * @param allowFallback - Whether to allow element fallback to occur
+ * @param errors - A list of validation errors encountered while parsing the action
+ */
 export function createElementInstance(
     parent: CardElement,
     json: any,
@@ -145,9 +160,15 @@ export function createElementInstance(
         errors);
 }
 
+/**
+ * Represents an object that can be serialized to/from JSON
+ */
 export abstract class SerializableObject {
     private _rawProperties = {};
 
+    /**
+     *
+     */
     parse(json: any, errors?: Array<HostConfig.IValidationError>) {
         this._rawProperties = AdaptiveCard.enableFullJsonRoundTrip ? json : {};
     }
@@ -2578,8 +2599,6 @@ export class Media extends CardElement {
 
                     this.renderedElement.innerHTML = "";
                     this.renderedElement.appendChild(mediaPlayerElement);
-
-                    mediaPlayerElement.play();
                 }
                 else {
                     if (Media.onPlay) {
@@ -2642,7 +2661,15 @@ export class Media extends CardElement {
             mediaElement = document.createElement("audio");
         }
 
+        mediaElement.setAttribute("webkit-playsinline", "");
+        mediaElement.setAttribute("playsinline", "");
+        mediaElement.autoplay = true;
         mediaElement.controls = true;
+
+        if (Utils.isMobileOS()) {
+            mediaElement.muted = true;
+        }
+
         mediaElement.preload = "none";
         mediaElement.style.width = "100%";
 
@@ -2697,19 +2724,6 @@ export class Media extends CardElement {
 
         Utils.setProperty(result, "poster", this.poster);
         Utils.setProperty(result, "altText", this.altText);
-
-        /*
-        if (this.sources.length > 0) {
-            let serializedSources = [];
-
-            for (let source of this.sources) {
-                serializedSources.push(source.toJSON());
-            }
-
-            Utils.setProperty(result, "sources", serializedSources);
-        }
-        */
-
         Utils.setArrayProperty(result, "sources", this.sources);
 
         return result;
