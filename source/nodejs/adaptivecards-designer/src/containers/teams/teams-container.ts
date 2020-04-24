@@ -5,7 +5,7 @@ import { HostContainer } from "../host-container";
 import * as hostConfigLight from "../../hostConfigs/microsoft-teams-light.json";
 import * as hostConfigDark from "../../hostConfigs/microsoft-teams-dark.json";
 
-export abstract class BaseTeamsContainer extends HostContainer {
+abstract class BaseTeamsContainer extends HostContainer {
     public renderTo(hostElement: HTMLElement) {
         var outerFrame = document.createElement("div");
         outerFrame.className = "teams-frame";
