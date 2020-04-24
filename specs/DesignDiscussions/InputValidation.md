@@ -26,9 +26,9 @@
     6. [Future and Out of Scope Features](#Future-and-Out-of-Scope-Features)
         1. [Success Indicators](#Success-Indicators)
         2. [Cross field validation](#Cross-field-validation)
+    7. [Requirement Priorities](#Requirement-Priorities)
 2. [Annex](#Annex)
     1. [Examples of invalid inputs](#Examples-of-invalid-inputs)
-
 
 # Input Validation
 
@@ -66,16 +66,14 @@ The error text and invalid indication will be rendered in the host's `attention`
 >
 > | Property | Default value | HostConfig | Native Styling |
 > | --- | ---- | --- | --- |
-> | spacing | "default" | X | |
-> | fontType | "default" | X | X |
-> | size | "default" | X | X |
-> | weight | "default" | X | X |
-> | color | "attention" | X | X |
-> | backgroundColor | TBD | X | X |
-> | isSubtle | false | X | |
-> | position | "belowInput" | X "aboveInput" or "belowInput" | |
-> | borderColor (input) | "attention" | X | |
-> | borderWidth (input) | TBD | X | | 
+> | `spacing` | `default` | X | |
+> | `fontType` | `default` | X | X |
+> | `size` | `default` | X | X |
+> | `weight` | `default` | X | X |
+> | `color` | `attention` | X | X |
+> | `isSubtle` | `false` | X | |
+> | `borderColor` (input) | `attention` | X | |
+> | `borderWidth` (input) | TBD | X | | 
 >
 > ```json
 > {
@@ -86,8 +84,7 @@ The error text and invalid indication will be rendered in the host's `attention`
 >           "size": "small",
 >           "weight": "lighter",
 >           "color": "attention",
->           "isSubtle": true,
->           "position": "aboveInput"
+>           "isSubtle": true
 >       },
 >       "inputBorder": {
 >           "color": "attention",
@@ -97,7 +94,7 @@ The error text and invalid indication will be rendered in the host's `attention`
 > }
 > ```
 >
-> Finally, the proposed name for the native style to override for labels would be ```Adaptive.ErrorMessage```.
+> Finally, the proposed name for the native style to override for labels would be `Adaptive.ErrorMessage`.
 >
 
 ## Input Validation Behavior
@@ -119,7 +116,7 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
 
  For any of the above values, validation will happen for un-validated fields on action, and focus will be placed in the first invalid input.
 
- > The schema change for host config would be adding the property ```validationBehavior``` under ```inputs``` configuration as can be seen below:
+ > The schema change for host config will be adding the property `validationBehavior` under `inputs` configuration as can be seen below:
 >
 > ```json
 > “inputs”:{
@@ -128,9 +125,7 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
 >    “validationBehavior”: “onFocusLostWithInput”,
 >    “validationBehavior”: “onSubmit”
 > }
-> ```  
->
-> Question: What should happen for Choice Sets?
+> ```
 >
 > ### Validation for ChoiceSet and Toggle Inputs
 >
@@ -147,15 +142,13 @@ In addition to these new properties, there are several existing properties that 
 
 With the advent of this input validation feature, those platforms which do not support these properties should use the input validation behavior described in this spec to add support. Enforcing them natively in the UI by preventing the user from picking an invalid value is still preferred, but when that is not feasible, input validation should be used in these cases. Considering this, the full list of properties that should be either enforced or validated are:
 
-|Input|Properties||
-|---|---|---
-|Input.Text|regex <br> maxLength|New for this feature <br> ExistingProperty
-|Input.Number|min, max|Existing Properties
-|Input.Date|min, max|Existing Properties
-|Input.Time|min, max|Existing Properties
-|**All inputs** |isRequired |New for this feature
-
-> Open for consideration: Should Input.Number also validate for integer or floating point numbers? No request was made in the survey, should we leave it out of this version spec?
+| Input | Properties | |
+| --- | --- | --- |
+| `Input.Text` | `regex` <br> `maxLength` | New for this feature <br> ExistingProperty |
+| `Input.Number` | `min`, `max` | Existing Properties |
+| `Input.Date` | `min`, `max` | Existing Properties |
+| `Input.Time` | `min`, `max` | Existing Properties |
+|**All inputs** | `isRequired` | New for this feature |
 
 ### Which Inputs to Validate
 The primary purpose of client side input validation is to validate a users inputs before they submit them. In this case, the card author would want us to validate all inputs before they are submitted:
@@ -329,6 +322,43 @@ Some forms add an indicator to an input once a valid value has been added to giv
 There are many scenarios where validation that specifies relationships between fields could be useful. For example requiring a particular field only if another one is filled in, or requiring at least one (or exactly one) of several options is selected. More complicated scenarios, such as a choice in one input changing the available choices in another input, could also be useful.
 
 While this is an area we should investigate in the future, supporting cross field validation is out of scope for v1 of this feature.
+
+## Feature Cost estimation
+
+This feature focuses on adding validation support and error message rendering for inputs. This feature will include the modification of the object model and rendering capabilities.
+
+For the development of this feature the following costs have been estimated for all platforms like this:
+
+| Task | Cost (days) | Previous requirements | Includes |
+| --- | --- | --- | --- |
+| C++ Object Model | 6 | Spec completion | Tests |
+| UWP Implementation | 5 | C++ Object Model | Tests and override sample |
+| Android Implementation | 5 | C++ Object Model | Tests and override sample | 
+| iOS Implementation | 5 | C++ Object Model | Override sample |
+| C# Object Model | 5 | Spec completion | Tests |
+| .NET Implemenation | 5 | C# Object Model | Override sample |
+| HTML Implementation | 5 | C# Object Model | Tests | 
+| JavaScript Implementation | 14 | Spec completion | Changes to designer |
+| Bug Bash | 2 |  Spec completion, UWP, Android, iOS, Javascript and .NET implementations | Preparation and Bug Bash |
+| Bug Fixing | 5 | Bug Bash | Bug fixing |
+| Documentation | 6 | Spec completion, UWP, Android, iOS, Javascript and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
+| Total cost | 63 | | |
+
+Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
+
+## Requirement Priorities
+
+The priority of tasks have been mentioned in the open issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) which are:
+
+| Priority | Task |
+| --- | --- |
+| P0 | isRequired support |
+| P0 | Author can provide custom error message for each input |
+| P0 | Author can decide whether input should initially be visually indicated as required |
+| P0 | Regex validation support |
+| P1 | Hosts can define how error messages are displayed |
+| P2 | Authors can decide which inputs are going to be validated by an action |
+| P2 | Hosts can perform custom rendering of error messages |
 
 # Annex
 

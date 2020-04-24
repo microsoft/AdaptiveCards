@@ -7,7 +7,7 @@
 		3. [Card Author Formatting](#Card-Author-Formatting)
 			1. [Option 1 – Allow TextBlocks and RichTextBlocks as Labels](#Option-1-–-Allow-TextBlocks-and-RichTextBlocks-as-Labels)
 			2. [Option 2 – LabelFor Property on TextBlocks/RichTextBlocks]([#Option-2-–-LabelFor-Property-on-TextBlocks/RichTextBlocks])
-			3. [Final Conclussion](#Final-conclussion)
+			3. [Final Conclusion](#Final-conclusion)
 	3. [Backwards Compatibility](#Backwards-Compatibility)
 	4. [Placeholders](#Placeholders)
 	5. [Label Position](#Label-Position)
@@ -21,7 +21,8 @@
 		5. [Toggle Inputs](#Toggle-Inputs)
 	7. [Feature Cost Estimation](#Feature-Cost-Estimation)
 		1. [Follow ups](#Follow-ups) 
-	8. [Accessibility](#Accessibility)
+	8. [Requirements Priorities](#Requirements-Priorities)
+	9. [Accessibility](#Accessibility)
 		1. [1.3.1 Info and Relationships](#131-Info-and-Relationships)
 		2. [2.4.6 Headings and Labels](#246-Headings-and-Labels)
 		3. [3.3.2 Labels and Instructions](#332-Labels-and-Instructions)
@@ -230,9 +231,9 @@ Another option would be to allow card authors who wish to format their labels to
 
 The downside of this is that it provides a less clean story to our card authors. They would now have two ways to specify a label, and without reading the documentation it would not be clear that one option results in host formatting being applied and the other doesn't. If, for example, a card author wants to emphasize a particular word, and uses a RichTextBlock to highlight that word, they might unknowingly opt themselves out of host formatting. 
 
-#### Final conclussion 
+#### Final conclusion 
 
-After multiple days of deliberation, going over the pros and cons of each option and doing an internal voting in the team, the conclussion reached was to follow the schema proposed in "Option 1 – Allow TextBlocks and RichTextBlocks as Labels" which includes the following considerations:
+After multiple days of deliberation, going over the pros and cons of each option and doing an internal voting in the team, the conclusion reached was to follow the schema proposed in "Option 1 – Allow TextBlocks and RichTextBlocks as Labels" which includes the following considerations:
 * The label property can contain a markdown supported string, TextBlock or RichTextBlock so authors can modify how labels look
 * No HostConfig modifications for text formatting are done for the string label scenario in v1 of this feature  
 * Some properties will have to be managed for TextBlock and RichTextBlock elements to provide a nice user experience:
@@ -392,8 +393,10 @@ For the development of this feature the following costs have been estimated for 
 | .NET Implemenation | 4 | C# Object Model | Override sample |
 | HTML Implementation | 4 | C# Object Model | Tests | 
 | JavaScript Implementation | 14 | Spec completion | Changes to designer |
-| Documentation | 6 | Spec completion, UWP, Android, iOS and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
-| Total cost | 48 | | |
+| Bug Bash | 2 |  Spec completion, UWP, Android, iOS, Javascript and .NET implementations | Preparation and Bug Bash |
+| Bug Fixing | 5 | Bug Bash | Bug fixing |
+| Documentation | 6 | Spec completion, UWP, Android, iOS, Javascript and .NET implementations | Changes to schema explorer and guidance on how to override inputs | 
+| Total cost | 55 | | |
 
 Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
 
@@ -402,6 +405,18 @@ It's also important to note that using the approach we went with, we must make s
 ### Follow ups
 
 As mentioned before, this feature tackles a big issue Adaptive Cards has with accessibility, as such, we'll need some guidance from the Accessibility Team at Microsoft to make sure the implementation we made was correct and provides a good experience for people using a screen reader application. I didn't account this in the total cost as this process may take anything from a day to multiple weeks and may fall in the category of bug fixing.
+
+## Requirements Priorities
+
+| Priority | Task |
+| --- | --- |
+| P0 | isRequired support (rendering requirement hints) |
+| P0 | Label support as a string |
+| P0 | Support for formating labels using TextBlock or RichTextBlock |
+| P0 | Accessibility support for inputs |
+| P1 | TextBlock and RichTextBlock rendering are consumable for host apps for extensibility story | 
+| P1 | Author can define the string to be used as "required inputs" hint |
+| P2 | Samples are provided for overriding input elements |
 
 ## Accessibility
 
