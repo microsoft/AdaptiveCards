@@ -105,11 +105,11 @@ class Tokenizer {
                         throw new Error("A tokenizer rule matched more than one group.");
                     }
 
-                    if (rule.tokenType != undefined) {
+                    if (rule.tokenType !== undefined) {
                         result.push(
                             {
                                 type: rule.tokenType,
-                                value: matches[matches.length == 1 ? 0 : 1],
+                                value: matches[matches.length === 1 ? 0 : 1],
                                 originalPosition: i
                             }
                         )
@@ -145,7 +145,49 @@ function ensureValueType(value: any): LiteralValue {
 }
 
 type FunctionCallback = (...params: any[]) => any;
-type FunctionDictionary = { [key: string]: FunctionCallback };
+
+interface FunctionDefinition {
+    name: string;
+    callback: FunctionCallback;
+}
+
+class FunctionCollection {
+    private _functions: FunctionDefinition[] = [];
+
+    indexOf(name: string): number {
+        return this._functions.findIndex((f: FunctionDefinition) => { return f.name === name; });
+    }
+
+    register(name: string, callback: FunctionCallback) {
+        let index = this.indexOf(name);
+
+        if (index >= 0) {
+            this._functions[index].callback = callback;
+        }
+        else {
+            this._functions.push(
+                {
+                    name: name,
+                    callback: callback
+                }
+            );
+        }
+    }
+
+    unregister(name: string) {
+        let index = this.indexOf(name);
+
+        if (index >= 0) {
+            this._functions.splice(index, 1);
+        }
+    }
+
+    find(name: string): FunctionDefinition | undefined {
+        let index = this.indexOf(name);
+
+        return index >= 0 ? this._functions[index] : undefined;
+    }
+}
 
 interface EvaluationContextState {
     $data: any;
@@ -154,78 +196,144 @@ interface EvaluationContextState {
 
 export class EvaluationContext {
     private static readonly _reservedFields = ["$data", "$root", "$index"];
-    private static _builtInFunctions: FunctionDictionary = {}
+    private static _builtInFunctions = new FunctionCollection();
 
     static init() {
-        EvaluationContext._builtInFunctions["substr"] = (s, index, count) => {
-            if (typeof s === "string" && typeof index === "number" && typeof count === "number") {
-                return (s.substr(index, count));
-            }
-            else {
-                return "";
-            }
-        };
-        EvaluationContext._builtInFunctions["JSON.parse"] = (input) => {
-            return JSON.parse(input);
-        };
-        EvaluationContext._builtInFunctions["if"] = (condition, ifTrue, ifFalse) => {
-            return condition ? ifTrue : ifFalse;
-        };
-        EvaluationContext._builtInFunctions["toUpper"] = (input) => {
-            return typeof input === "string" ? input.toUpperCase() : input;
-        };
-        EvaluationContext._builtInFunctions["toLower"] = (input) => {
-            return typeof input === "string" ? input.toLowerCase() : input;
-        };
-        EvaluationContext._builtInFunctions["Date.format"] = (input, format) => {
-            const acceptedFormats = [ "long", "short", "compact" ];
-
-            let inputAsNumber: number;
-
-            if (typeof input === "string") {
-                inputAsNumber = Date.parse(input);
-            }
-            else if (typeof input === "number") {
-                inputAsNumber = input;
-            }
-            else {
-                return input;
-            }
-
-            let date = new Date(inputAsNumber);
-
-            let effectiveFormat: string = "compact";
-
-            if (typeof format === "string") {
-                effectiveFormat = format.toLowerCase();
-
-                if (acceptedFormats.indexOf(effectiveFormat) < 0) {
-                    effectiveFormat = "compact";
+        EvaluationContext._builtInFunctions.register(
+            "substr",
+            (s, index, count) => {
+                if (typeof s === "string" && typeof index === "number" && typeof count === "number") {
+                    return (s.substr(index, count));
+                }
+                else {
+                    return "";
                 }
             }
-
-            return effectiveFormat === "compact" ? date.toLocaleDateString() : date.toLocaleDateString(undefined, { day: "numeric", weekday: effectiveFormat, month: effectiveFormat, year: "numeric" });
-        };
-        EvaluationContext._builtInFunctions["Time.format"] = (input) => {
-            let inputAsNumber: number;
-
-            if (typeof input === "string") {
-                inputAsNumber = Date.parse(input);
+        );
+        EvaluationContext._builtInFunctions.register(
+            "JSON.parse",
+            (input) => {
+                return JSON.parse(input);
             }
-            else if (typeof input === "number") {
-                inputAsNumber = input;
-            }
-            else {
+        );
+        EvaluationContext._builtInFunctions.register(
+            "toString",
+            (input) => {
+                if (input.toString) {
+                    return input.toString();
+                }
+
                 return input;
             }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "parseInt",
+            (input, radix) => {
+                if (typeof input === "string" && (radix === undefined || typeof radix === "number")) {
+                    return parseInt(input, radix);
+                }
+                else {
+                    return input;
+                }
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "parseFloat",
+            (input) => {
+                return typeof input === "string" ? parseFloat(input) : input;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "if",
+            (condition, ifTrue, ifFalse) => {
+                return condition ? ifTrue : ifFalse;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "toUpper",
+            (input) => {
+                return typeof input === "string" ? input.toUpperCase() : input;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "toLower",
+            (input) => {
+                return typeof input === "string" ? input.toLowerCase() : input;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "Date.format",
+            (input, format) => {
+                const acceptedFormats = [ "long", "short", "compact" ];
 
-            let date = new Date(inputAsNumber);
+                let inputAsNumber: number;
 
-            return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
-        };
+                if (typeof input === "string") {
+                    inputAsNumber = Date.parse(input);
+                }
+                else if (typeof input === "number") {
+                    inputAsNumber = input;
+                }
+                else {
+                    return input;
+                }
+
+                let date = new Date(inputAsNumber);
+
+                let effectiveFormat: string = "compact";
+
+                if (typeof format === "string") {
+                    effectiveFormat = format.toLowerCase();
+
+                    if (acceptedFormats.indexOf(effectiveFormat) < 0) {
+                        effectiveFormat = "compact";
+                    }
+                }
+
+                return effectiveFormat === "compact" ? date.toLocaleDateString() : date.toLocaleDateString(undefined, { day: "numeric", weekday: effectiveFormat, month: effectiveFormat, year: "numeric" });
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "Time.format",
+            (input) => {
+                let inputAsNumber: number;
+
+                if (typeof input === "string") {
+                    inputAsNumber = Date.parse(input);
+                }
+                else if (typeof input === "number") {
+                    inputAsNumber = input;
+                }
+                else {
+                    return input;
+                }
+
+                let date = new Date(inputAsNumber);
+
+                return date.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "round",
+            (input) => {
+                return typeof input === "number" ? Math.round(input) : input;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "ceil",
+            (input) => {
+                return typeof input === "number" ? Math.ceil(input) : input;
+            }
+        );
+        EvaluationContext._builtInFunctions.register(
+            "floor",
+            (input) => {
+                return typeof input === "number" ? Math.floor(input) : input;
+            }
+        );
     }
 
-    private _functions = {};
+    private _functions = new FunctionCollection();
     private _stateStack: EvaluationContextState[] = [];
 
     $root: any;
@@ -233,21 +341,21 @@ export class EvaluationContext {
     $index: number;
 
     registerFunction(name: string, callback: FunctionCallback) {
-        this._functions[name] = callback;
+        this._functions.register(name, callback);
     }
 
     unregisterFunction(name: string) {
-        delete this._functions[name];
+        this._functions.unregister(name);
     }
 
     getFunction(name: string): FunctionCallback {
-        let result = this._functions[name];
+        let f = this._functions.find(name);
 
-        if (result == undefined) {
-            result = EvaluationContext._builtInFunctions[name];
+        if (!f)  {
+            f = EvaluationContext._builtInFunctions.find(name);
         }
 
-        return result;
+        return f ? f.callback : undefined;
     }
 
     isReservedField(name: string): boolean {
@@ -259,7 +367,7 @@ export class EvaluationContext {
     }
 
     restoreLastState() {
-        if (this._stateStack.length == 0) {
+        if (this._stateStack.length === 0) {
             throw new Error("There is no evaluation context state to restore.");
         }
 
@@ -270,7 +378,7 @@ export class EvaluationContext {
     }
 
     get currentDataContext(): any {
-        return this.$data != undefined ? this.$data : this.$root;
+        return this.$data !== undefined ? this.$data : this.$root;
     }
 }
 
@@ -291,7 +399,7 @@ class ExpressionNode extends EvaluationNode {
             ["==", "!=", "<", "<=", ">", ">="]
         ];
 
-        let nodesCopy = this.nodes;
+        let nodesCopy = this.nodes.slice();
 
         for (let priorityGroup of operatorPriorityGroups) {
             let i = 0;
@@ -336,10 +444,10 @@ class ExpressionNode extends EvaluationNode {
 
                     switch (node.operator) {
                         case "==":
-                            result = left == right;
+                            result = left === right;
                             break;
                         case "!=":
-                            result = left != right;
+                            result = left !== right;
                             break;
                         case "<":
                             result = left < right;
@@ -393,7 +501,7 @@ class FunctionCallNode extends EvaluationNode {
     evaluate(context: EvaluationContext): LiteralValue {
         let callback = context.getFunction(this.functionName);
 
-        if (callback != undefined) {
+        if (callback !== undefined) {
             let evaluatedParams = [];
 
             for (let param of this.parameters) {
@@ -440,7 +548,7 @@ class PathNode extends EvaluationNode {
             let part = this.parts[index];
 
             try {
-                if (part instanceof IdentifierNode && index == 0) {
+                if (part instanceof IdentifierNode && index === 0) {
                     switch (part.identifier) {
                         case "$root":
                             result = context.$root;
@@ -463,7 +571,7 @@ class PathNode extends EvaluationNode {
                 else {
                     let partValue = part.evaluate(context);
 
-                    if (index == 0) {
+                    if (index === 0) {
                         result = partValue;
                     }
                     else {
@@ -590,7 +698,7 @@ export class ExpressionParser {
 
             switch (this.current.type) {
                 case "(":
-                    if (result.parts.length == 0) {
+                    if (result.parts.length === 0) {
                         this.moveNext();
     
                         result.parts.push(this.parseExpression());
@@ -605,7 +713,7 @@ export class ExpressionParser {
                                 this.unexpectedToken();
                             }
 
-                            if (functionName != "") {
+                            if (functionName !== "") {
                                 functionName += ".";
                             }
 
@@ -653,7 +761,7 @@ export class ExpressionParser {
 
         while (!this.eoe) {
             if (expectedNextTokenTypes.indexOf(this.current.type) < 0) {
-                if (result.nodes.length == 0) {
+                if (result.nodes.length === 0) {
                     this.unexpectedToken();
                 }
 
@@ -671,10 +779,10 @@ export class ExpressionParser {
                 case "string":
                 case "number":
                 case "boolean":
-                    if (this.current.type == "string") {
+                    if (this.current.type === "string") {
                         result.nodes.push(new LiteralNode(this.current.value));
                     }
-                    else if (this.current.type == "number") {
+                    else if (this.current.type === "number") {
                         result.nodes.push(new LiteralNode(parseFloat(this.current.value)));
                     }
                     else {
@@ -687,7 +795,7 @@ export class ExpressionParser {
 
                     break;
                 case "-":
-                    if (result.nodes.length == 0) {
+                    if (result.nodes.length === 0) {
                         result.nodes.push(new LiteralNode(-1));
                         result.nodes.push(new OperatorNode("*"));
 
@@ -703,7 +811,7 @@ export class ExpressionParser {
 
                     break;
                 case "+":
-                    if (result.nodes.length == 0) {
+                    if (result.nodes.length === 0) {
                         expectedNextTokenTypes = literals.concat("(");
                     }
                     else {
@@ -746,8 +854,8 @@ export class ExpressionParser {
         return this._tokens[this._index];
     }
 
-    static parseBinding(bindingExpression: string): Binding {
-        let parser = new ExpressionParser(Tokenizer.parse(bindingExpression));
+    static parseBinding(expressionString: string): Binding {
+        let parser = new ExpressionParser(Tokenizer.parse(expressionString));
         parser.parseToken("{");
 
         let allowNull = !parser.parseOptionalToken("?#");
@@ -755,7 +863,7 @@ export class ExpressionParser {
 
         parser.parseToken("}");
 
-        return new Binding(expression, allowNull);
+        return new Binding(expressionString, expression, allowNull);
     }
 
     constructor(tokens: Token[]) {
@@ -764,7 +872,7 @@ export class ExpressionParser {
 }
 
 export class Binding {
-    constructor(private readonly expression: EvaluationNode, readonly allowNull: boolean = true) {}
+    constructor(readonly expressionString: string, private readonly expression: EvaluationNode, readonly allowNull: boolean = true) {}
 
     evaluate(context: EvaluationContext): LiteralValue {
         return this.expression.evaluate(context);
