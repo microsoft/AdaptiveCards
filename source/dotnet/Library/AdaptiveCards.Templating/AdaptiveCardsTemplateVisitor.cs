@@ -122,6 +122,10 @@ namespace AdaptiveCards.Templating
             dataContext.Push(new DataContext(stringToParse, rootDataContext));
         }
 
+        /// <summary>
+        /// push a <c>DataContext</c> onto a stack
+        /// </summary>
+        /// <param name="context"><c>context</c> to push</param>
         private void PushDataContext(DataContext context)
         {
             dataContext.Push(context);
@@ -154,11 +158,18 @@ namespace AdaptiveCards.Templating
             }
         }
 
+        /// <summary>
+        /// Pops a data context
+        /// </summary>
         private void PopDataContext()
         {
             dataContext.Pop();
         }
 
+        /// <summary>
+        /// Checks if there is a data context
+        /// </summary>
+        /// <returns></returns>
         private bool HasDataContext()
         {
             return dataContext.Count != 0;
