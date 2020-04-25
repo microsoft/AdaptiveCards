@@ -2145,7 +2145,7 @@ namespace AdaptiveCards.Templating.Test
     }
 
     [TestClass]
-    public sealed class TestCEL
+    public sealed class TestAEL
     {
         [TestMethod]
         public void TestCreation()

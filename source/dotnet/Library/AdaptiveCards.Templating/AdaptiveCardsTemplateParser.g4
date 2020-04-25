@@ -40,7 +40,7 @@ value
    ;
 
 templateString
-   : (STRING? TEMPLATELITERAL STRING?) # templatedString
+   : (STRING* TEMPLATELITERAL STRING*) # templatedString
    ;
 
 templateRoot

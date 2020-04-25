@@ -15,13 +15,13 @@
                     "$data": {
                         "key": "3"
                     },
-                    "text": "key should be 3, actual:{key}",
+                    "text": "key should be 3, actual:$ ${key}",
                     "size": "Medium",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "key should be 2, actual:{key}",
+                    "text": "key should be 2, actual:${key}",
                     "size": "Medium",
                     "wrap": true
                 }
@@ -31,5 +31,5 @@
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "{key}"
+    "version": "${key}"
 }
