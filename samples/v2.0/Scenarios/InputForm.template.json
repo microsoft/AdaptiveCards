@@ -12,52 +12,52 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{title}",
+                            "text": "${title}",
                             "weight": "Bolder",
                             "size": "Medium"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{body}",
+                            "text": "${body}",
                             "isSubtle": true,
                             "wrap": true
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{disclaimer}",
+                            "text": "${disclaimer}",
                             "isSubtle": true,
                             "wrap": true,
                             "size": "Small"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{properties[0].title}",
+                            "text": "${properties[0].title}",
                             "wrap": true
                         },
                         {
                             "type": "Input.Text",
                             "id": "myName",
-                            "placeholder": "{properties[0].placeholder}"
+                            "placeholder": "${properties[0].placeholder}"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{properties[1].title}",
+                            "text": "${properties[1].title}",
                             "wrap": true
                         },
                         {
                             "type": "Input.Text",
                             "id": "myEmail",
-                            "placeholder": "{properties[1].placeholder}",
+                            "placeholder": "${properties[1].placeholder}",
                             "style": "Email"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{properties[2].title}"
+                            "text": "${properties[2].title}"
                         },
                         {
                             "type": "Input.Text",
                             "id": "myTel",
-                            "placeholder": "{properties[2].placeholder}",
+                            "placeholder": "${properties[2].placeholder}",
                             "style": "Tel"
                         }
                     ]
@@ -68,7 +68,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "{thumbnailUrl}",
+                            "url": "${thumbnailUrl}",
                             "size": "auto"
                         }
                     ]

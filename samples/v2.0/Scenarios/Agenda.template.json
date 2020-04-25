@@ -186,7 +186,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "**{Subject}**"
+                            "text": "**${Subject}**"
                         },
                         {
                             "type": "ColumnSet",
@@ -207,7 +207,7 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "{Location.DisplayName}"
+                                            "text": "${Location.DisplayName}"
                                         }
                                     ],
                                     "width": "stretch"
