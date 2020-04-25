@@ -1,3 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Modified json lexer rules from "The Definitive ANTLR 4 Reference" by Terence Parr
+// Derived from http://json.org
+
 lexer grammar AdaptiveCardsTemplateLexer;
 
 COMMA : ',';

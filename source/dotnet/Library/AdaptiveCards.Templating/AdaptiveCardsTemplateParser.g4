@@ -1,4 +1,6 @@
-/** Taken from "The Definitive ANTLR 4 Reference" by Terence Parr */
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+// Modifed json parser grammar from "The Definitive ANTLR 4 Reference" by Terence Parr
 // Derived from http://json.org
 
 parser grammar AdaptiveCardsTemplateParser;

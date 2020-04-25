@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using System.Text;
 
 namespace AdaptiveCards.Templating
@@ -58,15 +60,6 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// It is used to construct an instance that has been dropped
-        /// </summary>
-        /// <param name="indicateIfDropped"></param>
-        public AdaptiveCardsTemplateResult(bool indicateIfDropped) : this()
-        {
-            HasItBeenDropped = indicateIfDropped;
-        }
-
-        /// <summary>
         /// constructs a result instance with <paramref name="capturedString"/>
         /// </summary>
         /// <param name="capturedString"></param>
@@ -102,12 +95,7 @@ namespace AdaptiveCards.Templating
         /// <param name="result"></param>
         public void Append(AdaptiveCardsTemplateResult result)
         {
-            if (result == null || result == this)
-            {
-                return;
-            }
-
-            if (!result.IsWhen)
+            if (result != null && result != this && !result.IsWhen)
             {
                 stringResult.Append(result.stringResult);
             }

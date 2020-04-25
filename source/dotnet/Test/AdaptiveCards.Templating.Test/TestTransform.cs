@@ -4,6 +4,7 @@ using AdaptiveExpressions.Properties;
 using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
+using AdaptiveExpressions.Memory;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -1298,6 +1299,52 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestWhenWithArrayWhenAllElementsOfArrayAreRemoved()
+        {
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""$when"": ""${Milage > 0}"",
+                    ""text"": ""${Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            string jsonData = @"{
+              ""LineItems"": [
+                    {""Milage"" : 0},
+                    {""Milage"" : 0}
+                ]
+            }";
+
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardsEvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": []
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
         public void TestWhenWithArrayWithPropoerCommanRemoval()
         {
             string jsonTemplate =
@@ -1393,6 +1440,106 @@ namespace AdaptiveCards.Templating.Test
      ""version"": ""1.0""
 
 }", cardJson);
+        }
+
+        [TestMethod]
+        public void TestNestedArray()
+        {
+            var jsonData =
+            @"{
+                  ""outerArray"": [
+                        [ ""a"", ""b"", ""c""],
+                        [ ""d"", ""e"", ""f""],
+                        [ ""g"", ""h"", ""i""]
+                  ]
+                }";
+            var jsonTemplate =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""$data"": ""${$root.outerArray}"",
+                        ""items"": [
+                            {
+                                ""text"": ""Container ${$index}"",
+                                ""type"": ""TextBlock""
+                            },
+                            {
+                                ""$data"": ""${$data}"",
+                                ""text"": ""${$data}"",
+                                ""type"": ""TextBlock""
+                            }
+                        ]
+                    }
+                ],
+                ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                ""version"": ""1.2""
+            }";
+
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardsEvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            var expectedString = @"{""type"":""AdaptiveCard"",""body"":[{""type"":""Container"",""items"":[{""text"":""Container 0"",""type"":""TextBlock""},{""text"":""a"",""type"":""TextBlock""},{""text"":""b"",""type"":""TextBlock""},{""text"":""c"",""type"":""TextBlock""}]},{""type"":""Container"",""items"":[{""text"":""Container 1"",""type"":""TextBlock""},{""text"":""d"",""type"":""TextBlock""},{""text"":""e"",""type"":""TextBlock""},{""text"":""f"",""type"":""TextBlock""}]},{""type"":""Container"",""items"":[{""text"":""Container 2"",""type"":""TextBlock""},{""text"":""g"",""type"":""TextBlock""},{""text"":""h"",""type"":""TextBlock""},{""text"":""i"",""type"":""TextBlock""}]}],""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""version"":""1.2""} ";
+            AssertJsonEqual(cardJson, expectedString);
+        }
+
+        [TestMethod]
+        public void TestNestedArrayWithoutDataReference()
+        {
+            var jsonData =
+            @"{
+                  ""outerArray"": [
+                        [ ""a"", ""b"", ""c""],
+                        [ ""d"", ""e"", ""f""],
+                        [ ""g"", ""h"", ""i""]
+                  ]
+                }";
+            var jsonTemplate =
+            @"{
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""$data"": ""${$root.outerArray}"",
+                        ""items"": [
+                            {
+                                ""text"": ""Container ${$index}"",
+                                ""type"": ""TextBlock""
+                            },
+                            {
+                                ""$data"": ""${$data}"",
+                                ""text"": ""test"",
+                                ""type"": ""TextBlock""
+                            }
+                        ]
+                    }
+                ],
+                ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                ""version"": ""1.2""
+            }";
+
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardsEvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            var expectedString = @"{""type"":""AdaptiveCard"",""body"":[{""type"":""Container"",""items"":[{""text"":""Container 0"",""type"":""TextBlock""},
+            {""text"":""test"",""type"":""TextBlock""},{""text"":""test"",""type"":""TextBlock""},
+            {""text"":""test"",""type"":""TextBlock""}]},{""type"":""Container"",""items"":[{""text"":""Container 1"",""type"":""TextBlock""},
+            {""text"":""test"",""type"":""TextBlock""},{""text"":""test"",""type"":""TextBlock""},{""text"":""test"",""type"":""TextBlock""}]},
+            {""type"":""Container"",""items"":[{""text"":""Container 2"",""type"":""TextBlock""},{""text"":""test"",""type"":""TextBlock""},
+            {""text"":""test"",""type"":""TextBlock""},{""text"":""test"",""type"":""TextBlock""}]}],
+            ""$schema"":""http://adaptivecards.io/schemas/adaptive-card.json"",""version"":""1.2""} ";
+            AssertJsonEqual(expectedString, cardJson);
         }
 
         [TestMethod]
@@ -2062,6 +2209,67 @@ namespace AdaptiveCards.Templating.Test
             var endTime1 = Stopwatch.GetTimestamp();
             Console.WriteLine("time1 took: " + (endTime1 - beginTime1));
             Assert.AreEqual("79", value);
+        }
+
+        [TestMethod]
+        public void TestMemoryInterface()
+        {
+            string jsonData = @"{
+            ""person"": {
+                ""firstName"": ""Super"",
+                ""lastName"": ""man"",
+                ""age"" : 79 
+                }
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+
+            var memory = new SimpleObjectMemory(token);
+            var (value, error) = new ValueExpression("${string(person.age)}").TryGetValue(memory);
+            Assert.AreEqual("79", value);
+        }
+
+        [TestMethod]
+        public void TestMemoryInterfaceWithDollarData()
+        {
+            string jsonData = @"{
+            ""person"": {
+                ""firstName"": ""Andrew"",
+                ""lastName"": ""Leader""
+              }
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var memory = new SimpleObjectMemory(token);
+            memory.SetValue("$data", token);
+            var (value, error) = new ValueExpression("${$data.person.firstName}").TryGetValue(memory);
+            Assert.AreEqual("Andrew", value);
+        }
+
+        [TestMethod]
+        public void TestMemoryInterfaceJValue()
+        {
+            JValue jval = new JValue("a");
+            JObject jobj = new JObject();
+            jobj["$data"] = jval;
+
+            var memory = new SimpleObjectMemory(jobj);
+            var (value, error) = new ValueExpression("${$data}").TryGetValue(memory);
+            Assert.AreEqual("a", value);
+        }
+
+        [TestMethod]
+        public void TestArrayTyepMemoryInterfaceWithDollarData()
+        {
+            string jsonData = @"{
+            ""person"":[""Andrew"", ""Leader""]
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            var memory = new SimpleObjectMemory(token);
+            memory.SetValue("$data", token);
+            var (value, error) = new ValueExpression("${$data.person}").TryGetValue(memory);
+            Assert.AreEqual("Andrew", JToken.Parse(value as string)[0]);
         }
     }
 }

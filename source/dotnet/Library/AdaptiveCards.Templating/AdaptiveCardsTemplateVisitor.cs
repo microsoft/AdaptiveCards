@@ -1,4 +1,7 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 using AdaptiveExpressions;
+using AdaptiveExpressions.Memory;
 using AdaptiveExpressions.Properties;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
@@ -25,6 +28,7 @@ namespace AdaptiveCards.Templating
         private sealed class DataContext
         {
             public JToken token;
+            public SimpleObjectMemory AELMemory;
             public bool IsArrayType = false;
 
             public JToken RootDataContext;
@@ -39,6 +43,8 @@ namespace AdaptiveCards.Templating
             /// <param name="rootDataContext">root data context</param>
             public DataContext(JToken jtoken, JToken rootDataContext)
             {
+                AELMemory = (jtoken is JObject) ? new SimpleObjectMemory(jtoken) : new SimpleObjectMemory(new JObject());
+
                 token = jtoken;
                 RootDataContext = rootDataContext;
 
@@ -46,11 +52,9 @@ namespace AdaptiveCards.Templating
                 {
                     IsArrayType = true;
                 }
-                else
-                {
-                    AddDataContextWithKey(dataKeyword, token, token.DeepClone());
-                    AddDataContextWithKey(rootKeyword, token, RootDataContext);
-                }
+
+                AELMemory.SetValue(dataKeyword, token);
+                AELMemory.SetValue(rootKeyword, rootDataContext);
             }
 
             /// <summary>
@@ -64,43 +68,17 @@ namespace AdaptiveCards.Templating
             }
 
             /// <summary>
-            /// Adds <paramref name="jtoken"/> to <paramref name="targetJObj"/> with <paramref name="key"/>
-            /// </summary>
-            /// <param name="key"></param>
-            /// <param name="targetJObj"></param>
-            /// <param name="jtoken"></param>
-            public static void AddDataContextWithKey(string key, JToken targetJObj, JToken jtoken)
-            {
-                if (key == null || targetJObj == null || jtoken == null)
-                {
-                    return;
-                }
-
-                targetJObj[key] = jtoken;
-            }
-
-            /// <summary>
             /// retrieve a <see cref="JObject"/> from this DataContext instance if <see cref="JToken"/> is a <see cref="JArray"/> at <paramref name="index"/>
             /// </summary>
             /// <param name="index"></param>
             /// <returns><see cref="JObject"/> at<paramref name="index"/> of a <see cref="JArray"/></returns>
-            public JToken GetDataAtIndex(int index)
+            public DataContext GetDataContextAtIndex(int index)
             {
-                if (IsArrayType)
-                {
-                    var jarray = token as JArray;
-                    var jtokenAtIndex = jarray[index];
-                    if (jtokenAtIndex is JObject)
-                    {
-                        var jobject = jtokenAtIndex as JObject;
-                        AddDataContextWithKey(dataKeyword, jobject, jtokenAtIndex.DeepClone());
-                        AddDataContextWithKey(rootKeyword, jobject, RootDataContext);
-                        jobject[indexKeyword] = index;
-                    }
-
-                    return jtokenAtIndex;
-                }
-                return new JObject();
+                var jarray = token as JArray;
+                var jtokenAtIndex = jarray[index];
+                var dataContext = new DataContext(jtokenAtIndex, RootDataContext);
+                dataContext.AELMemory.SetValue(indexKeyword, index);
+                return dataContext;
             }
         }
 
@@ -111,7 +89,7 @@ namespace AdaptiveCards.Templating
         /// <param name="data">json data in string which will be set as a root data context</param>
         public AdaptiveCardsTemplateVisitor(Func<string, object> nullSubstitutionOption, string data = null)
         {
-            if (data != null && data.Length != 0)
+            if (data?.Length != 0)
             {
                 // set data as root data context
                 root = JToken.Parse(data);
@@ -119,20 +97,10 @@ namespace AdaptiveCards.Templating
             }
 
             // if null, set default option
-            if (nullSubstitutionOption == null)
+            options = new Options
             {
-                options = new Options
-                {
-                    NullSubstitution = (path) => $"${{{path}}}"
-                };
-            }
-            else
-            {
-                options = new Options
-                {
-                    NullSubstitution = nullSubstitutionOption
-                };
-            }
+                NullSubstitution = nullSubstitutionOption != null? nullSubstitutionOption : (path) => $"${{{path}}}"
+            };
         }
 
         /// <summary>
@@ -154,14 +122,9 @@ namespace AdaptiveCards.Templating
             dataContext.Push(new DataContext(stringToParse, rootDataContext));
         }
 
-        /// <summary>
-        /// pushes jtoken object to a stack
-        /// </summary>
-        /// <param name="jtoken"></param>
-        /// <param name="rootDataContext"></param>
-        private void PushDataContext(JToken jtoken, JToken rootDataContext)
+        private void PushDataContext(DataContext context)
         {
-            dataContext.Push(new DataContext(jtoken, rootDataContext));
+            dataContext.Push(context);
         }
 
         /// <summary>
@@ -178,7 +141,7 @@ namespace AdaptiveCards.Templating
 
             try
             {
-                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.token);
+                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
                 if (error == null)
                 {
                     dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
@@ -210,13 +173,8 @@ namespace AdaptiveCards.Templating
         /// <returns></returns>
         public override AdaptiveCardsTemplateResult VisitTemplateData([NotNull] AdaptiveCardsTemplateParser.TemplateDataContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -241,7 +199,7 @@ namespace AdaptiveCards.Templating
             {
                 // tempalteString() can be zero or more due to user error
                 var templateStrings = (templateDataValueNode as AdaptiveCardsTemplateParser.ValueTemplateStringContext).templateString();
-                if (templateStrings != null && templateStrings.Length == 1)
+                if (templateStrings?.Length == 1)
                 {
                     // retrieve template literal and create a data context
                     var templateLiteral = (templateStrings[0] as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
@@ -259,16 +217,12 @@ namespace AdaptiveCards.Templating
         /// <returns><see cref="AdaptiveCardsTemplateResult"/></returns>
         public override AdaptiveCardsTemplateResult VisitTemplateStringWithRoot([NotNull] AdaptiveCardsTemplateParser.TemplateStringWithRootContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
+
             // retreives templateroot token from current context; please refers to templateRoot grammar in AdaptiveCardsTemplateParser.g4
             return Visit(context.TEMPLATEROOT());
         }
@@ -280,13 +234,8 @@ namespace AdaptiveCards.Templating
         /// <returns><see cref="AdaptiveCardsTemplateResult"/></returns>
         public override AdaptiveCardsTemplateResult VisitTemplateRootData([NotNull] AdaptiveCardsTemplateParser.TemplateRootDataContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -305,13 +254,8 @@ namespace AdaptiveCards.Templating
         /// <returns>AdaptiveCardsTemplateResult</returns>
         public override AdaptiveCardsTemplateResult VisitValueTemplateExpression([NotNull] AdaptiveCardsTemplateParser.ValueTemplateExpressionContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -342,13 +286,8 @@ namespace AdaptiveCards.Templating
         /// <returns><c>AdaptiveCardsTemplateResult</c></returns>
         public override AdaptiveCardsTemplateResult VisitValueTemplateString([NotNull] AdaptiveCardsTemplateParser.ValueTemplateStringContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -390,13 +329,8 @@ namespace AdaptiveCards.Templating
         /// <returns><c>AdaptiveCardsTemplateResult</c></returns>
         public override AdaptiveCardsTemplateResult VisitValueObject([NotNull] AdaptiveCardsTemplateParser.ValueObjectContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -411,13 +345,8 @@ namespace AdaptiveCards.Templating
         /// <returns><c>AdaptiveCardsTemplateResult</c></returns>
         public override AdaptiveCardsTemplateResult VisitObj([NotNull] AdaptiveCardsTemplateParser.ObjContext context)
         {
-            if (context == null)
-            {
-                throw new ArgumentNullException(nameof(context));
-            }
-
             // checks if parsing failed, if failed, return failed segment as string unchanged
-            if (context.exception != null)
+            if (!ValidateParserRuleContext(context))
             {
                 return new AdaptiveCardsTemplateResult(context.GetText());
             }
@@ -461,21 +390,21 @@ namespace AdaptiveCards.Templating
             string jsonPairDelimieter = (comma != null && comma.Length > 0) ? comma[0].GetText() : "";
 
             // loop for repeating obj parsed in the inner loop
-            for (int i = 0; i < repeatsCounts; i++)
+            for (int iObj = 0; iObj < repeatsCounts; iObj++)
             {
                 if (isArrayType)
                 {
                     // set new data context
-                    PushDataContext(dataContext.GetDataAtIndex(i), dataContext.RootDataContext);
+                    PushDataContext(dataContext.GetDataContextAtIndex(iObj));
                 }
 
                 // parse obj
                 AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LCB().GetText());
                 var whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated;
 
-                for (int j = 0; j < pairs.Length; j++)
+                for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
-                    var pair = pairs[j];
+                    var pair = pairs[iPair];
                     // if the pair refers to same pair that was used for data cotext, do not add its entry
                     if (pair != dataPair)
                     {
@@ -487,7 +416,7 @@ namespace AdaptiveCards.Templating
                         result.Append(returnedResult);
 
                         // add a delimiter, ','
-                        if (j != pairs.Length - 1 && !returnedResult.IsWhen)
+                        if (iPair != pairs.Length - 1 && !returnedResult.IsWhen)
                         {
                             result.Append(jsonPairDelimieter);
                         }
@@ -498,7 +427,7 @@ namespace AdaptiveCards.Templating
 
                 if (whenEvaluationResult != AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse)
                 {
-                    if (i != repeatsCounts - 1)
+                    if (iObj != repeatsCounts - 1)
                     {
                         result.Append(jsonPairDelimieter);
                     }
@@ -567,7 +496,7 @@ namespace AdaptiveCards.Templating
             {
                 DataContext currentDataContext = GetCurrentDataContext();
                 string templateString = node.GetText();
-                return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.token, isExpanded));
+                return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.AELMemory, isExpanded));
             }
 
             return new AdaptiveCardsTemplateResult(node.GetText());
@@ -580,7 +509,7 @@ namespace AdaptiveCards.Templating
         /// <param name="data"></param>
         /// <param name="isTemplatedString"></param>
         /// <returns><c>string</c></returns>
-        public static string Expand(string unboundString, JToken data, bool isTemplatedString = false)
+        public static string Expand(string unboundString, SimpleObjectMemory data, bool isTemplatedString = false)
         {
             if (unboundString == null)
             {
@@ -687,6 +616,7 @@ namespace AdaptiveCards.Templating
 
             return result;
         }
+
         /// <summary>
         /// Evaluates a predicate
         /// </summary>
@@ -723,6 +653,22 @@ namespace AdaptiveCards.Templating
             }
 
             return result;
+        }
+
+        private static bool ValidateParserRuleContext(Antlr4.Runtime.ParserRuleContext context)
+        {
+            if (context == null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
+            // checks if parsing failed, if failed, return failed segment as string unchanged
+            if (context.exception != null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
