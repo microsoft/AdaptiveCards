@@ -133,7 +133,7 @@ namespace WpfVisualizer
                 // don't throw error, but should affect work flow and performance.
                 // transformer -> has to have errors
                 var tranformer = new AdaptiveCardsTemplate(CardPayload);
-                var context = new AdaptiveCardEvaluationContext
+                var context = new AdaptiveCardsEvaluationContext
                 {
                     Root = templateData
                 };
