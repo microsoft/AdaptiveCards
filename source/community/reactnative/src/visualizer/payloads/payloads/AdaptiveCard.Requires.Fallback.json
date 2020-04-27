@@ -19,13 +19,23 @@
 							"type": "TextBlock",
 							"text": "✓: This textblock requires adaptiveCards 1.2",
 							"color": "good",
-							"wrap": true,
-							"requires": {
-								"adaptiveCards": "1.2"
-							},
-							"fallback": "drop"
+							"wrap": true
 						}
-					]
+					],
+					"requires": {
+						"adaptiveCards": "1.2"
+					},
+					"fallback": {
+						"type": "Column",
+						"items": [
+							{
+								"type": "TextBlock",
+								"text": "Fallback column",
+								"color": "attention",
+								"wrap": true
+							}
+						]
+					}
 				},
 				{
 					"type": "Column",

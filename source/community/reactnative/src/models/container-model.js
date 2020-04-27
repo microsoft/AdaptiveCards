@@ -2,6 +2,7 @@ import { BaseModel } from './base-model'
 import { ModelFactory } from './model-factory';
 import { ElementType } from '../utils/enums'
 import { ImageModel } from './element-model'
+import { HostCapabilities, HostConfigManager } from '../utils/host-config';
 
 class BaseContainerModel extends BaseModel {
     constructor(payload, parent) {
@@ -52,9 +53,18 @@ export class ColumnSetModel extends BaseContainerModel {
         this.children = [];
         if (payload.columns) {
             payload.columns.forEach((item) => {
-                let column = new ColumnModel(item, this);
-                if (column) {
-                    this.children.push(column);
+                if(item.requires) {
+                    let requirements = new HostCapabilities(item.requires)
+                    let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
+                    if(requirements.satisfied(hostCapabilities)) {
+                        this.addColumn(item)
+                    } else if (item.fallback 
+                        && typeof(item.fallback) === 'object' 
+                        && item.fallback.type === 'Column' ) {
+                        this.addColumn(item.fallback)
+                    }
+                } else {
+                    this.addColumn(item)
                 }
             });
         }
@@ -62,6 +72,13 @@ export class ColumnSetModel extends BaseContainerModel {
     }
     get columns() {
         return this.children;
+    }
+
+    addColumn(item) {
+        let column = new ColumnModel(item, this);
+        if (column) {
+            this.children.push(column);
+        }
     }
 }
 
