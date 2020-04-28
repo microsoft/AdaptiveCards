@@ -346,7 +346,7 @@ For the development of this feature the following costs have been estimated for 
 
 Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
 
-## Requirement Priorities
+## Requirements Priorities
 
 The priority of tasks have been mentioned in the open issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) which are:
 
@@ -356,6 +356,7 @@ The priority of tasks have been mentioned in the open issue [#3081](https://gith
 | P0 | Author can provide custom error message for each input |
 | P0 | Author can decide whether input should initially be visually indicated as required |
 | P0 | Regex validation support |
+| P0 | Hosts can define when validation is performed |
 | P1 | Hosts can define how error messages are displayed |
 | P2 | Authors can decide which inputs are going to be validated by an action |
 | P2 | Hosts can perform custom rendering of error messages |
