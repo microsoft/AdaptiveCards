@@ -29,7 +29,7 @@
 		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
 		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts",
-		"docs": "typedoc"
+		"docs": "npx typedoc"
 	},
 	"repository": {
 		"type": "git",
