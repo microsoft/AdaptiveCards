@@ -43,10 +43,11 @@ class CatalogueItem {
                 if (sender.sampleData) {
                     let template = new ACData.Template(cardPayload);
 
-                    let evaluationContext = new ACData.EvaluationContext();
-                    evaluationContext.$root = JSON.parse(sender.sampleData);
-
-                    cardPayload = template.expand(evaluationContext);
+                    cardPayload = template.expand(
+                        {
+                            $root: JSON.parse(sender.sampleData)
+                        }
+                    );
                 }
 
                 let card = new Adaptive.AdaptiveCard();

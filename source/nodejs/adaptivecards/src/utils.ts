@@ -4,6 +4,15 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+export function isMobileOS(): boolean {
+    let userAgent = window.navigator.userAgent;
+
+    return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
+}
+
+/**
+ * Generate a UUID prepended with "__ac-"
+ */
 export function generateUniqueId(): string {
     return "__ac-" + Shared.UUID.generate();
 }

@@ -271,6 +271,10 @@ export class FieldDefinition {
 
     constructor(readonly parent: FieldDefinition) {}
 
+    asExpression(): string {
+        return "${" + this.getPath() + "}";
+    }
+
     getPath(asLeaf: boolean = true): string {
         let result: string = this.qualifiedName(asLeaf);
         let currentField = this.parent;

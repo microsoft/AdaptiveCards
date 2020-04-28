@@ -330,13 +330,13 @@ export class CardDesignerSurface {
                 try {
                     let template = new ACData.Template(inputPayload);
 
-                    let evaluationContext = new ACData.EvaluationContext();
+                    let evaluationContext: ACData.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext.$root = this.context.sampleData;
+                        evaluationContext = { $root: this.context.sampleData };
                     }
                     else {
-                        evaluationContext.$root = this.context.dataStructure.dataType.generateSampleData();
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
                     }
 
                     outputPayload = template.expand(evaluationContext);
@@ -597,29 +597,24 @@ export class CardDesignerSurface {
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
-                let templatizedString = ACData.TemplatizedString.parse(value);
+                let expression = ACData.Template.parseInterpolatedString(value);
 
-                if (templatizedString instanceof ACData.TemplatizedString) {
-                    let evaluationContext = new ACData.EvaluationContext();
-
-                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext.$root = this.context.sampleData;
-                    }
-                    else {
-                        evaluationContext.$root = this.context.dataStructure.dataType.generateSampleData();
-                    }
-
-                    let evaluatedValue = templatizedString.evaluate(evaluationContext);
-
-                    if (evaluatedValue !== undefined) {
-                        return typeof evaluatedValue === "string" ? evaluatedValue : value;
-                    }
-                    else {
-                        return value;
-                    }
+                if (typeof expression === "string") {
+                    return expression;
                 }
                 else {
-                    return templatizedString;
+                    let evaluationContext: ACData.IEvaluationContext;
+
+                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
+                        evaluationContext = { $root: this.context.sampleData };
+                    }
+                    else {
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                    }
+
+                    let evaluationResult = ACData.Template.tryEvaluateExpression(expression, evaluationContext, true);
+
+                    return typeof evaluationResult.value === "string" ? evaluationResult.value : value;
                 }
             }
 

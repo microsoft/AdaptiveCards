@@ -19,14 +19,20 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards-templating --project . --out dist/adaptivecards-templating.d.ts",
 		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
-		"release": "npm run build && webpack --mode=production && npm run dts"
+		"release": "npm run build && webpack --mode=production && npm run dts",
+		"docs": "npx typedoc"
 	},
 	"devDependencies": {
 		"rimraf": "^2.6.2",
+		"typedoc": "^0.17.0-3",
+		"typedoc-plugin-markdown": "^2.2.17",
 		"typescript": "^3.5.3",
 		"webpack": "^4.38.0",
 		"webpack-cli": "^3.3.6",
 		"webpack-concat-plugin": "^3.0.0",
 		"webpack-dev-server": "^3.7.2"
+	},
+	"dependencies": {
+		"adaptive-expressions": "^4.9.0-preview-117200"
 	}
 }

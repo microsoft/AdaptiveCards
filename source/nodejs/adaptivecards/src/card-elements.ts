@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
@@ -2210,7 +2210,15 @@ export class Media extends CardElement {
             mediaElement = document.createElement("audio");
         }
 
+        mediaElement.setAttribute("webkit-playsinline", "");
+        mediaElement.setAttribute("playsinline", "");
+        mediaElement.autoplay = true;
         mediaElement.controls = true;
+
+        if (Utils.isMobileOS()) {
+            mediaElement.muted = true;
+        }
+
         mediaElement.preload = "none";
         mediaElement.style.width = "100%";
 
