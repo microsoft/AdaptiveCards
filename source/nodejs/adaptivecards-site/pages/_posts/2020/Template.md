@@ -5,17 +5,14 @@ date: 2020-04-27
 github_username: jwoo-msft
 ---
 # Template
-### I will show you how to use the basic template features and some advanced ones. Along the way, I will also show you our updated template syntax, and introduce Adaptive Expression Language.
-### We will be working on a Expense report. This expense report AdaptiveCards is available in [our github repository](https://github.com/microsoft/AdaptiveCards/blob/master/samples/v1.2/Scenarios/ExpenseReport.json) We will turn this AdaptiveCards into a templated AdaptiveCards, so we can dynamically update AdaptiveCards based on data the template bound to.
-
-**ExpenseReport First Iteration**
+I will show you how to use the basic template features and some advanced ones. Along the way, I will also show you our updated template syntax, and introduce Adaptive Expression Language. We will be working on a Expense report card. This expense report card is available in [our github repository](https://github.com/microsoft/AdaptiveCards/blob/master/samples/v1.2/Scenarios/ExpenseReport.json). We will turn this AdaptiveCards into a templated AdaptiveCards, so we can dynamically update AdaptiveCards based on data.
 
 ![Expense Report First Iteration](Template/ExpenseReport01.png)
 
-The expense report's json is over 800 lines. To update the AdaptiveCards, we could update the card by editing Adaptive Elements objects. Template is a new way to update AdaptiveCards.
-
-For example, if we want to change the name of Submitter, **Matt Hidinger** to **Jopseh Woo**. We would change the section we want to update to a template.
-
+## Data Binding
+The expense report's json is over 800 lines. To update the contents of the card, we could update it by editing Adaptive Elements objects. Since template is a new way to update AdaptiveCards, we will update the content using template.
+ 
+As an example, if we want to change the name of Submitter, **Matt Hidinger** to **Jopseh Woo**. 
 Given the json below, we will update it with template
 ```json
 {
@@ -26,28 +23,7 @@ Given the json below, we will update it with template
             "title": "Submitted By",
             "value": "**Matt Hidinger**  matt@contoso.com"
         },
-        {
-            "title": "Duration",
-            "value": "2019/06/19 - 2019/06/25"
-        },
-        {
-            "title": "Submitted On",
-            "value": "2019/04/14"
-        },
-        {
-            "title": "Reimbursable Amount",
-            "value": "$ 404.30"
-        },
-        {
-            "title": "Awaiting approval from",
-            "value": "**Thomas**  thomas@contoso.com"
-        },
-        {
-            "title": "Submitted to",
-            "value": "**David**   david@contoso.com"
-        }
-    ]
-}
+        ...
 ```
 
 ```json
@@ -57,30 +33,9 @@ Given the json below, we will update it with template
     "facts": [
         {
             "title": "Submitted By",
-            "value": "**${submitter.name}**  ${submitter.email}"
+            "value": "**${submitter.name}**  ${submitter.e-mail}"
         },
-        {
-            "title": "Duration",
-            "value": "2019/06/19 - 2019/06/25"
-        },
-        {
-            "title": "Submitted On",
-            "value": "2019/04/14"
-        },
-        {
-            "title": "Reimbursable Amount",
-            "value": "$ 404.30"
-        },
-        {
-            "title": "Awaiting approval from",
-            "value": "**Thomas**  thomas@contoso.com"
-        },
-        {
-            "title": "Submitted to",
-            "value": "**David**   david@contoso.com"
-        }
-    ]
-}
+        ...
 ```
 
 The example above misses data. To use template, we have to provide data.  Data can be any valid json
@@ -96,18 +51,16 @@ The example above misses data. To use template, we have to provide data.  Data c
 }
 ```
 
-The card will be updated
+Updated card
 
 ![Expense Report First Iteration](Template/ExpenseReport02.png)
 
-As long as data's format doesn't change, this AdaptiveCards can be re-used. AdaptiveCards will be updated according to the data the card is bound to.
-
-Template can also be used in repeating a layout.
+As long as data's format doesn't change, this AdaptiveCards can be re-used. AdaptiveCards will be updated according to the data the card is bound to. Template can also be used in repeating a layout.
 Expense Report Card has following layout, each row for expense item has the same layout.
 
 ![Expense Report First Iteration](Template/ExpenseReport03.png)
 
-We have to define each layout for each row item as below. Since there are tree expense items, we have to have three ColumnSet each defining the item.
+Without template, we have to define each layout for each expense items. Since there are three expense items, we have to have three ColumnSet each defining the items.
 
 ```json
 {
@@ -200,8 +153,8 @@ We have to define each layout for each row item as below. Since there are tree e
 }
 ```
 To use template we will do followings
-1. We will define one layout for expense item, and remove all existing layouts for the expense item.
-2. We format the layout with template
+1. We keep one layout of expense item for template, and remove all other layouts of the expense items.
+2. We format the layout with the template
 3. We provide data that the template expects
 
 ```json
@@ -296,10 +249,9 @@ To use template we will do followings
 }
 ```
 
-We've introduced two new concepts 
-1. [$data](https://docs.microsoft.com/en-us/adaptive-cards/templating/language#assigning-a-data-context-to-elements) keyword in this use case was used to specify data in our source data, and this changed data is applied within the boundary of [a json object](https://www.w3schools.com/js/js_json_objects.asp) that $data is defined. In addition, the data that was bound by $data will be applied to the json object's sub elemetns. 
+We've introduced new keyword [$data](https://docs.microsoft.com/en-us/adaptive-cards/templating/language#assigning-a-data-context-to-elements). $data is used in this example to specify data in our source data, and this chosen data is applied within the boundary of [a json object](https://www.w3schools.com/js/js_json_objects.asp) that the $data is defined. In addition, the data that was bound by $data will be applied to the json object's sub elemetns as well. For example, if $data context is defined in Container, and if TextBlock is a item of the Container, the TextBlock will get the same data context. 
 
-For example, if $data context is defined in Container, then if TextBlock is a child of the Container, TextBlock will get the same data context. This scoping can be changed in child elements by setting new data context in the child elements.
+The json pair shown below specifies that the ColumnSet will use ```expense``` in data binding. 
 
 ```json
 {
@@ -313,7 +265,6 @@ For example, if $data context is defined in Container, then if TextBlock is a ch
 ```json
 "$data" : "${expense}"
 ```
-The json pair shown above specifies that the ColumnSet will use ```expense``` in data binding for itself and its child elements.
 
 This is our current data we designed
 
@@ -383,9 +334,9 @@ This can be accomplished by template's [repeating element feature](https://docs.
 }
 ```
 
-There is one more problem. When we bound ```amount``` to ${amount}  template. Its type will be integer. This can be a problem. For example, if AdaptiveCards parser see this ```"text" : 500``` in  ```TextBlock```. It will drop entire TextBlock, or text may be left empty because the parser expects string type for ```text```. 
+There is one more problem. The type of ```amount``` is integer. This can be a problem. For example, if AdaptiveCards parser see this ```"text" : 500``` in  ```TextBlock``` after expansion. It will drop entire TextBlock, or text may be left empty because the parser expects string type.
 
-To convert integer to string, we can use ```string``` functions. Template linbrary provides functions or expression through [Adpative Expression Language library](https://github.com/microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language). For the list of api, please see [here](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/prebuilt-functions.md). Changing ```"text": "$${amount}"``` to ```"text": "$${string(amount)}"``` resolves our final issue. Finally we don't need each entries of the ColumnSet for the expenses in Expese Report card, so we replace all of them with the tempalted one. Don't forget that we changed entry ```expense``` to ```expenses``` in our data if you're following this example. If the temmplate is run in the designer, it will look like this.
+To convert integer to string, we can use ```string``` functions. Template linbrary provides functions or expression through [Adpative Expression Language library](https://github.com/microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language). For the list of api, please see [here](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/prebuilt-functions.md). Changing ```"text": "$${amount}"``` to ```"text": "$${string(amount)}"``` resolves our final issue. Finally we don't need every entries of the ColumnSet for the expenses in Expese Report card, so we remove them. Don't forget that we changed entry ```expense``` to ```expenses``` in our data if you're following this example. If the temmplate is run in the designer, it will look like this.
 
 ![Expense Report First Iteration](Template/ExpenseReport04.png)
 
@@ -452,7 +403,7 @@ Finally, total amount of expense shown below is static, and should be fixed
 },
 ```
 
-Using AEL' ```sum, select functions```, we modify ```403.30``` to ```${sum(select(expenses, x, x.amount))}```. This change will allow the card to dynamically update the expanses based on the data
+Using AEL [sum](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/prebuilt-functions.md#sum), [select](https://github.com/microsoft/BotBuilder-Samples/blob/master/experimental/common-expression-language/prebuilt-functions.md#select) functions, we modify "403.30" to ```${sum(select(expenses, x, x.amount))}```. This change will allow the card to dynamically update the expanses based on the data
 ```json
 "items": [
 {
