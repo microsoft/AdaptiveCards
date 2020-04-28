@@ -899,7 +899,7 @@ namespace AdaptiveNamespace::XamlHelpers
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
         ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;
-
+        
         // If there's any validation on this input, and the caller has requested a validation border by passing
         // validationBorderOut, put the input inside a border
         boolean isRequired;
@@ -927,6 +927,63 @@ namespace AdaptiveNamespace::XamlHelpers
             }
         }
 
+        // Different input renderers perform stuff differently
+        // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
+        // Input.Time and Input.Date let this method render the border for them
+        // Input.Toggle 
+
+        ComPtr<IUIElement> actualInputUIElement;
+
+        if (validationBorderOut && hasValidation)
+        {
+            validationBorder->get_Child(&actualInputUIElement);
+        }
+        else
+        {
+            if (hasValidation)
+            {
+                // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
+                if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+                {
+                    validationBorder->get_Child(&actualInputUIElement);
+                }
+                else
+                {
+                    actualInputUIElement = inputUIElement;
+                }
+            }
+            else
+            {
+                actualInputUIElement = inputUIElement;
+            }
+        }
+
+        // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationPropertiesStatics));
+
+        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+
+        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));
+
+        // The AutomationProperties.LabeledBy property allows an input to have more context for people using a screen
+        // reader, as it reads the label we rendered previously
+        if (label != nullptr)
+        {
+            RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
+        }
+
+        // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
+        // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
+        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
+
+
+
+
         RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
         RETURN_IF_FAILED(errorMessageControl.CopyTo(validationErrorOut));
 
@@ -934,24 +991,6 @@ namespace AdaptiveNamespace::XamlHelpers
         {
             RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
         }
-
-        // Set accessibility properties
-        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-        RETURN_IF_FAILED(
-            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                 &automationPropertiesStatics));
-
-        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
-        RETURN_IF_FAILED(inputUIElementParentContainer.As(&inputUIElementAsDependencyObject));
-
-        // Set label to input so users have more context
-        if (label != nullptr)
-        {
-            RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
-        }
-
-        // Set requirement for input to be filled
-        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
 
         return S_OK;
     }
