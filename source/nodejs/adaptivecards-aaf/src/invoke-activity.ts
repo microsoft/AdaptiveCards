@@ -26,14 +26,14 @@ export interface InvokeActivity {
     relatesTo?: string
 }
 
-export enum ActivityInvocationContext {
+export enum ActivityInvocationTrigger {
     Automatic,
     UserInteraction,
 }
 
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
-    readonly context: ActivityInvocationContext,
+    readonly trigger: ActivityInvocationTrigger,
     attemptNumber: number
 }
 

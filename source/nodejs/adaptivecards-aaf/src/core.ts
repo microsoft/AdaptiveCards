@@ -1,7 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
-import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationContext } from "./invoke-activity";
+import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 
 export class ExecuteAction extends Adaptive.SubmitAction {
     //#region Schema
@@ -134,10 +134,10 @@ export class AdaptiveApplet {
         }
     }
 
-    private createActivityRequest(action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
+    private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger): ActivityRequest | undefined {
         if (this.card) {
             let request: ActivityRequest = {
-                context: context,
+                trigger: trigger,
                 activity: {
                     type: "invoke",
                     name: "adaptiveCard/action",
@@ -217,10 +217,10 @@ export class AdaptiveApplet {
         return card;
     }
 
-    private internalExecuteAction(action: Adaptive.Action, context: ActivityInvocationContext) {
+    private internalExecuteAction(action: Adaptive.Action, trigger: ActivityInvocationTrigger) {
         if (this.channelAdapter) {
             if (action instanceof ExecuteAction) {
-                let request = this.createActivityRequest(action, context);
+                let request = this.createActivityRequest(action, trigger);
 
                 if (request) {
                     this.internalSendActivityRequestAsync(request);
@@ -240,7 +240,7 @@ export class AdaptiveApplet {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
         }
 
-        let overlay = this.createProgressOverlay(request.context);
+        let overlay = this.createProgressOverlay(request.trigger);
 
         this.renderedElement.appendChild(overlay);
 
@@ -412,11 +412,11 @@ export class AdaptiveApplet {
         }
     }
 
-    private createProgressOverlay(context: ActivityInvocationContext): HTMLElement {
+    private createProgressOverlay(trigger: ActivityInvocationTrigger): HTMLElement {
         let overlay: HTMLElement | undefined = undefined;
 
         if (this.onCreateProgressOverlay) {
-            overlay = this.onCreateProgressOverlay(this, context);
+            overlay = this.onCreateProgressOverlay(this, trigger);
         }
 
         if (!overlay) {
@@ -443,7 +443,7 @@ export class AdaptiveApplet {
     onCardChanged?: (sender: AdaptiveApplet) => void;
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
     onActivityRequestCompleted?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
-    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionContext: ActivityInvocationContext) => HTMLElement | undefined;
+    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
 
     constructor() {
         this.renderedElement = document.createElement("div");
@@ -491,7 +491,7 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteAction(action, ActivityInvocationContext.UserInteraction);
+                        this.internalExecuteAction(action, ActivityInvocationTrigger.UserInteraction);
                     }
 
                     this._card.render();
@@ -504,7 +504,7 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.refresh) {
-                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationContext.Automatic);
+                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic);
                         }
                     }
                 }
