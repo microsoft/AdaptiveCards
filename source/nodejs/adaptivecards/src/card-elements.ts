@@ -4216,6 +4216,13 @@ export class OpenUrlAction extends Action {
         this.url = Utils.getStringValue(json["url"]);
     }
 
+    render(baseCssClass: string = "ac-pushButton") {
+        super.render(baseCssClass);
+
+        // OpenUrl actions behave like a hyperlink. Make sure screenreaders treat them that way.
+        this.renderedElement.setAttribute("role", "link");
+    }
+
     getHref(): string {
         return this.url;
     }
