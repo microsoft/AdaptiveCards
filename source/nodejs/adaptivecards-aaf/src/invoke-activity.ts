@@ -27,8 +27,8 @@ export interface InvokeActivity {
 }
 
 export enum ActivityInvocationContext {
-    Refresh,
-    UserInteraction
+    Automatic,
+    UserInteraction,
 }
 
 export interface ActivityRequest {

@@ -504,7 +504,7 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.refresh) {
-                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationContext.Refresh);
+                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationContext.Automatic);
                         }
                     }
                 }
