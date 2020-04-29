@@ -54,4 +54,7 @@
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>
+
+  <!-- workaround for multiple TargetFramework regression -->
+  <Target Name="_CheckForGenerateAppxPackageOnBuild" />
 </Project>
