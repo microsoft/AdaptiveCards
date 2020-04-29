@@ -3637,6 +3637,13 @@ export class OpenUrlAction extends Action {
         }
     }
 
+    render(baseCssClass: string = "ac-pushButton") {
+        super.render(baseCssClass);
+
+        // OpenUrl actions behave like a hyperlink. Make sure screenreaders treat them that way.
+        this.renderedElement.setAttribute("role", "link");
+    }
+
     getHref(): string | undefined {
         return this.url;
     }
