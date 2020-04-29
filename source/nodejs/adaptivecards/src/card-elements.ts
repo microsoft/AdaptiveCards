@@ -3641,7 +3641,9 @@ export class OpenUrlAction extends Action {
         super.render(baseCssClass);
 
         // OpenUrl actions behave like a hyperlink. Make sure screenreaders treat them that way.
-        this.renderedElement.setAttribute("role", "link");
+        if (this.renderedElement) {
+            this.renderedElement.setAttribute("role", "link");
+        }
     }
 
     getHref(): string | undefined {
