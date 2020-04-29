@@ -121,6 +121,19 @@
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
+- (void)testActionSetInputs
+{
+    NSString *payload = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"ActionSet.Inputs.Tests" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
+    XCTAssertTrue(cardParseResult && cardParseResult.isValid);
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
+    XCTAssertTrue(renderResult && renderResult.succeeded);
+    ACOAdaptiveCard *renderedCard = [renderResult.view card];
+    NSData *json = [renderedCard inputs];
+    NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableContainers error:nil];
+    XCTAssert([dictionary count] == 2);
+}
+
 // this test ensure that extending text render doesn't crash
 // in use case where custom renderer uses default text renderer
 - (void)testExtendingTextRenderersDoesNotCrash
