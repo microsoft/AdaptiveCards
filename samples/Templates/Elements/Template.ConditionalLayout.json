@@ -1,0 +1,32 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "Container",
+			"$data": "${requests}",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Item Requested Type: ${type}"
+				},
+				{
+					"type": "TextBlock",
+					"text": "Price:$${string(price)}"
+				},
+				{
+					"type": "TextBlock",
+					"$when": "${price > 500}",
+					"text": "This thing is pricy!",
+					"color": "attention"
+				},
+				 {
+					"type": "TextBlock",
+					"$when": "${price <= 100}",
+					"text": "Dang, this thing is cheap!",
+					"color": "good"
+				}
+			]
+		}
+	]
+}

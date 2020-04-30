@@ -1,0 +1,27 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Name in lower case: ${toLower(employee.name)}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Name in upper case: ${toUpper(employee.name)}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Length of name ${string(length(employee.name))}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Retrieved last name, ${substring(employee.peers[2].name, 5, 4)} using sbustring()"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Index of r in ${employee.peers[0].name}: ${indexOf(employee.peers[0].name, 'r')}"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
