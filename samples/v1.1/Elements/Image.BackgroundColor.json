@@ -9,6 +9,7 @@
 				"width": "stretch",
 				"items": [{
 					"type": "Image",
+					"style": "person",
 					"backgroundColor": "#982374",
 					"url": "https://adaptivecards.io/content/cats/1.png"
 				}]
