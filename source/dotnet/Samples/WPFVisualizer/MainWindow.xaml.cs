@@ -132,7 +132,7 @@ namespace WpfVisualizer
             {
                 // don't throw error, but should affect work flow and performance.
                 // transformer -> has to have errors
-                var tranformer = new AdaptiveCardsTemplate(CardPayload);
+                var template = new AdaptiveCardsTemplate(CardPayload);
                 var context = new AdaptiveCardsEvaluationContext
                 {
                     Root = templateData
@@ -145,7 +145,7 @@ namespace WpfVisualizer
                 //     "name": "Mickey Mouse"
                 // };
 
-                var transformedPaylaod = tranformer.Expand(context);
+                var transformedPaylaod = template.Expand(context);
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
 
                 AdaptiveCard card = parseResult.Card;
@@ -296,10 +296,8 @@ namespace WpfVisualizer
         private void loadButton_Click(object sender, RoutedEventArgs e)
         {
             string cardPayload;
-            if (OpenFileDialogForJson(out cardPayload))
-            {
-                CardPayload = cardPayload;
-            }
+            OpenFileDialogForJson(out cardPayload);
+            CardPayload = cardPayload;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -469,21 +467,17 @@ namespace WpfVisualizer
             _dirty = true;
         }
 
-        private bool OpenFileDialogForJson(out string output)
+        private void OpenFileDialogForJson(out string output)
         {
             var dlg = new OpenFileDialog();
             dlg.DefaultExt = ".json";
             dlg.Filter = "Json documents (*.json)|*.json";
-            var result = dlg.ShowDialog();
             output = "";
-
-            if (result == true)
+            if (dlg.ShowDialog() == true)
             {
                 output = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
                 _dirty = true;
-                return true;
             }
-            return false;
         }
 
         private void loadTemplateDataButton_Click(object sender, RoutedEventArgs e)
