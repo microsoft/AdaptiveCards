@@ -318,7 +318,6 @@
 				xhttp.onload = function () {
 					if (xhttp.responseText && xhttp.responseText != "") {
 						var sampleData = JSON.parse(xhttp.responseText);
-						//designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
 						designer.sampleData = sampleData;
 					}
 				};
@@ -353,10 +352,13 @@
 					]
 				};
 
-				designer.dataStructure = ACDesigner.FieldDefinition.deriveFrom(sampleData);
 				designer.sampleData = sampleData;
 
+
 			}
+
+			designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+
 		});
 	});
 </script>
