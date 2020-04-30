@@ -15,6 +15,8 @@ using namespace ABI::Windows::Globalization::DateTimeFormatting;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Documents;
+using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace AdaptiveNamespace;
 
 HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
@@ -69,6 +71,66 @@ HRESULT InputValue::SetFocus()
     return S_OK;
 }
 
+HRESULT InputValue::SetAccessibilityProperties(boolean errorMessageVisible)
+{
+    ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics;
+
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                          &automationPropertiesStatics));
+
+    // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+    // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+    ComPtr<IUIElement> uiInputElement(m_uiInputElement);
+
+    ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+    RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
+
+    RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), !errorMessageVisible));
+
+    ComPtr<IUIElement> uiValidationError(m_validationError);
+
+    ComPtr<IRichTextBlock> validationError;
+    RETURN_IF_FAILED(uiValidationError.As(&validationError));
+
+    ComPtr<IVector<Block*>> blocks;
+    RETURN_IF_FAILED(validationError->get_Blocks(blocks.GetAddressOf()));
+
+    HString validationErrorText;
+
+    XamlHelpers::IterateOverVector<Block, IBlock>(blocks.Get(), [&](IBlock* textBlock) {
+        ComPtr<IBlock> xamlTextBlock(textBlock);
+
+        ComPtr<IParagraph> xamlTextBlockAsParagraph;
+        RETURN_IF_FAILED(xamlTextBlock.As(&xamlTextBlockAsParagraph));
+
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
+        RETURN_IF_FAILED(xamlTextBlockAsParagraph->get_Inlines(inlines.GetAddressOf()));
+
+        XamlHelpers::IterateOverVector<ABI::Windows::UI::Xaml::Documents::Inline, ABI::Windows::UI::Xaml::Documents::IInline>(
+            inlines.Get(), [&](ABI::Windows::UI::Xaml::Documents::IInline* paragraphInline) {
+                ComPtr<IInline> xamlInline(paragraphInline);
+
+                ComPtr<IRun> xamlInlineAsRun;
+                RETURN_IF_FAILED(xamlInline.As(&xamlInlineAsRun));
+
+                HString runText;
+                RETURN_IF_FAILED(xamlInlineAsRun->get_Text(runText.GetAddressOf()));
+
+                HString concatenatedString;
+                RETURN_IF_FAILED(WindowsConcatString(validationErrorText.Get(), runText.Get(), concatenatedString.GetAddressOf()));
+                RETURN_IF_FAILED(concatenatedString.CopyTo(validationErrorText.GetAddressOf()));
+
+                return S_OK;
+            });
+
+        return S_OK;
+    });
+
+    RETURN_IF_FAILED(automationPropertiesStatics->SetFullDescription(inputUIElementAsDependencyObject.Get(),
+                                                                     validationErrorText.Get()));
+    return S_OK;
+}
+
 HRESULT InputValue::IsValueValid(_Out_ boolean* isInputValid)
 {
     boolean isRequired;
@@ -108,11 +170,15 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
         if (isInputValid)
         {
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Collapsed));
+
+
         }
         else
         {
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
         }
+
+        SetAccessibilityProperties(!isInputValid);
     }
 
     // Once this has been marked invalid once, we should validate on all value changess going forward

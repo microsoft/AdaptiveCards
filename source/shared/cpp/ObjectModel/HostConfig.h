@@ -297,6 +297,24 @@ namespace AdaptiveSharedNamespace
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
 
+    struct InputLabelConfig
+    {
+        ForegroundColor color = ForegroundColor::Default;
+        TextSize size = TextSize::Default;
+        Spacing spacing = Spacing::Default;
+        std::string suffix = std::string();
+
+        static InputLabelConfig Deserialize(const Json::Value& json, const InputLabelConfig& defaultValue);
+    };
+
+    struct InputLabelsConfig
+    {
+        InputLabelConfig requiredInputs;
+        InputLabelConfig optionalInputs;
+
+        static InputLabelsConfig Deserialize(const Json::Value& json, const InputLabelsConfig& defaultValue);
+    };
+
     struct MediaConfig
     {
         std::string defaultPoster;
@@ -372,6 +390,9 @@ namespace AdaptiveSharedNamespace
         MediaConfig GetMedia() const;
         void SetMedia(const MediaConfig value);
 
+        InputLabelsConfig GetInputLabels() const;
+        void SetInputLabels(const InputLabelsConfig value);
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -392,5 +413,6 @@ namespace AdaptiveSharedNamespace
         ActionsConfig _actions;
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
+        InputLabelsConfig _inputLabels;
     };
 }

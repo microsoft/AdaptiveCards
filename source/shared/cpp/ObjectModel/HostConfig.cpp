@@ -75,6 +75,11 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
     result._media =
         ParseUtil::ExtractJsonValueAndMergeWithDefault<MediaConfig>(json, AdaptiveCardSchemaKey::Media, result._media, MediaConfig::Deserialize);
 
+    result._inputLabels =  ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelsConfig>(json,
+                                                                                             AdaptiveCardSchemaKey::InputLabels,
+                                                                                             result._inputLabels,
+                                                                                             InputLabelsConfig::Deserialize);
+
     return result;
 }
 
@@ -297,6 +302,39 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 
     return result;
 }
+
+InputLabelConfig InputLabelConfig::Deserialize(const Json::Value& json, const InputLabelConfig& defaultValue)
+{
+    InputLabelConfig result;
+
+    result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
+
+    result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
+    
+    result.spacing = ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, defaultValue.spacing, SpacingFromString);
+
+    result.suffix = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Suffix, defaultValue.suffix);
+
+    return result;
+}
+
+InputLabelsConfig InputLabelsConfig::Deserialize(const Json::Value& json, const InputLabelsConfig& defaultValue)
+{
+    InputLabelsConfig result;
+
+    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
+                                                                                             AdaptiveCardSchemaKey::RequiredInputs,
+                                                                                             defaultValue.requiredInputs,
+                                                                                             InputLabelConfig::Deserialize);
+
+    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
+                                                                                             AdaptiveCardSchemaKey::OptionalInputs,
+                                                                                             defaultValue.optionalInputs,
+                                                                                             InputLabelConfig::Deserialize);
+
+    return result;
+}
+
 
 SpacingConfig SpacingConfig::Deserialize(const Json::Value& json, const SpacingConfig& defaultValue)
 {
@@ -825,4 +863,14 @@ MediaConfig HostConfig::GetMedia() const
 void HostConfig::SetMedia(const MediaConfig value)
 {
     _media = value;
+}
+
+InputLabelsConfig HostConfig::GetInputLabels() const
+{
+    return _inputLabels;
+}
+
+void HostConfig::SetInputLabels(const InputLabelsConfig value)
+{
+    _inputLabels = value;
 }

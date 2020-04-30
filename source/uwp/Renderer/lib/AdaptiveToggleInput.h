@@ -66,16 +66,6 @@ namespace AdaptiveNamespace
             return AdaptiveInputElementBase::put_Label(label);
         }
 
-        IFACEMETHODIMP get_LabelCardElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** label)
-        {
-            return AdaptiveInputElementBase::get_LabelCardElement(label);
-        }
-
-        IFACEMETHODIMP put_LabelCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* label)
-        {
-            return AdaptiveInputElementBase::put_LabelCardElement(label);
-        }
-
         // IAdaptiveCardElement
         IFACEMETHODIMP get_ElementType(_Out_ ABI::AdaptiveNamespace::ElementType* elementType);
 

@@ -724,7 +724,6 @@ AdaptiveNamespaceStart
         Boolean IsRequired;
         String ErrorMessage;
         String Label;
-        IAdaptiveCardElement LabelCardElement;
     };
 
     [
@@ -1375,6 +1374,34 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputLabelConfig", 4350CCBC-FC55-4324-88E3-72583A25F178),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveInputLabelConfig {
+        AdaptiveInputLabelConfig();
+
+        ForegroundColor Color;
+        TextSize Size;
+        Spacing Spacing;
+        String Suffix;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputLabelsConfig", 8511B8D9-866A-4535-9A46-B9C0D4C63085),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveInputLabelsConfig {
+        AdaptiveInputLabelsConfig();
+
+        AdaptiveInputLabelConfig RequiredInputs;
+        AdaptiveInputLabelConfig OptionalInputs;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfig", 15ae7240-f9b0-47e4-b444-62da42b8b863),
         static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigStatics", 11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
         contract(InternalContract, 1),
@@ -1401,6 +1428,7 @@ AdaptiveNamespaceStart
         AdaptiveFactSetConfig FactSet;
         AdaptiveActionsConfig Actions;
         AdaptiveMediaConfig Media;
+        AdaptiveInputLabelsConfig InputLabels;
 
         static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
         static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);

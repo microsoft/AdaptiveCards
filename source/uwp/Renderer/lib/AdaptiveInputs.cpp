@@ -100,6 +100,9 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputs::ValidateInputs(boolean* inputsAreValid)
     {
         boolean allInputsValid = true;
+
+
+
         for (auto& inputValue : *m_inputValues)
         {
             boolean currentInputValid;

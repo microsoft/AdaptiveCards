@@ -16,6 +16,7 @@
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
+#include "AdaptiveInputLabelsConfig.h"
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
@@ -92,6 +93,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.GetActions()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelsConfig>(m_inputLabels.GetAddressOf(), sharedHostConfig.GetInputLabels()));
 
         return S_OK;
     }
@@ -248,6 +250,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveHostConfig::put_Media(_In_ IAdaptiveMediaConfig* mediaConfig)
     {
         m_media = mediaConfig;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveHostConfig::get_InputLabels(_COM_Outptr_ IAdaptiveInputLabelsConfig** inputLabelsConfig)
+    {
+        return m_inputLabels.CopyTo(inputLabelsConfig);
+    }
+
+    HRESULT AdaptiveHostConfig::put_InputLabels(_In_ IAdaptiveInputLabelsConfig* inputLabelsConfig)
+    {
+        m_inputLabels = inputLabelsConfig;
         return S_OK;
     }
 

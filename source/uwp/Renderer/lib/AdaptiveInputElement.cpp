@@ -20,12 +20,6 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetErrorMessage(), m_errorMessage.GetAddressOf()));
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetLabel(), m_label.GetAddressOf()));
 
-        auto labelCardElement = sharedModel->GetLabelCardElement();
-        if (labelCardElement != nullptr)
-        {
-            RETURN_IF_FAILED(GenerateLabelProjection(labelCardElement, m_labelCardElement.GetAddressOf()));
-        }
-
         return S_OK;
     }
 
@@ -49,30 +43,12 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveInputElementBase::put_Label(_In_ HSTRING label) { return m_label.Set(label); }
 
-    IFACEMETHODIMP AdaptiveInputElementBase::get_LabelCardElement(_COM_Outptr_ IAdaptiveCardElement** label)
-    {
-        return m_labelCardElement.CopyTo(label);
-    }
-
-    IFACEMETHODIMP AdaptiveInputElementBase::put_LabelCardElement(_In_ IAdaptiveCardElement* label)
-    {
-        m_labelCardElement = label;
-        return S_OK;
-    }
-
     HRESULT AdaptiveInputElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement)
     {
         AdaptiveCardElementBase::SetSharedElementProperties(sharedCardElement);
         sharedCardElement->SetIsRequired(m_isRequired);
         sharedCardElement->SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
         sharedCardElement->SetLabel(HStringToUTF8(m_label.Get()));
-
-        std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> labelCardElement;
-        if (m_labelCardElement != nullptr)
-        {
-            RETURN_IF_FAILED(GenerateSharedElement(m_labelCardElement.Get(), labelCardElement));
-            sharedCardElement->SetLabelCardElement(labelCardElement);
-        }
 
         return S_OK;
     }

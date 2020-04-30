@@ -20,9 +20,6 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label);
         IFACEMETHODIMP put_Label(_In_ HSTRING label);
 
-        IFACEMETHODIMP get_LabelCardElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** label);
-        IFACEMETHODIMP put_LabelCardElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* label);
-
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
 
     private:

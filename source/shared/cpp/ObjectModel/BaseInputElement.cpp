@@ -27,16 +27,6 @@ void BaseInputElement::SetLabel(const std::string label)
     m_label = label;
 }
 
-std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> BaseInputElement::GetLabelCardElement() const
-{
-    return m_labelCardElement;
-}
-
-void BaseInputElement::SetLabelCardElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> label)
-{
-    m_labelCardElement = label;
-}
-
 bool BaseInputElement::GetIsRequired() const
 {
     return m_isRequired;

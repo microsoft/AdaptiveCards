@@ -677,52 +677,55 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    // Retrieves the inlines from a TextBlock or RichTextBlock so we can append the " *" (required indicator) to the rendered label 
-    HRESULT SetRequiredHint(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                            _In_ ABI::Windows::UI::Xaml::IUIElement* uiElement)
+    HRESULT FormatLabelWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                      _In_ boolean isRequired,
+                                      ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
-        ComPtr<IUIElement> xamlUIElement(uiElement);
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
-        ComPtr<ITextBlock> textBlock;
-        if (SUCCEEDED(xamlUIElement.As(&textBlock)))
+        ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
+        RETURN_IF_FAILED(hostConfig->get_InputLabels(&inputLabelsConfig));
+
+        ComPtr<IAdaptiveInputLabelConfig> labelConfig;
+        if (isRequired)
         {
-            RETURN_IF_FAILED(textBlock->get_Inlines(xamlInlines.GetAddressOf()));
+            inputLabelsConfig->get_RequiredInputs(&labelConfig);
         }
         else
         {
-            ComPtr<IRichTextBlock> richTextBlock;
-            if (SUCCEEDED(xamlUIElement.As(&richTextBlock)))
-            {
-                // As we're retrieving the inlines from a previously rendered RichTextBlock we have to do the
-                // opposite process as when crerating the label as a string
-                ComPtr<IVector<Block*>> xamlBlocks;
-                RETURN_IF_FAILED(richTextBlock->get_Blocks(xamlBlocks.GetAddressOf()));
-
-                UINT blockCount{};
-                RETURN_IF_FAILED(xamlBlocks->get_Size(&blockCount));
-
-                // Get the last block from the RichTextBlock
-                ComPtr<IBlock> xamlBlock;
-                RETURN_IF_FAILED(xamlBlocks->GetAt(blockCount - 1, xamlBlock.GetAddressOf()));
-
-                // Convert the Block to a Paragraph to 
-                ComPtr<IParagraph> blockAsParagraph;
-                RETURN_IF_FAILED(xamlBlock.As(&blockAsParagraph));
-
-                RETURN_IF_FAILED(blockAsParagraph->get_Inlines(xamlInlines.GetAddressOf()));
-            }
+            inputLabelsConfig->get_OptionalInputs(&labelConfig);
         }
 
-        RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
+        ABI::AdaptiveNamespace::ForegroundColor textColor;
+        RETURN_IF_FAILED(labelConfig->get_Color(&textColor));
+
+        
+
+        ABI::Windows::UI::Color color;
+        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), textColor, ContainerStyle_Default, false, false, &color));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> xamlLabelRun(labelRun);
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> labelRunAsTextElement;
+        RETURN_IF_FAILED(xamlLabelRun.As(&labelRunAsTextElement));
+
+        RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
+
+        ABI::AdaptiveNamespace::TextSize textSize;
+        RETURN_IF_FAILED(labelConfig->get_Size(&textSize));
+
+        UINT32 resultSize{};
+        GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize);
+
+        RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 
         return S_OK;
     }
 
-
     HRESULT RenderInputLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* /*renderArgs*/,
                              _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
     {
         HString inputLabel;
@@ -769,46 +772,6 @@ namespace AdaptiveNamespace::XamlHelpers
             }
 
             RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
-        }
-        else
-        {
-            ComPtr<IAdaptiveCardElement> labelCardElement;
-            RETURN_IF_FAILED(adaptiveInputElement->get_LabelCardElement(labelCardElement.GetAddressOf()));
-
-            if (labelCardElement != nullptr)
-            {
-                ComPtr<IAdaptiveElementRenderer> labelRenderer;
-                if (labelCardElement != nullptr)
-                {
-                    ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
-                    THROW_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
-
-                    ComPtr<IAdaptiveTextBlock> textBlock;
-                    if (SUCCEEDED(labelCardElement.As(&textBlock)))
-                    {
-                        RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"TextBlock").Get(), &labelRenderer));
-                    }
-                    else
-                    {
-                        ComPtr<IAdaptiveRichTextBlock> richTextBlock;
-                        if (SUCCEEDED(labelCardElement.As(&richTextBlock)))
-                        {
-                            RETURN_IF_FAILED(elementRenderers->Get(HStringReference(L"RichTextBlock").Get(), &labelRenderer));
-                        }
-                    }
-                }
-
-                ComPtr<IUIElement> renderedLabel;
-                if (labelRenderer != nullptr)
-                {
-                    RETURN_IF_FAILED(
-                        labelRenderer->Render(labelCardElement.Get(), renderContext, renderArgs, renderedLabel.GetAddressOf()));
-                }
-
-                RETURN_IF_FAILED(SetRequiredHint(renderContext, renderedLabel.Get()));
-
-                RETURN_IF_FAILED(renderedLabel.CopyTo(labelControl));
-            }
         }
 
         return S_OK;
@@ -896,6 +859,30 @@ namespace AdaptiveNamespace::XamlHelpers
         XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label);
         XamlHelpers::AppendXamlElementToPanel(label.Get(), stackPanelAsPanel.Get());
 
+        // Render the spacing between the label and the input
+        if (label != nullptr)
+        {
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
+            RETURN_IF_FAILED(hostConfig->get_InputLabels(&inputLabelsConfig));
+
+            ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
+            RETURN_IF_FAILED(inputLabelsConfig->get_RequiredInputs(&inputLabelConfig));
+
+            ABI::AdaptiveNamespace::Spacing labelSpacing;
+            RETURN_IF_FAILED(inputLabelConfig->get_Spacing(&labelSpacing));
+
+            UINT spacing{};
+            RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), labelSpacing, &spacing));
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
+
+            ComPtr<IPanel> inputPanel;
+            inputStackPanel.As(&inputPanel);
+            XamlHelpers::AppendXamlElementToPanel(separator.Get(), inputPanel.Get());
+        }
+
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
         ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;
@@ -980,9 +967,6 @@ namespace AdaptiveNamespace::XamlHelpers
         // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
         RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
-
-
-
 
         RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
         RETURN_IF_FAILED(errorMessageControl.CopyTo(validationErrorOut));

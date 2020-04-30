@@ -129,6 +129,8 @@
   <ItemGroup>
     <ClCompile Include="lib\ActionHelpers.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputLabelsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
@@ -170,6 +172,8 @@
     <ClInclude Include="lib\AdaptiveImageSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveInputElement.h" />
+    <ClInclude Include="lib\AdaptiveInputLabelConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputLabelsConfig.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
     <ClInclude Include="lib\AdaptiveMedia.h" />
     <ClInclude Include="lib\AdaptiveMediaConfig.h" />

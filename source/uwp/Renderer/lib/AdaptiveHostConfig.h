@@ -62,6 +62,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Media(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig** mediaConfig);
         IFACEMETHODIMP put_Media(_In_ ABI::AdaptiveNamespace::IAdaptiveMediaConfig* mediaConfig);
 
+        IFACEMETHODIMP get_InputLabels(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig** inputLabelsConfig);
+        IFACEMETHODIMP put_InputLabels(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig* inputLabelsConfig);
+
     private:
         Microsoft::WRL::Wrappers::HString m_fontFamily;
         boolean m_supportsInteractivity;
@@ -80,6 +83,7 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveFactSetConfig> m_factSet;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionsConfig> m_actions;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveMediaConfig> m_media;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig> m_inputLabels;
     };
 
     class AdaptiveHostConfigStaticsImpl WrlFinal
