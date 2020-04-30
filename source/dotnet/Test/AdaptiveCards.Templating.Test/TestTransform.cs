@@ -5,6 +5,7 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
+using System.Collections.Generic;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -2270,6 +2271,60 @@ namespace AdaptiveCards.Templating.Test
             memory.SetValue("$data", token);
             var (value, error) = new ValueExpression("${$data.person}").TryGetValue(memory);
             Assert.AreEqual("Andrew", JToken.Parse(value as string)[0]);
+        }
+
+        [TestMethod]
+        public void TestCustomFunction()
+        {
+            string jsonTemplate = @"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.0"",
+                ""body"": [{
+                    ""type"": ""TextBlock"",
+                    ""text"": ""${stringFormat(strings.myName, person.firstName, person.lastName)}""
+                }]
+            }";
+            string jsonData = @"{
+                ""strings"": {
+                    ""myName"": ""My name is {0} {1}""
+                },
+                ""person"": {
+                    ""firstName"": ""Andrew"",
+                    ""lastName"": ""Leader""
+                }
+            }";
+            AdaptiveCardsTemplate transformer = new AdaptiveCardsTemplate(jsonTemplate);
+            var context = new AdaptiveCardsEvaluationContext
+            {
+                Root = jsonData
+            };
+            Expression.Functions.Add("stringFormat", new ExpressionEvaluator(null, StringFormat, ReturnType.String));
+            string cardJson = transformer.Expand(context);
+            Test.TestTemplate.AssertJsonEqual(@"{
+                ""type"": ""AdaptiveCard"",
+                ""version"": ""1.0"",
+                ""body"": [{
+                    ""type"": ""TextBlock"",
+                    ""text"": ""My name is Andrew Leader""
+                }]
+            }", cardJson);
+        }
+        private static (object value, string error) StringFormat(Expression expression, IMemory state, Options options)
+        {
+            var inputs = new List<string>();
+            foreach (var child in expression.Children)
+            {
+                var input = child.ToString();
+                if (state.TryGetValue(input, out var obj))
+                {
+                    input = obj.ToString();
+                }
+                inputs.Add(input);
+            }
+            var str = inputs[0];
+            inputs.RemoveAt(0);
+            var output = string.Format(str, inputs.ToArray());
+            return (output, null);
         }
     }
 }
