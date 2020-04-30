@@ -21,19 +21,19 @@ export interface InvokeActivity {
             verb: string,
             data?: object
         },
+        trigger: ActivityInvocationTrigger,
         magicCode?: string
     },
     relatesTo?: string
 }
 
 export enum ActivityInvocationTrigger {
-    Automatic,
-    UserInteraction,
+    Automatic = "automatic",
+    Manual = "manual",
 }
 
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
-    readonly trigger: ActivityInvocationTrigger,
     attemptNumber: number
 }
 

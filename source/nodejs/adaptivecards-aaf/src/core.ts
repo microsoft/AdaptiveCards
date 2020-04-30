@@ -137,7 +137,6 @@ export class AdaptiveApplet {
     private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger): ActivityRequest | undefined {
         if (this.card) {
             let request: ActivityRequest = {
-                trigger: trigger,
                 activity: {
                     type: "invoke",
                     name: "adaptiveCard/action",
@@ -149,7 +148,8 @@ export class AdaptiveApplet {
                             id: action.id,
                             verb: action.verb,
                             data: action.data
-                        }
+                        },
+                        trigger: trigger,
                     }
                 },
                 attemptNumber: 0
@@ -240,7 +240,7 @@ export class AdaptiveApplet {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
         }
 
-        let overlay = this.createProgressOverlay(request.trigger);
+        let overlay = this.createProgressOverlay(request.activity.value.trigger);
 
         this.renderedElement.appendChild(overlay);
 
@@ -491,7 +491,7 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteAction(action, ActivityInvocationTrigger.UserInteraction);
+                        this.internalExecuteAction(action, ActivityInvocationTrigger.Manual);
                     }
 
                     this._card.render();
