@@ -3,6 +3,11 @@
 	"version": "1.2",
 	"body": [
 		{
+			"type": "TextBlock",
+			"text": "If the price in the data is higher than 500, red text will apper, otherwise green text",
+			"wrap": true
+		},
+		{
 			"type": "Container",
 			"$data": "${requests}",
 			"items": [

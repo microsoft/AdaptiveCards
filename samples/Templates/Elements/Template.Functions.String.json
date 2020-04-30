@@ -12,15 +12,16 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "Length of name ${string(length(employee.name))}"
+			"text": "Length of name: ${string(length(employee.name))}"
 		},
 		{
 			"type": "TextBlock",
-			"text": "Retrieved last name, ${substring(employee.peers[2].name, 5, 4)} using sbustring()"
+			"text": "Retrieved the last name, ${substring(employee.peers[2].name, 5, 4)} using substring() from ${employee.peers[2].name}",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Index of r in ${employee.peers[0].name}: ${indexOf(employee.peers[0].name, 'r')}"
+			"text": "Index of 'r' in '${employee.peers[0].name}': ${indexOf(employee.peers[0].name, 'r')}"
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"

@@ -3,19 +3,28 @@
 	"version": "1.2",
 	"body": [ 
 		{ 
+			"type": "TextBlock", 
+			"text": "Data context is set with employee.manager, and the usage of name in template will refer to employee.manager's name",
+			"wrap": true
+		}, 
+		{ 
 			"type": "Container",
 			"$data": "${employee.manager}",
 			"items": [ 
 				{ 
 					"type": "TextBlock", 
-					"text": "Manager: ${name}"
+					"text": "name: ${name}"
 				}, 
 				{
 					"type": "Container",
 					"items": [
 						{ 
 							"type": "TextBlock", 
-							"text": "Employee: ${$root.employee.name}"
+							"text": "Root keyword allows to access root data context "
+						},
+						{ 
+							"type": "TextBlock", 
+							"text": "name: ${$root.employee.name}"
 						}
 					]
 				}
