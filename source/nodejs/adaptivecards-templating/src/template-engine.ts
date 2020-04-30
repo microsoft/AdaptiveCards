@@ -351,7 +351,7 @@ export class Template {
                 this._context.$index = i;
 
                 if (dataContexts[i] !== undefined) {
-                    this._context.$data = dataContext[i];
+                    this._context.$data = dataContexts[i];
                 }
 
                 let dropObject = false;
