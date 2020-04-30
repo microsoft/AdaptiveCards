@@ -4,7 +4,8 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Convert ${date} to 'yyyy-MM-ddTHH:mm:ss' format"
+			"text": "Convert ${date} to 'yyyy-MM-ddTHH:mm:ss' format",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",

@@ -9,21 +9,20 @@
 				{
 					"$when":"${exists(type)}",
 					"type": "TextBlock",
-					"text": "Item Type: ${type}"
-
+					"text": "Presence of type text in the data context was checked using **exists** function that returns true if requested entry exists, and this TextBlock is shown with type: '${type}'",
+					"wrap": true
 				},
 				{
 					"$when":"${!exists(type)}",
 					"type": "TextBlock",
-					"text": "Item Type is missing",
-					"color": "attention"
-
+					"text": "If **type** text doesn't appear, this TextBlock will appear",
+					"color": "attention",
+					"wrap": true
 				},
 				{
 					"type": "TextBlock",
 					"text": "${string(price)}",
 					"color": "${if(price <= 500, 'good', 'attention')}"
-
 				}
 			]
 		}
