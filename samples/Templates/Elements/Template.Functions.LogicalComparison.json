@@ -1,0 +1,32 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "Container",
+			"$data": "${requests}",
+			"items": [
+				{
+					"$when":"${exists(type)}",
+					"type": "TextBlock",
+					"text": "Item Type: ${type}"
+
+				},
+				{
+					"$when":"${!exists(type)}",
+					"type": "TextBlock",
+					"text": "Item Type is missing",
+					"color": "attention"
+
+				},
+				{
+					"type": "TextBlock",
+					"text": "${string(price)}",
+					"color": "${if(price <= 500, 'good', 'attention')}"
+
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

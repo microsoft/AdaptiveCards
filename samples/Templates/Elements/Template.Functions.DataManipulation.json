@@ -1,0 +1,41 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "Create a json instance from commit message in the data and use it for data context",
+					"wrap":true,
+					"color": "good"
+
+				},
+				{
+					"type": "FactSet",
+					"$data": "${json(commitMessage)}",
+					"facts": [
+						{
+							"title": "type", 
+							"value": "${type}"
+						},
+						{
+							"title": "build id", 
+							"value": "${buildID}"
+						},
+						{
+							"title": "release id", 
+							"value": "${releaseID}"
+						},
+						{
+							"title": "build number", 
+							"value": "${buildNumber}"
+						}
+					]
+				}
+			]
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

@@ -1,0 +1,31 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Convert ${date} to 'yyyy-MM-ddTHH:mm:ss' format"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ss')}**"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Express in AdaptiveCards DATE Function Short"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Express in AdaptiveCards TIME Function"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**{{TIME(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')})}}**"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

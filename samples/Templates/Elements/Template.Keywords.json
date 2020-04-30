@@ -1,0 +1,25 @@
+{ 
+	"type": "AdaptiveCard", 
+	"version": "1.2",
+	"body": [ 
+		{ 
+			"type": "Container",
+			"$data": "${employee.manager}",
+			"items": [ 
+				{ 
+					"type": "TextBlock", 
+					"text": "Manager: ${name}"
+				}, 
+				{
+					"type": "Container",
+					"items": [
+						{ 
+							"type": "TextBlock", 
+							"text": "Employee: ${$root.employee.name}"
+						}
+					]
+				}
+			] 
+		}
+	]
+}
