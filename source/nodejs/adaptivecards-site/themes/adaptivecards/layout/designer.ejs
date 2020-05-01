@@ -70,15 +70,15 @@
 		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
 		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
 		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		ACDesigner.GlobalSettings.showVersionPicker = true;
 		
 		<% if (page.previewFeaturesEnabled) { %>
-			// Enable the version picker
-			ACDesigner.GlobalSettings.showVersionPicker = true;
+
         <% } %>
         
-        // Override the build flag if preview=1 is specified on the URL
+
         if (getParameterByName("preview") === "1") {
-            ACDesigner.GlobalSettings.showVersionPicker = true;            
+       
         }
 
 		let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
@@ -205,7 +205,7 @@
 						"type": "TextBlock",
 						"size": "Medium",
 						"weight": "Bolder",
-						"text": "{title}"
+						"text": "${title}"
 					},
 					{
 						"type": "ColumnSet",
@@ -216,7 +216,7 @@
 									{
 										"type": "Image",
 										"style": "Person",
-										"url": "{creator.profileImage}",
+										"url": "${creator.profileImage}",
 										"size": "Small"
 									}
 								],
@@ -228,7 +228,7 @@
 									{
 										"type": "TextBlock",
 										"weight": "Bolder",
-										"text": "{creator.name}",
+										"text": "${creator.name}",
 										"wrap": true
 									},
 									{
@@ -252,9 +252,9 @@
 						"type": "FactSet",
 						"facts": [
 							{
-								"$data": "{properties}",
-								"title": "{key}:",
-								"value": "{value}"
+								"$data": "${properties}",
+								"title": "${key}:",
+								"value": "${value}"
 							}
 						]
 					}
@@ -289,7 +289,7 @@
 					{
 						"type": "Action.OpenUrl",
 						"title": "View",
-						"url": "{viewUrl}"
+						"url": "${viewUrl}"
 					}
 				],
 				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
