@@ -10,7 +10,7 @@ import { HostConfigManager } from '../../utils/host-config';
 import { Input } from './input';
 import * as Enums from '../../utils/enums';
 
-const NUM_REGEX = /^\-?[0-9]\d*(\.\d*)?$/;
+const NUM_REGEX = /^\-?[0-9]\d*([\.\,]\d*)?$/;
 
 export class NumberInput extends React.Component {
 
