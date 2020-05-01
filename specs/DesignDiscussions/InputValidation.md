@@ -59,43 +59,41 @@ The error text and invalid indication will be rendered in the host's `attention`
 
 ![img](assets/InputValidation/InputValidationExample.png)
 
->
-> ### Host side  styling
->
-> As has been proposed, the error message is a string property which is rendered in the `attention` color, card hosts may need more control over how this messages and the visual representation of an error appear. As can be seen in the [Annex] there's a wide array on how error messages are represented in different websites. The table below details the proposed set of properties that host apps will be able to modify based on the examples located in the annex as well as if they are going to be modified through the host config or the native styling in each platform. It's important to note that some of this properties will act on the input element rather than the error message.
->
-> | Property | Default value | HostConfig | Native Styling |
-> | --- | ---- | --- | --- |
-> | `spacing` | `default` | X | |
-> | `fontType` | `default` | X | X |
-> | `size` | `default` | X | X |
-> | `weight` | `default` | X | X |
-> | `color` | `attention` | X | X |
-> | `isSubtle` | `false` | X | |
-> | `borderColor` (input) | `attention` | X | |
-> | `borderWidth` (input) | TBD | X | | 
->
-> ```json
-> {
->   "validationFormatting": {
->       "errorMessage": {
->           "spacing": "small",
->           "fontType": "monospace",
->           "size": "small",
->           "weight": "lighter",
->           "color": "attention",
->           "isSubtle": true
->       },
->       "inputBorder": {
->           "color": "attention",
->           "width": 8
->       }
->    }
-> }
-> ```
->
-> Finally, the proposed name for the native style to override for labels would be `Adaptive.ErrorMessage`.
->
+
+### Host side  styling
+
+As has been proposed, the error message is a string property which is rendered in the `attention` color by default, card hosts may need more control over how this messages and the visual representation of an error appear. As can be seen in the [Annex] there's a wide array on how error messages are represented in different websites. The table below details the proposed set of properties that host apps will be able to modify based on the examples located in the annex as well as if they are going to be modified through the host config or the native styling in each platform. It's important to note that some of this properties will act on the input element rather than the error message.
+
+| Property | Default value | Observations |
+| --- | ---- | --- | --- |
+| `borderColor` | `attention` | Acts on the input |
+| `borderWidth` | TBD | Acts on the input. Must be defined in pixels | 
+| `color` | `attention` |
+| `isSubtle` | `false` | 
+| `size` | `default` | 
+| `spacing` | `default` | 
+| `weight` | `default` | 
+
+```json
+{
+    "inputValidation": 
+    {
+        "errorMessage": 
+        {
+            "spacing": "small",
+            "fontType": "monospace",
+            "size": "small",
+            "weight": "lighter",
+            "color": "attention",
+            "isSubtle": true
+        },
+        "inputBorder": {
+            "color": "attention",
+            "width": 8
+        }
+    }
+}
+```
 
 ## Input Validation Behavior
 
@@ -218,11 +216,9 @@ Bring back non-visible card element            |  Bring back single input
 > Note on this card: This "Wizard" scenario is implemented here via toggle visibility. We should consider whether we want to support a first class wizard experience where a new element type could list a series of subcards to display in order. Whether or not we ever introduce such a concept, the point remains that toggle logic may be complex, and we shouldn't be arbitrarily toggling things visible outside the scope of what the card author has defined in their toggle buttons.
 
 #### Current Card/Container
-
 Considering the food order card above, one option in show card scenarios may be to validate the current show card, or the show card and any parent cards. This works well for the food order card, but doesn't help us with card scenarios that include toggles. It may also not be the correct behavior for a mid card action set containing a show card. While it would be nice if we could provide an algorithm that deduces which inputs should be validated, it would be tricky to create an algorithm that gracefully handles all cases. Additionally, the more complicated the algorithm, the harder it is for card authors to understand the expected behavior.
 
 #### Card Author Control
-
 As the discussion above shows, depending on the card scenario, it may be difficult for us to determine which fields the card author wants to validate. Any of the above approaches may be correct for *some* cards, but none are appropriate for all cards. In order to address this, the best approach is to allow the card author to specify which inputs are associated with a given action. We will implement this via a new `associatedInputIds` property on Action types. The inputs listed will be the ones that are validated, and also the ones that are returned on Submit.
 
 The first option available for inputs is "All." This will validate and submit all inputs on the card. This is the current behavior, and would be the default for submit actions.
@@ -283,16 +279,6 @@ Although submit actions are the most obvious case for input validation, we will 
 ##### Submit Actions
 Submit actions will default to `"associatedInputIds": "All"`. This means that all inputs on the card will be validated and sent with this submission. Card authors can adjust this default behavior by setting the `associatedInputIds` property to a different value as described above.
 
-##### Toggle and ShowCard Actions
-In many cases, it likely doesn't make sense to validate on show card or toggle actions if those actions are simply showing more details that don't need to appear on the main card. In some cases, however, either show card or toggle may be used to reveal the next step in a progression through the card experience. The wizard card above is a clear example of this. The card author may want to validate the first "page" before allowing the user to proceed to the second. Even the FoodOrder card can be viewed as an example of using show cards to progress through an interaction. If the upper portion of the card contained addition inputs, the card author may want to validate those fields before proceeding to ask additional questions about the users order. 
-
-Because by default Toggles and ShowCards don't necessarily need to validate inputs, these actions will default to `"associatedInputIds": "None"`. We will, however, support the ability to set a different value to enforce validation of some or all of the inputs before allowing the user to take one of these actions.
-
-##### OpenUrl
-Today it is unlikely that there are many scenarios to validate inputs on OpenUrl, so the default value for `associatedInputIds` will be `None`. For consistency, however, we will allow `associatedInputIds` to be set on OpenUrl actions.
-
-If we in the future allow inputs to be used to construct the Url, any explicitly referenced inputs can be added to those checked by `associatedInputIds`.
-
 #### Disabling Actions
 
 We will not disable actions that require further validation. Clicking on a action that still has unvalidated fields will show any unshown validation errors, but will not invoke the action. This ensures that all error's are shown to the user and they understand why they cannot proceed.
@@ -313,18 +299,7 @@ All new properties added for input validation will be ignored when sent to earli
  - Associated inputs will be ignored, and all Submit Actions will be treated as 
  `"associatedInputIds" : "All"`.
 
-## Future and Out of Scope Features
-
-### Success Indicators
-Some forms add an indicator to an input once a valid value has been added to give the user feedback that they've entered a valid value. For example, a password field that turns green once the password has reached sufficient complexity. This may be a useful feature for future versions, but is out of scope for v1.
-
-### Cross field validation
-There are many scenarios where validation that specifies relationships between fields could be useful. For example requiring a particular field only if another one is filled in, or requiring at least one (or exactly one) of several options is selected. More complicated scenarios, such as a choice in one input changing the available choices in another input, could also be useful.
-
-While this is an area we should investigate in the future, supporting cross field validation is out of scope for v1 of this feature.
-
 ## Feature Cost estimation
-
 This feature focuses on adding validation support and error message rendering for inputs. This feature will include the modification of the object model and rendering capabilities.
 
 For the development of this feature the following costs have been estimated for all platforms like this:
@@ -347,7 +322,6 @@ For the development of this feature the following costs have been estimated for 
 Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
 
 ## Requirements Priorities
-
 The priority of tasks have been mentioned in the open issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) which are:
 
 | Priority | Task |
@@ -357,7 +331,7 @@ The priority of tasks have been mentioned in the open issue [#3081](https://gith
 | P0 | Author can decide whether input should initially be visually indicated as required |
 | P0 | Regex validation support |
 | P0 | Hosts can define when validation is performed |
-| P1 | Hosts can define how error messages are displayed |
+| P1 | Hosts can define how error messages are displayed through host config or custom rendering |
 | P2 | Authors can decide which inputs are going to be validated by an action |
 | P2 | Hosts can perform custom rendering of error messages |
 
@@ -376,3 +350,25 @@ The following is a list of examples on how multiple websites render invalid inpu
 | Twitter | <img src="assets/InputValidation/ErrorMessageTwitter.PNG" width="450"> |
 | Survey Monkey | <img src="assets/InputValidation/ErrorMessageSurveyMonkey.PNG" width="450"> |
 | Survey Monkey | <img src="assets/InputValidation/ErrorMessageSurveyMonkey2.PNG" width="450"> |
+
+## Work for future iterations
+
+### Success Indicators
+Some forms add an indicator to an input once a valid value has been added to give the user feedback that they've entered a valid value. For example, a password field that turns green once the password has reached sufficient complexity. This may be a useful feature for future versions, but is out of scope for v1.
+
+### Cross field validation
+There are many scenarios where validation that specifies relationships between fields could be useful. For example requiring a particular field only if another one is filled in, or requiring at least one (or exactly one) of several options is selected. More complicated scenarios, such as a choice in one input changing the available choices in another input, could also be useful.
+
+While this is an area we should investigate in the future, supporting cross field validation is out of scope for v1 of this feature.
+
+### Future for validation and actions
+
+##### Toggle and ShowCard Actions
+In many cases, it likely doesn't make sense to validate on show card or toggle actions if those actions are simply showing more details that don't need to appear on the main card. In some cases, however, either show card or toggle may be used to reveal the next step in a progression through the card experience. The wizard card above is a clear example of this. The card author may want to validate the first "page" before allowing the user to proceed to the second. Even the FoodOrder card can be viewed as an example of using show cards to progress through an interaction. If the upper portion of the card contained addition inputs, the card author may want to validate those fields before proceeding to ask additional questions about the users order. 
+
+Because by default Toggles and ShowCards don't necessarily need to validate inputs, these actions will default to `"associatedInputIds": "None"`. We will, however, support the ability to set a different value to enforce validation of some or all of the inputs before allowing the user to take one of these actions.
+
+##### OpenUrl
+Today it is unlikely that there are many scenarios to validate inputs on OpenUrl, so the default value for `associatedInputIds` will be `None`. For consistency, however, we will allow `associatedInputIds` to be set on OpenUrl actions.
+
+If we in the future allow inputs to be used to construct the Url, any explicitly referenced inputs can be added to those checked by `associatedInputIds`.

@@ -166,24 +166,31 @@ Based on the results from Q9 of the survey, we will provide the option to allow 
  We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
 
  ```json
-"inputLabelFormatting": 
+"inputLabels": 
 {
+	"spacingWithLabel": "small",
 	"requiredInputs": {
-		"spacing": "small"
+		"weight": "bolder",
+		"color": "attention",
+		"size": "medium"
 	},
 	"optionalInputs": {
-		"isSubtle":true
+		"color": "good",
+		"isSubtle": true,
+		"weight": "lighter"
 	}
 }
 ```
 
 The full set of properties to be modified using full text formatting will be:
 
-| Property | Default Value |
-| --- | --- | --- | --- |
-| `spacing` (between label and input) | `default` |
-| `size` | `default` | 
-| `color` | `default` |
+| Property | Default Value | Extra observations
+| --- | --- | --- |
+| `color` | `default` | |
+| `isSubtle` | `false` | |
+| `size` | `default` | | 
+| `spacingWithLabel` | `default` | This should be the same for required and optional inputs |
+| `weight` | `default` | |
 
 Allowing the control of this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc) may also be required but will be set out of scope for v1 of this feature. This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
 
@@ -196,10 +203,10 @@ As has been mentioned in the Input.Validation spec, all input elements will supp
 By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the word "required". Consider a host config similar to the below:
 
   ```json
-"inputLabelFormatting": 
+"inputLabels": 
 {
+	"requiredSuffix": "*",
 	"requiredInputs": {
-		"suffix":"*",
 		"weight": "Bolder",
 	}
 }
@@ -513,6 +520,8 @@ As mentioned before, this feature tackles a big issue Adaptive Cards has with ac
 Given that, we should consider options for card author label formatting. Consider the two following options.
 
 ### Card Author Formatting Options
+
+As has been previously mentioned, the option for authors to format their cards will be retaken in the next version of this feature. This work will have to include the option of specifying markdown in your string labels as well as using other Adaptive Cards elements as a label which in turn will provide card authors richer experiences for rendering forms, while at the same time we will have to balance the freedom of card author formatting with the constraints of host formatting to provide a consistent experience within cards.
 
 #### Option 1 – Allow TextBlocks and RichTextBlocks as Labels
 
