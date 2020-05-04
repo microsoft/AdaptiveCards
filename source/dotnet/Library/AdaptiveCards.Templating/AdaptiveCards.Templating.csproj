@@ -2,7 +2,8 @@
   <PropertyGroup>
 
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0-alpha1</Version>
+    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Authors>Microsoft</Authors>
     <Product>Adaptive Cards</Product>
     <Summary>JSON templating library</Summary>
@@ -13,7 +14,6 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DocumentationFile>$(MSBuildProjectDirectory)\docs\AdaptiveCardsTemplate.xml</DocumentationFile>
