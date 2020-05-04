@@ -210,7 +210,7 @@ export class Template {
      * @returns An Expression object if the provided interpolated string contained at least one expression (e.g. "${expression}"); the original string otherwise.
      */
     public static parseInterpolatedString(interpolatedString: string): AEL.Expression | string {
-        let regExp = /\${([^}]*)}/g;
+        let regExp = /\${([^{}}]+)}/g;
         let matches: RegExpExecArray = null;
         let lastMatch: RegExpExecArray;
         let matchCount = 0;
@@ -351,7 +351,7 @@ export class Template {
                 this._context.$index = i;
 
                 if (dataContexts[i] !== undefined) {
-                    this._context.$data = dataContext[i];
+                    this._context.$data = dataContexts[i];
                 }
 
                 let dropObject = false;

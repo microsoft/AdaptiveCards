@@ -10,7 +10,7 @@ import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
 
-export const enum BindingPreviewMode {
+export enum BindingPreviewMode {
     NoPreview,
     GeneratedData,
     SampleData

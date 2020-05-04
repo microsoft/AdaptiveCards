@@ -147,13 +147,13 @@ export class ContainerStyle {
     static readonly Warning: "warning" = "warning";
 }
 
-export const enum ValidationPhase {
+export enum ValidationPhase {
     Parse,
     ToJSON,
     Validation
 }
 
-export const enum ValidationEvent {
+export enum ValidationEvent {
     Hint,
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
@@ -172,7 +172,7 @@ export const enum ValidationEvent {
     Other
 }
 
-export const enum ContainerFitStatus {
+export enum ContainerFitStatus {
     FullyInContainer,
     Overflowing,
     FullyOutOfContainer
