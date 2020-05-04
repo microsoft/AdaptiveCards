@@ -2,7 +2,7 @@
   <PropertyGroup>
 
     <TargetFramework>netstandard2.0</TargetFramework>
-    <VersionPrefix>0.1.0</VersionPrefix>
+    <VersionPrefix>0.1.0-alpha1</VersionPrefix>
     <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Authors>Microsoft</Authors>
     <Product>Adaptive Cards</Product>
