@@ -26,16 +26,14 @@ window.onload = function() {
 
     // applet.channelAdapter = new LocalChannelAdapter();
 
-    applet.channelAdapter = new TestHttpChannelAdapter("https://aaftestbot2.azurewebsites.net/aaftestbot/invoke");
+    applet.channelAdapter = new TestHttpChannelAdapter("https://acv2testbot.azurewebsites.net/aaftestbot/invoke");
 
     applet.setCard(sampleCardAndData);
-    /*
-    applet.onActivityRequestCompleted = (sender, response) => {
-        if (response.status === AAF.ActivityStatus.Failure) {
-            return 2000;
+    // applet.onActivityRequestFailed = (sender, response) => { return 2000; }
+    applet.onActivityRequestSucceeded = (sender, response) => {
+        if (typeof response.content === "string") {
+            alert(response.content);
         }
     }
-    */
-
     document.getElementById("appHost").appendChild(applet.renderedElement);
 }

@@ -29,7 +29,6 @@ export const sampleData = {
 
 export const sampleCard = {
     type: "AdaptiveCard",
-    appId: "abcd",
     body: [
         {
             type: "TextBlock",

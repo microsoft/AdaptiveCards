@@ -9,6 +9,12 @@ export enum RefreshMode {
     Automatic
 }
 
+export enum LogLevel {
+    Info,
+    Warning,
+    Error
+}
+
 export type Refresh = {
     mode: RefreshMode;
     timeBetweenAutomaticRefreshes: number;
@@ -16,6 +22,8 @@ export type Refresh = {
 }
 
 export class GlobalSettings {
+    static logEnabled: boolean = true;
+    static logLevel: LogLevel = LogLevel.Error;
     static maximumRetryAttempts: number = 3;
     static defaultTimeBetweenRetryAttempts: number = 3000; // 3 seconds
     static authPromptWidth: number = 400;
@@ -24,8 +32,31 @@ export class GlobalSettings {
     static readonly refresh: Refresh = {
         mode: RefreshMode.Manual,
         timeBetweenAutomaticRefreshes: 3000, // 3 seconds
-        maximumConsecutiveRefreshes: 1
+        maximumConsecutiveRefreshes: 3
     };
+
+    static onLogEvent?: (level: LogLevel, message?: any, ...optionalParams: any[]) => void;
+}
+
+function logEvent(level: LogLevel, message?: any, ...optionalParams: any[]) {
+    if (GlobalSettings.logEnabled) {
+        if (GlobalSettings.onLogEvent) {
+            GlobalSettings.onLogEvent(level, message, optionalParams);
+        }
+        else {
+            switch (level) {
+                case LogLevel.Warning:
+                    console.warn(message, optionalParams);
+                    break;
+                case LogLevel.Error:
+                    console.error(message, optionalParams);
+                    break;
+                default:
+                    console.log(message, optionalParams);
+                    break;
+            }
+        }
+    }
 }
 
 export class ExecuteAction extends Adaptive.SubmitAction {
@@ -103,7 +134,7 @@ export class RefreshDefinition extends Adaptive.SerializableObject {
 export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
     //#region Schema
 
-    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition);
+    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition, true);
 
     @Adaptive.property(AdaptiveAppletCard.refreshProperty)
     get refresh(): RefreshDefinition | undefined {
@@ -140,6 +171,7 @@ export class AdaptiveApplet {
     private _card?: AdaptiveAppletCard;
     private _cardPayload: any;
     private _cardData: any;
+    private _allowAutomaticCardUpdate: boolean = false;
 
     private displayCard(card: Adaptive.AdaptiveCard) {
         if (card.renderedElement) {
@@ -154,7 +186,7 @@ export class AdaptiveApplet {
         }
     }
 
-    private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger): ActivityRequest | undefined {
+    private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number): ActivityRequest | undefined {
         if (this.card) {
             let request: ActivityRequest = {
                 activity: {
@@ -172,7 +204,8 @@ export class AdaptiveApplet {
                         trigger: trigger,
                     }
                 },
-                attemptNumber: 0
+                attemptNumber: 0,
+                consecutiveRefreshes: consecutiveRefreshes
             };
 
             let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
@@ -237,240 +270,15 @@ export class AdaptiveApplet {
         return card;
     }
 
-    private internalExecuteAction(action: Adaptive.Action, trigger: ActivityInvocationTrigger) {
-        if (this.channelAdapter) {
-            if (action instanceof ExecuteAction) {
-                let request = this.createActivityRequest(action, trigger);
+    private cancelAutomaticRefresh() {
+        if (this._allowAutomaticCardUpdate) {
+            logEvent(LogLevel.Warning, "Automatic card refresh has been cancelled as a result of the user interacting with the card.");
+        }
 
-                if (request) {
-                    this.internalSendActivityRequestAsync(request);
-                }
-            }
-            else {
-                throw new Error("internalExecuteAction: Unsupported action type.");
-            }
-        }
-        else {
-            throw new Error("internalExecuteAction: No channel adapter set.");
-        }
+        this._allowAutomaticCardUpdate = false;
     }
 
-    private async internalSendActivityRequestAsync(request: ActivityRequest) {
-        if (!this.channelAdapter) {
-            throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
-        }
-
-        let overlay = this.createProgressOverlay(request.activity.value.trigger);
-
-        this.renderedElement.appendChild(overlay);
-
-        let done = false;
-
-        while (!done) {
-            let response: ActivityResponse | undefined = undefined;
-
-            if (request.attemptNumber === 0) {
-                console.log("Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
-            }
-            else {
-                console.log("Re-sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
-            }
-
-            try {
-                response = await this.channelAdapter.sendRequestAsync(request);
-            }
-            catch (error) {
-                console.error("Activity request failed: " + error);
-
-                this.renderedElement.removeChild(overlay);
-
-                done = true;
-
-                alert("Something went wrong: " + error);
-            }
-
-            if (response) {
-                switch (response.status) {
-                    case ActivityStatus.Success:
-                        this.renderedElement.removeChild(overlay);
-
-                        let parsedResult: any = undefined;
-
-                        try {
-                            parsedResult = JSON.parse(response.content);
-                        }
-                        catch {
-                            parsedResult = response.content;
-                        }
-
-                        if (typeof parsedResult === "string") {
-                            console.log("The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
-
-                            alert(parsedResult);
-                        }
-                        else if (typeof parsedResult === "object") {
-                            switch (parsedResult["type"]) {
-                                case "AdaptiveCard":
-                                    console.log("The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
-
-                                    this.setCard(parsedResult);
-
-                                    break;
-                                case "Activity.InvocationError.Unauthorized":
-                                    console.log("The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
-
-                                    if ((request.attemptNumber + 1) <= GlobalSettings.maximumRetryAttempts) {
-                                        let loginUrl: URL;
-
-                                        try {
-                                            loginUrl = new URL(parsedResult["loginUrl"]);
-                                        }
-                                        catch (e) {
-                                            console.error("Invalid loginUrl: " + parsedResult["loginUrl"]);
-
-                                            throw e;
-                                        }
-
-                                        console.log("Login required at " + loginUrl.toString());
-
-                                        let magicCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
-                                        magicCodeInputCard.render();
-                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Adaptive.Action) => {
-                                            if (this.card && submitMagicCodeAction instanceof Adaptive.SubmitAction) {
-                                                switch (submitMagicCodeAction.id) {
-                                                    case "submitMagicCode":
-                                                        let magicCode: string | undefined = undefined;
-
-                                                        if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
-                                                            magicCode = (<any>submitMagicCodeAction.data)["magicCode"];
-                                                        }
-
-                                                        if (magicCode) {
-                                                            this.displayCard(this.card);
-
-                                                            request.activity.value.magicCode = magicCode;
-                                                            request.attemptNumber++;
-
-                                                            this.internalSendActivityRequestAsync(request);
-                                                        }
-                                                        else {
-                                                            alert("Please enter the magic code you received.");
-                                                        }
-
-                                                        break;
-                                                    case "cancel":
-                                                        console.warn("Authentication cancelled by user.");
-
-                                                        this.displayCard(this.card);
-
-                                                        break;
-                                                    default:
-                                                        console.error("Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
-
-                                                        alert("Something went wrong. This action can't be handled.");
-
-                                                        break;
-                                                }
-                                            }
-                                        }
-
-                                        this.displayCard(magicCodeInputCard);
-
-                                        let left = window.screenX + (window.outerWidth - GlobalSettings.authPromptWidth) / 2;
-                                        let top = window.screenY + (window.outerHeight - GlobalSettings.authPromptHeight) / 2;
-
-                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.authPromptWidth},height=${GlobalSettings.authPromptHeight},left=${left},top=${top}`);
-                                    }
-                                    else {
-                                        console.error("Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
-
-                                        alert("Authentication failed.");
-                                    }
-
-                                    break;
-                                default:
-                                    throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
-                            }
-                        }
-                        else {
-                            throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
-                        }
-
-                        done = true;
-
-                        break;
-                    case ActivityStatus.Failure:
-                    default:
-                        let retryIn: number = this.onActivityRequestCompleted ? this.onActivityRequestCompleted(this, response) : GlobalSettings.defaultTimeBetweenRetryAttempts;
-
-                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.maximumRetryAttempts) {
-                            console.warn("Activity request failed. Retrying in " + retryIn + "ms");
-
-                            request.attemptNumber++;
-
-                            await new Promise(
-                                (resolve, reject) => {
-                                    window.setTimeout(
-                                        () => { resolve(); },
-                                        retryIn
-                                    )
-                                });
-                        }
-                        else {
-                            console.error("Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
-
-                            this.renderedElement.removeChild(overlay);
-
-                            done = true;
-
-                            alert(response.content);
-                        }
-
-                        break;
-                }
-            }
-        }
-    }
-
-    private createProgressOverlay(trigger: ActivityInvocationTrigger): HTMLElement {
-        let overlay: HTMLElement | undefined = undefined;
-
-        if (this.onCreateProgressOverlay) {
-            overlay = this.onCreateProgressOverlay(this, trigger);
-        }
-
-        if (!overlay) {
-            overlay = document.createElement("div");
-            overlay.className = "aaf-progress-overlay";
-
-            let spinner = document.createElement("div");
-            spinner.className = "aaf-spinner";
-            spinner.style.width = "28px";
-            spinner.style.height = "28px";
-
-            overlay.appendChild(spinner);
-        }
-
-        return overlay;
-    }
-
-    readonly renderedElement: HTMLElement;
-
-    userId?: string;
-    channelAdapter: ChannelAdapter | undefined = undefined;
-
-    onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
-    onCardChanged?: (sender: AdaptiveApplet) => void;
-    onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
-    onActivityRequestCompleted?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
-    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
-
-    constructor() {
-        this.renderedElement = document.createElement("div");
-        this.renderedElement.style.position = "relative";
-    }
-
-    setCard(payload: any) {
+    private internalSetCard(payload: any, consecutiveRefreshes: number) {
         if (typeof payload === "object") {
             if (payload["type"] === "AdaptiveCard") {
                 if (payload["$data"] !== undefined) {
@@ -512,7 +320,14 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteAction(action, ActivityInvocationTrigger.Manual);
+                        // If the user takes an action, cancel any pending automatic refresh
+                        this.cancelAutomaticRefresh();
+
+                        this.internalExecuteAction(action, ActivityInvocationTrigger.Manual, 0);
+                    }
+                    this._card.onInputValueChanged = (input: Adaptive.Input) => {
+                        // If the user modifies an input, cancel any pending automatic refresh
+                        this.cancelAutomaticRefresh();
                     }
 
                     this._card.render();
@@ -524,17 +339,291 @@ export class AdaptiveApplet {
                             this.onCardChanged(this);
                         }
 
-                        if (this._card.refresh && GlobalSettings.refresh.mode === RefreshMode.Automatic) {
-                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic);
+                        if (this._card.refresh) {
+                            if (GlobalSettings.refresh.mode === RefreshMode.Automatic && consecutiveRefreshes < GlobalSettings.refresh.maximumConsecutiveRefreshes) {
+                                if (GlobalSettings.refresh.timeBetweenAutomaticRefreshes <= 0) {
+                                    logEvent(LogLevel.Info, "Triggering automatic card refresh number " + (consecutiveRefreshes + 1));
+
+                                    this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
+                                }
+                                else {
+                                    logEvent(LogLevel.Info, "Scheduling automatic card refresh number " + (consecutiveRefreshes + 1) + " in " + GlobalSettings.refresh.timeBetweenAutomaticRefreshes + "ms");
+
+                                    let action = this._card.refresh.action;
+
+                                    this._allowAutomaticCardUpdate = true;
+
+                                    window.setTimeout(
+                                        () => {
+                                            if (this._allowAutomaticCardUpdate) {
+                                                this.internalExecuteAction(action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
+                                            }
+                                        },
+                                        GlobalSettings.refresh.timeBetweenAutomaticRefreshes
+                                    )
+                                }
+                            }
+                            else if (GlobalSettings.refresh.mode !== RefreshMode.Disabled) {
+                                if (consecutiveRefreshes > 0) {
+                                    logEvent(LogLevel.Warning, "Stopping automatic refreshes after " + consecutiveRefreshes + " consecutive refreshes. Showing a manual refresh button instead.");
+                                }
+                                else {
+                                    logEvent(LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled. Showing manual refresh button instead.");
+                                }
+
+                                alert("Manual refresh from now on")
+                            }
                         }
                     }
                 }
             }
             catch (error) {
                 // Ignore all errors
-                console.error("setCard: " + error);
+                logEvent(LogLevel.Error, "setCard: " + error);
             }
         }
+    }
+
+    private internalExecuteAction(action: Adaptive.Action, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number) {
+        if (this.channelAdapter) {
+            if (action instanceof ExecuteAction) {
+                let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
+
+                if (request) {
+                    this.internalSendActivityRequestAsync(request);
+                }
+            }
+            else {
+                throw new Error("internalExecuteAction: Unsupported action type.");
+            }
+        }
+        else {
+            throw new Error("internalExecuteAction: No channel adapter set.");
+        }
+    }
+
+    private activityRequestSucceeded(response: ActivityResponse) {
+        if (this.onActivityRequestSucceeded) {
+            this.onActivityRequestSucceeded(this, response);
+        }
+    }
+
+    private activityRequestFailed(response: ActivityResponse): number {
+        return this.onActivityRequestFailed ? this.onActivityRequestFailed(this, response) : GlobalSettings.defaultTimeBetweenRetryAttempts;
+    }
+
+    private async internalSendActivityRequestAsync(request: ActivityRequest) {
+        if (!this.channelAdapter) {
+            throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
+        }
+
+        let overlay = this.createProgressOverlay(request.activity.value.trigger);
+
+        this.renderedElement.appendChild(overlay);
+
+        let done = false;
+
+        while (!done) {
+            let response: ActivityResponse | undefined = undefined;
+
+            if (request.attemptNumber === 0) {
+                logEvent(LogLevel.Info, "Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+            }
+            else {
+                logEvent(LogLevel.Info, "Re-sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+            }
+
+            try {
+                response = await this.channelAdapter.sendRequestAsync(request);
+            }
+            catch (error) {
+                logEvent(LogLevel.Error, "Activity request failed: " + error);
+
+                this.renderedElement.removeChild(overlay);
+
+                done = true;
+            }
+
+            if (response) {
+                switch (response.status) {
+                    case ActivityStatus.Success:
+                        this.renderedElement.removeChild(overlay);
+
+                        try {
+                            response.content = JSON.parse(response.content);
+                        }
+                        catch {
+                            // Leave the content as is
+                        }
+
+                        if (typeof response.content === "string") {
+                            logEvent(LogLevel.Info, "The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
+                        }
+                        else if (typeof response.content === "object") {
+                            switch (response.content["type"]) {
+                                case "AdaptiveCard":
+                                    logEvent(LogLevel.Info, "The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                                    this.internalSetCard(response.content, request.consecutiveRefreshes);
+
+                                    break;
+                                case "Activity.InvocationError.Unauthorized":
+                                    logEvent(LogLevel.Info, "The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                                    if ((request.attemptNumber + 1) <= GlobalSettings.maximumRetryAttempts) {
+                                        let loginUrl: URL;
+
+                                        try {
+                                            loginUrl = new URL(response.content["loginUrl"]);
+                                        }
+                                        catch (e) {
+                                            logEvent(LogLevel.Error, "Invalid loginUrl: " + response.content["loginUrl"]);
+
+                                            throw e;
+                                        }
+
+                                        logEvent(LogLevel.Info, "Login required at " + loginUrl.toString());
+
+                                        let magicCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
+                                        magicCodeInputCard.render();
+                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Adaptive.Action) => {
+                                            if (this.card && submitMagicCodeAction instanceof Adaptive.SubmitAction) {
+                                                switch (submitMagicCodeAction.id) {
+                                                    case "submitMagicCode":
+                                                        let magicCode: string | undefined = undefined;
+
+                                                        if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
+                                                            magicCode = (<any>submitMagicCodeAction.data)["magicCode"];
+                                                        }
+
+                                                        if (magicCode) {
+                                                            this.displayCard(this.card);
+
+                                                            request.activity.value.magicCode = magicCode;
+                                                            request.attemptNumber++;
+
+                                                            this.internalSendActivityRequestAsync(request);
+                                                        }
+                                                        else {
+                                                            alert("Please enter the magic code you received.");
+                                                        }
+
+                                                        break;
+                                                    case "cancel":
+                                                        logEvent(LogLevel.Warning, "Authentication cancelled by user.");
+
+                                                        this.displayCard(this.card);
+
+                                                        break;
+                                                    default:
+                                                        logEvent(LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
+
+                                                        alert("Something went wrong. This action can't be handled.");
+
+                                                        break;
+                                                }
+                                            }
+                                        }
+
+                                        this.displayCard(magicCodeInputCard);
+
+                                        let left = window.screenX + (window.outerWidth - GlobalSettings.authPromptWidth) / 2;
+                                        let top = window.screenY + (window.outerHeight - GlobalSettings.authPromptHeight) / 2;
+
+                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.authPromptWidth},height=${GlobalSettings.authPromptHeight},left=${left},top=${top}`);
+                                    }
+                                    else {
+                                        logEvent(LogLevel.Error, "Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+
+                                        alert("Authentication failed.");
+                                    }
+
+                                    break;
+                                default:
+                                    throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof response.content + ")");
+                            }
+                        }
+                        else {
+                            throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof response.content + ")");
+                        }
+
+                        this.activityRequestSucceeded(response);
+
+                        done = true;
+
+                        break;
+                    case ActivityStatus.Failure:
+                    default:
+                        let retryIn: number = this.activityRequestFailed(response);
+
+                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.maximumRetryAttempts) {
+                            logEvent(LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
+
+                            request.attemptNumber++;
+
+                            await new Promise(
+                                (resolve, reject) => {
+                                    window.setTimeout(
+                                        () => { resolve(); },
+                                        retryIn
+                                    )
+                                });
+                        }
+                        else {
+                            logEvent(LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+
+                            this.renderedElement.removeChild(overlay);
+
+                            done = true;
+                        }
+
+                        break;
+                }
+            }
+        }
+    }
+
+    private createProgressOverlay(trigger: ActivityInvocationTrigger): HTMLElement {
+        let overlay: HTMLElement | undefined = undefined;
+
+        if (this.onCreateProgressOverlay) {
+            overlay = this.onCreateProgressOverlay(this, trigger);
+        }
+
+        if (!overlay) {
+            overlay = document.createElement("div");
+            overlay.className = "aaf-progress-overlay";
+
+            let spinner = document.createElement("div");
+            spinner.className = "aaf-spinner";
+            spinner.style.width = "28px";
+            spinner.style.height = "28px";
+
+            overlay.appendChild(spinner);
+        }
+
+        return overlay;
+    }
+
+    readonly renderedElement: HTMLElement;
+
+    userId?: string;
+    channelAdapter: ChannelAdapter | undefined = undefined;
+
+    onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
+    onCardChanged?: (sender: AdaptiveApplet) => void;
+    onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
+    onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: ActivityResponse) => void;
+    onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
+    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
+
+    constructor() {
+        this.renderedElement = document.createElement("div");
+        this.renderedElement.style.position = "relative";
+    }
+
+    setCard(payload: any) {
+        this.internalSetCard(payload, 0);
     }
 
     get card(): AdaptiveAppletCard | undefined {

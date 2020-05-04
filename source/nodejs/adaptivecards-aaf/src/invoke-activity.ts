@@ -34,7 +34,8 @@ export enum ActivityInvocationTrigger {
 
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
-    attemptNumber: number
+    attemptNumber: number,
+    consecutiveRefreshes: number
 }
 
 export enum ActivityStatus {
@@ -45,5 +46,5 @@ export enum ActivityStatus {
 export interface ActivityResponse {
     readonly request: ActivityRequest,
     readonly status: ActivityStatus,
-    readonly content: string
+    content: any
 }
