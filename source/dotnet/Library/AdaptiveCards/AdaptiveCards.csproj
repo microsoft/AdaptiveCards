@@ -59,4 +59,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <!-- workaround for multiple TargetFramework regression -->
+  <Target Name="_CheckForGenerateAppxPackageOnBuild" />
 </Project>
