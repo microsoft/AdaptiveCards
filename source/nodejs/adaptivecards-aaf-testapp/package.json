@@ -19,9 +19,8 @@
 		"webpack-cli": "^3.1.2",
 		"webpack-dev-server": "^3.1.14",
 		"adaptivecards": "^2.0.0-alpha.1",
-		"adaptivecards-templating": "^0.1.2-alpha.0"
-	},
-	"dependencies": {
+		"adaptivecards-templating": "^0.1.2-alpha.0",
+		"adaptive-expressions": "^4.9.0-preview-117200",
 		"adaptivecards-aaf": "^0.1.0-alpha.1"
 	}
 }

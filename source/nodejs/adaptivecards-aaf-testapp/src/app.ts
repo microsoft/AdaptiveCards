@@ -7,6 +7,9 @@ import "adaptivecards-aaf/dist/adaptivecards.css";
 import { TestHttpChannelAdapter } from "./test-http-channel-adapter";
 
 window.onload = function() {
+    AAF.GlobalSettings.allowTemplates = true;
+    AAF.GlobalSettings.refresh.mode = AAF.RefreshMode.Automatic;
+
     let sampleCardAndData = Shared.sampleCard;
     sampleCardAndData["$data"] = Shared.sampleData;
 

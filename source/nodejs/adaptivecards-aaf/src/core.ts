@@ -3,6 +3,31 @@ import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 
+export enum RefreshMode {
+    Disabled,
+    Manual,
+    Automatic
+}
+
+export type Refresh = {
+    mode: RefreshMode;
+    timeBetweenAutomaticRefreshes: number;
+    maximumConsecutiveRefreshes: number;
+}
+
+export class GlobalSettings {
+    static maximumRetryAttempts: number = 3;
+    static defaultTimeBetweenRetryAttempts: number = 3000; // 3 seconds
+    static authPromptWidth: number = 400;
+    static authPromptHeight: number = 600;
+    static allowTemplates: boolean = false;
+    static readonly refresh: Refresh = {
+        mode: RefreshMode.Manual,
+        timeBetweenAutomaticRefreshes: 3000, // 3 seconds
+        maximumConsecutiveRefreshes: 1
+    };
+}
+
 export class ExecuteAction extends Adaptive.SubmitAction {
     //#region Schema
 
@@ -32,7 +57,7 @@ export class RefreshActionProperty extends Adaptive.PropertyDefinition {
         else {
             context.logParseEvent(
                 Adaptive.ValidationEvent.ActionTypeNotAllowed,
-                "\"refresh\" must have its \"action\" property defined as an Action.Execute object",
+                "The \"refresh\" property must have its \"action\" field defined set to an Action.Execute object",
                 sender);
 
             return undefined;
@@ -78,7 +103,7 @@ export class RefreshDefinition extends Adaptive.SerializableObject {
 export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
     //#region Schema
 
-    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition, true);
+    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition);
 
     @Adaptive.property(AdaptiveAppletCard.refreshProperty)
     get refresh(): RefreshDefinition | undefined {
@@ -103,11 +128,6 @@ export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
 export class AdaptiveApplet {
     private static _elementsRegistry = new Adaptive.CardObjectRegistry<Adaptive.CardElement>();
     private static _actionsRegistry = new Adaptive.CardObjectRegistry<Adaptive.Action>();
-
-    static maximumRequestAttempts: number = 3;
-    static defaultTimeBetweenAttempts: number = 3000; // 3 seconds
-    static authPromptWidth: number = 400;
-    static authPromptHeight: number = 600;
 
     static initialize() {
         Adaptive.GlobalRegistry.populateWithDefaultElements(AdaptiveApplet._elementsRegistry);
@@ -299,7 +319,7 @@ export class AdaptiveApplet {
                                 case "Activity.InvocationError.Unauthorized":
                                     console.log("The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
 
-                                    if ((request.attemptNumber + 1) <= AdaptiveApplet.maximumRequestAttempts) {
+                                    if ((request.attemptNumber + 1) <= GlobalSettings.maximumRetryAttempts) {
                                         let loginUrl: URL;
 
                                         try {
@@ -356,10 +376,10 @@ export class AdaptiveApplet {
 
                                         this.displayCard(magicCodeInputCard);
 
-                                        let left = window.screenX + (window.outerWidth - AdaptiveApplet.authPromptWidth) / 2;
-                                        let top = window.screenY + (window.outerHeight - AdaptiveApplet.authPromptHeight) / 2;
+                                        let left = window.screenX + (window.outerWidth - GlobalSettings.authPromptWidth) / 2;
+                                        let top = window.screenY + (window.outerHeight - GlobalSettings.authPromptHeight) / 2;
 
-                                        window.open(loginUrl.toString(), "Login", `width=${AdaptiveApplet.authPromptWidth},height=${AdaptiveApplet.authPromptHeight},left=${left},top=${top}`);
+                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.authPromptWidth},height=${GlobalSettings.authPromptHeight},left=${left},top=${top}`);
                                     }
                                     else {
                                         console.error("Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
@@ -381,9 +401,9 @@ export class AdaptiveApplet {
                         break;
                     case ActivityStatus.Failure:
                     default:
-                        let retryIn: number = this.onActivityRequestCompleted ? this.onActivityRequestCompleted(this, response) : AdaptiveApplet.defaultTimeBetweenAttempts;
+                        let retryIn: number = this.onActivityRequestCompleted ? this.onActivityRequestCompleted(this, response) : GlobalSettings.defaultTimeBetweenRetryAttempts;
 
-                        if (retryIn >= 0 && (request.attemptNumber + 1) < AdaptiveApplet.maximumRequestAttempts) {
+                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.maximumRetryAttempts) {
                             console.warn("Activity request failed. Retrying in " + retryIn + "ms");
 
                             request.attemptNumber++;
@@ -473,12 +493,13 @@ export class AdaptiveApplet {
                 serializationContext.setElementRegistry(AdaptiveApplet._elementsRegistry);
                 serializationContext.setActionRegistry(AdaptiveApplet._actionsRegistry);
 
-                if (this._cardData) {
-                    let evaluationContext = new Templating.EvaluationContext();
-                    evaluationContext.$root = this._cardData;
-
-                    let template = new Templating.Template(this._cardPayload)
-                    let expandedCardPayload = template.expand(evaluationContext);
+                if (this._cardData && GlobalSettings.allowTemplates) {
+                    let template = new Templating.Template(this._cardPayload);
+                    let expandedCardPayload = template.expand(
+                        {
+                            $root: this._cardData
+                        }
+                    );
 
                     card.parse(expandedCardPayload, serializationContext);
                 }
@@ -503,7 +524,7 @@ export class AdaptiveApplet {
                             this.onCardChanged(this);
                         }
 
-                        if (this._card.refresh) {
+                        if (this._card.refresh && GlobalSettings.refresh.mode === RefreshMode.Automatic) {
                             this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic);
                         }
                     }

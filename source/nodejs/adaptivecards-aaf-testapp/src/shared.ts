@@ -35,7 +35,7 @@ export const sampleCard = {
             type: "TextBlock",
             size: "Medium",
             weight: "Bolder",
-            text: "{title}"
+            text: "${title}"
         },
         {
             type: "ColumnSet",
@@ -46,7 +46,7 @@ export const sampleCard = {
                         {
                             type: "Image",
                             style: "Person",
-                            url: "{creator.profileImage}",
+                            url: "${creator.profileImage}",
                             size: "Small"
                         }
                     ],
@@ -58,13 +58,13 @@ export const sampleCard = {
                         {
                             type: "TextBlock",
                             weight: "Bolder",
-                            text: "{creator.name}",
+                            text: "${creator.name}",
                             wrap: true
                         },
                         {
                             type: "TextBlock",
                             spacing: "None",
-                            text: "Created {{DATE({createdUtc},SHORT)}}",
+                            text: "Created {{DATE(${createdUtc},SHORT)}}",
                             isSubtle: true,
                             wrap: true
                         }
@@ -75,16 +75,16 @@ export const sampleCard = {
         },
         {
             type: "TextBlock",
-            text: "{description}",
+            text: "${description}",
             wrap: true
         },
         {
             type: "FactSet",
             facts: [
                 {
-                    $data: "{properties}",
-                    title: "{key}:",
-                    value: "{value}"
+                    $data: "${properties}",
+                    title: "${key}:",
+                    value: "${value}"
                 }
             ]
         }
