@@ -1,7 +1,7 @@
 import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
-import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationContext } from "./invoke-activity";
+import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 
 export class ExecuteAction extends Adaptive.SubmitAction {
     //#region Schema
@@ -18,8 +18,8 @@ export class ExecuteAction extends Adaptive.SubmitAction {
     }
 }
 
-export class AutoRefreshActionProperty extends Adaptive.PropertyDefinition {
-    parse(sender: AutoRefreshDefinition, source: Adaptive.PropertyBag, context: Adaptive.SerializationContext): ExecuteAction | undefined {
+export class RefreshActionProperty extends Adaptive.PropertyDefinition {
+    parse(sender: RefreshDefinition, source: Adaptive.PropertyBag, context: Adaptive.SerializationContext): ExecuteAction | undefined {
         let action = context.parseAction(
             sender.parent,
             source[this.name],
@@ -32,7 +32,7 @@ export class AutoRefreshActionProperty extends Adaptive.PropertyDefinition {
         else {
             context.logParseEvent(
                 Adaptive.ValidationEvent.ActionTypeNotAllowed,
-                "\"autoRefresh\" must have its \"action\" property defined as an Action.Execute object",
+                "\"refresh\" must have its \"action\" property defined as an Action.Execute object",
                 sender);
 
             return undefined;
@@ -48,26 +48,18 @@ export class AutoRefreshActionProperty extends Adaptive.PropertyDefinition {
     }
 }
 
-export class AutoRefreshDefinition extends Adaptive.SerializableObject {
+export class RefreshDefinition extends Adaptive.SerializableObject {
     //#region Schema
 
-    static readonly userIdsProperty = new Adaptive.StringArrayProperty(Adaptive.Versions.v1_0, "userIds");
-    static readonly displayCurrentCardWhileRefreshingProperty = new Adaptive.BoolProperty(Adaptive.Versions.v1_0, "displayCurrentCardWhileRefreshing", true);
-    static readonly actionProperty = new AutoRefreshActionProperty(Adaptive.Versions.v1_0, "action");
+    static readonly actionProperty = new RefreshActionProperty(Adaptive.Versions.v1_0, "action");
 
-    @Adaptive.property(AutoRefreshDefinition.userIdsProperty)
-    userIds: string[];
-
-    @Adaptive.property(AutoRefreshDefinition.displayCurrentCardWhileRefreshingProperty)
-    displayCurrentCardWhileRefreshing: boolean;
-
-    @Adaptive.property(AutoRefreshDefinition.actionProperty)
+    @Adaptive.property(RefreshDefinition.actionProperty)
     get action(): ExecuteAction {
-        return this.getValue(AutoRefreshDefinition.actionProperty);
+        return this.getValue(RefreshDefinition.actionProperty);
     }
 
     set action(value: ExecuteAction) {
-        this.setValue(AutoRefreshDefinition.actionProperty, value);
+        this.setValue(RefreshDefinition.actionProperty, value);
 
         if (value) {
             value.setParent(this.parent);
@@ -75,7 +67,7 @@ export class AutoRefreshDefinition extends Adaptive.SerializableObject {
     }
 
     protected getSchemaKey(): string {
-        return "AutoRefreshDefinition";
+        return "RefreshDefinition";
     }
 
     //#endregion
@@ -86,19 +78,15 @@ export class AutoRefreshDefinition extends Adaptive.SerializableObject {
 export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
     //#region Schema
 
-    static readonly appIdProperty = new Adaptive.StringProperty(Adaptive.Versions.v1_0, "appId", true);
-    static readonly autoRefreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "autoRefresh", AutoRefreshDefinition, true);
+    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition, true);
 
-    @Adaptive.property(AdaptiveAppletCard.appIdProperty)
-    appId: string;
-
-    @Adaptive.property(AdaptiveAppletCard.autoRefreshProperty)
-    get autoRefresh(): AutoRefreshDefinition | undefined {
-        return this.getValue(AdaptiveAppletCard.autoRefreshProperty);
+    @Adaptive.property(AdaptiveAppletCard.refreshProperty)
+    get refresh(): RefreshDefinition | undefined {
+        return this.getValue(AdaptiveAppletCard.refreshProperty);
     }
 
-    set autoRefresh(value: AutoRefreshDefinition | undefined) {
-        this.setValue(AdaptiveAppletCard.autoRefreshProperty, value);
+    set refresh(value: RefreshDefinition | undefined) {
+        this.setValue(AdaptiveAppletCard.refreshProperty, value);
 
         if (value) {
             value.parent = this;
@@ -146,14 +134,12 @@ export class AdaptiveApplet {
         }
     }
 
-    private createActivityRequest(action: ExecuteAction, context: ActivityInvocationContext): ActivityRequest | undefined {
+    private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger): ActivityRequest | undefined {
         if (this.card) {
             let request: ActivityRequest = {
-                context: context,
                 activity: {
                     type: "invoke",
                     name: "adaptiveCard/action",
-                    appId: this.card.appId,
                     localTimezone: "",
                     localTimestamp: "",
                     value: {
@@ -162,7 +148,8 @@ export class AdaptiveApplet {
                             id: action.id,
                             verb: action.verb,
                             data: action.data
-                        }
+                        },
+                        trigger: trigger,
                     }
                 },
                 attemptNumber: 0
@@ -230,10 +217,10 @@ export class AdaptiveApplet {
         return card;
     }
 
-    private internalExecuteAction(action: Adaptive.Action, context: ActivityInvocationContext) {
+    private internalExecuteAction(action: Adaptive.Action, trigger: ActivityInvocationTrigger) {
         if (this.channelAdapter) {
             if (action instanceof ExecuteAction) {
-                let request = this.createActivityRequest(action, context);
+                let request = this.createActivityRequest(action, trigger);
 
                 if (request) {
                     this.internalSendActivityRequestAsync(request);
@@ -253,7 +240,7 @@ export class AdaptiveApplet {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
         }
 
-        let overlay = this.createProgressOverlay(request.context);
+        let overlay = this.createProgressOverlay(request.activity.value.trigger);
 
         this.renderedElement.appendChild(overlay);
 
@@ -276,7 +263,7 @@ export class AdaptiveApplet {
                 console.error("Activity request failed: " + error);
 
                 this.renderedElement.removeChild(overlay);
-                
+
                 done = true;
 
                 alert("Something went wrong: " + error);
@@ -286,7 +273,7 @@ export class AdaptiveApplet {
                 switch (response.status) {
                     case ActivityStatus.Success:
                         this.renderedElement.removeChild(overlay);
-                
+
                         let parsedResult: any = undefined;
 
                         try {
@@ -383,7 +370,7 @@ export class AdaptiveApplet {
                                     break;
                                 default:
                                     throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
-                            }                                    
+                            }
                         }
                         else {
                             throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof parsedResult + ")");
@@ -425,11 +412,11 @@ export class AdaptiveApplet {
         }
     }
 
-    private createProgressOverlay(context: ActivityInvocationContext): HTMLElement {
+    private createProgressOverlay(trigger: ActivityInvocationTrigger): HTMLElement {
         let overlay: HTMLElement | undefined = undefined;
 
         if (this.onCreateProgressOverlay) {
-            overlay = this.onCreateProgressOverlay(this, context);
+            overlay = this.onCreateProgressOverlay(this, trigger);
         }
 
         if (!overlay) {
@@ -456,7 +443,7 @@ export class AdaptiveApplet {
     onCardChanged?: (sender: AdaptiveApplet) => void;
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
     onActivityRequestCompleted?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
-    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionContext: ActivityInvocationContext) => HTMLElement | undefined;
+    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
 
     constructor() {
         this.renderedElement = document.createElement("div");
@@ -499,16 +486,12 @@ export class AdaptiveApplet {
                     card.parse(this._cardPayload, serializationContext);
                 }
 
-                if (!card.appId) {
-                    throw new Error("Invalid card payload. The appId property is missing.")
-                }
-
                 let doChangeCard = this.onCardChanging ? this.onCardChanging(this, this._cardPayload) : true;
 
                 if (doChangeCard) {
                     this._card = card;
                     this._card.onExecuteAction = (action: Adaptive.Action) => {
-                        this.internalExecuteAction(action, ActivityInvocationContext.UserInteraction);
+                        this.internalExecuteAction(action, ActivityInvocationTrigger.Manual);
                     }
 
                     this._card.render();
@@ -520,8 +503,8 @@ export class AdaptiveApplet {
                             this.onCardChanged(this);
                         }
 
-                        if (this._card.autoRefresh) {
-                            this.internalExecuteAction(this._card.autoRefresh.action, ActivityInvocationContext.AutoRefresh);
+                        if (this._card.refresh) {
+                            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic);
                         }
                     }
                 }

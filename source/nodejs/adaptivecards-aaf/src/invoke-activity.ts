@@ -1,7 +1,6 @@
 export interface InvokeActivity {
     type: "invoke",
     name: "adaptiveCard/action",
-    appId: string,
     channelId?: string,
     localTimezone: string,
     localTimestamp: string,
@@ -22,19 +21,19 @@ export interface InvokeActivity {
             verb: string,
             data?: object
         },
+        trigger: ActivityInvocationTrigger,
         magicCode?: string
     },
     relatesTo?: string
 }
 
-export enum ActivityInvocationContext {
-    AutoRefresh,
-    UserInteraction
+export enum ActivityInvocationTrigger {
+    Automatic = "automatic",
+    Manual = "manual",
 }
 
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
-    readonly context: ActivityInvocationContext,
     attemptNumber: number
 }
 
