@@ -18,7 +18,7 @@
     "@types/node-sass": "^3.10.32",
     "css-color-names": "0.0.4",
     "css2json": "0.0.4",
-    "node-sass": "^4.5.2"
+    "node-sass": "^4.14.1"
   },
   "devDependencies": {
     "typescript": "^2.1.5"
