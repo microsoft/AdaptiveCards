@@ -163,7 +163,7 @@
                     NSParagraphStyleAttributeName : paragraphStyle,
                     NSForegroundColorAttributeName : foregroundColor,
                 }
-                                        range:NSMakeRange(0, textRunContent.length - 1)];
+                                        range:NSMakeRange(0, textRunContent.length)];
 
                 [content appendAttributedString:textRunContent];
             }
