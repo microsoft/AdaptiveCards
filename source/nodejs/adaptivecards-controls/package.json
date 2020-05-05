@@ -17,7 +17,8 @@
 		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
-		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
+		"lint": "eslint src/*.ts",
+	    "dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
 		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},
 	"devDependencies": {
