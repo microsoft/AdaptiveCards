@@ -24,7 +24,7 @@
 		"typescript": "^3.2.2",
 		"vkbeautify": "^0.99.3",
 		"webpack": "^4.27.1",
-		"webpack-cli": "^3.1.2",
+		"webpack-cli": "^3.3.11",
 		"webpack-dev-server": "^3.1.14"
 	}
 }
