@@ -18,7 +18,7 @@
 										{
 											"type": "Image",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationGreen_A.png",
-											"altText": "Stop A"
+											"altText": "Location A"
 										}
 									],
 									"width": "auto"
@@ -58,7 +58,7 @@
 										{
 											"type": "Image",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationBlue_B.png",
-											"altText": "Stop B"
+											"altText": "Location B"
 										}
 									],
 									"width": "auto"
@@ -98,7 +98,7 @@
 										{
 											"type": "Image",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/LocationRed_C.png",
-											"altText": "Stop C"
+											"altText": "Location C"
 										}
 									],
 									"width": "auto"
@@ -180,7 +180,7 @@
 							"type": "Image",
 							"horizontalAlignment": "Center",
 							"url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png",
-							"altText": "Coffee icon"
+							"altText": "Location A: Coffee"
 						}
 					],
 					"width": "auto",
@@ -255,7 +255,7 @@
 										{
 											"type": "Image",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png",
-											"altText": "Powerpoint logo"
+											"altText": "Powerpoint presentation"
 										}
 									],
 									"width": "auto"
@@ -314,7 +314,7 @@
 										{
 											"type": "Image",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/car.png",
-											"altText": "Car"
+											"altText": "Travel by car"
 										}
 									],
 									"width": "auto"
@@ -370,7 +370,7 @@
 							"type": "Image",
 							"horizontalAlignment": "Center",
 							"url": "https://messagecardplayground.azurewebsites.net/assets/CircleBlue_flight.png",
-							"altText": "Flight"
+							"altText": "Location B: Flight"
 						}
 					],
 					"width": "auto",
