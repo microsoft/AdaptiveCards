@@ -695,33 +695,35 @@ namespace AdaptiveNamespace
             {
                 // Collapse the Ellipse while the image loads, so that resizing is not noticeable
                 THROW_IF_FAILED(ellipseAsUIElement->put_Visibility(Visibility::Visibility_Collapsed));
+
                 // Handle ImageOpened event so we can check the imageSource's size to determine if it fits in its parent
                 EventRegistrationToken eventToken;
                 ComPtr<IInspectable> localParentElement(parentElement);
 
-                // Take weak references to the ellipse and parent to avoid circular references between this lambda and
-                // its parents (Parent->Ellipse->ImageBrush->Lambda->(Parent and Ellipse))
+                // Take a weak reference to the parent to avoid circular references (Parent->Ellipse->ImageBrush->Lambda->(Parent))
                 WeakRef weakParent;
                 THROW_IF_FAILED(localParentElement.AsWeak(&weakParent));
 
-                WeakRef weakEllipse;
-                THROW_IF_FAILED(ellipseAsUIElement.AsWeak(&weakEllipse));
                 THROW_IF_FAILED(brushAsImageBrush->add_ImageOpened(
-                    Callback<IRoutedEventHandler>([weakEllipse, imageSourceAsBitmap, weakParent, isVisible](
-                                                      IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                    Callback<IRoutedEventHandler>([ellipseAsFrameworkElement, weakParent, isVisible](IInspectable* sender, IRoutedEventArgs *
+                                                                                                     /*args*/) -> HRESULT {
                         if (isVisible)
                         {
-                            ComPtr<IFrameworkElement> lambdaEllipseAsFrameworkElement;
-                            RETURN_IF_FAILED(weakEllipse.As(&lambdaEllipseAsFrameworkElement));
+                            ComPtr<IImageBrush> lambdaBrushAsImageBrush;
+                            RETURN_IF_FAILED(sender->QueryInterface(IID_PPV_ARGS(&lambdaBrushAsImageBrush)));
+
+                            ComPtr<IImageSource> lambdaImageSource;
+                            RETURN_IF_FAILED(lambdaBrushAsImageBrush->get_ImageSource(&lambdaImageSource));
+                            ComPtr<IBitmapSource> lambdaImageSourceAsBitmap;
+                            RETURN_IF_FAILED(lambdaImageSource.As(&lambdaImageSourceAsBitmap));
 
                             ComPtr<IInspectable> lambdaParentElement;
                             RETURN_IF_FAILED(weakParent.As(&lambdaParentElement));
-
-                            if (lambdaEllipseAsFrameworkElement && lambdaParentElement)
+                            if (ellipseAsFrameworkElement.Get() && lambdaParentElement.Get())
                             {
-                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(lambdaEllipseAsFrameworkElement.Get(),
+                                RETURN_IF_FAILED(XamlHelpers::SetAutoImageSize(ellipseAsFrameworkElement.Get(),
                                                                                lambdaParentElement.Get(),
-                                                                               imageSourceAsBitmap.Get(),
+                                                                               lambdaImageSourceAsBitmap.Get(),
                                                                                isVisible));
                             }
                         }
