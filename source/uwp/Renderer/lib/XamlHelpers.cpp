@@ -968,6 +968,30 @@ namespace AdaptiveNamespace::XamlHelpers
         // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
         RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
 
+        // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
+        ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);
+        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
+        if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))
+        {
+            ComPtr<IContentControl> uiInpuElementAsContentControl;
+            RETURN_IF_FAILED(actualInputUIElement.As(&uiInpuElementAsContentControl));
+
+            ComPtr<IInspectable> content;
+            RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
+
+            ComPtr<IDependencyObject> contentAsDependencyObject;
+            RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
+            RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
+
+            ComPtr<IVector<DependencyObject*>> uiElementDescribers;
+            RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
+                                                                          uiElementDescribers.GetAddressOf()));
+
+            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));
+        }
+
         RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
         RETURN_IF_FAILED(errorMessageControl.CopyTo(validationErrorOut));
 

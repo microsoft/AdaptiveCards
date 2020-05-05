@@ -71,7 +71,7 @@ HRESULT InputValue::SetFocus()
     return S_OK;
 }
 
-HRESULT InputValue::SetAccessibilityProperties(boolean errorMessageVisible)
+HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
 {
     ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics;
 
@@ -85,49 +85,29 @@ HRESULT InputValue::SetAccessibilityProperties(boolean errorMessageVisible)
     ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
     RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
 
-    RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), !errorMessageVisible));
+    ComPtr<IVector<DependencyObject*>> uiElementDescribers; 
+    automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(), uiElementDescribers.GetAddressOf());
 
     ComPtr<IUIElement> uiValidationError(m_validationError);
+    ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
+    RETURN_IF_FAILED(uiValidationError.As(&uiValidationErrorAsDependencyObject));
 
-    ComPtr<IRichTextBlock> validationError;
-    RETURN_IF_FAILED(uiValidationError.As(&validationError));
+    UINT index{};
+    boolean found{};
+    RETURN_IF_FAILED(uiElementDescribers->IndexOf(uiValidationErrorAsDependencyObject.Get(), &index, &found));
 
-    ComPtr<IVector<Block*>> blocks;
-    RETURN_IF_FAILED(validationError->get_Blocks(blocks.GetAddressOf()));
+    // If the error message is visible then the input element must be described by it, otherwise we try to remove it from the list of describers
+    if (!isInputValid && !found)
+    {
+        RETURN_IF_FAILED(uiElementDescribers->Append(uiValidationErrorAsDependencyObject.Get()));
+    }
+    else if (isInputValid && found)
+    {
+        RETURN_IF_FAILED(uiElementDescribers->RemoveAt(index));
+    }
 
-    HString validationErrorText;
+    RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), isInputValid));
 
-    XamlHelpers::IterateOverVector<Block, IBlock>(blocks.Get(), [&](IBlock* textBlock) {
-        ComPtr<IBlock> xamlTextBlock(textBlock);
-
-        ComPtr<IParagraph> xamlTextBlockAsParagraph;
-        RETURN_IF_FAILED(xamlTextBlock.As(&xamlTextBlockAsParagraph));
-
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> inlines;
-        RETURN_IF_FAILED(xamlTextBlockAsParagraph->get_Inlines(inlines.GetAddressOf()));
-
-        XamlHelpers::IterateOverVector<ABI::Windows::UI::Xaml::Documents::Inline, ABI::Windows::UI::Xaml::Documents::IInline>(
-            inlines.Get(), [&](ABI::Windows::UI::Xaml::Documents::IInline* paragraphInline) {
-                ComPtr<IInline> xamlInline(paragraphInline);
-
-                ComPtr<IRun> xamlInlineAsRun;
-                RETURN_IF_FAILED(xamlInline.As(&xamlInlineAsRun));
-
-                HString runText;
-                RETURN_IF_FAILED(xamlInlineAsRun->get_Text(runText.GetAddressOf()));
-
-                HString concatenatedString;
-                RETURN_IF_FAILED(WindowsConcatString(validationErrorText.Get(), runText.Get(), concatenatedString.GetAddressOf()));
-                RETURN_IF_FAILED(concatenatedString.CopyTo(validationErrorText.GetAddressOf()));
-
-                return S_OK;
-            });
-
-        return S_OK;
-    });
-
-    RETURN_IF_FAILED(automationPropertiesStatics->SetFullDescription(inputUIElementAsDependencyObject.Get(),
-                                                                     validationErrorText.Get()));
     return S_OK;
 }
 
@@ -178,7 +158,7 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
         }
 
-        SetAccessibilityProperties(!isInputValid);
+        SetAccessibilityProperties(isInputValid);
     }
 
     // Once this has been marked invalid once, we should validate on all value changess going forward

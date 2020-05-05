@@ -22,7 +22,7 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP Validate(_Out_ boolean* isInputValid);
         IFACEMETHODIMP SetFocus();
-        IFACEMETHODIMP SetAccessibilityProperties(boolean errorMessageVisible);
+        IFACEMETHODIMP SetAccessibilityProperties(boolean isInputValid);
 
     protected:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
