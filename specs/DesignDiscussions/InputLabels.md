@@ -189,7 +189,7 @@ The full set of properties to be modified using full text formatting will be:
 | `color` | `default` | |
 | `isSubtle` | `false` | |
 | `size` | `default` | | 
-| `spacingWithLabel` | `default` | This should be the same for required and optional inputs |
+| `inputSpacing` | `default` | This should be the same for required and optional inputs |
 | `weight` | `default` | |
 
 Allowing the control of this styling via support of native styling on required and optional labels (i.e. CSS, Xaml Styles, etc) may also be required but will be set out of scope for v1 of this feature. This decision speaks to a larger discussion of the direction of host config that is beyond the scope of this document.
@@ -360,7 +360,7 @@ This document has primarily focused on `Input.Text` in it's examples, but the la
 
 This feature focuses on adding a text element to an input element which will have to be implemented in all of our renderers and the designer. It's important to note that this feature covers the accessibility aspect which should be reviewed by people who have expertise in this aspect.
 
-For the development of this feature the following costs have been estimated for all platforms like this:
+For the development of this feature (P0 & P1 tasks) the following costs have been estimated for all platforms like this:
 
 | Task | Cost (days) | Previous requirements | Includes |
 | --- | --- | --- | --- |
@@ -393,8 +393,8 @@ As mentioned before, this feature tackles a big issue Adaptive Cards has with ac
 | P0 | Label support as a string |
 | P0 | Accessibility support for inputs |
 | P0 | Host can define formatting for labels |
-| P1 | Host Apps can define custom rendering for labels |
-| P1 | Author can define the string to be used as "required inputs" hint |
+| P1 | Host Apps can define custom rendering for labels (using extensibility APIs) |
+| P1 | Hosts can define the string to be used as "required inputs" hint |
 | P2 | Samples are provided for overriding input elements |
 | P2 | Support for formating labels using other Adaptive cards elements |
 | P2 | Support markdown in labels |

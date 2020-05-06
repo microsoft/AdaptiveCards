@@ -18,17 +18,18 @@
         5. [Validation and Actions](#Validation-and-Actions)
             1. [Action Types](#Action-Types)
                 1. [Submit Actions](#Submit-Actions)
-                2. [Toggle and ShowCard Actions](#Toggle-and-ShowCard-Actions)
-                3. [OpenUrl](#OpenUrl)
             2. [Disabling Actions](#Disabling-Actions)
     4. [Custom Rendering Error Messages](#Custom-Rendering-Error-Messages)
     5. [Backwards Compatibility](#Backwards-Compatibility)
-    6. [Future and Out of Scope Features](#Future-and-Out-of-Scope-Features)
-        1. [Success Indicators](#Success-Indicators)
-        2. [Cross field validation](#Cross-field-validation)
-    7. [Requirement Priorities](#Requirement-Priorities)
+    6. [Requirement Priorities](#Requirement-Priorities)
 2. [Annex](#Annex)
     1. [Examples of invalid inputs](#Examples-of-invalid-inputs)
+    2. [Work for future iterations](#Work-for-future-iterations)
+        1. [Success Indicators](#Success-Indicators)
+        2. [Cross field validation](#Cross-field-validation)
+        3. [Future for validation and actions](#Future-for-validation-and-actions)
+            1. [Toggle and ShowCard Actions](#Toggle-and-ShowCard-Actions)
+            2. [OpenUrl](#OpenUrl)
 
 # Input Validation
 
@@ -64,12 +65,8 @@ The error text and invalid indication will be rendered in the host's `attention`
 
 As has been proposed, the error message is a string property which is rendered in the `attention` color by default, card hosts may need more control over how this messages and the visual representation of an error appear. As can be seen in the [Annex] there's a wide array on how error messages are represented in different websites. The table below details the proposed set of properties that host apps will be able to modify based on the examples located in the annex as well as if they are going to be modified through the host config or the native styling in each platform. It's important to note that some of this properties will act on the input element rather than the error message.
 
-| Property | Default value | Observations |
-| --- | ---- | --- | --- |
-| `borderColor` | `attention` | Acts on the input |
-| `borderWidth` | TBD | Acts on the input. Must be defined in pixels | 
-| `color` | `attention` |
-| `isSubtle` | `false` | 
+| Property | Default value |
+| --- | ---- | 
 | `size` | `default` | 
 | `spacing` | `default` | 
 | `weight` | `default` | 
@@ -81,17 +78,46 @@ As has been proposed, the error message is a string property which is rendered i
         "errorMessage": 
         {
             "spacing": "small",
-            "fontType": "monospace",
             "size": "small",
-            "weight": "lighter",
-            "color": "attention",
-            "isSubtle": true
-        },
-        "inputBorder": {
-            "color": "attention",
-            "width": 8
+            "weight": "lighter"
         }
     }
+}
+```
+
+For v1 of this feature, the error messages will always be rendered using the `attention` color. In future versions of the renderer the set of properties to be configurable using host config may increase.
+
+### Native Styling
+
+When an input fails validation it is visually signalized with a change of the input border color or with other visual cues. As this feature has to do with error message rendering no changes will be made for input rendering. On the other hand, we currently provide native styling for inputs in almost all platforms, this allows host apps to use the platform's capabilities to render the inputs as they want and the platform allows; platforms usually provide ways for signalizing an error in input fields through element states; for clarification we will provide examples on two platforms:
+
+#### UWP (XAML)
+
+For the UWP renderer we can still support the current styles that host apps have defined for their inputs, we would only have to provide the naming convention for the visual states for valid (or neutral) and invalid inputs. The following snippet should provide a template on how hosts could specify this custom rendering by overloading the `InvalidState` on the VisualStateGroup:
+
+``` xml
+<VisualStateGroup x:Name="ValidationStates">
+    <VisualState x:Name="InvalidState">
+        <Storyboard>
+            ...
+        </Storyboard>
+    </VisualState>
+
+    <VisualState x:Name="NeutralState">
+        <Storyboard>
+            ...
+        </Storyboard>
+    </VisualState>
+</VisualStateGroup>
+```
+
+#### JavaScript (HTML + CSS)
+
+In the case of the Javascript renderer we have a simple way of providing a style for an invalid input: the `:invalid` pseudo-class. This pseudo-class is part of css and can be attached to any `input` or `form` element and can be specified like this:
+
+``` css
+input:invalid {
+  ...
 }
 ```
 
@@ -114,23 +140,22 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
 
  For any of the above values, validation will happen for un-validated fields on action, and focus will be placed in the first invalid input.
 
- > The schema change for host config will be adding the property `validationBehavior` under `inputs` configuration as can be seen below:
->
-> ```json
-> “inputs”:{
->    // One of
->    “validationBehavior”: “onFocusLost”,
->    “validationBehavior”: “onFocusLostWithInput”,
->    “validationBehavior”: “onSubmit”
-> }
-> ```
->
-> ### Validation for ChoiceSet and Toggle Inputs
->
-> When we think of validation our first thought may go towards text inputs, but we also support ChoiceSet and Toggle elements. The currently proposed validation behavior should be almost the same as text input based validation but considering that usually interaction with this types of elements is not done using a keyboard.
->
-> ![img](assets/InputValidation/ChoiceSetValidation.gif)
-> 
+The schema change for host config will be adding the property `validationBehavior` under `inputs` configuration as can be seen below:
+
+```json
+“inputs”:{
+   // One of
+   "validationBehavior": "onFocusLost",
+   "validationBehavior": "onFocusLostWithInput",
+   "validationBehavior": "onSubmit"
+}
+```
+
+### Validation for ChoiceSet and Toggle Inputs
+
+When we think of validation our first thought may go towards text inputs, but we also support ChoiceSet and Toggle elements. The currently proposed validation behavior should be almost the same as text input based validation but considering that usually interaction with this types of elements is not done using a keyboard.
+
+![img](assets/InputValidation/ChoiceSetValidation.gif)
 
 ### Which Input Properties to Validate
 
@@ -147,6 +172,27 @@ With the advent of this input validation feature, those platforms which do not s
 | `Input.Date` | `min`, `max` | Existing Properties |
 | `Input.Time` | `min`, `max` | Existing Properties |
 |**All inputs** | `isRequired` | New for this feature |
+
+### Validation success condition
+
+Once we have defined the properties to be validated, we also have to provide some consistency on how we consider every property to be successfully validated (no error is raised):
+
+| Input | Property | Success condition |
+| --- | --- | --- |
+| `Input.Text` | `regex` | Input complies with provided regex. |
+| `Input.Text` | `maxLength` | Input length is less or equal to maxLength. | 
+| `Input.Text` | `isRequired` | Input has any character in it including spaces or any other character. | 
+| `Input.Number` | `min` | Input value is greater or equal to min. |
+| `Input.Number` | `max` | Input value is less or equal to max. |
+| `Input.Number` | `isRequired` | Input has any positive or negative number in it. |
+| `Input.Date` | `min` | Input value is greater or equal to min. |
+| `Input.Date` | `max` | Input value is less or equal to max. |
+| `Input.Date` | `isRequired` | A date has been selected and populates the input. |
+| `Input.Time` | `min` | Input value is greater or equal to min. |
+| `Input.Time` | `max` | Input value is less or equal to max. |
+| `Input.Time` | `isRequired` | A time has been selected and populates the input. |
+| `Input.ChoiceSet` | `isRequired` | Any value has been selected. In the case of multiselect, 1 or more values have been selected. | 
+| `Input.Toggle` | `isRequired` | ValueOn has been selected. |
 
 ### Which Inputs to Validate
 The primary purpose of client side input validation is to validate a users inputs before they submit them. In this case, the card author would want us to validate all inputs before they are submitted:
@@ -321,6 +367,8 @@ For the development of this feature the following costs have been estimated for 
 
 Modifications to pipelines or other infrastructure changes are not required as this is a rendering (and accessibility) feature. The estimations were made considering that the developer(s) have experience with the platforms they are developing the feature in as well as their accessibility story.
 
+> NOTE: The cost for this feature may be updated later depending on what route we take for the `associatedInputs` property or any changes made for input gathering
+
 ## Requirements Priorities
 The priority of tasks have been mentioned in the open issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) which are:
 
@@ -330,10 +378,39 @@ The priority of tasks have been mentioned in the open issue [#3081](https://gith
 | P0 | Author can provide custom error message for each input |
 | P0 | Author can decide whether input should initially be visually indicated as required |
 | P0 | Regex validation support |
+| P0 | An user must always know why an action is not working due to a validation error | 
 | P0 | Hosts can define when validation is performed |
 | P1 | Hosts can define how error messages are displayed through host config or custom rendering |
 | P2 | Authors can decide which inputs are going to be validated by an action |
 | P2 | Hosts can perform custom rendering of error messages |
+
+## Accessibility 
+
+The input validation property for inputs opens up a way where we can fix or help fix some parts of the accessibility story for forms rendered using Adaptive Cards. The guidelines we used were the [Web Content Accessibility Guidelines (WDGA) 2.0](https://www.w3.org/TR/WCAG20/) where we identified the following guidelines that could help guide our design and could help card authors to provide a better accessible experience using our product:
+
+### 2.1.2 No Keyboard Trap
+
+[Original guideline](https://www.w3.org/WAI/WCAG21/Understanding/no-keyboard-trap.html)
+
+Our design must be aware of not trapping users in an input or set of input if validation fails. As we have previously mentioned, there are multiple times when validation may be performed but we have to be careful of just focusing the invalid inputs when an action has been clicked rather than all times a field is validated. 
+
+### 3.3.1 Error Identification
+
+[Original guideline](https://www.w3.org/WAI/WCAG21/Understanding/error-identification.html)
+
+Providing an error message for every input will allow authors to specify error messages as specific as possible for every field. Also, a red border will be drawn around some failing inputs which will make it easier for users to find the failing inputs. 
+
+### 3.3.3 Error Suggestion
+
+[Original guideline](https://www.w3.org/WAI/WCAG21/Understanding/error-suggestion.html)
+
+As explained before, by providing the option of specifying an error message, users will know what may be the issue when filling in a form. Also, when an value is considered invalid, then the error message is also tied to the input to assistive technologies can read it and provide more context to users.  
+
+### 3.3.6 Error Prevention
+
+[Original guideline](https://www.w3.org/WAI/WCAG21/Understanding/error-prevention-all.html)
+
+By providing a input validation check, we allow users that placed an invalid value in a field to stop progressing with the invalid data they filled in. 
 
 # Annex
 
@@ -363,12 +440,12 @@ While this is an area we should investigate in the future, supporting cross fiel
 
 ### Future for validation and actions
 
-##### Toggle and ShowCard Actions
+#### Toggle and ShowCard Actions
 In many cases, it likely doesn't make sense to validate on show card or toggle actions if those actions are simply showing more details that don't need to appear on the main card. In some cases, however, either show card or toggle may be used to reveal the next step in a progression through the card experience. The wizard card above is a clear example of this. The card author may want to validate the first "page" before allowing the user to proceed to the second. Even the FoodOrder card can be viewed as an example of using show cards to progress through an interaction. If the upper portion of the card contained addition inputs, the card author may want to validate those fields before proceeding to ask additional questions about the users order. 
 
 Because by default Toggles and ShowCards don't necessarily need to validate inputs, these actions will default to `"associatedInputIds": "None"`. We will, however, support the ability to set a different value to enforce validation of some or all of the inputs before allowing the user to take one of these actions.
 
-##### OpenUrl
+#### OpenUrl
 Today it is unlikely that there are many scenarios to validate inputs on OpenUrl, so the default value for `associatedInputIds` will be `None`. For consistency, however, we will allow `associatedInputIds` to be set on OpenUrl actions.
 
 If we in the future allow inputs to be used to construct the Url, any explicitly referenced inputs can be added to those checked by `associatedInputIds`.
