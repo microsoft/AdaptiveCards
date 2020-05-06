@@ -21,7 +21,7 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "{{DATE(${string(converToUTC(latestUpdate))}, SHORT)}} {{TIME(${string(parseDateFromEpoch(latestUpdate))})}}"
+                    "text": "{{DATE(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
                 }
             ]
         },
