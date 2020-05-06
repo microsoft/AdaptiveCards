@@ -175,7 +175,7 @@
 
 			if (cardUrl) {
 				var cardXhttp = new XMLHttpRequest();
-				xhttp.onload = function () {
+				cardXhttp.onload = function () {
 					if (cardXhttp.responseText && cardXhttp.responseText != "") {
 						designer.setCard(JSON.parse(cardXhttp.responseText));
 					}
