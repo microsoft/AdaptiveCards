@@ -27,7 +27,7 @@
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open --local",
 		"dts": "dts-generator --name adaptivecards-fabric --project . --out dist/adaptivecards-fabric.d.ts",
-        "lint": "eslint src/*.ts src/actions/**/*.ts* src/components/**/*.ts* src/utils/**/*.ts*",
+		"lint": "eslint src/*.ts src/actions/**/*.ts* src/components/**/*.ts* src/utils/**/*.ts*",
 		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
 	},
 	"repository": {
