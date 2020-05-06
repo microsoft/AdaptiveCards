@@ -20,31 +20,31 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "{value[0].contentUrl}"
+                    "url": "${value[0].contentUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{value[1].contentUrl}"
+                    "url": "${value[1].contentUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{queryExpansions[0].thumbnail.thumbnailUrl}"
+                    "url": "${queryExpansions[0].thumbnail.thumbnailUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{queryExpansions[1].thumbnail.thumbnailUrl}"
+                    "url": "${queryExpansions[1].thumbnail.thumbnailUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{pivotSuggestions[0].suggestions[0].thumbnail.thumbnailUrl}"
+                    "url": "${pivotSuggestions[0].suggestions[0].thumbnail.thumbnailUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{pivotSuggestions[0].suggestions[1].thumbnail.thumbnailUrl}"
+                    "url": "${pivotSuggestions[0].suggestions[1].thumbnail.thumbnailUrl}"
                 },
                 {
                     "type": "Image",
-                    "url": "{value[2].thumbnailUrl}"
+                    "url": "${value[2].thumbnailUrl}"
                 }
             ]
         }

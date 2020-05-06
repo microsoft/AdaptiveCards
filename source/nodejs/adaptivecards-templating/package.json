@@ -18,11 +18,14 @@
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards-templating --project . --out dist/adaptivecards-templating.d.ts",
-		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+		"lint": "eslint src/*.ts",
 		"release": "npm run build && webpack --mode=production && npm run dts",
 		"docs": "npx typedoc"
 	},
 	"devDependencies": {
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"@typescript-eslint/parser": "^2.26.0",
+		"eslint": "^6.8.0",
 		"rimraf": "^2.6.2",
 		"typedoc": "^0.17.0-3",
 		"typedoc-plugin-markdown": "^2.2.17",

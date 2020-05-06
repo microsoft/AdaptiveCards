@@ -7,7 +7,7 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": " {ParticipantInfoForm.title}",
+            "text": " ${ParticipantInfoForm.title}",
             "horizontalAlignment": "Center"
         },
         {
@@ -69,12 +69,12 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": "{Survey.title} ",
+            "text": "${Survey.title} ",
             "horizontalAlignment": "Center"
         },
         {
             "type": "TextBlock",
-            "text": "{Survey.questions[0].question}"
+            "text": "${Survey.questions[0].question}"
         },
         {
             "type": "Input.ChoiceSet",
@@ -82,15 +82,15 @@
             "value": "1",
             "choices": [
                 {
-                    "$data": "{Survey.questions[0].items}",
-                    "title": "{choice}",
-                    "value": "{value}"
+                    "$data": "${Survey.questions[0].items}",
+                    "title": "${choice}",
+                    "value": "${value}"
                 }
             ]
         },
         {
             "type": "TextBlock",
-            "text": "{Survey.questions[1].question}"
+            "text": "${Survey.questions[1].question}"
         },
         {
             "type": "Input.ChoiceSet",
@@ -99,15 +99,15 @@
             "value": "1",
             "choices": [
                 {
-                    "$data": "{Survey.questions[1].items}",
-                    "title": "{choice}",
-                    "value": "{value}"
+                    "$data": "${Survey.questions[1].items}",
+                    "title": "${choice}",
+                    "value": "${value}"
                 }
             ]
         },
         {
             "type": "TextBlock",
-            "text": "{Survey.questions[2].question}"
+            "text": "${Survey.questions[2].question}"
         },
         {
             "type": "Input.ChoiceSet",
@@ -116,9 +116,9 @@
             "value": "1,3",
             "choices": [
                 {
-                    "$data": "{Survey.questions[2].items}",
-                    "title": "{choice}",
-                    "value": "{value}"
+                    "$data": "${Survey.questions[2].items}",
+                    "title": "${choice}",
+                    "value": "${value}"
                 }
             ]
         },
@@ -131,14 +131,14 @@
         },
         {
             "type": "Input.Toggle",
-            "title": "{Survey.questions[3].question}",
+            "title": "${Survey.questions[3].question}",
             "id": "AcceptsTerms",
             "wrap": false,
             "value": "false"
         },
         {
             "type": "Input.Toggle",
-            "title": "{Survey.questions[4].question}",
+            "title": "${Survey.questions[4].question}",
             "valueOn": "RedCars",
             "valueOff": "NotRedCars",
             "id": "ColorPreference",

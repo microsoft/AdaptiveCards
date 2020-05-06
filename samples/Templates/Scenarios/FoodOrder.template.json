@@ -20,15 +20,15 @@
             "images": [
                 {
                     "type": "Image",
-                    "url": "{hasMenu.hasMenuSection[0].image}"
+                    "url": "${hasMenu.hasMenuSection[0].image}"
                 },
                 {
                     "type": "Image",
-                    "url": "{hasMenu.hasMenuSection[0].hasMenuSection[0].image}"
+                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[0].image}"
                 },
                 {
                     "type": "Image",
-                    "url": "{hasMenu.hasMenuSection[0].hasMenuSection[1].image}"
+                    "url": "${hasMenu.hasMenuSection[0].hasMenuSection[1].image}"
                 }
             ]
         }
@@ -36,13 +36,13 @@
     "actions": [
         {
             "type": "Action.ShowCard",
-            "title": "{hasMenu.hasMenuSection[0].name}",
+            "title": "${hasMenu.hasMenuSection[0].name}",
             "card": {
                 "type": "AdaptiveCard",
                 "body": [
                     {
                         "type": "TextBlock",
-                        "text": "{hasMenu.hasMenuSection[0].description}",
+                        "text": "${hasMenu.hasMenuSection[0].description}",
                         "size": "Medium",
                         "wrap": true
                     },
@@ -86,13 +86,13 @@
         },
         {
             "type": "Action.ShowCard",
-            "title": "{hasMenu.hasMenuSection[0].hasMenuSection[0].name}",
+            "title": "${hasMenu.hasMenuSection[0].hasMenuSection[0].name}",
             "card": {
                 "type": "AdaptiveCard",
                 "body": [
                     {
                         "type": "TextBlock",
-                        "text": "{hasMenu.hasMenuSection[0].hasMenuSection[0].description}",
+                        "text": "${hasMenu.hasMenuSection[0].hasMenuSection[0].description}",
                         "size": "Medium",
                         "wrap": true
                     },
@@ -129,13 +129,13 @@
         },
         {
             "type": "Action.ShowCard",
-            "title": "{hasMenu.hasMenuSection[0].hasMenuSection[1].name}",
+            "title": "${hasMenu.hasMenuSection[0].hasMenuSection[1].name}",
             "card": {
                 "type": "AdaptiveCard",
                 "body": [
                     {
                         "type": "TextBlock",
-                        "text": "{hasMenu.hasMenuSection[0].hasMenuSection[1].description}",
+                        "text": "${hasMenu.hasMenuSection[0].hasMenuSection[1].description}",
                         "size": "Medium",
                         "wrap": true
                     },

@@ -5,7 +5,7 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": "{title}"
+            "text": "${title}"
         },
         {
             "type": "ColumnSet",
@@ -16,7 +16,7 @@
                         {
                             "type": "Image",
                             "style": "Person",
-                            "url": "{creator.profileImage}",
+                            "url": "${creator.profileImage}",
                             "size": "Small"
                         }
                     ],
@@ -28,13 +28,13 @@
                         {
                             "type": "TextBlock",
                             "weight": "Bolder",
-                            "text": "{creator.name}",
+                            "text": "${creator.name}",
                             "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "spacing": "None",
-                            "text": "Created {{DATE({createdUtc},SHORT)}}",
+                            "text": "Created {{DATE(${string(createdUtc)}, SHORT)}}",
                             "isSubtle": true,
                             "wrap": true
                         }
@@ -45,16 +45,16 @@
         },
         {
             "type": "TextBlock",
-            "text": "{description}",
+            "text": "${description}",
             "wrap": true
         },
         {
             "type": "FactSet",
             "facts": [
                 {
-                    "$data": "{properties}",
-                    "title": "{key}:",
-                    "value": "{value}"
+                    "$data": "${properties}",
+                    "title": "${key}:",
+                    "value": "${value}"
                 }
             ]
         }
@@ -89,7 +89,7 @@
         {
             "type": "Action.OpenUrl",
             "title": "View",
-            "url": "{viewUrl}"
+            "url": "${viewUrl}"
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
