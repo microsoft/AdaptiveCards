@@ -29,19 +29,19 @@
                                     "size": "ExtraLarge",
                                     "weight": "Lighter",
                                     "color": "Accent",
-                                    "text": "Flight to {reservationFor.arrivalAirport.iataCode}",
+                                    "text": "Flight to ${reservationFor.arrivalAirport.iataCode}",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "spacing": "Small",
-                                    "text": "{reservationFor.provider.name}  Air Lines flight {reservationFor.flightNumber} ",
+                                    "text": "${reservationFor.provider.name}  Air Lines flight ${reservationFor.flightNumber} ",
                                     "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "spacing": "None",
-                                    "text": "Confirmation code: {reservationId}",
+                                    "text": "Confirmation code: ${reservationId}",
                                     "wrap": true
                                 },
                                 {
@@ -75,7 +75,7 @@
                                                     "type": "TextBlock",
                                                     "size": "ExtraLarge",
                                                     "weight": "Lighter",
-                                                    "text": "{reservationFor.departureAirport.iataCode}"
+                                                    "text": "${reservationFor.departureAirport.iataCode}"
                                                 }
                                             ],
                                             "width": "auto"
@@ -114,7 +114,7 @@
                                                     "horizontalAlignment": "Right",
                                                     "size": "ExtraLarge",
                                                     "weight": "Lighter",
-                                                    "text": "{reservationFor.arrivalAirport.iataCode}"
+                                                    "text": "${reservationFor.arrivalAirport.iataCode}"
                                                 }
                                             ],
                                             "width": "auto"
@@ -130,7 +130,7 @@
                                                 {
                                                     "type": "TextBlock",
                                                     "size": "Medium",
-                                                    "text": "{{TIME({reservationFor.departureTime})}}"
+                                                    "text": "{{TIME(${string(reservationFor.departureTime)})}}"
                                                 }
                                             ],
                                             "width": 1
@@ -142,7 +142,7 @@
                                                     "type": "TextBlock",
                                                     "horizontalAlignment": "Right",
                                                     "size": "Medium",
-                                                    "text": "{{TIME({reservationFor.arrivalTime})}}"
+                                                    "text": "{{TIME(${string(reservationFor.arrivalTime)})}}"
                                                 }
                                             ],
                                             "width": 1
@@ -158,7 +158,7 @@
                                             "items": [
                                                 {
                                                     "type": "TextBlock",
-                                                    "text": "{{DATE({reservationFor.departureTime}, SHORT)}}",
+                                                    "text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}",
                                                     "isSubtle": true,
                                                     "wrap": true
                                                 }
@@ -171,7 +171,7 @@
                                                 {
                                                     "type": "TextBlock",
                                                     "horizontalAlignment": "Right",
-                                                    "text": "{{DATE({reservationFor.departureTime}, SHORT)}}",
+                                                    "text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}",
                                                     "isSubtle": true,
                                                     "wrap": true
                                                 }
@@ -189,7 +189,7 @@
                                             "items": [
                                                 {
                                                     "type": "TextBlock",
-                                                    "text": "{reservationFor.departureAirport.city}",
+                                                    "text": "${reservationFor.departureAirport.city}",
                                                     "isSubtle": true
                                                 }
                                             ],
@@ -201,7 +201,7 @@
                                                 {
                                                     "type": "TextBlock",
                                                     "horizontalAlignment": "Right",
-                                                    "text": "{reservationFor.arrivalAirport.city}",
+                                                    "text": "${reservationFor.arrivalAirport.city}",
                                                     "isSubtle": true
                                                 }
                                             ],

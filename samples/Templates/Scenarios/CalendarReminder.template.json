@@ -6,18 +6,18 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "{summary}",
+            "text": "${summary}",
             "size": "Large",
             "weight": "Bolder"
         },
         {
             "type": "TextBlock",
-            "text": " {location} ",
+            "text": " ${location} ",
             "isSubtle": true
         },
         {
             "type": "TextBlock",
-            "text": "{{TIME({start.dateTime})}} - {{TIME({end.dateTime})}}",
+            "text": "${formatDateTime(start.dateTime, 'HH:mm')} - ${formatDateTime(end.dateTime, 'hh:mm')}",
             "isSubtle": true,
             "spacing": "None"
         },
@@ -30,19 +30,19 @@
         {
             "type": "Input.ChoiceSet",
             "id": "snooze",
-            "value": "{reminders.overrides[0].minutes}",
+            "value": "${reminders.overrides[0].minutes}",
             "choices": [
                 {
-                    "title": "{reminders.overrides[0].minutes} minutes",
-                    "value": "{reminders.overrides[0].minutes}"
+                    "title": "${reminders.overrides[0].minutes} minutes",
+                    "value": "${reminders.overrides[0].minutes}"
                 },
                 {
-                    "title": "{reminders.overrides[1].minutes} minutes",
-                    "value": "{reminders.overrides[1].minutes}"
+                    "title": "${reminders.overrides[1].minutes} minutes",
+                    "value": "${reminders.overrides[1].minutes}"
                 },
                 {
-                    "title": "{reminders.overrides[2].minutes} minutes",
-                    "value": "{reminders.overrides[2].minutes}"
+                    "title": "${reminders.overrides[2].minutes} minutes",
+                    "value": "${reminders.overrides[2].minutes}"
                 }
             ]
         }
