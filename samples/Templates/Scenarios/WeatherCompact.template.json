@@ -12,7 +12,7 @@
         },
         {
             "type": "TextBlock",
-            "text": "{{DATE(${parseDateFromEpoch(dt)}, SHORT)}} {{TIME(${parseDateFromEpoch(dt)})}}",
+            "text": "{{DATE(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
             "spacing": "None"
         },
         {
