@@ -57,7 +57,7 @@
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{underName.name}",
+                            "text": "${underName.name}",
                             "spacing": "Small"
                         },
                         {
@@ -122,7 +122,7 @@
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{reservationFor.flightNumber}",
+                            "text": "${reservationFor.flightNumber}",
                             "spacing": "Small"
                         }
                     ]
@@ -140,7 +140,7 @@
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{{TIME({reservationFor.departureTime})}}",
+                            "text": "{{TIME(${string(reservationFor.departureTime)})}}",
                             "color": "Attention",
                             "weight": "Bolder",
                             "horizontalAlignment": "Center",
@@ -161,7 +161,7 @@
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{{TIME({reservationFor.arrivalTime})}}",
+                            "text": "{{TIME(${string(reservationFor.arrivalTime)})}}",
                             "color": "Attention",
                             "horizontalAlignment": "Right",
                             "weight": "Bolder",
@@ -182,12 +182,12 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{reservationFor.departureAirport.name}",
+                            "text": "${reservationFor.departureAirport.name}",
                             "isSubtle": true
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{reservationFor.departureAirport.iataCode}",
+                            "text": "${reservationFor.departureAirport.iataCode}",
                             "size": "ExtraLarge",
                             "color": "Accent",
                             "spacing": "None"
@@ -215,13 +215,13 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{reservationFor.arrivalAirport.name}",
+                            "text": "${reservationFor.arrivalAirport.name}",
                             "isSubtle": true,
                             "horizontalAlignment": "Right"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{reservationFor.arrivalAirport.iataCode}",
+                            "text": "${reservationFor.arrivalAirport.iataCode}",
                             "horizontalAlignment": "Right",
                             "size": "ExtraLarge",
                             "color": "Accent",

@@ -35,7 +35,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "{{DATE({start_date}, SHORT)}}",
+                                    "text": "{{DATE(${string(start_date)}, SHORT)}}",
                                     "horizontalAlignment": "Center"
                                 },
                                 {
@@ -46,7 +46,7 @@
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "{home_points} - {away_points}",
+                                    "text": "${home_points} - ${away_points}",
                                     "size": "ExtraLarge",
                                     "horizontalAlignment": "Center"
                                 }
