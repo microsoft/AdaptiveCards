@@ -13,53 +13,53 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{address.addressLocality}, {address.addressRegion}"
+                            "text": "${address.addressLocality}, ${address.addressRegion}"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "{name}",
+                            "text": "${name}",
                             "weight": "Bolder",
                             "size": "ExtraLarge",
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "{aggregateRating.ratingValue <= 1}",
-                            "text": "{aggregateRating.ratingValue} ★☆☆☆☆ ({aggregateRating.reviewCount}) · {priceRange}",
+                            "$when": "${aggregateRating.ratingValue <= 1}",
+                            "text": "${aggregateRating.ratingValue} ★☆☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
                             "isSubtle": true,
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "{aggregateRating.ratingValue <= 2}",
-                            "text": "{aggregateRating.ratingValue} ★★☆☆☆ ({aggregateRating.reviewCount}) · {priceRange}",
+                            "$when": "${aggregateRating.ratingValue <= 2}",
+                            "text": "${aggregateRating.ratingValue} ★★☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
                             "isSubtle": true,
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "{aggregateRating.ratingValue <= 3}",
-                            "text": "{aggregateRating.ratingValue} ★★★☆☆ ({aggregateRating.reviewCount}) · {priceRange}",
+                            "$when": "${aggregateRating.ratingValue <= 3}",
+                            "text": "${aggregateRating.ratingValue} ★★★☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
                             "isSubtle": true,
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "{aggregateRating.ratingValue <= 4}",
-                            "text": "{aggregateRating.ratingValue} ★★★★☆ ({aggregateRating.reviewCount}) · {priceRange}",
+                            "$when": "${aggregateRating.ratingValue <= 4}",
+                            "text": "${aggregateRating.ratingValue} ★★★★☆ (${aggregateRating.reviewCount}) · ${priceRange}",
                             "isSubtle": true,
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "{aggregateRating.ratingValue <= 5}",
-                            "text": "{aggregateRating.ratingValue} ★★★★★ ({aggregateRating.reviewCount}) · {priceRange}",
+                            "$when": "${aggregateRating.ratingValue <= 5}",
+                            "text": "${aggregateRating.ratingValue} ★★★★★ (${aggregateRating.reviewCount}) · ${priceRange}",
                             "isSubtle": true,
                             "spacing": "None"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "**{review[0].author}** said \"{review[0].description}\"",
+                            "text": "**${review[0].author}** said \"${review[0].description}\"",
                             "size": "Small",
                             "wrap": true,
                             "maxLines": 3
@@ -72,7 +72,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "{image}",
+                            "url": "${image}",
                             "size": "auto"
                         }
                     ]
@@ -84,7 +84,7 @@
         {
             "type": "Action.OpenUrl",
             "title": "More Info",
-            "url": "{url}"
+            "url": "${url}"
         }
     ]
 }

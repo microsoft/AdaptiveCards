@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using AdaptiveCards;
+using AdaptiveCards.Templating;
 using AdaptiveCards.Rendering;
 using AdaptiveCards.Rendering.Wpf;
 using Microsoft.Win32;
@@ -26,6 +27,7 @@ using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
 using System.Collections.ObjectModel;
 using System.Threading;
+using ICSharpCode.AvalonEdit;
 
 namespace WpfVisualizer
 {
@@ -34,6 +36,8 @@ namespace WpfVisualizer
         private bool _dirty;
         private readonly SpeechSynthesizer _synth;
         private DocumentLine _errorLine;
+        private string templateData;
+
         /*
         // This variable exists so the sample styles are not added twice
         private bool _stylesAdded = false;
@@ -119,9 +123,30 @@ namespace WpfVisualizer
             cardError.Children.Clear();
             cardGrid.Opacity = 0.65;
 
+            if (templateData != null && templateData.Length == 0)
+            {
+                templateData = null;
+            }
+
             try
             {
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(CardPayload);
+                // don't throw error, but should affect work flow and performance.
+                // transformer -> has to have errors
+                var template = new AdaptiveCardsTemplate(CardPayload);
+                var context = new AdaptiveCardsEvaluationContext
+                {
+                    Root = templateData
+                };
+
+                // Create a data binding context, and set its $root property to the
+                // data object to bind the template to
+                // var context = new ACData.EvaluationContext();
+                // context.$root = {
+                //     "name": "Mickey Mouse"
+                // };
+
+                var transformedPaylaod = template.Expand(context);
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -270,15 +295,9 @@ namespace WpfVisualizer
 
         private void loadButton_Click(object sender, RoutedEventArgs e)
         {
-            var dlg = new OpenFileDialog();
-            dlg.DefaultExt = ".json";
-            dlg.Filter = "Json documents (*.json)|*.json";
-            var result = dlg.ShowDialog();
-            if (result == true)
-            {
-                CardPayload = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
-                _dirty = true;
-            }
+            string cardPayload;
+            OpenFileDialogForJson(out cardPayload);
+            CardPayload = cardPayload;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -439,6 +458,36 @@ namespace WpfVisualizer
         {
             Renderer.UseXceedElementRenderers();
             _dirty = true;
+        }
+
+        private void templateData_Added(object sender, EventArgs e)
+        {
+            var textEditor = sender as TextEditor;
+            templateData = textEditor.Text;
+            _dirty = true;
+        }
+
+        private void OpenFileDialogForJson(out string output)
+        {
+            var dlg = new OpenFileDialog();
+            dlg.DefaultExt = ".json";
+            dlg.Filter = "Json documents (*.json)|*.json";
+            output = "";
+            if (dlg.ShowDialog() == true)
+            {
+                output = File.ReadAllText(dlg.FileName).Replace("\t", "  ");
+                _dirty = true;
+            }
+        }
+
+        private void loadTemplateDataButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialogForJson(out templateData);
+            if (templateData.Length == 0)
+            {
+                templateData = null;
+            }
+            templateDataTextBox.Text = templateData;
         }
     }
 }
