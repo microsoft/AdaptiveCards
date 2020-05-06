@@ -2,6 +2,34 @@ import * as Adaptive from "adaptivecards";
 import * as Templating from "adaptivecards-templating";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
+import { Strings } from "./strings";
+
+function clearElementChildren(element: HTMLElement) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
+
+function logEvent(level: LogLevel, message?: any, ...optionalParams: any[]) {
+    if (GlobalSettings.logEnabled) {
+        if (GlobalSettings.onLogEvent) {
+            GlobalSettings.onLogEvent(level, message, optionalParams);
+        }
+        else {
+            switch (level) {
+                case LogLevel.Warning:
+                    console.warn(message, optionalParams);
+                    break;
+                case LogLevel.Error:
+                    console.error(message, optionalParams);
+                    break;
+                default:
+                    console.log(message, optionalParams);
+                    break;
+            }
+        }
+    }
+}
 
 export enum RefreshMode {
     Disabled,
@@ -36,27 +64,6 @@ export class GlobalSettings {
     };
 
     static onLogEvent?: (level: LogLevel, message?: any, ...optionalParams: any[]) => void;
-}
-
-function logEvent(level: LogLevel, message?: any, ...optionalParams: any[]) {
-    if (GlobalSettings.logEnabled) {
-        if (GlobalSettings.onLogEvent) {
-            GlobalSettings.onLogEvent(level, message, optionalParams);
-        }
-        else {
-            switch (level) {
-                case LogLevel.Warning:
-                    console.warn(message, optionalParams);
-                    break;
-                case LogLevel.Error:
-                    console.error(message, optionalParams);
-                    break;
-                default:
-                    console.log(message, optionalParams);
-                    break;
-            }
-        }
-    }
 }
 
 export class ExecuteAction extends Adaptive.SubmitAction {
@@ -172,17 +179,100 @@ export class AdaptiveApplet {
     private _cardPayload: any;
     private _cardData: any;
     private _allowAutomaticCardUpdate: boolean = false;
+    private _refreshButtonHostElement: HTMLElement;
+    private _cardHostElement: HTMLElement;
 
     private displayCard(card: Adaptive.AdaptiveCard) {
         if (card.renderedElement) {
-            while (this.renderedElement.firstChild) {
-                this.renderedElement.removeChild(this.renderedElement.firstChild);
-            }
+            clearElementChildren(this._cardHostElement);
 
-            this.renderedElement.appendChild(card.renderedElement);
+            this._refreshButtonHostElement.style.display = "none";
+
+            this._cardHostElement.appendChild(card.renderedElement);
         }
         else {
             throw new Error("displayCard: undefined card.");
+        }
+    }
+
+    private displayRefreshButton(refreshAction: ExecuteAction) {
+        this._refreshButtonHostElement.style.display = "none";
+
+        let renderedRefreshButton: HTMLElement | undefined = undefined;
+
+        if (this.onRenderRefreshButton) {
+            renderedRefreshButton = this.onRenderRefreshButton(this);
+        }
+        else {
+            let cardPayload: object;
+            
+            if (GlobalSettings.refresh.mode === RefreshMode.Automatic) {
+                let autoRefreshPausedMessage = Strings.refresh.automaticRefreshPaused;
+
+                if (autoRefreshPausedMessage[autoRefreshPausedMessage.length - 1] !== " ") {
+                    autoRefreshPausedMessage += " ";
+                }
+
+                cardPayload = {
+                    type: "AdaptiveCard",
+                    version: "1.2",
+                    body: [
+                        {
+                            type: "RichTextBlock",
+                            horizontalAlignment: "right",
+                            inlines: [
+                                autoRefreshPausedMessage,
+                                {
+                                    type: "TextRun",
+                                    text: Strings.refresh.clckToRestartAutomaticRefresh,
+                                    selectAction: {
+                                        type: "Action.Submit",
+                                        id: "refreshCard"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+            }
+            else {
+                cardPayload = {
+                    type: "AdaptiveCard",
+                    version: "1.2",
+                    body: [
+                        {
+                            type: "RichTextBlock",
+                            horizontalAlignment: "right",
+                            inlines: [
+                                {
+                                    type: "TextRun",
+                                    text: Strings.refresh.refreshThisCard,
+                                    selectAction: {
+                                        type: "Action.Submit",
+                                        id: "refreshCard"
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                };
+            }
+
+            let card = new Adaptive.AdaptiveCard();
+            card.parse(cardPayload, new Adaptive.SerializationContext(Adaptive.Versions.v1_2));
+            card.onExecuteAction = (action: Adaptive.Action) => {
+                if (action.id === "refreshCard") {
+                    this.internalExecuteAction(refreshAction, ActivityInvocationTrigger.Automatic, 0);
+                }
+            }
+
+            renderedRefreshButton = card.render();
+        }
+
+        if (renderedRefreshButton) {
+            this._refreshButtonHostElement.appendChild(renderedRefreshButton);
+
+            this._refreshButtonHostElement.style.removeProperty("display");
         }
     }
 
@@ -371,7 +461,7 @@ export class AdaptiveApplet {
                                     logEvent(LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled. Showing manual refresh button instead.");
                                 }
 
-                                alert("Manual refresh from now on")
+                                this.displayRefreshButton(this._card.refresh.action);
                             }
                         }
                     }
@@ -616,10 +706,29 @@ export class AdaptiveApplet {
     onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: ActivityResponse) => void;
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
     onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
+    onRenderRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
 
     constructor() {
         this.renderedElement = document.createElement("div");
+        this.renderedElement.className = "aaf-cardHost"
         this.renderedElement.style.position = "relative";
+        this.renderedElement.style.display = "flex";
+        this.renderedElement.style.flexDirection = "column";
+
+        this._cardHostElement = document.createElement("div");
+
+        this._refreshButtonHostElement = document.createElement("div");
+        this._refreshButtonHostElement.className = "aaf-refreshButtonHost";    
+        this._refreshButtonHostElement.style.display = "none";
+
+        this.renderedElement.appendChild(this._cardHostElement);
+        this.renderedElement.appendChild(this._refreshButtonHostElement);
+    }
+
+    refreshCard() {
+        if (this._card && this._card.refresh) {
+            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Manual, 0);
+        }
     }
 
     setCard(payload: any) {

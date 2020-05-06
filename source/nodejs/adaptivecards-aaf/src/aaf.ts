@@ -1,3 +1,4 @@
+export * from "./strings";
 export * from "./core";
 export * from "./channel-adapter";
 export * from "./http-channel-adapter";
