@@ -141,7 +141,7 @@
 											"type": "Image",
 											"horizontalAlignment": "Left",
 											"url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png",
-											"altText": "Conflict"
+											"altText": "Calendar conflict"
 										}
 									],
 									"width": "auto"
