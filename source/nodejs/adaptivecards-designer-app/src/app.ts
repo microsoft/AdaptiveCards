@@ -4,6 +4,7 @@ import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
 import * as ACTemplating from "adaptivecards-templating";
+import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
