@@ -75,7 +75,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     }
 }
 
-/***
+/**
  * Holds global settings that can be used to customize the way templates are expanded.
  */
 export class GlobalSettings {
