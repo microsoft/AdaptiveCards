@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -47,12 +48,13 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
+			new Dotenv(),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer (No Microsoft Hosts)",
 				template: "./noHosts.html",
 				filename: "noHosts.html",
-				chunks: [ "adaptivecards-designer-standalone" ]
-			 }),
+				chunks: ["adaptivecards-designer-standalone"]
+			}),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html",

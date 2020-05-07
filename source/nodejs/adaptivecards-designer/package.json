@@ -36,6 +36,7 @@
 	},
 	"devDependencies": {
 		"cpy-cli": "^2.0.0",
+		"dotenv-webpack": "1.7.0",
 		"monaco-editor": "^0.17.1",
 		"rimraf": "^2.6.2",
 		"typescript": "^3.5.3",

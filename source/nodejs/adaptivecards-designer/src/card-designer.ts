@@ -7,6 +7,7 @@ import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
+import { OpenImageDialog } from "./open-image-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
@@ -614,7 +615,7 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (dialog.selectedSample && dialog.selectedSample.cardId !=="PIC_2_CARD") {
                         dialog.selectedSample.onDownloaded = () => {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
@@ -638,6 +639,10 @@ export class CardDesigner extends Designer.DesignContext {
                         };
                         dialog.selectedSample.download();
                     }
+                    else if(dialog.selectedSample.cardId ==="PIC_2_CARD")  {
+                        this.launchImagePopup();
+                    }
+                    
                 };
                 dialog.open();
             });
@@ -725,6 +730,17 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Upload Card Structure ";
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            this.setCardPayload(dialog.predictedCardJSON, true);
+        };
+    }
+    
     private updateSampleData() {
         try {
             this._sampleData = JSON.parse(this.getCurrentSampleDataEditorPayload());

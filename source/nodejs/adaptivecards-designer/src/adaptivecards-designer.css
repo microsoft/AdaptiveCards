@@ -1,6 +1,7 @@
 @font-face {
-    font-family: 'FabricMDL2Icons';
-    src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"), url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
+    font-family: "FabricMDL2Icons";
+    src: url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.woff") format("woff"),
+        url("https://appsforoffice.microsoft.com/fabric/fonts/icons/FabricMDL2Icons.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
@@ -15,19 +16,19 @@
 }
 
 .acd-designer-root *:hover::-webkit-scrollbar-thumb {
-    background-color: #CDCDCD;
+    background-color: #cdcdcd;
 }
 
 .acd-designer-cardArea {
     flex: 1 1 70%;
-    background-color: #F6F6F6;
+    background-color: #f6f6f6;
     display: flex;
     flex-direction: column;
     overflow: auto;
 }
 
 .acd-designersurface {
-	outline: none;
+    outline: none;
 }
 
 .acd-hidden {
@@ -39,7 +40,7 @@
     flex: 0 0 auto;
     flex-direction: column;
     background-color: white;
-    border-right: 1px solid #D2D2D2;
+    border-right: 1px solid #d2d2d2;
 }
 
 .acd-treeView-pane {
@@ -63,7 +64,7 @@
     flex: 0 0 auto;
     flex-direction: column;
     width: 360px;
-    background-color: #F9F9F9;
+    background-color: #f9f9f9;
 }
 
 .acd-propertySheet-host {
@@ -72,7 +73,7 @@
 }
 
 .acd-vertical-splitter {
-    border-left: 1px solid #D2D2D2;
+    border-left: 1px solid #d2d2d2;
     cursor: ew-resize;
     position: absolute;
     top: 0;
@@ -83,7 +84,7 @@
 }
 
 .acd-horizontal-splitter {
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #d2d2d2;
     cursor: ns-resize;
     position: absolute;
     top: 0;
@@ -108,7 +109,7 @@
     flex: 0 0 65px;
     color: white;
     background-color: #3a96dd;
-    border-top: 1px solid #D2D2D2;
+    border-top: 1px solid #d2d2d2;
     overflow-x: hidden;
     overflow-y: auto;
     white-space: nowrap;
@@ -220,7 +221,7 @@
     max-height: 400px;
     width: 100%;
     pointer-events: none;
-    border: 1.5px solid #EEEEEE;
+    border: 1.5px solid #eeeeee;
     display: flex;
     justify-content: center;
 }
@@ -230,8 +231,8 @@
 }
 
 .acd-open-sample-item:hover > .acd-open-sample-item-thumbnail {
-    box-shadow: 0 0 20px -5px #CCCCCC;
-    border: 1.5px solid #CCCCCC;
+    box-shadow: 0 0 20px -5px #cccccc;
+    border: 1.5px solid #cccccc;
 }
 
 .acd-open-sample-item:hover > .acd-open-sample-item-title {
@@ -239,8 +240,12 @@
 }
 
 @keyframes acd-spinner-rotate {
-    from { transform: rotate(0) }
-    to { transform: rotate(360deg) }
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 .acd-spinner {
@@ -261,7 +266,7 @@
 */
 
 .acd-icon {
-    font-family: 'FabricMDL2Icons';
+    font-family: "FabricMDL2Icons";
     font-size: 14px;
     font-style: normal;
     font-weight: normal;
@@ -277,7 +282,7 @@
 }
 
 .acd-dialog-titleBar-button:hover {
-    background-color: #CCCCCC;
+    background-color: #cccccc;
 }
 
 .acd-toolPalette-icon {
@@ -473,13 +478,13 @@
 }
 
 .acd-horizontalCollapsedTabContainer > .acd-toolbox-header {
-    border-right: 1px solid #D2D2D2;
+    border-right: 1px solid #d2d2d2;
 }
 
 .acd-verticalCollapsedTabContainer.acd-dockedLeft > .acd-toolbox-header {
     width: 32px;
     height: 170px;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #d2d2d2;
 }
 
 .acd-verticalCollapsedTabContainer.acd-dockedLeft .acd-toolbox-header-content {
@@ -489,11 +494,10 @@
     transform: rotate(-90deg) translate(-170px, 0px);
 }
 
-
 .acd-verticalCollapsedTabContainer.acd-dockedRight > .acd-toolbox-header {
     width: 32px;
     height: 170px;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #d2d2d2;
 }
 
 .acd-verticalCollapsedTabContainer.acd-dockedRight .acd-toolbox-header-content {
@@ -561,15 +565,21 @@
 */
 
 @keyframes acd-peer-frame-appear {
-    from { border-color: transparent }
-    to { border-color: steelblue }
+    from {
+        border-color: transparent;
+    }
+    to {
+        border-color: steelblue;
+    }
 }
 
 @keyframes acd-peer-frame-disappear {
     /*
     from { border-color: currentColor }
     */
-    to { border-color: transparent }
+    to {
+        border-color: transparent;
+    }
 }
 
 .acd-peer {
@@ -580,7 +590,7 @@
 }
 
 .acd-peer.invisible {
-    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAwSURBVChTY/j//z8cA0EDOh+vJJjGJwll45YE81E4WBTjlQTT+CShbNyS////ZwAAVxKXcckJBiYAAAAASUVORK5CYII=');
+    background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNv1OCegAAAAwSURBVChTY/j//z8cA0EDOh+vJJjGJwll45YE81E4WBTjlQTT+CShbNyS////ZwAAVxKXcckJBiYAAAAASUVORK5CYII=");
     background-repeat: repeat;
     background-color: white;
     opacity: 0.4;
@@ -630,7 +640,7 @@
 }
 
 .acd-peerButton-icon {
-    font-family: 'FabricMDL2Icons';
+    font-family: "FabricMDL2Icons";
     font-style: normal;
     font-weight: normal;
     justify-content: center;
@@ -661,7 +671,7 @@
     white-space: nowrap;
     padding: 6px 16px 6px 16px;
     cursor: default;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 .acd-palette-item {
@@ -681,7 +691,7 @@
 }
 
 .acd-palette-item:hover {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 /*
@@ -693,19 +703,19 @@
 }
 
 .acd-tree-item.selected {
-    background-color: #BCE2FF;
+    background-color: #bce2ff;
 }
 
 .acd-tree-item:hover {
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 .acd-tree-item.selected:hover {
-    background-color: #A3D8FF;
+    background-color: #a3d8ff;
 }
 
 .acd-tree-item-expandCollapseButton {
-    font-family: 'FabricMDL2Icons';
+    font-family: "FabricMDL2Icons";
     font-size: 10px;
 }
 
@@ -738,15 +748,15 @@
 .acd-toolbar {
     display: flex;
     flex: 0 0 auto;
-    background-color: #F1F1F1;
+    background-color: #f1f1f1;
     align-items: center;
-    border-bottom: 1px solid #D2D2D2;
+    border-bottom: 1px solid #d2d2d2;
 }
 
 .acd-toolbar-separator {
     width: 1px;
     height: 30px;
-    border-left: 1px solid #D2D2D2;
+    border-left: 1px solid #d2d2d2;
 }
 
 .acd-toolbar-label {
@@ -761,7 +771,7 @@
 }
 
 .acd-toolbar-button {
-    font-family: 'Segoe UI', sans-serif;
+    font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     font-weight: normal;
     padding: 10px;
@@ -798,7 +808,7 @@
 }
 
 .acd-toolbar-button::before {
-    font-family: 'FabricMDL2Icons';
+    font-family: "FabricMDL2Icons";
     font-size: 20px;
     margin-right: 8px;
 }
@@ -822,15 +832,15 @@
 
 .default-ac-media-poster.empty {
     height: 200px;
-    background-color: #F2F2F2;
+    background-color: #f2f2f2;
 }
 
 .default-ac-media-playButton {
     width: 56px;
     height: 56px;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #eeeeee;
     border-radius: 28px;
-    box-shadow: 0px 0px 10px #EEEEEE;
+    box-shadow: 0px 0px 10px #eeeeee;
     background-color: rgba(255, 255, 255, 0.9);
     color: black;
     cursor: pointer;
@@ -849,19 +859,19 @@ a.default-ac-anchor {
 }
 
 a.default-ac-anchor:link {
-    color: #005A9E;
+    color: #005a9e;
 }
 
 a.default-ac-anchor:visited {
-    color: #005A9E;
+    color: #005a9e;
 }
 
 a.default-ac-anchor:link:active {
-    color: #004D84;
+    color: #004d84;
 }
 
 a.default-ac-anchor:visited:active {
-    color: #004D84;
+    color: #004d84;
 }
 
 .default-ac-container.default-ac-selectable,
@@ -879,7 +889,8 @@ a.default-ac-anchor:visited:active {
     background-color: rgba(0, 0, 0, 0.15) !important;
 }
 
-.default-ac-pushButton, .acd-dialog-button {
+.default-ac-pushButton,
+.acd-dialog-button {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
@@ -890,57 +901,59 @@ a.default-ac-anchor:visited:active {
     font-weight: 600;
     padding: 4px 10px 5px 10px;
     -webkit-user-select: none;
-        -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
     height: 31px;
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
     color: black;
-    border: 1px solid #CCCCCC;
+    border: 1px solid #cccccc;
     border-radius: 2px;
 }
 
-.default-ac-pushButton:hover, .acd-dialog-button:hover {
-    background-color: #DDDDDD;
-    border: 1px solid #BBBBBB;
+.default-ac-pushButton:hover,
+.acd-dialog-button:hover {
+    background-color: #dddddd;
+    border: 1px solid #bbbbbb;
 }
 
-.default-ac-pushButton:active, .acd-dialog-button:active {
-    background-color: #CCCCCC;
-    border: 1px solid #BBBBBB;
+.default-ac-pushButton:active,
+.acd-dialog-button:active {
+    background-color: #cccccc;
+    border: 1px solid #bbbbbb;
 }
 
 .default-ac-pushButton.subdued {
     color: #666666;
-    border: 1px solid #EEEEEE;
+    border: 1px solid #eeeeee;
 }
 
 .default-ac-pushButton.subdued:hover {
-    background-color: #0078D7;
+    background-color: #0078d7;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0078d7;
 }
 
 .default-ac-pushButton.expanded {
-    background-color: #0078D7;
+    background-color: #0078d7;
     color: white;
-    border: 1px solid #0078D7;
+    border: 1px solid #0078d7;
 }
 
 .default-ac-pushButton.expandable:after {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
     display: inline-block;
-    font-family: 'FabricMDL2Icons';
+    font-family: "FabricMDL2Icons";
     font-size: 10px;
     font-style: normal;
     font-weight: 900;
     margin: auto 0px auto 6px;
-    content: '\E70D';
+    content: "\E70D";
 }
 
 .default-ac-pushButton.expandable.expanded:after {
-    content: '\E70E';
+    content: "\E70E";
 }
 
 .default-ac-input {
@@ -969,7 +982,7 @@ a.default-ac-anchor:visited:active {
 .default-ac-input.default-ac-dateInput,
 .default-ac-input.default-ac-timeInput,
 .default-ac-input.default-ac-multichoiceInput {
-    border: 1px solid #DDDDDD;
+    border: 1px solid #dddddd;
     padding: 4px 8px 4px 8px;
 }
 
@@ -978,6 +991,202 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-textBlock.default-ac-selectable:hover {
-    color: #3A96DD !important;
+    color: #3a96dd !important;
     cursor: pointer;
+}
+/* PIC2CARD css changes*/
+.acd-image-conatainer {
+    display: flex;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    margin: 10px;
+    position: relative;
+}
+
+.acd-sample-image-container {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+}
+
+.acd-image-upload-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    border-right: solid 1px #dddbdb;
+}
+
+.acd-image-title {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 30px;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #0a0a0a;
+}
+
+.acd-image-title-content {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-family: Helvetica;
+    font-size: 12px;
+    opacity: 0.61;
+    color: #0a0a0a;
+}
+
+.acd-image-file-container {
+    width: 394px;
+    height: 394px;
+    margin-top: 30px;
+    display: flex;
+    align-self: center;
+    border: dashed 1px #cdcdcd;
+    background-color: #ffffff;
+}
+
+.acd-upload-control {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.acd-upload-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acd-image-placeholder {
+    max-width: 270px;
+}
+
+.acd-file-type {
+    height: 40px;
+    color: white;
+}
+.acd-file-type::-webkit-file-upload-button {
+    visibility: hidden;
+}
+.acd-file-type::before,
+.acd-card-button {
+    content: attr(button-name);
+    display: inline-block;
+    width: 238px;
+    height: 32px;
+    background-color: #286ec0;
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #ffffff;
+    border: 1px solid #286ec0;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    line-height: 30px;
+}
+
+.acd-file-type:hover::before {
+    border-color: black;
+}
+
+.acd-file-type:focus {
+    outline: none;
+}
+
+.acd-image-file-note {
+    font-family: Helvetica;
+    font-size: 10px;
+    color: #0a0a0a;
+    margin-top: 7px;
+}
+.acd-image-file-note .link {
+    color: #0367c1;
+    cursor: pointer;
+}
+.acd-image-upload {
+    width: 400px;
+    height: 300px;
+    border: dashed 1px #c9cbcc;
+    background-color: rgba(235, 237, 240, 0.32);
+    justify-content: space-evenly;
+}
+
+.acd-image-container {
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.acd-image-upload:hover {
+    box-shadow: 0 0 20px -5px #cccccc;
+    border: 1.5px dashed #cccccc;
+}
+
+.acd-image-container:hover > .acd-open-sample-item-title {
+    font-weight: bold;
+}
+
+.acd-sample-image {
+    max-width: 280px;
+    margin: 12px;
+    cursor: pointer;
+}
+
+.acd-image-text-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.acd-image-new-title {
+    background-color: #4195fe;
+    color: #ffffff;
+    padding: 3px 10px;
+    font-weight: bold;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.acd-image-upload-title {
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: bold;
+    color: #161717;
+    margin-top: 10px;
+}
+
+.acd-image-description {
+    opacity: 0.72;
+    font-family: Helvetica;
+    font-size: 14px;
+    text-align: center;
+    color: #161717;
+    margin-top: 10px;
+    width: 80%;
+}
+.acd-try-now-button {
+    width: 138px;
+    height: 31px;
+    border-radius: 2px;
+    background-color: #4195fe;
+    border: 1px solid #4195f3;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.acd-error-text {
+    font-size: 13px;
+    margin-top: 10px;
+    color: red;
+    font-family: Helvetica;
 }
