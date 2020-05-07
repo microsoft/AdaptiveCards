@@ -20,15 +20,18 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg"
+					"url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+					"altText": "Steak cut with fries"
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg"
+					"url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+					"altText": "Fried chicken with lettuce"
 				},
 				{
 					"type": "Image",
-					"url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg"
+					"url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg",
+					"altText": "Tofu topped with red sauce"
 				}
 			]
 		}
