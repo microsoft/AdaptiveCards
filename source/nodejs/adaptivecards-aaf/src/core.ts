@@ -262,6 +262,8 @@ export class AdaptiveApplet {
             card.parse(cardPayload, new Adaptive.SerializationContext(Adaptive.Versions.v1_2));
             card.onExecuteAction = (action: Adaptive.Action) => {
                 if (action.id === "refreshCard") {
+                    clearElementChildren(this._refreshButtonHostElement);
+                    
                     this.internalExecuteAction(refreshAction, ActivityInvocationTrigger.Automatic, 0);
                 }
             }
@@ -270,6 +272,8 @@ export class AdaptiveApplet {
         }
 
         if (renderedRefreshButton) {
+            clearElementChildren(this._refreshButtonHostElement);
+
             this._refreshButtonHostElement.appendChild(renderedRefreshButton);
 
             this._refreshButtonHostElement.style.removeProperty("display");
