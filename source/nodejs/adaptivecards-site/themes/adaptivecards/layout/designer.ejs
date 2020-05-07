@@ -63,261 +63,80 @@
 			}
 		}
 
-		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
-			console.log("Local storage is not available.");
-		}
-
-		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
-		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
-		
-		<% if (page.previewFeaturesEnabled) { %>
-			// Enable the version picker
-			ACDesigner.GlobalSettings.showVersionPicker = true;
-        <% } %>
-        
-        // Override the build flag if preview=1 is specified on the URL
-        if (getParameterByName("preview") === "1") {
-            ACDesigner.GlobalSettings.showVersionPicker = true;            
-        }
-
-		let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
-		designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
-		designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
-
-		let hostDocsButton = new ACDesigner.ToolbarButton(
-			"hostDocs",
-			"Host App Docs",
-			"acd-icon-storyboard",
-			function () {
-				window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
-			}
-		);
-		hostDocsButton.separator = false;
-		hostDocsButton.toolTip = "Learn more about the Host Apps";
-		designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
-
-		let templateDocsButton = new ACDesigner.ToolbarButton(
-			"templateDocs",
-			"Templating Docs",
-			"acd-icon-scopeTemplate",
-			function () {
-				appInsights.trackEvent({ name: "ViewedTemplatingDocs" }, { Origin: "Designer" });
-				window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
-			}
-		);
-		templateDocsButton.separator = false;
-		templateDocsButton.toolTip = "Learn more about Adaptive Cards templating";
-		designer.toolbar.insertElementAfter(templateDocsButton, "hostDocs");
-
-		designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
-
-
-		let visualizerButton = new ACDesigner.ToolbarButton(
-			"visualizerButton",
-			"Classic Visualizer",
-			null,
-			function () {
-				window.open("<%- config.root %>visualizer")
-			}
-		);
-		visualizerButton.separator = true;
-		visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-		designer.toolbar.addElement(visualizerButton);
-
-		let feedbackButton = new ACDesigner.ToolbarButton(
-			"feedbackButton",
-			"Feedback",
-			"acd-icon-feedback",
-			function () {
-				window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
-					+ encodeURIComponent("[Designer] [Your feedback title here]")
-					+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
-			}
-		);
-
-		feedbackButton.separator = true;
-		feedbackButton.displayCaption = false;
-		feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-		feedbackButton.toolTip = "Provide feedback about the Designer";
-		designer.toolbar.addElement(feedbackButton);
-
-
-		var cardUrl = getParameterByName("card", null);
-		var dataUrl = getParameterByName("data", null);
-
-		if (cardUrl) {
-
-			var xhttp = new XMLHttpRequest();
-			xhttp.onload = function () {
-				designer.attachTo(document.getElementById("designerRootHost"));
-
-				if (xhttp.responseText && xhttp.responseText != "") {
-					designer.setCard(JSON.parse(xhttp.responseText));
+		function initializeDesigner() {
+			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
+			designer.assetPath = "<%- config.root %>node_modules/adaptivecards-designer/dist/";
+			designer.sampleCatalogueUrl = "<%- config.root %>designer/sample-catalogue.json";
+			designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+			
+			let hostDocsButton = new ACDesigner.ToolbarButton(
+				"hostDocs",
+				"Host App Docs",
+				"acd-icon-storyboard",
+				function () {
+					window.open("https://docs.microsoft.com/en-us/adaptive-cards/resources/partners")
 				}
+			);
+			hostDocsButton.separator = false;
+			hostDocsButton.toolTip = "Learn more about the Host Apps";
+			designer.toolbar.insertElementAfter(hostDocsButton, ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker);
 
-				// TODO: Talk to David: I want to put the sampleData setter here but it was failing
+			let templateDocsButton = new ACDesigner.ToolbarButton(
+				"templateDocs",
+				"Templating Docs",
+				"acd-icon-scopeTemplate",
+				function () {
+					appInsights.trackEvent({ name: "ViewedTemplatingDocs" }, { Origin: "Designer" });
+					window.open("https://docs.microsoft.com/en-us/adaptive-cards/templating/");
+				}
+			);
+			templateDocsButton.separator = false;
+			templateDocsButton.toolTip = "Learn more about Adaptive Cards templating";
+			designer.toolbar.insertElementAfter(templateDocsButton, "hostDocs");
 
-				history.replaceState(null, null, "<%- config.root %>designer");
-			};
+			designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
-			// TODO: when the designer has an addError API we should log that we failed to load the requested card
-			// xhttp.onerror = function() {
-			// 	designer.
-			// };
 
-			try {
-				xhttp.open("GET", cardUrl, true);
-				xhttp.send();
-			} catch (e) {
-				designer.attachTo(document.getElementById("designerRootHost"));
-			}
-		} else {
+			let visualizerButton = new ACDesigner.ToolbarButton(
+				"visualizerButton",
+				"Classic Visualizer",
+				null,
+				function () {
+					window.open("<%- config.root %>visualizer")
+				}
+			);
+			visualizerButton.separator = true;
+			visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+			designer.toolbar.addElement(visualizerButton);
+
+			let feedbackButton = new ACDesigner.ToolbarButton(
+				"feedbackButton",
+				"Feedback",
+				"acd-icon-feedback",
+				function () {
+					window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
+						+ encodeURIComponent("[Designer] [Your feedback title here]")
+						+ "&body=" + encodeURIComponent("[Your detailed feedback here]"))
+				}
+			);
+
+			feedbackButton.separator = true;
+			feedbackButton.displayCaption = false;
+			feedbackButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
+			feedbackButton.toolTip = "Provide feedback about the Designer";
+			designer.toolbar.addElement(feedbackButton);
+
 			designer.attachTo(document.getElementById("designerRootHost"));
-
-			designer.setCard({
-				"type": "AdaptiveCard",
-				"body": [
-					{
-						"type": "Container",
-						"items": [
-							{
-								"type": "TextBlock",
-								"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) *(Preview)*",
-								"size": "Medium",
-								"wrap": true
-							},
-							{
-								"type": "TextBlock",
-								"text": "Click the **Preview mode** toolbar button to see the card bound to the **Sample Data** in the lower-right. Sample Data helps design your card by simulating the real data.",
-								"wrap": true
-							},
-							{
-								"type": "TextBlock",
-								"text": "When you're ready to populate it with real data, use the Adaptive Card [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk).",
-								"wrap": true
-							}
-						],
-						"style": "good",
-						"bleed": true
-					},
-					{
-						"type": "TextBlock",
-						"size": "Medium",
-						"weight": "Bolder",
-						"text": "{title}"
-					},
-					{
-						"type": "ColumnSet",
-						"columns": [
-							{
-								"type": "Column",
-								"items": [
-									{
-										"type": "Image",
-										"style": "Person",
-										"url": "{creator.profileImage}",
-										"size": "Small"
-									}
-								],
-								"width": "auto"
-							},
-							{
-								"type": "Column",
-								"items": [
-									{
-										"type": "TextBlock",
-										"weight": "Bolder",
-										"text": "{creator.name}",
-										"wrap": true
-									},
-									{
-										"type": "TextBlock",
-										"spacing": "None",
-										"text": "Created {{DATE({createdUtc},SHORT)}}",
-										"isSubtle": true,
-										"wrap": true
-									}
-								],
-								"width": "stretch"
-							}
-						]
-					},
-					{
-						"type": "TextBlock",
-						"text": "{description}",
-						"wrap": true
-					},
-					{
-						"type": "FactSet",
-						"facts": [
-							{
-								"$data": "{properties}",
-								"title": "{key}:",
-								"value": "{value}"
-							}
-						]
-					}
-				],
-				"actions": [
-					{
-						"type": "Action.ShowCard",
-						"title": "Set due date",
-						"card": {
-							"type": "AdaptiveCard",
-							"body": [
-								{
-									"type": "Input.Date",
-									"id": "dueDate"
-								},
-								{
-									"type": "Input.Text",
-									"id": "comment",
-									"placeholder": "Add a comment",
-									"isMultiline": true
-								}
-							],
-							"actions": [
-								{
-									"type": "Action.Submit",
-									"title": "OK"
-								}
-							],
-							"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
-						}
-					},
-					{
-						"type": "Action.OpenUrl",
-						"title": "View",
-						"url": "{viewUrl}"
-					}
-				],
-				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-				"version": "1.0"
-			});
-
-		}
-
-		require.config({
-			paths: {
-				'vs': '<%- config.root %>node_modules/monaco-editor/min/vs'
-			}
-		});
-		require(['vs/editor/editor.main'], function () {
-
 			designer.monacoModuleLoaded();
 
-			// Override the designer schema validation to enable syntax highlighting
-			// TODO: Find a way to also validate against the schema
-			monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
-				validate: true
-			});
+			var cardUrl = getParameterByName("card", null);
+			var dataUrl = getParameterByName("data", null);
 
 			if (dataUrl) {
-				var xhttp = new XMLHttpRequest();
-				xhttp.onload = function () {
-					if (xhttp.responseText && xhttp.responseText != "") {
-						var sampleData = JSON.parse(xhttp.responseText);
+				var dataXhttp = new XMLHttpRequest();
+				dataXhttp.onload = function () {
+					if (dataXhttp.responseText && dataXhttp.responseText != "") {
+						var sampleData = JSON.parse(dataXhttp.responseText);
 						designer.sampleData = sampleData;
 					}
 				};
@@ -328,10 +147,9 @@
 				// };
 
 				try {
-					xhttp.open("GET", dataUrl, true);
-					xhttp.send();
+					dataXhttp.open("GET", dataUrl, true);
+					dataXhttp.send();
 				} catch (e) {
-
 				}
 			} else {
 				// Add sample data
@@ -353,12 +171,185 @@
 				};
 
 				designer.sampleData = sampleData;
-
-
 			}
 
-			designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+			if (cardUrl) {
+				var cardXhttp = new XMLHttpRequest();
+				cardXhttp.onload = function () {
+					if (cardXhttp.responseText && cardXhttp.responseText != "") {
+						designer.setCard(JSON.parse(cardXhttp.responseText));
+					}
 
+					// TODO: Talk to David: I want to put the sampleData setter here but it was failing
+
+					history.replaceState(null, null, "<%- config.root %>designer");
+				};
+
+				// TODO: when the designer has an addError API we should log that we failed to load the requested card
+				// xhttp.onerror = function() {
+				// 	designer.
+				// };
+
+				try {
+					cardXhttp.open("GET", cardUrl, true);
+					cardXhttp.send();
+				} catch (e) {
+				}
+			} else {
+				designer.setCard({
+					"type": "AdaptiveCard",
+					"body": [
+						{
+							"type": "Container",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) *(Preview)*",
+									"size": "Medium",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "Click the **Preview mode** toolbar button to see the card bound to the **Sample Data** in the lower-right. Sample Data helps design your card by simulating the real data.",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"text": "When you're ready to populate it with real data, use the Adaptive Card [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk).",
+									"wrap": true
+								}
+							],
+							"style": "good",
+							"bleed": true
+						},
+						{
+							"type": "TextBlock",
+							"size": "Medium",
+							"weight": "Bolder",
+							"text": "${title}"
+						},
+						{
+							"type": "ColumnSet",
+							"columns": [
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "Image",
+											"style": "Person",
+											"url": "${creator.profileImage}",
+											"size": "Small"
+										}
+									],
+									"width": "auto"
+								},
+								{
+									"type": "Column",
+									"items": [
+										{
+											"type": "TextBlock",
+											"weight": "Bolder",
+											"text": "${creator.name}",
+											"wrap": true
+										},
+										{
+											"type": "TextBlock",
+											"spacing": "None",
+											"text": "Created {{DATE({createdUtc},SHORT)}}",
+											"isSubtle": true,
+											"wrap": true
+										}
+									],
+									"width": "stretch"
+								}
+							]
+						},
+						{
+							"type": "TextBlock",
+							"text": "{description}",
+							"wrap": true
+						},
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"$data": "${properties}",
+									"title": "${key}:",
+									"value": "${value}"
+								}
+							]
+						}
+					],
+					"actions": [
+						{
+							"type": "Action.ShowCard",
+							"title": "Set due date",
+							"card": {
+								"type": "AdaptiveCard",
+								"body": [
+									{
+										"type": "Input.Date",
+										"id": "dueDate"
+									},
+									{
+										"type": "Input.Text",
+										"id": "comment",
+										"placeholder": "Add a comment",
+										"isMultiline": true
+									}
+								],
+								"actions": [
+									{
+										"type": "Action.Submit",
+										"title": "OK"
+									}
+								],
+								"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+							}
+						},
+						{
+							"type": "Action.OpenUrl",
+							"title": "View",
+							"url": "${viewUrl}"
+						}
+					],
+					"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+					"version": "1.0"
+				});
+			}
+		}
+
+		if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			console.log("Local storage is not available.");
+		}
+
+		ACDesigner.GlobalSettings.enableDataBindingSupport = true;
+		ACDesigner.GlobalSettings.showDataStructureToolbox = false;
+		ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+		ACDesigner.GlobalSettings.showVersionPicker = true;
+		
+		<% if (page.previewFeaturesEnabled) { %>
+
+        <% } %>
+        
+
+        if (getParameterByName("preview") === "1") {
+       
+        }
+
+		require.config({
+			paths: {
+				'vs': '<%- config.root %>node_modules/monaco-editor/min/vs'
+			}
+		});
+		require(['vs/editor/editor.main'], function () {
+			// Override the designer schema validation to enable syntax highlighting
+			// TODO: Find a way to also validate against the schema
+			monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
+				validate: true
+			});
+
+			initializeDesigner();
 		});
 	});
 </script>

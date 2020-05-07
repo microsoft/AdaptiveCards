@@ -17,7 +17,7 @@
             "someProperty": "foo",
             "fallback": {
                 "type": "TextBlock",
-                "text": "{fallback.message}"
+                "text": "${fallback.message}"
             }
         }
     ]

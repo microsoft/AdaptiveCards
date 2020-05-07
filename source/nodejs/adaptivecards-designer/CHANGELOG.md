@@ -28,3 +28,4 @@
 - The `HostContainer` class now have a `targetVersion` property
     - When the selected `HostContainer` changes, its target version is automatically selected in the version picker. This behavior can be disabled by setting `GlobalsSettings.selectedHostContainerControlsTargetVersion` to `false`
     - If a target version that is greater than that supported by the current `HostContainer` is selected, a **Warning** message is displayed to let the user know they might be using Adaptive Card capabilities that are not compatible with the target host application. This behavior can be disabled by setting `GlobalSettings.showTargetVersionMismatchWarning` to `false`.
+- Monaco now needs to be loaded before the designer component is initialized, which includes calling `setCard` or setting the `sampleData` property. The `monacoModuleLoaded` function must be called before the `attachTo` method.

@@ -2,7 +2,7 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "0.5",
-    "backgroundImage": "{backgroundImageUrl}",
+    "backgroundImage": "${backgroundImageUrl}",
     "body": [
         {
             "type": "ColumnSet",
@@ -13,7 +13,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "{gameImageUrl}",
+                            "url": "${gameImageUrl}",
                             "size": "Stretch"
                         }
                     ]
@@ -24,7 +24,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{action.title}",
+                            "text": "${action.title}",
                             "color": "Light",
                             "weight": "Bolder",
                             "wrap": true,
