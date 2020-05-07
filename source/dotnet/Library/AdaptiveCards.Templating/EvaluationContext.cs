@@ -5,7 +5,7 @@ namespace AdaptiveCards.Templating
     /// <summary>
     /// Provides Data Context to AdaptiveCardsTemplate Parser
     /// </summary>
-    public sealed class AdaptiveCardsEvaluationContext
+    public sealed class EvaluationContext
     {
         /// <summary>
         /// Provides Root Data Context 
@@ -19,7 +19,7 @@ namespace AdaptiveCards.Templating
         ///         ""lastName"": ""World""
         /// }";
         ///
-        /// var context = new AdaptiveCardsEvaluationContext()
+        /// var context = new EvaluationContext()
         /// {
         ///     Root = jsonData
         /// };
@@ -28,6 +28,23 @@ namespace AdaptiveCards.Templating
         /// </example>
         public object Root
         { get; set; }
+
+        /// <summary>
+        /// default consturctor
+        /// </summary>
+        public EvaluationContext()
+        {
+            Root = null;
+        }
+
+        /// <summary>
+        /// constructor for <c>EvaluationContext</c> that takes one argument that will be used for root data context
+        /// </summary>
+        /// <param name="rootData"></param>
+        public EvaluationContext(object rootData)
+        {
+            Root = rootData;
+        }
 
     }
 }

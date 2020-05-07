@@ -8,8 +8,8 @@ using System;
 namespace AdaptiveCards.Templating
 {
     /// <summary>
-    /// The main <c>AdaptiveCardsTemplate</c> class
-    /// Contain all methods for performaing data binding to <c>AdaptiveCardsTemplate</c>
+    /// The main <c>AdaptiveCardTemplate</c> class
+    /// Contain all methods for performaing data binding to <c>AdaptiveCardTemplate</c>
     /// <list type="bullet">
     /// <item>
     /// <term>Expand</term>
@@ -17,19 +17,19 @@ namespace AdaptiveCards.Templating
     /// </item>
     /// </list>
     /// </summary>
-    public sealed class AdaptiveCardsTemplate
+    public sealed class AdaptiveCardTemplate
     {
         private IParseTree parseTree;
         private string jsonTemplateString;
 
         /// <summary>
-        /// <para>Creates an instance of AdaptiveCardsTemplate</para>
+        /// <para>Creates an instance of AdaptiveCardTemplate</para>
         /// </summary>
         /// <remarks>
         /// <para>Once created, it will contain a parsed tree based on jsonTemplate</para>
         /// <para>Data is bound by calling <c>Expand</c> on the object</para>
         /// <para>The intance can be rebound with different data by calling <c>Expand</c></para>
-        /// <see cref="Expand(AdaptiveCardsEvaluationContext, Func{string, object})"/>
+        /// <see cref="Expand(EvaluationContext, Func{string, object})"/>
         /// </remarks>
         /// <example>
         /// <code>
@@ -44,11 +44,11 @@ namespace AdaptiveCards.Templating
         ///        }
         ///    ]
         ///}"
-        /// var template = new AdaptiveCardsTemplate(jsonTemplate);
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
         /// </code>
         /// </example>
         /// <param name="jsonTemplate">string in json or seriazable object</param>
-        public AdaptiveCardsTemplate(object jsonTemplate)
+        public AdaptiveCardTemplate(object jsonTemplate)
         {
             if (jsonTemplate != null)
             {
@@ -67,10 +67,10 @@ namespace AdaptiveCards.Templating
         }
 
         /// <summary>
-        /// Bind data in <paramref name="context"/> to the instance of AdaptiveCardsTemplate
+        /// Bind data in <paramref name="context"/> to the instance of AdaptiveCardTemplate
         /// </summary>
         /// <remarks>
-        /// <para> Data can be also inlined in AdaptiveCardsTemplate payload</para>
+        /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
         /// <para> Expand can be called multiple times with different or same <paramref name="context"/></para>
         /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
         /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
@@ -80,14 +80,14 @@ namespace AdaptiveCards.Templating
         /// <param name="nullSubstitutionOption">defines behavior when no suitable data is found for a template entry</param>
         /// <example>
         /// <code>
-        /// var template = new AdaptiveCardsTemplate(jsonTemplate);
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
         /// var context = new AdaptiveCardsEvaluationContext(jsonData);
         /// template.Expand(context);
         /// </code>
         /// </example>
-        /// <seealso cref="AdaptiveCardsEvaluationContext"/>
+        /// <seealso cref="EvaluationContext"/>
         /// <returns>json as string</returns>
-        public string Expand(AdaptiveCardsEvaluationContext context, Func<string, object> nullSubstitutionOption = null)
+        public string Expand(EvaluationContext context, Func<string, object> nullSubstitutionOption = null)
         {
             if (parseTree == null)
             {
@@ -110,6 +110,33 @@ namespace AdaptiveCards.Templating
 
             AdaptiveCardsTemplateVisitor eval = new AdaptiveCardsTemplateVisitor(nullSubstitutionOption, jsonData);
             return eval.Visit(parseTree).ToString();
+        }
+
+        /// <summary>
+        /// Create a root data context using <paramref name="rootData"/>, and bind it to the instance of AdaptiveCardTemplate
+        /// </summary>
+        /// <remarks>
+        /// <para> Data can be also inlined in AdaptiveCardTemplate payload</para>
+        /// <para> Expand can be called multiple times with different or same <paramref name="rootData"/></para>
+        /// <para> Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser</para>
+        /// <para> <paramref name="nullSubstitutionOption"/> defines behavior when no suitable data is found for a template entry</para>
+        /// <para> Default behavior is leaving templated string unchanged</para>
+        /// </remarks>
+        /// <param name="rootData">Serializable object or a string in valid json format that will be used as data context</param>
+        /// <param name="nullSubstitutionOption">Defines behavior when no suitable data is found for a template entry</param>
+        /// <example>
+        /// <code>
+        /// var template = new AdaptiveCardTemplate(jsonTemplate);
+        /// template.Expand(rootData);
+        /// </code>
+        /// </example>
+        /// <seealso cref="EvaluationContext"/>
+        /// <returns>json as string</returns>
+        public string Expand(object rootData, Func<string, object> nullSubstitutionOption = null)
+        {
+            var context = new EvaluationContext(rootData);
+
+            return Expand(context, nullSubstitutionOption);
         }
     }
 }

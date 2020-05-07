@@ -3,11 +3,10 @@
 
 ## Contents
 
-- [AdaptiveCardsEvaluationContext](#T-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext 'AdaptiveCards.Templating.AdaptiveCardsEvaluationContext')
-  - [Root](#P-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext-Root 'AdaptiveCards.Templating.AdaptiveCardsEvaluationContext.Root')
-- [AdaptiveCardsTemplate](#T-AdaptiveCards-Templating-AdaptiveCardsTemplate 'AdaptiveCards.Templating.AdaptiveCardsTemplate')
-  - [#ctor(jsonTemplate)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplate-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardsTemplate.#ctor(System.Object)')
-  - [Expand(context,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplate-Expand-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardsTemplate.Expand(AdaptiveCards.Templating.AdaptiveCardsEvaluationContext,System.Func{System.String,System.Object})')
+- [AdaptiveCardTemplate](#T-AdaptiveCards-Templating-AdaptiveCardTemplate 'AdaptiveCards.Templating.AdaptiveCardTemplate')
+  - [#ctor(jsonTemplate)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardTemplate.#ctor(System.Object)')
+  - [Expand(context,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
+  - [Expand(rootData,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-System-Object,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(System.Object,System.Func{System.String,System.Object})')
 - [AdaptiveCardsTemplateParserBaseVisitor\`1](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1')
   - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext)')
   - [VisitJson(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitJson(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext)')
@@ -70,6 +69,10 @@
   - [#ctor(jtoken,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
   - [#ctor(text,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.String,Newtonsoft.Json.Linq.JToken)')
   - [GetDataContextAtIndex(index)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-GetDataContextAtIndex-System-Int32- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.GetDataContextAtIndex(System.Int32)')
+- [EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
+  - [#ctor()](#M-AdaptiveCards-Templating-EvaluationContext-#ctor 'AdaptiveCards.Templating.EvaluationContext.#ctor')
+  - [#ctor(rootData)](#M-AdaptiveCards-Templating-EvaluationContext-#ctor-System-Object- 'AdaptiveCards.Templating.EvaluationContext.#ctor(System.Object)')
+  - [Root](#P-AdaptiveCards-Templating-EvaluationContext-Root 'AdaptiveCards.Templating.EvaluationContext.Root')
 - [EvaluationResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult')
   - [EvaluatedToFalse](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToFalse 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse')
   - [EvaluatedToTrue](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToTrue 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue')
@@ -100,8 +103,8 @@
   - [VisitValueTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
   - [VisitValueTrue(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTrue(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext)')
 
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext'></a>
-## AdaptiveCardsEvaluationContext `type`
+<a name='T-AdaptiveCards-Templating-AdaptiveCardTemplate'></a>
+## AdaptiveCardTemplate `type`
 
 ##### Namespace
 
@@ -109,49 +112,15 @@ AdaptiveCards.Templating
 
 ##### Summary
 
-Provides Data Context to AdaptiveCardsTemplate Parser
+The main `AdaptiveCardTemplate` class
+Contain all methods for performaing data binding to `AdaptiveCardTemplate`
 
-<a name='P-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext-Root'></a>
-### Root `property`
-
-##### Summary
-
-Provides Root Data Context
-
-##### Example
-
-```
- 
- string jsonData = @"{
-     ""person"": {
-         ""firstName"": ""Hello"",
-         ""lastName"": ""World""
- }";
- var context = new AdaptiveCardsEvaluationContext()
- {
-     Root = jsonData
- };
- 
-```
-
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplate'></a>
-## AdaptiveCardsTemplate `type`
-
-##### Namespace
-
-AdaptiveCards.Templating
-
-##### Summary
-
-The main `AdaptiveCardsTemplate` class
-Contain all methods for performaing data binding to `AdaptiveCardsTemplate`
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplate-#ctor-System-Object-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardTemplate-#ctor-System-Object-'></a>
 ### #ctor(jsonTemplate) `constructor`
 
 ##### Summary
 
-Creates an instance of AdaptiveCardsTemplate
+Creates an instance of AdaptiveCardTemplate
 
 ##### Parameters
 
@@ -173,7 +142,7 @@ Creates an instance of AdaptiveCardsTemplate
         }
     ]
 }"
- var template = new AdaptiveCardsTemplate(jsonTemplate);
+ var template = new AdaptiveCardTemplate(jsonTemplate);
  
 ```
 
@@ -185,14 +154,14 @@ Data is bound by calling `Expand` on the object
 
 The intance can be rebound with different data by calling `Expand`
 
-[Expand](#M-AdaptiveCards-Templating-AdaptiveCardsTemplate-Expand-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardsTemplate.Expand(AdaptiveCards.Templating.AdaptiveCardsEvaluationContext,System.Func{System.String,System.Object})')
+[Expand](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplate-Expand-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext,System-Func{System-String,System-Object}-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}-'></a>
 ### Expand(context,nullSubstitutionOption) `method`
 
 ##### Summary
 
-Bind data in `context` to the instance of AdaptiveCardsTemplate
+Bind data in `context` to the instance of AdaptiveCardTemplate
 
 ##### Returns
 
@@ -202,20 +171,20 @@ json as string
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsEvaluationContext](#T-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext 'AdaptiveCards.Templating.AdaptiveCardsEvaluationContext') | provides data context |
+| context | [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext') | provides data context |
 | nullSubstitutionOption | [System.Func{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{System.String,System.Object}') | defines behavior when no suitable data is found for a template entry |
 
 ##### Example
 
 ```
-var template = new AdaptiveCardsTemplate(jsonTemplate);
+var template = new AdaptiveCardTemplate(jsonTemplate);
 var context = new AdaptiveCardsEvaluationContext(jsonData);
 template.Expand(context);
 ```
 
 ##### Remarks
 
-Data can be also inlined in AdaptiveCardsTemplate payload
+Data can be also inlined in AdaptiveCardTemplate payload
 
 Expand can be called multiple times with different or same `context`
 
@@ -227,7 +196,48 @@ Default behavior is leaving templated string unchanged
 
 ##### See Also
 
-- [AdaptiveCards.Templating.AdaptiveCardsEvaluationContext](#T-AdaptiveCards-Templating-AdaptiveCardsEvaluationContext 'AdaptiveCards.Templating.AdaptiveCardsEvaluationContext')
+- [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-System-Object,System-Func{System-String,System-Object}-'></a>
+### Expand(rootData,nullSubstitutionOption) `method`
+
+##### Summary
+
+Create a root data context using `rootData`, and bind it to the instance of AdaptiveCardTemplate
+
+##### Returns
+
+json as string
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| rootData | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Serializable object or a string in valid json format that will be used as data context |
+| nullSubstitutionOption | [System.Func{System.String,System.Object}](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Func 'System.Func{System.String,System.Object}') | Defines behavior when no suitable data is found for a template entry |
+
+##### Example
+
+```
+var template = new AdaptiveCardTemplate(jsonTemplate);
+template.Expand(rootData);
+```
+
+##### Remarks
+
+Data can be also inlined in AdaptiveCardTemplate payload
+
+Expand can be called multiple times with different or same `rootData`
+
+Returned string can be invalid AdaptiveCards, such validation will be performed by AdaptiveCards Parser
+
+`nullSubstitutionOption` defines behavior when no suitable data is found for a template entry
+
+Default behavior is leaving templated string unchanged
+
+##### See Also
+
+- [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1'></a>
 ## AdaptiveCardsTemplateParserBaseVisitor\`1 `type`
@@ -1185,6 +1195,64 @@ retrieve a [JObject](#T-Newtonsoft-Json-Linq-JObject 'Newtonsoft.Json.Linq.JObje
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | index | [System.Int32](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Int32 'System.Int32') |  |
+
+<a name='T-AdaptiveCards-Templating-EvaluationContext'></a>
+## EvaluationContext `type`
+
+##### Namespace
+
+AdaptiveCards.Templating
+
+##### Summary
+
+Provides Data Context to AdaptiveCardsTemplate Parser
+
+<a name='M-AdaptiveCards-Templating-EvaluationContext-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+default consturctor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-Templating-EvaluationContext-#ctor-System-Object-'></a>
+### #ctor(rootData) `constructor`
+
+##### Summary
+
+constructor for `EvaluationContext` that takes one argument that will be used for root data context
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| rootData | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
+
+<a name='P-AdaptiveCards-Templating-EvaluationContext-Root'></a>
+### Root `property`
+
+##### Summary
+
+Provides Root Data Context
+
+##### Example
+
+```
+ 
+ string jsonData = @"{
+     ""person"": {
+         ""firstName"": ""Hello"",
+         ""lastName"": ""World""
+ }";
+ var context = new EvaluationContext()
+ {
+     Root = jsonData
+ };
+ 
+```
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult'></a>
 ## EvaluationResult `type`
