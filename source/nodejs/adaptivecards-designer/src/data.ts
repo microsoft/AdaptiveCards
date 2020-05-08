@@ -211,12 +211,14 @@ export class ObjectData extends DataType {
     static deriveFrom(parent: FieldDefinition, input: object): ObjectData {
         let result = new ObjectData(parent);
 
-        for (let key of Object.keys(input)) {
-            let field = new FieldDefinition(parent);
-            field.dataType =  DataType.deriveFrom(field, input[key]);
-            field.name = key;
+        if (input !== null) {
+            for (let key of Object.keys(input)) {
+                let field = new FieldDefinition(parent);
+                field.dataType =  DataType.deriveFrom(field, input[key]);
+                field.name = key;
 
-            result.fields.push(field);
+                result.fields.push(field);
+            }
         }
 
         return result;
