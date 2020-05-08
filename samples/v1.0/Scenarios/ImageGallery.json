@@ -20,39 +20,48 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=100"
+					"url": "https://picsum.photos/200/200?image=100",
+					"altText": "White beach panorama"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=200"
+					"url": "https://picsum.photos/300/200?image=200",
+					"altText": "Cow on a grassy field"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=301"
+					"url": "https://picsum.photos/300/200?image=301",
+					"altText": "Orange leaves on the sidewalk of a park"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=400"
+					"url": "https://picsum.photos/200/200?image=400",
+					"altText": "Green leaves"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=500"
+					"url": "https://picsum.photos/300/200?image=500",
+					"altText": "Top of a sky scrapper"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/200/200?image=600"
+					"url": "https://picsum.photos/200/200?image=600",
+					"altText": "Foggy forest"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=700"
+					"url": "https://picsum.photos/300/200?image=700",
+					"altText": "Picure of the blue ocean"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=800"
+					"url": "https://picsum.photos/300/200?image=800",
+					"altText": "Crowded train station"
 				},
 				{
 					"type": "Image",
-					"url": "https://picsum.photos/300/200?image=900"
+					"url": "https://picsum.photos/300/200?image=900",
+					"altText": "Sunset under a dock"
 				}
 			]
 		}
