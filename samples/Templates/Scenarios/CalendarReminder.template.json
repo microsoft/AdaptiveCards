@@ -2,7 +2,7 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
-    "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at ${formatDateTime(start.dateTime, 'HH:mm')}pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
+    "speak": "<s>Your  meeting about \"Adaptive Card design session\"<break strength='weak'/> is starting at 12:30pm</s><s>Do you want to snooze <break strength='weak'/> or do you want to send a late notification to the attendees?</s>",
     "body": [
         {
             "type": "TextBlock",
@@ -33,9 +33,16 @@
             "value": "${reminders.overrides[0].minutes}",
             "choices": [
                 {
-                    "$data": "${reminders.overrides}",
-                    "title": "${minutes} minutes",
-                    "value": "${minutes}"
+                    "title": "${reminders.overrides[0].minutes} minutes",
+                    "value": "${reminders.overrides[0].minutes}"
+                },
+                {
+                    "title": "${reminders.overrides[1].minutes} minutes",
+                    "value": "${reminders.overrides[1].minutes}"
+                },
+                {
+                    "title": "${reminders.overrides[2].minutes} minutes",
+                    "value": "${reminders.overrides[2].minutes}"
                 }
             ]
         }

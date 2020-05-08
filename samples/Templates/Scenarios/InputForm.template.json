@@ -30,20 +30,35 @@
                             "size": "Small"
                         },
                         {
-                            "type": "Container",
-                            "$data": "${properties}",
-                            "items": [
-                                {
-                                    "type": "TextBlock",
-                                    "text": "${title}",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "Input.Text",
-                                    "id": "${if(title == 'Your Name', 'myName', if(title == 'Your email', 'myEmail', 'myTel'))}",
-                                    "placeholder": "${placeholder}"
-                                }
-                            ]
+                            "type": "TextBlock",
+                            "text": "${properties[0].title}",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "myName",
+                            "placeholder": "${properties[0].placeholder}"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${properties[1].title}",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "myEmail",
+                            "placeholder": "${properties[1].placeholder}",
+                            "style": "Email"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${properties[2].title}"
+                        },
+                        {
+                            "type": "Input.Text",
+                            "id": "myTel",
+                            "placeholder": "${properties[2].placeholder}",
+                            "style": "Tel"
                         }
                     ]
                 },
