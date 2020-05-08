@@ -21,7 +21,7 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "{{DATE(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
+                    "text": "{{DATE(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
                 }
             ]
         },
@@ -43,7 +43,7 @@
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "${if(change >= 0, '▲', '▼')} USD ${change}%",
+                                    "text": "${if(change >= 0, '▲', '▼')} USD ${formatNumber(change,2)}%",
                                     "color": "${if(change >= 0, 'good', 'attention')}",
                                     "spacing": "None"
                                 }
