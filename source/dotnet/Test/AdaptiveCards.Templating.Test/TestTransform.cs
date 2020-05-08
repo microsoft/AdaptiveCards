@@ -2341,7 +2341,18 @@ namespace AdaptiveCards.Templating.Test
             {
                 Root = jsonData
             };
-            Expression.Functions.Add("stringFormat", new ExpressionEvaluator(null, StringFormat, ReturnType.String));
+            Expression.Functions.Add("stringFormat", (args) =>
+            {
+                string formattedString = "";
+
+                if (args[0] != null && args[1] != null && args[2] != null) 
+                {
+                    string format = args[0];
+                    string[] stringArguments = {args[1], args[2] };
+                    formattedString = string.Format(format, stringArguments);
+                }
+                return formattedString;
+            });//, new ExpressionEvaluator(null, StringFormat, ReturnType.String));
             string cardJson = transformer.Expand(context);
             Test.TestTemplate.AssertJsonEqual(@"{
                 ""type"": ""AdaptiveCard"",
@@ -2351,23 +2362,6 @@ namespace AdaptiveCards.Templating.Test
                     ""text"": ""My name is Andrew Leader""
                 }]
             }", cardJson);
-        }
-        private static (object value, string error) StringFormat(Expression expression, IMemory state, Options options)
-        {
-            var inputs = new List<string>();
-            foreach (var child in expression.Children)
-            {
-                var input = child.ToString();
-                if (state.TryGetValue(input, out var obj))
-                {
-                    input = obj.ToString();
-                }
-                inputs.Add(input);
-            }
-            var str = inputs[0];
-            inputs.RemoveAt(0);
-            var output = string.Format(str, inputs.ToArray());
-            return (output, null);
-        }
+        }        
     }
 }
