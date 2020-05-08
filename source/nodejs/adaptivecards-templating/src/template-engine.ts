@@ -189,9 +189,13 @@ export class Template {
                 catch (ex) {
                     // We'll swallow all exceptions here
                     evaluationResult = {
-                        value: "${" + childExpression.toString() + "}",
+                        value: undefined,
                         error: ex
                     };
+                }
+
+                if (evaluationResult.error) {
+                    evaluationResult.value = "${" + childExpression.toString() + "}";
                 }
 
                 result += evaluationResult.value.toString();
