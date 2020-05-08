@@ -1,0 +1,38 @@
+{
+	"employee": {
+		"name": "Matt",
+		"manager": 
+		{ 
+			"name": "Thomas" 
+		},
+		"peers": [
+			{
+				"name": "Andrew" 
+			}, 
+			{ 
+				"name": "Lei"
+			},
+			{ 
+				"name": "Mary Anne"
+			}, 
+			{ 
+				"name": "Adam"
+			}
+		]
+	},
+	"date" : "03/15/2018 12:00:00",
+	"requests" : [
+		{
+			"type": "monitor",
+			"price": 100
+		},
+		{
+			"type": "laptop",
+			"price": 2000
+		},
+		{
+			"price": 2000
+		}
+	],
+	"commitMessage": "{\"type\":\"Deployment\",\"buildId\":\"9542982\",\"releaseId\":\"129\",\"buildNumber\":\"20180504.3\",\"releaseName\":\"Release-104\",\"repoProvider\":\"GitHub\"}"
+}

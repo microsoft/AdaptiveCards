@@ -2,7 +2,7 @@
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
     "version": "1.0",
-    "speak": "<s>The forecast for Seattle January 20 is mostly clear with a High of 51 degrees and Low of 40 degrees</s>",
+    "speak": "<s>The forecast for Seattle ${formatEpoch(dt, 'MMMM d')} is mostly clear with a High of ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)} degrees and Low of ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)} degrees</s>",
     "body": [
         {
             "type": "TextBlock",
@@ -12,7 +12,7 @@
         },
         {
             "type": "TextBlock",
-            "text": "{{DATE(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
+            "text": "{{DATE(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
             "spacing": "None"
         },
         {
@@ -35,7 +35,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "${((main.temp * 100 - 27315) * 1.8 + 3200) / 100}",
+                            "text": "${formatNumber((main.temp - 273) * 9 / 5 + 32, 0)}",
                             "size": "ExtraLarge",
                             "spacing": "None"
                         }
@@ -59,12 +59,12 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Hi ${((main.temp_max * 1000 - 273150) * 1.8 + 32000) / 1000}",
+                            "text": "Hi ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)}",
                             "horizontalAlignment": "Left"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "Lo ${((main.temp_min * 1000 - 273150) * 1.8 + 32000) / 1000} ",
+                            "text": "Lo ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)}",
                             "horizontalAlignment": "Left",
                             "spacing": "None"
                         }
