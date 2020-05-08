@@ -20,7 +20,7 @@ Holds global settings that can be used to customize the way templates are expand
 
 ▪ **getUndefinedFieldValueSubstitutionString**? : *function* = undefined
 
-*Defined in [template-engine.ts:107](https://github.com/microsoft/AdaptiveCards/blob/bf1bfa514/source/nodejs/adaptivecards-templating/src/template-engine.ts#L107)*
+*Defined in [template-engine.ts:107](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L107)*
 
 Callback invoked when expression evaluation needs the value of a field in the source data object
 and that field is undefined or null. By default, expression evaluation will substitute an undefined

@@ -75,7 +75,7 @@ class TemplateObjectMemory implements AEL.MemoryInterface {
     }
 }
 
-/**
+/***
  * Holds global settings that can be used to customize the way templates are expanded.
  */
 export class GlobalSettings {
@@ -189,13 +189,9 @@ export class Template {
                 catch (ex) {
                     // We'll swallow all exceptions here
                     evaluationResult = {
-                        value: undefined,
+                        value: "${" + childExpression.toString() + "}",
                         error: ex
                     };
-                }
-
-                if (evaluationResult.error) {
-                    evaluationResult.value = "${" + childExpression.toString() + "}";
                 }
 
                 result += evaluationResult.value.toString();

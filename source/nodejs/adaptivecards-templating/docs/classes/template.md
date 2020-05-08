@@ -26,7 +26,7 @@ Represents a template that can be bound to data.
 
 \+ **new Template**(`payload`: any): *[Template](template.md)*
 
-*Defined in [template-engine.ts:394](https://github.com/microsoft/AdaptiveCards/blob/bf1bfa514/source/nodejs/adaptivecards-templating/src/template-engine.ts#L394)*
+*Defined in [template-engine.ts:385](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L385)*
 
 Initializes a new Template instance based on the provided payload.
 Once created, the instance can be bound to different data objects
@@ -46,7 +46,7 @@ Name | Type | Description |
 
 ▸ **expand**(`context`: [IEvaluationContext](../interfaces/ievaluationcontext.md)): *any*
 
-*Defined in [template-engine.ts:474](https://github.com/microsoft/AdaptiveCards/blob/bf1bfa514/source/nodejs/adaptivecards-templating/src/template-engine.ts#L474)*
+*Defined in [template-engine.ts:465](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L465)*
 
 Expands the template using the provided context. Template expansion involves
 evaluating the expressions used in the original template payload, as well as
@@ -127,7 +127,7 @@ ___
 
 ▸ **parseInterpolatedString**(`interpolatedString`: string): *Expression | string*
 
-*Defined in [template-engine.ts:212](https://github.com/microsoft/AdaptiveCards/blob/bf1bfa514/source/nodejs/adaptivecards-templating/src/template-engine.ts#L212)*
+*Defined in [template-engine.ts:212](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L212)*
 
 Parses an interpolated string into an Expression object ready to evaluate.
 
@@ -147,7 +147,7 @@ ___
 
 ▸ **tryEvaluateExpression**(`expression`: Expression, `context`: [IEvaluationContext](../interfaces/ievaluationcontext.md), `allowSubstitutions`: boolean): *object*
 
-*Defined in [template-engine.ts:263](https://github.com/microsoft/AdaptiveCards/blob/bf1bfa514/source/nodejs/adaptivecards-templating/src/template-engine.ts#L263)*
+*Defined in [template-engine.ts:263](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L263)*
 
 Tries to evaluate the provided expression using the provided context.
 

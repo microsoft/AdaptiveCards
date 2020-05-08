@@ -133,10 +133,10 @@
 			var dataUrl = getParameterByName("data", null);
 
 			if (dataUrl) {
-				var dataXhttp = new XMLHttpRequest();
-				dataXhttp.onload = function () {
-					if (dataXhttp.responseText && dataXhttp.responseText != "") {
-						var sampleData = JSON.parse(dataXhttp.responseText);
+				var xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					if (xhttp.responseText && xhttp.responseText != "") {
+						var sampleData = JSON.parse(xhttp.responseText);
 						designer.sampleData = sampleData;
 					}
 				};
@@ -147,9 +147,10 @@
 				// };
 
 				try {
-					dataXhttp.open("GET", dataUrl, true);
-					dataXhttp.send();
+					xhttp.open("GET", dataUrl, true);
+					xhttp.send();
 				} catch (e) {
+
 				}
 			} else {
 				// Add sample data
@@ -174,10 +175,10 @@
 			}
 
 			if (cardUrl) {
-				var cardXhttp = new XMLHttpRequest();
-				cardXhttp.onload = function () {
-					if (cardXhttp.responseText && cardXhttp.responseText != "") {
-						designer.setCard(JSON.parse(cardXhttp.responseText));
+				var xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					if (xhttp.responseText && xhttp.responseText != "") {
+						designer.setCard(JSON.parse(xhttp.responseText));
 					}
 
 					// TODO: Talk to David: I want to put the sampleData setter here but it was failing
@@ -191,8 +192,8 @@
 				// };
 
 				try {
-					cardXhttp.open("GET", cardUrl, true);
-					cardXhttp.send();
+					xhttp.open("GET", cardUrl, true);
+					xhttp.send();
 				} catch (e) {
 				}
 			} else {
