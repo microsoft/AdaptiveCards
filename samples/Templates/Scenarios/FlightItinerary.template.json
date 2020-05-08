@@ -259,7 +259,7 @@
                         {
                             "type": "TextBlock",
                             "horizontalAlignment": "Right",
-                            "text": "$${BookingOptions[0].BookingItems[0].Price}",
+                            "text": "$${formatNumber(BookingOptions[0].BookingItems[0].Price, 2)}",
                             "size": "Medium",
                             "weight": "Bolder"
                         }
