@@ -167,7 +167,8 @@ The Designer makes it easy to load a sample from a catalog. Simply create a file
 [
     {
         "displayName": "My Sample Payload",
-        "cardPayloadUrl": "url/to/the/payload.json"
+		"cardPayloadUrl": "url/to/the/payload.json",
+		"dataSampleUrl": "optional/url/to/sample/data.json
     }
 ]
 ```
