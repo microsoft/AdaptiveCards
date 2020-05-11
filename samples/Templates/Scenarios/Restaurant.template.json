@@ -1,0 +1,90 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "speak": "Tom's Pie is a Pizza restaurant which is rated 9.3 by customers.",
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 2,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "${address.addressLocality}, ${address.addressRegion}"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "${name}",
+                            "weight": "Bolder",
+                            "size": "ExtraLarge",
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "$when": "${aggregateRating.ratingValue <= 1}",
+                            "text": "${aggregateRating.ratingValue} ★☆☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "$when": "${aggregateRating.ratingValue <= 2}",
+                            "text": "${aggregateRating.ratingValue} ★★☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "$when": "${aggregateRating.ratingValue <= 3}",
+                            "text": "${aggregateRating.ratingValue} ★★★☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "$when": "${aggregateRating.ratingValue <= 4}",
+                            "text": "${aggregateRating.ratingValue} ★★★★☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "$when": "${aggregateRating.ratingValue <= 5}",
+                            "text": "${aggregateRating.ratingValue} ★★★★★ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "**${review[0].author}** said \"${review[0].description}\"",
+                            "size": "Small",
+                            "wrap": true,
+                            "maxLines": 3
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "${image}",
+                            "size": "auto"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "More Info",
+            "url": "${url}"
+        }
+    ]
+}
