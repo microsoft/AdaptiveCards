@@ -21,11 +21,11 @@ export class DataTreeItem extends BaseTreeItem {
     }
 
     protected getLabelText(): string {
-        return this.field.name;
+        return this.field.displayName;
     }
 
     protected getAdditionalText(): string {
-        return this.field.typeName;
+        return this.field.valueType;
     }
 
     protected getAdditionalTextClass(): string {
@@ -51,7 +51,7 @@ export class DataTreeItem extends BaseTreeItem {
     }
 
     isDraggable(): boolean {
-        return true;
+        return false;
     }
 
     getChildCount(): number {
@@ -62,7 +62,7 @@ export class DataTreeItem extends BaseTreeItem {
 
     getChildAt(index: number): DataTreeItem {
         this.buildChildList();
-        
+
         return this._children[index];
     }
 }

@@ -44,7 +44,7 @@ export class Toolbox {
             this.onToggled(this);
         }
     }
-    
+
     onToggled: (sender: Toolbox) => void;
 
     readonly id: string;
@@ -65,6 +65,7 @@ export class Toolbox {
         this._renderedElement.style.overflow = "auto";
         this._renderedElement.style.display = "flex";
         this._renderedElement.style.flexDirection = "column";
+        this._renderedElement.style.position = "relative";
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
@@ -220,7 +221,7 @@ export class Toolbox {
                 }
 
                 let isExpandedSetting = SettingsManager.tryLoadBooleanSetting("Toolbox" + this.id + "IsExpanded", true);
-        
+
                 if (isExpandedSetting.succeeded) {
                     if (isExpandedSetting.value) {
                         this.expand();

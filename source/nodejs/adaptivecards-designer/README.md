@@ -50,7 +50,6 @@ To load the designer component you have 2 options:
 
 <script type="text/javascript">
 	window.onload = function() {
-
 		let hostContainers = [];
 
 		// Optional: add the default Microsoft Host Apps (see docs below)
@@ -106,7 +105,6 @@ import "adaptivecards-designer/dist/adaptivecards-designer.css";
 //import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-
 	ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -132,7 +130,6 @@ The following plugins and configuration should be enough to boostrap the designe
 * **copy-webpack-plugin** [OPTIONAL] - If you use any of the default Host Configs, then the designer requires a few CSS and image assets be available. This plugin as described below copies them from the designer package into your output bundle
 
 ```js
-...
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -168,25 +165,19 @@ The Designer makes it easy to load a sample from a catalog. Simply create a file
 
 ```json
 [
-	{
-		"displayName": "My Sample Payload",
-		"cardPayloadUrl": "url/to/the/payload.json"
-	}
+    {
+        "displayName": "My Sample Payload",
+		"cardPayloadUrl": "url/to/the/payload.json",
+		"dataSampleUrl": "optional/url/to/sample/data.json
+    }
 ]
 ```
 
 And then set the `sampleCatalogueUrl` to the location of that file:
 
 ```js
-	/* Configure "Open Sample" tooobar button */
-	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-```
-
-If you don't want to load via a sample, you can hide the toolbar button
-
-```js
-	/* Hide the "Open Sample" toolbar button */
-	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+/* Configure "Open Sample" tooobar button */
+designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 ```
 
 ## Advanced configuration
@@ -194,8 +185,29 @@ If you don't want to load via a sample, you can hide the toolbar button
 For advanced configuration of the designer use the following APIs.
 
 ```js
+{
+    /* Turn features on or off */
 
-    // Configure toolbox titles
+    // Turn general support for data binding on or off. When set to false, this flag override
+    // showDataStructureToolbox and showSampleDataEditorToolbox.
+    ACDesigner.GlobalSettings.enableDataBindingSupport: boolean = true;
+    // Show or hide the "Data structure" toolbox. NOTE: the "Data structure" toolbox is currently
+    // non functional and will likely be removed in a future release
+    ACDesigner.GlobalSettings.showDataStructureToolbox: boolean = false;
+    // Show or hide the "Sample Data" toolbox.
+    ACDesigner.GlobalSettings.showSampleDataEditorToolbox: boolean = true;
+    // Show or hide the target version picker.
+    ACDesigner.GlobalSettings.showVersionPicker: boolean = true;
+    // Controls whether the target version should change according to the selected  host application.
+    // Each host application is associated with a maximum supported target version.
+    ACDesigner.GlobalSettings.selectedHostContainerControlsTargetVersion: boolean = true;
+    // Controls whether a warning message should be displayed when the selected target version is
+    // greater than the version supported by the selected host application. This warning is meant
+    // to inform the user that not all features they're designing their card with will work in the
+    // target host.
+    ACDesigner.GlobalSettings.showTargetVersionMismatchWarning: boolean = true;
+
+    /* Configure toolbox titles */
     ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
     ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
     ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
@@ -203,13 +215,28 @@ For advanced configuration of the designer use the following APIs.
     ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-	/* Add a custom Host Container to the drop-down at the top */
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+    /* Modify the Element toolbox (BEFORE designer attached) */ 
+    Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
+    ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
-	/* Add the default Microsoft Host Apps
-	If you want to add the default Microsoft apps, use this const in the CardDesigner constructor */
-	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
+    /* Modify the Actions flyout (BEFORE designer attached) */
+    Adaptive.GlobalRegistry.actions.unregister("Action.ToggleVisibility");
+    ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
+    
+    /* Include all built-in host apps */
+    let hostContainers: ACDesigner.HostContainer[] = ACDesigner.defaultMicrosoftHosts;
 
+    /* Or pick and choose which built-in host apps to include, and/or add your custom host app
+    
+    let hostContainers: ACDesigner.HostContainer[] = [
+        new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
+        new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
+        new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
+    ];
+    */
+    
+	/* Instantiate the designer component */
+	let designer = new ACDesigner.CardDesigner(hostContainers);
 
 	/* Modify the toolbar */
     let myButton = new Designer.ToolbarButton(
@@ -218,40 +245,27 @@ For advanced configuration of the designer use the following APIs.
         null,
         (sender) => { alert("My button was clicked"); });
     myButton.separator = true;
+
     designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
 
-	/* Collapse certain panes by default (BEFORE designer attached)	*/
-	designer.treeViewPane.collapse();
-	designer.jsonEditorPane.collapse();
-	
+    /* ------- Attach the designer --------- */
 
-	/* Set the card payload in the designer: (AFTER designer attached) */ 
-	designer.setCard(
-		{
-			type: "AdaptiveCard",
-			version: "1.0",
-			body: [
-				{
-					type: "TextBlock",
-					text: "Hello world"
-				}
-			]
-		}
-	);
+    /* Collapse certain panes by default (AFTER designer attached)	*/
+    designer.treeViewToolbox.collapse();
+    designer.jsonEditorToolbox.collapse();
 
-	/* Modify the Element toolbox (BEFORE designer attached) */ 
-	Adaptive.AdaptiveCard.elementTypeRegistry.unregisterType("RichTextBlock");
-	ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
-
-	/* Modify the Actions flyout (AFTER designer attached) */
-	Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.ToggleVisibility");
-	ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);	
-
-
-	/* Try experimental preview features that are in progress */
-	ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-	ACDesigner.GlobalSettings.showDataStructureTooklbox = true;
-	ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
-	ACDesigner.GlobalSettings.showVersionPicker = true;
-};
+    /* Set the card payload in the designer: (AFTER designer attached) */ 
+    designer.setCard(
+        {
+            type: "AdaptiveCard",
+            version: "1.0",
+            body: [
+                {
+                    type: "TextBlock",
+                    text: "Hello world"
+                }
+            ]
+        }
+    );
+}
 ```
