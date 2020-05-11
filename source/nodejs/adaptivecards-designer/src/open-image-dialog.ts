@@ -46,10 +46,10 @@ export class OpenImageDialog extends Dialog {
         this.fetchManager = new FetchManager();
     }
 
-    private setContent(element: HTMLElement) { 
+    private setContent(element: HTMLElement) {
         this._renderedElement.appendChild(element);
-	}   
-	
+	}
+
 	private removeContent(element: HTMLElement) {
 		this._renderedElement.removeChild(element);
 	}
@@ -80,7 +80,7 @@ export class OpenImageDialog extends Dialog {
         this._buttonContainer.className="acd-upload-button-container";
         const fileNote = document.createElement("div");
         fileNote.className="acd-image-file-note"
-        fileNote.innerHTML= "By using the upload feature you agree to our <span class='link'> image usage policy</spanl>";
+        fileNote.innerHTML= "By using the upload feature you agree to our <a href='../privacy'><span class='link'>privacy policy</span></a>";
 		this._buttonContainer.appendChild(type === 'file' ? this.createFileButton(): this.createActionButton());
         this._buttonContainer.appendChild(fileNote);
         return this._buttonContainer;
@@ -90,9 +90,9 @@ export class OpenImageDialog extends Dialog {
 		const filesize = parseInt(((file.size/1024)/1024).toFixed(4)); // MB
 		return filesize < 2;
 	}
-	
+
 	private createFileButton() {
-		const inputElement = <HTMLInputElement>document.createElement("INPUT");       
+		const inputElement = <HTMLInputElement>document.createElement("INPUT");
 		inputElement.className="acd-file-type";
         inputElement.setAttribute("type", "file");
         inputElement.setAttribute('button-name','Browse File')
@@ -133,8 +133,8 @@ export class OpenImageDialog extends Dialog {
 		const uploadButton = document.createElement("INPUT")
 		uploadButton.className="acd-card-button";
         uploadButton.setAttribute("type", "BUTTON");
-		uploadButton.setAttribute('button-name','Convert to Adaptive Cards');
-		uploadButton.setAttribute('value', 'Convert to Adaptive Cards');
+		uploadButton.setAttribute('button-name','Convert to Adaptive Card');
+		uploadButton.setAttribute('value', 'Convert to Adaptive Card');
 		uploadButton.onclick = () => {
 			let spinnerElement = this.loadSpinner();
             this.setContent(spinnerElement);
@@ -167,12 +167,12 @@ export class OpenImageDialog extends Dialog {
         spinnerElement.style.position = "absolute";
         spinnerElement.style.top = "50%"
         spinnerElement.style.left = "50%";
-        
+
         spinnerHostElement.appendChild(spinnerElement);
         return spinnerHostElement;
 	}
-	
-	
+
+
 
     private renderImage(imageContent) {
         this._imageElement.setAttribute('src', imageContent);
@@ -198,7 +198,7 @@ export class OpenImageDialog extends Dialog {
 
     private renderImageContainer(): HTMLElement {
         let template = document.createElement("div");
-        template.className="acd-image-upload-container";       
+        template.className="acd-image-upload-container";
         template.appendChild(this.renderTitle());
         template.appendChild(this.renderTitleContent());
         template.appendChild(this.renderUploadContainer())
@@ -209,7 +209,7 @@ export class OpenImageDialog extends Dialog {
         let sampleImageTemplate = document.createElement("div");
         sampleImageTemplate.className="acd-sample-image-container";
         sampleImageTemplate.style.flexDirection = "column"
-        
+
         let spinnerElement = document.createElement("div");
         spinnerElement.className = "acd-spinner";
         spinnerElement.style.width = "28px";
@@ -218,7 +218,7 @@ export class OpenImageDialog extends Dialog {
         message.className = "acd-dialog-message";
         message.innerText = "Loading Sample Images...";
         message.style.marginTop = "10px";
-        
+
         sampleImageTemplate.appendChild(spinnerElement);
         sampleImageTemplate.appendChild(message);
 
@@ -238,7 +238,7 @@ export class OpenImageDialog extends Dialog {
                     let sampleImage = new ImageItem(template);
                     sampleImage.onClick = (selectedImage: string) => {
                         this.renderImage(selectedImage)
-                    }   
+                    }
                     imageContainer.appendChild(sampleImage.render());
                 }
                 sampleImageTemplate.appendChild(imageContainer);
@@ -249,7 +249,7 @@ export class OpenImageDialog extends Dialog {
 
     protected renderContent(): HTMLElement {
         this._renderedElement = document.createElement("div");
-        this._renderedElement.className="acd-image-conatainer";       
+        this._renderedElement.className="acd-image-conatainer";
         this.setContent(this.renderImageContainer());
         this.setContent(this.renderSampleTemplate());
 
@@ -263,7 +263,7 @@ export class OpenImageDialog extends Dialog {
 
 
 export class ImageItem {
-    
+
 
     constructor(readonly template: string) {
 
