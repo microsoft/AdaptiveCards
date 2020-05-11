@@ -72,15 +72,13 @@ As has been proposed, the error message is a string property which is rendered i
 | `weight` | `default` | 
 
 ```json
+"inputs": 
 {
-    "inputValidation": 
+    "errorMessage": 
     {
-        "errorMessage": 
-        {
-            "spacing": "small",
-            "size": "small",
-            "weight": "lighter"
-        }
+        "spacing": "small",
+        "size": "small",
+        "weight": "lighter"
     }
 }
 ```
@@ -143,7 +141,7 @@ Issue [#3081](https://github.com/microsoft/AdaptiveCards/issues/3081) covers res
 The schema change for host config will be adding the property `validationBehavior` under `inputs` configuration as can be seen below:
 
 ```json
-“inputs”:{
+“inputs”: {
    // One of
    "validationBehavior": "onFocusLost",
    "validationBehavior": "onFocusLostWithInput",

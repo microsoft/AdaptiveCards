@@ -166,18 +166,21 @@ Based on the results from Q9 of the survey, we will provide the option to allow 
  We are introducing the option to specify formatting of input labels for required and optional inputs. We will allow full text formatting (as in the formatting properties of a TextBlock) For example:
 
  ```json
-"inputLabels": 
+"inputs": 
 {
-	"spacingWithLabel": "small",
-	"requiredInputs": {
-		"weight": "bolder",
-		"color": "attention",
-		"size": "medium"
-	},
-	"optionalInputs": {
-		"color": "good",
-		"isSubtle": true,
-		"weight": "lighter"
+	"inputLabels": 
+	{
+		"inputSpacing": "small",
+		"requiredInputs": {
+			"weight": "bolder",
+			"color": "attention",
+			"size": "medium"
+		},
+		"optionalInputs": {
+			"color": "good",
+			"isSubtle": true,
+			"weight": "lighter"
+		}
 	}
 }
 ```
@@ -202,12 +205,15 @@ As has been mentioned in the Input.Validation spec, all input elements will supp
 
 By default, we will mark required inputs with a `*`. We may want, however, to provide the option for the host to configure a suffix to the label for required or optional inputs. This allows the host to add a `*` to required labels, or to add the word "required". Consider a host config similar to the below:
 
-  ```json
-"inputLabels": 
+```json
+"inputs":
 {
-	"requiredSuffix": "*",
-	"requiredInputs": {
-		"weight": "Bolder",
+	"inputLabels": 
+	{
+		"requiredSuffix": "*",
+		"requiredInputs": {
+			"weight": "Bolder",
+		}
 	}
 }
 ```
