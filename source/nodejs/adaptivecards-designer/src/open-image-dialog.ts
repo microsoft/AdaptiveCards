@@ -80,7 +80,7 @@ export class OpenImageDialog extends Dialog {
         this._buttonContainer.className="acd-upload-button-container";
         const fileNote = document.createElement("div");
         fileNote.className="acd-image-file-note"
-        fileNote.innerHTML= "By using the upload feature you agree to our <a href='../privacy'><span class='link'>privacy policy</span></a>";
+        fileNote.innerHTML= "By using the upload feature you agree to our <a href='../privacy' target='_blank'><span class='link'>privacy policy</span></a>";
 		this._buttonContainer.appendChild(type === 'file' ? this.createFileButton(): this.createActionButton());
         this._buttonContainer.appendChild(fileNote);
         return this._buttonContainer;
