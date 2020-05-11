@@ -6,7 +6,8 @@ import * as monaco from "monaco-editor";
 import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
-import { SamplePickerDialog } from "./sample-picker-dialog";
+import { OpenSampleDialog } from "./open-sample-dialog";
+import { OpenImageDialog } from "./open-image-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
@@ -18,11 +19,12 @@ import { SidePanel, SidePanelAlignment } from "./side-panel";
 import { Toolbox, IToolboxCommand } from "./tool-box";
 import { FieldDefinition } from "./data";
 import { DataTreeItem } from "./data-treeitem";
-import { BaseTreeItem } from "./base-tree-item";
 import { Strings } from "./strings";
 import * as Shared from "./shared";
+import { TreeView } from "./tree-view";
+import { SampleCatalogue } from "./catalogue";
 
-export class CardDesigner {
+export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
         if (CardDesigner.onProcessMarkdown) {
             CardDesigner.onProcessMarkdown(text, result);
@@ -49,10 +51,10 @@ export class CardDesigner {
     private _draggedPaletteItem: BasePaletteItem;
     private _draggedElement: HTMLElement;
     private _currentMousePosition: IPoint;
-    private _card: Adaptive.AdaptiveCard;
-    private _activeHostContainer: HostContainer;
+    private _hostContainer: HostContainer;
     private _undoStack: Array<object> = [];
     private _undoStackIndex: number = -1;
+    private _startDragPayload: object;
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
     private _treeViewToolbox: Toolbox;
@@ -63,17 +65,20 @@ export class CardDesigner {
     private _assetPath: string;
     private _dataStructure: FieldDefinition;
     private _sampleData: any;
+    private _bindingPreviewMode: Designer.BindingPreviewMode = Designer.BindingPreviewMode.NoPreview;
     private _customPeletteItems: CustomPaletteItem[];
+    private _sampleCatalogue: SampleCatalogue = new SampleCatalogue();
 
     private togglePreview() {
         this._designerSurface.isPreviewMode = !this._designerSurface.isPreviewMode;
 
         if (this._designerSurface.isPreviewMode) {
             this._togglePreviewButton.toolTip = "Return to Design mode";
+            this._designerSurface.setCardPayloadAsString(this.getCurrentCardEditorPayload());
         }
         else {
             this._togglePreviewButton.toolTip = "Switch to Preview mode";
-            this._designerSurface.updateLayout();
+            this.updateCardFromJson(false);
         }
 
         this.buildTreeView();
@@ -90,27 +95,10 @@ export class CardDesigner {
                     '</div>';
             }
             else {
-                this._treeViewToolbox.content.appendChild(this.designerSurface.rootPeer.treeItem.render());
+                let treeView = new TreeView(this.designerSurface.rootPeer.treeItem);
+
+                this._treeViewToolbox.content.appendChild(treeView.render());
             }
-        }
-    }
-
-    private setupDataTreeItemEvents(treeItem: DataTreeItem) {
-        treeItem.onStartDrag = (sender: BaseTreeItem) => {
-            this._draggedPaletteItem = new DataPaletteItem(treeItem.field);
-
-            this._draggedElement = this._draggedPaletteItem.renderDragVisual();
-            this._draggedElement.style.position = "absolute";
-            this._draggedElement.style.left = this._currentMousePosition.x + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y + "px";
-
-            document.body.appendChild(this._draggedElement);
-
-            treeItem.endDrag();
-        }
-
-        for (let i = 0; i < treeItem.getChildCount(); i++) {
-            this.setupDataTreeItemEvents(treeItem.getChildAt(i));
         }
     }
 
@@ -118,12 +106,11 @@ export class CardDesigner {
         if (this._dataToolbox && this._dataToolbox.content) {
             this._dataToolbox.content.innerHTML = "";
 
-            if (this._dataStructure) {
-                let treeItem = new DataTreeItem(this._dataStructure);
+            if (this.dataStructure) {
+                let treeItem = new DataTreeItem(this.dataStructure);
+                let treeView = new TreeView(treeItem);
 
-                this._dataToolbox.content.appendChild(treeItem.render());
-
-                this.setupDataTreeItemEvents(treeItem);
+                this._dataToolbox.content.appendChild(treeView.render());
             }
         }
     }
@@ -135,7 +122,7 @@ export class CardDesigner {
             let card: Adaptive.AdaptiveCard;
 
             if (peer) {
-                card = peer.buildPropertySheetCard(this.currentTargetVersion);
+                card = peer.buildPropertySheetCard(this);
             }
             else {
                 card = new Adaptive.AdaptiveCard();
@@ -155,7 +142,8 @@ export class CardDesigner {
                                 text: "Select an element in the card to modify its properties."
                             }
                         ]
-                    }
+                    },
+                    new Adaptive.SerializationContext(this.targetVersion)
                 );
                 card.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
@@ -165,7 +153,6 @@ export class CardDesigner {
                 )
             }
 
-            // card.hostConfig = this._propertySheetHostConfig;
             card.hostConfig = defaultHostConfig;
 
             this._propertySheetToolbox.content.appendChild(card.render());
@@ -195,23 +182,26 @@ export class CardDesigner {
 
         this._toolPaletteToolbox.content.innerHTML = "";
 
-        let categorizedTypes: Object = {};
+        let categorizedTypes: object = {};
 
-        for (let i = 0; i < Adaptive.AdaptiveCard.elementTypeRegistry.getItemCount(); i++) {
-            let dummyCardElement = Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i).createInstance();
-            let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration((<any>dummyCardElement).constructor);
+        for (let i = 0; i < this.hostContainer.elementsRegistry.getItemCount(); i++) {
+            let registration = this.hostContainer.elementsRegistry.getItemAt(i);
 
-            if (peerRegistration) {
-                if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
-                    categorizedTypes[peerRegistration.category] = [];
+            if (registration.schemaVersion.compareTo(this.targetVersion) <= 0) {
+                let peerRegistration = Designer.CardDesignerSurface.cardElementPeerRegistry.findTypeRegistration(registration.objectType);
+
+                if (peerRegistration) {
+                    if (!categorizedTypes.hasOwnProperty(peerRegistration.category)) {
+                        categorizedTypes[peerRegistration.category] = [];
+                    }
+
+                    let paletteItem = new ElementPaletteItem(
+                        registration,
+                        peerRegistration
+                    )
+
+                    categorizedTypes[peerRegistration.category].push(paletteItem);
                 }
-
-                let paletteItem = new ElementPaletteItem(
-                    Adaptive.AdaptiveCard.elementTypeRegistry.getItemAt(i),
-                    peerRegistration
-                )
-
-                categorizedTypes[peerRegistration.category].push(paletteItem);
             }
         }
 
@@ -248,15 +238,15 @@ export class CardDesigner {
         }
     }
 
-    private renderErrorPaneElement(message: string, cardObject?: Adaptive.CardObject): HTMLElement {
+    private renderErrorPaneElement(message: string, source?: Adaptive.SerializableObject): HTMLElement {
         let errorElement = document.createElement("div");
         errorElement.className = "acd-error-pane-message";
 
-        if (cardObject) {
+        if (source && source instanceof Adaptive.CardObject) {
             errorElement.classList.add("selectable");
             errorElement.title = "Click to select this element";
             errorElement.onclick = (e) => {
-                let peer = this.designerSurface.findPeer(cardObject);
+                let peer = this.designerSurface.findPeer(source);
 
                 if (peer) {
                     peer.isSelected = true;
@@ -283,63 +273,76 @@ export class CardDesigner {
         styleSheetLinkElement.rel = "stylesheet";
 		styleSheetLinkElement.type = "text/css";
 
-		if(Utils.isAbsoluteUrl(this.activeHostContainer.styleSheet))
+		if (Utils.isAbsoluteUrl(this.hostContainer.styleSheet))
         {
-			styleSheetLinkElement.href = this.activeHostContainer.styleSheet;
+			styleSheetLinkElement.href = this.hostContainer.styleSheet;
 		}
 		else
 		{
-			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.activeHostContainer.styleSheet);
+			styleSheetLinkElement.href = Utils.joinPaths(this._assetPath, this.hostContainer.styleSheet);
 		}
 
         let _cardArea = document.getElementById("cardArea");
 
         if (_cardArea) {
-            _cardArea.style.backgroundColor = this.activeHostContainer.getBackgroundColor();
+            _cardArea.style.backgroundColor = this.hostContainer.getBackgroundColor();
         }
 
-        this.activeHostContainer.initialize();
+        this.hostContainer.initialize();
 
         this._designerHostElement.innerHTML = "";
-        this.activeHostContainer.renderTo(this._designerHostElement);
+        this.hostContainer.renderTo(this._designerHostElement);
 
         let wasInPreviewMode = this._designerSurface ? this._designerSurface.isPreviewMode : false;
 
-        this._designerSurface = new Designer.CardDesignerSurface(this.activeHostContainer.cardHost);
-        this._designerSurface.fixedHeightCard = this.activeHostContainer.isFixedHeight;
+        this._designerSurface = new Designer.CardDesignerSurface(this);
+        this._designerSurface.fixedHeightCard = this.hostContainer.isFixedHeight;
         this._designerSurface.onSelectedPeerChanged = (peer: DesignerPeers.DesignerPeer) => {
             this.buildPropertySheet(peer);
         };
         this._designerSurface.onLayoutUpdated = (isFullRefresh: boolean) => {
             if (isFullRefresh) {
                 this.scheduleUpdateJsonFromCard();
+                this.buildTreeView();
+            }
+        };
+        this._designerSurface.onCardValidated = (logEntries: Adaptive.IValidationEvent[]) => {
+            if (this.onCardValidated) {
+                this.onCardValidated(this, logEntries);
             }
 
-            this.buildTreeView();
-        };
-        this._designerSurface.onCardValidated = (parseErrors: Array<Adaptive.IValidationError>, validationResults: Adaptive.ValidationResults) => {
             let errorPane = document.getElementById("errorPane");
             errorPane.innerHTML = "";
 
-            if (parseErrors.length > 0) {
-                let errorMessages: Array<string> = [];
-
-                for (let error of parseErrors) {
-                    if (errorMessages.indexOf(error.message) < 0) {
-                        errorMessages.push(error.message);
-                    }
-                }
-
-                for (let message of errorMessages) {
-                    errorPane.appendChild(this.renderErrorPaneElement("[Error] " + message));
-                }
+            if (this.targetVersion.compareTo(this.hostContainer.targetVersion) > 0 && Shared.GlobalSettings.showTargetVersionMismatchWarning) {
+                errorPane.appendChild(this.renderErrorPaneElement("[Warning] The selected Target Version (" + this.targetVersion.toString() + ") is greater than the version supported by " + this.hostContainer.name + " (" + this.hostContainer.targetVersion.toString() + ")"));
             }
 
-            if (validationResults.failures.length > 0) {
-                for (let failure of validationResults.failures) {
-                    for (let error of failure.errors) {
-                        errorPane.appendChild(this.renderErrorPaneElement("[" + failure.cardObject.getJsonTypeName() + "] " + error.message, failure.cardObject));
+            if (logEntries.length > 0) {
+                let dedupedEntries: Adaptive.IValidationEvent[] = [];
+
+                for (let entry of logEntries) {
+                    if (dedupedEntries.indexOf(entry) < 0) {
+                        dedupedEntries.push(entry);
                     }
+                }
+
+                for (let entry of dedupedEntries) {
+                    let s: string = "";
+
+                    switch (entry.phase) {
+                        case Adaptive.ValidationPhase.Parse:
+                            s = "[Parse]";
+                            break;
+                        case Adaptive.ValidationPhase.ToJSON:
+                            s = "[Serialize]";
+                            break;
+                        default:
+                            s = "[Validation]";
+                            break;
+                    }
+
+                    errorPane.appendChild(this.renderErrorPaneElement(s + " " + entry.message, entry.source));
                 }
             }
 
@@ -350,16 +353,22 @@ export class CardDesigner {
                 errorPane.classList.add("acd-hidden");
             }
         };
+        this._designerSurface.onStartDrag = (sender: Designer.CardDesignerSurface) => {
+            this._startDragPayload = JSON.parse(this.getCurrentCardEditorPayload());
+        };
+        this._designerSurface.onEndDrag = (sender: Designer.CardDesignerSurface, wasCancelled: boolean) => {
+            if (wasCancelled) {
+                this.setCardPayload(this._startDragPayload, false);
+            }
+            else {
+                this.addToUndoStack(this._designerSurface.getCardPayloadAsObject());
+            }
+        };
 
         this.buildPalette();
         this.buildPropertySheet(null);
 
-        if (this._card) {
-            this._card.hostConfig = this.activeHostContainer.getHostConfig();
-        }
-
-        this._designerSurface.card = this._card;
-
+        this.updateCardFromJson(false);
         this.updateSampleData();
 
         this._designerSurface.isPreviewMode = wasInPreviewMode;
@@ -375,6 +384,22 @@ export class CardDesigner {
         }
     }
 
+    private targetVersionChanged() {
+        let cardPayload = this.designerSurface.getCardPayloadAsObject();
+
+        if (typeof cardPayload === "object") {
+            cardPayload["version"] = this.targetVersion.toString();
+
+            this.setCardPayload(cardPayload, false);
+        }
+
+        this.recreateDesignerSurface();
+
+        if (this.onTargetVersionChanged) {
+            this.onTargetVersionChanged(this);
+        }
+    }
+
     private updateToolboxLayout(toolbox: Toolbox, hostPanelRect: ClientRect | DOMRect) {
         if (toolbox) {
             let jsonEditorHeaderRect = toolbox.getHeaderBoundingRect();
@@ -383,7 +408,7 @@ export class CardDesigner {
         }
     }
 
-    public updateJsonEditorsLayout() {
+    private updateJsonEditorsLayout() {
         if (this._isMonacoEditorLoaded) {
             let jsonEditorsPaneRect = this._jsonEditorsPanel.contentHost.getBoundingClientRect();
 
@@ -402,11 +427,10 @@ export class CardDesigner {
         this.updateJsonEditorsLayout();
     }
 
-    private jsonUpdateTimer: any;
-    private cardUpdateTimer: any;
-    private updateLayoutTimer: any;
-
-    private preventCardUpdate: boolean = false;
+    private _jsonUpdateTimer: any;
+    private _cardUpdateTimer: any;
+    private _updateLayoutTimer: any;
+    private _preventCardUpdate: boolean = false;
 
     private cardPayloadChanged() {
         if (this.onCardPayloadChanged) {
@@ -431,6 +455,10 @@ export class CardDesigner {
             this.beginCardEditorUpdate();
 
             try {
+                if (payload.hasOwnProperty("version")) {
+                    payload["version"] = this.targetVersion.toString();
+                }
+
                 this._cardEditor.setValue(JSON.stringify(payload, null, 4));
                 this.updateCardFromJson(addToUndoStack);
             }
@@ -450,24 +478,24 @@ export class CardDesigner {
 
     private updateJsonFromCard(addToUndoStack: boolean = true) {
         try {
-            this.preventCardUpdate = true;
+            this._preventCardUpdate = true;
 
             if (!this.preventJsonUpdate && this._isMonacoEditorLoaded) {
-                let cardPayload = this.card.toJSON();
+                let cardPayload = this._designerSurface.getCardPayloadAsObject();
 
                 this.setCardPayload(cardPayload, addToUndoStack);
             }
         }
         finally {
-            this.preventCardUpdate = false;
+            this._preventCardUpdate = false;
         }
     }
 
     private scheduleUpdateJsonFromCard() {
-        clearTimeout(this.jsonUpdateTimer);
+        clearTimeout(this._jsonUpdateTimer);
 
         if (!this.preventJsonUpdate) {
-            this.jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
+            this._jsonUpdateTimer = setTimeout(() => { this.updateJsonFromCard(); }, 100);
         }
     }
 
@@ -489,14 +517,14 @@ export class CardDesigner {
 
             if (addToUndoStack) {
                 try {
-                    let parsed = JSON.parse(currentEditorPayload);
-                    this.addToUndoStack(parsed);
-                } catch {
-                    // do nothing
+                    this.addToUndoStack(JSON.parse(currentEditorPayload));
+                }
+                catch {
+                    // Swallow the parse error
                 }
             }
 
-            if (!this.preventCardUpdate) {
+            if (!this._preventCardUpdate) {
                 this.designerSurface.setCardPayloadAsString(currentEditorPayload);
 
                 this.cardPayloadChanged();
@@ -507,19 +535,45 @@ export class CardDesigner {
     }
 
     private scheduleUpdateCardFromJson() {
-        clearTimeout(this.cardUpdateTimer);
+        clearTimeout(this._cardUpdateTimer);
 
-        if (!this.preventCardUpdate) {
-            this.cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
+        if (!this._preventCardUpdate) {
+            this._cardUpdateTimer = setTimeout(() => { this.updateCardFromJson(true); }, 300);
         }
     }
 
-    private scheduleLayoutUpdate() {
-        clearTimeout(this.updateLayoutTimer);
+    private _isEdgeHTML?: boolean = undefined;
 
-        this.updateLayoutTimer = setTimeout(() => { this.designerSurface.updateLayout(false); }, 50);
+    private isEdgeHTML(): boolean {
+        if (this._isEdgeHTML === undefined) {
+            this._isEdgeHTML = window.navigator.userAgent.toLowerCase().indexOf("edge") > -1;
+        }
+
+        return this._isEdgeHTML;
     }
 
+    private scheduleLayoutUpdate() {
+        if (this.designerSurface) {
+            if (!this.isEdgeHTML()) {
+                this.designerSurface.updateLayout(false);
+            }
+            else {
+                // In "old" Edge, updateLayout() is *super* slow (because it uses getBoundingClientRect
+                // heavily which is itself super slow) and we have to call it only on idle
+                clearTimeout(this._updateLayoutTimer);
+
+                this._updateLayoutTimer = setTimeout(
+                    () => {
+                        if (this.designerSurface) {
+                            this.designerSurface.updateLayout(false);
+                        }
+                    },
+                    5);
+            }
+        }
+    }
+
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -529,6 +583,7 @@ export class CardDesigner {
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
     private _togglePreviewButton: ToolbarButton;
+    private _preventRecursiveSetTargetVersion = false;
 
     private prepareToolbar() {
         if (Shared.GlobalSettings.showVersionPicker) {
@@ -549,32 +604,18 @@ export class CardDesigner {
             this.toolbar.addElement(this._versionChoicePicker);
         }
 
-        this._fullScreenButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.FullScreen,
-            "Enter Full Screen",
-            "acd-icon-fullScreen",
-            (sender) => { this._fullScreenHandler.toggleFullScreen(); });
-        this._fullScreenButton.displayCaption = false;
-        this._fullScreenButton.toolTip = "Enter full screen";
-        this._fullScreenButton.alignment = ToolbarElementAlignment.Right;
-        // Hide full screen button by default. This button is useless
-        // and should really be plain and simple removed in a future version
-        this._fullScreenButton.isVisible = false;
-
-        this.toolbar.addElement(this._fullScreenButton);
-
-        let openSampleButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.OpenPayload,
-            "Open Sample",
-            "acd-icon-open",
+        this._newCardButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.NewCard,
+            "New card",
+            "acd-icon-newCard",
             (sender: ToolbarButton) => {
-                let dialog = new SamplePickerDialog();
-                dialog.title = "Pick a sample";
-                dialog.width = "30%";
-                dialog.height = "60%";
-                dialog.catalogueUrl = this.sampleCatalogueUrl;
+                let dialog = new OpenSampleDialog(this._sampleCatalogue);
+                dialog.title = "Pick a sample as a starting point";
+                dialog.closeButton.caption = "Cancel";
+                dialog.width = "80%";
+                dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (dialog.selectedSample && dialog.selectedSample.cardId !=="PIC_2_CARD") {
                         dialog.selectedSample.onDownloaded = () => {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
@@ -584,25 +625,30 @@ export class CardDesigner {
                                 alert("The sample could not be loaded.")
                             }
 
-                            if (!Adaptive.isNullOrEmpty(dialog.selectedSample.sampleData)) {
+                            if (dialog.selectedSample.sampleData) {
                                 try {
                                     let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
 
                                     this.setSampleDataPayload(sampleDataPayload);
-                                    this.dataStructure = FieldDefinition.create(sampleDataPayload);
-                                } catch {
+                                    this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
+                                }
+                                catch {
                                     alert("The sample could not be loaded.")
                                 }
                             }
                         };
                         dialog.selectedSample.download();
                     }
+                    else if(dialog.selectedSample.cardId ==="PIC_2_CARD")  {
+                        this.launchImagePopup();
+                    }
+                    
                 };
                 dialog.open();
-            }
-        )
+            });
+        this._newCardButton.separator = true;
 
-        this.toolbar.addElement(openSampleButton);
+        this.toolbar.addElement(this._newCardButton);
 
         if (this._hostContainers && this._hostContainers.length > 0) {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
@@ -620,7 +666,7 @@ export class CardDesigner {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.activeHostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             };
@@ -650,15 +696,6 @@ export class CardDesigner {
         this._redoButton.displayCaption = false;
 
         this.toolbar.addElement(this._redoButton);
-
-        this._newCardButton = new ToolbarButton(
-            CardDesigner.ToolbarCommands.NewCard,
-            "New card",
-            "acd-icon-newCard",
-            (sender: ToolbarButton) => { this.newCard(); });
-        this._newCardButton.separator = true;
-
-        this.toolbar.addElement(this._newCardButton);
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
@@ -693,17 +730,117 @@ export class CardDesigner {
         }
     }
 
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Upload Card Structure ";
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            this.setCardPayload(dialog.predictedCardJSON, true);
+        };
+    }
+    
     private updateSampleData() {
         try {
             this._sampleData = JSON.parse(this.getCurrentSampleDataEditorPayload());
-            this.designerSurface.sampleData = this._sampleData;
+
+            this.scheduleUpdateCardFromJson();
         }
         catch {
             // Swallow expression, the payload isn't a valid JSON document
         }
     }
 
-    public monacoModuleLoaded(monaco: any = null) {
+    private updateToolbar() {
+        this._undoButton.isEnabled = this.canUndo;
+        this._redoButton.isEnabled = this.canRedo;
+    }
+
+    private addToUndoStack(payload: object) {
+        let doAdd: boolean = !this._designerSurface.draggedPeer;
+
+        if (doAdd) {
+            if (this._undoStack.length > 0) {
+                doAdd = this._undoStack[this._undoStack.length - 1] != payload;
+            }
+
+            if (doAdd) {
+                let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
+
+                if (undoPayloadsToDiscard > 0) {
+                    this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
+                }
+
+                this._undoStack.push(payload);
+
+                if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
+                    this._undoStack.splice(0, 1);
+                }
+
+                this._undoStackIndex = this._undoStack.length - 1;
+
+                this.updateToolbar();
+            }
+        }
+    }
+
+    private handlePointerUp(e: PointerEvent) {
+        this.endDrag();
+
+        if (this.designerSurface) {
+            this.designerSurface.endDrag(false);
+        }
+    }
+
+    private handlePointerMove(e: PointerEvent) {
+        this._currentMousePosition = { x: e.x, y: e.y };
+
+        if (this.designerSurface) {
+            let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
+            let peerDropped = false;
+
+            if (this._draggedPaletteItem && isPointerOverDesigner) {
+                let peer = this._draggedPaletteItem.createPeer(this, this.designerSurface);
+
+                let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
+
+                if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
+                    this.endDrag();
+
+                    this.designerSurface.startDrag(peer);
+
+                    peerDropped = true;
+                }
+            }
+
+            if (!peerDropped && this._draggedElement) {
+                this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
+                this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
+            }
+        }
+    }
+
+    readonly toolbar: Toolbar = new Toolbar();
+
+    lockDataStructure: boolean = false;
+
+    constructor(hostContainers: Array<HostContainer> = null) {
+        super();
+
+        Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
+        Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+
+        Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
+            CardDesigner.internalProcessMarkdown(text, result);
+        }
+
+        this._hostContainers = hostContainers ? hostContainers : [];
+
+        this.prepareToolbar();
+    }
+
+    monacoModuleLoaded(monaco: any = null) {
 		if (!monaco) {
             monaco = window["monaco"];
         }
@@ -765,6 +902,15 @@ export class CardDesigner {
             this._sampleDataEditor.onDidChangeModelContent(
                 () => {
                     this.updateSampleData();
+
+                    if (!this.lockDataStructure) {
+                        try {
+                            this.dataStructure = FieldDefinition.deriveFrom(JSON.parse(this.getCurrentSampleDataEditorPayload()));
+                        }
+                        catch {
+                            // Swallow exception
+                        }
+                    }
                 });
         }
 
@@ -773,84 +919,7 @@ export class CardDesigner {
         this._isMonacoEditorLoaded = true;
 
         this.updateJsonEditorsLayout();
-        this.updateJsonFromCard(false);
-    }
-
-    private updateToolbar() {
-        this._undoButton.isEnabled = this.canUndo;
-        this._redoButton.isEnabled = this.canRedo;
-    }
-
-    private addToUndoStack(payload: object) {
-        let doAdd: boolean = true;
-
-        if (this._undoStack.length > 0) {
-            doAdd = this._undoStack[this._undoStack.length - 1] != payload;
-        }
-
-        if (doAdd) {
-            let undoPayloadsToDiscard = this._undoStack.length - (this._undoStackIndex + 1);
-
-            if (undoPayloadsToDiscard > 0) {
-                this._undoStack.splice(this._undoStackIndex + 1, undoPayloadsToDiscard);
-            }
-
-            this._undoStack.push(payload);
-
-            if (this._undoStack.length > CardDesigner.MAX_UNDO_STACK_SIZE) {
-                this._undoStack.splice(0, 1);
-            }
-
-            this._undoStackIndex = this._undoStack.length - 1;
-
-            this.updateToolbar();
-        }
-    }
-
-    private handlePointerUp(e: PointerEvent) {
-        this.endDrag();
-        this.designerSurface.endDrag();
-    }
-
-    private handlePointerMove(e: PointerEvent) {
-        this._currentMousePosition = { x: e.x, y: e.y };
-
-        let isPointerOverDesigner = this.designerSurface.isPointerOver(this._currentMousePosition.x, this._currentMousePosition.y);
-        let peerDropped = false;
-
-        if (this._draggedPaletteItem && isPointerOverDesigner) {
-            let peer = this._draggedPaletteItem.createPeer(this.designerSurface);
-
-            let clientCoordinates = this.designerSurface.pageToClientCoordinates(this._currentMousePosition.x, this._currentMousePosition.y);
-
-            if (this.designerSurface.tryDrop(clientCoordinates, peer)) {
-                this.endDrag();
-
-                this.designerSurface.startDrag(peer);
-
-                peerDropped = true;
-            }
-        }
-
-        if (!peerDropped && this._draggedElement) {
-            this._draggedElement.style.left = this._currentMousePosition.x - 10 + "px";
-            this._draggedElement.style.top = this._currentMousePosition.y - 10 + "px";
-        }
-    }
-
-    readonly toolbar: Toolbar = new Toolbar();
-
-    sampleCatalogueUrl: string = undefined;
-
-    constructor(hostContainers: Array<HostContainer> = null) {
-        Adaptive.AdaptiveCard.enableFullJsonRoundTrip = true;
-        Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
-            CardDesigner.internalProcessMarkdown(text, result);
-        }
-
-        this._hostContainers = hostContainers ? hostContainers : [];
-
-        this.prepareToolbar();
+        this.updateJsonFromCard(true);
     }
 
     attachTo(root: HTMLElement)  {
@@ -863,12 +932,13 @@ export class CardDesigner {
         document.getElementsByTagName("head")[0].appendChild(styleSheetLinkElement);
 
         if (this._hostContainers && this._hostContainers.length > 0) {
-            this._activeHostContainer = this._hostContainers[0];
+            this._hostContainer = this._hostContainers[0];
         }
         else {
-            this._activeHostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
+            this._hostContainer = new DefaultContainer("Default", "adaptivecards-defaulthost.css");
         }
 
+        root.classList.add("acd-designer-root");
         root.style.flex = "1 1 auto";
         root.style.display = "flex";
         root.style.flexDirection = "column";
@@ -899,9 +969,9 @@ export class CardDesigner {
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
         if (this._versionChoicePicker) {
-            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(Shared.Versions.v1_2);
-            this._versionChoicePicker.onChanged = (sender) => {
-                this.buildPropertySheet(this._designerSurface.selectedPeer);
+            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this.targetVersion);
+            this._versionChoicePicker.onChanged = (sender: ToolbarChoicePicker) => {
+                this.targetVersion = Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
             }
         }
 
@@ -909,7 +979,9 @@ export class CardDesigner {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => { return JSON.stringify(this.card.toJSON(), null, 4); }
+                    text: (trigger) => {
+                        return JSON.stringify(this.getCard(), null, 4);
+                    }
                 });
         }
 
@@ -956,15 +1028,6 @@ export class CardDesigner {
             this._sampleDataEditorToolbox.content = document.createElement("div");
             this._sampleDataEditorToolbox.content.style.padding = "8px";
             this._sampleDataEditorToolbox.content.innerText = Strings.loadingEditor;
-            this._sampleDataEditorToolbox.commands = [
-                {
-                    title: "Copy the structure of this data into the Data Structure toolbox",
-                    iconClass: "acd-icon-dataStructure",
-                    execute: (sender: IToolboxCommand) => {
-                        this.dataStructure = FieldDefinition.create(JSON.parse(this.getCurrentSampleDataEditorPayload()));
-                    }
-                }
-            ];
 
             this._jsonEditorsPanel.addToolbox(this._sampleDataEditorToolbox);
         }
@@ -1026,13 +1089,21 @@ export class CardDesigner {
         this._isAttached = true;
 
         this.recreateDesignerSurface();
+    }
 
-        let card = new Adaptive.AdaptiveCard();
-        card.onImageLoaded = (image: Adaptive.Image) => {
-            this.scheduleLayoutUpdate();
-        }
+    clearUndoStack() {
+        this._undoStack = [];
+        this._undoStackIndex = -1;
+        this.updateToolbar();
+    }
 
-        this.card = card;
+    setCard(payload: object) {
+        this.clearUndoStack();
+        this.setCardPayload(payload, true);
+    }
+
+    getCard(): object {
+        return this._designerSurface ? this._designerSurface.getCardPayloadAsObject() : undefined;
     }
 
     undo() {
@@ -1042,7 +1113,6 @@ export class CardDesigner {
             let card = this._undoStack[this._undoStackIndex];
 
             this.setCardPayload(card, false);
-
             this.updateToolbar();
         }
     }
@@ -1051,10 +1121,9 @@ export class CardDesigner {
         if (this._undoStackIndex < this._undoStack.length - 1) {
             this._undoStackIndex++;
 
-            let card = this._undoStack[this._undoStackIndex];
+            let payload = this._undoStack[this._undoStackIndex];
 
-            this.setCardPayload(card, false);
-
+            this.setCardPayload(payload, false);
             this.updateToolbar();
         }
     }
@@ -1062,7 +1131,8 @@ export class CardDesigner {
     newCard() {
         let card = {
             type: "AdaptiveCard",
-            version: "1.0",
+            $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+            version: this.targetVersion.toString(),
             body: [
             ]
         }
@@ -1070,34 +1140,31 @@ export class CardDesigner {
         this.setCardPayload(card, true);
     }
 
-    setCard(payload: object) {
-        try {
-            this.preventJsonUpdate = true;
-
-            if (!this.preventCardUpdate) {
-                this.designerSurface.setCardPayloadAsObject(payload);
-            }
-        }
-        finally {
-            this.preventJsonUpdate = false;
-        }
-
-        this.updateJsonFromCard();
-    }
-
-    getCard(): object {
-        return this.designerSurface.card.toJSON();
-    }
-
     onCardPayloadChanged: (designer: CardDesigner) => void;
+    onCardValidated: (designer: CardDesigner, validationLogEntries: Adaptive.IValidationEvent[]) => void;
     onActiveHostContainerChanged: (designer: CardDesigner) => void;
+    onTargetVersionChanged: (designer: CardDesigner) => void;
 
-    get currentTargetVersion(): Shared.TargetVersion {
-        if (this._versionChoicePicker) {
-            return Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
-        }
-        else {
-            return Shared.Versions.latest;
+    get targetVersion(): Adaptive.Version {
+        return this._targetVersion;
+    }
+
+    set targetVersion(value: Adaptive.Version) {
+        if (this._targetVersion.compareTo(value) !== 0 && !this._preventRecursiveSetTargetVersion) {
+            this._preventRecursiveSetTargetVersion = true;
+
+            try {
+                this._targetVersion = value;
+
+                this.targetVersionChanged();
+
+                if (this._versionChoicePicker) {
+                    this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this._targetVersion);
+                }
+            }
+            finally {
+                this._preventRecursiveSetTargetVersion = false;
+            }
         }
     }
 
@@ -1121,15 +1188,27 @@ export class CardDesigner {
         this.setSampleDataPayload(value);
     }
 
-    get activeHostContainer(): HostContainer {
-        return this._activeHostContainer;
+    get bindingPreviewMode(): Designer.BindingPreviewMode {
+        return this._bindingPreviewMode;
     }
 
-    set activeHostContainer(value: HostContainer) {
-        if (this._activeHostContainer !== value) {
-            this._activeHostContainer = value;
+    set bindingPreviewMode(value: Designer.BindingPreviewMode) {
+        this._bindingPreviewMode = value;
+    }
+
+    get hostContainer(): HostContainer {
+        return this._hostContainer;
+    }
+
+    set hostContainer(value: HostContainer) {
+        if (this._hostContainer !== value) {
+            this._hostContainer = value;
 
             this.activeHostContainerChanged();
+
+            if (Shared.GlobalSettings.selectedHostContainerControlsTargetVersion) {
+                this.targetVersion = this._hostContainer.targetVersion;
+            }
         }
     }
 
@@ -1139,28 +1218,6 @@ export class CardDesigner {
 
     get canRedo(): boolean {
         return this._undoStackIndex < this._undoStack.length - 1;
-    }
-
-    get card(): Adaptive.AdaptiveCard {
-        return this._card;
-    }
-
-    set card(value: Adaptive.AdaptiveCard) {
-        if (this._card != value) {
-            if (this._card) {
-                this._card.designMode = false;
-            }
-
-            this._card = value;
-
-            if (this._card) {
-                this._card.designMode = true;
-                this._card.hostConfig = this.activeHostContainer.getHostConfig();
-            }
-
-            this.recreateDesignerSurface();
-            this.updateCardFromJson(true);
-        }
     }
 
     get designerSurface(): Designer.CardDesignerSurface {
@@ -1204,18 +1261,24 @@ export class CardDesigner {
 
         this.buildPalette();
     }
+
+    get sampleCatalogueUrl(): string {
+        return this._sampleCatalogue.url;
+    }
+
+    set sampleCatalogueUrl(value: string) {
+        this._sampleCatalogue.url = value;
+    }
 }
 
 export module CardDesigner {
     export class ToolbarCommands {
-        static FullScreen = "__fullScreenButton";
-        static OpenPayload = "__openPayload";
-        static HostAppPicker = "__hostAppPicker";
-        static VersionPicker = "__versionPicker";
-        static Undo = "__undoButton";
-        static Redo = "__redoButton";
-        static NewCard = "__newCardButton";
-        static CopyJSON = "__copyJsonButton";
-        static TogglePreview = "__togglePreviewButton";
+        static readonly HostAppPicker = "__hostAppPicker";
+        static readonly VersionPicker = "__versionPicker";
+        static readonly Undo = "__undoButton";
+        static readonly Redo = "__redoButton";
+        static readonly NewCard = "__newCardButton";
+        static readonly CopyJSON = "__copyJsonButton";
+        static readonly TogglePreview = "__togglePreviewButton";
     }
 }

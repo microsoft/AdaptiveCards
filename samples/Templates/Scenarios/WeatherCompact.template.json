@@ -6,13 +6,13 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "{name}, WA",
+            "text": "${name}, WA",
             "size": "Large",
             "isSubtle": true
         },
         {
             "type": "TextBlock",
-            "text": "{{DATE({parseDateFromEpoch(dt)}, SHORT)}} {{TIME({parseDateFromEpoch(dt)})}}",
+            "text": "{{DATE(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
             "spacing": "None"
         },
         {
@@ -35,7 +35,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "{((main.temp * 100 - 27315) * 1.8 + 3200) / 100} ",
+                            "text": "${((main.temp * 100 - 27315) * 1.8 + 3200) / 100}",
                             "size": "ExtraLarge",
                             "spacing": "None"
                         }
@@ -59,12 +59,12 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Hi {((main.temp_max * 1000 - 273150) * 1.8 + 32000) / 1000} ",
+                            "text": "Hi ${((main.temp_max * 1000 - 273150) * 1.8 + 32000) / 1000}",
                             "horizontalAlignment": "Left"
                         },
                         {
                             "type": "TextBlock",
-                            "text": "Lo {((main.temp_min * 1000 - 273150) * 1.8 + 32000) / 1000} ",
+                            "text": "Lo ${((main.temp_min * 1000 - 273150) * 1.8 + 32000) / 1000} ",
                             "horizontalAlignment": "Left",
                             "spacing": "None"
                         }

@@ -2,6 +2,8 @@
 
 # Class: GlobalSettings
 
+Holds global settings that can be used to customize the way templates are expanded.
+
 ## Hierarchy
 
 * **GlobalSettings**
@@ -10,12 +12,46 @@
 
 ### Properties
 
-* [undefinedExpressionValueSubstitutionString](globalsettings.md#static-optional-undefinedexpressionvaluesubstitutionstring)
+* [getUndefinedFieldValueSubstitutionString](globalsettings.md#static-optional-getundefinedfieldvaluesubstitutionstring)
 
 ## Properties
 
-### `Static` `Optional` undefinedExpressionValueSubstitutionString
+### `Static` `Optional` getUndefinedFieldValueSubstitutionString
 
-▪ **undefinedExpressionValueSubstitutionString**? : *string* = undefined
+▪ **getUndefinedFieldValueSubstitutionString**? : *function* = undefined
 
-*Defined in [shared.ts:4](https://github.com/microsoft/AdaptiveCards/blob/689f58229/source/nodejs/adaptivecards-templating/src/shared.ts#L4)*
+*Defined in [template-engine.ts:107](https://github.com/microsoft/AdaptiveCards/blob/62537c57c/source/nodejs/adaptivecards-templating/src/template-engine.ts#L107)*
+
+Callback invoked when expression evaluation needs the value of a field in the source data object
+and that field is undefined or null. By default, expression evaluation will substitute an undefined
+field with its binding expression (e.g. `${field}`). This callback makes it possible to customize that
+behavior.
+
+**Example**
+Given this data object:
+
+```json
+{
+    firstName: "David"
+}
+```
+
+The expression `${firstName} ${lastName}` will evaluate to "David ${lastName}" because the `lastName`
+field is undefined.
+
+Now let's set the callback:
+```typescript
+GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<undefined value>"; }
+```
+
+With that, the above expression will evaluate to "David &lt;undefined value&gt;"
+
+#### Type declaration:
+
+▸ (`path`: string): *string | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`path` | string |

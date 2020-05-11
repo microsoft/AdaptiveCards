@@ -6,11 +6,11 @@
     "body": [
         {
             "type": "Media",
-            "poster": "{ThumbnailUrl}",
+            "poster": "${ThumbnailUrl}",
             "sources": [
                 {
                     "mimeType": "video/mp4",
-                    "url": "{Url}"                      
+                    "url": "${Url}"                      
                 }
             ]
         }

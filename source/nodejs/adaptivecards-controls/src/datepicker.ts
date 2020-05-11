@@ -22,7 +22,7 @@ export class CalendarPopupControl extends PopupControl {
         this._calendar.onDateChanged = (c) => {
             this._owner.value = c.date;
 
-            this.close();
+            this.closePopup(false);
         };
         this._calendar.attach(element);
 

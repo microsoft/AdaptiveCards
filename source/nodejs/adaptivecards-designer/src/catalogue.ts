@@ -2,10 +2,28 @@ import * as Adaptive from "adaptivecards";
 import { Downloader } from "./downloader";
 
 export class CatalogueEntry {
+    static createEmptyCardEntry(): CatalogueEntry {
+        let result = new CatalogueEntry("Blank card", "");
+        result._cardPayload = JSON.stringify(
+            {
+                type: "AdaptiveCard",
+                $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+                version: "1.0",
+                body: [
+                ]
+            }
+        );
+        result._cardPayloadDownloaded = true;
+        result._sampleDataDownloaded = true;
+
+        return result;
+    }
+
     private _cardPayload: string;
     private _cardPayloadDownloaded: boolean = false;
     private _sampleData: string;
     private _sampleDataDownloaded: boolean = false;
+    private _cardId: string;
 
     private downloadCompleted() {
         if (this._cardPayloadDownloaded && this._sampleDataDownloaded && this.onDownloaded) {
@@ -17,26 +35,35 @@ export class CatalogueEntry {
 
     onDownloaded: (sender: CatalogueEntry) => void = null;
 
-    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string) {
+    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string, id?:string) {
         this.sampleDataUrl = sampleDataUrl;
+        this._cardId = id;
     }
 
     download() {
-        let payloadDownloader = new Downloader(this.cardPayloadUrl);
-        payloadDownloader.onSuccess = () => {
-            this._cardPayload = payloadDownloader.data;
-            this._cardPayloadDownloaded = true;
+        let cardPayloadDownloadComplete = false;
+        let sampleDataDownloadComplete = false;
 
-            this.downloadCompleted();
+        if (!this.cardPayloadDownloaded) {
+            let payloadDownloader = new Downloader(this.cardPayloadUrl);
+            payloadDownloader.onSuccess = () => {
+                this._cardPayload = payloadDownloader.data;
+                this._cardPayloadDownloaded = true;
+
+                this.downloadCompleted();
+            }
+            payloadDownloader.onError = () => {
+                this._cardPayloadDownloaded = true;
+
+                this.downloadCompleted();
+            }
+            payloadDownloader.download();
         }
-        payloadDownloader.onError = () => {
-            this._cardPayloadDownloaded = true;
-
-            this.downloadCompleted();
+        else {
+            cardPayloadDownloadComplete = true;
         }
-        payloadDownloader.download();
 
-        if (!Adaptive.isNullOrEmpty(this.sampleDataUrl)) {
+        if (this.sampleDataUrl && !this.sampleDataDownloaded) {
             let sampleDataDownloader = new Downloader(this.sampleDataUrl);
             sampleDataDownloader.onSuccess = () => {
                 this._sampleData = sampleDataDownloader.data;
@@ -54,48 +81,132 @@ export class CatalogueEntry {
         else {
             this._sampleDataDownloaded = true;
 
+            sampleDataDownloadComplete = true;
+        }
+
+        if (cardPayloadDownloadComplete && sampleDataDownloadComplete) {
             this.downloadCompleted();
         }
+    }
+
+    get cardPayloadDownloaded(): boolean {
+        return this._cardPayloadDownloaded;
     }
 
     get cardPayload(): string {
         return this._cardPayload;
     }
 
+    get sampleDataDownloaded(): boolean {
+        return this._sampleDataDownloaded;
+    }
+
     get sampleData(): string {
         return this._sampleData;
     }
+
+    get cardId(): string  {
+        return this._cardId;
+    }
 }
 
-export function parseCatalogue(input: any): CatalogueEntry[] {
-    let entries: any[] = null;
+export class SampleCatalogue {
+    private _entries: CatalogueEntry[] = [];
+    private _isDownloaded: boolean = false;
+    private _url: string;
 
-    if (Array.isArray(input)) {
-        entries = input;
+    private downloaded() {
+        this._isDownloaded = true;
+
+        if (this.onDownloaded) {
+            this.onDownloaded(this);
+        }
     }
-    else {
-        entries = Array.isArray(input["entries"]) ? input["entried"] : null;
-    }
 
-    let result: CatalogueEntry[] = [];
+    private parse(input: any) {
+        let entries: any[] = null;
 
-    if (entries != null) {
-        for (let entry of entries) {
-            if (typeof entry === "object") {
-                let displayName = Adaptive.getStringValue(entry["displayName"]);
-                let cardPayloadUrl = Adaptive.getStringValue(entry["cardPayloadUrl"]);
+        if (Array.isArray(input)) {
+            entries = input;
+        }
+        else {
+            entries = Array.isArray(input["entries"]) ? input["entries"] : null;
+        }
 
-                if (!Adaptive.isNullOrEmpty(displayName) && !Adaptive.isNullOrEmpty(cardPayloadUrl)) {
+        this._entries = [
+            CatalogueEntry.createEmptyCardEntry()
+        ];
 
-                    result.push(
-                        new CatalogueEntry(
-                            displayName,
-                            cardPayloadUrl,
-                            Adaptive.getStringValue(entry["dataSampleUrl"])));
+        if (entries != null) {
+            for (let entry of entries) {
+                if (typeof entry === "object") {
+                    let displayName = Adaptive.parseString(entry["displayName"]);
+                    let cardPayloadUrl = Adaptive.parseString(entry["cardPayloadUrl"]);
+
+                    if (displayName && cardPayloadUrl) {
+                        this._entries.push(
+                            new CatalogueEntry(
+                                displayName,
+                                cardPayloadUrl,
+                                Adaptive.parseString(entry["dataSampleUrl"])));
+                    }
                 }
             }
         }
     }
 
-    return result;
+    onDownloaded: (sender: SampleCatalogue) => void;
+
+    constructor(url: string = "./sample-catalogue.json") {
+        this.url = url;
+    }
+
+    download() {
+        if (!this.isDownloaded) {
+            let downloader = new Downloader(this.url);
+            downloader.onError = () => {
+                if (this._entries.length === 0) {
+                    this._entries = [ CatalogueEntry.createEmptyCardEntry() ];
+                }
+                
+                this.downloaded();
+            };
+            downloader.onSuccess = () => {
+                if (downloader.data) {
+                    try {
+                        this.parse(JSON.parse(downloader.data));
+                    }
+                    catch (e) {
+                        // Swallow the error
+                    }
+                }
+
+                this.downloaded();
+            };
+            downloader.download();
+        }
+        else {
+            this.downloaded();
+        }
+    }
+
+    get isDownloaded(): boolean {
+        return this._isDownloaded;
+    }
+
+    get entries(): CatalogueEntry[] {
+        return this._entries;
+    }
+
+    get url(): string {
+        return this._url;
+    }
+
+    set url(value: string) {
+        if (value !== this._url) {
+            this._url = value;
+
+            this._isDownloaded = false;
+        }
+    }
 }

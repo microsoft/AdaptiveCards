@@ -8,20 +8,20 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "{companyName}",
+                    "text": "${companyName}",
                     "size": "Medium",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "{primaryExchange}: {symbol}",
+                    "text": "${primaryExchange}: ${symbol}",
                     "isSubtle": true,
                     "spacing": "Small",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "{{DATE({parseDateFromEpoch(latestUpdate)}, SHORT)}} {{TIME({parseDateFromEpoch(latestUpdate)})}}"
+                    "text": "{{DATE(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
                 }
             ]
         },
@@ -38,13 +38,13 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "{latestPrice} ",
+                                    "text": "${latestPrice} ",
                                     "size": "ExtraLarge"
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "{if(change >= 0, '▲', '▼')} USD {change} ({format(changePercent, '%')})",
-                                    "color": "{if(change >= 0, 'good', 'attention')}",
+                                    "text": "${if(change >= 0, '▲', '▼')} USD ${change}%",
+                                    "color": "${if(change >= 0, 'good', 'attention')}",
                                     "spacing": "None"
                                 }
                             ]
@@ -58,15 +58,15 @@
                                     "facts": [
                                         {
                                             "title": "Open",
-                                            "value": "{open} "
+                                            "value": "${open} "
                                         },
                                         {
                                             "title": "High",
-                                            "value": "{high} "
+                                            "value": "${high} "
                                         },
                                         {
                                             "title": "Low",
-                                            "value": "{low} "
+                                            "value": "${low} "
                                         }
                                     ]
                                 }
