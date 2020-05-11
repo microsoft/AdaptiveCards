@@ -64,7 +64,7 @@ export class OpenImageDialog extends Dialog {
     private renderTitleContent():HTMLElement {
         const content = document.createElement("div");
         content.className="acd-image-title-content";
-        content.innerText = "Design your cards and upload it as a png, or jpeg and see it magically convert to a fucntioning adaptive card";
+        content.innerText = "Design your cards and upload it as a png, or jpeg and see it magically convert to a functioning adaptive card";
         return content;
     }
 
@@ -232,14 +232,16 @@ export class OpenImageDialog extends Dialog {
             sampleImageTemplate.removeChild(spinnerElement);
             sampleImageTemplate.removeChild(message);
             sampleImageTemplate.appendChild(imageTitle);
-            
+            const imageContainer = document.createElement("div");
+
                 for(let template of res.templates) {
                     let sampleImage = new ImageItem(template);
                     sampleImage.onClick = (selectedImage: string) => {
                         this.renderImage(selectedImage)
                     }   
-                    sampleImageTemplate.appendChild(sampleImage.render());
+                    imageContainer.appendChild(sampleImage.render());
                 }
+                sampleImageTemplate.appendChild(imageContainer);
         })
             return sampleImageTemplate;
     }

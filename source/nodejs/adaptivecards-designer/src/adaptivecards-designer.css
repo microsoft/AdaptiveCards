@@ -1134,7 +1134,7 @@ a.default-ac-anchor:visited:active {
 }
 
 .acd-sample-image {
-    max-width: 280px;
+    max-width: 40%;
     margin: 12px;
     cursor: pointer;
 }
