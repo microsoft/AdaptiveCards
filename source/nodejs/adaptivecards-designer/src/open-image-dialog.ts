@@ -225,7 +225,7 @@ export class OpenImageDialog extends Dialog {
 
         this.fetchManager.getSampleImages().then(res => {
             const imageTitle = document.createElement("div");
-            imageTitle.innerText = "Choose from our Sample Image";
+            imageTitle.innerText = "Choose from our sample images";
             imageTitle.style.marginLeft = "15px";
             imageTitle.className="acd-image-title";
             sampleImageTemplate.style.flexDirection = "row"

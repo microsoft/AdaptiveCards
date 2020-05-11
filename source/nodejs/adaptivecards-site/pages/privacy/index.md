@@ -6,7 +6,7 @@ title: Privacy
 
 ![Screenshot of convert from image feature](index/convert-from-image.png)
 
-The [Adaptive Card Designer](https://adaptivecards.io/designer) includes a preview feature that allows uploading an image and having machine learning (ML) convert it into an Adaptive Card. Once this image is processed and the card payload is returned, all uploaded data is removed. Your use of the feature operates as your consent to these practices.
+The [Adaptive Card Designer](https://adaptivecards.io/designer) includes a preview feature that allows uploading an image and having machine learning (ML) convert it into an Adaptive Card. Once this image is processed and the card payload is returned, all uploaded data is discarded. Your use of the feature operates as your consent to these practices. The Microsoft privacy statement is located here https://go.microsoft.com/fwlink/?LinkID=824704
 
 
 ## General website usage
