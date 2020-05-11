@@ -2,7 +2,8 @@
   <PropertyGroup>
 
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>0.1.0-alpha1</Version>
+    <VersionPrefix>1.0.0-beta1</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     <Authors>Microsoft</Authors>
     <Product>Adaptive Cards</Product>
     <Summary>JSON templating library</Summary>
