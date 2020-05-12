@@ -46,11 +46,11 @@ hexo.extend.generator.register("generator-sampleBrowser", function(locals) {
             }
 		};
 
-		// TODO: Find way to include the template samples here, for now, just load the regular samples
+
         designerSampleCatalog.push({
             displayName: sample.name,
-			cardPayloadUrl: sample.jsonUrl
-			//dataSampleUrl: sample.dataUrl
+			cardPayloadUrl: sample.templateUrl,
+			dataSampleUrl: sample.dataUrl
         });
 
         // Generate an index.html for the first one

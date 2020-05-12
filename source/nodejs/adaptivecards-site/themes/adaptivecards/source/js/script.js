@@ -408,32 +408,9 @@ $(function () {
 
 		if (dataJson) {
 			var template = new ACData.Template(json);
-			var context = {
+			adaptiveCard.parse(template.expand({
 				$root: dataJson
-			}
-
-			// context.registerFunction("format", function(param0, param1) {
-			// 	switch (param1) {
-			// 		case ("%"):
-			// 			return (param0 * 100).toFixed(2) + "%";
-
-			// 		default:
-			// 			return "Unknown format: " + param1;
-			// 	}
-			// });
-
-			// context.registerFunction("parseDateFromEpoch", function(param) {
-			// 	try {
-			// 		let d = new Date(param);
-			// 		let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2);
-			// 		return d.toISOString().substr(0, 19) + "-03:00";
-			// 	} catch(e) {
-			// 		return "Unable to parse epoch";
-			// 	}
-
-			// });
-
-			adaptiveCard.parse(template.expand(context));
+			}));
 			renderedCard = adaptiveCard.render();
 		} else {
 			adaptiveCard.parse(json);

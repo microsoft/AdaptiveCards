@@ -99,7 +99,7 @@
                         },
                         {
                             "title": "Reimbursable Amount",
-                            "value": "$${string(expenses[0].total + expenses[1].total + expenses[2].total)}"
+                            "value": "$${formatNumber(expenses[0].total + expenses[1].total + expenses[2].total, 2)}"
                         },
                         {
                             "title": "Awaiting approval from",
@@ -191,7 +191,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "$${string(expenses[0].total)}",
+                            "text": "$${formatNumber(expenses[0].total, 2)}",
                             "wrap": true
                         }
                     ],
@@ -344,7 +344,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "$${string(expenses[1].total)}",
+                            "text": "$${formatNumber(expenses[1].total, 2)}",
                             "wrap": true
                         }
                     ],
@@ -491,7 +491,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "$${string(expenses[2].total)}",
+                            "text": "$${formatNumber(expenses[2].total, 2)}",
                             "wrap": true
                         }
                     ],
@@ -629,7 +629,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "$${string(expenses[0].total + expenses[1].total + expenses[2].total)}"
+                            "text": "$${formatNumber(expenses[0].total + expenses[1].total + expenses[2].total, 2)}"
                         },
                         {
                             "type": "TextBlock",
@@ -673,7 +673,7 @@
                                 {
                                     "type": "TextBlock",
                                     "weight": "Bolder",
-                                    "text": "$${string(expenses[0].total + expenses[1].total + expenses[2].total)}"
+                                    "text": "$${formatNumber(expenses[0].total + expenses[1].total + expenses[2].total, 2)}"
                                 }
                             ],
                             "width": "auto"

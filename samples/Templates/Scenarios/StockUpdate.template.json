@@ -1,7 +1,7 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "1.2",
     "body": [
         {
             "type": "Container",
@@ -16,12 +16,12 @@
                     "type": "TextBlock",
                     "text": "${primaryExchange}: ${symbol}",
                     "isSubtle": true,
-                    "spacing": "Small",
+                    "spacing": "None",
                     "wrap": true
                 },
                 {
                     "type": "TextBlock",
-                    "text": "{{DATE(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatDateTime(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
+                    "text": "{{DATE(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}"
                 }
             ]
         },
@@ -38,12 +38,12 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "${latestPrice} ",
+                                    "text": "${formatNumber(latestPrice, 2)} ",
                                     "size": "ExtraLarge"
                                 },
                                 {
                                     "type": "TextBlock",
-                                    "text": "${if(change >= 0, '▲', '▼')} USD ${change}%",
+                                    "text": "${if(change >= 0, '▲', '▼')} ${formatNumber(change,2)} USD (${formatNumber(changePercent * 100, 2)}%)",
                                     "color": "${if(change >= 0, 'good', 'attention')}",
                                     "spacing": "None"
                                 }
