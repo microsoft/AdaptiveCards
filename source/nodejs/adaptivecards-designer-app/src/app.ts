@@ -3,6 +3,7 @@
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
+import * as ACTemplating from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
@@ -11,11 +12,11 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    // Uncomment to enabled preview features such as data binding
+    ACTemplating.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<" + path + " is undefined>" };
+
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
-    // Note the below two flags are ignored if enableDataBindingSupport is set to false
-    ACDesigner.GlobalSettings.showDataStructureToolbox = true;
+    ACDesigner.GlobalSettings.showDataStructureToolbox = false;
     ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
 
     // Uncomment to configure default toolbox titles
@@ -28,8 +29,6 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
 
-
-
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
@@ -39,62 +38,140 @@ window.onload = function() {
 		console.log("Local storage is not available.");
 	}
 
-	let hostContainers: Array<ACDesigner.HostContainer> = [];
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-	hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-	hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-	hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-	hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-	hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
-
-	let designer = new ACDesigner.CardDesigner(hostContainers);
+	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 	designer.attachTo(document.getElementById("designerRootHost"));
 
-	/* Uncomment to test a custom palette item example
+    /* Uncomment to test a custom palette item example
+    let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
+    exampleSnippet.snippet = {
+        type: "ColumnSet",
+        columns: [
+            {
+                width: "auto",
+                items: [
+                    {
+                        type: "Image",
+                        size: "Small",
+                        style: "Person",
+                        url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    }
+                ]
+            },
+            {
+                width: "stretch",
+                items: [
+                    {
+                        type: "TextBlock",
+                        text: "John Doe",
+                        weight: "Bolder",
+                        wrap: true
+                    },
+                    {
+                        type: "TextBlock",
+                        spacing: "None",
+                        text: "Additional information",
+                        wrap: true
+                    }
+                ]
+            }
+        ]
+    };
 
-  let exampleSnippet = new ACDesigner.SnippetPaletteItem("Custom", "Example");
-  exampleSnippet.snippet = {
-      type: "ColumnSet",
-      columns: [
-          {
-              width: "auto",
-              items: [
-                  {
-                      type: "Image",
-                      size: "Small",
-                      style: "Person",
-                      url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
-                  }
-              ]
-          },
-          {
-              width: "stretch",
-              items: [
-                  {
-                      type: "TextBlock",
-                      text: "John Doe",
-                      weight: "Bolder",
-                      wrap: true
-                  },
-                  {
-                      type: "TextBlock",
-                      spacing: "None",
-                      text: "Additional information",
-                      wrap: true
-                  }
-              ]
-          }
-      ]
-  };
+    designer.customPaletteItems = [ exampleSnippet ];
+    */
 
-  designer.customPaletteItems = [ exampleSnippet ];
-  */
+    designer.monacoModuleLoaded(monaco);
 
-	designer.monacoModuleLoaded(monaco);
+    let sampleData = {
+        title: "Publish Adaptive Card Schema",
+        description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+        creator: {
+            name: "Matt Hidinger",
+            profileImage: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+        },
+        createdUtc: "2017-02-14T06:08:39Z",
+        viewUrl: "https://adaptivecards.io",
+        properties: [
+            { key: "Board", value: "Adaptive Cards" },
+            { key: "List", value: "Backlog" },
+            { key: "Assigned to", value: "Matt Hidinger" },
+            { key: "Due date", value: "Not set" }
+        ]
+    };
 
+    let sampleDataStructure: ACDesigner.IData = {
+        valueType: "Object",
+        fields: [
+            {
+                name: "title",
+                displayName: "Title",
+                valueType: "String",
+                sampleValue: "Publish Adaptive Card Schema"
+            },
+            {
+                name: "description",
+                displayName: "Description",
+                valueType: "String",
+                sampleValue: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."
+            },
+            {
+                name: "creator",
+                displayName: "Creator",
+                valueType: "Object",
+                fields: [
+                    {
+                        name: "name",
+                        displayName: "Name",
+                        valueType: "String",
+                        sampleValue: "Matt Hidinger"
+                    },
+                    {
+                        name: "profileImage",
+                        displayName: "Profile image URL",
+                        valueType: "String",
+                        sampleValue: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                    }
+                ]
+            },
+            {
+                name: "createdUtc",
+                displayName: "Date created",
+                valueType: "String",
+                sampleValue: "2017-02-14T06:08:39Z"
+            },
+            {
+                name: "viewUrl",
+                displayName: "View URL",
+                valueType: "String",
+                sampleValue: "https://adaptivecards.io"
+            },
+            {
+                name: "properties",
+                displayName: "Properties",
+                valueType: "Array",
+                itemType: {
+                    valueType: "Object",
+                    fields: [
+                        {
+                            name: "key",
+                            displayName: "Key",
+                            valueType: "String",
+                            sampleValue: "Sample key"
+                        },
+                        {
+                            name: "value",
+                            displayName: "Value",
+                            valueType: "String",
+                            sampleValue: "Sample value"
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+
+    /*
 	let sampleData = {
 		firstName: "John",
 		lastName: "Doe",
@@ -118,8 +195,100 @@ window.onload = function() {
 				age: 13
 			}
 		]
-	};
-	
-	designer.dataStructure = ACDesigner.FieldDefinition.create(sampleData);
-	designer.sampleData = sampleData;
+    };
+
+    let sampleDataStructure: ACDesigner.IData = {
+        valueType: "Object",
+        fields: [
+            {
+                name: "firstName",
+                displayName: "First name",
+                valueType: "String",
+                sampleValue: "John"
+            },
+            {
+                name: "lastName",
+                displayName: "Last name",
+                valueType: "String",
+                sampleValue: "Doe"
+            },
+            {
+                name: "age",
+                displayName: "Age",
+                valueType: "Number",
+                sampleValue: 36
+            },
+            {
+                name: "isMarried",
+                displayName: "Married",
+                valueType: "Boolean",
+                sampleValue: false
+            },
+            {
+                name: "address",
+                displayName: "Address",
+                valueType: "Object",
+                fields: [
+                    {
+                        name: "street",
+                        displayName: "Street",
+                        valueType: "String",
+                        sampleValue: "1234 555th Ave NE"
+                    },
+                    {
+                        name: "city",
+                        displayName: "City",
+                        valueType: "String",
+                        sampleValue: "Redmond"
+                    },
+                    {
+                        name: "state",
+                        displayName: "State",
+                        valueType: "String",
+                        sampleValue: "WA"
+                    },
+                    {
+                        name: "countryOrRegion",
+                        displayName: "Country/region",
+                        valueType: "String",
+                        sampleValue: "USA"
+                    }
+                ]
+            },
+            {
+                name: "children",
+                displayName: "Children",
+                valueType: "Array",
+                itemType: {
+                    valueType: "Object",
+                    fields: [
+                        {
+                            name: "firstName",
+                            displayName: "First name",
+                            valueType: "String",
+                            sampleValue: "Jennifer"
+                        },
+                        {
+                            name: "lastName",
+                            displayName: "Last name",
+                            valueType: "String",
+                            sampleValue: "Doe"
+                        },
+                        {
+                            name: "age",
+                            displayName: "Age",
+                            valueType: "Number",
+                            sampleValue: 13
+                        }
+                    ]
+                }
+            }
+        ]
+    };
+    */
+
+	designer.dataStructure = ACDesigner.FieldDefinition.parse(sampleDataStructure);
+    // designer.lockDataStructure = true;
+    designer.sampleData = sampleData;
+    designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
 }
