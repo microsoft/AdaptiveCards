@@ -117,6 +117,8 @@
     <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -240,6 +242,8 @@
     <ClInclude Include="lib\LinkButton.h" />
     <ClInclude Include="lib\AdaptiveInputLabelsConfig.h" />
     <ClInclude Include="lib\AdaptiveInputLabelConfig.h" />
+    <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputsConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
