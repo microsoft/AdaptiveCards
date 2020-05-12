@@ -16,20 +16,20 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Color(_Outptr_ ABI::AdaptiveNamespace::ForegroundColor* color);
         IFACEMETHODIMP put_Color(_In_ ABI::AdaptiveNamespace::ForegroundColor color);
 
+        IFACEMETHODIMP get_IsSubtle(_Outptr_ boolean* isSubtle);
+        IFACEMETHODIMP put_IsSubtle(_In_ boolean isSubtle);
+
         IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveNamespace::TextSize* size);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveNamespace::TextSize size);
 
-        IFACEMETHODIMP get_Spacing(_Outptr_ ABI::AdaptiveNamespace::Spacing* spacing);
-        IFACEMETHODIMP put_Spacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
-
-        IFACEMETHODIMP get_Suffix(_Outptr_ HSTRING* suffix);
-        IFACEMETHODIMP put_Suffix(_In_ HSTRING suffix);
+        IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveNamespace::TextWeight* weight);
+        IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveNamespace::TextWeight weight);
 
     private:
         ABI::AdaptiveNamespace::ForegroundColor m_color;
+        boolean m_isSubtle;
         ABI::AdaptiveNamespace::TextSize m_size;
-        ABI::AdaptiveNamespace::Spacing m_spacing;
-        Microsoft::WRL::Wrappers::HString m_suffix;
+        ABI::AdaptiveNamespace::TextWeight m_weight;
 
     };
     ActivatableClass(AdaptiveInputLabelConfig);

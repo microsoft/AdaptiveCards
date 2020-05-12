@@ -16,7 +16,7 @@
 #include "AdaptiveImageConfig.h"
 #include "AdaptiveImageSetConfig.h"
 #include "AdaptiveImageSizesConfig.h"
-#include "AdaptiveInputLabelsConfig.h"
+#include "AdaptiveInputsConfig.h"
 #include "AdaptiveMediaConfig.h"
 #include "AdaptiveSeparatorConfig.h"
 #include "AdaptiveSpacingConfig.h"
@@ -93,7 +93,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionsConfig>(m_actions.GetAddressOf(), sharedHostConfig.GetActions()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveImageConfig>(m_image.GetAddressOf(), sharedHostConfig.GetImage()));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveMediaConfig>(m_media.GetAddressOf(), sharedHostConfig.GetMedia()));
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelsConfig>(m_inputLabels.GetAddressOf(), sharedHostConfig.GetInputLabels()));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputsConfig>(m_inputs.GetAddressOf(), sharedHostConfig.GetInputs()));
 
         return S_OK;
     }
@@ -253,14 +253,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveHostConfig::get_InputLabels(_COM_Outptr_ IAdaptiveInputLabelsConfig** inputLabelsConfig)
+    HRESULT AdaptiveHostConfig::get_Inputs(_COM_Outptr_ IAdaptiveInputsConfig** inputsConfig)
     {
-        return m_inputLabels.CopyTo(inputLabelsConfig);
+        return m_inputs.CopyTo(inputsConfig);
     }
 
-    HRESULT AdaptiveHostConfig::put_InputLabels(_In_ IAdaptiveInputLabelsConfig* inputLabelsConfig)
+    HRESULT AdaptiveHostConfig::put_Inputs(_In_ IAdaptiveInputsConfig* inputsConfig)
     {
-        m_inputLabels = inputLabelsConfig;
+        m_inputs = inputsConfig;
         return S_OK;
     }
 
@@ -268,6 +268,7 @@ namespace AdaptiveNamespace
     {
         return m_fontTypes.CopyTo(value);
     }
+
 
     HRESULT AdaptiveHostConfig::put_FontTypes(_In_ IAdaptiveFontTypesDefinition* value)
     {

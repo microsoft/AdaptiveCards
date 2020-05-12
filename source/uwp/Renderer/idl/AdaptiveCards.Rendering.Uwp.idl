@@ -396,6 +396,16 @@ AdaptiveNamespaceStart
         OptionalInputs
     } InputNecessityIndicators;
 
+    [version(NTDDI_WIN10_RS1), flags]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        [contract(InternalContract, 1)][internal]
+#endif
+        typedef[v1_enum] enum ValidationBehavior {
+            OnSubmit = 0,
+            OnFocusLostWithInput,
+            OnFocusLost
+        } ValidationBehavior;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1382,9 +1392,9 @@ AdaptiveNamespaceStart
         AdaptiveInputLabelConfig();
 
         ForegroundColor Color;
+        Boolean IsSubtle;
         TextSize Size;
-        Spacing Spacing;
-        String Suffix;
+        TextWeight Weight;
     };
 
     [
@@ -1396,8 +1406,39 @@ AdaptiveNamespaceStart
     ] runtimeclass AdaptiveInputLabelsConfig {
         AdaptiveInputLabelsConfig();
 
+        String RequiredSuffix;
+        Spacing InputSpacing;
+
         AdaptiveInputLabelConfig RequiredInputs;
         AdaptiveInputLabelConfig OptionalInputs;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveErrorMessageConfig", 01170E4D-B523-48E7-96C9-39FD8710048B),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveErrorMessageConfig {
+        AdaptiveErrorMessageConfig();
+
+        TextSize Size;
+        Spacing Spacing;
+        TextWeight Weight;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputsConfig", 470F4E2E-920B-4FA2-A967-982C766182A2),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveInputsConfig {
+        AdaptiveInputsConfig();
+
+        AdaptiveErrorMessageConfig ErrorMessage;
+        AdaptiveInputLabelsConfig InputLabels;
+        ValidationBehavior ValidationBehavior;
     };
 
     [
@@ -1428,7 +1469,7 @@ AdaptiveNamespaceStart
         AdaptiveFactSetConfig FactSet;
         AdaptiveActionsConfig Actions;
         AdaptiveMediaConfig Media;
-        AdaptiveInputLabelsConfig InputLabels;
+        AdaptiveInputsConfig Inputs;
 
         static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
         static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);

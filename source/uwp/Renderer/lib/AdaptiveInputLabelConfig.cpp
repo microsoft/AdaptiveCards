@@ -20,10 +20,9 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputLabelConfig::RuntimeClassInitialize(InputLabelConfig inputLabelConfig) noexcept
     {
         m_color = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(inputLabelConfig.color);
+        m_isSubtle = static_cast<boolean>(inputLabelConfig.isSubtle);
         m_size = static_cast<ABI::AdaptiveNamespace::TextSize>(inputLabelConfig.size);
-        m_spacing = static_cast<ABI::AdaptiveNamespace::Spacing>(inputLabelConfig.spacing);
-        
-        RETURN_IF_FAILED(UTF8ToHString(inputLabelConfig.suffix, m_suffix.GetAddressOf()));
+        m_weight = static_cast<ABI::AdaptiveNamespace::TextWeight>(inputLabelConfig.weight);
 
         return S_OK;
     }
@@ -40,6 +39,19 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveInputLabelConfig::get_IsSubtle(_Outptr_ boolean* isSubtle)
+    {
+        *isSubtle = m_isSubtle;
+        return S_OK;
+    }
+
+
+    HRESULT AdaptiveInputLabelConfig::put_IsSubtle(_In_ boolean isSubtle)
+    {
+        m_isSubtle = isSubtle;
+        return S_OK;
+    }
+
     HRESULT AdaptiveInputLabelConfig::get_Size(_Out_ ABI::AdaptiveNamespace::TextSize* size)
     {
         *size = m_size;
@@ -52,24 +64,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveInputLabelConfig::get_Spacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
+    HRESULT AdaptiveInputLabelConfig::get_Weight(_Outptr_ ABI::AdaptiveNamespace::TextWeight* weight)
     {
-        *spacing = m_spacing;
+        *weight = m_weight;
         return S_OK;
     }
 
-    HRESULT AdaptiveInputLabelConfig::put_Spacing(ABI::AdaptiveNamespace::Spacing spacing)
+    HRESULT AdaptiveInputLabelConfig::put_Weight(_In_ ABI::AdaptiveNamespace::TextWeight weight)
     {
-        m_spacing = spacing;
+        m_weight = weight;
         return S_OK;
     }
-
-
-    HRESULT AdaptiveInputLabelConfig::get_Suffix(_Outptr_ HSTRING* suffix)
-    {
-        return m_suffix.CopyTo(suffix);
-    }
-
-    HRESULT AdaptiveInputLabelConfig::put_Suffix(_In_ HSTRING suffix) { return m_suffix.Set(suffix); }
-
 }

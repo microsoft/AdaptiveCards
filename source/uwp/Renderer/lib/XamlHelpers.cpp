@@ -684,8 +684,11 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
+        ComPtr<IAdaptiveInputsConfig> inputsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+
         ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
-        RETURN_IF_FAILED(hostConfig->get_InputLabels(&inputLabelsConfig));
+        RETURN_IF_FAILED(inputsConfig->get_InputLabels(&inputLabelsConfig));
 
         ComPtr<IAdaptiveInputLabelConfig> labelConfig;
         if (isRequired)
@@ -698,9 +701,7 @@ namespace AdaptiveNamespace::XamlHelpers
         }
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
-        RETURN_IF_FAILED(labelConfig->get_Color(&textColor));
-
-        
+        RETURN_IF_FAILED(labelConfig->get_Color(&textColor));      
 
         ABI::Windows::UI::Color color;
         RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), textColor, ContainerStyle_Default, false, false, &color));
@@ -777,6 +778,42 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
+    // Error messages are formatted for text size and weight
+    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                             ITextBlock* errorMessage)
+    {
+        ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(hostConfig.GetAddressOf()));
+
+        ComPtr<IAdaptiveInputsConfig> inputsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Inputs(inputsConfig.GetAddressOf()));
+
+        ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
+        RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+
+        // Set size defined in host config
+        ABI::AdaptiveNamespace::TextSize textSize;
+        RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
+
+        UINT32 resultSize{};
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+
+        RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
+
+        // Set weight defined in host config
+        ABI::AdaptiveNamespace::TextWeight textWeight;
+        RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
+
+        ABI::Windows::UI::Text::FontWeight resultWeight;
+        RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textWeight, &resultWeight));
+
+        RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
+
+        return S_OK;
+    }
+
     HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                     _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
@@ -800,6 +837,9 @@ namespace AdaptiveNamespace::XamlHelpers
                 GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
 
             errorMessageTextBlock->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get());
+
+            // Format the error message through host config
+            RETURN_IF_FAILED(FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock.Get()));
 
             // Error message should begin collapsed and only be show when validated
             ComPtr<IUIElement> errorMessageTextBlockAsUIElement;
@@ -859,20 +899,20 @@ namespace AdaptiveNamespace::XamlHelpers
         XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label);
         XamlHelpers::AppendXamlElementToPanel(label.Get(), stackPanelAsPanel.Get());
 
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveInputsConfig> inputsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+
         // Render the spacing between the label and the input
         if (label != nullptr)
         {
-            ComPtr<IAdaptiveHostConfig> hostConfig;
-            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
             ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
-            RETURN_IF_FAILED(hostConfig->get_InputLabels(&inputLabelsConfig));
-
-            ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
-            RETURN_IF_FAILED(inputLabelsConfig->get_RequiredInputs(&inputLabelConfig));
+            RETURN_IF_FAILED(inputsConfig->get_InputLabels(inputLabelsConfig.GetAddressOf()));
 
             ABI::AdaptiveNamespace::Spacing labelSpacing;
-            RETURN_IF_FAILED(inputLabelConfig->get_Spacing(&labelSpacing));
+            RETURN_IF_FAILED(inputLabelsConfig->get_InputSpacing(&labelSpacing));
 
             UINT spacing{};
             RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), labelSpacing, &spacing));
@@ -898,6 +938,31 @@ namespace AdaptiveNamespace::XamlHelpers
         if (validationBorderOut && hasValidation)
         {
             RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
+
+            ABI::AdaptiveNamespace::ValidationBehavior validationBehavior{};
+            inputsConfig->get_ValidationBehavior(&validationBehavior);
+
+            if (validationBehavior != ABI::AdaptiveNamespace::ValidationBehavior::OnSubmit)
+            {
+                
+                // Probably add the lambda
+                //EventRegistrationToken lostFocusToken;
+                //inputUIElement->add_LostFocus(Callback<IRoutedEventHandler>([validationBehavior](IInspectable /*sender*/, IRoutedEventArgs *
+                //                                                                                 /*args*/) -> HRESULT {
+                //                                  // here comes the behaviour where we validate
+                 //                                 if (validationBehavior == ABI::AdaptiveNamespace::ValidationBehavior::OnFocusLostWithInput)
+                  //                                {
+                   //                                 // validate input has something filled in 
+                    //                              }
+                     //                             else
+                      //                            {
+//
+ //                                                 }
+//
+ //                                             }).Get(),
+    //                                          &lostFocusToken);
+            }
+
             RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
         }
 
@@ -908,8 +973,23 @@ namespace AdaptiveNamespace::XamlHelpers
         if (hasValidation)
         {
             RETURN_IF_FAILED(XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext, &errorMessageControl));
+
             if (errorMessageControl != nullptr)
             {
+                // Render the spacing between the input and the error message
+                ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
+                RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+
+                ABI::AdaptiveNamespace::Spacing errorSpacing;
+                RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
+
+                UINT spacing{};
+                RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), errorSpacing, &spacing));
+                auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
+
+                XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
+
+                // Add the rendered error message
                 XamlHelpers::AppendXamlElementToPanel(errorMessageControl.Get(), stackPanelAsPanel.Get());
             }
         }

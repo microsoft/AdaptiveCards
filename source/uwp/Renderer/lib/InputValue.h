@@ -28,7 +28,7 @@ namespace AdaptiveNamespace
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
         virtual HRESULT SetValidation(boolean isValid);
 
-        virtual HRESULT EnableFocusLostValidation();
+        virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior);
         virtual HRESULT EnableValueChangedValidation() = 0;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputElement> m_adaptiveInputElement;
@@ -106,6 +106,7 @@ namespace AdaptiveNamespace
 
     private:
         virtual HRESULT EnableValueChangedValidation() override;
+        // virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveDateInput> m_adaptiveDateInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker> m_datePickerElement;
@@ -129,7 +130,7 @@ namespace AdaptiveNamespace
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
         virtual HRESULT EnableValueChangedValidation() override;
-        virtual HRESULT EnableFocusLostValidation() override;
+        virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveTimeInput> m_adaptiveTimeInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITimePicker> m_timePickerElement;
@@ -153,6 +154,7 @@ namespace AdaptiveNamespace
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
         virtual HRESULT EnableValueChangedValidation() override;
+        virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveToggleInput> m_adaptiveToggleInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICheckBox> m_checkBoxElement;
@@ -177,7 +179,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP SetFocus() override;
 
         virtual HRESULT EnableValueChangedValidation() override;
-        virtual HRESULT EnableFocusLostValidation() override;
+        virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
 
         std::string GetChoiceValue(_In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 

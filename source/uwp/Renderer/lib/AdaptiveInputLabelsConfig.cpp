@@ -19,11 +19,34 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveInputLabelsConfig::RuntimeClassInitialize(InputLabelsConfig inputLabelsConfig) noexcept
     {
+        m_inputSpacing = static_cast<ABI::AdaptiveNamespace::Spacing>(inputLabelsConfig.inputSpacing);
+
+        RETURN_IF_FAILED(UTF8ToHString(inputLabelsConfig.requiredSuffix, m_requiredSuffix.GetAddressOf()));
+
         MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), inputLabelsConfig.requiredInputs);
         MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), inputLabelsConfig.optionalInputs);
 
         return S_OK;
     }
+
+    HRESULT AdaptiveInputLabelsConfig::get_InputSpacing(_Out_ ABI::AdaptiveNamespace::Spacing* spacing)
+    {
+        *spacing = m_inputSpacing;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputLabelsConfig::put_InputSpacing(ABI::AdaptiveNamespace::Spacing spacing)
+    {
+        m_inputSpacing = spacing;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputLabelsConfig::get_RequiredSuffix(_Outptr_ HSTRING* suffix)
+    {
+        return m_requiredSuffix.CopyTo(suffix);
+    }
+
+    HRESULT AdaptiveInputLabelsConfig::put_RequiredSuffix(_In_ HSTRING suffix) { return m_requiredSuffix.Set(suffix); }
 
     HRESULT AdaptiveInputLabelsConfig::get_RequiredInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** requiredInputs)
     {
@@ -46,4 +69,5 @@ namespace AdaptiveNamespace
         m_optionalInputs = optionalInputs;
         return S_OK;
     }
+
 }
