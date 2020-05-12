@@ -34,7 +34,7 @@
           "AgentID": 4499211,
           "Status": "Current",
           "Price": 4032.54,
-          "Deeplink": "http://partners.api.skyscanner.net/apiservices/deeplink/v2?_cje=jzj5DawL5[...]",
+          "Deeplink": "https://partners.api.skyscanner.net/apiservices/deeplink/v2?_cje=jzj5DawL5[...]",
           "SegmentIds": [
             1,
             2
@@ -64,7 +64,7 @@
       "Id": 881,
       "Code": "BA",
       "Name": "British Airways",
-      "ImageUrl": "http://s1.apideeplink.com/images/airlines/BA.png"
+      "ImageUrl": "https://s1.apideeplink.com/images/airlines/BA.png"
     }
   ],
   "Query": {
