@@ -21,6 +21,10 @@ export function isaNumber(value) {
 	return false;
 }
 
+export function getSize(sizeValue){
+	return sizeValue ? parseInt(sizeValue, 10): undefined;
+}
+
 /**
  * @description
  * This function will return the Number for the specified pixel string / number
