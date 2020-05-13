@@ -99,7 +99,7 @@ namespace AdaptiveCards.Templating
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Setting root data failed with given data cotext", e);
+                    throw new Exception("Setting root data failed with given data context", e);
                 }
             }
 
@@ -147,7 +147,7 @@ namespace AdaptiveCards.Templating
             DataContext parentDataContext = GetCurrentDataContext();
             if (jpath == null || parentDataContext == null)
             {
-                throw new ArgumentNullException("parent data context or selection path is null");
+                throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
             var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
@@ -466,7 +466,7 @@ namespace AdaptiveCards.Templating
                 for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
                     var pair = pairs[iPair];
-                    // if the pair refers to same pair that was used for data cotext, do not add its entry
+                    // if the pair refers to same pair that was used for data context, do not add its entry
                     if (pair != dataPair)
                     {
                         var returnedResult = Visit(pair);
