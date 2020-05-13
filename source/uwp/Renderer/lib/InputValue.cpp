@@ -605,24 +605,29 @@ HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-HRESULT ToggleInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior /*validationBehavior*/)
+HRESULT ToggleInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
 {
-    ComPtr<IButtonBase> checkBoxAsButtonBase;
-    RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsButtonBase));
+    ComPtr<IUIElement> checkBoxAsUIElement;
+    RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
 
-    EventRegistrationToken toggleFocusLostToken;
-    RETURN_IF_FAILED(checkBoxAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                          /*args*/) -> HRESULT {
-                                                         boolean isToggleChecked = false;
-                                                         XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &isToggleChecked);
-                                                         if (!isToggleChecked)
-                                                         {
-                                                             return S_OK;
-                                                         }
+    EventRegistrationToken toggleFocusLostToken;  
+    RETURN_IF_FAILED(checkBoxAsUIElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/,
+                                                                                                IRoutedEventArgs * /*args*/) -> HRESULT {
+                                                           if (validationBehavior == ABI::AdaptiveNamespace::ValidationBehavior::OnFocusLost)
+                                                           {
+                                                               boolean isToggleChecked = false;
+                                                               XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &isToggleChecked);
 
-                                                         return Validate(nullptr);
-                                                     }).Get(),
-                                                     &toggleFocusLostToken));
+                                                               if (isToggleChecked)
+                                                               {
+                                                                   return S_OK;
+                                                               }
+                                                           }
+
+                                                           return Validate(nullptr);
+                                                       }).Get(),
+                                                       &toggleFocusLostToken));
+
     RETURN_IF_FAILED(EnableValueChangedValidation());
 
     return S_OK;
