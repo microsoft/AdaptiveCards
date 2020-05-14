@@ -17,7 +17,7 @@ abstract class AbstractTextFormatter {
 
             while ((matches = this._regularExpression.exec(input)) != null) {
                 result = result.replace(matches[0], this.internalFormat(lang, matches));
-            };
+            }
 
             return result;
         }
@@ -29,8 +29,8 @@ abstract class AbstractTextFormatter {
 
 class DateFormatter extends AbstractTextFormatter {
     protected internalFormat(lang: string | undefined, matches: RegExpExecArray): string {
-        let date = new Date(Date.parse(matches[1]));
-        let format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
+        const date = new Date(Date.parse(matches[1]));
+        const format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
 
         if (format != "compact") {
             return date.toLocaleDateString(lang, { day: "numeric", weekday: format, month: format, year: "numeric" });
@@ -43,9 +43,9 @@ class DateFormatter extends AbstractTextFormatter {
 
 class TimeFormatter extends AbstractTextFormatter {
     protected internalFormat(lang: string | undefined, matches: RegExpExecArray): string {
-        let date = new Date(Date.parse(matches[1]));
+        const date = new Date(Date.parse(matches[1]));
 
-        return date.toLocaleTimeString(lang, { hour: 'numeric', minute: '2-digit' });
+        return date.toLocaleTimeString(lang, { hour: "numeric", minute: "2-digit" });
     }
 }
 
@@ -57,7 +57,7 @@ export function formatText(lang: string | undefined, text: string | undefined): 
 
     let result = text;
 
-    for (let formatter of formatters) {
+    for (const formatter of formatters) {
         result = formatter.format(lang, result);
     }
 

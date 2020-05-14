@@ -13,15 +13,15 @@ export class HostCapabilities extends SerializableObject {
         super.internalParse(source, context);
 
         if (source) {
-            for (let name in source) {
-                let jsonVersion = source[name];
+            for (const name in source) {
+                const jsonVersion = source[name];
 
                 if (typeof jsonVersion === "string") {
                     if (jsonVersion == "*") {
                         this.addCapability(name, "*");
                     }
                     else {
-                        let version = Version.parse(jsonVersion, context);
+                        const version = Version.parse(jsonVersion, context);
 
                         if (version && version.isValid) {
                             this.addCapability(name, version);
@@ -35,7 +35,7 @@ export class HostCapabilities extends SerializableObject {
     protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
         super.internalToJSON(target, context);
 
-        for (let key in this._capabilities) {
+        for (const key in this._capabilities) {
             target[key] = this._capabilities[key];
         }
     }
@@ -65,7 +65,7 @@ export class HostCapabilities extends SerializableObject {
     }
 
     areAllMet(hostCapabilities: HostCapabilities): boolean {
-        for (let capabilityName in this._capabilities) {
+        for (const capabilityName in this._capabilities) {
             if (!hostCapabilities.hasCapability(capabilityName, this._capabilities[capabilityName])) {
                 return false;
             }

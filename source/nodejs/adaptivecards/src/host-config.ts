@@ -7,7 +7,7 @@ import { HostCapabilities } from "./host-capabilities";
 
 function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
     if (typeof value === "string") {
-        let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
+        const parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
 
         return parsedValue !== undefined ? parsedValue : defaultValue;
     }
@@ -78,7 +78,7 @@ export class ImageSetConfig {
         return {
             imageSize: Enums.Size[this.imageSize],
             maxImageHeight: this.maxImageHeight
-        }
+        };
     }
 }
 
@@ -97,13 +97,13 @@ export class MediaConfig {
         return {
             defaultPoster: this.defaultPoster,
             allowInlinePlayback: this.allowInlinePlayback
-        }
+        };
     }
 }
 
 export class FactTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
-    color: Enums.TextColor = Enums.TextColor.Default;;
+    color: Enums.TextColor = Enums.TextColor.Default;
     isSubtle: boolean = false;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
     wrap: boolean = true;
@@ -129,7 +129,7 @@ export class FactTextDefinition {
             isSubtle: this.isSubtle,
             weight: Enums.TextWeight[this.weight],
             wrap: this.wrap
-        }
+        };
     }
 }
 
@@ -183,7 +183,7 @@ export class ShowCardActionConfig {
             actionMode: Enums.ShowCardActionMode[this.actionMode],
             inlineTopMargin: this.inlineTopMargin,
             style: this.style
-        }
+        };
     }
 }
 
@@ -212,7 +212,7 @@ export class ActionsConfig {
             this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
             try {
-                let sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
+                const sizeAndUnit = Shared.SizeAndUnit.parse(obj["iconSize"]);
 
                 if (sizeAndUnit.unit == Enums.SizeUnit.Pixel) {
                     this.iconSize = sizeAndUnit.physicalSize;
@@ -233,7 +233,7 @@ export class ActionsConfig {
             preExpandSingleShowCardAction: this.preExpandSingleShowCardAction,
             actionsOrientation: Enums.Orientation[this.actionsOrientation],
             actionAlignment: Enums.ActionAlignment[this.actionAlignment]
-        }
+        };
     }
 }
 
@@ -343,9 +343,9 @@ export class ContainerStyleSet {
             const customStyleArray = obj["customStyles"];
 
             if (customStyleArray && Array.isArray(customStyleArray)) {
-                for (let customStyle of customStyleArray) {
+                for (const customStyle of customStyleArray) {
                     if (customStyle) {
-                        let styleName = customStyle["name"];
+                        const styleName = customStyle["name"];
 
                         if (styleName && typeof styleName === "string") {
                             if (this._allStyles.hasOwnProperty(styleName)) {
@@ -362,7 +362,7 @@ export class ContainerStyleSet {
     }
 
     toJSON() {
-        let customStyleArray: any[] = [];
+        const customStyleArray: any[] = [];
 
         Object.keys(this._allStyles).forEach(
             (key) => {
@@ -374,10 +374,10 @@ export class ContainerStyleSet {
                 }
             });
 
-        let result: any = {
+        const result: any = {
             default: this.default,
             emphasis: this.emphasis
-        }
+        };
 
         if (customStyleArray.length > 0) {
             result.customStyles = customStyleArray;
@@ -549,12 +549,12 @@ export class HostConfig {
                     large: obj.lineHeights["large"],
                     extraLarge: obj.lineHeights["extraLarge"]
                 };
-            };
+            }
 
             this.imageSizes = {
                 small: obj.imageSizes && obj.imageSizes["small"] || this.imageSizes.small,
                 medium: obj.imageSizes && obj.imageSizes["medium"] || this.imageSizes.medium,
-                large: obj.imageSizes && obj.imageSizes["large"] || this.imageSizes.large,
+                large: obj.imageSizes && obj.imageSizes["large"] || this.imageSizes.large
             };
 
             this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
@@ -570,12 +570,12 @@ export class HostConfig {
             this.separator = {
                 lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
                 lineColor: obj.separator && obj.separator["lineColor"] || this.separator.lineColor
-            }
+            };
 
             this.actions = new ActionsConfig(obj.actions || this.actions);
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
-            this.factSet = new FactSetConfig(obj["factSet"])
+            this.factSet = new FactSetConfig(obj["factSet"]);
         }
     }
 
@@ -616,9 +616,9 @@ export class HostConfig {
     }
 
     makeCssClassNames(...classNames: string[]): string[] {
-        let result: string[] = [];
+        const result: string[] = [];
 
-        for (let className of classNames) {
+        for (const className of classNames) {
             result.push((this.cssClassNamePrefix ? this.cssClassNamePrefix + "-" : "") + className);
         }
 
@@ -626,7 +626,7 @@ export class HostConfig {
     }
 
     makeCssClassName(...classNames: string[]): string {
-        let result = this.makeCssClassNames(...classNames).join(" ");
+        const result = this.makeCssClassNames(...classNames).join(" ");
 
         return result ? result : "";
     }
@@ -925,14 +925,14 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                 isSubtle: false,
                 weight: Enums.TextWeight.Bolder,
                 wrap: true,
-                maxWidth: 150,
+                maxWidth: 150
             },
             value: {
                 color: Enums.TextColor.Default,
                 size: Enums.TextSize.Default,
                 isSubtle: false,
                 weight: Enums.TextWeight.Default,
-                wrap: true,
+                wrap: true
             },
             spacing: 10
         }

@@ -34,7 +34,7 @@ export abstract class CardObject extends SerializableObject {
         undefined,
         undefined,
         (sender: object) => {
-            return (<CardObject>sender).getJsonTypeName()
+            return (<CardObject>sender).getJsonTypeName();
         });
     static readonly idProperty = new StringProperty(Versions.v1_0, "id");
     static readonly requiresProperty = new SerializableObjectProperty(
@@ -68,7 +68,7 @@ export abstract class CardObject extends SerializableObject {
     abstract get hostConfig(): HostConfig;
 
     preProcessPropertyValue(property: PropertyDefinition, propertyValue?: any): any {
-        let value = propertyValue === undefined ? this.getValue(property) : propertyValue;
+        const value = propertyValue === undefined ? this.getValue(property) : propertyValue;
 
         if (GlobalSettings.allowPreProcessingPropertyValues) {
             let currentObject: CardObject | undefined = this;
@@ -126,7 +126,7 @@ export abstract class CardObject extends SerializableObject {
     }
 
     validateProperties(): ValidationResults {
-        let result = new ValidationResults();
+        const result = new ValidationResults();
 
         this.internalValidateProperties(result);
 

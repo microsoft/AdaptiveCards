@@ -3,9 +3,9 @@
 import { SerializableObject, Version, Versions } from "./serialization";
 
 export interface ITypeRegistration<T extends SerializableObject> {
-    typeName: string,
-    objectType: { new(): T },
-    schemaVersion: Version
+    typeName: string;
+    objectType: { new(): T };
+    schemaVersion: Version;
 }
 
 export class CardObjectRegistry<T extends SerializableObject> {
@@ -30,7 +30,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
                 typeName: typeName,
                 objectType: objectType,
                 schemaVersion: schemaVersion
-            }
+            };
         }
 
         this._items[typeName] = registrationInfo;
@@ -41,7 +41,7 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     createInstance(typeName: string, targetVersion: Version): T | undefined {
-        let registrationInfo = this.findByName(typeName);
+        const registrationInfo = this.findByName(typeName);
 
         return (registrationInfo && registrationInfo.schemaVersion.compareTo(targetVersion) <= 0) ? new registrationInfo.objectType() : undefined;
     }

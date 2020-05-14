@@ -329,7 +329,8 @@ module.exports = {
       // let foo: Foo = /*...*/;
       // foo.Bar = 7; <-- nice
       // foo["Bar"] = 7; <-- legal but weird
-      "dot-notation": "error",
+      // unfortunately, we can't enforce this due to some legit uses in our codebase
+      "dot-notation": "off",
 
       // require files to end in a single EOL
       "eol-last": "error",
