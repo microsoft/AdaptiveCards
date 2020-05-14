@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for ${formatEpoch(data[0].sunrise_ts, 'dddd')} is high of ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)} and low of ${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} degrees with a ${formatNumber(data[0].precip * 100, 0)}% chance of rain</s><s>Winds will be ${formatNumber(data[0].wind_gust_spd, 0)} mph from the ${data[0].wind_cdir}</s>",
-	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
+	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",

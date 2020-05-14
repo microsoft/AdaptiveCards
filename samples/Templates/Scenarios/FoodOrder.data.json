@@ -1,9 +1,9 @@
 {
    "@context":"http://schema.org",
    "@type":"Restaurant",
-   "url":"http://www.thisisarestaurant.com",
+   "url":"https://www.thisisarestaurant.com",
    "name":"The Restaurant",
-   "image":"http://www.example.com/image-of-some-restaurant.jpg",
+   "image":"https://www.example.com/image-of-some-restaurant.jpg",
    "description":"This is an example restaurant that serves American cuisine.",
    "servesCuisine":[
       "American cuisine"

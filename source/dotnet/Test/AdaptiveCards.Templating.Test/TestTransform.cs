@@ -583,7 +583,7 @@ namespace AdaptiveCards.Templating.Test
                     ]
                 }
             ] ,
-            ""$data"":""{$root}""
+            ""$data"":""${$root}""
         }
     ]
 }";
