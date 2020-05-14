@@ -105,12 +105,16 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
     private:
+        virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
         virtual HRESULT EnableValueChangedValidation() override;
-        // virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
+        virtual HRESULT EnableFocusLostValidation(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior) override;
+
+        boolean TryParseDate(HSTRING dateString, _Out_ ABI::Windows::Foundation::DateTime* parsedDate);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveDateInput> m_adaptiveDateInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker> m_datePickerElement;
         bool m_isDateChangedValidationEnabled;
+        bool m_isFocusLostValidationEnabled{};
     };
 
     // Input value for Input.Time

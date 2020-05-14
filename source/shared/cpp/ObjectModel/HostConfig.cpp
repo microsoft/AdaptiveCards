@@ -80,19 +80,6 @@ HostConfig HostConfig::Deserialize(const Json::Value& json)
                                                                                   result._inputs,
                                                                                   InputsConfig::Deserialize);
 
-
-    /*
-    result._inputLabels =  ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelsConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::InputLabels,
-                                                                                             result._inputLabels,
-                                                                                             InputLabelsConfig::Deserialize);
-
-    result._errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(json,
-                                                                                              AdaptiveCardSchemaKey::ErrorMessage,
-                                                                                              result._errorMessage,
-                                                                                              ErrorMessageConfig::Deserialize);
-                                                                                              */
-
     return result;
 }
 

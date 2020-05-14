@@ -87,7 +87,8 @@ namespace AdaptiveNamespace
         HString hstringMax;
         RETURN_IF_FAILED(adaptiveDateInput->get_Max(hstringMax.GetAddressOf()));
         std::string max = HStringToUTF8(hstringMax.Get());
-        if (DateTimePreparser::TryParseSimpleDate(max, year, month, day))
+        boolean isMaxValid{DateTimePreparser::TryParseSimpleDate(max, year, month, day)};
+        if (isMaxValid)
         {
             DateTime maxDate = GetDateTime(year, month, day);
             if (isMinValid)
@@ -123,7 +124,7 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement> validationError;
         XamlHelpers::HandleInputLayoutAndValidation(adapitveDateInputAsAdaptiveInput.Get(),
                                                     datePickerAsUIElement.Get(),
-                                                    false,
+                                                    isMinValid || isMaxValid , // due to min, max values
                                                     renderContext,
                                                     renderArgs,
                                                     &inputLayout,

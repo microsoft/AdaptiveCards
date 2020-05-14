@@ -772,6 +772,8 @@ namespace AdaptiveNamespace::XamlHelpers
                 RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
             }
 
+            FormatLabelWithHostConfig(renderContext, isRequired, labelRun.Get());
+
             RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
         }
 
@@ -783,6 +785,8 @@ namespace AdaptiveNamespace::XamlHelpers
                                              ITextBlock* errorMessage)
     {
         ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
+
+        xamlErrorMessage->put_TextWrapping(TextWrapping::TextWrapping_WrapWholeWords);
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(hostConfig.GetAddressOf()));
@@ -941,27 +945,6 @@ namespace AdaptiveNamespace::XamlHelpers
 
             ABI::AdaptiveNamespace::ValidationBehavior validationBehavior{};
             inputsConfig->get_ValidationBehavior(&validationBehavior);
-
-            if (validationBehavior != ABI::AdaptiveNamespace::ValidationBehavior::OnSubmit)
-            {
-                
-                // Probably add the lambda
-                //EventRegistrationToken lostFocusToken;
-                //inputUIElement->add_LostFocus(Callback<IRoutedEventHandler>([validationBehavior](IInspectable /*sender*/, IRoutedEventArgs *
-                //                                                                                 /*args*/) -> HRESULT {
-                //                                  // here comes the behaviour where we validate
-                 //                                 if (validationBehavior == ABI::AdaptiveNamespace::ValidationBehavior::OnFocusLostWithInput)
-                  //                                {
-                   //                                 // validate input has something filled in 
-                    //                              }
-                     //                             else
-                      //                            {
-//
- //                                                 }
-//
- //                                             }).Get(),
-    //                                          &lostFocusToken);
-            }
 
             RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
         }

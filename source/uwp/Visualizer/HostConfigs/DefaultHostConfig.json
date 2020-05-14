@@ -141,20 +141,16 @@
 			"requiredSuffix": "*",
 			"inputSpacing": "small",
 			"requiredInputs": {
-				"weight": "bolder",
-				"color": "attention",
-				"size": "medium"
+				"weight": "bolder"
 			},
 			"optionalInputs": {
-				"color": "good",
-				"isSubtle": true,
-				"weight": "lighter"
+				"isSubtle": true
 			}
 		},
 		"errorMessage": {
 			"spacing": "small",
 			"size": "small",
-			"weight": "lighter"
+			"weight": "bolder"
 		}
 	}
 }

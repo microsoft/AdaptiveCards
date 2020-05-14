@@ -181,7 +181,7 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
         }
 
-        SetAccessibilityProperties(isInputValid);
+        RETURN_IF_FAILED(SetAccessibilityProperties(isInputValid));
     }
 
     // Once this has been marked invalid once, we should validate on all value changess going forward
@@ -196,11 +196,11 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
 HRESULT InputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
 {
     EventRegistrationToken focusLostToken;
-m_uiInputElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/, IRoutedEventArgs *
+    RETURN_IF_FAILED(m_uiInputElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                           /*args*/) -> HRESULT {
                                                         return ValidateIfNeeded(validationBehavior, this);
                                                      }).Get(),
-                                                     &focusLostToken);
+                                                     &focusLostToken));
 
     return S_OK;
 }
@@ -376,6 +376,69 @@ HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rend
     return S_OK;
 }
 
+boolean DateInputValue::TryParseDate(HSTRING dateString, _Out_ DateTime* parsedDate)
+{
+    std::string date = HStringToUTF8(dateString);
+
+    DateTime resultDate{};
+    unsigned int year, month, day;
+   
+    boolean isDateValid{DateTimePreparser::TryParseSimpleDate(date, year, month, day)};
+    if (isDateValid)
+    {
+        resultDate = GetDateTime(year, month, day);
+        *parsedDate = resultDate;
+    }
+
+    return isDateValid;
+}
+
+HRESULT DateInputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    // Call the base class to validate isRequired
+    boolean isBaseValid;
+    RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));
+
+    // The DateInput controller allows us to define min and max values so an user can't input an invalid date
+    // but if the card author has set an invalid value as original value then we have to perform manual validation
+
+    // Retrieve current value from input
+    HString currentValue;
+    RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
+    // CurrentValue is guaranteed to be returned in yyyy-mm-dd format, it should always be valid
+    DateTime currentDate{};
+    TryParseDate(currentValue.Get(), &currentDate);
+
+    // Retrieve Min date
+    HString minValidDate;
+    RETURN_IF_FAILED(m_adaptiveDateInput->get_Min(minValidDate.GetAddressOf()));
+    DateTime minDate{};
+    boolean isMinDateValid = TryParseDate(minValidDate.Get(), &minDate);
+    
+    // Retrieve Max date
+    HString maxValidDate;
+    RETURN_IF_FAILED(m_adaptiveDateInput->get_Max(maxValidDate.GetAddressOf()));
+    DateTime maxDate{};
+    boolean isMaxDateValid = TryParseDate(maxValidDate.Get(), &maxDate);  
+
+    // By default both are valid unless proven otherwise
+    boolean minValid{true}, maxValid{true};
+
+    if (isMinDateValid)
+    {
+        minValid = (minDate.UniversalTime <= currentDate.UniversalTime);
+    }
+
+    if (isMaxDateValid)
+    {
+        maxValid = (currentDate.UniversalTime <= maxDate.UniversalTime);
+    }
+
+    *isInputValid = isBaseValid && minValid && maxValid;
+
+    return S_OK;
+}
+
 HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 {
     ComPtr<IReference<DateTime>> dateRef;
@@ -400,6 +463,25 @@ HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 
     RETURN_IF_FAILED(formattedDate.CopyTo(serializedUserInput));
 
+    return S_OK;
+}
+
+HRESULT DateInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
+{
+    if (!m_isFocusLostValidationEnabled)
+    {
+        ComPtr<IUIElement> datePickerAsUIElement;
+        m_datePickerElement.As(&datePickerAsUIElement);
+
+        EventRegistrationToken lostFocusToken;
+        datePickerAsUIElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                                              /*args*/) -> HRESULT {
+                                                 return ValidateIfNeeded(validationBehavior, this); // return Validate(nullptr);
+            }).Get(),
+            &lostFocusToken);
+
+        m_isFocusLostValidationEnabled = true;
+    }
     return S_OK;
 }
 
