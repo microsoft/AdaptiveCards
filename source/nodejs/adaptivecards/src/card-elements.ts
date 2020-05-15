@@ -1700,7 +1700,11 @@ export class Image extends CardElement {
 
             imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
             imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
-            imageElement.alt = <string>this.preProcessPropertyValue(Image.altTextProperty);
+
+            const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
+            if (altTextProperty) {
+                imageElement.alt = <string>altTextProperty;
+            }
 
             element.appendChild(imageElement);
         }
