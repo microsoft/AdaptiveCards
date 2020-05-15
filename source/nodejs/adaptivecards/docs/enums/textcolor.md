@@ -20,7 +20,7 @@
 
 • **Accent**:
 
-*Defined in [enums.ts:59](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L59)*
+*Defined in [enums.ts:59](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L59)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **Attention**:
 
-*Defined in [enums.ts:62](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L62)*
+*Defined in [enums.ts:62](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L62)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **Dark**:
 
-*Defined in [enums.ts:57](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L57)*
+*Defined in [enums.ts:57](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L57)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **Default**:
 
-*Defined in [enums.ts:56](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L56)*
+*Defined in [enums.ts:56](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L56)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **Good**:
 
-*Defined in [enums.ts:60](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L60)*
+*Defined in [enums.ts:60](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L60)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **Light**:
 
-*Defined in [enums.ts:58](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L58)*
+*Defined in [enums.ts:58](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L58)*
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 • **Warning**:
 
-*Defined in [enums.ts:61](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L61)*
+*Defined in [enums.ts:61](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L61)*

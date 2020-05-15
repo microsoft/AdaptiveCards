@@ -16,7 +16,7 @@
 
 • **FullyInContainer**:
 
-*Defined in [enums.ts:168](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L168)*
+*Defined in [enums.ts:176](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L176)*
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 • **FullyOutOfContainer**:
 
-*Defined in [enums.ts:170](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L170)*
+*Defined in [enums.ts:178](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L178)*
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 • **Overflowing**:
 
-*Defined in [enums.ts:169](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L169)*
+*Defined in [enums.ts:177](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L177)*

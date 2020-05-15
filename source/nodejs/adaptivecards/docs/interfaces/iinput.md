@@ -20,8 +20,8 @@
 
 ### Properties
 
-* [id](iinput.md#id)
-* [value](iinput.md#value)
+* [id](iinput.md#optional-id)
+* [value](iinput.md#optional-value)
 
 ### Methods
 
@@ -29,19 +29,19 @@
 
 ## Properties
 
-###  id
+### `Optional` id
 
-• **id**: *string*
+• **id**? : *undefined | string*
 
-*Defined in [shared.ts:17](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L17)*
+*Defined in [shared.ts:29](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L29)*
 
 ___
 
-###  value
+### `Optional` value
 
-• **value**: *string*
+• **value**? : *undefined | string*
 
-*Defined in [shared.ts:18](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L18)*
+*Defined in [shared.ts:30](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L30)*
 
 ## Methods
 
@@ -49,6 +49,6 @@ ___
 
 ▸ **validateValue**(): *boolean*
 
-*Defined in [shared.ts:19](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L19)*
+*Defined in [shared.ts:31](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L31)*
 
 **Returns:** *boolean*

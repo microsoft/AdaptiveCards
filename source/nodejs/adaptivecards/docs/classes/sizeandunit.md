@@ -27,7 +27,7 @@
 
 \+ **new SizeAndUnit**(`physicalSize`: number, `unit`: [SizeUnit](../enums/sizeunit.md)): *[SizeAndUnit](sizeandunit.md)*
 
-*Defined in [shared.ts:165](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L165)*
+*Defined in [shared.ts:176](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L176)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **physicalSize**: *number*
 
-*Defined in [shared.ts:135](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L135)*
+*Defined in [shared.ts:146](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L146)*
 
 ___
 
@@ -52,21 +52,21 @@ ___
 
 • **unit**: *[SizeUnit](../enums/sizeunit.md)*
 
-*Defined in [shared.ts:136](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L136)*
+*Defined in [shared.ts:147](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L147)*
 
 ## Methods
 
 ### `Static` parse
 
-▸ **parse**(`input`: any, `requireUnitSpecifier`: boolean): *[SizeAndUnit](sizeandunit.md)*
+▸ **parse**(`input`: string, `requireUnitSpecifier`: boolean): *[SizeAndUnit](sizeandunit.md)*
 
-*Defined in [shared.ts:138](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L138)*
+*Defined in [shared.ts:149](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L149)*
 
 **Parameters:**
 
 Name | Type | Default |
 ------ | ------ | ------ |
-`input` | any | - |
+`input` | string | - |
 `requireUnitSpecifier` | boolean | false |
 
 **Returns:** *[SizeAndUnit](sizeandunit.md)*

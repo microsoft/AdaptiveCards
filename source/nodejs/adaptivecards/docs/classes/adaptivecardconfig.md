@@ -22,7 +22,7 @@
 
 \+ **new AdaptiveCardConfig**(`obj?`: any): *[AdaptiveCardConfig](adaptivecardconfig.md)*
 
-*Defined in [host-config.ts:47](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L47)*
+*Defined in [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L57)*
 
 **Parameters:**
 
@@ -38,4 +38,4 @@ Name | Type |
 
 • **allowCustomStyle**: *boolean* = false
 
-*Defined in [host-config.ts:47](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L47)*
+*Defined in [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L57)*

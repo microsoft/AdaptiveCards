@@ -33,7 +33,7 @@
 
 \+ **new FactTextDefinition**(`obj?`: any): *[FactTextDefinition](facttextdefinition.md)*
 
-*Defined in [host-config.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L99)*
+*Defined in [host-config.ts:109](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L109)*
 
 **Parameters:**
 
@@ -49,7 +49,7 @@ Name | Type |
 
 • **color**: *[TextColor](../enums/textcolor.md)* = Enums.TextColor.Default
 
-*Defined in [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L96)*
+*Defined in [host-config.ts:106](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L106)*
 
 ___
 
@@ -57,7 +57,7 @@ ___
 
 • **isSubtle**: *boolean* = false
 
-*Defined in [host-config.ts:97](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L97)*
+*Defined in [host-config.ts:107](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L107)*
 
 ___
 
@@ -65,7 +65,7 @@ ___
 
 • **size**: *[TextSize](../enums/textsize.md)* = Enums.TextSize.Default
 
-*Defined in [host-config.ts:95](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L95)*
+*Defined in [host-config.ts:105](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L105)*
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 • **weight**: *[TextWeight](../enums/textweight.md)* = Enums.TextWeight.Default
 
-*Defined in [host-config.ts:98](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L98)*
+*Defined in [host-config.ts:108](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L108)*
 
 ___
 
@@ -81,7 +81,7 @@ ___
 
 • **wrap**: *boolean* = true
 
-*Defined in [host-config.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L99)*
+*Defined in [host-config.ts:109](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L109)*
 
 ## Methods
 
@@ -89,7 +89,7 @@ ___
 
 ▸ **getDefaultWeight**(): *[TextWeight](../enums/textweight.md)*
 
-*Defined in [host-config.ts:111](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L111)*
+*Defined in [host-config.ts:121](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L121)*
 
 **Returns:** *[TextWeight](../enums/textweight.md)*
 
@@ -99,6 +99,6 @@ ___
 
 ▸ **toJSON**(): *any*
 
-*Defined in [host-config.ts:115](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L115)*
+*Defined in [host-config.ts:125](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L125)*
 
 **Returns:** *any*

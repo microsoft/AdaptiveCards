@@ -20,21 +20,38 @@
 
 ## Index
 
+### Constructors
+
+* [constructor](action.md#constructor)
+
 ### Properties
 
-* [iconUrl](action.md#iconurl)
-* [id](action.md#id)
+* [_parent](action.md#protected-optional-_parent)
+* [_renderedElement](action.md#protected-optional-_renderedelement)
+* [iconUrl](action.md#optional-iconurl)
+* [id](action.md#optional-id)
+* [maxVersion](action.md#maxversion)
 * [onExecute](action.md#onexecute)
-* [requires](action.md#requires)
+* [onPreProcessPropertyValue](action.md#optional-onpreprocesspropertyvalue)
 * [style](action.md#style)
-* [title](action.md#title)
+* [title](action.md#optional-title)
+* [iconUrlProperty](action.md#static-iconurlproperty)
+* [idProperty](action.md#static-idproperty)
+* [ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)
+* [onRegisterCustomProperties](action.md#static-optional-onregistercustomproperties)
+* [requiresProperty](action.md#static-requiresproperty)
+* [styleProperty](action.md#static-styleproperty)
+* [titleProperty](action.md#static-titleproperty)
+* [typeNameProperty](action.md#static-typenameproperty)
 
 ### Accessors
 
+* [hostConfig](action.md#hostconfig)
 * [ignoreInputValidation](action.md#ignoreinputvalidation)
 * [isPrimary](action.md#isprimary)
 * [parent](action.md#parent)
 * [renderedElement](action.md#renderedelement)
+* [requires](action.md#requires)
 
 ### Methods
 
@@ -47,38 +64,95 @@
 * [getJsonTypeName](action.md#abstract-getjsontypename)
 * [getReferencedInputs](action.md#getreferencedinputs)
 * [getResourceInformation](action.md#getresourceinformation)
+* [getRootObject](action.md#getrootobject)
+* [getSchema](action.md#getschema)
+* [getSchemaKey](action.md#protected-getschemakey)
+* [getValue](action.md#protected-getvalue)
+* [hasAllDefaultValues](action.md#hasalldefaultvalues)
+* [hasDefaultValue](action.md#hasdefaultvalue)
 * [internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)
+* [internalParse](action.md#protected-internalparse)
 * [internalPrepareForExecution](action.md#protected-internalprepareforexecution)
+* [internalToJSON](action.md#protected-internaltojson)
 * [internalValidateInputs](action.md#protected-internalvalidateinputs)
 * [internalValidateProperties](action.md#internalvalidateproperties)
 * [parse](action.md#parse)
+* [populateSchema](action.md#protected-populateschema)
+* [preProcessPropertyValue](action.md#preprocesspropertyvalue)
 * [prepareForExecution](action.md#prepareforexecution)
 * [remove](action.md#remove)
 * [render](action.md#render)
+* [resetDefaultValues](action.md#resetdefaultvalues)
 * [setCustomProperty](action.md#setcustomproperty)
 * [setParent](action.md#setparent)
+* [setShouldFallback](action.md#setshouldfallback)
+* [setValue](action.md#protected-setvalue)
 * [shouldFallback](action.md#shouldfallback)
+* [shouldSerialize](action.md#protected-shouldserialize)
 * [toJSON](action.md#tojson)
+* [updateActionButtonCssStyle](action.md#updateactionbuttoncssstyle)
 * [validateInputs](action.md#validateinputs)
 * [validateProperties](action.md#validateproperties)
 
+## Constructors
+
+###  constructor
+
+\+ **new Action**(): *[Action](action.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+*Defined in [serialization.ts:819](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L819)*
+
+**Returns:** *[Action](action.md)*
+
 ## Properties
 
-###  iconUrl
+### `Protected` `Optional` _parent
 
-• **iconUrl**: *string*
+• **_parent**? : *[CardObject](cardobject.md)*
 
-*Defined in [card-elements.ts:3905](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3905)*
+*Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
+
+*Defined in [card-object.ts:61](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L61)*
 
 ___
 
-###  id
+### `Protected` `Optional` _renderedElement
 
-• **id**: *string*
+• **_renderedElement**? : *HTMLElement*
 
-*Inherited from [CardObject](cardobject.md).[id](cardobject.md#id)*
+*Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
 
-*Defined in [card-elements.ts:247](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L247)*
+*Defined in [card-object.ts:62](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L62)*
+
+___
+
+### `Optional` iconUrl
+
+• **iconUrl**? : *undefined | string*
+
+*Defined in [card-elements.ts:3335](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3335)*
+
+___
+
+### `Optional` id
+
+• **id**? : *undefined | string*
+
+*Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
+
+*Defined in [card-object.ts:50](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L50)*
+
+___
+
+###  maxVersion
+
+• **maxVersion**: *[Version](version.md)* = Versions.latest
+
+*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+
+*Defined in [serialization.ts:819](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L819)*
 
 ___
 
@@ -86,7 +160,7 @@ ___
 
 • **onExecute**: *function*
 
-*Defined in [card-elements.ts:3908](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3908)*
+*Defined in [card-elements.ts:3376](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3376)*
 
 #### Type declaration:
 
@@ -100,11 +174,13 @@ Name | Type |
 
 ___
 
-###  requires
+### `Optional` onPreProcessPropertyValue
 
-• **requires**: *[HostCapabilities](hostcapabilities.md)‹›* = new HostConfig.HostCapabilities()
+• **onPreProcessPropertyValue**? : *undefined | function*
 
-*Defined in [card-elements.ts:3902](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3902)*
+*Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
+
+*Defined in [card-object.ts:64](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L64)*
 
 ___
 
@@ -112,23 +188,126 @@ ___
 
 • **style**: *string* = Enums.ActionStyle.Default
 
-*Defined in [card-elements.ts:3906](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3906)*
+*Defined in [card-elements.ts:3338](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3338)*
 
 ___
 
-###  title
+### `Optional` title
 
-• **title**: *string*
+• **title**? : *undefined | string*
 
-*Defined in [card-elements.ts:3904](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3904)*
+*Defined in [card-elements.ts:3332](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3332)*
+
+___
+
+### `Static` iconUrlProperty
+
+▪ **iconUrlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "iconUrl")
+
+*Defined in [card-elements.ts:3318](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3318)*
+
+___
+
+### `Static` idProperty
+
+▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+
+*Defined in [card-object.ts:39](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L39)*
+
+___
+
+### `Static` ignoreInputValidationProperty
+
+▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.vNext, "ignoreInputValidation", false)
+
+*Defined in [card-elements.ts:3329](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3329)*
+
+___
+
+### `Static` `Optional` onRegisterCustomProperties
+
+▪ **onRegisterCustomProperties**? : *undefined | function*
+
+*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+
+*Defined in [serialization.ts:721](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L721)*
+
+___
+
+### `Static` requiresProperty
+
+▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
+        Versions.v1_2,
+        "requires",
+        HostCapabilities)
+
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
+
+*Defined in [card-object.ts:40](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L40)*
+
+___
+
+### `Static` styleProperty
+
+▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
+        Versions.v1_2,
+        "style",
+        [
+            { value: Enums.ActionStyle.Default },
+            { value: Enums.ActionStyle.Positive },
+            { value: Enums.ActionStyle.Destructive }
+        ],
+        Enums.ActionStyle.Default)
+
+*Defined in [card-elements.ts:3319](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3319)*
+
+___
+
+### `Static` titleProperty
+
+▪ **titleProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "title")
+
+*Defined in [card-elements.ts:3317](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3317)*
+
+___
+
+### `Static` typeNameProperty
+
+▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
+        Versions.v1_0,
+        "type",
+        undefined,
+        undefined,
+        undefined,
+        (sender: object) => {
+            return (<CardObject>sender).getJsonTypeName()
+        })
+
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+
+*Defined in [card-object.ts:30](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L30)*
 
 ## Accessors
+
+###  hostConfig
+
+• **get hostConfig**(): *[HostConfig](hostconfig.md)*
+
+*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
+
+*Defined in [card-elements.ts:3527](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3527)*
+
+**Returns:** *[HostConfig](hostconfig.md)*
+
+___
 
 ###  ignoreInputValidation
 
 • **get ignoreInputValidation**(): *boolean*
 
-*Defined in [card-elements.ts:4088](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4088)*
+*Defined in [card-elements.ts:3523](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3523)*
 
 **Returns:** *boolean*
 
@@ -138,13 +317,13 @@ ___
 
 • **get isPrimary**(): *boolean*
 
-*Defined in [card-elements.ts:4073](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4073)*
+*Defined in [card-elements.ts:3508](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3508)*
 
 **Returns:** *boolean*
 
 • **set isPrimary**(`value`: boolean): *void*
 
-*Defined in [card-elements.ts:4077](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4077)*
+*Defined in [card-elements.ts:3512](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3512)*
 
 **Parameters:**
 
@@ -158,21 +337,37 @@ ___
 
 ###  parent
 
-• **get parent**(): *[CardElement](cardelement.md)*
+• **get parent**(): *[CardElement](cardelement.md) | undefined*
 
-*Defined in [card-elements.ts:4092](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4092)*
+*Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)*
 
-**Returns:** *[CardElement](cardelement.md)*
+*Defined in [card-elements.ts:3531](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3531)*
+
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
 ___
 
 ###  renderedElement
 
-• **get renderedElement**(): *HTMLElement*
+• **get renderedElement**(): *HTMLElement | undefined*
 
-*Defined in [card-elements.ts:4096](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4096)*
+*Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
 
-**Returns:** *HTMLElement*
+*Defined in [card-object.ts:140](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L140)*
+
+**Returns:** *HTMLElement | undefined*
+
+___
+
+###  requires
+
+• **get requires**(): *HostCapabilities*
+
+*Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+
+*Defined in [card-object.ts:53](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L53)*
+
+**Returns:** *HostCapabilities*
 
 ## Methods
 
@@ -180,7 +375,7 @@ ___
 
 ▸ **addCssClasses**(`element`: HTMLElement): *void*
 
-*Defined in [card-elements.ts:3872](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3872)*
+*Defined in [card-elements.ts:3344](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3344)*
 
 **Parameters:**
 
@@ -196,7 +391,7 @@ ___
 
 ▸ **execute**(): *void*
 
-*Defined in [card-elements.ts:3992](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3992)*
+*Defined in [card-elements.ts:3460](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3460)*
 
 **Returns:** *void*
 
@@ -204,9 +399,9 @@ ___
 
 ###  getActionById
 
-▸ **getActionById**(`id`: string): *[Action](action.md)*
+▸ **getActionById**(`id`: string): *[Action](action.md) | undefined*
 
-*Defined in [card-elements.ts:4055](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4055)*
+*Defined in [card-elements.ts:3496](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3496)*
 
 **Parameters:**
 
@@ -214,17 +409,17 @@ Name | Type |
 ------ | ------ |
 `id` | string |
 
-**Returns:** *[Action](action.md)*
+**Returns:** *[Action](action.md) | undefined*
 
 ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *Array‹[Input](input.md)›*
+▸ **getAllInputs**(): *[Input](input.md)[]*
 
-*Defined in [card-elements.ts:4042](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4042)*
+*Defined in [card-elements.ts:3488](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3488)*
 
-**Returns:** *Array‹[Input](input.md)›*
+**Returns:** *[Input](input.md)[]*
 
 ___
 
@@ -234,7 +429,7 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
 
-*Defined in [card-elements.ts:200](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L200)*
+*Defined in [serialization.ts:898](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L898)*
 
 **Parameters:**
 
@@ -248,11 +443,11 @@ ___
 
 ###  getHref
 
-▸ **getHref**(): *string*
+▸ **getHref**(): *string | undefined*
 
-*Defined in [card-elements.ts:3910](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3910)*
+*Defined in [card-elements.ts:3378](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3378)*
 
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
@@ -260,9 +455,9 @@ ___
 
 ▸ **getJsonTypeName**(): *string*
 
-*Overrides [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)*
+*Inherited from [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)*
 
-*Defined in [card-elements.ts:3900](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3900)*
+*Defined in [card-object.ts:66](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L66)*
 
 **Returns:** *string*
 
@@ -270,51 +465,175 @@ ___
 
 ###  getReferencedInputs
 
-▸ **getReferencedInputs**(): *Shared.Dictionary‹[Input](input.md)›*
+▸ **getReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined*
 
-*Defined in [card-elements.ts:4061](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4061)*
+*Defined in [card-elements.ts:3500](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3500)*
 
-**Returns:** *Shared.Dictionary‹[Input](input.md)›*
+**Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined*
 
 ___
 
 ###  getResourceInformation
 
-▸ **getResourceInformation**(): *Array‹[IResourceInformation](../interfaces/iresourceinformation.md)›*
+▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
 
-*Defined in [card-elements.ts:4046](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4046)*
+*Defined in [card-elements.ts:3492](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3492)*
 
-**Returns:** *Array‹[IResourceInformation](../interfaces/iresourceinformation.md)›*
+**Returns:** *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
+
+___
+
+###  getRootObject
+
+▸ **getRootObject**(): *[CardObject](cardobject.md)*
+
+*Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
+
+*Defined in [card-object.ts:100](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L100)*
+
+**Returns:** *[CardObject](cardobject.md)*
+
+___
+
+###  getSchema
+
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+
+*Defined in [serialization.ts:902](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L902)*
+
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+___
+
+### `Protected` getSchemaKey
+
+▸ **getSchemaKey**(): *string*
+
+*Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)*
+
+*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
+
+*Defined in [card-object.ts:45](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L45)*
+
+**Returns:** *string*
+
+___
+
+### `Protected` getValue
+
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
+
+*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+
+*Defined in [serialization.ts:752](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L752)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *any*
+
+___
+
+###  hasAllDefaultValues
+
+▸ **hasAllDefaultValues**(): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+
+*Defined in [serialization.ts:863](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L863)*
+
+**Returns:** *boolean*
+
+___
+
+###  hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+
+*Defined in [serialization.ts:859](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L859)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *boolean*
 
 ___
 
 ### `Protected` internalGetReferencedInputs
 
-▸ **internalGetReferencedInputs**(`allInputs`: Array‹[Input](input.md)›): *Shared.Dictionary‹[Input](input.md)›*
+▸ **internalGetReferencedInputs**(`allInputs`: [Input](input.md)[]): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
-*Defined in [card-elements.ts:3876](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3876)*
+*Defined in [card-elements.ts:3348](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3348)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`allInputs` | Array‹[Input](input.md)› |
+`allInputs` | [Input](input.md)[] |
 
-**Returns:** *Shared.Dictionary‹[Input](input.md)›*
+**Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
+
+___
+
+### `Protected` internalParse
+
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)*
+
+*Defined in [serialization.ts:765](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L765)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
 
 ___
 
 ### `Protected` internalPrepareForExecution
 
-▸ **internalPrepareForExecution**(`inputs`: Shared.Dictionary‹[Input](input.md)›): *void*
+▸ **internalPrepareForExecution**(`inputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): *void*
 
-*Defined in [card-elements.ts:3880](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3880)*
+*Defined in [card-elements.ts:3352](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3352)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`inputs` | Shared.Dictionary‹[Input](input.md)› |
+`inputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
+
+**Returns:** *void*
+
+___
+
+### `Protected` internalToJSON
+
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)*
+
+*Defined in [serialization.ts:797](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L797)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *void*
 
@@ -322,17 +641,17 @@ ___
 
 ### `Protected` internalValidateInputs
 
-▸ **internalValidateInputs**(`referencedInputs`: Shared.Dictionary‹[Input](input.md)›): *Array‹[Input](input.md)›*
+▸ **internalValidateInputs**(`referencedInputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): *[Input](input.md)[]*
 
-*Defined in [card-elements.ts:3884](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3884)*
+*Defined in [card-elements.ts:3356](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3356)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`referencedInputs` | Shared.Dictionary‹[Input](input.md)› |
+`referencedInputs` | [Dictionary](../README.md#dictionary)‹[Input](input.md)› &#124; undefined |
 
-**Returns:** *Array‹[Input](input.md)›*
+**Returns:** *[Input](input.md)[]*
 
 ___
 
@@ -342,7 +661,7 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)*
 
-*Defined in [card-elements.ts:249](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L249)*
+*Defined in [card-object.ts:110](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L110)*
 
 **Parameters:**
 
@@ -356,20 +675,57 @@ ___
 
 ###  parse
 
-▸ **parse**(`json`: any, `errors?`: Array‹[IValidationError](../interfaces/ivalidationerror.md)›): *void*
+▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
 
-*Overrides [CardObject](cardobject.md).[parse](cardobject.md#parse)*
+*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
 
-*Defined in [card-elements.ts:4012](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4012)*
+*Defined in [card-elements.ts:3386](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3386)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`json` | any |
-`errors?` | Array‹[IValidationError](../interfaces/ivalidationerror.md)› |
+`source` | any |
+`context?` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *void*
+
+___
+
+### `Protected` populateSchema
+
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+
+*Defined in [serialization.ts:730](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L730)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
+
+**Returns:** *void*
+
+___
+
+###  preProcessPropertyValue
+
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
+
+*Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
+
+*Defined in [card-object.ts:70](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L70)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`propertyValue?` | any |
+
+**Returns:** *any*
 
 ___
 
@@ -377,7 +733,7 @@ ___
 
 ▸ **prepareForExecution**(): *boolean*
 
-*Defined in [card-elements.ts:4000](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4000)*
+*Defined in [card-elements.ts:3468](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3468)*
 
 **Returns:** *boolean*
 
@@ -387,7 +743,7 @@ ___
 
 ▸ **remove**(): *boolean*
 
-*Defined in [card-elements.ts:4034](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4034)*
+*Defined in [card-elements.ts:3480](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3480)*
 
 **Returns:** *boolean*
 
@@ -397,7 +753,7 @@ ___
 
 ▸ **render**(`baseCssClass`: string): *void*
 
-*Defined in [card-elements.ts:3925](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3925)*
+*Defined in [card-elements.ts:3394](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3394)*
 
 **Parameters:**
 
@@ -409,13 +765,25 @@ Name | Type | Default |
 
 ___
 
+###  resetDefaultValues
+
+▸ **resetDefaultValues**(): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+
+*Defined in [serialization.ts:877](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L877)*
+
+**Returns:** *void*
+
+___
+
 ###  setCustomProperty
 
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
 *Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
 
-*Defined in [card-elements.ts:189](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L189)*
+*Defined in [serialization.ts:887](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L887)*
 
 **Parameters:**
 
@@ -430,17 +798,54 @@ ___
 
 ###  setParent
 
-▸ **setParent**(`value`: [CardElement](cardelement.md)): *void*
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
 
-*Overrides [CardObject](cardobject.md).[setParent](cardobject.md#abstract-setparent)*
+*Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
 
-*Defined in [card-elements.ts:3988](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3988)*
+*Defined in [card-object.ts:88](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L88)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | [CardElement](cardelement.md) |
+`value` | [CardObject](cardobject.md) &#124; undefined |
+
+**Returns:** *void*
+
+___
+
+###  setShouldFallback
+
+▸ **setShouldFallback**(`value`: boolean): *void*
+
+*Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
+
+*Defined in [card-object.ts:92](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L92)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | boolean |
+
+**Returns:** *void*
+
+___
+
+### `Protected` setValue
+
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+
+*Defined in [serialization.ts:756](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L756)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
 
 **Returns:** *void*
 
@@ -450,9 +855,27 @@ ___
 
 ▸ **shouldFallback**(): *boolean*
 
-*Overrides [CardObject](cardobject.md).[shouldFallback](cardobject.md#abstract-shouldfallback)*
+*Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
 
-*Defined in [card-elements.ts:4069](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4069)*
+*Defined in [card-object.ts:96](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L96)*
+
+**Returns:** *boolean*
+
+___
+
+### `Protected` shouldSerialize
+
+▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
+
+*Overrides [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+
+*Defined in [card-elements.ts:3372](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3372)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -460,13 +883,35 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(): *any*
+▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [CardObject](cardobject.md).[toJSON](cardobject.md#tojson)*
+*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
-*Defined in [card-elements.ts:3914](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L3914)*
+*Defined in [card-elements.ts:3390](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3390)*
 
-**Returns:** *any*
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context?` | [SerializationContext](serializationcontext.md) |
+
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
+
+___
+
+###  updateActionButtonCssStyle
+
+▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement): *void*
+
+*Defined in [card-elements.ts:3382](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3382)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`actionButtonElement` | HTMLElement |
+
+**Returns:** *void*
 
 ___
 
@@ -474,7 +919,7 @@ ___
 
 ▸ **validateInputs**(): *[Input](input.md)‹›[]*
 
-*Defined in [card-elements.ts:4065](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L4065)*
+*Defined in [card-elements.ts:3504](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3504)*
 
 **Returns:** *[Input](input.md)‹›[]*
 
@@ -486,6 +931,6 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
 
-*Defined in [card-elements.ts:284](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L284)*
+*Defined in [card-object.ts:128](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L128)*
 
 **Returns:** *[ValidationResults](validationresults.md)*

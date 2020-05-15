@@ -15,7 +15,7 @@
 ### Properties
 
 * [allowInlinePlayback](mediaconfig.md#allowinlineplayback)
-* [defaultPoster](mediaconfig.md#defaultposter)
+* [defaultPoster](mediaconfig.md#optional-defaultposter)
 
 ### Methods
 
@@ -27,7 +27,7 @@
 
 \+ **new MediaConfig**(`obj?`: any): *[MediaConfig](mediaconfig.md)*
 
-*Defined in [host-config.ts:77](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L77)*
+*Defined in [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L87)*
 
 **Parameters:**
 
@@ -43,15 +43,15 @@ Name | Type |
 
 • **allowInlinePlayback**: *boolean* = true
 
-*Defined in [host-config.ts:77](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L77)*
+*Defined in [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L87)*
 
 ___
 
-###  defaultPoster
+### `Optional` defaultPoster
 
-• **defaultPoster**: *string*
+• **defaultPoster**? : *undefined | string*
 
-*Defined in [host-config.ts:76](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L76)*
+*Defined in [host-config.ts:86](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L86)*
 
 ## Methods
 
@@ -59,10 +59,10 @@ ___
 
 ▸ **toJSON**(): *object*
 
-*Defined in [host-config.ts:86](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L86)*
+*Defined in [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L96)*
 
 **Returns:** *object*
 
 * **allowInlinePlayback**: *boolean* = this.allowInlinePlayback
 
-* **defaultPoster**: *string* = this.defaultPoster
+* **defaultPoster**: *undefined | string* = this.defaultPoster

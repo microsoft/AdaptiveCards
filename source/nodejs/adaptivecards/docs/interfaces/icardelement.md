@@ -29,7 +29,7 @@
 
 • **height**? : *"auto" | "stretch"*
 
-*Defined in [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L39)*
+*Defined in [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L39)*
 
 ___
 
@@ -37,23 +37,23 @@ ___
 
 • **horizontalAlignment**? : *[HorizontalAlignment](../enums/horizontalalignment.md)*
 
-*Defined in [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L36)*
+*Defined in [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L36)*
 
 ___
 
 ### `Optional` id
 
-• **id**? : *string*
+• **id**? : *undefined | string*
 
-*Defined in [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L34)*
+*Defined in [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L34)*
 
 ___
 
 ### `Optional` separator
 
-• **separator**? : *boolean*
+• **separator**? : *undefined | false | true*
 
-*Defined in [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L38)*
+*Defined in [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L38)*
 
 ___
 
@@ -61,12 +61,12 @@ ___
 
 • **spacing**? : *[Spacing](../enums/spacing.md)*
 
-*Defined in [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L37)*
+*Defined in [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L37)*
 
 ___
 
 ### `Optional` speak
 
-• **speak**? : *string*
+• **speak**? : *undefined | string*
 
-*Defined in [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L35)*
+*Defined in [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L35)*

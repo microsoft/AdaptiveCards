@@ -17,7 +17,7 @@
 
 • **Center**:
 
-*Defined in [enums.ts:79](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L79)*
+*Defined in [enums.ts:79](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L79)*
 
 ___
 
@@ -25,7 +25,7 @@ ___
 
 • **Left**:
 
-*Defined in [enums.ts:78](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L78)*
+*Defined in [enums.ts:78](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L78)*
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
 • **Right**:
 
-*Defined in [enums.ts:80](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L80)*
+*Defined in [enums.ts:80](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L80)*
 
 ___
 
@@ -41,4 +41,4 @@ ___
 
 • **Stretch**:
 
-*Defined in [enums.ts:81](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L81)*
+*Defined in [enums.ts:81](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L81)*

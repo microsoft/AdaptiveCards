@@ -33,7 +33,7 @@
 
 \+ **new ContainerStyleDefinition**(`obj?`: any): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:289](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L289)*
+*Defined in [host-config.ts:299](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L299)*
 
 **Parameters:**
 
@@ -47,9 +47,9 @@ Name | Type |
 
 ### `Optional` backgroundColor
 
-• **backgroundColor**? : *string*
+• **backgroundColor**? : *undefined | string*
 
-*Defined in [host-config.ts:263](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L263)*
+*Defined in [host-config.ts:273](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L273)*
 
 ___
 
@@ -67,23 +67,23 @@ ___
         }
     )
 
-*Defined in [host-config.ts:265](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L265)*
+*Defined in [host-config.ts:275](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L275)*
 
 ___
 
 ### `Optional` highlightBackgroundColor
 
-• **highlightBackgroundColor**? : *string*
+• **highlightBackgroundColor**? : *undefined | string*
 
-*Defined in [host-config.ts:277](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L277)*
+*Defined in [host-config.ts:287](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L287)*
 
 ___
 
 ### `Optional` highlightForegroundColor
 
-• **highlightForegroundColor**? : *string*
+• **highlightForegroundColor**? : *undefined | string*
 
-*Defined in [host-config.ts:278](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L278)*
+*Defined in [host-config.ts:288](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L288)*
 
 ## Accessors
 
@@ -91,7 +91,7 @@ ___
 
 • **get isBuiltIn**(): *boolean*
 
-*Defined in [host-config.ts:295](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L295)*
+*Defined in [host-config.ts:305](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L305)*
 
 **Returns:** *boolean*
 
@@ -101,7 +101,7 @@ ___
 
 ▸ **parse**(`obj`: any): *void*
 
-*Defined in [host-config.ts:280](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L280)*
+*Defined in [host-config.ts:290](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L290)*
 
 **Parameters:**
 

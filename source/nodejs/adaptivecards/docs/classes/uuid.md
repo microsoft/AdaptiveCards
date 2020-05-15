@@ -27,7 +27,7 @@ Fast UUID generator, RFC4122 version 4 compliant.
 
 ▸ **generate**(): *string*
 
-*Defined in [shared.ts:187](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L187)*
+*Defined in [shared.ts:198](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L198)*
 
 **Returns:** *string*
 
@@ -37,6 +37,6 @@ ___
 
 ▸ **initialize**(): *void*
 
-*Defined in [shared.ts:199](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L199)*
+*Defined in [shared.ts:210](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L210)*
 
 **Returns:** *void*

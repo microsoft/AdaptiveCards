@@ -36,7 +36,7 @@
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[constructor](facttextdefinition.md#constructor)*
 
-*Defined in [host-config.ts:128](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L128)*
+*Defined in [host-config.ts:138](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L138)*
 
 **Parameters:**
 
@@ -54,7 +54,7 @@ Name | Type |
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[color](facttextdefinition.md#color)*
 
-*Defined in [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L96)*
+*Defined in [host-config.ts:106](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L106)*
 
 ___
 
@@ -64,15 +64,15 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[isSubtle](facttextdefinition.md#issubtle)*
 
-*Defined in [host-config.ts:97](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L97)*
+*Defined in [host-config.ts:107](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L107)*
 
 ___
 
 ### `Optional` maxWidth
 
-• **maxWidth**? : *number* = 150
+• **maxWidth**? : *undefined | number* = 150
 
-*Defined in [host-config.ts:127](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L127)*
+*Defined in [host-config.ts:137](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L137)*
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[size](facttextdefinition.md#size)*
 
-*Defined in [host-config.ts:95](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L95)*
+*Defined in [host-config.ts:105](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L105)*
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[weight](facttextdefinition.md#weight)*
 
-*Defined in [host-config.ts:128](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L128)*
+*Defined in [host-config.ts:138](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L138)*
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[wrap](facttextdefinition.md#wrap)*
 
-*Defined in [host-config.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L99)*
+*Defined in [host-config.ts:109](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L109)*
 
 ## Methods
 
@@ -112,7 +112,7 @@ ___
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[getDefaultWeight](facttextdefinition.md#getdefaultweight)*
 
-*Defined in [host-config.ts:139](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L139)*
+*Defined in [host-config.ts:149](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L149)*
 
 **Returns:** *[TextWeight](../enums/textweight.md)*
 
@@ -124,6 +124,6 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[toJSON](facttextdefinition.md#tojson)*
 
-*Defined in [host-config.ts:115](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L115)*
+*Defined in [host-config.ts:125](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L125)*
 
 **Returns:** *any*
