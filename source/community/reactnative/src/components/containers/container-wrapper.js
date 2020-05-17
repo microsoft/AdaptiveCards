@@ -45,12 +45,11 @@ export class ContainerWrapper extends React.PureComponent {
                 url: this.payload.backgroundImage
             }
         }
-        const backgroundImageStyle = this.payload.type === Constants.TypeAdaptiveCard ? styles.backgroundImage : [styles.backgroundImage, { flex: 1 }];
         return (
-            <View style={backgroundImageStyle}>
+            <React.Fragment>
                 <BackgroundImage backgroundImage={this.payload.backgroundImage} />
                 {this.props.children}
-            </View >
+            </React.Fragment >
         );
     }
 

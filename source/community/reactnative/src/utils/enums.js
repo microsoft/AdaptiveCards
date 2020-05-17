@@ -81,9 +81,10 @@ export const Orientation = Object.freeze({
 
 export const BackgroundImageMode = Object.freeze({
 	Stretch: 0,
-	RepeatHorizontally: 1,
-	RepeatVertically: 2,
-	Repeat: 3
+	Cover: 1, 
+	RepeatHorizontally: 2,
+	RepeatVertically: 3,
+	Repeat: 4
 });
 
 export const ActionIconPlacement = Object.freeze({

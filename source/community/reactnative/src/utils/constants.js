@@ -9,6 +9,7 @@ export const FlexWrap = 'wrap';
 export const FlexStart = 'flex-start';
 export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';
+export const Cover = 'cover';
 export const Auto = 'auto';
 export const Repeat = 'repeat';
 export const Absolute = "absolute";

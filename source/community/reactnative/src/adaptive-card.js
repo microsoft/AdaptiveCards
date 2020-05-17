@@ -169,6 +169,11 @@ export default class AdaptiveCard extends React.Component {
 		let containerStyles = [styles.container]
 		//If containerStyle is passed by the user from adaptive card via props, we will override this style
 		this.props.containerStyle && containerStyles.push( this.props.containerStyle )
+
+		const minHeight = Utils.convertStringToNumber(this.state.cardModel.minHeight);
+		//We will pass the style as array, since it can be updated in the container wrapper if required.
+		typeof minHeight === "number" && containerStyles.push({ minHeight});
+
 		//If contentHeight is passed by the user from adaptive card via props, we will set this as height
 		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
 		var adaptiveCardContent =

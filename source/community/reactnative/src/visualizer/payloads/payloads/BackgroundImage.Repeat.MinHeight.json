@@ -4,6 +4,7 @@
     "version": "1.1",
     "backgroundImage": {
         "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_HorizontalLine.png",
-        "mode": "repeatHorizontally"
-    }
+        "mode": "repeat"
+    },
+    "minHeight" : 300
 }
