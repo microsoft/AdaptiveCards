@@ -97,13 +97,9 @@ namespace AdaptiveCards.Templating
                     root = JToken.Parse(data);
                     PushDataContext(data, root);
                 }
-                catch (JsonException e)
+                catch (JsonException innerException)
                 {
-                    throw new Exception("Setting root data failed with given data context", e);
-                }
-                catch
-                {
-                    throw;
+                    throw new AdaptiveTemplateException("Setting root data failed with given data context", innerException);
                 }
                 
             }
@@ -225,15 +221,10 @@ namespace AdaptiveCards.Templating
                     {
                         throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is invalid because '{e.Message}'");
                     }
-                    catch (JsonException e)
+                    catch (JsonException innerException)
                     {
-                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", e);
+                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", innerException);
                     }
-                    catch
-                    {
-                        throw;
-                    }
-
                 }
             }
             else
@@ -244,13 +235,9 @@ namespace AdaptiveCards.Templating
                 {
                     PushDataContext(childJson, root);
                 }
-                catch (JsonException e)
+                catch (JsonException innerException)
                 {
-                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", e);
-                }
-                catch 
-                {
-                    throw;
+                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
                 }
             }
 
@@ -301,13 +288,9 @@ namespace AdaptiveCards.Templating
             {
                 throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{context.GetText()}'  at line, '{context.Start.Line}'is malformed");
             }
-            catch (JsonException e)
+            catch (JsonException innerException)
             {
-                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", e);
-            }
-            catch
-            {
-                throw;
+                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", innerException);
             }
 
             return new AdaptiveCardsTemplateResult();
