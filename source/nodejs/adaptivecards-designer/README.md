@@ -1,4 +1,4 @@
-# Adaptive Card Designer (Beta)
+# Adaptive Card Designer
 
 The Adaptive Card Designer provides a rich, interactive design-time experience for authoring [adaptive cards](https://adaptivecards.io). 
 
@@ -9,10 +9,6 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 ## What is this package?
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
-
-## Beta notice 
-
-**NOTE**: The designer is currently considered beta and **may have breaking changes** in the public API as we get feedback.
 
 ## Usage
 
@@ -185,87 +181,83 @@ designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 For advanced configuration of the designer use the following APIs.
 
 ```js
-{
-    /* Turn features on or off */
+// Turn general support for data binding (templating) on or off. When set to false, this flag overrides showDataStructureToolbox and showSampleDataEditorToolbox.
+ACDesigner.GlobalSettings.enableDataBindingSupport: boolean = true;
 
-    // Turn general support for data binding on or off. When set to false, this flag override
-    // showDataStructureToolbox and showSampleDataEditorToolbox.
-    ACDesigner.GlobalSettings.enableDataBindingSupport: boolean = true;
-    // Show or hide the "Data structure" toolbox. NOTE: the "Data structure" toolbox is currently
-    // non functional and will likely be removed in a future release
-    ACDesigner.GlobalSettings.showDataStructureToolbox: boolean = false;
-    // Show or hide the "Sample Data" toolbox.
-    ACDesigner.GlobalSettings.showSampleDataEditorToolbox: boolean = true;
-    // Show or hide the target version picker.
-    ACDesigner.GlobalSettings.showVersionPicker: boolean = true;
-    // Controls whether the target version should change according to the selected  host application.
-    // Each host application is associated with a maximum supported target version.
-    ACDesigner.GlobalSettings.selectedHostContainerControlsTargetVersion: boolean = true;
-    // Controls whether a warning message should be displayed when the selected target version is
-    // greater than the version supported by the selected host application. This warning is meant
-    // to inform the user that not all features they're designing their card with will work in the
-    // target host.
-    ACDesigner.GlobalSettings.showTargetVersionMismatchWarning: boolean = true;
+// Show or hide the "Data structure" toolbox. NOTE: the "Data structure" toolbox is currently non functional and will likely be removed in a future release
+ACDesigner.GlobalSettings.showDataStructureToolbox: boolean = false;
 
-    /* Configure toolbox titles */
-    ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
-    ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
-    ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
-    ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
-    ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
-    ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
+// Show or hide the "Sample Data" toolbox.
+ACDesigner.GlobalSettings.showSampleDataEditorToolbox: boolean = true;
 
-    /* Modify the Element toolbox (BEFORE designer attached) */ 
-    Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
-    ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
+// Show or hide the target version picker.
+ACDesigner.GlobalSettings.showVersionPicker: boolean = true;
 
-    /* Modify the Actions flyout (BEFORE designer attached) */
-    Adaptive.GlobalRegistry.actions.unregister("Action.ToggleVisibility");
-    ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
-    
-    /* Include all built-in host apps */
-    let hostContainers: ACDesigner.HostContainer[] = ACDesigner.defaultMicrosoftHosts;
+// Controls whether the target version should change according to the selected  host application. Each host application is associated with a maximum supported target version.
+ACDesigner.GlobalSettings.selectedHostContainerControlsTargetVersion: boolean = true;
 
-    /* Or pick and choose which built-in host apps to include, and/or add your custom host app
-    
-    let hostContainers: ACDesigner.HostContainer[] = [
-        new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
-        new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
-        new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
-    ];
-    */
-    
-	/* Instantiate the designer component */
-	let designer = new ACDesigner.CardDesigner(hostContainers);
+// Controls whether a warning message should be displayed when the selected target version is greater than the version supported by the selected host application. This warning is meant to inform the user that not all features they're designing their card with will work in the target host.
+ACDesigner.GlobalSettings.showTargetVersionMismatchWarning: boolean = true;
 
-	/* Modify the toolbar */
-    let myButton = new Designer.ToolbarButton(
-        "myButton",
-        "My button",
-        null,
-        (sender) => { alert("My button was clicked"); });
-    myButton.separator = true;
+/* Configure toolbox titles */
+ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
+ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
+ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
+ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
+ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
+ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-    designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
+/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
+ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
-    /* ------- Attach the designer --------- */
+/* Modify the Actions flyout (BEFORE called attachTo) */
+Adaptive.GlobalRegistry.actions.unregister("Action.ToggleVisibility");
+ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
 
-    /* Collapse certain panes by default (AFTER designer attached)	*/
-    designer.treeViewToolbox.collapse();
-    designer.jsonEditorToolbox.collapse();
+/* Include all built-in host apps */
+let hostContainers: ACDesigner.HostContainer[] = ACDesigner.defaultMicrosoftHosts;
+let designer = new ACDesigner.CardDesigner(hostContainers);
 
-    /* Set the card payload in the designer: (AFTER designer attached) */ 
-    designer.setCard(
-        {
-            type: "AdaptiveCard",
-            version: "1.0",
-            body: [
-                {
-                    type: "TextBlock",
-                    text: "Hello world"
-                }
-            ]
-        }
-    );
-}
+/* Or pick and choose which built-in host apps to include, and/or add your custom host app */
+let hostContainers: ACDesigner.HostContainer[] = [
+	new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
+	new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
+	new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
+];
+let designer = new ACDesigner.CardDesigner(hostContainers);
+
+/* Modify the toolbar */
+let myButton = new Designer.ToolbarButton(
+	"myButton",
+	"My button",
+	null,
+	(sender) => { alert("My button was clicked"); });
+myButton.separator = true;
+
+designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
+
+/* Collapse certain panes by default (AFTER calling attachTo)	*/
+designer.treeViewToolbox.collapse();
+designer.jsonEditorToolbox.collapse();
+
+/* Set the card payload in the designer: (AFTER calling attachTo */ 
+designer.setCard(
+	{
+		type: "AdaptiveCard",
+		version: "1.0",
+		body: [
+			{
+				type: "TextBlock",
+				text: "Hello world"
+			}
+		]
+	}
+);
+
+/* Set sample data (AFTER calling attachTo) */ 
+designer.sampleData = {
+	name: "John Doe",
+	phone: "123-123-1234"
+};
 ```
