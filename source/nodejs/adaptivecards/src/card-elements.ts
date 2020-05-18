@@ -1980,7 +1980,9 @@ export class Image extends CardElement {
             }
 
             imageElement.src = this.url;
-            imageElement.alt = this.altText;
+            if (!Utils.isNullOrEmpty(this.altText)) {
+                imageElement.alt = this.altText;
+            }
 
             element.appendChild(imageElement);
         }
