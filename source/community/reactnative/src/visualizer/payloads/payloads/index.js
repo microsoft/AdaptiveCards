@@ -56,16 +56,32 @@ export default payloads = [
     "json": require('./BackgroundImage.Stretch.json')
   },
   {
+    "title": "BackgroundImage.Cover.MinHeight.json",
+    "json": require('./BackgroundImage.Cover.MinHeight.json')
+  },
+  {
     "title": "BackgroundImage.Repeat.json",
     "json": require('./BackgroundImage.Repeat.json')
+  },
+  {
+    "title": "BackgroundImage.Repeat.MinHeight.json",
+    "json": require('./BackgroundImage.Repeat.MinHeight.json')
   },
   {
     "title": "BackgroundImage.RepeatVertically.json",
     "json": require('./BackgroundImage.RepeatVertically.json')
   },
   {
+    "title": "BackgroundImage.RepeatVertically.MinHeight.json",
+    "json": require('./BackgroundImage.RepeatVertically.MinHeight.json')
+  },
+  {
     "title": "BackgroungImage.RepeatHorizontally.json",
     "json": require('./BackgroungImage.RepeatHorizontally.json')
+  },
+  {
+    "title": "BackgroungImage.RepeatHorizontally.MinHeight.json",
+    "json": require('./BackgroungImage.RepeatHorizontally.MinHeight.json')
   },
   {
     "title": "Bleeding.ColumnSet.json",

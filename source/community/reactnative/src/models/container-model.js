@@ -12,6 +12,7 @@ class BaseContainerModel extends BaseModel {
         this.verticalContentAlignment = payload.verticalContentAlignment;
         this.style = payload.style;
         this.bleed = payload.bleed;
+        this.minHeight = payload.minHeight;
     }
 }
 
@@ -37,7 +38,6 @@ export class ContainerModel extends BaseContainerModel {
         this.children = [];
         this.children.push(...ModelFactory.createGroup(payload.items, this));
         this.height = payload.height;
-        this.minHeight = payload.minHeight;
     }
 
     get items() {
