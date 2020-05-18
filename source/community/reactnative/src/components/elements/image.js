@@ -143,7 +143,7 @@ export class Img extends React.Component {
 					{
 						sizeStyle.push({
 							width: this.hostConfig.imageSizes.small,
-							height: this.payload.fromImageSet == true ? this.state.imageHeight : this.hostConfig.imageSizes.small
+							height: this.hostConfig.imageSizes.small
 						});
 						this.width = this.hostConfig.imageSizes.small;
 						break;
@@ -156,10 +156,6 @@ export class Img extends React.Component {
 							this.payload.spacing,
 							Enums.Spacing.Medium);
 						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
-
-						if (this.payload.fromImageSet == true)
-							sizeStyle.push({ height: this.state.imageHeight, marginRight: this.spacing });
-
 						this.width = this.hostConfig.imageSizes.medium;
 						break;
 					}
@@ -171,10 +167,6 @@ export class Img extends React.Component {
 							this.payload.spacing,
 							Enums.Spacing.Large);
 						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
-
-						if (this.payload.fromImageSet == true)
-							sizeStyle.push({ height: this.state.imageHeight, marginRight: this.spacing });
-
 						this.width = this.hostConfig.imageSizes.large;
 						break;
 					}
@@ -184,27 +176,22 @@ export class Img extends React.Component {
 						 * When the images are rendered via imageset and if the size is undefined or Auto, 
 						 * the size of the image is taken as medium as default as per native iOS renderer.
 						 */
-						this.height = this.state.imageHeight;
-						sizeStyle.push([styles.imageAuto, {
-							height: this.state.imageHeight
-						}]);
+						sizeStyle.push(styles.imageAuto);
 						if ((this.isSizeUndefined && this.payload.fromImageSet == true) ||
 							(this.payload.fromImageSet == true)) {
-
 							const spacingValue = Utils.parseHostConfigEnum(
 								Enums.Spacing,
 								this.payload.spacing,
 								Enums.Spacing.Medium);
 							this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
-
 							sizeStyle.push({
 								width: this.hostConfig.imageSizes.medium,
-								marginRight: this.spacing
+								height: this.hostConfig.imageSizes.medium,
 							});
 							this.width = this.hostConfig.imageSizes.medium;
 						}
 						else {
-							sizeStyle.push({ width: this.state.imageWidth });
+							sizeStyle.push({ width: this.state.imageWidth, height: this.state.imageHeight });
 							this.width = this.state.imageWidth;
 						}
 						break;
@@ -265,13 +252,7 @@ export class Img extends React.Component {
 	render() {
 		this.parseHostConfig();
 
-		const {
-			type,
-			url,
-			spacing,
-		} = this;
-
-		if (!type || !Utils.isValidImageURI(this.payload.url)) {
+		if (!this.type || !Utils.isValidImageURI(this.payload.url)) {
 			return null;
 		}
 
@@ -281,7 +262,7 @@ export class Img extends React.Component {
 		wrapperComputedStyle.push({ backgroundColor: 'transparent' });
 
 		if (this.payload.fromImageSet == true) {
-			wrapperComputedStyle.push({ margin: spacing });
+			wrapperComputedStyle.push({ margin: this.spacing});
 		}
 
         /**
@@ -300,7 +281,7 @@ export class Img extends React.Component {
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
 
-		let imageUrl = Utils.getImageUrl(url);
+		let imageUrl = Utils.getImageUrl(this.url);
 
 		let containerContent = (<InputContextConsumer>
 			{({ addResourceInformation }) => {
