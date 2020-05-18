@@ -9,10 +9,7 @@
  */
 
 import React from 'react';
-import {
-    View,
-    StyleSheet
-} from 'react-native';
+import { View } from 'react-native';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from "../../utils/constants";
@@ -123,9 +120,3 @@ export class ContainerWrapper extends React.PureComponent {
         return computedStyles;
     }
 }
-
-const styles = StyleSheet.create({
-    backgroundImage: {
-        width: Constants.FullWidth
-    }
-});

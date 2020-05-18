@@ -170,6 +170,7 @@ export default class AdaptiveCard extends React.Component {
 		//If containerStyle is passed by the user from adaptive card via props, we will override this style
 		this.props.containerStyle && containerStyles.push( this.props.containerStyle )
 
+		//if this.state.cardModel.minHeight is undefined or null, then minheight value will be null. So it will automatically handled the undefined and null cases also...
 		const minHeight = Utils.convertStringToNumber(this.state.cardModel.minHeight);
 		//We will pass the style as array, since it can be updated in the container wrapper if required.
 		typeof minHeight === "number" && containerStyles.push({ minHeight});
