@@ -1699,7 +1699,11 @@ export class Image extends CardElement {
 
             imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
             imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
-            imageElement.alt = <string>this.preProcessPropertyValue(Image.altTextProperty);
+
+            const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
+            if (altTextProperty) {
+                imageElement.alt = <string>altTextProperty;
+            }
 
             element.appendChild(imageElement);
         }
@@ -6113,7 +6117,15 @@ export class AdaptiveCard extends ContainerWithActions {
 
             if (renderedCard) {
                 renderedCard.classList.add(this.hostConfig.makeCssClassName("ac-adaptiveCard"));
-                renderedCard.tabIndex = 0;
+
+                // Having a tabIndex on the root container for a card can mess up accessibility in some scenarios.
+                // However, we've shipped this behavior before, and so can't just turn it off in a point release. For
+                // now, to unblock accessibility scenarios for our customers, we've got an option to turn it off. In a
+                // future release, we should strongly consider flipping the default such that we *don't* emit a tabIndex
+                // by default.
+                if (GlobalSettings.setTabIndexAtCardRoot) {
+                    renderedCard.tabIndex = 0;
+                }
 
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);

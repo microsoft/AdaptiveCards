@@ -197,21 +197,8 @@ namespace AdaptiveCards.Templating
             // get value node from pair node
             // i.e. $data : "value"
             IParseTree templateDataValueNode = context.value();
-            // value was json object or json array, we take this json value and create a new data context
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueObjectContext || templateDataValueNode is AdaptiveCardsTemplateParser.ValueArrayContext)
-            {
-                string childJson = templateDataValueNode.GetText();
-                try
-                {
-                    PushDataContext(childJson, root);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", e);
-                }
-            }
             // refer to label, valueTemplateStringWithRoot in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
             {
                 // call a visit method for further processing
                 Visit(templateDataValueNode);
@@ -241,8 +228,17 @@ namespace AdaptiveCards.Templating
                 }
             }
             else
+            // else clause handles all of the ordinary json values 
             {
-                throw new Exception($"'{context.value().GetText()}' at line, '{context.Start.Line}' is invalid value type for '$data : ' pair");
+                string childJson = templateDataValueNode.GetText();
+                try
+                {
+                    PushDataContext(childJson, root);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", e);
+                }
             }
 
             return new AdaptiveCardsTemplateResult();
