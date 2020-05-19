@@ -113,29 +113,15 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if (toggleInput.GetHeight() == HeightType.Stretch)
-        {
-            LinearLayout toggleInputContainer = new LinearLayout(context);
+        View returnView = InputUtil.HandleLabelAndValidation(checkBox, toggleInput, false, toggleInputHandler, context, hostConfig, renderArgs);
+        tagContent.SetStretchContainer(returnView);
 
-            if (toggleInput.GetHeight() == HeightType.Stretch)
-            {
-                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
+        toggleInputHandler.addOnFocusLostValidation(hostConfig.GetInputs().getValidationBehavior());
 
-            tagContent.SetStretchContainer(toggleInputContainer);
-            toggleInputContainer.addView(checkBox);
-            viewGroup.addView(toggleInputContainer);
-        }
-        else
-        {
-            viewGroup.addView(checkBox);
-        }
+        viewGroup.addView(returnView);
 
         checkBox.setTag(tagContent);
+
         setVisibility(baseCardElement.GetIsVisible(), checkBox);
 
         return checkBox;

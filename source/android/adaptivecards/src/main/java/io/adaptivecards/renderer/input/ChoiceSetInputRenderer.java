@@ -32,6 +32,7 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -313,24 +314,24 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         View separator = setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
 
-        View view = null;
+        View inputView = null;
 
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            view = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup);
+            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Expanded)
             {
                 // Create radio button group
-                view = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup);
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                view = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup);
             }
             else
             {
@@ -338,25 +339,18 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if (choiceSetInput.GetHeight() == HeightType.Stretch)
+        TagContent tagContent = (TagContent) inputView.getTag();
+        View containerView = InputUtil.HandleLabelAndValidation(inputView, choiceSetInput, false, (BaseInputHandler) tagContent.GetInputHandler(), context, hostConfig, renderArgs);
+
+        if (containerView != inputView)
         {
-            LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-
-            TagContent tagContent = (TagContent)view.getTag();
-            tagContent.SetStretchContainer(containerLayout);
-
-            containerLayout.addView(view);
-            viewGroup.addView(containerLayout);
+            tagContent.SetStretchContainer(containerView);
         }
-        else
-        {
-            viewGroup.addView(view);
-        }
+        viewGroup.addView(containerView);
 
-        setVisibility(choiceSetInput.GetIsVisible(), view);
+        setVisibility(choiceSetInput.GetIsVisible(), inputView);
 
-        return view;
+        return inputView;
     }
 
     private static ChoiceSetInputRenderer s_instance = null;

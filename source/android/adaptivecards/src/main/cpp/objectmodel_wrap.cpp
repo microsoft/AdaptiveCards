@@ -8448,6 +8448,54 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_getValidationBehaviorEnum(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > *) &AdaptiveCards::EnumHelpers::getValidationBehaviorEnum();
+  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ValidationBehaviorToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
+  jstring jresult = 0 ;
+  AdaptiveCards::ValidationBehavior arg1 ;
+  std::string result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = (AdaptiveCards::ValidationBehavior)jarg1; 
+  result = AdaptiveCards::ValidationBehaviorToString(arg1);
+  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ValidationBehaviorFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
+  jint jresult = 0 ;
+  std::string *arg1 = 0 ;
+  AdaptiveCards::ValidationBehavior result;
+  
+  (void)jenv;
+  (void)jcls;
+  if(!jarg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return 0;
+  }
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  if (!arg1_pstr) return 0;
+  std::string arg1_str(arg1_pstr);
+  arg1 = &arg1_str;
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  result = (AdaptiveCards::ValidationBehavior)AdaptiveCards::ValidationBehaviorFromString((std::string const &)*arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveBase64Util_1Decode(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
@@ -22189,6 +22237,602 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1color_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::ForegroundColor arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ForegroundColor)jarg2; 
+  if (arg1) (arg1)->color = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1color_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::ForegroundColor result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  result = (AdaptiveCards::ForegroundColor) ((arg1)->color);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1isSubtle_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jboolean jarg2) {
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  bool arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  arg2 = jarg2 ? true : false; 
+  if (arg1) (arg1)->isSubtle = arg2;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1isSubtle_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jboolean jresult = 0 ;
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  bool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  result = (bool) ((arg1)->isSubtle);
+  jresult = (jboolean)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::TextSize arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::TextSize)jarg2; 
+  if (arg1) (arg1)->size = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::TextSize result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  result = (AdaptiveCards::TextSize) ((arg1)->size);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::TextWeight arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::TextWeight)jarg2; 
+  if (arg1) (arg1)->weight = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  AdaptiveCards::TextWeight result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  result = (AdaptiveCards::TextWeight) ((arg1)->weight);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  Json::Value *arg1 = 0 ;
+  AdaptiveCards::InputLabelConfig *arg2 = 0 ;
+  AdaptiveCards::InputLabelConfig result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(Json::Value **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    return 0;
+  } 
+  arg2 = *(AdaptiveCards::InputLabelConfig **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::InputLabelConfig const & reference is null");
+    return 0;
+  } 
+  result = AdaptiveCards::InputLabelConfig::Deserialize((Json::Value const &)*arg1,(AdaptiveCards::InputLabelConfig const &)*arg2);
+  *(AdaptiveCards::InputLabelConfig **)&jresult = new AdaptiveCards::InputLabelConfig((const AdaptiveCards::InputLabelConfig &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InputLabelConfig(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputLabelConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::InputLabelConfig *)new AdaptiveCards::InputLabelConfig();
+  *(AdaptiveCards::InputLabelConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1InputLabelConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::InputLabelConfig *arg1 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::InputLabelConfig **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1requiredSuffix_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  std::string *arg2 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  if(!jarg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
+    return ;
+  }
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  if (!arg2_pstr) return ;
+  std::string arg2_str(arg2_pstr);
+  arg2 = &arg2_str;
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  if (arg1) (arg1)->requiredSuffix = *arg2;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1requiredSuffix_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jstring jresult = 0 ;
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  std::string *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  result = (std::string *) & ((arg1)->requiredSuffix);
+  jresult = jenv->NewStringUTF(result->c_str()); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1inputSpacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::Spacing arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::Spacing)jarg2; 
+  if (arg1) (arg1)->inputSpacing = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1inputSpacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::Spacing result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  result = (AdaptiveCards::Spacing) ((arg1)->inputSpacing);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1requiredInputs_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::InputLabelConfig *arg2 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::InputLabelConfig **)&jarg2; 
+  if (arg1) (arg1)->requiredInputs = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1requiredInputs_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::InputLabelConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  result = (AdaptiveCards::InputLabelConfig *)& ((arg1)->requiredInputs);
+  *(AdaptiveCards::InputLabelConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1optionalInputs_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::InputLabelConfig *arg2 = (AdaptiveCards::InputLabelConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::InputLabelConfig **)&jarg2; 
+  if (arg1) (arg1)->optionalInputs = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1optionalInputs_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  AdaptiveCards::InputLabelConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  result = (AdaptiveCards::InputLabelConfig *)& ((arg1)->optionalInputs);
+  *(AdaptiveCards::InputLabelConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputLabelsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  Json::Value *arg1 = 0 ;
+  AdaptiveCards::InputLabelsConfig *arg2 = 0 ;
+  AdaptiveCards::InputLabelsConfig result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(Json::Value **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    return 0;
+  } 
+  arg2 = *(AdaptiveCards::InputLabelsConfig **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::InputLabelsConfig const & reference is null");
+    return 0;
+  } 
+  result = AdaptiveCards::InputLabelsConfig::Deserialize((Json::Value const &)*arg1,(AdaptiveCards::InputLabelsConfig const &)*arg2);
+  *(AdaptiveCards::InputLabelsConfig **)&jresult = new AdaptiveCards::InputLabelsConfig((const AdaptiveCards::InputLabelsConfig &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InputLabelsConfig(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputLabelsConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::InputLabelsConfig *)new AdaptiveCards::InputLabelsConfig();
+  *(AdaptiveCards::InputLabelsConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1InputLabelsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::InputLabelsConfig *arg1 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::InputLabelsConfig **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1size_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::TextSize arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::TextSize)jarg2; 
+  if (arg1) (arg1)->size = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1size_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::TextSize result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  result = (AdaptiveCards::TextSize) ((arg1)->size);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1spacing_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::Spacing arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::Spacing)jarg2; 
+  if (arg1) (arg1)->spacing = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1spacing_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::Spacing result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  result = (AdaptiveCards::Spacing) ((arg1)->spacing);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1weight_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::TextWeight arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::TextWeight)jarg2; 
+  if (arg1) (arg1)->weight = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1weight_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  AdaptiveCards::TextWeight result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  result = (AdaptiveCards::TextWeight) ((arg1)->weight);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ErrorMessageConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  Json::Value *arg1 = 0 ;
+  AdaptiveCards::ErrorMessageConfig *arg2 = 0 ;
+  AdaptiveCards::ErrorMessageConfig result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(Json::Value **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    return 0;
+  } 
+  arg2 = *(AdaptiveCards::ErrorMessageConfig **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ErrorMessageConfig const & reference is null");
+    return 0;
+  } 
+  result = AdaptiveCards::ErrorMessageConfig::Deserialize((Json::Value const &)*arg1,(AdaptiveCards::ErrorMessageConfig const &)*arg2);
+  *(AdaptiveCards::ErrorMessageConfig **)&jresult = new AdaptiveCards::ErrorMessageConfig((const AdaptiveCards::ErrorMessageConfig &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ErrorMessageConfig(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::ErrorMessageConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::ErrorMessageConfig *)new AdaptiveCards::ErrorMessageConfig();
+  *(AdaptiveCards::ErrorMessageConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ErrorMessageConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::ErrorMessageConfig *arg1 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1validationBehavior_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::ValidationBehavior arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  arg2 = (AdaptiveCards::ValidationBehavior)jarg2; 
+  if (arg1) (arg1)->validationBehavior = arg2;
+}
+
+
+SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1validationBehavior_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jint jresult = 0 ;
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::ValidationBehavior result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  result = (AdaptiveCards::ValidationBehavior) ((arg1)->validationBehavior);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1inputLabels_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::InputLabelsConfig *arg2 = (AdaptiveCards::InputLabelsConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::InputLabelsConfig **)&jarg2; 
+  if (arg1) (arg1)->inputLabels = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1inputLabels_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::InputLabelsConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  result = (AdaptiveCards::InputLabelsConfig *)& ((arg1)->inputLabels);
+  *(AdaptiveCards::InputLabelsConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1errorMessage_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::ErrorMessageConfig *arg2 = (AdaptiveCards::ErrorMessageConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  arg2 = *(AdaptiveCards::ErrorMessageConfig **)&jarg2; 
+  if (arg1) (arg1)->errorMessage = *arg2;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1errorMessage_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  AdaptiveCards::ErrorMessageConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  result = (AdaptiveCards::ErrorMessageConfig *)& ((arg1)->errorMessage);
+  *(AdaptiveCards::ErrorMessageConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1Deserialize(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  jlong jresult = 0 ;
+  Json::Value *arg1 = 0 ;
+  AdaptiveCards::InputsConfig *arg2 = 0 ;
+  AdaptiveCards::InputsConfig result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(Json::Value **)&jarg1;
+  if (!arg1) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    return 0;
+  } 
+  arg2 = *(AdaptiveCards::InputsConfig **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::InputsConfig const & reference is null");
+    return 0;
+  } 
+  result = AdaptiveCards::InputsConfig::Deserialize((Json::Value const &)*arg1,(AdaptiveCards::InputsConfig const &)*arg2);
+  *(AdaptiveCards::InputsConfig **)&jresult = new AdaptiveCards::InputsConfig((const AdaptiveCards::InputsConfig &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InputsConfig(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::InputsConfig *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::InputsConfig *)new AdaptiveCards::InputsConfig();
+  *(AdaptiveCards::InputsConfig **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1InputsConfig(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
+  delete arg1;
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_MediaConfig_1defaultPoster_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jstring jarg2) {
   AdaptiveCards::MediaConfig *arg1 = (AdaptiveCards::MediaConfig *) 0 ;
   std::string *arg2 = 0 ;
@@ -23107,6 +23751,41 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   }
   arg2 = *argp2; 
   (arg1)->SetMedia(arg2);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1GetInputs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::InputsConfig result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  result = ((AdaptiveCards::HostConfig const *)arg1)->GetInputs();
+  *(AdaptiveCards::InputsConfig **)&jresult = new AdaptiveCards::InputsConfig((const AdaptiveCards::InputsConfig &)result); 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_HostConfig_1SetInputs(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+  AdaptiveCards::HostConfig *arg1 = (AdaptiveCards::HostConfig *) 0 ;
+  AdaptiveCards::InputsConfig arg2 ;
+  AdaptiveCards::InputsConfig const *argp2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  (void)jarg2_;
+  arg1 = *(AdaptiveCards::HostConfig **)&jarg1; 
+  argp2 = *(AdaptiveCards::InputsConfig **)&jarg2; 
+  if (!argp2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null AdaptiveCards::InputsConfig const");
+    return ;
+  }
+  arg2 = *argp2; 
+  (arg1)->SetInputs(arg2);
 }
 
 

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
 public class RenderedAdaptiveCard {
@@ -53,6 +54,28 @@ public class RenderedAdaptiveCard {
             input.put(i.getId(), i.getInput());
         }
         return input;
+    }
+
+    public boolean areInputsValid()
+    {
+        boolean allInputsAreValid = true;
+        boolean hasSetFocusToElement = false;
+        for(IInputHandler i : handlers)
+        {
+            // This variable is calculated out of the assignment as optimizations may make this code
+            // not execute if allInputsAreValid is set to true
+            boolean currentInputIsValid = i.isValid();
+            allInputsAreValid = allInputsAreValid && currentInputIsValid;
+
+            if (!allInputsAreValid && !hasSetFocusToElement)
+            {
+                BaseInputHandler baseInputHandler = (BaseInputHandler) i;
+                baseInputHandler.setFocusToView();
+                hasSetFocusToElement = true;
+            }
+        }
+
+        return allInputsAreValid;
     }
 
     public void setInputs(Map<String, String> inputs)

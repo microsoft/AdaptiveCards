@@ -8,12 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -27,15 +25,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
@@ -51,14 +46,6 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRegexValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
-import io.adaptivecards.renderer.layout.StretchableInputLayout;
-import io.adaptivecards.renderer.readonly.RendererUtil;
-import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
-import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class TextInputRenderer extends BaseCardElementRenderer
@@ -186,42 +173,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         private TextInputHandler m_textInputHandler;
     }
 
-    public static View RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
-    {
-        SpannableStringBuilder paragraph = new SpannableStringBuilder();
-        CharSequence text = RendererUtil.handleSpecialText(label);
-        paragraph.append(text);
-        paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), ForegroundColor.Default, false, hostConfig, renderArgs);
-
-        if (isRequired)
-        {
-            int spanStart = text.length();
-
-            paragraph.append(" *");
-            paragraph = RichTextBlockRenderer.setColor(paragraph, spanStart, spanStart + 2, ForegroundColor.Attention, false, hostConfig, renderArgs);
-        }
-
-        TextView labelView = new TextView(context);
-        labelView.setText(paragraph);
-
-        return labelView;
-    }
-
-    public static TextView RenderErrorMessage(String message, Context context, HostConfig hostConfig, RenderArgs renderArgs)
-    {
-        SpannableStringBuilder paragraph = new SpannableStringBuilder();
-        CharSequence text = RendererUtil.handleSpecialText(message);
-        paragraph.append(text);
-
-        paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), ForegroundColor.Attention, false, hostConfig, renderArgs);
-
-        TextView errorMessageView = new TextView(context);
-        errorMessageView.setText(paragraph);
-        errorMessageView.setVisibility(View.INVISIBLE);
-
-        return errorMessageView;
-    }
-
     protected EditText renderInternal(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -233,18 +184,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             TagContent tagContent,
             RenderArgs renderArgs,
-            boolean requiresValidation,
-            IInputValidator inputValidator)
+            boolean hasSpecificValidation)
     {
         EditText editText = null;
 
-        String errorMessage = baseInputElement.GetErrorMessage();
-        boolean isRequired = baseInputElement.GetIsRequired();
-
-        if (requiresValidation)
+        if (baseInputElement.GetIsRequired() || hasSpecificValidation)
         {
-            editText = new ValidatedEditText(context, new Color(), textInputHandler, inputValidator);
-            inputValidator.setViewForValidation(editText);
+            editText = new ValidatedEditText(context, textInputHandler);
         }
         else
         {
@@ -342,53 +288,15 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        boolean mustStretch = (baseInputElement.GetHeight() == HeightType.Stretch);
 
-        String inputLabel = baseInputElement.GetLabel();
-
-        if (mustStretch || isRequired || !(inputLabel.isEmpty()) || !(errorMessage.isEmpty()) )
+        View returnableView = editText;
+        if (textInputViewGroup != null)
         {
-            StretchableInputLayout inputLayout = new StretchableInputLayout(context, mustStretch);
-            tagContent.SetStretchContainer(inputLayout);
-
-            // Render input label
-            if (!inputLabel.isEmpty())
-            {
-                View view = TextInputRenderer.RenderInputLabel(inputLabel, isRequired, context, hostConfig, renderArgs);
-                inputLayout.setLabel(view);
-            }
-
-            // TextInputViewGroup is only used when there's an inline action
-            if (textInputViewGroup != null)
-            {
-                inputLayout.addView(textInputViewGroup);
-            }
-            else
-            {
-                inputLayout.addView(editText);
-            }
-            inputLayout.setInputView(editText);
-
-            // Render error message
-            if (!errorMessage.isEmpty())
-            {
-                View view = TextInputRenderer.RenderErrorMessage(errorMessage, context, hostConfig, renderArgs);
-                inputLayout.setValidationLabel(view);
-            }
-
-            viewGroup.addView(inputLayout);
+            returnableView = textInputViewGroup;
         }
-        else
-        {
-            if (textInputViewGroup != null)
-            {
-                viewGroup.addView(textInputViewGroup);
-            }
-            else
-            {
-                viewGroup.addView(editText);
-            }
-        }
+
+        View editTextContainer = InputUtil.HandleLabelAndValidation(returnableView, baseInputElement, hasSpecificValidation, textInputHandler, context, hostConfig, renderArgs);
+        viewGroup.addView(editTextContainer);
 
         return editText;
     }
@@ -422,22 +330,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
 
-        IInputValidator inputValidator = new TextInputValidator();
-        boolean isRequired = textInput.GetIsRequired();
-        boolean requiresValidation = false;
-        if (isRequired)
-        {
-            inputValidator = new TextInputRequiredValidator(inputValidator);
-            requiresValidation = true;
-        }
-
-        String regex = textInput.GetRegex();
-        if (!(regex.trim().isEmpty()))
-        {
-            inputValidator = new TextInputRegexValidator(inputValidator);
-            requiresValidation = true;
-        }
-
         View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
         final EditText editText = renderInternal(
@@ -451,8 +343,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 hostConfig,
                 tagContent,
                 renderArgs,
-                requiresValidation,
-                inputValidator);
+                !textInput.GetRegex().isEmpty());
 
         editText.setSingleLine(!textInput.GetIsMultiline());
         editText.setTag(tagContent);

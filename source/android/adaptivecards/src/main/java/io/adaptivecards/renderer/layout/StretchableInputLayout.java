@@ -2,10 +2,6 @@ package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
 import android.view.View;
-import android.widget.TextView;
-
-import io.adaptivecards.objectmodel.TextInput;
-import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
 
 /**
  * This class is only supposed to be used for inputs that have: label, validation, isRequired or stretch height
@@ -35,23 +31,22 @@ public class StretchableInputLayout extends StretchableElementLayout
 
     public void setInputView(View input)
     {
-        // addView(input);
+        addView(input);
         m_inputView = input;
     }
 
-    public View getValidationLabel()
+    public View getErrorMessage()
     {
-        return m_validationLabel;
+        return m_errorMessage;
     }
 
-    public void setValidationLabel(View validationLabel)
+    public void setErrorMessage(View errorMessage)
     {
-        m_validationLabel = validationLabel;
+        addView(errorMessage);
+        m_errorMessage = errorMessage;
     }
 
     private View m_label = null;
     private View m_inputView = null;
-    private View m_validationLabel = null;
-
-    // private IInputValidator m_inputValidator = null;
+    private View m_errorMessage = null;
 }

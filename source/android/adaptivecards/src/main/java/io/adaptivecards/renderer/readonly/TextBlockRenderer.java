@@ -55,22 +55,22 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
-    static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
+    public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
     {
         textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
     }
 
-    void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
+    public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
     {
         textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, type), m_textWeightMap.get(textWeight));
     }
 
-    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
+    public static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }

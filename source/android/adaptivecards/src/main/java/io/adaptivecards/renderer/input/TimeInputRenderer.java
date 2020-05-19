@@ -9,29 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
-import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRangeValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
 
@@ -49,72 +38,6 @@ public class TimeInputRenderer extends TextInputRenderer
         }
 
         return s_instance;
-    }
-
-    private class TimeInputRangeValidator extends TextInputRangeValidator
-    {
-        public TimeInputRangeValidator(IInputValidator inputValidator, Object min, Object max)
-        {
-            super(inputValidator, min, max);
-        }
-
-        @Override
-        public boolean isInRange(String value, Object min, Object max)
-        {
-            long minTime = RendererUtil.getTime((String)min).getTime().getTime();
-            long maxTime = RendererUtil.getTime((String)max).getTime().getTime();
-            long timeVal = RendererUtil.getTime(value).getTime().getTime();
-
-            return (minTime <= timeVal) && (timeVal <= maxTime);
-        }
-    }
-
-    public boolean requiresValidation(TimeInput timeInput)
-    {
-        boolean requiresValidation = timeInput.GetIsRequired();
-
-        if (!(timeInput.GetMin().isEmpty()))
-        {
-            requiresValidation = true;
-        }
-
-        if (!(timeInput.GetMax().isEmpty()))
-        {
-            requiresValidation = true;
-        }
-
-        return requiresValidation;
-    }
-
-    public IInputValidator generateValidator(TimeInput timeInput)
-    {
-        IInputValidator inputValidator = new TextInputValidator();
-
-        if (timeInput.GetIsRequired())
-        {
-            inputValidator = new TextInputRequiredValidator(inputValidator);
-        }
-
-        String minTime = timeInput.GetMin(), maxTime = timeInput.GetMax();
-
-        if (!(minTime.isEmpty() && maxTime.isEmpty()))
-        {
-            String rangeMinTime = "00:00 AM", rangeMaxTime = "11:59 PM";
-
-            if (!minTime.isEmpty())
-            {
-                rangeMinTime = minTime;
-            }
-
-            if (!maxTime.isEmpty())
-            {
-                rangeMaxTime = maxTime;
-            }
-
-            inputValidator = new TimeInputRangeValidator(inputValidator, rangeMinTime, rangeMaxTime);
-        }
-
-        return inputValidator;
     }
 
     @Override
@@ -149,13 +72,6 @@ public class TimeInputRenderer extends TextInputRenderer
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         String time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
-        boolean requiresValidation = requiresValidation(timeInput);
-        IInputValidator inputValidator = null;
-        if (requiresValidation)
-        {
-            inputValidator = generateValidator(timeInput);
-        }
-
         TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
@@ -168,8 +84,7 @@ public class TimeInputRenderer extends TextInputRenderer
                 hostConfig,
                 tagContent,
                 renderArgs,
-                requiresValidation,
-                inputValidator);
+                (!timeInput.GetMin().isEmpty()) && (!timeInput.GetMax().isEmpty()) /* hasSpecificValidation */);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()

@@ -30,6 +30,7 @@ import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
+import io.adaptivecards.objectmodel.ValidationBehavior;
 import io.adaptivecards.objectmodel.WarningStatusCode;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -329,6 +330,14 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
             else
             {
+                if (m_action.GetElementType() == ActionType.Submit)
+                {
+                    if (!m_renderedAdaptiveCard.areInputsValid())
+                    {
+                        return;
+                    }
+                }
+
                 m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
             }
         }

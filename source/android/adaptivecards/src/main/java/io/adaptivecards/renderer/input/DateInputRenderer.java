@@ -9,30 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.DateTimePreparser;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
 
@@ -50,27 +38,6 @@ public class DateInputRenderer extends TextInputRenderer
         }
 
         return s_instance;
-    }
-
-    public IInputValidator generateValidator(DateInput dateInput)
-    {
-        IInputValidator textInputValidator = new TextInputValidator();
-
-        if (dateInput.GetIsRequired())
-        {
-            textInputValidator = new TextInputRequiredValidator(textInputValidator);
-        }
-
-        return textInputValidator;
-    }
-
-    public boolean requiresValidation(DateInput dateInput)
-    {
-        boolean requiresValidation = false;
-
-        requiresValidation = dateInput.GetIsRequired();
-
-        return requiresValidation;
     }
 
     @Override
@@ -107,13 +74,6 @@ public class DateInputRenderer extends TextInputRenderer
 
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
-        boolean requiresValidation = requiresValidation(dateInput);
-        IInputValidator inputValidator = null;
-        if (requiresValidation)
-        {
-            inputValidator = generateValidator(dateInput);
-        }
-
         TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
                 renderedCard,
@@ -126,8 +86,8 @@ public class DateInputRenderer extends TextInputRenderer
                 hostConfig,
                 tagContent,
                 renderArgs,
-                requiresValidation,
-                inputValidator);
+                ((!dateInput.GetMin().isEmpty()) && (!dateInput.GetMax().isEmpty())));
+
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
