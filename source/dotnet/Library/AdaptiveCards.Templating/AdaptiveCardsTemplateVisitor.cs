@@ -217,9 +217,10 @@ namespace AdaptiveCards.Templating
                     {
                         PushTemplatedDataContext(templateLiteral.GetText());
                     }
-                    catch (ArgumentNullException e)
+                    catch (ArgumentNullException)
                     {
-                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is invalid because '{e.Message}'");
+                        string errorMessage = $"Please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'";
+                        throw new AdaptiveTemplateException(errorMessage);
                     }
                     catch (JsonException innerException)
                     {
@@ -280,13 +281,10 @@ namespace AdaptiveCards.Templating
             {
                 PushTemplatedDataContext(child.GetText());
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                throw new AdaptiveTemplateException($"'{context.GetText()}' at line, '{context.Start.Line}' is invalid because '{e.Message}'");
-            }
-            catch (NullReferenceException)
-            {
-                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{context.GetText()}'  at line, '{context.Start.Line}'is malformed");
+                string errorMessage = $"Please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'";
+                throw new ArgumentException(errorMessage);
             }
             catch (JsonException innerException)
             {
