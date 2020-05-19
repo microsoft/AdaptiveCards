@@ -1,7 +1,7 @@
 ---
-title: 📣 Community Call - January 10, 2020
+title: 📣 Community Call - January 9, 2020
 subtitle: Matt wears lumberjack suspenders and a look at Schema-Driven Adaptive Cards
-date: 2020-01-10
+date: 2020-01-09
 github_username: matthidinger
 twitter: matthidinger
 ---
