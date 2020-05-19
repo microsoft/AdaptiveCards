@@ -1,9 +1,17 @@
 {
 	"name": "adaptivecards-templating",
-	"version": "0.1.2-alpha.0",
+	"version": "1.0.0-rc.0",
 	"description": "Adaptive Card data binding and templating engine for JavaScript",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
 	"main": "lib/adaptivecards-templating.js",
 	"types": "lib/adaptivecards-templating.d.ts",
 	"files": [

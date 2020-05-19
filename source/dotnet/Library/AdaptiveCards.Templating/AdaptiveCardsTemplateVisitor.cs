@@ -97,10 +97,11 @@ namespace AdaptiveCards.Templating
                     root = JToken.Parse(data);
                     PushDataContext(data, root);
                 }
-                catch (Exception e)
+                catch (JsonException innerException)
                 {
-                    throw new Exception("Setting root data failed with given data context", e);
+                    throw new AdaptiveTemplateException("Setting root data failed with given data context", innerException);
                 }
+                
             }
 
             // if null, set default option
@@ -197,21 +198,8 @@ namespace AdaptiveCards.Templating
             // get value node from pair node
             // i.e. $data : "value"
             IParseTree templateDataValueNode = context.value();
-            // value was json object or json array, we take this json value and create a new data context
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueObjectContext || templateDataValueNode is AdaptiveCardsTemplateParser.ValueArrayContext)
-            {
-                string childJson = templateDataValueNode.GetText();
-                try
-                {
-                    PushDataContext(childJson, root);
-                }
-                catch (Exception e)
-                {
-                    throw new Exception($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", e);
-                }
-            }
             // refer to label, valueTemplateStringWithRoot in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
             {
                 // call a visit method for further processing
                 Visit(templateDataValueNode);
@@ -229,20 +217,28 @@ namespace AdaptiveCards.Templating
                     {
                         PushTemplatedDataContext(templateLiteral.GetText());
                     }
-                    catch (ArgumentNullException e)
+                    catch (ArgumentNullException)
                     {
-                        throw new Exception($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is invalid because '{e.Message}'");
+                        throw new ArgumentNullException($"Check if parent data context is set, or please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'");
                     }
-                    catch (Exception e)
+                    catch (JsonException innerException)
                     {
-                        throw new Exception($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", e);
+                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", innerException);
                     }
-
                 }
             }
             else
+            // else clause handles all of the ordinary json values 
             {
-                throw new Exception($"'{context.value().GetText()}' at line, '{context.Start.Line}' is invalid value type for '$data : ' pair");
+                string childJson = templateDataValueNode.GetText();
+                try
+                {
+                    PushDataContext(childJson, root);
+                }
+                catch (JsonException innerException)
+                {
+                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
+                }
             }
 
             return new AdaptiveCardsTemplateResult();
@@ -284,17 +280,13 @@ namespace AdaptiveCards.Templating
             {
                 PushTemplatedDataContext(child.GetText());
             }
-            catch (ArgumentNullException e)
+            catch (ArgumentNullException)
             {
-                throw new Exception($"'{context.GetText()}' at line, '{context.Start.Line}' is invalid because '{e.Message}'");
+                throw new ArgumentException($"Check if parent data context is set, or please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'");
             }
-            catch (NullReferenceException)
+            catch (JsonException innerException)
             {
-                throw new Exception($"value of '$data : ', json pair, '{context.GetText()}'  at line, '{context.Start.Line}'is malformed");
-            }
-            catch (Exception e)
-            {
-                throw new Exception($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", e);
+                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", innerException);
             }
 
             return new AdaptiveCardsTemplateResult();
