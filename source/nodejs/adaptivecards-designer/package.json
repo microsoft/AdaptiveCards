@@ -4,6 +4,14 @@
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
 	"main": "lib/adaptivecards-designer.js",
 	"types": "lib/adaptivecards-designer.d.ts",
 	"files": [
