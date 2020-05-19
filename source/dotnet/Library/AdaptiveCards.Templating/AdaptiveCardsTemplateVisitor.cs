@@ -219,8 +219,7 @@ namespace AdaptiveCards.Templating
                     }
                     catch (ArgumentNullException)
                     {
-                        string errorMessage = $"Please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'";
-                        throw new AdaptiveTemplateException(errorMessage);
+                        throw new ArgumentNullException($"Check if parent data context is set, or please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'");
                     }
                     catch (JsonException innerException)
                     {
@@ -283,8 +282,7 @@ namespace AdaptiveCards.Templating
             }
             catch (ArgumentNullException)
             {
-                string errorMessage = $"Please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'";
-                throw new ArgumentException(errorMessage);
+                throw new ArgumentException($"Check if parent data context is set, or please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'");
             }
             catch (JsonException innerException)
             {
