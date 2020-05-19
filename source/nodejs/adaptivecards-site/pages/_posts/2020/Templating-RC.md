@@ -291,7 +291,7 @@ With the addition of `expense`, binding will occur *almost* correctly. Another p
 
 This can be accomplished by a template's [repeating element feature](https://docs.microsoft.com/en-us/adaptive-cards/templating/language#repeating-items-in-an-array). This allows adaptive elements to be repeated by simply changing the data type to array. 
 
-**If the data and element is bound to is an array, the Adaptive Card element will be repeated by the number of elements in the array.**
+**If the data an element is bound to is an array, the Adaptive Card element will be repeated by the number of elements in the array.**
 
 Let's change the data to include the array of expense line items.
 

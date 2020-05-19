@@ -1,7 +1,7 @@
 ---
 title: 📣 Community Call - February 2020
 subtitle: Adaptive Card Management System - Part 1
-date: 2019-02-13
+date: 2020-02-13
 github_username: matthidinger
 twitter: matthidinger
 ---
