@@ -14,12 +14,46 @@ The simple open card format enables an ecosystem of shared tooling, seamless int
 
 Check out the [full documentation](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/htmlclient) for more
 
+## FYI: New policy on versioning
+
+In previous releases of this SDK (`1.x`), the package version would match an official [Adaptive Card Schema](https://adaptivecards.io/explorer/) version; the library would be able to parse and render cards expressed in the latest Adaptive Card schema version and all previous versions, but it would only ever serialize to the latest version of the Adaptive Card schema. With the `2.x` release we've introduced a new compability layer, allowing developers to (de)serialize cards to and from any version of the Adaptive Card schema using a single library. The below table summarizes this new versioning capability:
+
+| SDK Version | Can parse from schema versions | Can serialize to schema versions |
+| --- | --- | --- |
+| `2.x` | `1.0`, `1.1`, `1.2` | `1.0`, `1.1`, `1.2` |
+| `1.2` | `1.0`, `1.1`, `1.2` | `1.2` |
+| `1.1` | `1.0`, `1.1` | `1.1` | 
+| `1.0` | `1.0` | `1.0` |
+
+
 ## Breaking changes
 
 Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
+| **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
+|| The `isNullOrEmpty(value: string): boolean` function has been **REMOVED**. Use `if (!stringValue)` instead. |
+|| The library is now compiled with the `noImplicitAny` flag. As a result, anything that can be undefined/not set now has the `undefined` value. All uses of `null` have been removed. |
+|| The following global setting statics have been moved from the AdaptiveCard class to the new GlobalSettings class: `useAdvancedTextBlockTruncation`, `useAdvancedCardBottomTruncation`, `useMarkdownInRadioButtonAndCheckbox`, `allowMarkForTextHighlighting`, `alwaysBleedSeparators`, `enableFullJsonRoundTrip`, `useBuiltInInputValidation`, `displayInputValidationErrors` |
+|| `CardElement.getForbiddenElementTypes()` has been **REMOVED** |
+|| The signature of **CardElement.getForbiddenActionTypes()** has changed to `getForbiddenActionTypes(): CardObjectType<Action>[]` with **CardObjectType** defined as `type CardObjectType<T extends CardObject> = { new(): T }` |
+|| The `AdaptiveCard.onParseError` event has been **REMOVED**. Parse errors are now collected into the `SerializationContext.errors` property. ||
+|| The `AdaptiveCard.onParseElement` and `AdaptiveCard.onParseAction` events (both static and instance versions) have been **REMOVED**. Use `SerializationContext.onParseElement` and `SerializationContext.onParseAction` instead. |
+|| The `createActionInstance` and `createElementInstance` global functions have been **REMOVED** and replaced with the `parseAction` and `parseElement` methods of the `SerializationContext` class. |
+|| A new base class, `SerializableObject`, has been introduced. It implements core serialization and deserialization behaviors and pretty much all objects handled by the library (including `Action` and `CardElement` extend it. |
+|| **Serialization** and **deserialization** are now done using a "schema" model, where each property of a serializable object is defined as a `PropertyDefinition` instance. Class members that expose those properties are identified via the use of the `@property` decorator. The PropertyDefinition model makes it possible to associate version information with pretty much eveything, which allows the library to (de)serialize to/from any version of the Adaptive Card schema. |
+|| The signature of the `CardObject.parse` method has changed to `parse(source: any, context?: SerializationContext)`. The context object includes a `targetVersion` property, which tells the API which version of the Adaptive Card schema to honor when deserializing the source object. |
+|| A new protected `internalParse` method has been introduced on **SerializableObject**. When implementing custom actions or elements, have your class override `internalParse` rather than `parse`. |
+|| `SerializableObject.toJSON` now accepts a **targetVersion** parameter. When a targetVersion value is specified, the object is serialized to that particular version of the Adaptive Card schema. If no targetVersion is specified, the object is serialized to the latest version of the Adaptive Card schema supported by the library. |
+|| A new protected `internalToJSON` method has been introduced on **SerializableObject**. When implementing custom actions or elements, have your class override `internalToJSON` rather than `toJSON`. |
+|| `AdaptiveCard.elementTypeRegistry` and `AdaptiveCard.actionTypeRegistry` have been **REMOVED**. They are replaced with `GlobalRegistry.elements` and `GlobalRegistry.actions`. |
+|| The `TypeRegistry<T>`, `ElementTypeRegistry` and `ActionTypeRegistry` classes have been **REMOVED**, replaced with the single `CardObjectRegistry<T>` class. |
+|| The global `setProperty`, `setNumberProperty`, `setEnumProperty` and `setArrayProperty` functions have been **REMOVED**. They are replaced by `SerializationContext` instance methods `serializeValue`, `serializeNumber`, `serializeEnum` and `serializeArray`. |
+|| The global `getStringValue`, `getNumberValue`, `getBoolValue` and `getEnumValue` functions have been renamed into `parseString`, `parseNumber`, `parseBool` and `parseEnum`. |
+|| The global `parseHostConfigEnum` function is no longer exported. |
+|| The `ValidationError` enum has been renamed into `ValidationEvent`. |
+|| The `IValidationError` interface has been renamed into `IValidationLogEntry`. It has a new required `phase` field of type `ValidationPhase` and its `error` field has been renamed into `event`. |
 | **1.2** | The default `value` of an Input.Time **no longer accepts seconds**. 08:25:32 will now be treated as an invalid value and ignored; it should be replaced with 08:25. This behavior is consistent with other Adaptive Card renderers.|
 || The `ICardObject` interface has been **REMOVED**, replaced with the `CardObject` class that both `CardElement` and `Action` extend. This change should have little to no impact on any application.|
 || The `CardElement.validate()` and `Action.validate()` methods have been **REMOVED**, replaced with `CardObject.validateProperties()` and `CardObject.internalValidateProperties(context: ValidationContext)`. Custom elements and actions now must override `internalValidateProperties` and add validation failures as appropriate to the `context` object passed as a parameter using its `addFailure` method. Be sure to always call `super.internalValidateProperties(context)` in your override.|
@@ -168,8 +202,8 @@ module.exports = {
 };
 ```
 
-## Learn more at http://adaptivecards.io
-* [Documentation](http://adaptivecards.io/documentation/)
-* [Schema Explorer](http://adaptivecards.io/explorer/)
-* [Sample Cards](http://adaptivecards.io/samples/)
-* [Interactive Designer](http://adaptivecards.io/designer/)
+## Learn more at https://adaptivecards.io
+* [Documentation](https://adaptivecards.io/documentation/)
+* [Schema Explorer](https://adaptivecards.io/explorer/)
+* [Sample Cards](https://adaptivecards.io/samples/)
+* [Interactive Designer](https://adaptivecards.io/designer/)
