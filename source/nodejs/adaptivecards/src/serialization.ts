@@ -744,7 +744,6 @@ export abstract class SerializableObject {
                 let propertyValue = ctor[propertyName];
 
                 if (propertyValue instanceof PropertyDefinition) {
-                    // schema.add(propertyValue);
                     properties.push(propertyValue);
                 }
             }
