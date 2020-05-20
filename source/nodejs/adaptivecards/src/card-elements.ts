@@ -3254,6 +3254,22 @@ export class ChoiceSetInput extends Input {
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: Array<HTMLInputElement>;
 
+    // Make sure `aria-current` is applied to the currently-selected item
+    protected internalApplyAriaCurrent(): void {
+        const options = this._selectElement.options;
+
+        if (options) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    options[i].setAttribute("aria-current", "true");
+                }
+                else {
+                    options[i].removeAttribute("aria-current");
+                }
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement {
         if (!this.isMultiSelect) {
             if (this.isCompact) {
@@ -3287,8 +3303,12 @@ export class ChoiceSetInput extends Input {
                     Utils.appendChild(this._selectElement, option);
                 }
 
-                this._selectElement.onchange = () => { this.valueChanged(); }
+                this._selectElement.onchange = () => {
+                    this.internalApplyAriaCurrent();
+                    this.valueChanged();
+                }
 
+                this.internalApplyAriaCurrent();
                 return this._selectElement;
             }
             else {
