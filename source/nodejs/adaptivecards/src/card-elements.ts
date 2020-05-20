@@ -2892,7 +2892,7 @@ export class ChoiceSetInput extends Input {
         const options = this._selectElement.options;
 
         if (options) {
-            for (const i in options) {
+            for (let i = 0; i < options.length; i++) {
                 if (options[i].selected) {
                     options[i].setAttribute("aria-current", "true");
                 }
@@ -2957,6 +2957,7 @@ export class ChoiceSetInput extends Input {
                     this.valueChanged();
                 }
 
+                this.internalApplyAriaCurrent();
                 return this._selectElement;
             }
         }
