@@ -2890,11 +2890,13 @@ export class ChoiceSetInput extends Input {
     // Make sure `aria-current` is applied to the currently-selected item
     protected internalApplyAriaCurrent(): void {
         const options = this._selectElement.options;
+
         if (options) {
             for (const i in options) {
                 if (options[i].selected) {
                     options[i].setAttribute("aria-current", "true");
-                } else {
+                }
+                else {
                     options[i].removeAttribute("aria-current");
                 }
             }
