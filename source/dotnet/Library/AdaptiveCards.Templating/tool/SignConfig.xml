@@ -5,8 +5,8 @@
 -->
 <SignConfigXML>
   <!-- Release sign job -->
-  <job platform="AnyCPU" configuration="release" dest="__RELBINPATH__\..\..\..\a" jobname="Adaptive Cards .NET" approvers="">
+  <job platform="AnyCPU" configuration="release" dest="__OUTPATHROOT__" jobname="Adaptive Cards .NET" approvers="">
     <!-- AdaptiveCards.Templating -->
-    <file src="__RELBINPATH__\..\..\..\s\source\dotnet\Library\AdaptiveCards.Templating\bin\Release\netstandard2.0\AdaptiveCards.Templating.dll" signType="AuthenticodeFormer" dest="__RELBINPATH__\..\..\..\a\AdaptiveCards.Templating.dll"  />
+    <file src="__RELBINPATH__\..\..\..\s\source\dotnet\Library\AdaptiveCards.Templating\bin\Release\netstandard2.0\AdaptiveCards.Templating.dll" signType="AuthenticodeFormer" dest="__OUTPATHROOT__\AdaptiveCards.Templating.dll"  />
   </job>
 </SignConfigXML>
