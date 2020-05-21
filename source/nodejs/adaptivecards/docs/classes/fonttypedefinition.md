@@ -30,15 +30,15 @@
 
 ###  constructor
 
-\+ **new FontTypeDefinition**(`fontFamily?`: string): *[FontTypeDefinition](fonttypedefinition.md)*
+\+ **new FontTypeDefinition**(`fontFamily?`: undefined | string): *[FontTypeDefinition](fonttypedefinition.md)*
 
-*Defined in [host-config.ts:569](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L569)*
+*Defined in [host-config.ts:438](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L438)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`fontFamily?` | string |
+`fontFamily?` | undefined &#124; string |
 
 **Returns:** *[FontTypeDefinition](fonttypedefinition.md)*
 
@@ -46,9 +46,9 @@ Name | Type |
 
 ### `Optional` fontFamily
 
-• **fontFamily**? : *string* = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif"
+• **fontFamily**? : *undefined | string* = "Segoe UI,Segoe,Segoe WP,Helvetica Neue,Helvetica,sans-serif"
 
-*Defined in [host-config.ts:555](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L555)*
+*Defined in [host-config.ts:424](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L424)*
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 ▪ **monospace**: *[FontTypeDefinition](fonttypedefinition.md)‹›* = new FontTypeDefinition("'Courier New', Courier, monospace")
 
-*Defined in [host-config.ts:553](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L553)*
+*Defined in [host-config.ts:422](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L422)*
 
 ## Methods
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **parse**(`obj?`: any): *void*
 
-*Defined in [host-config.ts:577](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L577)*
+*Defined in [host-config.ts:446](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L446)*
 
 **Parameters:**
 
@@ -80,37 +80,37 @@ Name | Type |
 
 ### ▪ **fontSizes**: *object*
 
-*Defined in [host-config.ts:557](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L557)*
+*Defined in [host-config.ts:426](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L426)*
 
 ###  default
 
 • **default**: *number* = 14
 
-*Defined in [host-config.ts:559](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L559)*
+*Defined in [host-config.ts:428](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L428)*
 
 ###  extraLarge
 
 • **extraLarge**: *number* = 26
 
-*Defined in [host-config.ts:562](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L562)*
+*Defined in [host-config.ts:431](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L431)*
 
 ###  large
 
 • **large**: *number* = 21
 
-*Defined in [host-config.ts:561](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L561)*
+*Defined in [host-config.ts:430](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L430)*
 
 ###  medium
 
 • **medium**: *number* = 17
 
-*Defined in [host-config.ts:560](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L560)*
+*Defined in [host-config.ts:429](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L429)*
 
 ###  small
 
 • **small**: *number* = 12
 
-*Defined in [host-config.ts:558](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L558)*
+*Defined in [host-config.ts:427](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L427)*
 
 ___
 
@@ -118,22 +118,22 @@ ___
 
 ### ▪ **fontWeights**: *object*
 
-*Defined in [host-config.ts:565](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L565)*
+*Defined in [host-config.ts:434](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L434)*
 
 ###  bolder
 
 • **bolder**: *number* = 600
 
-*Defined in [host-config.ts:568](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L568)*
+*Defined in [host-config.ts:437](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L437)*
 
 ###  default
 
 • **default**: *number* = 400
 
-*Defined in [host-config.ts:567](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L567)*
+*Defined in [host-config.ts:436](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L436)*
 
 ###  lighter
 
 • **lighter**: *number* = 200
 
-*Defined in [host-config.ts:566](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L566)*
+*Defined in [host-config.ts:435](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L435)*

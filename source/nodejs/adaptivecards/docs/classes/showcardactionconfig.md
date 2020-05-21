@@ -28,7 +28,7 @@
 
 \+ **new ShowCardActionConfig**(`obj?`: any): *[ShowCardActionConfig](showcardactionconfig.md)*
 
-*Defined in [host-config.ts:161](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L161)*
+*Defined in [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L171)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **actionMode**: *[ShowCardActionMode](../enums/showcardactionmode.md)* = Enums.ShowCardActionMode.Inline
 
-*Defined in [host-config.ts:159](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L159)*
+*Defined in [host-config.ts:169](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L169)*
 
 ___
 
@@ -52,15 +52,15 @@ ___
 
 • **inlineTopMargin**: *number* = 16
 
-*Defined in [host-config.ts:160](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L160)*
+*Defined in [host-config.ts:170](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L170)*
 
 ___
 
 ### `Optional` style
 
-• **style**? : *string* = Enums.ContainerStyle.Emphasis
+• **style**? : *undefined | string* = Enums.ContainerStyle.Emphasis
 
-*Defined in [host-config.ts:161](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L161)*
+*Defined in [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L171)*
 
 ## Methods
 
@@ -68,7 +68,7 @@ ___
 
 ▸ **toJSON**(): *object*
 
-*Defined in [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L171)*
+*Defined in [host-config.ts:181](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L181)*
 
 **Returns:** *object*
 
@@ -76,4 +76,4 @@ ___
 
 * **inlineTopMargin**: *number* = this.inlineTopMargin
 
-* **style**: *string* = this.style
+* **style**: *undefined | string* = this.style
