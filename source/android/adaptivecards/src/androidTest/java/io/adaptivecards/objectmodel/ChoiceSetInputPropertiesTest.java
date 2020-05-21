@@ -110,116 +110,55 @@ public class ChoiceSetInputPropertiesTest
     @Test
     public void IsMultiSelectTest() throws Exception
     {
-        {
-            final String inputChoiceSetDefaultWrap =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                    "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+        ChoiceSetInputCommand<Boolean> c = new ChoiceSetInputCommand<Boolean>() {
+            @Override
+            public Boolean get(ChoiceSetInput element) { return element.GetIsMultiSelect(); }
 
-            ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-            Assert.assertEquals(inputChoiceSetDefaultWrap, choiceSetInput.Serialize());
+            @Override
+            public void set(Boolean value, ChoiceSetInput element) { element.SetIsMultiSelect(value); }
+        };
 
-            choiceSetInput.SetIsMultiSelect(false);
-            Assert.assertEquals(inputChoiceSetDefaultWrap, choiceSetInput.Serialize());
-
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetDefaultWrap), "1.0");
-            ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(false, parsedChoiceSetInput.GetIsMultiSelect());
-        }
-
-        {
-            final String inputChoiceSetWrapJson =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                    "\"id\":\"id\",\"isMultiSelect\":true,\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
-
-            ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-            choiceSetInput.SetIsMultiSelect(true);
-            Assert.assertEquals(inputChoiceSetWrapJson, choiceSetInput.Serialize());
-
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetWrapJson), "1.0");
-            ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(true, parsedChoiceSetInput.GetIsMultiSelect());
-        }
+        final String inputChoiceSetIsMultiSelectJson =
+            "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                "\"id\":\"id\",\"isMultiSelect\":%b,\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+        TestUtil.executeBooleanTests(c, c_defaultInputChoiceSet, inputChoiceSetIsMultiSelectJson, false);
     }
 
     @Test
     public void ValueTest() throws Exception
     {
-        {
-            final String inputChoiceSetDefaultValue =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+        ChoiceSetInputCommand<String> c = new ChoiceSetInputCommand<String>() {
+            @Override
+            public String get(ChoiceSetInput element) { return element.GetValue(); }
 
-            ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-            Assert.assertEquals(inputChoiceSetDefaultValue, choiceSetInput.Serialize());
+            @Override
+            public void set(String value, ChoiceSetInput element) { element.SetValue(value); }
+        };
 
-            choiceSetInput.SetValue("");
-            Assert.assertEquals(inputChoiceSetDefaultValue, choiceSetInput.Serialize());
+        TestUtil.executeDefaultTestCase(c, c_defaultInputChoiceSet, "");
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetDefaultValue), "1.0");
-            ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedChoiceSetInput.GetValue());
-        }
-
-        {
-            final String inputChoiceSetValueTemplate =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                    "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\",\"value\":\"%s\"}\n";
-
-            String tests[] = {"Sample text",
-                "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
-                "The quick brown fox jumps over the lazy dog",
-                "{{DATE(2017-02-14T06:08:39Z,LONG)}}",
-                "This is some **bold** text"};
-
-            for (int i = 0; i < tests.length; ++i)
-            {
-                String inputChoiceSetValueJson = String.format(inputChoiceSetValueTemplate, tests[i]);
-
-                ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-                choiceSetInput.SetValue(tests[i]);
-                Assert.assertEquals(inputChoiceSetValueJson, choiceSetInput.Serialize());
-
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetValueJson), "1.0");
-                ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedChoiceSetInput.GetValue());
-            }
-        }
+        final String inputChoiceSetValueTemplate =
+            "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\",\"value\":\"%s\"}\n";
+        TestUtil.executeTests(c, inputChoiceSetValueTemplate, TestUtil.c_regularStringTestCases);
     }
 
     @Test
     public void WrapTest() throws Exception
     {
-        {
-            final String inputChoiceSetDefaultWrap =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                    "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+        ChoiceSetInputCommand<Boolean> c = new ChoiceSetInputCommand<Boolean>() {
+            @Override
+            public Boolean get(ChoiceSetInput element) { return element.GetWrap(); }
 
-            ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-            Assert.assertEquals(inputChoiceSetDefaultWrap, choiceSetInput.Serialize());
+            @Override
+            public void set(Boolean value, ChoiceSetInput element) { element.SetWrap(value); }
+        };
 
-            choiceSetInput.SetWrap(false);
-            Assert.assertEquals(inputChoiceSetDefaultWrap, choiceSetInput.Serialize());
-
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetDefaultWrap), "1.0");
-            ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(false, parsedChoiceSetInput.GetWrap());
-        }
-
-        {
-            final String inputChoiceSetWrapJson =
-                "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
-                    "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\",\"wrap\":true}\n";
-
-            ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
-            choiceSetInput.SetWrap(true);
-            Assert.assertEquals(inputChoiceSetWrapJson, choiceSetInput.Serialize());
-
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputChoiceSetWrapJson), "1.0");
-            ChoiceSetInput parsedChoiceSetInput = TestUtil.castToChoiceSetInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(true, parsedChoiceSetInput.GetWrap());
-        }
+        final String inputChoiceSetWrapJson =
+            "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\",\"wrap\":%b}\n";
+        TestUtil.executeBooleanTests(c, c_defaultInputChoiceSet, inputChoiceSetWrapJson, false);
     }
-
 
     @Test
     public void LabelTest() throws Exception
