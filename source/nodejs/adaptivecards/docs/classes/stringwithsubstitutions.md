@@ -20,21 +20,21 @@
 
 ###  get
 
-▸ **get**(): *string*
+▸ **get**(): *string | undefined*
 
-*Defined in [shared.ts:85](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L85)*
+*Defined in [shared.ts:97](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L97)*
 
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
 ###  getOriginal
 
-▸ **getOriginal**(): *string*
+▸ **getOriginal**(): *string | undefined*
 
-*Defined in [shared.ts:81](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L81)*
+*Defined in [shared.ts:93](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L93)*
 
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 ▸ **getReferencedInputs**(`inputs`: [IInput](../interfaces/iinput.md)[], `referencedInputs`: [Dictionary](../README.md#dictionary)‹[IInput](../interfaces/iinput.md)›): *void*
 
-*Defined in [shared.ts:29](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L29)*
+*Defined in [shared.ts:42](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L42)*
 
 **Parameters:**
 
@@ -57,15 +57,15 @@ ___
 
 ###  set
 
-▸ **set**(`value`: string): *void*
+▸ **set**(`value`: string | undefined): *void*
 
-*Defined in [shared.ts:94](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L94)*
+*Defined in [shared.ts:106](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L106)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | string |
+`value` | string &#124; undefined |
 
 **Returns:** *void*
 
@@ -75,7 +75,7 @@ ___
 
 ▸ **substituteInputValues**(`inputs`: [Dictionary](../README.md#dictionary)‹[IInput](../interfaces/iinput.md)›, `contentType`: string): *void*
 
-*Defined in [shared.ts:43](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L43)*
+*Defined in [shared.ts:56](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L56)*
 
 **Parameters:**
 
