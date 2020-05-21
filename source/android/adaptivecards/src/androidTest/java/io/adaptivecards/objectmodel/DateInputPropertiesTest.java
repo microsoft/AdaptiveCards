@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import static org.junit.Assert.*;
 
@@ -21,7 +22,9 @@ public class DateInputPropertiesTest
     public void AllPropertiesTest()
     {
         final String dateInputNoDefaultValues =
-            "{\"id\":\"id\"," +
+            "{\"errorMessage\":\"Error message\"," +
+                "\"id\":\"id\"," +
+                "\"label\":\"Input label\"," +
                 "\"max\":\"2019-07-18\"," +
                 "\"min\":\"2018-06-17\"," +
                 "\"placeholder\":\"Sample placeholder\"," +
@@ -29,6 +32,8 @@ public class DateInputPropertiesTest
                 "\"value\":\"2019-01-01\"}\n";
 
         DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetErrorMessage("Error message");
+        dateInput.SetLabel("Input label");
         dateInput.SetMax("2019-07-18");
         dateInput.SetMin("2018-06-17");
         dateInput.SetPlaceholder("Sample placeholder");
@@ -41,10 +46,12 @@ public class DateInputPropertiesTest
     public void AllPropertiesWithInheritedTest()
     {
         final String dateInputNoDefaultValues =
-            "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+            "{\"errorMessage\":\"Error message\"," +
+                "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
                 "\"height\":\"Stretch\"," +
                 "\"id\":\"id\"," +
                 "\"isVisible\":false," +
+                "\"label\":\"Input label\"," +
                 "\"max\":\"2019-07-18\"," +
                 "\"min\":\"2018-06-17\"," +
                 "\"placeholder\":\"Sample placeholder\"," +
@@ -54,10 +61,12 @@ public class DateInputPropertiesTest
                 "\"value\":\"2019-01-01\"}\n";
 
         DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetErrorMessage("Error message");
         dateInput.SetFallbackType(FallbackType.Content);
         dateInput.SetFallbackContent(TestUtil.createMockImage());
         dateInput.SetHeight(HeightType.Stretch);
         dateInput.SetIsVisible(false);
+        dateInput.SetLabel("Input label");
         dateInput.SetMax("2019-07-18");
         dateInput.SetMin("2018-06-17");
         dateInput.SetPlaceholder("Sample placeholder");
@@ -213,5 +222,55 @@ public class DateInputPropertiesTest
             }
         }
     }
+
+    @Test
+    public void LabelTest() throws Exception
+    {
+        DateInputCommand<String> c = new DateInputCommand<String>() {
+            @Override
+            public String get(DateInput element) { return element.GetLabel(); }
+
+            @Override
+            public void set(String value, DateInput element) { element.SetLabel(value); }
+        };
+
+        TestUtil.executeDefaultTestCase(c, c_defaultInputDate, "");
+
+        final String inputDateLabelTemplate = "{\"id\":\"id\",\"label\":\"%s\",\"type\":\"Input.Date\"}\n";
+        TestUtil.executeTests(c, inputDateLabelTemplate, TestUtil.c_regularStringTestCases);
+    }
+
+    @Test
+    public void ErrorMessageTest() throws Exception
+    {
+        DateInputCommand<String> c = new DateInputCommand<String>() {
+            @Override
+            public String get(DateInput element) { return element.GetErrorMessage(); }
+
+            @Override
+            public void set(String value, DateInput element) { element.SetErrorMessage(value); }
+        };
+
+        TestUtil.executeDefaultTestCase(c, c_defaultInputDate, "");
+
+        final String inputDateErrorMessageTemplate = "{\"errorMessage\":\"%s\",\"id\":\"id\",\"type\":\"Input.Date\"}\n";
+        TestUtil.executeTests(c, inputDateErrorMessageTemplate, TestUtil.c_regularStringTestCases);
+    }
+
+    private abstract class DateInputCommand<E> implements TestUtil.Command<DateInput, E>
+    {
+        @Override
+        public DateInput getMockObject()
+        {
+            return TestUtil.createMockDateInput();
+        }
+
+        @Override
+        public DateInput castTo(BaseCardElement element) {
+            return TestUtil.castToDateInput(element);
+        }
+    }
+
+    private final String c_defaultInputDate = "{\"id\":\"id\",\"type\":\"Input.Date\"}\n";
 
 }

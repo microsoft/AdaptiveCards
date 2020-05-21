@@ -17,14 +17,18 @@ public class ChoiceSetInputPropertiesTest
     {
         final String dateInputNoDefaultValues =
             "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+            "\"errorMessage\":\"Error message\"," +
             "\"id\":\"id\"," +
             "\"isMultiSelect\":true," +
+            "\"label\":\"Input label\"," +
             "\"style\":\"Compact\"," +
             "\"type\":\"Input.ChoiceSet\"," +
             "\"value\":\"Sample value\"," +
             "\"wrap\":true}\n";
 
         ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        choiceSetInput.SetErrorMessage("Error message");
+        choiceSetInput.SetLabel("Input label");
         choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Compact);
         choiceSetInput.SetIsMultiSelect(true);
         choiceSetInput.SetValue("Sample value");
@@ -38,11 +42,13 @@ public class ChoiceSetInputPropertiesTest
     {
         final String choiceSetInputNoDefaultValues =
             "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+            "\"errorMessage\":\"Error message\"," +
             "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
             "\"height\":\"Stretch\"," +
             "\"id\":\"id\"," +
             "\"isMultiSelect\":true," +
             "\"isVisible\":false," +
+            "\"label\":\"Input label\"," +
             "\"separator\":true," +
             "\"spacing\":\"medium\"," +
             "\"style\":\"Expanded\"," +
@@ -52,11 +58,13 @@ public class ChoiceSetInputPropertiesTest
 
         ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
         choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Expanded);
+        choiceSetInput.SetErrorMessage("Error message");
         choiceSetInput.SetFallbackType(FallbackType.Content);
         choiceSetInput.SetFallbackContent(TestUtil.createMockImage());
         choiceSetInput.SetHeight(HeightType.Stretch);
         choiceSetInput.SetIsMultiSelect(true);
         choiceSetInput.SetIsVisible(false);
+        choiceSetInput.SetLabel("Input label");
         choiceSetInput.SetSeparator(true);
         choiceSetInput.SetSpacing(Spacing.Medium);
         choiceSetInput.SetValue("Sample value");
@@ -211,4 +219,59 @@ public class ChoiceSetInputPropertiesTest
             Assert.assertEquals(true, parsedChoiceSetInput.GetWrap());
         }
     }
+
+
+    @Test
+    public void LabelTest() throws Exception
+    {
+        ChoiceSetInputCommand<String> c = new ChoiceSetInputCommand<String>() {
+            @Override
+            public String get(ChoiceSetInput element) { return element.GetLabel(); }
+
+            @Override
+            public void set(String value, ChoiceSetInput element) { element.SetLabel(value); }
+        };
+
+        TestUtil.executeDefaultTestCase(c, c_defaultInputChoiceSet, "");
+
+        final String inputToggleLabelTemplate = "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                                                "\"id\":\"id\",\"label\":\"%s\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+        TestUtil.executeTests(c, inputToggleLabelTemplate, TestUtil.c_regularStringTestCases);
+    }
+
+    @Test
+    public void ErrorMessageTest() throws Exception
+    {
+        ChoiceSetInputCommand<String> c = new ChoiceSetInputCommand<String>() {
+            @Override
+            public String get(ChoiceSetInput element) { return element.GetErrorMessage(); }
+
+            @Override
+            public void set(String value, ChoiceSetInput element) { element.SetErrorMessage(value); }
+        };
+
+        TestUtil.executeDefaultTestCase(c, c_defaultInputChoiceSet, "");
+
+        final String inputChoiceSetErrorMessageTemplate = "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                                                        "\"errorMessage\":\"%s\",\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
+
+        TestUtil.executeTests(c, inputChoiceSetErrorMessageTemplate, TestUtil.c_regularStringTestCases);
+    }
+
+    private abstract class ChoiceSetInputCommand<E> implements TestUtil.Command<ChoiceSetInput, E>
+    {
+        @Override
+        public ChoiceSetInput getMockObject()
+        {
+            return TestUtil.createMockChoiceSetInput();
+        }
+
+        @Override
+        public ChoiceSetInput castTo(BaseCardElement element) {
+            return TestUtil.castToChoiceSetInput(element);
+        }
+    }
+
+    private final String c_defaultInputChoiceSet = "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +
+                                                    "\"id\":\"id\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}\n";
 }

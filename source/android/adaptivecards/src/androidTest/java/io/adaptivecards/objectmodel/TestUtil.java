@@ -1,5 +1,7 @@
 package io.adaptivecards.objectmodel;
 
+import junit.framework.Assert;
+
 import org.w3c.dom.Text;
 
 import java.sql.Time;
@@ -7,6 +9,42 @@ import java.util.List;
 
 public class TestUtil
 {
+    public interface Command<T extends BaseCardElement, E>
+    {
+        E get(T element);
+        void set(E value, T element);
+
+        T getMockObject();
+        T castTo(BaseCardElement baseCardElement);
+    }
+
+    public static <T extends BaseCardElement, E> void executeTests(TestUtil.Command<T, E> command, String templateJson, E[] testCases) throws Exception
+    {
+        for (int i = 0; i < testCases.length; ++i)
+        {
+            String inputJson = String.format(templateJson, testCases[i]);
+
+            T cardElement = command.getMockObject();
+            command.set(testCases[i], cardElement);
+            Assert.assertEquals(inputJson, cardElement.Serialize());
+
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputJson), "1.0");
+            T parsedInput = command.castTo(result.GetAdaptiveCard().GetBody().get(0));
+            Assert.assertEquals(testCases[i], command.get(parsedInput));
+        }
+    }
+
+    public static  <T extends BaseCardElement, E> void executeDefaultTestCase(TestUtil.Command<T, E> command, String json, E defaultValue) throws Exception
+    {
+        executeTests(command, json, (E[])new Object[]{defaultValue});
+    }
+
+    public static <T extends BaseCardElement> void executeBooleanTests(TestUtil.Command<T, Boolean> command, String defaultJson, String templateJson, Boolean defaultValue) throws Exception
+    {
+        executeDefaultTestCase(command, defaultJson, defaultValue);
+
+        executeTests(command, templateJson, new Boolean[]{!defaultValue});
+    }
 
     public static String encloseElementJsonInCard(String elementJson)
     {
@@ -688,5 +726,12 @@ public class TestUtil
 
         return toggleVisibilityAction;
     }
+
+    public static final String c_regularStringTestCases[] = {"Sample text",
+                                                            "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
+                                                            "The quick brown fox jumps over the lazy dog",
+                                                            "This is some **bold** text"};
+
+    public static final String c_dateStringTestCases[] = {"{{DATE(2017-02-14T06:08:39Z,LONG)}}"};
 
 }
