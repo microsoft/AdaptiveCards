@@ -204,7 +204,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) *(Preview)*",
+									"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/)",
 									"size": "Medium",
 									"wrap": true
 								},
@@ -255,7 +255,7 @@
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "Created {{DATE({createdUtc},SHORT)}}",
+											"text": "Created {{DATE(${createdUtc},SHORT)}}",
 											"isSubtle": true,
 											"wrap": true
 										}
@@ -266,7 +266,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "{description}",
+							"text": "${description}",
 							"wrap": true
 						},
 						{

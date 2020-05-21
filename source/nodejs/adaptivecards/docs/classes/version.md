@@ -22,6 +22,7 @@
 ### Methods
 
 * [compareTo](version.md#compareto)
+* [toJSON](version.md#tojson)
 * [toString](version.md#tostring)
 * [parse](version.md#static-parse)
 
@@ -29,9 +30,9 @@
 
 ###  constructor
 
-\+ **new Version**(`major`: number, `minor`: number, `label?`: string): *[Version](version.md)*
+\+ **new Version**(`major`: number, `minor`: number, `label?`: undefined | string): *[Version](version.md)*
 
-*Defined in [host-config.ts:397](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L397)*
+*Defined in [serialization.ts:19](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L19)*
 
 **Parameters:**
 
@@ -39,7 +40,7 @@ Name | Type | Default |
 ------ | ------ | ------ |
 `major` | number | 1 |
 `minor` | number | 1 |
-`label?` | string | - |
+`label?` | undefined &#124; string | - |
 
 **Returns:** *[Version](version.md)*
 
@@ -49,7 +50,7 @@ Name | Type | Default |
 
 • **get isValid**(): *boolean*
 
-*Defined in [host-config.ts:473](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L473)*
+*Defined in [serialization.ts:96](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L96)*
 
 **Returns:** *boolean*
 
@@ -59,7 +60,7 @@ ___
 
 • **get label**(): *string*
 
-*Defined in [host-config.ts:461](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L461)*
+*Defined in [serialization.ts:84](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L84)*
 
 **Returns:** *string*
 
@@ -69,7 +70,7 @@ ___
 
 • **get major**(): *number*
 
-*Defined in [host-config.ts:465](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L465)*
+*Defined in [serialization.ts:88](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L88)*
 
 **Returns:** *number*
 
@@ -79,7 +80,7 @@ ___
 
 • **get minor**(): *number*
 
-*Defined in [host-config.ts:469](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L469)*
+*Defined in [serialization.ts:92](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L92)*
 
 **Returns:** *number*
 
@@ -89,7 +90,7 @@ ___
 
 ▸ **compareTo**(`otherVersion`: [Version](version.md)): *number*
 
-*Defined in [host-config.ts:440](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L440)*
+*Defined in [serialization.ts:63](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L63)*
 
 **Parameters:**
 
@@ -101,11 +102,21 @@ Name | Type |
 
 ___
 
+###  toJSON
+
+▸ **toJSON**(): *any*
+
+*Defined in [serialization.ts:59](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L59)*
+
+**Returns:** *any*
+
+___
+
 ###  toString
 
 ▸ **toString**(): *string*
 
-*Defined in [host-config.ts:436](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L436)*
+*Defined in [serialization.ts:55](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L55)*
 
 **Returns:** *string*
 
@@ -113,15 +124,15 @@ ___
 
 ### `Static` parse
 
-▸ **parse**(`versionString`: string, `errors?`: Array‹[IValidationError](../interfaces/ivalidationerror.md)›): *[Version](version.md)*
+▸ **parse**(`versionString`: string, `context`: [BaseSerializationContext](baseserializationcontext.md)): *[Version](version.md) | undefined*
 
-*Defined in [host-config.ts:405](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L405)*
+*Defined in [serialization.ts:27](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L27)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `versionString` | string |
-`errors?` | Array‹[IValidationError](../interfaces/ivalidationerror.md)› |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *[Version](version.md)*
+**Returns:** *[Version](version.md) | undefined*

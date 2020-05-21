@@ -1695,7 +1695,11 @@ export class Image extends CardElement {
 
             imageElement.style.backgroundColor = <string>Utils.stringToCssColor(this.backgroundColor);
             imageElement.src = <string>this.preProcessPropertyValue(Image.urlProperty);
-            imageElement.alt = <string>this.preProcessPropertyValue(Image.altTextProperty);
+
+            const altTextProperty = this.preProcessPropertyValue(Image.altTextProperty);
+            if (altTextProperty) {
+                imageElement.alt = <string>altTextProperty;
+            }
 
             element.appendChild(imageElement);
         }
@@ -2798,18 +2802,18 @@ export class ChoiceSetInput extends Input {
     private static uniqueCategoryCounter = 0;
 
     private static getUniqueCategoryName(): string {
-        let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
+        let uniqueCategoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
 
         ChoiceSetInput.uniqueCategoryCounter++;
 
-        return uniqueCwtegoryName;
+        return uniqueCategoryName;
     }
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: HTMLInputElement[];
 
-    private renderCompundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
+    private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
@@ -2879,12 +2883,28 @@ export class ChoiceSetInput extends Input {
         return element;
     }
 
+    // Make sure `aria-current` is applied to the currently-selected item
+    protected internalApplyAriaCurrent(): void {
+        const options = this._selectElement.options;
+
+        if (options) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    options[i].setAttribute("aria-current", "true");
+                }
+                else {
+                    options[i].removeAttribute("aria-current");
+                }
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
         if (this.isMultiSelect) {
             // Render as a list of toggle inputs
-            return this.renderCompundInput(
+            return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
                 "checkbox",
                 this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : undefined);
@@ -2892,7 +2912,7 @@ export class ChoiceSetInput extends Input {
         else {
             if (this.style === "expanded") {
                 // Render as a series of radio buttons
-                return this.renderCompundInput(
+                return this.renderCompoundInput(
                     "ac-choiceSetInput-expanded",
                     "radio",
                     this.defaultValue ? [ this.defaultValue ] : undefined);
@@ -2928,8 +2948,12 @@ export class ChoiceSetInput extends Input {
                     Utils.appendChild(this._selectElement, option);
                 }
 
-                this._selectElement.onchange = () => { this.valueChanged(); }
+                this._selectElement.onchange = () => {
+                    this.internalApplyAriaCurrent();
+                    this.valueChanged();
+                }
 
+                this.internalApplyAriaCurrent();
                 return this._selectElement;
             }
         }
@@ -6097,7 +6121,15 @@ export class AdaptiveCard extends ContainerWithActions {
 
             if (renderedCard) {
                 renderedCard.classList.add(this.hostConfig.makeCssClassName("ac-adaptiveCard"));
-                renderedCard.tabIndex = 0;
+
+                // Having a tabIndex on the root container for a card can mess up accessibility in some scenarios.
+                // However, we've shipped this behavior before, and so can't just turn it off in a point release. For
+                // now, to unblock accessibility scenarios for our customers, we've got an option to turn it off. In a
+                // future release, we should strongly consider flipping the default such that we *don't* emit a tabIndex
+                // by default.
+                if (GlobalSettings.setTabIndexAtCardRoot) {
+                    renderedCard.tabIndex = 0;
+                }
 
                 if (this.speak) {
                     renderedCard.setAttribute("aria-label", this.speak);

@@ -258,6 +258,99 @@ namespace AdaptiveCards.Templating.Test
 }", cardJson);
         }
 
+        [TestMethod]
+        public void TestExceptionHandling()
+        {
+            // ${LineItem} doesn't exist in the data context provided
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${LineItem}"",
+                    ""type"": ""TextBlock"",
+                    ""$when"": ""${Milage > 0}"",
+                    ""text"": ""${Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            string jsonData = @"{
+              ""LineItems"": [
+                {
+                    ""Milage"": 10
+                },
+                {
+                    ""Milage"": 0
+                }
+              ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = jsonData
+            };
+
+            try
+            {
+                string cardJson = transformer.Expand(context);
+                Assert.Fail("There should be an exception");
+            }
+            catch (AdaptiveTemplateException e)
+            {
+                Assert.AreEqual(@"'${LineItem}' at line, '8' is malformed for '$data : ' pair", e.Message);
+            }
+            catch
+            {
+                Assert.Fail();
+                throw;
+            }
+        }
+
+        [TestMethod]
+        public void TestNullArgumentExceptionHandling()
+        {
+            // ${} is a null value
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""body"": [
+              {
+                ""type"": ""Container"",
+                ""items"": [
+                  {
+                    ""$data"": ""${LineItems}"",
+                    ""type"": ""TextBlock"",
+                    ""$when"": ""${Milage > 0}"",
+                    ""text"": ""${Milage}""
+                  }
+                ]
+              }
+            ]
+        }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            try
+            {
+                string cardJson = transformer.Expand(null);
+                Assert.Fail("There should be an exception");
+            }
+            catch (ArgumentNullException e)
+            {
+                Assert.AreEqual("Check if parent data context is set, or please enter a non-null value for '${LineItems}' at line, '8'", e.ParamName);
+            }
+            catch
+            {
+                Assert.Fail();
+                throw;
+            }
+        }
+        
         public static void AssertJsonEqual(string jsonExpected, string jsonActual)
         {
             var expected = JObject.Parse(jsonExpected);
@@ -583,7 +676,7 @@ namespace AdaptiveCards.Templating.Test
                     ]
                 }
             ] ,
-            ""$data"":""{$root}""
+            ""$data"":""${$root}""
         }
     ]
 }";

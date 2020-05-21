@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-visualizer",
-	"version": "1.2.6",
+	"version": "1.2.7",
 	"description": "Adaptive Card Visualizer for HTML renderer",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -20,7 +20,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^2.26.0",
 		"@typescript-eslint/parser": "^2.26.0",
-		"adaptivecards": "^2.0.0-alpha.1",
+		"adaptivecards": "^2.0.0-rc.0",
 		"eslint": "^6.8.0",
 		"markdown-it": "^8.4.0",
 		"monaco-editor": "^0.15.6",

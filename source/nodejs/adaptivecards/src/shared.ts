@@ -12,6 +12,7 @@ export class GlobalSettings {
     static useBuiltInInputValidation: boolean = true;
     static displayInputValidationErrors: boolean = true;
     static allowPreProcessingPropertyValues: boolean = false;
+    static setTabIndexAtCardRoot: boolean = true;
 }
 
 export const ContentTypes = {

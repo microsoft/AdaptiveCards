@@ -1,9 +1,17 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "0.8.0-rc.2",
+	"version": "1.0.0-rc.0",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
 	"main": "lib/adaptivecards-designer.js",
 	"types": "lib/adaptivecards-designer.d.ts",
 	"files": [
@@ -25,10 +33,10 @@
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptive-expressions": "^4.9.0-rc5",
-		"adaptivecards": "^2.0.0-alpha.1",
-		"adaptivecards-controls": "^0.3.5",
-		"adaptivecards-templating": "^0.1.2-alpha.0",
+		"adaptive-expressions": "^4.9.0",
+		"adaptivecards": "^2.0.0-rc.0",
+		"adaptivecards-controls": "^0.3.6",
+		"adaptivecards-templating": "^1.0.0-rc.0",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {

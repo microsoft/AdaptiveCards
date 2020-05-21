@@ -128,6 +128,8 @@ namespace WpfVisualizer
                 templateData = null;
             }
 
+            string expandedPayload = ""; 
+
             try
             {
                 // don't throw error, but should affect work flow and performance.
@@ -145,8 +147,19 @@ namespace WpfVisualizer
                 //     "name": "Mickey Mouse"
                 // };
 
-                var transformedPaylaod = template.Expand(context);
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
+                expandedPayload = template.Expand(context);
+            }
+
+            catch (Exception e)
+            {
+                // if an exception thrown, we parse and render cards as it is
+                ShowError(e);
+                expandedPayload = CardPayload;
+            }
+
+            try
+            {
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(expandedPayload);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -250,7 +263,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = "ERROR: " + err.Message,
+                Text = err.Message + "\nSource : " + err.Source,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };

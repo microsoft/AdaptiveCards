@@ -4,7 +4,7 @@
 
 ## Type parameters
 
-▪ **T**
+▪ **T**: *[SerializableObject](../classes/serializableobject.md)*
 
 ## Hierarchy
 
@@ -14,20 +14,29 @@
 
 ### Properties
 
-* [createInstance](ityperegistration.md#createinstance)
+* [objectType](ityperegistration.md#objecttype)
+* [schemaVersion](ityperegistration.md#schemaversion)
 * [typeName](ityperegistration.md#typename)
 
 ## Properties
 
-###  createInstance
+###  objectType
 
-• **createInstance**: *function*
+• **objectType**: *object*
 
-*Defined in [card-elements.ts:6387](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L6387)*
+*Defined in [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L7)*
 
 #### Type declaration:
 
-▸ (): *T*
+* **new __type**(): *T*
+
+___
+
+###  schemaVersion
+
+• **schemaVersion**: *[Version](../classes/version.md)*
+
+*Defined in [registry.ts:8](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L8)*
 
 ___
 
@@ -35,4 +44,4 @@ ___
 
 • **typeName**: *string*
 
-*Defined in [card-elements.ts:6386](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L6386)*
+*Defined in [registry.ts:6](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L6)*
