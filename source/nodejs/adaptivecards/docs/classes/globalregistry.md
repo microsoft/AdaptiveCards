@@ -25,7 +25,7 @@
 
 ▪ **actions**: *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)‹››* = new CardObjectRegistry<Action>()
 
-*Defined in [card-elements.ts:6240](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L6240)*
+*Defined in [card-elements.ts:6272](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6272)*
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
 ▪ **elements**: *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)‹››* = new CardObjectRegistry<CardElement>()
 
-*Defined in [card-elements.ts:6239](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L6239)*
+*Defined in [card-elements.ts:6271](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6271)*
 
 ## Methods
 
@@ -41,7 +41,7 @@ ___
 
 ▸ **populateWithDefaultActions**(`registry`: [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›): *void*
 
-*Defined in [card-elements.ts:6230](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L6230)*
+*Defined in [card-elements.ts:6262](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6262)*
 
 **Parameters:**
 
@@ -57,7 +57,7 @@ ___
 
 ▸ **populateWithDefaultElements**(`registry`: [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›): *void*
 
-*Defined in [card-elements.ts:6209](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L6209)*
+*Defined in [card-elements.ts:6241](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6241)*
 
 **Parameters:**
 
@@ -73,6 +73,6 @@ ___
 
 ▸ **reset**(): *void*
 
-*Defined in [card-elements.ts:6242](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L6242)*
+*Defined in [card-elements.ts:6274](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6274)*
 
 **Returns:** *void*

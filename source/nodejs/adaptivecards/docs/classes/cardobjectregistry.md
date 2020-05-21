@@ -28,7 +28,7 @@
 
 ▸ **clear**(): *void*
 
-*Defined in [registry.ts:18](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L18)*
+*Defined in [registry.ts:18](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L18)*
 
 **Returns:** *void*
 
@@ -38,7 +38,7 @@ ___
 
 ▸ **createInstance**(`typeName`: string, `targetVersion`: [Version](version.md)): *T | undefined*
 
-*Defined in [registry.ts:43](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L43)*
+*Defined in [registry.ts:43](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L43)*
 
 **Parameters:**
 
@@ -55,7 +55,7 @@ ___
 
 ▸ **findByName**(`typeName`: string): *[ITypeRegistration](../interfaces/ityperegistration.md)‹T› | undefined*
 
-*Defined in [registry.ts:14](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L14)*
+*Defined in [registry.ts:14](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L14)*
 
 **Parameters:**
 
@@ -71,7 +71,7 @@ ___
 
 ▸ **getItemAt**(`index`: number): *[ITypeRegistration](../interfaces/ityperegistration.md)‹T›*
 
-*Defined in [registry.ts:53](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L53)*
+*Defined in [registry.ts:53](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L53)*
 
 **Parameters:**
 
@@ -87,7 +87,7 @@ ___
 
 ▸ **getItemCount**(): *number*
 
-*Defined in [registry.ts:49](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L49)*
+*Defined in [registry.ts:49](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L49)*
 
 **Returns:** *number*
 
@@ -97,7 +97,7 @@ ___
 
 ▸ **register**(`typeName`: string, `objectType`: object, `schemaVersion`: [Version](version.md)): *void*
 
-*Defined in [registry.ts:22](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L22)*
+*Defined in [registry.ts:22](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L22)*
 
 **Parameters:**
 
@@ -119,7 +119,7 @@ ___
 
 ▸ **unregister**(`typeName`: string): *void*
 
-*Defined in [registry.ts:39](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L39)*
+*Defined in [registry.ts:39](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L39)*
 
 **Parameters:**
 

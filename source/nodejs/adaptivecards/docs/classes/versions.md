@@ -22,7 +22,7 @@
 
 ▪ **latest**: *[Version](version.md)‹›* = Versions.v1_2
 
-*Defined in [serialization.ts:107](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L107)*
+*Defined in [serialization.ts:107](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L107)*
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 ▪ **v1_0**: *[Version](version.md)‹›* = new Version(1, 0)
 
-*Defined in [serialization.ts:104](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L104)*
+*Defined in [serialization.ts:104](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L104)*
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 ▪ **v1_1**: *[Version](version.md)‹›* = new Version(1, 1)
 
-*Defined in [serialization.ts:105](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L105)*
+*Defined in [serialization.ts:105](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L105)*
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 ▪ **v1_2**: *[Version](version.md)‹›* = new Version(1, 2)
 
-*Defined in [serialization.ts:106](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L106)*
+*Defined in [serialization.ts:106](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L106)*
 
 ___
 
@@ -54,4 +54,4 @@ ___
 
 ▪ **vNext**: *[Version](version.md)‹›* = new Version(1000, 0, "vNext")
 
-*Defined in [serialization.ts:108](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L108)*
+*Defined in [serialization.ts:108](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L108)*

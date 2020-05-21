@@ -19,7 +19,7 @@
 
 • **didProcess**: *boolean*
 
-*Defined in [card-elements.ts:5888](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L5888)*
+*Defined in [card-elements.ts:5912](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L5912)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **outputHtml**? : *any*
 
-*Defined in [card-elements.ts:5889](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L5889)*
+*Defined in [card-elements.ts:5913](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L5913)*

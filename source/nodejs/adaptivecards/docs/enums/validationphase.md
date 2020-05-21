@@ -16,7 +16,7 @@
 
 • **Parse**:
 
-*Defined in [enums.ts:151](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L151)*
+*Defined in [enums.ts:151](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L151)*
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 • **ToJSON**:
 
-*Defined in [enums.ts:152](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L152)*
+*Defined in [enums.ts:152](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L152)*
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 • **Validation**:
 
-*Defined in [enums.ts:153](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L153)*
+*Defined in [enums.ts:153](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L153)*

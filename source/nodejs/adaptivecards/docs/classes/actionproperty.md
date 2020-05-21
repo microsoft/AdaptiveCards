@@ -20,6 +20,7 @@
 * [forbiddenActionTypes](actionproperty.md#forbiddenactiontypes)
 * [name](actionproperty.md#name)
 * [onGetInitialValue](actionproperty.md#optional-ongetinitialvalue)
+* [sequentialNumber](actionproperty.md#sequentialnumber)
 * [targetVersion](actionproperty.md#targetversion)
 
 ### Methods
@@ -36,7 +37,7 @@
 
 *Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
 
-*Defined in [card-elements.ts:611](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L611)*
+*Defined in [card-elements.ts:611](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L611)*
 
 **Parameters:**
 
@@ -56,7 +57,7 @@ Name | Type | Default |
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
 
-*Defined in [serialization.ts:259](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L259)*
+*Defined in [serialization.ts:263](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L263)*
 
 ___
 
@@ -64,7 +65,7 @@ ___
 
 • **forbiddenActionTypes**: *string[]*
 
-*Defined in [card-elements.ts:616](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L616)*
+*Defined in [card-elements.ts:616](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L616)*
 
 ___
 
@@ -74,7 +75,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
 
-*Defined in [card-elements.ts:615](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L615)*
+*Defined in [card-elements.ts:615](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L615)*
 
 ___
 
@@ -84,7 +85,17 @@ ___
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
 
-*Defined in [serialization.ts:260](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L260)*
+*Defined in [serialization.ts:264](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L264)*
+
+___
+
+###  sequentialNumber
+
+• **sequentialNumber**: *number*
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+
+*Defined in [serialization.ts:258](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L258)*
 
 ___
 
@@ -94,7 +105,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
 
-*Defined in [card-elements.ts:614](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L614)*
+*Defined in [card-elements.ts:614](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L614)*
 
 ## Methods
 
@@ -104,7 +115,7 @@ ___
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)*
 
-*Defined in [serialization.ts:244](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L244)*
+*Defined in [serialization.ts:246](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L246)*
 
 **Returns:** *string*
 
@@ -116,7 +127,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[parse](propertydefinition.md#parse)*
 
-*Defined in [card-elements.ts:599](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L599)*
+*Defined in [card-elements.ts:599](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L599)*
 
 **Parameters:**
 
@@ -136,7 +147,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[toJSON](propertydefinition.md#tojson)*
 
-*Defined in [card-elements.ts:609](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L609)*
+*Defined in [card-elements.ts:609](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L609)*
 
 **Parameters:**
 

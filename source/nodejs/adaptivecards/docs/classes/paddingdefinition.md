@@ -25,7 +25,7 @@
 
 \+ **new PaddingDefinition**(`top`: [Spacing](../enums/spacing.md), `right`: [Spacing](../enums/spacing.md), `bottom`: [Spacing](../enums/spacing.md), `left`: [Spacing](../enums/spacing.md)): *[PaddingDefinition](paddingdefinition.md)*
 
-*Defined in [shared.ts:132](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L132)*
+*Defined in [shared.ts:133](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L133)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type | Default |
 
 • **bottom**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.None
 
-*Defined in [shared.ts:131](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L131)*
+*Defined in [shared.ts:132](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L132)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **left**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.None
 
-*Defined in [shared.ts:132](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L132)*
+*Defined in [shared.ts:133](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L133)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **right**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.None
 
-*Defined in [shared.ts:130](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L130)*
+*Defined in [shared.ts:131](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L131)*
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 • **top**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.None
 
-*Defined in [shared.ts:129](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L129)*
+*Defined in [shared.ts:130](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L130)*

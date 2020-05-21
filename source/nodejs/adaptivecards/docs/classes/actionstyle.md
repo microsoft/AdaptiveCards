@@ -20,7 +20,7 @@
 
 ▪ **Default**: *"default"* = "default"
 
-*Defined in [enums.ts:8](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L8)*
+*Defined in [enums.ts:8](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L8)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 ▪ **Destructive**: *"destructive"* = "destructive"
 
-*Defined in [enums.ts:10](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L10)*
+*Defined in [enums.ts:10](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L10)*
 
 ___
 
@@ -36,4 +36,4 @@ ___
 
 ▪ **Positive**: *"positive"* = "positive"
 
-*Defined in [enums.ts:9](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L9)*
+*Defined in [enums.ts:9](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L9)*

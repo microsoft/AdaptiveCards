@@ -21,6 +21,7 @@
 * [onGetInitialValue](timeproperty.md#optional-ongetinitialvalue)
 * [onParse](timeproperty.md#onparse)
 * [onToJSON](timeproperty.md#ontojson)
+* [sequentialNumber](timeproperty.md#sequentialnumber)
 * [targetVersion](timeproperty.md#targetversion)
 
 ### Methods
@@ -37,7 +38,7 @@
 
 *Overrides [CustomProperty](customproperty.md).[constructor](customproperty.md#constructor)*
 
-*Defined in [card-elements.ts:3148](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3148)*
+*Defined in [card-elements.ts:3172](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L3172)*
 
 **Parameters:**
 
@@ -58,7 +59,7 @@ Name | Type |
 
 *Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
 
-*Defined in [serialization.ts:644](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L644)*
+*Defined in [serialization.ts:652](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L652)*
 
 ___
 
@@ -68,7 +69,7 @@ ___
 
 *Overrides [CustomProperty](customproperty.md).[name](customproperty.md#name)*
 
-*Defined in [card-elements.ts:3149](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3149)*
+*Defined in [card-elements.ts:3173](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L3173)*
 
 ___
 
@@ -80,7 +81,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
 
-*Defined in [serialization.ts:645](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L645)*
+*Defined in [serialization.ts:653](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L653)*
 
 ___
 
@@ -90,7 +91,7 @@ ___
 
 *Inherited from [CustomProperty](customproperty.md).[onParse](customproperty.md#onparse)*
 
-*Defined in [serialization.ts:642](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L642)*
+*Defined in [serialization.ts:650](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L650)*
 
 #### Type declaration:
 
@@ -113,7 +114,7 @@ ___
 
 *Inherited from [CustomProperty](customproperty.md).[onToJSON](customproperty.md#ontojson)*
 
-*Defined in [serialization.ts:643](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L643)*
+*Defined in [serialization.ts:651](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L651)*
 
 #### Type declaration:
 
@@ -131,13 +132,23 @@ Name | Type |
 
 ___
 
+###  sequentialNumber
+
+• **sequentialNumber**: *number*
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+
+*Defined in [serialization.ts:258](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L258)*
+
+___
+
 ###  targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
 *Overrides [CustomProperty](customproperty.md).[targetVersion](customproperty.md#targetversion)*
 
-*Defined in [card-elements.ts:3149](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-elements.ts#L3149)*
+*Defined in [card-elements.ts:3173](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L3173)*
 
 ## Methods
 
@@ -147,7 +158,7 @@ ___
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)*
 
-*Defined in [serialization.ts:244](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L244)*
+*Defined in [serialization.ts:246](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L246)*
 
 **Returns:** *string*
 
@@ -161,7 +172,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[parse](propertydefinition.md#parse)*
 
-*Defined in [serialization.ts:631](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L631)*
+*Defined in [serialization.ts:639](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L639)*
 
 **Parameters:**
 
@@ -183,7 +194,7 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[toJSON](propertydefinition.md#tojson)*
 
-*Defined in [serialization.ts:635](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L635)*
+*Defined in [serialization.ts:643](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L643)*
 
 **Parameters:**
 

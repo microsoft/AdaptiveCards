@@ -17,7 +17,7 @@
 
 • **Cover**:
 
-*Defined in [enums.ts:100](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L100)*
+*Defined in [enums.ts:100](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L100)*
 
 ___
 
@@ -25,7 +25,7 @@ ___
 
 • **Repeat**:
 
-*Defined in [enums.ts:103](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L103)*
+*Defined in [enums.ts:103](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L103)*
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
 • **RepeatHorizontally**:
 
-*Defined in [enums.ts:101](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L101)*
+*Defined in [enums.ts:101](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L101)*
 
 ___
 
@@ -41,4 +41,4 @@ ___
 
 • **RepeatVertically**:
 
-*Defined in [enums.ts:102](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L102)*
+*Defined in [enums.ts:102](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L102)*

@@ -15,7 +15,7 @@
 
 • **Pixel**:
 
-*Defined in [enums.ts:23](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L23)*
+*Defined in [enums.ts:23](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L23)*
 
 ___
 
@@ -23,4 +23,4 @@ ___
 
 • **Weight**:
 
-*Defined in [enums.ts:22](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L22)*
+*Defined in [enums.ts:22](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L22)*

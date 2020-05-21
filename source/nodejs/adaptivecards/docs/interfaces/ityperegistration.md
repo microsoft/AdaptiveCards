@@ -24,7 +24,7 @@
 
 • **objectType**: *object*
 
-*Defined in [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L7)*
+*Defined in [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L7)*
 
 #### Type declaration:
 
@@ -36,7 +36,7 @@ ___
 
 • **schemaVersion**: *[Version](../classes/version.md)*
 
-*Defined in [registry.ts:8](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L8)*
+*Defined in [registry.ts:8](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L8)*
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 • **typeName**: *string*
 
-*Defined in [registry.ts:6](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/registry.ts#L6)*
+*Defined in [registry.ts:6](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L6)*

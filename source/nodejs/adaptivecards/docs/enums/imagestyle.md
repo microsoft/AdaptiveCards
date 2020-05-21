@@ -15,7 +15,7 @@
 
 • **Default**:
 
-*Defined in [enums.ts:85](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L85)*
+*Defined in [enums.ts:85](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L85)*
 
 ___
 
@@ -23,4 +23,4 @@ ___
 
 • **Person**:
 
-*Defined in [enums.ts:86](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L86)*
+*Defined in [enums.ts:86](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L86)*

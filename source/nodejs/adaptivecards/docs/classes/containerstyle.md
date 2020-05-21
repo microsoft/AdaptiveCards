@@ -23,7 +23,7 @@
 
 ▪ **Accent**: *"accent"* = "accent"
 
-*Defined in [enums.ts:144](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L144)*
+*Defined in [enums.ts:144](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L144)*
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 ▪ **Attention**: *"attention"* = "attention"
 
-*Defined in [enums.ts:146](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L146)*
+*Defined in [enums.ts:146](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L146)*
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 ▪ **Default**: *"default"* = "default"
 
-*Defined in [enums.ts:142](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L142)*
+*Defined in [enums.ts:142](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L142)*
 
 ___
 
@@ -47,7 +47,7 @@ ___
 
 ▪ **Emphasis**: *"emphasis"* = "emphasis"
 
-*Defined in [enums.ts:143](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L143)*
+*Defined in [enums.ts:143](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L143)*
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 ▪ **Good**: *"good"* = "good"
 
-*Defined in [enums.ts:145](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L145)*
+*Defined in [enums.ts:145](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L145)*
 
 ___
 
@@ -63,4 +63,4 @@ ___
 
 ▪ **Warning**: *"warning"* = "warning"
 
-*Defined in [enums.ts:147](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L147)*
+*Defined in [enums.ts:147](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L147)*

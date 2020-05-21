@@ -29,7 +29,7 @@
 
 • **ActionTypeNotAllowed**:
 
-*Defined in [enums.ts:158](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L158)*
+*Defined in [enums.ts:158](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L158)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **CollectionCantBeEmpty**:
 
-*Defined in [enums.ts:159](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L159)*
+*Defined in [enums.ts:159](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L159)*
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • **Deprecated**:
 
-*Defined in [enums.ts:160](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L160)*
+*Defined in [enums.ts:160](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L160)*
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • **DuplicateId**:
 
-*Defined in [enums.ts:170](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L170)*
+*Defined in [enums.ts:170](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L170)*
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 • **ElementTypeNotAllowed**:
 
-*Defined in [enums.ts:161](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L161)*
+*Defined in [enums.ts:161](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L161)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 • **Hint**:
 
-*Defined in [enums.ts:157](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L157)*
+*Defined in [enums.ts:157](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L157)*
 
 ___
 
@@ -77,7 +77,7 @@ ___
 
 • **InteractivityNotAllowed**:
 
-*Defined in [enums.ts:162](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L162)*
+*Defined in [enums.ts:162](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L162)*
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 • **InvalidPropertyValue**:
 
-*Defined in [enums.ts:163](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L163)*
+*Defined in [enums.ts:163](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L163)*
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 • **MissingCardType**:
 
-*Defined in [enums.ts:164](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L164)*
+*Defined in [enums.ts:164](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L164)*
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 • **Other**:
 
-*Defined in [enums.ts:172](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L172)*
+*Defined in [enums.ts:172](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L172)*
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 • **PropertyCantBeNull**:
 
-*Defined in [enums.ts:165](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L165)*
+*Defined in [enums.ts:165](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L165)*
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 • **TooManyActions**:
 
-*Defined in [enums.ts:166](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L166)*
+*Defined in [enums.ts:166](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L166)*
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 • **UnknownActionType**:
 
-*Defined in [enums.ts:167](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L167)*
+*Defined in [enums.ts:167](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L167)*
 
 ___
 
@@ -133,7 +133,7 @@ ___
 
 • **UnknownElementType**:
 
-*Defined in [enums.ts:168](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L168)*
+*Defined in [enums.ts:168](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L168)*
 
 ___
 
@@ -141,7 +141,7 @@ ___
 
 • **UnsupportedCardVersion**:
 
-*Defined in [enums.ts:169](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L169)*
+*Defined in [enums.ts:169](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L169)*
 
 ___
 
@@ -149,4 +149,4 @@ ___
 
 • **UnsupportedProperty**:
 
-*Defined in [enums.ts:171](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L171)*
+*Defined in [enums.ts:171](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L171)*

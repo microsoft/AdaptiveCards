@@ -21,7 +21,7 @@
 
 • **event**: *[ValidationEvent](../enums/validationevent.md)*
 
-*Defined in [serialization.ts:10](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L10)*
+*Defined in [serialization.ts:10](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L10)*
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 • **message**: *string*
 
-*Defined in [serialization.ts:11](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L11)*
+*Defined in [serialization.ts:11](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L11)*
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **phase**: *[ValidationPhase](../enums/validationphase.md)*
 
-*Defined in [serialization.ts:9](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L9)*
+*Defined in [serialization.ts:9](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L9)*
 
 ___
 
@@ -45,4 +45,4 @@ ___
 
 • **source**? : *[SerializableObject](../classes/serializableobject.md)*
 
-*Defined in [serialization.ts:8](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L8)*
+*Defined in [serialization.ts:8](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L8)*

@@ -15,7 +15,7 @@
 
 • **Horizontal**:
 
-*Defined in [enums.ts:95](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L95)*
+*Defined in [enums.ts:95](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L95)*
 
 ___
 
@@ -23,4 +23,4 @@ ___
 
 • **Vertical**:
 
-*Defined in [enums.ts:96](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/enums.ts#L96)*
+*Defined in [enums.ts:96](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L96)*

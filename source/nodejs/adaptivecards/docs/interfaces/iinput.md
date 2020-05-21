@@ -33,7 +33,7 @@
 
 • **id**? : *undefined | string*
 
-*Defined in [shared.ts:29](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L29)*
+*Defined in [shared.ts:30](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L30)*
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 • **value**? : *undefined | string*
 
-*Defined in [shared.ts:30](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L30)*
+*Defined in [shared.ts:31](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L31)*
 
 ## Methods
 
@@ -49,6 +49,6 @@ ___
 
 ▸ **validateValue**(): *boolean*
 
-*Defined in [shared.ts:31](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L31)*
+*Defined in [shared.ts:32](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L32)*
 
 **Returns:** *boolean*

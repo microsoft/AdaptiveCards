@@ -34,7 +34,7 @@
 
 • **actions**? : *ISubmitAction | IOpenUrlAction | IShowCardAction[]*
 
-*Defined in [schema.ts:170](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L170)*
+*Defined in [schema.ts:170](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L170)*
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 • **backgroundImage**? : *IBackgroundImage | string*
 
-*Defined in [schema.ts:168](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L168)*
+*Defined in [schema.ts:168](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L168)*
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 • **body**? : *ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer[]*
 
-*Defined in [schema.ts:169](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L169)*
+*Defined in [schema.ts:169](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L169)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 *Inherited from [IAdaptiveCard](iadaptivecard.md).[height](iadaptivecard.md#optional-height)*
 
-*Defined in [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L39)*
+*Defined in [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L39)*
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 *Inherited from [IAdaptiveCard](iadaptivecard.md).[horizontalAlignment](iadaptivecard.md#optional-horizontalalignment)*
 
-*Defined in [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L36)*
+*Defined in [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L36)*
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 *Inherited from [IAdaptiveCard](iadaptivecard.md).[id](iadaptivecard.md#optional-id)*
 
-*Defined in [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L34)*
+*Defined in [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L34)*
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 *Inherited from [IAdaptiveCard](iadaptivecard.md).[separator](iadaptivecard.md#optional-separator)*
 
-*Defined in [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L38)*
+*Defined in [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L38)*
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 *Inherited from [IAdaptiveCard](iadaptivecard.md).[spacing](iadaptivecard.md#optional-spacing)*
 
-*Defined in [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L37)*
+*Defined in [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L37)*
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 *Overrides [ICardElement](icardelement.md).[speak](icardelement.md#optional-speak)*
 
-*Defined in [schema.ts:171](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L171)*
+*Defined in [schema.ts:171](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L171)*
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 • **type**: *"AdaptiveCard"*
 
-*Defined in [schema.ts:166](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L166)*
+*Defined in [schema.ts:166](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L166)*
 
 ___
 
@@ -126,4 +126,4 @@ ___
 
 • **version**? : *IVersion | string*
 
-*Defined in [schema.ts:167](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/schema.ts#L167)*
+*Defined in [schema.ts:167](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/schema.ts#L167)*

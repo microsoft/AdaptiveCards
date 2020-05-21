@@ -19,7 +19,7 @@
 
 • **mimeType**: *string*
 
-*Defined in [shared.ts:186](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L186)*
+*Defined in [shared.ts:187](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L187)*
 
 ___
 
@@ -27,4 +27,4 @@ ___
 
 • **url**: *string*
 
-*Defined in [shared.ts:185](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/shared.ts#L185)*
+*Defined in [shared.ts:186](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L186)*

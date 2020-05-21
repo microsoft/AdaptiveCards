@@ -23,7 +23,7 @@
 
 • **allIds**: *[Dictionary](../README.md#dictionary)‹number›*
 
-*Defined in [card-object.ts:10](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L10)*
+*Defined in [card-object.ts:10](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-object.ts#L10)*
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 • **validationEvents**: *[IValidationEvent](../interfaces/ivalidationevent.md)[]* = []
 
-*Defined in [card-object.ts:11](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L11)*
+*Defined in [card-object.ts:11](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-object.ts#L11)*
 
 ## Methods
 
@@ -39,7 +39,7 @@ ___
 
 ▸ **addFailure**(`cardObject`: [CardObject](cardobject.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
-*Defined in [card-object.ts:13](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/card-object.ts#L13)*
+*Defined in [card-object.ts:13](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-object.ts#L13)*
 
 **Parameters:**
 

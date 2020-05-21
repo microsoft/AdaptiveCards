@@ -28,7 +28,7 @@
 
 \+ **new ContainerStyleSet**(`obj?`: any): *[ContainerStyleSet](containerstyleset.md)*
 
-*Defined in [host-config.ts:325](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L325)*
+*Defined in [host-config.ts:325](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L325)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **get default**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:398](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L398)*
+*Defined in [host-config.ts:398](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L398)*
 
 **Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
@@ -54,7 +54,7 @@ ___
 
 • **get emphasis**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:402](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L402)*
+*Defined in [host-config.ts:402](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L402)*
 
 **Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
@@ -64,7 +64,7 @@ ___
 
 ▸ **getStyleByName**(`name`: string | undefined, `defaultValue?`: [ContainerStyleDefinition](containerstyledefinition.md)): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:389](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L389)*
+*Defined in [host-config.ts:389](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L389)*
 
 **Parameters:**
 
@@ -81,6 +81,6 @@ ___
 
 ▸ **toJSON**(): *any*
 
-*Defined in [host-config.ts:364](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/host-config.ts#L364)*
+*Defined in [host-config.ts:364](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L364)*
 
 **Returns:** *any*

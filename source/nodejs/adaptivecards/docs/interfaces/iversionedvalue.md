@@ -23,7 +23,7 @@
 
 • **targetVersion**? : *[Version](../classes/version.md)*
 
-*Defined in [serialization.ts:373](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L373)*
+*Defined in [serialization.ts:381](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L381)*
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 • **value**: *TValue*
 
-*Defined in [serialization.ts:372](https://github.com/microsoft/AdaptiveCards/blob/8588bd5ad/source/nodejs/adaptivecards/src/serialization.ts#L372)*
+*Defined in [serialization.ts:380](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L380)*
