@@ -16,7 +16,7 @@
 
 • **Optional**:
 
-*Defined in [enums.ts:119](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L119)*
+*Defined in [enums.ts:119](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L119)*
 
 ___
 
@@ -24,7 +24,7 @@ ___
 
 • **Required**:
 
-*Defined in [enums.ts:120](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L120)*
+*Defined in [enums.ts:120](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L120)*
 
 ___
 
@@ -32,4 +32,4 @@ ___
 
 • **RequiredWithVisualCue**:
 
-*Defined in [enums.ts:121](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L121)*
+*Defined in [enums.ts:121](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L121)*

@@ -28,7 +28,7 @@
 
 \+ **new ContainerStyleSet**(`obj?`: any): *[ContainerStyleSet](containerstyleset.md)*
 
-*Defined in [host-config.ts:315](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L315)*
+*Defined in [host-config.ts:325](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L325)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type |
 
 • **get default**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:383](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L383)*
+*Defined in [host-config.ts:398](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L398)*
 
 **Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
@@ -54,7 +54,7 @@ ___
 
 • **get emphasis**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:387](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L387)*
+*Defined in [host-config.ts:402](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L402)*
 
 **Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
@@ -62,16 +62,16 @@ ___
 
 ###  getStyleByName
 
-▸ **getStyleByName**(`name`: string, `defaultValue`: [ContainerStyleDefinition](containerstyledefinition.md)): *[ContainerStyleDefinition](containerstyledefinition.md)*
+▸ **getStyleByName**(`name`: string | undefined, `defaultValue?`: [ContainerStyleDefinition](containerstyledefinition.md)): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:379](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L379)*
+*Defined in [host-config.ts:389](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L389)*
 
 **Parameters:**
 
-Name | Type | Default |
------- | ------ | ------ |
-`name` | string | - |
-`defaultValue` | [ContainerStyleDefinition](containerstyledefinition.md) | null |
+Name | Type |
+------ | ------ |
+`name` | string &#124; undefined |
+`defaultValue?` | [ContainerStyleDefinition](containerstyledefinition.md) |
 
 **Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
@@ -81,6 +81,6 @@ ___
 
 ▸ **toJSON**(): *any*
 
-*Defined in [host-config.ts:354](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L354)*
+*Defined in [host-config.ts:364](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L364)*
 
 **Returns:** *any*

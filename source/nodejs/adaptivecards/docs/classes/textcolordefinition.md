@@ -28,18 +28,18 @@
 
 ###  constructor
 
-\+ **new TextColorDefinition**(`defaultColor?`: string, `subtleColor?`: string): *[TextColorDefinition](textcolordefinition.md)*
+\+ **new TextColorDefinition**(`defaultColor?`: undefined | string, `subtleColor?`: undefined | string): *[TextColorDefinition](textcolordefinition.md)*
 
 *Inherited from [ColorDefinition](colordefinition.md).[constructor](colordefinition.md#constructor)*
 
-*Defined in [host-config.ts:14](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L14)*
+*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`defaultColor?` | string |
-`subtleColor?` | string |
+`defaultColor?` | undefined &#124; string |
+`subtleColor?` | undefined &#124; string |
 
 **Returns:** *[TextColorDefinition](textcolordefinition.md)*
 
@@ -51,7 +51,7 @@ Name | Type |
 
 *Inherited from [ColorDefinition](colordefinition.md).[default](colordefinition.md#default)*
 
-*Defined in [host-config.ts:13](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L13)*
+*Defined in [host-config.ts:23](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L23)*
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 • **highlightColors**: *[ColorDefinition](colordefinition.md)‹›* = new ColorDefinition("#22000000", "#11000000")
 
-*Defined in [host-config.ts:35](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L35)*
+*Defined in [host-config.ts:45](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L45)*
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 *Inherited from [ColorDefinition](colordefinition.md).[subtle](colordefinition.md#subtle)*
 
-*Defined in [host-config.ts:14](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L14)*
+*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
 
 ## Methods
 
@@ -79,7 +79,7 @@ ___
 
 *Overrides [ColorDefinition](colordefinition.md).[parse](colordefinition.md#parse)*
 
-*Defined in [host-config.ts:37](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L37)*
+*Defined in [host-config.ts:47](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L47)*
 
 **Parameters:**
 
