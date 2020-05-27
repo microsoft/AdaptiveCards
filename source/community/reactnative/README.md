@@ -118,30 +118,45 @@ templatePayload = template.expand(context);
 ```
 
 ## Theme Config
-* For customising UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCard/>`.
+* For customizing UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCards/>`.
+* Currently below elements are supported in the theme config.
+    * input 
+    * button
+    * choice Set
+    * date picker
+    * time picker
 
 * Host app can provide `platform specific styles` as seen in the below example. For same styles across platforms, pass the styles without platform.
 
 **Examples**   
-In this example, styles passed for element `input` are applied to both iOS and Android whereas for `button`, platform specific styles are applied.
-
+In this example, styles passed for element `input` are applied to all the platforms whereas for `button` platform-specific styles are applied. 
 ```css
     customThemeConfig = {
         input: {
             borderColor: "#000000",
             backgroundColor: "#F5F5F5",
+            borderRadius: 4,
+            borderWidth: 1,
         },
         button: {
             "ios": {
-                textTransform: 'none',
+                color: 'white',
+                backgroundColor: "#1D9BF6",
             },
             "android": {
-                textTransform: 'uppercase'
+                color: 'white',
+                backgroundColor: "#1D9BF6",
+            },
+            "windows": {
+                color: 'white',
+                backgroundColor: "#1D9BF6",
             }
         }
     }
+    
+<AdaptiveCards themeConfig={customThemeConfig} payload={payload} />
 ```
-Refer this [wiki page](https://github.com/Imaginea/AdaptiveCards/wiki/Extensibility---Theme-Config) to view the complete list of customizable theme config properties.
+Refer this [wiki page](https://github.com/microsoft/AdaptiveCards/wiki/React-Native-Theme-Config-Support) to view the complete list of customizable theme config properties.
 
 ##  Examples / Visualizer
 There are lot of sample JSON payloads covering all element types with few real case scenarios are available within this project.   
