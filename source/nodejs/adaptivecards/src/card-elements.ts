@@ -869,7 +869,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (hostConfig.supportsInteractivity) {
                     element.tabIndex = 0
-                    element.setAttribute("role", "button");
+                    element.setAttribute("role", this.selectAction.getAriaRole());
 
                     if (this.selectAction.title) {
                         element.setAttribute("aria-label", this.selectAction.title);
@@ -1680,7 +1680,7 @@ export class Image extends CardElement {
 
             if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
-                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("role", this.selectAction.getAriaRole());
 
                 if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
@@ -1828,7 +1828,7 @@ export abstract class CardElementContainer extends CardElement {
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 element.tabIndex = 0;
-                element.setAttribute("role", "button");
+                element.setAttribute("role", this._selectAction.getAriaRole());
 
                 if (this._selectAction.title) {
                     element.setAttribute("aria-label", this._selectAction.title);
@@ -3403,6 +3403,10 @@ export abstract class Action extends CardObject {
         return "";
     }
 
+    getAriaRole(): string {
+        return "button";
+    }
+
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
         // Do nothing in base implementation
     }
@@ -3648,6 +3652,10 @@ export class OpenUrlAction extends Action {
 
     getJsonTypeName(): string {
         return OpenUrlAction.JsonTypeName;
+    }
+
+    getAriaRole() : string {
+        return "link";
     }
 
     internalValidateProperties(context: ValidationResults) {
