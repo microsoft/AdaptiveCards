@@ -169,8 +169,6 @@
 
 Ƭ **ActionType**: *object*
 
-*Defined in [card-elements.ts:3336](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L3336)*
-
 #### Type declaration:
 
 * **new __type**(): *[Action](classes/action.md)*
@@ -181,15 +179,11 @@ ___
 
 Ƭ **CardElementHeight**: *"auto" | "stretch"*
 
-*Defined in [card-elements.ts:16](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L16)*
-
 ___
 
 ###  CardObjectType
 
 Ƭ **CardObjectType**: *object*
-
-*Defined in [card-object.ts:25](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-object.ts#L25)*
 
 #### Type declaration:
 
@@ -201,15 +195,11 @@ ___
 
 Ƭ **ColumnWidth**: *[SizeAndUnit](classes/sizeandunit.md) | "auto" | "stretch"*
 
-*Defined in [card-elements.ts:5265](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L5265)*
-
 ___
 
 ###  Dictionary
 
 Ƭ **Dictionary**: *object*
-
-*Defined in [shared.ts:35](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L35)*
 
 #### Type declaration:
 
@@ -221,8 +211,6 @@ ___
 
 Ƭ **PropertyBag**: *object*
 
-*Defined in [serialization.ts:726](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L726)*
-
 #### Type declaration:
 
 * \[ **propertyName**: *string*\]: any
@@ -233,8 +221,6 @@ ___
 
 Ƭ **SerializableObjectType**: *object*
 
-*Defined in [serialization.ts:561](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L561)*
-
 #### Type declaration:
 
 * **new __type**(): *[SerializableObject](classes/serializableobject.md)*
@@ -244,8 +230,6 @@ ___
 ###  TargetVersion
 
 Ƭ **TargetVersion**: *[Version](classes/version.md) | "*"*
-
-*Defined in [serialization.ts:101](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L101)*
 
 ## Variables
 
@@ -541,15 +525,11 @@ ___
         }
     })
 
-*Defined in [host-config.ts:651](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L651)*
-
 ## Functions
 
 ###  appendChild
 
 ▸ **appendChild**(`node`: Node, `child`: Node | undefined): *void*
-
-*Defined in [utils.ts:20](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L20)*
 
 **Parameters:**
 
@@ -566,8 +546,6 @@ ___
 
 ▸ **generateUniqueId**(): *string*
 
-*Defined in [utils.ts:16](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L16)*
-
 Generate a UUID prepended with "__ac-"
 
 **Returns:** *string*
@@ -577,8 +555,6 @@ ___
 ###  getEnumValueByName
 
 ▸ **getEnumValueByName**(`enumType`: object, `name`: string): *number | undefined*
-
-*Defined in [utils.ts:52](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L52)*
 
 **Parameters:**
 
@@ -595,8 +571,6 @@ ___
 
 ▸ **getFitStatus**(`element`: HTMLElement, `containerEnd`: number): *[ContainerFitStatus](enums/containerfitstatus.md)*
 
-*Defined in [utils.ts:219](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L219)*
-
 **Parameters:**
 
 Name | Type |
@@ -612,8 +586,6 @@ ___
 
 ▸ **isMobileOS**(): *boolean*
 
-*Defined in [utils.ts:7](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L7)*
-
 **Returns:** *boolean*
 
 ___
@@ -621,8 +593,6 @@ ___
 ###  isVersionLessOrEqual
 
 ▸ **isVersionLessOrEqual**(`version`: [TargetVersion](README.md#targetversion), `targetVersion`: [TargetVersion](README.md#targetversion)): *boolean*
-
-*Defined in [serialization.ts:111](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L111)*
 
 **Parameters:**
 
@@ -639,8 +609,6 @@ ___
 
 ▸ **parseBool**(`value`: any, `defaultValue?`: undefined | false | true): *boolean | undefined*
 
-*Defined in [utils.ts:34](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L34)*
-
 **Parameters:**
 
 Name | Type |
@@ -655,8 +623,6 @@ ___
 ###  parseEnum
 
 ▸ **parseEnum**(`enumType`: object, `name`: string, `defaultValue?`: undefined | number): *number | undefined*
-
-*Defined in [utils.ts:68](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L68)*
 
 **Parameters:**
 
@@ -674,8 +640,6 @@ ___
 
 ▸ **parseNumber**(`obj`: any, `defaultValue?`: undefined | number): *number | undefined*
 
-*Defined in [utils.ts:30](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L30)*
-
 **Parameters:**
 
 Name | Type |
@@ -690,8 +654,6 @@ ___
 ###  parseString
 
 ▸ **parseString**(`obj`: any, `defaultValue?`: undefined | string): *string | undefined*
-
-*Defined in [utils.ts:26](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L26)*
 
 **Parameters:**
 
@@ -708,8 +670,6 @@ ___
 
 ▸ **property**(`property`: [PropertyDefinition](classes/propertydefinition.md)): *(Anonymous function)*
 
-*Defined in [serialization.ts:713](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L713)*
-
 **Parameters:**
 
 Name | Type |
@@ -723,8 +683,6 @@ ___
 ###  renderSeparation
 
 ▸ **renderSeparation**(`hostConfig`: [HostConfig](classes/hostconfig.md), `separationDefinition`: [ISeparationDefinition](interfaces/iseparationdefinition.md), `orientation`: [Orientation](enums/orientation.md)): *HTMLElement | undefined*
-
-*Defined in [utils.ts:78](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L78)*
 
 **Parameters:**
 
@@ -742,8 +700,6 @@ ___
 
 ▸ **stringToCssColor**(`color`: string | undefined): *string | undefined*
 
-*Defined in [utils.ts:116](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L116)*
-
 **Parameters:**
 
 Name | Type |
@@ -757,8 +713,6 @@ ___
 ###  truncate
 
 ▸ **truncate**(`element`: HTMLElement, `maxHeight`: number, `lineHeight?`: undefined | number): *void*
-
-*Defined in [utils.ts:134](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/utils.ts#L134)*
 
 **Parameters:**
 
@@ -776,16 +730,10 @@ Name | Type |
 
 ### ▪ **ContentTypes**: *object*
 
-*Defined in [shared.ts:18](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L18)*
-
 ###  applicationJson
 
 • **applicationJson**: *string* = "application/json"
 
-*Defined in [shared.ts:19](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L19)*
-
 ###  applicationXWwwFormUrlencoded
 
 • **applicationXWwwFormUrlencoded**: *string* = "application/x-www-form-urlencoded"
-
-*Defined in [shared.ts:20](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L20)*

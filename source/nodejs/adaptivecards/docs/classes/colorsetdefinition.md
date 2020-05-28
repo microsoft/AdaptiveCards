@@ -32,8 +32,6 @@
 
 \+ **new ColorSetDefinition**(`obj?`: any): *[ColorSetDefinition](colorsetdefinition.md)*
 
-*Defined in [host-config.ts:253](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L253)*
-
 **Parameters:**
 
 Name | Type |
@@ -48,15 +46,11 @@ Name | Type |
 
 • **accent**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
 
-*Defined in [host-config.ts:250](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L250)*
-
 ___
 
 ###  attention
 
 • **attention**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
-
-*Defined in [host-config.ts:253](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L253)*
 
 ___
 
@@ -64,15 +58,11 @@ ___
 
 • **dark**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
 
-*Defined in [host-config.ts:248](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L248)*
-
 ___
 
 ###  default
 
 • **default**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
-
-*Defined in [host-config.ts:247](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L247)*
 
 ___
 
@@ -80,15 +70,11 @@ ___
 
 • **good**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
 
-*Defined in [host-config.ts:251](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L251)*
-
 ___
 
 ###  light
 
 • **light**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
-
-*Defined in [host-config.ts:249](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L249)*
 
 ___
 
@@ -96,15 +82,11 @@ ___
 
 • **warning**: *[TextColorDefinition](textcolordefinition.md)* = new TextColorDefinition()
 
-*Defined in [host-config.ts:252](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L252)*
-
 ## Methods
 
 ###  parse
 
 ▸ **parse**(`obj`: any): *void*
-
-*Defined in [host-config.ts:259](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L259)*
 
 **Parameters:**
 

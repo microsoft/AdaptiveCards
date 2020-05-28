@@ -17,15 +17,11 @@
 
 • **Center**:
 
-*Defined in [enums.ts:79](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L79)*
-
 ___
 
 ###  Left
 
 • **Left**:
-
-*Defined in [enums.ts:78](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L78)*
 
 ___
 
@@ -33,12 +29,8 @@ ___
 
 • **Right**:
 
-*Defined in [enums.ts:80](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L80)*
-
 ___
 
 ###  Stretch
 
 • **Stretch**:
-
-*Defined in [enums.ts:81](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L81)*
