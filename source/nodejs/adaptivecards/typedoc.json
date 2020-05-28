@@ -13,5 +13,6 @@
 		"typedoc-plugin-markdown"
 	],
 	"theme": "markdown",
-	"stripInternal": true
+	"stripInternal": true,
+	"hideSources": true
 }

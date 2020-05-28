@@ -51,8 +51,6 @@
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[constructor](baseserializationcontext.md#constructor)*
 
-*Defined in [serialization.ts:232](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L232)*
-
 **Parameters:**
 
 Name | Type | Default |
@@ -67,15 +65,11 @@ Name | Type | Default |
 
 • **onParseAction**? : *undefined | function*
 
-*Defined in [card-elements.ts:6358](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6358)*
-
 ___
 
 ### `Optional` onParseElement
 
 • **onParseElement**? : *undefined | function*
-
-*Defined in [card-elements.ts:6359](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6359)*
 
 ___
 
@@ -85,15 +79,11 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)*
 
-*Defined in [serialization.ts:234](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L234)*
-
 ## Accessors
 
 ###  actionRegistry
 
 • **get actionRegistry**(): *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›*
-
-*Defined in [card-elements.ts:6445](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6445)*
 
 **Returns:** *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)›*
 
@@ -102,8 +92,6 @@ ___
 ###  elementRegistry
 
 • **get elementRegistry**(): *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›*
-
-*Defined in [card-elements.ts:6435](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6435)*
 
 **Returns:** *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)›*
 
@@ -115,8 +103,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[eventCount](baseserializationcontext.md#eventcount)*
 
-*Defined in [serialization.ts:236](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L236)*
-
 **Returns:** *number*
 
 ## Methods
@@ -124,8 +110,6 @@ ___
 ### `Protected` cardObjectParsed
 
 ▸ **cardObjectParsed**(`o`: [SerializableObject](serializableobject.md), `source`: any): *void*
-
-*Defined in [card-elements.ts:6349](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6349)*
 
 **Parameters:**
 
@@ -144,8 +128,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[clearEvents](baseserializationcontext.md#clearevents)*
 
-*Defined in [serialization.ts:208](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L208)*
-
 **Returns:** *void*
 
 ___
@@ -155,8 +137,6 @@ ___
 ▸ **getEventAt**(`index`: number): *[IValidationEvent](../interfaces/ivalidationevent.md)*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[getEventAt](baseserializationcontext.md#geteventat)*
-
-*Defined in [serialization.ts:230](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L230)*
 
 **Parameters:**
 
@@ -173,8 +153,6 @@ ___
 ▸ **logEvent**(`phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[logEvent](baseserializationcontext.md#logevent)*
-
-*Defined in [serialization.ts:212](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L212)*
 
 **Parameters:**
 
@@ -195,8 +173,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[logParseEvent](baseserializationcontext.md#logparseevent)*
 
-*Defined in [serialization.ts:226](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L226)*
-
 **Parameters:**
 
 Name | Type |
@@ -212,8 +188,6 @@ ___
 ###  parseAction
 
 ▸ **parseAction**(`parent`: [CardElement](cardelement.md), `source`: any, `forbiddenActionTypes`: string[], `allowFallback`: boolean): *[Action](action.md) | undefined*
-
-*Defined in [card-elements.ts:6406](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6406)*
 
 **Parameters:**
 
@@ -231,8 +205,6 @@ ___
 ###  parseCardObject
 
 ▸ **parseCardObject**<**T**>(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `forbiddenTypeNames`: string[], `allowFallback`: boolean, `createInstanceCallback`: function, `logParseEvent`: function): *T | undefined*
-
-*Defined in [card-elements.ts:6361](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6361)*
 
 **Type parameters:**
 
@@ -277,8 +249,6 @@ ___
 
 ▸ **parseElement**(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `allowFallback`: boolean): *[CardElement](cardelement.md) | undefined*
 
-*Defined in [card-elements.ts:6383](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6383)*
-
 **Parameters:**
 
 Name | Type |
@@ -297,8 +267,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeArray](baseserializationcontext.md#serializearray)*
 
-*Defined in [serialization.ts:175](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L175)*
-
 **Parameters:**
 
 Name | Type |
@@ -316,8 +284,6 @@ ___
 ▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeEnum](baseserializationcontext.md#serializeenum)*
-
-*Defined in [serialization.ts:148](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L148)*
 
 **Parameters:**
 
@@ -339,8 +305,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeNumber](baseserializationcontext.md#serializenumber)*
 
-*Defined in [serialization.ts:139](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L139)*
-
 **Parameters:**
 
 Name | Type | Default |
@@ -360,8 +324,6 @@ ___
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[serializeValue](baseserializationcontext.md#serializevalue)*
 
-*Defined in [serialization.ts:130](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L130)*
-
 **Parameters:**
 
 Name | Type | Default |
@@ -379,8 +341,6 @@ ___
 
 ▸ **setActionRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)› | undefined): *void*
 
-*Defined in [card-elements.ts:6451](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6451)*
-
 **Parameters:**
 
 Name | Type |
@@ -394,8 +354,6 @@ ___
 ###  setElementRegistry
 
 ▸ **setElementRegistry**(`value`: [CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)› | undefined): *void*
-
-*Defined in [card-elements.ts:6441](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/card-elements.ts#L6441)*
 
 **Parameters:**
 

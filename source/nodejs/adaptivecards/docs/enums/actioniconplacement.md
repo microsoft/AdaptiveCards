@@ -15,12 +15,8 @@
 
 • **AboveTitle**:
 
-*Defined in [enums.ts:108](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L108)*
-
 ___
 
 ###  LeftOfTitle
 
 • **LeftOfTitle**:
-
-*Defined in [enums.ts:107](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L107)*

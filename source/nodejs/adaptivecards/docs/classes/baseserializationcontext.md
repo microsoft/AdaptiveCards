@@ -39,8 +39,6 @@
 
 \+ **new BaseSerializationContext**(`targetVersion`: [Version](version.md)): *[BaseSerializationContext](baseserializationcontext.md)*
 
-*Defined in [serialization.ts:232](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L232)*
-
 **Parameters:**
 
 Name | Type | Default |
@@ -55,15 +53,11 @@ Name | Type | Default |
 
 • **targetVersion**: *[Version](version.md)*
 
-*Defined in [serialization.ts:234](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L234)*
-
 ## Accessors
 
 ###  eventCount
 
 • **get eventCount**(): *number*
-
-*Defined in [serialization.ts:236](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L236)*
 
 **Returns:** *number*
 
@@ -73,8 +67,6 @@ Name | Type | Default |
 
 ▸ **clearEvents**(): *void*
 
-*Defined in [serialization.ts:208](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L208)*
-
 **Returns:** *void*
 
 ___
@@ -82,8 +74,6 @@ ___
 ###  getEventAt
 
 ▸ **getEventAt**(`index`: number): *[IValidationEvent](../interfaces/ivalidationevent.md)*
-
-*Defined in [serialization.ts:230](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L230)*
 
 **Parameters:**
 
@@ -98,8 +88,6 @@ ___
 ###  logEvent
 
 ▸ **logEvent**(`phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
-
-*Defined in [serialization.ts:212](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L212)*
 
 **Parameters:**
 
@@ -118,8 +106,6 @@ ___
 
 ▸ **logParseEvent**(`event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
 
-*Defined in [serialization.ts:226](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L226)*
-
 **Parameters:**
 
 Name | Type |
@@ -136,8 +122,6 @@ ___
 
 ▸ **serializeArray**(`target`: object, `propertyName`: string, `propertyValue`: any[] | undefined): *void*
 
-*Defined in [serialization.ts:175](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L175)*
-
 **Parameters:**
 
 Name | Type |
@@ -153,8 +137,6 @@ ___
 ###  serializeEnum
 
 ▸ **serializeEnum**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
-
-*Defined in [serialization.ts:148](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L148)*
 
 **Parameters:**
 
@@ -174,8 +156,6 @@ ___
 
 ▸ **serializeNumber**(`target`: object, `propertyName`: string, `propertyValue`: number | undefined, `defaultValue`: number | undefined): *void*
 
-*Defined in [serialization.ts:139](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L139)*
-
 **Parameters:**
 
 Name | Type | Default |
@@ -192,8 +172,6 @@ ___
 ###  serializeValue
 
 ▸ **serializeValue**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): *void*
-
-*Defined in [serialization.ts:130](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L130)*
 
 **Parameters:**
 
