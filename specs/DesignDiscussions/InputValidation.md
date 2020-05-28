@@ -263,7 +263,7 @@ Bring back non-visible card element            |  Bring back single input
 Considering the food order card above, one option in show card scenarios may be to validate the current show card, or the show card and any parent cards. This works well for the food order card, but doesn't help us with card scenarios that include toggles. It may also not be the correct behavior for a mid card action set containing a show card. While it would be nice if we could provide an algorithm that deduces which inputs should be validated, it would be tricky to create an algorithm that gracefully handles all cases. Additionally, the more complicated the algorithm, the harder it is for card authors to understand the expected behavior.
 
 #### Card Author Control
-As the discussion above shows, depending on the card scenario, it may be difficult for us to determine which fields the card author wants to validate. Any of the above approaches may be correct for *some* cards, but none are appropriate for all cards. In order to address this, the best approach is to allow the card author to specify which inputs are associated with a given action. We will implement this via a new `associatedInputIds` property on Action types. The inputs listed will be the ones that are validated, and also the ones that are returned on Submit.
+As the discussion above shows, depending on the card scenario, it may be difficult for us to determine which fields the card author wants to validate. Any of the above approaches may be correct for *some* cards, but none are appropriate for all cards. In order to address this, the best approach is to allow the card author to specify which inputs are associated with a given action. We will implement this via a new `associatedInputIds` property on ```Action.Submit``` actions. The inputs listed will be the ones that are validated, and also the ones that are returned on Submit.
 
 The first option available for inputs is "All." This will validate and submit all inputs on the card. This is the current behavior, and would be the default for submit actions.
 ```json
@@ -282,6 +282,10 @@ The second option would be "None". This would be useful for, for example, a "Can
 	"associatedInputIds": "None",
 }
 ```
+Adding the `None` keyword allows some flexibility on scenarios where an action must be interacted with to continue but no inputs are required to do so, for example, a bot using Adaptive Cards to interact with the user.
+
+![img](assets/InputValidation/NoneExample.PNG)
+
 For authors that need more granular control of which inputs to validate, we would also allow them to specify a list of inputs, such as the following:
 ```json
 {
@@ -290,7 +294,10 @@ For authors that need more granular control of which inputs to validate, we woul
 	"associatedInputIds": ["input1Id", "input2Id"] 
 }
 ```
-In order to allow authors to group their inputs, we will also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form.
+
+#### Future work on associated inputs
+
+Out of scope for this release but to be considered in the future, we could allow authors to group their inputs, we will also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form.
 ```json
 {
 	"type": "Action.Submit",
@@ -318,7 +325,7 @@ As discussed above, validating all fields can lead to issues if pieces of the va
 ### Validation and Actions
 
 #### Action Types
-Although submit actions are the most obvious case for input validation, we will support validation on all action types. The `associatedInputIds` property will indicate which fields are validated.
+Submit actions are the most obvious case for input validation and for v1 of this feature it's the only action type we will support, on future versions this behaviour will be reviewed to support the other action types. The `associatedInputIds` property will indicate which fields are validated.
 
 ##### Submit Actions
 Submit actions will default to `"associatedInputIds": "All"`. This means that all inputs on the card will be validated and sent with this submission. Card authors can adjust this default behavior by setting the `associatedInputIds` property to a different value as described above.
