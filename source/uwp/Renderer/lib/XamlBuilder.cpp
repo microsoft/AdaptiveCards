@@ -2139,6 +2139,19 @@ namespace AdaptiveNamespace
                 ComPtr<IAdaptiveActionInvoker> actionInvoker;
                 renderContext->get_ActionInvoker(&actionInvoker);
 
+                // Use the selectAction's title as the accessibility name for this link.
+                HString actionTitle;
+                RETURN_IF_FAILED(selectAction->get_Title(actionTitle.ReleaseAndGetAddressOf()));
+                if (actionTitle.IsValid() && !WindowsIsStringEmpty(actionTitle.Get()))
+                {
+                    ComPtr<IAutomationPropertiesStatics> automationProperties;
+                    RETURN_IF_FAILED(GetActivationFactory(
+                        HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(), &automationProperties));
+                    ComPtr<IDependencyObject> linkAsDependencyObject;
+                    RETURN_IF_FAILED(hyperlink.As(&linkAsDependencyObject));
+                    RETURN_IF_FAILED(automationProperties->SetName(linkAsDependencyObject.Get(), actionTitle.Get()));
+                }
+
                 EventRegistrationToken clickToken;
                 RETURN_IF_FAILED(
                     hyperlink->add_Click(Callback<ABI::Windows::Foundation::ITypedEventHandler<Hyperlink*, HyperlinkClickEventArgs*>>(
