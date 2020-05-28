@@ -25,7 +25,7 @@
 
 \+ **new SpacingDefinition**(`top`: number, `right`: number, `bottom`: number, `left`: number): *[SpacingDefinition](spacingdefinition.md)*
 
-*Defined in [shared.ts:104](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L104)*
+*Defined in [shared.ts:116](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L116)*
 
 **Parameters:**
 
@@ -44,7 +44,7 @@ Name | Type | Default |
 
 • **bottom**: *number* = 0
 
-*Defined in [shared.ts:104](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L104)*
+*Defined in [shared.ts:116](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L116)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **left**: *number* = 0
 
-*Defined in [shared.ts:101](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L101)*
+*Defined in [shared.ts:113](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L113)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **right**: *number* = 0
 
-*Defined in [shared.ts:103](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L103)*
+*Defined in [shared.ts:115](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L115)*
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 • **top**: *number* = 0
 
-*Defined in [shared.ts:102](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L102)*
+*Defined in [shared.ts:114](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L114)*

@@ -24,7 +24,7 @@
 
 \+ **new FactSetConfig**(`obj?`: any): *[FactSetConfig](factsetconfig.md)*
 
-*Defined in [host-config.ts:147](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L147)*
+*Defined in [host-config.ts:157](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L157)*
 
 **Parameters:**
 
@@ -40,7 +40,7 @@ Name | Type |
 
 • **spacing**: *number* = 10
 
-*Defined in [host-config.ts:147](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L147)*
+*Defined in [host-config.ts:157](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L157)*
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 • **title**: *[FactTitleDefinition](facttitledefinition.md)* = new FactTitleDefinition()
 
-*Defined in [host-config.ts:145](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L145)*
+*Defined in [host-config.ts:155](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L155)*
 
 ___
 
@@ -56,4 +56,4 @@ ___
 
 • **value**: *[FactTextDefinition](facttextdefinition.md)* = new FactTextDefinition()
 
-*Defined in [host-config.ts:146](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L146)*
+*Defined in [host-config.ts:156](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L156)*

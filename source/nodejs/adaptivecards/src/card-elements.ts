@@ -869,7 +869,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (hostConfig.supportsInteractivity) {
                     element.tabIndex = 0
-                    element.setAttribute("role", "button");
+                    element.setAttribute("role", this.selectAction.getAriaRole());
 
                     if (this.selectAction.title) {
                         element.setAttribute("aria-label", this.selectAction.title);
@@ -1680,7 +1680,7 @@ export class Image extends CardElement {
 
             if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
-                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("role", this.selectAction.getAriaRole());
 
                 if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
@@ -1828,7 +1828,7 @@ export abstract class CardElementContainer extends CardElement {
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 element.tabIndex = 0;
-                element.setAttribute("role", "button");
+                element.setAttribute("role", this._selectAction.getAriaRole());
 
                 if (this._selectAction.title) {
                     element.setAttribute("aria-label", this._selectAction.title);
@@ -2806,18 +2806,18 @@ export class ChoiceSetInput extends Input {
     private static uniqueCategoryCounter = 0;
 
     private static getUniqueCategoryName(): string {
-        let uniqueCwtegoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
+        let uniqueCategoryName = "__ac-category" + ChoiceSetInput.uniqueCategoryCounter;
 
         ChoiceSetInput.uniqueCategoryCounter++;
 
-        return uniqueCwtegoryName;
+        return uniqueCategoryName;
     }
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: HTMLInputElement[];
 
-    private renderCompundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
+    private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
         element.className = this.hostConfig.makeCssClassName("ac-input", cssClassName);
         element.style.width = "100%";
@@ -2887,12 +2887,28 @@ export class ChoiceSetInput extends Input {
         return element;
     }
 
+    // Make sure `aria-current` is applied to the currently-selected item
+    protected internalApplyAriaCurrent(): void {
+        const options = this._selectElement.options;
+
+        if (options) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    options[i].setAttribute("aria-current", "true");
+                }
+                else {
+                    options[i].removeAttribute("aria-current");
+                }
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._uniqueCategoryName = ChoiceSetInput.getUniqueCategoryName();
 
         if (this.isMultiSelect) {
             // Render as a list of toggle inputs
-            return this.renderCompundInput(
+            return this.renderCompoundInput(
                 "ac-choiceSetInput-multiSelect",
                 "checkbox",
                 this.defaultValue ? this.defaultValue.split(this.hostConfig.choiceSetInputValueSeparator) : undefined);
@@ -2900,7 +2916,7 @@ export class ChoiceSetInput extends Input {
         else {
             if (this.style === "expanded") {
                 // Render as a series of radio buttons
-                return this.renderCompundInput(
+                return this.renderCompoundInput(
                     "ac-choiceSetInput-expanded",
                     "radio",
                     this.defaultValue ? [ this.defaultValue ] : undefined);
@@ -2936,8 +2952,12 @@ export class ChoiceSetInput extends Input {
                     Utils.appendChild(this._selectElement, option);
                 }
 
-                this._selectElement.onchange = () => { this.valueChanged(); }
+                this._selectElement.onchange = () => {
+                    this.internalApplyAriaCurrent();
+                    this.valueChanged();
+                }
 
+                this.internalApplyAriaCurrent();
                 return this._selectElement;
             }
         }
@@ -3383,6 +3403,10 @@ export abstract class Action extends CardObject {
         return "";
     }
 
+    getAriaRole(): string {
+        return "button";
+    }
+
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
         // Do nothing in base implementation
     }
@@ -3628,6 +3652,10 @@ export class OpenUrlAction extends Action {
 
     getJsonTypeName(): string {
         return OpenUrlAction.JsonTypeName;
+    }
+
+    getAriaRole() : string {
+        return "link";
     }
 
     internalValidateProperties(context: ValidationResults) {

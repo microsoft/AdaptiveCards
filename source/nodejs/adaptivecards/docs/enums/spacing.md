@@ -20,7 +20,7 @@
 
 • **Default**:
 
-*Defined in [enums.ts:48](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L48)*
+*Defined in [enums.ts:48](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L48)*
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **ExtraLarge**:
 
-*Defined in [enums.ts:51](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L51)*
+*Defined in [enums.ts:51](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L51)*
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **Large**:
 
-*Defined in [enums.ts:50](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L50)*
+*Defined in [enums.ts:50](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L50)*
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **Medium**:
 
-*Defined in [enums.ts:49](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L49)*
+*Defined in [enums.ts:49](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L49)*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **None**:
 
-*Defined in [enums.ts:46](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L46)*
+*Defined in [enums.ts:46](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L46)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **Padding**:
 
-*Defined in [enums.ts:52](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L52)*
+*Defined in [enums.ts:52](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L52)*
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 • **Small**:
 
-*Defined in [enums.ts:47](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L47)*
+*Defined in [enums.ts:47](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L47)*
