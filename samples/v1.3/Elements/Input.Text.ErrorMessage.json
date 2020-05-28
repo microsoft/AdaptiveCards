@@ -1,13 +1,55 @@
 {
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.3",
+	"version": "1.0",
 	"body": [
 		{
-			"label": "Please create a username",
 			"type": "Input.Text",
-			"id": "username",
+			"id": "input1",
+			"style": "text",
+			"label": "Required Input.Text",
+			"isRequired": true,
+			"errorMessage": "This is a required input"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"style": "text",
+			"label": "Input.Text with regular expression (xxx-xxx-xxxx)",
+			"regex": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
+			"errorMessage": "The input data must follow the pattern: 3 numbers, hyphen, 3 numbers, hyphen and, finally, 4 numbers"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"style": "text",
+			"label": "Input.Text with max length of 20",
+			"maxLength": 20,
+			"errorMessage": "The data can't be longer than 20 characters"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input4",
+			"style": "text",
+			"label": "Input.Text with input length check using regular expressions",
 			"regex": "^\\w{5,50}$",
-			"errorMessage": "Username must be between 5 and 50 characters long."
+			"errorMessage": "The data length must be between 5 and 50 characters long."
+		},
+		{
+			"type": "Input.Text",
+			"id": "input4",
+			"style": "text",
+			"label": "Required Input.Text with input length check and regular expressions",
+			"regex": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+			"maxLength": 20,
+			"isRequired": true,
+			"errorMessage": "The data can only contain letters, numbers and underscore. It can't start with a number."
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
 		}
 	]
 }
