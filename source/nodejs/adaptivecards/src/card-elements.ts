@@ -1198,7 +1198,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (hostConfig.supportsInteractivity) {
                     element.tabIndex = 0
-                    element.setAttribute("role", "button");
+                    element.setAttribute("role", this.selectAction.getAriaRole());
                     element.setAttribute("aria-label", this.selectAction.title);
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 }
@@ -1962,7 +1962,7 @@ export class Image extends CardElement {
 
             if (this.selectAction != null && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
-                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("role", this.selectAction.getAriaRole());
                 imageElement.setAttribute("aria-label", this.selectAction.title);
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
@@ -2264,7 +2264,7 @@ export abstract class CardElementContainer extends CardElement {
         if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
             element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             element.tabIndex = 0;
-            element.setAttribute("role", "button");
+            element.setAttribute("role", this._selectAction.getAriaRole());
             element.setAttribute("aria-label", this._selectAction.title);
 
             element.onclick = (e) => {
@@ -3910,6 +3910,10 @@ export abstract class Action extends CardObject {
 
     onExecute: (sender: Action) => void;
 
+    getAriaRole(): string {
+        return "button";
+    }
+
     getHref(): string {
         return "";
     }
@@ -3938,6 +3942,8 @@ export abstract class Action extends CardObject {
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
+
+        buttonElement.setAttribute("role", this.getAriaRole());
 
         let hasTitle = !Utils.isNullOrEmpty(this.title);
 
@@ -4187,6 +4193,10 @@ export class OpenUrlAction extends Action {
 
     getJsonTypeName(): string {
         return OpenUrlAction.JsonTypeName;
+    }
+
+    getAriaRole(): string {
+        return "link";
     }
 
     toJSON(): any {
