@@ -42,7 +42,7 @@
     numInput.text = [NSString stringWithFormat: @"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
     numInput.borderStyle = UITextBorderStyleRoundedRect;
-    numInput.keyboardType = UIKeyboardTypeNumberPad;
+    numInput.keyboardType = UIKeyboardTypeDecimalPad;
     numInput.min = numInputBlck->GetMin();
     numInput.max = numInputBlck->GetMax();
     CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
