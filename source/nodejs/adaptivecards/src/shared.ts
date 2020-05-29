@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 
+export class GlobalSettings {
+    static setTabIndexAtCardRoot: boolean = true;
+}
+
 export const ContentTypes = {
 	applicationJson: "application/json",
 	applicationXWwwFormUrlencoded: "application/x-www-form-urlencoded"
