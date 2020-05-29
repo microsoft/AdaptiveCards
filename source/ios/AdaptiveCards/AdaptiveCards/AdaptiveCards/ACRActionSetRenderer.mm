@@ -35,6 +35,7 @@
          hostConfig:(ACOHostConfig *)acoConfig {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ActionSet> actionSetElem = std::dynamic_pointer_cast<ActionSet>(elem);
+    [[rootView card] setInputs:inputs];
     return [self renderButtons:rootView
                         inputs:(NSMutableArray *)inputs
                      superview:viewGroup
