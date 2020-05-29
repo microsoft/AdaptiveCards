@@ -27,8 +27,6 @@
 
 \+ **new MediaConfig**(`obj?`: any): *[MediaConfig](mediaconfig.md)*
 
-*Defined in [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L87)*
-
 **Parameters:**
 
 Name | Type |
@@ -43,23 +41,17 @@ Name | Type |
 
 • **allowInlinePlayback**: *boolean* = true
 
-*Defined in [host-config.ts:87](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L87)*
-
 ___
 
 ### `Optional` defaultPoster
 
 • **defaultPoster**? : *undefined | string*
 
-*Defined in [host-config.ts:86](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L86)*
-
 ## Methods
 
 ###  toJSON
 
 ▸ **toJSON**(): *object*
-
-*Defined in [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L96)*
 
 **Returns:** *object*
 

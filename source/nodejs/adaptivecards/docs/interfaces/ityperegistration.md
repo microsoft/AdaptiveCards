@@ -24,8 +24,6 @@
 
 • **objectType**: *object*
 
-*Defined in [registry.ts:7](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L7)*
-
 #### Type declaration:
 
 * **new __type**(): *T*
@@ -36,12 +34,8 @@ ___
 
 • **schemaVersion**: *[Version](../classes/version.md)*
 
-*Defined in [registry.ts:8](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L8)*
-
 ___
 
 ###  typeName
 
 • **typeName**: *string*
-
-*Defined in [registry.ts:6](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/registry.ts#L6)*

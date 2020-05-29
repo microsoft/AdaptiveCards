@@ -32,8 +32,6 @@
 
 *Inherited from [ColorDefinition](colordefinition.md).[constructor](colordefinition.md#constructor)*
 
-*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
-
 **Parameters:**
 
 Name | Type |
@@ -51,15 +49,11 @@ Name | Type |
 
 *Inherited from [ColorDefinition](colordefinition.md).[default](colordefinition.md#default)*
 
-*Defined in [host-config.ts:23](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L23)*
-
 ___
 
 ###  highlightColors
 
 • **highlightColors**: *[ColorDefinition](colordefinition.md)‹›* = new ColorDefinition("#22000000", "#11000000")
-
-*Defined in [host-config.ts:45](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L45)*
 
 ___
 
@@ -69,8 +63,6 @@ ___
 
 *Inherited from [ColorDefinition](colordefinition.md).[subtle](colordefinition.md#subtle)*
 
-*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
-
 ## Methods
 
 ###  parse
@@ -78,8 +70,6 @@ ___
 ▸ **parse**(`obj?`: any): *void*
 
 *Overrides [ColorDefinition](colordefinition.md).[parse](colordefinition.md#parse)*
-
-*Defined in [host-config.ts:47](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L47)*
 
 **Parameters:**
 
