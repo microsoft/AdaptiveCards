@@ -725,7 +725,7 @@ ___
 
 ▸ **render**(`baseCssClass`: string): *void*
 
-*Overrides [Action](action.md).[render](action.md#render)*
+*Inherited from [Action](action.md).[render](action.md#render)*
 
 **Parameters:**
 

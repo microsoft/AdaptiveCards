@@ -3436,6 +3436,8 @@ export abstract class Action extends CardObject {
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
 
+        buttonElement.setAttribute("role", this.getAriaRole());
+
         let titleElement = document.createElement("div");
         titleElement.style.overflow = "hidden";
         titleElement.style.textOverflow = "ellipsis";
@@ -3666,15 +3668,6 @@ export class OpenUrlAction extends Action {
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
                 "An Action.OpenUrl must have its url property set.");
-        }
-    }
-
-    render(baseCssClass: string = "ac-pushButton") {
-        super.render(baseCssClass);
-
-        // OpenUrl actions behave like a hyperlink. Make sure screenreaders treat them that way.
-        if (this.renderedElement) {
-            this.renderedElement.setAttribute("role", "link");
         }
     }
 
