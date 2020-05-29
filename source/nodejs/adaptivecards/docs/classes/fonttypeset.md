@@ -27,8 +27,6 @@
 
 \+ **new FontTypeSet**(`obj?`: any): *[FontTypeSet](fonttypeset.md)*
 
-*Defined in [host-config.ts:465](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L465)*
-
 **Parameters:**
 
 Name | Type |
@@ -43,23 +41,17 @@ Name | Type |
 
 • **default**: *[FontTypeDefinition](fonttypedefinition.md)*
 
-*Defined in [host-config.ts:464](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L464)*
-
 ___
 
 ###  monospace
 
 • **monospace**: *[FontTypeDefinition](fonttypedefinition.md)*
 
-*Defined in [host-config.ts:465](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L465)*
-
 ## Methods
 
 ###  getStyleDefinition
 
 ▸ **getStyleDefinition**(`style`: [FontType](../enums/fonttype.md) | undefined): *[FontTypeDefinition](fonttypedefinition.md)*
-
-*Defined in [host-config.ts:477](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L477)*
 
 **Parameters:**
 
