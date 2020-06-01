@@ -2284,6 +2284,7 @@ export class Media extends CardElement {
     }
 }
 
+/*
 export class InputValidationOptions extends SerializableObject {
     //#region Schema
 
@@ -2306,15 +2307,29 @@ export class InputValidationOptions extends SerializableObject {
         return this.hasAllDefaultValues() ? undefined : super.internalToJSON(target, context);
     }
 }
+*/
 
 export abstract class Input extends CardElement implements IInput {
     //#region Schema
 
+    /*
     static readonly validationProperty = new SerializableObjectProperty(
         Versions.vNext,
         "validation",
         InputValidationOptions);
+    */
 
+    static readonly isRequiredProperty = new BoolProperty(
+        Versions.v1_3,
+        "isRequired",
+        false);
+
+    static readonly errorMessageProperty = new StringProperty(
+        Versions.v1_3,
+        "errorMessage",
+        true);
+
+    /*
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
 
@@ -2327,6 +2342,13 @@ export abstract class Input extends CardElement implements IInput {
     get validation(): InputValidationOptions {
         return this.getValue(Input.validationProperty);
     }
+    */
+
+    @property(Input.isRequiredProperty)
+    isRequired: boolean;
+
+    @property(Input.errorMessageProperty)
+    errorMessage?: string;
 
     //#endregion
 
@@ -2364,7 +2386,7 @@ export abstract class Input extends CardElement implements IInput {
             this._renderedInputControlElement = renderedInputControlElement;
             this._renderedInputControlElement.style.minWidth = "0px";
 
-            if (GlobalSettings.useBuiltInInputValidation && this.isNullable && this.validation.necessity == Enums.InputValidationNecessity.RequiredWithVisualCue) {
+            if (this.isNullable && this.isRequired) {
                 this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
             }
 
@@ -2389,7 +2411,7 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     protected resetValidationFailureCue() {
-        if (GlobalSettings.useBuiltInInputValidation && this.renderedElement) {
+        if (this.renderedElement) {
             this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             if (this._errorMessageElement) {
@@ -2401,20 +2423,33 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     protected showValidationErrorMessage() {
-        if (this.renderedElement && GlobalSettings.useBuiltInInputValidation && GlobalSettings.displayInputValidationErrors && this.validation.errorMessage) {
+        if (this.renderedElement && this.errorMessage && GlobalSettings.displayInputValidationErrors) {
+            /*
             this._errorMessageElement = document.createElement("span");
             this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
-            this._errorMessageElement.textContent = this.validation.errorMessage;
+            this._errorMessageElement.textContent = this.errorMessage;
+            */
 
-            this._outerContainerElement.appendChild(this._errorMessageElement);
+            let errorMessageTextBlock = new TextBlock();
+            errorMessageTextBlock.setParent(this);
+            errorMessageTextBlock.text = this.errorMessage;
+            errorMessageTextBlock.color = Enums.TextColor.Attention;
+
+            this._errorMessageElement = errorMessageTextBlock.render();
+
+            if (this._errorMessageElement) {
+                this._outerContainerElement.appendChild(this._errorMessageElement);
+            }
         }
     }
-
-    abstract get value(): any;
 
     onValueChanged: (sender: Input) => void;
 
     abstract isSet(): boolean;
+
+    isValid(): boolean {
+        return true;
+    }
 
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
@@ -2428,27 +2463,24 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     validateValue(): boolean {
-        if (GlobalSettings.useBuiltInInputValidation) {
-            this.resetValidationFailureCue();
+        this.resetValidationFailureCue();
 
-            let result = this.validation.necessity != Enums.InputValidationNecessity.Optional ? this.isSet() : true;
+        let result = this.isRequired ? this.isSet() && this.isValid() : this.isValid();
 
-            if (!result && this.renderedElement) {
-                this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (!result && this.renderedElement) {
+            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-                this.showValidationErrorMessage();
-            }
-
-            return result;
+            this.showValidationErrorMessage();
         }
-        else {
-            return true;
-        }
+
+        return result;
     }
 
     getAllInputs(): Input[] {
         return [this];
     }
+
+    abstract get value(): any;
 
     get isInteractive(): boolean {
         return true;
@@ -2464,6 +2496,7 @@ export class TextInput extends Input {
     static readonly placeholderProperty = new StringProperty(Versions.v1_0, "placeholder");
     static readonly styleProperty = new EnumProperty(Versions.v1_0, "style", Enums.InputTextStyle, Enums.InputTextStyle.Text);
     static readonly inlineActionProperty = new ActionProperty(Versions.v1_0, "inlineAction", [ "Action.ShowCard" ]);
+    static readonly regexProperty = new StringProperty(Versions.v1_3, "regex", true);
 
     @property(TextInput.valueProperty)
     defaultValue?: string;
@@ -2482,6 +2515,9 @@ export class TextInput extends Input {
 
     @property(TextInput.inlineActionProperty)
     inlineAction?: Action;
+
+    @property(TextInput.regexProperty)
+    regex?: string;
 
     //#endregion
 
@@ -2610,6 +2646,18 @@ export class TextInput extends Input {
         return this.value ? true : false;
     }
 
+    isValid(): boolean {
+        if (!this.value) {
+            return true;
+        }
+
+        if (this.regex) {
+            return new RegExp(this.regex, "g").test(this.value);
+        }
+
+        return true;
+    }
+
     get value(): string | undefined {
         if (this.renderedInputControlElement) {
             if (this.isMultiline) {
@@ -2719,6 +2767,10 @@ export class ToggleInput extends Input {
     }
 
     isSet(): boolean {
+        if (this.isRequired) {
+            return this.value === this.valueOn;
+        }
+
         return this.value ? true : false;
     }
 
@@ -2958,6 +3010,7 @@ export class ChoiceSetInput extends Input {
                 }
 
                 this.internalApplyAriaCurrent();
+                
                 return this._selectElement;
             }
         }
@@ -3380,7 +3433,7 @@ export abstract class Action extends CardObject {
     protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
-        if (GlobalSettings.useBuiltInInputValidation && !this.ignoreInputValidation && referencedInputs) {
+        if (!this.ignoreInputValidation && referencedInputs) {
             for (let key of Object.keys(referencedInputs)) {
                 let input = referencedInputs[key];
 

@@ -57,6 +57,7 @@ export class PropertySheetCategory {
     static readonly StyleCategory = "Style";
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
+    static readonly Validation = "Validation";
 
     private _entries: PropertySheetEntry[] = [];
 
@@ -1285,11 +1286,9 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (Adaptive.GlobalSettings.useBuiltInInputValidation) {
-            propertySheet.add(
-                PropertySheetCategory.DefaultCategory,
-                HttpActionPeer.ignoreInputValidationProperty);
-        }
+        propertySheet.add(
+            PropertySheetCategory.DefaultCategory,
+            HttpActionPeer.ignoreInputValidationProperty);
 
         propertySheet.add(
             defaultCategory,
@@ -2189,6 +2188,7 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
+    /*
     static readonly validationProperty = new CompoundPropertyEditor(
         Adaptive.Versions.vNext,
         "validation",
@@ -2197,13 +2197,25 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
             new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
         ]
     );
+    */
+
+    static readonly isRequiredProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "isRequired",
+        "Required");
+
+    static readonly errorMessageProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "errorMessage",
+        "Error message");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
         propertySheet.add(
-            "Validation",
-            InputPeer.validationProperty);
+            PropertySheetCategory.Validation,
+            InputPeer.isRequiredProperty,
+            InputPeer.errorMessageProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
@@ -2218,6 +2230,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
     static readonly maxLengthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly regexProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "regex", "Pattern");
+
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2255,6 +2269,10 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             defaultCategory,
             TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.Validation,
+            TextInputPeer.regexProperty);
     }
 
     initializeCardElement() {
