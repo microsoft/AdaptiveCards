@@ -15,12 +15,8 @@
 
 • **Default**:
 
-*Defined in [enums.ts:41](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L41)*
-
 ___
 
 ###  Monospace
 
 • **Monospace**:
-
-*Defined in [enums.ts:42](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L42)*

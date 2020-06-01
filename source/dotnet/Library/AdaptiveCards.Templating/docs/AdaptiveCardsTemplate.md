@@ -65,6 +65,10 @@
   - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueObject(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext)')
   - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
   - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
+- [AdaptiveTemplateException](#T-AdaptiveCards-Templating-AdaptiveTemplateException 'AdaptiveCards.Templating.AdaptiveTemplateException')
+  - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor')
+  - [#ctor(message)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String)')
+  - [#ctor(message,innerException)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String,System-Exception- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String,System.Exception)')
 - [DataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext')
   - [#ctor(jtoken,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-Newtonsoft-Json-Linq-JToken,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(Newtonsoft.Json.Linq.JToken,Newtonsoft.Json.Linq.JToken)')
   - [#ctor(text,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext-#ctor-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext.#ctor(System.String,Newtonsoft.Json.Linq.JToken)')
@@ -1133,6 +1137,55 @@ Visitor method for `valueTemplateString` grammar rule `AdaptiveCardsTemplatePars
 | Name | Type | Description |
 | ---- | ---- | ----------- |
 | context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext') |  |
+
+<a name='T-AdaptiveCards-Templating-AdaptiveTemplateException'></a>
+## AdaptiveTemplateException `type`
+
+##### Namespace
+
+AdaptiveCards.Templating
+
+##### Summary
+
+AdaptiveCardTemplate Library's Exception class
+
+<a name='M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor'></a>
+### #ctor() `constructor`
+
+##### Summary
+
+Default constructor
+
+##### Parameters
+
+This constructor has no parameters.
+
+<a name='M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String-'></a>
+### #ctor(message) `constructor`
+
+##### Summary
+
+Constructor that takes single argument that is exception message
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The error message that explains the reason for the exception |
+
+<a name='M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String,System-Exception-'></a>
+### #ctor(message,innerException) `constructor`
+
+##### Summary
+
+Constructor that takes message and inner exception to pass
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| message | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | The error message that explains the reason for the exception |
+| innerException | [System.Exception](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Exception 'System.Exception') | The exception that is the cause of the current exception |
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext'></a>
 ## DataContext `type`
