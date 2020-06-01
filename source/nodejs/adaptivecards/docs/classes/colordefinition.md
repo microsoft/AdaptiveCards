@@ -29,8 +29,6 @@
 
 \+ **new ColorDefinition**(`defaultColor?`: undefined | string, `subtleColor?`: undefined | string): *[ColorDefinition](colordefinition.md)*
 
-*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
-
 **Parameters:**
 
 Name | Type |
@@ -46,23 +44,17 @@ Name | Type |
 
 • **default**: *string* = "#000000"
 
-*Defined in [host-config.ts:23](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L23)*
-
 ___
 
 ###  subtle
 
 • **subtle**: *string* = "#666666"
 
-*Defined in [host-config.ts:24](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L24)*
-
 ## Methods
 
 ###  parse
 
 ▸ **parse**(`obj?`: any): *void*
-
-*Defined in [host-config.ts:36](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L36)*
 
 **Parameters:**
 

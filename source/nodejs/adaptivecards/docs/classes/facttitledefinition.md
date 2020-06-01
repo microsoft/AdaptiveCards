@@ -36,8 +36,6 @@
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[constructor](facttextdefinition.md#constructor)*
 
-*Defined in [host-config.ts:138](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L138)*
-
 **Parameters:**
 
 Name | Type |
@@ -54,8 +52,6 @@ Name | Type |
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[color](facttextdefinition.md#color)*
 
-*Defined in [host-config.ts:106](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L106)*
-
 ___
 
 ###  isSubtle
@@ -64,15 +60,11 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[isSubtle](facttextdefinition.md#issubtle)*
 
-*Defined in [host-config.ts:107](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L107)*
-
 ___
 
 ### `Optional` maxWidth
 
 • **maxWidth**? : *undefined | number* = 150
-
-*Defined in [host-config.ts:137](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L137)*
 
 ___
 
@@ -82,8 +74,6 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[size](facttextdefinition.md#size)*
 
-*Defined in [host-config.ts:105](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L105)*
-
 ___
 
 ###  weight
@@ -91,8 +81,6 @@ ___
 • **weight**: *[TextWeight](../enums/textweight.md)* = Enums.TextWeight.Bolder
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[weight](facttextdefinition.md#weight)*
-
-*Defined in [host-config.ts:138](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L138)*
 
 ___
 
@@ -102,8 +90,6 @@ ___
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[wrap](facttextdefinition.md#wrap)*
 
-*Defined in [host-config.ts:109](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L109)*
-
 ## Methods
 
 ###  getDefaultWeight
@@ -111,8 +97,6 @@ ___
 ▸ **getDefaultWeight**(): *[TextWeight](../enums/textweight.md)*
 
 *Overrides [FactTextDefinition](facttextdefinition.md).[getDefaultWeight](facttextdefinition.md#getdefaultweight)*
-
-*Defined in [host-config.ts:149](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L149)*
 
 **Returns:** *[TextWeight](../enums/textweight.md)*
 
@@ -123,7 +107,5 @@ ___
 ▸ **toJSON**(): *any*
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[toJSON](facttextdefinition.md#tojson)*
-
-*Defined in [host-config.ts:125](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L125)*
 
 **Returns:** *any*

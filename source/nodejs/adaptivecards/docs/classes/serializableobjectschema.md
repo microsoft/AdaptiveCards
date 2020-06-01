@@ -22,8 +22,6 @@
 
 ▸ **add**(...`properties`: [PropertyDefinition](propertydefinition.md)[]): *void*
 
-*Defined in [serialization.ts:679](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L679)*
-
 **Parameters:**
 
 Name | Type |
@@ -38,8 +36,6 @@ ___
 
 ▸ **getCount**(): *number*
 
-*Defined in [serialization.ts:706](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L706)*
-
 **Returns:** *number*
 
 ___
@@ -47,8 +43,6 @@ ___
 ###  getItemAt
 
 ▸ **getItemAt**(`index`: number): *[PropertyDefinition](propertydefinition.md)*
-
-*Defined in [serialization.ts:702](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L702)*
 
 **Parameters:**
 
@@ -64,8 +58,6 @@ ___
 
 ▸ **indexOf**(`property`: [PropertyDefinition](propertydefinition.md)): *number*
 
-*Defined in [serialization.ts:669](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L669)*
-
 **Parameters:**
 
 Name | Type |
@@ -79,8 +71,6 @@ ___
 ###  remove
 
 ▸ **remove**(...`properties`: [PropertyDefinition](propertydefinition.md)[]): *void*
-
-*Defined in [serialization.ts:687](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/serialization.ts#L687)*
 
 **Parameters:**
 
