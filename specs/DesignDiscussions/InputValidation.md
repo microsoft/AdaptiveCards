@@ -13,6 +13,10 @@
             3. [Making hidden element visible on submit](#Making-hidden-element-visible-on-submit)
             4. [Current Card/Container](#Current-Card/Container)
             5. [Card Author Control](#Card-Author-Control)
+                1. [Hurdles with input-action association](#Hurdles-with-input-action-association)
+                2. [Handling hidden input elements](#Handling-hidden-input-elements)
+                3. [Card author experience](#Card-author-experience) 
+                4. [Validating on focus lost](#Validating-on-focus-lost)
             6. [On Not Adding a Form Type](#On-Not-Adding-a-Form-Type)
             7. [Defaulting to All](#Defaulting-to-All)
         5. [Validation and Actions](#Validation-and-Actions)
@@ -295,9 +299,23 @@ For authors that need more granular control of which inputs to validate, we woul
 }
 ```
 
-#### Future work on associated inputs
+#### Hurdles with input-action association
 
-Out of scope for this release but to be considered in the future, we could allow authors to group their inputs, we will also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form.
+##### Handling hidden inputs
+
+Input-action association is the mechanism we came up to be able to solve the problem when a hidden card requires a field to be validated but the user is actually not required to interact with that field to be able to use that card. Let's pick, for example, a card that we have had as a scenario since the 1st version of AdaptiveCards, the `Food Order` card:
+
+![img](assets/InputValidation/InputAssociationShowCard.gif)
+
+In the example above, input-action association works as the card author would expect, the user doesn't have to fill out the required field in the _steak card_ if he wants to order chicken or the vegetarian options, but what happens in a wizard card scenario as the one we touched on [Making hidden element visible on submit](#Making-hidden-element-visible-on-submit)? 
+
+A simple solution would be to just show the input that has failed to validate but that is not an universal solution, just showing inputs would probably break the intended user experience that the card author planned, for example, the _input x_ could be tied to a toggle visibility action which would hide something else as the _input x_ is shown. By simply showing the _input x_ both elements could be shown at the same time which would be an unintended behaviour by the card author.
+
+##### Card author experience 
+
+A problem that could arise for card authors is that by having them provide the `associatedInputIds` card authors could face hardships as there will be the possibility where a card author misstypes the input id or adds an input but forgets to add it in the ids list.
+
+We could allow authors to group their inputs, we will also accept container ids. This allows the card author to functionally define a "form" and indicate that the submit button relates to that form.
 ```json
 {
 	"type": "Action.Submit",
@@ -306,6 +324,14 @@ Out of scope for this release but to be considered in the future, we could allow
 }
 ```
 Container IDs can be ids on a `Container`, `Column`, `ColumnSet` or `Card`. An `id` property will be added to the AdaptiveCard type to support this behavior, which will allow card authors to select, for example, a show card as the associated input container. Card id's are not currently part of the schema and exist today only in JavaScript.
+
+It is important to note that this feature could be added in a following version of this feature where we could add a new `associatedInputContainers` property which would allow us to release this feature without too much coding overhead and ready for our expected timeline.
+
+##### Validating on focus lost
+
+Another scenario that may seem odd for users with the introduction of input-action association is that inputs that may require some validation but are not part of the associated inputs list will show error messages which will lead to confusion to users. This behaviour will only be shown if the `validationBehavior` property is set to `onFocusLost` or `onFocusLostWithInput` while `onSubmit` will work as expected.
+
+ We can avoid this issue by providing a built in mechanism which where, if any action in the card defines a list of inputs which doesn't include all inputs, then we default the validation behaviour to that of `onSubmit`.
 
 ##### On Not Adding a Form Type
 
