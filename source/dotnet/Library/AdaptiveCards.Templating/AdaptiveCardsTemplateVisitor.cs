@@ -92,8 +92,16 @@ namespace AdaptiveCards.Templating
             if (data?.Length != 0)
             {
                 // set data as root data context
-                root = JToken.Parse(data);
-                PushDataContext(data, root);
+                try
+                {
+                    root = JToken.Parse(data);
+                    PushDataContext(data, root);
+                }
+                catch (JsonException innerException)
+                {
+                    throw new AdaptiveTemplateException("Setting root data failed with given data context", innerException);
+                }
+                
             }
 
             // if null, set default option
@@ -140,21 +148,18 @@ namespace AdaptiveCards.Templating
             DataContext parentDataContext = GetCurrentDataContext();
             if (jpath == null || parentDataContext == null)
             {
-                return;
+                throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            try
+            var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
+            if (error == null)
             {
-                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
-                if (error == null)
-                {
-                    dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
-                }
+                dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
             }
-            catch (JsonException)
+            else
             {
-                // we swallow the error here
-                // as result, no data context will be set, and won't be evaluated using the given data context
+                // if there was an error during parsing data, it's irrecoverable
+                throw new Exception(error);
             }
         }
 
@@ -193,14 +198,8 @@ namespace AdaptiveCards.Templating
             // get value node from pair node
             // i.e. $data : "value"
             IParseTree templateDataValueNode = context.value();
-            // value was json object or json array, we take this json value and create a new data context
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueObjectContext || templateDataValueNode is AdaptiveCardsTemplateParser.ValueArrayContext)
-            {
-                string childJson = templateDataValueNode.GetText();
-                PushDataContext(childJson, root);
-            }
             // refer to label, valueTemplateStringWithRoot in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
             {
                 // call a visit method for further processing
                 Visit(templateDataValueNode);
@@ -214,7 +213,31 @@ namespace AdaptiveCards.Templating
                 {
                     // retrieve template literal and create a data context
                     var templateLiteral = (templateStrings[0] as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
-                    PushTemplatedDataContext(templateLiteral.GetText());
+                    try
+                    {
+                        PushTemplatedDataContext(templateLiteral.GetText());
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        throw new ArgumentNullException($"Check if parent data context is set, or please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'");
+                    }
+                    catch (JsonException innerException)
+                    {
+                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", innerException);
+                    }
+                }
+            }
+            else
+            // else clause handles all of the ordinary json values 
+            {
+                string childJson = templateDataValueNode.GetText();
+                try
+                {
+                    PushDataContext(childJson, root);
+                }
+                catch (JsonException innerException)
+                {
+                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
                 }
             }
 
@@ -252,8 +275,20 @@ namespace AdaptiveCards.Templating
             }
 
             // retrieves templateRoot of the grammar as in this method's summary
-            var child = context.templateRoot();
-            PushTemplatedDataContext(child.GetText());
+            var child = context.templateRoot() as AdaptiveCardsTemplateParser.TemplateStringWithRootContext;
+            try
+            {
+                PushTemplatedDataContext(child.GetText());
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ArgumentException($"Check if parent data context is set, or please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'");
+            }
+            catch (JsonException innerException)
+            {
+                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", innerException);
+            }
+
             return new AdaptiveCardsTemplateResult();
         }
 
@@ -406,7 +441,14 @@ namespace AdaptiveCards.Templating
                 if (isArrayType)
                 {
                     // set new data context
-                    PushDataContext(dataContext.GetDataContextAtIndex(iObj));
+                    try
+                    {
+                        PushDataContext(dataContext.GetDataContextAtIndex(iObj));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"setting data context failed with '{context.GetText()}' at line, '{context.Start.Line}'", e);
+                    }
                 }
 
                 // parse obj
@@ -416,7 +458,7 @@ namespace AdaptiveCards.Templating
                 for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
                     var pair = pairs[iPair];
-                    // if the pair refers to same pair that was used for data cotext, do not add its entry
+                    // if the pair refers to same pair that was used for data context, do not add its entry
                     if (pair != dataPair)
                     {
                         var returnedResult = Visit(pair);

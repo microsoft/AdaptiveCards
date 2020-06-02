@@ -1,8 +1,8 @@
-# Adaptive Card Data Binding and Templating Engine for JavaScript (Preview)
+# Adaptive Card Templating for JavaScript
 
 This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.
 
-For more information about the data binding language implemented by this library, [please refer to GitHub](https://github.com/microsoft/AdaptiveCards/issues/2448)
+[Learn more about Adaptive Card Templating](https://aka.ms/actemplating)
 
 ## Install and import the module
 
@@ -33,8 +33,8 @@ The latest release will keep you up to date with features and fixes, but may hav
 <!-- Option 1: always load the latest release -->
 <script src="https://unpkg.com/adaptivecards-templating/dist/adaptivecards-templating.min.js"></script>
 
-<!-- Option 2: load a specific version (e.g, 0.1.0-alpha1) -->
-<script src="https://unpkg.com/adaptivecards-templating@0.1.0-alpha1/dist/adaptivecards-templating.min.js"></script>
+<!-- Option 2: load a specific version (e.g, 1.0-rc1) -->
+<script src="https://unpkg.com/adaptivecards-templating@<VERSION>/dist/adaptivecards-templating.min.js"></script>
 ```
 
 Once the library is loaded, the global `ACData` variable is defined and ready to be used.
@@ -56,7 +56,7 @@ var templatePayload = {
     "body": [
         {
             "type": "TextBlock",
-            "text": "Hello {name}!"
+            "text": "Hello ${name}!"
         }
     ]
 };
@@ -86,10 +86,13 @@ document.getElementById('exampleDiv').appendChild(adaptiveCard.render());
 This example is implemented in the **example.html** file.
 
 ### Functions
+
 #### Built-in functions
-For a list of and documentation on built-in functions, please refer to the [AdaptiveExpressions documentation](https://github.com/Microsoft/BotBuilder-Samples/tree/master/experimental/common-expression-language).
+
+For a list of and documentation on built-in functions, please refer to the [AdaptiveExpressions documentation](https://aka.ms/adaptive-expressions).
 
 #### Custom functions
+
 ```typescript
-// TODO
+// Coming soon...
 ```

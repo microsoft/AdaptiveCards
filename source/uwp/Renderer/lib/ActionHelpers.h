@@ -34,7 +34,6 @@ namespace AdaptiveNamespace::ActionHelpers
     void HandleInlineAction(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                             _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
-                            _In_ ABI::Windows::UI::Xaml::IUIElement* textBoxParentContainer,
                             _In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** textBoxWithInlineAction);
 

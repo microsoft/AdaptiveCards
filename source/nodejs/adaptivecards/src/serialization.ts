@@ -241,6 +241,8 @@ export abstract class BaseSerializationContext {
 class SimpleSerializationContext extends BaseSerializationContext {}
 
 export class PropertyDefinition {
+    private static _sequentialNumber: number = 0;
+
     getInternalName(): string {
         return this.name;
     }
@@ -253,11 +255,17 @@ export class PropertyDefinition {
         context.serializeValue(target, this.name, value, this.defaultValue);
     }
 
+    readonly sequentialNumber: number;
+
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
         readonly defaultValue?: any,
-        readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+            this.sequentialNumber = PropertyDefinition._sequentialNumber;
+
+            PropertyDefinition._sequentialNumber++;
+        }
 }
 
 export class StringProperty extends PropertyDefinition {
@@ -729,19 +737,35 @@ export abstract class SerializableObject {
 
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
+        let properties: PropertyDefinition[] = [];
 
         for (let propertyName in ctor) {
             try {
                 let propertyValue = ctor[propertyName];
 
                 if (propertyValue instanceof PropertyDefinition) {
-                    schema.add(propertyValue);
+                    properties.push(propertyValue);
                 }
             }
             catch {
                 // If a property happens to have a getter function and
                 // it throws an exception, we need to catch it here
             }
+        }
+
+        if (properties.length > 0) {
+            let sortedProperties = properties.sort((p1: PropertyDefinition, p2: PropertyDefinition) => {
+                if (p1.sequentialNumber > p2.sequentialNumber) {
+                    return 1;
+                }
+                else if (p1.sequentialNumber < p2.sequentialNumber) {
+                    return -1;
+                }
+
+                return 0;
+            });
+
+            schema.add(...sortedProperties);
         }
 
         if (SerializableObject.onRegisterCustomProperties) {

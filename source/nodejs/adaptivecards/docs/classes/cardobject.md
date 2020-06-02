@@ -14,29 +14,165 @@
 
 ## Index
 
+### Constructors
+
+* [constructor](cardobject.md#constructor)
+
 ### Properties
 
-* [id](cardobject.md#id)
+* [_parent](cardobject.md#protected-optional-_parent)
+* [_renderedElement](cardobject.md#protected-optional-_renderedelement)
+* [id](cardobject.md#optional-id)
+* [maxVersion](cardobject.md#maxversion)
+* [onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)
+* [idProperty](cardobject.md#static-idproperty)
+* [onRegisterCustomProperties](cardobject.md#static-optional-onregistercustomproperties)
+* [requiresProperty](cardobject.md#static-requiresproperty)
+* [typeNameProperty](cardobject.md#static-typenameproperty)
+
+### Accessors
+
+* [hostConfig](cardobject.md#hostconfig)
+* [parent](cardobject.md#parent)
+* [renderedElement](cardobject.md#renderedelement)
+* [requires](cardobject.md#requires)
 
 ### Methods
 
 * [getCustomProperty](cardobject.md#getcustomproperty)
 * [getJsonTypeName](cardobject.md#abstract-getjsontypename)
+* [getRootObject](cardobject.md#getrootobject)
+* [getSchema](cardobject.md#getschema)
+* [getSchemaKey](cardobject.md#protected-getschemakey)
+* [getValue](cardobject.md#protected-getvalue)
+* [hasAllDefaultValues](cardobject.md#hasalldefaultvalues)
+* [hasDefaultValue](cardobject.md#hasdefaultvalue)
+* [internalParse](cardobject.md#protected-internalparse)
+* [internalToJSON](cardobject.md#protected-internaltojson)
 * [internalValidateProperties](cardobject.md#internalvalidateproperties)
 * [parse](cardobject.md#parse)
+* [populateSchema](cardobject.md#protected-populateschema)
+* [preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)
+* [resetDefaultValues](cardobject.md#resetdefaultvalues)
 * [setCustomProperty](cardobject.md#setcustomproperty)
-* [setParent](cardobject.md#abstract-setparent)
-* [shouldFallback](cardobject.md#abstract-shouldfallback)
+* [setParent](cardobject.md#setparent)
+* [setShouldFallback](cardobject.md#setshouldfallback)
+* [setValue](cardobject.md#protected-setvalue)
+* [shouldFallback](cardobject.md#shouldfallback)
+* [shouldSerialize](cardobject.md#protected-shouldserialize)
 * [toJSON](cardobject.md#tojson)
 * [validateProperties](cardobject.md#validateproperties)
 
+## Constructors
+
+###  constructor
+
+\+ **new CardObject**(): *[CardObject](cardobject.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+**Returns:** *[CardObject](cardobject.md)*
+
 ## Properties
 
-###  id
+### `Protected` `Optional` _parent
 
-• **id**: *string*
+• **_parent**? : *[CardObject](cardobject.md)*
 
-*Defined in [card-elements.ts:247](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L247)*
+___
+
+### `Protected` `Optional` _renderedElement
+
+• **_renderedElement**? : *HTMLElement*
+
+___
+
+### `Optional` id
+
+• **id**? : *undefined | string*
+
+___
+
+###  maxVersion
+
+• **maxVersion**: *[Version](version.md)* = Versions.latest
+
+*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+
+___
+
+### `Optional` onPreProcessPropertyValue
+
+• **onPreProcessPropertyValue**? : *undefined | function*
+
+___
+
+### `Static` idProperty
+
+▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+
+___
+
+### `Static` `Optional` onRegisterCustomProperties
+
+▪ **onRegisterCustomProperties**? : *undefined | function*
+
+*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+
+___
+
+### `Static` requiresProperty
+
+▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
+        Versions.v1_2,
+        "requires",
+        HostCapabilities)
+
+___
+
+### `Static` typeNameProperty
+
+▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
+        Versions.v1_0,
+        "type",
+        undefined,
+        undefined,
+        undefined,
+        (sender: object) => {
+            return (<CardObject>sender).getJsonTypeName()
+        })
+
+## Accessors
+
+###  hostConfig
+
+• **get hostConfig**(): *[HostConfig](hostconfig.md)*
+
+**Returns:** *[HostConfig](hostconfig.md)*
+
+___
+
+###  parent
+
+• **get parent**(): *[CardObject](cardobject.md) | undefined*
+
+**Returns:** *[CardObject](cardobject.md) | undefined*
+
+___
+
+###  renderedElement
+
+• **get renderedElement**(): *HTMLElement | undefined*
+
+**Returns:** *HTMLElement | undefined*
+
+___
+
+###  requires
+
+• **get requires**(): *HostCapabilities*
+
+**Returns:** *HostCapabilities*
 
 ## Methods
 
@@ -45,8 +181,6 @@
 ▸ **getCustomProperty**(`name`: string): *any*
 
 *Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
-
-*Defined in [card-elements.ts:200](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L200)*
 
 **Parameters:**
 
@@ -62,17 +196,117 @@ ___
 
 ▸ **getJsonTypeName**(): *string*
 
-*Defined in [card-elements.ts:243](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L243)*
+**Returns:** *string*
+
+___
+
+###  getRootObject
+
+▸ **getRootObject**(): *[CardObject](cardobject.md)*
+
+**Returns:** *[CardObject](cardobject.md)*
+
+___
+
+###  getSchema
+
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+___
+
+### `Protected` getSchemaKey
+
+▸ **getSchemaKey**(): *string*
+
+*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
 
 **Returns:** *string*
+
+___
+
+### `Protected` getValue
+
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
+
+*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *any*
+
+___
+
+###  hasAllDefaultValues
+
+▸ **hasAllDefaultValues**(): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+
+**Returns:** *boolean*
+
+___
+
+###  hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *boolean*
+
+___
+
+### `Protected` internalParse
+
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
+### `Protected` internalToJSON
+
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
 
 ___
 
 ###  internalValidateProperties
 
 ▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
-
-*Defined in [card-elements.ts:249](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L249)*
 
 **Parameters:**
 
@@ -86,18 +320,57 @@ ___
 
 ###  parse
 
-▸ **parse**(`json`: any, `errors?`: Array‹[IValidationError](../interfaces/ivalidationerror.md)›): *void*
+▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
-*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
-
-*Defined in [card-elements.ts:269](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L269)*
+*Inherited from [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`json` | any |
-`errors?` | Array‹[IValidationError](../interfaces/ivalidationerror.md)› |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
+### `Protected` populateSchema
+
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
+
+**Returns:** *void*
+
+___
+
+###  preProcessPropertyValue
+
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`propertyValue?` | any |
+
+**Returns:** *any*
+
+___
+
+###  resetDefaultValues
+
+▸ **resetDefaultValues**(): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
 
 **Returns:** *void*
 
@@ -108,8 +381,6 @@ ___
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
 *Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
-
-*Defined in [card-elements.ts:189](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L189)*
 
 **Parameters:**
 
@@ -122,27 +393,70 @@ Name | Type |
 
 ___
 
-### `Abstract` setParent
+###  setParent
 
-▸ **setParent**(`parent`: [CardElement](cardelement.md)): *any*
-
-*Defined in [card-elements.ts:245](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L245)*
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`parent` | [CardElement](cardelement.md) |
+`value` | [CardObject](cardobject.md) &#124; undefined |
 
-**Returns:** *any*
+**Returns:** *void*
 
 ___
 
-### `Abstract` shouldFallback
+###  setShouldFallback
+
+▸ **setShouldFallback**(`value`: boolean): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | boolean |
+
+**Returns:** *void*
+
+___
+
+### `Protected` setValue
+
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
+
+**Returns:** *void*
+
+___
+
+###  shouldFallback
 
 ▸ **shouldFallback**(): *boolean*
 
-*Defined in [card-elements.ts:244](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L244)*
+**Returns:** *boolean*
+
+___
+
+### `Protected` shouldSerialize
+
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -150,20 +464,22 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(): *any*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
-*Defined in [card-elements.ts:275](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L275)*
+**Parameters:**
 
-**Returns:** *any*
+Name | Type |
+------ | ------ |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 
 ___
 
 ###  validateProperties
 
 ▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
-
-*Defined in [card-elements.ts:284](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L284)*
 
 **Returns:** *[ValidationResults](validationresults.md)*

@@ -12,12 +12,14 @@ export class BaseModel {
     isFallbackActivated = false;
     fallback;
     fallbackType;
+    requires;
 
     constructor(payload, parent) {
         this.parent = parent;
         this.id = payload.id;
         this.spacing = payload.spacing;
         this.separator = payload.separator;
+        this.requires = payload.requires;
         if (this.id === undefined) {
             this.id = Utils.generateID();
         }

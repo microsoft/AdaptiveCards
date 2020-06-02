@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-site",
-	"version": "0.4.6",
+	"version": "0.4.7",
 	"private": true,
 	"scripts": {
 		"clean": "hexo clean",
@@ -15,11 +15,11 @@
 	},
 	"devDependencies": {
 		"@fortawesome/fontawesome-free": "^5.11.2",
-		"ac-typed-schema": "^0.5.4",
-		"adaptivecards": "^2.0.0-alpha.1",
-		"adaptivecards-designer": "^0.8.0-rc.2",
-		"adaptivecards-templating": "^0.1.2-alpha.0",
-		"adaptivecards-visualizer": "^1.2.6",
+		"ac-typed-schema": "^0.5.5",
+		"adaptivecards": "^2.0.0-rc.0",
+		"adaptivecards-designer": "^1.0.0-rc.0",
+		"adaptivecards-templating": "^1.0.0-rc.0",
+		"adaptivecards-visualizer": "^1.2.7",
 		"change-case": "^3.0.1",
 		"cheerio": "^1.0.0-rc.3",
 		"glob": "7.1.2",

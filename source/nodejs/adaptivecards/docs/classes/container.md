@@ -14,25 +14,50 @@
 
 ## Index
 
+### Constructors
+
+* [constructor](container.md#constructor)
+
 ### Properties
 
+* [_parent](container.md#protected-optional-_parent)
+* [_renderedElement](container.md#protected-optional-_renderedelement)
+* [_selectAction](container.md#protected-optional-_selectaction)
 * [allowVerticalOverflow](container.md#allowverticaloverflow)
-* [backgroundImage](container.md#backgroundimage)
-* [customCssSelector](container.md#customcssselector)
+* [customCssSelector](container.md#optional-customcssselector)
 * [height](container.md#height)
-* [horizontalAlignment](container.md#optional-horizontalalignment)
-* [id](container.md#id)
+* [horizontalAlignment](container.md#horizontalalignment)
+* [id](container.md#optional-id)
+* [maxVersion](container.md#maxversion)
 * [minPixelHeight](container.md#optional-minpixelheight)
-* [requires](container.md#requires)
+* [onPreProcessPropertyValue](container.md#optional-onpreprocesspropertyvalue)
 * [rtl](container.md#optional-rtl)
 * [separator](container.md#separator)
 * [spacing](container.md#spacing)
 * [verticalContentAlignment](container.md#verticalcontentalignment)
+* [backgroundImageProperty](container.md#static-backgroundimageproperty)
+* [bleedProperty](container.md#static-bleedproperty)
+* [heightProperty](container.md#static-heightproperty)
+* [horizontalAlignmentProperty](container.md#static-horizontalalignmentproperty)
+* [idProperty](container.md#static-idproperty)
+* [isVisibleProperty](container.md#static-isvisibleproperty)
+* [langProperty](container.md#static-langproperty)
+* [minHeightProperty](container.md#static-minheightproperty)
+* [onRegisterCustomProperties](container.md#static-optional-onregistercustomproperties)
+* [requiresProperty](container.md#static-requiresproperty)
+* [rtlProperty](container.md#static-rtlproperty)
+* [selectActionProperty](container.md#static-selectactionproperty)
+* [separatorProperty](container.md#static-separatorproperty)
+* [spacingProperty](container.md#static-spacingproperty)
+* [styleProperty](container.md#static-styleproperty)
+* [typeNameProperty](container.md#static-typenameproperty)
+* [verticalContentAlignmentProperty](container.md#static-verticalcontentalignmentproperty)
 
 ### Accessors
 
 * [allowCustomPadding](container.md#protected-allowcustompadding)
 * [allowCustomStyle](container.md#protected-allowcustomstyle)
+* [backgroundImage](container.md#backgroundimage)
 * [bleed](container.md#bleed)
 * [defaultStyle](container.md#protected-defaultstyle)
 * [hasExplicitStyle](container.md#protected-hasexplicitstyle)
@@ -49,11 +74,11 @@
 * [parent](container.md#parent)
 * [renderedActionCount](container.md#protected-renderedactioncount)
 * [renderedElement](container.md#renderedelement)
+* [requires](container.md#requires)
 * [selectAction](container.md#selectaction)
 * [separatorElement](container.md#separatorelement)
 * [separatorOrientation](container.md#protected-separatororientation)
 * [style](container.md#style)
-* [supportsMinHeight](container.md#protected-supportsminheight)
 * [useDefaultSizing](container.md#protected-usedefaultsizing)
 
 ### Methods
@@ -74,10 +99,10 @@
 * [getDefaultPadding](container.md#protected-getdefaultpadding)
 * [getEffectivePadding](container.md#geteffectivepadding)
 * [getEffectiveStyle](container.md#geteffectivestyle)
+* [getEffectiveStyleDefinition](container.md#geteffectivestyledefinition)
 * [getElementById](container.md#getelementbyid)
 * [getFirstVisibleRenderedItem](container.md#getfirstvisiblerendereditem)
 * [getForbiddenActionTypes](container.md#getforbiddenactiontypes)
-* [getForbiddenElementTypes](container.md#getforbiddenelementtypes)
 * [getHasBackground](container.md#protected-gethasbackground)
 * [getHasExpandedAction](container.md#protected-gethasexpandedaction)
 * [getImmediateSurroundingPadding](container.md#getimmediatesurroundingpadding)
@@ -90,11 +115,18 @@
 * [getParentContainer](container.md#getparentcontainer)
 * [getResourceInformation](container.md#getresourceinformation)
 * [getRootElement](container.md#getrootelement)
-* [getSelectAction](container.md#protected-getselectaction)
+* [getRootObject](container.md#getrootobject)
+* [getSchema](container.md#getschema)
+* [getSchemaKey](container.md#protected-getschemakey)
+* [getValue](container.md#protected-getvalue)
+* [hasAllDefaultValues](container.md#hasalldefaultvalues)
+* [hasDefaultValue](container.md#hasdefaultvalue)
 * [indexOf](container.md#indexof)
 * [insertItemAfter](container.md#insertitemafter)
 * [insertItemBefore](container.md#insertitembefore)
+* [internalParse](container.md#protected-internalparse)
 * [internalRender](container.md#protected-internalrender)
+* [internalToJSON](container.md#protected-internaltojson)
 * [internalValidateProperties](container.md#internalvalidateproperties)
 * [isAtTheVeryBottom](container.md#isattheverybottom)
 * [isAtTheVeryLeft](container.md#isattheveryleft)
@@ -105,27 +137,31 @@
 * [isBleedingAtTop](container.md#isbleedingattop)
 * [isBottomElement](container.md#isbottomelement)
 * [isDesignMode](container.md#isdesignmode)
+* [isDisplayed](container.md#protected-isdisplayed)
 * [isElementAllowed](container.md#protected-iselementallowed)
 * [isFirstElement](container.md#isfirstelement)
 * [isHiddenDueToOverflow](container.md#ishiddenduetooverflow)
 * [isLastElement](container.md#islastelement)
 * [isLeftMostElement](container.md#isleftmostelement)
-* [isRendered](container.md#isrendered)
 * [isRightMostElement](container.md#isrightmostelement)
 * [isRtl](container.md#isrtl)
 * [isTopElement](container.md#istopelement)
 * [overrideInternalRender](container.md#protected-overrideinternalrender)
 * [parse](container.md#parse)
+* [populateSchema](container.md#protected-populateschema)
+* [preProcessPropertyValue](container.md#preprocesspropertyvalue)
 * [remove](container.md#remove)
 * [removeItem](container.md#removeitem)
 * [render](container.md#render)
+* [resetDefaultValues](container.md#resetdefaultvalues)
 * [setBleed](container.md#protected-setbleed)
 * [setCustomProperty](container.md#setcustomproperty)
 * [setPadding](container.md#protected-setpadding)
 * [setParent](container.md#setparent)
-* [setSelectAction](container.md#protected-setselectaction)
 * [setShouldFallback](container.md#setshouldfallback)
+* [setValue](container.md#protected-setvalue)
 * [shouldFallback](container.md#shouldfallback)
+* [shouldSerialize](container.md#protected-shouldserialize)
 * [supportsExcplitiHeight](container.md#protected-supportsexcplitiheight)
 * [toJSON](container.md#tojson)
 * [truncateOverflow](container.md#protected-truncateoverflow)
@@ -133,7 +169,41 @@
 * [updateLayout](container.md#updatelayout)
 * [validateProperties](container.md#validateproperties)
 
+## Constructors
+
+###  constructor
+
+\+ **new Container**(): *[Container](container.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+**Returns:** *[Container](container.md)*
+
 ## Properties
+
+### `Protected` `Optional` _parent
+
+• **_parent**? : *[CardObject](cardobject.md)*
+
+*Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
+
+___
+
+### `Protected` `Optional` _renderedElement
+
+• **_renderedElement**? : *HTMLElement*
+
+*Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+
+___
+
+### `Protected` `Optional` _selectAction
+
+• **_selectAction**? : *[Action](action.md)*
+
+*Inherited from [CardElementContainer](cardelementcontainer.md).[_selectAction](cardelementcontainer.md#protected-optional-_selectaction)*
+
+___
 
 ###  allowVerticalOverflow
 
@@ -141,103 +211,83 @@
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[allowVerticalOverflow](cardelementcontainer.md#allowverticaloverflow)*
 
-*Defined in [card-elements.ts:2229](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2229)*
-
 ___
 
-###  backgroundImage
+### `Optional` customCssSelector
 
-• **backgroundImage**: *[BackgroundImage](backgroundimage.md)* = new BackgroundImage()
+• **customCssSelector**? : *undefined | string*
 
-*Defined in [card-elements.ts:5571](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5571)*
-
-___
-
-###  customCssSelector
-
-• **customCssSelector**: *string* = null
-
-*Inherited from [CardElement](cardelement.md).[customCssSelector](cardelement.md#customcssselector)*
-
-*Defined in [card-elements.ts:507](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L507)*
+*Inherited from [CardElement](cardelement.md).[customCssSelector](cardelement.md#optional-customcssselector)*
 
 ___
 
 ###  height
 
-• **height**: *[CardElementHeight](../README.md#cardelementheight)* = "auto"
+• **height**: *[CardElementHeight](../README.md#cardelementheight)*
 
 *Inherited from [CardElement](cardelement.md).[height](cardelement.md#height)*
 
-*Defined in [card-elements.ts:508](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L508)*
+___
+
+###  horizontalAlignment
+
+• **horizontalAlignment**: *[HorizontalAlignment](../enums/horizontalalignment.md)*
+
+*Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#horizontalalignment)*
 
 ___
 
-### `Optional` horizontalAlignment
+### `Optional` id
 
-• **horizontalAlignment**? : *[HorizontalAlignment](../enums/horizontalalignment.md)* = null
+• **id**? : *undefined | string*
 
-*Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#optional-horizontalalignment)*
-
-*Defined in [card-elements.ts:504](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L504)*
+*Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
 
 ___
 
-###  id
+###  maxVersion
 
-• **id**: *string*
+• **maxVersion**: *[Version](version.md)* = Versions.latest
 
-*Inherited from [CardObject](cardobject.md).[id](cardobject.md#id)*
-
-*Defined in [card-elements.ts:247](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L247)*
+*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
 ___
 
 ### `Optional` minPixelHeight
 
-• **minPixelHeight**? : *number* = null
+• **minPixelHeight**? : *undefined | number*
 
-*Inherited from [CardElement](cardelement.md).[minPixelHeight](cardelement.md#optional-minpixelheight)*
-
-*Defined in [card-elements.ts:509](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L509)*
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minPixelHeight](stylablecardelementcontainer.md#optional-minpixelheight)*
 
 ___
 
-###  requires
+### `Optional` onPreProcessPropertyValue
 
-• **requires**: *[HostCapabilities](hostcapabilities.md)‹›* = new HostConfig.HostCapabilities()
+• **onPreProcessPropertyValue**? : *undefined | function*
 
-*Inherited from [CardElement](cardelement.md).[requires](cardelement.md#requires)*
-
-*Defined in [card-elements.ts:502](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L502)*
+*Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
 
 ___
 
 ### `Optional` rtl
 
-• **rtl**? : *boolean* = null
-
-*Defined in [card-elements.ts:5574](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5574)*
+• **rtl**? : *undefined | false | true*
 
 ___
 
 ###  separator
 
-• **separator**: *boolean* = false
+• **separator**: *boolean*
 
 *Inherited from [CardElement](cardelement.md).[separator](cardelement.md#separator)*
-
-*Defined in [card-elements.ts:506](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L506)*
 
 ___
 
 ###  spacing
 
-• **spacing**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.Default
+• **spacing**: *[Spacing](../enums/spacing.md)*
 
 *Inherited from [CardElement](cardelement.md).[spacing](cardelement.md#spacing)*
-
-*Defined in [card-elements.ts:505](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L505)*
 
 ___
 
@@ -245,7 +295,174 @@ ___
 
 • **verticalContentAlignment**: *[VerticalAlignment](../enums/verticalalignment.md)* = Enums.VerticalAlignment.Top
 
-*Defined in [card-elements.ts:5573](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5573)*
+___
+
+### `Static` backgroundImageProperty
+
+▪ **backgroundImageProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
+        Versions.v1_0,
+        "backgroundImage",
+        BackgroundImage)
+
+___
+
+### `Static` bleedProperty
+
+▪ **bleedProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "bleed", false)
+
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[bleedProperty](stylablecardelementcontainer.md#static-bleedproperty)*
+
+___
+
+### `Static` heightProperty
+
+▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
+        Versions.v1_1,
+        "height",
+        [
+            { value: "auto" },
+            { value: "stretch" }
+        ],
+        "auto")
+
+*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-heightproperty)*
+
+___
+
+### `Static` horizontalAlignmentProperty
+
+▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(
+        Versions.v1_0,
+        "horizontalAlignment",
+        Enums.HorizontalAlignment,
+        Enums.HorizontalAlignment.Left)
+
+*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-horizontalalignmentproperty)*
+
+___
+
+### `Static` idProperty
+
+▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+
+___
+
+### `Static` isVisibleProperty
+
+▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
+
+*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
+
+___
+
+### `Static` langProperty
+
+▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
+
+*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-langproperty)*
+
+___
+
+### `Static` minHeightProperty
+
+▪ **minHeightProperty**: *[PixelSizeProperty](pixelsizeproperty.md)‹›* = new PixelSizeProperty(Versions.v1_2, "minHeight")
+
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minHeightProperty](stylablecardelementcontainer.md#static-minheightproperty)*
+
+___
+
+### `Static` `Optional` onRegisterCustomProperties
+
+▪ **onRegisterCustomProperties**? : *undefined | function*
+
+*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+
+___
+
+### `Static` requiresProperty
+
+▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
+        Versions.v1_2,
+        "requires",
+        HostCapabilities)
+
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
+
+___
+
+### `Static` rtlProperty
+
+▪ **rtlProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "rtl")
+
+___
+
+### `Static` selectActionProperty
+
+▪ **selectActionProperty**: *[ActionProperty](actionproperty.md)‹›* = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ])
+
+*Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-selectactionproperty)*
+
+___
+
+### `Static` separatorProperty
+
+▪ **separatorProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "separator", false)
+
+*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-separatorproperty)*
+
+___
+
+### `Static` spacingProperty
+
+▪ **spacingProperty**: *[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›* = new EnumProperty(
+        Versions.v1_0,
+        "spacing",
+        Enums.Spacing,
+        Enums.Spacing.Default)
+
+*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-spacingproperty)*
+
+___
+
+### `Static` styleProperty
+
+▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
+        Versions.v1_0,
+        "style",
+        [
+            { value: Enums.ContainerStyle.Default },
+            { value: Enums.ContainerStyle.Emphasis },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
+            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
+        ])
+
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[styleProperty](stylablecardelementcontainer.md#static-styleproperty)*
+
+___
+
+### `Static` typeNameProperty
+
+▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
+        Versions.v1_0,
+        "type",
+        undefined,
+        undefined,
+        undefined,
+        (sender: object) => {
+            return (<CardObject>sender).getJsonTypeName()
+        })
+
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+
+___
+
+### `Static` verticalContentAlignmentProperty
+
+▪ **verticalContentAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›* = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
 
 ## Accessors
 
@@ -254,8 +471,6 @@ ___
 • **get allowCustomPadding**(): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[allowCustomPadding](cardelement.md#protected-allowcustompadding)*
-
-*Defined in [card-elements.ts:490](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L490)*
 
 **Returns:** *boolean*
 
@@ -267,9 +482,15 @@ ___
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[allowCustomStyle](stylablecardelementcontainer.md#protected-allowcustomstyle)*
 
-*Defined in [card-elements.ts:5236](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5236)*
-
 **Returns:** *boolean*
+
+___
+
+###  backgroundImage
+
+• **get backgroundImage**(): *[BackgroundImage](backgroundimage.md)*
+
+**Returns:** *[BackgroundImage](backgroundimage.md)*
 
 ___
 
@@ -277,13 +498,9 @@ ___
 
 • **get bleed**(): *boolean*
 
-*Defined in [card-elements.ts:5810](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5810)*
-
 **Returns:** *boolean*
 
 • **set bleed**(`value`: boolean): *void*
-
-*Defined in [card-elements.ts:5814](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5814)*
 
 **Parameters:**
 
@@ -301,8 +518,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[defaultStyle](cardelement.md#protected-defaultstyle)*
 
-*Defined in [card-elements.ts:498](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L498)*
-
 **Returns:** *string*
 
 ___
@@ -312,8 +527,6 @@ ___
 • **get hasExplicitStyle**(): *boolean*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[hasExplicitStyle](stylablecardelementcontainer.md#protected-hasexplicitstyle)*
-
-*Defined in [card-elements.ts:5232](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5232)*
 
 **Returns:** *boolean*
 
@@ -325,8 +538,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[hasVisibleSeparator](cardelement.md#hasvisibleseparator)*
 
-*Defined in [card-elements.ts:928](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L928)*
-
 **Returns:** *boolean*
 
 ___
@@ -337,7 +548,7 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)*
 
-*Defined in [card-elements.ts:881](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L881)*
+*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
 
 **Returns:** *[HostConfig](hostconfig.md)*
 
@@ -345,7 +556,7 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[hostConfig](cardelement.md#hostconfig)*
 
-*Defined in [card-elements.ts:895](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L895)*
+*Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
 
 **Parameters:**
 
@@ -363,8 +574,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[index](cardelement.md#index)*
 
-*Defined in [card-elements.ts:899](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L899)*
-
 **Returns:** *number*
 
 ___
@@ -374,8 +583,6 @@ ___
 • **get isInline**(): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isInline](cardelement.md#isinline)*
-
-*Defined in [card-elements.ts:916](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L916)*
 
 **Returns:** *boolean*
 
@@ -387,8 +594,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isInteractive](cardelement.md#isinteractive)*
 
-*Defined in [card-elements.ts:908](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L908)*
-
 **Returns:** *boolean*
 
 ___
@@ -398,8 +603,6 @@ ___
 • **get isSelectable**(): *boolean*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[isSelectable](cardelementcontainer.md#protected-isselectable)*
-
-*Defined in [card-elements.ts:5567](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5567)*
 
 **Returns:** *boolean*
 
@@ -411,8 +614,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isStandalone](cardelement.md#isstandalone)*
 
-*Defined in [card-elements.ts:912](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L912)*
-
 **Returns:** *boolean*
 
 ___
@@ -423,15 +624,11 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
 
-*Defined in [card-elements.ts:924](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L924)*
-
 **Returns:** *boolean*
 
 • **set isVisible**(`value`: boolean): *void*
 
 *Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
-
-*Defined in [card-elements.ts:937](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L937)*
 
 **Parameters:**
 
@@ -445,25 +642,21 @@ ___
 
 ###  lang
 
-• **get lang**(): *string*
+• **get lang**(): *string | undefined*
 
 *Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
 
-*Defined in [card-elements.ts:853](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L853)*
+**Returns:** *string | undefined*
 
-**Returns:** *string*
-
-• **set lang**(`value`: string): *void*
+• **set lang**(`value`: string | undefined): *void*
 
 *Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
-
-*Defined in [card-elements.ts:867](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L867)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | string |
+`value` | string &#124; undefined |
 
 **Returns:** *void*
 
@@ -471,21 +664,17 @@ ___
 
 ###  padding
 
-• **get padding**(): *[PaddingDefinition](paddingdefinition.md)*
+• **get padding**(): *[PaddingDefinition](paddingdefinition.md) | undefined*
 
-*Defined in [card-elements.ts:5794](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5794)*
+**Returns:** *[PaddingDefinition](paddingdefinition.md) | undefined*
 
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
-
-• **set padding**(`value`: [PaddingDefinition](paddingdefinition.md)): *void*
-
-*Defined in [card-elements.ts:5798](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5798)*
+• **set padding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | [PaddingDefinition](paddingdefinition.md) |
+`value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
 
 **Returns:** *void*
 
@@ -493,13 +682,13 @@ ___
 
 ###  parent
 
-• **get parent**(): *[CardElement](cardelement.md)*
+• **get parent**(): *[CardElement](cardelement.md) | undefined*
 
 *Inherited from [CardElement](cardelement.md).[parent](cardelement.md#parent)*
 
-*Defined in [card-elements.ts:920](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L920)*
+*Overrides [CardObject](cardobject.md).[parent](cardobject.md#parent)*
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
 ___
 
@@ -509,41 +698,43 @@ ___
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[renderedActionCount](stylablecardelementcontainer.md#protected-renderedactioncount)*
 
-*Defined in [card-elements.ts:5228](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5228)*
-
 **Returns:** *number*
 
 ___
 
 ###  renderedElement
 
-• **get renderedElement**(): *HTMLElement*
+• **get renderedElement**(): *HTMLElement | undefined*
 
-*Inherited from [CardElement](cardelement.md).[renderedElement](cardelement.md#renderedelement)*
+*Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
 
-*Defined in [card-elements.ts:956](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L956)*
+**Returns:** *HTMLElement | undefined*
 
-**Returns:** *HTMLElement*
+___
+
+###  requires
+
+• **get requires**(): *HostCapabilities*
+
+*Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+
+**Returns:** *HostCapabilities*
 
 ___
 
 ###  selectAction
 
-• **get selectAction**(): *[Action](action.md)*
+• **get selectAction**(): *[Action](action.md) | undefined*
 
-*Defined in [card-elements.ts:5802](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5802)*
+**Returns:** *[Action](action.md) | undefined*
 
-**Returns:** *[Action](action.md)*
-
-• **set selectAction**(`value`: [Action](action.md)): *void*
-
-*Defined in [card-elements.ts:5806](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5806)*
+• **set selectAction**(`value`: [Action](action.md) | undefined): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | [Action](action.md) |
+`value` | [Action](action.md) &#124; undefined |
 
 **Returns:** *void*
 
@@ -551,13 +742,11 @@ ___
 
 ###  separatorElement
 
-• **get separatorElement**(): *HTMLElement*
+• **get separatorElement**(): *HTMLElement | undefined*
 
 *Inherited from [CardElement](cardelement.md).[separatorElement](cardelement.md#separatorelement)*
 
-*Defined in [card-elements.ts:960](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L960)*
-
-**Returns:** *HTMLElement*
+**Returns:** *HTMLElement | undefined*
 
 ___
 
@@ -567,49 +756,29 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[separatorOrientation](cardelement.md#protected-separatororientation)*
 
-*Defined in [card-elements.ts:494](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L494)*
-
 **Returns:** *[Orientation](../enums/orientation.md)*
 
 ___
 
 ###  style
 
-• **get style**(): *string*
+• **get style**(): *string | undefined*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)*
 
-*Defined in [card-elements.ts:5295](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5295)*
+**Returns:** *string | undefined*
 
-**Returns:** *string*
-
-• **set style**(`value`: string): *void*
+• **set style**(`value`: string | undefined): *void*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[style](stylablecardelementcontainer.md#style)*
-
-*Defined in [card-elements.ts:5305](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5305)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | string |
+`value` | string &#124; undefined |
 
 **Returns:** *void*
-
-___
-
-### `Protected` supportsMinHeight
-
-• **get supportsMinHeight**(): *boolean*
-
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[supportsMinHeight](stylablecardelementcontainer.md#protected-supportsminheight)*
-
-*Overrides [CardElement](cardelement.md).[supportsMinHeight](cardelement.md#protected-supportsminheight)*
-
-*Defined in [card-elements.ts:5240](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5240)*
-
-**Returns:** *boolean*
 
 ___
 
@@ -619,8 +788,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[useDefaultSizing](cardelement.md#protected-usedefaultsizing)*
 
-*Defined in [card-elements.ts:486](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L486)*
-
 **Returns:** *boolean*
 
 ## Methods
@@ -628,8 +795,6 @@ ___
 ###  addItem
 
 ▸ **addItem**(`item`: [CardElement](cardelement.md)): *void*
-
-*Defined in [card-elements.ts:5730](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5730)*
 
 **Parameters:**
 
@@ -645,9 +810,9 @@ ___
 
 ▸ **adjustRenderedElementSize**(`renderedElement`: HTMLElement): *void*
 
-*Inherited from [CardElement](cardelement.md).[adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)*
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[adjustRenderedElementSize](stylablecardelementcontainer.md#protected-adjustrenderedelementsize)*
 
-*Defined in [card-elements.ts:411](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L411)*
+*Overrides [CardElement](cardelement.md).[adjustRenderedElementSize](cardelement.md#protected-adjustrenderedelementsize)*
 
 **Parameters:**
 
@@ -665,8 +830,6 @@ ___
 
 *Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[applyBackground](stylablecardelementcontainer.md#protected-applybackground)*
 
-*Defined in [card-elements.ts:5441](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5441)*
-
 **Returns:** *void*
 
 ___
@@ -679,29 +842,23 @@ ___
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[applyPadding](cardelementcontainer.md#protected-applypadding)*
 
-*Defined in [card-elements.ts:5137](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5137)*
-
 **Returns:** *void*
 
 ___
 
 ###  asString
 
-▸ **asString**(): *string*
+▸ **asString**(): *string | undefined*
 
 *Inherited from [CardElement](cardelement.md).[asString](cardelement.md#asstring)*
 
-*Defined in [card-elements.ts:513](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L513)*
-
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
 ###  clear
 
 ▸ **clear**(): *void*
-
-*Defined in [card-elements.ts:5758](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5758)*
 
 **Returns:** *void*
 
@@ -713,19 +870,15 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[createPlaceholderElement](cardelement.md#protected-createplaceholderelement)*
 
-*Defined in [card-elements.ts:400](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L400)*
-
 **Returns:** *HTMLElement*
 
 ___
 
 ###  getActionAt
 
-▸ **getActionAt**(`index`: number): *[Action](action.md)*
+▸ **getActionAt**(`index`: number): *[Action](action.md) | undefined*
 
 *Inherited from [CardElement](cardelement.md).[getActionAt](cardelement.md#getactionat)*
-
-*Defined in [card-elements.ts:694](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L694)*
 
 **Parameters:**
 
@@ -733,17 +886,15 @@ Name | Type |
 ------ | ------ |
 `index` | number |
 
-**Returns:** *[Action](action.md)*
+**Returns:** *[Action](action.md) | undefined*
 
 ___
 
 ###  getActionById
 
-▸ **getActionById**(`id`: string): *[Action](action.md)*
+▸ **getActionById**(`id`: string): *[Action](action.md) | undefined*
 
 *Overrides [CardElement](cardelement.md).[getActionById](cardelement.md#getactionbyid)*
-
-*Defined in [card-elements.ts:5772](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5772)*
 
 **Parameters:**
 
@@ -751,7 +902,7 @@ Name | Type |
 ------ | ------ |
 `id` | string |
 
-**Returns:** *[Action](action.md)*
+**Returns:** *[Action](action.md) | undefined*
 
 ___
 
@@ -761,23 +912,19 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[getActionCount](cardelement.md#getactioncount)*
 
-*Defined in [card-elements.ts:690](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L690)*
-
 **Returns:** *number*
 
 ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *Array‹[Input](input.md)›*
+▸ **getAllInputs**(): *[Input](input.md)[]*
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[getAllInputs](cardelementcontainer.md#getallinputs)*
 
 *Overrides [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
 
-*Defined in [card-elements.ts:2334](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2334)*
-
-**Returns:** *Array‹[Input](input.md)›*
+**Returns:** *[Input](input.md)[]*
 
 ___
 
@@ -786,8 +933,6 @@ ___
 ▸ **getBleed**(): *boolean*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getBleed](stylablecardelementcontainer.md#protected-getbleed)*
-
-*Defined in [card-elements.ts:5220](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5220)*
 
 **Returns:** *boolean*
 
@@ -798,8 +943,6 @@ ___
 ▸ **getCustomProperty**(`name`: string): *any*
 
 *Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
-
-*Defined in [card-elements.ts:200](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L200)*
 
 **Parameters:**
 
@@ -819,8 +962,6 @@ ___
 
 *Overrides [CardElement](cardelement.md).[getDefaultPadding](cardelement.md#protected-getdefaultpadding)*
 
-*Defined in [card-elements.ts:5207](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5207)*
-
 **Returns:** *[PaddingDefinition](paddingdefinition.md)*
 
 ___
@@ -830,8 +971,6 @@ ___
 ▸ **getEffectivePadding**(): *[PaddingDefinition](paddingdefinition.md)*
 
 *Inherited from [CardElement](cardelement.md).[getEffectivePadding](cardelement.md#geteffectivepadding)*
-
-*Defined in [card-elements.ts:847](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L847)*
 
 **Returns:** *[PaddingDefinition](paddingdefinition.md)*
 
@@ -845,21 +984,27 @@ ___
 
 *Overrides [CardElement](cardelement.md).[getEffectiveStyle](cardelement.md#geteffectivestyle)*
 
-*Defined in [card-elements.ts:5289](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5289)*
-
 **Returns:** *string*
+
+___
+
+###  getEffectiveStyleDefinition
+
+▸ **getEffectiveStyleDefinition**(): *[ContainerStyleDefinition](containerstyledefinition.md)*
+
+*Inherited from [CardElement](cardelement.md).[getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)*
+
+**Returns:** *[ContainerStyleDefinition](containerstyledefinition.md)*
 
 ___
 
 ###  getElementById
 
-▸ **getElementById**(`id`: string): *[CardElement](cardelement.md)*
+▸ **getElementById**(`id`: string): *[CardElement](cardelement.md) | undefined*
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[getElementById](cardelementcontainer.md#getelementbyid)*
 
 *Overrides [CardElement](cardelement.md).[getElementById](cardelement.md#getelementbyid)*
-
-*Defined in [card-elements.ts:2354](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2354)*
 
 **Parameters:**
 
@@ -867,43 +1012,27 @@ Name | Type |
 ------ | ------ |
 `id` | string |
 
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
 ___
 
 ###  getFirstVisibleRenderedItem
 
-▸ **getFirstVisibleRenderedItem**(): *[CardElement](cardelement.md)*
+▸ **getFirstVisibleRenderedItem**(): *[CardElement](cardelement.md) | undefined*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getFirstVisibleRenderedItem](cardelementcontainer.md#abstract-getfirstvisiblerendereditem)*
 
-*Defined in [card-elements.ts:5606](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5606)*
-
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
 ___
 
 ###  getForbiddenActionTypes
 
-▸ **getForbiddenActionTypes**(): *Array‹any›*
+▸ **getForbiddenActionTypes**(): *[ActionType](../README.md#actiontype)[]*
 
 *Inherited from [CardElement](cardelement.md).[getForbiddenActionTypes](cardelement.md#getforbiddenactiontypes)*
 
-*Defined in [card-elements.ts:557](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L557)*
-
-**Returns:** *Array‹any›*
-
-___
-
-###  getForbiddenElementTypes
-
-▸ **getForbiddenElementTypes**(): *Array‹string›*
-
-*Inherited from [CardElement](cardelement.md).[getForbiddenElementTypes](cardelement.md#getforbiddenelementtypes)*
-
-*Defined in [card-elements.ts:553](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L553)*
-
-**Returns:** *Array‹string›*
+**Returns:** *[ActionType](../README.md#actiontype)[]*
 
 ___
 
@@ -912,8 +1041,6 @@ ___
 ▸ **getHasBackground**(): *boolean*
 
 *Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getHasBackground](stylablecardelementcontainer.md#protected-gethasbackground)*
-
-*Defined in [card-elements.ts:5563](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5563)*
 
 **Returns:** *boolean*
 
@@ -925,8 +1052,6 @@ ___
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[getHasExpandedAction](stylablecardelementcontainer.md#protected-gethasexpandedaction)*
 
-*Defined in [card-elements.ts:5216](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5216)*
-
 **Returns:** *boolean*
 
 ___
@@ -936,8 +1061,6 @@ ___
 ▸ **getImmediateSurroundingPadding**(`result`: [PaddingDefinition](paddingdefinition.md), `processTop`: boolean, `processRight`: boolean, `processBottom`: boolean, `processLeft`: boolean): *void*
 
 *Inherited from [CardElement](cardelement.md).[getImmediateSurroundingPadding](cardelement.md#getimmediatesurroundingpadding)*
-
-*Defined in [card-elements.ts:561](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L561)*
 
 **Parameters:**
 
@@ -959,8 +1082,6 @@ ___
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getItemAt](cardelementcontainer.md#abstract-getitemat)*
 
-*Defined in [card-elements.ts:5602](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5602)*
-
 **Parameters:**
 
 Name | Type |
@@ -977,8 +1098,6 @@ ___
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getItemCount](cardelementcontainer.md#abstract-getitemcount)*
 
-*Defined in [card-elements.ts:5598](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5598)*
-
 **Returns:** *number*
 
 ___
@@ -986,8 +1105,6 @@ ___
 ### `Protected` getItemsCollectionPropertyName
 
 ▸ **getItemsCollectionPropertyName**(): *string*
-
-*Defined in [card-elements.ts:5437](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5437)*
 
 **Returns:** *string*
 
@@ -997,9 +1114,7 @@ ___
 
 ▸ **getJsonTypeName**(): *string*
 
-*Overrides [CardElement](cardelement.md).[getJsonTypeName](cardelement.md#abstract-getjsontypename)*
-
-*Defined in [card-elements.ts:5630](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5630)*
+*Overrides [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)*
 
 **Returns:** *string*
 
@@ -1007,49 +1122,41 @@ ___
 
 ###  getLastVisibleRenderedItem
 
-▸ **getLastVisibleRenderedItem**(): *[CardElement](cardelement.md)*
+▸ **getLastVisibleRenderedItem**(): *[CardElement](cardelement.md) | undefined*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getLastVisibleRenderedItem](cardelementcontainer.md#abstract-getlastvisiblerendereditem)*
 
-*Defined in [card-elements.ts:5618](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5618)*
-
-**Returns:** *[CardElement](cardelement.md)*
+**Returns:** *[CardElement](cardelement.md) | undefined*
 
 ___
 
 ### `Protected` getPadding
 
-▸ **getPadding**(): *[PaddingDefinition](paddingdefinition.md)*
+▸ **getPadding**(): *[PaddingDefinition](paddingdefinition.md) | undefined*
 
 *Inherited from [CardElement](cardelement.md).[getPadding](cardelement.md#protected-getpadding)*
 
-*Defined in [card-elements.ts:474](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L474)*
-
-**Returns:** *[PaddingDefinition](paddingdefinition.md)*
+**Returns:** *[PaddingDefinition](paddingdefinition.md) | undefined*
 
 ___
 
 ###  getParentContainer
 
-▸ **getParentContainer**(): *[Container](container.md)*
+▸ **getParentContainer**(): *[Container](container.md) | undefined*
 
 *Inherited from [CardElement](cardelement.md).[getParentContainer](cardelement.md#getparentcontainer)*
 
-*Defined in [card-elements.ts:809](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L809)*
-
-**Returns:** *[Container](container.md)*
+**Returns:** *[Container](container.md) | undefined*
 
 ___
 
 ###  getResourceInformation
 
-▸ **getResourceInformation**(): *Array‹[IResourceInformation](../interfaces/iresourceinformation.md)›*
+▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getResourceInformation](cardelementcontainer.md#getresourceinformation)*
 
-*Defined in [card-elements.ts:5762](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5762)*
-
-**Returns:** *Array‹[IResourceInformation](../interfaces/iresourceinformation.md)›*
+**Returns:** *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
 
 ___
 
@@ -1059,21 +1166,81 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[getRootElement](cardelement.md#getrootelement)*
 
-*Defined in [card-elements.ts:799](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L799)*
-
 **Returns:** *[CardElement](cardelement.md)*
 
 ___
 
-### `Protected` getSelectAction
+###  getRootObject
 
-▸ **getSelectAction**(): *[Action](action.md)*
+▸ **getRootObject**(): *[CardObject](cardobject.md)*
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[getSelectAction](cardelementcontainer.md#protected-getselectaction)*
+*Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
 
-*Defined in [card-elements.ts:2207](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2207)*
+**Returns:** *[CardObject](cardobject.md)*
 
-**Returns:** *[Action](action.md)*
+___
+
+###  getSchema
+
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+___
+
+### `Protected` getSchemaKey
+
+▸ **getSchemaKey**(): *string*
+
+*Inherited from [CardObject](cardobject.md).[getSchemaKey](cardobject.md#protected-getschemakey)*
+
+*Overrides [SerializableObject](serializableobject.md).[getSchemaKey](serializableobject.md#protected-abstract-getschemakey)*
+
+**Returns:** *string*
+
+___
+
+### `Protected` getValue
+
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
+
+*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *any*
+
+___
+
+###  hasAllDefaultValues
+
+▸ **hasAllDefaultValues**(): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+
+**Returns:** *boolean*
+
+___
+
+###  hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
+
+*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *boolean*
 
 ___
 
@@ -1082,8 +1249,6 @@ ___
 ▸ **indexOf**(`cardElement`: [CardElement](cardelement.md)): *number*
 
 *Overrides [CardElement](cardelement.md).[indexOf](cardelement.md#indexof)*
-
-*Defined in [card-elements.ts:5726](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5726)*
 
 **Parameters:**
 
@@ -1098,8 +1263,6 @@ ___
 ###  insertItemAfter
 
 ▸ **insertItemAfter**(`item`: [CardElement](cardelement.md), `insertAfter`: [CardElement](cardelement.md)): *void*
-
-*Defined in [card-elements.ts:5738](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5738)*
 
 **Parameters:**
 
@@ -1116,8 +1279,6 @@ ___
 
 ▸ **insertItemBefore**(`item`: [CardElement](cardelement.md), `insertBefore`: [CardElement](cardelement.md)): *void*
 
-*Defined in [card-elements.ts:5734](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5734)*
-
 **Parameters:**
 
 Name | Type |
@@ -1129,15 +1290,47 @@ Name | Type |
 
 ___
 
+### `Protected` internalParse
+
+▸ **internalParse**(`source`: any, `context`: [SerializationContext](serializationcontext.md)): *void*
+
+*Overrides [SerializableObject](serializableobject.md).[internalParse](serializableobject.md#protected-internalparse)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | any |
+`context` | [SerializationContext](serializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
 ### `Protected` internalRender
 
-▸ **internalRender**(): *HTMLElement*
+▸ **internalRender**(): *HTMLElement | undefined*
 
 *Overrides [CardElement](cardelement.md).[internalRender](cardelement.md#protected-abstract-internalrender)*
 
-*Defined in [card-elements.ts:5449](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5449)*
+**Returns:** *HTMLElement | undefined*
 
-**Returns:** *HTMLElement*
+___
+
+### `Protected` internalToJSON
+
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [SerializationContext](serializationcontext.md)): *void*
+
+*Overrides [SerializableObject](serializableobject.md).[internalToJSON](serializableobject.md#protected-internaltojson)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [SerializationContext](serializationcontext.md) |
+
+**Returns:** *void*
 
 ___
 
@@ -1148,8 +1341,6 @@ ___
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[internalValidateProperties](stylablecardelementcontainer.md#internalvalidateproperties)*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[internalValidateProperties](cardelementcontainer.md#internalvalidateproperties)*
-
-*Defined in [card-elements.ts:5256](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5256)*
 
 **Parameters:**
 
@@ -1167,8 +1358,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isAtTheVeryBottom](cardelement.md#isattheverybottom)*
 
-*Defined in [card-elements.ts:767](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L767)*
-
 **Returns:** *boolean*
 
 ___
@@ -1178,8 +1367,6 @@ ___
 ▸ **isAtTheVeryLeft**(): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isAtTheVeryLeft](cardelement.md#isattheveryleft)*
-
-*Defined in [card-elements.ts:755](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L755)*
 
 **Returns:** *boolean*
 
@@ -1191,8 +1378,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isAtTheVeryRight](cardelement.md#isattheveryright)*
 
-*Defined in [card-elements.ts:759](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L759)*
-
 **Returns:** *boolean*
 
 ___
@@ -1202,8 +1387,6 @@ ___
 ▸ **isAtTheVeryTop**(): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isAtTheVeryTop](cardelement.md#isattheverytop)*
-
-*Defined in [card-elements.ts:763](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L763)*
 
 **Returns:** *boolean*
 
@@ -1217,8 +1400,6 @@ ___
 
 *Overrides [CardElement](cardelement.md).[isBleeding](cardelement.md#isbleeding)*
 
-*Defined in [card-elements.ts:5244](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5244)*
-
 **Returns:** *boolean*
 
 ___
@@ -1228,8 +1409,6 @@ ___
 ▸ **isBleedingAtBottom**(): *boolean*
 
 *Overrides [CardElement](cardelement.md).[isBleedingAtBottom](cardelement.md#isbleedingatbottom)*
-
-*Defined in [card-elements.ts:5675](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5675)*
 
 **Returns:** *boolean*
 
@@ -1241,8 +1420,6 @@ ___
 
 *Overrides [CardElement](cardelement.md).[isBleedingAtTop](cardelement.md#isbleedingattop)*
 
-*Defined in [card-elements.ts:5669](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5669)*
-
 **Returns:** *boolean*
 
 ___
@@ -1252,8 +1429,6 @@ ___
 ▸ **isBottomElement**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isBottomElement](cardelement.md#isbottomelement)*
-
-*Defined in [card-elements.ts:791](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L791)*
 
 **Parameters:**
 
@@ -1271,7 +1446,15 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isDesignMode](cardelement.md#isdesignmode)*
 
-*Defined in [card-elements.ts:737](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L737)*
+**Returns:** *boolean*
+
+___
+
+### `Protected` isDisplayed
+
+▸ **isDisplayed**(): *boolean*
+
+*Inherited from [CardElement](cardelement.md).[isDisplayed](cardelement.md#protected-isdisplayed)*
 
 **Returns:** *boolean*
 
@@ -1279,18 +1462,15 @@ ___
 
 ### `Protected` isElementAllowed
 
-▸ **isElementAllowed**(`element`: [CardElement](cardelement.md), `forbiddenElementTypes`: Array‹string›): *boolean*
+▸ **isElementAllowed**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[isElementAllowed](cardelementcontainer.md#protected-iselementallowed)*
-
-*Defined in [card-elements.ts:2169](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2169)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `element` | [CardElement](cardelement.md) |
-`forbiddenElementTypes` | Array‹string› |
 
 **Returns:** *boolean*
 
@@ -1301,8 +1481,6 @@ ___
 ▸ **isFirstElement**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Overrides [CardElement](cardelement.md).[isFirstElement](cardelement.md#isfirstelement)*
-
-*Defined in [card-elements.ts:5634](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5634)*
 
 **Parameters:**
 
@@ -1320,8 +1498,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isHiddenDueToOverflow](cardelement.md#ishiddenduetooverflow)*
 
-*Defined in [card-elements.ts:795](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L795)*
-
 **Returns:** *boolean*
 
 ___
@@ -1331,8 +1507,6 @@ ___
 ▸ **isLastElement**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Overrides [CardElement](cardelement.md).[isLastElement](cardelement.md#islastelement)*
-
-*Defined in [card-elements.ts:5646](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5646)*
 
 **Parameters:**
 
@@ -1350,8 +1524,6 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isLeftMostElement](cardelement.md#isleftmostelement)*
 
-*Defined in [card-elements.ts:779](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L779)*
-
 **Parameters:**
 
 Name | Type |
@@ -1362,25 +1534,11 @@ Name | Type |
 
 ___
 
-###  isRendered
-
-▸ **isRendered**(): *boolean*
-
-*Inherited from [CardElement](cardelement.md).[isRendered](cardelement.md#isrendered)*
-
-*Defined in [card-elements.ts:743](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L743)*
-
-**Returns:** *boolean*
-
-___
-
 ###  isRightMostElement
 
 ▸ **isRightMostElement**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isRightMostElement](cardelement.md#isrightmostelement)*
-
-*Defined in [card-elements.ts:783](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L783)*
 
 **Parameters:**
 
@@ -1396,8 +1554,6 @@ ___
 
 ▸ **isRtl**(): *boolean*
 
-*Defined in [card-elements.ts:5658](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5658)*
-
 **Returns:** *boolean*
 
 ___
@@ -1407,8 +1563,6 @@ ___
 ▸ **isTopElement**(`element`: [CardElement](cardelement.md)): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[isTopElement](cardelement.md#istopelement)*
-
-*Defined in [card-elements.ts:787](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L787)*
 
 **Parameters:**
 
@@ -1422,32 +1576,65 @@ ___
 
 ### `Protected` overrideInternalRender
 
-▸ **overrideInternalRender**(): *HTMLElement*
+▸ **overrideInternalRender**(): *HTMLElement | undefined*
 
 *Inherited from [CardElement](cardelement.md).[overrideInternalRender](cardelement.md#protected-overrideinternalrender)*
 
-*Defined in [card-elements.ts:426](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L426)*
-
-**Returns:** *HTMLElement*
+**Returns:** *HTMLElement | undefined*
 
 ___
 
 ###  parse
 
-▸ **parse**(`json`: any, `errors?`: Array‹[IValidationError](../interfaces/ivalidationerror.md)›): *void*
+▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[parse](stylablecardelementcontainer.md#parse)*
+*Inherited from [CardElement](cardelement.md).[parse](cardelement.md#parse)*
 
-*Defined in [card-elements.ts:5681](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5681)*
+*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`json` | any |
-`errors?` | Array‹[IValidationError](../interfaces/ivalidationerror.md)› |
+`source` | any |
+`context?` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *void*
+
+___
+
+### `Protected` populateSchema
+
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+
+*Inherited from [CardElementContainer](cardelementcontainer.md).[populateSchema](cardelementcontainer.md#protected-populateschema)*
+
+*Overrides [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
+
+**Returns:** *void*
+
+___
+
+###  preProcessPropertyValue
+
+▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
+
+*Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`propertyValue?` | any |
+
+**Returns:** *any*
 
 ___
 
@@ -1456,8 +1643,6 @@ ___
 ▸ **remove**(): *boolean*
 
 *Inherited from [CardElement](cardelement.md).[remove](cardelement.md#remove)*
-
-*Defined in [card-elements.ts:698](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L698)*
 
 **Returns:** *boolean*
 
@@ -1468,8 +1653,6 @@ ___
 ▸ **removeItem**(`item`: [CardElement](cardelement.md)): *boolean*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[removeItem](cardelementcontainer.md#abstract-removeitem)*
-
-*Defined in [card-elements.ts:5742](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5742)*
 
 **Parameters:**
 
@@ -1483,15 +1666,23 @@ ___
 
 ###  render
 
-▸ **render**(): *HTMLElement*
+▸ **render**(): *HTMLElement | undefined*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[render](stylablecardelementcontainer.md#render)*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[render](cardelementcontainer.md#render)*
 
-*Defined in [card-elements.ts:5279](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5279)*
+**Returns:** *HTMLElement | undefined*
 
-**Returns:** *HTMLElement*
+___
+
+###  resetDefaultValues
+
+▸ **resetDefaultValues**(): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+
+**Returns:** *void*
 
 ___
 
@@ -1500,8 +1691,6 @@ ___
 ▸ **setBleed**(`value`: boolean): *void*
 
 *Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[setBleed](stylablecardelementcontainer.md#protected-setbleed)*
-
-*Defined in [card-elements.ts:5224](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5224)*
 
 **Parameters:**
 
@@ -1519,8 +1708,6 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
 
-*Defined in [card-elements.ts:189](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L189)*
-
 **Parameters:**
 
 Name | Type |
@@ -1534,17 +1721,15 @@ ___
 
 ### `Protected` setPadding
 
-▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md)): *void*
+▸ **setPadding**(`value`: [PaddingDefinition](paddingdefinition.md) | undefined): *void*
 
 *Inherited from [CardElement](cardelement.md).[setPadding](cardelement.md#protected-setpadding)*
-
-*Defined in [card-elements.ts:478](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L478)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | [PaddingDefinition](paddingdefinition.md) |
+`value` | [PaddingDefinition](paddingdefinition.md) &#124; undefined |
 
 **Returns:** *void*
 
@@ -1552,37 +1737,15 @@ ___
 
 ###  setParent
 
-▸ **setParent**(`value`: [CardElement](cardelement.md)): *void*
+▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
 
-*Inherited from [CardElement](cardelement.md).[setParent](cardelement.md#setparent)*
-
-*Overrides [CardObject](cardobject.md).[setParent](cardobject.md#abstract-setparent)*
-
-*Defined in [card-elements.ts:541](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L541)*
+*Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | [CardElement](cardelement.md) |
-
-**Returns:** *void*
-
-___
-
-### `Protected` setSelectAction
-
-▸ **setSelectAction**(`value`: [Action](action.md)): *void*
-
-*Inherited from [CardElementContainer](cardelementcontainer.md).[setSelectAction](cardelementcontainer.md#protected-setselectaction)*
-
-*Defined in [card-elements.ts:2211](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2211)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | [Action](action.md) |
+`value` | [CardObject](cardobject.md) &#124; undefined |
 
 **Returns:** *void*
 
@@ -1592,9 +1755,7 @@ ___
 
 ▸ **setShouldFallback**(`value`: boolean): *void*
 
-*Inherited from [CardElement](cardelement.md).[setShouldFallback](cardelement.md#setshouldfallback)*
-
-*Defined in [card-elements.ts:843](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L843)*
+*Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
 
 **Parameters:**
 
@@ -1606,15 +1767,46 @@ Name | Type |
 
 ___
 
+### `Protected` setValue
+
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+
+*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
+
+**Returns:** *void*
+
+___
+
 ###  shouldFallback
 
 ▸ **shouldFallback**(): *boolean*
 
-*Inherited from [CardElement](cardelement.md).[shouldFallback](cardelement.md#shouldfallback)*
+*Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
 
-*Overrides [CardObject](cardobject.md).[shouldFallback](cardobject.md#abstract-shouldfallback)*
+**Returns:** *boolean*
 
-*Defined in [card-elements.ts:839](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L839)*
+___
+
+### `Protected` shouldSerialize
+
+▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
+
+*Inherited from [CardElement](cardelement.md).[shouldSerialize](cardelement.md#protected-shouldserialize)*
+
+*Overrides [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -1624,21 +1816,25 @@ ___
 
 ▸ **supportsExcplitiHeight**(): *boolean*
 
-*Defined in [card-elements.ts:5433](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5433)*
-
 **Returns:** *boolean*
 
 ___
 
 ###  toJSON
 
-▸ **toJSON**(): *any*
+▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[toJSON](stylablecardelementcontainer.md#tojson)*
+*Inherited from [CardElement](cardelement.md).[toJSON](cardelement.md#tojson)*
 
-*Defined in [card-elements.ts:5576](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5576)*
+*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
-**Returns:** *any*
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context?` | [SerializationContext](serializationcontext.md) |
+
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 
 ___
 
@@ -1647,8 +1843,6 @@ ___
 ▸ **truncateOverflow**(`maxHeight`: number): *boolean*
 
 *Overrides [CardElement](cardelement.md).[truncateOverflow](cardelement.md#protected-truncateoverflow)*
-
-*Defined in [card-elements.ts:5522](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5522)*
 
 **Parameters:**
 
@@ -1666,8 +1860,6 @@ ___
 
 *Overrides [CardElement](cardelement.md).[undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)*
 
-*Defined in [card-elements.ts:5557](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5557)*
-
 **Returns:** *void*
 
 ___
@@ -1679,8 +1871,6 @@ ___
 *Inherited from [CardElementContainer](cardelementcontainer.md).[updateLayout](cardelementcontainer.md#updatelayout)*
 
 *Overrides [CardElement](cardelement.md).[updateLayout](cardelement.md#updatelayout)*
-
-*Defined in [card-elements.ts:2324](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L2324)*
 
 **Parameters:**
 
@@ -1697,7 +1887,5 @@ ___
 ▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
 
 *Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
-
-*Defined in [card-elements.ts:284](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L284)*
 
 **Returns:** *[ValidationResults](validationresults.md)*

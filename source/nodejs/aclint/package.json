@@ -1,7 +1,8 @@
 {
 	"name": "aclint",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Adaptive Cards Linting Tool",
+	"private": true,
 	"main": "dist/src/index.js",
 	"bin": {
 		"aclint": "./dist/src/index.js"
