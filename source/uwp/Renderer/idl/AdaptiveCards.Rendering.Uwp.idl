@@ -396,16 +396,6 @@ AdaptiveNamespaceStart
         OptionalInputs
     } InputNecessityIndicators;
 
-    [version(NTDDI_WIN10_RS1), flags]
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        [contract(InternalContract, 1)][internal]
-#endif
-        typedef[v1_enum] enum ValidationBehavior {
-            OnSubmit = 0,
-            OnFocusLostWithInput,
-            OnFocusLost
-        } ValidationBehavior;
-
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -733,7 +723,6 @@ AdaptiveNamespaceStart
     {
         Boolean IsRequired;
         String ErrorMessage;
-        String Label;
     };
 
     [
@@ -1012,7 +1001,6 @@ AdaptiveNamespaceStart
 
         void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
         void ResetFixedDimensions();
-        void SetInlineValidation(Boolean inlineValidation);
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
         Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard> RenderCardAsXamlAsync(AdaptiveCard adaptiveCard);
@@ -1384,65 +1372,6 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputLabelConfig", 4350CCBC-FC55-4324-88E3-72583A25F178),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ] runtimeclass AdaptiveInputLabelConfig {
-        AdaptiveInputLabelConfig();
-
-        ForegroundColor Color;
-        Boolean IsSubtle;
-        TextSize Size;
-        TextWeight Weight;
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputLabelsConfig", 8511B8D9-866A-4535-9A46-B9C0D4C63085),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ] runtimeclass AdaptiveInputLabelsConfig {
-        AdaptiveInputLabelsConfig();
-
-        String RequiredSuffix;
-        Spacing InputSpacing;
-
-        AdaptiveInputLabelConfig RequiredInputs;
-        AdaptiveInputLabelConfig OptionalInputs;
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveErrorMessageConfig", 01170E4D-B523-48E7-96C9-39FD8710048B),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ] runtimeclass AdaptiveErrorMessageConfig {
-        AdaptiveErrorMessageConfig();
-
-        TextSize Size;
-        Spacing Spacing;
-        TextWeight Weight;
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputsConfig", 470F4E2E-920B-4FA2-A967-982C766182A2),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ] runtimeclass AdaptiveInputsConfig {
-        AdaptiveInputsConfig();
-
-        AdaptiveErrorMessageConfig ErrorMessage;
-        AdaptiveInputLabelsConfig InputLabels;
-        ValidationBehavior ValidationBehavior;
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfig", 15ae7240-f9b0-47e4-b444-62da42b8b863),
         static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveHostConfigStatics", 11a659ac-a28d-42fc-ab0e-f103b3f5c4fd),
         contract(InternalContract, 1),
@@ -1469,7 +1398,6 @@ AdaptiveNamespaceStart
         AdaptiveFactSetConfig FactSet;
         AdaptiveActionsConfig Actions;
         AdaptiveMediaConfig Media;
-        AdaptiveInputsConfig Inputs;
 
         static AdaptiveHostConfigParseResult FromJsonString(String hostConfigJson);
         static AdaptiveHostConfigParseResult FromJson(Windows.Data.Json.JsonObject hostConfigJson);
@@ -1664,8 +1592,6 @@ AdaptiveNamespaceStart
 
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
-
-        Boolean ValidateInputs();
     };
 
     [
@@ -1832,8 +1758,6 @@ AdaptiveNamespaceStart
     {
         IAdaptiveInputElement InputElement { get; };
         String CurrentValue { get; };
-        Boolean Validate();
-        void SetFocus();
     };
 
     [

@@ -424,11 +424,10 @@ namespace AdaptiveNamespace::ActionHelpers
     void HandleInlineAction(_In_ IAdaptiveRenderContext* renderContext,
                             _In_ IAdaptiveRenderArgs* renderArgs,
                             _In_ ITextBox* textBox,
-                            _In_ IUIElement* textBoxParentContainer,
                             _In_ IAdaptiveActionElement* inlineAction,
                             _COM_Outptr_ IUIElement** textBoxWithInlineAction)
     {
-        ComPtr<IUIElement> localTextBoxContainer(textBoxParentContainer);
+        ComPtr<ITextBox> localTextBox(textBox);
         ComPtr<IAdaptiveActionElement> localInlineAction(inlineAction);
 
         ABI::AdaptiveNamespace::ActionType actionType;
@@ -440,7 +439,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // Inline ShowCards are not supported for inline actions
         if (WarnForInlineShowCard(renderContext, localInlineAction.Get(), L"Inline ShowCard not supported for InlineAction"))
         {
-            THROW_IF_FAILED(localTextBoxContainer.CopyTo(textBoxWithInlineAction));
+            THROW_IF_FAILED(localTextBox.CopyTo(textBoxWithInlineAction));
             return;
         }
 
@@ -461,11 +460,11 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(textBoxColumnDefinition->put_Width({1, GridUnitType::GridUnitType_Star}));
         THROW_IF_FAILED(columnDefinitions->Append(textBoxColumnDefinition.Get()));
 
-        ComPtr<IFrameworkElement> textBoxContainerAsFrameworkElement;
-        THROW_IF_FAILED(localTextBoxContainer.As(&textBoxContainerAsFrameworkElement));
+        ComPtr<IFrameworkElement> textBoxAsFrameworkElement;
+        THROW_IF_FAILED(localTextBox.As(&textBoxAsFrameworkElement));
 
-        THROW_IF_FAILED(gridStatics->SetColumn(textBoxContainerAsFrameworkElement.Get(), 0));
-        XamlHelpers::AppendXamlElementToPanel(textBoxContainerAsFrameworkElement.Get(), gridAsPanel.Get());
+        THROW_IF_FAILED(gridStatics->SetColumn(textBoxAsFrameworkElement.Get(), 0));
+        XamlHelpers::AppendXamlElementToPanel(textBox, gridAsPanel.Get());
 
         // Create a separator column
         ComPtr<IColumnDefinition> separatorColumnDefinition = XamlHelpers::CreateXamlClass<IColumnDefinition>(
@@ -554,13 +553,13 @@ namespace AdaptiveNamespace::ActionHelpers
 
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
-        THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+        THROW_IF_FAILED(textBoxAsFrameworkElement->add_Loaded(
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                        /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
 
-                return ActionHelpers::SetMatchingHeight(actionFrameworkElement.Get(), textBoxContainerAsFrameworkElement.Get());
+                return ActionHelpers::SetMatchingHeight(actionFrameworkElement.Get(), textBoxAsFrameworkElement.Get());
             }).Get(),
             &eventToken));
 
@@ -587,7 +586,6 @@ namespace AdaptiveNamespace::ActionHelpers
 
         if (!isMultiLine)
         {
-            ComPtr<ITextBox> localTextBox(textBox);
             ComPtr<IUIElement> textBoxAsUIElement;
             THROW_IF_FAILED(localTextBox.As(&textBoxAsUIElement));
 

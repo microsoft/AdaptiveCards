@@ -443,12 +443,9 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "TextInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
-
-            Assert.AreEqual("LabelText", textInput.Label);
 
             ValidateBaseElementProperties(textInput, "TextInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -486,7 +483,6 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "NumberInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
@@ -499,7 +495,6 @@ namespace UWPUnitTests
             Assert.AreEqual(40, numberInput.Min);
             Assert.AreEqual("Placeholder", numberInput.Placeholder);
             Assert.AreEqual(42, numberInput.Value);
-            Assert.AreEqual("LabelText", numberInput.Label);
 
             var jsonString = numberInput.ToJson().ToString();
             Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
@@ -518,13 +513,10 @@ namespace UWPUnitTests
                 Id = "DateInputId",
                 IsRequired = true,
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
                 Value = "2018-01-14",
             };
-
-            Assert.AreEqual("LabelText", dateInput.Label);
 
             ValidateBaseElementProperties(dateInput, "DateInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -551,12 +543,9 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "TimeInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
-
-            Assert.AreEqual("LabelText", timeInput.Label);
 
             ValidateBaseElementProperties(timeInput, "TimeInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -584,12 +573,9 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ToggleInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
-
-            Assert.AreEqual("LabelText", toggleInput.Label);
 
             ValidateBaseElementProperties(toggleInput, "ToggleInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -633,12 +619,9 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ChoiceSetInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
-
-            Assert.AreEqual("LabelText", choiceSet.Label);
 
             ValidateBaseElementProperties(choiceSet, "ChoiceSetInputId", false, true, Spacing.Medium, HeightType.Stretch);
 

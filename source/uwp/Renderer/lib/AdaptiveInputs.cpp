@@ -96,28 +96,4 @@ namespace AdaptiveNamespace
         }
         return valueSet.CopyTo(valueSetOut);
     }
-
-    HRESULT AdaptiveInputs::ValidateInputs(boolean* inputsAreValid)
-    {
-        boolean allInputsValid = true;
-
-
-
-        for (auto& inputValue : *m_inputValues)
-        {
-            boolean currentInputValid;
-            RETURN_IF_FAILED(inputValue->Validate(&currentInputValid));
-
-            // If this is the first invalid input, set focus here
-            if (allInputsValid && !currentInputValid)
-            {
-                RETURN_IF_FAILED(inputValue->SetFocus());
-            }
-
-            allInputsValid &= currentInputValid;
-        }
-
-        *inputsAreValid = allInputsValid;
-        return S_OK;
-    }
 }

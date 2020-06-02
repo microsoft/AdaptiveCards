@@ -18,7 +18,6 @@ namespace AdaptiveNamespace
         AdaptiveCardElementBase::InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(sharedModel));
         m_isRequired = sharedModel->GetIsRequired();
         RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetErrorMessage(), m_errorMessage.GetAddressOf()));
-        RETURN_IF_FAILED(UTF8ToHString(sharedModel->GetLabel(), m_label.GetAddressOf()));
 
         return S_OK;
     }
@@ -35,21 +34,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveInputElementBase::get_ErrorMessage(_Outptr_ HSTRING* title) { return m_errorMessage.CopyTo(title); }
+    HRESULT AdaptiveInputElementBase::get_ErrorMessage(HSTRING* title) { return m_errorMessage.CopyTo(title); }
 
-    HRESULT AdaptiveInputElementBase::put_ErrorMessage(_In_ HSTRING title) { return m_errorMessage.Set(title); }
-
-    HRESULT AdaptiveInputElementBase::get_Label(_Outptr_ HSTRING* label) { return m_label.CopyTo(label); }
-
-    HRESULT AdaptiveInputElementBase::put_Label(_In_ HSTRING label) { return m_label.Set(label); }
+    HRESULT AdaptiveInputElementBase::put_ErrorMessage(HSTRING title) { return m_errorMessage.Set(title); }
 
     HRESULT AdaptiveInputElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement)
     {
         AdaptiveCardElementBase::SetSharedElementProperties(sharedCardElement);
         sharedCardElement->SetIsRequired(m_isRequired);
         sharedCardElement->SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
-        sharedCardElement->SetLabel(HStringToUTF8(m_label.Get()));
-
         return S_OK;
     }
 }

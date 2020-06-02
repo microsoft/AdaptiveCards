@@ -30,12 +30,6 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP SetFixedDimensions(UINT32 desiredWidth, UINT32 desiredHeight);
         IFACEMETHODIMP ResetFixedDimensions();
 
-        STDMETHODIMP SetInlineValidation(boolean inlineValidation)
-        {
-            m_inlineValidation = inlineValidation;
-            return S_OK;
-        }
-
         IFACEMETHODIMP RenderAdaptiveCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                                           _COM_Outptr_ ABI::AdaptiveNamespace::IRenderedAdaptiveCard** result);
 
@@ -89,7 +83,6 @@ namespace AdaptiveNamespace
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
-        boolean m_inlineValidation = true;
     };
 
     ActivatableClass(AdaptiveCardRenderer);

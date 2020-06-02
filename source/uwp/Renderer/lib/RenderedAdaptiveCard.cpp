@@ -254,15 +254,6 @@ namespace AdaptiveNamespace
         // get the inputElements in Json form.
         ComPtr<IAdaptiveInputs> gatheredInputs;
         RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-
-        boolean inputsAreValid;
-        gatheredInputs->ValidateInputs(&inputsAreValid);
-
-        if (!inputsAreValid)
-        {
-            return S_OK;
-        }
-
         ComPtr<IAdaptiveActionEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
 
