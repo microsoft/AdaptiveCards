@@ -399,9 +399,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
             // this way is cleaner than modifying interface to accept a cardActionHandler
             // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
-            if(subView instanceof ViewGroup) {
+            if(subView instanceof ViewGroup)
+            {
                 ViewGroup subViewGroup = (ViewGroup) subView;
-                for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
+                for (int index = 0; index < subViewGroup.getChildCount(); ++index)
+                {
                     View view = subViewGroup.getChildAt(index);
                     if (view instanceof Button || view instanceof ImageButton)
                     {
