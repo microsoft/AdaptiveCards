@@ -8,12 +8,10 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -27,14 +25,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -42,6 +39,7 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -51,15 +49,8 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.inputhandler.validation.IInputValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRegexValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputRequiredValidator;
-import io.adaptivecards.renderer.inputhandler.validation.TextInputValidator;
-import io.adaptivecards.renderer.layout.StretchableInputLayout;
-import io.adaptivecards.renderer.readonly.RendererUtil;
-import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
-import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -157,71 +148,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         private BaseActionElement m_action = null;
     }
 
-    private class UnvalidatedTextWatcher implements TextWatcher
-    {
-
-        public UnvalidatedTextWatcher(TextInputHandler inputHandler)
-        {
-            m_textInputHandler = inputHandler;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after)
-        {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count)
-        {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable s)
-        {
-            CardRendererRegistration.getInstance().notifyInputChange(m_textInputHandler.getId(), m_textInputHandler.getInput());
-        }
-
-        private TextInputHandler m_textInputHandler;
-    }
-
-    public static View RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
-    {
-        SpannableStringBuilder paragraph = new SpannableStringBuilder();
-        CharSequence text = RendererUtil.handleSpecialText(label);
-        paragraph.append(text);
-        paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), ForegroundColor.Default, false, hostConfig, renderArgs);
-
-        if (isRequired)
-        {
-            int spanStart = text.length();
-
-            paragraph.append(" *");
-            paragraph = RichTextBlockRenderer.setColor(paragraph, spanStart, spanStart + 2, ForegroundColor.Attention, false, hostConfig, renderArgs);
-        }
-
-        TextView labelView = new TextView(context);
-        labelView.setText(paragraph);
-
-        return labelView;
-    }
-
-    public static TextView RenderErrorMessage(String message, Context context, HostConfig hostConfig, RenderArgs renderArgs)
-    {
-        SpannableStringBuilder paragraph = new SpannableStringBuilder();
-        CharSequence text = RendererUtil.handleSpecialText(message);
-        paragraph.append(text);
-
-        paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), ForegroundColor.Attention, false, hostConfig, renderArgs);
-
-        TextView errorMessageView = new TextView(context);
-        errorMessageView.setText(paragraph);
-        errorMessageView.setVisibility(View.INVISIBLE);
-
-        return errorMessageView;
-    }
-
     protected EditText renderInternal(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -231,27 +157,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
             String placeHolder,
             final TextInputHandler textInputHandler,
             HostConfig hostConfig,
-            TagContent tagContent,
-            RenderArgs renderArgs,
-            boolean requiresValidation,
-            IInputValidator inputValidator)
+            TagContent tagContent)
     {
-        EditText editText = null;
-
-        String errorMessage = baseInputElement.GetErrorMessage();
-        boolean isRequired = baseInputElement.GetIsRequired();
-
-        if (requiresValidation)
-        {
-            editText = new ValidatedEditText(context, new Color(), textInputHandler, inputValidator);
-            inputValidator.setViewForValidation(editText);
-        }
-        else
-        {
-            editText = new EditText(context);
-            editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
-        }
-
+        EditText editText = new EditText(context);
         textInputHandler.setView(editText);
         renderedCard.registerInputHandler(textInputHandler);
 
@@ -264,6 +172,26 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             editText.setHint(placeHolder);
         }
+        editText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(textInputHandler.getId(), textInputHandler.getInput());
+            }
+        });
 
         LinearLayout textInputViewGroup = null;
 
@@ -342,41 +270,32 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        boolean mustStretch = (baseInputElement.GetHeight() == HeightType.Stretch);
-
-        String inputLabel = baseInputElement.GetLabel();
-
-        if (mustStretch || isRequired || !(inputLabel.isEmpty()) || !(errorMessage.isEmpty()) )
+        if (baseInputElement.GetHeight() == HeightType.Stretch)
         {
-            StretchableInputLayout inputLayout = new StretchableInputLayout(context, mustStretch);
-            tagContent.SetStretchContainer(inputLayout);
+            LinearLayout containerLayout = new LinearLayout(context);
 
-            // Render input label
-            if (!inputLabel.isEmpty())
+            if (baseInputElement.GetHeight() == HeightType.Stretch)
             {
-                View view = TextInputRenderer.RenderInputLabel(inputLabel, isRequired, context, hostConfig, renderArgs);
-                inputLayout.setLabel(view);
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
             }
+            else
+            {
+                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            }
+
+            tagContent.SetStretchContainer(containerLayout);
 
             // TextInputViewGroup is only used when there's an inline action
             if (textInputViewGroup != null)
             {
-                inputLayout.addView(textInputViewGroup);
+                containerLayout.addView(textInputViewGroup);
             }
             else
             {
-                inputLayout.addView(editText);
-            }
-            inputLayout.setInputView(editText);
-
-            // Render error message
-            if (!errorMessage.isEmpty())
-            {
-                View view = TextInputRenderer.RenderErrorMessage(errorMessage, context, hostConfig, renderArgs);
-                inputLayout.setValidationLabel(view);
+                containerLayout.addView(editText);
             }
 
-            viewGroup.addView(inputLayout);
+            viewGroup.addView(containerLayout);
         }
         else
         {
@@ -421,23 +340,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-
-        IInputValidator inputValidator = new TextInputValidator();
-        boolean isRequired = textInput.GetIsRequired();
-        boolean requiresValidation = false;
-        if (isRequired)
-        {
-            inputValidator = new TextInputRequiredValidator(inputValidator);
-            requiresValidation = true;
-        }
-
-        String regex = textInput.GetRegex();
-        if (!(regex.trim().isEmpty()))
-        {
-            inputValidator = new TextInputRegexValidator(inputValidator);
-            requiresValidation = true;
-        }
-
         View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
         final EditText editText = renderInternal(
@@ -449,11 +351,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInput.GetPlaceholder(),
                 textInputHandler,
                 hostConfig,
-                tagContent,
-                renderArgs,
-                requiresValidation,
-                inputValidator);
-
+                tagContent);
         editText.setSingleLine(!textInput.GetIsMultiline());
         editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
@@ -487,11 +385,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
             // this way is cleaner than modifying interface to accept a cardActionHandler
             // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
-            if(subView instanceof ViewGroup)
-            {
+            if(subView instanceof ViewGroup) {
                 ViewGroup subViewGroup = (ViewGroup) subView;
-                for (int index = 0; index < subViewGroup.getChildCount(); ++index)
-                {
+                for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
                     View view = subViewGroup.getChildAt(index);
                     if (view instanceof Button || view instanceof ImageButton)
                     {
