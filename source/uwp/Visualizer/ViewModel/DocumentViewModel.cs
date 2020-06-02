@@ -28,6 +28,8 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
+        private static bool _inlineValidation = true;
+
         private RenderedAdaptiveCard _renderedAdaptiveCard;
         private UIElement _renderedCard;
         public UIElement RenderedCard
@@ -65,7 +67,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 if (_renderer == null)
                 {
-                    InitializeRenderer(MainPageViewModel.HostConfigEditor.HostConfig);
+                    InitializeRenderer(MainPageViewModel.HostConfigEditor.HostConfig, _inlineValidation);
                 }
             }
             catch (Exception ex)
@@ -223,7 +225,7 @@ namespace AdaptiveCardVisualizer.ViewModel
             return answer;
         }
 
-        public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
+        public static void InitializeRenderer(AdaptiveHostConfig hostConfig, bool inlineValidation)
         {
             _renderer = new AdaptiveCardRenderer();
             if (hostConfig != null)
@@ -238,6 +240,9 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 _renderer.SetFixedDimensions(320, 180);
             }
+
+            _inlineValidation = inlineValidation;
+            _renderer.SetInlineValidation(_inlineValidation);
 
             // Custom resource resolvers
             _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());

@@ -17,10 +17,15 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* title);
         IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING title);
 
+        IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label);
+        IFACEMETHODIMP put_Label(_In_ HSTRING label);
+
         HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
 
     private:
         boolean m_isRequired;
         Microsoft::WRL::Wrappers::HString m_errorMessage;
+        Microsoft::WRL::Wrappers::HString m_label;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_labelCardElement;
     };
 }

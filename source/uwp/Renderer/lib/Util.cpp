@@ -540,6 +540,12 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNames
                                   _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept
 try
 {
+    if (baseElement == nullptr)
+    {
+        *projectedElement = nullptr;
+        return S_OK;
+    }
+
     *projectedElement = nullptr;
     switch (baseElement->GetElementType())
     {
@@ -698,6 +704,38 @@ try
     return S_OK;
 }
 CATCH_RETURN;
+
+
+HRESULT GenerateLabelProjection(const std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> element,
+                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept
+try
+{
+    if (element == nullptr)
+    {
+        *projectedElement = nullptr;
+        return S_OK;
+    }
+
+    if (element->GetElementType() == CardElementType::TextBlock)
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveTextBlock>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::TextBlock>(element)));
+    }
+    else if (element->GetElementType() == CardElementType::RichTextBlock)
+    {
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRichTextBlock>(
+            projectedElement, std::AdaptivePointerCast<AdaptiveSharedNamespace::RichTextBlock>(element)));
+    }
+    else
+    {
+        return E_UNEXPECTED;
+    }
+
+    return S_OK;
+}
+CATCH_RETURN;
+
+
 
 HRESULT GenerateColumnsProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Column>>& containedElements,
                                   _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveColumn*>* projectedParentContainer) noexcept

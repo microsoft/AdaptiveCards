@@ -126,5 +126,11 @@ namespace AdaptiveCardVisualizer
         {
             SetIsInHostConfigEditor(false);
         }
+
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            CheckBox checkBox = sender as CheckBox;
+            ViewModel.InlineValidation = checkBox.IsChecked.HasValue && checkBox.IsChecked.Value;
+        }
     }
 }

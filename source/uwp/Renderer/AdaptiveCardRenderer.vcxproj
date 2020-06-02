@@ -128,7 +128,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\ActionHelpers.cpp" />
+    <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputLabelsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
@@ -151,6 +155,7 @@
     <ClInclude Include="lib\AdaptiveCardRendererComponent.h" />
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
+    <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
@@ -170,7 +175,10 @@
     <ClInclude Include="lib\AdaptiveImageSetRenderer.h" />
     <ClInclude Include="lib\AdaptiveImageSizesConfig.h" />
     <ClInclude Include="lib\AdaptiveInputElement.h" />
+    <ClInclude Include="lib\AdaptiveInputLabelConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputLabelsConfig.h" />
     <ClInclude Include="lib\AdaptiveInputs.h" />
+    <ClInclude Include="lib\AdaptiveInputsConfig.h" />
     <ClInclude Include="lib\AdaptiveMedia.h" />
     <ClInclude Include="lib\AdaptiveMediaConfig.h" />
     <ClInclude Include="lib\AdaptiveMediaEventInvoker.h" />
