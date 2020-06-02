@@ -37,6 +37,7 @@ import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -47,6 +48,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
 
 public class TextInputRenderer extends BaseCardElementRenderer
 {
@@ -210,6 +212,26 @@ public class TextInputRenderer extends BaseCardElementRenderer
         {
             editText.setHint(placeHolder);
         }
+        editText.addTextChangedListener(new TextWatcher()
+        {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after)
+            {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count)
+            {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s)
+            {
+                CardRendererRegistration.getInstance().notifyInputChange(textInputHandler.getId(), textInputHandler.getInput());
+            }
+        });
 
         LinearLayout textInputViewGroup = null;
 
@@ -329,7 +351,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-
         View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
         TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
         final EditText editText = renderInternal(
@@ -378,11 +399,9 @@ public class TextInputRenderer extends BaseCardElementRenderer
             // this way is cleaner than modifying interface to accept a cardActionHandler
             // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
-            if(subView instanceof ViewGroup)
-            {
+            if(subView instanceof ViewGroup) {
                 ViewGroup subViewGroup = (ViewGroup) subView;
-                for (int index = 0; index < subViewGroup.getChildCount(); ++index)
-                {
+                for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
                     View view = subViewGroup.getChildAt(index);
                     if (view instanceof Button || view instanceof ImageButton)
                     {

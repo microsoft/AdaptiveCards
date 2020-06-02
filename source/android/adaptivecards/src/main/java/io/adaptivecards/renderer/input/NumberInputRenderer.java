@@ -66,7 +66,6 @@ public class NumberInputRenderer extends TextInputRenderer
 
         NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
         TagContent tagContent = new TagContent(numberInput, numberInputHandler, separator, viewGroup);
-
         EditText editText = renderInternal(
                 renderedCard,
                 context,
