@@ -35,8 +35,6 @@
 
 \+ **new ActionsConfig**(`obj?`: any): *[ActionsConfig](actionsconfig.md)*
 
-*Defined in [host-config.ts:200](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L200)*
-
 **Parameters:**
 
 Name | Type |
@@ -51,15 +49,11 @@ Name | Type |
 
 • **actionAlignment**: *[ActionAlignment](../enums/actionalignment.md)* = Enums.ActionAlignment.Left
 
-*Defined in [host-config.ts:197](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L197)*
-
 ___
 
 ###  actionsOrientation
 
 • **actionsOrientation**: *[Orientation](../enums/orientation.md)* = Enums.Orientation.Horizontal
-
-*Defined in [host-config.ts:196](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L196)*
 
 ___
 
@@ -67,15 +61,11 @@ ___
 
 • **allowTitleToWrap**: *boolean* = false
 
-*Defined in [host-config.ts:199](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L199)*
-
 ___
 
 ###  buttonSpacing
 
 • **buttonSpacing**: *number* = 20
-
-*Defined in [host-config.ts:193](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L193)*
 
 ___
 
@@ -83,15 +73,11 @@ ___
 
 • **iconPlacement**: *[ActionIconPlacement](../enums/actioniconplacement.md)* = Enums.ActionIconPlacement.LeftOfTitle
 
-*Defined in [host-config.ts:198](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L198)*
-
 ___
 
 ###  iconSize
 
 • **iconSize**: *number* = 16
-
-*Defined in [host-config.ts:200](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L200)*
 
 ___
 
@@ -99,15 +85,11 @@ ___
 
 • **maxActions**: *number* = 5
 
-*Defined in [host-config.ts:191](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L191)*
-
 ___
 
 ### `Optional` preExpandSingleShowCardAction
 
 • **preExpandSingleShowCardAction**? : *undefined | false | true* = false
-
-*Defined in [host-config.ts:195](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L195)*
 
 ___
 
@@ -115,23 +97,17 @@ ___
 
 • **showCard**: *[ShowCardActionConfig](showcardactionconfig.md)* = new ShowCardActionConfig()
 
-*Defined in [host-config.ts:194](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L194)*
-
 ___
 
 ###  spacing
 
 • **spacing**: *[Spacing](../enums/spacing.md)* = Enums.Spacing.Default
 
-*Defined in [host-config.ts:192](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L192)*
-
 ## Methods
 
 ###  toJSON
 
 ▸ **toJSON**(): *object*
-
-*Defined in [host-config.ts:227](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/host-config.ts#L227)*
 
 **Returns:** *object*
 

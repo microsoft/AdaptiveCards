@@ -16,20 +16,14 @@
 
 • **FullyInContainer**:
 
-*Defined in [enums.ts:176](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L176)*
-
 ___
 
 ###  FullyOutOfContainer
 
 • **FullyOutOfContainer**:
 
-*Defined in [enums.ts:178](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L178)*
-
 ___
 
 ###  Overflowing
 
 • **Overflowing**:
-
-*Defined in [enums.ts:177](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L177)*
