@@ -3844,7 +3844,7 @@ export class HttpAction extends Action {
     @property(HttpAction.bodyProperty)
     private _body: StringWithSubstitutions;
 
-    @property(HttpAction.bodyProperty)
+    @property(HttpAction.methodProperty)
     method?: string;
 
     @property(HttpAction.headersProperty)
