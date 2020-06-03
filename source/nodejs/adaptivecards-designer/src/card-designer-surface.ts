@@ -732,7 +732,7 @@ export class CardDesignerSurface {
             this.setCardPayloadAsObject(JSON.parse(payload));
         }
         catch (e) {
-            console.warn("Invalid JSON string. " + e)
+            console.warn("Invalid JSON string. " + e);
         }
     }
 
