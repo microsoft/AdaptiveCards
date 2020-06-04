@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import io.adaptivecards.adaptivecardssample.CustomObjects.Actions.*;
@@ -51,7 +52,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-        implements ICardActionHandler
+        implements ICardActionHandler, IInputWatcher
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -143,6 +144,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
+        tabHost.addTab(tabHost.newTabSpec("tab_load").setIndicator("Load").setContent(R.id.load));
         tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
@@ -343,6 +345,23 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    private void renderLoadCard(boolean showErrorToast) {
+        try {
+            ParseResult parseResult = AdaptiveCard.DeserializeFromString(readStream(getResources().openRawResource(R.raw.loadcard)), AdaptiveCardRenderer.VERSION);
+            LinearLayout layout = (LinearLayout) findViewById(R.id.loadAdaptiveCardLayout);
+            layout.removeAllViews();
+
+            CardRendererRegistration.getInstance().setInputWatcher(this);
+
+            RenderedAdaptiveCard loadCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this);
+            layout.addView(loadCard.getView());
+        } catch (Exception ex) {
+            if (showErrorToast) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private static final int FILE_SELECT_CARD = 0;
     private static final int FILE_SELECT_CONFIG = 1;
     public void onClickFileBrowser(View view)
@@ -362,19 +381,25 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
-    private String loadFile(Uri uri)
-    {
+    private String loadFile(Uri uri) {
         // Get the Uri of the selected file
-        if (uri == null)
-        {
+        if (uri == null) {
             Toast.makeText(this, "File was not selected.", Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        InputStream inputStream = null;
+        try {
+            return readStream(getContentResolver().openInputStream(uri));
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
+        }
+
+        return null;
+    }
+
+    private String readStream(InputStream inputStream) {
         try
         {
-            inputStream = getContentResolver().openInputStream(uri);
             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder total = new StringBuilder();
             String line;
@@ -385,10 +410,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             }
 
             return total.toString();
-        }
-        catch (FileNotFoundException e)
-        {
-            Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
         }
         catch (IOException ioExcep)
         {
@@ -595,6 +616,20 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
         showToast("Media ended playing: " + mediaElement, Toast.LENGTH_LONG);
+    }
+
+    @Override
+    public void onInputChange(String id, String value) {
+        try {
+            if(id.equals("sampleCardName")) {
+                loadAdaptiveCard(readStream(getAssets().open(value)));
+            } else if(id.equals("sampleHostConfigName")) {
+                loadHostConfig(readStream(getAssets().open(value)));
+            }
+        } catch (IOException e) {
+            Toast.makeText(this, "Failed to open " + value, Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void showToast(String text, int duration)
