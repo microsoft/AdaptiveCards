@@ -17,7 +17,6 @@ NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 const CGFloat padding = 16.0f;
-const CGFloat accessoryViewWidth = 50.0f;
 
 @implementation ACRChoiceSetCell
 
