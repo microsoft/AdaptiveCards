@@ -60,6 +60,37 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestDateConversion()
+        {
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
+            ""$data"": {
+                ""rfc3389"" : ""2017-02-14T06:08:00Z""
+             },
+            ""body"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""${rfc3389}""
+                }
+            ]
+            }";
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""2017-02-14T06:08:00Z""
+        }
+    ]
+}", cardJson);
+        }
+        [TestMethod]
         public void TestEvaluationContext()
         {
             string jsonTemplate = @"{
