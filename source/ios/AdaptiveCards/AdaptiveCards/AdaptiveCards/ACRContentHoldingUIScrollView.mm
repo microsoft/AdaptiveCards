@@ -36,7 +36,7 @@
     self.contentWidth = [self intrinsicContentSize].width;
 
     // if content size is smaller than the superview, and stretch is specified, stretch content view
-    if (self.contentview && ((self.contentview.axis == UILayoutConstraintAxisVertical) || (self.stretch && self.frame.size.width > self.contentWidth && !self.widthConstraintForStretch.active))) {
+    if (self.contentview && (self.stretch && self.frame.size.width > self.contentWidth && !self.widthConstraintForStretch.active)) {
         // add new constraints before layoutSubview before layout pass
         self.widthConstraintForStretch = [self.contentview.widthAnchor constraintEqualToAnchor:self.widthAnchor multiplier:1.0];
         self.widthConstraintForStretch.active = YES;
