@@ -837,7 +837,7 @@ export class CardDesigner extends Designer.DesignContext {
                     fileMatch: ["*"],
                 }
             ],
-            validate: false,
+            validate: true,
             allowComments: true
         }
 
@@ -855,7 +855,7 @@ export class CardDesigner extends Designer.DesignContext {
                 fontSize: 13.5,
                 language: 'json',
                 minimap: {
-                    enabled: false
+                    enabled: true
                 }
             }
         );

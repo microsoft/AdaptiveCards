@@ -324,6 +324,7 @@ export class Template {
         else if (typeof node === "object" && node !== null) {
             let when = node["$when"];
             let dataContext = node["$data"];
+            let dataContextIsArray: boolean = false;
             let dataContexts: any[];
 
             if (dataContext === undefined) {
@@ -343,6 +344,7 @@ export class Template {
 
                 if (Array.isArray(dataContext)) {
                     dataContexts = dataContext;
+                    dataContextIsArray = true;
                 }
                 else {
                     dataContexts = [ dataContext ];
@@ -352,7 +354,9 @@ export class Template {
             result = [];
 
             for (let i = 0; i < dataContexts.length; i++) {
-                this._context.$index = i;
+                if (dataContextIsArray) {
+                    this._context.$index = i;
+                }
 
                 if (dataContexts[i] !== undefined) {
                     this._context.$data = dataContexts[i];

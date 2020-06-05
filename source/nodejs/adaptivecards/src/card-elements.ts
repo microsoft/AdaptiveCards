@@ -886,7 +886,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (this.useMarkdown && formattedText) {
                     if (GlobalSettings.allowMarkForTextHighlighting) {
-                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==/");
                     }
 
                     let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
@@ -913,7 +913,7 @@ export class TextBlock extends BaseTextBlock {
                                 markStyle = 'style="' + markStyle + '"';
                             }
 
-                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==\//g, "</mark>");
                         }
                     } else {
                         this._processedText = formattedText;
@@ -3844,7 +3844,7 @@ export class HttpAction extends Action {
     @property(HttpAction.bodyProperty)
     private _body: StringWithSubstitutions;
 
-    @property(HttpAction.bodyProperty)
+    @property(HttpAction.methodProperty)
     method?: string;
 
     @property(HttpAction.headersProperty)

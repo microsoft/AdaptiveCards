@@ -728,7 +728,12 @@ export class CardDesignerSurface {
     }
 
     setCardPayloadAsString(payload: string) {
-        this.setCardPayloadAsObject(JSON.parse(payload));
+        try {
+            this.setCardPayloadAsObject(JSON.parse(payload));
+        }
+        catch (e) {
+            console.warn("Invalid JSON string. " + e);
+        }
     }
 
     updateLayout(isFullRefresh: boolean = true) {
