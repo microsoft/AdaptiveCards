@@ -20,20 +20,14 @@
 
 • **bolder**: *number*
 
-*Defined in [host-config.ts:549](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L549)*
-
 ___
 
 ###  default
 
 • **default**: *number*
 
-*Defined in [host-config.ts:548](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L548)*
-
 ___
 
 ###  lighter
 
 • **lighter**: *number*
-
-*Defined in [host-config.ts:547](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L547)*

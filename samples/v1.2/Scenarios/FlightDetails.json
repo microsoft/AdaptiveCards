@@ -9,12 +9,13 @@
 					"items": [
 						{
 							"type": "Container",
-							"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+							"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
 							"items": [
 								{
 									"type": "Image",
 									"horizontalAlignment": "Center",
-									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
+									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png",
+									"altText": "Departing airplane"
 								}
 							],
 							"bleed": true
@@ -101,7 +102,8 @@
 												{
 													"type": "Image",
 													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
-													"height": "16px"
+													"height": "16px",
+													"altText": "Flight to"
 												}
 											],
 											"width": "auto"

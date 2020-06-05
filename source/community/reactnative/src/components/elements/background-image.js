@@ -109,28 +109,14 @@ export class BackgroundImage extends React.Component {
         imageContainerStyle.push(styles.imageContainer)
         switch (this.backgroundImageModeEnumValue) {
             case Enums.BackgroundImageMode.Repeat:
-                imageContainerStyle.push(this.getImageHorizontalAlignment());
-                imageContainerStyle.push(this.getImageVerticalAlignment());
+                imageContainerStyle.push({alignItems: Constants.FlexStart, justifyContent: Constants.FlexStart});
                 backgroundImage.push(
                     <Image
-                        key="image-repeat-horizontal"
+                        key="image-repeat"
                         resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
-                        /**
-                         * when the resize mode for the image is "repeat". it's always taking the row count as 3. So, we have divided the image height by 3.
-                         * Refer https://github.com/facebook/react-native/issues/17684
-                         */
-                        style={{ width: Constants.FullWidth, height: this.state.backgroundImageHeight / 3, resizeMode: Constants.Repeat }}
-                    />
-                );
-                backgroundImage.push(
-                    <Image
-                        key="image-repeat-vertical"
-                        resizeMethod={Constants.Resize}
-                        source={{ uri: this.backgroundImage.url }}
-                        onError={() => { this.onError(onParseError) }}
-                        style={{ width: this.state.backgroundImageWidth / 3, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
+                        style={{ width: Constants.FullWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
                     />
                 );
                 break;
@@ -142,6 +128,10 @@ export class BackgroundImage extends React.Component {
                         resizeMethod={Constants.Resize}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
+                        /**
+                          * when the resize mode for the image is "repeat". it's always taking the row count as 3. So, we have divided the image height by 3.
+                          * Refer https://github.com/facebook/react-native/issues/17684
+                          */
                         style={{ width: Constants.FullWidth, height: this.state.backgroundImageHeight / 3, resizeMode: Constants.Repeat }}
                     />
                 );
@@ -159,6 +149,7 @@ export class BackgroundImage extends React.Component {
                 );
                 break;
             case Enums.BackgroundImageMode.Stretch:
+            case Enums.BackgroundImageMode.Cover:
             default:
                 backgroundImage.push(
                     <Image
