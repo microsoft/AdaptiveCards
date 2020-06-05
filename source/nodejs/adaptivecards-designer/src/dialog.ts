@@ -59,6 +59,7 @@ export abstract class Dialog {
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("role", "dialog");
+            dialogFrameElement.setAttribute("aria-modal", "true");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
 
