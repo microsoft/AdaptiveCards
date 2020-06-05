@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-fabric",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "Adaptive Cards Office Fabric based extension",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -27,7 +27,7 @@
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open --local",
 		"dts": "dts-generator --name adaptivecards-fabric --project . --out dist/adaptivecards-fabric.d.ts",
-		"lint": "tslint -c ../tslint.json 'src/**/*.{ts,tsx}'",
+		"lint": "eslint src/*.ts src/actions/**/*.ts* src/components/**/*.ts* src/utils/**/*.ts*",
 		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
 	},
 	"repository": {
@@ -42,7 +42,10 @@
 	},
 	"devDependencies": {
 		"@types/jest": "^23.3.14",
+		"@typescript-eslint/eslint-plugin": "^2.26.0",
+		"@typescript-eslint/parser": "^2.26.0",
 		"adaptivecards": "^1.2.0",
+		"eslint": "^6.8.0",
 		"jest": "^24.8.0",
 		"office-ui-fabric-react": "^6.195.6",
 		"react": "^16.8.6",

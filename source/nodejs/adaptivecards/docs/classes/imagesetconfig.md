@@ -27,8 +27,6 @@
 
 \+ **new ImageSetConfig**(`obj?`: any): *[ImageSetConfig](imagesetconfig.md)*
 
-*Defined in [host-config.ts:58](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L58)*
-
 **Parameters:**
 
 Name | Type |
@@ -43,23 +41,17 @@ Name | Type |
 
 • **imageSize**: *[Size](../enums/size.md)* = Enums.Size.Medium
 
-*Defined in [host-config.ts:57](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L57)*
-
 ___
 
 ###  maxImageHeight
 
 • **maxImageHeight**: *number* = 100
 
-*Defined in [host-config.ts:58](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L58)*
-
 ## Methods
 
 ###  toJSON
 
 ▸ **toJSON**(): *object*
-
-*Defined in [host-config.ts:67](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L67)*
 
 **Returns:** *object*
 

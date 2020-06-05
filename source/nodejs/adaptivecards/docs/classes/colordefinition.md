@@ -27,16 +27,14 @@
 
 ###  constructor
 
-\+ **new ColorDefinition**(`defaultColor?`: string, `subtleColor?`: string): *[ColorDefinition](colordefinition.md)*
-
-*Defined in [host-config.ts:14](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L14)*
+\+ **new ColorDefinition**(`defaultColor?`: undefined | string, `subtleColor?`: undefined | string): *[ColorDefinition](colordefinition.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`defaultColor?` | string |
-`subtleColor?` | string |
+`defaultColor?` | undefined &#124; string |
+`subtleColor?` | undefined &#124; string |
 
 **Returns:** *[ColorDefinition](colordefinition.md)*
 
@@ -46,23 +44,17 @@ Name | Type |
 
 • **default**: *string* = "#000000"
 
-*Defined in [host-config.ts:13](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L13)*
-
 ___
 
 ###  subtle
 
 • **subtle**: *string* = "#666666"
 
-*Defined in [host-config.ts:14](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L14)*
-
 ## Methods
 
 ###  parse
 
 ▸ **parse**(`obj?`: any): *void*
-
-*Defined in [host-config.ts:26](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L26)*
 
 **Parameters:**
 

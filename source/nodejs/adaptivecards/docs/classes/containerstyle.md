@@ -23,15 +23,11 @@
 
 ▪ **Accent**: *"accent"* = "accent"
 
-*Defined in [enums.ts:144](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L144)*
-
 ___
 
 ### `Static` Attention
 
 ▪ **Attention**: *"attention"* = "attention"
-
-*Defined in [enums.ts:146](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L146)*
 
 ___
 
@@ -39,15 +35,11 @@ ___
 
 ▪ **Default**: *"default"* = "default"
 
-*Defined in [enums.ts:142](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L142)*
-
 ___
 
 ### `Static` Emphasis
 
 ▪ **Emphasis**: *"emphasis"* = "emphasis"
-
-*Defined in [enums.ts:143](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L143)*
 
 ___
 
@@ -55,12 +47,8 @@ ___
 
 ▪ **Good**: *"good"* = "good"
 
-*Defined in [enums.ts:145](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L145)*
-
 ___
 
 ### `Static` Warning
 
 ▪ **Warning**: *"warning"* = "warning"
-
-*Defined in [enums.ts:147](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L147)*

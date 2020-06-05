@@ -16,20 +16,14 @@
 
 • **Center**:
 
-*Defined in [enums.ts:67](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L67)*
-
 ___
 
 ###  Left
 
 • **Left**:
 
-*Defined in [enums.ts:66](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L66)*
-
 ___
 
 ###  Right
 
 • **Right**:
-
-*Defined in [enums.ts:68](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L68)*

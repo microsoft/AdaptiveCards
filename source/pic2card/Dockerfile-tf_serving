@@ -1,0 +1,24 @@
+FROM tensorflow/serving
+
+LABEL author="Haridas N"
+LABEL description="Pic2Card model exposed via tf-serving apis"
+
+ENV MODEL_BASE_PATH=/models/
+ENV MODEL_NAME=mystique
+
+# Ensure the saved_model paresent under data folder, which was generated from 
+# the export_inference_graph.py object detection command.
+COPY ./model/saved_model/ $MODEL_BASE_PATH/$MODEL_NAME/1
+
+EXPOSE 8501
+
+# Create a script that runs the model server so we can use environment variables
+# while also passing in arguments from the docker command line
+# Also, wrapping the tf-server process with bash helps for better signal handling.
+RUN echo '#!/bin/bash \n\n\
+    tensorflow_model_server --port=8500 --rest_api_port=8501 \
+    --model_name=${MODEL_NAME} --model_base_path=${MODEL_BASE_PATH}/${MODEL_NAME} \
+    "$@"' > /usr/bin/tf_serving_entrypoint.sh \
+    && chmod +x /usr/bin/tf_serving_entrypoint.sh
+
+ENTRYPOINT ["/usr/bin/tf_serving_entrypoint.sh"]
