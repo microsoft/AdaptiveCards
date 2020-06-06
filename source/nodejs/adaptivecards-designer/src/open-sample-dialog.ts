@@ -10,14 +10,17 @@ class CatalogueItem {
     constructor(readonly entry: CatalogueEntry) { }
 
     private static _id = 0;
-    private static _getNewItemId(prefix: string): string {
+    private static getNewItemId(prefix: string): string {
         let newId = prefix + "-" + CatalogueItem._id;
+
         CatalogueItem._id++;
+
         return newId;
     }
 
     render(): HTMLElement {
-        const newItemId = CatalogueItem._getNewItemId("acd-open-sample-item-title");
+        const newItemId = CatalogueItem.getNewItemId("acd-open-sample-item-title");
+
         let element = document.createElement("div");
         element.className = "acd-open-sample-item";
         element.tabIndex = 0;
@@ -128,6 +131,7 @@ export class OpenSampleDialog extends Dialog {
         let renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-sample-item-container";
         renderedElement.setAttribute("role", "list");
+
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
             item.onClick = (sender: CatalogueItem) => {

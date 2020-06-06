@@ -67,6 +67,7 @@ export abstract class Dialog {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
                 e.cancelBubble = true;
+
                 return false;
             }
 
