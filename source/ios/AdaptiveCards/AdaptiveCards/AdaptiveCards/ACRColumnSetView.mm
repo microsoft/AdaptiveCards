@@ -2,7 +2,7 @@
 //  ACRColumnSetView
 //  ACRColumnSetView.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ACRColumnSetView.h"
@@ -21,6 +21,13 @@
 - (void)addArrangedSubview:(UIView *)view
 {
     [super addArrangedSubview:view];
+    [self increaseIntrinsicContentSize:view];
+}
+
+// inserts a UIView at insertion index
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex
+{
+    [super insertArrangedSubview:view atIndex:insertionIndex];
     [self increaseIntrinsicContentSize:view];
 }
 
