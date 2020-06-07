@@ -1,3 +1,5 @@
+import * as Controls from "adaptivecards-controls";
+
 export class DialogButton {
     onClick: (sender: DialogButton) => void;
 
@@ -46,12 +48,41 @@ export abstract class Dialog {
         if (!this._isOpen) {
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "acd-dialog-overlay";
+            this._overlayElement.onclick = (e) => {
+                // clicks on the overlay window should dismiss the dialog
+                this.close();
+            }
 
             let dialogFrameElement = document.createElement("div");
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
+            dialogFrameElement.setAttribute("role", "dialog");
+            dialogFrameElement.setAttribute("aria-modal", "true");
+            dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
+            dialogFrameElement.tabIndex = -1;
+
+            dialogFrameElement.onclick = (e) => {
+                // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
+                // dialog unexpectedly
+                e.cancelBubble = true;
+
+                return false;
+            }
+
+            // keyboard navigation support
+            dialogFrameElement.onkeydown = (e) => {
+                switch (e.keyCode) {
+                    case Controls.KEY_ESCAPE:
+                        this.close();
+                        e.preventDefault();
+                        e.cancelBubble = true;
+                        break;
+                }
+
+                return !e.cancelBubble;
+            };
 
             let titleBarElement = document.createElement("div");
             titleBarElement.style.display = "flex";
@@ -61,6 +92,7 @@ export abstract class Dialog {
 
             let titleElement = document.createElement("div");
             titleElement.className = "acd-dialog-title";
+            titleElement.id = "acd-dialog-title-element";
             titleElement.innerText = this.title;
             titleElement.style.flex = "1 1 auto";
 
@@ -87,6 +119,7 @@ export abstract class Dialog {
             this._overlayElement.appendChild(dialogFrameElement);
 
             document.body.appendChild(this._overlayElement);
+            dialogFrameElement.focus();
 
             this._isOpen = true;
         }
