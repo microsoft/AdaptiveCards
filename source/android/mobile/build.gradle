@@ -24,6 +24,7 @@ android {
     }
     sourceSets {
         main {
+            // including shared samples in APK assets
             assets {
                 srcDirs {
                     "../../../samples/"

@@ -92,7 +92,7 @@
 					"value": "v1.2/Scenarios/SimpleFallback.json"
 				  }
 				],
-				"value": "Agenda",
+				"placeholder": "(choose sample)",
 				"id": "sampleCardName"
 			  }
 			]
@@ -102,7 +102,19 @@
 		  "type": "Action.ShowCard",
 		  "title": "Import Card",
 		  "card": {
-			"type": "AdaptiveCard"
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "ActionSet",
+				"actions": [
+				  {
+					"type": "Action.Submit",
+					"title": "Choose File",
+					"id": "cardFileAction"
+				  }
+				]
+			  }
+			]
 		  }
 		}
 	  ]
@@ -112,7 +124,7 @@
 	  "actions": [
 		{
 		  "type": "Action.ShowCard",
-		  "title": "Sample Host Configs",
+		  "title": "Sample Configs",
 		  "card": {
 			"type": "AdaptiveCard",
 			"body": [
@@ -172,7 +184,7 @@
 					"value": "HostConfig/windows-timeline.json"
 				  }
 				],
-				"value": "scenarios",
+				"placeholder": "(default)",
 				"id": "sampleHostConfigName"
 			  }
 			]
@@ -180,9 +192,21 @@
 		},
 		{
 		  "type": "Action.ShowCard",
-		  "title": "Import Host Config",
+		  "title": "Import Config",
 		  "card": {
-			"type": "AdaptiveCard"
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "ActionSet",
+				"actions": [
+				  {
+					"type": "Action.Submit",
+					"title": "Choose File",
+					"id": "hostConfigFileAction"
+				  }
+				]
+			  }
+			]
 		  }
 		}
 	  ]
