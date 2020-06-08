@@ -352,8 +352,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
      * Render importer UI (defined as an AdaptiveCard) in the importer tab
      * @param showErrorToast show toast on IO errors, if True
      */
-    private void renderImporterCard(boolean showErrorToast) {
-        try {
+    private void renderImporterCard(boolean showErrorToast)
+    {
+        try
+        {
             ParseResult parseResult = AdaptiveCard.DeserializeFromString(readStream(getResources().openRawResource(R.raw.importer_card)), AdaptiveCardRenderer.VERSION);
             LinearLayout importerLayout = (LinearLayout) findViewById(R.id.importerCardLayout);
             importerLayout.removeAllViews();
@@ -362,7 +364,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             RenderedAdaptiveCard importerCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this);
             importerLayout.addView(importerCard.getView());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (showErrorToast) {
                 Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -375,7 +379,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
      * Creates file manager intent to allow user to choose JSON file for import.
      * @param fileType indicates card JSON (FILE_SELECT_CARD) or host config JSON (FILE_SELECT_CONFIG)
      */
-    public void onClickFileBrowser(int fileType) {
+    public void onClickFileBrowser(int fileType)
+    {
         Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
         fileBrowserIntent.setType("*/*");
         fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -394,16 +399,21 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
      * @param uri file path
      * @return file contents
      */
-    private String loadFile(Uri uri) {
+    private String loadFile(Uri uri)
+    {
         // Get the Uri of the selected file
-        if (uri == null) {
+        if (uri == null)
+        {
             Toast.makeText(this, "File was not selected.", Toast.LENGTH_SHORT).show();
             return null;
         }
 
-        try {
+        try
+        {
             return readStream(getContentResolver().openInputStream(uri));
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
         }
 
@@ -415,7 +425,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
      * @param inputStream stream to read from
      * @return file contents
      */
-    private String readStream(InputStream inputStream) {
+    private String readStream(InputStream inputStream)
+    {
         try
         {
             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
@@ -440,16 +451,16 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     /**
      * Load given AdaptiveCard
      * @param fileName name of chosen card JSON file
-     * @param payload file contents
+     * @param card file contents
      */
-    private void loadAdaptiveCard(String fileName, String payload)
+    private void loadAdaptiveCard(String fileName, String card)
     {
-        if (payload.isEmpty())
+        if (card.isEmpty())
         {
             return;
         }
         m_selectedCardText.setText(fileName);
-        m_jsonEditText.setText(payload);
+        m_jsonEditText.setText(card);
 
         // Render it immediately
         renderAdaptiveCard(true);
@@ -458,16 +469,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     /**
      * Load given host config
      * @param fileName name of chosen host config JSON file
-     * @param hostConfigStr file contents
+     * @param hostConfig file contents
      */
-    private void loadHostConfig(String fileName, String hostConfigStr)
+    private void loadHostConfig(String fileName, String hostConfig)
     {
-        if (hostConfigStr.isEmpty())
-        {
-            return;
-        }
         m_selectedHostConfigText.setText(fileName);
-        m_configEditText.setText(hostConfigStr);
+        m_configEditText.setText(hostConfig);
 
         // Render it immediately
         renderAdaptiveCard(true);
@@ -508,7 +515,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
         SubmitAction submitAction = null;
 
-
         if (actionElement instanceof SubmitAction)
         {
             submitAction = (SubmitAction) actionElement;
@@ -518,9 +524,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
         }
 
-        if (actionElement.GetId().equals("cardFileAction")) {
+        if (actionElement.GetId().equals("cardFileAction"))
+        {
             onClickFileBrowser(FILE_SELECT_CARD);
-        } else if (actionElement.GetId().equals("hostConfigFileAction")) {
+        }
+        else if (actionElement.GetId().equals("hostConfigFileAction"))
+        {
             onClickFileBrowser(FILE_SELECT_CONFIG);
         }
 
@@ -643,8 +652,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
      * @param value new input value
      */
     @Override
-    public void onInputChange(String id, String value) {
-        try {
+    public void onInputChange(String id, String value)
+    {
+        try
+        {
             if (id.equals("sampleCardName") && !value.isEmpty())
             {
                 String filename = value.substring(value.lastIndexOf('/'));
@@ -655,7 +666,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                 String filename = value.substring(value.lastIndexOf('/'));
                 loadHostConfig(filename, readStream(getAssets().open(value)));
             }
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Toast.makeText(this, "Failed to open " + value, Toast.LENGTH_SHORT).show();
         }
 
