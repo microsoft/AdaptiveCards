@@ -17,7 +17,9 @@ namespace AdaptiveNamespace
                                                       _In_ IPanel* parentPanel,
                                                       _In_ IUIElement* separator,
                                                       _In_ IColumnDefinition* columnDefinition,
-                                                      boolean isStretchable)
+                                                      _In_ boolean expectedVisibility,
+                                                      _In_ boolean isStretchable)
+
     {
         if (parentPanel != nullptr)
         {
@@ -28,6 +30,7 @@ namespace AdaptiveNamespace
         m_columnDefinition = columnDefinition;
         m_separator = separator;
         m_cardElement = cardElement;
+        m_expectedVisibility = expectedVisibility;
         m_isStretchable = isStretchable;
         return S_OK;
     }
@@ -51,14 +54,28 @@ namespace AdaptiveNamespace
     {
         return m_parentPanel.CopyTo(parentPanel);
     }
+
     HRESULT ElementTagContent::get_IsStretchable(boolean* isStretchable)
     {
         *isStretchable = m_isStretchable;
         return S_OK;
     }
+
     HRESULT ElementTagContent::put_IsStretchable(boolean isStretchable)
     {
         m_isStretchable = isStretchable;
+        return S_OK;
+    }
+
+    HRESULT ElementTagContent::get_ExpectedVisibility(_Outptr_ boolean* expectedVisibility)
+    {
+        *expectedVisibility = m_expectedVisibility;
+        return S_OK;
+    }
+
+    HRESULT ElementTagContent::set_ExpectedVisibility(boolean expectedVisibility)
+    {
+        m_expectedVisibility = expectedVisibility;
         return S_OK;
     }
 }
