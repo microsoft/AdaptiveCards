@@ -143,7 +143,7 @@ namespace AdaptiveCardTestApp.ViewModels
             UserActivity userActivity = await channel.GetOrCreateUserActivityAsync(Guid.NewGuid().ToString());
             userActivity.VisualElements.DisplayText = "Card error: " + card.Name;
             userActivity.VisualElements.AttributionDisplayText = card.Name;
-            userActivity.ActivationUri = new Uri("https://github.com/Microsoft/AdaptiveCards/blob/master/samples/" + card.Name + ".json");
+            userActivity.ActivationUri = new Uri("https://github.com/Microsoft/AdaptiveCards/blob/main/samples/" + card.Name + ".json");
 
             userActivity.VisualElements.Content = AdaptiveCardBuilder.CreateAdaptiveCardFromJson(card.Contents);
 

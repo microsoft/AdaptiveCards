@@ -60,7 +60,7 @@ task createPom {
                 licenses {
                     license {
                         name 'MIT'
-                        url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                        url 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
                         distribution 'repo'
                     }
                 }
@@ -122,7 +122,7 @@ uploadArchives {
                     licenses {
                         license {
                             name 'MIT'
-                            url 'https://github.com/Microsoft/AdaptiveCards/blob/master/LICENSE'
+                            url 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
                             distribution 'repo'
                         }
                     }

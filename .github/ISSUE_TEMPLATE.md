@@ -17,7 +17,7 @@ If you're an author, who are you sending cards to?
 
 # Version of SDK
 
-What version are you using? Ex: NuGet 1.0.2, or latest master, etc...
+What version are you using? Ex: NuGet 1.0.2, or latest main, etc...
 
 # Issue
 
