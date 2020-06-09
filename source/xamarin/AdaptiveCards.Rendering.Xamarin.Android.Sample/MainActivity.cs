@@ -47,7 +47,7 @@ namespace AdaptiveCards.Rendering.Xamarin.Android.Sample
         private async void buttonClick(object sender, EventArgs e)
         {
             var httpClient = new HttpClient();
-            var response = await httpClient.GetAsync("https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/FlightUpdate.json");
+            var response = await httpClient.GetAsync("https://raw.githubusercontent.com/Microsoft/AdaptiveCards/main/samples/v1.0/Scenarios/FlightUpdate.json");
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
