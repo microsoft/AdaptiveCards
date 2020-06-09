@@ -5,8 +5,6 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace AdaptiveCards.Templating.Test
 {

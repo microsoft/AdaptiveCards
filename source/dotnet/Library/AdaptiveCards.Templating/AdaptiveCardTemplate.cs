@@ -105,9 +105,6 @@ namespace AdaptiveCards.Templating
                 else
                 {
                     jsonData = JsonConvert.SerializeObject(context.Root);
-                    
-                    System.Diagnostics.Debug.WriteLine("top");
-                    System.Diagnostics.Debug.WriteLine(jsonData);
                 }
             }
 
