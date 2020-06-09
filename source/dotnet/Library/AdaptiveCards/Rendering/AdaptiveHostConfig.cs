@@ -50,6 +50,9 @@ namespace AdaptiveCards.Rendering
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public MediaConfig Media { get; set; } = new MediaConfig();
 
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public InputsConfig Inputs { get; set; } = new InputsConfig();
+
         /// <summary>
         /// Toggles whether or not to render inputs and actions
         /// </summary>

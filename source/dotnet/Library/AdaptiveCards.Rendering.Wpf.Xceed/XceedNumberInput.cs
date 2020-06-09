@@ -6,6 +6,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+
     public static class XceedNumberInput
     {
         public static FrameworkElement Render(AdaptiveNumberInput input, AdaptiveRenderContext context)
@@ -14,7 +15,6 @@ namespace AdaptiveCards.Rendering.Wpf
             {
 
                 IntegerUpDown numberPicker = new IntegerUpDown();
-                // numberPicker.ShowButtonSpinner = true;
 
                 if (!Double.IsNaN(input.Value))
                     numberPicker.Value = Convert.ToInt32(input.Value);
@@ -28,7 +28,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => numberPicker.Value?.ToString());
+
+                AdaptiveXceedNumberInputValue inputValue = new AdaptiveXceedNumberInputValue(input, numberPicker);
+                context.InputValues.Add(input.Id, inputValue);
+                context.InputBindings.Add(input.Id, () => inputValue.GetValue());
+
                 return numberPicker;
             }
             else

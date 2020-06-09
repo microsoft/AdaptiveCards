@@ -165,9 +165,15 @@ namespace AdaptiveCards.Rendering.Wpf
 
             outerGrid.Children.Add(grid);
 
+            AdaptiveInternalID parentCardId = context.RenderArgs.ContainerCardId;
+
+
+            context.RenderArgs.ContainerCardId = card.InternalID;
+
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
             AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context, card.InternalID);
 
+            context.RenderArgs.ContainerCardId = parentCardId;
 
             if (card.SelectAction != null)
             {

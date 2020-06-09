@@ -13,7 +13,10 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
             textBox.SetContext(input);
+
+
             context.InputBindings.Add(input.Id, () => textBox.Text);
+
             return textBox;
         }
     }

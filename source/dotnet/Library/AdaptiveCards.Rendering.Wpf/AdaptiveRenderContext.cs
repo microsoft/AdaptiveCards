@@ -78,6 +78,13 @@ namespace AdaptiveCards.Rendering.Wpf
                 ToggleShowCardVisibility((Button)ui);
                 return;
             }
+            else if (args.Action is AdaptiveSubmitAction)
+            {
+                if (!ValidateInputs(args.Action as AdaptiveSubmitAction))
+                {
+                    return;
+                }
+            }
 
             OnAction?.Invoke(ui, args);
         }
@@ -143,6 +150,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
+
         // contains showcard peers in actions set, and the AdaptiveInternalID is internal id of the actions set
         public IDictionary<AdaptiveInternalID, List<FrameworkElement>> PeerShowCardsInActionSet = new Dictionary<AdaptiveInternalID, List<FrameworkElement>>();
 
@@ -162,6 +170,70 @@ namespace AdaptiveCards.Rendering.Wpf
             // Debug.WriteLine($"Unable to find Style {styleName} from the supplied ResourceDictionary");
             return null;
         }
+
+        public AdaptiveTypedElement GetRendereableElement(AdaptiveTypedElement element)
+        {
+            AdaptiveTypedElement rendereableElement = null;
+            var oldAncestorHasFallback = AncestorHasFallback;
+            var elementHasFallback = element != null && element.Fallback != null && (element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None);
+            AncestorHasFallback = AncestorHasFallback || elementHasFallback;
+
+            try
+            {
+                if (AncestorHasFallback && !element.MeetsRequirements(FeatureRegistration))
+                {
+                    throw new AdaptiveFallbackException("Element requirements aren't met");
+                }
+
+                var renderer = ElementRenderers.Get(element.GetType());
+                if (renderer != null)
+                {
+                    rendereableElement = element;
+                }
+            }
+            catch (AdaptiveFallbackException)
+            {
+                if (!elementHasFallback)
+                {
+                    throw;
+                }
+            }
+
+            if (rendereableElement == null)
+            {
+                // Since no renderer exists for this element, add warning and render fallback (if available)
+                if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
+                {
+                    if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
+                    {
+                        Warnings.Add(new AdaptiveWarning(-1, $"Dropping element '{element.Type}' for fallback"));
+                    }
+                    else if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Content && element.Fallback.Content != null)
+                    {
+                        // Render fallback content
+                        Warnings.Add(new AdaptiveWarning(-1, $"Performing fallback for '{element.Type}' (fallback element type '{element.Fallback.Content.Type}')"));
+                        RenderingFallback = true;
+
+                        rendereableElement = GetRendereableElement(element.Fallback.Content);
+
+                        RenderingFallback = false;
+                    }
+                }
+                else if (AncestorHasFallback && !RenderingFallback)
+                {
+                    throw new AdaptiveFallbackException();
+                }
+                else
+                {
+                    Warnings.Add(new AdaptiveWarning(-1, $"No renderer for element '{element.Type}'"));
+                }
+            }
+
+            AncestorHasFallback = oldAncestorHasFallback;
+
+            return rendereableElement;
+        }
+
 
         /// <summary>
         /// Helper to deal with casting
@@ -454,7 +526,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             FrameworkElement card = ActionShowCards[uiAction];
             var id = uiAction.GetContext() as AdaptiveInternalID;
-            if (id == null) 
+            if (id == null)
             {
                 Warnings.Add(new AdaptiveWarning(-1, $"Toggling visibility event handling is dropped " +
                     $"since the action set the button belongs to has null internal id"));
@@ -465,13 +537,76 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var targetVisibility = card.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
                 // need to make sure we collapse all showcards before showing this one
-                foreach(var showCard in peers)
+                foreach (var showCard in peers)
                 {
                     showCard.Visibility = Visibility.Collapsed;
                 }
 
-                card.Visibility = targetVisibility; 
+                card.Visibility = targetVisibility;
             }
         }
+
+        private bool ValidateInputs(AdaptiveSubmitAction submitAction)
+        {
+            bool allInputsValid = true, firstInvalidInputFound = false;
+
+            List<string> inputsToValidate = RetrieveInputList(submitAction);
+
+            // Iterate through all the elements and validate them
+            foreach (string inputId in inputsToValidate)
+            {
+                allInputsValid = allInputsValid && InputValues[inputId].Validate();
+
+                // If the validation failed, set focus to the first element that failed
+                if (!allInputsValid && !firstInvalidInputFound)
+                {
+                    InputValues[inputId].SetFocus();
+                    firstInvalidInputFound = true;
+                }
+            }
+
+            return allInputsValid;
+        }
+
+        private List<string> RetrieveInputList(AdaptiveSubmitAction submitAction)
+        {
+            List<string> inputList = new List<string>();
+            AdaptiveInternalID submitActionCardId = SubmitActionCardId[submitAction];
+
+            // While the card is not the main card, iterate through them
+            // It's important to note that as we go from deep most upwards then we have to add the
+            // inputs at the begining of the list to focus on the first one on validation
+            while (submitActionCardId != new AdaptiveInternalID())
+            {
+                // Copy the inputs into the result
+                inputList.InsertRange(0, InputsInCard[submitActionCardId]);
+
+                // Move to the parent card
+                submitActionCardId = ParentCards[submitActionCardId];
+            }
+
+            return inputList;
+        }
+
+        public void AddInputToCard(AdaptiveInternalID cardId, string inputId)
+        {
+            if (InputsInCard[cardId] == null)
+            {
+                InputsInCard[cardId] = new List<string>();
+            }
+
+            InputsInCard[cardId].Add(inputId);
+        }
+
+        // Dictionary where all the parent cards point to their parent cards, the parent for the main card must have ID = Invalid
+        public Dictionary<AdaptiveInternalID, AdaptiveInternalID> ParentCards { get; set; }  = new Dictionary<AdaptiveInternalID, AdaptiveInternalID>();
+
+        // Dictionary where we tie every Action.Submit to the card where it is contained, this help us knowing where should we start validating from
+        public Dictionary<AdaptiveSubmitAction, AdaptiveInternalID> SubmitActionCardId { get; set; } = new Dictionary<AdaptiveSubmitAction, AdaptiveInternalID>();
+
+        // Dictionary where we tie every input.Id (string) with the card internal Id 
+        private Dictionary<AdaptiveInternalID, List<string>> InputsInCard = new Dictionary<AdaptiveInternalID, List<string>>();
+
+        public Dictionary<string, AdaptiveInputValue> InputValues = new Dictionary<string, AdaptiveInputValue>();
     }
 }
