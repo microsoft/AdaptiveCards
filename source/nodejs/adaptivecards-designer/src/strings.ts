@@ -1,22 +1,22 @@
 export class Strings {
     static readonly toolboxes = {
         toolPalette: {
-            title: "Card Elements"
+            title: "CARD ELEMENTS"
         },
         cardEditor: {
-            title: "Card Payload Editor"
+            title: "CARD PAYLOAD EDITOR"
         },
         sampleDataEditor: {
-            title: "Sample Data Editor"
+            title: "SAMPLE DATA EDITOR"
         },
         propertySheet: {
-            title: "Element Properties"
+            title: "ELEMENT PROPERTIES"
         },
         cardStructure: {
-            title: "Card Structure"
+            title: "CARD STRUCTURE"
         },
         dataStructure: {
-            title: "Data Structure"
+            title: "DATA STRUCTURE"
         }
     };
     static loadingEditor = "Loading editor...";

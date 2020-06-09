@@ -20,29 +20,23 @@
 
 ###  get
 
-▸ **get**(): *string*
+▸ **get**(): *string | undefined*
 
-*Defined in [shared.ts:85](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L85)*
-
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
 ###  getOriginal
 
-▸ **getOriginal**(): *string*
+▸ **getOriginal**(): *string | undefined*
 
-*Defined in [shared.ts:81](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L81)*
-
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
 ###  getReferencedInputs
 
 ▸ **getReferencedInputs**(`inputs`: [IInput](../interfaces/iinput.md)[], `referencedInputs`: [Dictionary](../README.md#dictionary)‹[IInput](../interfaces/iinput.md)›): *void*
-
-*Defined in [shared.ts:29](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L29)*
 
 **Parameters:**
 
@@ -57,15 +51,13 @@ ___
 
 ###  set
 
-▸ **set**(`value`: string): *void*
-
-*Defined in [shared.ts:94](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L94)*
+▸ **set**(`value`: string | undefined): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | string |
+`value` | string &#124; undefined |
 
 **Returns:** *void*
 
@@ -74,8 +66,6 @@ ___
 ###  substituteInputValues
 
 ▸ **substituteInputValues**(`inputs`: [Dictionary](../README.md#dictionary)‹[IInput](../interfaces/iinput.md)›, `contentType`: string): *void*
-
-*Defined in [shared.ts:43](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L43)*
 
 **Parameters:**
 

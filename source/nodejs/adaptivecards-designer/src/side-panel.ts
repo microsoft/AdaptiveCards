@@ -27,7 +27,7 @@ class ToolboxInfo {
     onToggled: (sender: ToolboxInfo) => void;
     onResizeEnded: (sender: ToolboxInfo) => void;
     onResized: (sender: ToolboxInfo) => void;
-    
+
     showSplitter() {
         if (this.splitter) {
             this.splitter.attachedTo.classList.remove("acd-hidden");
@@ -182,11 +182,13 @@ export class SidePanel {
 
     attachTo(attachTo: HTMLElement) {
         this._attachedTo = attachTo;
+        this._attachedTo.style.position = "relative";
 
         this._contentHost = document.createElement("div");
         this._contentHost.style.display = "flex";
         this._contentHost.style.overflow = "hidden";
         this._contentHost.style.flex = "1 1 auto";
+        this._contentHost.style.position = "relative";
 
         if (this.isVertical) {
             this._contentHost.style.flexDirection = "column";
@@ -215,7 +217,7 @@ export class SidePanel {
                     toolboxInfo.toolbox.renderedElement.style.width = (100 / this._toolboxes.length) + "%";
                 }
 
-                this._contentHost.appendChild(splitterElement);
+                toolboxInfo.toolbox.renderedElement.appendChild(splitterElement);
 
                 toolboxInfo.splitter = new Splitter(
                     splitterElement,

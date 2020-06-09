@@ -15,9 +15,11 @@
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
+    <DocumentationFile>$(MSBuildProjectDirectory)/docs/AdaptiveCards.xml</DocumentationFile>
+    <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
   </PropertyGroup>
 
-  <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output --> 
+  <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output -->
   <!--<PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
     <TargetFrameworks>$(TargetFrameworks);uap10.0</TargetFrameworks>
   </PropertyGroup>-->
@@ -38,11 +40,10 @@
     <PackageReference Include="System.Reflection" Version="4.3.0" />
     <PackageReference Include="System.Collections" Version="4.3.0" />
     <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.0" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
     <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
   </ItemGroup>
-
 
   <PropertyGroup Condition="$(Configuration) == 'Debug'">
     <DebugType>full</DebugType>
@@ -53,6 +54,10 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Vsxmd" Version="1.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <!-- workaround for multiple TargetFramework regression -->

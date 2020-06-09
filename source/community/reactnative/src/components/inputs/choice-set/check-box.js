@@ -14,6 +14,7 @@ import {
 import { Label } from '../../elements'
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
+import { StyleManager } from '../../../styles/style-config';
 
 const styles = StyleSheet.create({
 	contentStyle: {
@@ -31,6 +32,8 @@ const CheckedCheckBoxImage = "./assets/checked.png";
 const UncheckedCheckBoxImage = "./assets/unchecked.png";
 
 class CheckBox extends React.PureComponent {
+
+	styleConfig = StyleManager.getManager().styles;
 
 	static propTypes = {
 		style: ViewPropTypes.style,
@@ -71,11 +74,11 @@ class CheckBox extends React.PureComponent {
 	}
 
 	renderCheckBoxIcon = () => {
-		const { iconSize, isRadioButtonType } = this.props;
+		const { isRadioButtonType } = this.props;
 
 		return (
 			<Image
-				style={{ width: iconSize, height: iconSize }}
+				style={isRadioButtonType ? this.styleConfig.radioButton : this.styleConfig.checkBox}
 				source={isRadioButtonType ?
 					this.state.checked ? require(CheckedRadioImage) :
 						require(UncheckedRadioImage) :
@@ -86,14 +89,17 @@ class CheckBox extends React.PureComponent {
 	}
 
 	renderContent = () => {
-		const { labelStyle, label, wrapText } = this.props;
+		const { label, wrapText } = this.props;
 		const flexDirection = Constants.FlexRow;
-
 		return (
 			<View style={[styles.contentStyle, { flexDirection }]}>
 				{this.renderCheckBoxIcon()}
 				{
-					label ? <Label text={label} style={labelStyle} wrap={wrapText} /> : null
+					label ? <Label
+						text={label}
+						style={[this.styleConfig.choiceSetTitle, this.styleConfig.defaultFontConfig]}
+						wrap={wrapText} />
+						: null
 				}
 			</View>
 		)

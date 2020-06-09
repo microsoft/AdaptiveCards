@@ -6,8 +6,9 @@
 
 ### Classes
 
-* [Binding](classes/binding.md)
-* [EvaluationContext](classes/evaluationcontext.md)
-* [ExpressionParser](classes/expressionparser.md)
 * [GlobalSettings](classes/globalsettings.md)
 * [Template](classes/template.md)
+
+### Interfaces
+
+* [IEvaluationContext](interfaces/ievaluationcontext.md)

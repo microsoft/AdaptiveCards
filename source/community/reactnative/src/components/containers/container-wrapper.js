@@ -9,10 +9,7 @@
  */
 
 import React from 'react';
-import {
-    View,
-    StyleSheet
-} from 'react-native';
+import { View } from 'react-native';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import * as Constants from "../../utils/constants";
@@ -45,12 +42,11 @@ export class ContainerWrapper extends React.PureComponent {
                 url: this.payload.backgroundImage
             }
         }
-        const backgroundImageStyle = this.payload.type === Constants.TypeAdaptiveCard ? styles.backgroundImage : [styles.backgroundImage, { flex: 1 }];
         return (
-            <View style={backgroundImageStyle}>
+            <React.Fragment>
                 <BackgroundImage backgroundImage={this.payload.backgroundImage} />
                 {this.props.children}
-            </View >
+            </React.Fragment >
         );
     }
 
@@ -124,9 +120,3 @@ export class ContainerWrapper extends React.PureComponent {
         return computedStyles;
     }
 }
-
-const styles = StyleSheet.create({
-    backgroundImage: {
-        width: Constants.FullWidth
-    }
-});

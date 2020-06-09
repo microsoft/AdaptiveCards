@@ -33,8 +33,6 @@
 
 \+ **new ContainerStyleDefinition**(`obj?`: any): *[ContainerStyleDefinition](containerstyledefinition.md)*
 
-*Defined in [host-config.ts:289](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L289)*
-
 **Parameters:**
 
 Name | Type |
@@ -47,9 +45,7 @@ Name | Type |
 
 ### `Optional` backgroundColor
 
-• **backgroundColor**? : *string*
-
-*Defined in [host-config.ts:263](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L263)*
+• **backgroundColor**? : *undefined | string*
 
 ___
 
@@ -67,31 +63,23 @@ ___
         }
     )
 
-*Defined in [host-config.ts:265](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L265)*
-
 ___
 
 ### `Optional` highlightBackgroundColor
 
-• **highlightBackgroundColor**? : *string*
-
-*Defined in [host-config.ts:277](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L277)*
+• **highlightBackgroundColor**? : *undefined | string*
 
 ___
 
 ### `Optional` highlightForegroundColor
 
-• **highlightForegroundColor**? : *string*
-
-*Defined in [host-config.ts:278](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L278)*
+• **highlightForegroundColor**? : *undefined | string*
 
 ## Accessors
 
 ###  isBuiltIn
 
 • **get isBuiltIn**(): *boolean*
-
-*Defined in [host-config.ts:295](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L295)*
 
 **Returns:** *boolean*
 
@@ -100,8 +88,6 @@ ___
 ###  parse
 
 ▸ **parse**(`obj`: any): *void*
-
-*Defined in [host-config.ts:280](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L280)*
 
 **Parameters:**
 

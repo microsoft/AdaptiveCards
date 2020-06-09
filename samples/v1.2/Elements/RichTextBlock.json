@@ -9,12 +9,12 @@
 				"This is the first inline. ",
 				{
 					"type": "TextRun",
-					"text": "We support colors, ",
+					"text": "We support colors,",
 					"color": "good"
 				},
 				{
 					"type": "TextRun",
-					"text": "both regular and subtle. ",
+					"text": " both regular and subtle. ",
 					"isSubtle": true
 				},
 				{

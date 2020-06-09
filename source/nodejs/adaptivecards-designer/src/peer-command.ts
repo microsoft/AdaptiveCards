@@ -4,14 +4,30 @@ export class PeerCommand {
     private _renderedElement: HTMLElement;
 
     protected internalRender(): HTMLElement {
-        var buttonElement = document.createElement("button");
-        buttonElement.type = "button";
-        buttonElement.title = this.name;
+        let buttonElement = document.createElement("button");
         buttonElement.classList.add("acd-peerButton");
-        buttonElement.classList.add(this.iconClass);
-        buttonElement.style.display = "flex";
-        buttonElement.style.flex = "0 0 auto";
-        buttonElement.style.alignItems = "center";
+        buttonElement.type = "button";
+        buttonElement.title = this.toolTip ? this.toolTip : this.name;
+
+        if (this.iconClass) {
+            let iconElement = document.createElement("div");
+            iconElement.classList.add("acd-peerButton-icon", this.iconClass);
+
+            buttonElement.appendChild(iconElement);
+        }
+
+        if (this.name && (!this.iconClass || this.alwaysShowName)) {
+            let nameElement = document.createElement("div");
+            nameElement.classList.add("acd-peerButton-text");
+            nameElement.innerText = this.name;
+
+            buttonElement.classList.add("variableWidth");
+            buttonElement.appendChild(nameElement);
+        }
+        else {
+            buttonElement.classList.add("fixedWidth");
+        }
+
         buttonElement.onclick = (e: MouseEvent) => {
             if (this.execute) {
                 this.execute(this, buttonElement);
@@ -23,8 +39,11 @@ export class PeerCommand {
     }
 
     name: string;
+    alwaysShowName: boolean = false;
+    toolTip: string = undefined;
     iconClass: string;
     isPromotable: boolean = false;
+    showInPropertySheet: boolean = false;
     execute: (command: PeerCommand, clickedElement: HTMLElement) => void;
 
     constructor(init?: Partial<PeerCommand>) {
