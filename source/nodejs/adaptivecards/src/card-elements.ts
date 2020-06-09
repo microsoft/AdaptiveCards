@@ -3290,6 +3290,20 @@ class ActionButton {
                     this.action.renderedElement.classList.add(...hostConfig.makeCssClassNames("style-" + this.action.style.toLowerCase()));
                 }
             }
+
+            this.updateAriaExpandedState();
+        }
+    }
+
+    private updateAriaExpandedState() {
+        // update aria-expanded property
+        if (this.action.renderedElement && this.action.renderedElement.classList.contains("expandable")) {
+            if (this.state === ActionButtonState.Expanded) {
+                this.action.renderedElement.setAttribute("aria-expanded", "true");
+            }
+            else {
+                this.action.renderedElement.setAttribute("aria-expanded", "false");
+            }
         }
     }
 
