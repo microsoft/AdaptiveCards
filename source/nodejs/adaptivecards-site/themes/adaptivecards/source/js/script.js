@@ -402,6 +402,7 @@ $(function () {
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
+		AdaptiveCards.GlobalSettings.setTabIndexAtCardRoot = false;
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
 		var renderedCard;
