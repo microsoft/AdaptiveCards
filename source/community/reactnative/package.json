@@ -23,7 +23,7 @@
     "lint": "eslint ."
   },
   "repository": {
-    "url": "https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/reactnative",
+    "url": "https://github.com/Microsoft/AdaptiveCards/tree/main/source/community/reactnative",
     "type": "git"
   },
   "files": [
