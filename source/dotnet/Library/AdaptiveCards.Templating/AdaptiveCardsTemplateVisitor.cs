@@ -625,7 +625,7 @@ namespace AdaptiveCards.Templating
                     var test = JsonConvert.SerializeObject(value);
                     if (!isTemplatedString)
                     {
-                        // lenght can not be less than 2 because template string will 
+                        // length can not be less than 2 because template string will 
                         // always have start and end token
                         test = test.Substring(1, test.Length - 2);
                     }
