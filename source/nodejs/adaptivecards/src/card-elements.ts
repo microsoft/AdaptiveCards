@@ -3268,7 +3268,7 @@ class ActionButton {
                 this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
             }
 
-            this.action.updateActionButtonCssStyle(this.action.renderedElement);
+            this.action.updateActionButtonCssStyle(this.action.renderedElement, this._state);
 
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -3408,7 +3408,7 @@ export abstract class Action extends CardObject {
         return "button";
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
+    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         // Do nothing in base implementation
     }
 
@@ -3992,11 +3992,12 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
+    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         super.updateActionButtonCssStyle(actionButtonElement);
 
         if (this.parent) {
             actionButtonElement.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
+            actionButtonElement.setAttribute("aria-expanded", (buttonState === ActionButtonState.Expanded).toString());
         }
     }
 
