@@ -5,7 +5,6 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
-using System.Collections.Generic;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -450,6 +449,79 @@ namespace AdaptiveCards.Templating.Test
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
+        public void TestDataContextCommaRemoal()
+        {
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""text"": ""${name}""
+                              }
+                          ],
+                          ""$data"": ""${$root.LineItems}"" 
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Matt""
+                            } ]
+                    },
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""David""
+                            }
+                        ]
+                    },
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Thomas""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            string jsonData = @"{
+              ""LineItems"": [
+                  { ""name"": ""Matt"" }, 
+                  { ""name"": ""David"" }, 
+                  { ""name"": ""Thomas"" }
+                ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
+            AdaptiveCardTemplate transformer2 = new AdaptiveCardTemplate(expectedString);
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+            string expectedcardJson = transformer2.Expand(context);
+            Assert.AreEqual(expectedcardJson, cardJson);
         }
 
         [TestMethod]
@@ -1883,6 +1955,36 @@ namespace AdaptiveCards.Templating.Test
             var context = new EvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
+        }
+        
+        class Data
+        { 
+            public string title { get; set; }
+        };
+        [TestMethod]
+        public void TestDoubleQuote()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\",\"weight\": \"Bolder\",\"text\": \"${title}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            Data dt = new Data()
+            {
+                title = "Test with\n\r \"quotes\""
+            };
+
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+            try
+            {
+                var jsonOb = Newtonsoft.Json.JsonConvert.DeserializeObject(st);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                Assert.Fail();
+            }
         }
     }
     [TestClass]
