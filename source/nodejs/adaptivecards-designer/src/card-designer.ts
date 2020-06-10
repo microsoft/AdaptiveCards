@@ -639,7 +639,7 @@ export class CardDesigner extends Designer.DesignContext {
                         dialog.selectedSample.download();
                     }
 
-                    const newCardButton = document.getElementById(CardDesigner.ToolbarCommands.NewCard);
+                    const newCardButton = this._newCardButton.renderedElement;
 
                     if (newCardButton) {
                         newCardButton.focus();

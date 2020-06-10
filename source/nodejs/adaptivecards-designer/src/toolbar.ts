@@ -94,7 +94,6 @@ export class ToolbarButton extends ToolbarElement {
     protected internalRender(): HTMLElement {
         let element = document.createElement("button");
 
-        element.id = this.id;
         element.onclick = (e) => {
             if (this.allowToggle) {
                 this.isToggled = !this.isToggled;
