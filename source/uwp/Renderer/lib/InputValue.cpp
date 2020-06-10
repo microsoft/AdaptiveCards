@@ -19,16 +19,10 @@ using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace AdaptiveNamespace;
 
-HRESULT ValidateIfNeeded(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior, IAdaptiveInputValue* inputValue)
+HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 {
     HString currentValue;
     inputValue->get_CurrentValue(currentValue.GetAddressOf());
-
-    if (validationBehavior == ABI::AdaptiveNamespace::ValidationBehavior::OnFocusLostWithInput &&
-        WindowsIsStringEmpty(currentValue.Get()))
-    {
-        return S_OK;
-    }
 
     return inputValue->Validate(nullptr);
 }
@@ -55,14 +49,6 @@ HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderCo
 
     ComPtr<IAdaptiveInputsConfig> inputsConfig;
     hostConfig->get_Inputs(inputsConfig.GetAddressOf());
-
-    ABI::AdaptiveNamespace::ValidationBehavior validationBehavior;
-    inputsConfig->get_ValidationBehavior(&validationBehavior);
-
-    if (validationBehavior != ABI::AdaptiveNamespace::ValidationBehavior::OnSubmit)
-    {
-        RETURN_IF_FAILED(EnableFocusLostValidation(validationBehavior));
-    }
 
     return S_OK;
 }
@@ -184,24 +170,6 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
         SetAccessibilityProperties(isInputValid);
     }
 
-    // Once this has been marked invalid once, we should validate on all value changess going forward
-    if (!isInputValid)
-    {
-        RETURN_IF_FAILED(EnableValueChangedValidation());
-    }
-
-    return S_OK;
-}
-
-HRESULT InputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
-{
-    EventRegistrationToken focusLostToken;
-m_uiInputElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                          /*args*/) -> HRESULT {
-                                                        return ValidateIfNeeded(validationBehavior, this);
-                                                     }).Get(),
-                                                     &focusLostToken);
-
     return S_OK;
 }
 
@@ -232,22 +200,6 @@ HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rende
 HRESULT TextInputBase::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 {
     return m_textBoxElement->get_Text(serializedUserInput);
-}
-
-HRESULT TextInputBase::EnableValueChangedValidation()
-{
-    if (!m_isTextChangedValidationEnabled)
-    {
-        EventRegistrationToken textChangedToken;
-        RETURN_IF_FAILED(m_textBoxElement->add_TextChanged(Callback<ITextChangedEventHandler>([this](IInspectable* /*sender*/, ITextChangedEventArgs *
-                                                                                                     /*args*/) -> HRESULT {
-                                                               return Validate(nullptr);
-                                                           }).Get(),
-                                                           &textChangedToken));
-
-        m_isTextChangedValidationEnabled = true;
-    }
-    return S_OK;
 }
 
 HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
@@ -403,23 +355,6 @@ HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     return S_OK;
 }
 
-HRESULT DateInputValue::EnableValueChangedValidation()
-{
-    if (!m_isDateChangedValidationEnabled)
-    {
-        EventRegistrationToken dateChangedToken;
-        RETURN_IF_FAILED(m_datePickerElement->add_DateChanged(
-            Callback<ITypedEventHandler<CalendarDatePicker*, CalendarDatePickerDateChangedEventArgs*>>([this](IInspectable* /*sender*/, ICalendarDatePickerDateChangedEventArgs *
-                                                                                                              /*args*/) -> HRESULT {
-                return Validate(nullptr);
-            }).Get(),
-            &dateChangedToken));
-
-        m_isDateChangedValidationEnabled = true;
-    }
-    return S_OK;
-}
-
 HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveTimeInput* adaptiveTimeInput,
                                                _In_ ITimePicker* uiTimePickerElement,
@@ -517,32 +452,6 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
-HRESULT TimeInputValue::EnableValueChangedValidation()
-{
-    if (!m_isTimeChangedValidationEnabled)
-    {
-        EventRegistrationToken dateChangedToken;
-        RETURN_IF_FAILED(m_timePickerElement->add_TimeChanged(
-            Callback<IEventHandler<TimePickerValueChangedEventArgs*>>([this](IInspectable* /*sender*/, ITimePickerValueChangedEventArgs *
-                                                                             /*args*/) -> HRESULT {
-                return Validate(nullptr);
-            }).Get(),
-            &dateChangedToken));
-
-        m_isTimeChangedValidationEnabled = true;
-    }
-    return S_OK;
-}
-
-HRESULT TimeInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
-{
-    // If we're validating immediately on focus lost, also validate the time picker as soon a a selection is made
-    RETURN_IF_FAILED(InputValue::EnableFocusLostValidation(validationBehavior));
-    RETURN_IF_FAILED(EnableValueChangedValidation());
-
-    return S_OK;
-}
-
 HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                  _In_ IAdaptiveToggleInput* adaptiveToggleInput,
                                                  _In_ ICheckBox* uiCheckBoxElement,
@@ -601,49 +510,6 @@ HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
     }
 
     *isInputValid = meetsRequirement;
-
-    return S_OK;
-}
-
-HRESULT ToggleInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior /*validationBehavior*/)
-{
-    ComPtr<IButtonBase> checkBoxAsButtonBase;
-    RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsButtonBase));
-
-    EventRegistrationToken toggleFocusLostToken;
-    RETURN_IF_FAILED(checkBoxAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                          /*args*/) -> HRESULT {
-                                                         boolean isToggleChecked = false;
-                                                         XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &isToggleChecked);
-                                                         if (!isToggleChecked)
-                                                         {
-                                                             return S_OK;
-                                                         }
-
-                                                         return Validate(nullptr);
-                                                     }).Get(),
-                                                     &toggleFocusLostToken));
-    RETURN_IF_FAILED(EnableValueChangedValidation());
-
-    return S_OK;
-}
-
-HRESULT ToggleInputValue::EnableValueChangedValidation()
-{
-    if (!m_isToggleChangedValidationEnabled)
-    {
-        ComPtr<IButtonBase> checkBoxAsButtonBase;
-        RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsButtonBase));
-
-        EventRegistrationToken toggleChangedToken;
-        RETURN_IF_FAILED(checkBoxAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                              /*args*/) -> HRESULT {
-                                                             return Validate(nullptr);
-                                                         }).Get(),
-                                                         &toggleChangedToken));
-
-        m_isToggleChangedValidationEnabled = true;
-    }
 
     return S_OK;
 }
@@ -764,102 +630,6 @@ try
     return S_OK;
 }
 CATCH_RETURN;
-
-HRESULT ChoiceSetInputValue::EnableValueChangedValidation()
-{
-    if (!m_isChoiceSetChangedValidationEnabled)
-    {
-        ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
-
-        boolean isMultiSelect;
-        RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
-
-        if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
-        {
-            // Handle compact style
-            ComPtr<ISelector> selector;
-            RETURN_IF_FAILED(m_uiInputElement.As(&selector));
-
-            EventRegistrationToken toggleChangedToken;
-            RETURN_IF_FAILED(selector->add_SelectionChanged(Callback<ISelectionChangedEventHandler>([this](IInspectable* /*sender*/, ISelectionChangedEventArgs *
-                                                                                                           /*args*/) -> HRESULT {
-                                                                return Validate(nullptr);
-                                                            }).Get(),
-                                                            &toggleChangedToken));
-        }
-        else
-        {
-            // For expanded style, put click handlers to validate on all the choices
-            ComPtr<IPanel> panel;
-            RETURN_IF_FAILED(m_uiInputElement.As(&panel));
-
-            ComPtr<IVector<UIElement*>> panelChildren;
-            RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
-
-            UINT size;
-            RETURN_IF_FAILED(panelChildren->get_Size(&size));
-
-            for (UINT i = 0; i < size; i++)
-            {
-                ComPtr<IUIElement> currentElement;
-                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
-
-                ComPtr<IButtonBase> elementAsButtonBase;
-                RETURN_IF_FAILED(currentElement.As(&elementAsButtonBase));
-
-                EventRegistrationToken elementChangedToken;
-                RETURN_IF_FAILED(elementAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                                     /*args*/) -> HRESULT {
-                                                                    return Validate(nullptr);
-                                                                }).Get(),
-                                                                &elementChangedToken));
-            }
-        }
-        m_isChoiceSetChangedValidationEnabled = true;
-    }
-
-    return S_OK;
-}
-
-HRESULT ChoiceSetInputValue::EnableFocusLostValidation(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
-{
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
-
-    boolean isMultiSelect;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
-
-    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
-    {
-        // Compact style can use the base class implementation
-        RETURN_IF_FAILED(InputValue::EnableFocusLostValidation(validationBehavior));
-    }
-    else
-    {
-        // For expanded style, put a focus lost handler on the last choice in the choice set
-        ComPtr<IPanel> panel;
-        RETURN_IF_FAILED(m_uiInputElement.As(&panel));
-
-        ComPtr<IVector<UIElement*>> panelChildren;
-        RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
-
-        UINT size;
-        RETURN_IF_FAILED(panelChildren->get_Size(&size));
-
-        ComPtr<IUIElement> lastElement;
-        RETURN_IF_FAILED(panelChildren->GetAt(size - 1, &lastElement));
-
-        EventRegistrationToken focusLostToken;
-        RETURN_IF_FAILED(lastElement->add_LostFocus(Callback<IRoutedEventHandler>([this, validationBehavior](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                         /*args*/) -> HRESULT {
-                                                        return ValidateIfNeeded(validationBehavior, this);
-                                                    }).Get(),
-                                                    &focusLostToken));
-    }
-
-    return S_OK;
-}
 
 HRESULT ChoiceSetInputValue::SetFocus()
 {

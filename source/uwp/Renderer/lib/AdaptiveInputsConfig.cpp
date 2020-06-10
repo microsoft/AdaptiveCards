@@ -21,8 +21,6 @@ namespace AdaptiveNamespace
     {
         MakeAndInitialize<AdaptiveErrorMessageConfig>(m_errorMessage.GetAddressOf(), inputsConfig.errorMessage);
         MakeAndInitialize<AdaptiveInputLabelsConfig>(m_inputLabels.GetAddressOf(), inputsConfig.inputLabels);
-
-        m_validationBehavior = static_cast<ABI::AdaptiveNamespace::ValidationBehavior>(inputsConfig.validationBehavior);
        
         return S_OK;
     }
@@ -46,18 +44,6 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputsConfig::put_InputLabels(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig* inputLabels)
     {
         m_inputLabels = inputLabels;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveInputsConfig::get_ValidationBehavior(_Out_ ABI::AdaptiveNamespace::ValidationBehavior* validationBehavior)
-    {
-        *validationBehavior = m_validationBehavior;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveInputsConfig::put_ValidationBehavior(ABI::AdaptiveNamespace::ValidationBehavior validationBehavior)
-    {
-        m_validationBehavior = validationBehavior;
         return S_OK;
     }
 
