@@ -335,9 +335,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getInputNecessityIndicatorsEnum();
   public final static native String InputNecessityIndicatorsToString(int jarg1);
   public final static native int InputNecessityIndicatorsFromString(String jarg1);
-  public final static native long getValidationBehaviorEnum();
-  public final static native String ValidationBehaviorToString(int jarg1);
-  public final static native int ValidationBehaviorFromString(String jarg1);
   public final static native long AdaptiveBase64Util_Decode(String jarg1);
   public final static native String AdaptiveBase64Util_Encode(long jarg1, CharVector jarg1_);
   public final static native String AdaptiveBase64Util_ExtractDataFromUri(String jarg1);
@@ -1094,8 +1091,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long ErrorMessageConfig_Deserialize(long jarg1, JsonValue jarg1_, long jarg2, ErrorMessageConfig jarg2_);
   public final static native long new_ErrorMessageConfig();
   public final static native void delete_ErrorMessageConfig(long jarg1);
-  public final static native void InputsConfig_validationBehavior_set(long jarg1, InputsConfig jarg1_, int jarg2);
-  public final static native int InputsConfig_validationBehavior_get(long jarg1, InputsConfig jarg1_);
   public final static native void InputsConfig_inputLabels_set(long jarg1, InputsConfig jarg1_, long jarg2, InputLabelsConfig jarg2_);
   public final static native long InputsConfig_inputLabels_get(long jarg1, InputsConfig jarg1_);
   public final static native void InputsConfig_errorMessage_set(long jarg1, InputsConfig jarg1_, long jarg2, ErrorMessageConfig jarg2_);

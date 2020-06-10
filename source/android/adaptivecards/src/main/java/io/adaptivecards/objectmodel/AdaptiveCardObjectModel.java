@@ -313,18 +313,6 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return InputNecessityIndicators.swigToEnum(AdaptiveCardObjectModelJNI.InputNecessityIndicatorsFromString(t));
   }
 
-  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ValidationBehavior_t getValidationBehaviorEnum() {
-    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ValidationBehavior_t(AdaptiveCardObjectModelJNI.getValidationBehaviorEnum(), false);
-  }
-
-  public static String ValidationBehaviorToString(ValidationBehavior t) {
-    return AdaptiveCardObjectModelJNI.ValidationBehaviorToString(t.swigValue());
-  }
-
-  public static ValidationBehavior ValidationBehaviorFromString(String t) {
-    return ValidationBehavior.swigToEnum(AdaptiveCardObjectModelJNI.ValidationBehaviorFromString(t));
-  }
-
   public static void HandleUnknownProperties(JsonValue json, SWIGTYPE_p_std__unordered_setT_std__string_t knownProperties, JsonValue unknownProperties) {
     AdaptiveCardObjectModelJNI.HandleUnknownProperties(JsonValue.getCPtr(json), json, SWIGTYPE_p_std__unordered_setT_std__string_t.getCPtr(knownProperties), JsonValue.getCPtr(unknownProperties), unknownProperties);
   }

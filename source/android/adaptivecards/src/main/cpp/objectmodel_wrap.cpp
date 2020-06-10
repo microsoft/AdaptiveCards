@@ -8448,54 +8448,6 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_getValidationBehaviorEnum(JNIEnv *jenv, jclass jcls) {
-  jlong jresult = 0 ;
-  AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  result = (AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > *) &AdaptiveCards::EnumHelpers::getValidationBehaviorEnum();
-  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::ValidationBehavior > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ValidationBehaviorToString(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jstring jresult = 0 ;
-  AdaptiveCards::ValidationBehavior arg1 ;
-  std::string result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = (AdaptiveCards::ValidationBehavior)jarg1; 
-  result = AdaptiveCards::ValidationBehaviorToString(arg1);
-  jresult = jenv->NewStringUTF((&result)->c_str()); 
-  return jresult;
-}
-
-
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ValidationBehaviorFromString(JNIEnv *jenv, jclass jcls, jstring jarg1) {
-  jint jresult = 0 ;
-  std::string *arg1 = 0 ;
-  AdaptiveCards::ValidationBehavior result;
-  
-  (void)jenv;
-  (void)jcls;
-  if(!jarg1) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
-    return 0;
-  }
-  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
-  if (!arg1_pstr) return 0;
-  std::string arg1_str(arg1_pstr);
-  arg1 = &arg1_str;
-  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
-  result = (AdaptiveCards::ValidationBehavior)AdaptiveCards::ValidationBehaviorFromString((std::string const &)*arg1);
-  jresult = (jint)result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveBase64Util_1Decode(JNIEnv *jenv, jclass jcls, jstring jarg1) {
   jlong jresult = 0 ;
   std::string *arg1 = 0 ;
@@ -22696,34 +22648,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   (void)jcls;
   arg1 = *(AdaptiveCards::ErrorMessageConfig **)&jarg1; 
   delete arg1;
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1validationBehavior_1set(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jint jarg2) {
-  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
-  AdaptiveCards::ValidationBehavior arg2 ;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
-  arg2 = (AdaptiveCards::ValidationBehavior)jarg2; 
-  if (arg1) (arg1)->validationBehavior = arg2;
-}
-
-
-SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_InputsConfig_1validationBehavior_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jint jresult = 0 ;
-  AdaptiveCards::InputsConfig *arg1 = (AdaptiveCards::InputsConfig *) 0 ;
-  AdaptiveCards::ValidationBehavior result;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  arg1 = *(AdaptiveCards::InputsConfig **)&jarg1; 
-  result = (AdaptiveCards::ValidationBehavior) ((arg1)->validationBehavior);
-  jresult = (jint)result; 
-  return jresult;
 }
 
 

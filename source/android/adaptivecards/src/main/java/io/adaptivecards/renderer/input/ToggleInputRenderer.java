@@ -116,8 +116,6 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         View returnView = InputUtil.HandleLabelAndValidation(checkBox, toggleInput, false, toggleInputHandler, context, hostConfig, renderArgs);
         tagContent.SetStretchContainer(returnView);
 
-        toggleInputHandler.addOnFocusLostValidation(hostConfig.GetInputs().getValidationBehavior());
-
         viewGroup.addView(returnView);
 
         checkBox.setTag(tagContent);

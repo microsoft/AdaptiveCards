@@ -36,14 +36,6 @@ public class InputsConfig {
     }
   }
 
-  public void setValidationBehavior(ValidationBehavior value) {
-    AdaptiveCardObjectModelJNI.InputsConfig_validationBehavior_set(swigCPtr, this, value.swigValue());
-  }
-
-  public ValidationBehavior getValidationBehavior() {
-    return ValidationBehavior.swigToEnum(AdaptiveCardObjectModelJNI.InputsConfig_validationBehavior_get(swigCPtr, this));
-  }
-
   public void setInputLabels(InputLabelsConfig value) {
     AdaptiveCardObjectModelJNI.InputsConfig_inputLabels_set(swigCPtr, this, InputLabelsConfig.getCPtr(value), value);
   }

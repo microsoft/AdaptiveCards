@@ -77,14 +77,6 @@ public abstract class BaseInputHandler implements IInputHandler
         }
     }
 
-    public void addOnFocusLostValidation(ValidationBehavior validationBehavior)
-    {
-        if (validationBehavior != ValidationBehavior.OnSubmit)
-        {
-            m_view.setOnFocusChangeListener(new FocusLostListener(validationBehavior, this));
-        }
-    }
-
     public void setFocusToView()
     {
         m_view.requestFocus();
@@ -93,29 +85,5 @@ public abstract class BaseInputHandler implements IInputHandler
     protected BaseInputElement m_baseInputElement = null;
     protected View m_view = null;
     private StretchableInputLayout m_inputLayout = null;
-
-    class FocusLostListener implements View.OnFocusChangeListener
-    {
-
-        public FocusLostListener(ValidationBehavior validationBehavior, IInputHandler inputHandler)
-        {
-            m_validationBehavior = validationBehavior;
-            m_inputHandler = inputHandler;
-        }
-
-        @Override
-        public void onFocusChange(View view, boolean b)
-        {
-            if ((m_validationBehavior == ValidationBehavior.OnFocusLostWithInput) && m_inputHandler.getInput().isEmpty())
-            {
-                return;
-            }
-
-            m_inputHandler.isValid();
-        }
-
-        private ValidationBehavior m_validationBehavior;
-        private IInputHandler m_inputHandler;
-    }
 
 }
