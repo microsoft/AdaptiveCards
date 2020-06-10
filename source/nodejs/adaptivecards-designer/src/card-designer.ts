@@ -638,6 +638,12 @@ export class CardDesigner extends Designer.DesignContext {
                         };
                         dialog.selectedSample.download();
                     }
+
+                    const newCardButton = document.getElementById(CardDesigner.ToolbarCommands.NewCard);
+
+                    if (newCardButton) {
+                        newCardButton.focus();
+                    }
                 };
                 dialog.open();
             });
