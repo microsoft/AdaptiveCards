@@ -54,17 +54,8 @@ export default class Visualizer extends React.Component {
                     <Image source={moreIcon} style={styles.moreIcon} />
                 </TouchableOpacity>
                 {this.state.activeOption !== Constants.OtherCards ? this.segmentedControl() : this.header()}
-                <FlatList
-                    data={items}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={({ item, index }) => (
-                        <PayloadItem
-                            onItemSelection={() => this.payloadDidSelect(item)}
-                            item={item}
-                            index={index} />
-                    )}
-                />
-                <Modal
+                
+                {/* <Modal
                     animationType="slide"
                     transparent={false}
                     supportedOrientations={['portrait', 'landscape']}
@@ -84,7 +75,28 @@ export default class Visualizer extends React.Component {
                     visible={this.state.isMoreVisible}
                     onRequestClose={() => this.closeMoreOptions()}>
                     {this.modalLayout()}
-                </Modal>
+                </Modal> */}
+                {
+                    this.state.isModalVisible ? <View>
+                    <Renderer
+                            payload={this.state.selectedPayload}
+                            isDataBinding={Constants.DataBinding === this.state.activeIndexValue}
+                            onModalClose={this.closeModal}
+                        />
+                        </View> :
+                        <FlatList
+                        data={items}
+                        keyExtractor={(item, index) => index.toString()}
+                        renderItem={({ item, index }) => (
+                            <PayloadItem
+                                onItemSelection={() => this.payloadDidSelect(item)}
+                                item={item}
+                                index={index} />
+                        )}
+                    />
+                }
+
+
             </View>
         );
     }

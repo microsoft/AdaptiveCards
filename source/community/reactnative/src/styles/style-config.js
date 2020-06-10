@@ -50,8 +50,8 @@ export class StyleManager {
 			...this.themeConfig.button[Platform.OS]
 		},
 		buttonTitle: {
-			color: this.themeConfig.button[Platform.OS].color,
-			textTransform: this.themeConfig.button[Platform.OS].textTransform,
+			// color: this.themeConfig.button[Platform.OS].color,
+			// textTransform: this.themeConfig.button[Platform.OS].textTransform,
 		},
 		input: {
 			...this.themeConfig.input[Platform.OS]

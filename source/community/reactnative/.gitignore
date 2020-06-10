@@ -50,6 +50,8 @@ buck-out/
 #
 ios/Pods/
 ios/Podfile.lock
+macos/Pods/
+macos/Podfile.lock
 
 # fastlane
 #

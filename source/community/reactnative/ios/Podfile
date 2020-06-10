@@ -68,7 +68,7 @@ target 'RNAdaptiveCards' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
-  pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
+  #pod 'react-native-video', :path => '../node_modules/react-native-video/react-native-video.podspec'
 
   target 'RNAdaptiveCardsTests' do
     inherit! :complete

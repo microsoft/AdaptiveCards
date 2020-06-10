@@ -13,7 +13,7 @@ import {
 
 import * as Constants from "../../utils/constants";
 import * as Enums from '../../utils/enums';
-import Video from "react-native-video";
+// import Video from "react-native-video";
 import ElementWrapper from './element-wrapper'
 import {
     InputContextConsumer,
@@ -114,7 +114,7 @@ export class Media extends React.Component {
 
                     return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
                         <View style={styles.container}>
-                            {
+                            {/* {
                                 (this.sources && this.sources.length > 0) &&
                                 <Video
                                     source={this.sources[this.state.currentSourceIndex]}
@@ -126,7 +126,7 @@ export class Media extends React.Component {
                                     onLoad={this.videoLoadSuccess}
                                     style={styles.nativeVideoControls}
                                 />
-                            }
+                            } */}
                             {(!this.state.onLoad && this.payload.poster) && <Image source={{ uri: this.payload.poster }} resizeMode="contain" style={styles.nativeVideoControls}></Image>}
                         </View>
                     </ElementWrapper>
