@@ -329,7 +329,6 @@ namespace AdaptiveSharedNamespace
 
     struct InputsConfig
     {
-        ValidationBehavior validationBehavior = ValidationBehavior::OnSubmit;
         InputLabelsConfig inputLabels;
         ErrorMessageConfig errorMessage;
 
