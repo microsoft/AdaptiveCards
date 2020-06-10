@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Adaptive Card</title>
+    </head>
+    <body>   
+        <script src='https://unpkg.com/adaptivecards/dist/adaptivecards.js'></script>
+        <script src='https://unpkg.com/adaptivecards-templating/dist/adaptivecards-templating.min.js'></script>
+        <p id= 'template'><%= cardTemplate %></p>
+        <p id='data'><%= cardData %></p>
+        <div id="AdaptiveCard" class="AdaptiveCard"></div>
+        <script>
+            const cardTemplate = JSON.parse(document.getElementById('template').innerHTML);
+            const cardData = JSON.parse(document.getElementById('data').innerHTML);
+
+            //hide the json dislpayed on the web page
+            document.getElementById('template').style.display = 'none';
+            document.getElementById('data').style.display = 'none';
+
+            //create and render the card
+            const template = new ACData.Template(cardTemplate);
+            const card = template.expand({ $root: cardData });
+            const adaptiveCard = new AdaptiveCards.AdaptiveCard();
+            adaptiveCard.parse(card);
+            const renderedCard = adaptiveCard.render();
+            document.getElementById('AdaptiveCard').appendChild(renderedCard);
+        </script>
+        
+    </body>
+</html>
