@@ -379,11 +379,6 @@ InputsConfig InputsConfig::Deserialize(const Json::Value& json, const InputsConf
                                                                                            defaultValue.inputLabels,
                                                                                            InputLabelsConfig::Deserialize);
 
-    result.validationBehavior = ParseUtil::GetEnumValue<ValidationBehavior>(json,
-                                                                            AdaptiveCardSchemaKey::ValidationBehavior,
-                                                                            defaultValue.validationBehavior,
-                                                                            ValidationBehaviorFromString);
-
     return result;
 }
 

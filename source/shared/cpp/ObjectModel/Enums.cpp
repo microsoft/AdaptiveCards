@@ -117,9 +117,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
-            {AdaptiveCardSchemaKey::OnSubmit, "onSubmit"},
-            {AdaptiveCardSchemaKey::OnFocusLost, "onFocusLost"},
-            {AdaptiveCardSchemaKey::OnFocusLostWithInput, "onFocusLostWithInput"},
             {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
@@ -165,7 +162,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Type, "type"},
             {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
-            {AdaptiveCardSchemaKey::ValidationBehavior, "validationBehavior"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
             {AdaptiveCardSchemaKey::ValueOn, "valueOn"},
@@ -340,9 +336,4 @@ namespace AdaptiveSharedNamespace
             {InputNecessityIndicators::None, "None"},
             {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
             {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
-
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ValidationBehavior, ValidationBehavior::OnSubmit, {
-            {ValidationBehavior::OnSubmit, "OnSubmit"},
-            {ValidationBehavior::OnFocusLostWithInput, "OnFocusLostWithInput"},
-            {ValidationBehavior::OnFocusLost, "OnFocusLost"}});
 }

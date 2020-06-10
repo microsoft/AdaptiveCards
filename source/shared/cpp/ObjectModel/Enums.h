@@ -119,9 +119,6 @@ namespace AdaptiveSharedNamespace
         MinHeight,
         Monospace,
         NumberInput,
-        OnSubmit,
-        OnFocusLost,
-        OnFocusLostWithInput,
         OptionalInputs,
         Padding,
         Placeholder,
@@ -167,7 +164,6 @@ namespace AdaptiveSharedNamespace
         Type,
         Underline,
         Url,
-        ValidationBehavior,
         Value,
         ValueOff,
         ValueOn,
@@ -500,12 +496,4 @@ namespace AdaptiveSharedNamespace
         OptionalInputs
     };
     DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
-
-    enum class ValidationBehavior
-    {
-        OnSubmit,
-        OnFocusLostWithInput,
-        OnFocusLost
-    };
-    DECLARE_ADAPTIVECARD_ENUM(ValidationBehavior);
 }
