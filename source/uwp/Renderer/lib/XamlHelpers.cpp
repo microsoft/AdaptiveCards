@@ -938,31 +938,6 @@ namespace AdaptiveNamespace::XamlHelpers
         if (validationBorderOut && hasValidation)
         {
             RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
-
-            ABI::AdaptiveNamespace::ValidationBehavior validationBehavior{};
-            inputsConfig->get_ValidationBehavior(&validationBehavior);
-
-            if (validationBehavior != ABI::AdaptiveNamespace::ValidationBehavior::OnSubmit)
-            {
-                
-                // Probably add the lambda
-                //EventRegistrationToken lostFocusToken;
-                //inputUIElement->add_LostFocus(Callback<IRoutedEventHandler>([validationBehavior](IInspectable /*sender*/, IRoutedEventArgs *
-                //                                                                                 /*args*/) -> HRESULT {
-                //                                  // here comes the behaviour where we validate
-                 //                                 if (validationBehavior == ABI::AdaptiveNamespace::ValidationBehavior::OnFocusLostWithInput)
-                  //                                {
-                   //                                 // validate input has something filled in 
-                    //                              }
-                     //                             else
-                      //                            {
-//
- //                                                 }
-//
- //                                             }).Get(),
-    //                                          &lostFocusToken);
-            }
-
             RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
         }
 

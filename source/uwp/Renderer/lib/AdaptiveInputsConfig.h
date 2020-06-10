@@ -22,11 +22,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_InputLabels(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig** inputLabels);
         IFACEMETHODIMP put_InputLabels(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig* inputLabels);
 
-        IFACEMETHODIMP get_ValidationBehavior(_Outptr_ ABI::AdaptiveNamespace::ValidationBehavior* validationBehavior);
-        IFACEMETHODIMP put_ValidationBehavior(_In_ ABI::AdaptiveNamespace::ValidationBehavior validationBehavior);
-
     private:
-        ABI::AdaptiveNamespace::ValidationBehavior m_validationBehavior;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig> m_inputLabels;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig> m_errorMessage;
     };

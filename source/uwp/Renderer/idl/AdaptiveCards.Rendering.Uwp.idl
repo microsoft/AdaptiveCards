@@ -396,16 +396,6 @@ AdaptiveNamespaceStart
         OptionalInputs
     } InputNecessityIndicators;
 
-    [version(NTDDI_WIN10_RS1), flags]
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        [contract(InternalContract, 1)][internal]
-#endif
-        typedef[v1_enum] enum ValidationBehavior {
-            OnSubmit = 0,
-            OnFocusLostWithInput,
-            OnFocusLost
-        } ValidationBehavior;
-
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1438,7 +1428,6 @@ AdaptiveNamespaceStart
 
         AdaptiveErrorMessageConfig ErrorMessage;
         AdaptiveInputLabelsConfig InputLabels;
-        ValidationBehavior ValidationBehavior;
     };
 
     [
