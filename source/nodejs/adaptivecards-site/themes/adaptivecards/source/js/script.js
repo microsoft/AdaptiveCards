@@ -462,16 +462,21 @@ $(function () {
 		}
 	});
 
-
-
-	$("#feedback-button").click(function (e) {
+	function invokeFeedback(e) {
 		e.preventDefault();
 		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
 			+ encodeURIComponent("[Website] [Your feedback title here]")
 			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
-				+ window.location.href));
-	});
+			+ window.location.href));
+	}
 
+	$("#feedback-button").on({
+	click: invokeFeedback,
+	keydown: function (e) {
+		if (e.key === "Enter") {
+			invokeFeedback(e);
+		}
+	}});
 
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
