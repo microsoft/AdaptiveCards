@@ -1,27 +1,16 @@
 # Instructions for Logging Issues
 
 ## 1. Search for Duplicates
-
 [Search the existing issues](https://github.com/Microsoft/AdaptiveCards/issues?utf8=%E2%9C%93&q=is%3Aissue) before logging a new one.
 
 ## 2. Do you have a question?
-
-Please use the issue tracker for bugs and suggestions.
-
 If you have a *question*, please use [Stack Overflow](https://stackoverflow.com/questions/tagged/adaptive-cards)
 
 ## 3. Did you find a bug?
-
-I'm not surprised, we're still in the early stages, so there are plenty of them right now :)
-
-When logging a bug, please be sure to include the following:
- * The platform you were using
- * If at all possible, an *isolated* way to reproduce the behavior
- * The behavior you expect to see, and the actual behavior
+Please use the [bug template](https://github.com/microsoft/AdaptiveCards/issues/new?assignees=&labels=Bug&template=bug_report.md&title=%5BPlatform%5D%5BBroad+Issue+Category+if+applicable+%28eg+Accessibility%29%5D+%5BBug+Title%5D) we provide to raise bugs for us. 
  
 ## 4. Do you have a suggestion?
-
-We also accept suggestions in the issue tracker. 
+We also accept suggestions as github issues. 
 
 Please take a look at our [Core Design Principles](https://docs.microsoft.com/en-us/adaptive-cards/#core-design-principles) to make sure the suggestion is aligned with the project goals.
 
@@ -34,9 +23,9 @@ In general, things we find useful when reviewing suggestions are:
 
 ## Contributing bug fixes
 
-Our local dev team is in active development, but we are still accepting external contributions in the form of bug fixes.
+Our local dev team is in active development, but we are always looking for community participation in the spirit of open development and accepting external contributions in the form of bug fixes or even broader features if they have the potential to impact the broader AdaptiveCards community.
 
-A bug must have an issue tracking it in the issue tracker that has been approved by the Adaptive Cards team. Your pull request should include a link to the bug that you are fixing. If you've submitted a PR for a bug, please post a comment in the bug to avoid duplication of effort.
+For contributing to existing isues, check out our [Accepting PRs](https://github.com/microsoft/AdaptiveCards/labels/Accepting%20PRs) list. For new issues, ensure you've created a new issue report and that it's been approved to be fixed by the Adaptive Cards team. 
 
 ## Contributing features
 
@@ -53,16 +42,8 @@ not already a CLA on file for your GitHub account. Once we have received the sig
 
 You can review details of the agreement at https://cla.opensource.microsoft.com.
 
-## Housekeeping
+### Pull Requests
+For pull requests, please use the [pull request template](https://github.com/microsoft/AdaptiveCards/blob/main/.github/pull_request_template.md) we provide. Do test your fixes manually (PR support/Buddy builds at this point are not supported but we are working on enabling it) before putting up your change for review. All unit tests should be passing for a PR to be committed into main. Someone from the AdaptiveCards v-team will also have to review your change before the change is allowed to be merged in. They may ask questions for more information or ask you to change things. Be sure to respond to their comments and push additional changes to the branch if they ask you to modify things before they sign off.
 
-Your pull request should: 
-
-* Include a description of what your change intends to do
-* Be a child commit of a reasonably recent commit in the **main** branch 
-    * Requests need not be a single commit, but should be a linear sequence of commits (i.e. no merge commits in your PR)
-* Have clear commit messages 
-    * e.g. "Refactor feature", "Fix issue", "Add tests for issue"
-
-## Running the Tests
-
-*Coming soon*
+#### Stale Pull Request Policy
+We mark pull requests as stale after 5 days of inactivity on it and call your attention to it via our fabricbot, and assign the pull request to be reviewed by a member of the Adaptive Cards team formally and should be able to help shepherd the change in. Our team's pull request SLA typically is ~2 business days but please do call us out on this if you see us slipping (we still are a very small team). The bot will automtically close the pull request and notify you after 30 days of continuous inactivity on it. Follow up's would likely be a case-by-case basis depending on why the PR aged out to begin with.
