@@ -63,7 +63,7 @@ card.parse(
         body: [
             {
                 type: "TextBlock",
-                text: "This demonstrates the ProgressBar element."
+                text: "This demonstrates the AlertAction action."
             }
         ],
         actions: [
