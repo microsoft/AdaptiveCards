@@ -52,7 +52,7 @@ using namespace AdaptiveNamespace;
 using namespace ABI::Windows::Foundation;
 using namespace ABI::Windows::Foundation::Collections;
 
-HRESULT WStringToHString(const std::wstring_view& in, _Outptr_ HSTRING* out) noexcept
+HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept
 try
 {
     if (out == nullptr)
@@ -65,12 +65,12 @@ try
     }
     else
     {
-        return WindowsCreateString(&in[0], static_cast<UINT32>(in.length()), out);
+        return WindowsCreateString(in.data(), static_cast<UINT32>(in.length()), out);
     }
 }
 CATCH_RETURN;
 
-std::string WstringToString(const std::wstring_view& in)
+std::string WstringToString(std::wstring_view in)
 {
     if (!in.empty())
     {
@@ -87,7 +87,7 @@ std::string WstringToString(const std::wstring_view& in)
     return "";
 }
 
-std::wstring StringToWstring(const std::string_view& in)
+std::wstring StringToWstring(std::string_view in)
 {
     if (!in.empty())
     {
@@ -105,7 +105,7 @@ std::wstring StringToWstring(const std::string_view& in)
     return L"";
 }
 
-HRESULT UTF8ToHString(const std::string_view& in, _Outptr_ HSTRING* out) noexcept
+HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept
 try
 {
     if (out == nullptr)
@@ -120,7 +120,7 @@ try
 }
 CATCH_RETURN;
 
-HRESULT HStringToUTF8(const HSTRING& in, std::string& out) noexcept
+HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept
 try
 {
     out = WstringToString(WindowsGetStringRawBuffer(in, nullptr));
@@ -128,7 +128,7 @@ try
 }
 CATCH_RETURN;
 
-std::string HStringToUTF8(const HSTRING& in)
+std::string HStringToUTF8(HSTRING in)
 {
     std::string typeAsKey;
     if (SUCCEEDED(HStringToUTF8(in, typeAsKey)))
@@ -753,9 +753,8 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateRequirementsProjection(
-    const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
+HRESULT GenerateRequirementsProjection(const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
+                                       _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
     for (auto& sharedRequirement : *sharedRequirements)
@@ -872,7 +871,7 @@ CATCH_RETURN;
 HRESULT GetColorFromString(const std::string& colorString, _Out_ ABI::Windows::UI::Color* color) noexcept
 try
 {
-    if (colorString.front() == '#')
+    if (colorString.length() > 0 && colorString.front() == '#')
     {
         // Get the pure hex value (without #)
         std::string hexColorString = colorString.substr(1, std::string::npos);
