@@ -865,7 +865,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (hostConfig.supportsInteractivity) {
                     element.tabIndex = 0
-                    element.setAttribute("role", "button");
+                    element.setAttribute("role", this.selectAction.getAriaRole());
 
                     if (this.selectAction.title) {
                         element.setAttribute("aria-label", this.selectAction.title);
@@ -882,7 +882,7 @@ export class TextBlock extends BaseTextBlock {
 
                 if (this.useMarkdown && formattedText) {
                     if (GlobalSettings.allowMarkForTextHighlighting) {
-                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==");
+                        formattedText = formattedText.replace(/<mark>/g, "===").replace(/<\/mark>/g, "/==/");
                     }
 
                     let markdownProcessingResult = AdaptiveCard.applyMarkdown(formattedText);
@@ -909,7 +909,7 @@ export class TextBlock extends BaseTextBlock {
                                 markStyle = 'style="' + markStyle + '"';
                             }
 
-                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==/g, "</mark>");
+                            this._processedText = this._processedText.replace(/===/g, "<mark " + markStyle + ">").replace(/\/==\//g, "</mark>");
                         }
                     } else {
                         this._processedText = formattedText;
@@ -1391,6 +1391,7 @@ export class FactSet extends CardElement {
             element.style.display = "block";
             element.style.overflow = "hidden";
             element.classList.add(hostConfig.makeCssClassName("ac-factset"));
+            element.setAttribute("role", "presentation");
 
             for (let i = 0; i < this.facts.length; i++) {
                 let trElement = document.createElement("tr");
@@ -1676,7 +1677,7 @@ export class Image extends CardElement {
 
             if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
-                imageElement.setAttribute("role", "button");
+                imageElement.setAttribute("role", this.selectAction.getAriaRole());
 
                 if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
@@ -1824,7 +1825,7 @@ export abstract class CardElementContainer extends CardElement {
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
                 element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
                 element.tabIndex = 0;
-                element.setAttribute("role", "button");
+                element.setAttribute("role", this._selectAction.getAriaRole());
 
                 if (this._selectAction.title) {
                     element.setAttribute("aria-label", this._selectAction.title);
@@ -3395,6 +3396,10 @@ export abstract class Action extends CardObject {
         return "";
     }
 
+    getAriaRole(): string {
+        return "button";
+    }
+
     updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
         // Do nothing in base implementation
     }
@@ -3423,6 +3428,8 @@ export abstract class Action extends CardObject {
         buttonElement.style.display = "flex";
         buttonElement.style.alignItems = "center";
         buttonElement.style.justifyContent = "center";
+
+        buttonElement.setAttribute("role", this.getAriaRole());
 
         let titleElement = document.createElement("div");
         titleElement.style.overflow = "hidden";
@@ -3642,6 +3649,10 @@ export class OpenUrlAction extends Action {
         return OpenUrlAction.JsonTypeName;
     }
 
+    getAriaRole() : string {
+        return "link";
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -3650,15 +3661,6 @@ export class OpenUrlAction extends Action {
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
                 "An Action.OpenUrl must have its url property set.");
-        }
-    }
-
-    render(baseCssClass: string = "ac-pushButton") {
-        super.render(baseCssClass);
-
-        // OpenUrl actions behave like a hyperlink. Make sure screenreaders treat them that way.
-        if (this.renderedElement) {
-            this.renderedElement.setAttribute("role", "link");
         }
     }
 
@@ -3835,7 +3837,7 @@ export class HttpAction extends Action {
     @property(HttpAction.bodyProperty)
     private _body: StringWithSubstitutions;
 
-    @property(HttpAction.bodyProperty)
+    @property(HttpAction.methodProperty)
     method?: string;
 
     @property(HttpAction.headersProperty)

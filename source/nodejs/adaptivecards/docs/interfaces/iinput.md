@@ -33,22 +33,16 @@
 
 • **id**? : *undefined | string*
 
-*Defined in [shared.ts:30](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L30)*
-
 ___
 
 ### `Optional` value
 
 • **value**? : *undefined | string*
 
-*Defined in [shared.ts:31](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L31)*
-
 ## Methods
 
 ###  validateValue
 
 ▸ **validateValue**(): *boolean*
-
-*Defined in [shared.ts:32](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/shared.ts#L32)*
 
 **Returns:** *boolean*

@@ -481,11 +481,13 @@ export class ValueSetProperty extends PropertyDefinition {
             }
         }
 
-        context.serializeValue(
-            target,
-            this.name,
-            valueFound ? value : undefined,
-            this.defaultValue);
+        if (valueFound) {
+            context.serializeValue(
+                target,
+                this.name,
+                value,
+                this.defaultValue);
+        }
     }
 
     constructor(

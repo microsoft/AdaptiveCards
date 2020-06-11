@@ -16,20 +16,14 @@
 
 • **Bolder**:
 
-*Defined in [enums.ts:37](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L37)*
-
 ___
 
 ###  Default
 
 • **Default**:
 
-*Defined in [enums.ts:36](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L36)*
-
 ___
 
 ###  Lighter
 
 • **Lighter**:
-
-*Defined in [enums.ts:35](https://github.com/microsoft/AdaptiveCards/blob/899191664/source/nodejs/adaptivecards/src/enums.ts#L35)*
