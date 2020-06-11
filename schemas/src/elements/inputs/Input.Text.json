@@ -18,7 +18,7 @@
 		},
 		"style": {
 			"type": "TextInputStyle",
-			"descrption": "Style hint for text input."
+			"description": "Style hint for text input."
 		},
 		"inlineAction": {
 			"type": "ISelectAction",
