@@ -17,7 +17,8 @@
 			"description": "Description of the input desired. Displayed when no text has been input."
 		},
 		"style": {
-			"type": "TextInputStyle"
+			"type": "TextInputStyle",
+			"descrption": "Style hint for text input."
 		},
 		"inlineAction": {
 			"type": "ISelectAction",
