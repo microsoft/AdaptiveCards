@@ -52,7 +52,7 @@ namespace AdaptiveSharedNamespace
         void SetHighlight(const bool value);
 
         void SetLanguage(const std::string& value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
 
         bool GetUnderline() const;
         void SetUnderline(const bool value);
