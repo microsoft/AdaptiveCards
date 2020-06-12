@@ -234,7 +234,6 @@ namespace AdaptiveCards.Rendering.Wpf
             return rendereableElement;
         }
 
-
         /// <summary>
         /// Helper to deal with casting
         /// </summary>
@@ -361,71 +360,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 return tagContent;
             }
             return null;
-        }
-
-        /// <summary>
-        /// Changes the visibility for the rendered element
-        /// </summary>
-        /// <param name="element">Rendered element to apply visibility</param>
-        /// <param name="desiredVisibility">Visibility to be applied to the element</param>
-        /// <param name="tagContent">Rendered element tag</param>
-        public void SetVisibility(FrameworkElement element, bool desiredVisibility, TagContent tagContent)
-        {
-            // TagContents are only assigned to card elements so actions mustn't have a TagContent object tied to it
-            // TagContents are used to save information on the rendered object as the element separator
-            if (tagContent == null)
-            {
-                return;
-            }
-
-            bool elementIsCurrentlyVisible = (element.Visibility == Visibility.Visible);
-
-            element.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
-
-            // Hides the separator if any was rendered
-            Grid separator = tagContent.Separator;
-            if (separator != null)
-            {
-                separator.Visibility = desiredVisibility ? Visibility.Visible : Visibility.Collapsed;
-            }
-
-            // Elements (Rows) with RowDefinition having stars won't hide so we have to set the width to auto
-            // Also, trying to set the same rowDefinition twice to the same element is not valid,
-            // so we have to make a check first
-            if ((tagContent.RowDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
-            {
-                RowDefinition rowDefinition = null;
-                if (desiredVisibility)
-                {
-                    rowDefinition = tagContent.RowDefinition;
-                }
-                else
-                {
-                    // When the visibility is set to false, then set the row definition to auto
-                    rowDefinition = new RowDefinition() { Height = GridLength.Auto };
-                }
-
-                tagContent.ParentContainerElement.RowDefinitions[tagContent.ViewIndex] = rowDefinition;
-            }
-
-            // Columns with ColumnDefinition having stars won't hide so we have to set the width to auto
-            // Also, trying to set the same columnDefinition twice to the same element is not valid,
-            // so we have to make a check first
-            if ((tagContent.ColumnDefinition != null) && !(elementIsCurrentlyVisible && desiredVisibility))
-            {
-                ColumnDefinition columnDefinition = null;
-                if (desiredVisibility)
-                {
-                    columnDefinition = tagContent.ColumnDefinition;
-                }
-                else
-                {
-                    columnDefinition = new ColumnDefinition() { Width = GridLength.Auto };
-                }
-
-                tagContent.ParentContainerElement.ColumnDefinitions[tagContent.ViewIndex] = columnDefinition;
-            }
-        }
+        }       
 
         /// <summary>
         /// Changes the visibility of the specified elements as defined
@@ -452,7 +387,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     TagContent tagContent = GetTagContent(elementFrameworkElement);
 
-                    SetVisibility(elementFrameworkElement, newVisibility, tagContent);
+                    RendererUtil.SetVisibility(elementFrameworkElement, newVisibility, tagContent);
 
                     if (tagContent != null)
                     {
@@ -549,19 +484,39 @@ namespace AdaptiveCards.Rendering.Wpf
         private bool ValidateInputs(AdaptiveSubmitAction submitAction)
         {
             bool allInputsValid = true, firstInvalidInputFound = false;
+            Dictionary<string, Func<string>> newInputBindings = new Dictionary<string, Func<string>>();
+
+            // We clear the InputBindings collection to clear all the results
+            InputBindings.Clear();
 
             List<string> inputsToValidate = RetrieveInputList(submitAction);
 
             // Iterate through all the elements and validate them
             foreach (string inputId in inputsToValidate)
             {
-                allInputsValid = allInputsValid && InputValues[inputId].Validate();
+                AdaptiveInputValue inputValue = InputValues[inputId];
+                bool inputIsValid = inputValue.Validate();
+                allInputsValid = allInputsValid && inputIsValid;
 
                 // If the validation failed, set focus to the first element that failed
                 if (!allInputsValid && !firstInvalidInputFound)
                 {
-                    InputValues[inputId].SetFocus();
+                    inputValue.SetFocus();
                     firstInvalidInputFound = true;
+                }
+
+                inputValue.ChangeVisualCueVisibility(inputIsValid);
+
+                // Add the input value to the inputs bindings
+                newInputBindings.Add(inputId, () => inputValue.GetValue());
+            }
+
+            // If the validation succeeded, then copy the result to the InputBindings
+            if (allInputsValid)
+            {
+                foreach (string key in newInputBindings.Keys)
+                {
+                    InputBindings.Add(key, newInputBindings[key]);
                 }
             }
 
@@ -576,7 +531,7 @@ namespace AdaptiveCards.Rendering.Wpf
             // While the card is not the main card, iterate through them
             // It's important to note that as we go from deep most upwards then we have to add the
             // inputs at the begining of the list to focus on the first one on validation
-            while (submitActionCardId != new AdaptiveInternalID())
+            while (!submitActionCardId.Equals(new AdaptiveInternalID()))
             {
                 // Copy the inputs into the result
                 inputList.InsertRange(0, InputsInCard[submitActionCardId]);
@@ -590,9 +545,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public void AddInputToCard(AdaptiveInternalID cardId, string inputId)
         {
-            if (InputsInCard[cardId] == null)
+            if (!InputsInCard.ContainsKey(cardId))
             {
-                InputsInCard[cardId] = new List<string>();
+                InputsInCard.Add(cardId, new List<string>());
             }
 
             InputsInCard[cardId].Add(inputId);

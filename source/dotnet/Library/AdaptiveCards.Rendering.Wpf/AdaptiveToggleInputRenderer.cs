@@ -18,9 +18,7 @@ namespace AdaptiveCards.Rendering.Wpf
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
             uiToggle.SetContext(input);
 
-            AdaptiveToggleInputValue toggleInputValue = new AdaptiveToggleInputValue(input, uiToggle);
-            context.InputValues.Add(input.Id, toggleInputValue);
-            context.InputBindings.Add(input.Id, () => toggleInputValue.GetValue());
+            context.InputValues.Add(input.Id, new AdaptiveToggleInputValue(input, uiToggle));
 
             return uiToggle;
         }

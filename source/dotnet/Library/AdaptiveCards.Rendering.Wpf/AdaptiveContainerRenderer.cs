@@ -148,7 +148,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         tag.RowDefinition = rowDefinition;
                         tag.ViewIndex = rowDefinitionIndex;
 
-                        context.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                        RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
                     }
                     else
                     {
@@ -166,7 +166,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         {
                             Grid.SetRow(uiElement, rowDefinitionIndex);
                             uiContainer.Children.Add(uiElement);
-                            context.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                            RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         }
                         else
                         {
@@ -177,12 +177,19 @@ namespace AdaptiveCards.Rendering.Wpf
                                 panel.Name = cardElement.Id;
                             }
 
-                            panel.Children.Add(uiElement);
+                            if (rendereableElement is AdaptiveInput)
+                            {
+                                panel.Children.Add(EncloseInputForVisualCue(context, rendereableElement as AdaptiveInput, uiElement));
+                            }
+                            else
+                            {
+                                panel.Children.Add(uiElement);
+                            }
                             panel.Tag = tag;
 
                             Grid.SetRow(panel, rowDefinitionIndex);
                             uiContainer.Children.Add(panel);
-                            context.SetVisibility(panel, cardElement.IsVisible, tag);
+                            RendererUtil.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
                 }
@@ -324,6 +331,7 @@ namespace AdaptiveCards.Rendering.Wpf
             if (element is AdaptiveInput)
             {
                 AdaptiveInput inputElement = element as AdaptiveInput;
+                enclosingElement = EncloseInputForVisualCue(context, inputElement, renderedElement);
 
                 if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
                 {
@@ -337,7 +345,9 @@ namespace AdaptiveCards.Rendering.Wpf
                         AddSpacing(context, context.Config.Inputs.InputLabels.InputSpacing, panel);
                     }
 
-                    panel.Children.Add(renderedElement);
+                    panel.Children.Add(enclosingElement);
+                    enclosingElement = panel;
+                    tag.EnclosingElement = panel;
 
                     if (!String.IsNullOrEmpty(inputElement.ErrorMessage))
                     {
@@ -346,12 +356,40 @@ namespace AdaptiveCards.Rendering.Wpf
                         FrameworkElement renderedErrorMessage = RenderErrorMessage(context, inputElement);
                         renderedErrorMessage.Tag = new TagContent(errorMessageSpacing, null);
 
+                        context.InputValues[inputElement.Id].ErrorMessage = renderedErrorMessage;
+
                         panel.Children.Add(renderedErrorMessage);
                         tag.ErrorMessage = renderedErrorMessage;
-                    }
 
-                    enclosingElement = panel;
-                    tag.EnclosingElement = panel;
+                        RendererUtil.SetVisibility(renderedErrorMessage, false, renderedErrorMessage.Tag as TagContent);
+                    }
+                }
+            }
+
+            return enclosingElement;
+        }
+
+        /// <summary>
+        /// Encloses the element in a panel to ease the showing/hiding of elements
+        /// </summary>
+        /// <param name="renderedElement">UIElement</param>
+        /// <returns>Border that encloses the element or the element if not needed</returns>
+        public static UIElement EncloseInputForVisualCue(AdaptiveRenderContext context, AdaptiveInput element, FrameworkElement renderedElement)
+        {
+            UIElement enclosingElement = renderedElement;
+
+            if (!(element is AdaptiveChoiceSetInput) && !(element is AdaptiveToggleInput))
+            {
+                AdaptiveTextBoxInputValue inputValue = context.InputValues[element.Id] as AdaptiveTextBoxInputValue;
+
+                if (inputValue != null)
+                {
+                    Border visualCue = new Border();
+                    visualCue.Child = renderedElement;
+                    visualCue.BorderBrush = context.GetColorBrush(context.GetForegroundColors(AdaptiveTextColor.Attention).Default);
+
+                    inputValue.VisualErrorCue = visualCue;
+                    enclosingElement = visualCue;
                 }
             }
 

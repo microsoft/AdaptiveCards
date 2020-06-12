@@ -15,9 +15,7 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
             textBox.SetContext(input);
 
-            AdaptiveNumberInputValue numberInputValue = new AdaptiveNumberInputValue(input, textBox);
-            context.InputValues.Add(input.Id, numberInputValue);
-            context.InputBindings.Add(input.Id, () => numberInputValue.GetValue());
+            context.InputValues.Add(input.Id, new AdaptiveNumberInputValue(input, textBox));
 
             return textBox;
         }

@@ -28,9 +28,7 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
             textBox.SetContext(input);
 
-            AdaptiveTextInputValue value = new AdaptiveTextInputValue(input, textBox);
-            context.InputValues.Add(input.Id, value);
-            context.InputBindings.Add(input.Id, () => value.GetValue());
+            context.InputValues.Add(input.Id, new AdaptiveTextInputValue(input, textBox));
 
             if (input.InlineAction != null)
             {

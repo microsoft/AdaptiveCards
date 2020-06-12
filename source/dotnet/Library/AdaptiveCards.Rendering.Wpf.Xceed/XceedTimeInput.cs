@@ -33,7 +33,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     timePicker.Value = value;
                 TimeSpan minValue;
                 if (IsSupportedTimeFormat(input.Min) && TimeSpan.TryParse(input.Min, out minValue))
-                    timePicker.EndTime = minValue;
+                    timePicker.StartTime = minValue;
                 TimeSpan maxValue;
                 if (IsSupportedTimeFormat(input.Max) && TimeSpan.TryParse(input.Max, out maxValue))
                     timePicker.EndTime = maxValue;
@@ -41,9 +41,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 timePicker.Style = context.GetStyle("Adaptive.Input.Time");
                 timePicker.DataContext = input;
 
-                AdaptiveXceedTimeInputValue inputValue = new AdaptiveXceedTimeInputValue(input, timePicker);
-                context.InputValues.Add(input.Id, inputValue);
-                context.InputBindings.Add(input.Id, () => inputValue.GetValue());
+                context.InputValues.Add(input.Id, new AdaptiveXceedTimeInputValue(input, timePicker));
 
                 return timePicker;
             }

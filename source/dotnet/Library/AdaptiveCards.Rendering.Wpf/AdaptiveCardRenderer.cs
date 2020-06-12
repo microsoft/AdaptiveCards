@@ -166,8 +166,7 @@ namespace AdaptiveCards.Rendering.Wpf
             outerGrid.Children.Add(grid);
 
             AdaptiveInternalID parentCardId = context.RenderArgs.ContainerCardId;
-
-
+            context.ParentCards.Add(card.InternalID, parentCardId);
             context.RenderArgs.ContainerCardId = card.InternalID;
 
             AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
@@ -228,7 +227,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, ref context.InputBindings);
 
             return renderCard;
         }

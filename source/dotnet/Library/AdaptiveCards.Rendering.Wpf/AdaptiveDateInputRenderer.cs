@@ -14,8 +14,7 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.Date");
             textBox.SetContext(input);
 
-
-            context.InputBindings.Add(input.Id, () => textBox.Text);
+            context.InputValues.Add(input.Id, new AdaptiveDateInputValue(input, textBox));
 
             return textBox;
         }

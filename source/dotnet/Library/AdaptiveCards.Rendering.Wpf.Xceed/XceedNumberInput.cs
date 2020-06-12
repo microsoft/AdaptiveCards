@@ -29,9 +29,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
 
-                AdaptiveXceedNumberInputValue inputValue = new AdaptiveXceedNumberInputValue(input, numberPicker);
-                context.InputValues.Add(input.Id, inputValue);
-                context.InputBindings.Add(input.Id, () => inputValue.GetValue());
+                context.InputValues.Add(input.Id, new AdaptiveXceedNumberInputValue(input, numberPicker));
 
                 return numberPicker;
             }

@@ -40,9 +40,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 datePicker.Style = context.GetStyle("Adaptive.Input.Date");
                 datePicker.DataContext = input;
 
-                AdaptiveXceedDateInputValue inputValue = new AdaptiveXceedDateInputValue(input, datePicker);
-                context.InputValues.Add(input.Id, inputValue);
-                context.InputBindings.Add(input.Id, () => inputValue.GetValue());
+                context.InputValues.Add(input.Id, new AdaptiveXceedDateInputValue(input, datePicker));
 
                 return datePicker;
             }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 using System;
 using System.IO;
+using System.Runtime.Remoting.Contexts;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -25,18 +26,29 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public abstract void SetFocus();
 
+        public virtual void ChangeVisualCueVisibility(bool inputIsValid)
+        {
+            // Change visibility for error message (and spacing)
+            if (ErrorMessage != null)
+            {
+                TagContent tagContent = ErrorMessage.Tag as TagContent;
+                RendererUtil.SetVisibility(ErrorMessage, !inputIsValid, tagContent);
+            }
+        }
+
         public AdaptiveInput InputElement { get; set; }
 
-        // This may not be required
         public UIElement RenderedInputElement { get; set; }
+
+        public FrameworkElement ErrorMessage { private get; set; }
     }
 
     /// <summary>
     /// Abstract class that implements the Validate behaviour for isRequired in almost all inputValues (except for Input.Toggle)
     /// </summary>
-    public abstract class AdaptiveInputValueRequiredValidation : AdaptiveInputValue
+    public abstract class AdaptiveInputValueNonEmptyValidation : AdaptiveInputValue
     {
-        public AdaptiveInputValueRequiredValidation(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
+        public AdaptiveInputValueNonEmptyValidation(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
 
         public override bool Validate()
         {
@@ -44,7 +56,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (InputElement.IsRequired)
             {
-                isValid = String.IsNullOrEmpty(GetValue());
+                isValid = !(String.IsNullOrEmpty(GetValue()));
             }
 
             return isValid;
@@ -55,7 +67,7 @@ namespace AdaptiveCards.Rendering.Wpf
     /// Intermediate class, as most of the elements in the vanilla wpf (no xceed) renderers use a textbox,
     /// this class was created to avoid all inputValues to implement the same GetValue and Focus method
     /// </summary>
-    public class AdaptiveTextBoxInputValue : AdaptiveInputValueRequiredValidation
+    public class AdaptiveTextBoxInputValue : AdaptiveInputValueNonEmptyValidation
     {
         public AdaptiveTextBoxInputValue(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
 
@@ -68,6 +80,22 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             RenderedInputElement.Focus();
         }
+
+        public override void ChangeVisualCueVisibility(bool isInputValid)
+        {
+            base.ChangeVisualCueVisibility(isInputValid);
+
+            if (isInputValid)
+            {
+                VisualErrorCue.BorderThickness = new Thickness(0);
+            }
+            else
+            {
+                VisualErrorCue.BorderThickness = new Thickness(2);
+            }
+        }
+
+        public Border VisualErrorCue { private get; set; }
     }
 
     public class AdaptiveTextInputValue : AdaptiveTextBoxInputValue
@@ -102,12 +130,12 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             bool isValid = base.Validate();
 
+            AdaptiveNumberInput numberInput = InputElement as AdaptiveNumberInput;
             double inputValue = 0.0;
-            isValid = isValid && Double.TryParse(GetValue(), out inputValue);
-
-            if (isValid)
+            
+            if (isValid && Double.TryParse(GetValue(), out inputValue))
             {
-                AdaptiveNumberInput numberInput = InputElement as AdaptiveNumberInput;
+                
 
                 bool isMinValid = true, isMaxValid = true;
                 if (!Double.IsNaN(numberInput.Min))
@@ -121,6 +149,15 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
 
                 isValid = isValid && isMinValid && isMaxValid;
+            }
+            else
+            {
+                // if the input is not required and the string is empty, then proceed
+                // This is a fail safe as non xceed controls are rendered with a Text
+                if (!(!numberInput.IsRequired && String.IsNullOrEmpty(GetValue())))
+                {
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -140,11 +177,12 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             bool isValid = base.Validate();
 
+            AdaptiveDateInput dateInput = InputElement as AdaptiveDateInput;
             // Check if our input is valid
+            string currentValue = GetValue();
             DateTime inputValue;
-            if (DateTime.TryParse(GetValue(), out inputValue))
+            if (DateTime.TryParse(currentValue, out inputValue))
             {
-                AdaptiveDateInput dateInput = InputElement as AdaptiveDateInput;
                 DateTime minDate, maxDate;
 
                 if (!String.IsNullOrEmpty(dateInput.Min))
@@ -161,13 +199,18 @@ namespace AdaptiveCards.Rendering.Wpf
                     // if max is a valid date, compare against it, otherwise ignore
                     if (DateTime.TryParse(dateInput.Max, out maxDate))
                     {
-                        isValid = isValid && (inputValue >= maxDate);
+                        isValid = isValid && (inputValue <= maxDate);
                     }
                 }
             }
             else
             {
-                isValid = false;
+                // if the input is not required and the string is empty, then proceed
+                // This is a fail safe as non xceed controls are rendered with a Text
+                if (!(!dateInput.IsRequired && String.IsNullOrEmpty(currentValue)))
+                {
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -203,11 +246,13 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             bool isValid = base.Validate();
 
+            AdaptiveTimeInput timeInput = InputElement as AdaptiveTimeInput;
+            string currentValue = GetValue();
+
             // Check if our input is valid
             TimeSpan inputValue;
-            if (TimeSpan.TryParse(GetValue(), out inputValue))
+            if (TimeSpan.TryParse(currentValue, out inputValue))
             {
-                AdaptiveTimeInput timeInput = InputElement as AdaptiveTimeInput;
                 TimeSpan minTime, maxTime;
 
                 if (!String.IsNullOrEmpty(timeInput.Min))
@@ -224,13 +269,18 @@ namespace AdaptiveCards.Rendering.Wpf
                     // if max is a valid date, compare against it, otherwise ignore
                     if (TimeSpan.TryParse(timeInput.Max, out maxTime))
                     {
-                        isValid = isValid && (inputValue >= maxTime);
+                        isValid = isValid && (inputValue <= maxTime);
                     }
                 }
             }
             else
             {
-                isValid = false;
+                // if the input is not required and the string is empty, then proceed
+                // This is a fail safe as non xceed controls are rendered with a TextBox
+                if (!(!timeInput.IsRequired && String.IsNullOrEmpty(currentValue)))
+                {
+                    isValid = false;
+                }
             }
 
             return isValid;
@@ -253,7 +303,7 @@ namespace AdaptiveCards.Rendering.Wpf
         }
     }
 
-    public class AdaptiveChoiceSetInputValue : AdaptiveInputValueRequiredValidation
+    public class AdaptiveChoiceSetInputValue : AdaptiveInputValueNonEmptyValidation
     {
         public AdaptiveChoiceSetInputValue(AdaptiveChoiceSetInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
 
@@ -307,7 +357,21 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public override void SetFocus()
         {
-            throw new NotImplementedException();
+            // For expanded cases, the inputs are inserted into a panel,
+            // so we focus on the first element in the panel
+            if (RenderedInputElement is Panel)
+            {
+                Panel choicesContainer = RenderedInputElement as Panel;
+
+                if (choicesContainer.Children.Count > 0)
+                {
+                    choicesContainer.Children[0].Focus();
+                }
+            }
+            else
+            {
+                RenderedInputElement.Focus();
+            }
         }
     }
 

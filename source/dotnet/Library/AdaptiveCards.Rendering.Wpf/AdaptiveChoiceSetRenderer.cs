@@ -102,7 +102,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices);
             }
 
-            context.InputBindings.Add(input.Id, () => inputValue.GetValue());
             context.InputValues.Add(input.Id, inputValue);
 
             return uiGrid;
