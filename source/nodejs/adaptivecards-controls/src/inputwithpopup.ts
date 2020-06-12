@@ -277,8 +277,10 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
 
     get labelId(): string {
         if (this._labelElement) {
+
             return this._labelElement.id;
         }
+
         return undefined;
     }
 

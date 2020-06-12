@@ -76,6 +76,7 @@ export class ToolbarButton extends ToolbarElement {
         else {
             this.renderedElement.classList.remove("acd-toolbar-button-toggled");
         }
+
         this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
 
         if (this.iconClass) {

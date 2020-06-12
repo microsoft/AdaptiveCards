@@ -273,7 +273,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
         return this._parentLabelId;
     }
 
-    set parentLabelId(newParentLabelId: string) {
-        this._parentLabelId = newParentLabelId;
+    set parentLabelId(value: string) {
+        this._parentLabelId = value;
     }
 }
