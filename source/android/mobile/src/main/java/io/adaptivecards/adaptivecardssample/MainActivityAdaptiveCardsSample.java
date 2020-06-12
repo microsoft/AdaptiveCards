@@ -457,6 +457,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         if (card.isEmpty())
         {
+            Toast.makeText(this, "Card was empty.", Toast.LENGTH_SHORT).show();
             return;
         }
         m_selectedCardText.setText(fileName);
