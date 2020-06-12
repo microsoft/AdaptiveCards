@@ -543,6 +543,9 @@ $(function () {
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
 
 	function updateSidebarTopOffset() {
@@ -555,11 +558,9 @@ $(function () {
 
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });
