@@ -17,6 +17,7 @@ export class PopupMenu extends PopupControl {
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";
+        element.setAttribute("role", "listbox");
 
         for (var i = 0; i < this._items.length; i++) {
             var renderedItem = this._items.get(i).render();
