@@ -430,6 +430,7 @@ $(function () {
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
