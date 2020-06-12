@@ -3,9 +3,9 @@
 name: pic2card-build
 on:
   push:
-    branches: [ master, pic2card-backend ]
+    branches: [ master, main, pic2card-backend ]
   pull_request:
-    branches: [ master, pic2card-backend ]
+    branches: [ master, main, pic2card-backend ]
 defaults:
   run:
     shell: bash
