@@ -57,7 +57,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
 
         // This layout contains the space for the actions (top, first element) and the hidden cards (bottom, second element)
         LinearLayout rootLayout = new LinearLayout(context);
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setFocusable(true);
         rootLayout.setFocusableInTouchMode(true);
