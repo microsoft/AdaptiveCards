@@ -1,4 +1,5 @@
 import { DraggableElement } from "./draggable-element";
+import { KEY_ENTER, KEY_SPACE } from "adaptivecards-controls";
 
 export abstract class BaseTreeItem extends DraggableElement {
     private static collapsedIconClass = "acd-icon-chevronRight";
@@ -77,6 +78,10 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
         this._expandCollapseElement.style.flex = "0 0 auto";
         this._expandCollapseElement.style.visibility = this.getChildCount() > 0 ? "visible" : "hidden";
+        this._expandCollapseElement.tabIndex = 0;
+        this._expandCollapseElement.setAttribute("role", "button");
+        this._expandCollapseElement.setAttribute("aria-expanded", this._isExpanded.toString());
+
         this._expandCollapseElement.onclick = (e: MouseEvent) => {
             this._isExpanded = !this._isExpanded;
 
@@ -84,6 +89,16 @@ export abstract class BaseTreeItem extends DraggableElement {
 
             e.cancelBubble = true;
             e.preventDefault();
+        }
+
+        this._expandCollapseElement.onkeydown = (e: KeyboardEvent) => {
+            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+                this._isExpanded = !this._isExpanded;
+
+                this.updateLayout();
+                this._expandCollapseElement.focus();
+                e.preventDefault();
+            }
         }
 
         this._treeItemElement.appendChild(this._expandCollapseElement);
@@ -151,6 +166,8 @@ export abstract class BaseTreeItem extends DraggableElement {
     abstract getChildAt(index: number): BaseTreeItem;
 
     updateLayout() {
+        this._expandCollapseElement.setAttribute("aria-expanded", this._isExpanded.toString());
+
         if (this._isExpanded) {
             this._childContainerElement.classList.remove("acd-hidden");
             this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
