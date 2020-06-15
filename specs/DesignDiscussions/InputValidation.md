@@ -405,13 +405,14 @@ The priority of tasks have been mentioned in the open issue [#3081](https://gith
 
 | Priority | Task |
 | --- | --- |
-| P0 | isRequired support |
-| P0 | Author can provide custom error message for each input |
-| P0 | Author can decide whether input should initially be visually indicated as required |
-| P0 | Regex validation support |
-| P0 | An user must always know why an action is not working due to a validation error | 
-| P0 | Hosts can define when validation is performed |
-| P1 | Hosts can define how error messages are displayed through host config or custom rendering |
+| P0 | Visual indication on the inputs validation state |
+| P0 | Author can provide custom error message string for each input |
+| P0 | Regex validation support for Input.Text elements | 
+| P0 | Ensure that min and max validation are performed |
+| P0 | Hosts can define how error messages are displayed through host config |
+| P0 | Document scenarios that may not be fully supported on v1 |
+| P1 | An user must always know why an action is not working due to a validation error | 
+| P2 | Hosts can define when validation is performed |
 | P2 | Authors can decide which inputs are going to be validated by an action |
 | P2 | Hosts can perform custom rendering of error messages |
 
