@@ -2138,6 +2138,7 @@ export class Media extends CardElement {
 
         if (this.hostConfig.supportsInteractivity && this._selectedSources.length > 0) {
             let playButtonOuterElement = document.createElement("div");
+            playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
             playButtonOuterElement.setAttribute("aria-label", "Play media");
             playButtonOuterElement.className = this.hostConfig.makeCssClassName("ac-media-playButton");
