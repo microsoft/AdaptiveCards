@@ -24,7 +24,6 @@ export class TreeView {
     render(): HTMLElement {
         let treeRoot = document.createElement("div");
         treeRoot.className = "acd-treeView";
-        treeRoot.tabIndex = 0;
         treeRoot.appendChild(this.rootItem.render());
 
         this.setupTreeItemEvents(this.rootItem);
