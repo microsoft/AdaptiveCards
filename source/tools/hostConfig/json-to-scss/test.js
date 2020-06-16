@@ -45,7 +45,7 @@ var config = {
           },
           "good": {
             "default": "#FF54a254",
-            "subtle": "#DD54a254"
+            "subtle": "#DD027502"
           },
           "warning": {
             "default": "#FFe69500",
@@ -70,7 +70,7 @@ var config = {
           },
           "good": {
             "default": "#FF54a254",
-            "subtle": "#DD54a254"
+            "subtle": "#DD027502"
           },
           "warning": {
             "default": "#FFe69500",
