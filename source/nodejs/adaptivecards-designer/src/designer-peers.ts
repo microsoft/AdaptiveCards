@@ -2188,16 +2188,10 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    /*
-    static readonly validationProperty = new CompoundPropertyEditor(
-        Adaptive.Versions.vNext,
-        "validation",
-        [
-            new EnumPropertyEditor(Adaptive.Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
-        ]
-    );
-    */
+    static readonly labelProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "label",
+        "Label");
 
     static readonly isRequiredProperty = new BooleanPropertyEditor(
         Adaptive.Versions.v1_3,
@@ -2212,6 +2206,7 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.add(defaultCategory, InputPeer.labelProperty);
         propertySheet.add(
             PropertySheetCategory.Validation,
             InputPeer.isRequiredProperty,

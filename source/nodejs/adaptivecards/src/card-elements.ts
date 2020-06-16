@@ -4,9 +4,8 @@ import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
-import { HostConfig, defaultHostConfig, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
+import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
 import * as TextFormatters from "./text-formatters";
-import { HostCapabilities } from "./host-capabilities";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
@@ -516,7 +515,7 @@ export abstract class CardElement extends CardObject {
         return undefined;
     }
 
-    getAllInputs(): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
     }
 
@@ -723,6 +722,21 @@ export abstract class BaseTextBlock extends CardElement {
 
     protected setText(value: string | undefined) {
         this.setValue(BaseTextBlock.textProperty, value);
+    }
+
+    constructor(text?: string) {
+        super();
+        
+        if (text) {
+            this.text = text;
+        }
+    }
+
+    init(textDefinition: BaseTextDefinition) {
+        this.size = textDefinition.size;
+        this.weight = textDefinition.weight;
+        this.color = textDefinition.color;
+        this.isSubtle = textDefinition.isSubtle;
     }
 
     asString(): string | undefined {
@@ -1323,8 +1337,13 @@ export class RichTextBlock extends CardElement {
         }
     }
 
-    addInline(inline: CardElement) {
-        this.internalAddInline(inline);
+    addInline(inline: CardElement | string) {
+        if (typeof inline === "string") {
+            this.internalAddInline(new TextRun(inline));
+        }
+        else {
+            this.internalAddInline(inline);
+        }
     }
 
     removeInline(inline: CardElement): boolean {
@@ -1868,11 +1887,11 @@ export abstract class CardElementContainer extends CardElement {
         }
     }
 
-    getAllInputs(): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         let result: Input[] = [];
 
         for (let i = 0; i < this.getItemCount(); i++) {
-            result = result.concat(this.getItemAt(i).getAllInputs());
+            result = result.concat(this.getItemAt(i).getAllInputs(processActions));
         }
 
         return result;
@@ -2284,65 +2303,15 @@ export class Media extends CardElement {
     }
 }
 
-/*
-export class InputValidationOptions extends SerializableObject {
-    //#region Schema
-
-    static readonly necessityProperty = new EnumProperty(Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
-    static readonly errorMessageProperty = new StringProperty(Versions.vNext, "errorMessagwe");
-
-    protected getSchemaKey(): string {
-        return "InputValidationOptions";
-    }
-
-    @property(InputValidationOptions.necessityProperty)
-    necessity: Enums.InputValidationNecessity = Enums.InputValidationNecessity.Optional;
-
-    @property(InputValidationOptions.errorMessageProperty)
-    errorMessage?: string;
-
-    //#endregion
-
-    protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
-        return this.hasAllDefaultValues() ? undefined : super.internalToJSON(target, context);
-    }
-}
-*/
-
 export abstract class Input extends CardElement implements IInput {
     //#region Schema
 
-    /*
-    static readonly validationProperty = new SerializableObjectProperty(
-        Versions.vNext,
-        "validation",
-        InputValidationOptions);
-    */
+    static readonly labelProperty = new StringProperty(Versions.v1_3, "label", true);
+    static readonly isRequiredProperty = new BoolProperty(Versions.v1_3, "isRequired", false);
+    static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessage", true);
 
-    static readonly isRequiredProperty = new BoolProperty(
-        Versions.v1_3,
-        "isRequired",
-        false);
-
-    static readonly errorMessageProperty = new StringProperty(
-        Versions.v1_3,
-        "errorMessage",
-        true);
-
-    /*
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        if (!GlobalSettings.useBuiltInInputValidation) {
-            schema.remove(Input.validationProperty);
-        }
-    }
-
-    @property(Input.validationProperty)
-    get validation(): InputValidationOptions {
-        return this.getValue(Input.validationProperty);
-    }
-    */
+    @property(Input.labelProperty)
+    label?: string;
 
     @property(Input.isRequiredProperty)
     isRequired: boolean;
@@ -2376,6 +2345,34 @@ export abstract class Input extends CardElement implements IInput {
         this._outerContainerElement.style.display = "flex";
         this._outerContainerElement.style.flexDirection = "column";
 
+        if (this.label) {
+            let labelRichTextBlock = new RichTextBlock();
+            labelRichTextBlock.setParent(this);
+
+            let labelInline = new TextRun(this.label);
+            labelRichTextBlock.addInline(labelInline);
+
+            if (this.isRequired) {
+                labelInline.init(hostConfig.inputs.label.requiredInputs);
+
+                let isRequiredCueInline = new TextRun(hostConfig.inputs.label.requiredInputs.suffix);
+                isRequiredCueInline.color = hostConfig.inputs.label.requiredInputs.suffixColor;
+
+                labelRichTextBlock.addInline(isRequiredCueInline);
+            }
+            else {
+                labelInline.init(hostConfig.inputs.label.optionalInputs);
+            }
+
+            let renderedLabel = labelRichTextBlock.render();
+
+            if (renderedLabel) {
+                renderedLabel.style.marginBottom = hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+
+                this._outerContainerElement.appendChild(renderedLabel);
+            }
+        }
+
         this._inputControlContainerElement = document.createElement("div");
         this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
         this._inputControlContainerElement.style.display = "flex";
@@ -2401,7 +2398,9 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     protected valueChanged() {
-        this.resetValidationFailureCue();
+        if (this.isValid()) {
+            this.resetValidationFailureCue();
+        }
 
         if (this.onValueChanged) {
             this.onValueChanged(this);
@@ -2424,16 +2423,10 @@ export abstract class Input extends CardElement implements IInput {
 
     protected showValidationErrorMessage() {
         if (this.renderedElement && this.errorMessage && GlobalSettings.displayInputValidationErrors) {
-            /*
-            this._errorMessageElement = document.createElement("span");
-            this._errorMessageElement.className = this.hostConfig.makeCssClassName("ac-input-validation-error-message");
-            this._errorMessageElement.textContent = this.errorMessage;
-            */
-
             let errorMessageTextBlock = new TextBlock();
             errorMessageTextBlock.setParent(this);
             errorMessageTextBlock.text = this.errorMessage;
-            errorMessageTextBlock.color = Enums.TextColor.Attention;
+            errorMessageTextBlock.init(this.hostConfig.inputs.errorMessage);
 
             this._errorMessageElement = errorMessageTextBlock.render();
 
@@ -2476,8 +2469,8 @@ export abstract class Input extends CardElement implements IInput {
         return result;
     }
 
-    getAllInputs(): Input[] {
-        return [this];
+    getAllInputs(processActions: boolean = true): Input[] {
+        return [ this ];
     }
 
     abstract get value(): any;
@@ -3422,7 +3415,7 @@ export abstract class Action extends CardObject {
         // Do nothing in base implementation
     }
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
+    protected internalGetReferencedInputs(): Dictionary<Input> {
         return {};
     }
 
@@ -3568,7 +3561,7 @@ export abstract class Action extends CardObject {
         return false;
     }
 
-    getAllInputs(): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         return [];
     }
 
@@ -3581,7 +3574,7 @@ export abstract class Action extends CardObject {
     }
 
     getReferencedInputs(): Dictionary<Input> | undefined {
-        return this.parent ? this.internalGetReferencedInputs(this.parent.getRootElement().getAllInputs()) : undefined;
+        return this.internalGetReferencedInputs();
     }
 
     validateInputs() {
@@ -3636,10 +3629,11 @@ export class SubmitAction extends Action {
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
+    protected internalGetReferencedInputs(): Dictionary<Input> {
         let result: Dictionary<Input> = {};
+        let inputs = this.parent ? this.parent.getRootElement().getAllInputs(false) : [];
 
-        for (let input of allInputs) {
+        for (let input of inputs) {
             if (input.id) {
                 result[input.id] = input;
             }
@@ -3912,7 +3906,8 @@ export class HttpAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.Http" = "Action.Http";
 
-    protected internalGetReferencedInputs(allInputs: Input[]): Dictionary<Input> {
+    protected internalGetReferencedInputs(): Dictionary<Input> {
+        let allInputs = this.parent ? this.parent.getRootElement().getAllInputs() : [];
         let result: Dictionary<Input> = {};
 
         this._url.getReferencedInputs(allInputs, result);
@@ -4058,8 +4053,8 @@ export class ShowCardAction extends Action {
         this.card.setParent(value);
     }
 
-    getAllInputs(): Input[] {
-        return this.card.getAllInputs();
+    getAllInputs(processActions: boolean = true): Input[] {
+        return this.card.getAllInputs(processActions);
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -4517,11 +4512,13 @@ class ActionCollection {
         this._renderedActionCount = 0;
     }
 
-    getAllInputs(): Input[] {
+    getAllInputs(processActions: boolean = true): Input[] {
         let result: Input[] = [];
 
-        for (let action of this.items) {
-            result = result.concat(action.getAllInputs());
+        if (processActions) {
+            for (let action of this.items) {
+                result = result.concat(action.getAllInputs());
+            }
         }
 
         return result;
@@ -4621,8 +4618,8 @@ export class ActionSet extends CardElement {
         this._actionCollection.addAction(action);
     }
 
-    getAllInputs(): Input[] {
-        return this._actionCollection.getAllInputs();
+    getAllInputs(processActions: boolean = true): Input[] {
+        return processActions ? this._actionCollection.getAllInputs() : [];
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -5935,8 +5932,14 @@ export abstract class ContainerWithActions extends Container {
         this._actionCollection.clear();
     }
 
-    getAllInputs(): Input[] {
-        return super.getAllInputs().concat(this._actionCollection.getAllInputs());
+    getAllInputs(processActions: boolean = true): Input[] {
+        let result = super.getAllInputs(processActions);
+
+        if (processActions) {
+            result = result.concat(this._actionCollection.getAllInputs(processActions));
+        }
+
+        return result;
     }
 
     getResourceInformation(): IResourceInformation[] {
