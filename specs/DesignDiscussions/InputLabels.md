@@ -168,7 +168,7 @@ Based on the results from Q9 of the survey, we will provide the option to allow 
  ```json
 "inputs": 
 {
-	"inputLabels": 
+	"label": 
 	{
 		"inputSpacing": "small",
 		"requiredInputs": {
@@ -208,11 +208,11 @@ By default, we will mark required inputs with a `*`. We may want, however, to pr
 ```json
 "inputs":
 {
-	"inputLabels": 
+	"label": 
 	{
-		"requiredSuffix": "*",
 		"requiredInputs": {
-			"weight": "Bolder",
+			"suffix": "*",
+			"weight": "Bolder
 		}
 	}
 }
@@ -401,7 +401,8 @@ For v1 of this feature we will only release the requirements marked as P0, while
 | P0 | Label support as a string |
 | P0 | Accessibility support for inputs |
 | P0 | Host can define formatting for labels in hostconfig |
-| P0 | Labels still show up if an host overrides or custom renders an input | 
+| P0 | Labels still show up if an host overrides or custom renders an input |
+| P0 | Renderers visually indicate what inputs are required (isRequired property) | 
 | P1 | Hosts can define the string to be used as "required inputs" hint |
 | P1 | Host Apps can define custom rendering for labels (using extensibility APIs) |
 | P1 | Samples are provided for overriding input elements |

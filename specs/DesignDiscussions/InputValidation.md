@@ -153,6 +153,8 @@ The schema change for host config will be adding the property `validationBehavio
 }
 ```
 
+For v1 of this feature, only the ```onSubmit``` behaviour will be implemented as after some talks with our MVPs we considered it would be better to provide an incremental experience with this feature.
+
 ### Validation for ChoiceSet and Toggle Inputs
 
 When we think of validation our first thought may go towards text inputs, but we also support ChoiceSet and Toggle elements. The currently proposed validation behavior should be almost the same as text input based validation but considering that usually interaction with this types of elements is not done using a keyboard.
@@ -348,6 +350,21 @@ As discussed above, validating all fields can lead to issues if pieces of the va
 
 - If "All" doesn't work well for a particular  card, allowing the card author to explicitly specify inputs allows them to override this default behavior to configure the validation as appropriate for their scenario.
 
+##### Conclusion
+
+After talks with some of our MVPs, as in the case with the `validation behaviour`, we'll introduce this behaviour gradually, as for this time, the behavior for grabbing the inputs will be changed and will be made consistent across the different platforms. The new behaviour has to be consistent with the inclusion of input validation and as such we cannot validate inputs that are not visible as it may not provide a satisfactory card author or user experience, after all, if some inputs are in a hidden card, then probably the card author doesn't want to grab those inputs. At the same time, users must be able to know what input is validating incorrectly and we cannot simply take the decision of showing a hidden input as it may break the experience the card author devised.
+
+To explain the input retrieving behavior we landed on consider the following diagram where the main card A has two `ShowCard` actions.
+
+![img](assets/InputValidation/CardCascadeSample.png)
+
+The behaviour is as follows:
+* If the `Submit` action on card A is clicked, then only the inputs in card A are retrieved
+* If the `Submit` action on card B is clicked, then inputs in card A and card B are retrieved, but not the inputs in card C
+* If the `Submit` action on card C is clicked, then inputs in card A and card C are retrieved, but not the inputs in card B
+
+To summarize, all the inputs in the card where the `Submit` action was clicked and all the inputs in all the "parent" cards are retrieved, no inputs in "sibling" cards are retrieved. In the diagram above, card A would be a "parent" of B and C, and card B and C are siblings.
+
 ### Validation and Actions
 
 #### Action Types
@@ -409,8 +426,11 @@ The priority of tasks have been mentioned in the open issue [#3081](https://gith
 | P0 | Author can provide custom error message string for each input |
 | P0 | Regex validation support for Input.Text elements | 
 | P0 | Ensure that min and max validation are performed |
-| P0 | Hosts can define how error messages are displayed through host config |
+| P0 | Hosts can define how error messages are formatted through host config |
 | P0 | Document scenarios that may not be fully supported on v1 |
+| P0 | Accessibility support for inputs |
+| P0.5 | Change input gathering (and validation) behaviour to get current card and all parent cards on submit action |
+| P1 | Validate only visible inputs | 
 | P1 | An user must always know why an action is not working due to a validation error | 
 | P2 | Hosts can define when validation is performed |
 | P2 | Authors can decide which inputs are going to be validated by an action |
