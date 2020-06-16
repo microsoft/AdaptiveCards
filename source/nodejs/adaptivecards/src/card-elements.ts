@@ -2428,6 +2428,7 @@ export abstract class Input extends CardElement implements IInput {
             let errorMessageTextBlock = new TextBlock();
             errorMessageTextBlock.setParent(this);
             errorMessageTextBlock.text = this.errorMessage;
+            errorMessageTextBlock.wrap = true;
             errorMessageTextBlock.init(this.hostConfig.inputs.errorMessage);
 
             this._errorMessageElement = errorMessageTextBlock.render();
@@ -3146,6 +3147,24 @@ export class NumberInput extends Input {
         return this.value !== undefined && !isNaN(this.value);
     }
 
+    isValid(): boolean {
+        if (!this.value) {
+            return !this.isRequired;
+        }
+
+        let result = true;
+
+        if (this.min) {
+            result = result && (this.value >= this.min);
+        }
+
+        if (this.max) {
+            result = result && (this.value <= this.max);
+        }
+
+        return result;
+    }
+
     get value(): number | undefined {
         return this._numberInputElement ? this._numberInputElement.valueAsNumber : undefined;
     }
@@ -3212,6 +3231,30 @@ export class DateInput extends Input {
         return this.value ? true : false;
     }
 
+    isValid(): boolean {
+        if (!this.value) {
+            return !this.isRequired;
+        }
+
+        let valueAsDate = new Date(this.value);
+
+        let result = true;
+
+        if (this.min) {
+            let minDate = new Date(this.min);
+
+            result = result && (valueAsDate >= minDate);
+        }
+
+        if (this.max) {
+            let maxDate = new Date(this.max);
+
+            result = result && (valueAsDate <= maxDate);
+        }
+
+        return result;
+    }
+
     get value(): string | undefined {
         return this._dateInputElement ? this._dateInputElement.value : undefined;
     }
@@ -3238,6 +3281,10 @@ export class TimeProperty extends CustomProperty<string | undefined> {
 }
 
 export class TimeInput extends Input {
+    private static convertTimeStringToDate(timeString: string): Date {
+        return new Date("1973-09-04T" + timeString + ":00Z");
+    }
+
     //#region Schema
 
     static readonly valueProperty = new TimeProperty(Versions.v1_0, "value");
@@ -3288,6 +3335,30 @@ export class TimeInput extends Input {
 
     isSet(): boolean {
         return this.value ? true : false;
+    }
+
+    isValid(): boolean {
+        if (!this.value) {
+            return !this.isRequired;
+        }
+
+        let valueAsDate = TimeInput.convertTimeStringToDate(this.value);
+
+        let result = true;
+
+        if (this.min) {
+            let minDate = TimeInput.convertTimeStringToDate(this.min);
+
+            result = result && (valueAsDate >= minDate);
+        }
+
+        if (this.max) {
+            let maxDate = TimeInput.convertTimeStringToDate(this.max);
+
+            result = result && (valueAsDate <= maxDate);
+        }
+
+        return result;
     }
 
     get value(): string | undefined {
