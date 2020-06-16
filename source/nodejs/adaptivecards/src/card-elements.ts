@@ -3704,7 +3704,14 @@ export class SubmitAction extends Action {
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
         let result: Dictionary<Input> = {};
-        let inputs = this.parent ? this.parent.getRootElement().getAllInputs(false) : [];
+        let current: CardElement | undefined = this.parent;
+        let inputs: Input[] = [];
+
+        while (current) {
+            inputs = inputs.concat(current.getAllInputs(false));
+
+            current = current.parent;
+        }
 
         for (let input of inputs) {
             if (input.id) {
