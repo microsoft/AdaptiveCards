@@ -1,0 +1,24 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Toggle",
+			"id": "input2",
+			"title": "I accept the terms and agreements",
+			"value": "false",
+			"valueOn": "true",
+			"valueOff": "false",
+			"label": "Required Input.Toggle",
+			"isRequired": true,
+			"errorMessage": "This is a required input"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}
