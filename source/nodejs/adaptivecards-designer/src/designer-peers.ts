@@ -1673,7 +1673,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1774,7 +1774,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1844,7 +1844,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1908,7 +1908,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -2096,7 +2096,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 
                 propertySheet.add(
                     PropertySheetCategory.SelectionAction,
-                    new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
+                    new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
@@ -2462,7 +2462,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.TextSize);
     static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
     static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
-    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "subtle", "Subtle");
+    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);

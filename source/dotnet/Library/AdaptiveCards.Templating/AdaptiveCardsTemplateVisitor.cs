@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AdaptiveCards.Templating
@@ -43,6 +44,30 @@ namespace AdaptiveCards.Templating
             /// <param name="rootDataContext">root data context</param>
             public DataContext(JToken jtoken, JToken rootDataContext)
             {
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
+            /// </summary>
+            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
+            /// <param name="text">json in string</param>
+            /// <param name="rootDataContext">a root data context</param>
+            public DataContext(string text, JToken rootDataContext)
+            {
+                // disable date parsing handling
+                var jsonReader = new JsonTextReader(new StringReader(text)) { DateParseHandling = DateParseHandling.None };
+                var jtoken = JToken.Load(jsonReader);
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// Initializer method that takes jtoken and root data context to initialize a data context object
+            /// </summary>
+            /// <param name="jtoken">current data context</param>
+            /// <param name="rootDataContext">root data context</param>
+            private void Init(JToken jtoken, JToken rootDataContext)
+            {
                 AELMemory = (jtoken is JObject) ? new SimpleObjectMemory(jtoken) : new SimpleObjectMemory(new JObject());
 
                 token = jtoken;
@@ -55,16 +80,6 @@ namespace AdaptiveCards.Templating
 
                 AELMemory.SetValue(dataKeyword, token);
                 AELMemory.SetValue(rootKeyword, rootDataContext);
-            }
-
-            /// <summary>
-            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
-            /// </summary>
-            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
-            /// <param name="text">json in string</param>
-            /// <param name="rootDataContext">a root data context</param>
-            public DataContext(string text, JToken rootDataContext) : this(JToken.Parse(text), rootDataContext)
-            {
             }
 
             /// <summary>
@@ -94,7 +109,8 @@ namespace AdaptiveCards.Templating
                 // set data as root data context
                 try
                 {
-                    root = JToken.Parse(data);
+                    var jsonReader = new JsonTextReader(new StringReader(data)) { DateParseHandling = DateParseHandling.None };
+                    root = JToken.Load(jsonReader);
                     PushDataContext(data, root);
                 }
                 catch (JsonException innerException)
@@ -454,6 +470,7 @@ namespace AdaptiveCards.Templating
                 // parse obj
                 AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LCB().GetText());
                 var whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated;
+                bool isPairAdded = false;
 
                 for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
@@ -462,17 +479,25 @@ namespace AdaptiveCards.Templating
                     if (pair != dataPair)
                     {
                         var returnedResult = Visit(pair);
+
+                        // add a delimiter, e.g ',' before appending
+                        // a pair after first pair is added
+                        if (isPairAdded && !returnedResult.IsWhen)
+                        {
+                            result.Append(jsonPairDelimieter);
+                        }
+
+                        result.Append(returnedResult);
+
                         if (returnedResult.IsWhen)
                         {
                             whenEvaluationResult = returnedResult.WhenEvaluationResult;
                         }
-                        result.Append(returnedResult);
-
-                        // add a delimiter, ','
-                        if (iPair != pairs.Length - 1 && !returnedResult.IsWhen)
+                        else
                         {
-                            result.Append(jsonPairDelimieter);
+                            isPairAdded = true;
                         }
+
                     }
                 }
 
@@ -593,16 +618,23 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                if (value is string && isTemplatedString)
+                if (value is string)
                 {
-                    result.Append("\"");
+                    // this can be little counterintuitive, but template expand() is
+                    // modifying serialized json string, so we serialize what's deserialized
+                    var test = JsonConvert.SerializeObject(value);
+                    if (!isTemplatedString)
+                    {
+                        // length can not be less than 2 because template string will 
+                        // always have start and end token
+                        test = test.Substring(1, test.Length - 2);
+                    }
+
+                    result.Append(test);
                 }
-
-                result.Append(value.ToString());
-
-                if (value is string && isTemplatedString)
+                else
                 {
-                    result.Append("\"");
+                    result.Append(value.ToString());
                 }
             }
             else
