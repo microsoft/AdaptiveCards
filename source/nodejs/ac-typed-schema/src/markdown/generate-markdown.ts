@@ -21,7 +21,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		properties = sortProperties(properties);
 
 		if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
-			md += "#### Introduced in version " + elementVersion + "\n\n";
+			md += "**Introduced in version " + elementVersion + "**\n\n";
 		}
 
 		var formattedProperties = [];
