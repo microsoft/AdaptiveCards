@@ -96,19 +96,6 @@
 
 			designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
-
-			let visualizerButton = new ACDesigner.ToolbarButton(
-				"visualizerButton",
-				"Classic Visualizer",
-				null,
-				function () {
-					window.open("<%- config.root %>visualizer")
-				}
-			);
-			visualizerButton.separator = true;
-			visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-			designer.toolbar.addElement(visualizerButton);
-
 			let feedbackButton = new ACDesigner.ToolbarButton(
 				"feedbackButton",
 				"Feedback",

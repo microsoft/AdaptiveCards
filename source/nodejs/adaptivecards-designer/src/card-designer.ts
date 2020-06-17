@@ -820,6 +820,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
         Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+        Adaptive.GlobalSettings.setTabIndexAtCardRoot = false;
 
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
