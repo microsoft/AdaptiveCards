@@ -2325,14 +2325,36 @@ export abstract class Input extends CardElement implements IInput {
 
     private _outerContainerElement: HTMLElement;
     private _inputControlContainerElement: HTMLElement;
-    private _errorMessageElement?: HTMLElement;
-    private _renderedInputControlElement: HTMLElement;
+    private _renderedErrorMessageElement?: HTMLElement;
+    private _renderedLabelElement?: HTMLElement;
+    private _renderedInputControlElement?: HTMLElement;
+
+    private updateInputControlAriaLabelledBy() {
+        if (this._renderedInputControlElement) {
+            let labelIds: string[] = [];
+
+            if (this._renderedLabelElement) {
+                labelIds.push(this._renderedLabelElement.id);
+            }
+
+            if (this._renderedErrorMessageElement) {
+                labelIds.push(this._renderedErrorMessageElement.id);
+            }
+
+            if (labelIds.length > 0) {
+                this._renderedInputControlElement.setAttribute("aria-labelledby", labelIds.join(" "));
+            }
+            else {
+                this._renderedInputControlElement.removeAttribute("aria-labelledby");
+            }
+        }
+    }
 
     protected get isNullable(): boolean {
         return true;
     }
 
-    protected get renderedInputControlElement(): HTMLElement {
+    protected get renderedInputControlElement(): HTMLElement | undefined {
         return this._renderedInputControlElement;
     }
 
@@ -2366,12 +2388,13 @@ export abstract class Input extends CardElement implements IInput {
                 labelInline.init(hostConfig.inputs.label.optionalInputs);
             }
 
-            let renderedLabel = labelRichTextBlock.render();
+            this._renderedLabelElement = labelRichTextBlock.render();
 
-            if (renderedLabel) {
-                renderedLabel.style.marginBottom = hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
+            if (this._renderedLabelElement) {
+                this._renderedLabelElement.id = Utils.generateUniqueId();
+                this._renderedLabelElement.style.marginBottom = hostConfig.getEffectiveSpacing(hostConfig.inputs.label.inputSpacing) + "px";
 
-                this._outerContainerElement.appendChild(renderedLabel);
+                this._outerContainerElement.appendChild(this._renderedLabelElement);
             }
         }
 
@@ -2379,10 +2402,9 @@ export abstract class Input extends CardElement implements IInput {
         this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
         this._inputControlContainerElement.style.display = "flex";
 
-        let renderedInputControlElement = this.internalRender();
+        this._renderedInputControlElement = this.internalRender();
 
-        if (renderedInputControlElement) {
-            this._renderedInputControlElement = renderedInputControlElement;
+        if (this._renderedInputControlElement) {
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
@@ -2390,8 +2412,9 @@ export abstract class Input extends CardElement implements IInput {
             }
 
             this._inputControlContainerElement.appendChild(this._renderedInputControlElement);
-
             this._outerContainerElement.appendChild(this._inputControlContainerElement);
+
+            this.updateInputControlAriaLabelledBy();
 
             return this._outerContainerElement;
         }
@@ -2412,13 +2435,15 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     protected resetValidationFailureCue() {
-        if (this.renderedElement) {
-            this._renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (this.renderedInputControlElement) {
+            this.renderedInputControlElement.classList.remove(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
-            if (this._errorMessageElement) {
-                this._outerContainerElement.removeChild(this._errorMessageElement);
+            this.updateInputControlAriaLabelledBy();
 
-                this._errorMessageElement = undefined;
+            if (this._renderedErrorMessageElement) {
+                this._outerContainerElement.removeChild(this._renderedErrorMessageElement);
+
+                this._renderedErrorMessageElement = undefined;
             }
         }
     }
@@ -2431,10 +2456,13 @@ export abstract class Input extends CardElement implements IInput {
             errorMessageTextBlock.wrap = true;
             errorMessageTextBlock.init(this.hostConfig.inputs.errorMessage);
 
-            this._errorMessageElement = errorMessageTextBlock.render();
+            this._renderedErrorMessageElement = errorMessageTextBlock.render();
 
-            if (this._errorMessageElement) {
-                this._outerContainerElement.appendChild(this._errorMessageElement);
+            if (this._renderedErrorMessageElement) {
+                this._renderedErrorMessageElement.id = Utils.generateUniqueId();
+                this._outerContainerElement.appendChild(this._renderedErrorMessageElement);
+
+                this.updateInputControlAriaLabelledBy();
             }
         }
     }
@@ -2442,6 +2470,12 @@ export abstract class Input extends CardElement implements IInput {
     onValueChanged: (sender: Input) => void;
 
     abstract isSet(): boolean;
+
+    focus() {
+        if (this._renderedInputControlElement) {
+            this._renderedInputControlElement.focus();
+        }
+    }
 
     isValid(): boolean {
         return true;
@@ -2463,8 +2497,8 @@ export abstract class Input extends CardElement implements IInput {
 
         let result = this.isRequired ? this.isSet() && this.isValid() : this.isValid();
 
-        if (!result && this.renderedElement) {
-            this._renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
+        if (!result && this.renderedInputControlElement) {
+            this.renderedInputControlElement.classList.add(this.hostConfig.makeCssClassName("ac-input-validation-failed"));
 
             this.showValidationErrorMessage();
         }
@@ -3616,8 +3650,11 @@ export abstract class Action extends CardObject {
 
     prepareForExecution(): boolean {
         let referencedInputs = this.getReferencedInputs();
+        let invalidInputs = this.internalValidateInputs(referencedInputs);
 
-        if (this.internalValidateInputs(referencedInputs).length > 0) {
+        if (invalidInputs.length > 0) {
+            invalidInputs[0].focus();
+
             return false;
         }
 
@@ -3650,7 +3687,12 @@ export abstract class Action extends CardObject {
         return this.internalGetReferencedInputs();
     }
 
-    validateInputs() {
+    /**
+     * Validates the inputs associated with this action.
+     * 
+     * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
+     */
+    validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
