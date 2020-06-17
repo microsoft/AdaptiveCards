@@ -445,6 +445,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseInputElement_GetErrorMessage(long jarg1, BaseInputElement jarg1_);
   public final static native void BaseInputElement_SetErrorMessage(long jarg1, BaseInputElement jarg1_, String jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
+  public final static native long BaseInputElement_dynamic_cast(long jarg1, BaseElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
   public final static native long new_BackgroundImage__SWIG_0();
   public final static native long new_BackgroundImage__SWIG_1(String jarg1);

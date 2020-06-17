@@ -128,7 +128,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
      * @param view defines the rendered element to grab the TagContent from
      * @return TagContent form view
      */
-    protected static TagContent getTagContent(View view)
+    public static TagContent getTagContent(View view)
     {
         if (view != null)
         {

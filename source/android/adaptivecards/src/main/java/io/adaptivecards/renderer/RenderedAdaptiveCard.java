@@ -5,10 +5,15 @@ package io.adaptivecards.renderer;
 import android.view.View;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
+import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.InternalId;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
@@ -19,11 +24,21 @@ public class RenderedAdaptiveCard {
     private Vector<IInputHandler> handlers;
     private AdaptiveCard adaptiveCard;
 
+    private Map<Long, Long> submitActionCard;
+    private Map<Long, Vector<IInputHandler>> inputsInCard;
+    private Map<Long, Long> parentCardForCard;
+    private Map<String, String> prevalidatedInputs;
+
     protected RenderedAdaptiveCard(AdaptiveCard adaptiveCard)
     {
         this.warnings = new Vector<>();
         this.handlers = new Vector<>();
         this.adaptiveCard = adaptiveCard;
+
+        this.submitActionCard = new HashMap<>();
+        this.inputsInCard = new HashMap<>();
+        this.parentCardForCard = new HashMap<>();
+        this.prevalidatedInputs = new HashMap<>();
     }
 
     public View getView()
@@ -41,31 +56,66 @@ public class RenderedAdaptiveCard {
         return warnings;
     }
 
-    public void registerInputHandler(IInputHandler handler)
+    public void registerInputHandler(IInputHandler handler, InternalId cardId)
     {
+        Long cardHash = cardId.Hash();
+        if (!inputsInCard.containsKey(cardHash))
+        {
+            inputsInCard.put(cardHash, new Vector<IInputHandler>());
+        }
+        inputsInCard.get(cardHash).add(handler);
+
         handlers.add(handler);
     }
 
     public Map<String, String> getInputs()
     {
-        HashMap<String, String> input = new HashMap<>();
-        for(IInputHandler i : handlers)
-        {
-            input.put(i.getId(), i.getInput());
-        }
-        return input;
+        return prevalidatedInputs;
     }
 
-    public boolean areInputsValid()
+    public void setParentToCard(InternalId card, InternalId parentCard)
+    {
+        parentCardForCard.put(card.Hash(), parentCard.Hash());
+    }
+
+    public void setCardForSubmitAction(InternalId actionId, InternalId parentCard)
+    {
+        submitActionCard.put(actionId.Hash(), parentCard.Hash());
+    }
+
+    private Vector<IInputHandler> getInputsToValidate(SubmitAction submitAction)
+    {
+        Long cardId = submitActionCard.get(submitAction.GetInternalId().Hash());
+        Vector<IInputHandler> inputHandlers = new Vector<>();
+
+        while ((cardId != null) && (cardId != new InternalId().Hash()))
+        {
+            inputHandlers.addAll(inputsInCard.get(cardId));
+            cardId = parentCardForCard.get(cardId);
+        }
+
+        return inputHandlers;
+    }
+
+    public boolean areInputsValid(SubmitAction submitAction)
     {
         boolean allInputsAreValid = true;
         boolean hasSetFocusToElement = false;
-        for(IInputHandler i : handlers)
+        Map<String, String> validatedInputs = new HashMap<>();
+
+        Vector<IInputHandler> inputsToValidate = getInputsToValidate(submitAction);
+
+        for(IInputHandler i : inputsToValidate)
         {
             // This variable is calculated out of the assignment as optimizations may make this code
             // not execute if allInputsAreValid is set to true
-            boolean currentInputIsValid = i.isValid();
-            allInputsAreValid = allInputsAreValid && currentInputIsValid;
+            allInputsAreValid &= i.isValid();
+
+            // We populate the validated inputs only if all inputs are valid, otherwise, just save time
+            if (allInputsAreValid)
+            {
+                validatedInputs.put(i.getId(), i.getInput());
+            }
 
             if (!allInputsAreValid && !hasSetFocusToElement)
             {
@@ -73,6 +123,11 @@ public class RenderedAdaptiveCard {
                 baseInputHandler.setFocusToView();
                 hasSetFocusToElement = true;
             }
+        }
+
+        if (allInputsAreValid)
+        {
+            prevalidatedInputs = validatedInputs;
         }
 
         return allInputsAreValid;

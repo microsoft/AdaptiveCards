@@ -27,6 +27,7 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
@@ -91,7 +92,8 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                                      ViewGroup viewGroup,
                                      BaseActionElement baseActionElement,
                                      ICardActionHandler cardActionHandler,
-                                     HostConfig hostConfig)
+                                     HostConfig hostConfig,
+                                     RenderArgs renderArgs)
         {
             this(renderedCard, baseActionElement, cardActionHandler);
 
@@ -100,7 +102,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             // As SelectAction doesn't support ShowCard actions, then this line won't be executed
             if (m_isInlineShowCardAction)
             {
-                renderHiddenCard(context, fragmentManager, viewGroup, hostConfig);
+                renderHiddenCard(context, fragmentManager, viewGroup, hostConfig, renderArgs);
             }
         }
 
@@ -170,7 +172,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
         }
 
-        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig)
+        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig, RenderArgs renderArgs)
         {
             ShowCardAction showCardAction = null;
             if (m_action instanceof ShowCardAction)
@@ -182,7 +184,8 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                 throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
             }
 
-            m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(), m_cardActionHandler, hostConfig, true);
+            m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(),
+                                                                                m_cardActionHandler, hostConfig, true, renderArgs.getContainerCardId());
             m_invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.GetActions().getShowCard().getInlineTopMargin()), 0, 0);
@@ -319,7 +322,8 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View v)
+        {
             if (m_isInlineShowCardAction)
             {
                 handleInlineShowCardAction(v);
@@ -332,7 +336,9 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             {
                 if (m_action.GetElementType() == ActionType.Submit)
                 {
-                    if (!m_renderedAdaptiveCard.areInputsValid())
+                    SubmitAction submitAction = Util.castToSubmitAction(m_action);
+
+                    if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
                     {
                         return;
                     }

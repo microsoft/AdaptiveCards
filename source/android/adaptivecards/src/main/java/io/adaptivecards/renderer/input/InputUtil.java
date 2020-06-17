@@ -27,75 +27,7 @@ import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 public class InputUtil
 {
 
-    public static View HandleLabelAndValidation(View inputView,
-                                  BaseInputElement element,
-                                  boolean hasSpecificValidation,
-                                  BaseInputHandler inputHandler,
-                                  Context context,
-                                  HostConfig hostConfig,
-                                  RenderArgs renderArgs)
-    {
-        // as first step we must figure out if the input requires a container layout
-        // it will require a container layout if:
-        // it needs to be stretched
-        // it contains a label
-        // it needs validation (has an error message or isrequired or hasSpecificValidation)
-        // Specific validation refers to validation not in all input elements, e.g. regex or min/max
 
-        boolean mustStretch = (element.GetHeight() == HeightType.Stretch);
-        boolean inputHasLabel = !element.GetLabel().isEmpty();
-        boolean inputHasErrorMessage = !element.GetErrorMessage().isEmpty();
-        boolean requiresValidation = (element.GetIsRequired() ||  hasSpecificValidation);
-        boolean requiresSurroundingLayout =  mustStretch || inputHasLabel || inputHasErrorMessage || requiresValidation;
-
-        if (requiresSurroundingLayout)
-        {
-            StretchableInputLayout stretchableinputLayout = new StretchableInputLayout(context, mustStretch);
-
-            if (inputHasLabel)
-            {
-                View inputLabel = RenderInputLabel(element.GetLabel(), element.GetIsRequired(), context, hostConfig, renderArgs);
-                stretchableinputLayout.setLabel(inputLabel);
-
-                // Render spacing
-                BaseCardElementRenderer.setSpacingAndSeparator(context,
-                    stretchableinputLayout,
-                    hostConfig.GetInputs().getInputLabels().getInputSpacing(),
-                    false /* separator */,
-                    hostConfig,
-                    false /* horizontalLine */,
-                    false /* isImageSet */);
-            }
-
-            stretchableinputLayout.setInputView(inputView);
-
-            if (inputHasErrorMessage)
-            {
-                // Render spacing
-                View spacing = BaseCardElementRenderer.setSpacingAndSeparator(context,
-                    stretchableinputLayout,
-                    hostConfig.GetInputs().getErrorMessage().getSpacing(),
-                    false /* separator */,
-                    hostConfig,
-                    false /* horizontalLine */,
-                    false /* isImageSet */);
-
-                View errorMessage = RenderErrorMessage(element.GetErrorMessage(), context, hostConfig, renderArgs);
-                errorMessage.setTag(new TagContent(null, spacing, null));
-                stretchableinputLayout.setErrorMessage(errorMessage);
-
-                BaseCardElementRenderer.setVisibility(false, errorMessage);
-
-                inputHandler.setInputLayout(stretchableinputLayout);
-            }
-
-            return stretchableinputLayout;
-        }
-        else
-        {
-            return inputView;
-        }
-    }
 
     public static View RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
     {

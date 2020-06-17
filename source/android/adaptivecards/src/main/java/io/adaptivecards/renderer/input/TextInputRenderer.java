@@ -201,7 +201,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         textInputHandler.setView(editText);
-        renderedCard.registerInputHandler(textInputHandler);
+        renderedCard.registerInputHandler(textInputHandler, renderArgs.getContainerCardId());
 
         if (!TextUtils.isEmpty(value))
         {
@@ -317,8 +317,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             returnableView = textInputViewGroup;
         }
 
-        View editTextContainer = InputUtil.HandleLabelAndValidation(returnableView, baseInputElement, hasSpecificValidation, textInputHandler, context, hostConfig, renderArgs);
-        viewGroup.addView(editTextContainer);
+        viewGroup.addView(returnableView);
 
         return editText;
     }

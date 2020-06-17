@@ -23,6 +23,7 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.IsVisible;
@@ -65,11 +66,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
     }
 
     public View renderCheckBoxSet(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup)
+                RenderedAdaptiveCard renderedCard,
+                Context context,
+                ChoiceSetInput choiceSetInput,
+                View separator,
+                ViewGroup viewGroup,
+                RenderArgs renderArgs)
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -115,7 +117,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             layout.addView(checkBox);
         }
 
-        renderedCard.registerInputHandler(checkBoxSetInputHandler);
+        renderedCard.registerInputHandler(checkBoxSetInputHandler, renderArgs.getContainerCardId());
         return layout;
     }
 
@@ -124,7 +126,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             Context context,
             ChoiceSetInput choiceSetInput,
             View separator,
-            ViewGroup viewGroup)
+            ViewGroup viewGroup,
+            RenderArgs renderArgs)
     {
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
@@ -155,7 +158,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
             radioGroup.addView(radioButton);
         }
-        renderedCard.registerInputHandler(radioGroupInputHandler);
+        renderedCard.registerInputHandler(radioGroupInputHandler, renderArgs.getContainerCardId());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -172,7 +175,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             Context context,
             ChoiceSetInput choiceSetInput,
             View separator,
-            ViewGroup viewGroup)
+            ViewGroup viewGroup,
+            RenderArgs renderArgs)
     {
         final Vector<String> titleList = new Vector<>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -206,7 +210,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
 
-        renderedCard.registerInputHandler(comboBoxInputHandler);
+        renderedCard.registerInputHandler(comboBoxInputHandler, renderArgs.getContainerCardId());
 
         class TextSpinnerAdapter extends ArrayAdapter<String>
         {
@@ -319,19 +323,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup);
+            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Expanded)
             {
                 // Create radio button group
-                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                inputView = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
             }
             else
             {
@@ -339,15 +343,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        TagContent tagContent = (TagContent) inputView.getTag();
-        View containerView = InputUtil.HandleLabelAndValidation(inputView, choiceSetInput, false, (BaseInputHandler) tagContent.GetInputHandler(), context, hostConfig, renderArgs);
-
-        if (containerView != inputView)
-        {
-            tagContent.SetStretchContainer(containerView);
-        }
-        viewGroup.addView(containerView);
-
+        viewGroup.addView(inputView);
         setVisibility(choiceSetInput.GetIsVisible(), inputView);
 
         return inputView;

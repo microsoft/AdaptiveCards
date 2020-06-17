@@ -88,7 +88,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         TagContent tagContent = new TagContent(toggleInput, toggleInputHandler, separator, viewGroup);
 
         checkBox.setText(toggleInput.GetTitle());
-        renderedCard.registerInputHandler(toggleInputHandler);
+        renderedCard.registerInputHandler(toggleInputHandler, renderArgs.getContainerCardId());
 
         if (TextUtils.isEmpty(toggleInput.GetValueOn()))
         {
@@ -113,11 +113,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        View returnView = InputUtil.HandleLabelAndValidation(checkBox, toggleInput, false, toggleInputHandler, context, hostConfig, renderArgs);
-        tagContent.SetStretchContainer(returnView);
-
-        viewGroup.addView(returnView);
-
+        viewGroup.addView(checkBox);
         checkBox.setTag(tagContent);
 
         setVisibility(baseCardElement.GetIsVisible(), checkBox);
