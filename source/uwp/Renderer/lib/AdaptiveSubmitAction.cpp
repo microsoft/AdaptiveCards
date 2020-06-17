@@ -77,12 +77,12 @@ namespace AdaptiveNamespace
         if (m_dataJson != nullptr)
         {
             RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-            submitAction->SetDataJson(jsonAsString);
+            submitAction->SetDataJson(std::move(jsonAsString));
         }
 
         submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
 
-        sharedModel = submitAction;
+        sharedModel = std::move(submitAction);
         return S_OK;
     }
     CATCH_RETURN;

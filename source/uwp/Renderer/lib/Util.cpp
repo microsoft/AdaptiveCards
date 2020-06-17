@@ -271,7 +271,7 @@ HRESULT GenerateSharedElements(_In_ ABI::Windows::Foundation::Collections::IVect
     XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::IAdaptiveCardElement>(items, [&](ABI::AdaptiveNamespace::IAdaptiveCardElement* item) {
         std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> baseCardElement;
         RETURN_IF_FAILED(GenerateSharedElement(item, baseCardElement));
-        containedElements.push_back(baseCardElement);
+        containedElements.push_back(std::move(baseCardElement));
 
         return S_OK;
     });

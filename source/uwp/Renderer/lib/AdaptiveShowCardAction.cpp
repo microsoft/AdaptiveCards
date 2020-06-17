@@ -67,9 +67,9 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
 
-        showCardAction->SetCard(sharedCard);
+        showCardAction->SetCard(std::move(sharedCard));
 
-        sharedModel = showCardAction;
+        sharedModel = std::move(showCardAction);
         return S_OK;
     }
     CATCH_RETURN;

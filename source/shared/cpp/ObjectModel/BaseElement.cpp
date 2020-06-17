@@ -53,6 +53,7 @@ namespace AdaptiveSharedNamespace
 
     Json::Value BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
 
+    void BaseElement::SetAdditionalProperties(Json::Value&& value) { m_additionalProperties = std::move(value); }
     void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.

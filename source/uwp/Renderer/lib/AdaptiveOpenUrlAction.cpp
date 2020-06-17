@@ -76,7 +76,7 @@ namespace AdaptiveNamespace
             openUrlAction->SetUrl(urlString);
         }
 
-        sharedModel = openUrlAction;
+        sharedModel = std::move(openUrlAction);
         return S_OK;
     }
     CATCH_RETURN;

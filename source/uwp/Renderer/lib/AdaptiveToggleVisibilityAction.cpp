@@ -56,7 +56,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));
 
-        sharedModel = toggleVisibilityAction;
+        sharedModel = std::move(toggleVisibilityAction);
         return S_OK;
     }
     CATCH_RETURN;

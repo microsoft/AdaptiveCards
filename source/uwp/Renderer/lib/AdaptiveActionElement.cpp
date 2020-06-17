@@ -124,7 +124,7 @@ namespace AdaptiveNamespace
         {
             Json::Value jsonCpp;
             RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
-            sharedCardElement.SetAdditionalProperties(jsonCpp);
+            sharedCardElement.SetAdditionalProperties(std::move(jsonCpp));
         }
 
         return S_OK;
