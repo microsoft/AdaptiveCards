@@ -724,6 +724,8 @@ export abstract class BaseTextBlock extends CardElement {
         this.setValue(BaseTextBlock.textProperty, value);
     }
 
+    ariaHidden: boolean = false;
+
     constructor(text?: string) {
         super();
         
@@ -791,6 +793,10 @@ export abstract class BaseTextBlock extends CardElement {
         }
 
         targetElement.style.fontWeight = fontWeight.toString();
+
+        if (this.ariaHidden) {
+            targetElement.setAttribute("aria-hidden", "true");
+        }
     }
 
     get effectiveColor(): Enums.TextColor {
@@ -2381,6 +2387,7 @@ export abstract class Input extends CardElement implements IInput {
 
                 let isRequiredCueInline = new TextRun(hostConfig.inputs.label.requiredInputs.suffix);
                 isRequiredCueInline.color = hostConfig.inputs.label.requiredInputs.suffixColor;
+                isRequiredCueInline.ariaHidden = true;
 
                 labelRichTextBlock.addInline(isRequiredCueInline);
             }
@@ -2408,6 +2415,7 @@ export abstract class Input extends CardElement implements IInput {
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
+                this._renderedInputControlElement.setAttribute("aria-required", "true");
                 this._renderedInputControlElement.classList.add(hostConfig.makeCssClassName("ac-input-required"));
             }
 
