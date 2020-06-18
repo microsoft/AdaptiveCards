@@ -335,7 +335,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -343,15 +343,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        TextInput textInput = null;
-        if (baseCardElement instanceof TextInput)
-        {
-            textInput = (TextInput) baseCardElement;
-        }
-        else if ((textInput = TextInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextInput object model.");
-        }
+        TextInput textInput = Util.castTo(baseCardElement, TextInput.class);
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
         TagContent tagContent = new TagContent(textInput, textInputHandler);
@@ -395,13 +387,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
         }
 
-        if(action != null)
+        if (action != null)
         {
             // adds click listeners to buttons; it iterates through subviews, and grabs the button
             // this way is cleaner than modifying interface to accept a cardActionHandler
             // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
-            if(subView instanceof ViewGroup)
+            if (subView instanceof ViewGroup)
             {
                 ViewGroup subViewGroup = (ViewGroup) subView;
                 for (int index = 0; index < subViewGroup.getChildCount(); ++index)

@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.TimeInput;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.input.TimeInputRenderer;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
@@ -35,10 +36,13 @@ public class TimeInputHandler extends TextInputHandler
     public String getInput()
     {
         EditText editText = getEditText();
-        try {
+        try
+        {
             Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
            return s_simpleDateFormat.format(time);
-        } catch (ParseException e) {
+        }
+        catch (ParseException e)
+        {
             return editText.getText().toString();
         }
     }
@@ -46,31 +50,16 @@ public class TimeInputHandler extends TextInputHandler
     @Override
     public boolean isValidOnSpecifics(String timeInputValue)
     {
-        TimeInput timeInput = null;
-        if (m_baseInputElement instanceof TimeInput)
+        TimeInput timeInput = Util.tryCastTo(m_baseInputElement, TimeInput.class);
+        if (timeInput == null)
         {
-            timeInput = (TimeInput) m_baseInputElement;
-        }
-        else if ((timeInput = TimeInput.dynamic_cast(m_baseInputElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
+            return false;
         }
 
-        Date currentTime;
+        Date currentTime = null;
         try
         {
-            currentTime = TimeInputRenderer.getTimeFormat().parse(timeInputValue);
-            Calendar currentValueDate = Calendar.getInstance();
-            currentValueDate.setTime(currentTime);
-
-            Date currentDate = new Date();
-            Calendar currentDateCalendar = Calendar.getInstance();
-            currentDateCalendar.setTime(currentDate);
-
-            currentDateCalendar.set(Calendar.HOUR_OF_DAY, currentValueDate.get(Calendar.HOUR_OF_DAY));
-            currentDateCalendar.set(Calendar.MINUTE, currentValueDate.get(Calendar.MINUTE));
-
-            currentTime = currentDateCalendar.getTime();
+            currentTime = getCurrentValue(getInput());
         }
         catch (Exception e)
         {
@@ -81,7 +70,7 @@ public class TimeInputHandler extends TextInputHandler
         if (!minTime.isEmpty())
         {
             Date min = RendererUtil.getTime(minTime).getTime();
-            if (currentTime.before(min))
+            if (!beforeOrSame(min, currentTime))
             {
                 return false;
             }
@@ -91,13 +80,52 @@ public class TimeInputHandler extends TextInputHandler
         if (!maxTime.isEmpty())
         {
             Date max = RendererUtil.getTime(maxTime).getTime();
-            if (currentTime.after(max))
+            if (!beforeOrSame(currentTime, max))
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    private Date getCurrentValue(String timeInputValue) throws Exception
+    {
+        Date currentTime = TimeInputRenderer.getTimeFormat().parse(timeInputValue);
+        Calendar currentValueDate = Calendar.getInstance();
+        currentValueDate.setTime(currentTime);
+
+        Date currentDate = new Date();
+        Calendar currentDateCalendar = Calendar.getInstance();
+        currentDateCalendar.setTime(currentDate);
+
+        currentDateCalendar.set(Calendar.HOUR_OF_DAY, currentValueDate.get(Calendar.HOUR_OF_DAY));
+        currentDateCalendar.set(Calendar.MINUTE, currentValueDate.get(Calendar.MINUTE));
+
+        currentTime = currentDateCalendar.getTime();
+
+        return currentTime;
+    }
+
+    /**
+     * The before method in Date doesn't work as the miliseconds difference introduced by calculations messes the behaviour
+     * @param before
+     * @param after
+     * @return
+     */
+    private boolean beforeOrSame(Date before, Date after)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(before);
+        int beforeHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int beforeMinute = calendar.get(Calendar.MINUTE);
+
+        calendar.setTime(after);
+        int afterHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int afterMinute = calendar.get(Calendar.MINUTE);
+
+        // If the hour is the same, compare against minutes. Seconds are not considered
+        return (beforeHour < afterHour || (beforeHour == afterHour && beforeMinute <= afterMinute));
     }
 
     private FragmentManager m_fragmentManager;

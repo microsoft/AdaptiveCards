@@ -24,6 +24,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -146,20 +147,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        TextBlock textBlock = null;
-        if (baseCardElement instanceof TextBlock)
-        {
-            textBlock = (TextBlock) baseCardElement;
-        }
-        else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-        }
+        TextBlock textBlock = Util.castTo(baseCardElement, TextBlock.class);
 
         TextView textView = new TextView(context);
-
         textView.setTag(new TagContent(textBlock));
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());

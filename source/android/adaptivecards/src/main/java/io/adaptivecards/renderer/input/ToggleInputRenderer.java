@@ -56,7 +56,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -64,15 +64,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        ToggleInput toggleInput = null;
-        if (baseCardElement instanceof ToggleInput)
-        {
-            toggleInput = (ToggleInput) baseCardElement;
-        }
-        else if ((toggleInput = ToggleInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
-        }
+        ToggleInput toggleInput = Util.castTo(baseCardElement, ToggleInput.class);
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);

@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.objectmodel.TextInput;
+import io.adaptivecards.renderer.Util;
 
 public class NumberInputHandler extends TextInputHandler
 {
@@ -36,14 +37,10 @@ public class NumberInputHandler extends TextInputHandler
     @Override
     public boolean isValidOnSpecifics(String numberInputValue)
     {
-        NumberInput numberInput = null;
-        if (m_baseInputElement instanceof TextInput)
+        NumberInput numberInput = Util.tryCastTo(m_baseInputElement, NumberInput.class);
+        if (numberInput == null)
         {
-            numberInput = (NumberInput) m_baseInputElement;
-        }
-        else if ((numberInput = NumberInput.dynamic_cast(m_baseInputElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
+            return false;
         }
 
         int inputValue = 0;

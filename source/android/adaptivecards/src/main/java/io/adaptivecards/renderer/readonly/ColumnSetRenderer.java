@@ -16,6 +16,7 @@ import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -53,17 +54,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
-        RenderArgs renderArgs) throws AdaptiveFallbackException
+        RenderArgs renderArgs) throws Exception
     {
-        ColumnSet columnSet = null;
-        if (baseCardElement instanceof ColumnSet)
-        {
-            columnSet = (ColumnSet) baseCardElement;
-        }
-        else if ((columnSet = ColumnSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
-        }
+        ColumnSet columnSet = Util.castTo(baseCardElement, ColumnSet.class);
 
         IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column.toString());
         if (columnRenderer == null)

@@ -13,6 +13,7 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.NumberInput;
@@ -45,7 +46,7 @@ public class NumberInputRenderer extends TextInputRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -53,15 +54,7 @@ public class NumberInputRenderer extends TextInputRenderer
             return null;
         }
 
-        NumberInput numberInput = null;
-        if (baseCardElement instanceof NumberInput)
-        {
-            numberInput = (NumberInput) baseCardElement;
-        }
-        else if ((numberInput = NumberInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
-        }
+        NumberInput numberInput = Util.castTo(baseCardElement, NumberInput.class);
 
         NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
         TagContent tagContent = new TagContent(numberInput, numberInputHandler);
@@ -82,7 +75,6 @@ public class NumberInputRenderer extends TextInputRenderer
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
         editText.setTag(tagContent);
-        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }

@@ -58,7 +58,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException
+            RenderArgs renderArgs) throws Exception
     {
         Column column = Util.castTo(baseCardElement, Column.class);
 

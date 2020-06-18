@@ -292,7 +292,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -300,18 +300,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        ChoiceSetInput choiceSetInput = null;
-        if (baseCardElement instanceof ChoiceSetInput)
-        {
-            choiceSetInput = (ChoiceSetInput) baseCardElement;
-        }
-        else if ((choiceSetInput = ChoiceSetInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
-        }
+        ChoiceSetInput choiceSetInput = Util.castTo(baseCardElement, ChoiceSetInput.class);
 
         View inputView = null;
-
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox

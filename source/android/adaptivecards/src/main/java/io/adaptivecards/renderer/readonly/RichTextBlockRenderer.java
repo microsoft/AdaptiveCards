@@ -40,6 +40,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RichTextBlockRenderer extends BaseCardElementRenderer
@@ -190,17 +191,9 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        RichTextBlock richTextBlock = null;
-        if (baseCardElement instanceof TextBlock)
-        {
-            richTextBlock = (RichTextBlock) baseCardElement;
-        }
-        else if ((richTextBlock = RichTextBlock.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-        }
+        RichTextBlock richTextBlock = Util.castTo(baseCardElement, RichTextBlock.class);
 
         TextView textView = new TextView(context);
         textView.setEllipsize(TextUtils.TruncateAt.END);

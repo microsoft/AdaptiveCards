@@ -232,7 +232,7 @@ public class CardRendererRegistration
             BaseCardElementVector baseCardElementList,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException
+            RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -322,7 +322,7 @@ public class CardRendererRegistration
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
             RenderArgs renderArgs,
-            FeatureRegistration featureRegistration) throws AdaptiveFallbackException
+            FeatureRegistration featureRegistration) throws AdaptiveFallbackException, Exception
     {
         IBaseCardElementRenderer renderer = m_typeToRendererMap.get(cardElement.GetElementTypeString());
 
@@ -399,7 +399,8 @@ public class CardRendererRegistration
                             renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
                             renderedElement = fallbackCardElement;
                             break;
-                        } catch (AdaptiveFallbackException e2)
+                        }
+                        catch (AdaptiveFallbackException e2)
                         {
                             // As the fallback element didn't exist, go back to trying
                             if (fallbackElement.GetFallbackType() == FallbackType.Content)
@@ -435,7 +436,6 @@ public class CardRendererRegistration
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE, "Unsupported card element type: " + cardElement.GetElementTypeString()));
                 renderedElement = null;
             }
-
         }
 
         View taggedView = findElementWithTagContent(mockLayout);
@@ -522,6 +522,7 @@ public class CardRendererRegistration
         if (requiresSurroundingLayout)
         {
             StretchableInputLayout inputLayout = new StretchableInputLayout(context, mustStretch);
+            View actualInput = findElementWithTagContent(mockLayout);
 
             if (inputHasLabel)
             {
@@ -535,6 +536,8 @@ public class CardRendererRegistration
                     false /* separator */,
                     hostConfig,
                     true /* horizontalLine */);
+
+                inputLabel.setLabelFor(actualInput.getId());
             }
 
             tagContent.SetStretchContainer(inputLayout);

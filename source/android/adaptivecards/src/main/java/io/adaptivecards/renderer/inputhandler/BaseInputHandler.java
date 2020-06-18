@@ -3,6 +3,8 @@
 package io.adaptivecards.renderer.inputhandler;
 
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -74,6 +76,16 @@ public abstract class BaseInputHandler implements IInputHandler
             if (errorMessage != null)
             {
                 BaseCardElementRenderer.setVisibility(!isValid, errorMessage);
+
+                if (m_view instanceof EditText)
+                {
+                    CharSequence inputHint = "";
+                    if (!isValid)
+                    {
+                        inputHint = ((TextView)errorMessage).getText();
+                    }
+                    ((EditText) m_view).setHint(inputHint);
+                }
             }
         }
 

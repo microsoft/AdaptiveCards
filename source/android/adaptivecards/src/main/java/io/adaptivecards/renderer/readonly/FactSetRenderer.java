@@ -70,17 +70,9 @@ public class FactSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        FactSet factSet = null;
-        if (baseCardElement instanceof FactSet)
-        {
-            factSet = (FactSet) baseCardElement;
-        }
-        else if ((factSet = FactSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
-        }
+        FactSet factSet = Util.castTo(baseCardElement, FactSet.class);
 
         TableLayout tableLayout = new TableLayout(context);
         tableLayout.setTag(new TagContent(factSet));

@@ -57,7 +57,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         ImageSet imageSet = Util.castTo(baseCardElement, ImageSet.class);
 

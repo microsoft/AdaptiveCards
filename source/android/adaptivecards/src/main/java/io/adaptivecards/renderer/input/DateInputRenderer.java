@@ -13,6 +13,7 @@ import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -49,7 +50,7 @@ public class DateInputRenderer extends TextInputRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
 
         if (!hostConfig.GetSupportsInteractivity())
@@ -58,20 +59,9 @@ public class DateInputRenderer extends TextInputRenderer
             return null;
         }
 
-        DateInput dateInput = null;
-        if (baseCardElement instanceof DateInput)
-        {
-            dateInput = (DateInput) baseCardElement;
-        }
-        else if ((dateInput = DateInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
-        }
-
+        DateInput dateInput = Util.castTo(baseCardElement, DateInput.class);
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
-
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
-
         TagContent tagContent = new TagContent(dateInput, dateInputHandler);
 
         EditText editText = renderInternal(

@@ -310,7 +310,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         Image image = Util.castTo(baseCardElement, Image.class);
 

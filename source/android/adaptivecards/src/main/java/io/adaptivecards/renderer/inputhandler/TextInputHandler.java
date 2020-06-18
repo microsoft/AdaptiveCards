@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.TextInput;
+import io.adaptivecards.renderer.Util;
 
 public class TextInputHandler extends BaseInputHandler
 {
@@ -34,14 +35,10 @@ public class TextInputHandler extends BaseInputHandler
     @Override
     public boolean isValidOnSpecifics(String textInputValue)
     {
-        TextInput textInput = null;
-        if (m_baseInputElement instanceof TextInput)
+        TextInput textInput = Util.tryCastTo(m_baseInputElement, TextInput.class);
+        if (textInput == null)
         {
-            textInput = (TextInput) m_baseInputElement;
-        }
-        else if ((textInput = TextInput.dynamic_cast(m_baseInputElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextInput object model.");
+            return false;
         }
 
         boolean isValid = true;
