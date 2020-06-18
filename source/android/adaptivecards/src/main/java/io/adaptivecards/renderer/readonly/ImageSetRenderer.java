@@ -59,7 +59,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs)
     {
-        ImageSet imageSet = Util.tryCastToImageSet(baseCardElement);
+        ImageSet imageSet = Util.castTo(baseCardElement, ImageSet.class);
 
         IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)

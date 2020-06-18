@@ -312,7 +312,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs)
     {
-        Image image = Util.castToImage(baseCardElement);
+        Image image = Util.castTo(baseCardElement, Image.class);
 
         View separator = null;
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;

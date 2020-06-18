@@ -60,7 +60,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        Container container = Util.castToContainer(baseCardElement);
+        Container container = Util.castTo(baseCardElement, Container.class);
 
         StretchableElementLayout containerView = new StretchableElementLayout(context, container.GetHeight() == HeightType.Stretch);
         containerView.setTag(new TagContent(container));

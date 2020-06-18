@@ -60,7 +60,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        Column column = Util.castToColumn(baseCardElement);
+        Column column = Util.castTo(baseCardElement, Column.class);
 
         LinearLayout.LayoutParams layoutParams;
         // TODO: Check compatibility with model on top

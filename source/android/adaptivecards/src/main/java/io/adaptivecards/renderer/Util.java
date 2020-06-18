@@ -9,6 +9,8 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.lang.reflect.Method;
+
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
@@ -16,10 +18,15 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.CharVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.Column;
+import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.Container;
+import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
+import io.adaptivecards.objectmodel.Media;
+import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.SubmitAction;
+import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 
 public final class Util {
@@ -69,46 +76,117 @@ public final class Util {
         return baseInputElement;
     }
 
-    public static Container tryCastToContainer(BaseCardElement cardElement)
+    /**
+     *
+     * @param cardElement
+     * @param cardElementType
+     * @param <T>
+     * @return
+     */
+    public static<T extends BaseCardElement> boolean isOfType(BaseCardElement cardElement, Class<T> cardElementType)
     {
-        Container result = null;
+        return (tryCastTo(cardElement, cardElementType) != null);
+    }
+
+    /**
+     *
+     * @param cardElement
+     * @param cardElementType
+     * @param <T>
+     * @return
+     */
+    public static<T extends BaseCardElement> T tryCastTo(BaseCardElement cardElement, Class<T> cardElementType)
+    {
         try
         {
-            result = castToContainer(cardElement);
+            return castTo(cardElement, cardElementType);
         }
-        catch (Exception e) {}
-
-        return result;
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
-    public static Container castToContainer(BaseCardElement cardElement)
+    /**
+     *
+     * @param cardElement
+     * @param cardElementType
+     * @param <T>
+     * @return
+     */
+    public static<T extends BaseCardElement> T castTo(BaseCardElement cardElement, Class<T> cardElementType)
     {
-        Container container = null;
-        if (cardElement instanceof Container)
-        {
-            container = (Container) cardElement;
-        }
-        else if ((container = Container.dynamic_cast(cardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Container object model.");
-        }
-
-        return container;
-    }
-
-    public static Column tryCastToColumn(BaseCardElement cardElement)
-    {
-        Column result = null;
         try
         {
-            result = castToColumn(cardElement);
+            T castedElement = null;
+            if (cardElementType.isAssignableFrom(cardElement.getClass()))
+            {
+                castedElement = (T)cardElement;
+            }
+            else
+            {
+                Method dynamicCastMethod = cardElementType.getMethod("dynamic_cast", BaseCardElement.class);
+                if ((castedElement = (T)dynamicCastMethod.invoke(null, cardElement)) == null)
+                {
+                    throw new InternalError("Unable to convert " + cardElement.getClass().getName() + " to " + cardElementType.getName() + " object model.");
+                }
+            }
+            return castedElement;
         }
-        catch (Exception e) {}
+        catch (Exception e)
+        {
+            throw new InternalError("Unable to find dynamic_cast method in " + cardElementType.getName() + ".");
+        }
 
-        return result;
+
+/*
+
+        if (cardElement instanceof T)
+        {
+
+        }
+
+        if (cardElementType == Column.class)
+        {
+            return (T)castToColumn(cardElement);
+        }
+        else if (cardElementType == ColumnSet.class)
+        {
+            return (T)castToColumnSet(cardElement);
+        }
+        else if (cardElementType == Container.class)
+        {
+            return (T)castToContainer(cardElement);
+        }
+        else if (cardElementType == FactSet.class)
+        {
+            return (T)castToFactSet(cardElement);
+        }
+        else if (cardElementType == Image.class)
+        {
+            return (T)castToImage(cardElement);
+        }
+        else if (cardElementType == ImageSet.class)
+        {
+            return (T)castToImageSet(cardElement);
+        }
+        else if (cardElementType == Media.class)
+        {
+            return (T)castToMedia(cardElement);
+        }
+        else if (cardElementType == RichTextBlock.class)
+        {
+            return (T)castToRichTextBlock(cardElement);
+        }
+        else if (cardElementType == TextBlock.class)
+        {
+            return (T)castToTextBlock(cardElement);
+        }
+ */
+        // return (T)cardElement;
     }
 
-    public static Column castToColumn(BaseCardElement cardElement)
+    private static Column castToColumn(BaseCardElement cardElement)
     {
         Column column = null;
         if (cardElement instanceof Column)
@@ -123,19 +201,52 @@ public final class Util {
         return column;
     }
 
-    public static Image tryCastToImage(BaseCardElement cardElement)
+    private static ColumnSet castToColumnSet(BaseCardElement cardElement)
     {
-        Image result = null;
-        try
+        ColumnSet columnSet = null;
+        if (cardElement instanceof ColumnSet)
         {
-            result = castToImage(cardElement);
+            columnSet = (ColumnSet) cardElement;
         }
-        catch (Exception e) {}
+        else if ((columnSet = ColumnSet.dynamic_cast(cardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
+        }
 
-        return result;
+        return columnSet;
     }
 
-    public static Image castToImage(BaseCardElement cardElement)
+    private static Container castToContainer(BaseCardElement cardElement)
+    {
+        Container container = null;
+        if (cardElement instanceof Container)
+        {
+            container = (Container) cardElement;
+        }
+        else if ((container = Container.dynamic_cast(cardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to Container object model.");
+        }
+
+        return container;
+    }
+
+    private static FactSet castToFactSet(BaseCardElement cardElement)
+    {
+        FactSet container = null;
+        if (cardElement instanceof FactSet)
+        {
+            container = (FactSet) cardElement;
+        }
+        else if ((container = FactSet.dynamic_cast(cardElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
+        }
+
+        return container;
+    }
+
+    private static Image castToImage(BaseCardElement cardElement)
     {
         Image image = null;
         if (cardElement instanceof Image)
@@ -150,19 +261,7 @@ public final class Util {
         return image;
     }
 
-    public static ImageSet tryCastToImageSet(BaseCardElement cardElement)
-    {
-        ImageSet result = null;
-        try
-        {
-            result = castToImageSet(cardElement);
-        }
-        catch (Exception e) {}
-
-        return result;
-    }
-
-    public static ImageSet castToImageSet(BaseCardElement cardElement)
+    private static ImageSet castToImageSet(BaseCardElement cardElement)
     {
         ImageSet imageSet = null;
         if (cardElement instanceof ImageSet)

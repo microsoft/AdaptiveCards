@@ -445,10 +445,10 @@ public class CardRendererRegistration
         tagContent.SetViewContainer(viewGroup);
 
         // Render the spacing so no other renderers have to do it
-        Column castedColumn = Util.tryCastToColumn(renderedElement);
+        boolean isColumn = Util.isOfType(renderedElement, Column.class);
 
-        // Only columns render vertical spacing, so if the column is null, then we need a horizontal spacing
-        HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, castedColumn == null);
+        // Only columns render vertical spacing, so if it's not a column, then we need a horizontal spacing
+        HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, !isColumn);
 
         // Check if the element is an input or must be stretched
         BaseInputElement baseInputElement = Util.castToInputElement(renderedElement);
@@ -459,12 +459,9 @@ public class CardRendererRegistration
         }
         else
         {
-            Container castedContainer = Util.tryCastToContainer(renderedElement);
-            Image castedImage = Util.tryCastToImage(renderedElement);
-            ImageSet castedImageSet = Util.tryCastToImageSet(renderedElement);
-
-            // Column, container, image and imageset handle their height on their own, so let's not add an extra view for them
-            if (renderedElement.GetHeight() == HeightType.Stretch && castedColumn != null && castedContainer != null && castedImage != null && castedImageSet != null)
+            // Column, container, image and imageSet handle their height on their own, so let's not add an extra view for them
+            if (renderedElement.GetHeight() == HeightType.Stretch && !isColumn && !Util.isOfType(renderedElement, Container.class)
+                && !Util.isOfType(renderedElement, Image.class) && !Util.isOfType(renderedElement, ImageSet.class))
             {
                 // put the element in a StretchableElementLayout
                 HandleStretchHeight(mockLayout, viewGroup, renderedElement, context, tagContent);
