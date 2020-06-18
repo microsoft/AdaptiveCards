@@ -2758,6 +2758,10 @@ export class ToggleInput extends Input {
             this._checkboxInputElement.setAttribute("aria-label", this.title);
         }
 
+        if (this.isRequired) {
+            this._checkboxInputElement.setAttribute("aria-required", "true");
+        }
+
         this._checkboxInputElement.tabIndex = 0;
 
         if (this.defaultValue == this.valueOn) {
@@ -2923,6 +2927,10 @@ export class ChoiceSetInput extends Input {
             input.style.verticalAlign = "middle";
             input.style.flex = "0 0 auto";
             input.name = this.id ? this.id : this._uniqueCategoryName;
+
+            if (this.isRequired) {
+                input.setAttribute("aria-required", "true");
+            }
 
             if (choice.value) {
                 input.value = choice.value;
