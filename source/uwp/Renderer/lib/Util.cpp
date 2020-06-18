@@ -70,39 +70,56 @@ try
 }
 CATCH_RETURN;
 
-std::string WstringToString(std::wstring_view in)
+std::string WStringToString(std::wstring_view in)
 {
-    if (!in.empty())
-    {
-        const size_t requiredSize =
-            WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), nullptr, 0, nullptr, nullptr);
-        std::string converted(requiredSize, 0);
+    const int length_in = static_cast<int>(in.length());
 
-        if (WideCharToMultiByte(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &converted[0], (int)requiredSize, nullptr, nullptr) == 0)
+    if (length_in > 0)
+    {
+        const int length_out = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, NULL, 0, NULL, NULL);
+
+        if (length_out > 0)
         {
-            throw bad_string_conversion();
+            std::string out(length_out, '\0');
+
+            const int length_written = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out, NULL, NULL);
+
+            if (length_written == length_out)
+            {
+                return out;
+            }
         }
-        return converted;
+
+        throw bad_string_conversion();
     }
-    return "";
+
+    return {};
 }
 
-std::wstring StringToWstring(std::string_view in)
+std::wstring StringToWString(std::string_view in)
 {
-    if (!in.empty())
-    {
-        // TODO: safer casts
-        const size_t requiredSize = MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), (LPWSTR) nullptr, 0);
-        std::wstring wide(requiredSize, 0);
+    const int length_in = static_cast<int>(in.length());
 
-        if (MultiByteToWideChar(CP_UTF8, 0 /*dwFlags*/, &in[0], (int)in.length(), &wide[0], (int)requiredSize) == 0)
+    if (length_in > 0)
+    {
+        const int length_out = ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, NULL, 0);
+
+        if (length_out > 0)
         {
-            throw bad_string_conversion();
+            std::wstring out(length_out, L'\0');
+
+            const int length_written = ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
+
+            if (length_written == length_out)
+            {
+                return out;
+            }
         }
 
-        return wide;
+        throw bad_string_conversion();
     }
-    return L"";
+
+    return {};
 }
 
 HRESULT UTF8ToHString(std::string_view in, _Outptr_ HSTRING* out) noexcept
@@ -114,7 +131,7 @@ try
     }
     else
     {
-        std::wstring wide = StringToWstring(in);
+        std::wstring wide = StringToWString(in);
         return WindowsCreateString(wide.c_str(), static_cast<UINT32>(wide.length()), out);
     }
 }
@@ -123,7 +140,10 @@ CATCH_RETURN;
 HRESULT HStringToUTF8(HSTRING in, std::string& out) noexcept
 try
 {
-    out = WstringToString(WindowsGetStringRawBuffer(in, nullptr));
+    UINT32 length = 0U;
+    const auto* ptr_wide = WindowsGetStringRawBuffer(in, &length);
+    out = WStringToString(std::wstring_view(ptr_wide, length));
+
     return S_OK;
 }
 CATCH_RETURN;
@@ -135,10 +155,8 @@ std::string HStringToUTF8(HSTRING in)
     {
         return typeAsKey;
     }
-    else
-    {
-        return "";
-    }
+
+    return {};
 }
 
 template<typename TSharedBaseType, typename TAdaptiveBaseType, typename TAdaptiveType>

@@ -36,8 +36,8 @@ private:
 
 HRESULT WStringToHString(std::wstring_view in, _Outptr_ HSTRING* out) noexcept;
 
-std::string WstringToString(std::wstring_view in);
-std::wstring StringToWstring(std::string_view in);
+std::string WStringToString(std::wstring_view in);
+std::wstring StringToWString(std::string_view in);
 
 // This function is needed to deal with the fact that non-windows platforms handle Unicode without the need for wchar_t.
 // (which has a platform specific implementation) It converts a std::string to an HSTRING.
