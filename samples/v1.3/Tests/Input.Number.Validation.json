@@ -1,0 +1,41 @@
+{
+  "type": "AdaptiveCard",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "Input.Number",
+      "id": "notRequired",
+      "label": "Not Required:"
+    },
+    {
+      "type": "Input.Number",
+      "id": "required",
+      "label": "Required:",
+      "isRequired": true,
+      "errorMessage": "Error: Number is required"
+    },
+    {
+      "type": "Input.Number",
+      "id": "notRequiredWithMaxMin",
+      "label": "Not Required (with max and min):",
+      "errorMessage": "Error: Number must be between 2 and 10",
+      "max": 10,
+      "min": 2
+    },
+    {
+      "type": "Input.Number",
+      "id": "requiredWithMaxMin",
+      "label": "Required (with max and min)",
+      "isRequired": true,
+      "errorMessage": "Error: Number is required and must be between 2 and 10",
+      "max": 10,
+      "min": 2
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Send!"
+    }
+  ]
+}

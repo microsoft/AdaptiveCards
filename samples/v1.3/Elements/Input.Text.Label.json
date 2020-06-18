@@ -1,0 +1,42 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Text",
+			"id": "input1",
+			"style": "text",
+			"label": "Default Input.Text label"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"style": "text",
+			"label": "Required Input.Text label",
+			"isRequired": true
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"style": "text",
+			"label": "Longer label to verify label wrapping for an Input.Text"
+		},
+		{
+			"type": "Input.Text",
+			"id": "input4",
+			"label": "Input.Text label with inline action",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}

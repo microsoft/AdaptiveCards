@@ -1,0 +1,87 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Which color would you like?"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"placeholder": "Placeholder text",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "Red"
+				},
+				{
+					"title": "Blue",
+					"value": "Blue"
+				}
+			],
+			"style": "expanded",
+			"id": "color",
+			"isRequired": true,
+			"errorMessage": "Please select a color"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.ShowCard",
+					"title": "Click here to personalize your item",
+					"card": {
+						"type": "AdaptiveCard",
+						"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+						"body": [
+							{
+								"type": "TextBlock",
+								"text": "Name (alphanumeric only):"
+							},
+							{
+								"type": "Input.Text",
+								"placeholder": "Name",
+								"regex": "\\w+",
+								"id": "personalizationName",
+								"errorMessage": "The item can only be personalized with letters and numbers (no special characters)"
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Choose your shipping type:"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"placeholder": "Placeholder text",
+			"choices": [
+				{
+					"title": "Standard (5-7 business days)",
+					"value": "Standard"
+				},
+				{
+					"title": "Express (2-3 business days)",
+					"value": "Express"
+				},
+				{
+					"title": "Overnight (next business day)",
+					"value": "Overnight"
+				}
+			],
+			"style": "expanded",
+			"id": "shipping",
+			"isRequired": true,
+			"errorMessage": "Please select a shipping type"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit Order"
+		}
+	]
+}

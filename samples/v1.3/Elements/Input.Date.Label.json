@@ -1,27 +1,23 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"inputNecessityIndicators": "requiredInputs",
-	"version": "1.3",
+	"version": "1.0",
 	"body": [
 		{
-			"type": "TextBlock",
-			"text": "Two required inputs and one optional"
-		},
-		{
-			"type": "Input.Text",
+			"type": "Input.Date",
 			"id": "input1",
-			"isRequired": true
+			"label": "Default Input.Date label"
 		},
 		{
-			"type": "Input.Text",
+			"type": "Input.Date",
 			"id": "input2",
+			"label": "Required Input.Date label",
 			"isRequired": true
 		},
 		{
-			"type": "Input.Text",
+			"type": "Input.Date",
 			"id": "input3",
-			"isRequired": false
+			"label": "Longer label to verify label wrapping for an Input.Date"
 		}
 	],
 	"actions": [

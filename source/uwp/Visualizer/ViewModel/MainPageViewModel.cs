@@ -36,6 +36,19 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public HostConfigEditorViewModel HostConfigEditor { get; private set; }
 
+        private bool _inlineValidation = true;
+        public bool InlineValidation
+        {
+            get { return _inlineValidation; }
+            set
+            {
+                _inlineValidation = value;
+                // Need to re-initialize Renderer so it changes whether it uses inline validation
+                DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig, _inlineValidation);
+                ReRenderCards();
+            }
+        }
+
         public bool UseFixedDimensions
         {
             get { return Settings.UseFixedDimensions; }
@@ -46,7 +59,7 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Settings.UseFixedDimensions = value;
 
                     // Need to re-initialize Renderer so it changes whether it uses fixed dimensions
-                    DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig);
+                    DocumentViewModel.InitializeRenderer(HostConfigEditor.HostConfig, _inlineValidation);
                     ReRenderCards();
                 }
             }
@@ -171,7 +184,7 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private void HostConfigEditor_HostConfigChanged(object sender, AdaptiveHostConfig e)
         {
-            DocumentViewModel.InitializeRenderer(e);
+            DocumentViewModel.InitializeRenderer(e, _inlineValidation);
             ReRenderCards();
         }
 

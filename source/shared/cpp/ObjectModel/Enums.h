@@ -85,7 +85,10 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
+        InputLabels,
         InputNecessityIndicators,
+        Inputs,
+        InputSpacing,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -94,6 +97,7 @@ namespace AdaptiveSharedNamespace
         IsVisible,
         Italic,
         Items,
+        Label,
         Language,
         Large,
         Left,
@@ -115,6 +119,10 @@ namespace AdaptiveSharedNamespace
         MinHeight,
         Monospace,
         NumberInput,
+        OnSubmit,
+        OnFocusLost,
+        OnFocusLostWithInput,
+        OptionalInputs,
         Padding,
         Placeholder,
         PlayButton,
@@ -123,6 +131,8 @@ namespace AdaptiveSharedNamespace
         Repeat,
         RepeatHorizontally,
         RepeatVertically,
+        RequiredInputs,
+        RequiredSuffix,
         Requires,
         RichTextBlock,
         Right,
@@ -141,6 +151,7 @@ namespace AdaptiveSharedNamespace
         Strikethrough,
         Style,
         Subtle,
+        Suffix,
         SupportsInteractivity,
         TargetElements,
         Text,
@@ -156,6 +167,7 @@ namespace AdaptiveSharedNamespace
         Type,
         Underline,
         Url,
+        ValidationBehavior,
         Value,
         ValueOff,
         ValueOn,
@@ -488,4 +500,12 @@ namespace AdaptiveSharedNamespace
         OptionalInputs
     };
     DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
+
+    enum class ValidationBehavior
+    {
+        OnSubmit,
+        OnFocusLostWithInput,
+        OnFocusLost
+    };
+    DECLARE_ADAPTIVECARD_ENUM(ValidationBehavior);
 }

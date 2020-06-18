@@ -1,11 +1,18 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-  "extends": "Action, ISelectAction",
-  "description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
-  "properties": {
-    "data": {
-      "type": "string|object",
-      "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Action, ISelectAction",
+	"description": "Gathers input fields, merges with optional data field, and sends an event to the client. It is up to the client to determine how this data is processed. For example: With BotFramework bots, the client would send an activity through the messaging medium to the bot.",
+	"properties": {
+		"data": {
+			"type": "string|object",
+			"description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
+		},
+		"inputs": {
+			"type": "string[]|ActionInputs",
+			"description": "None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it.",
+			"version": "1.3",
+			"default":"All",
+			"override": true
+		}
+	}
 }

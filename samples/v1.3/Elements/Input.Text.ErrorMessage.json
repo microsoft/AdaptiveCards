@@ -1,0 +1,19 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"label": "Please create a username",
+			"type": "Input.Text",
+			"id": "username",
+			"regex": "^\\w{5,50}$",
+			"errorMessage": "Username must be between 5 and 50 characters long."
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}

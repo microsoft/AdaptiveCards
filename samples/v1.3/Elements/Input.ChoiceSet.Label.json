@@ -1,0 +1,118 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input1",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Default Input.ChoiceSet label (compact)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input2",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (compact)",
+			"isRequired": true,
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input3",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": "Default Input.ChoiceSet label (expanded)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input4",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (expanded)",
+			"isRequired": true,
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input5",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"label": "Default Input.ChoiceSet label (expanded, multiselect)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input6",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"isRequired": true,
+			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

@@ -1,0 +1,30 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Number",
+			"id": "input1",
+			"label": "Default Input.Number label"
+		},
+		{
+			"type": "Input.Number",
+			"id": "input2",
+			"label": "Require Input.Number label",
+			"isRequired": true
+		},
+		{
+			"type": "Input.Number",
+			"id": "input3",
+			"style": "text",
+			"label": "Longer label to verify label wrapping for an Input.Number"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}

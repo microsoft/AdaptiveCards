@@ -297,6 +297,45 @@ namespace AdaptiveSharedNamespace
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
 
+    struct InputLabelConfig
+    {
+        ForegroundColor color = ForegroundColor::Default;
+        bool isSubtle = false; 
+        TextSize size = TextSize::Default;
+        TextWeight weight = TextWeight::Default;
+
+        static InputLabelConfig Deserialize(const Json::Value& json, const InputLabelConfig& defaultValue);
+    };
+
+    struct InputLabelsConfig
+    {
+        std::string requiredSuffix = std::string();
+        Spacing inputSpacing = Spacing::Default;
+
+        InputLabelConfig requiredInputs;
+        InputLabelConfig optionalInputs;
+
+        static InputLabelsConfig Deserialize(const Json::Value& json, const InputLabelsConfig& defaultValue);
+    };
+
+    struct ErrorMessageConfig
+    {
+        TextSize size = TextSize::Default;
+        Spacing spacing = Spacing::Default;
+        TextWeight weight = TextWeight::Default;
+
+        static ErrorMessageConfig Deserialize(const Json::Value& json, const ErrorMessageConfig& defaultValue);
+    };
+
+    struct InputsConfig
+    {
+        ValidationBehavior validationBehavior = ValidationBehavior::OnSubmit;
+        InputLabelsConfig inputLabels;
+        ErrorMessageConfig errorMessage;
+
+        static InputsConfig Deserialize(const Json::Value& json, const InputsConfig& defaultValue);
+    };
+
     struct MediaConfig
     {
         std::string defaultPoster;
@@ -372,6 +411,17 @@ namespace AdaptiveSharedNamespace
         MediaConfig GetMedia() const;
         void SetMedia(const MediaConfig value);
 
+        InputsConfig GetInputs() const;
+        void SetInputs(const InputsConfig value);
+
+        /*
+        InputLabelsConfig GetInputLabels() const;
+        void SetInputLabels(const InputLabelsConfig value);
+
+        ErrorMessageConfig GetErrorMessage() const;
+        void SetErrorMessage(const ErrorMessageConfig value);
+        */
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -392,5 +442,9 @@ namespace AdaptiveSharedNamespace
         ActionsConfig _actions;
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
+        InputsConfig _inputs;
+
+        // InputLabelsConfig _inputLabels;
+        // ErrorMessageConfig _errorMessage;
     };
 }

@@ -1,0 +1,30 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Time",
+			"id": "input1",
+            "label": "Default Input.Time label"
+        },
+        {
+			"type": "Input.Time",
+			"id": "input2",
+            "label": "Required Input.Time label",
+            "isRequired":  true
+		},
+		{
+			"type": "Input.Time",
+			"id": "input3",
+			"style": "text",
+			"label": "Longer label to verify label wrapping for an Input.Time"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}
