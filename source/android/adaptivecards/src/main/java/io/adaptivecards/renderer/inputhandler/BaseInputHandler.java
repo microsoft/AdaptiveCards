@@ -8,6 +8,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ValidationBehavior;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.input.ValidatedEditText;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 
 public abstract class BaseInputHandler implements IInputHandler
@@ -74,6 +75,11 @@ public abstract class BaseInputHandler implements IInputHandler
             {
                 BaseCardElementRenderer.setVisibility(!isValid, errorMessage);
             }
+        }
+
+        if (m_view instanceof ValidatedEditText)
+        {
+            ((ValidatedEditText)m_view).setValidationResult(isValid);
         }
     }
 

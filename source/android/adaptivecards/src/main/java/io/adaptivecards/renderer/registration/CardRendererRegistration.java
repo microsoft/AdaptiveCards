@@ -20,6 +20,8 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.Image;
+import io.adaptivecards.objectmodel.ImageSet;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -332,6 +334,7 @@ public class CardRendererRegistration
         // - renderedElement contains the element that was finally rendered (after performing fallback)
         //      this allows us to check if it was an input and render the label and error message
         BaseCardElement renderedElement = null;
+        View renderedElementView = null;
 
         // - mockLayout is a layout to contain the rendered element, as android renderers have to add
         //      the drawn views into the container view, it makes it easier to do not draw something unwanted
@@ -350,10 +353,9 @@ public class CardRendererRegistration
                 throw new AdaptiveFallbackException(cardElement, featureRegistration);
             }
 
-            renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
+            renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
             renderedElement = cardElement;
-        }
-        catch (AdaptiveFallbackException e)
+        } catch (AdaptiveFallbackException e)
         {
             if (elementHasFallback)
             {
@@ -388,17 +390,16 @@ public class CardRendererRegistration
                             }
 
                             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,
-                                "Performing fallback for '" + cardElement.GetElementTypeString() +
-                                    "' (fallback element type: '" + fallbackCardElement.GetElementTypeString() + "')"));
+                                                                        "Performing fallback for '" + cardElement.GetElementTypeString() +
+                                                                            "' (fallback element type: '" + fallbackCardElement.GetElementTypeString() + "')"));
 
                             // before rendering, check if the element to render is an input, if it is, then create an stretchable input layout, and add the label
                             // pass that as the viewgroup and
 
-                            fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
+                            renderedElementView = fallbackRenderer.render(renderedCard, context, fragmentManager, mockLayout, fallbackCardElement, cardActionHandler, hostConfig, childRenderArgs);
                             renderedElement = fallbackCardElement;
                             break;
-                        }
-                        catch (AdaptiveFallbackException e2)
+                        } catch (AdaptiveFallbackException e2)
                         {
                             // As the fallback element didn't exist, go back to trying
                             if (fallbackElement.GetFallbackType() == FallbackType.Content)
@@ -418,7 +419,7 @@ public class CardRendererRegistration
                 else if (cardElement.GetFallbackType() == FallbackType.Drop)
                 {
                     renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,
-                        "Dropping element '" + cardElement.GetElementTypeString() + "' for fallback"));
+                                                                "Dropping element '" + cardElement.GetElementTypeString() + "' for fallback"));
 
                     renderedElement = null;
                 }
@@ -431,35 +432,84 @@ public class CardRendererRegistration
             else
             {
                 // The element doesn't have a fallback, so the element can't be rendered and it's dropped
-                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE,"Unsupported card element type: " + cardElement.GetElementTypeString()));
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.UNKNOWN_ELEMENT_TYPE, "Unsupported card element type: " + cardElement.GetElementTypeString()));
                 renderedElement = null;
             }
 
         }
 
+        View taggedView = findElementWithTagContent(mockLayout);
+        TagContent tagContent = BaseCardElementRenderer.getTagContent(taggedView);
+
+        // Sets this view container as the element is being moved to the correct location
+        tagContent.SetViewContainer(viewGroup);
+
+        // Render the spacing so no other renderers have to do it
+        Column castedColumn = Util.tryCastToColumn(renderedElement);
+
+        // Only columns render vertical spacing, so if the column is null, then we need a horizontal spacing
+        HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, castedColumn == null);
+
+        // Check if the element is an input or must be stretched
         BaseInputElement baseInputElement = Util.castToInputElement(renderedElement);
         if (baseInputElement != null)
         {
             // put the element in a Stretchable input layout and
-            HandleLabelAndValidation(mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs);
-        }
-        else if (renderedElement.GetHeight() == HeightType.Stretch)
-        {
-            // put the element in a StretchableElementLayout
-            HandleStretchHeight(mockLayout, viewGroup, renderedElement, context);
+            HandleLabelAndValidation(mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs, tagContent);
         }
         else
         {
-            Util.MoveChildrenViews(mockLayout, viewGroup);
+            Container castedContainer = Util.tryCastToContainer(renderedElement);
+            Image castedImage = Util.tryCastToImage(renderedElement);
+            ImageSet castedImageSet = Util.tryCastToImageSet(renderedElement);
+
+            // Column, container, image and imageset handle their height on their own, so let's not add an extra view for them
+            if (renderedElement.GetHeight() == HeightType.Stretch && castedColumn != null && castedContainer != null && castedImage != null && castedImageSet != null)
+            {
+                // put the element in a StretchableElementLayout
+                HandleStretchHeight(mockLayout, viewGroup, renderedElement, context, tagContent);
+            }
+            else
+            {
+                Util.MoveChildrenViews(mockLayout, viewGroup);
+            }
         }
+
+        HandleVisibility(renderedElement, renderedElementView);
     }
 
-    public static void HandleLabelAndValidation(ViewGroup mockLayout,
+    private static void HandleSpacing(Context context,
+                                      ViewGroup viewGroup,
+                                      BaseCardElement cardElement,
+                                      HostConfig hostConfig,
+                                      TagContent tagContent,
+                                      boolean isHorizontalSpacing)
+    {
+        // Render spacing
+        View separator = BaseCardElementRenderer.setSpacingAndSeparator(context,
+                                                                        viewGroup,
+                                                                        cardElement.GetSpacing(),
+                                                                        cardElement.GetSeparator(),
+                                                                        hostConfig,
+                                                                        isHorizontalSpacing,
+                                                                        false /* isImageSet */);
+
+        // Sets the spacing as now we handle the spacing rendering
+        tagContent.SetSeparator(separator);
+    }
+
+    private static void HandleVisibility(BaseCardElement element, View renderedElementView)
+    {
+        BaseCardElementRenderer.setVisibility(element.GetIsVisible(), renderedElementView);
+    }
+
+    private static void HandleLabelAndValidation(ViewGroup mockLayout,
                                                 ViewGroup container,
                                                 BaseInputElement element,
                                                 Context context,
                                                 HostConfig hostConfig,
-                                                RenderArgs renderArgs)
+                                                RenderArgs renderArgs,
+                                                TagContent tagContent)
     {
         // as first step we must figure out if the input requires a container layout
         // it will require a container layout if:
@@ -487,12 +537,9 @@ public class CardRendererRegistration
                     hostConfig.GetInputs().getInputLabels().getInputSpacing(),
                     false /* separator */,
                     hostConfig,
-                    false /* horizontalLine */,
-                    false /* isImageSet */);
+                    true /* horizontalLine */);
             }
 
-            View taggedView = findElementWithTagContent(mockLayout);
-            TagContent tagContent = BaseCardElementRenderer.getTagContent(taggedView);
             tagContent.SetStretchContainer(inputLayout);
 
             if (mockLayout.getChildCount() == 1)
@@ -514,8 +561,7 @@ public class CardRendererRegistration
                     hostConfig.GetInputs().getErrorMessage().getSpacing(),
                     false /* separator */,
                     hostConfig,
-                    false /* horizontalLine */,
-                    false /* isImageSet */);
+                    true /* horizontalLine */);
 
                 View errorMessage = InputUtil.RenderErrorMessage(element.GetErrorMessage(), context, hostConfig, renderArgs);
                 errorMessage.setTag(new TagContent(null, spacing, null));
@@ -538,10 +584,11 @@ public class CardRendererRegistration
         }
     }
 
-    public static void HandleStretchHeight(ViewGroup mockLayout,
+    private static void HandleStretchHeight(ViewGroup mockLayout,
                                            ViewGroup container,
                                            BaseCardElement element,
-                                           Context context)
+                                           Context context,
+                                           TagContent tagContent)
     {
         boolean mustStretch = element.GetHeight() == HeightType.Stretch;
 
@@ -551,6 +598,8 @@ public class CardRendererRegistration
             StretchableElementLayout stretchElementLayout = new StretchableElementLayout(context, mustStretch);
             Util.MoveChildrenViews(mockLayout, stretchElementLayout);
             container.addView(stretchElementLayout);
+
+            tagContent.SetStretchContainer(container);
         }
         else
         {
@@ -568,6 +617,16 @@ public class CardRendererRegistration
             if (rawTag != null  && rawTag instanceof TagContent)
             {
                 return view;
+            }
+
+            // Test whether the taggedView is in a child view
+            if (view instanceof ViewGroup)
+            {
+                View childTaggedContent = findElementWithTagContent((ViewGroup)view);
+                if (childTaggedContent != null)
+                {
+                    return childTaggedContent;
+                }
             }
         }
 

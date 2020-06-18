@@ -32,6 +32,8 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 
+import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -47,6 +49,7 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -192,12 +195,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         if (baseInputElement.GetIsRequired() || hasSpecificValidation)
         {
-            editText = new ValidatedEditText(context, textInputHandler);
+            editText = new ValidatedEditText(context, getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
         }
         else
         {
             editText = new EditText(context);
-            editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
+            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
         }
 
         textInputHandler.setView(editText);
@@ -350,8 +354,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         }
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
-        TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(textInput, textInputHandler);
         final EditText editText = renderInternal(
                 renderedCard,
                 context,

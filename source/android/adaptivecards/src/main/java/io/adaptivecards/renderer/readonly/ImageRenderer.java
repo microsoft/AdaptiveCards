@@ -312,18 +312,14 @@ public class ImageRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs)
     {
-        Image image;
-        if (baseCardElement instanceof Image)
-        {
-            image = (Image) baseCardElement;
-        }
-        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
-        }
+        Image image = Util.castToImage(baseCardElement);
 
+        View separator = null;
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+        if (isInImageSet)
+        {
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, isInImageSet);
+        }
 
         ImageView imageView = new ImageView(context);
 

@@ -82,24 +82,11 @@ public class FactSetRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, factSet.GetSpacing(), factSet.GetSeparator(), hostConfig, true);
-
         TableLayout tableLayout = new TableLayout(context);
-        tableLayout.setTag(new TagContent(factSet, separator, viewGroup));
-
-        setVisibility(baseCardElement.GetIsVisible(), tableLayout);
+        tableLayout.setTag(new TagContent(factSet));
 
         tableLayout.setColumnShrinkable(1, true);
         HeightType height = factSet.GetHeight();
-
-        if(height == HeightType.Stretch)
-        {
-            tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            tableLayout.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
-        }
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
@@ -110,7 +97,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
             Fact fact = factVector.get(i);
             TableRow factRow = new TableRow(context);
 
-            if( height == HeightType.Stretch )
+            if (height == HeightType.Stretch )
             {
                 factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1));
             }

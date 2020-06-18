@@ -59,17 +59,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs)
     {
-        ImageSet imageSet = null;
-        if (baseCardElement instanceof ImageSet)
-        {
-            imageSet = (ImageSet) baseCardElement;
-        }
-        else if ((imageSet = ImageSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
+        ImageSet imageSet = Util.tryCastToImageSet(baseCardElement);
 
         IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
@@ -78,7 +68,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
         }
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
-        horizFlowLayout.setTag(new TagContent(imageSet, separator, viewGroup));
+        horizFlowLayout.setTag(new TagContent(imageSet));
 
         setVisibility(baseCardElement.GetIsVisible(), horizFlowLayout);
 

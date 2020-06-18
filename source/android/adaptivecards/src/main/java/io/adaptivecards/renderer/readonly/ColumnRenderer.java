@@ -60,22 +60,15 @@ public class ColumnRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        Column column;
-        if (baseCardElement instanceof Column)
-        {
-            column = (Column) baseCardElement;
-        }
-        else if ((column = Column.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
-        }
+        Column column = Util.castToColumn(baseCardElement);
 
         LinearLayout.LayoutParams layoutParams;
+        // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
-        returnedView.setTag(new TagContent(column, separator, viewGroup));
+        returnedView.setTag(new TagContent(column));
 
         // Add this two for allowing children to bleed
         returnedView.setClipChildren(false);

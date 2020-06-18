@@ -68,13 +68,12 @@ public class DateInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to DateInput object model.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, dateInput.GetSpacing(), dateInput.GetSeparator(), hostConfig, true /* horizontal line */);
-
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
         String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
 
-        TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(dateInput, dateInputHandler);
+
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -86,7 +85,7 @@ public class DateInputRenderer extends TextInputRenderer
                 hostConfig,
                 tagContent,
                 renderArgs,
-                ((!dateInput.GetMin().isEmpty()) && (!dateInput.GetMax().isEmpty())));
+                ((!dateInput.GetMin().isEmpty()) || (!dateInput.GetMax().isEmpty())));
 
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);

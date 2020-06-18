@@ -30,6 +30,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ContainerRenderer extends BaseCardElementRenderer
@@ -59,36 +60,17 @@ public class ContainerRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        Container container = null;
-        if (baseCardElement instanceof Container)
-        {
-            container = (Container) baseCardElement;
-        }
-        else if ((container = Container.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Container object model.");
-        }
+        Container container = Util.castToContainer(baseCardElement);
 
-        View separator = setSpacingAndSeparator(context, viewGroup, container.GetSpacing(),container.GetSeparator(), hostConfig, true /* horizontal line */);
-        LinearLayout containerView = new LinearLayout(context);
-        containerView.setTag(new TagContent(container, separator, viewGroup));
+        StretchableElementLayout containerView = new StretchableElementLayout(context, container.GetHeight() == HeightType.Stretch);
+        containerView.setTag(new TagContent(container));
         containerView.setOrientation(LinearLayout.VERTICAL);
 
-        setVisibility(container.GetIsVisible(), containerView);
         setMinHeight(container.GetMinHeight(), containerView, context);
 
         // Add this two for allowing children to bleed
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
-
-        if (container.GetHeight() == HeightType.Stretch)
-        {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            containerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
 
         VerticalContentAlignment contentAlignment = container.GetVerticalContentAlignment();
         switch (contentAlignment)
@@ -128,8 +110,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
             }
             catch (AdaptiveFallbackException e)
             {
-                // If the container couldn't be rendered, the separator is removed
-                viewGroup.removeView(separator);
                 throw e;
             }
         }

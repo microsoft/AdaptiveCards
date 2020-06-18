@@ -160,10 +160,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
         TextView textView = new TextView(context);
 
-        View separator = setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-
-        textView.setTag(new TagContent(textBlock, separator, viewGroup));
-        setVisibility(baseCardElement.GetIsVisible(), textView);
+        textView.setTag(new TagContent(textBlock));
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
@@ -182,15 +179,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-
-        if( textBlock.GetHeight() == HeightType.Stretch )
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())

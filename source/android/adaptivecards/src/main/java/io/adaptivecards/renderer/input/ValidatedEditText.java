@@ -17,10 +17,9 @@ public class ValidatedEditText extends EditText
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
-    public ValidatedEditText(Context context, TextInputHandler inputHandler) {
+    public ValidatedEditText(Context context, int errorColor) {
         this(context);
-        // m_errorColor = errorColor;
-        // m_inputValidator = inputValidator;
+        m_errorColor = errorColor;
     }
 
     public void setValidationResult(boolean isValid)
@@ -33,11 +32,9 @@ public class ValidatedEditText extends EditText
         else
         {
             // Change border to red
-            getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+            getBackground().setColorFilter(m_errorColor, PorterDuff.Mode.SRC_ATOP);
         }
     }
 
-    private Color m_errorColor = null;
-    // private IInputValidator m_inputValidator = null;
-    private boolean m_hasGainedFocus = false;
+    private int m_errorColor;
 }

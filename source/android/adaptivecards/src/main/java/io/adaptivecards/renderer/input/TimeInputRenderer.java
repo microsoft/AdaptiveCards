@@ -67,12 +67,10 @@ public class TimeInputRenderer extends TextInputRenderer
             throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
-
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
         String time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
 
-        TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(timeInput, timeInputHandler);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -84,7 +82,7 @@ public class TimeInputRenderer extends TextInputRenderer
                 hostConfig,
                 tagContent,
                 renderArgs,
-                (!timeInput.GetMin().isEmpty()) && (!timeInput.GetMax().isEmpty()) /* hasSpecificValidation */);
+                (!timeInput.GetMin().isEmpty()) || (!timeInput.GetMax().isEmpty()) /* hasSpecificValidation */);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()

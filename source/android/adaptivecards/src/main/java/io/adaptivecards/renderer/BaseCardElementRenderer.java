@@ -112,7 +112,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return view;
     }
 
-    protected static View setSpacingAndSeparator(
+    public static View setSpacingAndSeparator(
             Context context,
             ViewGroup viewGroup,
             Spacing spacing,

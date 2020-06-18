@@ -297,18 +297,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         View separator = setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
 
         LinearLayout mediaLayout = new LinearLayout(context);
-        mediaLayout.setTag(new TagContent(media, separator, viewGroup));
-
-        setVisibility(baseCardElement.GetIsVisible(), mediaLayout);
-
-        if( media.GetHeight() == HeightType.Stretch )
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        mediaLayout.setTag(new TagContent(media));
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);

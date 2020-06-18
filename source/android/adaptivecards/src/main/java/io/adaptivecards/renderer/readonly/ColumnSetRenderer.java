@@ -71,13 +71,10 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
@@ -114,7 +111,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
-        TagContent tagContent = new TagContent(columnSet, separator, viewGroup);
+        TagContent tagContent = new TagContent(columnSet);
 
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
@@ -136,7 +133,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         layout.setTag(tagContent);
-        setVisibility(baseCardElement.GetIsVisible(), layout);
 
         ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
         ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);

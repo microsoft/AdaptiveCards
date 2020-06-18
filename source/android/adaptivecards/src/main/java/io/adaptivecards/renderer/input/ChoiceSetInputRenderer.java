@@ -69,8 +69,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 RenderedAdaptiveCard renderedCard,
                 Context context,
                 ChoiceSetInput choiceSetInput,
-                View separator,
-                ViewGroup viewGroup,
                 RenderArgs renderArgs)
     {
         LinearLayout layout = new LinearLayout(context);
@@ -87,7 +85,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
 
-        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler, separator, viewGroup));
+        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler));
 
         for (int i = 0; i < size; i++)
         {
@@ -125,15 +123,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             RenderedAdaptiveCard renderedCard,
             Context context,
             ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup,
             RenderArgs renderArgs)
     {
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
 
-        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler, separator, viewGroup));
+        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler));
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -174,8 +170,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             RenderedAdaptiveCard renderedCard,
             Context context,
             ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup,
             RenderArgs renderArgs)
     {
         final Vector<String> titleList = new Vector<>();
@@ -208,7 +202,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
 
-        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
+        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
 
         renderedCard.registerInputHandler(comboBoxInputHandler, renderArgs.getContainerCardId());
 
@@ -316,26 +310,24 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
-
         View inputView = null;
 
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
+            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, renderArgs);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Expanded)
             {
                 // Create radio button group
-                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
+                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, renderArgs);
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                inputView = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup, renderArgs);
+                inputView = renderComboBox(renderedCard, context, choiceSetInput, renderArgs);
             }
             else
             {
@@ -344,7 +336,6 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         }
 
         viewGroup.addView(inputView);
-        setVisibility(choiceSetInput.GetIsVisible(), inputView);
 
         return inputView;
     }
