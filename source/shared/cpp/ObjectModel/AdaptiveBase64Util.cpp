@@ -7,7 +7,6 @@
 #endif
 
 #include "AdaptiveBase64Util.h"
-#include <map>
 
 /*
 * Copyright (C) 2013 Tomas Kislan
