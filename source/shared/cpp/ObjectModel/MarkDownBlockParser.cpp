@@ -42,7 +42,15 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         break;
     }
     // handles list block
-    case '-':
+    case '-': case '+':
+    {
+        ListParser listParser;
+        // do syntax check of list
+        listParser.Match(stream);
+        // append list result to the rest
+        m_parsedResult.AppendParseResult(listParser.GetParsedResult());
+        break;
+    }
     {
         ListParser listParser;
         // do syntax check of list
@@ -544,7 +552,7 @@ void LinkParser::CaptureLinkToken()
 bool ListParser::MatchNewListItem(std::stringstream& stream)
 {
     const char ch = static_cast<char>(stream.peek());
-    if (IsHyphen(ch) || IsAsterisk(ch))
+    if (IsHyphen(ch) || IsPlus(ch) || IsAsterisk(ch))
     {
         stream.get();
         if (stream.peek() == ' ')
@@ -661,7 +669,7 @@ void ListParser::Match(std::stringstream& stream)
 {
     // check for - of -\s+ list marker
     const char ch = static_cast<char>(stream.peek());
-    if (IsHyphen(ch) || IsAsterisk(ch))
+    if (IsHyphen(ch) || IsPlus(ch) || IsAsterisk(ch))
     {
         stream.get();
         if (CompleteListParsing(stream))
