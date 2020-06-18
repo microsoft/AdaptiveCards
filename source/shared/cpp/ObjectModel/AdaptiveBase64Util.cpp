@@ -100,7 +100,7 @@ void AdaptiveBase64Util::a4_to_a3(unsigned char* a3, unsigned char* a4)
 
 unsigned char AdaptiveBase64Util::b64_lookup(unsigned char c)
 {
-    if (c < std::size(c_base64DecodeTable))
+    if (c < std::extent<decltype(c_base64DecodeTable)>::value)
     {
         return c_base64DecodeTable[c];
     }
