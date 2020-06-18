@@ -168,6 +168,7 @@ namespace AdaptiveSharedNamespace
         bool MatchNewBlock(std::stringstream&);
         bool MatchNewOrderedListItem(std::stringstream&, std::string&);
         static constexpr bool IsHyphen(const char ch) { return ch == '-'; };
+        static constexpr bool IsPlus(const char ch) { return ch == '+'; };
         static constexpr bool IsAsterisk(const char ch) { return ch == '*'; };
         static constexpr bool IsDot(const char ch) { return ch == '.'; };
         static constexpr bool IsNewLine(const char ch) { return (ch == '\r') || (ch == '\n'); };
