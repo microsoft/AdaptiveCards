@@ -1,0 +1,1467 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdaptiveCards</name>
+    </assembly>
+    <members>
+        <member name="T:AdaptiveCards.AdaptiveAction">
+            <summary>
+                Base of Action types
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveAction.Title">
+            <summary>
+                Title of the action
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveAction.Speak">
+            <summary>
+                Speak phrase for this action
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveAction.IconUrl">
+            <summary>
+                IconUrl that can be specified for actions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveAction.Style">
+            <summary>
+                Style that can be specified for actions
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveActionSet">
+            <summary>
+                ActionSet
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveActionSet.Actions">
+            <summary>
+                Actions of the action set
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveCard">
+            <summary>
+                Adaptive card which has flexible container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion">
+            <summary>
+            The latest known schema version supported by this library
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.#ctor(AdaptiveCards.AdaptiveSchemaVersion)">
+            <summary>
+            Creates an AdaptiveCard using a specific schema version
+            </summary>
+            <param name="schemaVersion">The schema version to use</param>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.#ctor(System.String)">
+            <inheritdoc />
+            <param name="schemaVersion">The schema version to use</param>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.#ctor">
+            <inheritdoc />
+            <summary>
+            Creates an AdaptiveCard using the <see cref="F:AdaptiveCards.AdaptiveCard.KnownSchemaVersion" /> of this library
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Version">
+            <summary>
+                Schema version that this card requires. If a client is lower than this version the fallbackText will be rendered.
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "P:AdaptiveCards.AdaptiveCard.MinVersion" -->
+        <member name="P:AdaptiveCards.AdaptiveCard.FallbackText">
+            <summary>
+                Text shown when the client doesn’t support the version specified. This can be in markdown format.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Speak">
+            <summary>
+                Speak annotation for the card
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Lang">
+            <summary>
+                The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Title">
+            <summary>
+                Title for the card (used when displayed in a dialog)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.BackgroundImage">
+            <summary>
+                Background image for card
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Height">
+            <summary>
+                Value that denotes if the card must use all the vertical space that is set to it. Default value is <see cref="!:AdaptiveHeight.Default"/>.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.PixelMinHeight">
+            <summary>
+               Explicit card minimum height in pixels
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Body">
+            <summary>
+            The Body elements for this card
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.Actions">
+            <summary>
+                Actions for the card
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.JsonSchema">
+            <summary>
+            This makes sure the $schema property doesn't show up in AdditionalProperties
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.VerticalContentAlignment">
+            <summary>
+                The content alignment for the element inside the container.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.SelectAction">
+            <summary>
+                Action for the card (this allows a default action at the card level)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCard.OnDeserializingMissingVersion">
+            <summary>
+                Callback that will be invoked should a null or empty version string is encountered. The callback may return an alternate version to use for parsing.
+            </summary>
+            <example>
+                AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 5);
+            </example>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.FromJson(System.String)">
+            <summary>
+            Parse an AdaptiveCard from a JSON string
+            </summary>
+            <param name="json">A JSON-serialized Adaptive Card</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.ToJson">
+            <summary>
+             Serialize this Adaptive Card to JSON
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveCard.GetResourceInformation">
+            <summary>
+            Get resource information for all Images/Media in the whole card
+            TODO: Add Media information to the list when Media type is added
+            </summary>
+            <returns>An array of all card resource information</returns>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCardParseResult.Card">
+            <summary>
+            The parsed card object
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCardParseResult.Warnings">
+            <summary>
+            If any modifications were done to the parsed card they will be reported here
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveChoice">
+            <summary>
+                Choice as part of a Input.AdaptiveChoiceSetInput element
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoice.Title">
+            <summary>
+                Display text for the choice
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoice.Value">
+            <summary>
+                Internal value which will be collected as input if the choice is selected
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoice.IsSelected">
+            <summary>
+                Is this choice selected?
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoice.Speak">
+            <summary>
+                (OPTIONAL) Speech description of the choice
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveChoiceInputStyle.Compact">
+            <summary>
+                choices are prefered to be compactly displayed. Example: ComboBox
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveChoiceInputStyle.Expanded">
+            <summary>
+                choices are prefered to be displayed for easy input. Example: Checkbox or Radio buttons
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveChoiceSetInput">
+            <summary>
+                Element which collects choice from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoiceSetInput.Value">
+            <summary>
+                 Comma separated string of selected Choice values
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoiceSetInput.Style">
+            <summary>
+                Style for choice
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoiceSetInput.IsMultiSelect">
+            <summary>
+                allow multiple choices to be selected (default false)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoiceSetInput.Choices">
+            <summary>
+                the choice options
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveChoiceSetInput.Wrap">
+            <summary>
+                 when set true, text will wrap
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveCollectionElement">
+            <summary>
+                Base class for all elements that contain elements
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCollectionElement.Style">
+            <summary>
+                The style in which the image is displayed.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCollectionElement.VerticalContentAlignment">
+            <summary>
+                The content alignment for the element inside the container.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCollectionElement.SelectAction">
+            <summary>
+                Action for this container (this allows a default action at the container level)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCollectionElement.Bleed">
+            <summary>
+                Defines if the element can bleed through its parent's padding
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveCollectionElement.PixelMinHeight">
+            <summary>
+               Explicit container element minimum height
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveColumn">
+            <summary>
+                Column
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveColumn.Size">
+            <summary>
+                Size for the column (either ColumnSize string or number which is relative size of the column)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveColumn.Width">
+            <summary>
+                Width for the column (either ColumnWidth string or number which is relative size of the column)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveColumnSet">
+            <summary>
+                A set of columns
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveColumnSet.Columns">
+            <summary>
+                Columns that are part of this group
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveColumnSize">
+            <summary>
+                Controls the horizontal size (width) of Column.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveColumnSize.Auto">
+            <summary>
+                The width of the Column is optimally chosen depending on the space available in the element's container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveColumnSize.Stretch">
+            <summary>
+                The width of the Column adjusts to match that of its container
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveColumnWidth">
+            <summary>
+                Controls the horizontal size (width) of Column.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveColumnWidth.Auto">
+            <summary>
+                The width of the Column is optimally chosen depending on the space available in the element's container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveColumnWidth.Stretch">
+            <summary>
+                The width of the Column adjusts to match that of its container
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveContainer">
+            <summary>
+                Container for a collection of elements
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveContainer.Items">
+            <summary>
+                Elements of the container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveContainerStyle.Normal">
+            <summary>
+            The container is a normal container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveContainerStyle.Default">
+            <summary>
+            The container is a default container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveContainerStyle.Emphasis">
+            <summary>
+            The container should be emphasized as a grouping of elements
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveDateInput">
+            <summary>
+                Input which collects date from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveDateInput.Placeholder">
+            <summary>
+                Placeholder text for the input desired
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveDateInput.Value">
+            <summary>
+                The initial value for the field
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveDateInput.Min">
+            <summary>
+                hint of minimum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveDateInput.Max">
+            <summary>
+                hint of maximum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveElement.Spacing">
+            <summary>
+            The amount of space the element should be separated from the previous element. Default value is <see cref="F:AdaptiveCards.AdaptiveSpacing.Default"/>.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveElement.Separator">
+            <summary>
+            Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveElement.Speak">
+            <summary>
+                SSML fragment for spoken interaction
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveElement.Height">
+            <summary>
+            The amount of space the element should be separated from the previous element. Default value is <see cref="!:AdaptiveHeight.Default"/>.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveElement.IsVisible">
+            <summary>
+            Indicates whether the element should be visible when the card has been rendered.
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveFact">
+            <summary>
+                Represents one "fact" in a FactSet element.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveFact.Title">
+            <summary>
+                The facts label
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveFact.Value">
+            <summary>
+                The fact's value
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveFact.Speak">
+            <summary>
+                (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveFactSet">
+            <summary>
+                The FactSet element makes it simple to display a series of "facts" (e.g. name/value pairs) in a tabular form.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveFactSet.Facts">
+            <summary>
+                The facts to be displayed.
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveFontType">
+            <summary>
+                Controls the font type of the TextBlock Elements
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveFontType.Default">
+            <summary>
+                The default font type for general use
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveFontType.Monospace">
+            <summary>
+                The monospace font type
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveHeightType">
+            <summary>
+                Controls the vertical size (height) of element.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHeightType.Auto">
+            <summary>
+                The height of the element is wraps the element content
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHeightType.Stretch">
+            <summary>
+                The height of the element uses as much space as it is able to
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHeightType.Pixel">
+            <summary>
+                The height of the element was explicitly specified (only for Image elements)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveHorizontalAlignment">
+            <summary>
+                Controls how elements are horizontally positioned within their container.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHorizontalAlignment.Left">
+            <summary>
+                The element is left aligned
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHorizontalAlignment.Center">
+            <summary>
+                The element is centered inside its container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHorizontalAlignment.Right">
+            <summary>
+                The element is right aligned
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveHorizontalAlignment.Stretch">
+            <summary>
+            Stretch the actions to fit the containerhrit
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveImage">
+            <summary>
+                The Image element allows for the inclusion of images in an Adaptive Card.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.Size">
+            <summary>
+                Size for the Image
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.Style">
+            <summary>
+                The style in which the image is displayed.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.Url">
+            <summary>
+                A url pointing to an image to display
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.UrlString">
+            <summary>
+                This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.HorizontalAlignment">
+            <summary>
+                Horizontal alignment for element
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.BackgroundColor">
+            <summary>
+                A background color for the image specified as #AARRGGBB or #RRGGBB
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.SelectAction">
+            <summary>
+                Action for this image (this allows a default action to happen when a click on an image happens)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.AltText">
+            <summary>
+                Alternate text to display for this image
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.PixelWidth">
+            <summary>
+               Explicit Image Width
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImage.PixelHeight">
+            <summary>
+               Explicit Image Height
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveImageSet">
+            <summary>
+                The ImageSet allows for the inclusion of a collection images like a photogallery.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImageSet.Images">
+            <summary>
+                Collection of images to display together
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveImageSet.ImageSize">
+            <summary>
+                Specifies the horizontal size of each image in the set
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveImageSize">
+            <summary>
+                Controls the horizontal size (width) of element.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageSize.Auto">
+            <summary>
+                The width of the element is optimally chosen depending on the space available in the element's container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageSize.Stretch">
+            <summary>
+                The width of the element adjusts to match that of its container
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageSize.Small">
+            <summary>
+                Small width
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageSize.Medium">
+            <summary>
+                Medium width
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageSize.Large">
+            <summary>
+                Large width
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveImageStyle">
+            <summary>
+                Controls the way Image elements are displayed.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageStyle.Default">
+            <summary>
+                The image is displayed within a rectangle.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageStyle.Normal">
+            <summary>
+                The image is displayed within a rectangle.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveImageStyle.Person">
+            <summary>
+                The image is cropped to a circle, a common way to represent people photos.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveInline.Type">
+            <summary>
+            The type name of the inline
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveInline.AdditionalProperties">
+            <summary>
+            Additional properties not found on the default schema
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveInput">
+            <summary>
+                Input is used as part of a Form CardElement to collect information from a user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveInput.IsRequired">
+            <summary>
+                The input must have a value for it to be part of a Submit or Http action
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveInput.GetNonInteractiveValue">
+            <summary>
+            The string that will be rendered on a a host with "SupportsInteractivity" set to false.
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveMedia">
+            <summary>
+                The Media element allows for the inclusion of medias (videos and audios) in an Adaptive Card.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveMedia.Sources">
+            <summary>
+                The media sources to try
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveMedia.Poster">
+            <summary>
+                Poster URL for this media
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveMedia.AltText">
+            <summary>
+                Alternate text to display for this media
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveMediaSource">
+            <summary>
+                Represents one "media source" in a Media element.
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveNumberInput">
+            <summary>
+                Input which collects number from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveNumberInput.Placeholder">
+            <summary>
+                Placeholder text for the input desired
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveNumberInput.Value">
+            <summary>
+                The initial value for the field
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveNumberInput.Min">
+            <summary>
+                hint of minimum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveNumberInput.Max">
+            <summary>
+                hint of maximum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveOpenUrlAction">
+            <summary>
+                When ActionOpenUrl is invoked it will show the given url, either by launching it to an external web browser or
+                showing in-situ with embedded web browser.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveOpenUrlAction.Url">
+            <summary>
+                Url to open using default operating system browser
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveOpenUrlAction.UrlString">
+            <summary>
+                This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveRichTextBlock.HorizontalAlignment">
+            <summary>
+                Horizontal alignment for element
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveShowCardAction">
+            <summary>
+                ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveShowCardAction.Card">
+            <summary>
+                Container card to show when the action is invoked
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveSpacing.Padding">
+            <summary>
+            This results in the same padding that's applied to the card itself.
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveSubmitAction">
+            <summary>
+                Submit action gathers up input fields, merges with optional data field and generates event to client asking for
+                data to be submitted. It is up to the client to determine how that data is processed. For example: With
+                BotFramework bots the client would send an activity through the messaging medium to the bot.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveSubmitAction.Data">
+            <summary>
+                initial data that input fields will be combined with. This is essentially 'hidden' properties, Example:
+                {"id":"123123123"}
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTargetElement.ElementId">
+            <summary>
+                Identifier of element to change visibility.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTargetElement.IsVisible">
+            <summary>
+            Value to change visibility to.
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.AdaptiveTargetElement.op_Implicit(System.String)~AdaptiveCards.AdaptiveTargetElement">
+            <summary>
+            Implicit conversion from <see cref="T:System.String"/> to <see cref="T:AdaptiveCards.AdaptiveTargetElement"/>.
+            </summary>
+            <param name="elementId"></param>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTextBlock">
+            <summary>
+                The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive
+                Cards.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Size">
+            <summary>
+                The size of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Weight">
+            <summary>
+                The weight of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Color">
+            <summary>
+                The color of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.IsSubtle">
+            <summary>
+                Make the text less prominent
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Italic">
+            <summary>
+                Make the text italic
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Strikethrough">
+            <summary>
+                Make the struck through
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Text">
+            <summary>
+                The text to display
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.HorizontalAlignment">
+            <summary>
+                Horizontal alignment for element
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.Wrap">
+            <summary>
+                Is it allowed for the text to wrap
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.MaxLines">
+            <summary>
+                When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.MaxWidth">
+            <summary>
+              The maximum width of the textblock
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextBlock.FontType">
+            <summary>
+                The font types of the TextBlock
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTextColor">
+            <summary>
+                Controls the color style of TextBlock Elements
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Default">
+            <summary>
+                The default color which guarentees appropriate contrast
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Dark">
+            <summary>
+                Forces the text to be rendered in a dark color which is suitable when displayed over a light background
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Light">
+            <summary>
+                Forces the text to be rendered in a light color which is suitable when displayed over a dark background
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Accent">
+            <summary>
+                Accent the text
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Good">
+            <summary>
+                Good (such as green)
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Warning">
+            <summary>
+                Warning (such as yellow)
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextColor.Attention">
+            <summary>
+                Highlight as needing attention (such as red)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTextInput">
+            <summary>
+                Input which collects text from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.Placeholder">
+            <summary>
+                Placeholder text for the input desired
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.Value">
+            <summary>
+                The initial value for the field
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.Style">
+            <summary>
+                Hint of style of input, if client doesn't support the style it will become simple text input
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.IsMultiline">
+            <summary>
+                true to collect multiple lines of text(default is false)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.MaxLength">
+            <summary>
+                hint of maximum length characters to collect(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextInput.InlineAction">
+            <summary>
+            The Body elements for this card
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextInputStyle.Text">
+            <summary>
+                plain text
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextInputStyle.Tel">
+            <summary>
+                Input is a telephone number and the client may use this information to provide optimized keyboard input for the
+                user.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextInputStyle.Url">
+            <summary>
+                Input is a url and the client may use this information to provide optimized keyboard input for the user.
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextInputStyle.Email">
+            <summary>
+                Input is a email and the client may use this information to provide optimized keyboard input for the user.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Size">
+            <summary>
+                The size of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Weight">
+            <summary>
+                The weight of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Color">
+            <summary>
+                The color of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.IsSubtle">
+            <summary>
+                Make the text less prominent
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Italic">
+            <summary>
+                Make the text italic
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Strikethrough">
+            <summary>
+                Make the struck through
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Highlight">
+            <summary>
+                Make the text highlighted
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Text">
+            <summary>
+                The text to display
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.FontType">
+            <summary>
+                The font style of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.SelectAction">
+            <summary>
+                Action for this text run
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTextRun.Underline">
+            <summary>
+                Make the text be underlined
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTextSize">
+            <summary>
+                Controls the relative size of TextBlock elements
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.Default">
+            <summary>
+                Default text size
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.Normal">
+            <summary>
+                Default text size
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.Small">
+            <summary>
+                Smallest text size
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.Medium">
+            <summary>
+                Slightly larger than default
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.Large">
+            <summary>
+                Slightly larger then medium
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextSize.ExtraLarge">
+            <summary>
+                The largest text size
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTextWeight">
+            <summary>
+                Controls the weight of TextBock Elements
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextWeight.Default">
+            <summary>
+                The default text weight
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextWeight.Normal">
+            <summary>
+                The default text weight
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextWeight.Lighter">
+            <summary>
+                Lighter text (thinner stroke)
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTextWeight.Bolder">
+            <summary>
+                Bolder text (wider stroke)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTimeInput">
+            <summary>
+                Input which collects Time from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTimeInput.Placeholder">
+            <summary>
+                Placeholder text for the input desired
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTimeInput.Value">
+            <summary>
+                The initial value for the field
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTimeInput.Min">
+            <summary>
+                hint of minimum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTimeInput.Max">
+            <summary>
+                hint of maximum value(may be ignored by some clients)
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveToggleInput">
+            <summary>
+                Input which collects a choice between two options from the user
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleInput.Title">
+            <summary>
+                Title text for toggle
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleInput.ValueOn">
+            <summary>
+                Value to use for on (Default: true)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleInput.ValueOff">
+            <summary>
+                Value to use for off (Default: false)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleInput.Wrap">
+            <summary>
+                 when set true, text will wrap
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleInput.Value">
+            <summary>
+                The initial value for the field
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveToggleVisibilityAction">
+            <summary>
+                Toggle visibility action changes the visibility for the specified elements. You can also specify
+                the visibility of a certain element to a set value instead of toggling it.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveToggleVisibilityAction.TargetElements">
+            <summary>
+                Identifiers of elements to change visibility. Example: "id1" or { "elementId": "id2", "isVisible": true }
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTypedBaseElementConverter">
+            <summary>
+            JsonConverters that deserialize to Adpative Elements and require
+            ParseContext must inherit this Class
+            ParseContext provides id generation, id collision detections, and other useful
+            services during deserialization
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTypedElement.Type">
+            <summary>
+            The type name of the element
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTypedElement.AdditionalProperties">
+            <summary>
+            Additional properties not found on the default schema
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.AdaptiveTypedElement.Id">
+            <summary>
+            A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTypedElement.Requires">
+            <summary>
+             A collection representing features and feature versions that this element is declared as requiring
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.AdaptiveTypedElementConverter">
+            <summary>
+                This handles using type field to instantiate strongly typed object on deserialization
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.AdaptiveTypedElementConverter.TypedElementTypes">
+            <summary>
+            Default types to support, register any new types to this list
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Size">
+            <summary>
+                The size of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Weight">
+            <summary>
+                The weight of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Color">
+            <summary>
+                The color of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.IsSubtle">
+            <summary>
+                Make the text less prominent
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Italic">
+            <summary>
+                Make the text italic
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Strikethrough">
+            <summary>
+                Make the struck through
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.Text">
+            <summary>
+                The text to display
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.IAdaptiveTextElement.FontType">
+            <summary>
+                The font style of the TextBlock
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.ActionsConfig">
+            <summary>
+            Properties which control rendering of actions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.ActionsOrientation">
+            <summary>
+            Arrange actions horizontal or vertical
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.ActionAlignment">
+            <summary>
+            should they be aligned Left, Center or Right
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.ButtonSpacing">
+            <summary>
+            Space between actions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.MaxActions">
+            <summary>
+            Max number of actions to support on your Cards(e.g., 3)
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.ShowCard">
+            <summary>
+            ShowCard configuration
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.IconPlacement">
+            <summary>
+            Position of Icon relative to Title
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ActionsConfig.IconSize">
+            <summary>
+            Size of Icon
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ShowCardConfig.Style">
+            <summary>
+            Indicates the style of ShowCard
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ShowCardConfig.InlineTopMargin">
+            <summary>
+            If actionMode is inline this is the margin between the inline card and the actions
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.ShowCardActionMode.Inline">
+            <summary>
+            Show the card inline
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.ShowCardActionMode.Popup">
+            <summary>
+            Popup the card
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.ActionsOrientation.Horizontal">
+            <summary>
+            actions should be laid out horizontally
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.ActionsOrientation.Vertical">
+            <summary>
+            Actions should be laid out vertically
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.IconPlacement.AboveTitle">
+            <summary>
+            Places the icons about the text in actions
+            </summary>
+        </member>
+        <member name="F:AdaptiveCards.Rendering.IconPlacement.LeftOfTitle">
+            <summary>
+            Place the icon to the left of the text in actions
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.AdaptiveActionHandlers.AddSupportedAction``1">
+            <summary>
+            Adds support for a given action type. Any action in a payload not specified here will be dropped from the rendered card
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.AdaptiveActionHandlers.RemoveSupportedAction``1">
+            <summary>
+            Remove support for an action type. This will prevent these actions from appearing in the rendered card
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.AdaptiveActionHandlers.IsSupported(System.Type)">
+            <summary>
+            Whether or not the action is supported by the renderer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.HostConfig">
+            <summary>
+            A Host Configuration object to determine base styling and behavior of the rendered card
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.ElementRenderers">
+            <summary>
+            The dictionary of supported element types and their associated rendering functions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.AdaptiveHostConfig.SupportsInteractivity">
+            <summary>
+            Toggles whether or not to render inputs and actions
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.AdaptiveHostConfig.ImageBaseUrl">
+            <summary>
+            Image Base URL for relative URLs
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.AdaptiveHostConfig.ResolveFinalAbsoluteUri(System.Uri)">
+            Get the absolute URI either by itself or using imageBaseUrl 
+        </member>
+        <member name="M:AdaptiveCards.Rendering.AdaptiveHostConfig.ToJson">
+            <summary>
+             Serialize this Host Config to JSON
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.AdaptiveRenderException.CardFallbackText">
+            <summary>
+            The fallback text associated with this card, if provided by the card author
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.AdaptiveVisitor">
+            <summary>
+                Utility class which allows you to visit every node
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ContainerStyleConfig.BackgroundColor">
+            <summary>
+            The background color to use for this container
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.ContainerStyleConfig.ForegroundColors">
+            <summary>
+            The font colors to use for this container
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.FactSetConfig.Title">
+            <summary>
+            TextBlock to use for Titles in factsets
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.FactSetConfig.Value">
+            <summary>
+            TextBlock to use for Values in fact sets
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.FactSetConfig.Spacing">
+            <summary>
+            Spacing between facts and values
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.FontColorConfig.Default">
+            <summary>
+            Color in #RRGGBB format
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.HighlightColorConfig.Default">
+            <summary>
+            Color in #RRGGBB format
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.MediaConfig">
+            <summary>
+            Properties which control rendering of media
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.MediaConfig.DefaultPoster">
+            <summary>
+            Default poster URL to use for media thumbnail
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.MediaConfig.PlayButton">
+            <summary>
+            Play button URL to use for media thumbnail
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.MediaConfig.AllowInlinePlayback">
+            <summary>
+            Controls whether the media is played in the card or sent to host
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.RenderedAdaptiveCardBase">
+            <summary>
+            The base class for RenderedAdaptiveCard. Renderers extend this class to provide their native UI element property.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.RenderedAdaptiveCardBase.OriginatingCard">
+            <summary>
+            The card that the visual was rendered from.
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.RenderedAdaptiveCardBase.Warnings">
+            <summary>
+            If any modifications were done to the rendered card they will be reported here
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.RenderedAdaptiveCardBase.UserInputs">
+            <summary>
+            Provides access to the input fields on a card
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.RenderedAdaptiveCardInputs">
+            <summary>
+            Provides access to the input fields on a card
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.AsJson">
+            <summary>
+            Read the input fields as a JSON object. All input values will serialize to strings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.RenderedAdaptiveCardInputs.AsDictionary">
+            <summary>
+            Read the input fields as a Dictionary. All input values will serialize the strings
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.RendererUtilities">
+            <summary>
+                Utility methods for dealing with body and binding
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.Rendering.RendererUtilities.ApplyTextFunctions(System.String,System.String)">
+            <summary>
+                This funct will return modified text replacing {{DATE|TIME()}} style functions as the formatted text
+            </summary>
+            <param name="text"></param>
+            <returns></returns>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.SeparatorConfig.LineThickness">
+            <summary>
+            If there is a visible line, how thick should the line be
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.SeparatorConfig.LineColor">
+            <summary>
+            If there is a visible color, what color to use
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.Rendering.SpacingsConfig">
+            <summary>
+            Specifies how much spacing should be used for the various spacing options
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.Size">
+            <summary>
+             The size of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.Weight">
+            <summary>
+             The weight of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.Color">
+            <summary>
+             The color of the text
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.IsSubtle">
+            <summary>
+              Should it be subtle?
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.Wrap">
+            <summary>
+             Is it allowed for the text to wrap
+            </summary>
+        </member>
+        <member name="P:AdaptiveCards.Rendering.TextBlockConfig.MaxWidth">
+            <summary>
+            The maximum width for text
+            </summary>
+        </member>
+        <member name="T:AdaptiveCards.WarningLoggingContractResolver">
+            <summary>
+            This JSON contract resolver checks if the JsonConverter can log warnings, and if so sets the Warnings property
+            </summary>
+        </member>
+        <member name="M:AdaptiveCards.WarningLoggingContractResolver.CreateProperty(System.Reflection.MemberInfo,Newtonsoft.Json.MemberSerialization)">
+            <summary>
+                Override when a member property is being instantiated. At this point we know what converter
+                is being used for the property. If the converter can log warnings, then give it our collection
+            </summary>
+            <param name="member"></param>
+            <param name="memberSerialization"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
