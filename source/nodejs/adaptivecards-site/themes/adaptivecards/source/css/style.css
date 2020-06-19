@@ -423,8 +423,7 @@ dir {
   text-decoration: none;
 }
 
-.blog .article-subtitle:link,
-.blog .article-subtitle:visited {
+.blog .article-subtitle {
   color: rgba(0, 0, 0, 0.54);
   font-size: 17px;
   line-height: 22px;
