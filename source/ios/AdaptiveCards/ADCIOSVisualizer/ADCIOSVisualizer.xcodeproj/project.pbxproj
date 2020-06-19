@@ -59,6 +59,7 @@
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
 		F423C07D1EE1FB6100905679 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
@@ -155,6 +156,7 @@
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 		6B150A0823034DAB00046B3A /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */,
 				6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */,
 				6B150A0D23034F2800046B3A /* ActivityUpdate.json */,
 				6B150A32230354F200046B3A /* Column.json */,
@@ -488,6 +491,7 @@
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
 				6B150A40230354F200046B3A /* Image.json in Resources */,
 				6B150A042302415000046B3A /* sample.json in Resources */,
+				6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,

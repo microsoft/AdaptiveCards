@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-controls",
-	"version": "0.3.3",
+	"version": "0.3.6",
 	"description": "A library of pure JS/HTML controls designed for use with Adaptive Cards.",
 	"author": "Microsoft",
 	"license": "MIT",
@@ -17,6 +17,7 @@
 		"prebuild": "tsc",
 		"build": "webpack",
 		"watch": "webpack --watch",
+		"lint": "eslint src/*.ts",
 		"dts": "dts-generator --name adaptivecards-controls --project . --out dist/adaptivecards-controls.d.ts",
 		"release": "npm run clean && npm run build && webpack --mode=production && npm run dts"
 	},

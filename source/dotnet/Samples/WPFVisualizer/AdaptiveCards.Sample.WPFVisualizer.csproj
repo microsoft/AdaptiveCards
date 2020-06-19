@@ -158,6 +158,10 @@
       <Project>{385bfaad-07e0-4dbf-844d-9ee12efc0799}</Project>
       <Name>AdaptiveCards.Rendering.Wpf</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj">
+      <Project>{f36e1451-6a16-4e83-b7b3-90024bf36b4c}</Project>
+      <Name>AdaptiveCards.Templating</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj">
       <Project>{fc4a3527-05a2-4297-98d3-cb1cb512ffda}</Project>
       <Name>AdaptiveCards</Name>
@@ -183,13 +187,13 @@
       <Version>5.0.4</Version>
     </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit">
-      <Version>3.5.0</Version>
+      <Version>3.8.1</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
-      <Version>11.0.2</Version>
+      <Version>12.0.3</Version>
     </PackageReference>
     <PackageReference Include="NuGet.CommandLine">
-      <Version>4.9.4</Version>
+      <Version>5.5.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>

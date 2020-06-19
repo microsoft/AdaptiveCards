@@ -1,5 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+if (typeof hljs !== 'undefined') {
+	hljs.configure({
+		tabReplace: '  '
+	});
+
+	hljs.initHighlightingOnLoad();
+}
+
 $(function () {
 	if(localStorage.getItem("enable-templating") === null) {
 		localStorage.setItem("enable-templating", true);
@@ -315,7 +323,7 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
-	// Loop videos 
+	// Loop videos
 	$("video").each(function () {
 		var $video = $(this);
 		var loopDelay = $video.attr("data-loop-delay");
@@ -330,14 +338,6 @@ $(function () {
 
 
 	$('.ac-properties table').addClass("w3-table w3-bordered");
-
-	if (typeof hljs !== 'undefined') {
-		hljs.configure({
-			tabReplace: '  '
-		});
-
-		hljs.initHighlightingOnLoad();
-	}
 
 
 	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
@@ -377,7 +377,7 @@ $(function () {
 
 				$(".show-with-templating").css("display", "block");
 				$(".hide-with-templating").css("display", "none");
-		
+
 				$.getJSON(templateUrl, function (templateJson) {
 					$.getJSON(dataUrl, function (dataJson) {
 						renderCard(el, templateJson, dataJson);
@@ -402,37 +402,16 @@ $(function () {
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
+		AdaptiveCards.GlobalSettings.setTabIndexAtCardRoot = false;
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
 		var renderedCard;
 
 		if (dataJson) {
 			var template = new ACData.Template(json);
-			var context = new ACData.EvaluationContext();
-
-			context.registerFunction("format", function(param0, param1) {
-				switch (param1) {
-					case ("%"):
-						return (param0 * 100).toFixed(2) + "%";
-
-					default:
-						return "Unknown format: " + param1;
-				}
-			});
-
-			context.registerFunction("parseDateFromEpoch", function(param) {
-				try {
-					let d = new Date(param);
-					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2);
-					return d.toISOString().substr(0, 19) + "-03:00";
-				} catch(e) {
-					return "Unable to parse epoch";
-				}
-
-			});
-
-			context.$root = dataJson;
-			adaptiveCard.parse(template.expand(context));
+			adaptiveCard.parse(template.expand({
+				$root: dataJson
+			}));
 			renderedCard = adaptiveCard.render();
 		} else {
 			adaptiveCard.parse(json);
@@ -451,6 +430,7 @@ $(function () {
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
@@ -476,23 +456,28 @@ $(function () {
 		var dataUrl = cardEl.attr("data-data-url");
 		var templateUrl = cardEl.attr("data-template-url");
 
-		if (enableTemplating && dataUrl && templateUrl) { 
-			launchDesigner(designerUrl, templateUrl, dataUrl);			
+		if (enableTemplating && dataUrl && templateUrl) {
+			launchDesigner(designerUrl, templateUrl, dataUrl);
 		} else {
 			launchDesigner(designerUrl, cardUrl);
 		}
 	});
 
-	
-
-	$("#feedback-button").click(function (e) {
+	function invokeFeedback(e) {
 		e.preventDefault();
 		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
 			+ encodeURIComponent("[Website] [Your feedback title here]")
 			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
-				+ window.location.href));
-	});
+			+ window.location.href));
+	}
 
+	$("#feedback-button").on({
+	click: invokeFeedback,
+	keydown: function (e) {
+		if (e.key === "Enter") {
+			invokeFeedback(e);
+		}
+	}});
 
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
@@ -558,6 +543,9 @@ $(function () {
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
 
 	function updateSidebarTopOffset() {
@@ -570,11 +558,9 @@ $(function () {
 
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });
