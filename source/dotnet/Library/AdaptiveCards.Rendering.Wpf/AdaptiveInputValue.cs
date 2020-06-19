@@ -6,6 +6,7 @@ using System.Runtime.Remoting.Contexts;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -33,6 +34,13 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 TagContent tagContent = ErrorMessage.Tag as TagContent;
                 RendererUtil.SetVisibility(ErrorMessage, !inputIsValid, tagContent);
+
+                string helpText = "";
+                if (!inputIsValid)
+                {
+                    helpText = ErrorMessage.Text;
+                }
+                AutomationProperties.SetHelpText(RenderedInputElement, helpText);
             }
         }
 
@@ -40,7 +48,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public UIElement RenderedInputElement { get; set; }
 
-        public FrameworkElement ErrorMessage { private get; set; }
+        public TextBlock ErrorMessage { private get; set; }
     }
 
     /// <summary>

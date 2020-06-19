@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
@@ -333,6 +334,27 @@ namespace AdaptiveCards.Rendering.Wpf
                 AdaptiveInput inputElement = element as AdaptiveInput;
                 enclosingElement = EncloseInputForVisualCue(context, inputElement, renderedElement);
 
+                FrameworkElement elementForAccessibility = renderedElement;
+
+                if (inputElement is AdaptiveChoiceSetInput)
+                {
+                    Grid inputContainer = renderedElement as Grid;
+                    // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
+                    UIElement choiceSet = inputContainer.Children[0];
+
+                    if (choiceSet is ComboBox)
+                    {
+                        elementForAccessibility = choiceSet as FrameworkElement;
+                    }
+                    else if (choiceSet is Panel)
+                    {
+                        // If it's a choice set, then use the first element as element
+                        elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                    }
+                }
+
+                AutomationProperties.SetIsRequiredForForm(elementForAccessibility, inputElement.IsRequired);
+
                 if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
                 {
                     TagContent tag = renderedElement.Tag as TagContent;
@@ -341,7 +363,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (!String.IsNullOrEmpty(inputElement.Label))
                     {
-                        panel.Children.Add(RenderLabel(context, inputElement));
+                        panel.Children.Add(RenderLabel(context, inputElement, elementForAccessibility));
                         AddSpacing(context, context.Config.Inputs.InputLabels.InputSpacing, panel);
                     }
 
@@ -353,7 +375,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         Grid errorMessageSpacing = AddSpacing(context, context.Config.Inputs.ErrorMessage.Spacing, panel);
 
-                        FrameworkElement renderedErrorMessage = RenderErrorMessage(context, inputElement);
+                        TextBlock renderedErrorMessage = RenderErrorMessage(context, inputElement);
                         renderedErrorMessage.Tag = new TagContent(errorMessageSpacing, null);
 
                         context.InputValues[inputElement.Id].ErrorMessage = renderedErrorMessage;
@@ -402,7 +424,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <param name="context">AdaptiveRenderContext</param>
         /// <param name="input">AdaptiveInput</param>
         /// <returns>The rendered label</returns>
-        public static FrameworkElement RenderLabel(AdaptiveRenderContext context, AdaptiveInput input)
+        public static FrameworkElement RenderLabel(AdaptiveRenderContext context, AdaptiveInput input, FrameworkElement renderedInput)
         {
             TextBlock uiTextBlock = new TextBlock { TextWrapping = TextWrapping.Wrap };
 
@@ -435,6 +457,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiTextBlock.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
             }
 
+            AutomationProperties.SetLabeledBy(renderedInput, uiTextBlock);
+
             return uiTextBlock;
         }
 
@@ -444,7 +468,7 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <param name="context">AdaptiveRenderContext</param>
         /// <param name="input">AdaptiveInput</param>
         /// <returns>The rendered error message</returns>
-        public static FrameworkElement RenderErrorMessage(AdaptiveRenderContext context, AdaptiveInput input)
+        public static TextBlock RenderErrorMessage(AdaptiveRenderContext context, AdaptiveInput input)
         {
             TextBlock uiTextBlock = new TextBlock() {
                 Text = input.ErrorMessage,
