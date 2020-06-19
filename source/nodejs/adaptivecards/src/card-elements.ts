@@ -2138,6 +2138,7 @@ export class Media extends CardElement {
 
         if (this.hostConfig.supportsInteractivity && this._selectedSources.length > 0) {
             let playButtonOuterElement = document.createElement("div");
+            playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
             playButtonOuterElement.setAttribute("aria-label", "Play media");
             playButtonOuterElement.className = this.hostConfig.makeCssClassName("ac-media-playButton");
@@ -3268,7 +3269,7 @@ class ActionButton {
                 this.action.renderedElement.classList.add("style-" + this._parentContainerStyle);
             }
 
-            this.action.updateActionButtonCssStyle(this.action.renderedElement);
+            this.action.updateActionButtonCssStyle(this.action.renderedElement, this._state);
 
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -3408,7 +3409,7 @@ export abstract class Action extends CardObject {
         return "button";
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
+    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         // Do nothing in base implementation
     }
 
@@ -3992,11 +3993,12 @@ export class ShowCardAction extends Action {
         this.card.internalValidateProperties(context);
     }
 
-    updateActionButtonCssStyle(actionButtonElement: HTMLElement): void {
+    updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         super.updateActionButtonCssStyle(actionButtonElement);
 
         if (this.parent) {
             actionButtonElement.classList.add(this.parent.hostConfig.makeCssClassName("expandable"));
+            actionButtonElement.setAttribute("aria-expanded", (buttonState === ActionButtonState.Expanded).toString());
         }
     }
 
@@ -4274,6 +4276,7 @@ class ActionCollection {
             let buttonStrip = document.createElement("div");
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
+            buttonStrip.setAttribute("role", "group");
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
@@ -4344,47 +4347,51 @@ class ActionCollection {
             if (parentContainer) {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
-                for (let i = 0; i < this.items.length; i++) {
-                    if (this.isActionAllowed(this.items[i])) {
-                        let actionButton = this.findActionButton(this.items[i]);
+                const allowedActions = this.items.filter(this.isActionAllowed.bind(this));
 
-                        if (!actionButton) {
-                            actionButton = new ActionButton(this.items[i], parentContainerStyle);
-                            actionButton.onClick = (ab) => { this.actionClicked(ab); };
+                for (let i = 0; i < allowedActions.length; i++) {
+                    let actionButton = this.findActionButton(allowedActions[i]);
 
-                            this.buttons.push(actionButton);
+                    if (!actionButton) {
+                        actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
+                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
+
+                        this.buttons.push(actionButton);
+                    }
+
+                    actionButton.render();
+
+                    if (actionButton.action.renderedElement) {
+                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+                        actionButton.action.renderedElement.setAttribute("role", "listitem");
+
+                        if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+                            actionButton.action.renderedElement.style.flex = "0 1 100%";
+                        }
+                        else {
+                            actionButton.action.renderedElement.style.flex = "0 1 auto";
                         }
 
-                        actionButton.render();
+                        buttonStrip.appendChild(actionButton.action.renderedElement);
 
-                        if (actionButton.action.renderedElement) {
-                            if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
-                                actionButton.action.renderedElement.style.flex = "0 1 100%";
+                        this._renderedActionCount++;
+
+                        if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
+                            break;
+                        }
+                        else if (hostConfig.actions.buttonSpacing > 0) {
+                            let spacer = document.createElement("div");
+
+                            if (orientation === Enums.Orientation.Horizontal) {
+                                spacer.style.flex = "0 0 auto";
+                                spacer.style.width = hostConfig.actions.buttonSpacing + "px";
                             }
                             else {
-                                actionButton.action.renderedElement.style.flex = "0 1 auto";
+                                spacer.style.height = hostConfig.actions.buttonSpacing + "px";
                             }
 
-                            buttonStrip.appendChild(actionButton.action.renderedElement);
-
-                            this._renderedActionCount++;
-
-                            if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
-                                break;
-                            }
-                            else if (hostConfig.actions.buttonSpacing > 0) {
-                                let spacer = document.createElement("div");
-
-                                if (orientation === Enums.Orientation.Horizontal) {
-                                    spacer.style.flex = "0 0 auto";
-                                    spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-                                }
-                                else {
-                                    spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-                                }
-
-                                Utils.appendChild(buttonStrip, spacer);
-                            }
+                            Utils.appendChild(buttonStrip, spacer);
                         }
                     }
                 }

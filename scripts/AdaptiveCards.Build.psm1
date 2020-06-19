@@ -15,7 +15,7 @@ param(
         return;
     }
 
-    # Convert "/refs/head/master" => "master"
+    # Convert "/refs/head/main" => "main"
     $sourceBranch = $env:BUILD_SOURCEBRANCH -Split "/",3 | select -skip 2
     git checkout $sourceBranch 
 
