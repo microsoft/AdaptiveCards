@@ -7,7 +7,6 @@
 #endif
 
 #include "AdaptiveBase64Util.h"
-#include <map>
 
 /*
 * Copyright (C) 2013 Tomas Kislan
@@ -24,29 +23,27 @@ Portions Copyright Microsoft Corporation
 
 using namespace AdaptiveSharedNamespace;
 
-const char c_base64Alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                "abcdefghijklmnopqrstuvwxyz"
-                                "0123456789+/";
-
-void GetBase64Alphabet(std::map<char, int>* base64AlphabetOut)
+namespace
 {
-    static std::map<char, int> base64Alphabet = {
-        {'A', 0}, {'B', 1}, {'C', 2}, {'D', 3}, {'E', 4}, {'F', 5}, {'G', 6}, {'H', 7}, {'I', 8}, {'J', 9}, {'K', 10}, {'L', 11},
-        {'M', 12}, {'N', 13}, {'O', 14}, {'P', 15}, {'Q', 16}, {'R', 17}, {'S', 18}, {'T', 19}, {'U', 20}, {'V', 21}, {'W', 22},
-        {'X', 23}, {'Y', 24}, {'Z', 25}, {'a', 26}, {'b', 27}, {'c', 28}, {'d', 29}, {'e', 30}, {'f', 31}, {'g', 32}, {'h', 33},
-        {'i', 34}, {'j', 35}, {'k', 36}, {'l', 37}, {'m', 38}, {'n', 39}, {'o', 40}, {'p', 41}, {'q', 42}, {'r', 43}, {'s', 44},
-        {'t', 45}, {'u', 46}, {'v', 47}, {'w', 48}, {'x', 49}, {'y', 50}, {'z', 51}, {'0', 52}, {'1', 53}, {'2', 54}, {'3', 55},
-        {'4', 56}, {'5', 57}, {'6', 58}, {'7', 59}, {'8', 60}, {'9', 61}, {'+', 62}, {'/', 63},
-    };
+    const char c_base64EncodeTable[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
-    *base64AlphabetOut = base64Alphabet;
+    const unsigned char c_base64DecodeTable[] = {
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // Control characters:     0 -  15
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // Control characters:    16 -  31
+        0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0x3E, 0xFF, 0xFF, 0xFF, 0x3F, // Printable characters:  32 -  47 (  to /)
+        0x34, 0x35, 0x36, 0x37, 0x38, 0x39, 0x3A, 0x3B, 0x3C, 0x3D, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // Printable characters:  48 -  63 (0 to ?)
+        0xFF, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, // Printable characters:  64 -  79 (` to O)
+        0x0F, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, // Printable characters:  80 -  95 (P to _)
+        0xFF, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x21, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27, 0x28, // Printable characters:  96 - 111 (@ to o)
+        0x29, 0x2A, 0x2B, 0x2C, 0x2D, 0x2E, 0x2F, 0x30, 0x31, 0x32, 0x33, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF  // Printable characters: 112 - 127 (p to DEL)
+    };
 }
 
 size_t AdaptiveBase64Util::DecodedLength(const char* in, size_t in_length)
 {
     int numEq{};
 
-    const char *in_end{ in + in_length };
+    const char* in_end{ in + in_length };
     while (*--in_end == '=')
     {
         ++numEq;
@@ -103,14 +100,12 @@ void AdaptiveBase64Util::a4_to_a3(unsigned char* a3, unsigned char* a4)
 
 unsigned char AdaptiveBase64Util::b64_lookup(unsigned char c)
 {
-    std::map<char, int> base64Alphabet;
-    GetBase64Alphabet(&base64Alphabet);
-
-    if (base64Alphabet.find(c) == base64Alphabet.end())
+    if (c < std::extent<decltype(c_base64DecodeTable)>::value)
     {
-        return 255;
+        return c_base64DecodeTable[c];
     }
-    return static_cast<unsigned char>(base64Alphabet[c]);
+
+    return 0xFF;
 }
 
 bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
@@ -133,7 +128,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 
             for (i = 0; i < 4; ++i)
             {
-                (*out)[enc_len++] = c_base64Alphabet[a4[i]];
+                (*out)[enc_len++] = c_base64EncodeTable[a4[i]];
             }
 
             i = 0;
@@ -151,7 +146,7 @@ bool AdaptiveBase64Util::Encode(const std::vector<char>& in, std::string* out)
 
         for (int j{}; j < i + 1; ++j)
         {
-            (*out)[enc_len++] = c_base64Alphabet[a4[j]];
+            (*out)[enc_len++] = c_base64EncodeTable[a4[j]];
         }
 
         while ((i++ < 3))
