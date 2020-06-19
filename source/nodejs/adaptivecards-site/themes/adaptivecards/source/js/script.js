@@ -430,6 +430,7 @@ $(function () {
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
@@ -542,6 +543,9 @@ $(function () {
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
 
 	function updateSidebarTopOffset() {
@@ -554,11 +558,9 @@ $(function () {
 
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });

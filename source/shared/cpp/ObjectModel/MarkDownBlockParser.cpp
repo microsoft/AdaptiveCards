@@ -42,7 +42,7 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         break;
     }
     // handles list block
-    case '-':
+    case '-': case '+':
     {
         ListParser listParser;
         // do syntax check of list
@@ -51,6 +51,26 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         m_parsedResult.AppendParseResult(listParser.GetParsedResult());
         break;
     }
+    {
+        ListParser listParser;
+        // do syntax check of list
+        listParser.Match(stream);
+        // append list result to the rest
+        m_parsedResult.AppendParseResult(listParser.GetParsedResult());
+        break;
+    }
+
+    // handles list block
+    case '*':
+    {
+        ListParser listParser;
+        // do syntax check of list
+        listParser.Match(stream);
+        // append list result to the rest
+        m_parsedResult.AppendParseResult(listParser.GetParsedResult());
+        break;
+    }
+
     case '0':
     case '1':
     case '2':
@@ -71,12 +91,17 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
     }
     // everything else is treated as normal text + emphasis
     default:
-        EmphasisParser emphasisParser;
-        // do syntax check of normal text + emphasis
-        emphasisParser.Match(stream);
-        // append result to the rest
-        m_parsedResult.AppendParseResult(emphasisParser.GetParsedResult());
+        ParseTextAndEmphasis(stream);
     }
+}
+
+void MarkDownBlockParser::ParseTextAndEmphasis(std::stringstream& stream)
+{
+    EmphasisParser emphasisParser;
+    // do syntax check of normal text + emphasis
+    emphasisParser.Match(stream);
+    // append result to the rest
+    m_parsedResult.AppendParseResult(emphasisParser.GetParsedResult());
 }
 
 // Emphasis Match's syntax is complete when it's Captured
@@ -464,7 +489,9 @@ bool LinkParser::MatchAtLinkDestinationStart(std::stringstream& lookahead)
 // link is in form of [txt](url), this method matches ')'
 bool LinkParser::MatchAtLinkDestinationRun(std::stringstream& lookahead)
 {
-    if (lookahead.peek() > 0 && (MarkDownBlockParser::IsSpace(static_cast<char>(lookahead.peek())) || MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek()))))
+    if (lookahead.peek() > 0 &&
+        (MarkDownBlockParser::IsSpace(static_cast<char>(lookahead.peek())) ||
+         MarkDownBlockParser::IsCntrl(static_cast<char>(lookahead.peek()))))
     {
         m_parsedResult.AppendParseResult(m_linkTextParsedResult);
         return false;
@@ -524,7 +551,8 @@ void LinkParser::CaptureLinkToken()
 // this method matches -\s
 bool ListParser::MatchNewListItem(std::stringstream& stream)
 {
-    if (IsHyphen(static_cast<char>(stream.peek())))
+    const char ch = static_cast<char>(stream.peek());
+    if (IsHyphen(ch) || IsPlus(ch) || IsAsterisk(ch))
     {
         stream.get();
         if (stream.peek() == ' ')
@@ -640,7 +668,8 @@ bool ListParser::CompleteListParsing(std::stringstream& stream)
 void ListParser::Match(std::stringstream& stream)
 {
     // check for - of -\s+ list marker
-    if (IsHyphen(static_cast<char>(stream.peek())))
+    const char ch = static_cast<char>(stream.peek());
+    if (IsHyphen(ch) || IsPlus(ch) || IsAsterisk(ch))
     {
         stream.get();
         if (CompleteListParsing(stream))
@@ -649,8 +678,18 @@ void ListParser::Match(std::stringstream& stream)
         }
         else
         {
-            // if incorrect syntax, capture what was thrown as a new token.
-            m_parsedResult.AddNewTokenToParsedResult('-');
+            // if it was asterisk, put the char back and start emphasis parsing
+            if (IsAsterisk(ch))
+            {
+                stream.putback(ch);
+
+                ParseTextAndEmphasis(stream);
+            }
+            else
+            {
+                // if incorrect syntax, capture what was thrown as a new token.
+                m_parsedResult.AddNewTokenToParsedResult(ch);
+            }
         }
     }
 }
