@@ -32,7 +32,15 @@ export class DropDownItem {
             this._element = document.createElement("span");
             this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
             this._element.innerText = this.value;
+            this._element.setAttribute("role", "option");
+            this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
+            this._element.onkeydown = (e) => {
+                if (e.keyCode === Constants.KEY_ENTER) {
+                    this.click();
+                    e.cancelBubble = true;
+                }
+            };
         }
 
         return this._element;
@@ -65,6 +73,7 @@ export class DropDownPopupControl extends PopupControl {
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";
+        element.setAttribute("role", "listbox");
 
         var selectedIndex = this._owner.selectedIndex;
 
@@ -85,7 +94,7 @@ export class DropDownPopupControl extends PopupControl {
     }
 
     keyDown(e: KeyboardEvent) {
-        super.keyDown(e);
+        super.keyDown(e); // handles ESC
 
         var selectedItemIndex = this._selectedIndex;
 
@@ -154,7 +163,14 @@ export class DropDownPopupControl extends PopupControl {
 
     set selectedIndex(index: number) {
         if (index >= 0 && index < this._renderedItems.length) {
+            // deselect previous item (if one was selected)
+            if (this._selectedIndex >= 0 && this._selectedIndex < this._renderedItems.length) {
+                this._renderedItems[this._selectedIndex].setAttribute("aria-selected", "false");
+            }
+
+            // select new item
             this._renderedItems[index].focus();
+            this._renderedItems[index].setAttribute("aria-selected", "true");
 
             this._selectedIndex = index;
         }
@@ -163,6 +179,7 @@ export class DropDownPopupControl extends PopupControl {
 
 export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem> {
     private _items: Collection<DropDownItem>;
+    private _parentLabelId: string; // tracks the id of the parent control's label
 
     private itemClicked(item: DropDownItem) {
         this.selectedItem = item;
@@ -207,6 +224,21 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
                 this._items.add(item);
             }
         }
+
+        // add aria-labelledby tag with all pertinent label ids
+        let ariaLabelledByIds: Array<string> = [];
+
+        if (this.parentLabelId) {
+            ariaLabelledByIds.push(this.parentLabelId);
+        }
+
+        if (this.labelId) {
+            ariaLabelledByIds.push(this.labelId);
+        }
+
+        if (ariaLabelledByIds.length > 0) {
+            this.rootElement.setAttribute("aria-labelledby", ariaLabelledByIds.join(" "));
+        }
     }
 
     popup() {
@@ -235,5 +267,13 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
         if (index >= 0 && this.items.length > index) {
             this.selectedItem = this.items.get(index);
         }
+    }
+
+    get parentLabelId() : string {
+        return this._parentLabelId;
+    }
+
+    set parentLabelId(value: string) {
+        this._parentLabelId = value;
     }
 }

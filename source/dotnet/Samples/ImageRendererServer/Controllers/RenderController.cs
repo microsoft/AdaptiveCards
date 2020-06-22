@@ -24,7 +24,7 @@ namespace ImageRendererServer.Controllers
         public async Task<ActionResult> Index(string cardUrl = null)
         {
             cardUrl = cardUrl ??
-                      "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/samples/v1.0/Scenarios/ActivityUpdate.json";
+                      "https://raw.githubusercontent.com/Microsoft/AdaptiveCards/main/samples/v1.0/Scenarios/ActivityUpdate.json";
 
             try
             {

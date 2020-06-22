@@ -5,83 +5,114 @@
 	"body": [
 		{
 			"type": "Input.ChoiceSet",
-			"id": "myColor",
+			"id": "input1",
 			"style": "compact",
-			"label": "What color do you want?",
+			"isMultiSelect": false,
+			"label": "Default Input.ChoiceSet label (compact)",
 			"choices": [
 				{
-					"title": "Red",
+					"title": "Option 1",
 					"value": "1"
 				},
 				{
-					"title": "Green",
+					"title": "Option 2",
 					"value": "2"
-				},
-				{
-					"title": "Blue",
-					"value": "3"
 				}
 			]
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "myColor2",
+			"id": "input2",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (compact)",
+			"isRequired": true,
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input3",
 			"style": "expanded",
 			"isMultiSelect": false,
-			"label": {
-				"type": "TextBlock",
-				"text": "What color do you want?",
-				"weight": "Bolder"
-			},
+			"label": "Default Input.ChoiceSet label (expanded)",
 			"choices": [
 				{
-					"title": "Red",
+					"title": "Option 1",
 					"value": "1"
 				},
 				{
-					"title": "Green",
+					"title": "Option 2",
 					"value": "2"
-				},
-				{
-					"title": "Blue",
-					"value": "3"
 				}
 			]
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "myColor3",
-			"isMultiSelect": true,
+			"id": "input4",
 			"style": "expanded",
-			"label": {
-				"type": "RichTextBlock",
-				"inlines": [
-					{
-						"type": "TextRun",
-						"text": "What colors do you want?",
-						"color": "Accent"
-					},
-					{
-						"type": "TextRun",
-						"text": " (You can pick more than one)",
-						"size": "Small"
-					}
-				]
-			},
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (expanded)",
+			"isRequired": true,
 			"choices": [
 				{
-					"title": "Red",
+					"title": "Option 1",
 					"value": "1"
 				},
 				{
-					"title": "Green",
+					"title": "Option 2",
 					"value": "2"
-				},
-				{
-					"title": "Blue",
-					"value": "3"
 				}
 			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input5",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"label": "Default Input.ChoiceSet label (expanded, multiselect)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input6",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"isRequired": true,
+			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
 		}
 	]
 }

@@ -2,7 +2,7 @@
 
 This package "lights-up" the Adaptive Card renderer with [Office Fabric UI](https://developer.microsoft.com/en-us/fabric#/controls/web) input controls.
 
-![Adaptive cards fabric animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/master/source/nodejs/adaptivecards-fabric/adaptivecards-fabric.gif)
+![Adaptive cards fabric animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/main/source/nodejs/adaptivecards-fabric/adaptivecards-fabric.gif)
 
 
 ## Extended Controls
