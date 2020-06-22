@@ -55,8 +55,8 @@
         toggleView.title.lineBreakMode = NSLineBreakByTruncatingTail;
     }
 
-    if (adaptiveToggleInput->GetValue() == adaptiveToggleInput->GetValueOn()) {
-        toggleView.toggle.on = YES;
+    if (adaptiveToggleInput->GetValue() != adaptiveToggleInput->GetValueOn()) {
+        toggleView.toggle.on = NO;
     }
 
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
