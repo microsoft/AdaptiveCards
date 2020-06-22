@@ -26,6 +26,14 @@
 		{
 			"type": "TextBlock",
 			"text": "**{{TIME(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')})}}**"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Data Expressed in RFC3389 format with AdaptiveCards TIME Function"
+		},
+		{
+			"type": "TextBlock",
+			"text": "**{{TIME(${rfc3389})}}**"
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
