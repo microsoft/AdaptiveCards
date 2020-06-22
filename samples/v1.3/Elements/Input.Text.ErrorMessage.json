@@ -9,5 +9,11 @@
 			"regex": "^\\w{5,50}$",
 			"errorMessage": "Username must be between 5 and 50 characters long."
 		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
 	]
 }

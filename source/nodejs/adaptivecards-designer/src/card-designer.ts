@@ -638,6 +638,12 @@ export class CardDesigner extends Designer.DesignContext {
                         };
                         dialog.selectedSample.download();
                     }
+
+                    const newCardButton = this._newCardButton.renderedElement;
+
+                    if (newCardButton) {
+                        newCardButton.focus();
+                    }
                 };
                 dialog.open();
             });
@@ -814,6 +820,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
         Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+        Adaptive.GlobalSettings.setTabIndexAtCardRoot = false;
 
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
@@ -837,7 +844,7 @@ export class CardDesigner extends Designer.DesignContext {
                     fileMatch: ["*"],
                 }
             ],
-            validate: false,
+            validate: true,
             allowComments: true
         }
 
@@ -855,7 +862,7 @@ export class CardDesigner extends Designer.DesignContext {
                 fontSize: 13.5,
                 language: 'json',
                 minimap: {
-                    enabled: false
+                    enabled: true
                 }
             }
         );
