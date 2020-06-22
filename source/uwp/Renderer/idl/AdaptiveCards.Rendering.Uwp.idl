@@ -1654,7 +1654,7 @@ AdaptiveNamespaceStart
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
 
-        Boolean ValidateInputs();
+        Boolean ValidateInputs(AdaptiveSubmitAction submitAction);
     };
 
     [
@@ -1827,6 +1827,24 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderArgs", e75cbfea-77a6-4562-be66-c86b36ac193a),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveRenderArgs {
+        AdaptiveRenderArgs();
+
+        ContainerStyle ContainerStyle;
+        IInspectable ParentElement;
+        Boolean IsInShowCard;
+        Boolean AllowAboveTitleIconPlacement;
+        Boolean AncestorHasFallback;
+        AdaptiveCard ParentCard;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderContext", 98e4b78a-683c-48f2-a7d2-42b0556e5e63),
         contract(InternalContract, 1),
         internal
@@ -1846,11 +1864,14 @@ AdaptiveNamespaceStart
         Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
         AdaptiveInputs UserInputs { get; };
 
-        void AddInputValue(IAdaptiveInputValue inputValue);
+        void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
+        void LinkSubmitActionToCard(AdaptiveSubmitAction submitAction, AdaptiveRenderArgs renderArgs);
+        void LinkCardToParent(AdaptiveCard card, AdaptiveRenderArgs renderArgs);
 
         void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,
-                               Windows.UI.Xaml.UIElement showCardUIElement);
+                               Windows.UI.Xaml.UIElement showCardUIElement,
+                               AdaptiveRenderArgs renderArgs);
 
         void AddError(ErrorStatusCode statusCode, String message);
         void AddWarning(WarningStatusCode statusCode, String message);
@@ -2113,24 +2134,6 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
         AdaptiveToggleVisibilityActionRenderer();
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderArgs", e75cbfea-77a6-4562-be66-c86b36ac193a),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ]
-    runtimeclass AdaptiveRenderArgs 
-    {
-        AdaptiveRenderArgs(); 
-
-        ContainerStyle ContainerStyle;
-        IInspectable ParentElement;
-        Boolean IsInShowCard;
-        Boolean AllowAboveTitleIconPlacement;
-        Boolean AncestorHasFallback;
     };
 
     [

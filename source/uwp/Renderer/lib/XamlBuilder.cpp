@@ -74,7 +74,7 @@ namespace AdaptiveNamespace
                 }
             }
             ComPtr<IAdaptiveRenderArgs> renderArgs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, nullptr));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, adaptiveCard, nullptr));
 
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement;
@@ -109,9 +109,11 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(adaptiveCard->get_Body(&body));
             ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
             RETURN_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get(), nullptr));
+                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get(), adaptiveCard, nullptr));
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
+
+            // renderContext->LinkCardToParent(adaptiveCard, renderArgs.Get());
 
             ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));

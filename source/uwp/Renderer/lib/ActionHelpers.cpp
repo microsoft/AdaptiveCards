@@ -348,8 +348,7 @@ namespace AdaptiveNamespace::ActionHelpers
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-        std::shared_ptr<std::vector<ComPtr<IUIElement>>> allShowCards = std::make_shared<std::vector<ComPtr<IUIElement>>>();
-
+        
         // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
         ComPtr<IButtonBase> buttonBase;
         RETURN_IF_FAILED(button.As(&buttonBase));
@@ -968,7 +967,7 @@ namespace AdaptiveNamespace::ActionHelpers
                         if (adaptiveActionSet)
                         {
                             RETURN_IF_FAILED(
-                                renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get()));
+                                renderContext->AddInlineShowCard(adaptiveActionSet, showCardAction.Get(), uiShowCard.Get(), renderArgs));
                         }
                         else
                         {
@@ -976,7 +975,7 @@ namespace AdaptiveNamespace::ActionHelpers
                                 PeekInnards<AdaptiveNamespace::AdaptiveRenderContext>(renderContext);
 
                             RETURN_IF_FAILED(
-                                contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get()));
+                                contextImpl->AddInlineShowCard(adaptiveCard, showCardAction.Get(), uiShowCard.Get(), renderArgs));
                         }
                     }
                 }

@@ -106,6 +106,7 @@ namespace AdaptiveNamespace
         ComPtr<IComboBox> comboBox =
             XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
+        
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
         ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
         RETURN_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));
@@ -185,7 +186,7 @@ namespace AdaptiveNamespace
         ComPtr<ChoiceSetInputValue> input;
         MakeAndInitialize<ChoiceSetInputValue>(
             &input, renderContext, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get(), validationError.Get());
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
     }
@@ -286,7 +287,7 @@ namespace AdaptiveNamespace
         ComPtr<ChoiceSetInputValue> input;
         MakeAndInitialize<ChoiceSetInputValue>(
             &input, renderContext, adaptiveChoiceSetInput, choiceSetAsUIElement.Get(), nullptr, validationError.Get());
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
     }
