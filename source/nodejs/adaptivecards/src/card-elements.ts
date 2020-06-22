@@ -3741,17 +3741,30 @@ export class ToggleVisibilityAction extends Action {
 
     execute() {
         if (this.parent) {
+            const hide: CardElement[] = [];
             for (let elementId of Object.keys(this.targetElements)) {
                 let targetElement = this.parent.getRootElement().getElementById(elementId);
 
                 if (targetElement) {
                     if (typeof this.targetElements[elementId] === "boolean") {
-                        targetElement.isVisible = this.targetElements[elementId];
+                        if(this.targetElements[elementId]) {
+                            targetElement.isVisible = true;
+                        } else {
+                            hide.push(targetElement);
+                        }
                     }
-                    else {
-                        targetElement.isVisible = !targetElement.isVisible;
+                    else if (!targetElement.isVisible) {
+                        targetElement.isVisible = true;
+                    } else {
+                        hide.push(targetElement);
                     }
                 }
+            }
+            for (const targetElement of hide) {
+                if(targetElement.renderedElement === document.activeElement) {
+                    // traverse card elements to find next visible, focussable element, and set its focus.
+                }
+                targetElement.isVisible = false;
             }
         }
     }
