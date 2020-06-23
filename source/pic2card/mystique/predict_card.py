@@ -21,8 +21,8 @@ from mystique import config
 
 class PredictCard:
     """
-    Collects the faster rcnn detected objects and handles the 
-    functionality of calling diffrent modules in card prediction 
+    Collects the faster rcnn detected objects and handles the
+    functionality of calling diffrent modules in card prediction
     and returning the predicted json objects.
     """
 
@@ -113,7 +113,7 @@ class PredictCard:
         return self.generate_card(output_dict, image, image_np, card_format)
 
     def tf_serving_main(self, bs64_img: str, tf_server: str, model_name: str,
-                        card_format: str) -> Dict:
+                        card_format: str=None) -> Dict:
         tf_uri = os.path.join(tf_server,
                               f"v1/models/{model_name}:predict")
         payloads = {
@@ -146,7 +146,7 @@ class PredictCard:
     def generate_card(self, prediction: Dict, image: Image,
                       image_np: np.array, card_format: str):
         """
-        From the object detection result and image, generate adaptive 
+        From the object detection result and image, generate adaptive
         card object.
 
         @param prediction: Prediction result from rcnn model
