@@ -302,20 +302,19 @@ namespace AdaptiveSharedNamespace
         ForegroundColor color = ForegroundColor::Default;
         bool isSubtle = false; 
         TextSize size = TextSize::Default;
+        std::string suffix = std::string();
         TextWeight weight = TextWeight::Default;
 
         static InputLabelConfig Deserialize(const Json::Value& json, const InputLabelConfig& defaultValue);
     };
 
-    struct InputLabelsConfig
+    struct LabelConfig
     {
-        std::string requiredSuffix = std::string();
         Spacing inputSpacing = Spacing::Default;
-
         InputLabelConfig requiredInputs;
         InputLabelConfig optionalInputs;
 
-        static InputLabelsConfig Deserialize(const Json::Value& json, const InputLabelsConfig& defaultValue);
+        static LabelConfig Deserialize(const Json::Value& json, const LabelConfig& defaultValue);
     };
 
     struct ErrorMessageConfig
@@ -329,8 +328,7 @@ namespace AdaptiveSharedNamespace
 
     struct InputsConfig
     {
-        ValidationBehavior validationBehavior = ValidationBehavior::OnSubmit;
-        InputLabelsConfig inputLabels;
+        LabelConfig label;
         ErrorMessageConfig errorMessage;
 
         static InputsConfig Deserialize(const Json::Value& json, const InputsConfig& defaultValue);
@@ -414,14 +412,6 @@ namespace AdaptiveSharedNamespace
         InputsConfig GetInputs() const;
         void SetInputs(const InputsConfig value);
 
-        /*
-        InputLabelsConfig GetInputLabels() const;
-        void SetInputLabels(const InputLabelsConfig value);
-
-        ErrorMessageConfig GetErrorMessage() const;
-        void SetErrorMessage(const ErrorMessageConfig value);
-        */
-
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -443,8 +433,5 @@ namespace AdaptiveSharedNamespace
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
         InputsConfig _inputs;
-
-        // InputLabelsConfig _inputLabels;
-        // ErrorMessageConfig _errorMessage;
     };
 }
