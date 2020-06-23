@@ -107,7 +107,7 @@
 .acd-error-pane {
     flex: 0 0 65px;
     color: white;
-    background-color: #3a96dd;
+    background-color: #2D7BB7;
     border-top: 1px solid #D2D2D2;
     overflow-x: hidden;
     overflow-y: auto;
@@ -281,11 +281,11 @@
 }
 
 .acd-toolPalette-icon {
-    color: #3a96dd;
+    color: #2D7BB7;
 }
 
 .acd-treeView-icon {
-    color: #3a96dd;
+    color: #2D7BB7;
 }
 
 .acd-icon-bolt::before {
@@ -727,7 +727,7 @@
 }
 
 .acd-data-tree-item-additionalText {
-    color: #3a96dd;
+    color: #2D7BB7;
     margin-left: 8px;
 }
 
@@ -978,6 +978,6 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-textBlock.default-ac-selectable:hover {
-    color: #3A96DD !important;
+    color: #2D7BB7 !important;
     cursor: pointer;
 }

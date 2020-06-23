@@ -175,7 +175,7 @@ To see the visualizer,
 * Android **> `react-native run-android`**
 * Windows **> `react-native start`**  and  **`Launch Simulator from Visual Studio`**
 
-**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/master/RNWCS/docs/GettingStarted.md for react-native-windows setup
+**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/main/RNWCS/docs/GettingStarted.md for react-native-windows setup
 
 
 ##  About Adaptive Card

@@ -7,7 +7,7 @@ npm install microsoft-adaptivecards-json-to-scss
 ```
 
 ## Usage
-Start with a JSON variable of Adaptive Cards Host Config. See [the default](https://github.com/Microsoft/AdaptiveCards/blob/master/source/html/renderer/src/card-elements.ts#L2525) for an example.
+Start with a JSON variable of Adaptive Cards Host Config. See [the default](https://github.com/Microsoft/AdaptiveCards/blob/main/source/html/renderer/src/card-elements.ts#L2525) for an example.
 
 ```
 var json2scss = require('microsoft-adaptivecards-json-to-scss');
