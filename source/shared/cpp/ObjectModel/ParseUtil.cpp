@@ -343,17 +343,21 @@ namespace AdaptiveSharedNamespace
 
     Json::Value ParseUtil::GetJsonValueFromString(const std::string& jsonString)
     {
-        std::istringstream jsonStream(jsonString);
+        const thread_local Json::CharReaderBuilder readerBuilder;
+        std::unique_ptr<Json::CharReader> reader(readerBuilder.newCharReader());
+
         Json::Value jsonValue;
 
-        try
-        {
-            jsonStream >> jsonValue;
-        }
-        catch (const Json::RuntimeError&)
+        const bool ok = reader->parse(
+            jsonString.data(),
+            jsonString.data() + jsonString.size(),
+            &jsonValue, nullptr);
+
+        if (!ok)
         {
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidJson, "Expected JSON Object");
         }
+
         return jsonValue;
     }
 

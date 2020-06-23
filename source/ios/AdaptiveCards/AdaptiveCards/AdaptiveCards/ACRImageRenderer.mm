@@ -103,6 +103,7 @@
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
 
     if (!view) {
+        [viewGroup addSubview:wrappingview];
         return wrappingview;
     }
     wrappingview.desiredContentSize = intrinsicContentSize;
