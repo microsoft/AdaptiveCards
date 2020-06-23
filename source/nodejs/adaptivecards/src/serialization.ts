@@ -104,7 +104,8 @@ export class Versions {
     static readonly v1_0 = new Version(1, 0);
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
-    static readonly latest = Versions.v1_2;
+    static readonly v1_3 = new Version(1, 3);
+    static readonly latest = Versions.v1_3;
     static readonly vNext = new Version(1000, 0, "vNext");
 }
 
@@ -439,11 +440,13 @@ export class ValueSetProperty extends PropertyDefinition {
             }
         }
 
-        context.serializeValue(
-            target,
-            this.name,
-            valueFound ? value : undefined,
-            this.defaultValue);
+        if (valueFound) {
+            context.serializeValue(
+                target,
+                this.name,
+                value,
+                this.defaultValue);
+        }
     }
 
     constructor(

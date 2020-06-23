@@ -203,6 +203,17 @@ static int kToggleVisibilityContext;
 - (void)addArrangedSubview:(UIView *)view
 {
     [_stackView addArrangedSubview:view];
+    [self configureVisibilityOfView:view];
+}
+
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex
+{
+    [_stackView insertArrangedSubview:view atIndex:insertionIndex];
+    [self configureVisibilityOfView:view];
+}
+
+- (void)configureVisibilityOfView:(UIView *)view
+{
     // if view is hidden before observer is added, we update hidden view count manually
     if (view.hidden) {
         [_hiddenSubviews addObject:view];
@@ -295,6 +306,11 @@ static int kToggleVisibilityContext;
 - (NSUInteger)subviewsCounts
 {
     return [_stackView.subviews count];
+}
+
+- (NSUInteger)arrangedSubviewsCounts
+{
+    return [_stackView.arrangedSubviews count];
 }
 
 - (void)addTarget:(NSObject *)target

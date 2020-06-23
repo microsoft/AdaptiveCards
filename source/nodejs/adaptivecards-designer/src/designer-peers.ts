@@ -57,6 +57,7 @@ export class PropertySheetCategory {
     static readonly StyleCategory = "Style";
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
+    static readonly Validation = "Validation";
 
     private _entries: PropertySheetEntry[] = [];
 
@@ -1285,11 +1286,9 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (Adaptive.GlobalSettings.useBuiltInInputValidation) {
-            propertySheet.add(
-                PropertySheetCategory.DefaultCategory,
-                HttpActionPeer.ignoreInputValidationProperty);
-        }
+        propertySheet.add(
+            PropertySheetCategory.DefaultCategory,
+            HttpActionPeer.ignoreInputValidationProperty);
 
         propertySheet.add(
             defaultCategory,
@@ -1674,7 +1673,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1775,7 +1774,7 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -1845,7 +1844,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 
@@ -1909,7 +1908,7 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
 
             propertySheet.add(
                 PropertySheetCategory.SelectionAction,
-                new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));
+                new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));
         }
     }
 }
@@ -2097,7 +2096,7 @@ export class ImagePeer extends TypedCardElementPeer<Adaptive.Image> {
 
                 propertySheet.add(
                     PropertySheetCategory.SelectionAction,
-                    new SubPropertySheetEntry(Adaptive.Versions.v1_2, this.cardElement.selectAction, subPropertySheet));            }
+                    new SubPropertySheetEntry(Adaptive.Versions.v1_0, this.cardElement.selectAction, subPropertySheet));            }
         }
     }
 }
@@ -2189,21 +2188,29 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly validationProperty = new CompoundPropertyEditor(
-        Adaptive.Versions.vNext,
-        "validation",
-        [
-            new EnumPropertyEditor(Adaptive.Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
-        ]
-    );
+    static readonly labelProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "label",
+        "Label");
+
+    static readonly isRequiredProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "isRequired",
+        "Required");
+
+    static readonly errorMessageProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "errorMessage",
+        "Error message");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.add(defaultCategory, InputPeer.labelProperty);
         propertySheet.add(
-            "Validation",
-            InputPeer.validationProperty);
+            PropertySheetCategory.Validation,
+            InputPeer.isRequiredProperty,
+            InputPeer.errorMessageProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
@@ -2218,6 +2225,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
     static readonly maxLengthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly regexProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "regex", "Pattern");
+
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2255,6 +2264,10 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             defaultCategory,
             TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.Validation,
+            TextInputPeer.regexProperty);
     }
 
     initializeCardElement() {
@@ -2449,7 +2462,7 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly sizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "size", "Size", Adaptive.TextSize);
     static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
     static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
-    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "subtle", "Subtle");
+    static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
