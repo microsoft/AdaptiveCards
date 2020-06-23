@@ -46,7 +46,7 @@ namespace AdaptiveSharedNamespace
     public:
         BaseElement() :
             m_typeString{}, m_additionalProperties{},
-            m_requires{std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>()},
+            m_requires{},
             m_fallbackContent(nullptr), m_internalId{InternalId::Current()}, m_fallbackType(FallbackType::None),
             m_canFallbackToAncestor(false), m_id{}
         {
@@ -76,13 +76,15 @@ namespace AdaptiveSharedNamespace
 
         // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
-        std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
+        const std::shared_ptr<BaseElement>& GetFallbackContent() const { return m_fallbackContent; }
         bool CanFallbackToAncestor() const { return m_canFallbackToAncestor; }
         void SetFallbackType(FallbackType type) { m_fallbackType = type; }
-        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = element; }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = std::move(element); }
 
         bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> GetRequirements() const;
+
+        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements();
+        const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements() const;
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
@@ -100,7 +102,7 @@ namespace AdaptiveSharedNamespace
         void ParseRequires(ParseContext& context, const Json::Value& json);
         void PopulateKnownPropertiesSet();
 
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> m_requires;
+        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
         InternalId m_internalId;
         FallbackType m_fallbackType;

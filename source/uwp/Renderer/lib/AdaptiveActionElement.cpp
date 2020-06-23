@@ -106,25 +106,25 @@ namespace AdaptiveNamespace
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
-    HRESULT AdaptiveActionElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement)
+    HRESULT AdaptiveActionElementBase::CopySharedElementProperties(AdaptiveSharedNamespace::BaseActionElement& sharedCardElement)
     {
-        sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
-        sharedCardElement->SetTitle(HStringToUTF8(m_title.Get()));
-        sharedCardElement->SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
-        sharedCardElement->SetStyle(HStringToUTF8(m_style.Get()));
-        sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetId(HStringToUTF8(m_id.Get()));
+        sharedCardElement.SetTitle(HStringToUTF8(m_title.Get()));
+        sharedCardElement.SetIconUrl(HStringToUTF8(m_iconUrl.Get()));
+        sharedCardElement.SetStyle(HStringToUTF8(m_style.Get()));
+        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
             std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> fallbackSharedModel;
             RETURN_IF_FAILED(GenerateSharedAction(m_fallbackContent.Get(), fallbackSharedModel));
-            sharedCardElement->SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+            sharedCardElement.SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
         }
 
         if (m_additionalProperties != nullptr)
         {
             Json::Value jsonCpp;
             RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
-            sharedCardElement->SetAdditionalProperties(jsonCpp);
+            sharedCardElement.SetAdditionalProperties(jsonCpp);
         }
 
         return S_OK;

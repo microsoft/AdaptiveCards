@@ -71,7 +71,7 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*submitAction));
 
         std::string jsonAsString;
         if (m_dataJson != nullptr)

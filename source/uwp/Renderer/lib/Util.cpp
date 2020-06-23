@@ -336,10 +336,10 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
 
 HRESULT GenerateSharedRequirements(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
-    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept
+    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept
 try
 {
-    sharedRequirements->clear();
+    sharedRequirements.clear();
 
     XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveRequirement, ABI::AdaptiveNamespace::IAdaptiveRequirement>(
         adaptiveRequirements, [&](ABI::AdaptiveNamespace::IAdaptiveRequirement* requirement) {
@@ -357,11 +357,11 @@ try
 
             if (versionString == "*")
             {
-                sharedRequirements->emplace(nameString, "0");
+                sharedRequirements.emplace(std::move(nameString), "0");
             }
             else
             {
-                sharedRequirements->emplace(nameString, versionString);
+                sharedRequirements.emplace(std::move(nameString), std::move(versionString));
             }
 
             return S_OK;
@@ -655,7 +655,7 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> action,
+HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& action,
                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept
 try
 {
@@ -754,11 +754,11 @@ try
 CATCH_RETURN;
 
 HRESULT GenerateRequirementsProjection(
-    const std::shared_ptr<std::unordered_map<std::string, SemanticVersion>>& sharedRequirements,
+    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
-    for (auto& sharedRequirement : *sharedRequirements)
+    for (const auto& sharedRequirement : sharedRequirements)
     {
         ComPtr<ABI::AdaptiveNamespace::IAdaptiveRequirement> projectedRequirement;
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveRequirement>(&projectedRequirement, sharedRequirement));
@@ -835,7 +835,7 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateSeparatorProjection(std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
+HRESULT GenerateSeparatorProjection(const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator,
                                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept
 try
 {
@@ -1446,7 +1446,7 @@ HRESULT MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* car
     RETURN_IF_FAILED(GenerateSharedElement(cardElement, sharedElement));
 
     ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
-    std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration> sharedFeatureRegistration =
+    const std::shared_ptr<AdaptiveSharedNamespace::FeatureRegistration>& sharedFeatureRegistration =
         featureRegistrationImpl->GetSharedFeatureRegistration();
 
     *meetsRequirements = sharedElement->MeetsRequirements(*sharedFeatureRegistration);
@@ -1530,10 +1530,10 @@ void GetUrlFromString(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConf
     THROW_IF_FAILED(localUrl.CopyTo(url));
 }
 
-HRESULT SharedWarningsToAdaptiveWarnings(std::vector<std::shared_ptr<AdaptiveCardParseWarning>> sharedWarnings,
+HRESULT SharedWarningsToAdaptiveWarnings(const std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& sharedWarnings,
                                          _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings)
 {
-    for (auto sharedWarning : sharedWarnings)
+    for (const auto& sharedWarning : sharedWarnings)
     {
         HString warningMessage;
         RETURN_IF_FAILED(UTF8ToHString(sharedWarning->GetReason(), warningMessage.GetAddressOf()));

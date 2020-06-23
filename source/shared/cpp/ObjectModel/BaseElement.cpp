@@ -53,12 +53,12 @@ namespace AdaptiveSharedNamespace
 
     Json::Value BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
 
-    void BaseElement::SetAdditionalProperties(Json::Value const& value) { m_additionalProperties = value; }
+    void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
     bool BaseElement::MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration) const
     {
-        for (const auto& requirement : *m_requires)
+        for (const auto& requirement : m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
@@ -84,7 +84,12 @@ namespace AdaptiveSharedNamespace
         return true;
     }
 
-    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> BaseElement::GetRequirements() const
+    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements()
+    {
+        return m_requires;
+    }
+
+    const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements() const
     {
         return m_requires;
     }
@@ -113,10 +118,10 @@ namespace AdaptiveSharedNamespace
         }
 
         // Handle requires
-        if (!m_requires->empty())
+        if (!m_requires.empty())
         {
             Json::Value jsonRequires{};
-            for (const auto& requirement : *m_requires)
+            for (const auto& requirement : m_requires)
             {
                 jsonRequires[requirement.first] = static_cast<std::string>(requirement.second);
             }
@@ -147,14 +152,14 @@ namespace AdaptiveSharedNamespace
                     if (memberValue == "*")
                     {
                         // * means any version.
-                        m_requires->emplace(memberName, "0");
+                        m_requires.emplace(memberName, "0");
                     }
                     else
                     {
                         try
                         {
                             SemanticVersion memberVersion(memberValue);
-                            m_requires->emplace(memberName, memberVersion);
+                            m_requires.emplace(memberName, memberVersion);
                         }
                         catch (const AdaptiveCardParseException&)
                         {
