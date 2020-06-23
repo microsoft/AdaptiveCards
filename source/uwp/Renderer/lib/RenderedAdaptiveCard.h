@@ -63,6 +63,8 @@ namespace AdaptiveNamespace
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         HRESULT LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+        HRESULT GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                              _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue);
 
         void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
         void SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value);

@@ -85,12 +85,12 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement> inputLayout;
         ComPtr<IUIElement> validationError;
         RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, renderArgs, &inputLayout, nullptr, &validationError));
+            textInputAsAdaptiveInput.Get(), textBoxParentContainer.Get(), regex.IsValid(), renderContext, &inputLayout, nullptr));
 
         // Create the InputValue and add it to the context
         ComPtr<TextInputValue> input;
         MakeAndInitialize<TextInputValue>(
-            &input, renderContext, adaptiveTextInput, textBox, validationBorder.Get(), validationError.Get());
+            &input, renderContext, adaptiveTextInput, textBox, validationBorder.Get());
         renderContext->AddInputValue(input.Get(), renderArgs);
 
         inputLayout.CopyTo(textInputLayout);

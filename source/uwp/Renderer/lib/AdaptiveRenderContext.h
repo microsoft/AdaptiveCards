@@ -46,6 +46,9 @@ namespace AdaptiveNamespace
                                          _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
                                          _In_ ABI::Windows::UI::Xaml::IUIElement* showCardUIElement,
                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs) override;
+        IFACEMETHODIMP GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue) override;
+
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers** value) override;
         IFACEMETHODIMP get_OverrideStyles(_COM_Outptr_ ABI::Windows::UI::Xaml::IResourceDictionary** overrideDictionary) override;
         IFACEMETHODIMP AddError(ABI::AdaptiveNamespace::ErrorStatusCode statusCode, _In_ HSTRING message) override;

@@ -162,7 +162,16 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
         return renderResult->LinkCardToParent(card, renderArgs);
     }
-        
+
+    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                                                 _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->GetInputValue(inputElement, inputValue);
+    }
+  
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {

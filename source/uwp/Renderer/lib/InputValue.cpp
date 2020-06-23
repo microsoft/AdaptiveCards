@@ -30,12 +30,10 @@ HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                            _In_ IAdaptiveInputElement* adaptiveInputElement,
                                            _In_ IUIElement* uiInputElement,
-                                           _In_ IBorder* validationBorder,
-                                           _In_ IUIElement* validationError)
+                                           _In_ IBorder* validationBorder)
 {
     m_adaptiveInputElement = adaptiveInputElement;
     m_uiInputElement = uiInputElement;
-    m_validationError = validationError;
     m_validationBorder = validationBorder;
 
     // Find out if we should validate inline on FocusLost. This is temporarily stored in the render context for
@@ -120,6 +118,12 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
     return S_OK;
 }
 
+HRESULT InputValue::SetErrorMessage(_In_ IUIElement* uiErrorMessage)
+{
+    m_validationError = uiErrorMessage;
+    return S_OK;
+}
+
 HRESULT InputValue::IsValueValid(_Out_ boolean* isInputValid)
 {
     boolean isRequired;
@@ -181,8 +185,7 @@ HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputE
 HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                               _In_ IAdaptiveInputElement* adaptiveInput,
                                               _In_ ITextBox* uiTextBoxElement,
-                                              _In_ IBorder* validationBorder,
-                                              _In_ IUIElement* validationError)
+                                              _In_ IBorder* validationBorder)
 {
     {
         m_textBoxElement = uiTextBoxElement;
@@ -191,7 +194,7 @@ HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rende
         RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
 
         RETURN_IF_FAILED(
-            InputValue::RuntimeClassInitialize(renderContext, adaptiveInput, textBoxAsUIElement.Get(), validationBorder, validationError));
+            InputValue::RuntimeClassInitialize(renderContext, adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
 
         return S_OK;
     }
@@ -205,8 +208,7 @@ HRESULT TextInputBase::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveTextInput* adaptiveTextInput,
                                                _In_ ITextBox* uiTextBoxElement,
-                                               _In_ IBorder* validationBorder,
-                                               _In_ IUIElement* validationError)
+                                               _In_ IBorder* validationBorder)
 {
     {
         m_adaptiveTextInput = adaptiveTextInput;
@@ -215,7 +217,7 @@ HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rend
         RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
 
         RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(
-            renderContext, textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder, validationError));
+            renderContext, textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
 
         return S_OK;
     }
@@ -254,15 +256,14 @@ HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
 HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                  _In_ IAdaptiveNumberInput* adaptiveNumberInput,
                                                  _In_ ITextBox* uiTextBoxElement,
-                                                 _In_ IBorder* validationBorder,
-                                                 _In_ IUIElement* validationError)
+                                                 _In_ IBorder* validationBorder)
 {
     m_adaptiveNumberInput = adaptiveNumberInput;
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
     RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(
-        renderContext, numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder, validationError));
+        renderContext, numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
     return S_OK;
 }
 
@@ -310,8 +311,7 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
 HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveDateInput* adaptiveDateInput,
                                                _In_ ICalendarDatePicker* uiDatePickerElement,
-                                               _In_ IBorder* validationBorder,
-                                               _In_ IUIElement* validationError)
+                                               _In_ IBorder* validationBorder)
 {
     m_adaptiveDateInput = adaptiveDateInput;
     m_datePickerElement = uiDatePickerElement;
@@ -323,7 +323,7 @@ HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rend
     RETURN_IF_FAILED(m_datePickerElement.As(&datePickerAsUIElement));
 
     RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        renderContext, dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder, validationError));
+        renderContext, dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder));
 
     return S_OK;
 }
@@ -358,8 +358,7 @@ HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                _In_ IAdaptiveTimeInput* adaptiveTimeInput,
                                                _In_ ITimePicker* uiTimePickerElement,
-                                               _In_ IBorder* validationBorder,
-                                               _In_ IUIElement* validationError)
+                                               _In_ IBorder* validationBorder)
 {
     m_adaptiveTimeInput = adaptiveTimeInput;
     m_timePickerElement = uiTimePickerElement;
@@ -371,7 +370,7 @@ HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* rend
     RETURN_IF_FAILED(m_timePickerElement.As(&timePickerAsUIElement));
 
     RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        renderContext, timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder, validationError));
+        renderContext, timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -455,8 +454,7 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
 HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                  _In_ IAdaptiveToggleInput* adaptiveToggleInput,
                                                  _In_ ICheckBox* uiCheckBoxElement,
-                                                 _In_ IBorder* validationBorder,
-                                                 _In_ IUIElement* validationError)
+                                                 _In_ IBorder* validationBorder)
 {
     m_adaptiveToggleInput = adaptiveToggleInput;
     m_checkBoxElement = uiCheckBoxElement;
@@ -468,7 +466,7 @@ HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* re
     RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
 
     RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        renderContext, toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder, validationError));
+        renderContext, toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -535,15 +533,14 @@ std::string ChoiceSetInputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* ch
 HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderContext,
                                                     _In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                                     _In_ IUIElement* uiChoiceSetElement,
-                                                    _In_ IBorder* validationBorder,
-                                                    _In_ IUIElement* validationError)
+                                                    _In_ IBorder* validationBorder)
 {
     m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
 
-    InputValue::RuntimeClassInitialize(renderContext, choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder, validationError);
+    InputValue::RuntimeClassInitialize(renderContext, choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder);
     return S_OK;
 }
 

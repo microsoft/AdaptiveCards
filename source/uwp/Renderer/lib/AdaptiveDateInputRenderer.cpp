@@ -120,20 +120,17 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        ComPtr<IUIElement> validationError;
         XamlHelpers::HandleInputLayoutAndValidation(adapitveDateInputAsAdaptiveInput.Get(),
                                                     datePickerAsUIElement.Get(),
                                                     false,
                                                     renderContext,
-                                                    renderArgs,
                                                     &inputLayout,
-                                                    &validationBorder,
-                                                    &validationError);
+                                                    &validationBorder);
 
         // Create the InputValue and add it to the context
         ComPtr<DateInputValue> input;
         MakeAndInitialize<DateInputValue>(
-            &input, renderContext, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get(), validationError.Get());
+            &input, renderContext, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get());
         renderContext->AddInputValue(input.Get(), renderArgs);
 
         inputLayout.CopyTo(dateInputControl);

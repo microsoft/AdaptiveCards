@@ -14,8 +14,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* uiInputElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_InputElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputElement** inputElement);
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) = 0;
@@ -23,6 +22,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP Validate(_Out_ boolean* isInputValid);
         IFACEMETHODIMP SetFocus();
         IFACEMETHODIMP SetAccessibilityProperties(boolean isInputValid);
+        IFACEMETHODIMP SetErrorMessage(_In_ ABI::Windows::UI::Xaml::IUIElement* uiErrorMessage);
 
     protected:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);
@@ -43,8 +43,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
@@ -60,8 +59,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveTextInput* adaptiveTextInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
@@ -76,8 +74,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveNumberInput* adaptiveNumberInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
     private:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid) override;
@@ -94,8 +91,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveDateInput* adaptiveDateInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker* uiDatePickerElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
@@ -114,8 +110,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveTimeInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITimePicker* uiTimePickerElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
@@ -136,8 +131,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveToggleInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICheckBox* uiCheckBoxElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 
@@ -158,8 +152,7 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* uiChoiceSetElement,
-                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder,
-                                       _In_ ABI::Windows::UI::Xaml::IUIElement* validationError);
+                                       _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) override;
 

@@ -714,20 +714,6 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(5238a2b8-9a13-4dc3-aa9e-5e1e3c1fcd70),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ]
-    interface IAdaptiveInputElement 
-    {
-        Boolean IsRequired;
-        String ErrorMessage;
-        String Label;
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveChoiceInput", ace5f894-2109-4c57-bde6-7e69069242a9),
         contract(InternalContract, 1),
         internal
@@ -1812,21 +1798,6 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
-        contract(InternalContract, 1),
-        internal
-#endif
-    ]
-    interface IAdaptiveInputValue 
-    {
-        IAdaptiveInputElement InputElement { get; };
-        String CurrentValue { get; };
-        Boolean Validate();
-        void SetFocus();
-    };
-
-    [
-#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRenderArgs", e75cbfea-77a6-4562-be66-c86b36ac193a),
         contract(InternalContract, 1),
         internal
@@ -1841,6 +1812,35 @@ AdaptiveNamespaceStart
         Boolean AllowAboveTitleIconPlacement;
         Boolean AncestorHasFallback;
         AdaptiveCard ParentCard;
+    };
+    
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(5238a2b8-9a13-4dc3-aa9e-5e1e3c1fcd70),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    interface IAdaptiveInputElement 
+    {
+        Boolean IsRequired;
+        String ErrorMessage;
+        String Label;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    interface IAdaptiveInputValue 
+    {
+        IAdaptiveInputElement InputElement { get; };
+        String CurrentValue { get; };
+        Boolean Validate();
+        void SetFocus();
     };
 
     [
@@ -1867,6 +1867,7 @@ AdaptiveNamespaceStart
         void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
         void LinkSubmitActionToCard(AdaptiveSubmitAction submitAction, AdaptiveRenderArgs renderArgs);
         void LinkCardToParent(AdaptiveCard card, AdaptiveRenderArgs renderArgs);
+        IAdaptiveInputValue GetInputValue(IAdaptiveInputElement inputElement);
 
         void AddInlineShowCard(AdaptiveActionSet actionSet,
                                AdaptiveShowCardAction showCardAction,

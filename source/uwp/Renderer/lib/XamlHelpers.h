@@ -316,14 +316,17 @@ namespace AdaptiveNamespace::XamlHelpers
                                    ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                                    ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
 
+    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInput,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                       _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
+
     HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInput,
                                            ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
                                            boolean hasTypeSpecificValidation,
                                            ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                           ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
                                            ABI::Windows::UI::Xaml::IUIElement** inputLayout,
-                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut,
-                                           ABI::Windows::UI::Xaml::IUIElement** validationErrorOut);
+                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
 
     template<typename TXamlControl>
     HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
@@ -361,7 +364,8 @@ namespace AdaptiveNamespace::XamlHelpers
     HRESULT RenderFallback(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* currentElement,
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
+                           _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** renderedElement);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,

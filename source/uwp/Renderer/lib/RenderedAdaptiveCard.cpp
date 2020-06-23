@@ -426,4 +426,10 @@ namespace AdaptiveNamespace
         return m_inputs->LinkCardToParent(cardId, parentCardId);
     }
 
+    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                                                _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    {
+        return m_inputs->GetInputValue(inputElement, inputValue);
+    }
+
 }

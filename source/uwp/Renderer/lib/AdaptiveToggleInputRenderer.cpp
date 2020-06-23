@@ -82,11 +82,11 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement> inputLayout;
         ComPtr<IUIElement> validationError;
         RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
-            adapitveToggleInputAsAdaptiveInput.Get(), checkboxAsUIElement.Get(), false, renderContext, renderArgs, &inputLayout, nullptr, &validationError));
+            adapitveToggleInputAsAdaptiveInput.Get(), checkboxAsUIElement.Get(), false, renderContext, &inputLayout, nullptr));
 
         ComPtr<ToggleInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<ToggleInputValue>(
-            &input, renderContext, adaptiveToggleInput.Get(), checkBox.Get(), nullptr, validationError.Get()));
+            &input, renderContext, adaptiveToggleInput.Get(), checkBox.Get(), nullptr));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(toggleInputControl));

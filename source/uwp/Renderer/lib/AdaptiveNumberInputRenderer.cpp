@@ -96,20 +96,17 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        ComPtr<IUIElement> validationError;
         RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(numberInputAsAdaptiveInput.Get(),
                                                                      textBoxAsUIElement.Get(),
                                                                      (max != MAXINT32 || min != -MAXINT32),
                                                                      renderContext,
-                                                                     renderArgs,
                                                                      &inputLayout,
-                                                                     &validationBorder,
-                                                                     &validationError));
+                                                                     &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<NumberInputValue> input;
         MakeAndInitialize<NumberInputValue>(
-            &input, renderContext, adaptiveNumberInput.Get(), textBox.Get(), validationBorder.Get(), validationError.Get());
+            &input, renderContext, adaptiveNumberInput.Get(), textBox.Get(), validationBorder.Get());
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(numberInputControl));

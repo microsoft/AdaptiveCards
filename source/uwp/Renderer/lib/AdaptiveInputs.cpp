@@ -6,6 +6,7 @@
 #include <uwp\Renderer\lib\AdaptiveRenderArgs.h>
 #include <uwp\Renderer\lib\AdaptiveCard.h>
 #include "AdaptiveSubmitAction.h"
+#include "AdaptiveInputElement.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -41,7 +42,19 @@ namespace AdaptiveNamespace
         ComPtr<AdaptiveCard> parentCardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(parentCard);
         InternalId cardId = parentCardImpl->GetInternalId();
 
-        m_inputValues[cardId.Hash()].push_back(inputValue);
+        ComPtr<IAdaptiveInputElement> inputElement;
+        RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
+
+
+        ComPtr<AdaptiveInputElementBase> cardElementImpl;
+        RETURN_IF_FAILED(inputElement->QueryInterface(cardElementImpl.GetAddressOf()));
+
+        // ComPtr<AdaptiveCardElementBase> inputElementImpl = PeekInnards<AdaptiveNamespace::AdaptiveCardElementBase>(inputElement);
+        InternalId inputId = cardElementImpl->GetInternalId();
+        std::size_t inputIdHash = inputId.Hash();
+
+        m_inputsPerCard[cardId.Hash()].push_back(inputIdHash);
+        m_inputValues[inputIdHash] = inputValue;
         return S_OK;
     }
 
@@ -67,6 +80,21 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputs::LinkCardToParent(_In_ InternalId cardId, _In_ InternalId parentCardId)
     {
         m_parentCard[cardId.Hash()] = parentCardId.Hash();
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputs::GetInputValue(_In_ IAdaptiveInputElement* inputElement, IAdaptiveInputValue** inputValue)
+    {
+        ComPtr<IAdaptiveInputElement> localInputElement(inputElement);
+
+        ComPtr<AdaptiveInputElementBase> inputElementImpl;
+        RETURN_IF_FAILED(localInputElement->QueryInterface(inputElementImpl.GetAddressOf()));
+
+        // ComPtr<AdaptiveInputElementBase> inputElementImpl = PeekInnards<AdaptiveNamespace::AdaptiveInputElementBase>(inputElement);
+        InternalId inputId = inputElementImpl->GetInternalId();
+
+        RETURN_IF_FAILED(m_inputValues[inputId.Hash()].CopyTo(inputValue));
+
         return S_OK;
     }
 
@@ -173,8 +201,12 @@ namespace AdaptiveNamespace
         std::size_t card = m_containerCardForAction[actionId.Hash()];
         while (card != InternalId().Hash())
         {
-            const auto& inputsInCard = m_inputValues[card];
-            inputsToValidate.insert(inputsToValidate.begin(), inputsInCard.begin(), inputsInCard.end());
+            const auto& inputsInCard = m_inputsPerCard[card];
+
+            for (const auto& inputId : inputsInCard)
+            {
+                inputsToValidate.emplace_back(m_inputValues[inputId]);
+            }
 
             if (m_parentCard.find(card) != m_parentCard.end())
             {
@@ -189,10 +221,9 @@ namespace AdaptiveNamespace
 
     void AdaptiveInputs::GetAllInputs(_Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputs)
     {
-        for (const auto& inputsInCard : m_inputValues)
+        for (const auto& input : m_inputValues)
         {
-            const auto& inputList = inputsInCard.second;
-            inputs.insert(inputs.end(), inputList.begin(), inputList.end());
+            inputs.emplace_back(input.second);
         }
     }
 }
