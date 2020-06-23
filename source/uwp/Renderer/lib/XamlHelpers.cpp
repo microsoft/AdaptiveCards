@@ -962,16 +962,6 @@ namespace AdaptiveNamespace::XamlHelpers
 
                     XamlHelpers::AppendXamlElementToPanel(child.Get(), stackPanelAsPanel.Get());
                 }
-
-                /**
-                IterateOverVector<ABI::Windows::UI::Xaml::UIElement>(panelChildren.Get(), [&](ABI::Windows::UI::Xaml::UIElement* element) {
-                    ComPtr<UIElement> localElement(element);
-                    ComPtr<IUIElement> iElement;
-
-                    RETURN_IF_FAILED(localElement.As(&iElement));
-                    XamlHelpers::AppendXamlElementToPanel(iElement.Get(), stackPanelAsPanel.Get());
-                });
-                */
             }
         }
         else
@@ -1024,31 +1014,6 @@ namespace AdaptiveNamespace::XamlHelpers
         if (label != nullptr)
         {
             RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
-        }
-
-
-        // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
-        ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);
-        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
-        if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))
-        {
-            ComPtr<IContentControl> uiInpuElementAsContentControl;
-            RETURN_IF_FAILED(actualUIElement.As(&uiInpuElementAsContentControl));
-
-            ComPtr<IInspectable> content;
-            RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
-
-            ComPtr<IDependencyObject> contentAsDependencyObject;
-            RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
-
-            ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
-            RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
-
-            ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-            RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
-                                                                          uiElementDescribers.GetAddressOf()));
-
-            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));
         }
 
         RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
