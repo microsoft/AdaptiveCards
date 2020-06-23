@@ -402,6 +402,7 @@ $(function () {
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
+		AdaptiveCards.GlobalSettings.setTabIndexAtCardRoot = false;
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
 		var renderedCard;
@@ -429,6 +430,7 @@ $(function () {
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
@@ -461,16 +463,21 @@ $(function () {
 		}
 	});
 
-
-
-	$("#feedback-button").click(function (e) {
+	function invokeFeedback(e) {
 		e.preventDefault();
 		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
 			+ encodeURIComponent("[Website] [Your feedback title here]")
 			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
-				+ window.location.href));
-	});
+			+ window.location.href));
+	}
 
+	$("#feedback-button").on({
+	click: invokeFeedback,
+	keydown: function (e) {
+		if (e.key === "Enter") {
+			invokeFeedback(e);
+		}
+	}});
 
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
@@ -536,6 +543,9 @@ $(function () {
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
 
 	function updateSidebarTopOffset() {
@@ -548,11 +558,9 @@ $(function () {
 
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });

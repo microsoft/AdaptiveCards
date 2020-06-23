@@ -7,7 +7,7 @@ npm install microsoft-adaptivecards-scss-to-json
 ```
 
 ## Usage
-Start with an SCSS file that contains a map (a structured variable) with the shape of Adaptive Cards Host Config. Your SCSS file can exist with your other stylesheets and be driven by your own variables or mixins. See [sample.scss](https://github.com/Microsoft/AdaptiveCards/blob/master/source/tools/hostConfig/scss-to-json/sample.scss) for an example.
+Start with an SCSS file that contains a map (a structured variable) with the shape of Adaptive Cards Host Config. Your SCSS file can exist with your other stylesheets and be driven by your own variables or mixins. See [sample.scss](https://github.com/Microsoft/AdaptiveCards/blob/main/source/tools/hostConfig/scss-to-json/sample.scss) for an example.
 
 You can create a map in SCSS from JSON with the companion tool "microsoft-adaptivecards-json-to-scss".
 

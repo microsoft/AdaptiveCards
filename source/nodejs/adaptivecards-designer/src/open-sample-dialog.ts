@@ -9,9 +9,23 @@ class CatalogueItem {
 
     constructor(readonly entry: CatalogueEntry) { }
 
+    private static _id = 0;
+    private static getNewItemId(prefix: string): string {
+        let newId = prefix + "-" + CatalogueItem._id;
+
+        CatalogueItem._id++;
+
+        return newId;
+    }
+
     render(): HTMLElement {
+        const newItemId = CatalogueItem.getNewItemId("acd-open-sample-item-title");
+
         let element = document.createElement("div");
         element.className = "acd-open-sample-item";
+        element.tabIndex = 0;
+        element.setAttribute("aria-labelledBy", newItemId);
+        element.setAttribute("role", "listitem");
         element.onclick = (e) => {
             if (this.onClick) {
                 this.onClick(this);
@@ -30,6 +44,7 @@ class CatalogueItem {
 
         let displayNameElement = document.createElement("div");
         displayNameElement.className = "acd-open-sample-item-title";
+        displayNameElement.id = newItemId;
         displayNameElement.innerText = this.entry.displayName;
 
         element.append(thumbnailHost, displayNameElement);
@@ -115,6 +130,7 @@ export class OpenSampleDialog extends Dialog {
     private renderCatalogue(): HTMLElement {
         let renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-sample-item-container";
+        renderedElement.setAttribute("role", "list");
 
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);

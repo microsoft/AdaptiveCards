@@ -51,7 +51,7 @@ This is the fun part -- let's see how your post looks on the actual website. As 
 
 > `https://adaptivecardsci.z5.web.core.windows.net/pr/<PR_NUMBER>/blog`
 
-Check it out, see how it looks, and send that URL to folks for feedback! When it's all good, merge it to master and it'll be live on `https://adaptivecards.io/blog`!
+Check it out, see how it looks, and send that URL to folks for feedback! When it's all good, merge it to main and it'll be live on `https://adaptivecards.io/blog`!
 
 ## Helpful VS Code extensions
 

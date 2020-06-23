@@ -1,0 +1,49 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+name: pic2card-build
+on:
+  push:
+    branches: [ master, main, 'pic2card-backend/**' ]
+    paths:
+    - 'source/pic2card/**'
+  pull_request:
+    branches: [ master, main, 'pic2card-backend/**' ]
+    paths:
+    - 'source/pic2card/**'
+defaults:
+  run:
+    shell: bash
+    working-directory: source/pic2card
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.6]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends libsm6 tesseract-ocr
+        sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/*
+        
+        python -m pip install --upgrade pip
+        pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        if [ -f requirements-frozen_graph.txt ]; then pip install -r requirements-frozen_graph.txt; fi
+        
+    - name: Lint with flake8
+      run: |
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
+    - name: Test with pytest
+      run: |
+        pytest

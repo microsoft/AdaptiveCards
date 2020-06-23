@@ -1,0 +1,215 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.2",
+  "body": [
+	{
+	  "type": "ActionSet",
+	  "actions": [
+		{
+		  "type": "Action.ShowCard",
+		  "title": "Sample Cards",
+		  "card": {
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "Input.ChoiceSet",
+				"choices": [
+				  {
+					"title": "ActivityUpdate",
+					"value": "v1.0/Scenarios/ActivityUpdate.json"
+				  },
+				  {
+					"title": "CalendarReminder",
+					"value": "v1.0/Scenarios/CalendarReminder.json"
+				  },
+				  {
+					"title": "FlightItinerary",
+					"value": "v1.0/Scenarios/FlightItinerary.json"
+				  },
+				  {
+					"title": "FlightUpdate",
+					"value": "v1.0/Scenarios/FlightUpdate.json"
+				  },
+				  {
+					"title": "FoodOrder",
+					"value": "v1.0/Scenarios/FoodOrder.json"
+				  },
+				  {
+					"title": "ImageGallery",
+					"value": "v1.0/Scenarios/ImageGallery.json"
+				  },
+				  {
+					"title": "InputForm",
+					"value": "v1.0/Scenarios/InputForm.json"
+				  },
+				  {
+					"title": "Inputs",
+					"value": "v1.0/Scenarios/Inputs.json"
+				  },
+				  {
+					"title": "Restaurant",
+					"value": "v1.0/Scenarios/Restaurant.json"
+				  },
+				  {
+					"title": "Solitaire",
+					"value": "v1.0/Scenarios/Solitaire.json"
+				  },
+				  {
+					"title": "SportingEvent",
+					"value": "v1.0/Scenarios/SportingEvent.json"
+				  },
+				  {
+					"title": "StockUpdate",
+					"value": "v1.0/Scenarios/StockUpdate.json"
+				  },
+				  {
+					"title": "WeatherCompact",
+					"value": "v1.0/Scenarios/WeatherCompact.json"
+				  },
+				  {
+					"title": "WeatherLarge",
+					"value": "v1.0/Scenarios/WeatherLarge.json"
+				  },
+				  {
+					"title": "ProductVideo",
+					"value": "v1.1/Scenarios/ProductVideo.json"
+				  },
+				  {
+					"title": "Agenda",
+					"value": "v1.2/Scenarios/Agenda.json"
+				  },
+				  {
+					"title": "ExpenseReport",
+					"value": "v1.2/Scenarios/ExpenseReport.json"
+				  },
+				  {
+					"title": "FlightDetails",
+					"value": "v1.2/Scenarios/FlightDetails.json"
+				  },
+				  {
+					"title": "SimpleFallback",
+					"value": "v1.2/Scenarios/SimpleFallback.json"
+				  }
+				],
+				"placeholder": "(choose sample)",
+				"id": "sampleCardName"
+			  }
+			]
+		  }
+		},
+		{
+		  "type": "Action.ShowCard",
+		  "title": "Import Card",
+		  "card": {
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "ActionSet",
+				"actions": [
+				  {
+					"type": "Action.Submit",
+					"title": "Choose File",
+					"id": "cardFileAction"
+				  }
+				]
+			  }
+			]
+		  }
+		}
+	  ]
+	},
+	{
+	  "type": "ActionSet",
+	  "actions": [
+		{
+		  "type": "Action.ShowCard",
+		  "title": "Sample Configs",
+		  "card": {
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "Input.ChoiceSet",
+				"choices": [
+				  {
+					"title": "cortana-skills-classic",
+					"value": "HostConfig/cortana-skills-classic.json"
+				  },
+				  {
+					"title": "cortana-skills-dark",
+					"value": "HostConfig/cortana-skills-dark.json"
+				  },
+				  {
+					"title": "cortana-skills-light",
+					"value": "HostConfig/cortana-skills-light.json"
+				  },
+				  {
+					"title": "microsoft-teams-dark",
+					"value": "HostConfig/microsoft-teams-dark.json"
+				  },
+				  {
+					"title": "microsoft-teams-light",
+					"value": "HostConfig/microsoft-teams-light.json"
+				  },
+				  {
+					"title": "outlook-desktop",
+					"value": "HostConfig/outlook-desktop.json"
+				  },
+				  {
+					"title": "render-to-image",
+					"value": "HostConfig/render-to-image.json"
+				  },
+				  {
+					"title": "sample",
+					"value": "HostConfig/sample.json"
+				  },
+				  {
+					"title": "skype",
+					"value": "HostConfig/skype.json"
+				  },
+				  {
+					"title": "testVariantHostConfig",
+					"value": "HostConfig/testVariantHostConfig.json"
+				  },
+				  {
+					"title": "webchat",
+					"value": "HostConfig/webchat.json"
+				  },
+				  {
+					"title": "windows-notification",
+					"value": "HostConfig/windows-notification.json"
+				  },
+				  {
+					"title": "windows-timeline",
+					"value": "HostConfig/windows-timeline.json"
+				  }
+				],
+				"placeholder": "(default)",
+				"id": "sampleHostConfigName"
+			  }
+			]
+		  }
+		},
+		{
+		  "type": "Action.ShowCard",
+		  "title": "Import Config",
+		  "card": {
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "ActionSet",
+				"actions": [
+				  {
+					"type": "Action.Submit",
+					"title": "Choose File",
+					"id": "hostConfigFileAction"
+				  }
+				]
+			  }
+			]
+		  }
+		}
+	  ]
+	}
+  ]
+}
