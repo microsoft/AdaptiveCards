@@ -8,12 +8,12 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "This is some text"
+					"text": "Cool Link"
 				}
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "cool link",
+				"title": "Cool Link",
 				"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 			}
 		},
@@ -23,12 +23,12 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Emphasis container"
+					"text": "Emphasized Link"
 				}
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "cool link 2",
+				"title": "Emphasized Link",
 				"url": "https://msn.com"
 			}
 		},
@@ -37,13 +37,13 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Default container again, using ShowCard",
+					"text": "This is a really long text block that should wrap, hope it works!",
 					"wrap": true
 				}
 			],
 			"selectAction": {
 				"type": "Action.Submit",
-				"title": "Submit action",
+				"title": "Wrapping Text Submit",
 				"data": "Submitted!"
 			}
 		},
