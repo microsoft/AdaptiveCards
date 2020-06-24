@@ -33,11 +33,12 @@ namespace AdaptiveSharedNamespace
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 
     protected:
-        void PopulateKnownPropertiesSet();
         std::unordered_set<std::string> m_knownProperties;
         Json::Value m_additionalProperties;
 
     private:
+        void PopulateKnownPropertiesSet();
+
         InlineElementType m_type;
     };
 }
