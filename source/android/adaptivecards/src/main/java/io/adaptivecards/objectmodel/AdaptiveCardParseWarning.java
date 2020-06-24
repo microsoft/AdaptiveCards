@@ -25,6 +25,7 @@ public class AdaptiveCardParseWarning {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
