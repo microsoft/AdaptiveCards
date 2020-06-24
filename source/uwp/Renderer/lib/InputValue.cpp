@@ -39,14 +39,12 @@ HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext* renderCo
     // Find out if we should validate inline on FocusLost. This is temporarily stored in the render context for
     // prototyping. At ship, this feature will either exist or not but not be toggleable.
     ComPtr<AdaptiveRenderContext> renderContextPeek = PeekInnards<AdaptiveRenderContext>(renderContext);
-    boolean inlineValidation;
-    RETURN_IF_FAILED(renderContextPeek->GetInlineValidation(&inlineValidation));
     
     ComPtr<IAdaptiveHostConfig> hostConfig;
-    renderContext->get_HostConfig(hostConfig.GetAddressOf());
+    RETURN_IF_FAILED(renderContext->get_HostConfig(hostConfig.GetAddressOf()));
 
     ComPtr<IAdaptiveInputsConfig> inputsConfig;
-    hostConfig->get_Inputs(inputsConfig.GetAddressOf());
+    RETURN_IF_FAILED(hostConfig->get_Inputs(inputsConfig.GetAddressOf()));
 
     return S_OK;
 }
@@ -545,7 +543,7 @@ HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveRenderContext*
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
 
-    InputValue::RuntimeClassInitialize(renderContext, choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder);
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(renderContext, choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder));
     return S_OK;
 }
 

@@ -988,7 +988,6 @@ AdaptiveNamespaceStart
 
         void SetFixedDimensions(UInt32 desiredWidth, UInt32 desiredHeight);
         void ResetFixedDimensions();
-        void SetInlineValidation(Boolean inlineValidation);
 
 #ifdef ADAPTIVE_CARDS_WINDOWS
         Windows.Foundation.IAsyncOperation<RenderedAdaptiveCard> RenderCardAsXamlAsync(AdaptiveCard adaptiveCard);

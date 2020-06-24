@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
-#include <uwp\Renderer\lib\AdaptiveActionElement.h>
-#include <uwp\Renderer\lib\AdaptiveRenderArgs.h>
-#include <uwp\Renderer\lib\AdaptiveCard.h>
+#include "AdaptiveActionElement.h"
+#include "AdaptiveRenderArgs.h"
+#include "AdaptiveCard.h"
 #include "AdaptiveSubmitAction.h"
 #include "AdaptiveInputElement.h"
 
@@ -46,7 +46,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
 
         ComPtr<AdaptiveInputElementBase> cardElementImpl;
-        RETURN_IF_FAILED(inputElement->QueryInterface(cardElementImpl.GetAddressOf()));
+        RETURN_IF_FAILED(inputElement.As(&cardElementImpl));
 
         InternalId inputId = cardElementImpl->GetInternalId();
         std::size_t inputIdHash = inputId.Hash();
@@ -86,9 +86,8 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveInputElement> localInputElement(inputElement);
 
         ComPtr<AdaptiveInputElementBase> inputElementImpl;
-        RETURN_IF_FAILED(localInputElement->QueryInterface(inputElementImpl.GetAddressOf()));
+        RETURN_IF_FAILED(localInputElement.As(&inputElementImpl));
 
-        // ComPtr<AdaptiveInputElementBase> inputElementImpl = PeekInnards<AdaptiveNamespace::AdaptiveInputElementBase>(inputElement);
         InternalId inputId = inputElementImpl->GetInternalId();
 
         RETURN_IF_FAILED(m_inputValues[inputId.Hash()].CopyTo(inputValue));

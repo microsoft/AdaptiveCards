@@ -26,6 +26,5 @@ namespace AdaptiveNamespace
         boolean m_isRequired;
         Microsoft::WRL::Wrappers::HString m_errorMessage;
         Microsoft::WRL::Wrappers::HString m_label;
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_labelCardElement;
     };
 }

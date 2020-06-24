@@ -77,20 +77,20 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        XamlHelpers::HandleInputLayoutAndValidation(adaptiveTimeInputAsAdaptiveInput.Get(),
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adaptiveTimeInputAsAdaptiveInput.Get(),
                                                     timePickerAsUIElement.Get(),
                                                     max.IsValid() || min.IsValid(),
                                                     renderContext,
                                                     &inputLayout,
-                                                    &validationBorder);
+                                                    &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<TimeInputValue> input;
-        MakeAndInitialize<TimeInputValue>(
+        RETURN_IF_FAILED(MakeAndInitialize<TimeInputValue>(
             &input, renderContext, adaptiveTimeInput.Get(), timePicker.Get(), validationBorder.Get());
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
 
-        inputLayout.CopyTo(timeInputControl);
+        RETURN_IF_FAILED(inputLayout.CopyTo(timeInputControl));
 
         return S_OK;
     }

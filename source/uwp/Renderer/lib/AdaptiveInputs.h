@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP AsJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** value);
         IFACEMETHODIMP AsValueSet(_COM_Outptr_ ABI::Windows::Foundation::Collections::IPropertySet** value);
 
-		IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction, boolean* inputsAreValid);
+        IFACEMETHODIMP ValidateInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction, boolean* inputsAreValid);
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue, _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction, _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);

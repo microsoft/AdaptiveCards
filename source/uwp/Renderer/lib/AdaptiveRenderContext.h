@@ -62,18 +62,6 @@ namespace AdaptiveNamespace
         HRESULT GetRenderResult(_COM_Outptr_ AdaptiveNamespace::RenderedAdaptiveCard** renderResult);
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> GetDefaultActionSentimentDictionary();
 
-        HRESULT SetInlineValidation(boolean inlineValidation)
-        {
-            m_inlineValidation = inlineValidation;
-            return S_OK;
-        }
-
-        HRESULT GetInlineValidation(boolean* inlineValidation)
-        {
-            *inlineValidation = m_inlineValidation;
-            return S_OK;
-        }
-
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 

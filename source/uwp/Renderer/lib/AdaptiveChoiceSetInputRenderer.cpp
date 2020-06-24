@@ -172,17 +172,17 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
                                                     comboBoxAsUIElement.Get(),
                                                     false,
                                                     renderContext,
                                                     &inputLayout,
-                                                    &validationBorder);
+                                                    &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
-        MakeAndInitialize<ChoiceSetInputValue>(
-            &input, renderContext, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get());
+        RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
+            &input, renderContext, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
@@ -270,18 +270,18 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(stackPanel.As(&choiceSetAsUIElement));
 
         ComPtr<IUIElement> inputLayout;
-        XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
                                                     choiceSetAsUIElement.Get(),
                                                     false,
                                                     renderContext,
                                                     &inputLayout,
-                                                    nullptr);
+                                                    nullptr));
 
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
-        MakeAndInitialize<ChoiceSetInputValue>(
+        RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
             &input, renderContext, adaptiveChoiceSetInput, choiceSetAsUIElement.Get(), nullptr);
-        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
 
         return inputLayout.CopyTo(choiceInputSet);
     }

@@ -828,7 +828,7 @@ namespace AdaptiveNamespace::XamlHelpers
         {
             ComPtr<ITextBlock> errorMessageTextBlock =
                 XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-            errorMessageTextBlock->put_Text(errorMessage.Get());
+            RETURN_IF_FAILED(errorMessageTextBlock->put_Text(errorMessage.Get()));
 
             // Set the color to Attention color
             ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -838,17 +838,17 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(
                 GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
 
-            errorMessageTextBlock->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get());
+            RETURN_IF_FAILED(errorMessageTextBlock->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
 
             // Format the error message through host config
             RETURN_IF_FAILED(FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock.Get()));
 
             // Error message should begin collapsed and only be show when validated
             ComPtr<IUIElement> errorMessageTextBlockAsUIElement;
-            errorMessageTextBlock.As(&errorMessageTextBlockAsUIElement);
+            RETURN_IF_FAILED(errorMessageTextBlock.As(&errorMessageTextBlockAsUIElement));
 
-            errorMessageTextBlockAsUIElement->put_Visibility(Visibility_Collapsed);
-            errorMessageTextBlockAsUIElement.CopyTo(errorMessageControl);
+            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement->put_Visibility(Visibility_Collapsed));
+            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement.CopyTo(errorMessageControl));
         }
 
         return S_OK;
@@ -859,7 +859,7 @@ namespace AdaptiveNamespace::XamlHelpers
                                    _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
-        renderContext->get_HostConfig(&hostConfig);
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
         ABI::Windows::UI::Color attentionColor;
         RETURN_IF_FAILED(
@@ -873,7 +873,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
         RETURN_IF_FAILED(validationBorder->put_Child(childElement));
 
-        validationBorder.CopyTo(elementWithBorder);
+        RETURN_IF_FAILED(validationBorder.CopyTo(elementWithBorder));
         return S_OK;
     }
 
@@ -898,7 +898,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
         // Render the label and add it to the stack panel
         ComPtr<IUIElement> label;
-        XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label);
+        RETURN_IF_FAILED(XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label));
         XamlHelpers::AppendXamlElementToPanel(label.Get(), stackPanelAsPanel.Get());
 
         // Render the spacing between the label and the input
@@ -915,7 +915,7 @@ namespace AdaptiveNamespace::XamlHelpers
             auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
 
             ComPtr<IPanel> inputPanel;
-            inputStackPanel.As(&inputPanel);
+            RETURN_IF_FAILED(inputStackPanel.As(&inputPanel));
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), inputPanel.Get());
         }
 
@@ -1032,7 +1032,7 @@ namespace AdaptiveNamespace::XamlHelpers
             XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
 
         ComPtr<IPanel> stackPanelAsPanel;
-        inputStackPanel.As(&stackPanelAsPanel);
+        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
 
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.

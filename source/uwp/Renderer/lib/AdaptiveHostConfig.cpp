@@ -269,7 +269,6 @@ namespace AdaptiveNamespace
         return m_fontTypes.CopyTo(value);
     }
 
-
     HRESULT AdaptiveHostConfig::put_FontTypes(_In_ IAdaptiveFontTypesDefinition* value)
     {
         m_fontTypes = value;
