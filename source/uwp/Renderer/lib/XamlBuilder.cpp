@@ -113,8 +113,6 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
-            // renderContext->LinkCardToParent(adaptiveCard, renderArgs.Get());
-
             ABI::AdaptiveNamespace::VerticalContentAlignment verticalContentAlignment;
             RETURN_IF_FAILED(adaptiveCard->get_VerticalContentAlignment(&verticalContentAlignment));
             XamlHelpers::SetVerticalContentAlignmentToChildren(bodyElementContainer.Get(), verticalContentAlignment);

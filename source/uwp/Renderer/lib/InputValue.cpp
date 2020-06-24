@@ -22,7 +22,7 @@ using namespace AdaptiveNamespace;
 HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 {
     HString currentValue;
-    inputValue->get_CurrentValue(currentValue.GetAddressOf());
+    RETURN_IF_FAILED(inputValue->get_CurrentValue(currentValue.GetAddressOf()));
 
     return inputValue->Validate(nullptr);
 }
@@ -79,8 +79,8 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
     ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
     RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
 
-    ComPtr<IVector<DependencyObject*>> uiElementDescribers; 
-    automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(), uiElementDescribers.GetAddressOf());
+    ComPtr<IVector<DependencyObject*>> uiElementDescribers;
+    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(), uiElementDescribers.GetAddressOf()));
 
     ComPtr<IUIElement> uiValidationError(m_validationError);
     ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
@@ -155,15 +155,13 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
         if (isInputValid)
         {
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Collapsed));
-
-
         }
         else
         {
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
         }
 
-        SetAccessibilityProperties(isInputValid);
+        RETURN_IF_FAILED(SetAccessibilityProperties(isInputValid));
     }
 
     return S_OK;
@@ -184,8 +182,7 @@ HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adapti
         ComPtr<IUIElement> textBoxAsUIElement;
         RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
 
-        RETURN_IF_FAILED(
-            InputValue::RuntimeClassInitialize(adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
+        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
 
         return S_OK;
     }
@@ -206,8 +203,7 @@ HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptive
         Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
         RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
 
-        RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(
-            textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+        RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
 
         return S_OK;
     }
@@ -251,8 +247,7 @@ HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adap
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
-    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(
-        numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
     return S_OK;
 }
 
@@ -310,8 +305,7 @@ HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptive
     ComPtr<IUIElement> datePickerAsUIElement;
     RETURN_IF_FAILED(m_datePickerElement.As(&datePickerAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder));
 
     return S_OK;
 }
@@ -356,8 +350,7 @@ HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptive
     ComPtr<IUIElement> timePickerAsUIElement;
     RETURN_IF_FAILED(m_timePickerElement.As(&timePickerAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -451,8 +444,7 @@ HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adap
     ComPtr<IUIElement> checkBoxAsUIElement;
     RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(
-        toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -647,4 +639,3 @@ HRESULT ChoiceSetInputValue::SetFocus()
 
     return S_OK;
 }
-

@@ -695,11 +695,11 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
         if (isRequired)
         {
-            labelConfig->get_RequiredInputs(&inputLabelConfig);
+            RETURN_IF_FAILED(labelConfig->get_RequiredInputs(&inputLabelConfig));
         }
         else
         {
-            labelConfig->get_OptionalInputs(&inputLabelConfig);
+            RETURN_IF_FAILED(labelConfig->get_OptionalInputs(&inputLabelConfig));
         }
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
@@ -719,7 +719,7 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize);
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
 
@@ -767,7 +767,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
             // If the input is required, add a *
             boolean isRequired;
-            adaptiveInputElement->get_IsRequired(&isRequired);
+            RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
 
             if (isRequired)
             {

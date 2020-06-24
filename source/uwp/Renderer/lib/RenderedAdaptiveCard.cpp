@@ -285,7 +285,6 @@ namespace AdaptiveNamespace
             }
             // else fallthrough
         }
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
         {
             ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
@@ -293,13 +292,14 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(localActionElement.As(&submitAction));
 
             boolean inputsAreValid;
-            gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid);
+            RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
 
             if (!inputsAreValid)
             {
                 return S_OK;
             }
         }
+        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Custom:
         default:
         {
