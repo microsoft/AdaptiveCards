@@ -130,7 +130,7 @@ namespace AdaptiveNamespace
         // Create the InputValue and add it to the context
         ComPtr<DateInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<DateInputValue>(
-            &input, renderContext, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));
+            &input, adaptiveDateInput.Get(), datePicker.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(dateInputControl));

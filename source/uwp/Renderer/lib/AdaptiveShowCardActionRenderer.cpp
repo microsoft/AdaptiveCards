@@ -68,7 +68,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderArgs->get_IsInShowCard(&wasInShowCard));
         RETURN_IF_FAILED(renderArgs->put_IsInShowCard(true));
 
-        renderContext->LinkCardToParent(showCard, renderArgs);
+        RETURN_IF_FAILED(renderContext->LinkCardToParent(showCard, renderArgs));
 
         ComPtr<IFrameworkElement> localUiShowCard;
         RETURN_IF_FAILED(

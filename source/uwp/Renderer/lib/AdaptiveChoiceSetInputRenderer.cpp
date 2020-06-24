@@ -182,7 +182,7 @@ namespace AdaptiveNamespace
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
-            &input, renderContext, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get()));
+            &input, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
@@ -280,7 +280,7 @@ namespace AdaptiveNamespace
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
-            &input, renderContext, adaptiveChoiceSetInput, choiceSetAsUIElement.Get(), nullptr);
+            &input, adaptiveChoiceSetInput, choiceSetAsUIElement.Get(), nullptr);
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
 
         return inputLayout.CopyTo(choiceInputSet);

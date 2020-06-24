@@ -87,7 +87,7 @@ namespace AdaptiveNamespace
         // Create the InputValue and add it to the context
         ComPtr<TimeInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<TimeInputValue>(
-            &input, renderContext, adaptiveTimeInput.Get(), timePicker.Get(), validationBorder.Get());
+            &input, adaptiveTimeInput.Get(), timePicker.Get(), validationBorder.Get());
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(timeInputControl));

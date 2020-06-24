@@ -12,8 +12,7 @@ namespace AdaptiveNamespace
                                               ABI::AdaptiveNamespace::IAdaptiveInputValue>
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* uiInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -40,10 +39,9 @@ namespace AdaptiveNamespace
     class TextInputBase : public InputValue
     {
     public:
-        TextInputBase() : m_isTextChangedValidationEnabled(false) {}
+        TextInputBase() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -51,15 +49,13 @@ namespace AdaptiveNamespace
 
     protected:
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITextBox> m_textBoxElement;
-        bool m_isTextChangedValidationEnabled;
     };
 
     // Input value for Input.Text
     class TextInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveTextInput* adaptiveTextInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveTextInput* adaptiveTextInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -73,8 +69,7 @@ namespace AdaptiveNamespace
     class NumberInputValue : public TextInputBase
     {
     public:
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveNumberInput* adaptiveNumberInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveNumberInput* adaptiveNumberInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITextBox* uiTextBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -88,10 +83,9 @@ namespace AdaptiveNamespace
     class DateInputValue : public InputValue
     {
     public:
-        DateInputValue() : m_isDateChangedValidationEnabled(false) {}
+        DateInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveDateInput* adaptiveDateInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveDateInput* adaptiveDateInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker* uiDatePickerElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -100,17 +94,15 @@ namespace AdaptiveNamespace
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveDateInput> m_adaptiveDateInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICalendarDatePicker> m_datePickerElement;
-        bool m_isDateChangedValidationEnabled;
     };
 
     // Input value for Input.Time
     class TimeInputValue : public InputValue
     {
     public:
-        TimeInputValue() : m_isTimeChangedValidationEnabled(false) {}
+        TimeInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveTimeInput* adaptiveTimeInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveTimeInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ITimePicker* uiTimePickerElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -121,17 +113,15 @@ namespace AdaptiveNamespace
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveTimeInput> m_adaptiveTimeInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ITimePicker> m_timePickerElement;
-        bool m_isTimeChangedValidationEnabled;
     };
 
     // Input value for Input.Toggle
     class ToggleInputValue : public InputValue
     {
     public:
-        ToggleInputValue() : m_isToggleChangedValidationEnabled(false) {}
+        ToggleInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveToggleInput* adaptiveTimeInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveToggleInput* adaptiveTimeInput,
                                        _In_ ABI::Windows::UI::Xaml::Controls::ICheckBox* uiCheckBoxElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -142,17 +132,15 @@ namespace AdaptiveNamespace
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveToggleInput> m_adaptiveToggleInput;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::Controls::ICheckBox> m_checkBoxElement;
-        bool m_isToggleChangedValidationEnabled;
     };
 
     // Input value for Input.ChoiceSet
     class ChoiceSetInputValue : public InputValue
     {
     public:
-        ChoiceSetInputValue() : m_isChoiceSetChangedValidationEnabled(false) {}
+        ChoiceSetInputValue() {}
 
-        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+        HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
                                        _In_ ABI::Windows::UI::Xaml::IUIElement* uiChoiceSetElement,
                                        _In_ ABI::Windows::UI::Xaml::Controls::IBorder* validationBorder);
 
@@ -164,6 +152,5 @@ namespace AdaptiveNamespace
         std::string GetChoiceValue(_In_ ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveChoiceSetInput> m_adaptiveChoiceSetInput;
-        bool m_isChoiceSetChangedValidationEnabled;
     };
 }
