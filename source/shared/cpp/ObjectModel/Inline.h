@@ -28,7 +28,8 @@ namespace AdaptiveSharedNamespace
 
         static std::shared_ptr<Inline> Deserialize(ParseContext& context, const Json::Value& root);
 
-        Json::Value GetAdditionalProperties() const;
+        const Json::Value& GetAdditionalProperties() const;
+        void SetAdditionalProperties(Json::Value&& additionalProperties);
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 
     protected:
