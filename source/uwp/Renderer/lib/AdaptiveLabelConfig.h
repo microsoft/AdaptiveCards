@@ -6,20 +6,17 @@
 
 namespace AdaptiveNamespace
 {
-    class AdaptiveInputLabelsConfig
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig>
+    class AdaptiveLabelConfig
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveLabelConfig>
     {
-        AdaptiveRuntime(AdaptiveInputLabelsConfig);
+        AdaptiveRuntime(AdaptiveLabelConfig);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(InputLabelsConfig inputLabelsConfig) noexcept;
+        HRESULT RuntimeClassInitialize(LabelConfig labelConfig) noexcept;
 
         IFACEMETHODIMP get_InputSpacing(_Outptr_ ABI::AdaptiveNamespace::Spacing* spacing);
         IFACEMETHODIMP put_InputSpacing(_In_ ABI::AdaptiveNamespace::Spacing spacing);
-
-        IFACEMETHODIMP get_RequiredSuffix(_Outptr_ HSTRING* suffix);
-        IFACEMETHODIMP put_RequiredSuffix(_In_ HSTRING suffix);
 
         IFACEMETHODIMP get_RequiredInputs(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig** requiredInputs);
         IFACEMETHODIMP put_RequiredInputs(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* requiredInputs);
@@ -29,11 +26,10 @@ namespace AdaptiveNamespace
 
     private:
         ABI::AdaptiveNamespace::Spacing m_inputSpacing;
-        Microsoft::WRL::Wrappers::HString m_requiredSuffix;
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig> m_requiredInputs;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig> m_optionalInputs;
 
     };
-    ActivatableClass(AdaptiveInputLabelsConfig);
+    ActivatableClass(AdaptiveLabelConfig);
 }

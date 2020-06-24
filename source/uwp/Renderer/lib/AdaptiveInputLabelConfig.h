@@ -22,6 +22,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Size(_Outptr_ ABI::AdaptiveNamespace::TextSize* size);
         IFACEMETHODIMP put_Size(_In_ ABI::AdaptiveNamespace::TextSize size);
 
+        IFACEMETHODIMP get_Suffix(_Outptr_ HSTRING* suffix);
+        IFACEMETHODIMP put_Suffix(_In_ HSTRING suffix);
+
         IFACEMETHODIMP get_Weight(_Outptr_ ABI::AdaptiveNamespace::TextWeight* weight);
         IFACEMETHODIMP put_Weight(_In_ ABI::AdaptiveNamespace::TextWeight weight);
 
@@ -29,6 +32,7 @@ namespace AdaptiveNamespace
         ABI::AdaptiveNamespace::ForegroundColor m_color;
         boolean m_isSubtle;
         ABI::AdaptiveNamespace::TextSize m_size;
+        Microsoft::WRL::Wrappers::HString m_suffix;
         ABI::AdaptiveNamespace::TextWeight m_weight;
 
     };

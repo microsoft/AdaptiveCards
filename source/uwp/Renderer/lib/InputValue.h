@@ -8,7 +8,8 @@ namespace AdaptiveNamespace
 {
     // Base class for input values. The InputValue is responsible for getting the current value and submit time, and also handles input validation.
     class DECLSPEC_UUID("BB1D1269-2243-4F34-B4EC-5216296EBBA0") InputValue
-        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, ABI::AdaptiveNamespace::IAdaptiveInputValue>
+        : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
+                                              ABI::AdaptiveNamespace::IAdaptiveInputValue>
     {
     public:
         HRESULT RuntimeClassInitialize(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -18,11 +19,12 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP get_InputElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputElement** inputElement);
         IFACEMETHODIMP get_CurrentValue(_Outptr_ HSTRING* serializedUserInput) = 0;
+        IFACEMETHODIMP get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage);
+        IFACEMETHODIMP put_ErrorMessage(_In_ ABI::Windows::UI::Xaml::IUIElement* uiErrorMessage);
 
         IFACEMETHODIMP Validate(_Out_ boolean* isInputValid);
         IFACEMETHODIMP SetFocus();
         IFACEMETHODIMP SetAccessibilityProperties(boolean isInputValid);
-        IFACEMETHODIMP SetErrorMessage(_In_ ABI::Windows::UI::Xaml::IUIElement* uiErrorMessage);
 
     protected:
         virtual HRESULT IsValueValid(_Out_ boolean* isInputValid);

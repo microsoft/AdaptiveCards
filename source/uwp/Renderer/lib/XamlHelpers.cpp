@@ -689,21 +689,21 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IAdaptiveInputsConfig> inputsConfig;
         RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
 
-        ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
-        RETURN_IF_FAILED(inputsConfig->get_InputLabels(&inputLabelsConfig));
+        ComPtr<IAdaptiveLabelConfig> labelConfig;
+        RETURN_IF_FAILED(inputsConfig->get_Label(&labelConfig));
 
-        ComPtr<IAdaptiveInputLabelConfig> labelConfig;
+        ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
         if (isRequired)
         {
-            inputLabelsConfig->get_RequiredInputs(&labelConfig);
+            labelConfig->get_RequiredInputs(&inputLabelConfig);
         }
         else
         {
-            inputLabelsConfig->get_OptionalInputs(&labelConfig);
+            labelConfig->get_OptionalInputs(&inputLabelConfig);
         }
 
         ABI::AdaptiveNamespace::ForegroundColor textColor;
-        RETURN_IF_FAILED(labelConfig->get_Color(&textColor));      
+        RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));      
 
         ABI::Windows::UI::Color color;
         RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), textColor, ContainerStyle_Default, false, false, &color));
@@ -716,7 +716,7 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
 
         ABI::AdaptiveNamespace::TextSize textSize;
-        RETURN_IF_FAILED(labelConfig->get_Size(&textSize));
+        RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
         GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize);
@@ -904,11 +904,11 @@ namespace AdaptiveNamespace::XamlHelpers
         // Render the spacing between the label and the input
         if (label != nullptr)
         {
-            ComPtr<IAdaptiveInputLabelsConfig> inputLabelsConfig;
-            RETURN_IF_FAILED(inputsConfig->get_InputLabels(inputLabelsConfig.GetAddressOf()));
+            ComPtr<IAdaptiveLabelConfig> labelConfig;
+            RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
 
             ABI::AdaptiveNamespace::Spacing labelSpacing;
-            RETURN_IF_FAILED(inputLabelsConfig->get_InputSpacing(&labelSpacing));
+            RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
 
             UINT spacing{};
             RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), labelSpacing, &spacing));
@@ -988,8 +988,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
             ComPtr<IAdaptiveInputValue> inputValue;
             renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf());
-            ComPtr<InputValue> inputValueImpl = PeekInnards<AdaptiveNamespace::InputValue>(inputValue);
-            RETURN_IF_FAILED(inputValueImpl->SetErrorMessage(errorMessageControl.Get()));
+            RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
 
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
 

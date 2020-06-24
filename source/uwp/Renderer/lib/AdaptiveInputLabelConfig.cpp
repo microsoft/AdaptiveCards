@@ -22,6 +22,7 @@ namespace AdaptiveNamespace
         m_color = static_cast<ABI::AdaptiveNamespace::ForegroundColor>(inputLabelConfig.color);
         m_isSubtle = static_cast<boolean>(inputLabelConfig.isSubtle);
         m_size = static_cast<ABI::AdaptiveNamespace::TextSize>(inputLabelConfig.size);
+        RETURN_IF_FAILED(UTF8ToHString(inputLabelConfig.suffix, m_suffix.GetAddressOf()));
         m_weight = static_cast<ABI::AdaptiveNamespace::TextWeight>(inputLabelConfig.weight);
 
         return S_OK;
@@ -63,6 +64,13 @@ namespace AdaptiveNamespace
         m_size = size;
         return S_OK;
     }
+
+    HRESULT AdaptiveInputLabelConfig::get_Suffix(_Outptr_ HSTRING* suffix)
+    {
+        return m_suffix.CopyTo(suffix);
+    }
+
+    HRESULT AdaptiveInputLabelConfig::put_Suffix(_In_ HSTRING suffix) { return m_suffix.Set(suffix); }
 
     HRESULT AdaptiveInputLabelConfig::get_Weight(_Outptr_ ABI::AdaptiveNamespace::TextWeight* weight)
     {

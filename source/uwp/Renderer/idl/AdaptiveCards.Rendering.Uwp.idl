@@ -1370,19 +1370,19 @@ AdaptiveNamespaceStart
         ForegroundColor Color;
         Boolean IsSubtle;
         TextSize Size;
+        String Suffix;
         TextWeight Weight;
     };
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputLabelsConfig", 8511B8D9-866A-4535-9A46-B9C0D4C63085),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveLabelConfig", 8511B8D9-866A-4535-9A46-B9C0D4C63085),
         contract(InternalContract, 1),
         internal
 #endif
-    ] runtimeclass AdaptiveInputLabelsConfig {
-        AdaptiveInputLabelsConfig();
+    ] runtimeclass AdaptiveLabelConfig {
+        AdaptiveLabelConfig();
 
-        String RequiredSuffix;
         Spacing InputSpacing;
 
         AdaptiveInputLabelConfig RequiredInputs;
@@ -1413,7 +1413,7 @@ AdaptiveNamespaceStart
         AdaptiveInputsConfig();
 
         AdaptiveErrorMessageConfig ErrorMessage;
-        AdaptiveInputLabelsConfig InputLabels;
+        AdaptiveLabelConfig Label;
     };
 
     [
@@ -1830,7 +1830,7 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        uuid(e138cceb-7a0a-41d4-9477-14e68e8cd67e),
+        uuid("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveInputValue", e138cceb-7a0a-41d4-9477-14e68e8cd67e),
         contract(InternalContract, 1),
         internal
 #endif
@@ -1839,6 +1839,7 @@ AdaptiveNamespaceStart
     {
         IAdaptiveInputElement InputElement { get; };
         String CurrentValue { get; };
+        Windows.UI.Xaml.UIElement ErrorMessage { get; set; };
         Boolean Validate();
         void SetFocus();
     };

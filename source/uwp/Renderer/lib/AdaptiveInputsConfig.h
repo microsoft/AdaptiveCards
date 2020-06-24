@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveInputLabelsConfig.h"
+#include "AdaptiveLabelConfig.h"
 #include "AdaptiveErrorMessageConfig.h"
 
 namespace AdaptiveNamespace
@@ -19,11 +19,11 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ErrorMessage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig** errorMessage);
         IFACEMETHODIMP put_ErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig* errorMessage);
 
-        IFACEMETHODIMP get_InputLabels(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig** inputLabels);
-        IFACEMETHODIMP put_InputLabels(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig* inputLabels);
+        IFACEMETHODIMP get_Label(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig** inputLabels);
+        IFACEMETHODIMP put_Label(_In_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig* inputLabels);
 
     private:
-        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig> m_inputLabels;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveLabelConfig> m_label;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig> m_errorMessage;
     };
     ActivatableClass(AdaptiveInputsConfig);

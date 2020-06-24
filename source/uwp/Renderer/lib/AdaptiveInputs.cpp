@@ -45,11 +45,9 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveInputElement> inputElement;
         RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
 
-
         ComPtr<AdaptiveInputElementBase> cardElementImpl;
         RETURN_IF_FAILED(inputElement->QueryInterface(cardElementImpl.GetAddressOf()));
 
-        // ComPtr<AdaptiveCardElementBase> inputElementImpl = PeekInnards<AdaptiveNamespace::AdaptiveCardElementBase>(inputElement);
         InternalId inputId = cardElementImpl->GetInternalId();
         std::size_t inputIdHash = inputId.Hash();
 

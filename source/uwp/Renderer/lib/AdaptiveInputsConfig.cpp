@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputsConfig::RuntimeClassInitialize(InputsConfig inputsConfig) noexcept
     {
         MakeAndInitialize<AdaptiveErrorMessageConfig>(m_errorMessage.GetAddressOf(), inputsConfig.errorMessage);
-        MakeAndInitialize<AdaptiveInputLabelsConfig>(m_inputLabels.GetAddressOf(), inputsConfig.inputLabels);
+        MakeAndInitialize<AdaptiveLabelConfig>(m_label.GetAddressOf(), inputsConfig.label);
        
         return S_OK;
     }
@@ -36,14 +36,14 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveInputsConfig::get_InputLabels(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig** inputLabels)
+    HRESULT AdaptiveInputsConfig::get_Label(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig** inputLabels)
     {
-        return m_inputLabels.CopyTo(inputLabels);
+        return m_label.CopyTo(inputLabels);
     }
 
-    HRESULT AdaptiveInputsConfig::put_InputLabels(_In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelsConfig* inputLabels)
+    HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig* inputLabels)
     {
-        m_inputLabels = inputLabels;
+        m_label = inputLabels;
         return S_OK;
     }
 }

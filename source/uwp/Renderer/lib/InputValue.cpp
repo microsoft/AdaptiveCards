@@ -118,7 +118,12 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
     return S_OK;
 }
 
-HRESULT InputValue::SetErrorMessage(_In_ IUIElement* uiErrorMessage)
+HRESULT InputValue::get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage)
+{
+    return m_validationError.CopyTo(uiErrorMessage);
+}
+
+HRESULT InputValue::put_ErrorMessage(_In_ IUIElement* uiErrorMessage)
 {
     m_validationError = uiErrorMessage;
     return S_OK;
