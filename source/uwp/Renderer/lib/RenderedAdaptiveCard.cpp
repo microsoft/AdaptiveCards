@@ -380,7 +380,7 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveCard> card;
         RETURN_IF_FAILED(localShowCardAction->get_Card(card.GetAddressOf()));
 
-        LinkCardToParent(card.Get(), renderArgs);
+        RETURN_IF_FAILED(LinkCardToParent(card.Get(), renderArgs));
 
         return S_OK;
     }

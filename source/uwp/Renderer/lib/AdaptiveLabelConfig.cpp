@@ -21,8 +21,8 @@ namespace AdaptiveNamespace
     {
         m_inputSpacing = static_cast<ABI::AdaptiveNamespace::Spacing>(labelConfig.inputSpacing);
 
-        MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), labelConfig.requiredInputs);
-        MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), labelConfig.optionalInputs);
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_requiredInputs.GetAddressOf(), labelConfig.requiredInputs));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputLabelConfig>(m_optionalInputs.GetAddressOf(), labelConfig.optionalInputs));
 
         return S_OK;
     }

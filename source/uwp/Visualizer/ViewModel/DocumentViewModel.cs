@@ -28,8 +28,6 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         private DocumentViewModel(MainPageViewModel mainPageViewModel) : base(mainPageViewModel) { }
 
-        private static bool _inlineValidation = true;
-
         private RenderedAdaptiveCard _renderedAdaptiveCard;
         private UIElement _renderedCard;
         public UIElement RenderedCard

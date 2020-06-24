@@ -19,8 +19,8 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveInputsConfig::RuntimeClassInitialize(InputsConfig inputsConfig) noexcept
     {
-        MakeAndInitialize<AdaptiveErrorMessageConfig>(m_errorMessage.GetAddressOf(), inputsConfig.errorMessage);
-        MakeAndInitialize<AdaptiveLabelConfig>(m_label.GetAddressOf(), inputsConfig.label);
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveErrorMessageConfig>(m_errorMessage.GetAddressOf(), inputsConfig.errorMessage));
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveLabelConfig>(m_label.GetAddressOf(), inputsConfig.label));
        
         return S_OK;
     }

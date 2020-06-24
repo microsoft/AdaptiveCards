@@ -80,7 +80,8 @@ HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
     RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
 
     ComPtr<IVector<DependencyObject*>> uiElementDescribers;
-    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(), uiElementDescribers.GetAddressOf()));
+    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
+                                                                 uiElementDescribers.GetAddressOf()));
 
     ComPtr<IUIElement> uiValidationError(m_validationError);
     ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
@@ -197,16 +198,14 @@ HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptive
                                                _In_ ITextBox* uiTextBoxElement,
                                                _In_ IBorder* validationBorder)
 {
-    {
-        m_adaptiveTextInput = adaptiveTextInput;
+    m_adaptiveTextInput = adaptiveTextInput;
 
-        Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
-        RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
 
-        RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
 
-        return S_OK;
-    }
+    return S_OK;
 }
 
 HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
@@ -366,7 +365,7 @@ HRESULT TimeInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     if (timeSpanReference != nullptr)
     {
         TimeSpan timeSpan;
-        timeSpanReference->get_Value(&timeSpan);
+        RETURN_IF_FAILED(timeSpanReference->get_Value(&timeSpan));
 
         UINT64 totalMinutes = timeSpan.Duration / 10000000 / 60;
         UINT64 hours = totalMinutes / 60;

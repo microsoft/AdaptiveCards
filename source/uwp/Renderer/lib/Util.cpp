@@ -540,12 +540,6 @@ HRESULT GenerateElementProjection(_In_ const std::shared_ptr<AdaptiveSharedNames
                                   _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** projectedElement) noexcept
 try
 {
-    if (baseElement == nullptr)
-    {
-        *projectedElement = nullptr;
-        return S_OK;
-    }
-
     *projectedElement = nullptr;
     switch (baseElement->GetElementType())
     {

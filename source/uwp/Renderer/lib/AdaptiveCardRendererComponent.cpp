@@ -156,7 +156,7 @@ namespace AdaptiveNamespace
             m_xamlBuilder->SetEnableXamlImageHandling(true);
             try
             {
-                renderContext->LinkCardToParent(adaptiveCard, nullptr);
+                RETURN_IF_FAILED(renderContext->LinkCardToParent(adaptiveCard, nullptr));
                 AdaptiveNamespace::XamlBuilder::BuildXamlTreeFromAdaptiveCard(adaptiveCard, &xamlTreeRoot, renderContext.Get(), m_xamlBuilder);
                 renderedCard->SetFrameworkElement(xamlTreeRoot.Get());
             }

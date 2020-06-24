@@ -83,7 +83,6 @@ namespace AdaptiveNamespace
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
-        boolean m_inlineValidation = true;
     };
 
     ActivatableClass(AdaptiveCardRenderer);
