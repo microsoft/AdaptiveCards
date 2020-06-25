@@ -63,9 +63,9 @@ The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templ
 
 **Breaking Change**
 
-*adaptivecards-reactnative v2.2* uses *adaptivecards-templating v1.0.0-rc.0* which migrated from older data binding [syntax](https://docs.microsoft.com/en-us/adaptive-cards/templating/#breaking-changes-as-of-may-2020) to [Adaptive Expression Language](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-adaptive-expressions?view=azure-bot-service-4.0).
+*adaptivecards-reactnative v2.2+ uses *adaptivecards-templating v1.0.0-rc.0* which migrated from older data binding [syntax](https://docs.microsoft.com/en-us/adaptive-cards/templating/#breaking-changes-as-of-may-2020) to [Adaptive Expression Language](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-adaptive-expressions?view=azure-bot-service-4.0).
 
-So data-binding for older templates will not work in adaptivecards-reactnative v2.2
+So data-binding for older templates will not work in adaptivecards-reactnative v2.2+
 
 **Usage**
 ```jsx
