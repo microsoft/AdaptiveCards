@@ -38,11 +38,11 @@ public class InputUtil
         InputLabelConfig inputLabelConfig;
         if (isRequired)
         {
-            inputLabelConfig = hostConfig.GetInputs().getInputLabels().getRequiredInputs();
+            inputLabelConfig = hostConfig.GetInputs().getLabel().getRequiredInputs();
         }
         else
         {
-            inputLabelConfig = hostConfig.GetInputs().getInputLabels().getOptionalInputs();
+            inputLabelConfig = hostConfig.GetInputs().getLabel().getOptionalInputs();
         }
 
         paragraph = RichTextBlockRenderer.setColor(paragraph, 0, text.length(), inputLabelConfig.getColor(), inputLabelConfig.getIsSubtle(), hostConfig, renderArgs);

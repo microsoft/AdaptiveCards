@@ -36,13 +36,13 @@ public class InputsConfig {
     }
   }
 
-  public void setInputLabels(InputLabelsConfig value) {
-    AdaptiveCardObjectModelJNI.InputsConfig_inputLabels_set(swigCPtr, this, InputLabelsConfig.getCPtr(value), value);
+  public void setLabel(LabelConfig value) {
+    AdaptiveCardObjectModelJNI.InputsConfig_label_set(swigCPtr, this, LabelConfig.getCPtr(value), value);
   }
 
-  public InputLabelsConfig getInputLabels() {
-    long cPtr = AdaptiveCardObjectModelJNI.InputsConfig_inputLabels_get(swigCPtr, this);
-    return (cPtr == 0) ? null : new InputLabelsConfig(cPtr, false);
+  public LabelConfig getLabel() {
+    long cPtr = AdaptiveCardObjectModelJNI.InputsConfig_label_get(swigCPtr, this);
+    return (cPtr == 0) ? null : new LabelConfig(cPtr, false);
   }
 
   public void setErrorMessage(ErrorMessageConfig value) {

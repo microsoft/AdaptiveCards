@@ -60,6 +60,14 @@ public class InputLabelConfig {
     return TextSize.swigToEnum(AdaptiveCardObjectModelJNI.InputLabelConfig_size_get(swigCPtr, this));
   }
 
+  public void setSuffix(String value) {
+    AdaptiveCardObjectModelJNI.InputLabelConfig_suffix_set(swigCPtr, this, value);
+  }
+
+  public String getSuffix() {
+    return AdaptiveCardObjectModelJNI.InputLabelConfig_suffix_get(swigCPtr, this);
+  }
+
   public void setWeight(TextWeight value) {
     AdaptiveCardObjectModelJNI.InputLabelConfig_weight_set(swigCPtr, this, value.swigValue());
   }

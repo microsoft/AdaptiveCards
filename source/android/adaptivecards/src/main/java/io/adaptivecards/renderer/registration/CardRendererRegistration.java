@@ -532,7 +532,7 @@ public class CardRendererRegistration
                 // Render spacing
                 BaseCardElementRenderer.setSpacingAndSeparator(context,
                     inputLayout,
-                    hostConfig.GetInputs().getInputLabels().getInputSpacing(),
+                    hostConfig.GetInputs().getLabel().getInputSpacing(),
                     false /* separator */,
                     hostConfig,
                     true /* horizontalLine */);

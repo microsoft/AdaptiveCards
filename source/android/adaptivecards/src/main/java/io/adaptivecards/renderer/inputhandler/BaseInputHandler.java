@@ -6,9 +6,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-import io.adaptivecards.objectmodel.ValidationBehavior;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.input.ValidatedEditText;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
