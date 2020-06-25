@@ -404,22 +404,16 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
 {
-    if (isVisible) {
-        button.backgroundColor = [UIColor redColor];
-    } else {
+    if (!isVisible) {
         if ([button isKindOfClass:[ACRButton class]]) {
             ACRButton *acrButton = (ACRButton *)button;
             if (acrButton.sentiment &&
                 [@"default" caseInsensitiveCompare:acrButton.sentiment] != NSOrderedSame) {
                 [acrButton applySentimentStyling];
-            } else {
-                button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
             }
-        } else {
-            button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
         }
         [self.scrView layoutIfNeeded];
-    }
+    } 
 }
 
 - (void)didFetchMediaViewController:(AVPlayerViewController *)controller
