@@ -95,7 +95,7 @@
          andHostConfig:(ACOHostConfig *)config;
 {
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    NSString *nibNameButton = [acoAction type] == ACRShowCard ? @"ACRButton" : @"ACRButtonExpandable";
+    NSString *nibNameButton = [acoAction type] == ACRShowCard ? @"ACRButtonExpandable" : @"ACRButton";
     ACRButton *button = [bundle loadNibNamed:nibNameButton owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
