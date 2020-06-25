@@ -408,7 +408,7 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
             if (DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
             {
                 TimeSpan minTime{(INT64)(minHours * 60 + minMinutes) * 10000000 * 60};
-                isMaxMinValid &= currentTime.Duration > minTime.Duration;
+                isMaxMinValid &= currentTime.Duration >= minTime.Duration;
             }
         }
 
@@ -421,7 +421,7 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
             if (DateTimePreparser::TryParseSimpleTime(maxTimeStdString, maxHours, maxMinutes))
             {
                 TimeSpan maxTime{(INT64)(maxHours * 60 + maxMinutes) * 10000000 * 60};
-                isMaxMinValid &= currentTime.Duration < maxTime.Duration;
+                isMaxMinValid &= currentTime.Duration <= maxTime.Duration;
             }
         }
     }

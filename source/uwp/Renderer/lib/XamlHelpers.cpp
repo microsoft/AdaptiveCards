@@ -774,6 +774,8 @@ namespace AdaptiveNamespace::XamlHelpers
                 RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
             }
 
+            RETURN_IF_FAILED(xamlRichTextBlock->put_TextWrapping(TextWrapping_Wrap));
+
             RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
         }
 
@@ -848,6 +850,8 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(errorMessageTextBlock.As(&errorMessageTextBlockAsUIElement));
 
             RETURN_IF_FAILED(errorMessageTextBlockAsUIElement->put_Visibility(Visibility_Collapsed));
+            RETURN_IF_FAILED(errorMessageTextBlock->put_TextWrapping(TextWrapping_Wrap));
+
             RETURN_IF_FAILED(errorMessageTextBlockAsUIElement.CopyTo(errorMessageControl));
         }
 
