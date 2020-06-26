@@ -9,7 +9,7 @@
             "items": [
                 {
                     "type": "TextBlock",
-                    "text": "{stockName}",
+                    "text": "${stockName}",
                     "size": "medium",
                     "isSubtle": true
                 },
@@ -33,7 +33,7 @@
                             "items": [
                                 {
                                     "type": "TextBlock",
-                                    "text": "{stockValue}",
+                                    "text": "${stockValue}",
                                     "size": "extraLarge"
                                 },
                                 {
