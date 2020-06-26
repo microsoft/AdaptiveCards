@@ -23,6 +23,15 @@
 			"isRequired": true,
 			"errorMessage": "Required input"
 		}
+		{
+			"type": "Input.Toggle",
+			"id": "input3",
+			"title": "I accept the terms and agreements",
+			"value": "false",
+			"valueOn": "true",
+            "valueOff": "false",
+			"label": "Longer label to verify label wrapping for an Input.Toggle. If that was not long enough, then this should make it long enough. Did you know octopuses have three hearts?"
+		}
 	],
 	"actions": [
 		{
