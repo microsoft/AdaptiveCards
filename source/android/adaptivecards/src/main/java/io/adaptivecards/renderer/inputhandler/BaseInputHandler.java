@@ -82,7 +82,7 @@ public abstract class BaseInputHandler implements IInputHandler
                     {
                         inputHint = ((TextView)errorMessage).getText();
                     }
-                    ((EditText) m_view).setHint(inputHint);
+                    ((EditText) m_view).setContentDescription(inputHint);
                 }
             }
         }
