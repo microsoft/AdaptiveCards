@@ -18,7 +18,7 @@
 		{
 			"type": "Input.Date",
 			"id": "input3",
-			"label": "Longer label to verify label wrapping for an Input.Date"
+			"label": "Longer label to verify label wrapping for an Input.Date. If that was not long enough, then this should make it long enough. Did you know a snail can sleep for three years?"
 		}
 	],
 	"actions": [

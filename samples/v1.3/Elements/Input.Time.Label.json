@@ -18,7 +18,7 @@
 		{
 			"type": "Input.Time",
 			"id": "input3",
-			"label": "Longer label to verify label wrapping for an Input.Time"
+			"label": "Longer label to verify label wrapping for an Input.Time. If that was not long enough, then this should make it long enough. Did you know bats always turn left when leaving a cave?"
 		}
 	],
 	"actions": [
