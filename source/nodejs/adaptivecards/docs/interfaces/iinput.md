@@ -20,8 +20,8 @@
 
 ### Properties
 
-* [id](iinput.md#id)
-* [value](iinput.md#value)
+* [id](iinput.md#optional-id)
+* [value](iinput.md#optional-value)
 
 ### Methods
 
@@ -29,26 +29,20 @@
 
 ## Properties
 
-###  id
+### `Optional` id
 
-• **id**: *string*
-
-*Defined in [shared.ts:17](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L17)*
+• **id**? : *undefined | string*
 
 ___
 
-###  value
+### `Optional` value
 
-• **value**: *string*
-
-*Defined in [shared.ts:18](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L18)*
+• **value**? : *undefined | string*
 
 ## Methods
 
 ###  validateValue
 
 ▸ **validateValue**(): *boolean*
-
-*Defined in [shared.ts:19](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L19)*
 
 **Returns:** *boolean*
