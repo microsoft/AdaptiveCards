@@ -3284,11 +3284,11 @@ export class NumberInput extends Input {
 
         let result = true;
 
-        if (this.min) {
+        if (this.min !== undefined) {
             result = result && (this.value >= this.min);
         }
 
-        if (this.max) {
+        if (this.max !== undefined) {
             result = result && (this.value <= this.max);
         }
 
