@@ -27,11 +27,11 @@
 		{
 			"type": "Input.Date",
 			"id": "input4",
-			"label": "Required Input.Date with valid value between April 1st, 2020 and July 4th, 2025",
+			"label": "Required Input.Date with valid value between April 1st, 2012 and January 7th, 2025",
 			"min": "2012-04-01",
 			"max": "2025-01-07",
 			"isRequired": true,
-			"errorMessage": "The input data must have a date between April 1st, 2020 and July 4th, 2025"
+			"errorMessage": "The input data must have a date between April 1st, 2012 and January 7th, 2025"
 		}
 	],
 	"actions": [

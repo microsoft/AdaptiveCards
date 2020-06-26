@@ -27,6 +27,7 @@
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (compact)",
 			"isRequired": true,
+			"errorMessage": "Required input",
 			"choices": [
 				{
 					"title": "Option 1",
@@ -62,6 +63,7 @@
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (expanded)",
 			"isRequired": true,
+			"errorMessage": "Required input",
 			"choices": [
 				{
 					"title": "Option 1",
@@ -97,6 +99,7 @@
 			"isMultiSelect": true,
 			"isRequired": true,
 			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
+			"errorMessage": "Required input",
 			"choices": [
 				{
 					"title": "Option 1",
