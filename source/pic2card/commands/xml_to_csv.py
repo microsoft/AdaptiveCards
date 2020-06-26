@@ -1,40 +1,9 @@
-"""This module converts the labelled traning and testing xmls generated 
+"""This module converts the labelled traning and testing xmls generated
    from the labelImg tool to object:boundary:image mapped csv.
 """
 import os
-import glob
-import pandas as pd
-import xml.etree.ElementTree as Et
 
-
-def xml_to_csv(path):
-    """
-    Maps the xml labels of each object
-    to the image file
-
-    @param path: images path 
-
-    @return: xml dataframe
-    """
-    xml_list = []
-    for xml_file in glob.glob(path + "/*.xml"):
-        tree = Et.parse(xml_file)
-        root = tree.getroot()
-        for member in root.findall("object"):
-            value = (root.find("filename").text,
-                     int(root.find("size")[0].text),
-                     int(root.find("size")[1].text),
-                     member[0].text,
-                     int(member[4][0].text),
-                     int(member[4][1].text),
-                     int(member[4][2].text),
-                     int(member[4][3].text)
-                     )
-            xml_list.append(value)
-    column_name = ["filename", "width", "height", "class", "xmin",
-                   "ymin", "xmax", "ymax"]
-    xml_df = pd.DataFrame(xml_list, columns=column_name)
-    return xml_df
+from mystique.utils import xml_to_csv
 
 
 def main():
