@@ -159,7 +159,7 @@ namespace AdaptiveSharedNamespace
         ParseContext& context,
         const Json::Value& json,
         AdaptiveCardSchemaKey key,
-        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& V)
+        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
     {
         auto el = deserializer(context, json);
         return el;

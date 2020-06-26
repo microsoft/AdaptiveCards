@@ -17,7 +17,6 @@
 		{
 			"type": "Input.Time",
 			"id": "input3",
-			"style": "text",
 			"label": "Longer label to verify label wrapping for an Input.Time"
 		}
 	],
