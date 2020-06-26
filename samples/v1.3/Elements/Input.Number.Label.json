@@ -12,12 +12,12 @@
 			"type": "Input.Number",
 			"id": "input2",
 			"label": "Require Input.Number label",
-			"isRequired": true
+			"isRequired": true,
+			"errorMessage": "Required input"
 		},
 		{
 			"type": "Input.Number",
 			"id": "input3",
-			"style": "text",
 			"label": "Longer label to verify label wrapping for an Input.Number"
 		}
 	],
