@@ -21,6 +21,7 @@ import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
+import { Label } from '../elements'
 
 export class Input extends React.Component {
 
@@ -37,6 +38,7 @@ export class Input extends React.Component {
 		this.type = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
+		this.label = Constants.EmptyString;
 
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
@@ -80,6 +82,7 @@ export class Input extends React.Component {
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
 							<ElementWrapper json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+								{this.renderLabel()}
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -285,6 +288,27 @@ export class Input extends React.Component {
 				};
 				onExecuteAction(actionObject, true);
 			}
+		}
+	}
+
+	renderLabel = () => {
+		let text = Constants.EmptyString;
+		let wrap = false;
+		if(this.label == Constants.EmptyString) return null;
+		
+		else{
+			if(typeof this.label == "string" ){
+				text = this.label;
+			}else if (typeof this.label == "object"){
+				
+			}
+			return (
+				label ? <Label
+					text={label}
+					style={[this.styleConfig.choiceSetTitle, this.styleConfig.defaultFontConfig]}
+					wrap={wrap} />
+					: null
+			)
 		}
 	}
 }
