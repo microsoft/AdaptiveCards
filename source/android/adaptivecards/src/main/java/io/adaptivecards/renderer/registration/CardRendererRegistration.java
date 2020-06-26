@@ -451,7 +451,7 @@ public class CardRendererRegistration
         HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, !isColumn);
 
         // Check if the element is an input or must be stretched
-        BaseInputElement baseInputElement = Util.castToInputElement(renderedElement);
+        BaseInputElement baseInputElement = Util.tryCastTo(renderedElement, BaseInputElement.class);
         if (baseInputElement != null)
         {
             // put the element in a Stretchable input layout and
