@@ -40,6 +40,10 @@ namespace AdaptiveNamespace
         // and at the same time, being able to respect custom inputs having error messages
         std::unordered_map<std::size_t, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>> m_inputValues;
 
+        // This is cache of the last inputs that were retrieved for validation (and succeeded)
+        // This is needed as the AsJson and AsValueSet methods are called after validating but we don't get an action reference to rebuild the list
+        std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>> m_lastRetrievedValues;
+
         // Map with key: internal id of card, value: internal id of parent card
         // This map allows us to move vertically accross the cards to retrieve the inputs
         std::unordered_map<std::size_t, std::size_t> m_parentCard;

@@ -99,9 +99,7 @@ namespace AdaptiveNamespace
     {
         Json::Value jsonValue;
 
-        std::vector<ComPtr<IAdaptiveInputValue>> inputs;
-        GetAllInputs(inputs);
-        for (auto& inputValue : inputs)
+        for (auto& inputValue : m_lastRetrievedValues)
         {
             ComPtr<IAdaptiveCardElement> cardElement;
             ComPtr<IAdaptiveInputElement> inputElement;
@@ -138,9 +136,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
                                               &propertyValueFactory));
 
-        std::vector<ComPtr<IAdaptiveInputValue>> inputs;
-        GetAllInputs(inputs);
-        for (auto& inputValue : inputs)
+        for (auto& inputValue : m_lastRetrievedValues)
         {
             ComPtr<IAdaptiveCardElement> cardElement;
             ComPtr<IAdaptiveInputElement> inputElement;
@@ -168,6 +164,7 @@ namespace AdaptiveNamespace
 
         std::vector<ComPtr<IAdaptiveInputValue>> inputsToValidate;
         GetInputsToValidate(submitAction, inputsToValidate);
+        m_lastRetrievedValues.clear();
 
         for (auto& inputValue : inputsToValidate)
         {
@@ -181,6 +178,12 @@ namespace AdaptiveNamespace
             }
 
             allInputsValid &= currentInputValid;
+        }
+
+        // If validation succeeded, then cache the validated inputs 
+        if (allInputsValid)
+        {
+            m_lastRetrievedValues = inputsToValidate;
         }
 
         *inputsAreValid = allInputsValid;
