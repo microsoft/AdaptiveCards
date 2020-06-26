@@ -16,7 +16,7 @@
 		{
 			"type": "Input.Text",
 			"id": "input2",
-			"label": "Required Input.Text with inline action label",,
+			"label": "Required Input.Text with inline action label",
 			"isRequired": true,
 			"errorMessage": "Required input",
 			"inlineAction": {

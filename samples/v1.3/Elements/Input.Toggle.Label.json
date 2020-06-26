@@ -20,7 +20,8 @@
 			"valueOn": "true",
             "valueOff": "false",
             "label": "Required Input.Toggle label",
-            "isRequired": true
+			"isRequired": true,
+			"errorMessage": "Required input"
 		}
 	],
 	"actions": [
