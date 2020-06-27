@@ -26,7 +26,7 @@ npm install adaptivecards-fabric
 **NOTE**: you must also install the necessary peer dependencies:
 
 * adaptivecards
-* office-ui-fabric-react
+* @fluentui/react
 * react
 * react-dom
 

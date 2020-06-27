@@ -3,7 +3,7 @@
 
 import { InputTextFabric } from "../../../components/inputs/InputTextFabric";
 import * as TestUtils from "../../TestUtils";
-import { initializeIcons } from "office-ui-fabric-react";
+import { initializeIcons } from "@fluentui/react";
 
 initializeIcons();
 
