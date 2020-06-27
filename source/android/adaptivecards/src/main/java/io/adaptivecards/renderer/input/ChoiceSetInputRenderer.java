@@ -143,7 +143,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
             if(!choiceSetInput.GetWrap())
             {
-                radioButton.setLines(1);
+                radioButton.setMaxLines(1);
                 radioButton.setEllipsize(TextUtils.TruncateAt.END);
             }
 
