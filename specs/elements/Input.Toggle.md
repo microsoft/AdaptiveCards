@@ -18,26 +18,13 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **errorMessage** | `string` | No | Error message to display when entered input is invalid | 1.3 |
 | **isRequired** | `boolean` | No | Whether or not this input is required | 1.3 |
-| **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
+| **label** | `string` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
-
-
-## label
-
-Label for this input
-
-* **Type**: `string`, `TextBlock`, `RichTextBlock`
-* **Version** : 1.3
-* **Required**: No
-* **Allowed values**:
-  * `string`
-  * `TextBlock`
-  * `RichTextBlock`
 
 
 ## fallback
@@ -97,17 +84,17 @@ Controls the amount of spacing between this element and the preceding element.
 ## Rendering
 
 ### Labels
-The `label` property should be rendered to the left of the toggle box. Clicking/tapping on the rendered label should toggle the input.
+The `label` property should be rendered above the input box if present. Clicking/tapping on the rendered label should put focus in the input box. 
+
+The `color`, `isSubtle`, `size`, and `weight` properties provided in the host config under `"inputs":"label":"requiredInputs"` for inputs with `"isRequired":true`, and under `"inputs":"label":"optionalInputs"` for inputs with `"isRequired":false` should be respected. The spacing between the label and the input should be set to the value of `inputSpacing` specified in those same locations in host config.
 
 ### Accessibility
 The `label` property should be set as the accessibility text when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
 
 ### Input Validation
- If the input has `isRequired` true, and the card has `showRequiredInputHints`, the input should be marked with a * in the host's `attention` color. The * should be placed on the label in the case where the label is set, and otherwise be placed next to the title string.
+If the input has `"isRequired":true` the input should be marked with the 
+ `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. Optional inputs should be marked with the `"inputs":"label":"optionalInputs":"suffix"` if set. The suffixes  should be placed on the label in the case where the label is set, and otherwise be placed next to the input control.
  
- The `isRequired` property should be validated for this input type.The validation should take place as follows:
- 
- - Validate the input when it loses focus for the first time.
- - Once the field has been marked invalid, validate when the user click the toggle so they can see that is has become valid.
+ The `isRequired` property should be validated for this input type the validation should take place when the user activates a submit action on the card.
 
- If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input.
+If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color.
