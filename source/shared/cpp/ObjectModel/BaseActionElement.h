@@ -42,10 +42,9 @@ namespace AdaptiveSharedNamespace
 
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
-    protected:
+    private:
         void PopulateKnownPropertiesSet();
 
-    private:
         std::string m_title;
         std::string m_iconUrl;
         std::string m_style;
