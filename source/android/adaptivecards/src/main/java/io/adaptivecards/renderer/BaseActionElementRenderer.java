@@ -184,7 +184,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             m_invisibleCard.setLayoutParams(layoutParams);
 
             ViewGroup parent = (ViewGroup) viewGroup.getParent();
-            if(parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
+            if (parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
             {
                 parent = (ViewGroup) parent.getParent().getParent();
             }

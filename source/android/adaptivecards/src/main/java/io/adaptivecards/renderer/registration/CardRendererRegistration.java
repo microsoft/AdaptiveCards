@@ -438,41 +438,45 @@ public class CardRendererRegistration
             }
         }
 
-        View taggedView = findElementWithTagContent(mockLayout);
-        TagContent tagContent = BaseCardElementRenderer.getTagContent(taggedView);
-
-        // Sets this view container as the element is being moved to the correct location
-        tagContent.SetViewContainer(viewGroup);
-
-        // Render the spacing so no other renderers have to do it
-        boolean isColumn = Util.isOfType(renderedElement, Column.class);
-
-        // Only columns render vertical spacing, so if it's not a column, then we need a horizontal spacing
-        HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, !isColumn);
-
-        // Check if the element is an input or must be stretched
-        BaseInputElement baseInputElement = Util.tryCastTo(renderedElement, BaseInputElement.class);
-        if (baseInputElement != null)
+        if (renderedElement != null)
         {
-            // put the element in a Stretchable input layout and
-            HandleLabelAndValidation(mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs, tagContent);
-        }
-        else
-        {
-            // Column, container, image and imageSet handle their height on their own, so let's not add an extra view for them
-            if (renderedElement.GetHeight() == HeightType.Stretch && !isColumn && !Util.isOfType(renderedElement, Container.class)
-                && !Util.isOfType(renderedElement, Image.class) && !Util.isOfType(renderedElement, ImageSet.class))
+
+            View taggedView = findElementWithTagContent(mockLayout);
+            TagContent tagContent = BaseCardElementRenderer.getTagContent(taggedView);
+
+            // Sets this view container as the element is being moved to the correct location
+            tagContent.SetViewContainer(viewGroup);
+
+            // Render the spacing so no other renderers have to do it
+            boolean isColumn = Util.isOfType(renderedElement, Column.class);
+
+            // Only columns render vertical spacing, so if it's not a column, then we need a horizontal spacing
+            HandleSpacing(context, viewGroup, renderedElement, hostConfig, tagContent, !isColumn);
+
+            // Check if the element is an input or must be stretched
+            BaseInputElement baseInputElement = Util.tryCastTo(renderedElement, BaseInputElement.class);
+            if (baseInputElement != null)
             {
-                // put the element in a StretchableElementLayout
-                HandleStretchHeight(mockLayout, viewGroup, renderedElement, context, tagContent);
+                // put the element in a Stretchable input layout and
+                HandleLabelAndValidation(mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs, tagContent);
             }
             else
             {
-                Util.MoveChildrenViews(mockLayout, viewGroup);
+                // Column, container, image and imageSet handle their height on their own, so let's not add an extra view for them
+                if (renderedElement.GetHeight() == HeightType.Stretch && !isColumn && !Util.isOfType(renderedElement, Container.class)
+                    && !Util.isOfType(renderedElement, Image.class) && !Util.isOfType(renderedElement, ImageSet.class))
+                {
+                    // put the element in a StretchableElementLayout
+                    HandleStretchHeight(mockLayout, viewGroup, renderedElement, context, tagContent);
+                }
+                else
+                {
+                    Util.MoveChildrenViews(mockLayout, viewGroup);
+                }
             }
-        }
 
-        HandleVisibility(renderedElement, renderedElementView);
+            HandleVisibility(renderedElement, renderedElementView);
+        }
     }
 
     private static void HandleSpacing(Context context,

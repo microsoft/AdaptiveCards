@@ -152,6 +152,8 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         TextBlock textBlock = Util.castTo(baseCardElement, TextBlock.class);
 
         TextView textView = new TextView(context);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
         textView.setTag(new TagContent(textBlock));
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());

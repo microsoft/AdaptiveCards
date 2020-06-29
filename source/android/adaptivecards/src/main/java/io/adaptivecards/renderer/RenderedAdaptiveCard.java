@@ -90,7 +90,13 @@ public class RenderedAdaptiveCard {
 
         while ((cardId != null) && (cardId != new InternalId().Hash()))
         {
-            inputHandlers.addAll(inputsInCard.get(cardId));
+            Vector<IInputHandler> handlersInCard = inputsInCard.get(cardId);
+
+            if (handlersInCard != null)
+            {
+                inputHandlers.addAll(handlersInCard);
+            }
+
             cardId = parentCardForCard.get(cardId);
         }
 

@@ -163,7 +163,10 @@ public class AdaptiveCardRenderer
         // Catches the exception as the method throws it for performing fallback with elements inside the card,
         // no fallback should be performed here so we just catch the exception
         catch (AdaptiveFallbackException e){}
-        catch (Exception e) {}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if (hostConfig.GetSupportsInteractivity())
         {

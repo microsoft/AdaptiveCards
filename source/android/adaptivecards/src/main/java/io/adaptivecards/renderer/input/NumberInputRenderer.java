@@ -72,7 +72,7 @@ public class NumberInputRenderer extends TextInputRenderer
                 renderArgs,
                 ((numberInput.GetMin() != Integer.MIN_VALUE) || (numberInput.GetMax() != Integer.MAX_VALUE)));
 
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 
         editText.setTag(tagContent);
 

@@ -114,7 +114,7 @@ public final class Util {
      * @param <T>
      * @return
      */
-    public static<T extends BaseCardElement> T castTo(BaseCardElement cardElement, Class<T> cardElementType) throws Exception
+    public static<T extends BaseCardElement> T castTo(BaseCardElement cardElement, Class<T> cardElementType) throws ClassCastException
     {
         try
         {
@@ -138,7 +138,7 @@ public final class Util {
         }
         catch (Exception e)
         {
-            throw new Exception("Unable to find dynamic_cast method in " + cardElementType.getName() + ".");
+            throw new ClassCastException("Unable to find dynamic_cast method in " + cardElementType.getName() + ".");
         }
     }
 
