@@ -90,6 +90,7 @@ public class NumberInputPropertiesTest
         TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, 2147483647);
 
         final String inputNumberMaxTemplate = "{\"id\":\"id\",\"max\":%d,\"type\":\"Input.Number\"}\n";
+        TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_numericalMinValue);
         TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_numericalTestCases);
     }
 
@@ -107,6 +108,7 @@ public class NumberInputPropertiesTest
         TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, -2147483648);
 
         final String inputNumberMinTemplate = "{\"id\":\"id\",\"min\":%d,\"type\":\"Input.Number\"}\n";
+        TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_numericalMaxValue);
         TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_numericalTestCases);
     }
 

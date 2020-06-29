@@ -734,6 +734,8 @@ public class TestUtil
 
     public static final String c_dateStringTestCases[] = {"{{DATE(2017-02-14T06:08:39Z,LONG)}}"};
 
-    public static final Integer[] c_numericalTestCases = {-2147483648, -100, -25, -10, -5, -1, 1, 5, 10, 25, 50, 2147483647};
+    public static final Integer[] c_numericalMaxValue = {Integer.MAX_VALUE};
+    public static final Integer[] c_numericalMinValue = {Integer.MIN_VALUE};
+    public static final Integer[] c_numericalTestCases = {-100, -25, -10, -5, -1, 1, 5, 10, 25, 50};
 
 }

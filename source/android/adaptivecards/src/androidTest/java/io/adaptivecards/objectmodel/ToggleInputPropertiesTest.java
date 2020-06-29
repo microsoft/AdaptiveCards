@@ -123,10 +123,9 @@ public class ToggleInputPropertiesTest
             public void set(String value, ToggleInput element) { element.SetValueOff(value); }
         };
 
-        // TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "");
+        TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "false");
 
         final String inputToggleValueTemplate = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"valueOff\":\"%s\"}\n";
-        TestUtil.executeTests(c, inputToggleValueTemplate, new String[]{"false"});
         TestUtil.executeTests(c, inputToggleValueTemplate, TestUtil.c_regularStringTestCases);
         TestUtil.executeTests(c, inputToggleValueTemplate, TestUtil.c_dateStringTestCases);
     }
@@ -142,10 +141,9 @@ public class ToggleInputPropertiesTest
             public void set(String value, ToggleInput element) { element.SetValueOn(value); }
         };
 
-        // TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "");
+        TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "true");
 
         final String inputToggleValueTemplate = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\",\"valueOn\":\"%s\"}\n";
-        TestUtil.executeTests(c, inputToggleValueTemplate, new String[]{"false"});
         TestUtil.executeTests(c, inputToggleValueTemplate, TestUtil.c_regularStringTestCases);
         TestUtil.executeTests(c, inputToggleValueTemplate, TestUtil.c_dateStringTestCases);
     }
@@ -177,7 +175,7 @@ public class ToggleInputPropertiesTest
 
         TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "");
 
-        final String inputToggleLabelTemplate = "{\"id\":\"id\",\"label\":\"%s\",\"type\":\"Input.Toggle\"}\n";
+        final String inputToggleLabelTemplate = "{\"id\":\"id\",\"label\":\"%s\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
         TestUtil.executeTests(c, inputToggleLabelTemplate, TestUtil.c_regularStringTestCases);
     }
 
@@ -194,7 +192,7 @@ public class ToggleInputPropertiesTest
 
         TestUtil.executeDefaultTestCase(c, c_defaultInputToggle, "");
 
-        final String inputToggleErrorMessageTemplate = "{\"errorMessage\":\"%s\",\"id\":\"id\",\"type\":\"Input.Toggle\"}\n";
+        final String inputToggleErrorMessageTemplate = "{\"errorMessage\":\"%s\",\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
         TestUtil.executeTests(c, inputToggleErrorMessageTemplate, TestUtil.c_regularStringTestCases);
     }
 

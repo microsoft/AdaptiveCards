@@ -47,7 +47,7 @@ public class DateInputPropertiesTest
     {
         final String dateInputNoDefaultValues =
             "{\"errorMessage\":\"Error message\"," +
-                "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
                 "\"height\":\"Stretch\"," +
                 "\"id\":\"id\"," +
                 "\"isVisible\":false," +
