@@ -22,7 +22,7 @@
 			"description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
 			"version": "1.2"
 		},
-		"associatedInputIds": {
+		"inputs": {
 			"type": "string[]|ActionInputs",
 			"description": "None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action.",
 			"version": "1.3",

@@ -6,7 +6,7 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.Submit"` | Yes | Must be `"Action.Submit"`. | 1.0 |
 | **data** | `string`, `object` | No | Initial data that input fields will be combined with. These are essentially ‘hidden’ properties. | 1.0 |
-| **associatedInputIds** | `string[]`, `ActionInputs` | No, default: `"All"` | None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it. | 1.3 |
+| **inputs** | `string[]`, `ActionInputs` | No, default: `"All"` | None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it. | 1.3 |
 
 **Inherited properties**
 
@@ -19,7 +19,7 @@
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
-## associatedInputIds
+## inputs
 
 None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it.
 

@@ -48,7 +48,7 @@
 								{
 									"type": "Action.Submit",
 									"title": "Option 1",
-									"associatedInputIds": [ "name", "option1" ]
+									"inputs": [ "name", "option1" ]
 								}
 							]
 						}
@@ -82,7 +82,7 @@
 								{
 									"type": "Action.Submit",
 									"title": "Option 2",
-									"associatedInputIds": [ "name", "option2" ]
+									"inputs": [ "name", "option2" ]
 								}
 							]
 						}

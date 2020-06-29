@@ -46,7 +46,7 @@
 					{
 						"type": "Action.ShowCard",
 						"title": "2. Address",
-						"associatedInputIds": [ "nameProperties" ],
+						"inputs": [ "nameProperties" ],
 						"card": {
 							"type": "AdaptiveCard",
 							"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -110,7 +110,7 @@
 								{
 									"type": "Action.ShowCard",
 									"title": "3. Phone/Email",
-									"associatedInputIds": [ "addressProperties" ],
+									"inputs": [ "addressProperties" ],
 									"card": {
 										"type": "AdaptiveCard",
 										"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

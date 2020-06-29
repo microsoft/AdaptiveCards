@@ -45,7 +45,7 @@
 									"isVisible": true
 								}
 							],
-							"associatedInputIds":["nameProperties"]
+							"inputs":["nameProperties"]
 						}
 					]
 				}
@@ -142,7 +142,7 @@
 									"isVisible": true
 								}
 							],
-							"associatedInputIds":["addressProperties"]
+							"inputs":["addressProperties"]
 						}
 					],
 					"id": "Next->"

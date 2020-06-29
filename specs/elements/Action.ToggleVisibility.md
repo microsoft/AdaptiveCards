@@ -17,7 +17,7 @@
 | **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
-| **associatedInputIds** | `string[]`, `ActionInputs` | No, default: `"None"` | None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action. | 1.3 |
+| **inputs** | `string[]`, `ActionInputs` | No, default: `"None"` | None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action. | 1.3 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
@@ -58,7 +58,7 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
-## associatedInputIds
+## inputs
 
 None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action.
 
