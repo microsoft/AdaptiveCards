@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import * as React from "react";
-import { TextField } from "office-ui-fabric-react";
+import { TextField } from "@fluentui/react";
 import * as AC from "adaptivecards";
 import * as Shared from "../../utils/shared";
 

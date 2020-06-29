@@ -3,7 +3,7 @@
 
 import { renderFabricComponent } from "../../TestUtils";
 import { InputChoiceSetFabric } from "../../../components/inputs/InputChoiceSetFabric";
-import { initializeIcons } from "office-ui-fabric-react";
+import { initializeIcons } from "@fluentui/react";
 
 initializeIcons();
 
