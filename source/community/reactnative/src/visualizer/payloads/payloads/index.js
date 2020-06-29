@@ -248,6 +248,10 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
+    "title": "Input.Label.json",
+    "json": require('./Input.Label.json')
+  },
+  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },
