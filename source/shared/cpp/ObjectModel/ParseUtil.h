@@ -63,6 +63,12 @@ namespace AdaptiveSharedNamespace
                        bool isRequired = false);
 
         template<typename T>
+        std::shared_ptr<T> GetElementOfType(ParseContext& context,
+                                            const Json::Value& json,
+                                            AdaptiveCardSchemaKey key,
+                                            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer);
+
+        template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollection(bool isTopToBottomContainer,
                                                              ParseContext& context,
                                                              const Json::Value& json,
@@ -101,6 +107,10 @@ namespace AdaptiveSharedNamespace
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
         std::string ToLowercase(const std::string& value);
+
+        std::shared_ptr<BaseCardElement> GetLabel(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key);
+
+        std::shared_ptr<BaseCardElement> GetLabelFromJsonValue(ParseContext& context, const Json::Value& json);
     };
 
     template<typename T>
@@ -142,6 +152,17 @@ namespace AdaptiveSharedNamespace
             // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
             return defaultEnumValue;
         }
+    }
+
+    template<typename T>
+    std::shared_ptr<T> ParseUtil::GetElementOfType(
+        ParseContext& context,
+        const Json::Value& json,
+        AdaptiveCardSchemaKey key,
+        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
+    {
+        auto el = deserializer(context, json);
+        return el;
     }
 
     template<typename T>

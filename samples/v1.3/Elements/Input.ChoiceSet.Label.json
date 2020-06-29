@@ -1,0 +1,138 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input1",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Default Input.ChoiceSet label (compact)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input2",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (compact)",
+			"isRequired": true,
+			"errorMessage": "Required input",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input3",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": "Default Input.ChoiceSet label (expanded)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input4",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (expanded)",
+			"isRequired": true,
+			"errorMessage": "Required input",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input5",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"label": "Default Input.ChoiceSet label (expanded, multiselect)",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input6",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"isRequired": true,
+			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
+			"errorMessage": "Required input",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "input1",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Longer label to verify label wrapping for an Input.ChoiceSet. If that was not long enough, then this should make it long enough. Did you know that honeybees can flap their wings 200 times every second?",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

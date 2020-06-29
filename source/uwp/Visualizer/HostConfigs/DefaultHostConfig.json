@@ -134,5 +134,27 @@
 			"wrap": true
 		},
 		"spacing": 10
+	},
+	"inputs": {
+		"validationBehavior": "onFocusLost",
+		"inputLabels": {
+			"requiredSuffix": "*",
+			"inputSpacing": "small",
+			"requiredInputs": {
+				"weight": "bolder",
+				"color": "attention",
+				"size": "medium"
+			},
+			"optionalInputs": {
+				"color": "good",
+				"isSubtle": true,
+				"weight": "lighter"
+			}
+		},
+		"errorMessage": {
+			"spacing": "small",
+			"size": "small",
+			"weight": "lighter"
+		}
 	}
 }

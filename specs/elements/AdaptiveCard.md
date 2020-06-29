@@ -14,6 +14,7 @@
 | **minHeight** | `string` | No | Specifies the minimum height of the card. | 1.2 |
 | **speak** | `string` | No | Specifies what should be spoken for this entire card. This is simple text or SSML fragment. | 1.0 |
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |
+| **showRequiredInputHints** | `boolean` | No, default: `true` | True if required fields should be visually indicated | 1.3 |
 | **verticalContentAlignment** | `VerticalContentAlignment` | No | Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified. | 1.1 |
 | **$schema** | `uri` | No | The Adaptive Card schema. | 1.0 |
 | **id** | `string` | No | A unique identifier associated with the AdaptiveCard. | 1.0 |

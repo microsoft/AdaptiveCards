@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "ParseUtil.h"
 #include "BaseCardElement.h"
+#include "TextBlock.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -15,6 +16,9 @@ namespace AdaptiveSharedNamespace
         BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
+
+        std::string GetLabel() const;
+        void SetLabel(const std::string label);
 
         bool GetIsRequired() const;
         void SetIsRequired(const bool isRequired);
@@ -28,8 +32,10 @@ namespace AdaptiveSharedNamespace
         void PopulateKnownPropertiesSet();
 
     private:
+
         bool m_isRequired;
         std::string m_errorMessage;
+        std::string m_label;
     };
 
     template<typename T>
@@ -42,6 +48,7 @@ namespace AdaptiveSharedNamespace
         baseInputElement->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
         baseInputElement->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
         baseInputElement->SetErrorMessage(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ErrorMessage));
+        baseInputElement->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label));
 
         return baseInputElement;
     }

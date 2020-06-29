@@ -72,10 +72,6 @@
 		"$schema": {
 			"type": "uri",
 			"description": "The Adaptive Card schema."
-		},
-		"id": {
-			"type": "string",
-			"description": "A unique identifier associated with the AdaptiveCard."
 		}
 	}
 }

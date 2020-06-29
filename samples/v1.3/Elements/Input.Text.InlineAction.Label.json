@@ -1,0 +1,46 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Text",
+			"id": "input1",
+			"label": "Input.Text with inline action label",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"label": "Required Input.Text with inline action label",
+			"isRequired": true,
+			"errorMessage": "Required input",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"style": "text",
+			"label": "Longer label to verify label wrapping for an Input.Text. If that was not long enough, then this should make it long enough. Did you know that wild dolphins call each other by name?",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}
