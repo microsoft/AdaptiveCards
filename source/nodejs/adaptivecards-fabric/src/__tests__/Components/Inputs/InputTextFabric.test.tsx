@@ -1,9 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { InputTextFabric } from "../../../Components/Inputs/InputTextFabric";
+import { InputTextFabric } from "../../../components/inputs/InputTextFabric";
 import * as TestUtils from "../../TestUtils";
-import { initializeIcons } from "office-ui-fabric-react";
+import { initializeIcons } from "@fluentui/react";
 
 initializeIcons();
 

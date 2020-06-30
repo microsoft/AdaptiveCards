@@ -1,11 +1,11 @@
 {
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "2.0",
     "body": [
         {
             "type": "TextBlock",
-            "text": "Hi {name}!"
+            "text": "Hi ${name}!"
         },
         {
             "type": "TextBlock",

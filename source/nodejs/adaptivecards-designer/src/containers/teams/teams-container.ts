@@ -41,6 +41,10 @@ abstract class BaseTeamsContainer extends HostContainer {
 
         hostElement.appendChild(outerFrame);
     }
+
+    get targetVersion(): Adaptive.Version {
+        return Adaptive.Versions.v1_2;
+    }
 }
 
 export class LightTeamsContainer extends BaseTeamsContainer {

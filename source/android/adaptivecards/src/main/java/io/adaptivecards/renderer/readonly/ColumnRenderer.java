@@ -16,6 +16,7 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -156,30 +157,32 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
         else
         {
-            if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
+            try
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                // I'm not sure what's going on here
+                float columnWeight = Float.parseFloat(columnSize);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParams.width = 0;
+                layoutParams.weight = columnWeight;
                 returnedView.setLayoutParams(layoutParams);
             }
-            else if (columnSize.equals(g_columnSizeAuto))
+            catch (NumberFormatException numFormatExcep)
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                returnedView.setLayoutParams(layoutParams);
-            }
-            else
-            {
-                try
+                if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
                 {
-                    // I'm not sure what's going on here
-                    float columnWeight = Float.parseFloat(columnSize);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    layoutParams.width = 0;
-                    layoutParams.weight = columnWeight;
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
                     returnedView.setLayoutParams(layoutParams);
                 }
-                catch (NumberFormatException numFormatExcep)
+                else
                 {
-                    throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
+                    // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    returnedView.setLayoutParams(layoutParams);
+
+                    if (!columnSize.equals(g_columnSizeAuto))
+                    {
+                        renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INVALID_COLUMN_WIDTH_VALUE, "Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>)."));
+                    }
                 }
             }
         }

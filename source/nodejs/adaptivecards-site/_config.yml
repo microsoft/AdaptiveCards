@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: /
+url: https://adaptivecards.io/
 root: /
 permalink: blog/:title/
 permalink_defaults:
@@ -71,9 +71,9 @@ footer:
     - title: Find us on GitHub
       href: https://github.com/Microsoft/AdaptiveCards
     - title: Roadmap
-      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
-    - title: Latest Build conference recording
-      href: https://www.youtube.com/watch?v=wT1yFr_j6IM
+      href: https://aka.ms/ACRoadmap
+    - title: Watch the Build 2020 video
+      href: https://aka.ms/m365sk134
       
 
 # Directory

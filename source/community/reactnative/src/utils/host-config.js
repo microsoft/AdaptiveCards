@@ -439,7 +439,7 @@ export class HostConfig {
 
 	separator = {
 		lineThickness: 1,
-		lineColor: "#D9D9D9"
+		lineColor: "#A9A9A9"
 	};
 
 	fontSizes = {
@@ -516,6 +516,7 @@ export class HostConfig {
 	factSet = new FactSetConfig();
 	fontStyles = new FontStyleConfig();
 
+	hostCapabilities = new HostCapabilities()
 	cssClassNamePrefix = null;
 
 	constructor(obj) {
@@ -578,6 +579,7 @@ export class HostConfig {
 			this.imageSet = new ImageSetConfig(obj["imageSet"]);
 			this.factSet = new FactSetConfig(obj["factSet"]);
 			this.fontStyles = new FontStyleConfig(obj);
+			this.hostCapabilities = new HostCapabilities(obj.hostCapabilities)
 		}
 	}
 
@@ -733,6 +735,85 @@ export class HostConfig {
 				return this.height.auto;
 		}
 	}
+
+	getHostCapabilities = () => {
+		return this.hostCapabilities
+	}
+}
+
+export class HostCapabilities {
+	capabilities = {}
+	setCapability(name, version) {
+		this.capabilities[name] = version
+	}
+
+	constructor(capabilities) {
+		if(capabilities) {
+			for(let capability in capabilities) {
+				let version = new Version(capabilities[capability])
+				if(version.isValid) {
+					this.setCapability(capability, version)
+				}
+			}
+		}
+	}
+
+	satisfied = (capabilities) => {
+		for(let capability in this.capabilities) {
+			let satisfied = capabilities.hasCapability(capability, this.capabilities[capability])
+			if(!satisfied) {
+				return false
+			}
+		}
+		return true
+	}
+
+	hasCapability = (capability, version) => {
+		if (this.capabilities.hasOwnProperty(capability)) {
+			if(version.version == "*") {
+				return true;
+			} else {
+				return version.compareTo(this.capabilities[capability]) <= 0;
+			}
+		} else {
+			return false
+		}
+	}
+}
+
+export class Version {
+	version = null
+	major = 1
+	minor = 1
+	isValid = true
+
+	constructor(version) {
+		this.version = version
+		let regEx = /(\d+).(\d+)/gi;
+		let matches = regEx.exec(this.version);
+		if (matches != null && matches.length == 3) {
+			this.major = parseInt(matches[1])
+			this.minor = parseInt(matches[2])
+		} else if(version != '*') {
+			this.isValid = false
+		}
+	}
+
+	compareTo(other) {
+        if (!this.isValid || !other.isValid) {
+            return 1
+        }
+ 		if (this.major > other.major) {
+            return 1;
+        } else if (this.major < other.major) {
+            return -1;
+        } else if (this.minor > other.minor) {
+            return 1; 
+        } else if (this.minor < other.minor) {
+            return -1;
+        }
+        return 0;
+    }
 }
 
 export const defaultHostConfig = {
@@ -803,16 +884,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -838,16 +919,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -860,7 +941,7 @@ export const defaultHostConfig = {
 			}
 		},
 		good: {
-			"backgroundColor": "#DD54A254",
+			"backgroundColor": "#DD027502",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -871,16 +952,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -907,15 +988,15 @@ export const defaultHostConfig = {
 				},
 				"good": {
 					"default": "#FFFFFF",
-					"subtle": "#DD54A254"
+					"subtle": "#DD027502"
 				},
 				"warning": {
 					"default": "#FFFFFF",
-					"subtle": "#DDC3AB23"
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
 					"default": "#FFFFFF",
-					"subtle": "#DDFF0000"
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -928,7 +1009,7 @@ export const defaultHostConfig = {
 			},
 		},
 		attention: {
-			"backgroundColor": "#DDC3AB23",
+			"backgroundColor": "#DDB75C00",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -939,16 +1020,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -972,16 +1053,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1005,16 +1086,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1038,16 +1119,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",

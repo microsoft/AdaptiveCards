@@ -36,6 +36,10 @@ export default class Renderer extends React.Component {
     }
 
     customHostConfig = {
+        hostCapabilities: {
+            adaptiveCards:'1.2',
+            acTest:'1.3'
+        },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
         fontSizes: {
@@ -64,11 +68,46 @@ export default class Renderer extends React.Component {
 
         // Create a data binding context, and set its $root property to the
         // data object to bind the template to
-        var context = new ACData.EvaluationContext();
-        context.$root = {
-            name: "Matt Hidinger",
-            stockName: "Microsoft Corp (NASDAQ: MSFT)",
-            stockValue: "75.30"
+        var context = {
+            $root: {
+                "name": "Matt",
+                "photo": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                "manager": {
+                    "name": "Thomas",
+                    "title": "PM Lead"
+                },
+                "message": "{\"type\":\"Deployment\",\"buildId\":\"9542982\",\"releaseId\":\"129\",\"buildNumber\":\"20180504.3\",\"releaseName\":\"Release-104\",\"repoProvider\":\"GitHub\"}",
+                "peers": [
+                    {
+                        "name": "Lei",
+                        "title": "Sr Program Manager"
+                    },
+                    {
+                        "name": "Andrew",
+                        "title": "Program Manager II"
+                    },
+                    {
+                        "name": "Mary Anne",
+                        "title": "Program Manager"
+                    }
+                ],
+                "stockName": "Microsoft Corp (NASDAQ: MSFT)",
+                "stockValue": "75.30",
+                "title": "Publish Adaptive Card Schema",
+                "description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+                "creator": {
+                    "name": "Matt Hidinger",
+                    "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
+                },
+                "createdUtc": "2017-02-14T06:08:39Z",
+                "viewUrl": "https://adaptivecards.io",
+                "properties": [
+                    { "key": "Board", "value": "Adaptive Cards" },
+                    { "key": "List", "value": "Backlog" },
+                    { "key": "Assigned to", "value": "Matt Hidinger" },
+                    { "key": "Due date", "value": "Not set" }
+                ]
+            }
         }
 
         // "Expand" the template - this generates the final payload for the Adaptive Card,
@@ -103,6 +142,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // containerStyle={{width:100, height: 100, flexGrow:1, backgroundColor: 'lightblue'}} //we can also set the style for the adaptive card
                         // contentHeight={500} //we can also set the height of the adaptive card
                         ref="adaptiveCardRef" />
                 }
