@@ -179,7 +179,7 @@ using namespace AdaptiveCards;
     auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
-        if (*firstelem != elem) {
+        if (*firstelem != elem && prevStretchableElem) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:elem
                                                         forSuperview:view
                                                       withHostConfig:[config getHostConfig]];
