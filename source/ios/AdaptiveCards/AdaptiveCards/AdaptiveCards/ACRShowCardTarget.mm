@@ -88,6 +88,7 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
+    _button.selected = !_button.selected;
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
