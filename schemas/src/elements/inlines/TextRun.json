@@ -6,7 +6,7 @@
   "properties": {
     "text": {
       "type": "string",
-      "description": "Text to display",
+      "description": "Text to display. Markdown is not supported.",
       "required": true
     },
     "color": {
