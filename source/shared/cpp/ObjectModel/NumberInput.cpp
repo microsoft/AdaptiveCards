@@ -8,8 +8,8 @@
 using namespace AdaptiveSharedNamespace;
 
 NumberInput::NumberInput() :
-    BaseInputElement(CardElementType::NumberInput), m_value(std::numeric_limits<int>::max()),
-    m_max(std::numeric_limits<int>::max()), m_min(std::numeric_limits<int>::min())
+    BaseInputElement(CardElementType::NumberInput), m_value(0), m_max(std::numeric_limits<int>::max()),
+    m_min(std::numeric_limits<int>::min())
 {
     PopulateKnownPropertiesSet();
 }
@@ -28,7 +28,7 @@ Json::Value NumberInput::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max;
     }
 
-    if (m_value != std::numeric_limits<int>::max())
+    if (m_value != 0)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
     }
@@ -88,14 +88,15 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
     std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, std::numeric_limits<int>::max()));
+    numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
     numberInput->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
     numberInput->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
 
     return numberInput;
 }
 
-std::shared_ptr<BaseCardElement> NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseCardElement>
+NumberInputParser::DeserializeFromString(ParseContext& context, const std::string& jsonString)
 {
     return NumberInputParser::Deserialize(context, ParseUtil::GetJsonValueFromString(jsonString));
 }

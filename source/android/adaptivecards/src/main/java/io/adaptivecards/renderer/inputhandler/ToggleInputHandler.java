@@ -37,4 +37,21 @@ public class ToggleInputHandler extends BaseInputHandler
         CheckBox checkBox = getCheckBox();
         checkBox.setChecked(value.equals(toggleInput.GetValueOn()));
     }
+
+    @Override
+    public boolean isValid()
+    {
+        boolean isValid = true;
+
+        // Due to toggle not working as all other inputs where isRequired can be satisfied
+        // with checking on empty values, we check on the state of the checkBox
+        if (m_baseInputElement.GetIsRequired())
+        {
+            isValid = getCheckBox().isChecked();
+        }
+
+        showValidationErrors(isValid);
+
+        return isValid;
+    }
 }
