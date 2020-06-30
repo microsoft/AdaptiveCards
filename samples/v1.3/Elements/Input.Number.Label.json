@@ -18,7 +18,7 @@
 		{
 			"type": "Input.Number",
 			"id": "input3",
-			"label": "Longer label to verify label wrapping for an Input.Number"
+			"label": "Longer label to verify label wrapping for an Input.Number. If that was not long enough, then this should make it long enough. Did you know that slugs have four noses?"
 		}
 	],
 	"actions": [

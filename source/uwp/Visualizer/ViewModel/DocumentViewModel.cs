@@ -274,4 +274,5 @@ namespace AdaptiveCardVisualizer.ViewModel
             */
         }
     }
+    
 }
