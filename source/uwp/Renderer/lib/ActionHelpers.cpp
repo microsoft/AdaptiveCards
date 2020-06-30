@@ -443,6 +443,13 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
+        if (actionType == ABI::AdaptiveNamespace::ActionType::Submit)
+        {
+            ComPtr<IAdaptiveSubmitAction> submitAction;
+            THROW_IF_FAILED(localInlineAction.As(&submitAction));
+            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(submitAction.Get(), renderArgs));
+        }
+
         // Create a grid to hold the text box and the action button
         ComPtr<IGridStatics> gridStatics;
         THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Grid).Get(), &gridStatics));
