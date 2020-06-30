@@ -136,11 +136,10 @@
 		"spacing": 10
 	},
 	"inputs": {
-		"validationBehavior": "onFocusLost",
-		"inputLabels": {
-			"requiredSuffix": "*",
+		"label": {
 			"inputSpacing": "small",
 			"requiredInputs": {
+				"suffix": " *",
 				"weight": "bolder",
 				"color": "attention",
 				"size": "medium"
