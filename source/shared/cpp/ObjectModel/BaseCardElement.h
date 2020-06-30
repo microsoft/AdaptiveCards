@@ -48,9 +48,10 @@ namespace AdaptiveSharedNamespace
 
     protected:
         static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
-        void PopulateKnownPropertiesSet();
 
     private:
+        void PopulateKnownPropertiesSet();
+
         CardElementType m_type;
         Spacing m_spacing;
         HeightType m_height;

@@ -13,7 +13,7 @@ module.exports = (env, argv) => {
 		"react-dom": "ReactDOM",
 		"adaptivecards": "AdaptiveCards",
 		...(isLocalBuild ? {} : {
-			"office-ui-fabric-react": "fabric"
+			"@fluentui/react": "fabric"
 		})
 	}];
 

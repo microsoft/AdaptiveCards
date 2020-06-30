@@ -14,13 +14,14 @@
 * [v1_0](versions.md#static-v1_0)
 * [v1_1](versions.md#static-v1_1)
 * [v1_2](versions.md#static-v1_2)
+* [v1_3](versions.md#static-v1_3)
 * [vNext](versions.md#static-vnext)
 
 ## Properties
 
 ### `Static` latest
 
-▪ **latest**: *[Version](version.md)‹›* = Versions.v1_2
+▪ **latest**: *[Version](version.md)‹›* = Versions.v1_3
 
 ___
 
@@ -39,6 +40,12 @@ ___
 ### `Static` v1_2
 
 ▪ **v1_2**: *[Version](version.md)‹›* = new Version(1, 2)
+
+___
+
+### `Static` v1_3
+
+▪ **v1_3**: *[Version](version.md)‹›* = new Version(1, 3)
 
 ___
 

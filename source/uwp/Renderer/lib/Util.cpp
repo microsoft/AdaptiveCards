@@ -1437,8 +1437,7 @@ HRESULT JsonObjectToJsonCpp(_In_ ABI::Windows::Data::Json::IJsonObject* jsonObje
     std::string jsonString;
     RETURN_IF_FAILED(JsonObjectToString(jsonObject, jsonString));
 
-    Json::Value value = ParseUtil::GetJsonValueFromString(jsonString);
-    *jsonCppValue = value;
+    *jsonCppValue = ParseUtil::GetJsonValueFromString(jsonString);
 
     return S_OK;
 }

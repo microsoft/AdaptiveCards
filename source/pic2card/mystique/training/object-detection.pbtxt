@@ -14,4 +14,7 @@ item {
     id: 4
     name: 'actionset'
 }
-
+item {
+    id: 5
+    name: 'image'
+}

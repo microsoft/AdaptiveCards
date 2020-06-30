@@ -55,11 +55,11 @@ namespace AdaptiveSharedNamespace
 
         Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-        template<typename T>
+        template<typename T, typename Fn>
         T GetEnumValue(const Json::Value& json,
                        AdaptiveCardSchemaKey key,
                        T defaultEnumValue,
-                       std::function<T(const std::string& name)> enumConverter,
+                       Fn enumConverter,
                        bool isRequired = false);
 
         template<typename T>
@@ -103,11 +103,11 @@ namespace AdaptiveSharedNamespace
         std::string ToLowercase(const std::string& value);
     };
 
-    template<typename T>
+    template<typename T, typename Fn>
     T ParseUtil::GetEnumValue(const Json::Value& json,
                               AdaptiveCardSchemaKey key,
                               T defaultEnumValue,
-                              std::function<T(const std::string& name)> enumConverter,
+                              Fn enumConverter,
                               bool isRequired)
     {
         std::string propertyValueStr = "";

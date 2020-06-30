@@ -488,6 +488,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello");
             Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ hello");
+            Assert::AreEqual<std::string>("<ul><li>hello</li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleSimpleValidListTest)
@@ -498,6 +500,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello</li><li>world</li><li>hi</li></ul>", parser2.TransformToHtml());
             MarkDownParser parser3("* hello\n- Hi");
             Assert::AreEqual<std::string>("<ul><li>hello</li><li>Hi</li></ul>", parser3.TransformToHtml());
+            MarkDownParser parser4("+ hello\n+ world\n+ hi");
+            Assert::AreEqual<std::string>("<ul><li>hello</li><li>world</li><li>hi</li></ul>", parser4.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_ListTestsWithInterHyphen)
@@ -506,6 +510,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world - hello hello");
             Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("- hello world + hello hello");
+            Assert::AreEqual<std::string>("<ul><li>hello world + hello hello</li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithHyphenTests)
@@ -514,6 +520,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li><li>winner winner chicken dinner</li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world * hello hello\r* winner winner chicken dinner");
             Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li>winner winner chicken dinner</li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ hello world * hello hello\r+ winner winner chicken dinner");
+            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li>winner winner chicken dinner</li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithHyphenAndEmphasisTests)
@@ -522,6 +530,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello world - hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world * hello hello\r* ***winner* winner** chicken dinner");
             Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ hello world * hello hello\r+ ***winner* winner** chicken dinner");
+            Assert::AreEqual<std::string>("<ul><li>hello world * hello hello</li><li><strong><em>winner</em> winner</strong> chicken dinner</li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_MultipleListWithLinkTest)
@@ -530,6 +540,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* hello world\r* hello hello\r* new site = [adaptive card](www.adaptivecards.io)");
             Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ hello world\r+ hello hello\r+ new site = [adaptive card](www.adaptivecards.io)");
+            Assert::AreEqual<std::string>("<ul><li>hello world</li><li>hello hello</li><li>new site = <a href=\"www.adaptivecards.io\">adaptive card</a></li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_PtagedBlockElementFollowedByListTest)
@@ -540,6 +552,9 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser2("Hello\r* my list");
             Assert::AreEqual<std::string>("<p>Hello</p><ul><li>my list</li></ul>", parser2.TransformToHtml());
             Assert::AreEqual<bool>(true, parser2.HasHtmlTags());
+            MarkDownParser parser3("Hello\r+ my list");
+            Assert::AreEqual<std::string>("<p>Hello</p><ul><li>my list</li></ul>", parser3.TransformToHtml());
+            Assert::AreEqual<bool>(true, parser3.HasHtmlTags());
         }
 
         TEST_METHOD(ListTest_ListFollowedByPtagedBlockElementTest)
@@ -548,6 +563,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser.TransformToHtml());
             MarkDownParser parser2("* my list\r\rHello");
             Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ my list\r\rHello");
+            Assert::AreEqual<std::string>("<ul><li>my list</li></ul><p>Hello</p>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_ListFollowedWithNewLineCharTest)
@@ -556,6 +573,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser.TransformToHtml());
             MarkDownParser parser2("* my list\rHello");
             Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser2.TransformToHtml());
+            MarkDownParser parser3("+ my list\rHello");
+            Assert::AreEqual<std::string>("<ul><li>my list\rHello</li></ul>", parser3.TransformToHtml());
         }
 
         TEST_METHOD(ListTest_InvalidListStringReturnedUnchangedTest)

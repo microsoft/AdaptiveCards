@@ -48,10 +48,9 @@ namespace AdaptiveSharedNamespace
 
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
-    protected:
+    private:
         void PopulateKnownPropertiesSet();
 
-    private:
         static constexpr const char* const defaultStyle = "default";
 
         std::string m_title;
