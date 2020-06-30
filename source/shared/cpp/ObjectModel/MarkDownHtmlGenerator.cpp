@@ -95,6 +95,11 @@ void MarkDownEmphasisHtmlGenerator::PushBoldTag()
 
 std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
 {
+    if (m_isHead)
+    {
+        html << "<p>";
+    }
+
     if (m_numberOfUnusedDelimiters)
     {
         const size_t startIdx = m_token.size() - m_numberOfUnusedDelimiters;
@@ -105,11 +110,6 @@ std::string MarkDownLeftEmphasisHtmlGenerator::GenerateHtmlString()
     for (auto itr = m_tags.rbegin(); itr != m_tags.rend(); ++itr)
     {
         html << *itr;
-    }
-
-    if (m_isHead)
-    {
-        return "<p>" + html.str();
     }
 
     if (m_isTail)
@@ -132,6 +132,11 @@ void MarkDownRightEmphasisHtmlGenerator::PushBoldTag()
 
 std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
 {
+    if (m_isHead)
+    {
+        html << "<p>";
+    }
+
     // append tags;
     for (auto itr = m_tags.begin(); itr != m_tags.end(); ++itr)
     {
@@ -143,11 +148,6 @@ std::string MarkDownRightEmphasisHtmlGenerator::GenerateHtmlString()
     {
         const size_t startIdx = m_token.size() - m_numberOfUnusedDelimiters;
         html << m_token.substr(startIdx, std::string::npos);
-    }
-
-    if (m_isHead)
-    {
-        return "<p>" + html.str();
     }
 
     if (m_isTail)

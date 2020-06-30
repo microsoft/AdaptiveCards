@@ -42,6 +42,7 @@ using namespace AdaptiveCards;
     // ACRViewController does not render adaptiveCard until viewDidLoad calls render
     ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width delegate:acrActionDelegate];
     result.view = view;
+    result.warnings = view.warnings;
     result.succeeded = YES;
     return result;
 }
@@ -62,6 +63,7 @@ using namespace AdaptiveCards;
     // ACRView does not render adaptiveCard until viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card hostconfig:config frame:frame delegate:acrActionDelegate];
     result.viewcontroller = viewcontroller;
+    result.warnings = ((ACRView *)viewcontroller.view).warnings;
     result.succeeded = YES;
     return result;
 }
@@ -129,20 +131,13 @@ using namespace AdaptiveCards;
 
     [rootView waitForAsyncTasksToFinish];
 
-    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
         adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [verticalView addPaddingSpace];
     }
 
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
-
-    // Dont add the trailing space if the vertical content alignment is top/default
-    if ((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
-        (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
-         !(verticalView.hasStretchableView))) {
-        trailingBlankSpace = [verticalView addPaddingSpace];
-    }
 
     [[rootView card] setInputs:inputs];
 

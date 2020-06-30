@@ -1,5 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+if (typeof hljs !== 'undefined') {
+	hljs.configure({
+		tabReplace: '  '
+	});
+
+	hljs.initHighlightingOnLoad();
+}
+
 $(function () {
 	if(localStorage.getItem("enable-templating") === null) {
 		localStorage.setItem("enable-templating", true);
@@ -315,7 +323,7 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
-	// Loop videos 
+	// Loop videos
 	$("video").each(function () {
 		var $video = $(this);
 		var loopDelay = $video.attr("data-loop-delay");
@@ -330,14 +338,6 @@ $(function () {
 
 
 	$('.ac-properties table').addClass("w3-table w3-bordered");
-
-	if (typeof hljs !== 'undefined') {
-		hljs.configure({
-			tabReplace: '  '
-		});
-
-		hljs.initHighlightingOnLoad();
-	}
 
 
 	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
@@ -377,7 +377,7 @@ $(function () {
 
 				$(".show-with-templating").css("display", "block");
 				$(".hide-with-templating").css("display", "none");
-		
+
 				$.getJSON(templateUrl, function (templateJson) {
 					$.getJSON(dataUrl, function (dataJson) {
 						renderCard(el, templateJson, dataJson);
@@ -408,31 +408,9 @@ $(function () {
 
 		if (dataJson) {
 			var template = new ACData.Template(json);
-			var context = new ACData.EvaluationContext();
-
-			context.registerFunction("format", function(param0, param1) {
-				switch (param1) {
-					case ("%"):
-						return (param0 * 100).toFixed(2) + "%";
-
-					default:
-						return "Unknown format: " + param1;
-				}
-			});
-
-			context.registerFunction("parseDateFromEpoch", function(param) {
-				try {
-					let d = new Date(param);
-					let timeZoneOffset = ("0" + new Date().getTimezoneOffset() / 60).slice(-2);
-					return d.toISOString().substr(0, 19) + "-03:00";
-				} catch(e) {
-					return "Unable to parse epoch";
-				}
-
-			});
-
-			context.$root = dataJson;
-			adaptiveCard.parse(template.expand(context));
+			adaptiveCard.parse(template.expand({
+				$root: dataJson
+			}));
 			renderedCard = adaptiveCard.render();
 		} else {
 			adaptiveCard.parse(json);
@@ -453,19 +431,37 @@ $(function () {
 		copyToClipboard(content);
 	});
 
+	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		if(!designerUrl || !cardUrl) {
+			alert("Whoops, something went wrong. Please click the Feedback button in the top right and let us know what happened.");
+			return;
+		}
+
+		designerUrl += "?card=" + cardUrl;
+
+		if(dataUrl) {
+			designerUrl += "&data=" + dataUrl
+		}
+
+		window.open(designerUrl);
+	}
+
 	$("button.try-adaptivecard").click(function (e) {
-		var $button = $(this);
-		if ($button.attr("data-designer-url")) {
-			window.open($button.attr("data-designer-url"));
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var designerUrl = cardEl.attr("data-designer-url");
+		var cardUrl = cardEl.attr("data-card-url");
+		var dataUrl = cardEl.attr("data-data-url");
+		var templateUrl = cardEl.attr("data-template-url");
+
+		if (enableTemplating && dataUrl && templateUrl) {
+			launchDesigner(designerUrl, templateUrl, dataUrl);
 		} else {
-			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
-			var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-			if (isAbsolutelUri.test(cardUrl) === false) {
-				cardUrl = window.location.href + cardUrl;
-			}
-			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
+			launchDesigner(designerUrl, cardUrl);
 		}
 	});
+
+
 
 	$("#feedback-button").click(function (e) {
 		e.preventDefault();
@@ -503,8 +499,7 @@ $(function () {
 
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
-	var $allVideos = $("iframe"),
-		$fluidEl = $(".blog");
+	var $allVideos = $("iframe");
 
 	// Figure out and save aspect ratio for each video
 	$allVideos.each(function () {
@@ -516,12 +511,11 @@ $(function () {
 
 	// When the window is resized
 	$(window).resize(function () {
-		//debugger;
 
-		var newWidth = $fluidEl.width() - 32;
 		// Resize all videos according to their own aspect ratio
 		$allVideos.each(function () {
 			var $el = $(this);
+			var newWidth = $el.parent().innerWidth();
 			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
 		});
 

@@ -26,7 +26,9 @@ using namespace AdaptiveCards;
 
 void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
-    view.hidden = !(visibilityInfo->GetIsVisible());
+    if (!visibilityInfo->GetIsVisible()) {
+        view.hidden = YES;
+    }
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
@@ -35,7 +37,9 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
-    view.hidden = !(visibilityInfo->GetIsVisible());
+    if (!visibilityInfo->GetIsVisible()) {
+        view.hidden = YES;
+    }
     NSMutableString *hashkey = [NSMutableString stringWithCString:visibilityInfo->GetId().c_str()
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
@@ -80,12 +84,10 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
         if (imgView) {
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
-            [containerView addSubview:imgView];
-            [containerView sendSubviewToBack:imgView];
+            [containerView insertSubview:imgView atIndex:0];
 
             if (img) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                // (ACRView::observeValueForKeyPath)
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
             }
         }
@@ -278,15 +280,42 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         case ImageFillMode::Cover:
         default: {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
+            // Fill Mode Description
+            // ScaleAspectFill increases one dimension proportionally if
+            // corresponding dimension increases
+            // find which dimension is in deficit and act accordingly
+            // when both dimensions are in deficit find the most deficient dimension
+            // and increase
+            // center the modified image view to the target view.
 
-            if (superView.frame.size.width > imageView.frame.size.width) {
+            CGSize targetViewSize = superView.frame.size;
+            CGSize sourceSize = image.size;
+            BOOL isDeficientInWidth = NO;
+            BOOL isDeficientInHeight = NO;
+
+            if (sourceSize.width < targetViewSize.width) {
+                isDeficientInWidth = YES;
+            }
+
+            if (sourceSize.height < targetViewSize.height) {
+                isDeficientInHeight = YES;
+            }
+
+            if (isDeficientInWidth and isDeficientInHeight) {
+                CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
+                CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
+                // we choose one with bigger difficienty in ratio, and by increasing the
+                // dimension, the other dimension will be increaed by the same % since it's
+                // cover mode
+                if (widthDeficiencyRaito >= heightDifficiencyRaito) {
+                    [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+                } else {
+                    [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+                }
+            } else if (isDeficientInWidth) {
                 [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-            } else if (superView.frame.size.height > imageView.frame.size.height) {
-                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active =
-                    YES;
-            } else { // if background image is bigger than the superview; let it retain its
-                     // dimensions
-                imageView.translatesAutoresizingMaskIntoConstraints = YES;
+            } else if (isDeficientInHeight) {
+                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
             }
 
             [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
@@ -466,7 +495,7 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet)
+                                   UIStackView *actionSet)
 {
     std::shared_ptr<BaseElement> fallbackBaseElement = nullptr;
     std::shared_ptr<BaseActionElement> elem = acoElem.element;

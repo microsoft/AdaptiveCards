@@ -91,14 +91,14 @@ export class DropDownPopupControl extends PopupControl {
 
         switch (e.keyCode) {
             case Constants.KEY_TAB:
-                this.close();
+                this.closePopup(true);
 
                 break;
             case Constants.KEY_ENTER:
                 if (this.selectedIndex >= 0) {
                     this._owner.selectedIndex = this.selectedIndex;
 
-                    this.close();
+                    this.closePopup(false);
                 }
 
                 break;
@@ -166,7 +166,7 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
 
     private itemClicked(item: DropDownItem) {
         this.selectedItem = item;
-        this.closePopup();
+        this.closePopup(false);
 
         this.rootElement.focus();
     }

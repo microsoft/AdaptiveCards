@@ -12,28 +12,27 @@ export class BaseModel {
     isFallbackActivated = false;
     fallback;
     fallbackType;
+    requires;
 
     constructor(payload, parent) {
         this.parent = parent;
         this.id = payload.id;
         this.spacing = payload.spacing;
         this.separator = payload.separator;
+        this.requires = payload.requires;
         if (this.id === undefined) {
             this.id = Utils.generateID();
         }
         if (payload.selectAction) {
             this.selectAction = payload.selectAction;
         }
-        if (payload.isVisible){
-            this.isVisible = payload.isVisible;
-        }
-        if (payload.fallback){
-            if (payload.fallback == "drop"){
+        this.isVisible = payload.isVisible !== undefined ? payload.isVisible : true;
+        if (payload.fallback) {
+            if (payload.fallback == "drop") {
                 this.fallbackType = "drop"
-            }else{
+            } else {
                 this.fallback = ModelFactory.createElement(payload.fallback, parent);
             }
         }
-        
     }
 }

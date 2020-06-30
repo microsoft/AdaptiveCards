@@ -1,0 +1,12 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"alwaysStrict": true,
+		"strict": true,
+		"composite": true,
+		"outDir": "./dist",
+		"target": "ES6",
+		"module": "commonjs"
+	},
+	"files": ["./src/index.ts" ]
+}

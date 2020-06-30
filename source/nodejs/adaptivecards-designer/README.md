@@ -1,4 +1,4 @@
-# Adaptive Card Designer (Beta)
+# Adaptive Card Designer
 
 The Adaptive Card Designer provides a rich, interactive design-time experience for authoring [adaptive cards](https://adaptivecards.io). 
 
@@ -9,10 +9,6 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 ## What is this package?
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
-
-## Beta notice 
-
-**NOTE**: The designer is currently considered beta and **may have breaking changes** in the public API as we get feedback.
 
 ## Usage
 
@@ -38,25 +34,29 @@ To load the designer component you have 2 options:
 <!-- REQUIRED: monaco-editor is required for the designer to work -->
 <script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
-<!-- DESIGNER OPTION A: Card Designer + Standard Hosts -->
-<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer.min.js"></script>
+<!-- DESIGNER OPTION A: Card Designer + Standard Hosts 
+	(replace <VERSION> with the version you want to load, or "latest" for latest)
+-->
+<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer.min.js"></script>
 
-<!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts -->
-<!--<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer-standalone.min.js"></script>-->
+<!-- DESIGNER OPTION B: Standalone Card Designer, without standard Hosts 
+	(replace <VERSION> with the version you want to load, or "latest" for latest)
+	<script src="https://unpkg.com/adaptivecards-designer@<VERSION>/dist/adaptivecards-designer-standalone.min.js"></script>
+-->
 
 <script type="text/javascript">
 	window.onload = function() {
-
 		let hostContainers = [];
 
 		// Optional: add the default Microsoft Host Apps (see docs below)
-		// hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+		// hostContainers = ACDesigner.defaultMicrosoftHosts;
 		 
 		let designer = new ACDesigner.CardDesigner(hostContainers);
 
 		// The designer requires various CSS and image assets to work properly, 
 		// If you've loaded the script from a CDN it needs to know where these assets are located
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.7.0/dist";
+		// Use the same <VERSION> that you used above
+		designer.assetPath = "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
 
 		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
 		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
@@ -101,14 +101,15 @@ import "adaptivecards-designer/dist/adaptivecards-designer.css";
 //import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-
 	ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
 		result.outputHtml = new markdownit().render(text);
 		result.didProcess = true;
 	}
 
 	let hostContainers = [];
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
+	
+	// Optional: add the default Microsoft Host Apps (see docs below)
+	// hostContainers = ACDesigner.defaultMicrosoftHosts;
 
 	let designer = new ACDesigner.CardDesigner(hostContainers);
 	designer.attachTo(document.getElementById("designerRootHost"));
@@ -125,7 +126,6 @@ The following plugins and configuration should be enough to boostrap the designe
 * **copy-webpack-plugin** [OPTIONAL] - If you use any of the default Host Configs, then the designer requires a few CSS and image assets be available. This plugin as described below copies them from the designer package into your output bundle
 
 ```js
-...
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
@@ -161,25 +161,19 @@ The Designer makes it easy to load a sample from a catalog. Simply create a file
 
 ```json
 [
-	{
-		"displayName": "My Sample Payload",
-		"cardPayloadUrl": "url/to/the/payload.json"
-	}
+    {
+        "displayName": "My Sample Payload",
+		"cardPayloadUrl": "url/to/the/payload.json",
+		"dataSampleUrl": "optional/url/to/sample/data.json
+    }
 ]
 ```
 
 And then set the `sampleCatalogueUrl` to the location of that file:
 
 ```js
-	/* Configure "Open Sample" tooobar button */
-	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
-```
-
-If you don't want to load via a sample, you can hide the toolbar button
-
-```js
-	/* Hide the "Open Sample" toolbar button */
-	designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
+/* Configure "Open Sample" tooobar button */
+designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
 ```
 
 ## Advanced configuration
@@ -187,53 +181,83 @@ If you don't want to load via a sample, you can hide the toolbar button
 For advanced configuration of the designer use the following APIs.
 
 ```js
+// Turn general support for data binding (templating) on or off. When set to false, this flag overrides showDataStructureToolbox and showSampleDataEditorToolbox.
+ACDesigner.GlobalSettings.enableDataBindingSupport: boolean = true;
 
-    // Configure toolbox titles
-    ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
-    ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
-    ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
-    ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
-    ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
-    ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
+// Show or hide the "Data structure" toolbox. NOTE: the "Data structure" toolbox is currently non functional and will likely be removed in a future release
+ACDesigner.GlobalSettings.showDataStructureToolbox: boolean = false;
 
-	/* Add the default Microsoft Host Apps 	*/ 
- 
-	hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-	hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-	hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-	hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-	hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-	hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-	hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-	hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
+// Show or hide the "Sample Data" toolbox.
+ACDesigner.GlobalSettings.showSampleDataEditorToolbox: boolean = true;
 
+// Show or hide the target version picker.
+ACDesigner.GlobalSettings.showVersionPicker: boolean = true;
 
-	/* Modify the toolbar */
-    let myButton = new Designer.ToolbarButton(
-        "myButton",
-        "My button",
-        null,
-        (sender) => { alert("My button was clicked"); });
-    myButton.separator = true;
-    designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
+// Controls whether the target version should change according to the selected  host application. Each host application is associated with a maximum supported target version.
+ACDesigner.GlobalSettings.selectedHostContainerControlsTargetVersion: boolean = true;
 
-	/* Collapse certain panes by default (BEFORE designer attached)	*/
-	designer.treeViewPane.collapse();
-	designer.jsonEditorPane.collapse();
-	
+// Controls whether a warning message should be displayed when the selected target version is greater than the version supported by the selected host application. This warning is meant to inform the user that not all features they're designing their card with will work in the target host.
+ACDesigner.GlobalSettings.showTargetVersionMismatchWarning: boolean = true;
 
-	/* Set the card payload in the designer: (AFTER designer attached) */ 
-	designer.setCard(
-		{
-			type: "AdaptiveCard",
-			version: "1.0",
-			body: [
-				{
-					type: "TextBlock",
-					text: "Hello world"
-				}
-			]
-		}
-	);
+/* Configure toolbox titles */
+ACDesigner.Strings.toolboxes.cardEditor.title = "Custom card editor title";
+ACDesigner.Strings.toolboxes.cardStructure.title = "Custom card structure title";
+ACDesigner.Strings.toolboxes.dataStructure.title = "Custom data structure title";
+ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title";
+ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
+ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
+
+/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
+ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
+
+/* Modify the Actions flyout (BEFORE called attachTo) */
+Adaptive.GlobalRegistry.actions.unregister("Action.ToggleVisibility");
+ACDesigner.CardDesignerSurface.actionPeerRegistry.unregisterPeer(Adaptive.ToggleVisibilityAction);
+
+/* Include all built-in host apps */
+let hostContainers: ACDesigner.HostContainer[] = ACDesigner.defaultMicrosoftHosts;
+let designer = new ACDesigner.CardDesigner(hostContainers);
+
+/* Or pick and choose which built-in host apps to include, and/or add your custom host app */
+let hostContainers: ACDesigner.HostContainer[] = [
+	new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"),
+	new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"),
+	new MyCustomContainerClass("My Custom Container", "path-to-my-custom-container-stylesheet.css")
+];
+let designer = new ACDesigner.CardDesigner(hostContainers);
+
+/* Modify the toolbar */
+let myButton = new Designer.ToolbarButton(
+	"myButton",
+	"My button",
+	null,
+	(sender) => { alert("My button was clicked"); });
+myButton.separator = true;
+
+designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarCommands.HostAppPicker);
+
+/* Collapse certain panes by default (AFTER calling attachTo)	*/
+designer.treeViewToolbox.collapse();
+designer.jsonEditorToolbox.collapse();
+
+/* Set the card payload in the designer: (AFTER calling attachTo */ 
+designer.setCard(
+	{
+		type: "AdaptiveCard",
+		version: "1.0",
+		body: [
+			{
+				type: "TextBlock",
+				text: "Hello world"
+			}
+		]
+	}
+);
+
+/* Set sample data (AFTER calling attachTo) */ 
+designer.sampleData = {
+	name: "John Doe",
+	phone: "123-123-1234"
 };
 ```

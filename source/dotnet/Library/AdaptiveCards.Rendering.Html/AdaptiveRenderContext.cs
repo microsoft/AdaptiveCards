@@ -144,7 +144,7 @@ namespace AdaptiveCards.Rendering.Html
                 if (color.Length == 9)
                 {
                     var opacity = (float)Convert.ToByte(color.Substring(1, 2), 16) / Byte.MaxValue;
-                    return $"rgba({Convert.ToByte(color.Substring(3, 2), 16)}, {Convert.ToByte(color.Substring(5, 2), 16)}, {Convert.ToByte(color.Substring(7, 2), 16)}, {opacity.ToString("F")})";
+                    return $"rgba({Convert.ToByte(color.Substring(3, 2), 16)}, {Convert.ToByte(color.Substring(5, 2), 16)}, {Convert.ToByte(color.Substring(7, 2), 16)}, {opacity.ToString("F", System.Globalization.CultureInfo.InvariantCulture)})";
                 }
             }
             return color;

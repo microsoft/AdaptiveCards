@@ -16,6 +16,10 @@ export default payloads = [
     "json": require('./Action.ToggleVisibility.json')
   },
   {
+    "title": "AdaptiveCard.Requires.Fallback.json",
+    "json": require('./AdaptiveCard.Requires.Fallback.json')
+  },
+  {
     "title": "AdaptiveCard.MinVersion.json",
     "json": require('./AdaptiveCard.MinVersion.json')
   },
@@ -52,20 +56,52 @@ export default payloads = [
     "json": require('./BackgroundImage.Stretch.json')
   },
   {
+    "title": "BackgroundImage.Cover.MinHeight.json",
+    "json": require('./BackgroundImage.Cover.MinHeight.json')
+  },
+  {
     "title": "BackgroundImage.Repeat.json",
     "json": require('./BackgroundImage.Repeat.json')
+  },
+  {
+    "title": "BackgroundImage.Repeat.MinHeight.json",
+    "json": require('./BackgroundImage.Repeat.MinHeight.json')
   },
   {
     "title": "BackgroundImage.RepeatVertically.json",
     "json": require('./BackgroundImage.RepeatVertically.json')
   },
   {
+    "title": "BackgroundImage.RepeatVertically.MinHeight.json",
+    "json": require('./BackgroundImage.RepeatVertically.MinHeight.json')
+  },
+  {
     "title": "BackgroungImage.RepeatHorizontally.json",
     "json": require('./BackgroungImage.RepeatHorizontally.json')
   },
   {
+    "title": "BackgroungImage.RepeatHorizontally.MinHeight.json",
+    "json": require('./BackgroungImage.RepeatHorizontally.MinHeight.json')
+  },
+  {
+    "title": "Bleeding.ColumnSet.json",
+    "json": require('./Bleeding.ColumnSet.json')
+  },
+  {
     "title": "Bleed.json",
     "json": require('./Bleed.json')
+  },
+  {
+    "title": "Content.To.Fit.json",
+    "json": require('./Content-to-fit.json')
+  },
+  {
+    "title": "Container.Style.json",
+    "json": require('./Container.Style.json')
+  },
+  {
+    "title": "Container.MinHeight.json",
+    "json": require('./Container.MinHeight.json')
   },
   {
     "title": "Container.BackgroundImageRepeatHorizontally.json",

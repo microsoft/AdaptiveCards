@@ -91,12 +91,14 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     if (self) {
         self.accessibilityLabel = @"ACR Root View";
         _adaptiveCard = card;
+        _warnings = [[NSMutableArray<ACOWarning *> alloc] init];
+        // override default host config if user host config is provided
         if (config) {
             _hostConfig = config;
-            _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
-            _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
-            _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         }
+        _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
+        _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
+        _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         unsigned int padding = [_hostConfig getHostConfig] -> GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
         if (padding) {
@@ -135,6 +137,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
 
     [self callDidLoadElementsIfNeeded];
+
     return newView;
 }
 
@@ -520,7 +523,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             ACOBaseCardElement *baseCardElement = _imageContextMap[key];
             if (baseCardElement) {
                 ACRRegistration *reg = [ACRRegistration getInstance];
-                ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *renderer = (ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *)[reg getRenderer:[NSNumber numberWithInt:baseCardElement.type]];
+                ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *renderer = (ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *)[reg getRenderer:[NSNumber numberWithInt:static_cast<int>(baseCardElement.type)]];
                 if (renderer && [[renderer class] conformsToProtocol:@protocol(ACRIKVONotificationHandler)]) {
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
@@ -551,6 +554,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         if (!observerRemoved) {
             [self removeObserver:self forKeyPath:path onObject:object];
         }
+    } else if ([path isEqualToString:@"hidden"]) {
+        [super observeValueForKeyPath:path ofObject:object change:change context:context];
     }
 }
 
@@ -716,14 +721,19 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     return _actionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getSelectActionsTargetBuilderDirector
 {
     return _selectActionsTargetBuilderDirector;
 }
 
-- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
+- (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector
 {
     return _quickReplyTargetBuilderDirector;
+}
+
+- (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message
+{
+    [((NSMutableArray *)_warnings) addObject:[[ACOWarning alloc] initWith:statusCode message:message]];
 }
 
 @end
