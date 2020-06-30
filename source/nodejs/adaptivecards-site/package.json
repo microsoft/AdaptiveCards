@@ -43,6 +43,7 @@
     "jquery": "^3.4.1",
     "markdown-it": "^8.4.2",
     "marked-schema": "^0.1.4",
+    "md5": "^2.2.1",
     "minimist": "^1.2.5",
     "monaco-editor": "^0.20.0",
     "request": "^2.88.2",
@@ -51,6 +52,7 @@
     "typescript": "^3.9.5",
     "webpack": "^4.43.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "yaml-front-matter": "^4.1.0"
   }
 }
