@@ -16,14 +16,6 @@
 | **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
 
-**Inherited properties**
-
-| Property | Type | Required | Description | Version |
-| -------- | ---- | -------- | ----------- | ------- |
-| **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
-| **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
-| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
-
 
 ## items
 
