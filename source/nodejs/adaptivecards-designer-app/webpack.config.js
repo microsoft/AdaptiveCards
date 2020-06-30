@@ -24,10 +24,15 @@ module.exports = (env, argv) => {
 			extensions: [".ts", ".tsx", ".js"]
 		},
 		module: {
-			rules: [{
+			rules: [
+				{
 					test: /\.ts$/,
 					loader: "ts-loader",
 					exclude: /(node_modules|__tests__)/
+				},
+				{
+					test: /\.ttf$/,
+					loader: "file-loader"
 				},
 				{
 					test: /\.css$/,
@@ -41,11 +46,13 @@ module.exports = (env, argv) => {
 		},
 		plugins: [
 			//new CleanWebpackPlugin(['dist']),
-			new CopyWebpackPlugin([{
-				from: 'node_modules/adaptivecards-designer/dist/containers/*',
-				to: 'containers/',
-				flatten: true
-			}]),
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'node_modules/adaptivecards-designer/dist/containers/*',
+					to: 'containers/',
+					flatten: true
+				}]
+			}),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html"

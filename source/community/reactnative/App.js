@@ -73,8 +73,8 @@ export const myHostConfig =
                     subtle: "#DDcc3300"
                 },
                 good: {
-                    default: "#54a254",
-                    subtle: "#DD54a254"
+                    default: "#028A02",
+                    subtle: "#DD027502"
                 },
                 warning: {
                     default: "#e69500",
@@ -106,8 +106,8 @@ export const myHostConfig =
                     subtle: "#DDcc3300"
                 },
                 good: {
-                    default: "#54a254",
-                    subtle: "#DD54a254"
+                    default: "#028A02",
+                    subtle: "#DD027502"
                 },
                 warning: {
                     default: "#e69500",

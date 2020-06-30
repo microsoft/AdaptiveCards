@@ -127,7 +127,7 @@ class DebugEndpoint(PredictJson):
 
     def __init__(self, *args, **kwargs):
         super(PredictJson, self).__init__(*args, **kwargs)
-    
+
     def _get_card_object(self, bs64_img: str, card_format: str):
         """
         From base64 image generate debugging images from the adaptive
@@ -135,11 +135,11 @@ class DebugEndpoint(PredictJson):
 
         Make use of the frozen graph for inferencing.
         """
- 
+
         imgdata = base64.b64decode(bs64_img)
         image = Image.open(io.BytesIO(imgdata))
         debug = Debug(current_app.od_model)
         images = debug.main(image=image, card_format=card_format)
         return images
 
-    
+

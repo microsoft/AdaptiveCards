@@ -47,16 +47,21 @@ module.exports = (env, argv) => {
 			new MiniCssExtractPlugin({
 				filename: 'adaptivecards-controls.css',
 			}),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-controls.css',
-				to: '../lib/',
-				flatten: true
-			}]),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-controls.css',
-				to: '../dist/',
-				flatten: true
-			}])
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'src/adaptivecards-controls.css',
+					to: '../lib/',
+                	flatten:true
+				},
+				{
+					from: 'src/adaptivecards-controls.css',
+					to: '../dist/',
+                	flatten:true
+				}],
+				options: {
+				  concurrency: 8
+				}
+			})
 		]
 	};
 };

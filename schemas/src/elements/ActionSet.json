@@ -5,7 +5,7 @@
   "properties": {
     "actions": {
       "type": "Action[]",
-      "description": "The array of `Image` elements to show.",
+      "description": "The array of `Action` elements to show.",
       "required": true
     }
   },

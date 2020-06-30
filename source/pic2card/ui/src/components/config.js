@@ -52,48 +52,48 @@ export default {
                 foregroundColors: {
                     default: {
                         default: '#000000',
-                        subtle: '#767676'
+                        subtle: '#6f6f6f'
                     },
                     accent: {
                         default: '#0063B1',
                         subtle: '#0063B1'
                     },
                     attention: {
-                        default: '#FF0000',
-                        subtle: '#DDFF0000'
+                        default: '#ED0000',
+                        subtle: '#DDED0000'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
-                        default: '#c3ab23',
-                        subtle: '#DDc3ab23'
+                        default: '#B75C00',
+                        subtle: '#DDB75C00'
                     }
                 }
             },
             emphasis: {
-                backgroundColor: '#F0F0F0',
+                backgroundColor: '#F9F9F9',
                 foregroundColors: {
                     default: {
                         default: '#000000',
-                        subtle: '#767676'
+                        subtle: '#6f6f6f'
                     },
                     accent: {
                         default: '#2E89FC',
                         subtle: '#882E89FC'
                     },
                     attention: {
-                        default: '#FF0000',
-                        subtle: '#DDFF0000'
+                        default: '#ED0000',
+                        subtle: '#DDED0000'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
-                        default: '#c3ab23',
-                        subtle: '#DDc3ab23'
+                        default: '#B75C00',
+                        subtle: '#DDB75C00'
                     }
                 }
             },
@@ -121,8 +121,8 @@ export default {
                         subtle: '#DDcc3300'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
                         default: '#e69500',
@@ -154,8 +154,8 @@ export default {
                         subtle: '#DDcc3300'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
                         default: '#e69500',
@@ -187,8 +187,8 @@ export default {
                         subtle: '#DDcc3300'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
                         default: '#e69500',
@@ -220,8 +220,8 @@ export default {
                         subtle: '#DDcc3300'
                     },
                     good: {
-                        default: '#54a254',
-                        subtle: '#DD54a254'
+                        default: '#028A02',
+                        subtle: '#DD027502'
                     },
                     warning: {
                         default: '#e69500',

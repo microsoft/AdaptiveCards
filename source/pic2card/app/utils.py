@@ -1,7 +1,6 @@
 """ utils for the app """
 import os
 import base64
-import json
 
 
 def get_templates(templates_path='assets/samples'):
