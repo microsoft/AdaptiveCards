@@ -61,6 +61,12 @@ The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templ
 
 [![Version](https://img.shields.io/npm/v/adaptivecards-templating.svg)](https://www.npmjs.com/package/adaptivecards-templating)
 
+**Breaking Change**
+
+*adaptivecards-reactnative v2.2+ uses *adaptivecards-templating v1.0.0-rc.0* which migrated from older data binding [syntax](https://docs.microsoft.com/en-us/adaptive-cards/templating/#breaking-changes-as-of-may-2020) to [Adaptive Expression Language](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-adaptive-expressions?view=azure-bot-service-4.0).
+
+So data-binding for older templates will not work in adaptivecards-reactnative v2.2+
+
 **Usage**
 ```jsx
 import AdaptiveCard from '../adaptive-card';
@@ -92,21 +98,22 @@ var template = new ACData.Template(templatePayload);
 
 // Create a data binding context, and set its $root property to the
 // data object to bind the template to
-var context = new ACData.EvaluationContext();
-context.$root = {
-    "employee": {
-        "name": "David Claux",
-        "manager": {
-            "name": "Matt Hidinger"
-        },
-        "peers": [
-            {
-                "name": "Andrew Leader"
+var context = {
+    "$root": {
+        "employee": {
+            "name": "David Claux",
+            "manager": {
+                "name": "Matt Hidinger"
             },
-            {
-                "name": "Shalini Joshi"
-            }
-        ]
+            "peers": [
+                {
+                    "name": "Andrew Leader"
+                },
+                {
+                    "name": "Shalini Joshi"
+                }
+            ]
+        }
     }
 }
 
