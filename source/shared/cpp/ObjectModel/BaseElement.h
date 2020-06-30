@@ -71,7 +71,7 @@ namespace AdaptiveSharedNamespace
 
         virtual std::string Serialize() const;
         virtual Json::Value SerializeToJsonValue() const;
-        Json::Value GetAdditionalProperties() const;
+        const Json::Value& GetAdditionalProperties() const;
         void SetAdditionalProperties(Json::Value&& additionalProperties);
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 

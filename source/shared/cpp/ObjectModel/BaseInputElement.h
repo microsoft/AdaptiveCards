@@ -24,10 +24,9 @@ namespace AdaptiveSharedNamespace
 
         Json::Value SerializeToJsonValue() const override;
 
-    protected:
+    private:
         void PopulateKnownPropertiesSet();
 
-    private:
         bool m_isRequired;
         std::string m_errorMessage;
     };

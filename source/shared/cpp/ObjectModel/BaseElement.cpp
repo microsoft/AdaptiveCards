@@ -51,7 +51,7 @@ namespace AdaptiveSharedNamespace
                                   AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)});
     }
 
-    Json::Value BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
+    const Json::Value& BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
 
     void BaseElement::SetAdditionalProperties(Json::Value&& value) { m_additionalProperties = std::move(value); }
     void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
@@ -97,7 +97,7 @@ namespace AdaptiveSharedNamespace
 
     Json::Value BaseElement::SerializeToJsonValue() const
     {
-        Json::Value root = GetAdditionalProperties();
+        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the return value to a value, rather than reference, type
 
         // Important -- we're explicitly getting the type as a string here because that's where we store the type that
         // was specified by the card author.
