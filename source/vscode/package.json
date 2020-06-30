@@ -11,12 +11,29 @@
         "Other"
     ],
     "activationEvents": [
+        "*",
         "onLanguage:json",
-        "onCommand:adaptivecardviewer.open",
-        "*"
+        "onView:cardOutline"
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "cardList",
+                    "title": "Adaptive Cards",
+                    "icon": "resources/teamwork-white.png"
+                }
+            ]
+        },
+        "views": {
+            "cardList": [
+                {
+                    "id": "cardList",
+                    "name": "Adaptive Cards"
+                }
+            ]
+        },
         "commands": [
             {
                 "command": "adaptivecardviewer.open",
@@ -25,7 +42,11 @@
                     "light": "./media/preview-darkgray.svg",
                     "dark": "./media/preview-lightgray.svg"
                 }
-            }
+            },
+			{
+				"command": "cardList.showElement",
+				"title": "Show"
+			}
         ],
         "menus": {
             "editor/title": [
@@ -44,9 +65,14 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Adaptive Card Viewer configuration",
+            "title": "Adaptive Card Editor Config",
             "properties": {
-                "adaptivecardviewer.enableautopreview": {
+                "acedit.useDefaultHostConfig": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Always use default Host Config"
+                },
+                "acedit.autoPreview": {
                     "type": "boolean",
                     "default": false,
                     "description": "Open the preview automatically"
@@ -55,18 +81,20 @@
         }
     },
     "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install"
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.21",
-        "glob": "^7.1.4",
+        "glob": "^7.1.6",
         "mocha": "^6.1.4",
-        "typescript": "^3.3.1",
         "tslint": "^5.12.1",
+        "typescript": "^3.3.1",
         "vscode-test": "^1.0.0-next.0"
     },
     "repository": {
