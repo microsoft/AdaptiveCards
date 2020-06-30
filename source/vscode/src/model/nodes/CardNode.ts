@@ -1,19 +1,20 @@
 import * as vscode from "vscode";
 import { INode } from "./INode";
-import * as path from 'path';
+import { CardNodeChild } from "./CardNodeChild";
+import { AdaptiveCardsMain } from "../../adaptiveCards";
 
 export class CardNode implements INode {
 
-    public IsActiveProject : boolean;
-
-    constructor(private readonly label: string, readonly path: string, readonly id: number) {
+    private readonly acm: AdaptiveCardsMain;
+    constructor(private readonly label: string, readonly path: string, readonly id: number, acm: AdaptiveCardsMain) {
+        this.acm = acm;
     }
 
     public getTreeItem(): vscode.TreeItem {
         return {
-            //iconPath: this.GetIcon(),
             label: this.label,
-            collapsibleState: vscode.TreeItemCollapsibleState.None,
+            collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            contextValue: "ac-CardBase",
             command: {
                 command: "cardList.showElement",
                 title: "",
@@ -21,14 +22,13 @@ export class CardNode implements INode {
             }
         };
     }
-
-    public GetIcon() {
-    }
-
     public async getChildren(context: vscode.ExtensionContext): Promise<INode[]> {
 
         try {
-            return [];//await this.twp.getTaskLists(context,this);
+            var list: INode[] = [];
+            list.push(new CardNodeChild("Template",this.path,"template",0,this.acm));
+            list.push(new CardNodeChild("Data",this.path.replace(".json",".data.json"),"data",1,this.acm));
+            return list;
           } catch (error) {
               vscode.window.showErrorMessage(error);
               return [];

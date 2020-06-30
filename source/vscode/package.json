@@ -2,8 +2,8 @@
     "name": "vscode-adaptivecards",
     "displayName": "Adaptive Card Viewer",
     "description": "Adaptive Card Viewer for Visual Studio Code.",
-    "version": "2.0.0",
-    "publisher": "tomlm",
+    "version": "0.5.0",
+    "publisher": "microsoft",
     "engines": {
         "vscode": "^1.36.0"
     },
@@ -43,10 +43,10 @@
                     "dark": "./media/preview-lightgray.svg"
                 }
             },
-			{
-				"command": "cardList.showElement",
-				"title": "Show"
-			}
+            {
+                "command": "cardList.showElement",
+                "title": "Show"
+            }
         ],
         "menus": {
             "editor/title": [
@@ -81,11 +81,11 @@
         }
     },
     "scripts": {
-		"vscode:prepublish": "npm run compile",
-		"compile": "tsc -p ./",
-		"watch": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "vscode:prepublish": "npm run compile",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
         "@types/glob": "^7.1.1",
