@@ -56,7 +56,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -64,17 +64,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        ToggleInput toggleInput = null;
-        if (baseCardElement instanceof ToggleInput)
-        {
-            toggleInput = (ToggleInput) baseCardElement;
-        }
-        else if ((toggleInput = ToggleInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ToggleInput object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, toggleInput.GetSpacing(), toggleInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        ToggleInput toggleInput = Util.castTo(baseCardElement, ToggleInput.class);
 
         final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
         CheckBox checkBox = new CheckBox(context);
@@ -85,10 +75,10 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         }
         toggleInputHandler.setView(checkBox);
 
-        TagContent tagContent = new TagContent(toggleInput, toggleInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(toggleInput, toggleInputHandler);
 
         checkBox.setText(toggleInput.GetTitle());
-        renderedCard.registerInputHandler(toggleInputHandler);
+        renderedCard.registerInputHandler(toggleInputHandler, renderArgs.getContainerCardId());
 
         if (TextUtils.isEmpty(toggleInput.GetValueOn()))
         {
@@ -113,29 +103,9 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             }
         });
 
-        if (toggleInput.GetHeight() == HeightType.Stretch)
-        {
-            LinearLayout toggleInputContainer = new LinearLayout(context);
-
-            if (toggleInput.GetHeight() == HeightType.Stretch)
-            {
-                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                toggleInputContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-
-            tagContent.SetStretchContainer(toggleInputContainer);
-            toggleInputContainer.addView(checkBox);
-            viewGroup.addView(toggleInputContainer);
-        }
-        else
-        {
-            viewGroup.addView(checkBox);
-        }
-
+        viewGroup.addView(checkBox);
         checkBox.setTag(tagContent);
+
         setVisibility(baseCardElement.GetIsVisible(), checkBox);
 
         return checkBox;

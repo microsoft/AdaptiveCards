@@ -9,19 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
-
-import java.util.Vector;
 
 public class NumberInputRenderer extends TextInputRenderer
 {
@@ -48,7 +46,7 @@ public class NumberInputRenderer extends TextInputRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -56,19 +54,11 @@ public class NumberInputRenderer extends TextInputRenderer
             return null;
         }
 
-        NumberInput numberInput = null;
-        if (baseCardElement instanceof NumberInput)
-        {
-            numberInput = (NumberInput) baseCardElement;
-        }
-        else if ((numberInput = NumberInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to NumberInput object model.");
-        }
-        View separator = setSpacingAndSeparator(context, viewGroup, numberInput.GetSpacing(), numberInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        NumberInput numberInput = Util.castTo(baseCardElement, NumberInput.class);
 
-        TextInputHandler numberInputHandler = new TextInputHandler(numberInput);
-        TagContent tagContent = new TagContent(numberInput, numberInputHandler, separator, viewGroup);
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        TagContent tagContent = new TagContent(numberInput, numberInputHandler);
+
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -78,11 +68,13 @@ public class NumberInputRenderer extends TextInputRenderer
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
                 hostConfig,
-                tagContent);
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                tagContent,
+                renderArgs,
+                ((numberInput.GetMin() != Integer.MIN_VALUE) || (numberInput.GetMax() != Integer.MAX_VALUE)));
+
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 
         editText.setTag(tagContent);
-        setVisibility(baseCardElement.GetIsVisible(), editText);
 
         return editText;
     }
