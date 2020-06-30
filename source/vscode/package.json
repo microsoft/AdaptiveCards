@@ -119,6 +119,8 @@
         "preview"
     ],
     "dependencies": {
+        "adaptivecards": "^1.2.6",
+        "adaptivecards-templating": "^1.0.0-rc.0",
         "vscode": "^1.1.36"
     }
 }

@@ -1,5 +1,5 @@
-import * as path from 'path';
-import * as vscode from 'vscode';
+import * as path from "path";
+import * as vscode from "vscode";
 
 /**
  * Manages cat coding webview panels
@@ -10,7 +10,7 @@ export class AdaptiveCardPanel {
 	 */
     public static currentPanel: AdaptiveCardPanel | undefined;
 
-    public static readonly viewType = 'adaptiveCard';
+    public static readonly viewType = "adaptiveCard";
 
     private readonly _panel: vscode.WebviewPanel;
     private readonly _extensionPath: string;
@@ -30,11 +30,11 @@ export class AdaptiveCardPanel {
         // Otherwise, create a new panel.
         const panel = vscode.window.createWebviewPanel(
             AdaptiveCardPanel.viewType,
-            'Adaptive Card Preview',
+            "Adaptive Card Preview",
             vscode.ViewColumn.Two,
             {
-                // Enable javascript in the webview
-                enableScripts: true,
+              // enable javascript in the webview
+              enableScripts: true,
             }
         );
 
@@ -49,17 +49,17 @@ export class AdaptiveCardPanel {
         this._panel = panel;
         this._extensionPath = extensionPath;
 
-        // Set the webview's initial html content
+        // set the webview's initial html content
         this._update();
 
-        // Listen for when the panel is disposed
-        // This happens when the user closes the panel or when the panel is closed programatically
+        // listen for when the panel is disposed
+        // this happens when the user closes the panel or when the panel is closed programatically
         this._panel.onDidDispose(() => this.dispose(), null, this._disposables);
 
         vscode.window.onDidChangeActiveTextEditor((e) => this._update());
         vscode.workspace.onDidSaveTextDocument((e) => this._update());
-        
-        // Update the content based on view changes
+
+        // update the content based on view changes
         this._panel.onDidChangeViewState(
             e => {
                 if (this._panel.visible) {
@@ -70,7 +70,7 @@ export class AdaptiveCardPanel {
             this._disposables
         );
 
-        // Handle messages from the webview
+        // handle messages from the webview
         this._panel.webview.onDidReceiveMessage(
             message => {
                 switch (message.command) {
