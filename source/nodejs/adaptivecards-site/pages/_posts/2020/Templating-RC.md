@@ -9,7 +9,7 @@ The goal of Adaptive Card Templating is to **save you time** when building cards
 
 This post will walk through the basic templating features as well as some advanced ones. Along the way, we will walk through you the updated template syntax, and introduce the *Adaptive Expression Language (AEL)*. 
 
-We will be working on an Expense report card. This expense report card is available in [our github repository](https://github.com/microsoft/AdaptiveCards/blob/master/samples/v1.2/Scenarios/ExpenseReport.json). We will turn this Adaptive Card into a template, so we can dynamically populate and generate an Adaptive Card based on dynamic data!
+We will be working on an Expense report card. This expense report card is available in [our github repository](https://github.com/microsoft/AdaptiveCards/blob/main/samples/v1.2/Scenarios/ExpenseReport.json). We will turn this Adaptive Card into a template, so we can dynamically populate and generate an Adaptive Card based on dynamic data!
 
 ![Expense Report First Iteration](Templating-RC/ExpenseReport01.png)
 

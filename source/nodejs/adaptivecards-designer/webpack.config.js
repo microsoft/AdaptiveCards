@@ -81,16 +81,16 @@ module.exports = (env, argv) => {
 				injectType: 'none',
 				filesToConcat: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
 			}),
-			new CopyWebpackPlugin([{
-				from: 'src/containers/default/adaptivecards-defaulthost.css',
-				to: '.'
-			}]),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-designer.css',
-				to: '.',
-				flatten: true
-			}]),
-			new CopyWebpackPlugin([
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'src/containers/default/adaptivecards-defaulthost.css',
+					to: '.'
+				},
+				{
+					from: 'src/adaptivecards-designer.css',
+					to: '.',
+					flatten: true
+				},
 				{
 					from: 'src/containers/**/*.css',
 					to: 'containers/',
@@ -105,8 +105,11 @@ module.exports = (env, argv) => {
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/',
 					flatten: true
+				}],
+				options: {
+					concurrency: 8
 				}
-			])
+			})
 		],
 		externals: [
 			///^monaco-editor/ // <-- NOT WORKING for some reason

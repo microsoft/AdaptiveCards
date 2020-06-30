@@ -12,95 +12,101 @@ exports[`InputChoiceSet inputChoiceSetCheckboxMultiSelect should be rendered cor
       style="width: 100%; min-width: 0px;"
     >
       <div
-        class="ms-Checkbox is-checked is-enabled root-78"
+        class="ms-Checkbox is-checked is-enabled root-68"
       >
         <input
+          aria-checked="true"
+          aria-label="Red"
           checked=""
-          class="input-79"
+          class="input-69"
           id="checkbox-11"
           type="checkbox"
         />
         <label
-          class="ms-Checkbox-label label-80"
+          class="ms-Checkbox-label label-70"
           for="checkbox-11"
         >
           <div
-            class="ms-Checkbox-checkbox checkbox-81"
+            class="ms-Checkbox-checkbox checkbox-71"
           >
             <i
               aria-hidden="true"
-              class="ms-Checkbox-checkmark checkmark-84"
+              class="ms-Checkbox-checkmark checkmark-74"
               data-icon-name="CheckMark"
-              role="presentation"
             >
               
             </i>
           </div>
           <span
-            class="ms-Checkbox-text text-83"
+            aria-hidden="true"
+            class="ms-Checkbox-text text-73"
           >
             Red
           </span>
         </label>
       </div>
       <div
-        class="ms-Checkbox is-enabled root-85"
+        class="ms-Checkbox is-enabled root-75"
       >
         <input
-          class="input-79"
+          aria-checked="false"
+          aria-label="Green"
+          class="input-69"
           id="checkbox-12"
           type="checkbox"
         />
         <label
-          class="ms-Checkbox-label label-86"
+          class="ms-Checkbox-label label-70"
           for="checkbox-12"
         >
           <div
-            class="ms-Checkbox-checkbox checkbox-87"
+            class="ms-Checkbox-checkbox checkbox-76"
           >
             <i
               aria-hidden="true"
-              class="ms-Checkbox-checkmark checkmark-89"
+              class="ms-Checkbox-checkmark checkmark-78"
               data-icon-name="CheckMark"
-              role="presentation"
             >
               
             </i>
           </div>
           <span
-            class="ms-Checkbox-text text-83"
+            aria-hidden="true"
+            class="ms-Checkbox-text text-73"
           >
             Green
           </span>
         </label>
       </div>
       <div
-        class="ms-Checkbox is-checked is-enabled root-85"
+        class="ms-Checkbox is-checked is-enabled root-79"
       >
         <input
+          aria-checked="true"
+          aria-label="Blue"
           checked=""
-          class="input-79"
+          class="input-69"
           id="checkbox-13"
           type="checkbox"
         />
         <label
-          class="ms-Checkbox-label label-80"
+          class="ms-Checkbox-label label-70"
           for="checkbox-13"
         >
           <div
-            class="ms-Checkbox-checkbox checkbox-81"
+            class="ms-Checkbox-checkbox checkbox-71"
           >
             <i
               aria-hidden="true"
-              class="ms-Checkbox-checkmark checkmark-84"
+              class="ms-Checkbox-checkmark checkmark-74"
               data-icon-name="CheckMark"
-              role="presentation"
             >
               
             </i>
           </div>
           <span
-            class="ms-Checkbox-text text-83"
+            aria-hidden="true"
+            class="ms-Checkbox-text text-73"
           >
             Blue
           </span>
@@ -123,30 +129,30 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
       style="width: 100%; min-width: 0px;"
     >
       <div
-        class="applicationRole-63"
+        class=""
       >
         <div
-          class="ms-ChoiceFieldGroup root-64"
+          class="ms-ChoiceFieldGroup root-57"
           role="radiogroup"
         >
           <div
-            class="ms-ChoiceFieldGroup-flexContainer flexContainer-65"
+            class="ms-ChoiceFieldGroup-flexContainer"
           >
             <div
-              class="ms-ChoiceField root-66"
+              class="ms-ChoiceField root-58"
             >
               <div
-                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+                class="ms-ChoiceField-wrapper"
               >
                 <input
                   checked=""
-                  class="ms-ChoiceField-input input-68"
+                  class="ms-ChoiceField-input input-59"
                   id="ChoiceGroup5-1"
                   name="ChoiceGroup5"
                   type="radio"
                 />
                 <label
-                  class="ms-ChoiceField-field is-checked field-69"
+                  class="ms-ChoiceField-field is-checked field-60"
                   for="ChoiceGroup5-1"
                 >
                   <span
@@ -159,19 +165,19 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
               </div>
             </div>
             <div
-              class="ms-ChoiceField root-66"
+              class="ms-ChoiceField root-58"
             >
               <div
-                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+                class="ms-ChoiceField-wrapper"
               >
                 <input
-                  class="ms-ChoiceField-input input-68"
+                  class="ms-ChoiceField-input input-59"
                   id="ChoiceGroup5-2"
                   name="ChoiceGroup5"
                   type="radio"
                 />
                 <label
-                  class="ms-ChoiceField-field field-75"
+                  class="ms-ChoiceField-field field-65"
                   for="ChoiceGroup5-2"
                 >
                   <span
@@ -184,19 +190,19 @@ exports[`InputChoiceSet inputChoiceSetChoiceGroup should be rendered correctly 1
               </div>
             </div>
             <div
-              class="ms-ChoiceField root-66"
+              class="ms-ChoiceField root-58"
             >
               <div
-                class="ms-ChoiceField-wrapper choiceFieldWrapper-67"
+                class="ms-ChoiceField-wrapper"
               >
                 <input
-                  class="ms-ChoiceField-input input-68"
+                  class="ms-ChoiceField-input input-59"
                   id="ChoiceGroup5-3"
                   name="ChoiceGroup5"
                   type="radio"
                 />
                 <label
-                  class="ms-ChoiceField-field field-75"
+                  class="ms-ChoiceField-field field-65"
                   for="ChoiceGroup5-3"
                 >
                   <span
@@ -231,7 +237,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
         class="ms-ComboBox-container "
       >
         <div
-          class="ms-ComboBox css-46"
+          class="ms-ComboBox css-40"
           id="ComboBox1wrapper"
         >
           <input
@@ -239,7 +245,7 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
             aria-expanded="false"
             autocapitalize="off"
             autocomplete="off"
-            class="ms-ComboBox-Input css-47"
+            class="ms-ComboBox-Input css-41"
             data-is-interactable="true"
             data-lpignore="true"
             id="ComboBox1-input"
@@ -251,26 +257,35 @@ exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] 
           />
           <button
             aria-hidden="true"
-            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-53"
+            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-48"
             data-is-focusable="false"
             role="presentation"
             tabindex="-1"
             type="button"
           >
-            <div
-              class="ms-Button-flexContainer flexContainer-54"
+            <span
+              class="ms-Button-flexContainer flexContainer-49"
+              data-automationid="splitbuttonprimary"
             >
               <i
                 aria-hidden="true"
-                class="ms-Button-icon icon-62"
+                class="ms-Icon root-37 css-56 ms-Button-icon icon-51"
                 data-icon-name="ChevronDown"
                 role="presentation"
+                style="font-family: \\"FabricMDL2Icons\\";"
               >
                 
               </i>
-            </div>
+            </span>
           </button>
         </div>
+        <div
+          aria-atomic="true"
+          aria-live="polite"
+          class=""
+          id="ComboBox1-error"
+          role="region"
+        />
       </div>
     </div>
   </div>
@@ -292,7 +307,7 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
         class="ms-ComboBox-container "
       >
         <div
-          class="ms-ComboBox css-46"
+          class="ms-ComboBox css-40"
           id="ComboBox7wrapper"
         >
           <input
@@ -300,7 +315,7 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
             aria-expanded="false"
             autocapitalize="off"
             autocomplete="off"
-            class="ms-ComboBox-Input css-47"
+            class="ms-ComboBox-Input css-41"
             data-is-interactable="true"
             data-lpignore="true"
             id="ComboBox7-input"
@@ -312,26 +327,35 @@ exports[`InputChoiceSet inputChoiceSetComboBoxMultiSelect should be rendered cor
           />
           <button
             aria-hidden="true"
-            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-53"
+            class="ms-Button ms-Button--icon ms-ComboBox-CaretDown-button root-48"
             data-is-focusable="false"
             role="presentation"
             tabindex="-1"
             type="button"
           >
-            <div
-              class="ms-Button-flexContainer flexContainer-54"
+            <span
+              class="ms-Button-flexContainer flexContainer-49"
+              data-automationid="splitbuttonprimary"
             >
               <i
                 aria-hidden="true"
-                class="ms-Button-icon icon-62"
+                class="ms-Icon root-37 css-56 ms-Button-icon icon-51"
                 data-icon-name="ChevronDown"
                 role="presentation"
+                style="font-family: \\"FabricMDL2Icons\\";"
               >
                 
               </i>
-            </div>
+            </span>
           </button>
         </div>
+        <div
+          aria-atomic="true"
+          aria-live="polite"
+          class=""
+          id="ComboBox7-error"
+          role="region"
+        />
       </div>
     </div>
   </div>

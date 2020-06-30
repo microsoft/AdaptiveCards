@@ -50,12 +50,12 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
 					"default": "#FF0000",
@@ -75,16 +75,16 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				}
 			},
 			"backgroundColor": "#08000000",
@@ -102,19 +102,19 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				}
 			},
-			"backgroundColor": "#DD54A254"
+			"backgroundColor": "#DD027502"
 		},
 		"warning": {
 			"foregroundColors": {
@@ -127,19 +127,19 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				}
 			},
-			"backgroundColor": "#DDC3AB23"
+			"backgroundColor": "#DDB75C00"
 		},
 		"attention": {
 			"foregroundColors": {
@@ -152,16 +152,16 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				}
 			},
 			"backgroundColor": "#DDFF0000",
@@ -179,16 +179,16 @@
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				}
 			},
 			"backgroundColor": "#882E89FC",
