@@ -328,7 +328,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             {
                 if (m_action.GetElementType() == ActionType.Submit)
                 {
-                    SubmitAction submitAction = Util.castToSubmitAction(m_action);
+                    SubmitAction submitAction = Util.castTo(m_action, SubmitAction.class);
 
                     if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
                     {

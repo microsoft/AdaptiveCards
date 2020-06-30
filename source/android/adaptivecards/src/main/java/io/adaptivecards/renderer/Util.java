@@ -142,28 +142,70 @@ public final class Util {
         }
     }
 
-    public static SubmitAction tryCastToSubmitAction(BaseActionElement actionElement)
+    /**
+     *
+     * @param actionElement
+     * @param actionElementType
+     * @param <T>
+     * @return
+     */
+    public static<T extends BaseActionElement> boolean isOfType(BaseActionElement actionElement, Class<T> actionElementType)
     {
-        SubmitAction result = null;
-        try
-        {
-            result = castToSubmitAction(actionElement);
-        }
-        catch (Exception e) {}
-        return result;
+        return (tryCastTo(actionElement, actionElementType) != null);
     }
 
-    public static SubmitAction castToSubmitAction(BaseActionElement actionElement)
+    /**
+     *
+     * @param actionElement
+     * @param actionElementType
+     * @param <T>
+     * @return
+     */
+    public static<T extends BaseActionElement> T tryCastTo(BaseActionElement actionElement, Class<T> actionElementType)
     {
-        SubmitAction submitAction = null;
-        if (actionElement instanceof SubmitAction)
+        try
         {
-            submitAction = (SubmitAction) actionElement;
+            return castTo(actionElement, actionElementType);
         }
-        else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
+        catch (Exception e)
         {
-            throw new InternalError("Unable to convert BaseCardElement to BaseInputElement object model.");
+            return null;
         }
-        return submitAction;
+    }
+
+    /**
+     *
+     * @param actionElement
+     * @param actionElementType
+     * @param <T>
+     * @return
+     * @throws ClassCastException
+     */
+    public static<T extends BaseActionElement> T castTo(BaseActionElement actionElement, Class<T> actionElementType) throws ClassCastException
+    {
+        try
+        {
+            T castedElement = null;
+            // As T is a generic, we cannot use instanceOf, so we have to use the isAssignableFrom method which provides the same functionality
+            if (actionElementType.isAssignableFrom(actionElement.getClass()))
+            {
+                castedElement = (T)actionElement;
+            }
+            else
+            {
+                // If the element could not be casted, we use reflection to retrieve and execute the dynamic_cast method, if the method is not found it throws
+                Method dynamicCastMethod = actionElementType.getMethod("dynamic_cast", BaseActionElement.class);
+                if ((castedElement = (T)dynamicCastMethod.invoke(null, actionElement)) == null)
+                {
+                    // If after both tries, the element could not be casted, we throw a conversion exception
+                    throw new InternalError("Unable to convert " + actionElement.getClass().getName() + " to " + actionElementType.getName() + " object model.");
+                }
+            }
+            return castedElement;
+        }
+        catch (Exception e)
+        {
+            throw new ClassCastException("Unable to find dynamic_cast method in " + actionElementType.getName() + ".");
+        }
     }
 }

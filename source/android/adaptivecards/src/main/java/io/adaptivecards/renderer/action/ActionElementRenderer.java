@@ -183,7 +183,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
     {
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
-        SubmitAction action = Util.tryCastToSubmitAction(baseActionElement);
+        SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
         {
             renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());

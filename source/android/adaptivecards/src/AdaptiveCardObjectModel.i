@@ -309,7 +309,6 @@ namespace Json {
   $result = *tmp;
 %}
 
-
 %typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseActionElement> "new $typemap(jstype, AdaptiveCards::BaseActionElement)($1,true)";
 %typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseActionElement;") std::shared_ptr<AdaptiveCards::BaseActionElement> %{
   *($&1_type*)&j$1 = new $1_type($1);
