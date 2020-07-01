@@ -9,8 +9,7 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    xmlns:toolkitControls="using:Microsoft.Toolkit.Uwp.UI.Controls"
-    xmlns:converters="using:AdaptiveCardVisualizer.Converters">
+    xmlns:toolkitControls="using:Microsoft.Toolkit.Uwp.UI.Controls">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ColumnDefinitions>
@@ -23,6 +22,7 @@
 
         <!--Vertical draggable column splitter-->
         <toolkitControls:GridSplitter
+            AutomationProperties.Name="Content splitter"
             Width="11"
             Background="{ThemeResource SystemControlBackgroundAccentBrush}"
             GripperCursor="Default"
