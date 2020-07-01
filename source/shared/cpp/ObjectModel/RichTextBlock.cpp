@@ -27,7 +27,7 @@ Json::Value RichTextBlock::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)] = HorizontalAlignmentToString(m_hAlignment);
     }
 
-    std::string inlinesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines);
+    const std::string& inlinesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Inlines);
     root[inlinesPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& currentInline : GetInlines())
     {

@@ -131,7 +131,7 @@ void TextRun::SetHighlight(const bool value)
     m_highlight = value;
 }
 
-std::string TextRun::GetLanguage() const
+const std::string& TextRun::GetLanguage() const
 {
     return m_textElementProperties->GetLanguage();
 }
