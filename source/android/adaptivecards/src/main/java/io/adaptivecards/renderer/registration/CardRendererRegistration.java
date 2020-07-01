@@ -355,7 +355,8 @@ public class CardRendererRegistration
 
             renderedElementView = renderer.render(renderedCard, context, fragmentManager, mockLayout, cardElement, cardActionHandler, hostConfig, childRenderArgs);
             renderedElement = cardElement;
-        } catch (AdaptiveFallbackException e)
+        }
+        catch (AdaptiveFallbackException e)
         {
             if (elementHasFallback)
             {
