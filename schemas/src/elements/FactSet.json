@@ -5,8 +5,8 @@
 	"properties": {
 		"facts": {
 			"type": "Fact[]",
-      "description": "The array of `Fact`'s.",
-      "required": true
+			"description": "The array of `Fact`'s.",
+			"required": true
 		}
 	}
 }
