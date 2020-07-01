@@ -27,7 +27,7 @@ Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
+    const std::string& factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
     root[factsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& fact : GetFacts())
     {
