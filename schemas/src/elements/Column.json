@@ -3,11 +3,6 @@
 	"extends": "Element",
 	"description": "Defines a container that is part of a ColumnSet.",
 	"properties": {
-		"type": {
-			"type": "Column",
-			"required": false,
-			"description": "Must be `Column`"
-		},
 		"items": {
 			"type": "Element[]",
 			"description": "The card elements to render inside the `Column`."
