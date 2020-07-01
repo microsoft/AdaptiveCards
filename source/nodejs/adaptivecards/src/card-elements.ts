@@ -6291,10 +6291,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
 
         return renderedCard;
     }
-
-    getForbiddenActionTypes(): ActionType[] {
-        return [ ShowCardAction ];
-    }
 }
 
 export class GlobalRegistry {
