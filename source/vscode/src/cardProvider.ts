@@ -4,7 +4,7 @@ import * as glob from 'glob';
 import * as path from 'path';
 import * as fs from 'fs';
 import { ProjectErrorNode } from './model/nodes/ProjectErrorNode';
-import { CardNode } from './model/nodes/CardNode';
+import { CardNode } from './model/CardNode';
 import { AdaptiveCardsMain } from './adaptiveCards';
 
 export class CardProvider implements vscode.TreeDataProvider<INode> {

@@ -13,24 +13,29 @@
     "activationEvents": [
         "*",
         "onLanguage:json",
-        "onView:cardOutline"
+        "onView:cardOutline",
+        "onView:cardCMSOutline"
     ],
     "main": "./out/src/extension",
     "contributes": {
         "viewsContainers": {
             "activitybar": [
                 {
-                    "id": "cardList",
+                    "id": "cardLists",
                     "title": "Adaptive Cards",
                     "icon": "resources/teamwork-white.png"
                 }
             ]
         },
         "views": {
-            "cardList": [
+            "cardLists": [
                 {
                     "id": "cardList",
-                    "name": "Adaptive Cards"
+                    "name": "Workspace Cards"
+                },
+                {
+                    "id": "cardListCMS",
+                    "name": "CMS Cards"
                 }
             ]
         },

@@ -1,6 +1,5 @@
 import * as path from "path";
 import * as vscode from "vscode";
-import * as AdaptiveCards from "adaptivecards";
 import * as ACData from "adaptivecards-templating";
 import { IEvaluationContext } from "adaptivecards-templating";
 

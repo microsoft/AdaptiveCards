@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
-import { INode } from "./INode";
+import { INode } from "./nodes/INode";
 import { CardNodeChild } from "./CardNodeChild";
-import { AdaptiveCardsMain } from "../../adaptiveCards";
+import { AdaptiveCardsMain } from "../adaptiveCards";
 
 export class CardNode implements INode {
 
