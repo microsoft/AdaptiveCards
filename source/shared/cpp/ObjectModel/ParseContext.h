@@ -34,7 +34,7 @@ namespace AdaptiveSharedNamespace
         void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
 
         void SetLanguage(const std::string& value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
 
         ContainerStyle GetParentalContainerStyle() const;
         void SetParentalContainerStyle(const ContainerStyle style);
