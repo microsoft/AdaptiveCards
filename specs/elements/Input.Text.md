@@ -31,6 +31,8 @@
 
 ## style
 
+Style hint for text input.
+
 * **Type**: `TextInputStyle`
 * **Required**: No
 * **Allowed values**:

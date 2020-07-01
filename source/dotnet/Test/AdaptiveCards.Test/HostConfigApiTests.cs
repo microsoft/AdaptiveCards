@@ -85,8 +85,8 @@ namespace AdaptiveCards.Test
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""default"": ""#54a254"",
-          ""subtle"": ""#DD54a254""
+          ""default"": ""#028A02"",
+          ""subtle"": ""#DD027502""
         },
         ""warning"": {
           ""default"": ""#e69500"",
@@ -110,8 +110,8 @@ namespace AdaptiveCards.Test
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""default"": ""#54a254"",
-          ""subtle"": ""#DD54a254""
+          ""default"": ""#028A02"",
+          ""subtle"": ""#DD027502""
         },
         ""warning"": {
           ""default"": ""#e69500"",
@@ -218,8 +218,8 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("#882E89FC", hostConfig.ContainerStyles.Default.ForegroundColors.Accent.Subtle);
             Assert.AreEqual("#cc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default);
             Assert.AreEqual("#DDcc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Subtle);
-            Assert.AreEqual("#54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Default);
-            Assert.AreEqual("#DD54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Subtle);
+            Assert.AreEqual("#028A02", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Default);
+            Assert.AreEqual("#DD027502", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Subtle);
             Assert.AreEqual("#e69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Default);
             Assert.AreEqual("#DDe69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Subtle);
 

@@ -445,7 +445,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String BaseInputElement_GetErrorMessage(long jarg1, BaseInputElement jarg1_);
   public final static native void BaseInputElement_SetErrorMessage(long jarg1, BaseInputElement jarg1_, String jarg2);
   public final static native long BaseInputElement_SerializeToJsonValue(long jarg1, BaseInputElement jarg1_);
-  public final static native long BaseInputElement_dynamic_cast(long jarg1, BaseElement jarg1_);
+  public final static native long BaseInputElement_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_BaseInputElement(long jarg1);
   public final static native long new_BackgroundImage__SWIG_0();
   public final static native long new_BackgroundImage__SWIG_1(String jarg1);
@@ -1341,7 +1341,7 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String Inline_GetInlineTypeString(long jarg1, Inline jarg1_);
   public final static native long Inline_Deserialize(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long Inline_GetAdditionalProperties(long jarg1, Inline jarg1_);
-  public final static native void Inline_SetAdditionalProperties(long jarg1, Inline jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void Inline_SetAdditionalProperties__SWIG_0(long jarg1, Inline jarg1_, long jarg2, JsonValue jarg2_);
   public final static native long new_RichTextBlock__SWIG_0();
   public final static native long new_RichTextBlock__SWIG_1(long jarg1, RichTextBlock jarg1_);
   public final static native void delete_RichTextBlock(long jarg1);

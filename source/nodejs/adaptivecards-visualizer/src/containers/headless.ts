@@ -99,8 +99,8 @@ export class HeadlessContainer extends HostContainer {
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
+                            default: "#ED0000",
+                            subtle: "#DDED0000"
                         }
                     }
                 },
@@ -124,8 +124,8 @@ export class HeadlessContainer extends HostContainer {
                             subtle: "#DD00FF00"
                         },
                         warning: {
-                            default: "#FF0000",
-                            subtle: "#DDFF0000"
+                            default: "#ED0000",
+                            subtle: "#DDED0000"
                         }
                     }
                 }

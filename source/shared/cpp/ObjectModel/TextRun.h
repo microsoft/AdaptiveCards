@@ -62,8 +62,10 @@ namespace AdaptiveSharedNamespace
 
     protected:
         std::shared_ptr<RichTextElementProperties> m_textElementProperties;
-        void PopulateKnownPropertiesSet();
         std::shared_ptr<BaseActionElement> m_selectAction;
         bool m_highlight;
+
+    private:
+        void PopulateKnownPropertiesSet();
     };
 }

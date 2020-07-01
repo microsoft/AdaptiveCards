@@ -1118,6 +1118,7 @@ export class TextRun extends BaseTextBlock {
     static readonly italicProperty = new BoolProperty(Versions.v1_2, "italic", false);
     static readonly strikethroughProperty = new BoolProperty(Versions.v1_2, "strikethrough", false);
     static readonly highlightProperty = new BoolProperty(Versions.v1_2, "highlight", false);
+    static readonly underlineProperty = new BoolProperty(Versions.v1_3, "underline", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1133,6 +1134,9 @@ export class TextRun extends BaseTextBlock {
 
     @property(TextRun.highlightProperty)
     highlight: boolean = false;
+
+    @property(TextRun.underlineProperty)
+    underline: boolean = false;
 
     //#endregion
 
@@ -1199,6 +1203,10 @@ export class TextRun extends BaseTextBlock {
             let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
             targetElement.style.backgroundColor = <string>Utils.stringToCssColor(this.isSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
+        }
+
+        if (this.underline) {
+            targetElement.style.textDecoration = "underline";
         }
     }
 

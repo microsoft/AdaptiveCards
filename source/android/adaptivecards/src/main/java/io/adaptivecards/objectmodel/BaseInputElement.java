@@ -79,8 +79,8 @@ public class BaseInputElement extends BaseCardElement {
     return new JsonValue(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
   }
 
-  public static BaseInputElement dynamic_cast(BaseElement baseElement) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_dynamic_cast(BaseElement.getCPtr(baseElement), baseElement);
+  public static BaseInputElement dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
   }
 
