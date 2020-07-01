@@ -2,6 +2,11 @@
 // Licensed under the MIT License.
 #include "pch.h"
 #include "AdaptiveInputs.h"
+#include "AdaptiveActionElement.h"
+#include "AdaptiveRenderArgs.h"
+#include "AdaptiveCard.h"
+#include "AdaptiveSubmitAction.h"
+#include "AdaptiveInputElement.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -16,11 +21,10 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    AdaptiveInputs::AdaptiveInputs() { m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>(); }
+    AdaptiveInputs::AdaptiveInputs() { }
 
     HRESULT AdaptiveInputs::RuntimeClassInitialize() noexcept
     {
-        m_inputValues = std::make_shared<std::vector<ComPtr<IAdaptiveInputValue>>>();
         return S_OK;
     }
 
@@ -29,16 +33,73 @@ namespace AdaptiveNamespace
         return StringToJsonObject(GetInputItemsAsJsonString(), value);
     }
 
-    HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
+    HRESULT AdaptiveInputs::AddInputValue(_In_ IAdaptiveInputValue* inputValue, _In_ IAdaptiveRenderArgs* renderArgs)
     {
-        m_inputValues->push_back(inputValue);
+        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
+
+        ComPtr<IAdaptiveCard> parentCard;
+        RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
+        ComPtr<AdaptiveCard> parentCardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(parentCard);
+        InternalId cardId = parentCardImpl->GetInternalId();
+
+        ComPtr<IAdaptiveInputElement> inputElement;
+        RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
+
+        ComPtr<AdaptiveInputElementBase> cardElementImpl;
+        RETURN_IF_FAILED(inputElement.As(&cardElementImpl));
+
+        InternalId inputId = cardElementImpl->GetInternalId();
+        std::size_t inputIdHash = inputId.Hash();
+
+        m_inputsPerCard[cardId.Hash()].push_back(inputIdHash);
+        m_inputValues[inputIdHash] = inputValue;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputs::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    {
+        ComPtr<IAdaptiveSubmitAction> localSubmitAction(submitAction);
+        ComPtr<AdaptiveNamespace::AdaptiveSubmitAction> submitActionImpl =
+            PeekInnards<AdaptiveNamespace::AdaptiveSubmitAction>(localSubmitAction);
+        InternalId actionId = submitActionImpl->GetInternalId();
+
+        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
+        ComPtr<IAdaptiveCard> adaptiveCard;
+        RETURN_IF_FAILED(localRenderArgs->get_ParentCard(adaptiveCard.GetAddressOf()));
+
+        ComPtr<AdaptiveCard> adaptiveCardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(adaptiveCard);
+        InternalId cardId = adaptiveCardImpl->GetInternalId();
+
+        m_containerCardForAction[actionId.Hash()] = cardId.Hash();
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputs::LinkCardToParent(_In_ InternalId cardId, _In_ InternalId parentCardId)
+    {
+        m_parentCard[cardId.Hash()] = parentCardId.Hash();
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputs::GetInputValue(_In_ IAdaptiveInputElement* inputElement, IAdaptiveInputValue** inputValue)
+    {
+        ComPtr<IAdaptiveInputElement> localInputElement(inputElement);
+
+        ComPtr<AdaptiveInputElementBase> inputElementImpl;
+        RETURN_IF_FAILED(localInputElement.As(&inputElementImpl));
+
+        InternalId inputId = inputElementImpl->GetInternalId();
+
+        RETURN_IF_FAILED(m_inputValues[inputId.Hash()].CopyTo(inputValue));
+
         return S_OK;
     }
 
     std::string AdaptiveInputs::GetInputItemsAsJsonString()
     {
         Json::Value jsonValue;
-        for (auto& inputValue : *m_inputValues)
+
+        for (auto& inputValue : m_lastRetrievedValues)
         {
             ComPtr<IAdaptiveCardElement> cardElement;
             ComPtr<IAdaptiveInputElement> inputElement;
@@ -75,7 +136,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
                                               &propertyValueFactory));
 
-        for (auto& inputValue : *m_inputValues)
+        for (auto& inputValue : m_lastRetrievedValues)
         {
             ComPtr<IAdaptiveCardElement> cardElement;
             ComPtr<IAdaptiveInputElement> inputElement;
@@ -95,5 +156,74 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(propertySetMap->Insert(key.Get(), propVal.Get(), &replaced));
         }
         return valueSet.CopyTo(valueSetOut);
+    }
+
+    HRESULT AdaptiveInputs::ValidateInputs(_In_ IAdaptiveSubmitAction* submitAction, boolean* inputsAreValid)
+    {
+        boolean allInputsValid = true;
+
+        std::vector<ComPtr<IAdaptiveInputValue>> inputsToValidate;
+        GetInputsToValidate(submitAction, inputsToValidate);
+        m_lastRetrievedValues.clear();
+
+        for (auto& inputValue : inputsToValidate)
+        {
+            boolean currentInputValid;
+            RETURN_IF_FAILED(inputValue->Validate(&currentInputValid));
+
+            // If this is the first invalid input, set focus here
+            if (allInputsValid && !currentInputValid)
+            {
+                RETURN_IF_FAILED(inputValue->SetFocus());
+            }
+
+            allInputsValid &= currentInputValid;
+        }
+
+        // If validation succeeded, then cache the validated inputs 
+        if (allInputsValid)
+        {
+            m_lastRetrievedValues = inputsToValidate;
+        }
+
+        *inputsAreValid = allInputsValid;
+        return S_OK;
+    }
+
+    void AdaptiveInputs::GetInputsToValidate(_In_ IAdaptiveSubmitAction* submitAction,
+                                             _Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputsToValidate)
+    {
+        ComPtr<IAdaptiveSubmitAction> localSubmitAction(submitAction);
+        ComPtr<AdaptiveNamespace::AdaptiveSubmitAction> submitActionImpl =
+            PeekInnards<AdaptiveNamespace::AdaptiveSubmitAction>(localSubmitAction);
+        InternalId actionId = submitActionImpl->GetInternalId();
+
+        std::size_t card = m_containerCardForAction[actionId.Hash()];
+        while (card != InternalId().Hash())
+        {
+            const auto& inputsInCard = m_inputsPerCard[card];
+
+            for (const auto& inputId : inputsInCard)
+            {
+                inputsToValidate.emplace_back(m_inputValues[inputId]);
+            }
+
+            if (m_parentCard.find(card) != m_parentCard.end())
+            {
+                card = m_parentCard[card];
+            }
+            else
+            {
+                break;
+            }
+        }
+    }
+
+    void AdaptiveInputs::GetAllInputs(_Out_ std::vector<ComPtr<IAdaptiveInputValue>>& inputs)
+    {
+        for (const auto& input : m_inputValues)
+        {
+            inputs.emplace_back(input.second);
+        }
     }
 }

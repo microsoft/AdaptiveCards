@@ -342,7 +342,7 @@ export class ContainerStyleDefinition {
             "dark": { default: "#000000", subtle: "#66000000" },
             "light": { default: "#FFFFFF", subtle: "#33000000" },
             "accent": { default: "#2E89FC", subtle: "#882E89FC" },
-            "good": { default: "#54A254", subtle: "#DD54A254" },
+            "good": { default: "#028A02", subtle: "#DD027502" },
             "warning": { default: "#E69500", subtle: "#DDE69500" },
             "attention": { default: "#CC3300", subtle: "#DDCC3300" }
         }
@@ -791,8 +791,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -824,8 +824,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -857,8 +857,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -890,8 +890,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -923,8 +923,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -956,8 +956,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",

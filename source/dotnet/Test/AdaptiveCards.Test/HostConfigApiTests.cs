@@ -85,8 +85,8 @@ namespace AdaptiveCards.Test
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""default"": ""#54a254"",
-          ""subtle"": ""#DD54a254""
+          ""default"": ""#028A02"",
+          ""subtle"": ""#DD027502""
         },
         ""warning"": {
           ""default"": ""#e69500"",
@@ -110,8 +110,8 @@ namespace AdaptiveCards.Test
           ""subtle"": ""#DDcc3300""
         },
         ""good"": {
-          ""default"": ""#54a254"",
-          ""subtle"": ""#DD54a254""
+          ""default"": ""#028A02"",
+          ""subtle"": ""#DD027502""
         },
         ""warning"": {
           ""default"": ""#e69500"",
@@ -168,6 +168,22 @@ namespace AdaptiveCards.Test
       ""wrap"": true
     },
     ""spacing"": 10
+  },
+  ""inputs"": {
+    ""inputLabels"": {
+      ""inputSpacing"": ""small"",
+      ""requiredInputs"": {
+        ""weight"": ""bolder"",
+        ""color"": ""attention"",
+        ""size"": ""medium"",
+        ""isSubtle"": false
+      },
+      ""optionalInputs"": {
+        ""color"": ""good"",
+        ""isSubtle"": true,
+        ""weight"": ""lighter""
+      }
+    }
   }
 }");
 
@@ -202,8 +218,8 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("#882E89FC", hostConfig.ContainerStyles.Default.ForegroundColors.Accent.Subtle);
             Assert.AreEqual("#cc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default);
             Assert.AreEqual("#DDcc3300", hostConfig.ContainerStyles.Default.ForegroundColors.Attention.Subtle);
-            Assert.AreEqual("#54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Default);
-            Assert.AreEqual("#DD54a254", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Subtle);
+            Assert.AreEqual("#028A02", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Default);
+            Assert.AreEqual("#DD027502", hostConfig.ContainerStyles.Default.ForegroundColors.Good.Subtle);
             Assert.AreEqual("#e69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Default);
             Assert.AreEqual("#DDe69500", hostConfig.ContainerStyles.Default.ForegroundColors.Warning.Subtle);
 
@@ -234,6 +250,19 @@ namespace AdaptiveCards.Test
 
             // Media config
             Assert.AreEqual("http://adaptivecards.io/content/media/poster.png", hostConfig.Media.DefaultPoster);
+
+            // Inputs config
+            Assert.AreEqual(AdaptiveSpacing.Small, hostConfig.Inputs.InputLabels.InputSpacing);
+
+            Assert.AreEqual(AdaptiveTextWeight.Bolder, hostConfig.Inputs.InputLabels.RequiredInputs.Weight);
+            Assert.AreEqual(AdaptiveTextColor.Attention, hostConfig.Inputs.InputLabels.RequiredInputs.Color);
+            Assert.AreEqual(AdaptiveTextSize.Medium, hostConfig.Inputs.InputLabels.RequiredInputs.Size);
+            Assert.AreEqual(false, hostConfig.Inputs.InputLabels.RequiredInputs.IsSubtle);
+
+            Assert.AreEqual(AdaptiveTextWeight.Lighter, hostConfig.Inputs.InputLabels.OptionalInputs.Weight);
+            Assert.AreEqual(AdaptiveTextColor.Good, hostConfig.Inputs.InputLabels.OptionalInputs.Color);
+            Assert.AreEqual(AdaptiveTextSize.Default, hostConfig.Inputs.InputLabels.OptionalInputs.Size);
+            Assert.AreEqual(true, hostConfig.Inputs.InputLabels.OptionalInputs.IsSubtle);
         }
 
         [TestMethod]
@@ -264,6 +293,68 @@ namespace AdaptiveCards.Test
             Assert.AreEqual("http://adaptivecards.io/content/media/poster.png", hostConfig.Media.DefaultPoster);
             Assert.AreEqual("http://adaptivecards.io/content/media/playButton.png", hostConfig.Media.PlayButton);
             Assert.AreEqual(false, hostConfig.Media.AllowInlinePlayback);
+        }
+
+        [TestMethod]
+        public void InputsConfig()
+        {
+            // Default values
+            var defaultHostConfig = AdaptiveHostConfig.FromJson(@"{}");
+
+            Assert.IsNotNull(defaultHostConfig);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs);
+            Assert.AreEqual(AdaptiveSpacing.Default, defaultHostConfig.Inputs.InputLabels.InputSpacing);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs.InputLabels.RequiredInputs);
+            Assert.AreEqual(AdaptiveTextColor.Default, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Color);
+            Assert.AreEqual(false, defaultHostConfig.Inputs.InputLabels.RequiredInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Default, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Default, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Weight);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs.InputLabels.OptionalInputs);
+            Assert.AreEqual(AdaptiveTextColor.Default, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Color);
+            Assert.AreEqual(false, defaultHostConfig.Inputs.InputLabels.OptionalInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Default, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Default, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Weight);
+
+            // Default values
+            var hostConfig = AdaptiveHostConfig.FromJson(@"{
+  ""inputs"": {
+    ""inputLabels"": {
+      ""inputSpacing"": ""small"",
+      ""requiredInputs"": {
+        ""weight"": ""bolder"",
+        ""color"": ""attention"",
+        ""size"": ""large"",
+        ""isSubtle"": false
+      },
+      ""optionalInputs"": {
+        ""color"": ""good"",
+        ""isSubtle"": true,
+        ""size"": ""medium"",
+        ""weight"": ""lighter""
+      }
+    }
+  }
+}");
+
+            Assert.IsNotNull(hostConfig);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs);
+            Assert.AreEqual(AdaptiveSpacing.Small, defaultHostConfig.Inputs.InputLabels.InputSpacing);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs.InputLabels.RequiredInputs);
+            Assert.AreEqual(AdaptiveTextColor.Attention, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Color);
+            Assert.AreEqual(false, defaultHostConfig.Inputs.InputLabels.RequiredInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Large, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Bolder, defaultHostConfig.Inputs.InputLabels.RequiredInputs.Weight);
+
+            Assert.IsNotNull(defaultHostConfig.Inputs.InputLabels.OptionalInputs);
+            Assert.AreEqual(AdaptiveTextColor.Good, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Color);
+            Assert.AreEqual(true, defaultHostConfig.Inputs.InputLabels.OptionalInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Medium, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Lighter, defaultHostConfig.Inputs.InputLabels.OptionalInputs.Weight);
         }
     }
 }

@@ -31,10 +31,12 @@ public class RadioGroupInputHandler extends BaseInputHandler
         int index = getRadioGroup().getCheckedRadioButtonId();
 
         // if no item was selected, index == -1, return empty string
-        if (index >= 0) {
+        if (index >= 0)
+        {
             return choiceSetInput.GetChoices().get(index).GetValue();
         }
-        else {
+        else
+        {
             return "";
         }
     }

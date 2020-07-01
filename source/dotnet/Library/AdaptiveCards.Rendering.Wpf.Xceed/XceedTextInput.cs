@@ -27,7 +27,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 textBox.Watermark = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
-                context.InputBindings.Add(input.Id, () => textBox.Text);
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedTextInputValue(input, textBox));
+
                 if (input.InlineAction != null)
                 {
                     if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline &&

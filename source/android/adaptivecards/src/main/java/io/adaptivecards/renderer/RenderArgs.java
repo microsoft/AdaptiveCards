@@ -4,6 +4,7 @@ package io.adaptivecards.renderer;
 
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.InternalId;
 
 public class RenderArgs
 {
@@ -14,6 +15,7 @@ public class RenderArgs
     {
         setAncestorHasFallback(renderArgs.getAncestorHasFallback());
         setContainerStyle(renderArgs.getContainerStyle());
+        setContainerCardId(renderArgs.getContainerCardId());
     }
 
     public boolean getAncestorHasFallback()
@@ -46,7 +48,18 @@ public class RenderArgs
         m_allowAboveTitleIconPlacement = allowAboveTitleIconPlacement;
     }
 
+    public void setContainerCardId(InternalId id)
+    {
+        m_containerCardId = id;
+    }
+
+    public InternalId getContainerCardId()
+    {
+        return m_containerCardId;
+    }
+
     private boolean m_ancestorHasFallback;
     private ContainerStyle m_containerStyle;
     private boolean m_allowAboveTitleIconPlacement;
+    private InternalId m_containerCardId;
 }

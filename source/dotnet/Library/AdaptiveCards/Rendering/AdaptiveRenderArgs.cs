@@ -41,5 +41,6 @@ namespace AdaptiveCards.Rendering
 
         public bool HasParentWithPadding { get; set; } = true;
 
+        public AdaptiveInternalID ContainerCardId { get; set; } = new AdaptiveInternalID();
     }
 }

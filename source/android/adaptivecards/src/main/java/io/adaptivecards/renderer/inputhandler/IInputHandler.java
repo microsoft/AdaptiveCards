@@ -8,4 +8,6 @@ public interface IInputHandler
     String getId();
     String getInput();
     void setInput(String input);
+
+    boolean isValid();
 }
