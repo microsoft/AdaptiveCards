@@ -70,11 +70,11 @@ public class Inline {
   }
 
   public JsonValue GetAdditionalProperties() {
-    return new JsonValue(AdaptiveCardObjectModelJNI.Inline_GetAdditionalProperties(swigCPtr, this), true);
+    return new JsonValue(AdaptiveCardObjectModelJNI.Inline_GetAdditionalProperties(swigCPtr, this), false);
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
-    AdaptiveCardObjectModelJNI.Inline_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+    AdaptiveCardObjectModelJNI.Inline_SetAdditionalProperties__SWIG_0(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
 }

@@ -1630,8 +1630,8 @@ SWIGINTERN jobject AdaptiveCards_BaseActionElement_swigOriginalObject(AdaptiveCa
 SWIGINTERN AdaptiveCards::BaseActionElement *AdaptiveCards_BaseActionElement_dynamic_cast(AdaptiveCards::BaseElement *baseElement){
         return dynamic_cast<AdaptiveCards::BaseActionElement *>(baseElement);
     }
-SWIGINTERN AdaptiveCards::BaseInputElement *AdaptiveCards_BaseInputElement_dynamic_cast(AdaptiveCards::BaseElement *baseElement){
-        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseElement);
+SWIGINTERN AdaptiveCards::BaseInputElement *AdaptiveCards_BaseInputElement_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
+        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseCardElement);
     }
 SWIGINTERN AdaptiveCards::Container *AdaptiveCards_Container_dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement){
         return dynamic_cast<AdaptiveCards::Container *>(baseCardElement);
@@ -8999,7 +8999,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
-  Json::Value result;
+  Json::Value *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -9007,8 +9007,8 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::BaseElement const *)arg1)->GetAdditionalProperties();
-  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
+  result = (Json::Value *) &((AdaptiveCards::BaseElement const *)arg1)->GetAdditionalProperties();
+  *(Json::Value **)&jresult = result; 
   return jresult;
 }
 
@@ -10455,16 +10455,16 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseInputElement_1dynamic_1cast(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
-  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
   AdaptiveCards::BaseInputElement *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
+  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
   {
     result = (AdaptiveCards::BaseInputElement *)AdaptiveCards_BaseInputElement_dynamic_cast(arg1);
     if (!result) {
@@ -27494,7 +27494,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   AdaptiveCards::Inline *arg1 = (AdaptiveCards::Inline *) 0 ;
   std::shared_ptr< AdaptiveCards::Inline const > *smartarg1 = 0 ;
-  Json::Value result;
+  Json::Value *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -27502,13 +27502,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::Inline > **)&jarg1;
   arg1 = (AdaptiveCards::Inline *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::Inline const *)arg1)->GetAdditionalProperties();
-  *(Json::Value **)&jresult = new Json::Value((const Json::Value &)result); 
+  result = (Json::Value *) &((AdaptiveCards::Inline const *)arg1)->GetAdditionalProperties();
+  *(Json::Value **)&jresult = result; 
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Inline_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Inline_1SetAdditionalProperties_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Inline *arg1 = (AdaptiveCards::Inline *) 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Inline > *smartarg1 = 0 ;
@@ -27522,10 +27522,10 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::Inline *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value && reference is null");
     return ;
   } 
-  (arg1)->SetAdditionalProperties((Json::Value const &)*arg2);
+  (arg1)->SetAdditionalProperties((Json::Value &&)*arg2);
 }
 
 

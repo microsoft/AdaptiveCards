@@ -423,7 +423,7 @@ namespace Json {
     }
 };
 
-%exception AdaptiveCards::BaseInputElement::dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
+%exception AdaptiveCards::BaseInputElement::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
     $action
     if (!result) {
         jclass excep = jenv->FindClass("java/lang/ClassCastException");
@@ -433,8 +433,8 @@ namespace Json {
     }
 }
 %extend AdaptiveCards::BaseInputElement {
-    static AdaptiveCards::BaseInputElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
-        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseElement);
+    static AdaptiveCards::BaseInputElement *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseCardElement);
     }
 };
 

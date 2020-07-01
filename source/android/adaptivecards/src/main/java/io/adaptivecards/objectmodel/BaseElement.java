@@ -94,7 +94,7 @@ public class BaseElement {
   }
 
   public JsonValue GetAdditionalProperties() {
-    return new JsonValue(AdaptiveCardObjectModelJNI.BaseElement_GetAdditionalProperties(swigCPtr, this), true);
+    return new JsonValue(AdaptiveCardObjectModelJNI.BaseElement_GetAdditionalProperties(swigCPtr, this), false);
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {

@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -95,7 +97,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 index++;
 
                 // each element has a row
-                FrameworkElement uiElement = context.Render(cardElement);
+                AdaptiveTypedElement rendereableElement = context.GetRendereableElement(cardElement);
+    
+                FrameworkElement uiElement = context.Render(rendereableElement);
                 if (uiElement != null)
                 {
                     TagContent tag = null;
@@ -120,6 +124,12 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiElement.MinHeight = collectionElement.PixelMinHeight;
                     }
 
+                    // If the rendered element is an input element, then add it to the inputs list
+                    if (rendereableElement is AdaptiveInput)
+                    {
+                        context.AddInputToCard(context.RenderArgs.ContainerCardId, rendereableElement.Id);
+                    }
+
                     int rowDefinitionIndex = uiContainer.RowDefinitions.Count;
                     RowDefinition rowDefinition = null;
                     if (cardElement.Height != AdaptiveHeight.Stretch)
@@ -127,8 +137,11 @@ namespace AdaptiveCards.Rendering.Wpf
                         rowDefinition = new RowDefinition() { Height = GridLength.Auto };
 
                         uiContainer.RowDefinitions.Add(rowDefinition);
-                        Grid.SetRow(uiElement, rowDefinitionIndex);
-                        uiContainer.Children.Add(uiElement);
+
+                        UIElement enclosingElement = EncloseElementInPanel(context, rendereableElement, uiElement);
+
+                        Grid.SetRow(enclosingElement, rowDefinitionIndex);
+                        uiContainer.Children.Add(enclosingElement);
 
                         // Row definition is stored in the tag for containers and elements that stretch
                         // so when the elements are shown, the row can have it's original definition,
@@ -136,7 +149,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         tag.RowDefinition = rowDefinition;
                         tag.ViewIndex = rowDefinitionIndex;
 
-                        context.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                        RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
                     }
                     else
                     {
@@ -154,7 +167,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         {
                             Grid.SetRow(uiElement, rowDefinitionIndex);
                             uiContainer.Children.Add(uiElement);
-                            context.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                            RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
                         }
                         else
                         {
@@ -165,12 +178,19 @@ namespace AdaptiveCards.Rendering.Wpf
                                 panel.Name = cardElement.Id;
                             }
 
-                            panel.Children.Add(uiElement);
+                            if (rendereableElement is AdaptiveInput)
+                            {
+                                panel.Children.Add(EncloseInputForVisualCue(context, rendereableElement as AdaptiveInput, uiElement));
+                            }
+                            else
+                            {
+                                panel.Children.Add(uiElement);
+                            }
                             panel.Tag = tag;
 
                             Grid.SetRow(panel, rowDefinitionIndex);
                             uiContainer.Children.Add(panel);
-                            context.SetVisibility(panel, cardElement.IsVisible, tag);
+                            RendererUtil.SetVisibility(panel, cardElement.IsVisible, tag);
                         }
                     }
                 }
@@ -186,21 +206,31 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <param name="element">Element to render spacing for</param>
         /// <param name="uiContainer">Container of rendered elements</param>
         /// <returns>Spacing grid</returns>
-        public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
+        public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveElement element, Panel uiContainer)
         {
-            if (element.Spacing == AdaptiveSpacing.None)
+            return AddSpacing(context, element.Spacing, uiContainer);
+        }
+
+        public static Grid AddSpacing(AdaptiveRenderContext context, AdaptiveSpacing spacing, Panel uiContainer)
+        {
+            if (spacing == AdaptiveSpacing.None)
             {
                 return null;
             }
 
             var uiSpa = new Grid();
             uiSpa.Style = context.GetStyle($"Adaptive.Spacing");
-            int spacing = context.Config.GetSpacing(element.Spacing);
 
-            uiSpa.SetHeight(spacing);
+            int pixelSpacing = context.Config.GetSpacing(spacing);
+            uiSpa.SetHeight(pixelSpacing);
 
-            uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-            Grid.SetRow(uiSpa, uiContainer.RowDefinitions.Count - 1);
+            if (uiContainer is Grid)
+            {
+                Grid uiContainerGrid = uiContainer as Grid;
+                uiContainerGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
+                Grid.SetRow(uiSpa, uiContainerGrid.RowDefinitions.Count - 1);
+            }
+
             uiContainer.Children.Add(uiSpa);
 
             return uiSpa;
@@ -288,6 +318,172 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             return canApplyPadding;
+        }
+
+        /// <summary>
+        /// Encloses the element in a panel to ease the showing/hiding of elements
+        /// </summary>
+        /// <param name="renderedElement">UIElement</param>
+        /// <returns>Panel that encloses the element</returns>
+        public static UIElement EncloseElementInPanel(AdaptiveRenderContext context, AdaptiveTypedElement element, FrameworkElement renderedElement)
+        {
+            UIElement enclosingElement = renderedElement;
+
+            if (element is AdaptiveInput)
+            {
+                AdaptiveInput inputElement = element as AdaptiveInput;
+                enclosingElement = EncloseInputForVisualCue(context, inputElement, renderedElement);
+
+                FrameworkElement elementForAccessibility = renderedElement;
+
+                if (inputElement is AdaptiveChoiceSetInput)
+                {
+                    Grid inputContainer = renderedElement as Grid;
+                    // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
+                    UIElement choiceSet = inputContainer.Children[0];
+
+                    if (choiceSet is ComboBox)
+                    {
+                        elementForAccessibility = choiceSet as FrameworkElement;
+                    }
+                    else if (choiceSet is Panel)
+                    {
+                        // If it's a choice set, then use the first element as element
+                        elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                    }
+                }
+
+                AutomationProperties.SetIsRequiredForForm(elementForAccessibility, inputElement.IsRequired);
+
+                if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
+                {
+                    TagContent tag = renderedElement.Tag as TagContent;
+
+                    StackPanel panel = new StackPanel();
+
+                    if (!String.IsNullOrEmpty(inputElement.Label))
+                    {
+                        panel.Children.Add(RenderLabel(context, inputElement, elementForAccessibility));
+                        AddSpacing(context, context.Config.Inputs.InputLabels.InputSpacing, panel);
+                    }
+
+                    panel.Children.Add(enclosingElement);
+                    enclosingElement = panel;
+                    tag.EnclosingElement = panel;
+
+                    if (!String.IsNullOrEmpty(inputElement.ErrorMessage))
+                    {
+                        Grid errorMessageSpacing = AddSpacing(context, context.Config.Inputs.ErrorMessage.Spacing, panel);
+
+                        TextBlock renderedErrorMessage = RenderErrorMessage(context, inputElement);
+                        renderedErrorMessage.Tag = new TagContent(errorMessageSpacing, null);
+
+                        context.InputValues[inputElement.Id].ErrorMessage = renderedErrorMessage;
+
+                        panel.Children.Add(renderedErrorMessage);
+                        tag.ErrorMessage = renderedErrorMessage;
+
+                        RendererUtil.SetVisibility(renderedErrorMessage, false, renderedErrorMessage.Tag as TagContent);
+                    }
+                }
+            }
+
+            return enclosingElement;
+        }
+
+        /// <summary>
+        /// Encloses the element in a panel to ease the showing/hiding of elements
+        /// </summary>
+        /// <param name="renderedElement">UIElement</param>
+        /// <returns>Border that encloses the element or the element if not needed</returns>
+        public static UIElement EncloseInputForVisualCue(AdaptiveRenderContext context, AdaptiveInput element, FrameworkElement renderedElement)
+        {
+            UIElement enclosingElement = renderedElement;
+
+            if (!(element is AdaptiveChoiceSetInput) && !(element is AdaptiveToggleInput))
+            {
+                AdaptiveTextBoxInputValue inputValue = context.InputValues[element.Id] as AdaptiveTextBoxInputValue;
+
+                if (inputValue != null)
+                {
+                    Border visualCue = new Border();
+                    visualCue.Child = renderedElement;
+                    visualCue.BorderBrush = context.GetColorBrush(context.GetForegroundColors(AdaptiveTextColor.Attention).Default);
+
+                    inputValue.VisualErrorCue = visualCue;
+                    enclosingElement = visualCue;
+                }
+            }
+
+            return enclosingElement;
+        }
+
+        /// <summary>
+        /// Renders the label for an input element
+        /// </summary>
+        /// <param name="context">AdaptiveRenderContext</param>
+        /// <param name="input">AdaptiveInput</param>
+        /// <returns>The rendered label</returns>
+        public static FrameworkElement RenderLabel(AdaptiveRenderContext context, AdaptiveInput input, FrameworkElement renderedInput)
+        {
+            TextBlock uiTextBlock = new TextBlock { TextWrapping = TextWrapping.Wrap };
+
+            InputLabelConfig labelConfig = null;
+            if (input.IsRequired)
+            {
+                labelConfig = context.Config.Inputs.InputLabels.RequiredInputs;
+            }
+            else
+            {
+                labelConfig = context.Config.Inputs.InputLabels.OptionalInputs;
+            }
+
+            Inline labelTextInline = new Run(input.Label);
+            labelTextInline.SetColor(AdaptiveTextColor.Default, labelConfig.IsSubtle, context);
+            uiTextBlock.Inlines.Add(labelTextInline);
+
+            if (input.IsRequired)
+            {
+                Inline requiredHintInline = new Run(" *");
+                requiredHintInline.SetColor(AdaptiveTextColor.Attention, labelConfig.IsSubtle, context);
+                uiTextBlock.Inlines.Add(requiredHintInline);
+            }
+
+            uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(AdaptiveFontType.Default, labelConfig.Weight));
+            uiTextBlock.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, labelConfig.Size);
+
+            if (labelConfig.Color != AdaptiveTextColor.Default)
+            {
+                uiTextBlock.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
+            }
+
+            AutomationProperties.SetLabeledBy(renderedInput, uiTextBlock);
+
+            return uiTextBlock;
+        }
+
+        /// <summary>
+        /// Renders the error message for an input element
+        /// </summary>
+        /// <param name="context">AdaptiveRenderContext</param>
+        /// <param name="input">AdaptiveInput</param>
+        /// <returns>The rendered error message</returns>
+        public static TextBlock RenderErrorMessage(AdaptiveRenderContext context, AdaptiveInput input)
+        {
+            TextBlock uiTextBlock = new TextBlock() {
+                Text = input.ErrorMessage,
+                TextWrapping = TextWrapping.Wrap,
+                Visibility = Visibility.Collapsed
+            };
+
+            // By default the color is set to attention
+            uiTextBlock.SetColor(AdaptiveTextColor.Attention, false /* isSubtle */, context);
+
+            // Then we honour size and weight from hostconfig
+            uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(AdaptiveFontType.Default, context.Config.Inputs.ErrorMessage.Weight));
+            uiTextBlock.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, context.Config.Inputs.ErrorMessage.Size);
+
+            return uiTextBlock;
         }
     }
 }
