@@ -131,19 +131,27 @@ export abstract class CardElement extends CardObject {
     }
 
     private updateRenderedElementVisibility() {
-        if (this._defaultRenderedElementDisplayMode) {
-            let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
+        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-            if (this._renderedElement) {
+        if (this._renderedElement) {
+            if (displayMode) {
                 this._renderedElement.style.display = displayMode;
             }
+            else {
+                this._renderedElement.style.removeProperty("display");
+            }
+        }
 
-            if (this._separatorElement) {
-                if (this.parent && this.parent.isFirstElement(this)) {
-                    this._separatorElement.style.display = "none";
+        if (this._separatorElement) {
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";
+            }
+            else {
+                if (displayMode) {
+                    this._separatorElement.style.display = displayMode;
                 }
                 else {
-                    this._separatorElement.style.display = displayMode;
+                    this._separatorElement.style.removeProperty("display");
                 }
             }
         }
