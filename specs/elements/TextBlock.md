@@ -103,6 +103,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Required**: No
 * **Allowed values**:
   * `ActionSet`
+  * `Column`
   * `ColumnSet`
   * `Container`
   * `FactSet`

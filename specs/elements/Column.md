@@ -4,17 +4,27 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **type** | `"Column"` | Yes | Must be `"Column"`. | 1.0 |
 | **items** | `Element[]` | No | The card elements to render inside the `Column`. | 1.0 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |
-| **fallback** | `Column`, `FallbackOption` | No | Describes what to do when an unknown item is encountered or the requires of this or any children can't be met. | 1.2 |
+| **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column in pixels, like `"80px"`. | 1.2 |
-| **separator** | `boolean` | No | When `true`, draw a separating line between this column and the previous column. | 1.0 |
-| **spacing** | `Spacing` | No | Controls the amount of spacing between this column and the preceding column. | 1.0 |
+| **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
+| **spacing** | `Spacing` | No | Controls the amount of spacing between this element and the preceding element. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **style** | `ContainerStyle?` | No | Style hint for `Column`. | 1.0 |
 | **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
+
+**Inherited properties**
+
+| Property | Type | Required | Description | Version |
+| -------- | ---- | -------- | ----------- | ------- |
+| **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
+| **id** | `string` | No | A unique identifier associated with the item. | 1.0 |
+| **isVisible** | `boolean` | No, default: `true` | If `false`, this item will be removed from the visual tree. | 1.2 |
+| **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
 ## items
@@ -25,6 +35,7 @@ The card elements to render inside the `Column`.
 * **Required**: No
 * **Allowed values**:
   * `ActionSet`
+  * `Column`
   * `ColumnSet`
   * `Container`
   * `FactSet`
@@ -55,19 +66,34 @@ Specifies the background image. Acceptable formats are PNG, JPEG, and GIF
 
 ## fallback
 
-Describes what to do when an unknown item is encountered or the requires of this or any children can't be met.
+Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.
 
-* **Type**: `Column`, `FallbackOption`
+* **Type**: `Element`, `FallbackOption`
 * **Version** : 1.2
 * **Required**: No
 * **Allowed values**:
+  * `ActionSet`
   * `Column`
+  * `ColumnSet`
+  * `Container`
+  * `FactSet`
+  * `Image`
+  * `ImageSet`
+  * `Input.ChoiceSet`
+  * `Input.Date`
+  * `Input.Number`
+  * `Input.Text`
+  * `Input.Time`
+  * `Input.Toggle`
+  * `Media`
+  * `RichTextBlock`
+  * `TextBlock`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
 
 
 ## spacing
 
-Controls the amount of spacing between this column and the preceding column.
+Controls the amount of spacing between this element and the preceding element.
 
 * **Type**: `Spacing`
 * **Required**: No
@@ -120,6 +146,18 @@ Defines how the content should be aligned vertically within the column.
   * `"top"`
   * `"center"`
   * `"bottom"`
+
+
+## height
+
+Specifies the height of the element.
+
+* **Type**: `BlockElementHeight`
+* **Version** : 1.1
+* **Required**: No
+* **Allowed values**:
+  * `"auto"`: The height of the container will be determined by the height of its contents.
+  * `"stretch"`: The container will stretch its height to the available remaining height of the parent container.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering

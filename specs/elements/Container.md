@@ -34,6 +34,7 @@ The card elements to render inside the `Container`.
 * **Required**: Yes
 * **Allowed values**:
   * `ActionSet`
+  * `Column`
   * `ColumnSet`
   * `Container`
   * `FactSet`
@@ -112,6 +113,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Required**: No
 * **Allowed values**:
   * `ActionSet`
+  * `Column`
   * `ColumnSet`
   * `Container`
   * `FactSet`

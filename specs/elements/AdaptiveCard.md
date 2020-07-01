@@ -26,6 +26,7 @@ The card elements to show in the primary card region.
 * **Required**: No
 * **Allowed values**:
   * `ActionSet`
+  * `Column`
   * `ColumnSet`
   * `Container`
   * `FactSet`
