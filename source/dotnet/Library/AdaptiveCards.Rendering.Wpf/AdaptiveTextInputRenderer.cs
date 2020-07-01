@@ -5,6 +5,7 @@ using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+    
     public static class AdaptiveTextInputRenderer
     {
         public static FrameworkElement Render(AdaptiveTextInput input, AdaptiveRenderContext context)
@@ -26,8 +27,8 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
             textBox.SetContext(input);
-            context.InputBindings.Add(input.Id, () => textBox.Text);
 
+            context.InputValues.Add(input.Id, new AdaptiveTextInputValue(input, textBox));
 
             if (input.InlineAction != null)
             {
