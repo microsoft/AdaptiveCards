@@ -42,7 +42,7 @@ Json::Value ImageSet::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ImageSize)] = ImageSizeToString(GetImageSize());
     }
 
-    std::string const& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
+    const std::string& itemsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Images);
     root[itemsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& image : m_images)
     {

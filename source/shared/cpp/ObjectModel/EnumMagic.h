@@ -38,7 +38,8 @@ namespace AdaptiveSharedNamespace
         public:
             // Initialize with a single list -> automatically generate reverse mapping
             EnumMapping(const std::initializer_list<std::pair<T, std::string>>& t) :
-                _enumToString{t.begin(), t.end()}, _stringToEnum(t.size())
+                _enumToString{t.begin(), t.end()},
+                _stringToEnum(t.size())
             {
                 _GenerateStringToEnumMap();
             }
@@ -53,7 +54,7 @@ namespace AdaptiveSharedNamespace
                 _GenerateStringToEnumMap();
             }
 
-            const std::string toString(T t) const { return _enumToString.at(t); }
+            const std::string& toString(T t) const { return _enumToString.at(t); }
             T fromString(const std::string& str) const { return _stringToEnum.at(str); }
 
         private:
@@ -71,12 +72,12 @@ namespace AdaptiveSharedNamespace
     }
 
 // Provides forward declaration for EnumHelpers mapping accessor as well as global mapping functions.
-#define DECLARE_ADAPTIVECARD_ENUM(ENUMTYPE)                 \
-    namespace EnumHelpers                                   \
-    {                                                       \
-        const EnumMapping<ENUMTYPE>& get##ENUMTYPE##Enum(); \
-    }                                                       \
-    const std::string ENUMTYPE##ToString(const ENUMTYPE t); \
+#define DECLARE_ADAPTIVECARD_ENUM(ENUMTYPE)                  \
+    namespace EnumHelpers                                    \
+    {                                                        \
+        const EnumMapping<ENUMTYPE>& get##ENUMTYPE##Enum();  \
+    }                                                        \
+    const std::string& ENUMTYPE##ToString(const ENUMTYPE t); \
     ENUMTYPE ENUMTYPE##FromString(const std::string& t);
 
 #define _DEFINE_ADAPTIVECARD_ENUM_INVARIANT(ENUMTYPE, ...)                \
@@ -88,7 +89,7 @@ namespace AdaptiveSharedNamespace
             return generatedEnum;                                         \
         }                                                                 \
     }                                                                     \
-    const std::string ENUMTYPE##ToString(const ENUMTYPE t) { return EnumHelpers::get##ENUMTYPE##Enum().toString(t); }
+    const std::string& ENUMTYPE##ToString(const ENUMTYPE t) { return EnumHelpers::get##ENUMTYPE##Enum().toString(t); }
 
 // Define mapping functions for ENUMTYPE. Throw an exception if caller passes in a string that doesn't map
 #define DEFINE_ADAPTIVECARD_ENUM_THROW(ENUMTYPE, ...)                \
