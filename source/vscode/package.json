@@ -23,7 +23,7 @@
                 {
                     "id": "cardLists",
                     "title": "Adaptive Cards",
-                    "icon": "resources/teamwork-white.png"
+                    "icon": "resources/adaptivecards.png"
                 }
             ]
         },
@@ -40,14 +40,6 @@
             ]
         },
         "commands": [
-            {
-                "command": "adaptivecardviewer.open",
-                "title": "AdaptiveCard: Preview",
-                "icon": {
-                    "light": "./media/preview-darkgray.svg",
-                    "dark": "./media/preview-lightgray.svg"
-                }
-            },
             {
                 "command": "cardList.showElement",
                 "title": "Show"

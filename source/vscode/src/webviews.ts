@@ -12,7 +12,7 @@ export class WebViews {
         this._context = context;
         this._extensionPath = extensionPath;
     }
-W
+
     public async GetWebViewContentAdaptiveCard(cardContent: string, cardData: string)  {
         let editor = vscode.window.activeTextEditor;
 
@@ -21,7 +21,7 @@ W
         var context : IEvaluationContext = {$root: JSON.parse(cardData)};
         var cardToRender = template.expand(context);
 
-        // local path to main script run in the webview
+    // local path to main script run in the webview
         const scriptPathOnDisk = vscode.Uri.file(
             path.join(this._extensionPath, "media/js", "mainAdaptive.js")
         );

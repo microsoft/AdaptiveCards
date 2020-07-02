@@ -23,32 +23,39 @@ export class AdaptiveCardsMain {
     public async OpenOrUpdatePanel(cardPath: string, content: string) {
 
         let activeEditor = vscode.window.activeTextEditor;
-        if(activeEditor == null ||activeEditor.document == null){
-            if(this.panel) this.panel.dispose();
+        if(activeEditor == null ||activeEditor.document == null) {
+            if(this.panel) { this.panel.dispose(); }
             return;
-        } 
+        }
 
         let text, data = "";
-        // When a data file is edited, get text from json template instead
-        // When a template is edited, get data from json.data instead
-        if(activeEditor.document.fileName.endsWith(".data.json")){
+        // when a data file is edited, get text from json template instead
+        // when a template is edited, get data from json.data instead
+        if(activeEditor.document.fileName.endsWith(".data.json")) {
             var templatefilePath = activeEditor.document.fileName.replace(".data","");
-            if (fs.existsSync(templatefilePath)) {
-                text = fs.readFileSync(templatefilePath, 'utf8');
-                data = activeEditor.document.getText();
+            var activeFiles = vscode.workspace.textDocuments;
+            activeFiles.forEach(file => {
+                if(file.fileName === templatefilePath) {
+                    text = file.getText();
+                }
+            });
+            if (text === "" && fs.existsSync(templatefilePath)) {
+                var rawData = require(templatefilePath);
+                text = JSON.stringify(rawData);
             }
-        }else{
+            data = activeEditor.document.getText();
+        } else {
             text = activeEditor.document.getText();
             var dataFilePath = activeEditor.document.fileName.replace(".json",".data.json");
             if (fs.existsSync(dataFilePath)) {
-                data = fs.readFileSync(dataFilePath, 'utf8');
+                data = fs.readFileSync(dataFilePath, "ascii");
             } else {
                 data = "{}";
             }
         }
 
         const searchTerm = "http://adaptivecards.io/schemas/adaptive-card.json";
-        if (text.includes(searchTerm)){
+        if (text != null && text !== "" && text.includes(searchTerm)) {
             const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
             if(this.panel) {
                 this.panel.reveal(column,true);
