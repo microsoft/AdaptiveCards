@@ -43,6 +43,7 @@
     </Compile>
     <Compile Include="Converters\ErrorViewModelConverters.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="CustomElements\CustomInput.cs" />
     <Compile Include="DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
