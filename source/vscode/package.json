@@ -1,7 +1,7 @@
 {
-    "name": "vscode-adaptivecards",
-    "displayName": "Adaptive Card Viewer",
-    "description": "Adaptive Card Viewer for Visual Studio Code.",
+    "name": "adaptivecards",
+    "displayName": "Adaptive Card Studio",
+    "description": "Adaptive Card Studio for Visual Studio Code.",
     "version": "0.5.0",
     "publisher": "microsoft",
     "engines": {
@@ -18,6 +18,11 @@
     ],
     "main": "./out/src/extension",
     "contributes": {
+        "snippets": [
+            {
+              "language": "json",
+              "path": "./snippets.json"
+            }],
         "viewsContainers": {
             "activitybar": [
                 {

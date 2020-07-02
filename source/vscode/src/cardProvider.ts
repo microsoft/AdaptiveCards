@@ -28,7 +28,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
 
     public async getChildren(element?: INode): Promise<INode[]> {
         if(!element) {
-            console.log("Searching for Adaptive Cards in your workspace");
+            vscode.window.showInformationMessage("Searching for Adaptive Cards in your workspace");
             return await this.GetAdaptiveCardsInFolder();
         }
         return element.getChildren(this.context);
@@ -37,7 +37,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
     public async GetAdaptiveCardsInFolder(): Promise<INode[]> {
         const items: INode[] = [];
         let folder = vscode.workspace.rootPath;
-
+        vscode.window.showInformationMessage("Searching for Adaptive Cards in your workspace");
         var files = await glob.sync(folder + "/**/*.json", {});
         var i = 0;
         files.forEach(file => {
@@ -52,7 +52,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
         });
 
         if(items.length === 0) {
-            items.push(new ProjectErrorNode("No Cards found in Workspace","","",0));
+            items.push(new ProjectErrorNode("No Cards found","","",0));
         }
         return items;
     }

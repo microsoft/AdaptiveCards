@@ -1,0 +1,150 @@
+{"Text Block (min)": {
+	"prefix": "ac-txt",
+	"body": [
+	  "{",
+	  "    \"type\": \"TextBlock\",",
+	  "    \"text\": \"New TextBlock\",",
+	  "},"
+	],
+	"description": "Text Block (min)"
+  },"Text Block (all options)": {
+	"prefix": "ac-txtfull",
+	"body": [
+	  "{",
+	  "    \"type\": \"TextBlock\",",
+	  "    \"text\": \"New TextBlock\",",
+	  "    \"fontType\": \"Default\",",
+	  "    \"size\": \"Medium\",",
+	  "    \"weight\": \"Lighter\",",
+	  "    \"color\": \"Light\",",
+	  "    \"separator\": true,",
+	  "    \"wrap\": true,",
+	  "    \"height\": \"stretch\",",
+	  "    \"horizontalAlignment\": \"Center\",",
+	  "    \"spacing\": \"ExtraLarge\"",
+	  "},"
+	],
+	"description": "Text Block (all options)"
+  },"Column Set (3 col)": {
+	"prefix": "ac-col3",
+	"body": [
+	  " {",
+	  "    \"type\": \"ColumnSet\",",
+	  "    \"columns\": [",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\"",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\"",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\"",
+	  "        }",
+	  "    ]",
+	  "},"
+	],
+	"description": "Column Set (3 col)"
+  },"Column Set (2 col)": {
+	"prefix": "ac-col2",
+	"body": [
+	  " {",
+	  "    \"type\": \"ColumnSet\",",
+	  "    \"columns\": [",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\"",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\"",
+	  "        }",
+	  "    ]",
+	  "}"
+	],
+	"description": "Column Set (2 col)"
+  },
+	"Fact Set": {
+	"prefix": "ac-fctset",
+	"body": [
+	  "{",
+	  "\"type\": \"FactSet\",",
+	  "   \"facts\": [",
+	  "     {",
+	  "      \"title\": \"Fact 1\",",
+	  "      \"value\": \"Value 1\"",
+	  "     },",
+	  "     {",
+	  "      \"title\": \"Fact 2\",",
+	  "      \"value\": \"Value 2\"",
+	  "     }",
+	  " ]",
+	  "}"
+	],
+	"description": "Fact Set"
+  },
+	"Adaptive Card w Actions": {
+	"prefix": "acaction",
+	"body": [
+	  "{",
+	  "    \"type\": \"AdaptiveCard\",",
+	  "    \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",",
+	  "    \"version\": \"1.2\",",
+	  "    \"body\": [",
+	  "        {",
+	  "            \"type\": \"Container\"",
+	  "        }",
+	  "    ],",
+	  "    \"actions\": [",
+	  "        {",
+	  "            \"type\": \"Action.Submit\",",
+	  "            \"title\": \"Action.Submit\"",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Action.Submit\",",
+	  "            \"title\": \"Action.Submit\"",
+	  "        }",
+	  "    ]",
+	  "}"
+	],
+	"description": "Adaptive Card w Actions"
+  },
+	"Adaptive Card Empty": {
+		"prefix": "ac",
+		"body": [
+		  "{",
+		  "    \"type\": \"AdaptiveCard\",",
+		  "    \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",",
+		  "    \"version\": \"1.2\",",
+		  "    \"body\": [",
+		  "    ]",
+		  "}"
+		],
+		"description": "Adaptive Card Empty"
+	  },
+	"Container": {
+		"prefix": "ac-ctr",
+		"body": [
+		  "{",
+		  "   \"type\": \"Container\",",
+		  "   \"items\": [",
+		  "   ]",
+		  "},"
+		],
+		"description": "Container"
+	  },
+	  "Image": {
+		"prefix": "ac-img",
+		"body": [
+		  "{",
+		  "  \"type\": \"Image\",",
+		  "  \"url\": \"https://imageurl\",",
+		  "  \"altText\": \"alttext\"",
+		  "},",
+		  ""
+		],
+		"description": "Image"
+	  }
+}
