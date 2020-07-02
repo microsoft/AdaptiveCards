@@ -5,7 +5,7 @@
   "properties": {
     "text": {
       "type": "string",
-      "description": "Text to display",
+      "description": "Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures)",
       "required": true
     },
     "color": {

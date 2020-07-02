@@ -35,12 +35,14 @@ namespace AdaptiveSharedNamespace
 
     std::string BaseElement::Serialize() const { return ParseUtil::JsonToString(SerializeToJsonValue()); }
 
-    std::string BaseElement::GetId() const { return m_id; }
+    const std::string& BaseElement::GetId() const { return m_id; }
 
+    void BaseElement::SetId(std::string&& value) { m_id = std::move(value); }
     void BaseElement::SetId(const std::string& value) { m_id = value; }
 
-    std::string BaseElement::GetElementTypeString() const { return m_typeString; }
+    const std::string& BaseElement::GetElementTypeString() const { return m_typeString; }
 
+    void BaseElement::SetElementTypeString(std::string&& value) { m_typeString = std::move(value); }
     void BaseElement::SetElementTypeString(const std::string& value) { m_typeString = value; }
 
     void BaseElement::PopulateKnownPropertiesSet()
@@ -165,7 +167,7 @@ namespace AdaptiveSharedNamespace
                         catch (const AdaptiveCardParseException&)
                         {
                             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                                             "Invalid version in requires value: '" + memberValue + "'");
+                                "Invalid version in requires value: '" + memberValue + "'");
                         }
                     }
                 }
