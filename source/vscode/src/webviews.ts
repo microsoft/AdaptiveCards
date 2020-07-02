@@ -12,14 +12,13 @@ export class WebViews {
         this._context = context;
         this._extensionPath = extensionPath;
     }
-
-    public async GetWebViewContentAdaptiveCard(taskItem: number, force: boolean = false)  {
+W
+    public async GetWebViewContentAdaptiveCard(cardContent: string, cardData: string)  {
         let editor = vscode.window.activeTextEditor;
 
         if (editor) {
-        let document = editor.document;
-        let template = new ACData.Template(document.getText());
-        var context : IEvaluationContext = {$root: {}};
+        let template = new ACData.Template(cardContent);
+        var context : IEvaluationContext = {$root: JSON.parse(cardData)};
         var cardToRender = template.expand(context);
 
         // local path to main script run in the webview

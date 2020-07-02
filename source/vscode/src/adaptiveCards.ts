@@ -21,22 +21,51 @@ export class AdaptiveCardsMain {
 
     // tslint:disable-next-line: typedef
     public async OpenOrUpdatePanel(cardPath: string, content: string) {
-        const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
-        if(this.panel) {
-            this.panel.reveal(column);
-            this.panel.title = "Adaptive Card";
-            this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(0);
-        } else {
-            this.panel = vscode.window.createWebviewPanel("ac.CardViewer","Adaptive Card",vscode.ViewColumn.Beside,{
-                enableScripts: true,
-                localResourceRoots: [
-                    vscode.Uri.file(path.join(this._extensionPath, "media"))
-                ]
-            });
-            this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(0);
-            this.panel.onDidDispose ( task=> {
-                this.dispose();
-            });
+
+        let activeEditor = vscode.window.activeTextEditor;
+        if(activeEditor == null ||activeEditor.document == null){
+            if(this.panel) this.panel.dispose();
+            return;
+        } 
+
+        let text, data = "";
+        // When a data file is edited, get text from json template instead
+        // When a template is edited, get data from json.data instead
+        if(activeEditor.document.fileName.endsWith(".data.json")){
+            var templatefilePath = activeEditor.document.fileName.replace(".data","");
+            if (fs.existsSync(templatefilePath)) {
+                text = fs.readFileSync(templatefilePath, 'utf8');
+                data = activeEditor.document.getText();
+            }
+        }else{
+            text = activeEditor.document.getText();
+            var dataFilePath = activeEditor.document.fileName.replace(".json",".data.json");
+            if (fs.existsSync(dataFilePath)) {
+                data = fs.readFileSync(dataFilePath, 'utf8');
+            } else {
+                data = "{}";
+            }
+        }
+
+        const searchTerm = "http://adaptivecards.io/schemas/adaptive-card.json";
+        if (text.includes(searchTerm)){
+            const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
+            if(this.panel) {
+                this.panel.reveal(column,true);
+                this.panel.title = "Adaptive Card";
+                this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(text,data);
+            } else {
+                this.panel = vscode.window.createWebviewPanel("ac.CardViewer","Adaptive Card",vscode.ViewColumn.Beside,{
+                    enableScripts: true,
+                    localResourceRoots: [
+                        vscode.Uri.file(path.join(this._extensionPath, "media"))
+                    ]
+                });
+                this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(text,data);
+                this.panel.onDidDispose ( task=> {
+                    this.dispose();
+                });
+            }
         }
     }
 

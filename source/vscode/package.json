@@ -51,6 +51,14 @@
             {
                 "command": "cardList.showElement",
                 "title": "Show"
+            },
+            {
+                "command": "cardList.refresh",
+                "title": "Refresh",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
             }
         ],
         "menus": {
@@ -60,7 +68,23 @@
                     "command": "adaptivecardviewer.open",
                     "group": "navigation"
                 }
-            ]
+            ],
+            "editor/context": [
+			],
+			"view/item/context": [
+			],
+			"view/title": [
+				{
+					"command": "cardList.refresh",
+					"when": "view == cardList",
+					"group": "navigation"
+				},
+				{
+					"command": "cardList.refresh",
+					"when": "view == cardListCMS",
+					"group": "navigation"
+				}
+			]
         },
         "keybindings": [
             {
