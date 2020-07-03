@@ -237,31 +237,24 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 isDeficientInHeight = YES;
             }
 
-            CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
-            CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
-
             if (isDeficientInWidth and isDeficientInHeight) {
                 CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
                 CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
                 // m * a >= x
                 // m * b >= y
-                // we want factor m that produces width and height when muliplied to a and b, that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
+                // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
                 // then m is max of (a/x, b/y)
                 // we applies m to image view's corresponding axis.
                 // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
                 if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-                    [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-                    [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
+                    configWidthAndHeightAnchors(imageView, superView, false);
                 } else {
-                    [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
-                    [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+                    configWidthAndHeightAnchors(imageView, superView, true);
                 }
             } else if (isDeficientInWidth) {
-                [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-                [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
+                configWidthAndHeightAnchors(imageView, superView, false);
             } else if (isDeficientInHeight) {
-                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
-                [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
+                configWidthAndHeightAnchors(imageView, superView, true);
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -685,5 +678,22 @@ void configHorizontalAlignmentConstraintsForBackgroundImageView(const Background
         default:
             [imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor].active = YES;
             break;
+    }
+}
+
+void configWidthAndHeightAnchors(UIImageView *imageView, UIView *superView, bool isComplimentaryAxisHorizontal)
+{
+    if (imageView && imageView.image && superView) {
+        CGSize targetViewSize = superView.frame.size;
+        CGSize sourceSize = imageView.image.size;
+        if (isComplimentaryAxisHorizontal) {
+            CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
+            [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
+            [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+        } else {
+            CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
+            [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+            [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
+        }
     }
 }
