@@ -21,6 +21,7 @@ import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
+import InputLabel from "./input-label";
 
 export class Input extends React.Component {
 
@@ -37,6 +38,7 @@ export class Input extends React.Component {
 		this.type = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
+		this.label = Constants.EmptyString;
 
 		this.validationRequiredWithVisualCue = (!this.payload.validation ||
 			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
@@ -62,7 +64,8 @@ export class Input extends React.Component {
 			type,
 			isMultiline,
 			placeholder,
-			maxLength
+			maxLength,
+			label
 		} = this;
 
 		if (!id || !type) {
@@ -79,7 +82,8 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+							<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+								<InputLabel label={label}/>
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -137,6 +141,7 @@ export class Input extends React.Component {
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
 		this.inlineAction = this.payload.inlineAction;
+		this.label = this.payload.label;
 	}
 
     /**
@@ -176,6 +181,7 @@ export class Input extends React.Component {
 			textStyle,
 			keyboardType,
 			inlineAction,
+			label,
 		} = this;
 
 		if (!id || !type) {
@@ -202,7 +208,9 @@ export class Input extends React.Component {
 			return (
 				<View>
 					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
-						<TextInput
+						<View style={styles.elementWrapper}>
+							<InputLabel label={label}/>
+							<TextInput
 							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 							autoCapitalize={Constants.NoneString}
 							autoCorrect={false}
@@ -225,6 +233,7 @@ export class Input extends React.Component {
 							}}
 							value={this.props.value}
 						/>
+						</View>
 						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
 							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
 								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
@@ -301,10 +310,14 @@ const styles = StyleSheet.create({
 	singleLineHeight: {
 		height: 44,
 	},
+	elementWrapper: {
+		flex: 1,
+		marginVertical : 3
+	},
 	input: {
 		width: Constants.FullWidth,
 		padding: 5,
-		marginTop: 15,
+		marginTop: 3,
 	},
 	inlineActionWrapper: {
 		flexDirection: 'row',
@@ -323,7 +336,6 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		width: 40,
 		height: 40,
-		marginTop: 15,
 		backgroundColor: 'transparent',
 		flexShrink: 0,
 	},

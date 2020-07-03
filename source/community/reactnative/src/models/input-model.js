@@ -1,13 +1,14 @@
-import {BaseModel} from './base-model'
+import { BaseModel } from './base-model'
 import { ElementType } from '../utils/enums'
 
-export class BaseInputModel extends BaseModel{
+export class BaseInputModel extends BaseModel {
     constructor(payload, parent) {
         super(payload, parent);
         this.placeholder = payload.placeholder;
         this.value = payload.value;
         this.inlineAction = payload.inlineAction;
         this.validation = payload.validation;
+        this.label = payload.label;
     }
 }
 
@@ -27,7 +28,7 @@ export class NumberInputModel extends BaseInputModel {
     type = ElementType.NumberInput;
 
     constructor(payload, parent) {
-        super(payload, parent);            
+        super(payload, parent);
         this.max = payload.max;
         this.min = payload.min;
     }
