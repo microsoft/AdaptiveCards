@@ -144,7 +144,7 @@
     if (_placeholderText && [textView.text isEqualToString:_placeholderText]) {
         textView.text = @"";
         if (@available(iOS 13.0, *)) {
-            textView.textColor = UIColor.labelColor;
+            textView.textColor = [UIColor labelColor];
         } else {
             // Fallback on earlier versions
             textView.textColor = [UIColor blackColor];
@@ -157,7 +157,7 @@
     if (![textView.text length]) {
         textView.text = _placeholderText;
         if (@available(iOS 13.0, *)) {
-            textView.textColor = UIColor.placeholderTextColor;
+            textView.textColor = [UIColor placeholderTextColor];
         } else {
             // Fallback on earlier versions
             textView.textColor = [UIColor lightGrayColor];
