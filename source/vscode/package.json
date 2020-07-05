@@ -1,9 +1,9 @@
 {
     "name": "adaptivecards",
-    "displayName": "Adaptive Card Studio",
-    "description": "Adaptive Card Studio for Visual Studio Code.",
+    "displayName": "Adaptive Card Studio (BETA)",
+    "description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version and might contain bugs )",
     "version": "0.5.0",
-    "publisher": "microsoft",
+    "publisher": "tcdev",
     "engines": {
         "vscode": "^1.36.0"
     },
@@ -20,9 +20,10 @@
     "contributes": {
         "snippets": [
             {
-              "language": "json",
-              "path": "./snippets.json"
-            }],
+                "language": "json",
+                "path": "./snippets.json"
+            }
+        ],
         "viewsContainers": {
             "activitybar": [
                 {
@@ -66,22 +67,20 @@
                     "group": "navigation"
                 }
             ],
-            "editor/context": [
-			],
-			"view/item/context": [
-			],
-			"view/title": [
-				{
-					"command": "cardList.refresh",
-					"when": "view == cardList",
-					"group": "navigation"
-				},
-				{
-					"command": "cardList.refresh",
-					"when": "view == cardListCMS",
-					"group": "navigation"
-				}
-			]
+            "editor/context": [],
+            "view/item/context": [],
+            "view/title": [
+                {
+                    "command": "cardList.refresh",
+                    "when": "view == cardList",
+                    "group": "navigation"
+                },
+                {
+                    "command": "cardList.refresh",
+                    "when": "view == cardListCMS",
+                    "group": "navigation"
+                }
+            ]
         },
         "keybindings": [
             {
@@ -147,6 +146,7 @@
     "dependencies": {
         "adaptivecards": "^1.2.6",
         "adaptivecards-templating": "^1.0.0-rc.0",
+        "axios": "^0.19.2",
         "vscode": "^1.1.36"
     }
 }

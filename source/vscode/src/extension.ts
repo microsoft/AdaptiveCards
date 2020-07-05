@@ -14,7 +14,23 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider("cardList", cardProvider);
 	vscode.window.registerTreeDataProvider("cardListCMS", cardProvider);
 
-	vscode.commands.registerCommand('cardList.refresh', task => {
+	// register Url Handler for App
+	vscode.window.registerUriHandler({
+        handleUri(uri: vscode.Uri) {
+			if(uri.toString().indexOf("adaptivecards") > 0) {
+				var cardId = uri.path.replace("/","");
+				acm.OpenRemoteCard(cardId);
+				console.log(uri.path.replace("/",""));
+				//vscode://tcdev.adaptivecards/5d51dd2e-4ff1-4cda-bc90-eaee20c5eb6b
+			} else {
+				// noting for us, just ignore
+			}
+        }
+    });
+
+
+
+	vscode.commands.registerCommand("cardList.refresh", task => {
 		cardProvider.refresh();
 		}
 	);
@@ -28,16 +44,16 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.onDidChangeActiveTextEditor(
 		editor => {
 		  activeEditor = editor;
-		  acm.OpenOrUpdatePanel("","")
+		  acm.OpenOrUpdatePanel("","");
 		},
 		null,
 		context.subscriptions
 	  );
-	
+
 	  vscode.workspace.onDidChangeTextDocument(
 		event => {
 		  if (activeEditor && event.document === activeEditor.document) {
-			acm.OpenOrUpdatePanel("","")
+			acm.OpenOrUpdatePanel("","");
 		  }
 		},
 		null,
