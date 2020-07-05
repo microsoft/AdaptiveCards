@@ -1,13 +1,13 @@
-{"Text Block (min)": {
+{"AC Text Block (min)": {
 	"prefix": "ac-txt",
 	"body": [
 	  "{",
 	  "    \"type\": \"TextBlock\",",
-	  "    \"text\": \"New TextBlock\",",
+	  "    \"text\": \"New TextBlock\"",
 	  "},"
 	],
 	"description": "Text Block (min)"
-  },"Text Block (all options)": {
+  },"AC Text Block (all options)": {
 	"prefix": "ac-txtfull",
 	"body": [
 	  "{",
@@ -25,7 +25,7 @@
 	  "},"
 	],
 	"description": "Text Block (all options)"
-  },"Column Set (3 col)": {
+  },"AC Column Set (3 col)": {
 	"prefix": "ac-col3",
 	"body": [
 	  " {",
@@ -34,20 +34,23 @@
 	  "        {",
 	  "            \"type\": \"Column\",",
 	  "            \"width\": \"stretch\"",
+	  "            \"items\": []",
 	  "        },",
 	  "        {",
 	  "            \"type\": \"Column\",",
 	  "            \"width\": \"stretch\"",
+	  "            \"items\": []",
 	  "        },",
 	  "        {",
 	  "            \"type\": \"Column\",",
 	  "            \"width\": \"stretch\"",
+	  "            \"items\": []",
 	  "        }",
 	  "    ]",
 	  "},"
 	],
 	"description": "Column Set (3 col)"
-  },"Column Set (2 col)": {
+  },"AC Column Set (2 col)": {
 	"prefix": "ac-col2",
 	"body": [
 	  " {",
@@ -56,17 +59,19 @@
 	  "        {",
 	  "            \"type\": \"Column\",",
 	  "            \"width\": \"stretch\"",
+	  "            \"items\": []",
 	  "        },",
 	  "        {",
 	  "            \"type\": \"Column\",",
 	  "            \"width\": \"stretch\"",
+	  "            \"items\": []",
 	  "        }",
 	  "    ]",
 	  "}"
 	],
 	"description": "Column Set (2 col)"
   },
-	"Fact Set": {
+	"AC Fact Set": {
 	"prefix": "ac-fctset",
 	"body": [
 	  "{",
@@ -95,6 +100,7 @@
 	  "    \"body\": [",
 	  "        {",
 	  "            \"type\": \"Container\"",
+	  "            \"items\": []",
 	  "        }",
 	  "    ],",
 	  "    \"actions\": [",

@@ -18,7 +18,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerUriHandler({
         handleUri(uri: vscode.Uri) {
 			if(uri.toString().indexOf("adaptivecards") > 0) {
-				var cardId = uri.path.replace("/","");
+				var cardId: string = uri.path.replace("/","");
 				acm.OpenRemoteCard(cardId);
 				console.log(uri.path.replace("/",""));
 				//vscode://tcdev.adaptivecards/5d51dd2e-4ff1-4cda-bc90-eaee20c5eb6b
@@ -27,8 +27,6 @@ export function activate(context: vscode.ExtensionContext) {
 			}
         }
     });
-
-
 
 	vscode.commands.registerCommand("cardList.refresh", task => {
 		cardProvider.refresh();
@@ -40,7 +38,8 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 
-	let activeEditor = vscode.window.activeTextEditor;
+	let activeEditor: vscode.TextEditor = vscode.window.activeTextEditor;
+
 	vscode.window.onDidChangeActiveTextEditor(
 		editor => {
 		  activeEditor = editor;

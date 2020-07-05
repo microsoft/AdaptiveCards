@@ -24,30 +24,30 @@ export class AdaptiveCardsMain {
     // tslint:disable-next-line: typedef
     public async OpenOrUpdatePanel(cardPath: string, content: string) {
 
-        let activeEditor = vscode.window.activeTextEditor;
+        let activeEditor: vscode.TextEditor = vscode.window.activeTextEditor;
         if(activeEditor == null ||activeEditor.document == null) {
             return;
         }
 
-        let text, data = "";
+        let text: string, data: string = "";
         // when a data file is edited, get text from json template instead
         // when a template is edited, get data from json.data instead
         if(activeEditor.document.fileName.endsWith(".data.json")) {
-            var templatefilePath = activeEditor.document.fileName.replace(".data","");
-            var activeFiles = vscode.workspace.textDocuments;
+            var templatefilePath: string = activeEditor.document.fileName.replace(".data","");
+            var activeFiles: vscode.TextDocument[] = vscode.workspace.textDocuments;
             activeFiles.forEach(file => {
                 if(file.fileName === templatefilePath) {
                     text = file.getText();
                 }
             });
             if (text === "" && fs.existsSync(templatefilePath)) {
-                var rawData = require(templatefilePath);
+                var rawData: string = require(templatefilePath);
                 text = JSON.stringify(rawData);
             }
             data = activeEditor.document.getText();
         } else {
             text = activeEditor.document.getText();
-            var dataFilePath = activeEditor.document.fileName.replace(".json",".data.json");
+            var dataFilePath: string = activeEditor.document.fileName.replace(".json",".data.json");
             if (fs.existsSync(dataFilePath)) {
                 data = fs.readFileSync(dataFilePath, "ascii");
             } else {
@@ -55,7 +55,7 @@ export class AdaptiveCardsMain {
             }
         }
 
-        const searchTerm = "http://adaptivecards.io/schemas/adaptive-card.json";
+        const searchTerm: string = "http://adaptivecards.io/schemas/adaptive-card.json";
         if (text != null && text !== "" && text.includes(searchTerm)) {
             const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
             if(this.panel) {
@@ -74,10 +74,11 @@ export class AdaptiveCardsMain {
         }
     }
 
+    // tslint:disable-next-line: typedef
     public async OpenRemoteCard(cardId: string) {
         try {
             var cardTemplate: string, cardData: string = "";
-            var workspacePath = vscode.workspace.rootPath;
+            var workspacePath: string = vscode.workspace.rootPath;
             axios.get("https://madewithcards.io/api/cardsv2/" + cardId).then( response => {
                 cardTemplate = response.data;
                 var filePath: string  = path.join(workspacePath,cardId + ".json");
