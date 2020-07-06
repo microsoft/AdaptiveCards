@@ -68,7 +68,7 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
-                                           const std::wstring& resourceName,
+                                           HSTRING resourceName,
                                            _In_ IFrameworkElement* frameworkElement) noexcept
     {
         ComPtr<IResourceDictionary> resourceDictionary;
@@ -81,6 +81,13 @@ namespace AdaptiveNamespace::XamlHelpers
         }
 
         return S_OK;
+    }
+
+    HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
+                                           const wchar_t* resourceName,
+                                           _In_ IFrameworkElement* frameworkElement) noexcept
+    {
+        return SetStyleFromResourceDictionary(renderContext, HStringReference(resourceName).Get(), frameworkElement);
     }
 
     HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)

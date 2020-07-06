@@ -8,6 +8,12 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
+    CustomElementWrapper::CustomElementWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement) :
+        BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom), m_cardElement(cardElement)
+    {
+        BaseElement::SetId(GetCardElementId());
+    }
+
     bool CustomElementWrapper::GetSeparator() const
     {
         boolean hasSeparator;
@@ -15,7 +21,10 @@ namespace AdaptiveNamespace
         return hasSeparator;
     }
 
-    void CustomElementWrapper::SetSeparator(const bool value) { THROW_IF_FAILED(m_cardElement->put_Separator(value)); }
+    void CustomElementWrapper::SetSeparator(bool value)
+    {
+        THROW_IF_FAILED(m_cardElement->put_Separator(value));
+    }
 
     Spacing CustomElementWrapper::GetSpacing() const
     {
@@ -25,23 +34,21 @@ namespace AdaptiveNamespace
         return static_cast<Spacing>(spacing);
     }
 
-    void CustomElementWrapper::SetSpacing(const Spacing value)
+    void CustomElementWrapper::SetSpacing(Spacing value)
     {
         THROW_IF_FAILED(m_cardElement->put_Spacing(static_cast<ABI::AdaptiveNamespace::Spacing>(value)));
     }
 
-    std::string CustomElementWrapper::GetId() const
+    void CustomElementWrapper::SetId(std::string&& value)
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(m_cardElement->get_Id(id.GetAddressOf()));
-        return HStringToUTF8(id.Get());
+        SetCardElementId(value);
+        BaseElement::SetId(std::move(value));
     }
 
     void CustomElementWrapper::SetId(const std::string& value)
     {
-        Wrappers::HString id;
-        THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
-        THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
+        SetCardElementId(value);
+        BaseElement::SetId(value);
     }
 
     Json::Value CustomElementWrapper::SerializeToJsonValue() const
@@ -67,5 +74,19 @@ namespace AdaptiveNamespace
     HRESULT CustomElementWrapper::GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement)
     {
         return m_cardElement.CopyTo(cardElement);
+    }
+
+    std::string CustomElementWrapper::GetCardElementId() const
+    {
+        Wrappers::HString id;
+        THROW_IF_FAILED(m_cardElement->get_Id(id.GetAddressOf()));
+        return HStringToUTF8(id.Get());
+    }
+
+    void CustomElementWrapper::SetCardElementId(const std::string& value)
+    {
+        Wrappers::HString id;
+        THROW_IF_FAILED(UTF8ToHString(value, id.GetAddressOf()));
+        THROW_IF_FAILED(m_cardElement->put_Id(id.Get()));
     }
 }
