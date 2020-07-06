@@ -123,7 +123,7 @@ namespace AdaptiveSharedNamespace
         std::string propertyValueStr = "";
         try
         {
-            const std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+            const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
             auto const& propertyValue = json.get(propertyName, Json::Value());
             if (propertyValue.empty())
             {
