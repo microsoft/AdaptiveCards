@@ -151,6 +151,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     {
         TextBlock textBlock = Util.castTo(baseCardElement, TextBlock.class);
 
+        if (textBlock.GetText().isEmpty())
+        {
+            return null;
+        }
+
         TextView textView = new TextView(context);
         textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
 
