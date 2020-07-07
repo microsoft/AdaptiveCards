@@ -75,4 +75,4 @@ void configHorizontalAlignmentConstraintsForBackgroundImageView(const Background
 
 void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
 
-void configWidthAndHeightAnchors(UIImageView *imageView, UIView *superView, bool isComplimentaryAxisHorizontal);
+void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal);

@@ -247,14 +247,14 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 // we applies m to image view's corresponding axis.
                 // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
                 if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-                    configWidthAndHeightAnchors(imageView, superView, false);
+                    configWidthAndHeightAnchors(superView, imageView, false);
                 } else {
-                    configWidthAndHeightAnchors(imageView, superView, true);
+                    configWidthAndHeightAnchors(superView, imageView, true);
                 }
             } else if (isDeficientInWidth) {
-                configWidthAndHeightAnchors(imageView, superView, false);
+                configWidthAndHeightAnchors(superView, imageView, false);
             } else if (isDeficientInHeight) {
-                configWidthAndHeightAnchors(imageView, superView, true);
+                configWidthAndHeightAnchors(superView, imageView, true);
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -681,19 +681,20 @@ void configHorizontalAlignmentConstraintsForBackgroundImageView(const Background
     }
 }
 
-void configWidthAndHeightAnchors(UIImageView *imageView, UIView *superView, bool isComplimentaryAxisHorizontal)
+void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal)
 {
-    if (imageView && imageView.image && superView) {
-        CGSize targetViewSize = superView.frame.size;
-        CGSize sourceSize = imageView.image.size;
-        if (isComplimentaryAxisHorizontal) {
-            CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
-            [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
-            [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
-        } else {
-            CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
-            [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-            [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
-        }
+    if (!imageView || !imageView.image || !superView) {
+        return;
+    }
+    CGSize targetViewSize = superView.frame.size;
+    CGSize sourceSize = imageView.image.size;
+    if (isComplimentaryAxisHorizontal) {
+        CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
+        [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
+        [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+    } else {
+        CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
+        [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+        [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
     }
 }
