@@ -5,7 +5,7 @@ import subprocess
 from app import app 
 
 
-@app.route('/node', methods=['POST'])
+@app.route('/', methods=['POST'])
 def index():
     """This POST request accepts JSON and returns the card screenshot on nodeJS.
 
@@ -18,28 +18,49 @@ def index():
         imageData field contains a base 64 encoded string representing the
         screenshot of the card.
    """
-   
     template = request.form['template']
     data = request.form['data']
+    card = ''
+    
+    if len(data) != 0:
+        card = '{"data": ' + data + ', "template" : ' + template + '}'
+    else: 
+        card = '{"data": "" ' + ', "template" : ' + template + '}'
 
-    template_json = json.loads(template)
-    data_json = json.loads(data)
+    card_byte_buffer = bytes(card, 'utf-8')  # The subprocess module requires the input to be a byte stream
 
-    #We create the new JSON string to send to the node renderer
-    card = '{"data": "", "template": ""}'
-    card_json = json.loads(card)
-    card_json["data"] = data_json
-    card_json["template"] = template_json
-
-    card_byte_buffer = bytes(json.dumps(card_json), 'utf-8')  # The subprocess module requires the input to be a byte stream
-
-    #output saves saves all the data node sends to stdout
-    output = subprocess.check_output(
-              ['node', 'NodeApp/app.js'],
-              input=card_byte_buffer,
-             )
-
-    img_json_str = output.decode('utf-8')
-    img_json = json.loads(img_json_str)
-    return json.dumps(img_json)
+    res_json = subprocess.run(['node', 'NodeApp/app.js'],
+                              input=card_byte_buffer,
+                              capture_output=True 
+                             )
+    img_json_str = (res_json.stdout).decode('utf-8')
+    return img_json_str
   
+@app.route('/test', methods=['POST'])
+def test():
+    """This POST request is primarily for testing purposes. 
+
+      It accepts JSON data via HTTP POST, creates a new JSON string with the new 
+      fields and sends it a mock node js app. It receives an incomplete JSON string that contains only 
+      part of a base64encoded string. It serves to demonstrate the scenario where the driver program 
+      crashes midway or is not able to send back all the data.
+
+      Returns:
+          A string that contains only part of the base64 encodeded image.
+    """
+    template = request.form['template']
+    data = request.form['data']
+    card = ''
+    if len(data) != 0:
+        card = '{"data": ' + data + ', "template" : ' + template + '}'
+    else: 
+        card = '{"data": "" ' + ', "template" : ' + template + '}'
+    card_byte_buffer = bytes(card, 'utf-8')
+
+    res_json = subprocess.run(['node', 'sendPartialResult.js'],
+                              input=card_byte_buffer,
+                              capture_output=True 
+                             )
+    img_json_str = (res_json.stdout).decode('utf-8')
+    return img_json_str
+    
