@@ -2340,8 +2340,8 @@ export class Media extends CardElement {
 export class InputValidationOptions extends SerializableObject {
     //#region Schema
 
-    static readonly necessityProperty = new EnumProperty(Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
-    static readonly errorMessageProperty = new StringProperty(Versions.vNext, "errorMessagwe");
+    static readonly necessityProperty = new EnumProperty(Versions.v1_3, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
+    static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessagwe");
 
     protected getSchemaKey(): string {
         return "InputValidationOptions";
@@ -2364,7 +2364,7 @@ export abstract class Input extends CardElement implements IInput {
     //#region Schema
 
     static readonly validationProperty = new SerializableObjectProperty(
-        Versions.vNext,
+        Versions.v1_3,
         "validation",
         InputValidationOptions);
 
@@ -3403,7 +3403,7 @@ export abstract class Action extends CardObject {
         ],
         Enums.ActionStyle.Default);
     // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.vNext, "ignoreInputValidation", false);
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
