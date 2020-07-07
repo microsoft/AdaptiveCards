@@ -33,6 +33,7 @@
         self.text = _placeholderText;
         self.textColor = [UIColor lightGrayColor];
     }
+
     self.isRequired = inputBlck->GetIsRequired();
     self.delegate = self;
     self.id = [NSString stringWithCString:inputBlck->GetId().c_str()
@@ -142,7 +143,12 @@
 {
     if (_placeholderText && [textView.text isEqualToString:_placeholderText]) {
         textView.text = @"";
-        textView.textColor = [UIColor blackColor];
+        if (@available(iOS 13.0, *)) {
+            textView.textColor = [UIColor labelColor];
+        } else {
+            // Fallback on earlier versions
+            textView.textColor = [UIColor blackColor];
+        }
     }
     [textView becomeFirstResponder];
 }
@@ -150,7 +156,12 @@
 {
     if (![textView.text length]) {
         textView.text = _placeholderText;
-        textView.textColor = [UIColor lightGrayColor];
+        if (@available(iOS 13.0, *)) {
+            textView.textColor = [UIColor placeholderTextColor];
+        } else {
+            // Fallback on earlier versions
+            textView.textColor = [UIColor lightGrayColor];
+        }
     }
     [textView resignFirstResponder];
 }
