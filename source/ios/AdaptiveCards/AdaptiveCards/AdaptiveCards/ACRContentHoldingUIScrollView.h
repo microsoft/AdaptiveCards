@@ -9,8 +9,13 @@
 
 @interface ACRContentHoldingUIScrollView: UIScrollView
 
-@property bool stretch;
-@property UIView *contentview;
+@property BOOL stretch;
+@property BOOL isContentSizeConstraintSet;
+@property UIStackView *contentview;
+@property CGFloat spacing;
 @property CGFloat contentWidth;
+@property NSLayoutConstraint *widthConstraintForStretch;
+@property NSLayoutConstraint *centerXConstraintForStretch;
+@property NSLayoutConstraint *centerYConstraintForStretch;
 
 @end
