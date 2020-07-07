@@ -658,7 +658,7 @@ namespace AdaptiveNamespace::XamlHelpers
     {
         ABI::AdaptiveNamespace::ForegroundColor textColor;
         RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
-        // If we're formatting a hint and the color has been set to default, then we have to render the button with
+        // If we're formatting a hint and the color has been set to default, then we have to render the hint with
         // attention color, otherwise match the label color
         if (isHint && textColor == ABI::AdaptiveNamespace::ForegroundColor::Default)
         {
@@ -686,7 +686,6 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    // TextBlock and RichTextBlock xaml types both support inlines, so we reuse the same method for rendering the " *" hint in both cases
     HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
                                   _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
                                   IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
@@ -694,7 +693,7 @@ namespace AdaptiveNamespace::XamlHelpers
         ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
 
         // Create an inline for the suffix
-        ComPtr<IRun> starRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+        ComPtr<IRun> hintRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
 
         HString suffix;
         RETURN_IF_FAILED(inputLabelConfig->get_Suffix(suffix.GetAddressOf()));
@@ -705,17 +704,17 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(UTF8ToHString(" *", suffix.GetAddressOf()));
         }
 
-        RETURN_IF_FAILED(starRun->put_Text(suffix.Get()));
+        RETURN_IF_FAILED(hintRun->put_Text(suffix.Get()));
 
-        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, starRun.Get());
+        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun.Get());
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> starRunAsTextElement;
-        RETURN_IF_FAILED(starRun.As(&starRunAsTextElement));
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> hintRunAsTextElement;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsTextElement));
 
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> starRunAsInline;
-        RETURN_IF_FAILED(starRun.As(&starRunAsInline));
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hintRunAsInline;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsInline));
 
-        RETURN_IF_FAILED(xamlInlines->Append(starRunAsInline.Get()));
+        RETURN_IF_FAILED(xamlInlines->Append(hintRunAsInline.Get()));
 
         return S_OK;
     }
