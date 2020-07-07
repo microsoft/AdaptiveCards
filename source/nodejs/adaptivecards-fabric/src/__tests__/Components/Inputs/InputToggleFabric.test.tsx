@@ -3,7 +3,7 @@
 
 import { InputToggleFabric } from "../../../components/inputs/InputToggleFabric";
 import { renderFabricComponent } from "../../TestUtils";
-import { initializeIcons } from "office-ui-fabric-react";
+import { initializeIcons } from "@fluentui/react";
 
 initializeIcons();
 

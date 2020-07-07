@@ -1,6 +1,6 @@
 {
 	"name": "aclint",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Adaptive Cards Linting Tool",
 	"private": true,
 	"main": "dist/src/index.js",
@@ -22,9 +22,9 @@
 	},
 	"devDependencies": {
 		"@types/yargs": "^15.0.4",
-		"@typescript-eslint/eslint-plugin": "^2.25.0",
-		"@typescript-eslint/parser": "^2.25.0",
-		"eslint": "^6.8.0",
-		"typescript": "^3.8.3"
+		"@typescript-eslint/eslint-plugin": "^3.4.0",
+		"@typescript-eslint/parser": "^3.4.0",
+		"eslint": "^7.3.1",
+		"typescript": "^3.9.5"
 	}
 }

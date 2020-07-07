@@ -13,5 +13,5 @@ export var SupportedTargetVersions: Adaptive.Version[] = [
     Adaptive.Versions.v1_0,
     Adaptive.Versions.v1_1,
     Adaptive.Versions.v1_2,
-    Adaptive.Versions.vNext
+    Adaptive.Versions.v1_3
 ];

@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  onLayout={[Function]}
+  style={
+    Object {
+      "paddingBottom": 0,
+    }
+  }
+>
+  <View
+    style={
+      Array [
+        Array [
+          Object {
+            "justifyContent": "flex-start",
+          },
+          Object {
+            "backgroundColor": "transparent",
+          },
+          Object {
+            "backgroundColor": "#EAEAEA",
+          },
+          Object {
+            "borderColor": undefined,
+            "borderWidth": 0,
+          },
+          Object {
+            "padding": 10,
+          },
+        ],
+        Array [
+          Object {
+            "padding": 10,
+          },
+        ],
+      ]
+    }
+  >
+    <RCTScrollView
+      alwaysBounceHorizontal={false}
+      alwaysBounceVertical={false}
+      showsHorizontalScrollIndicator={true}
+      showsVerticalScrollIndicator={true}
+    >
+      <View>
+        <View
+          style={
+            Array [
+              Object {
+                "backgroundColor": "transparent",
+              },
+              Object {
+                "alignItems": "center",
+                "backgroundColor": "transparent",
+                "width": "100%",
+              },
+            ]
+          }
+        >
+          <Text
+            numberOfLines={1}
+            style={
+              Array [
+                Object {
+                  "width": "100%",
+                },
+                Object {
+                  "color": "#333333",
+                  "fontFamily": "Helvetica",
+                  "fontSize": 14,
+                  "fontWeight": "400",
+                  "textAlign": "left",
+                },
+              ]
+            }
+          >
+            Adaptive Card Test
+          </Text>
+        </View>
+        <View>
+          <View
+            style={
+              Array [
+                Object {
+                  "flexWrap": "wrap",
+                  "justifyContent": "center",
+                  "paddingTop": 10,
+                },
+                Object {
+                  "flexDirection": "row",
+                },
+              ]
+            }
+          />
+        </View>
+      </View>
+    </RCTScrollView>
+  </View>
+</View>
+`;

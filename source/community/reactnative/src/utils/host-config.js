@@ -884,16 +884,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -919,16 +919,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -941,7 +941,7 @@ export const defaultHostConfig = {
 			}
 		},
 		good: {
-			"backgroundColor": "#DD54A254",
+			"backgroundColor": "#DD027502",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -952,16 +952,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -988,15 +988,15 @@ export const defaultHostConfig = {
 				},
 				"good": {
 					"default": "#FFFFFF",
-					"subtle": "#DD54A254"
+					"subtle": "#DD027502"
 				},
 				"warning": {
 					"default": "#FFFFFF",
-					"subtle": "#DDC3AB23"
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
 					"default": "#FFFFFF",
-					"subtle": "#DDFF0000"
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1009,7 +1009,7 @@ export const defaultHostConfig = {
 			},
 		},
 		attention: {
-			"backgroundColor": "#DDC3AB23",
+			"backgroundColor": "#DDB75C00",
 			"foregroundColors": {
 				"default": {
 					"default": "#333333",
@@ -1020,16 +1020,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1053,16 +1053,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1086,16 +1086,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",
@@ -1119,16 +1119,16 @@ export const defaultHostConfig = {
 					"subtle": "#882E89FC"
 				},
 				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
+					"default": "#028A02",
+					"subtle": "#DD027502"
 				},
 				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#ED0000",
+					"subtle": "#DDED0000"
 				},
 				"dark": {
 					"default": "#000000",

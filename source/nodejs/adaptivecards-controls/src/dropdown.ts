@@ -152,7 +152,6 @@ export class DropDownPopupControl extends PopupControl {
         var renderedElement = super.render(rootElementBounds);
 
         renderedElement.style.minWidth = (rootElementBounds.width / 2) + "px";
-        renderedElement.style.maxWidth = rootElementBounds.width + "px";
 
         return renderedElement;
     }
