@@ -33,7 +33,7 @@ Json::Value ActionSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
+    const std::string& actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
 
     for (const auto& actionElement : m_actions)
