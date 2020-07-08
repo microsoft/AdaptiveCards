@@ -82,8 +82,10 @@ namespace WpfVisualizer
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomInput>();
 
             Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+            Renderer.ElementRenderers.Set<MyCustomInput>(MyCustomInput.Render);
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
