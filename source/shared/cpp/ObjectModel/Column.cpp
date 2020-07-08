@@ -109,7 +109,7 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
 {
     auto column = CollectionTypeElement::Deserialize<Column>(context, value);
 
-    auto fallbackElement = column->GetFallbackContent();
+    const auto& fallbackElement = column->GetFallbackContent();
     if (fallbackElement)
     {
         if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)

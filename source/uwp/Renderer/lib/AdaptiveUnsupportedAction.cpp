@@ -45,9 +45,9 @@ namespace AdaptiveNamespace
         HString typeString;
         RETURN_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));
         unknownAction->SetElementTypeString(HStringToUTF8(typeString.Get()));
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(unknownAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*unknownAction));
 
-        sharedUnknown = unknownAction;
+        sharedUnknown = std::move(unknownAction);
         return S_OK;
     }
     CATCH_RETURN;
