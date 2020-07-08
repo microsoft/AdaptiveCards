@@ -52,12 +52,11 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(
-            std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(toggleVisibilityAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*toggleVisibilityAction));
 
         RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));
 
-        sharedModel = toggleVisibilityAction;
+        sharedModel = std::move(toggleVisibilityAction);
         return S_OK;
     }
     CATCH_RETURN;

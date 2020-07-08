@@ -123,7 +123,7 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
                               std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& containedElements);
 
 HRESULT GenerateSharedRequirements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
-                                   std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> sharedRequirements) noexcept;
+                                   std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept;
 
 HRESULT GenerateSharedImages(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveImage*>* items,
                              std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements);
@@ -155,7 +155,7 @@ HRESULT GenerateActionsProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>>& actions,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveActionElement*>* projectedParentContainer) noexcept;
 
-HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> action,
+HRESULT GenerateActionProjection(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& action,
                                  _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** projectedAction) noexcept;
 
 HRESULT GenerateColumnsProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Column>>& containedElements,
@@ -167,7 +167,7 @@ HRESULT GenerateFactsProjection(const std::vector<std::shared_ptr<AdaptiveShared
 HRESULT GenerateInlinesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Inline>>& containedElements,
                                   _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::IAdaptiveInline*>* projectedParentContainer) noexcept;
 
-HRESULT GenerateRequirementsProjection(const std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>& sharedRequirements,
+HRESULT GenerateRequirementsProjection(const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements,
                                        _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept;
 
 HRESULT GenerateImagesProjection(const std::vector<std::shared_ptr<AdaptiveSharedNamespace::Image>>& containedElements,
@@ -185,7 +185,7 @@ HRESULT GenerateToggleTargetProjection(
     const std::vector<std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>>& containedElements,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveToggleVisibilityTarget*>* projectedParentContainer) noexcept;
 
-HRESULT GenerateSeparatorProjection(std::shared_ptr<AdaptiveSharedNamespace::Separator> sharedSeparator,
+HRESULT GenerateSeparatorProjection(const std::shared_ptr<AdaptiveSharedNamespace::Separator>& sharedSeparator,
                                     _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveSeparator** projectedSeparator) noexcept;
 
 HRESULT GenerateSharedSeparator(_In_ ABI::AdaptiveNamespace::IAdaptiveSeparator* separator,
@@ -246,7 +246,7 @@ void GetUrlFromString(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConf
                       _Outptr_ ABI::Windows::Foundation::IUriRuntimeClass** url);
 
 HRESULT SharedWarningsToAdaptiveWarnings(
-    std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>> sharedWarnings,
+    const std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& sharedWarnings,
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings);
 
 HRESULT AdaptiveWarningsToSharedWarnings(

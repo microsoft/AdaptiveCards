@@ -21,6 +21,7 @@ public class AdaptiveBase64Util {
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

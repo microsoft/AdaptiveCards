@@ -67,7 +67,7 @@ namespace AdaptiveNamespace
             fact->SetLanguage(language);
         }
 
-        sharedModel = fact;
+        sharedModel = std::move(fact);
         return S_OK;
     }
     CATCH_RETURN;

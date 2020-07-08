@@ -51,11 +51,11 @@ namespace AdaptiveNamespace
     try
     {
         std::shared_ptr<AdaptiveCards::ActionSet> actionSet = std::make_shared<AdaptiveCards::ActionSet>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveCards::BaseCardElement>(actionSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*actionSet));
 
         GenerateSharedActions(m_actions.Get(), actionSet->GetActions());
 
-        sharedModel = actionSet;
+        sharedModel = std::move(actionSet);
         return S_OK;
     }
     CATCH_RETURN;

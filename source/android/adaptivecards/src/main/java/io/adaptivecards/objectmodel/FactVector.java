@@ -21,6 +21,7 @@ public class FactVector extends java.util.AbstractList<Fact> implements java.uti
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class FactVector extends java.util.AbstractList<Fact> implements java.uti
     AdaptiveCardObjectModelJNI.FactVector_clear(swigCPtr, this);
   }
 
-  public FactVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_FactVector__SWIG_2(count), true);
-  }
-
   public FactVector(int count, Fact value) {
-    this(AdaptiveCardObjectModelJNI.new_FactVector__SWIG_3(count, Fact.getCPtr(value), value), true);
+    this(AdaptiveCardObjectModelJNI.new_FactVector__SWIG_2(count, Fact.getCPtr(value), value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.FactVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(Fact value) {
-    AdaptiveCardObjectModelJNI.FactVector_doAdd__SWIG_0(swigCPtr, this, Fact.getCPtr(value), value);
+  private void doAdd(Fact x) {
+    AdaptiveCardObjectModelJNI.FactVector_doAdd__SWIG_0(swigCPtr, this, Fact.getCPtr(x), x);
   }
 
-  private void doAdd(int index, Fact value) {
-    AdaptiveCardObjectModelJNI.FactVector_doAdd__SWIG_1(swigCPtr, this, index, Fact.getCPtr(value), value);
+  private void doAdd(int index, Fact x) {
+    AdaptiveCardObjectModelJNI.FactVector_doAdd__SWIG_1(swigCPtr, this, index, Fact.getCPtr(x), x);
   }
 
   private Fact doRemove(int index) {
@@ -136,8 +133,8 @@ public class FactVector extends java.util.AbstractList<Fact> implements java.uti
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 
-  private Fact doSet(int index, Fact value) {
-    long cPtr = AdaptiveCardObjectModelJNI.FactVector_doSet(swigCPtr, this, index, Fact.getCPtr(value), value);
+  private Fact doSet(int index, Fact val) {
+    long cPtr = AdaptiveCardObjectModelJNI.FactVector_doSet(swigCPtr, this, index, Fact.getCPtr(val), val);
     return (cPtr == 0) ? null : new Fact(cPtr, true);
   }
 

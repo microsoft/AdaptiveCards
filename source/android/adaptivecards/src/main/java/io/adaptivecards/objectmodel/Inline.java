@@ -25,6 +25,7 @@ public class Inline {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -73,7 +74,7 @@ public class Inline {
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
-    AdaptiveCardObjectModelJNI.Inline_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+    AdaptiveCardObjectModelJNI.Inline_SetAdditionalProperties__SWIG_0(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
 }
