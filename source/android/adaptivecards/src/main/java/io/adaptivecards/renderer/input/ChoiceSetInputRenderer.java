@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -65,6 +66,39 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public static class FocusableChoiceListener<T extends CompoundButton> implements View.OnTouchListener
+    {
+        public FocusableChoiceListener(T firstView)
+        {
+            m_firstView = firstView;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent)
+        {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+            {
+                m_firstView.setFocusableInTouchMode(false);
+                m_firstView.clearFocus();
+
+                T clickableElement = (T) view;
+                // Checkboxes must change their values to the opposite one, radio buttons must always turn on
+                if (clickableElement instanceof CheckBox)
+                {
+                    clickableElement.setChecked(!clickableElement.isChecked());
+                }
+                else
+                {
+                    clickableElement.setChecked(true);
+                }
+
+            }
+            return true;
+        }
+
+        private T m_firstView;
+    }
+
     public View renderCheckBoxSet(
                 RenderedAdaptiveCard renderedCard,
                 Context context,
@@ -90,7 +124,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
-            CheckBox checkBox = new CheckBox(context);
+            final CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
 
             if (!choiceSetInput.GetWrap())
@@ -112,6 +146,13 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     CardRendererRegistration.getInstance().notifyInputChange(checkBoxSetInputHandler.getId(), checkBoxSetInputHandler.getInput());
                 }
             });
+
+            // Only for the first checkbox we'll add some extra behaviour as it's going to be the element to receive focus
+            // When validation fails we'll set the first checkbox with focusableInTouchMode = true, this makes the clicking
+            // inconsistent as it needs two clicks to check/uncheck, so once it's clicked, we'll remove the property to false
+            // and check/uncheck the box ourselves
+            checkBox.setOnTouchListener(new FocusableChoiceListener<CheckBox>(checkBoxList.get(0)));
+
             layout.addView(checkBox);
         }
 
@@ -135,6 +176,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         String value = choiceSetInput.GetValue();
+
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
@@ -152,7 +194,10 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             {
                 radioButton.setChecked(true);
             }
+
             radioGroup.addView(radioButton);
+
+            radioButton.setOnTouchListener(new FocusableChoiceListener<RadioButton>((RadioButton) radioGroup.getChildAt(0)));
         }
         renderedCard.registerInputHandler(radioGroupInputHandler, renderArgs.getContainerCardId());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
@@ -163,6 +208,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().notifyInputChange(radioGroupInputHandler.getId(), radioGroupInputHandler.getInput());
             }
         });
+
         return radioGroup;
     }
 
@@ -280,6 +326,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
             }
         });
+
+        spinner.setFocusable(true);
         return spinner;
     }
 
