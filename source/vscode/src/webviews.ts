@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import * as ACData from "adaptivecards-templating";
+import * as fs from "fs";
 import { IEvaluationContext } from "adaptivecards-templating";
 
 
@@ -21,7 +22,14 @@ export class WebViews {
         var context : IEvaluationContext = {$root: JSON.parse(cardData)};
         var cardToRender = template.expand(context);
 
-    // local path to main script run in the webview
+
+        // Lets pick the host config to use from the settings
+        var config = vscode.workspace.getConfiguration('acstudio');
+        var configName: string = config.get("defaultHostConfig");
+
+        var hostConfig = fs.readFileSync(path.join(this._extensionPath, "media/js/hostConfigs", configName + ".json"), "ascii");
+
+        // local path to main script run in the webview
         const scriptPathOnDisk = vscode.Uri.file(
             path.join(this._extensionPath, "media/js", "mainAdaptive.js")
         );
@@ -51,7 +59,7 @@ export class WebViews {
         url = vscode.Uri.file(	path.join(this._extensionPath, "media/js", "markdown-it.min.js"));
         const MarkdownUri = url.with({ scheme: "vscode-resource" });
 
-        url = vscode.Uri.file(	path.join(this._extensionPath, "media/css", "msteamsstyle.css"));
+        url = vscode.Uri.file(	path.join(this._extensionPath, "media/css/additional", configName + ".css"));
         const mainstyleUri = url.with({ scheme: "vscode-resource" });
 
         url = vscode.Uri.file(	path.join(this._extensionPath, "media/css", "fabric.components.min.css"));
@@ -62,6 +70,28 @@ export class WebViews {
 
 
         const nonce = this.getNonce();
+
+
+        var designerTemplate: string = "";
+        if (configName.indexOf("teams") > 0) {
+            designerTemplate = `<div class="teams-frame">
+                            <div class="teams-hexagon-outer"></div>
+                            <div class="teams-inner-frame">
+                                <div class="teams-botNameAndTime">Test Bot  2:36 PM</div>
+                                <div id="cardHost"></div>
+                            </div>
+                        </div>`;
+        }
+        if (configName.indexOf("web") > 0) {
+            designerTemplate = `<div class="webChatInnerContainer">
+                                    <div id="cardHost"></div>
+                                </div>`;
+        }
+
+
+        if ( designerTemplate === "" ) {
+          designerTemplate = `<div id="cardHost"></div>`;
+        }
 
         return `<!DOCTYPE html>
                 <html lang="en">
@@ -76,20 +106,25 @@ export class WebViews {
                     <link rel="stylesheet" href="${FabricStyleUri}"  nonce="${nonce}"  type="text/css" />
                 </head>
                 <body>
-                    <div id="exampleDiv"></div>
-                    <div id="out"></div>
-                    <script nonce="${nonce}" src="${jqueryUri}"></script>
-                    <script nonce="${nonce}" src="${ReactUri}"></script>
-                    <script nonce="${nonce}" src="${ReactDomUri}"></script>
+                    <div style='margin-top:25px'>
+                        ${designerTemplate}
+                        <div id="out"></div>
+                        <script nonce="${nonce}" src="${jqueryUri}"></script>
+                        <script nonce="${nonce}" src="${ReactUri}"></script>
+                        <script nonce="${nonce}" src="${ReactDomUri}"></script>
 
-                    <script nonce="${nonce}" src="${FabricUri}"></script>
-                    <script nonce="${nonce}" src="${ACUri}"></script>
-                    <script nonce="${nonce}" src="${ACUFabricUri}"></script>
+                        <script nonce="${nonce}" src="${FabricUri}"></script>
+                        <script nonce="${nonce}" src="${ACUri}"></script>
+                        <script nonce="${nonce}" src="${ACUFabricUri}"></script>
 
-                    <script nonce="${nonce}" src="${MarkdownUri}"></script>
-                    <script nonce="${nonce}" src="${scriptUri}"></script>
-                    <div id="divData" style='display:none;'>
-                        ${cardToRender}
+                        <script nonce="${nonce}" src="${MarkdownUri}"></script>
+                        <script nonce="${nonce}" src="${scriptUri}"></script>
+                        <div id="divConfig" style='display:none;'>
+                            ${hostConfig}
+                        </div>
+                        <div id="divData" style='display:none;'>
+                            ${cardToRender}
+                        </div>
                     </div>
                 </body>
                 </html>`;

@@ -59,9 +59,17 @@ export class AdaptiveCardsMain {
         if (text != null && text !== "" && text.includes(searchTerm)) {
             const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
             if(this.panel) {
-                this.panel.reveal(column,true);
-                this.panel.title = "Adaptive Card";
-                this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(text,data);
+                try {
+                    this.panel.reveal(column,true);
+                    this.panel.title = "Adaptive Card";
+                } catch {
+                    this.panel = vscode.window.createWebviewPanel("ac.CardViewer","Adaptive Card",vscode.ViewColumn.Beside,{
+                        enableScripts: true,
+                        localResourceRoots: [
+                            vscode.Uri.file(path.join(this._extensionPath, "media"))
+                        ]
+                    });
+                }
             } else {
                 this.panel = vscode.window.createWebviewPanel("ac.CardViewer","Adaptive Card",vscode.ViewColumn.Beside,{
                     enableScripts: true,
@@ -69,8 +77,8 @@ export class AdaptiveCardsMain {
                         vscode.Uri.file(path.join(this._extensionPath, "media"))
                     ]
                 });
-                this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(text,data);
             }
+            this.panel.webview.html = await this.WebViews.GetWebViewContentAdaptiveCard(text,data);
         }
     }
 

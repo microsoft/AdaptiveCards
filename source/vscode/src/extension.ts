@@ -17,11 +17,11 @@ export function activate(context: vscode.ExtensionContext) {
 	// register Url Handler for App
 	vscode.window.registerUriHandler({
         handleUri(uri: vscode.Uri) {
-			if(uri.toString().indexOf("adaptivecards") > 0) {
+			if(uri.toString().indexOf("adaptivecardsstudiobeta") > 0) {
 				var cardId: string = uri.path.replace("/","");
 				acm.OpenRemoteCard(cardId);
 				console.log(uri.path.replace("/",""));
-				//vscode://tcdev.adaptivecards/5d51dd2e-4ff1-4cda-bc90-eaee20c5eb6b
+				//vscode://tcdev.adaptivecardsstudiobeta/5d51dd2e-4ff1-4cda-bc90-eaee20c5eb6b
 			} else {
 				// noting for us, just ignore
 			}

@@ -1,9 +1,9 @@
 {
-    "name": "adaptivecards",
+    "name": "adaptivecardsstudiobeta",
     "displayName": "Adaptive Card Studio (BETA)",
     "description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version and might contain bugs )",
     "version": "0.5.0",
-    "publisher": "tcdev",
+    "publisher": "madewithcards",
     "engines": {
         "vscode": "^1.36.0"
     },
@@ -90,17 +90,39 @@
         ],
         "configuration": {
             "type": "object",
-            "title": "Adaptive Card Editor Config",
+            "title": "Adaptive Cards Studio",
             "properties": {
-                "acedit.useDefaultHostConfig": {
+                "acstudio.useDefaultHostConfig": {
                     "type": "boolean",
                     "default": false,
                     "description": "Always use default Host Config"
                 },
-                "acedit.autoPreview": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Open the preview automatically"
+                "acstudio.defaultHostConfig": {
+                    "type": "string",
+                    "default": "MSTeams-Dark",
+                    "enum": [
+                        "microsoft-teams-dark","microsoft-teams-light", 
+                        "webchat","outlook-desktop",
+                        "cortana-skills","cortana-skills",
+                        "windows-timeline",
+                        "BotFramework","windows-notification"
+                    ],
+                    "enumDescriptions": [
+                      "MS Teams Host Config (Dark)",
+                      "MS Teams Host Config (Light)",
+                      "Bot Framework - WebChat",
+                      "Outlook Actionable Messages",
+                      "Cortana Skills (Dark)",
+                      "Cortana SKills (Light)",
+                      "Windows Timeline",
+                      "Bot Framework - Other",
+                      "Windows Notifications (Preview)"
+                    ]
+                },
+                "acstudio.cmsFolder" : {
+                    "type": "string",
+                    "default": "",
+                    "description": "Where to store temporary files from the CMS, uses workspaces root if not set"
                 }
             }
         }
@@ -120,7 +142,8 @@
         "mocha": "^6.1.4",
         "tslint": "^5.12.1",
         "typescript": "^3.3.1",
-        "vscode-test": "^1.0.0-next.0"
+        "vscode-test": "^1.0.0-next.0",
+        "vscode": "^1.1.36"
     },
     "repository": {
         "type": "git",
@@ -146,7 +169,6 @@
     "dependencies": {
         "adaptivecards": "^1.2.6",
         "adaptivecards-templating": "^1.0.0-rc.0",
-        "axios": "^0.19.2",
-        "vscode": "^1.1.36"
+        "axios": "^0.19.2"
     }
 }
