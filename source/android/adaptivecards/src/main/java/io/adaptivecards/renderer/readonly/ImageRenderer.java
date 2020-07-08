@@ -136,35 +136,24 @@ public class ImageRenderer extends BaseCardElementRenderer
 
     private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig, boolean isInImageSet) {
         imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize == ImageSize.Stretch)
+        if (imageSize != ImageSize.Small && imageSize != ImageSize.Medium && imageSize != ImageSize.Large)
         {
-            if (!isInImageSet)
-            {
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if ((imageSize == ImageSize.Small) || (imageSize == ImageSize.Medium) || (imageSize == ImageSize.Large))
-        {
-            int size = getImageSizeLimit(context, imageSize, imageSizesConfig);
-
-            if (imageView.getLayoutParams() == null)
-            {
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            }
-            else
-            {
-                imageView.getLayoutParams().height = size;
-                imageView.getLayoutParams().width = size;
-            }
-
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None)
-        {
-            throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
+            imageSize = ImageSize.Medium;
         }
 
+        int size = getImageSizeLimit(context, imageSize, imageSizesConfig);
+
+        if (imageView.getLayoutParams() == null)
+        {
+            imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+        }
+        else
+        {
+            imageView.getLayoutParams().height = size;
+            imageView.getLayoutParams().width = size;
+        }
+
+        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         imageView.setAdjustViewBounds(true);
     }
 
