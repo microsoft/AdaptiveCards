@@ -528,4 +528,10 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::UnknownAction) == ACRUnknownAction);
 }
 
+- (void)testACRInputToggleViewCustomRendering
+{
+    ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 100.0f)];
+    XCTAssertNotNil(toggleView);
+}
+
 @end
