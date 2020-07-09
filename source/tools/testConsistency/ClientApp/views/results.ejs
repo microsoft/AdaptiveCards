@@ -1,19 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-
   </head>
   <body>
-
-    <h1>Consistent Cards</h1>
-    <img src= "data:image/png;base64,<%=nodeImg %>" > <br>
-    <p>Warnings: <%=nodeWarnings %></p>
-    <p>Errors: <%=nodeErrors %></p>
-    <p>The above image is rendered on node js</p><br>
-    <img src= "data:image/png;base64,<%=WPFImg %>" > <br>
-    <p>Warnings: <%=WPFWarnings %></p>
-    <p>Errors: <%=WPFErrors %></p>
-    <p>The above image is rendered on .NET WPF</p><br>
-    
+    <script>
+      const errorList = <%-errorList %>;
+      const warningList = <%-warningList %>;
+      const imageList = <%-imageList %>;
+      const platformNames = <%-platformNames %>;
+      for(var i = 0; i < platformNames.length; i++){
+          var newHTML = document.createElement ('div');
+          newHTML.innerHTML   = '             \
+                <div id= '+ platformNames[i] +' >             \
+                    <img src = "data:image/png;base64,'+ imageList[i]+ '  "  <br>\
+                    <p>The above is rendered on '+ platformNames[i]+' </p> \
+                    <p> Warnings: '+warningList[i] +' </p>\
+                    <p> Errors: '+ errorList[i] + '</p>\
+                </div>                          \
+            ';
+          document.body.appendChild (newHTML);
+      }
+    </script>
   </body>
 </html>

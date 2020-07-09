@@ -1,16 +1,18 @@
-using System;
+// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Licensed under the MIT License.
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using System.Text;
-using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
-using System.Drawing; 
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Text;
 
 namespace WPFRendererTests
 {
     [TestClass]
-    public class UnitTest1
+    public class WPFRendererTests
     {
         [DataTestMethod]
         [DynamicData(nameof(GetVersionZeroFiles), DynamicDataSourceType.Method)]
@@ -93,11 +95,11 @@ namespace WPFRendererTests
         }
         public static IEnumerable<object[]> GetData(string payLoadPath)
         {
-            foreach(var jsonFile in Directory.GetFiles(payLoadPath, "*.json", SearchOption.AllDirectories))
+            foreach (var jsonFile in Directory.GetFiles(payLoadPath, "*.json", SearchOption.AllDirectories))
             {
                 yield return new object[] { jsonFile };
             }
-           
+
         }
 
         bool isValidBase64(JObject result)
@@ -114,7 +116,7 @@ namespace WPFRendererTests
 
                 return true;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return false;
             }
@@ -130,8 +132,8 @@ namespace WPFRendererTests
         bool successfullyRendered(JObject result)
         {
             string img = result.GetValue("imageData").ToString();
-            return (img!= null && img.Length != 0);
+            return (img != null && img.Length != 0);
         }
-        
+
     }
 }

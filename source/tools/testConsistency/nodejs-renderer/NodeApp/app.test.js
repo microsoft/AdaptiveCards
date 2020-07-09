@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved. 
+// Licensed under the MIT License. 
 const path = require('path');
 const fs = require('fs');
 const spawn = require('child_process').spawn;
@@ -21,7 +23,7 @@ function testOneCard(card, done) {
   const cardPayLoad = `{"data" : "", "template": ${data}}`
   const buffer = Buffer.from(cardPayLoad, 'utf-8')
   child.stdin.write(buffer);
-  const resultBuffer = "";
+  var resultBuffer = "";
   child.stdout.on('data', function(data) {
     resultBuffer = resultBuffer + data;
   });
