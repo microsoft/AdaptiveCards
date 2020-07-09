@@ -18,6 +18,12 @@ export enum Size {
     Large
 }
 
+export enum ImageSize {
+    Small,
+    Medium,
+    Large
+}
+
 export enum SizeUnit {
     Weight,
     Pixel
