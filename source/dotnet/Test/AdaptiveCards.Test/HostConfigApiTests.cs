@@ -342,19 +342,19 @@ namespace AdaptiveCards.Test
             Assert.IsNotNull(hostConfig);
 
             Assert.IsNotNull(defaultHostConfig.Inputs);
-            Assert.AreEqual(AdaptiveSpacing.Small, defaultHostConfig.Inputs.Label.InputSpacing);
+            Assert.AreEqual(AdaptiveSpacing.Small, hostConfig.Inputs.Label.InputSpacing);
 
-            Assert.IsNotNull(defaultHostConfig.Inputs.Label.RequiredInputs);
-            Assert.AreEqual(AdaptiveTextColor.Attention, defaultHostConfig.Inputs.Label.RequiredInputs.Color);
-            Assert.AreEqual(false, defaultHostConfig.Inputs.Label.RequiredInputs.IsSubtle);
-            Assert.AreEqual(AdaptiveTextSize.Large, defaultHostConfig.Inputs.Label.RequiredInputs.Size);
-            Assert.AreEqual(AdaptiveTextWeight.Bolder, defaultHostConfig.Inputs.Label.RequiredInputs.Weight);
+            Assert.IsNotNull(hostConfig.Inputs.Label.RequiredInputs);
+            Assert.AreEqual(AdaptiveTextColor.Attention, hostConfig.Inputs.Label.RequiredInputs.Color);
+            Assert.AreEqual(false, hostConfig.Inputs.Label.RequiredInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Large, hostConfig.Inputs.Label.RequiredInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Bolder, hostConfig.Inputs.Label.RequiredInputs.Weight);
 
-            Assert.IsNotNull(defaultHostConfig.Inputs.Label.OptionalInputs);
-            Assert.AreEqual(AdaptiveTextColor.Good, defaultHostConfig.Inputs.Label.OptionalInputs.Color);
-            Assert.AreEqual(true, defaultHostConfig.Inputs.Label.OptionalInputs.IsSubtle);
-            Assert.AreEqual(AdaptiveTextSize.Medium, defaultHostConfig.Inputs.Label.OptionalInputs.Size);
-            Assert.AreEqual(AdaptiveTextWeight.Lighter, defaultHostConfig.Inputs.Label.OptionalInputs.Weight);
+            Assert.IsNotNull(hostConfig.Inputs.Label.OptionalInputs);
+            Assert.AreEqual(AdaptiveTextColor.Good, hostConfig.Inputs.Label.OptionalInputs.Color);
+            Assert.AreEqual(true, hostConfig.Inputs.Label.OptionalInputs.IsSubtle);
+            Assert.AreEqual(AdaptiveTextSize.Medium, hostConfig.Inputs.Label.OptionalInputs.Size);
+            Assert.AreEqual(AdaptiveTextWeight.Lighter, hostConfig.Inputs.Label.OptionalInputs.Weight);
         }
     }
 }
