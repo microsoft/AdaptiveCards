@@ -338,18 +338,21 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (inputElement is AdaptiveChoiceSetInput)
                 {
-                    Grid inputContainer = renderedElement as Grid;
-                    // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
-                    UIElement choiceSet = inputContainer.Children[0];
+                    if (renderedElement is Grid)
+                    {
+                        Grid inputContainer = renderedElement as Grid;
+                        // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
+                        UIElement choiceSet = inputContainer.Children[0];
 
-                    if (choiceSet is ComboBox)
-                    {
-                        elementForAccessibility = choiceSet as FrameworkElement;
-                    }
-                    else if (choiceSet is Panel)
-                    {
-                        // If it's a choice set, then use the first element as element
-                        elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                        if (choiceSet is ComboBox)
+                        {
+                            elementForAccessibility = choiceSet as FrameworkElement;
+                        }
+                        else if (choiceSet is Panel)
+                        {
+                            // If it's a choice set, then use the first element as element
+                            elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                        }
                     }
                 }
 
