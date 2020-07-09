@@ -6,10 +6,10 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards.Rendering
 {
     /// <summary>
-    /// Properties which control rendering of media
+    /// Properties which control rendering of input labels
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
-    public class InputLabelsConfig
+    public class LabelConfig
     {
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public InputLabelConfig RequiredInputs { get; set; } = new InputLabelConfig();

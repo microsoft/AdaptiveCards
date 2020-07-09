@@ -258,6 +258,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     tb.Text = input.GetNonInteractiveValue() ?? "*[Input]*";
                     tb.Color = AdaptiveTextColor.Accent;
                     tb.Wrap = true;
+                    InputValues.Add(input.Id, null);
                     Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
                     frameworkElementOut = Render(tb);
                 }
@@ -534,7 +535,10 @@ namespace AdaptiveCards.Rendering.Wpf
             while (!submitActionCardId.Equals(new AdaptiveInternalID()))
             {
                 // Copy the inputs into the result
-                inputList.InsertRange(0, InputsInCard[submitActionCardId]);
+                if (InputsInCard.ContainsKey(submitActionCardId))
+                {
+                    inputList.InsertRange(0, InputsInCard[submitActionCardId]);
+                }
 
                 // Move to the parent card
                 submitActionCardId = ParentCards[submitActionCardId];

@@ -12,7 +12,7 @@ namespace AdaptiveCards.Rendering
     public class InputsConfig
     {
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        public InputLabelsConfig InputLabels { get; set; } = new InputLabelsConfig();
+        public LabelConfig Label { get; set; } = new LabelConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public ErrorMessageConfig ErrorMessage { get; set; } = new ErrorMessageConfig();
