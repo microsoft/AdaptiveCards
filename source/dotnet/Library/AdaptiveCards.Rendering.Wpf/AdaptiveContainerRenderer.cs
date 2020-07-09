@@ -341,18 +341,21 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 if (inputElement is AdaptiveChoiceSetInput)
                 {
-                    Grid inputContainer = renderedElement as Grid;
-                    // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
-                    UIElement choiceSet = inputContainer.Children[0];
+                    if (renderedElement is Grid)
+                    {
+                        Grid inputContainer = renderedElement as Grid;
+                        // ChoiceSet inputs render by returning a Grid. The grid may contain a combobox or a panel that contains the options
+                        UIElement choiceSet = inputContainer.Children[0];
 
-                    if (choiceSet is ComboBox)
-                    {
-                        elementForAccessibility = choiceSet as FrameworkElement;
-                    }
-                    else if (choiceSet is Panel)
-                    {
-                        // If it's a choice set, then use the first element as element
-                        elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                        if (choiceSet is ComboBox)
+                        {
+                            elementForAccessibility = choiceSet as FrameworkElement;
+                        }
+                        else if (choiceSet is Panel)
+                        {
+                            // If it's a choice set, then use the first element as element
+                            elementForAccessibility = ((choiceSet as Panel).Children[0] as FrameworkElement) ?? renderedElement;
+                        }
                     }
                 }
 
@@ -367,7 +370,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     if (!String.IsNullOrEmpty(inputElement.Label))
                     {
                         panel.Children.Add(RenderLabel(context, inputElement, elementForAccessibility));
-                        AddSpacing(context, context.Config.Inputs.InputLabels.InputSpacing, panel);
+                        AddSpacing(context, context.Config.Inputs.Label.InputSpacing, panel);
                     }
 
                     panel.Children.Add(enclosingElement);
@@ -434,11 +437,11 @@ namespace AdaptiveCards.Rendering.Wpf
             InputLabelConfig labelConfig = null;
             if (input.IsRequired)
             {
-                labelConfig = context.Config.Inputs.InputLabels.RequiredInputs;
+                labelConfig = context.Config.Inputs.Label.RequiredInputs;
             }
             else
             {
-                labelConfig = context.Config.Inputs.InputLabels.OptionalInputs;
+                labelConfig = context.Config.Inputs.Label.OptionalInputs;
             }
 
             Inline labelTextInline = new Run(input.Label);
@@ -447,7 +450,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (input.IsRequired)
             {
-                Inline requiredHintInline = new Run(" *");
+                string hintToRender = " *";
+                if (String.IsNullOrWhiteSpace(labelConfig.Suffix))
+                {
+                    hintToRender = labelConfig.Suffix;
+                }
+
+                Inline requiredHintInline = new Run(hintToRender);
                 requiredHintInline.SetColor(AdaptiveTextColor.Attention, labelConfig.IsSubtle, context);
                 uiTextBlock.Inlines.Add(requiredHintInline);
             }

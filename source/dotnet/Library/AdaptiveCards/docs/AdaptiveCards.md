@@ -294,10 +294,11 @@
   - [Color](#P-AdaptiveCards-Rendering-InputLabelConfig-Color 'AdaptiveCards.Rendering.InputLabelConfig.Color')
   - [IsSubtle](#P-AdaptiveCards-Rendering-InputLabelConfig-IsSubtle 'AdaptiveCards.Rendering.InputLabelConfig.IsSubtle')
   - [Size](#P-AdaptiveCards-Rendering-InputLabelConfig-Size 'AdaptiveCards.Rendering.InputLabelConfig.Size')
+  - [Suffix](#P-AdaptiveCards-Rendering-InputLabelConfig-Suffix 'AdaptiveCards.Rendering.InputLabelConfig.Suffix')
   - [Weight](#P-AdaptiveCards-Rendering-InputLabelConfig-Weight 'AdaptiveCards.Rendering.InputLabelConfig.Weight')
-- [InputLabelsConfig](#T-AdaptiveCards-Rendering-InputLabelsConfig 'AdaptiveCards.Rendering.InputLabelsConfig')
-  - [InputSpacing](#P-AdaptiveCards-Rendering-InputLabelsConfig-InputSpacing 'AdaptiveCards.Rendering.InputLabelsConfig.InputSpacing')
 - [InputsConfig](#T-AdaptiveCards-Rendering-InputsConfig 'AdaptiveCards.Rendering.InputsConfig')
+- [LabelConfig](#T-AdaptiveCards-Rendering-LabelConfig 'AdaptiveCards.Rendering.LabelConfig')
+  - [InputSpacing](#P-AdaptiveCards-Rendering-LabelConfig-InputSpacing 'AdaptiveCards.Rendering.LabelConfig.InputSpacing')
 - [MediaConfig](#T-AdaptiveCards-Rendering-MediaConfig 'AdaptiveCards.Rendering.MediaConfig')
   - [AllowInlinePlayback](#P-AdaptiveCards-Rendering-MediaConfig-AllowInlinePlayback 'AdaptiveCards.Rendering.MediaConfig.AllowInlinePlayback')
   - [DefaultPoster](#P-AdaptiveCards-Rendering-MediaConfig-DefaultPoster 'AdaptiveCards.Rendering.MediaConfig.DefaultPoster')
@@ -2631,30 +2632,19 @@ Make the label less prominent
 
 The text size of the label
 
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-Suffix'></a>
+### Suffix `property`
+
+##### Summary
+
+Suffix to be displayed next to the label. Only respected for required inputs
+
 <a name='P-AdaptiveCards-Rendering-InputLabelConfig-Weight'></a>
 ### Weight `property`
 
 ##### Summary
 
 The text weight of the label
-
-<a name='T-AdaptiveCards-Rendering-InputLabelsConfig'></a>
-## InputLabelsConfig `type`
-
-##### Namespace
-
-AdaptiveCards.Rendering
-
-##### Summary
-
-Properties which control rendering of media
-
-<a name='P-AdaptiveCards-Rendering-InputLabelsConfig-InputSpacing'></a>
-### InputSpacing `property`
-
-##### Summary
-
-Specifies the spacing bewteen the label and the input
 
 <a name='T-AdaptiveCards-Rendering-InputsConfig'></a>
 ## InputsConfig `type`
@@ -2666,6 +2656,24 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Properties which control rendering of media
+
+<a name='T-AdaptiveCards-Rendering-LabelConfig'></a>
+## LabelConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Properties which control rendering of input labels
+
+<a name='P-AdaptiveCards-Rendering-LabelConfig-InputSpacing'></a>
+### InputSpacing `property`
+
+##### Summary
+
+Specifies the spacing bewteen the label and the input
 
 <a name='T-AdaptiveCards-Rendering-MediaConfig'></a>
 ## MediaConfig `type`
