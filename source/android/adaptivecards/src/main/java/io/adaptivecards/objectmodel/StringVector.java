@@ -21,6 +21,7 @@ public class StringVector extends java.util.AbstractList<String> implements java
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class StringVector extends java.util.AbstractList<String> implements java
     AdaptiveCardObjectModelJNI.StringVector_clear(swigCPtr, this);
   }
 
-  public StringVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_StringVector__SWIG_2(count), true);
-  }
-
   public StringVector(int count, String value) {
-    this(AdaptiveCardObjectModelJNI.new_StringVector__SWIG_3(count, value), true);
+    this(AdaptiveCardObjectModelJNI.new_StringVector__SWIG_2(count, value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.StringVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(String value) {
-    AdaptiveCardObjectModelJNI.StringVector_doAdd__SWIG_0(swigCPtr, this, value);
+  private void doAdd(String x) {
+    AdaptiveCardObjectModelJNI.StringVector_doAdd__SWIG_0(swigCPtr, this, x);
   }
 
-  private void doAdd(int index, String value) {
-    AdaptiveCardObjectModelJNI.StringVector_doAdd__SWIG_1(swigCPtr, this, index, value);
+  private void doAdd(int index, String x) {
+    AdaptiveCardObjectModelJNI.StringVector_doAdd__SWIG_1(swigCPtr, this, index, x);
   }
 
   private String doRemove(int index) {
@@ -134,8 +131,8 @@ public class StringVector extends java.util.AbstractList<String> implements java
     return AdaptiveCardObjectModelJNI.StringVector_doGet(swigCPtr, this, index);
   }
 
-  private String doSet(int index, String value) {
-    return AdaptiveCardObjectModelJNI.StringVector_doSet(swigCPtr, this, index, value);
+  private String doSet(int index, String val) {
+    return AdaptiveCardObjectModelJNI.StringVector_doSet(swigCPtr, this, index, val);
   }
 
   private void doRemoveRange(int fromIndex, int toIndex) {

@@ -69,16 +69,20 @@ public class ActionElementRenderer extends BaseActionElementRenderer
     {
         private IconPlacement m_iconPlacement;
         private long m_iconSize;
+        private long m_padding;
+        private Context m_context;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
         {
             super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
+            m_padding = padding;
+            m_context = context;
         }
 
         @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
+        public Bitmap styleBitmap(Bitmap bitmap)
         {
             Button button = (Button) super.m_view;
 
@@ -99,7 +103,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
             double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
-            return Bitmap.createScaledBitmap(bitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+            return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, (int)imageWidth), Util.dpToPixels(m_context, (int)imageHeight), false);
         }
 
         @Override
@@ -113,8 +117,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             }
             else
             {
-                button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
-                button.requestLayout();
+                button.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableIcon, null, null, null);
+                button.setCompoundDrawablePadding(Util.dpToPixels(m_context, (int) m_padding));
             }
         }
     }
@@ -174,6 +178,11 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         RenderedAdaptiveCard renderedCard,
         RenderArgs renderArgs)
     {
+        TypedValue buttonStyle = new TypedValue();
+        if (baseActionElement.GetElementType() == ActionType.ShowCard && context.getTheme().resolveAttribute(R.attr.adaptiveShowCardAction, buttonStyle, true)) {
+            context = new ContextThemeWrapper(context, buttonStyle.data);
+        }
+
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
         button.setText(baseActionElement.GetTitle());
@@ -212,17 +221,11 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     button,
                     hostConfig.GetImageBaseUrl(),
                     iconPlacement,
-                    hostConfig.GetActions().getIconSize()
+                    hostConfig.GetActions().getIconSize(),
+                    hostConfig.GetSpacing().getDefaultSpacing(),
+                    context
             );
             imageLoader.execute(baseActionElement.GetIconUrl());
-
-            // Only when the icon must be placed to the left of the title, we have to do this
-            if (iconPlacement == IconPlacement.LeftOfTitle) {
-                int padding = (int) hostConfig.GetSpacing().getDefaultSpacing();
-                ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
-                layoutChangedListener.setPadding(padding);
-                button.addOnLayoutChangeListener(layoutChangedListener);
-            }
         }
 
         viewGroup.addView(button);

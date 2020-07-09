@@ -25,6 +25,7 @@ public class TextElementProperties {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

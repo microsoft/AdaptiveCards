@@ -42,6 +42,7 @@ using namespace AdaptiveCards;
     // ACRViewController does not render adaptiveCard until viewDidLoad calls render
     ACRView *view = [[ACRView alloc] init:card hostconfig:config widthConstraint:width delegate:acrActionDelegate];
     result.view = view;
+    result.warnings = view.warnings;
     result.succeeded = YES;
     return result;
 }
@@ -62,6 +63,7 @@ using namespace AdaptiveCards;
     // ACRView does not render adaptiveCard until viewDidLoad calls render
     ACRViewController *viewcontroller = [[ACRViewController alloc] init:card hostconfig:config frame:frame delegate:acrActionDelegate];
     result.viewcontroller = viewcontroller;
+    result.warnings = ((ACRView *)viewcontroller.view).warnings;
     result.succeeded = YES;
     return result;
 }
@@ -129,20 +131,13 @@ using namespace AdaptiveCards;
 
     [rootView waitForAsyncTasksToFinish];
 
-    UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
+    UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
         adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Bottom) {
         leadingBlankSpace = [verticalView addPaddingSpace];
     }
 
     [ACRRenderer render:verticalView rootView:rootView inputs:inputs withCardElems:body andHostConfig:config];
-
-    // Dont add the trailing space if the vertical content alignment is top/default
-    if ((adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center) ||
-        (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Top &&
-         !(verticalView.hasStretchableView))) {
-        trailingBlankSpace = [verticalView addPaddingSpace];
-    }
 
     [[rootView card] setInputs:inputs];
 
@@ -184,7 +179,7 @@ using namespace AdaptiveCards;
     auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
-        if (*firstelem != elem) {
+        if (*firstelem != elem && curStretchableElem) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:elem
                                                         forSuperview:view
                                                       withHostConfig:[config getHostConfig]];
@@ -206,7 +201,17 @@ using namespace AdaptiveCards;
                 @throw [ACOFallbackException fallbackException];
             }
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-            if (elem->GetHeight() == HeightType::Stretch) {
+
+            if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
+                // vertical stretch works in the following way:
+                // an ui element that will be stretched will be contained in a new superview.
+                // additional trailing view is added to the superview at the bottom
+                // uistackview for ColumnSet will have distribution set to fill
+                // this ensures all columns will have same height, thus making the space available for
+                // stretch.
+                // when a smaller column is expanded, the trailing views in its subviews will fill up the
+                // space, by setting the heights of the superviews of the trailing views same as below,
+                // filler space occupies the same space.
                 if (prevStretchableElem) {
                     NSLayoutConstraint *heightConstraint = [NSLayoutConstraint constraintWithItem:curStretchableElem
                                                                                         attribute:NSLayoutAttributeHeight

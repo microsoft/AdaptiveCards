@@ -27,6 +27,7 @@ public class ShowCardAction extends BaseActionElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

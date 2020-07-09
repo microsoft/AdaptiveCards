@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
+	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -14,8 +14,9 @@
 					"items": [
 						{
 							"type": "Image",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-							"size": "stretch"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"size": "stretch",
+							"altText": "Mostly cloudy weather"
 						}
 					]
 				},
@@ -68,7 +69,8 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"altText": "Mostly cloudy weather"
 						},
 						{
 							"type": "TextBlock",
@@ -88,7 +90,7 @@
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"title": "View Friday",
-						"url": "http://www.microsoft.com"
+						"url": "https://www.microsoft.com"
 					}
 				},
 				{
@@ -104,7 +106,8 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png",
+							"altText": "Drizzly weather"
 						},
 						{
 							"type": "TextBlock",
@@ -124,7 +127,7 @@
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"title": "View Saturday",
-						"url": "http://www.microsoft.com"
+						"url": "https://www.microsoft.com"
 					}
 				},
 				{
@@ -140,7 +143,8 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"altText": "Mostly cloudy weather"
 						},
 						{
 							"type": "TextBlock",
@@ -160,7 +164,7 @@
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"title": "View Sunday",
-						"url": "http://www.microsoft.com"
+						"url": "https://www.microsoft.com"
 					}
 				},
 				{
@@ -176,7 +180,8 @@
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"altText": "Mostly cloudy weather"
 						},
 						{
 							"type": "TextBlock",
@@ -196,7 +201,7 @@
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"title": "View Monday",
-						"url": "http://www.microsoft.com"
+						"url": "https://www.microsoft.com"
 					}
 				}
 			]

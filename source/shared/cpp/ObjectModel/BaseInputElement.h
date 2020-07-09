@@ -26,6 +26,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         void PopulateKnownPropertiesSet();
+
         bool m_isRequired;
         std::string m_errorMessage;
     };

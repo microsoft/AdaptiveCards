@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveToggleInput.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveToggleInput.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -15,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput =
             std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
@@ -23,7 +22,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput) try
+    HRESULT AdaptiveToggleInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleInput>& sharedToggleInput)
+    try
     {
         if (sharedToggleInput == nullptr)
         {
@@ -75,12 +75,13 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveToggleInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput =
             std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(toggleInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*toggleInput));
 
         toggleInput->SetTitle(HStringToUTF8(m_title.Get()));
         toggleInput->SetValue(HStringToUTF8(m_value.Get()));
@@ -88,7 +89,7 @@ namespace AdaptiveNamespace
         toggleInput->SetValueOff(HStringToUTF8(m_valueOff.Get()));
         toggleInput->SetWrap(m_wrap);
 
-        sharedModel = toggleInput;
+        sharedModel = std::move(toggleInput);
 
         return S_OK;
     }

@@ -124,7 +124,7 @@
 
         switch (inputBlck->GetTextInputStyle()) {
             case TextInputStyle::Text: {
-                txtInput.keyboardType = UIKeyboardTypeAlphabet;
+                txtInput.keyboardType = UIKeyboardTypeDefault;
                 break;
             }
             case TextInputStyle::Email: {

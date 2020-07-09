@@ -3,7 +3,7 @@
     "type": "AdaptiveCard",
     "version": "1.1",
     "backgroundImage": {
-        "url": "http://messagecardplayground.azurewebsites.net/assets/TxP_HorizontalLine.png",
+        "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_HorizontalLine.png",
         "mode": "repeat"
     }
 }

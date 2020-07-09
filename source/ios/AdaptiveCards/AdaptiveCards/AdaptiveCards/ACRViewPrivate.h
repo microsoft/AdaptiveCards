@@ -55,4 +55,9 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (ACRTargetBuilderDirector *)getQuickReplyTargetBuilderDirector;
 
+- (void)enqueueIntermediateTextProcessingResult:(NSDictionary *)data
+                                      elementId:(NSString *)elementId;
+
+- (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message;
+
 @end

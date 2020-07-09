@@ -2,9 +2,8 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
 #include "SemanticVersion.h"
-#include "Enums.h"
+#include "BaseElement.h"
 
 namespace AdaptiveNamespace
 {
@@ -41,11 +40,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Height(_Out_ ABI::AdaptiveNamespace::HeightType* height);
         IFACEMETHODIMP put_Height(ABI::AdaptiveNamespace::HeightType height);
 
-        IFACEMETHODIMP get_Requirements(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements);
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements);
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement);
+        HRESULT CopySharedElementProperties(AdaptiveSharedNamespace::BaseCardElement& sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseCardElement>& sharedModel) = 0;
 

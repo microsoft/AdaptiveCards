@@ -1820,6 +1820,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1831,6 +1832,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1842,6 +1844,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1853,6 +1856,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1864,6 +1868,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1875,6 +1880,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1886,6 +1892,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1897,6 +1904,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1908,6 +1916,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1919,6 +1928,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1930,6 +1940,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1941,6 +1952,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1952,6 +1964,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1963,6 +1976,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1974,6 +1988,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1985,6 +2000,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -1996,6 +2012,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -2007,6 +2024,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -2018,6 +2036,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -2029,6 +2048,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -2040,6 +2060,7 @@ AdaptiveNamespaceStart
     };
 
     [
+        default_interface,
 #ifdef ADAPTIVE_CARDS_WINDOWS
         contract(InternalContract, 1),
         internal
@@ -2123,8 +2144,8 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ]
-    runtimeclass WholeItemsPanel
+    ] 
+    runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
     {
         String GetAltText();
         Boolean IsAllContentClippedOut();

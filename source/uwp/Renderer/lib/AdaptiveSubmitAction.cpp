@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSubmitAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
@@ -10,7 +10,8 @@ using namespace ABI::Windows::Data::Json;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
@@ -18,7 +19,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction) try
+    HRESULT AdaptiveSubmitAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction)
+    try
     {
         if (sharedSubmitAction == nullptr)
         {
@@ -64,22 +66,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveSubmitAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*submitAction));
 
         std::string jsonAsString;
         if (m_dataJson != nullptr)
         {
             RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-            submitAction->SetDataJson(jsonAsString);
+            submitAction->SetDataJson(std::move(jsonAsString));
         }
 
         submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
 
-        sharedModel = submitAction;
+        sharedModel = std::move(submitAction);
         return S_OK;
     }
     CATCH_RETURN;

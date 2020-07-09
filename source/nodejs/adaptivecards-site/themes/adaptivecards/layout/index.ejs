@@ -1,40 +1,238 @@
+<div class="homepage">
+
+	<div id="videoModal" class="w3-modal w3-card-4">
+		<div class="w3-modal-content w3-animate-zoom">
+
+			<video id="overviewVideo" controls="" width="100" style="width: 100%" poster="<%- url_for('content/poster-video.png') %>">
+				<source src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
+					type="video/mp4" />
+			</video>
+			<span id="closeVideo" class="w3-button w3-xlarge w3-transparent w3-display-topright"
+				title="Close video">×</span>
+		</div>
+	</div>
 
 
+	<div class="w3-center" style="max-width: 600px; margin: auto">
 
-<div id="vidbanner" class="videobanner">
-    <div style="text-align:center">
-		<video id="vid" autoplay muted style="width: 1000px;" src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveIntroVideo.mp4"></video>
-    </div>
-</div>
+		<div class="w3-margin w3-padding-32">
+			<h1 class="w3-xxxlarge">A whole new way to deliver UI</h1>
+			<h3>Adaptive Cards are platform-agnostic snippets of UI, authored in JSON, that apps and services can openly exchange. When delivered to a specific app, the JSON is transformed into native UI that automatically adapts to its surroundings. It helps design and integrate light-weight UI for all major platforms and frameworks.</h3>
+			<div class="w3-padding-16">
+				<button role="link" onclick="window.location.href='https://docs.microsoft.com/en-us/adaptive-cards/'"
+					style="width:150px" class="w3-button w3-round-xxlarge ac-blue">
+					Get Started
+				</button>
+				<button class="w3-button w3-round-xxlarge w3-border w3-border-blue w3-margin-left" style="width:150px"
+					id="watchVideo">
+					<i class="fas fa-play"></i>&nbsp; Watch video
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<div class="w3-row-padding mainSection">
+
+		<div class="w3-col l9">
+			<div class="w3-card" style="background-color: #0078D7">
+				<video id="vid" playsinline autoplay muted style="width: 100%; margin-bottom: -8px"
+					data-loop-delay="5000"
+					src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveIntroVideo.mp4"></video>
+			</div>
+		</div>
+
+		<div class="w3-col l3">
+			<h6>Made For</h6>
+
+			<div class="w3-row">
+				<% for(var link of config.home.made_for) { %>
+					<div class="w3-col s4 m3 l12"><a
+						href="<%- link.href %>"><i
+							class="<%- link.fa %>"></i> <%- link.title %></a></div>
+				<% } %>
+			</div>
+
+			<div class="w3-row">
+
+				<div class="w3-col s6 l12">
+					<h6>Releases</h6>
+					<% for(var link of config.home.releases) { %>
+						<div><a href="<%- link.href %>"
+							aria-label="<%- link.title %>"><i class="<%- link.fa %>"></i><%- link.title %></a> <span
+							class="w3-tag w3-round w3-tiny <%- link.tag_class %>"><%- link.tag %></span></div>
+					<% } %>
+				</div>
+
+				<div class="w3-col s6 l12">
+					<h6>GitHub</h6>
+					<a class="github-button" href="https://github.com/Microsoft/AdaptiveCards" data-show-count="true"
+						aria-label="Star Microsoft/AdaptiveCards on GitHub">Star</a>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+	<div class="divider"></div>
+
+	<%- partial("_partial/home-section", {
+		title: "Meet your users where they are",
+		subtitle: "Modern digital life is hectic. Users are constantly switching between devices, apps, and services to get their job done. Adaptive Cards help you increase engagement and efficiency by injecting your actionable content directly into the apps they use every day.",
+		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-MeetYourUsersWhereTheyAre.mp4",
+		videoLoopDelay: 5000,
+		learnMoreTitle: "Integrate into existing apps",
+		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/resources/partners"
+	}) %>
+
+	<%- partial("_partial/section-details", {
+		sections: [{
+			"title": "Bot Framework",
+			"subtitle": "A conversational bot powered by Adaptive Cards can greatly simplify business workflows on your web site or through other channels.",
+			"smallImage": url_for('content/bf-logo.png'),
+			"learnMoreLink": "https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/cards/cards-reference#adaptive-card"
+		},
+		{
+			"title": "Microsoft Teams",
+			"subtitle":  "As the digital hub for many modern workers, Teams offers multiple extensibilty points for apps to integrate with.",
+			"smallImage": url_for('content/teams-logo.png'),
+			"learnMoreLink": "https://docs.microsoft.com/en-us/microsoftteams/platform/concepts/cards/cards-reference#adaptive-card"
+		},
+		{
+			"title": "Outlook Actionable Messages",
+			"subtitle":  "Email has long been life-blood of an information worker, and now you can deliver actionable content directly to their inbox.",
+			"smallImage": url_for('content/outlook-logo.png'),
+			"learnMoreLink": "https://docs.microsoft.com/en-us/outlook/actionable-messages/adaptive-card"
+		},
+		{
+			"title": "Windows Timeline",
+			"subtitle":  "Help users resume their activities on any device.",
+			"smallImage": url_for('content/windows-logo.png'),
+			"learnMoreLink": "https://docs.microsoft.com/en-us/adaptive-cards/getting-started/windows"
+		}]	
+	}) %>
+
+	<div class="w3-padding-32"></div>
+
+	<%- partial("_partial/quote", { 
+		quote: "User engagement on surveys is always a challenge, but after utilizing Outlook Actionable Messages our return rate surged from 10-12% to a 3 month average of 35%!",
+		author: "Richard Greenfield",
+		title: "Executive Support Services",
+		profilePic: url_for('content/rigreenf.jpg'),
+		productLogo: url_for('content/microsoft-logo.png')
+	}) %>
+
+	<div class="divider"></div>
+
+	<%- partial("_partial/home-section", {
+		title: "Open your apps to extensbility",
+		subtitle: "There's an ecosystem of developers out there who want to integrate with your apps, but how can you do so safely and without their content sticking out like a sore thumb? Adaptive Cards are always native and blend seamlessly into the surrounding UI - and they work on every major platform!",
+		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4",
+		videoLoopDelay: 2000,
+		learnMoreTitle: "Install the Rendering SDKs",
+		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/rendering-cards/getting-started"
+	}) %>
+
+	<%- partial("_partial/section-details", {
+		sections: [{
+			"title": "Native performance",
+			"subtitle":  "Adaptive Cards render native UI on any platform",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "Adapts to the surrounding UI",
+			"subtitle":  "Cards automatically adaptive to the surrounding UI",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "Fully extensible",
+			"subtitle":  "The schema is open-ended so you can add your own element types",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "Dynamic and interactive",
+			"subtitle":  "Interactivity is expressed declaratively to help reduce risk of custom code injection",
+			"smallImage": url_for('content/Feature.jpg')
+		}]	
+	}) %>
+
+	<div class="w3-padding-32"></div>
+
+	<%- partial("_partial/quote", { 
+		quote: "Microsoft Teams is only as powerful as the third-party services that integrate with it. Adaptive Cards allows any developer to plug into the richness of the Teams platform in a native way.",
+		author: "Bill Bliss",
+		title: "Platform Architect",
+		profilePic: "https://pbs.twimg.com/profile_images/1257201339/Disneyland-2009_200x200.png",
+		productLogo: url_for('content/teams-logo.png'),
+		productName: "Microsoft Teams"
+	}) %>
+
+	<div class="divider"></div>
+
+	<%- partial("_partial/home-section", {
+		title: "Design cards anywhere",
+		subtitle: "You don't have to send your users to this website to design cards. Just like Adaptive Cards blend into their surroundings, so does the Adaptive Card Designer. The SDK includes a full configuration API allowing you to deeply integrate card workflows into your existing toolchain.",
+		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-Designer.mp4?refresh=2019-09-10",
+		videoLoopDelay: 5000,
+		learnMoreTitle: "Install the Designer SDK",
+		learnMoreLink: "https://docs.microsoft.com/adaptive-cards/sdk/designer"
+	}) %>
+
+	<div class="w3-padding-32"></div>
+
+	<%- partial("_partial/quote", { 
+		quote: "AtBot helps anyone write a bot without having to write code. By embedding the Adaptive Card designer directly into our web-based portal our customers can create rich, data-bound cards right from the browser.",
+		author: "Joe Herres",
+		title: "Co-CEO",
+		profilePic: "https://pbs.twimg.com/profile_images/911946058242158594/oyph7XGi_200x200.jpg",
+		productLogo: url_for('content/atbot-logo.png'),
+		productName: "AtBot"
+	}) %>
+
+	<div class="divider"></div>
 
 
-<!-- main content -->
-<div class="w3-content w3-padding w3-large" style="max-width:1564px">
-    <div class="w3-container">
-        <h2 class="w3-border-bottom w3-border-light-grey w3-padding-16">Introducing Adaptive Cards</h2>
-        <p>Adaptive Cards are a new way for developers to exchange card content in a common and consistent way.</p>
-    </div>
+	<%- partial("_partial/home-section", {
+		title: "Create, share, and discover reusable templates",
+		subtitle: "What if you could instantly display any type of data? It could be your own app's data, your organization's data, or data from the web. With Adaptive Card Templating you can separate the data from card layout, and when coupled with a new template service a whole new ecosystem of card exchange becomes possible.",
+		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4",
+		learnMoreTitle: "Create reusable card templates",
+		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/templating",
+		tag: "Updated May 2020"
+	}) %>
 
-    <div class="w3-row-padding">
-        <div class="w3-col w3-padding-16 l3 m6 w3-margin-bottom">
-            <h3>Express yourself</h3>
-            <p>Break outside the box of templated cards. Adaptive Cards let you describe your content as you see fit and deliver it beautifully wherever your customers are.</p>
-        </div>
-    
-        <div class="w3-col w3-padding-16 l3 m6 w3-margin-bottom">
-            <h3>Open framework, native performance</h3>
-            <p>A simple open card format enables an ecosystem of shared tooling, seamless integration between apps, and native cross-platform performance on any device.</p>
-        </div>
-    
-        <div class="w3-col w3-padding-16 l3 m6 w3-margin-bottom">
-            <h3>Speech enabled from day one</h3>
-            <p>We live in an exciting era where users can talk to their devices. Adaptive Cards embrace this new world and were designed from the ground up to support these new experiences.</p>
-        </div>
+	<%- partial("_partial/section-details", {
+		sections: [{
+			"title": "Rich designer integration",
+			"subtitle":  "Sample data allows you to preview your template without leaving the designer.",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "Simplify development workflows",
+			"subtitle":  "Create your template in the designer, use it without your services, then paste it right back into the designer to make changes.",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "Discover and share templates using a REST service",
+			"subtitle":  "The template service finds a template for your data, and will even populate it for you.",
+			"smallImage": url_for('content/Feature.jpg')
+		},
+		{
+			"title": "We want to hear from you",
+			"subtitle":  "We don't have a release date for this preview yet, but we're waiting to learn from you.",
+			"smallImage": url_for('content/Feature.jpg')
+		}]	
+	}) %>
 
-        <div class="w3-col w3-padding-16 l3 m6 w3-margin-bottom">
-            <h3>Tap into a growing ecosystem of content</h3>
-            <p>It's never been easier to safely integrate UI from a vast network of content producers. With our open-source cross-platform libraries you will have the freedom to create high-performing, great-looking experiences for your users.</p>    </div>
-        </div>
-    </div>
+	<div class="w3-padding-32"></div>
+
+
+	<%- partial("_partial/quote", { 
+		quote: "Teamwork offers a suite of productivity tools that integrate into many platforms. By creating reusable Adaptive Card templates we are able to deliver the same UI natively into our own apps, as well as tools our customers already use like Microsoft Teams and Visual Studio Code.",
+		author: "Tim Cadenbach",
+		title: "Head of Integrations",
+		profilePic: "https://pbs.twimg.com/profile_images/919315256563978241/2LDFiF5m_400x400.jpg",
+		productLogo: url_for('content/teamwork-logo.png'),
+		productName: "Teamwork.com"
+	}) %>
 
 </div>

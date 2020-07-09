@@ -16,7 +16,7 @@
 @implementation ACRToggleVisibilityTarget {
     ACOHostConfig *_config;
     __weak ACRView *_rootView;
-    std::unique_ptr<ToggleVisibilityAction> _action;
+    std::shared_ptr<ToggleVisibilityAction> _action;
 }
 
 - (instancetype)initWithActionElement:(std::shared_ptr<AdaptiveCards::ToggleVisibilityAction> const &)actionElement
@@ -27,7 +27,7 @@
     if (self) {
         _config = config;
         _rootView = rootView;
-        _action = std::make_unique<ToggleVisibilityAction>(*(actionElement.get()));
+        _action = std::make_shared<ToggleVisibilityAction>(*(actionElement.get()));
     }
     return self;
 }
@@ -46,22 +46,29 @@
 
         AdaptiveCards::IsVisible toggleEnum = target->GetIsVisible();
         if (toggleEnum == AdaptiveCards::IsVisibleToggle) {
-            view.hidden = !(view.hidden);
+            BOOL isHidden = view.hidden;
+            view.hidden = !isHidden;
             if (separator) {
                 separator.hidden = view.hidden;
             }
         } else if (toggleEnum == AdaptiveCards::IsVisibleTrue) {
-            view.hidden = NO;
-            if (separator) {
+            if (view.hidden == YES) {
+                view.hidden = NO;
+            }
+            if (separator && separator.hidden == YES) {
                 separator.hidden = NO;
             }
         } else {
-            view.hidden = YES;
-            if (separator) {
+            if (view.hidden == NO) {
+                view.hidden = YES;
+            }
+            if (separator && separator.hidden == NO) {
                 separator.hidden = YES;
             }
         }
     }
+
+    [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:[[ACOBaseActionElement alloc] initWithBaseActionElement:_action]];
 }
 
 @end

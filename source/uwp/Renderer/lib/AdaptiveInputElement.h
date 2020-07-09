@@ -2,10 +2,7 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "BaseInputElement.h"
-#include "AdaptiveCardElement.h"
 
 namespace AdaptiveNamespace
 {
@@ -20,7 +17,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ErrorMessage(_Outptr_ HSTRING* title);
         IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING title);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement);
+        HRESULT CopySharedElementProperties(AdaptiveSharedNamespace::BaseInputElement & sharedCardElement);
 
     private:
         boolean m_isRequired;

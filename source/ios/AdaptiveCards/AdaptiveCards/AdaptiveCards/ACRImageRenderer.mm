@@ -56,12 +56,34 @@
 
     UIImage *img = imageViewMap[key];
     ImageSize size = ImageSize::None;
+    CGSize intrinsicContentSize;
     if (!hasExplicitMeasurements) {
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
             size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
+
+        if (size == ImageSize::Stretch) {
+            intrinsicContentSize = [acoConfig getImageSize:ImageSize::Small];
+        } else if (size != ImageSize::Auto) {
+            intrinsicContentSize = [acoConfig getImageSize:imgElem->GetImageSize()];
+        }
+
+    } else {
+        if (pixelWidth) {
+            intrinsicContentSize.width = pixelWidth;
+            if (isAspectRatioNeeded) {
+                intrinsicContentSize.height = pixelWidth;
+            }
+        }
+        if (pixelHeight) {
+            intrinsicContentSize.height = pixelHeight;
+            if (isAspectRatioNeeded) {
+                intrinsicContentSize.width = pixelHeight;
+            }
+        }
     }
+
 
     if (img) {
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
@@ -81,8 +103,10 @@
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
 
     if (!view) {
+        [viewGroup addSubview:wrappingview];
         return wrappingview;
     }
+    wrappingview.desiredContentSize = intrinsicContentSize;
 
     view.clipsToBounds = YES;
 
@@ -95,11 +119,9 @@
 
     [viewGroup addArrangedSubview:wrappingview];
 
-    UILayoutGuide *leftGuide = nil;
-    UILayoutGuide *rightGuide = nil;
     HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
     if (adaptiveAlignment == HorizontalAlignment::Left) {
-        leftGuide = [[UILayoutGuide alloc] init];
+        UILayoutGuide *leftGuide = [[UILayoutGuide alloc] init];
         leftGuide.identifier = @"img-left-guide";
         [wrappingview addLayoutGuide:leftGuide];
         [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
@@ -109,7 +131,7 @@
     }
 
     if (adaptiveAlignment == HorizontalAlignment::Right) {
-        rightGuide = [[UILayoutGuide alloc] init];
+        UILayoutGuide *rightGuide = [[UILayoutGuide alloc] init];
         rightGuide.identifier = @"img-right-guide";
         [wrappingview addLayoutGuide:rightGuide];
         NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:view.trailingAnchor];
@@ -127,7 +149,7 @@
     [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
-    [view.centerYAnchor constraintEqualToAnchor:wrappingview.centerYAnchor].active = YES;
+    [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
 
     if (!isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
@@ -142,8 +164,13 @@
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
-            [blankTrailingSpace setContentHuggingPriority:(UILayoutPriorityDefaultLow) forAxis:UILayoutConstraintAxisVertical];
-            [viewGroup addArrangedSubview:blankTrailingSpace];
+            blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+            [wrappingview addSubview:blankTrailingSpace];
+            [blankTrailingSpace.topAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+            [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+            [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+            [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingview.bottomAnchor].active = YES;
+            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
     }
 
@@ -156,6 +183,8 @@
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+
+    view.isAccessibilityElement = YES;
 
     configVisibility(wrappingview, elem);
 
@@ -228,9 +257,10 @@
         constraints[1].priority = 1000;
 
         [NSLayoutConstraint activateConstraints:constraints];
-
-        if ([imageView class] == [ACRUIImageView class]) {
-            ((ACRUIImageView *)imageView).desiredSize = cgsize;
+        UIView *superview = imageView.superview;
+        if ([superview isKindOfClass:[ACRContentHoldingUIView class]]) {
+            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = cgsize;
+            [imageView.superview invalidateIntrinsicContentSize];
         }
     }
 
@@ -255,8 +285,8 @@
 
         [NSLayoutConstraint activateConstraints:constraints];
 
-        if ([imageView class] == [ACRUIImageView class]) {
-            ((ACRUIImageView *)imageView).desiredSize = cgsize;
+        if ([imageView.superview class] == [ACRContentHoldingUIView class]) {
+            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
         }
     }
 }

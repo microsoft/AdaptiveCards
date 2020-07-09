@@ -21,6 +21,7 @@ public class ToggleVisibilityTargetVector extends java.util.AbstractList<ToggleV
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class ToggleVisibilityTargetVector extends java.util.AbstractList<ToggleV
     AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_clear(swigCPtr, this);
   }
 
-  public ToggleVisibilityTargetVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_ToggleVisibilityTargetVector__SWIG_2(count), true);
-  }
-
   public ToggleVisibilityTargetVector(int count, ToggleVisibilityTarget value) {
-    this(AdaptiveCardObjectModelJNI.new_ToggleVisibilityTargetVector__SWIG_3(count, ToggleVisibilityTarget.getCPtr(value), value), true);
+    this(AdaptiveCardObjectModelJNI.new_ToggleVisibilityTargetVector__SWIG_2(count, ToggleVisibilityTarget.getCPtr(value), value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(ToggleVisibilityTarget value) {
-    AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doAdd__SWIG_0(swigCPtr, this, ToggleVisibilityTarget.getCPtr(value), value);
+  private void doAdd(ToggleVisibilityTarget x) {
+    AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doAdd__SWIG_0(swigCPtr, this, ToggleVisibilityTarget.getCPtr(x), x);
   }
 
-  private void doAdd(int index, ToggleVisibilityTarget value) {
-    AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doAdd__SWIG_1(swigCPtr, this, index, ToggleVisibilityTarget.getCPtr(value), value);
+  private void doAdd(int index, ToggleVisibilityTarget x) {
+    AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doAdd__SWIG_1(swigCPtr, this, index, ToggleVisibilityTarget.getCPtr(x), x);
   }
 
   private ToggleVisibilityTarget doRemove(int index) {
@@ -136,8 +133,8 @@ public class ToggleVisibilityTargetVector extends java.util.AbstractList<ToggleV
     return (cPtr == 0) ? null : new ToggleVisibilityTarget(cPtr, true);
   }
 
-  private ToggleVisibilityTarget doSet(int index, ToggleVisibilityTarget value) {
-    long cPtr = AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doSet(swigCPtr, this, index, ToggleVisibilityTarget.getCPtr(value), value);
+  private ToggleVisibilityTarget doSet(int index, ToggleVisibilityTarget val) {
+    long cPtr = AdaptiveCardObjectModelJNI.ToggleVisibilityTargetVector_doSet(swigCPtr, this, index, ToggleVisibilityTarget.getCPtr(val), val);
     return (cPtr == 0) ? null : new ToggleVisibilityTarget(cPtr, true);
   }
 

@@ -38,7 +38,7 @@ namespace AdaptiveSharedNamespace
         std::string m_altText;
         std::vector<std::shared_ptr<MediaSource>> m_sources;
 
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
     };
 
     class MediaParser : public BaseCardElementParser

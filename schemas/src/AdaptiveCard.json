@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-  "description": "An Adaptive Card",
+  "description": "An Adaptive Card, containing a free-form body of card elements, and an optional set of actions.",
   "properties": {
     "version": {
       "type": "string",
@@ -24,18 +24,13 @@
       "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
       "version": "1.1"
     },
-    "style": {
-      "type": "ContainerStyle",
-      "description": "Style hint for the Adaptive Card.",
-      "version": "1.2"
-    },
     "fallbackText": {
       "type": "string",
       "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
     },
     "backgroundImage": {
       "type": "BackgroundImage",
-      "description": "Specifies the background image of the card.",
+      "description": "Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF",
       "version": "1.2",
       "shorthands": [
         {

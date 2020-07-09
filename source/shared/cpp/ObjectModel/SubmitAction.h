@@ -29,7 +29,7 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         Json::Value m_dataJson;
         bool m_ignoreInputValidation;

@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveInputElement.h"
 
 using namespace Microsoft::WRL;
@@ -37,11 +38,11 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveInputElementBase::put_ErrorMessage(HSTRING title) { return m_errorMessage.Set(title); }
 
-    HRESULT AdaptiveInputElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement)
+    HRESULT AdaptiveInputElementBase::CopySharedElementProperties(AdaptiveSharedNamespace::BaseInputElement& sharedCardElement)
     {
-        AdaptiveCardElementBase::SetSharedElementProperties(sharedCardElement);
-        sharedCardElement->SetIsRequired(m_isRequired);
-        sharedCardElement->SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
+        AdaptiveCardElementBase::CopySharedElementProperties(sharedCardElement);
+        sharedCardElement.SetIsRequired(m_isRequired);
+        sharedCardElement.SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
         return S_OK;
     }
 }

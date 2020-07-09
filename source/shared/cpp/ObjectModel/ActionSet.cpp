@@ -8,13 +8,13 @@
 
 using namespace AdaptiveCards;
 
-ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{}, m_orientation(ActionsOrientation::Vertical)
+ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{}
 {
     PopulateKnownPropertiesSet();
 }
 
 ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet), m_actions(actions), m_orientation(ActionsOrientation::Vertical)
+    BaseCardElement(CardElementType::ActionSet), m_actions(actions)
 {
     PopulateKnownPropertiesSet();
 }
@@ -33,7 +33,7 @@ Json::Value ActionSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
+    const std::string& actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
 
     for (const auto& actionElement : m_actions)

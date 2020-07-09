@@ -23,7 +23,7 @@ namespace AdaptiveSharedNamespace
         static InternalId Current();
         static constexpr unsigned int Invalid = 0;
 
-        std::size_t const Hash() const { return std::hash<unsigned int>()(m_internalId); }
+        std::size_t Hash() const { return std::hash<unsigned int>()(m_internalId); }
 
         bool operator==(const unsigned int other) const { return m_internalId == other; }
         bool operator!=(const unsigned int other) const { return m_internalId != other; }
@@ -45,9 +45,9 @@ namespace AdaptiveSharedNamespace
     {
     public:
         BaseElement() :
-            m_additionalProperties{}, m_typeString{},
-            m_requires{std::make_shared<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>>()},
-            m_fallbackContent(nullptr), m_fallbackType(FallbackType::None), m_id{}, m_internalId{InternalId::Current()},
+            m_typeString{}, m_additionalProperties{},
+            m_requires{},
+            m_fallbackContent(nullptr), m_id{}, m_internalId{ InternalId::Current() }, m_fallbackType(FallbackType::None),
             m_canFallbackToAncestor(false)
         {
             PopulateKnownPropertiesSet();
@@ -60,35 +60,41 @@ namespace AdaptiveSharedNamespace
         virtual ~BaseElement() = default;
 
         // Element type and identity
-        std::string GetElementTypeString() const;
+        const std::string& GetElementTypeString() const;
+        void SetElementTypeString(std::string&& value);
         void SetElementTypeString(const std::string& value);
-        virtual std::string GetId() const;
+
+        const std::string& GetId() const;
+        virtual void SetId(std::string&& value);
         virtual void SetId(const std::string& value);
 
-        const InternalId GetInternalId() const { return m_internalId; }
+        InternalId GetInternalId() const { return m_internalId; }
 
         template<typename T> void DeserializeBase(ParseContext& context, const Json::Value& json);
 
         virtual std::string Serialize() const;
         virtual Json::Value SerializeToJsonValue() const;
-        Json::Value GetAdditionalProperties() const;
+        const Json::Value& GetAdditionalProperties() const;
+        void SetAdditionalProperties(Json::Value&& additionalProperties);
         void SetAdditionalProperties(const Json::Value& additionalProperties);
 
         // Fallback and Requires support
         FallbackType GetFallbackType() const { return m_fallbackType; }
-        std::shared_ptr<BaseElement> GetFallbackContent() const { return m_fallbackContent; }
+        const std::shared_ptr<BaseElement>& GetFallbackContent() const { return m_fallbackContent; }
         bool CanFallbackToAncestor() const { return m_canFallbackToAncestor; }
         void SetFallbackType(FallbackType type) { m_fallbackType = type; }
-        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = element; }
+        void SetFallbackContent(std::shared_ptr<BaseElement> element) { m_fallbackContent = std::move(element); }
 
         bool MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& hostProvides) const;
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> GetRequirements() const;
+
+        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements();
+        const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& GetRequirements() const;
 
         // Misc.
         virtual void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris);
 
     protected:
-        virtual void PopulateKnownPropertiesSet();
+        void SetTypeString(std::string&& type) { m_typeString = std::move(type); }
         void SetTypeString(const std::string& type) { m_typeString = type; }
         void SetCanFallbackToAncestor(bool value) { m_canFallbackToAncestor = value; }
 
@@ -99,13 +105,14 @@ namespace AdaptiveSharedNamespace
     private:
         template<typename T> void ParseFallback(ParseContext& context, const Json::Value& json);
         void ParseRequires(ParseContext& context, const Json::Value& json);
+        void PopulateKnownPropertiesSet();
 
-        std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> m_requires;
+        std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion> m_requires;
         std::shared_ptr<BaseElement> m_fallbackContent;
+        std::string m_id;
         InternalId m_internalId;
         FallbackType m_fallbackType;
         bool m_canFallbackToAncestor;
-        std::string m_id;
     };
 
     template<typename T> void BaseElement::DeserializeBase(ParseContext& context, const Json::Value& json)
@@ -135,7 +142,7 @@ namespace AdaptiveSharedNamespace
                     return;
                 }
                 throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                                 "The only valid string value for the fallback property is 'drop'.");
+                    "The only valid string value for the fallback property is 'drop'.");
             }
             else if (fallbackValue.isObject())
             {

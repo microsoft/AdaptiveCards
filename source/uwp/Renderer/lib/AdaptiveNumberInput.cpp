@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveNumberInput.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveNumberInput.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -15,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput =
             std::make_shared<AdaptiveSharedNamespace::NumberInput>();
@@ -23,7 +22,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput) try
+    HRESULT AdaptiveNumberInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::NumberInput>& sharedNumberInput)
+    try
     {
         if (sharedNumberInput == nullptr)
         {
@@ -89,19 +89,20 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveNumberInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput =
             std::make_shared<AdaptiveSharedNamespace::NumberInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(numberInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*numberInput));
 
         numberInput->SetMin(m_min);
         numberInput->SetMax(m_max);
         numberInput->SetValue(m_value);
         numberInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
 
-        sharedModel = numberInput;
+        sharedModel = std::move(numberInput);
         return S_OK;
     }
     CATCH_RETURN;

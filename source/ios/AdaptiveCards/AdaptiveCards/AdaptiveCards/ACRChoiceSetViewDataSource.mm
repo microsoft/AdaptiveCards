@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -16,7 +17,6 @@ NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 const CGFloat padding = 16.0f;
-const CGFloat accessoryViewWidth = 50.0f;
 
 @implementation ACRChoiceSetCell
 
@@ -53,9 +53,11 @@ const CGFloat accessoryViewWidth = 50.0f;
     NSMutableSet *_defaultValuesSet;
     NSArray *_defaultValuesArray;
     BOOL _shouldWrap;
+    std::shared_ptr<HostConfig> _config;
+    CGSize _contentSize;
 }
 
-- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet
+- (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)hostConfig;
 {
     self = [super init];
     if (self) {
@@ -66,6 +68,9 @@ const CGFloat accessoryViewWidth = 50.0f;
         _shouldWrap = choiceSet->GetWrap();
         _userSelections = [[NSMutableDictionary alloc] init];
         _currentSelectedIndexPath = nil;
+        _config = hostConfig;
+        _parentStyle = ACRContainerStyle::ACRNone;
+
         NSString *defaultValues = [NSString stringWithCString:_choiceSetDataSource->GetValue().c_str()
                                                      encoding:NSUTF8StringEncoding];
         _defaultValuesArray = [defaultValues componentsSeparatedByCharactersInSet:
@@ -111,19 +116,23 @@ const CGFloat accessoryViewWidth = 50.0f;
         } else {
             cell = [tableView dequeueReusableCellWithIdentifier:checkedRadioButtonReuseID];
         }
+        cell.accessibilityTraits |= UIAccessibilityTraitSelected;
     } else {
         if (_isMultiChoicesAllowed) {
             cell = [tableView dequeueReusableCellWithIdentifier:uncheckedCheckboxReuseID];
         } else {
             cell = [tableView dequeueReusableCellWithIdentifier:uncheckedRadioButtonReuseID];
         }
+        cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
 
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
 
     return cell;
 }
@@ -190,12 +199,22 @@ const CGFloat accessoryViewWidth = 50.0f;
     } else {
         textString = cell.textLabel.text;
     }
+    
+    if (_contentSize.width == 0 && tableView.contentSize.width && tableView.frame.size.height)
+    {
+        _contentSize = tableView.contentSize;
+        [tableView invalidateIntrinsicContentSize];
+    }
+    
     CGSize labelStringSize =
-        [textString boundingRectWithSize:CGSizeMake(cell.contentView.frame.size.width - accessoryViewWidth, CGFLOAT_MAX)
+        [textString boundingRectWithSize:CGSizeMake(tableView.contentSize.width - [self getNonInputWidth:cell], CGFLOAT_MAX)
                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                               attributes:@{NSFontAttributeName : cell.textLabel.font}
                                  context:nil]
             .size;
+    
+    [tableView layoutIfNeeded];
+    
     return labelStringSize.height + padding;
 }
 
@@ -241,6 +260,11 @@ const CGFloat accessoryViewWidth = 50.0f;
         return nil;
     }
     return [values componentsJoinedByString:@", "];
+}
+
+- (float)getNonInputWidth:(UITableViewCell *)cell
+{
+    return padding * 3 + cell.imageView.image.size.width;
 }
 
 @end

@@ -18,6 +18,12 @@ export enum Size {
     Large
 }
 
+export enum ImageSize {
+    Small,
+    Medium,
+    Large
+}
+
 export enum SizeUnit {
     Weight,
     Pixel
@@ -147,7 +153,13 @@ export class ContainerStyle {
     static readonly Warning: "warning" = "warning";
 }
 
-export enum ValidationError {
+export enum ValidationPhase {
+    Parse,
+    ToJSON,
+    Validation
+}
+
+export enum ValidationEvent {
     Hint,
     ActionTypeNotAllowed,
     CollectionCantBeEmpty,
@@ -161,7 +173,9 @@ export enum ValidationError {
     UnknownActionType,
     UnknownElementType,
     UnsupportedCardVersion,
-    DuplicateId
+    DuplicateId,
+    UnsupportedProperty,
+    Other
 }
 
 export enum ContainerFitStatus {

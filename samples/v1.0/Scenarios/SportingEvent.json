@@ -16,8 +16,9 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/3.png",
-									"size": "medium"
+									"url": "https://adaptivecards.io/content/cats/3.png",
+									"size": "medium",
+									"altText": "Shades cat team emblem"
 								},
 									{
 									"type": "TextBlock",
@@ -60,9 +61,10 @@
 							"items": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/2.png",
+									"url": "https://adaptivecards.io/content/cats/2.png",
 									"size": "medium",
-									"horizontalAlignment": "center"
+									"horizontalAlignment": "center",
+									"altText": "Skins cat team emblem"
 								},
 								{
 									"type": "TextBlock",

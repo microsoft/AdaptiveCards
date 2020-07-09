@@ -71,7 +71,7 @@ namespace AdaptiveSharedNamespace
         void SetSpeak(const std::string& value);
         ContainerStyle GetStyle() const;
         void SetStyle(const ContainerStyle value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
         void SetLanguage(const std::string& value);
         VerticalContentAlignment GetVerticalContentAlignment() const;
         void SetVerticalContentAlignment(const VerticalContentAlignment value);
@@ -92,7 +92,7 @@ namespace AdaptiveSharedNamespace
 
         std::vector<RemoteResourceInformation> GetResourceInformation();
 
-        const CardElementType GetElementType() const;
+        CardElementType GetElementType() const;
 #ifdef __ANDROID__
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,
@@ -114,18 +114,18 @@ namespace AdaptiveSharedNamespace
                                                                   const std::string& speak) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
 #else
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion,
+                                                                const std::string& rendererVersion,
                                                                 ParseContext& context);
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                std::string rendererVersion);
+                                                                const std::string& rendererVersion);
 
-        static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json, std::string rendererVersion, ParseContext& context);
+        static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json, const std::string& rendererVersion, ParseContext& context);
 
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion,
+                                                                  const std::string& rendererVersion,
                                                                   ParseContext& context);
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  std::string rendererVersion);
+                                                                  const std::string& rendererVersion);
 
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,

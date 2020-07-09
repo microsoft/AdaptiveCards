@@ -1,0 +1,19 @@
+<div class="w3-row w3-margin-top w3-margin-bottom">
+
+	<div class="w3-col s3 m12">
+		<% if(locals.learnMoreLink) { %>
+			<a href="<%- locals.learnMoreLink %>">
+		<% } %>
+		<img src="<%- smallImage %>" style="max-height: 150px; padding-right: 8px" alt="Product logo"
+			class="w3-image w3-margin-right" />
+		<% if(locals.learnMoreLink) { %>
+			</a>
+		<% } %>
+	</div>
+
+	<div class="w3-col s9 m12 w3-container">
+		<h4><%- title %></h4>
+		<h5><%- subtitle %></h5>
+	</div>
+
+</div>

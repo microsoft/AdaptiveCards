@@ -1,42 +1,68 @@
 ---
 layout: layout
 ---
-<!-- Main Content -->
+<!-- This is the blog index page -->
+
 <style>
-   img { max-width: 95%; height: auto; }
+	.main-container {
+		padding: 0 !important;
+	}
+
+	.uhf-container {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
 </style>
 
-<% page.posts.each(function(post){ %>
-<div class="post-preview">
-  <a href="<%- config.root %><%- post.path %>">
-    <h2 class="post-title">
-      <%- post.title || "Untitled" %>
-    </h2>
-  </a>
-  <h3 class="post-subtitle">
-    <%- post.subtitle || "" %>
-  </h3>
-  <p class="subtitle">
-    Posted <%= post.date.format(config.date_format) %>
-  </p>
-  <div class="post-content-preview">
-    <%- post.content %>
-  </div>
+<div class="blog w3-content" >
+
+
+	<% page.posts.each(function(post, i) { %>
+
+	<% if(i % 3 === 0) { /* start a new row every 3 posts */ %>
+	<div class="w3-cell-row w3-padding-16">
+		<% } %>
+		<article class="w3-cell w3-margin-bottom w3-padding-16 w3-container w3-mobile article" style="width: 328px">
+			<% var imageSrc = post.featured_image ? url_for(post.featured_image) : url_for('content/icons_blue/blue-wide.png');
+				var style = "background-image: url('" + imageSrc + "')"  %>
+			<a href="<%- config.root %><%- post.path %>" class="coverImage" style="<%= style %>" role="presentation" aria-label="<%= post.title %>"></a>
+
+			<h2><a class="article-title" href="<%- config.root %><%- post.path %>"><%- post.title %></a></h2>
+
+			<h3 class="article-subtitle"><%- post.subtitle %></h3>
+
+			<div class="w3-margin-top">
+				<div class="w3-cell w3-cell-middle">
+					<a href="<%- post.author.webpage %>" role="presentation"><img src="<%- post.author.avatar %>" class="w3-image w3-circle"
+							style="width: 35px; margin-right: 6px" alt="Go to the webpage for <%- post.author.name %>" /></a>
+				</div>
+				<div class="w3-cell">
+					<a class="article-author" href="<%- post.author.webpage %>"><%- post.author.name %></a>
+					<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D, YYYY") %></datetime> ·
+					<span class="reading-time"><%- readingTime(post.content, 'min read') %></span>
+				</div>
+			</div>
+
+
+		</article>
+
+		<% if(i % 3 === 2) { %>
+	</div>
+	<% } %>
+	<% }); %>
+
+	<!-- Pager -->
+
+	<ul class="w3-ul w3-center w3-medium">
+		<% if (page.prev){ %>
+		<li class="previous">
+			<a class="w3-button ac-blue" href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
+		</li>
+		<% } %>
+		<% if (page.next){ %>
+		<li class="next">
+			<a class="w3-button ac-blue" href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
+		</li>
+		<% } %>
+	</ul>
 </div>
-<% }); %>
-
-
-<!-- Pager -->
-
-<ul class="pager">
-    <% if (page.prev){ %>
-        <li class="previous">
-            <a href="<%- config.root %><%- page.prev_link %>">&larr; Newer Posts</a>
-        </li>
-    <% } %>
-    <% if (page.next){ %>
-        <li class="next">
-            <a href="<%- config.root %><%- page.next_link %>">Older Posts &rarr;</a>
-        </li>
-    <% } %>
-</ul>

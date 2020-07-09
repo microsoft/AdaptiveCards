@@ -22,7 +22,7 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const override;
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<ToggleVisibilityTarget>> m_targetElements;
     };

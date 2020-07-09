@@ -81,15 +81,14 @@
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
     _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
-
-    [superview addArrangedSubview:adcView];
-
     _adcView.hidden = YES;
+    [superview addArrangedSubview:adcView];
     _superview = superview;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
+    _button.selected = !_button.selected;
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;

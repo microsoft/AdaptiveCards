@@ -1,9 +1,17 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "0.7.1",
+	"version": "1.0.0",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
 	"main": "lib/adaptivecards-designer.js",
 	"types": "lib/adaptivecards-designer.d.ts",
 	"files": [
@@ -20,27 +28,31 @@
 		"start": "webpack-dev-server --open",
 		"start:preview": "webpack-dev-server --open-page previewFeatures.html",
 		"start:nohosts": "webpack-dev-server --open-page noHosts.html",
-		"dts": "dts-generator --name adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
-		"lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+		"dts": "dts-generator --prefix adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
+		"lint": "eslint src/**/*.ts",
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {
-		"adaptivecards": "^1.3.0-alpha.2",
-		"adaptivecards-controls": "^0.3.1",
-		"adaptivecards-templating": "^0.1.0-alpha.1",
+		"adaptive-expressions": "^4.9.2",
+		"adaptivecards": "^2.0.0",
+		"adaptivecards-controls": "^0.3.7",
+		"adaptivecards-templating": "^1.0.0",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {
-		"monaco-editor": "^0.15.6"
+		"monaco-editor": "^0.20.0"
 	},
 	"devDependencies": {
-		"cpy-cli": "^2.0.0",
-		"monaco-editor": "^0.17.1",
-		"rimraf": "^2.6.2",
-		"typescript": "^3.5.3",
-		"webpack": "^4.38.0",
-		"webpack-cli": "^3.3.6",
+		"@typescript-eslint/eslint-plugin": "^3.4.0",
+		"@typescript-eslint/parser": "^3.4.0",
+		"cpy-cli": "^3.1.1",
+		"eslint": "^7.3.1",
+		"monaco-editor": "^0.20.0",
+		"rimraf": "^3.0.2",
+		"typescript": "^3.9.5",
+		"webpack": "^4.43.0",
+		"webpack-cli": "^3.3.12",
 		"webpack-concat-plugin": "^3.0.0",
-		"webpack-dev-server": "^3.7.2"
+		"webpack-dev-server": "^3.11.0"
 	}
 }

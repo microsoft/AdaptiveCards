@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
   "extends": "Element",
-  "description": "Displays an image.",
+  "description": "Displays an image. Acceptable formats are PNG, JPEG, and GIF",
   "properties": {
     "url": {
       "type": "uri-reference",

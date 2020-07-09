@@ -744,7 +744,7 @@ namespace Swig {
 namespace Swig {
   namespace {
     jclass jclass_AdaptiveCardObjectModelJNI = NULL;
-    jmethodID director_method_ids[36];
+    jmethodID director_method_ids[33];
   }
 }
 
@@ -842,12 +842,7 @@ SWIGINTERN jint SWIG_VectorSize(size_t size) {
   return sz;
 }
 
-SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation > *new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< AdaptiveCards::RemoteResourceInformation >(static_cast<std::vector< AdaptiveCards::RemoteResourceInformation >::size_type>(count));
-      }
-SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation > *new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_3(jint count,AdaptiveCards::RemoteResourceInformation const &value){
+SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation > *new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_2(jint count,AdaptiveCards::RemoteResourceInformation const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< AdaptiveCards::RemoteResourceInformation >(static_cast<std::vector< AdaptiveCards::RemoteResourceInformation >::size_type>(count), value);
@@ -855,13 +850,13 @@ SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation > *new_std_vect
 SWIGINTERN jint std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doSize(std::vector< AdaptiveCards::RemoteResourceInformation > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doAdd__SWIG_0(std::vector< AdaptiveCards::RemoteResourceInformation > *self,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doAdd__SWIG_0(std::vector< AdaptiveCards::RemoteResourceInformation > *self,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doAdd__SWIG_1(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &value){
+SWIGINTERN void std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doAdd__SWIG_1(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -876,7 +871,7 @@ SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation >::value_type s
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN AdaptiveCards::RemoteResourceInformation const &std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doGet(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index){
+SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doGet(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
@@ -893,11 +888,11 @@ struct SWIG_null_deleter {
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_NEW
 #define SWIG_NO_NULL_DELETER_SWIG_POINTER_OWN
 
-SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation >::value_type std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doSet(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &value){
+SWIGINTERN std::vector< AdaptiveCards::RemoteResourceInformation >::value_type std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doSet(std::vector< AdaptiveCards::RemoteResourceInformation > *self,jint index,std::vector< AdaptiveCards::RemoteResourceInformation >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           AdaptiveCards::RemoteResourceInformation const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -911,12 +906,7 @@ SWIGINTERN void std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doRemo
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::size_type>(count), value);
@@ -924,13 +914,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -945,18 +935,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -970,12 +960,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseW
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::BaseCardElement > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::BaseCardElement > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::size_type>(count), value);
@@ -983,13 +968,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *new
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1004,18 +989,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::val
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::BaseCardElement > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::BaseCardElement > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1029,12 +1014,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Image > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::Image > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::Image > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::Image > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Image > >::size_type>(count), value);
@@ -1042,13 +1022,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > > *new_std_vecto
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::Image > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1063,18 +1043,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type st
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::Image > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Image > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::Image > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1088,12 +1068,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doRe
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Fact > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::Fact > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::Fact > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::Fact > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Fact > >::size_type>(count), value);
@@ -1101,13 +1076,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > > *new_std_vector
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::Fact > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1122,18 +1097,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type std
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::Fact > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Fact > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::Fact > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1147,12 +1122,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doRem
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Column > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::Column > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::Column > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::Column > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Column > >::size_type>(count), value);
@@ -1160,13 +1130,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > > *new_std_vect
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::Column > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1181,18 +1151,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type s
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::Column > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Column > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::Column > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1206,12 +1176,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doR
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::ChoiceInput > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::ChoiceInput > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::size_type>(count), value);
@@ -1219,13 +1184,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *new_std
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1240,18 +1205,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_t
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::ChoiceInput > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::ChoiceInput > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1265,12 +1230,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::MediaSource > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::MediaSource > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::size_type>(count), value);
@@ -1278,13 +1238,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *new_std
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1299,18 +1259,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_t
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::MediaSource > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::MediaSource > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1324,12 +1284,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::BaseActionElement > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::BaseActionElement > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::size_type>(count), value);
@@ -1337,13 +1292,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *n
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1358,18 +1313,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::v
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::BaseActionElement > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::BaseActionElement > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1383,12 +1338,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::size_type>(count), value);
@@ -1396,13 +1346,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken >
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1417,18 +1367,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken >
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1442,12 +1392,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedT
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::size_type>(count), value);
@@ -1455,13 +1400,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget >
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1476,18 +1421,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget >
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1501,12 +1446,7 @@ SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTa
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::string > *new_std_vector_Sl_std_string_Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::string >(static_cast<std::vector< std::string >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::string > *new_std_vector_Sl_std_string_Sg___SWIG_3(jint count,std::string const &value){
+SWIGINTERN std::vector< std::string > *new_std_vector_Sl_std_string_Sg___SWIG_2(jint count,std::string const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::string >(static_cast<std::vector< std::string >::size_type>(count), value);
@@ -1514,13 +1454,13 @@ SWIGINTERN std::vector< std::string > *new_std_vector_Sl_std_string_Sg___SWIG_3(
 SWIGINTERN jint std_vector_Sl_std_string_Sg__doSize(std::vector< std::string > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_string_Sg__doAdd__SWIG_0(std::vector< std::string > *self,std::vector< std::string >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_string_Sg__doAdd__SWIG_0(std::vector< std::string > *self,std::vector< std::string >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_string_Sg__doAdd__SWIG_1(std::vector< std::string > *self,jint index,std::vector< std::string >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_string_Sg__doAdd__SWIG_1(std::vector< std::string > *self,jint index,std::vector< std::string >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1535,18 +1475,18 @@ SWIGINTERN std::vector< std::string >::value_type std_vector_Sl_std_string_Sg__d
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::string const &std_vector_Sl_std_string_Sg__doGet(std::vector< std::string > *self,jint index){
+SWIGINTERN std::vector< std::string >::value_type const &std_vector_Sl_std_string_Sg__doGet(std::vector< std::string > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::string >::value_type std_vector_Sl_std_string_Sg__doSet(std::vector< std::string > *self,jint index,std::vector< std::string >::value_type const &value){
+SWIGINTERN std::vector< std::string >::value_type std_vector_Sl_std_string_Sg__doSet(std::vector< std::string > *self,jint index,std::vector< std::string >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::string const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1560,12 +1500,7 @@ SWIGINTERN void std_vector_Sl_std_string_Sg__doRemoveRange(std::vector< std::str
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< char > *new_std_vector_Sl_char_Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< char >(static_cast<std::vector< char >::size_type>(count));
-      }
-SWIGINTERN std::vector< char > *new_std_vector_Sl_char_Sg___SWIG_3(jint count,char const &value){
+SWIGINTERN std::vector< char > *new_std_vector_Sl_char_Sg___SWIG_2(jint count,char const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< char >(static_cast<std::vector< char >::size_type>(count), value);
@@ -1573,13 +1508,13 @@ SWIGINTERN std::vector< char > *new_std_vector_Sl_char_Sg___SWIG_3(jint count,ch
 SWIGINTERN jint std_vector_Sl_char_Sg__doSize(std::vector< char > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_char_Sg__doAdd__SWIG_0(std::vector< char > *self,std::vector< char >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_char_Sg__doAdd__SWIG_0(std::vector< char > *self,std::vector< char >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_char_Sg__doAdd__SWIG_1(std::vector< char > *self,jint index,std::vector< char >::value_type const &value){
+SWIGINTERN void std_vector_Sl_char_Sg__doAdd__SWIG_1(std::vector< char > *self,jint index,std::vector< char >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1594,18 +1529,18 @@ SWIGINTERN std::vector< char >::value_type std_vector_Sl_char_Sg__doRemove(std::
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN char const &std_vector_Sl_char_Sg__doGet(std::vector< char > *self,jint index){
+SWIGINTERN std::vector< char >::value_type const &std_vector_Sl_char_Sg__doGet(std::vector< char > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< char >::value_type std_vector_Sl_char_Sg__doSet(std::vector< char > *self,jint index,std::vector< char >::value_type const &value){
+SWIGINTERN std::vector< char >::value_type std_vector_Sl_char_Sg__doSet(std::vector< char > *self,jint index,std::vector< char >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           char const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1619,12 +1554,7 @@ SWIGINTERN void std_vector_Sl_char_Sg__doRemoveRange(std::vector< char > *self,j
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_2(jint count){
-        if (count < 0)
-          throw std::out_of_range("vector count must be positive");
-        return new std::vector< std::shared_ptr< AdaptiveCards::Inline > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Inline > >::size_type>(count));
-      }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_3(jint count,std::shared_ptr< AdaptiveCards::Inline > const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > > *new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_2(jint count,std::shared_ptr< AdaptiveCards::Inline > const &value){
         if (count < 0)
           throw std::out_of_range("vector count must be positive");
         return new std::vector< std::shared_ptr< AdaptiveCards::Inline > >(static_cast<std::vector< std::shared_ptr< AdaptiveCards::Inline > >::size_type>(count), value);
@@ -1632,13 +1562,13 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > > *new_std_vect
 SWIGINTERN jint std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doSize(std::vector< std::shared_ptr< AdaptiveCards::Inline > > const *self){
         return SWIG_VectorSize(self->size());
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &value){
-        self->push_back(value);
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doAdd__SWIG_0(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &x){
+        self->push_back(x);
       }
-SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &value){
+SWIGINTERN void std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doAdd__SWIG_1(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &x){
         jint size = static_cast<jint>(self->size());
         if (0 <= index && index <= size) {
-          self->insert(self->begin() + index, value);
+          self->insert(self->begin() + index, x);
         } else {
           throw std::out_of_range("vector index out of range");
         }
@@ -1653,18 +1583,18 @@ SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type s
           throw std::out_of_range("vector index out of range");
         }
       }
-SWIGINTERN std::shared_ptr< AdaptiveCards::Inline > const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doGet(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size)
           return (*self)[index];
         else
           throw std::out_of_range("vector index out of range");
       }
-SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &value){
+SWIGINTERN std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doSet(std::vector< std::shared_ptr< AdaptiveCards::Inline > > *self,jint index,std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type const &val){
         jint size = static_cast<jint>(self->size());
         if (index >= 0 && index < size) {
           std::shared_ptr< AdaptiveCards::Inline > const old_value = (*self)[index];
-          (*self)[index] = value;
+          (*self)[index] = val;
           return old_value;
         }
         else
@@ -1939,29 +1869,6 @@ void SwigDirector_BaseElement::GetResourceInformation(std::vector< AdaptiveCards
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[5], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself, jclass jcls, bool swig_mem_own, bool weak_global) {
   static struct {
     const char *mname;
@@ -1982,9 +1889,6 @@ void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself
     },
     {
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
-    },
-    {
-      "PopulateKnownPropertiesSet", "()V", NULL 
     }
   };
   
@@ -1997,7 +1901,7 @@ void SwigDirector_BaseElement::swig_connect_director(JNIEnv *jenv, jobject jself
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 6; ++i) {
+    for (int i = 0; i < 5; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2040,7 +1944,7 @@ std::string SwigDirector_BaseCardElement::GetId() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[6], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[5], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2077,7 +1981,7 @@ void SwigDirector_BaseCardElement::SetId(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[7], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[6], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2101,7 +2005,7 @@ std::string SwigDirector_BaseCardElement::Serialize() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[8], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[7], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2137,7 +2041,7 @@ Json::Value SwigDirector_BaseCardElement::SerializeToJsonValue() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[9], swigjobj);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[8], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2169,7 +2073,7 @@ void SwigDirector_BaseCardElement::GetResourceInformation(std::vector< AdaptiveC
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresourceUris = (std::vector< AdaptiveCards::RemoteResourceInformation > *) &resourceUris; 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[10], swigjobj, jresourceUris);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[9], swigjobj, jresourceUris);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2181,29 +2085,6 @@ void SwigDirector_BaseCardElement::GetResourceInformation(std::vector< AdaptiveC
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseCardElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseCardElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[11], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseCardElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 bool SwigDirector_BaseCardElement::GetSeparator() const {
   bool c_result = SwigValueInit< bool >() ;
   jboolean jresult = 0 ;
@@ -2211,12 +2092,12 @@ bool SwigDirector_BaseCardElement::GetSeparator() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[6]) {
+  if (!swig_override[5]) {
     return AdaptiveCards::BaseCardElement::GetSeparator();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[12], swigjobj);
+    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[10], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2236,14 +2117,14 @@ void SwigDirector_BaseCardElement::SetSeparator(bool const value) {
   jobject swigjobj = (jobject) NULL ;
   jboolean jvalue  ;
   
-  if (!swig_override[7]) {
+  if (!swig_override[6]) {
     AdaptiveCards::BaseCardElement::SetSeparator(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jboolean) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[13], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[11], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2262,12 +2143,12 @@ AdaptiveCards::Spacing SwigDirector_BaseCardElement::GetSpacing() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[8]) {
+  if (!swig_override[7]) {
     return AdaptiveCards::BaseCardElement::GetSpacing();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[14], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[12], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2287,14 +2168,14 @@ void SwigDirector_BaseCardElement::SetSpacing(AdaptiveCards::Spacing const value
   jobject swigjobj = (jobject) NULL ;
   jint jvalue  ;
   
-  if (!swig_override[9]) {
+  if (!swig_override[8]) {
     AdaptiveCards::BaseCardElement::SetSpacing(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jint) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[15], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[13], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2313,12 +2194,12 @@ bool SwigDirector_BaseCardElement::GetIsVisible() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[10]) {
+  if (!swig_override[9]) {
     return AdaptiveCards::BaseCardElement::GetIsVisible();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[16], swigjobj);
+    jresult = (jboolean) jenv->CallStaticBooleanMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[14], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2338,14 +2219,14 @@ void SwigDirector_BaseCardElement::SetIsVisible(bool const value) {
   jobject swigjobj = (jobject) NULL ;
   jboolean jvalue  ;
   
-  if (!swig_override[11]) {
+  if (!swig_override[10]) {
     AdaptiveCards::BaseCardElement::SetIsVisible(value);
     return;
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = (jboolean) value;
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[17], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[15], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2357,19 +2238,19 @@ void SwigDirector_BaseCardElement::SetIsVisible(bool const value) {
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-AdaptiveCards::CardElementType const SwigDirector_BaseCardElement::GetElementType() const {
+AdaptiveCards::CardElementType SwigDirector_BaseCardElement::GetElementType() const {
   AdaptiveCards::CardElementType c_result = SwigValueInit< AdaptiveCards::CardElementType >() ;
   jint jresult = 0 ;
   JNIEnvWrapper swigjnienv(this) ;
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[12]) {
+  if (!swig_override[11]) {
     return AdaptiveCards::BaseCardElement::GetElementType();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[18], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[16], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2405,9 +2286,6 @@ void SwigDirector_BaseCardElement::swig_connect_director(JNIEnv *jenv, jobject j
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
     },
     {
-      "PopulateKnownPropertiesSet", "()V", NULL 
-    },
-    {
       "GetSeparator", "()Z", NULL 
     },
     {
@@ -2439,7 +2317,7 @@ void SwigDirector_BaseCardElement::swig_connect_director(JNIEnv *jenv, jobject j
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 13; ++i) {
+    for (int i = 0; i < 12; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2484,7 +2362,7 @@ std::string SwigDirector_BaseActionElement::GetId() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[19], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[17], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2521,7 +2399,7 @@ void SwigDirector_BaseActionElement::SetId(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[18], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2545,7 +2423,7 @@ std::string SwigDirector_BaseActionElement::Serialize() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[19], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2581,7 +2459,7 @@ Json::Value SwigDirector_BaseActionElement::SerializeToJsonValue() const {
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[20], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2613,7 +2491,7 @@ void SwigDirector_BaseActionElement::GetResourceInformation(std::vector< Adaptiv
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresourceUris = (std::vector< AdaptiveCards::RemoteResourceInformation > *) &resourceUris; 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj, jresourceUris);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[21], swigjobj, jresourceUris);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2625,29 +2503,6 @@ void SwigDirector_BaseActionElement::GetResourceInformation(std::vector< Adaptiv
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-void SwigDirector_BaseActionElement::PopulateKnownPropertiesSet() {
-  JNIEnvWrapper swigjnienv(this) ;
-  JNIEnv * jenv = swigjnienv.getJNIEnv() ;
-  jobject swigjobj = (jobject) NULL ;
-  
-  if (!swig_override[5]) {
-    AdaptiveCards::BaseActionElement::PopulateKnownPropertiesSet();
-    return;
-  }
-  swigjobj = swig_get_self(jenv);
-  if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj);
-    jthrowable swigerror = jenv->ExceptionOccurred();
-    if (swigerror) {
-      Swig::DirectorException::raise(jenv, swigerror);
-    }
-    
-  } else {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseActionElement::PopulateKnownPropertiesSet ");
-  }
-  if (swigjobj) jenv->DeleteLocalRef(swigjobj);
-}
-
 std::string SwigDirector_BaseActionElement::GetTitle() const {
   std::string c_result ;
   jstring jresult = 0 ;
@@ -2655,12 +2510,12 @@ std::string SwigDirector_BaseActionElement::GetTitle() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[6]) {
+  if (!swig_override[5]) {
     return AdaptiveCards::BaseActionElement::GetTitle();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[25], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[22], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2689,7 +2544,7 @@ void SwigDirector_BaseActionElement::SetTitle(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[7]) {
+  if (!swig_override[6]) {
     AdaptiveCards::BaseActionElement::SetTitle(value);
     return;
   }
@@ -2697,7 +2552,7 @@ void SwigDirector_BaseActionElement::SetTitle(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[26], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[23], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2716,12 +2571,12 @@ std::string SwigDirector_BaseActionElement::GetIconUrl() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[8]) {
+  if (!swig_override[7]) {
     return AdaptiveCards::BaseActionElement::GetIconUrl();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[27], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[24], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2750,7 +2605,7 @@ void SwigDirector_BaseActionElement::SetIconUrl(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[9]) {
+  if (!swig_override[8]) {
     AdaptiveCards::BaseActionElement::SetIconUrl(value);
     return;
   }
@@ -2758,7 +2613,7 @@ void SwigDirector_BaseActionElement::SetIconUrl(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[28], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[25], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2777,12 +2632,12 @@ std::string SwigDirector_BaseActionElement::GetStyle() const {
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[10]) {
+  if (!swig_override[9]) {
     return AdaptiveCards::BaseActionElement::GetStyle();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[29], swigjobj);
+    jresult = (jstring) jenv->CallStaticObjectMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[26], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2811,7 +2666,7 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   jobject swigjobj = (jobject) NULL ;
   jstring jvalue = 0 ;
   
-  if (!swig_override[11]) {
+  if (!swig_override[10]) {
     AdaptiveCards::BaseActionElement::SetStyle(value);
     return;
   }
@@ -2819,7 +2674,7 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[30], swigjobj, jvalue);
+    jenv->CallStaticVoidMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[27], swigjobj, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2831,19 +2686,19 @@ void SwigDirector_BaseActionElement::SetStyle(std::string const &value) {
   if (swigjobj) jenv->DeleteLocalRef(swigjobj);
 }
 
-AdaptiveCards::ActionType const SwigDirector_BaseActionElement::GetElementType() const {
+AdaptiveCards::ActionType SwigDirector_BaseActionElement::GetElementType() const {
   AdaptiveCards::ActionType c_result = SwigValueInit< AdaptiveCards::ActionType >() ;
   jint jresult = 0 ;
   JNIEnvWrapper swigjnienv(this) ;
   JNIEnv * jenv = swigjnienv.getJNIEnv() ;
   jobject swigjobj = (jobject) NULL ;
   
-  if (!swig_override[12]) {
+  if (!swig_override[11]) {
     return AdaptiveCards::BaseActionElement::GetElementType();
   }
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
-    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[31], swigjobj);
+    jresult = (jint) jenv->CallStaticIntMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[28], swigjobj);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2879,9 +2734,6 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       "GetResourceInformation", "(Lio/adaptivecards/objectmodel/RemoteResourceInformationVector;)V", NULL 
     },
     {
-      "PopulateKnownPropertiesSet", "()V", NULL 
-    },
-    {
       "GetTitle", "()Ljava/lang/String;", NULL 
     },
     {
@@ -2913,7 +2765,7 @@ void SwigDirector_BaseActionElement::swig_connect_director(JNIEnv *jenv, jobject
       baseclass = (jclass) jenv->NewGlobalRef(baseclass);
     }
     bool derived = (jenv->IsSameObject(baseclass, jcls) ? false : true);
-    for (int i = 0; i < 13; ++i) {
+    for (int i = 0; i < 12; ++i) {
       if (!methods[i].base_methid) {
         methods[i].base_methid = jenv->GetMethodID(baseclass, methods[i].mname, methods[i].mdesc);
         if (!methods[i].base_methid) return;
@@ -2950,7 +2802,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
     jcontext = 0;
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[32], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[29], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -2991,7 +2843,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[33], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[30], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -3068,7 +2920,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
     jcontext = 0;
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     *(Json::Value **)&jvalue = (Json::Value *) &value; 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[34], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[31], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -3109,7 +2961,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
     *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
     jvalue = jenv->NewStringUTF((&value)->c_str());
     Swig::LocalRefGuard value_refguard(jenv, jvalue); 
-    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[35], swigjobj, jcontext, jvalue);
+    jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[32], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
@@ -3571,26 +3423,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1RemoteResourceInformationVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< AdaptiveCards::RemoteResourceInformation > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< AdaptiveCards::RemoteResourceInformation > *)new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1RemoteResourceInformationVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1RemoteResourceInformationVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   AdaptiveCards::RemoteResourceInformation *arg2 = 0 ;
@@ -3607,7 +3440,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
     return 0;
   } 
   try {
-    result = (std::vector< AdaptiveCards::RemoteResourceInformation > *)new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_3(arg1,(AdaptiveCards::RemoteResourceInformation const &)*arg2);
+    result = (std::vector< AdaptiveCards::RemoteResourceInformation > *)new_std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg___SWIG_2(arg1,(AdaptiveCards::RemoteResourceInformation const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -3708,7 +3541,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< AdaptiveCards::RemoteResourceInformation > *arg1 = (std::vector< AdaptiveCards::RemoteResourceInformation > *) 0 ;
   jint arg2 ;
-  AdaptiveCards::RemoteResourceInformation *result = 0 ;
+  std::vector< AdaptiveCards::RemoteResourceInformation >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -3716,7 +3549,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< AdaptiveCards::RemoteResourceInformation > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (AdaptiveCards::RemoteResourceInformation *) &std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doGet(arg1,arg2);
+    result = (std::vector< AdaptiveCards::RemoteResourceInformation >::value_type *) &std_vector_Sl_AdaptiveCards_RemoteResourceInformation_Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -3876,26 +3709,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardParseWarningVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardParseWarningVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1AdaptiveCardParseWarningVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > *arg2 = 0 ;
@@ -3908,7 +3722,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -4001,7 +3815,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -4009,12 +3823,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_AdaptiveCardParseWarning_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -4165,26 +3979,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > *arg2 = 0 ;
@@ -4197,7 +3992,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::BaseCardElement > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::BaseCardElement > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -4290,7 +4085,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -4298,12 +4093,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::BaseCardElement > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseCardElement_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::BaseCardElement > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -4454,26 +4249,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Image > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Image > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ImageVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::Image > *arg2 = 0 ;
@@ -4486,7 +4262,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::Image > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::Image > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::Image > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -4579,7 +4355,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Image > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Image > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::Image > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -4587,12 +4363,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Image > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::Image > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Image_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::Image > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::Image >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::Image > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -4743,26 +4519,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Fact > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Fact > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1FactVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::Fact > *arg2 = 0 ;
@@ -4775,7 +4532,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::Fact > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::Fact > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::Fact > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -4868,7 +4625,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Fact > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Fact > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::Fact > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -4876,12 +4633,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Fact > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::Fact > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Fact_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::Fact > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::Fact >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::Fact > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -5032,26 +4789,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Column > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Column > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ColumnVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::Column > *arg2 = 0 ;
@@ -5064,7 +4802,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::Column > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::Column > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::Column > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -5157,7 +4895,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Column > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Column > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::Column > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -5165,12 +4903,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Column > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::Column > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Column_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::Column > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::Column >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::Column > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -5321,26 +5059,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ChoiceInputVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::ChoiceInput > *arg2 = 0 ;
@@ -5353,7 +5072,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ChoiceInput > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::ChoiceInput > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::ChoiceInput > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -5446,7 +5165,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::ChoiceInput > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -5454,12 +5173,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::ChoiceInput > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ChoiceInput_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::ChoiceInput > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ChoiceInput >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::ChoiceInput > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -5610,26 +5329,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1MediaSourceVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1MediaSourceVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1MediaSourceVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::MediaSource > *arg2 = 0 ;
@@ -5642,7 +5342,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::MediaSource > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::MediaSource > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::MediaSource > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -5735,7 +5435,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::MediaSource > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -5743,12 +5443,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::MediaSource > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_MediaSource_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::MediaSource > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::MediaSource >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::MediaSource > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -5899,26 +5599,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseActionElementVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > *arg2 = 0 ;
@@ -5931,7 +5612,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::BaseActionElement > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::BaseActionElement > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -6024,7 +5705,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::BaseActionElement > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -6032,12 +5713,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::BaseActionElement > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_BaseActionElement_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::BaseActionElement > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -6188,26 +5869,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedTokenVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedTokenVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1DateTimePreparsedTokenVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > *arg2 = 0 ;
@@ -6220,7 +5882,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -6313,7 +5975,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -6321,12 +5983,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_DateTimePreparsedToken_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::DateTimePreparsedToken >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::DateTimePreparsedToken > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -6477,26 +6139,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleVisibilityTargetVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleVisibilityTargetVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ToggleVisibilityTargetVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > *arg2 = 0 ;
@@ -6509,7 +6152,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -6602,7 +6245,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -6610,12 +6253,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_ToggleVisibilityTarget_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::ToggleVisibilityTarget > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -6766,26 +6409,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StringVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::string > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::string > *)new_std_vector_Sl_std_string_Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::string > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StringVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jstring jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1StringVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jstring jarg2) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::string *arg2 = 0 ;
@@ -6804,7 +6428,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg2 = &arg2_str;
   jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
   try {
-    result = (std::vector< std::string > *)new_std_vector_Sl_std_string_Sg___SWIG_3(arg1,(std::string const &)*arg2);
+    result = (std::vector< std::string > *)new_std_vector_Sl_std_string_Sg___SWIG_2(arg1,(std::string const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -6909,7 +6533,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   jstring jresult = 0 ;
   std::vector< std::string > *arg1 = (std::vector< std::string > *) 0 ;
   jint arg2 ;
-  std::string *result = 0 ;
+  std::vector< std::string >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -6917,7 +6541,7 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   arg1 = *(std::vector< std::string > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::string *) &std_vector_Sl_std_string_Sg__doGet(arg1,arg2);
+    result = (std::vector< std::string >::value_type *) &std_vector_Sl_std_string_Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -7079,26 +6703,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CharVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< char > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< char > *)new_std_vector_Sl_char_Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< char > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CharVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jchar jarg2) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CharVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jchar jarg2) {
   jlong jresult = 0 ;
   jint arg1 ;
   char *arg2 = 0 ;
@@ -7111,7 +6716,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   temp2 = (char)jarg2; 
   arg2 = &temp2; 
   try {
-    result = (std::vector< char > *)new_std_vector_Sl_char_Sg___SWIG_3(arg1,(char const &)*arg2);
+    result = (std::vector< char > *)new_std_vector_Sl_char_Sg___SWIG_2(arg1,(char const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -7204,7 +6809,7 @@ SWIGEXPORT jchar JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jchar jresult = 0 ;
   std::vector< char > *arg1 = (std::vector< char > *) 0 ;
   jint arg2 ;
-  char *result = 0 ;
+  std::vector< char >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -7212,7 +6817,7 @@ SWIGEXPORT jchar JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< char > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (char *) &std_vector_Sl_char_Sg__doGet(arg1,arg2);
+    result = (std::vector< char >::value_type *) &std_vector_Sl_char_Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -7368,26 +6973,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InlineVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1) {
-  jlong jresult = 0 ;
-  jint arg1 ;
-  std::vector< std::shared_ptr< AdaptiveCards::Inline > > *result = 0 ;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = jarg1; 
-  try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_2(arg1);
-  } catch(std::out_of_range &_e) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
-    return 0;
-  }
-  *(std::vector< std::shared_ptr< AdaptiveCards::Inline > > **)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InlineVector_1_1SWIG_13(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1InlineVector_1_1SWIG_12(JNIEnv *jenv, jclass jcls, jint jarg1, jlong jarg2, jobject jarg2_) {
   jlong jresult = 0 ;
   jint arg1 ;
   std::shared_ptr< AdaptiveCards::Inline > *arg2 = 0 ;
@@ -7400,7 +6986,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = jarg1; 
   arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::Inline > **)&jarg2 : &tempnull2; 
   try {
-    result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_3(arg1,(std::shared_ptr< AdaptiveCards::Inline > const &)*arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *)new_std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg___SWIG_2(arg1,(std::shared_ptr< AdaptiveCards::Inline > const &)*arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
@@ -7493,7 +7079,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::Inline > > *arg1 = (std::vector< std::shared_ptr< AdaptiveCards::Inline > > *) 0 ;
   jint arg2 ;
-  std::shared_ptr< AdaptiveCards::Inline > *result = 0 ;
+  std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -7501,12 +7087,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   arg1 = *(std::vector< std::shared_ptr< AdaptiveCards::Inline > > **)&jarg1; 
   arg2 = jarg2; 
   try {
-    result = (std::shared_ptr< AdaptiveCards::Inline > *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doGet(arg1,arg2);
+    result = (std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type *) &std_vector_Sl_std_shared_ptr_Sl_AdaptiveCards_Inline_Sg__Sg__doGet(arg1,arg2);
   } catch(std::out_of_range &_e) {
     SWIG_JavaThrowException(jenv, SWIG_JavaIndexOutOfBoundsException, (&_e)->what());
     return 0;
   }
-  *(std::shared_ptr< AdaptiveCards::Inline > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::Inline >(*result) : 0; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type **)&jresult = *result ? new std::vector< std::shared_ptr< AdaptiveCards::Inline > >::value_type(*result) : 0; 
   return jresult;
 }
 
@@ -9422,7 +9008,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetAdditionalProperties_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
@@ -9436,10 +9022,10 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value && reference is null");
     return ;
   } 
-  (arg1)->SetAdditionalProperties((Json::Value const &)*arg2);
+  (arg1)->SetAdditionalProperties((Json::Value &&)*arg2);
 }
 
 
@@ -9465,7 +9051,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > result;
+  std::shared_ptr< AdaptiveCards::BaseElement > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -9473,8 +9059,8 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::BaseElement const *)arg1)->GetFallbackContent();
-  *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseElement >(result) : 0; 
+  result = (std::shared_ptr< AdaptiveCards::BaseElement > *) &((AdaptiveCards::BaseElement const *)arg1)->GetFallbackContent();
+  *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::BaseElement >(*result) : 0; 
   return jresult;
 }
 
@@ -9558,20 +9144,20 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1GetRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1GetRequirements_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
-  SwigValueWrapper< std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > > result;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  std::unordered_map< std::string,AdaptiveCards::SemanticVersion > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::BaseElement const *)arg1)->GetRequirements();
-  *(std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > **)&jresult = new std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > >((const std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > &)result); 
+  result = (std::unordered_map< std::string,AdaptiveCards::SemanticVersion > *) &(arg1)->GetRequirements();
+  *(std::unordered_map< std::string,AdaptiveCards::SemanticVersion > **)&jresult = result; 
   return jresult;
 }
 
@@ -9615,38 +9201,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     return ;
   } 
   (arg1)->AdaptiveCards::BaseElement::GetResourceInformation(*arg2);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
-  SwigDirector_BaseElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1PopulateKnownPropertiesSetSwigExplicitBaseElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
-  SwigDirector_BaseElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
 }
 
 
@@ -10121,38 +9675,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   } 
   arg3 = jarg3 ? *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jarg3 : &tempnull3; 
   AdaptiveCards::BaseCardElement::ParseJsonObject(*arg1,(Json::Value const &)*arg2,*arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
-  SwigDirector_BaseCardElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseCardElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseCardElement_1PopulateKnownPropertiesSetSwigExplicitBaseCardElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseCardElement *arg1 = (AdaptiveCards::BaseCardElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseCardElement > *smartarg1 = 0 ;
-  SwigDirector_BaseCardElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseCardElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
 }
 
 
@@ -10681,38 +10203,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   } 
   arg3 = jarg3 ? *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jarg3 : &tempnull3; 
   AdaptiveCards::BaseActionElement::ParseJsonObject(*arg1,(Json::Value const &)*arg2,*arg3);
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1PopulateKnownPropertiesSet(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
-  SwigDirector_BaseActionElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseActionElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSet();
-}
-
-
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseActionElement_1PopulateKnownPropertiesSetSwigExplicitBaseActionElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  AdaptiveCards::BaseActionElement *arg1 = (AdaptiveCards::BaseActionElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseActionElement > *smartarg1 = 0 ;
-  SwigDirector_BaseActionElement *darg = 0;
-  
-  (void)jenv;
-  (void)jcls;
-  (void)jarg1_;
-  
-  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseActionElement > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseActionElement *)(smartarg1 ? smartarg1->get() : 0); 
-  darg = dynamic_cast<SwigDirector_BaseActionElement *>(arg1);
-  (darg)->PopulateKnownPropertiesSetSwigPublic();
 }
 
 
@@ -12413,6 +11903,50 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   result = (char *)(char *)AdaptiveCards::c_adaptiveCardsFeature;
   if (result) jresult = jenv->NewStringUTF((const char *)result);
   return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveKeyHash(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::CaseInsensitiveKeyHash *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::CaseInsensitiveKeyHash *)new AdaptiveCards::CaseInsensitiveKeyHash();
+  *(AdaptiveCards::CaseInsensitiveKeyHash **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveKeyHash(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::CaseInsensitiveKeyHash *arg1 = (AdaptiveCards::CaseInsensitiveKeyHash *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::CaseInsensitiveKeyHash **)&jarg1; 
+  delete arg1;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1CaseInsensitiveKeyEquals(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  AdaptiveCards::CaseInsensitiveKeyEquals *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (AdaptiveCards::CaseInsensitiveKeyEquals *)new AdaptiveCards::CaseInsensitiveKeyEquals();
+  *(AdaptiveCards::CaseInsensitiveKeyEquals **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1CaseInsensitiveKeyEquals(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  AdaptiveCards::CaseInsensitiveKeyEquals *arg1 = (AdaptiveCards::CaseInsensitiveKeyEquals *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(AdaptiveCards::CaseInsensitiveKeyEquals **)&jarg1; 
+  delete arg1;
 }
 
 
@@ -27297,7 +26831,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Inline_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_Inline_1SetAdditionalProperties_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::Inline *arg1 = (AdaptiveCards::Inline *) 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::Inline > *smartarg1 = 0 ;
@@ -27311,10 +26845,10 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::Inline *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value && reference is null");
     return ;
   } 
-  (arg1)->SetAdditionalProperties((Json::Value const &)*arg2);
+  (arg1)->SetAdditionalProperties((Json::Value &&)*arg2);
 }
 
 
@@ -28942,7 +28476,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   static struct {
     const char *method;
     const char *signature;
-  } methods[36] = {
+  } methods[33] = {
     {
       "SwigDirector_BaseElement_GetId", "(Lio/adaptivecards/objectmodel/BaseElement;)Ljava/lang/String;" 
     },
@@ -28959,9 +28493,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
       "SwigDirector_BaseElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseElement;J)V" 
     },
     {
-      "SwigDirector_BaseElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseElement;)V" 
-    },
-    {
       "SwigDirector_BaseCardElement_GetId", "(Lio/adaptivecards/objectmodel/BaseCardElement;)Ljava/lang/String;" 
     },
     {
@@ -28975,9 +28506,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     },
     {
       "SwigDirector_BaseCardElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseCardElement;J)V" 
-    },
-    {
-      "SwigDirector_BaseCardElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseCardElement;)V" 
     },
     {
       "SwigDirector_BaseCardElement_GetSeparator", "(Lio/adaptivecards/objectmodel/BaseCardElement;)Z" 
@@ -29014,9 +28542,6 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     },
     {
       "SwigDirector_BaseActionElement_GetResourceInformation", "(Lio/adaptivecards/objectmodel/BaseActionElement;J)V" 
-    },
-    {
-      "SwigDirector_BaseActionElement_PopulateKnownPropertiesSet", "(Lio/adaptivecards/objectmodel/BaseActionElement;)V" 
     },
     {
       "SwigDirector_BaseActionElement_GetTitle", "(Lio/adaptivecards/objectmodel/BaseActionElement;)Ljava/lang/String;" 
