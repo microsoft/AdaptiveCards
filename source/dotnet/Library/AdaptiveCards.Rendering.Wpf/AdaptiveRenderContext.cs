@@ -534,7 +534,10 @@ namespace AdaptiveCards.Rendering.Wpf
             while (!submitActionCardId.Equals(new AdaptiveInternalID()))
             {
                 // Copy the inputs into the result
-                inputList.InsertRange(0, InputsInCard[submitActionCardId]);
+                if (InputsInCard.ContainsKey(submitActionCardId))
+                {
+                    inputList.InsertRange(0, InputsInCard[submitActionCardId]);
+                }
 
                 // Move to the parent card
                 submitActionCardId = ParentCards[submitActionCardId];
