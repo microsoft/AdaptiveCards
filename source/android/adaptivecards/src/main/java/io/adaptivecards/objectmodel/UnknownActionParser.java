@@ -27,6 +27,7 @@ public class UnknownActionParser extends ActionElementParser {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

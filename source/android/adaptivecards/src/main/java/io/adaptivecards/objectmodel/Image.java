@@ -27,6 +27,7 @@ public class Image extends BaseCardElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

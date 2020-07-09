@@ -27,6 +27,7 @@ public class Media extends BaseCardElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

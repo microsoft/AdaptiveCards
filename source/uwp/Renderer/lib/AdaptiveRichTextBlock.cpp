@@ -72,13 +72,13 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::RichTextBlock> richTextBlock =
             std::make_shared<AdaptiveSharedNamespace::RichTextBlock>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(richTextBlock)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*richTextBlock));
 
         richTextBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
         RETURN_IF_FAILED(GenerateSharedInlines(m_inlines.Get(), richTextBlock->GetInlines()));
 
-        sharedRichTextBlock = richTextBlock;
+        sharedRichTextBlock = std::move(richTextBlock);
         return S_OK;
     }
     CATCH_RETURN;

@@ -25,6 +25,7 @@ public class MediaSource {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

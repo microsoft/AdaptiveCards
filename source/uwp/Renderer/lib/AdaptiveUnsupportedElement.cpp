@@ -49,9 +49,9 @@ namespace AdaptiveNamespace
             std::make_shared<AdaptiveSharedNamespace::UnknownElement>();
 
         unknownElement->SetElementTypeString(m_actualType);
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(unknownElement)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*unknownElement));
 
-        sharedUnknown = unknownElement;
+        sharedUnknown = std::move(unknownElement);
         return S_OK;
     }
     CATCH_RETURN;
