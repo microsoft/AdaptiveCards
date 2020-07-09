@@ -78,8 +78,7 @@
 						"title": "OK",
 						"data": {
 							"FoodChoice": "Steak"
-						},
-						"associatedInputs": ["SteakTemp", "SteakOther"]
+						}
 					}
 				]
 			}
@@ -109,7 +108,6 @@
 					{
 						"type": "Action.Submit",
 						"title": "OK",
-						"associatedInputs": ["ChickenAllergy", "ChickenOther"],
 						"data": {
 							"FoodChoice": "Chicken"
 						}
@@ -142,7 +140,6 @@
 					{
 						"type": "Action.Submit",
 						"title": "OK",
-						"associatedInputs": ["Vegetarian", "VegOther"],
 						"data": {
 							"FoodChoice": "Vegetarian"
 						}
