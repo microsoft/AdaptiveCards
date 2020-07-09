@@ -1,11 +1,16 @@
 """Module for extracting design element's properties"""
 
+import math
+from io import BytesIO
+import base64
+from typing import Tuple, Dict
+
 from pytesseract import pytesseract
 from PIL import Image
 import cv2
 import numpy as np
-import math
 
+from mystique import default_host_configs
 
 class ExtractProperties:
     """
@@ -63,41 +68,6 @@ class ExtractProperties:
             index = distances.index(min(distances))
             style = found_colors[index]
         return style
-
-    def get_image_size(self, image=None, image_cropped_size=None):
-        """[get the image size with respect to the card size]
-
-        Keyword Arguments:
-            image {[PIL image]} -- [input PIL image] (default: {None})
-            image_cropped_size {[tuple]} -- [tuple of cropped image 
-            width and height] (default: {None})
-
-        Returns:
-            [list] -- [list of sizes withrespect to columnset 
-            and inidiuval element]
-        """
-        sizes = ["Auto", "Auto"]
-        image_width, image_height = image.size
-        area_proportionate = (
-            (image_cropped_size[0]*image_cropped_size[1]) /
-            (image_width*image_height)
-        )*100
-        if area_proportionate >= 0 and area_proportionate <= 1:
-            sizes[0] = "Auto"
-        elif area_proportionate > 1 and area_proportionate <= 3:
-            sizes[0] = "Small"
-        elif area_proportionate > 3 and area_proportionate <= 5:
-            sizes[0] = "Medium"
-        elif area_proportionate > 5:
-            sizes[0] = "Large"
-
-        if area_proportionate >= 0 and area_proportionate < 4:
-            sizes[1] = "Small"
-        elif area_proportionate >= 4 and area_proportionate <= 9:
-            sizes[1] = "Medium"
-        elif area_proportionate > .0:
-            sizes[1] = "Auto"
-        return sizes
 
     def get_text(self, image=None, coords=None):
         """
@@ -285,3 +255,97 @@ class ExtractProperties:
                 if distance < 150:
                     color = "Default"
         return color
+
+
+class CollectProperties(ExtractProperties):
+    """
+    Helps to collect the properties for respective design object.
+    """
+    def __init__(self, image):
+        self.pil_imgae = image
+
+    def actionset(self, coords: Tuple) -> Dict:
+        """
+        Returns the actionset properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(image=self.pil_imgae,
+                                                           xmin=coords[0],
+                                                           xmax=coords[2]),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+                "style": self.get_actionset_type(image=self.pil_imgae,
+                                                 coords=coords)
+        }
+
+    def textbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the textbox properties of the extracted design object
+        @return: property object
+        """
+        size, weight = self.get_size_and_weight(image=self.pil_imgae,
+                                                coords=coords)
+        return {
+                "horizontal_alignment": self.get_alignment(image=self.pil_imgae,
+                                                           xmin=coords[0],
+                                                           xmax=coords[2]),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+                "size": size,
+                "weight": weight,
+                "color": self.get_colors(image=self.pil_imgae, coords=coords)
+
+        }
+
+    def radiobutton(self, coords: Tuple) -> Dict:
+        """
+        Returns the radiobutton properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(image=self.pil_imgae,
+                                                           xmin=coords[0],
+                                                           xmax=coords[2]),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def checkbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the checkbox properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(image=self.pil_imgae,
+                                                           xmin=coords[0],
+                                                           xmax=coords[2]),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def image(self, coords: Tuple) -> Dict:
+        """
+        Returns the image properties of the extracted design object
+        @return: property object
+        """
+        cropped = self.pil_imgae.crop(coords)
+        buff = BytesIO()
+        cropped.save(buff, format="PNG")
+        base64_string = base64.b64encode(
+                buff.getvalue()).decode()
+        data = f'data:image/png;base64,{base64_string}'
+
+        img_width, img_height = cropped.size
+        # set the closest size label for the image object's width and
+        # height
+        size = "Auto"
+        keys = list(default_host_configs.IMAGE_SIZE.keys())
+        width_key = min(keys, key=lambda x: abs(x - img_width))
+        height_key = min(keys, key=lambda x: abs(x - img_height))
+        if width_key == height_key:
+            size = default_host_configs.IMAGE_SIZE[width_key]
+        size = size
+        return {
+                "horizontal_alignment": self.get_alignment(image=self.pil_imgae,
+                                                           xmin=coords[0],
+                                                           xmax=coords[2]),
+                "data": data,
+                "size": size
+        }

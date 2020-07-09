@@ -36,3 +36,15 @@ ID_TO_LABEL = {
     5: "image",
     6: "rating"
 }
+
+# image detection swtiching paramater
+# On True [ uses custom image pipeline for image objects]
+# On False [ uses RCNN model image obejcts ]
+# Default is False
+USE_CUSTOM_IMAGE_PIPELINE = False
+
+# RCNN model confidence score cutoff
+MODEL_CONFIDENCE = 90.0
+
+# Extra textbox padding - 5px
+TEXTBOX_PADDING = 5

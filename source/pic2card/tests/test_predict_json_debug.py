@@ -25,7 +25,7 @@ class PredictJsonDebugTestAPI(BaseAPITest):
         """ checks if the response is not empty """
         self.assertEqual(bool(self.output), True)
         self.assertEqual(len(self.output), 3)
-        self.assertEqual(len(self.output["card_json"]["body"]), 13)
+        self.assertEqual(len(self.output["card_json"]["body"]), 9)
         self.assertIsNone(self.output["error"],
                           msg="Key 'Error' is not 'null'")
 

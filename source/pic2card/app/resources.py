@@ -139,7 +139,7 @@ class DebugEndpoint(PredictJson):
         imgdata = base64.b64decode(bs64_img)
         image = Image.open(io.BytesIO(imgdata))
         debug = Debug(current_app.od_model)
-        images = debug.main(image=image, card_format=card_format)
+        images = debug.main(pil_image=image, card_format=card_format)
         return images
 
 
