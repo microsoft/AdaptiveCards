@@ -258,6 +258,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     tb.Text = input.GetNonInteractiveValue() ?? "*[Input]*";
                     tb.Color = AdaptiveTextColor.Accent;
                     tb.Wrap = true;
+                    InputValues.Add(input.Id, null);
                     Warnings.Add(new AdaptiveWarning(-1, $"Rendering non-interactive input element '{element.Type}'"));
                     frameworkElementOut = Render(tb);
                 }

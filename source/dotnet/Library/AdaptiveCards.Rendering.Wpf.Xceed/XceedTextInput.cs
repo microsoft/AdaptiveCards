@@ -51,6 +51,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedTextInputValue(input, null));
+
                 return context.Render(textBlock);
             }
         }
