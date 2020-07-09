@@ -13,6 +13,8 @@ export class AdaptiveCardsMain {
     public readonly _context: vscode.ExtensionContext;
     public WebViews: WebViews;
 
+    public templates =  [];
+
     constructor(private context: vscode.ExtensionContext,extensionPath: string) {
         this._context = context;
         this.context = context;
@@ -55,7 +57,7 @@ export class AdaptiveCardsMain {
             }
         }
 
-        const searchTerm: string = "http://adaptivecards.io/schemas/adaptive-card.json";
+        const searchTerm: string = "adaptivecards.io/schemas/adaptive-card.json";
         if (text != null && text !== "" && text.includes(searchTerm)) {
             const column : vscode.ViewColumn = vscode.ViewColumn.Beside;
             if(this.panel) {
@@ -135,6 +137,33 @@ export class AdaptiveCardsMain {
 		}
     }
 
+    public async OpenCardCMS(id: string) {
+
+        // Lets get the template
+        this.templates.forEach(element => {
+            if(element._id == id){
+                var path = vscode.workspace.rootPath + "_" + id + ".json";
+                var pathData = vscode.workspace.rootPath + "_" + id + ".data.json";
+                if (fs.existsSync(path)) {
+                    vscode.workspace.openTextDocument(path).then(async card => {
+                        vscode.window.showTextDocument(card, vscode.ViewColumn.One).then(async e => {
+                            await this.OpenOrUpdatePanel("","");
+                        });
+                      });
+                } else {
+                    fs.writeFile(path, JSON.stringify(element.instances[0].json),err => {
+                        fs.writeFile(pathData, JSON.stringify(element.instances[0].data),err => {
+                            vscode.workspace.openTextDocument(path).then(card => {
+                                vscode.window.showTextDocument(card, vscode.ViewColumn.One).then(async e => {
+                                    await this.OpenOrUpdatePanel("","");
+                                });
+                            });
+                        });
+                    });
+                }
+            }
+        });
+    }
 
     private _disposables: vscode.Disposable[] = [];
 	// tslint:disable-next-line: typedef

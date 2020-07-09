@@ -11,7 +11,7 @@
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"outFiles": [
-				"${workspaceFolder}/out/src/**/*.js"
+				"${workspaceFolder}/out/**/*.js"
 			]
 		},
 		{
@@ -25,8 +25,7 @@
 			],
 			"outFiles": [
 				"${workspaceFolder}/out/test/**/*.js"
-			],
-			"preLaunchTask": "npm watch"
+			]
 		}
 	]
 }

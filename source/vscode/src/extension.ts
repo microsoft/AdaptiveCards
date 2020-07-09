@@ -1,8 +1,8 @@
 "use strict";
 
 import * as vscode from "vscode";
-import { AdaptiveCardPanel } from "./adaptiveCardPanel";
 import { CardProvider } from "./cardProvider";
+import { CardProviderCMS } from "./CardProviderCMS";
 import { AdaptiveCardsMain } from "./adaptiveCards";
 
 
@@ -11,13 +11,14 @@ import { AdaptiveCardsMain } from "./adaptiveCards";
 export function activate(context: vscode.ExtensionContext) {
 	const acm : AdaptiveCardsMain = new AdaptiveCardsMain(context,context.extensionPath);
 	const cardProvider : CardProvider = new CardProvider(context,acm);
+	const cardProviderCMS : CardProviderCMS = new CardProviderCMS(context,acm);
 	vscode.window.registerTreeDataProvider("cardList", cardProvider);
-	vscode.window.registerTreeDataProvider("cardListCMS", cardProvider);
+	vscode.window.registerTreeDataProvider("cardListCMS", cardProviderCMS);
 
 	// register Url Handler for App
 	vscode.window.registerUriHandler({
         handleUri(uri: vscode.Uri) {
-			if(uri.toString().indexOf("adaptivecardsstudiobeta") > 0) {
+			if(uri.toString().indexOf("adaptivecards") > 0) {
 				var cardId: string = uri.path.replace("/","");
 				acm.OpenRemoteCard(cardId);
 				console.log(uri.path.replace("/",""));
@@ -33,10 +34,18 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	);
 
+	vscode.commands.registerCommand("cardListCMS.refresh", task => {
+		cardProviderCMS.refresh();
+		}
+	);
+
 	vscode.commands.registerCommand("cardList.showElement", card  => {
 		acm.OpenCard(card.path);
 	});
 
+	vscode.commands.registerCommand("cardListCMS.showElement", card  => {
+		acm.OpenCardCMS(card.path);
+	});
 
 	let activeEditor: vscode.TextEditor = vscode.window.activeTextEditor;
 

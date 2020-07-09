@@ -1,18 +1,20 @@
 {"AC Text Block (min)": {
+	"scope": "json",
 	"prefix": "ac-txt",
 	"body": [
 	  "{",
 	  "    \"type\": \"TextBlock\",",
-	  "    \"text\": \"New TextBlock\"",
+	  "    \"text\": \"$0\"",
 	  "},"
 	],
 	"description": "Text Block (min)"
   },"AC Text Block (all options)": {
 	"prefix": "ac-txtfull",
+	"scope": "json",
 	"body": [
 	  "{",
 	  "    \"type\": \"TextBlock\",",
-	  "    \"text\": \"New TextBlock\",",
+	  "    \"text\": \"$0\",",
 	  "    \"fontType\": \"Default\",",
 	  "    \"size\": \"Medium\",",
 	  "    \"weight\": \"Lighter\",",
@@ -27,23 +29,24 @@
 	"description": "Text Block (all options)"
   },"AC Column Set (3 col)": {
 	"prefix": "ac-col3",
+	"scope": "json",
 	"body": [
 	  " {",
 	  "    \"type\": \"ColumnSet\",",
 	  "    \"columns\": [",
 	  "        {",
 	  "            \"type\": \"Column\",",
-	  "            \"width\": \"stretch\"",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": [$0]",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
 	  "            \"items\": []",
 	  "        },",
 	  "        {",
 	  "            \"type\": \"Column\",",
-	  "            \"width\": \"stretch\"",
-	  "            \"items\": []",
-	  "        },",
-	  "        {",
-	  "            \"type\": \"Column\",",
-	  "            \"width\": \"stretch\"",
+	  "            \"width\": \"stretch\",",
 	  "            \"items\": []",
 	  "        }",
 	  "    ]",
@@ -52,18 +55,19 @@
 	"description": "Column Set (3 col)"
   },"AC Column Set (2 col)": {
 	"prefix": "ac-col2",
+	"scope": "json",
 	"body": [
 	  " {",
 	  "    \"type\": \"ColumnSet\",",
 	  "    \"columns\": [",
 	  "        {",
 	  "            \"type\": \"Column\",",
-	  "            \"width\": \"stretch\"",
-	  "            \"items\": []",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": [$0]",
 	  "        },",
 	  "        {",
 	  "            \"type\": \"Column\",",
-	  "            \"width\": \"stretch\"",
+	  "            \"width\": \"stretch\",",
 	  "            \"items\": []",
 	  "        }",
 	  "    ]",
@@ -73,6 +77,7 @@
   },
 	"AC Fact Set": {
 	"prefix": "ac-fctset",
+	"scope": "json",
 	"body": [
 	  "{",
 	  "\"type\": \"FactSet\",",
@@ -90,48 +95,9 @@
 	],
 	"description": "Fact Set"
   },
-	"Adaptive Card w Actions": {
-	"prefix": "acaction",
-	"body": [
-	  "{",
-	  "    \"type\": \"AdaptiveCard\",",
-	  "    \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",",
-	  "    \"version\": \"1.2\",",
-	  "    \"body\": [",
-	  "        {",
-	  "            \"type\": \"Container\"",
-	  "            \"items\": []",
-	  "        }",
-	  "    ],",
-	  "    \"actions\": [",
-	  "        {",
-	  "            \"type\": \"Action.Submit\",",
-	  "            \"title\": \"Action.Submit\"",
-	  "        },",
-	  "        {",
-	  "            \"type\": \"Action.Submit\",",
-	  "            \"title\": \"Action.Submit\"",
-	  "        }",
-	  "    ]",
-	  "}"
-	],
-	"description": "Adaptive Card w Actions"
-  },
-	"Adaptive Card Empty": {
-		"prefix": "ac",
-		"body": [
-		  "{",
-		  "    \"type\": \"AdaptiveCard\",",
-		  "    \"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",",
-		  "    \"version\": \"1.2\",",
-		  "    \"body\": [",
-		  "    ]",
-		  "}"
-		],
-		"description": "Adaptive Card Empty"
-	  },
-	"Container": {
+	"AC Container": {
 		"prefix": "ac-ctr",
+		"scope": "json",
 		"body": [
 		  "{",
 		  "   \"type\": \"Container\",",
@@ -139,10 +105,11 @@
 		  "   ]",
 		  "},"
 		],
-		"description": "Container"
+		"description": "Adaptive Cards Container"
 	  },
-	  "Image": {
+	  "AC Image": {
 		"prefix": "ac-img",
+		"scope": "json",
 		"body": [
 		  "{",
 		  "  \"type\": \"Image\",",
@@ -151,6 +118,6 @@
 		  "},",
 		  ""
 		],
-		"description": "Image"
+		"description": "Adaptive Cards Image"
 	  }
 }

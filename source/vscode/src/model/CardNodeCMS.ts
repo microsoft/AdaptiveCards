@@ -2,8 +2,9 @@ import * as vscode from "vscode";
 import { INode } from "./nodes/INode";
 import { CardNodeChild } from "./CardNodeChild";
 import { AdaptiveCardsMain } from "../adaptiveCards";
+import * as path from 'path';
 
-export class CardNode implements INode {
+export class CardNodeCMS implements INode {
 
     private readonly acm: AdaptiveCardsMain;
     private readonly Author: string;
@@ -22,15 +23,29 @@ export class CardNode implements INode {
         state: string,
         acm: AdaptiveCardsMain) {
         this.acm = acm;
+        this.Author = author;
+        this.State = state;
     }
+
+    public getIcon(priority: string) {
+        console.log(priority);
+         return {
+          light: path.join(this.acm._context.extensionPath, 'resources/light', `${priority}.svg`),
+          dark: path.join(this.acm._context.extensionPath, 'resources/dark', `${priority}.svg`),
+      };
+
+
+  }
 
     public getTreeItem(): vscode.TreeItem {
         return {
             label: this.label,
             collapsibleState: vscode.TreeItemCollapsibleState.Collapsed,
+            description: this.Author,
+            iconPath: this.getIcon(this.State),
             contextValue: "ac-CardBase",
             command: {
-                command: "cardList.showElement",
+                command: "cardListCMS.showElement",
                 title: "",
                 arguments: [this],
             }

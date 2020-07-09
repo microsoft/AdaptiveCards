@@ -2,26 +2,26 @@
     "name": "adaptivecardsstudiobeta",
     "displayName": "Adaptive Card Studio (BETA)",
     "description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version and might contain bugs )",
-    "version": "0.5.0",
-    "publisher": "madewithcards",
+    "version": "0.5.2",
+    "publisher": "madewithcardsio",
     "engines": {
         "vscode": "^1.36.0"
     },
     "categories": [
-        "Other"
+        "Other",
+        "Snippets"
     ],
     "activationEvents": [
         "*",
-        "onLanguage:json",
         "onView:cardOutline",
         "onView:cardCMSOutline"
     ],
-    "main": "./out/src/extension",
+    "main": "./out/extension",
     "contributes": {
         "snippets": [
             {
                 "language": "json",
-                "path": "./snippets.json"
+                "path": "media/snippets.json"
             }
         ],
         "viewsContainers": {
@@ -47,28 +47,31 @@
         },
         "commands": [
             {
-                "command": "cardList.showElement",
-                "title": "Show"
-            },
-            {
                 "command": "cardList.refresh",
                 "title": "Refresh",
                 "icon": {
                     "light": "resources/light/refresh.svg",
                     "dark": "resources/dark/refresh.svg"
                 }
-            }
+            },
+            {
+                "command": "cardListCMS.refresh",
+                "title": "Refresh",
+                "icon": {
+                    "light": "resources/light/refresh.svg",
+                    "dark": "resources/dark/refresh.svg"
+                }
+            },
+            {
+				"command": "cardList.showElement",
+				"title": "Show"
+            },
+            {
+				"command": "cardListCMS.showElement",
+				"title": "Show"
+			}
         ],
         "menus": {
-            "editor/title": [
-                {
-                    "when": "resourceLangId == json",
-                    "command": "adaptivecardviewer.open",
-                    "group": "navigation"
-                }
-            ],
-            "editor/context": [],
-            "view/item/context": [],
             "view/title": [
                 {
                     "command": "cardList.refresh",
@@ -76,7 +79,7 @@
                     "group": "navigation"
                 },
                 {
-                    "command": "cardList.refresh",
+                    "command": "cardListCMS.refresh",
                     "when": "view == cardListCMS",
                     "group": "navigation"
                 }
@@ -101,25 +104,29 @@
                     "type": "string",
                     "default": "MSTeams-Dark",
                     "enum": [
-                        "microsoft-teams-dark","microsoft-teams-light", 
-                        "webchat","outlook-desktop",
-                        "cortana-skills","cortana-skills",
+                        "microsoft-teams-dark",
+                        "microsoft-teams-light",
+                        "webchat",
+                        "outlook-desktop",
+                        "cortana-skills",
+                        "cortana-skills",
                         "windows-timeline",
-                        "BotFramework","windows-notification"
+                        "BotFramework",
+                        "windows-notification"
                     ],
                     "enumDescriptions": [
-                      "MS Teams Host Config (Dark)",
-                      "MS Teams Host Config (Light)",
-                      "Bot Framework - WebChat",
-                      "Outlook Actionable Messages",
-                      "Cortana Skills (Dark)",
-                      "Cortana SKills (Light)",
-                      "Windows Timeline",
-                      "Bot Framework - Other",
-                      "Windows Notifications (Preview)"
+                        "MS Teams Host Config (Dark)",
+                        "MS Teams Host Config (Light)",
+                        "Bot Framework - WebChat",
+                        "Outlook Actionable Messages",
+                        "Cortana Skills (Dark)",
+                        "Cortana SKills (Light)",
+                        "Windows Timeline",
+                        "Bot Framework - Other",
+                        "Windows Notifications (Preview)"
                     ]
                 },
-                "acstudio.cmsFolder" : {
+                "acstudio.cmsFolder": {
                     "type": "string",
                     "default": "",
                     "description": "Where to store temporary files from the CMS, uses workspaces root if not set"
@@ -138,12 +145,10 @@
         "@types/glob": "^7.1.1",
         "@types/mocha": "^5.2.6",
         "@types/node": "^10.12.21",
-        "glob": "^7.1.6",
-        "mocha": "^6.1.4",
         "tslint": "^5.12.1",
         "typescript": "^3.3.1",
-        "vscode-test": "^1.0.0-next.0",
-        "vscode": "^1.1.36"
+        "vscode": "^1.1.37",
+        "vscode-test": "^1.0.0-next.0"
     },
     "repository": {
         "type": "git",
@@ -169,6 +174,8 @@
     "dependencies": {
         "adaptivecards": "^1.2.6",
         "adaptivecards-templating": "^1.0.0-rc.0",
-        "axios": "^0.19.2"
+        "axios": "^0.19.2",
+        "glob": "^7.1.6",
+        "mocha": "^6.1.4"
     }
 }

@@ -40,6 +40,7 @@ export class WebViews {
         const jqueryPath = vscode.Uri.file(	path.join(this._extensionPath, "media/js", "jquery.min.js"));
         const jqueryUri = jqueryPath.with({ scheme: "vscode-resource" });
 
+
         // adaptiveCards
         let url = vscode.Uri.file(	path.join(this._extensionPath, "media/js", "fabric.min.js"));
         const FabricUri = url.with({ scheme: "vscode-resource" });
@@ -104,8 +105,14 @@ export class WebViews {
                     <link rel="stylesheet" href="${mainstyleUri}"  nonce="${nonce}"  type="text/css" />
                     <link rel="stylesheet" href="${ACStyleUri}"  nonce="${nonce}"  type="text/css" />
                     <link rel="stylesheet" href="${FabricStyleUri}"  nonce="${nonce}"  type="text/css" />
+                    <style type="text/css">
+                    code {
+                        color: var(--vscode-editor-foreground);
+                        background-color: var(--vscode-editor-background);
+                      }
+                    </style>
                 </head>
-                <body>
+                <body class='code'>
                     <div style='margin-top:25px'>
                         ${designerTemplate}
                         <div id="out"></div>

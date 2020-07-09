@@ -27,6 +27,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
 	}
 
     public async getChildren(element?: INode): Promise<INode[]> {
+        console.log("ACSTUDIO - Get Child Nodes");
         if(!element) {
             vscode.window.showInformationMessage("Searching for Adaptive Cards in your workspace");
             return await this.GetAdaptiveCardsInFolder();
@@ -35,6 +36,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
     }
 
     public async GetAdaptiveCardsInFolder(): Promise<INode[]> {
+        console.log("ACSTUDIO - Searching for Cards");
         const items: INode[] = [];
         let folder = vscode.workspace.rootPath;
         vscode.window.showInformationMessage("Searching for Adaptive Cards in your workspace");
@@ -42,7 +44,7 @@ export class CardProvider implements vscode.TreeDataProvider<INode> {
         var i = 0;
         files.forEach(file => {
             var name = path.basename(file,".json");
-            const searchTerm = "http://adaptivecards.io/schemas/adaptive-card.json";
+            const searchTerm = "adaptivecards.io/schemas/adaptive-card.json";
             var content = fs.readFileSync(file, "utf8");
             if (content.includes(searchTerm)) {
                 var node = new CardNode(name,file, i, this.acm);
