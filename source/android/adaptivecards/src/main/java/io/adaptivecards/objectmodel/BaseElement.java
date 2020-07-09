@@ -25,6 +25,7 @@ public class BaseElement {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -97,7 +98,7 @@ public class BaseElement {
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
-    AdaptiveCardObjectModelJNI.BaseElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+    AdaptiveCardObjectModelJNI.BaseElement_SetAdditionalProperties__SWIG_0(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
   public FallbackType GetFallbackType() {
@@ -125,8 +126,8 @@ public class BaseElement {
     return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, FeatureRegistration.getCPtr(hostProvides), hostProvides);
   }
 
-  public SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t_t GetRequirements() {
-    return new SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements(swigCPtr, this), true);
+  public SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t GetRequirements() {
+    return new SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements__SWIG_0(swigCPtr, this), false);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {

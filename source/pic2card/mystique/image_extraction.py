@@ -15,18 +15,18 @@ from mystique import config
 
 class ImageExtraction:
     """
-    Class to identify the edges in the design image and filtering out the 
-    faster rcnn objects to obtain the image object boundaries and to add 
+    Class to identify the edges in the design image and filtering out the
+    faster rcnn objects to obtain the image object boundaries and to add
     the cropped out image obejcts as base64 to the card paylaod json.
     """
 
     def find_points(self, coord1, coord2, for_image=None):
         """
         Finds the intersecting bounding boxes by finding
-           the highest x and y ranges of the 2 coordinates 
-           and determine the intersection by deciding weather 
+           the highest x and y ranges of the 2 coordinates
+           and determine the intersection by deciding weather
            the new xmin>xmax or the new ymin>ymax.
-           For non image objects, includes finding the intersection 
+           For non image objects, includes finding the intersection
            area to a thersold to determine intersection
 
         @param coord1: list of coordinates of 1st object
@@ -61,7 +61,7 @@ class ImageExtraction:
         faster rcnn detected boxes.
 
         @param image: input open-cv image
-        @param detected_coords: list of detected 
+        @param detected_coords: list of detected
                                    object's coordinates from faster rcnn model
         @param pil_image: Input PIL image
         @param faster_rcnn_image: image with faster rcnn detected object's
@@ -143,13 +143,13 @@ class ImageExtraction:
     def detect_image(self, image=None , detected_coords=None, pil_image=None):
 
         """
-        Returns the Detected image coordinates by buidling 
+        Returns the Detected image coordinates by buidling
         countours over the design edge detection and on removing
         the faster rcnn model detected obects.
 
         @param image: input open-cv image
-        @param detected_coords: list of detected 
-                                object's coordinates from faster 
+        @param detected_coords: list of detected
+                                object's coordinates from faster
                                 rcnn model
         @param pil_image: Input PIL image
 

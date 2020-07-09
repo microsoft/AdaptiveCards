@@ -12,7 +12,7 @@ namespace AdaptiveNamespace
 
     std::string DateTimeParser::GenerateString(const DateTimePreparser& text)
     {
-        std::wostringstream parsedostr;
+        std::ostringstream parsedostr;
 
         if (text.HasDateTokens())
         {
@@ -30,9 +30,8 @@ namespace AdaptiveNamespace
 
         for (const auto& textSection : text.GetTextTokens())
         {
-            struct tm result
-            {
-            };
+            std::tm result = {};
+
             result.tm_mday = textSection->GetDay();
             result.tm_mon = textSection->GetMonth();
             result.tm_year = textSection->GetYear() >= 1900 ? textSection->GetYear() - 1900 : 0;
@@ -41,24 +40,24 @@ namespace AdaptiveNamespace
             switch (textSection->GetFormat())
             {
             case DateTimePreparsedTokenFormat::DateCompact:
-                parsedostr << std::put_time(&result, L"%Ex");
+                parsedostr << std::put_time(&result, "%Ex");
                 break;
             case DateTimePreparsedTokenFormat::DateShort:
                 mktime(&result);
-                parsedostr << std::put_time(&result, L"%a, %b %e, %Y");
+                parsedostr << std::put_time(&result, "%a, %b %e, %Y");
                 break;
             case DateTimePreparsedTokenFormat::DateLong:
                 mktime(&result);
-                parsedostr << std::put_time(&result, L"%A, %B %e, %Y");
+                parsedostr << std::put_time(&result, "%A, %B %e, %Y");
                 break;
             case DateTimePreparsedTokenFormat::RegularString:
             default:
-                parsedostr << StringToWstring(textSection->GetText());
+                parsedostr << textSection->GetText();
                 break;
             }
         }
 
-        return WstringToString(parsedostr.str());
+        return parsedostr.str();
     }
 
 }

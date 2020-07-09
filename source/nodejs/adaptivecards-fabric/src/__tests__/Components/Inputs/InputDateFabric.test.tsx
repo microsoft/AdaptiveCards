@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import { InputDateFabric } from "../../../components/inputs/InputDateFabric";
-import { initializeIcons } from "@uifabric/icons";
+import { initializeIcons } from "@fluentui/react";
 import * as TestUtils from "../../TestUtils";
 
 initializeIcons();

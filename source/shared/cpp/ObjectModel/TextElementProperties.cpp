@@ -157,7 +157,7 @@ void TextElementProperties::SetIsSubtle(const bool value)
     m_isSubtle = value;
 }
 
-std::string TextElementProperties::GetLanguage() const
+const std::string& TextElementProperties::GetLanguage() const
 {
     return m_language;
 }

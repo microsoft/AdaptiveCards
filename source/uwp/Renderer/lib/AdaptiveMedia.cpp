@@ -60,14 +60,14 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(media)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*media));
 
         media->SetPoster(HStringToUTF8(m_poster.Get()));
         media->SetAltText(HStringToUTF8(m_altText.Get()));
 
         RETURN_IF_FAILED(GenerateSharedMediaSources(m_sources.Get(), media->GetSources()));
 
-        sharedMedia = media;
+        sharedMedia = std::move(media);
         return S_OK;
     }
     CATCH_RETURN;

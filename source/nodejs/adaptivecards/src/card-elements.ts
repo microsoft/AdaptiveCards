@@ -131,19 +131,27 @@ export abstract class CardElement extends CardObject {
     }
 
     private updateRenderedElementVisibility() {
-        if (this._defaultRenderedElementDisplayMode) {
-            let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
+        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-            if (this._renderedElement) {
+        if (this._renderedElement) {
+            if (displayMode) {
                 this._renderedElement.style.display = displayMode;
             }
+            else {
+                this._renderedElement.style.removeProperty("display");
+            }
+        }
 
-            if (this._separatorElement) {
-                if (this.parent && this.parent.isFirstElement(this)) {
-                    this._separatorElement.style.display = "none";
+        if (this._separatorElement) {
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";
+            }
+            else {
+                if (displayMode) {
+                    this._separatorElement.style.display = displayMode;
                 }
                 else {
-                    this._separatorElement.style.display = displayMode;
+                    this._separatorElement.style.removeProperty("display");
                 }
             }
         }
@@ -1098,6 +1106,7 @@ export class TextRun extends BaseTextBlock {
     static readonly italicProperty = new BoolProperty(Versions.v1_2, "italic", false);
     static readonly strikethroughProperty = new BoolProperty(Versions.v1_2, "strikethrough", false);
     static readonly highlightProperty = new BoolProperty(Versions.v1_2, "highlight", false);
+    static readonly underlineProperty = new BoolProperty(Versions.v1_3, "underline", false);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1113,6 +1122,9 @@ export class TextRun extends BaseTextBlock {
 
     @property(TextRun.highlightProperty)
     highlight: boolean = false;
+
+    @property(TextRun.underlineProperty)
+    underline: boolean = false;
 
     //#endregion
 
@@ -1179,6 +1191,10 @@ export class TextRun extends BaseTextBlock {
             let colorDefinition = this.getColorDefinition(this.getEffectiveStyleDefinition().foregroundColors, this.effectiveColor);
 
             targetElement.style.backgroundColor = <string>Utils.stringToCssColor(this.isSubtle ? colorDefinition.highlightColors.subtle : colorDefinition.highlightColors.default);
+        }
+
+        if (this.underline) {
+            targetElement.style.textDecoration = "underline";
         }
     }
 
@@ -1582,22 +1598,45 @@ export class Image extends CardElement {
             }
         }
         else {
-            switch (this.size) {
-                case Enums.Size.Stretch:
-                    element.style.width = "100%";
-                    break;
-                case Enums.Size.Auto:
-                    element.style.maxWidth = "100%";
-                    break;
-                case Enums.Size.Small:
-                    element.style.width = this.hostConfig.imageSizes.small + "px";
-                    break;
-                case Enums.Size.Large:
-                    element.style.width = this.hostConfig.imageSizes.large + "px";
-                    break;
-                case Enums.Size.Medium:
-                    element.style.width = this.hostConfig.imageSizes.medium + "px";
-                    break;
+            if (this.maxHeight) {
+                // If the image is constrained in height, we set its height property and
+                // auto and stretch are ignored (default to medium). THis is necessary for
+                // ImageSet which uses a maximum image height as opposed to the cards width
+                // as a constraining dimension
+                switch (this.size) {
+                    case Enums.Size.Small:
+                        element.style.height = this.hostConfig.imageSizes.small + "px";
+                        break;
+                    case Enums.Size.Large:
+                        element.style.height = this.hostConfig.imageSizes.large + "px";
+                        break;
+                    default:
+                        element.style.height = this.hostConfig.imageSizes.medium + "px";
+                        break;
+                }
+
+                element.style.maxHeight = this.maxHeight + "px";
+            }
+            else {
+                switch (this.size) {
+                    case Enums.Size.Stretch:
+                        element.style.width = "100%";
+                        break;
+                    case Enums.Size.Auto:
+                        element.style.maxWidth = "100%";
+                        break;
+                    case Enums.Size.Small:
+                        element.style.width = this.hostConfig.imageSizes.small + "px";
+                        break;
+                    case Enums.Size.Large:
+                        element.style.width = this.hostConfig.imageSizes.large + "px";
+                        break;
+                    case Enums.Size.Medium:
+                        element.style.width = this.hostConfig.imageSizes.medium + "px";
+                        break;
+                }
+
+                element.style.maxHeight = "100%";
             }
         }
     }
@@ -1675,7 +1714,6 @@ export class Image extends CardElement {
 
                 raiseImageLoadedEvent(this);
             }
-            imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
@@ -1711,6 +1749,8 @@ export class Image extends CardElement {
 
         return element;
     }
+
+    maxHeight?: number;
 
     getJsonTypeName(): string {
         return "Image";
@@ -1917,14 +1957,14 @@ export class ImageSet extends CardElementContainer {
     static readonly imageSizeProperty = new EnumProperty(
         Versions.v1_0,
         "imageSize",
-        Enums.Size,
-        Enums.Size.Medium);
+        Enums.ImageSize,
+        Enums.ImageSize.Medium);
 
     @property(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
     @property(ImageSet.imageSizeProperty)
-    imageSize: Enums.Size = Enums.Size.Medium;
+    imageSize: Enums.ImageSize = Enums.ImageSize.Medium;
 
     //#endregion
 
@@ -1937,7 +1977,19 @@ export class ImageSet extends CardElementContainer {
             element.style.flexWrap = "wrap";
 
             for (let image of this._images) {
-                image.size = this.imageSize;
+                switch (this.imageSize) {
+                    case Enums.ImageSize.Small:
+                        image.size = Enums.Size.Small;
+                        break;
+                    case Enums.ImageSize.Large:
+                        image.size = Enums.Size.Large;
+                        break;
+                    default:
+                        image.size = Enums.Size.Medium;
+                        break;
+                }
+
+                image.maxHeight = this.hostConfig.imageSet.maxImageHeight;
 
                 let renderedImage = image.render();
 
@@ -1945,7 +1997,6 @@ export class ImageSet extends CardElementContainer {
                     renderedImage.style.display = "inline-flex";
                     renderedImage.style.margin = "0px";
                     renderedImage.style.marginRight = "10px";
-                    renderedImage.style.maxHeight = this.hostConfig.imageSet.maxImageHeight + "px";
 
                     Utils.appendChild(element, renderedImage);
                 }
@@ -2289,8 +2340,8 @@ export class Media extends CardElement {
 export class InputValidationOptions extends SerializableObject {
     //#region Schema
 
-    static readonly necessityProperty = new EnumProperty(Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
-    static readonly errorMessageProperty = new StringProperty(Versions.vNext, "errorMessagwe");
+    static readonly necessityProperty = new EnumProperty(Versions.v1_3, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional);
+    static readonly errorMessageProperty = new StringProperty(Versions.v1_3, "errorMessagwe");
 
     protected getSchemaKey(): string {
         return "InputValidationOptions";
@@ -2313,7 +2364,7 @@ export abstract class Input extends CardElement implements IInput {
     //#region Schema
 
     static readonly validationProperty = new SerializableObjectProperty(
-        Versions.vNext,
+        Versions.v1_3,
         "validation",
         InputValidationOptions);
 
@@ -3352,7 +3403,7 @@ export abstract class Action extends CardObject {
         ],
         Enums.ActionStyle.Default);
     // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.vNext, "ignoreInputValidation", false);
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
@@ -6239,10 +6290,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
         }
 
         return renderedCard;
-    }
-
-    getForbiddenActionTypes(): ActionType[] {
-        return [ ShowCardAction ];
     }
 }
 

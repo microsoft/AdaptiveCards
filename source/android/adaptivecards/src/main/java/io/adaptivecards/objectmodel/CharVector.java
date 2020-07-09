@@ -21,6 +21,7 @@ public class CharVector extends java.util.AbstractList<Character> implements jav
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class CharVector extends java.util.AbstractList<Character> implements jav
     AdaptiveCardObjectModelJNI.CharVector_clear(swigCPtr, this);
   }
 
-  public CharVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_CharVector__SWIG_2(count), true);
-  }
-
   public CharVector(int count, char value) {
-    this(AdaptiveCardObjectModelJNI.new_CharVector__SWIG_3(count, value), true);
+    this(AdaptiveCardObjectModelJNI.new_CharVector__SWIG_2(count, value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.CharVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(char value) {
-    AdaptiveCardObjectModelJNI.CharVector_doAdd__SWIG_0(swigCPtr, this, value);
+  private void doAdd(char x) {
+    AdaptiveCardObjectModelJNI.CharVector_doAdd__SWIG_0(swigCPtr, this, x);
   }
 
-  private void doAdd(int index, char value) {
-    AdaptiveCardObjectModelJNI.CharVector_doAdd__SWIG_1(swigCPtr, this, index, value);
+  private void doAdd(int index, char x) {
+    AdaptiveCardObjectModelJNI.CharVector_doAdd__SWIG_1(swigCPtr, this, index, x);
   }
 
   private char doRemove(int index) {
@@ -134,8 +131,8 @@ public class CharVector extends java.util.AbstractList<Character> implements jav
     return AdaptiveCardObjectModelJNI.CharVector_doGet(swigCPtr, this, index);
   }
 
-  private char doSet(int index, char value) {
-    return AdaptiveCardObjectModelJNI.CharVector_doSet(swigCPtr, this, index, value);
+  private char doSet(int index, char val) {
+    return AdaptiveCardObjectModelJNI.CharVector_doSet(swigCPtr, this, index, val);
   }
 
   private void doRemoveRange(int fromIndex, int toIndex) {
