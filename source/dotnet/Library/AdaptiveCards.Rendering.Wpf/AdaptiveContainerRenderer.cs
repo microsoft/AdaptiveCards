@@ -138,7 +138,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                         uiContainer.RowDefinitions.Add(rowDefinition);
 
-                        UIElement enclosingElement = EncloseElementInPanel(context, rendereableElement, uiElement);
+                        FrameworkElement enclosingElement = EncloseElementInPanel(context, rendereableElement, uiElement);
 
                         Grid.SetRow(enclosingElement, rowDefinitionIndex);
                         uiContainer.Children.Add(enclosingElement);
@@ -149,7 +149,10 @@ namespace AdaptiveCards.Rendering.Wpf
                         tag.RowDefinition = rowDefinition;
                         tag.ViewIndex = rowDefinitionIndex;
 
-                        RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                        enclosingElement.Tag = tag;
+                        enclosingElement.Name = cardElement.Id;
+
+                        RendererUtil.SetVisibility(enclosingElement, cardElement.IsVisible, tag);
                     }
                     else
                     {
@@ -325,9 +328,9 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         /// <param name="renderedElement">UIElement</param>
         /// <returns>Panel that encloses the element</returns>
-        public static UIElement EncloseElementInPanel(AdaptiveRenderContext context, AdaptiveTypedElement element, FrameworkElement renderedElement)
+        public static FrameworkElement EncloseElementInPanel(AdaptiveRenderContext context, AdaptiveTypedElement element, FrameworkElement renderedElement)
         {
-            UIElement enclosingElement = renderedElement;
+            FrameworkElement enclosingElement = renderedElement;
 
             if (element is AdaptiveInput)
             {
@@ -399,9 +402,9 @@ namespace AdaptiveCards.Rendering.Wpf
         /// </summary>
         /// <param name="renderedElement">UIElement</param>
         /// <returns>Border that encloses the element or the element if not needed</returns>
-        public static UIElement EncloseInputForVisualCue(AdaptiveRenderContext context, AdaptiveInput element, FrameworkElement renderedElement)
+        public static FrameworkElement EncloseInputForVisualCue(AdaptiveRenderContext context, AdaptiveInput element, FrameworkElement renderedElement)
         {
-            UIElement enclosingElement = renderedElement;
+            FrameworkElement enclosingElement = renderedElement;
 
             if (!(element is AdaptiveChoiceSetInput) && !(element is AdaptiveToggleInput))
             {
