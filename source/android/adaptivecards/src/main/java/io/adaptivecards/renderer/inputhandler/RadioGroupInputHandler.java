@@ -63,7 +63,6 @@ public class RadioGroupInputHandler extends BaseInputHandler
                 }
             }
         }
-
         else
         {
             // Indicates no item was selected

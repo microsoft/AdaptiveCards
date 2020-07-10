@@ -80,31 +80,43 @@ public class BaseActionElement extends BaseElement {
   }
 
   public String GetTitle() {
-    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetTitleSwigExplicitBaseActionElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetTitle(swigCPtr, this);
+  }
+
+  public void SetTitle(SWIGTYPE_p_std__string value) {
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value)); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTitleSwigExplicitBaseActionElement__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
   }
 
   public void SetTitle(String value) {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTitleSwigExplicitBaseActionElement(swigCPtr, this, value);
+    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetTitle__SWIG_1(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetTitleSwigExplicitBaseActionElement__SWIG_1(swigCPtr, this, value);
   }
 
   public String GetIconUrl() {
-    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetIconUrl(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetIconUrl(swigCPtr, this);
+  }
+
+  public void SetIconUrl(SWIGTYPE_p_std__string value) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrl__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
   }
 
   public void SetIconUrl(String value) {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrl(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetIconUrl__SWIG_1(swigCPtr, this, value);
   }
 
   public String GetStyle() {
-    return (getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetStyle(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetStyleSwigExplicitBaseActionElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseActionElement_GetStyle(swigCPtr, this);
+  }
+
+  public void SetStyle(SWIGTYPE_p_std__string value) {
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetStyle__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
   }
 
   public void SetStyle(String value) {
-    if (getClass() == BaseActionElement.class) AdaptiveCardObjectModelJNI.BaseActionElement_SetStyle(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseActionElement_SetStyleSwigExplicitBaseActionElement(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.BaseActionElement_SetStyle__SWIG_1(swigCPtr, this, value);
   }
 
   public ActionType GetElementType() {
-    return ActionType.swigToEnum((getClass() == BaseActionElement.class) ? AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(swigCPtr, this));
+    return ActionType.swigToEnum(AdaptiveCardObjectModelJNI.BaseActionElement_GetElementType(swigCPtr, this));
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {
