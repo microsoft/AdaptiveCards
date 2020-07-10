@@ -93,7 +93,7 @@ The `label` property should be set as the accessibility text when present. If th
 ### Input Validation
 
  If the input has `"isRequired":true` the input should be marked with the 
- `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. Optional inputs should be marked with the `"inputs":"label":"optionalInputs":"suffix"` if set. The suffixes  should be placed on the label in the case where the label is set, and otherwise be placed next to the input control.
+ `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. The suffix should be placed on the label in the case where the label is set, and otherwise be placed next to the input control.
  
  The `isRequired`, `min`, and `max` properties should be validated for this input type. If possible, `min` and `max` should be enforced by providing a control that does not allow the user to select values outside the specified range. For the `isRequired` (and for `max` and `min` if not enforced by the control), the validation should take place when the user activates a submit action on the card.
 
