@@ -35,10 +35,10 @@ namespace AdaptiveNamespace
                                  _Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>>& inputs);
         void GetAllInputs(_Out_ std::vector<Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>>& inputs);
 
-        // Map with key: input internal id, value: input value class
+        // Map with key: input id, value: input value class
         // This one has the collection of all input element values, this was introduced to be able to set the error message to the input value
         // and at the same time, being able to respect custom inputs having error messages
-        std::unordered_map<std::size_t, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>> m_inputValues;
+        std::unordered_map<std::string, Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveInputValue>> m_inputValues;
 
         // This is cache of the last inputs that were retrieved for validation (and succeeded)
         // This is needed as the AsJson and AsValueSet methods are called after validating but we don't get an action reference to rebuild the list
@@ -52,9 +52,9 @@ namespace AdaptiveNamespace
         // This is needed so we can get a starting point from where to start retrieving inputs
         std::unordered_map<std::size_t, std::size_t> m_containerCardForAction;
 
-        // Map with key: internal id for container card, value: vector of the internal ids of the inputs in the card
+        // Map with key: internal id for container card, value: vector of the ids (element property) of the inputs in the card
         // This is needed to retrieve inputs once we know what cards to look into
-        std::unordered_map<std::size_t, std::vector<std::size_t>> m_inputsPerCard;
+        std::unordered_map<std::size_t, std::vector<std::string>> m_inputsPerCard;
     };
 
     ActivatableClass(AdaptiveInputs);
