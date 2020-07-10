@@ -98,7 +98,7 @@ namespace AdaptiveNamespace
     try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextRun> textRun = std::make_shared<AdaptiveSharedNamespace::TextRun>();
-        RETURN_IF_FAILED(AdaptiveTextElement::SetTextElementProperties(textRun));
+        RETURN_IF_FAILED(AdaptiveTextElement::CopyTextElementProperties(*textRun));
 
         textRun->SetItalic(m_italic);
         textRun->SetStrikethrough(m_strikethrough);
@@ -109,10 +109,10 @@ namespace AdaptiveNamespace
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            textRun->SetSelectAction(sharedAction);
+            textRun->SetSelectAction(std::move(sharedAction));
         }
 
-        sharedModel = textRun;
+        sharedModel = std::move(textRun);
         return S_OK;
     }
     CATCH_RETURN;

@@ -95,14 +95,14 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::NumberInput> numberInput =
             std::make_shared<AdaptiveSharedNamespace::NumberInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(numberInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*numberInput));
 
         numberInput->SetMin(m_min);
         numberInput->SetMax(m_max);
         numberInput->SetValue(m_value);
         numberInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
 
-        sharedModel = numberInput;
+        sharedModel = std::move(numberInput);
         return S_OK;
     }
     CATCH_RETURN;

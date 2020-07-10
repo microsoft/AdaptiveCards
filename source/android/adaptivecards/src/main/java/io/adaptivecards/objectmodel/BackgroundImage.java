@@ -25,6 +25,7 @@ public class BackgroundImage {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

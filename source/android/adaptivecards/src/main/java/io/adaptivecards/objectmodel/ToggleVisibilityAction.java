@@ -27,6 +27,7 @@ public class ToggleVisibilityAction extends BaseActionElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

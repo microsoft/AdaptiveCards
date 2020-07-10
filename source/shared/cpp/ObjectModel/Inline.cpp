@@ -30,12 +30,17 @@ std::string Inline::GetInlineTypeString() const
     return InlineElementTypeToString(m_type);
 }
 
-Json::Value Inline::GetAdditionalProperties() const
+const Json::Value& Inline::GetAdditionalProperties() const
 {
     return m_additionalProperties;
 }
 
-void Inline::SetAdditionalProperties(Json::Value const& value)
+void Inline::SetAdditionalProperties(Json::Value&& value)
+{
+    m_additionalProperties = std::move(value);
+}
+
+void Inline::SetAdditionalProperties(const Json::Value& value)
 {
     m_additionalProperties = value;
 }

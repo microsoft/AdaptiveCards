@@ -87,14 +87,14 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextBlock> textBlock = std::make_shared<AdaptiveSharedNamespace::TextBlock>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(textBlock)));
-        RETURN_IF_FAILED(SetTextElementProperties(textBlock));
+        RETURN_IF_FAILED(CopySharedElementProperties(*textBlock));
+        RETURN_IF_FAILED(CopyTextElementProperties(*textBlock));
 
         textBlock->SetWrap(m_wrap);
         textBlock->SetMaxLines(m_maxLines);
         textBlock->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
-        sharedTextBlock = textBlock;
+        sharedTextBlock = std::move(textBlock);
         return S_OK;
     }
     CATCH_RETURN;

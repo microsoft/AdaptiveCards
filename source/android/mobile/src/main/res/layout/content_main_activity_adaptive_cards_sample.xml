@@ -30,63 +30,22 @@
         android:text="Connected! Click to disconnect"/>
 
     <LinearLayout
-        android:id="@+id/adaptiveCardPickerGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/selectedCardText"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/load_card"/>
-
-        <EditText
-            android:id="@+id/fileEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:ellipsize="end"
-            android:focusable="false"
-            android:inputType="textUri"
-            android:text="" />
-
-        <Button
-            android:id="@+id/loadCardButton"
-            android:layout_width="60dp"
-            android:layout_weight = "0"
-            android:layout_height="wrap_content"
-            android:onClick="onClickFileBrowser"
-            android:text="..." />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/hostConfigPickerGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
+            android:layout_weight="1"
+            android:text="@string/no_card" />
         <TextView
-            android:layout_width="wrap_content"
+            android:id="@+id/selectedHostConfigText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="@string/load_config" />
-
-        <EditText
-            android:id="@+id/hostConfigFileEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:ellipsize="end"
-            android:focusable="false"
-            android:inputType="textUri"
-            android:text="" />
-
-        <Button
-            android:id="@+id/hostConfigLoadButton"
-            android:layout_width="60dp"
-            android:layout_weight = "0"
-            android:layout_height="wrap_content"
-            android:onClick="onClickFileBrowser"
-            android:text="..." />
+            android:text="@string/default_config" />
     </LinearLayout>
 
     <TabHost
@@ -99,21 +58,47 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TabWidget
-                android:id="@android:id/tabs"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
 
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </HorizontalScrollView>
+            
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/importer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/importerCardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border"
+                            android:orientation="vertical" />
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/Visual"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_margin="20px"
                     android:orientation="vertical">
 
                     <ScrollView

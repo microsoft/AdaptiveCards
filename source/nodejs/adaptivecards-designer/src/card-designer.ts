@@ -572,7 +572,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.v1_2;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -588,7 +588,6 @@ export class CardDesigner extends Designer.DesignContext {
         if (Shared.GlobalSettings.showVersionPicker) {
             this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
             this._versionChoicePicker.label = "Target version:"
-            this._versionChoicePicker.width = 80;
             this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
             this._versionChoicePicker.separator = true;
 
@@ -637,6 +636,12 @@ export class CardDesigner extends Designer.DesignContext {
                             }
                         };
                         dialog.selectedSample.download();
+                    }
+
+                    const newCardButton = this._newCardButton.renderedElement;
+
+                    if (newCardButton) {
+                        newCardButton.focus();
                     }
                 };
                 dialog.open();
@@ -814,6 +819,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
         Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+        Adaptive.GlobalSettings.setTabIndexAtCardRoot = false;
 
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
