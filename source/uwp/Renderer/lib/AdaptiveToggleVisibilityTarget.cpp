@@ -56,7 +56,7 @@ namespace AdaptiveNamespace
         toggleTarget->SetElementId(id);
         toggleTarget->SetIsVisible((AdaptiveSharedNamespace::IsVisible)m_visibilityToggle);
 
-        sharedModel = toggleTarget;
+        sharedModel = std::move(toggleTarget);
         return S_OK;
     }
     CATCH_RETURN;

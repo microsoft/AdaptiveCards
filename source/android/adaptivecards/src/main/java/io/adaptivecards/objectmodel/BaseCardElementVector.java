@@ -21,6 +21,7 @@ public class BaseCardElementVector extends java.util.AbstractList<BaseCardElemen
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class BaseCardElementVector extends java.util.AbstractList<BaseCardElemen
     AdaptiveCardObjectModelJNI.BaseCardElementVector_clear(swigCPtr, this);
   }
 
-  public BaseCardElementVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_BaseCardElementVector__SWIG_2(count), true);
-  }
-
   public BaseCardElementVector(int count, BaseCardElement value) {
-    this(AdaptiveCardObjectModelJNI.new_BaseCardElementVector__SWIG_3(count, BaseCardElement.getCPtr(value), value), true);
+    this(AdaptiveCardObjectModelJNI.new_BaseCardElementVector__SWIG_2(count, BaseCardElement.getCPtr(value), value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.BaseCardElementVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(BaseCardElement value) {
-    AdaptiveCardObjectModelJNI.BaseCardElementVector_doAdd__SWIG_0(swigCPtr, this, BaseCardElement.getCPtr(value), value);
+  private void doAdd(BaseCardElement x) {
+    AdaptiveCardObjectModelJNI.BaseCardElementVector_doAdd__SWIG_0(swigCPtr, this, BaseCardElement.getCPtr(x), x);
   }
 
-  private void doAdd(int index, BaseCardElement value) {
-    AdaptiveCardObjectModelJNI.BaseCardElementVector_doAdd__SWIG_1(swigCPtr, this, index, BaseCardElement.getCPtr(value), value);
+  private void doAdd(int index, BaseCardElement x) {
+    AdaptiveCardObjectModelJNI.BaseCardElementVector_doAdd__SWIG_1(swigCPtr, this, index, BaseCardElement.getCPtr(x), x);
   }
 
   private BaseCardElement doRemove(int index) {
@@ -136,8 +133,8 @@ public class BaseCardElementVector extends java.util.AbstractList<BaseCardElemen
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 
-  private BaseCardElement doSet(int index, BaseCardElement value) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementVector_doSet(swigCPtr, this, index, BaseCardElement.getCPtr(value), value);
+  private BaseCardElement doSet(int index, BaseCardElement val) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElementVector_doSet(swigCPtr, this, index, BaseCardElement.getCPtr(val), val);
     return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
   }
 

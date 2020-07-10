@@ -44,8 +44,8 @@
             <Button Name="loadTemplateDataButton" Click="loadTemplateDataButton_Click" Content="Load Template Data" Margin="4" Padding="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4" Padding="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4" Padding="4"/>
-            <CheckBox Name ="xceedCheckbox" Margin="4,5,4,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked" VerticalAlignment="Center"></CheckBox>
-            <TextBlock Margin="0,4,-1,4" HorizontalAlignment="Center" VerticalAlignment="Center">Use Xceed Renderers</TextBlock>
+            <CheckBox Name ="xceedCheckbox" Margin="4,5,4,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked" AutomationProperties.LabeledBy="{Binding ElementName=xceedLabel}" VerticalAlignment="Center"></CheckBox>
+            <TextBlock Name="xceedLabel" Margin="0,4,-1,4" HorizontalAlignment="Center" VerticalAlignment="Center">Use Xceed Renderers</TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
             <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="4">HostConfig:</Label>
