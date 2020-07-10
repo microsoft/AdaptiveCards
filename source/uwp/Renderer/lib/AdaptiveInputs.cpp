@@ -45,14 +45,17 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveInputElement> inputElement;
         RETURN_IF_FAILED(inputValue->get_InputElement(inputElement.GetAddressOf()));
 
-        ComPtr<AdaptiveInputElementBase> cardElementImpl;
-        RETURN_IF_FAILED(inputElement.As(&cardElementImpl));
+        ComPtr<IAdaptiveCardElement> inputElementAsCardElement;
+        RETURN_IF_FAILED(inputElement.As(&inputElementAsCardElement));
 
-        InternalId inputId = cardElementImpl->GetInternalId();
-        std::size_t inputIdHash = inputId.Hash();
+        HString inputId;
+        RETURN_IF_FAILED(inputElementAsCardElement->get_Id(inputId.GetAddressOf()));
 
-        m_inputsPerCard[cardId.Hash()].push_back(inputIdHash);
-        m_inputValues[inputIdHash] = inputValue;
+        std::string id;
+        RETURN_IF_FAILED(HStringToUTF8(inputId.Get(), id));
+
+        m_inputsPerCard[cardId.Hash()].push_back(id);
+        m_inputValues[id] = inputValue;
         return S_OK;
     }
 
@@ -85,12 +88,16 @@ namespace AdaptiveNamespace
     {
         ComPtr<IAdaptiveInputElement> localInputElement(inputElement);
 
-        ComPtr<AdaptiveInputElementBase> inputElementImpl;
-        RETURN_IF_FAILED(localInputElement.As(&inputElementImpl));
+        ComPtr<IAdaptiveCardElement> cardElement;
+        RETURN_IF_FAILED(localInputElement.As(&cardElement));
 
-        InternalId inputId = inputElementImpl->GetInternalId();
+        HString elementId;
+        RETURN_IF_FAILED(cardElement->get_Id(elementId.GetAddressOf()));
 
-        RETURN_IF_FAILED(m_inputValues[inputId.Hash()].CopyTo(inputValue));
+        std::string utf8Id;
+        RETURN_IF_FAILED(HStringToUTF8(elementId.Get(), utf8Id));
+
+        RETURN_IF_FAILED(m_inputValues[utf8Id].CopyTo(inputValue));
 
         return S_OK;
     }
