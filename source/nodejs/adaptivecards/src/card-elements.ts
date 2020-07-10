@@ -1395,6 +1395,7 @@ export class FactSet extends CardElement {
             element.style.display = "block";
             element.style.overflow = "hidden";
             element.classList.add(hostConfig.makeCssClassName("ac-factset"));
+            element.setAttribute("role", "presentation");
 
             for (let i = 0; i < this.facts.length; i++) {
                 let trElement = document.createElement("tr");
