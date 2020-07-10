@@ -43,13 +43,12 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveInputElementBase::put_Label(_In_ HSTRING label) { return m_label.Set(label); }
 
-    HRESULT AdaptiveInputElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseInputElement> sharedCardElement)
+    HRESULT AdaptiveInputElementBase::CopySharedElementProperties(AdaptiveSharedNamespace::BaseInputElement& sharedCardElement)
     {
-        AdaptiveCardElementBase::SetSharedElementProperties(sharedCardElement);
-        sharedCardElement->SetIsRequired(m_isRequired);
-        sharedCardElement->SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
-        sharedCardElement->SetLabel(HStringToUTF8(m_label.Get()));
-
+        AdaptiveCardElementBase::CopySharedElementProperties(sharedCardElement);
+        sharedCardElement.SetIsRequired(m_isRequired);
+        sharedCardElement.SetErrorMessage(HStringToUTF8(m_errorMessage.Get()));
+        sharedCardElement.SetLabel(HStringToUTF8(m_label.Get()));
         return S_OK;
     }
 }

@@ -317,7 +317,7 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
         {
-            adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
+            adaptiveCard->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
@@ -329,13 +329,13 @@ namespace AdaptiveNamespace
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            adaptiveCard->SetSelectAction(sharedAction);
+            adaptiveCard->SetSelectAction(std::move(sharedAction));
         }
 
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 
-        sharedModel = adaptiveCard;
+        sharedModel = std::move(adaptiveCard);
         return S_OK;
     }
 
