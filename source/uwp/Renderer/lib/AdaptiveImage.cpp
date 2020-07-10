@@ -148,13 +148,13 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(image)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*image));
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            image->SetSelectAction(sharedAction);
+            image->SetSelectAction(std::move(sharedAction));
         }
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
@@ -173,7 +173,7 @@ namespace AdaptiveNamespace
         image->SetPixelWidth(m_pixelWidth);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
-        sharedImage = image;
+        sharedImage = std::move(image);
         return S_OK;
     }
     CATCH_RETURN;

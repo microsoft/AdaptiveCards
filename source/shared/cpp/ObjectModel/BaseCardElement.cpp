@@ -106,7 +106,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     return root;
 }
 
-Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction)
 {
     if (selectAction != nullptr)
     {
@@ -130,7 +130,7 @@ void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& con
     auto parsedElement = parser->Deserialize(context, json);
     if (parsedElement != nullptr)
     {
-        element = parsedElement;
+        element = std::move(parsedElement);
         return;
     }
 

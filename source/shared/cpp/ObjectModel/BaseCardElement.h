@@ -47,7 +47,7 @@ namespace AdaptiveSharedNamespace
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     protected:
-        static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
+        static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction);
 
     private:
         void PopulateKnownPropertiesSet();

@@ -261,7 +261,7 @@
               "version": "1.0"
             }
           ],
-          "description": "Specifies the background image of the card.",
+          "description": "Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF",
           "version": "1.2"
         },
         "minHeight": {
@@ -322,7 +322,7 @@
           "items": {
             "$ref": "#/definitions/ImplementationsOf.Action"
           },
-          "description": "The array of `Image` elements to show."
+          "description": "The array of `Action` elements to show."
         },
         "fallback": {},
         "height": {},
@@ -371,7 +371,7 @@
               "description": "The URL (or data url) to use as the background image. Supports data URI."
             }
           ],
-          "description": "Specifies the background image.",
+          "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
           "version": "1.2"
         },
         "bleed": {
@@ -583,7 +583,7 @@
               "description": "The URL (or data url) to use as the background image. Supports data URI."
             }
           ],
-          "description": "Specifies the background image.",
+          "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
           "version": "1.2"
         },
         "minHeight": {
@@ -677,7 +677,7 @@
       ]
     },
     "Image": {
-      "description": "Displays an image.",
+      "description": "Displays an image. Acceptable formats are PNG, JPEG, and GIF",
       "properties": {
         "type": {
           "enum": [
@@ -787,7 +787,7 @@
       ]
     },
     "ImageSet": {
-      "description": "The ImageSet displays a collection of Images similar to a gallery.",
+      "description": "The ImageSet displays a collection of Images similar to a gallery. Acceptable formats are PNG, JPEG, and GIF",
       "properties": {
         "type": {
           "enum": [
@@ -804,7 +804,8 @@
         },
         "imageSize": {
           "$ref": "#/definitions/ImageSize",
-          "description": "Controls the approximate size of each image. The physical dimensions will vary per host."
+          "default": "medium",
+          "description": "Controls the approximate size of each image. The physical dimensions will vary per host. Auto and stretch are not supported for ImageSet. The size will default to medium if those values are set."
         },
         "fallback": {},
         "height": {},
@@ -831,7 +832,7 @@
       "anyOf": [
         {
           "type": "string",
-          "description": "Text to display"
+          "description": "Text to display. Markdown is not supported."
         },
         {
           "type": "object",
@@ -844,7 +845,7 @@
             },
             "text": {
               "type": "string",
-              "description": "Text to display"
+              "description": "Text to display. Markdown is not supported."
             },
             "color": {
               "$ref": "#/definitions/Colors",
@@ -982,11 +983,11 @@
         },
         "max": {
           "type": "string",
-          "description": "Hint of maximum value expressed in ISO-8601 format (may be ignored by some clients)."
+          "description": "Hint of maximum value expressed in YYYY-MM-DD(may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "Hint of minimum value expressed in ISO-8601 format (may be ignored by some clients)."
+          "description": "Hint of minimum value expressed in YYYY-MM-DD(may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
@@ -994,7 +995,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for this field expressed in ISO-8601 format."
+          "description": "The initial value for this field expressed in YYYY-MM-DD."
         },
         "id": {},
         "errorMessage": {},
@@ -1086,7 +1087,8 @@
           "description": "Regular expression indicating the required format of this text input."
         },
         "style": {
-          "$ref": "#/definitions/TextInputStyle"
+          "$ref": "#/definitions/TextInputStyle",
+          "description": "Style hint for text input."
         },
         "inlineAction": {
           "$ref": "#/definitions/ImplementationsOf.ISelectAction",
@@ -1127,11 +1129,11 @@
         },
         "max": {
           "type": "string",
-          "description": "Hint of maximum value (may be ignored by some clients)."
+          "description": "Hint of maximum value expressed in HH:MM (may be ignored by some clients)."
         },
         "min": {
           "type": "string",
-          "description": "Hint of minimum value (may be ignored by some clients)."
+          "description": "Hint of minimum value expressed in HH:MM (may be ignored by some clients)."
         },
         "placeholder": {
           "type": "string",
@@ -1139,7 +1141,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The initial value for this field expressed in ISO-8601 format."
+          "description": "The initial value for this field expressed in HH:MM."
         },
         "id": {},
         "errorMessage": {},
@@ -1347,7 +1349,7 @@
         },
         "text": {
           "type": "string",
-          "description": "Text to display"
+          "description": "Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures)"
         },
         "color": {
           "$ref": "#/definitions/Colors",
@@ -1677,7 +1679,7 @@
       ]
     },
     "BackgroundImage": {
-      "description": "Specifies a background image.",
+      "description": "Specifies a background image. Acceptable formats are PNG, JPEG, and GIF",
       "properties": {
         "type": {
           "enum": [
@@ -1688,7 +1690,7 @@
         "url": {
           "type": "string",
           "format": "uri-reference",
-          "description": "The URL (or data url) of the image."
+          "description": "The URL (or data url) of the image. Acceptable formats are PNG, JPEG, and GIF"
         },
         "fillMode": {
           "$ref": "#/definitions/ImageFillMode",
