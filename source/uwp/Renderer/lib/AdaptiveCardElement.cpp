@@ -161,29 +161,29 @@ namespace AdaptiveNamespace
         return StringToJsonObject(sharedModel->Serialize(), result);
     }
 
-    HRESULT AdaptiveCardElementBase::SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement)
+    HRESULT AdaptiveCardElementBase::CopySharedElementProperties(AdaptiveSharedNamespace::BaseCardElement& sharedCardElement)
     {
-        sharedCardElement->SetId(HStringToUTF8(m_id.Get()));
-        sharedCardElement->SetSeparator(m_separator);
-        sharedCardElement->SetIsVisible(m_isVisible);
-        sharedCardElement->SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
-        sharedCardElement->SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
-        sharedCardElement->SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
+        sharedCardElement.SetId(HStringToUTF8(m_id.Get()));
+        sharedCardElement.SetSeparator(m_separator);
+        sharedCardElement.SetIsVisible(m_isVisible);
+        sharedCardElement.SetSpacing(static_cast<AdaptiveSharedNamespace::Spacing>(m_spacing));
+        sharedCardElement.SetHeight(static_cast<AdaptiveSharedNamespace::HeightType>(m_height));
+        sharedCardElement.SetFallbackType(MapUwpFallbackTypeToShared(m_fallbackType));
 
-        RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement->GetRequirements()));
+        RETURN_IF_FAILED(GenerateSharedRequirements(m_requirements.Get(), sharedCardElement.GetRequirements()));
 
         if (m_fallbackType == ABI::AdaptiveNamespace::FallbackType::Content)
         {
             std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> fallbackSharedModel;
             RETURN_IF_FAILED(GenerateSharedElement(m_fallbackContent.Get(), fallbackSharedModel));
-            sharedCardElement->SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
+            sharedCardElement.SetFallbackContent(std::static_pointer_cast<AdaptiveSharedNamespace::BaseElement>(fallbackSharedModel));
         }
 
         if (m_additionalProperties != nullptr)
         {
             Json::Value jsonCpp;
             RETURN_IF_FAILED(JsonObjectToJsonCpp(m_additionalProperties.Get(), &jsonCpp));
-            sharedCardElement->SetAdditionalProperties(jsonCpp);
+            sharedCardElement.SetAdditionalProperties(std::move(jsonCpp));
         }
 
         return S_OK;

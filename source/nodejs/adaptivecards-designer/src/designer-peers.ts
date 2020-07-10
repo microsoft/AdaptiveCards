@@ -1260,7 +1260,7 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 }
 
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly methodProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_0,
         "method",
@@ -1308,7 +1308,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {

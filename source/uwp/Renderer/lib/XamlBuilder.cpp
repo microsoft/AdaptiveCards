@@ -343,7 +343,6 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
         RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
-        std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
 
         HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
