@@ -27,6 +27,7 @@ public class BaseCardElement extends BaseElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -127,7 +128,7 @@ public class BaseCardElement extends BaseElement {
     AdaptiveCardObjectModelJNI.BaseCardElement_ParseJsonObject(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json, BaseElement.getCPtr(element), element);
   }
 
-  public Object swigOriginalObject() {
+  public java.lang.Object swigOriginalObject() {
     return AdaptiveCardObjectModelJNI.BaseCardElement_swigOriginalObject(swigCPtr, this);
   }
 

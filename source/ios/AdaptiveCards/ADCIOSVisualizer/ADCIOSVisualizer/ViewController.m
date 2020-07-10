@@ -51,11 +51,28 @@ const CGFloat kAdaptiveCardsWidth = 330;
     if (!self.editView) {
         CGRect desiredDimension = filebrowserView.frame;
         self.editView = [[UITextView alloc] initWithFrame:desiredDimension textContainer:nil];
+
         [self.view addSubview:self.editView];
         self.editView.directionalLockEnabled = NO;
         self.editView.showsHorizontalScrollIndicator = YES;
+        self.editView.keyboardType = UIKeyboardTypeAlphabet;
+
+        CGRect frame = CGRectMake(0, 0, self.editView.frame.size.width, 30);
+        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+        UIBarButtonItem *flexSpace =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                          target:nil
+                                                          action:nil];
+        UIBarButtonItem *doneButton =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                          target:self
+                                                          action:@selector(dismissKeyboard)];
+        [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
+        [toolBar sizeToFit];
+        self.editView.inputAccessoryView = toolBar;
     }
     self.editView.hidden = NO;
+    self.editView.delegate = self;
 
     NSMutableAttributedString *content =
         [[NSMutableAttributedString alloc] initWithString:self.editableStr];
@@ -65,9 +82,26 @@ const CGFloat kAdaptiveCardsWidth = 330;
     [content addAttributes:@{NSParagraphStyleAttributeName : para} range:NSMakeRange(0, 1)];
     self.editView.attributedText = content;
     UIFontDescriptor *dec = self.editView.font.fontDescriptor;
-    self.editView.font = [UIFont fontWithDescriptor:dec size:8];
+    self.editView.font = [UIFont fontWithDescriptor:dec size:15];
     self.editView.layer.borderWidth = 0.8;
     filebrowserView.hidden = YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    [textView resignFirstResponder];
+    return YES;
+}
+
+- (void)dismissKeyboard {
+    [self.editView resignFirstResponder];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    [textView resignFirstResponder];
 }
 
 - (IBAction)toggleCustomRenderer:(id)sender
@@ -113,9 +147,16 @@ const CGFloat kAdaptiveCardsWidth = 330;
     self.compositeFileBrowserView.hidden = NO;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
+                         @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
+                         @"\"1.2\", \"body\": [ {"
+                         @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
+                         @"\"weight\": \"Bolder\", \"color\": "
+                         @"\"Attention\", \"horizontalAlignment\": \"Center\""
+                         @"} ] }";
+    _errorCard = [ACOAdaptiveCard fromJson:errorMSG];
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
@@ -209,7 +250,9 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
     // custon renderer button
     self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.enableCustomRendererButton setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [self.enableCustomRendererButton
+        setContentCompressionResistancePriority:UILayoutPriorityDefaultLow
+                                        forAxis:UILayoutConstraintAxisHorizontal];
     [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer"
                                      forState:UIControlStateNormal];
     [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0 / 255
@@ -244,7 +287,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
     buttonLayout.distribution = UIStackViewDistributionEqualCentering;
     buttonLayout.spacing = 10;
 
-
     _scrView = [[UIScrollView alloc] init];
     _scrView.showsHorizontalScrollIndicator = NO;
 
@@ -266,8 +308,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-
-    [self update:self.ACVTabVC.userSelectedJSon];
 }
 
 - (void)didReceiveMemoryWarning
@@ -282,30 +322,32 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig
                                                             resourceResolvers:_resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if (cardParseResult.isValid) {
-        ACRRegistration *registration = [ACRRegistration getInstance];
 
-        NSString *type = @"ProgressBar";
-        CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
-        [registration setCustomElementParser:progressBarParser key:type];
-
-        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementRenderer:progressBarRenderer key:type];
-
-        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
-        NSString *type1 = @"NewStyle";
-        [registration setCustomActionElementParser:customParser key:type1];
-
-        CustomActionNewTypeRenderer *customActionRenderer =
-            [CustomActionNewTypeRenderer getInstance];
-        [registration setCustomActionRenderer:customActionRenderer key:type1];
-
-        _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card
-                                    config:hostconfigParseResult.config
-                           widthConstraint:kAdaptiveCardsWidth
-                                  delegate:self];
+    if (!cardParseResult.isValid) {
+        cardParseResult = _errorCard;
     }
+
+    ACRRegistration *registration = [ACRRegistration getInstance];
+
+    NSString *type = @"ProgressBar";
+    CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+    [registration setCustomElementParser:progressBarParser key:type];
+
+    CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
+    [registration setCustomElementRenderer:progressBarRenderer key:type];
+
+    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+    NSString *type1 = @"NewStyle";
+    [registration setCustomActionElementParser:customParser key:type1];
+
+    CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+    [registration setCustomActionRenderer:customActionRenderer key:type1];
+
+    _config = hostconfigParseResult.config;
+    renderResult = [ACRRenderer render:cardParseResult.card
+                                config:hostconfigParseResult.config
+                       widthConstraint:kAdaptiveCardsWidth
+                              delegate:self];
 
     if (renderResult.succeeded) {
         ACRView *ad = renderResult.view;
@@ -387,8 +429,13 @@ const CGFloat kAdaptiveCardsWidth = 330;
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"successfully rendered new button type" message:newType.alertMessage preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+            UIAlertController *alertController =
+                [UIAlertController alertControllerWithTitle:@"successfully rendered new button type"
+                                                    message:newType.alertMessage
+                                             preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss"
+                                                                style:UIAlertActionStyleDefault
+                                                              handler:nil]];
             newType.alertController = alertController;
             [self presentViewController:alertController animated:YES completion:nil];
         }

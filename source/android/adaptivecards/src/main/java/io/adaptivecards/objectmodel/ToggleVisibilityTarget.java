@@ -25,6 +25,7 @@ public class ToggleVisibilityTarget {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

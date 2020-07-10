@@ -21,6 +21,7 @@ public class InlineVector extends java.util.AbstractList<Inline> implements java
     return (obj == null) ? 0 : obj.swigCPtr;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
@@ -106,24 +107,20 @@ public class InlineVector extends java.util.AbstractList<Inline> implements java
     AdaptiveCardObjectModelJNI.InlineVector_clear(swigCPtr, this);
   }
 
-  public InlineVector(int count) {
-    this(AdaptiveCardObjectModelJNI.new_InlineVector__SWIG_2(count), true);
-  }
-
   public InlineVector(int count, Inline value) {
-    this(AdaptiveCardObjectModelJNI.new_InlineVector__SWIG_3(count, Inline.getCPtr(value), value), true);
+    this(AdaptiveCardObjectModelJNI.new_InlineVector__SWIG_2(count, Inline.getCPtr(value), value), true);
   }
 
   private int doSize() {
     return AdaptiveCardObjectModelJNI.InlineVector_doSize(swigCPtr, this);
   }
 
-  private void doAdd(Inline value) {
-    AdaptiveCardObjectModelJNI.InlineVector_doAdd__SWIG_0(swigCPtr, this, Inline.getCPtr(value), value);
+  private void doAdd(Inline x) {
+    AdaptiveCardObjectModelJNI.InlineVector_doAdd__SWIG_0(swigCPtr, this, Inline.getCPtr(x), x);
   }
 
-  private void doAdd(int index, Inline value) {
-    AdaptiveCardObjectModelJNI.InlineVector_doAdd__SWIG_1(swigCPtr, this, index, Inline.getCPtr(value), value);
+  private void doAdd(int index, Inline x) {
+    AdaptiveCardObjectModelJNI.InlineVector_doAdd__SWIG_1(swigCPtr, this, index, Inline.getCPtr(x), x);
   }
 
   private Inline doRemove(int index) {
@@ -136,8 +133,8 @@ public class InlineVector extends java.util.AbstractList<Inline> implements java
     return (cPtr == 0) ? null : new Inline(cPtr, true);
   }
 
-  private Inline doSet(int index, Inline value) {
-    long cPtr = AdaptiveCardObjectModelJNI.InlineVector_doSet(swigCPtr, this, index, Inline.getCPtr(value), value);
+  private Inline doSet(int index, Inline val) {
+    long cPtr = AdaptiveCardObjectModelJNI.InlineVector_doSet(swigCPtr, this, index, Inline.getCPtr(val), val);
     return (cPtr == 0) ? null : new Inline(cPtr, true);
   }
 
