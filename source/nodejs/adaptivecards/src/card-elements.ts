@@ -868,10 +868,6 @@ export class TextBlock extends BaseTextBlock {
         this._processedText = undefined;
     }
 
-    protected getRenderedDomElementType(): string {
-        return "div";
-    }
-
     protected internalRender(): HTMLElement | undefined {
         this._processedText = undefined;
 
@@ -879,7 +875,18 @@ export class TextBlock extends BaseTextBlock {
             let preProcessedText = this.preProcessPropertyValue(BaseTextBlock.textProperty);
             let hostConfig = this.hostConfig;
 
-            let element = document.createElement(this.getRenderedDomElementType());
+            let element: HTMLElement;
+            
+            if (this.forElementId) {
+                let labelElement = document.createElement("label");
+                labelElement.htmlFor = this.forElementId;
+
+                element = labelElement;
+            }
+            else {
+                element = document.createElement("label");
+            }
+
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
@@ -1037,6 +1044,7 @@ export class TextBlock extends BaseTextBlock {
     }
 
     useMarkdown: boolean = true;
+    forElementId?: string;
 
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
@@ -1100,24 +1108,6 @@ export class TextBlock extends BaseTextBlock {
             this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
     }
-}
-
-class Label extends TextBlock {
-    protected getRenderedDomElementType(): string {
-        return "label";
-    }
-
-    protected internalRender(): HTMLElement | undefined {
-        let renderedElement = <HTMLLabelElement>super.internalRender();
-
-        if (renderedElement && this.forElementId) {
-            renderedElement.htmlFor = this.forElementId;
-        }
-
-        return renderedElement;
-    }
-
-    forElementId: string;
 }
 
 export class TextRun extends BaseTextBlock {
@@ -1294,7 +1284,18 @@ export class RichTextBlock extends CardElement {
 
     protected internalRender(): HTMLElement | undefined {
         if (this._inlines.length > 0) {
-            let element = document.createElement("div");
+            let element: HTMLElement;
+
+            if (this.forElementId) {
+                let labelElement = document.createElement("label");
+                labelElement.htmlFor = this.forElementId;
+
+                element = labelElement;
+            }
+            else {
+                element = document.createElement("div");
+            }
+
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
             let parentContainer = this.getParentContainer();
@@ -1331,6 +1332,8 @@ export class RichTextBlock extends CardElement {
 
         return undefined;
     }
+
+    forElementId?: string;
 
     asString(): string | undefined {
         let result = "";
@@ -2426,9 +2429,12 @@ export abstract class Input extends CardElement implements IInput {
         this._outerContainerElement.style.display = "flex";
         this._outerContainerElement.style.flexDirection = "column";
 
+        let renderedInputControlId = Utils.generateUniqueId();
+
         if (this.label) {
             let labelRichTextBlock = new RichTextBlock();
             labelRichTextBlock.setParent(this);
+            labelRichTextBlock.forElementId = renderedInputControlId;
 
             let labelInline = new TextRun(this.label);
             labelRichTextBlock.addInline(labelInline);
@@ -2463,6 +2469,7 @@ export abstract class Input extends CardElement implements IInput {
         this._renderedInputControlElement = this.internalRender();
 
         if (this._renderedInputControlElement) {
+            this._renderedInputControlElement.id = renderedInputControlId;
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
@@ -2824,7 +2831,7 @@ export class ToggleInput extends Input {
         Utils.appendChild(element, this._checkboxInputElement);
 
         if (this.title || this.isDesignMode()) {
-            let label = new Label();
+            let label = new TextBlock();
             label.setParent(this);
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
@@ -3007,7 +3014,7 @@ export class ChoiceSetInput extends Input {
 
             Utils.appendChild(compoundInput, input);
 
-            let label = new Label();
+            let label = new TextBlock();
             label.setParent(this);
             label.forElementId = input.id;
             label.hostConfig = this.hostConfig;
