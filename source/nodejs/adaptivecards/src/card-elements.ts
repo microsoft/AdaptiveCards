@@ -884,7 +884,7 @@ export class TextBlock extends BaseTextBlock {
                 element = labelElement;
             }
             else {
-                element = document.createElement("label");
+                element = document.createElement("div");
             }
 
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
