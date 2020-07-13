@@ -9013,7 +9013,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetAdditionalProperties(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1SetAdditionalProperties_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_) {
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
@@ -9027,10 +9027,10 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
-    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value && reference is null");
     return ;
   } 
-  (arg1)->SetAdditionalProperties((Json::Value const &)*arg2);
+  (arg1)->SetAdditionalProperties((Json::Value &&)*arg2);
 }
 
 
@@ -9056,7 +9056,7 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   jlong jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement > result;
+  std::shared_ptr< AdaptiveCards::BaseElement > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
@@ -9064,8 +9064,8 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::BaseElement const *)arg1)->GetFallbackContent();
-  *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseElement >(result) : 0; 
+  result = (std::shared_ptr< AdaptiveCards::BaseElement > *) &((AdaptiveCards::BaseElement const *)arg1)->GetFallbackContent();
+  *(std::shared_ptr< AdaptiveCards::BaseElement > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::BaseElement >(*result) : 0; 
   return jresult;
 }
 
@@ -9149,20 +9149,20 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
 }
 
 
-SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1GetRequirements(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_BaseElement_1GetRequirements_1_1SWIG_10(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseElement *arg1 = (AdaptiveCards::BaseElement *) 0 ;
-  std::shared_ptr< AdaptiveCards::BaseElement const > *smartarg1 = 0 ;
-  SwigValueWrapper< std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > > result;
+  std::shared_ptr< AdaptiveCards::BaseElement > *smartarg1 = 0 ;
+  std::unordered_map< std::string,AdaptiveCards::SemanticVersion > *result = 0 ;
   
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   
-  smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseElement > **)&jarg1;
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseElement > **)&jarg1;
   arg1 = (AdaptiveCards::BaseElement *)(smartarg1 ? smartarg1->get() : 0); 
-  result = ((AdaptiveCards::BaseElement const *)arg1)->GetRequirements();
-  *(std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > **)&jresult = new std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > >((const std::shared_ptr< std::unordered_map< std::string,AdaptiveCards::SemanticVersion > > &)result); 
+  result = (std::unordered_map< std::string,AdaptiveCards::SemanticVersion > *) &(arg1)->GetRequirements();
+  *(std::unordered_map< std::string,AdaptiveCards::SemanticVersion > **)&jresult = result; 
   return jresult;
 }
 

@@ -368,14 +368,14 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long BaseElement_SerializeToJsonValue(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_SerializeToJsonValueSwigExplicitBaseElement(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetAdditionalProperties(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_SetAdditionalProperties(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
+  public final static native void BaseElement_SetAdditionalProperties__SWIG_0(long jarg1, BaseElement jarg1_, long jarg2, JsonValue jarg2_);
   public final static native int BaseElement_GetFallbackType(long jarg1, BaseElement jarg1_);
   public final static native long BaseElement_GetFallbackContent(long jarg1, BaseElement jarg1_);
   public final static native boolean BaseElement_CanFallbackToAncestor(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_SetFallbackType(long jarg1, BaseElement jarg1_, int jarg2);
   public final static native void BaseElement_SetFallbackContent(long jarg1, BaseElement jarg1_, long jarg2, BaseElement jarg2_);
   public final static native boolean BaseElement_MeetsRequirements(long jarg1, BaseElement jarg1_, long jarg2, FeatureRegistration jarg2_);
-  public final static native long BaseElement_GetRequirements(long jarg1, BaseElement jarg1_);
+  public final static native long BaseElement_GetRequirements__SWIG_0(long jarg1, BaseElement jarg1_);
   public final static native void BaseElement_GetResourceInformation(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_GetResourceInformationSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseElement_director_connect(BaseElement obj, long cptr, boolean mem_own, boolean weak_global);

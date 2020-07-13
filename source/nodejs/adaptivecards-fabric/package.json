@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-fabric",
-	"version": "1.0.4",
+	"version": "1.0.5",
 	"description": "Adaptive Cards Office Fabric based extension",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -35,8 +35,8 @@
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
 	"peerDependencies": {
-		"adaptivecards": "^1.1.0",
 		"@fluentui/react": "^7.121.2",
+		"adaptivecards": "^1.1.0",
 		"react": "^16.8.6",
 		"react-dom": "^16.8.6"
 	},
@@ -73,6 +73,5 @@
 		"modulePathIgnorePatterns": [
 			"TestUtils"
 		]
-	},
-	"dependencies": {}
+	}
 }
