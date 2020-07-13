@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AdaptiveCards.Templating
@@ -43,6 +44,30 @@ namespace AdaptiveCards.Templating
             /// <param name="rootDataContext">root data context</param>
             public DataContext(JToken jtoken, JToken rootDataContext)
             {
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
+            /// </summary>
+            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
+            /// <param name="text">json in string</param>
+            /// <param name="rootDataContext">a root data context</param>
+            public DataContext(string text, JToken rootDataContext)
+            {
+                // disable date parsing handling
+                var jsonReader = new JsonTextReader(new StringReader(text)) { DateParseHandling = DateParseHandling.None };
+                var jtoken = JToken.Load(jsonReader);
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// Initializer method that takes jtoken and root data context to initialize a data context object
+            /// </summary>
+            /// <param name="jtoken">current data context</param>
+            /// <param name="rootDataContext">root data context</param>
+            private void Init(JToken jtoken, JToken rootDataContext)
+            {
                 AELMemory = (jtoken is JObject) ? new SimpleObjectMemory(jtoken) : new SimpleObjectMemory(new JObject());
 
                 token = jtoken;
@@ -55,16 +80,6 @@ namespace AdaptiveCards.Templating
 
                 AELMemory.SetValue(dataKeyword, token);
                 AELMemory.SetValue(rootKeyword, rootDataContext);
-            }
-
-            /// <summary>
-            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
-            /// </summary>
-            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
-            /// <param name="text">json in string</param>
-            /// <param name="rootDataContext">a root data context</param>
-            public DataContext(string text, JToken rootDataContext) : this(JToken.Parse(text), rootDataContext)
-            {
             }
 
             /// <summary>
@@ -94,7 +109,8 @@ namespace AdaptiveCards.Templating
                 // set data as root data context
                 try
                 {
-                    root = JToken.Parse(data);
+                    var jsonReader = new JsonTextReader(new StringReader(data)) { DateParseHandling = DateParseHandling.None };
+                    root = JToken.Load(jsonReader);
                     PushDataContext(data, root);
                 }
                 catch (JsonException innerException)
