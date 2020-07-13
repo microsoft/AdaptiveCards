@@ -25,6 +25,7 @@ public class FeatureRegistration {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

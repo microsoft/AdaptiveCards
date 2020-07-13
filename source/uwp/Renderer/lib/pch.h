@@ -16,6 +16,7 @@
 #define AdaptivePointerCast dynamic_pointer_cast
 #endif
 
+#define DISABLE_NS_PREFIX_CHECKS 1
 #include <wrl.h>
 #include <wrl\wrappers\corewrappers.h>
 #include <unordered_map>
