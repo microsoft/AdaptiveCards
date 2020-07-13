@@ -1,16 +1,17 @@
 {
 	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
 	"extends": "Element",
-	"description": "The ImageSet displays a collection of Images similar to a gallery.",
+	"description": "The ImageSet displays a collection of Images similar to a gallery. Acceptable formats are PNG, JPEG, and GIF",
 	"properties": {
 		"images": {
 			"type": "Image[]",
-      "description": "The array of `Image` elements to show.",
-      "required": true
-    },
-    "imageSize": {
+			"description": "The array of `Image` elements to show.",
+			"required": true
+		},
+		"imageSize": {
 			"type": "ImageSize",
-			"description": "Controls the approximate size of each image. The physical dimensions will vary per host."
-    }
+			"default":"medium",
+			"description": "Controls the approximate size of each image. The physical dimensions will vary per host. Auto and stretch are not supported for ImageSet. The size will default to medium if those values are set."
+		}
 	}
 }

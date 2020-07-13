@@ -44,8 +44,8 @@ export const defaultConfigPayload: string = `{
 			"subtle": "#DD00FF00"
 		},
 		"warning": {
-			"normal": "#FF0000",
-			"subtle": "#DDFF0000"
+			"normal": "#ED0000",
+			"subtle": "#DDED0000"
 		}
 	},
 	"imageSizes": {

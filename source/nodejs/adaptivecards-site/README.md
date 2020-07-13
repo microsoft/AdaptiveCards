@@ -41,7 +41,7 @@ Microsoft properties have a standard header/footer that is provided by the UHF A
 ## Install and Build
 
 ### Prerequisites
-Ensure that you've bootstrapped the repo following instructions [here](https://github.com/microsoft/AdaptiveCards/tree/master/source/nodejs#build). Note that since we use lerna to manage our node project, the instructions below reference lerna commands rather than raw npm commands for consistency.
+Ensure that you've bootstrapped the repo following instructions [here](https://github.com/microsoft/AdaptiveCards/tree/main/source/nodejs#build). Note that since we use lerna to manage our node project, the instructions below reference lerna commands rather than raw npm commands for consistency.
 
 ### Build & Generate
 

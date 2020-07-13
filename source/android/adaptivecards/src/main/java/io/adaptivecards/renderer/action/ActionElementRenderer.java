@@ -178,6 +178,11 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         RenderedAdaptiveCard renderedCard,
         RenderArgs renderArgs)
     {
+        TypedValue buttonStyle = new TypedValue();
+        if (baseActionElement.GetElementType() == ActionType.ShowCard && context.getTheme().resolveAttribute(R.attr.adaptiveShowCardAction, buttonStyle, true)) {
+            context = new ContextThemeWrapper(context, buttonStyle.data);
+        }
+
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
         button.setText(baseActionElement.GetTitle());

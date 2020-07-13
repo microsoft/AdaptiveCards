@@ -75,7 +75,7 @@ DateTimePreparser Fact::GetValueForDateParsing() const
     return DateTimePreparser(m_value);
 }
 
-std::string Fact::GetLanguage() const
+const std::string& Fact::GetLanguage() const
 {
     return m_language;
 }

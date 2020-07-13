@@ -364,7 +364,7 @@ namespace AdaptiveCards.Templating
                 {
                     ITerminalNode[] stringChildren = templatedStringContext.STRING();
                     // if ther are no string tokens, we do not quates
-                    if (stringChildren.Length == 0)
+                    if (stringChildren.Length == 0 && HasDataContext())
                     {
                         result.Append(ExpandTemplatedString(templatedStringContext.TEMPLATELITERAL(), true));
                         return result;
@@ -470,6 +470,7 @@ namespace AdaptiveCards.Templating
                 // parse obj
                 AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LCB().GetText());
                 var whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated;
+                bool isPairAdded = false;
 
                 for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
@@ -478,17 +479,25 @@ namespace AdaptiveCards.Templating
                     if (pair != dataPair)
                     {
                         var returnedResult = Visit(pair);
+
+                        // add a delimiter, e.g ',' before appending
+                        // a pair after first pair is added
+                        if (isPairAdded && !returnedResult.IsWhen)
+                        {
+                            result.Append(jsonPairDelimieter);
+                        }
+
+                        result.Append(returnedResult);
+
                         if (returnedResult.IsWhen)
                         {
                             whenEvaluationResult = returnedResult.WhenEvaluationResult;
                         }
-                        result.Append(returnedResult);
-
-                        // add a delimiter, ','
-                        if (iPair != pairs.Length - 1 && !returnedResult.IsWhen)
+                        else
                         {
-                            result.Append(jsonPairDelimieter);
+                            isPairAdded = true;
                         }
+
                     }
                 }
 
@@ -609,17 +618,17 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                if (value is string && isTemplatedString)
+                // this can be little counterintuitive, but template expand() is
+                // modifying serialized json string, so we serialize what's deserialized
+                var serializedValue = JsonConvert.SerializeObject(value);
+                if (!isTemplatedString && value is string)
                 {
-                    result.Append("\"");
+                    // length can not be less than 2 because template string will 
+                    // always have start and end token
+                    serializedValue = serializedValue.Substring(1, serializedValue.Length - 2);
                 }
 
-                result.Append(value.ToString());
-
-                if (value is string && isTemplatedString)
-                {
-                    result.Append("\"");
-                }
+                result.Append(serializedValue);
             }
             else
             {

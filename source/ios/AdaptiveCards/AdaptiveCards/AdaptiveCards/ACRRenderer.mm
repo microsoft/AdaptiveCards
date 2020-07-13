@@ -179,7 +179,7 @@ using namespace AdaptiveCards;
     auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
-        if (*firstelem != elem) {
+        if (*firstelem != elem && curStretchableElem) {
             ACRSeparator *separator = [ACRSeparator renderSeparation:elem
                                                         forSuperview:view
                                                       withHostConfig:[config getHostConfig]];
@@ -202,7 +202,7 @@ using namespace AdaptiveCards;
             }
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
 
-            if (elem->GetHeight() == HeightType::Stretch) {
+            if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
                 // vertical stretch works in the following way:
                 // an ui element that will be stretched will be contained in a new superview.
                 // additional trailing view is added to the superview at the bottom

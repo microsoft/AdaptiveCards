@@ -27,6 +27,7 @@ public class ChoiceSetInput extends BaseInputElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

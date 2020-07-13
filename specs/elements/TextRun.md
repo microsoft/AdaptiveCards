@@ -7,7 +7,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"TextRun"` | Yes | Must be `"TextRun"`. | 1.2 |
-| **text** | `string` | Yes | Text to display | 1.2 |
+| **text** | `string` | Yes | Text to display. Markdown is not supported. | 1.2 |
 | **color** | `Colors` | No | Controls the color of the text. | 1.2 |
 | **fontType** | `FontType` | No | The type of font to use | 1.2 |
 | **highlight** | `boolean` | No | If `true`, displays the text highlighted. | 1.2 |

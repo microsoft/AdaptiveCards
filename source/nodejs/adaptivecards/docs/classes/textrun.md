@@ -34,6 +34,7 @@
 * [size](textrun.md#size)
 * [spacing](textrun.md#spacing)
 * [strikethrough](textrun.md#strikethrough)
+* [underline](textrun.md#underline)
 * [weight](textrun.md#weight)
 * [colorProperty](textrun.md#static-colorproperty)
 * [fontTypeProperty](textrun.md#static-fonttypeproperty)
@@ -54,6 +55,7 @@
 * [strikethroughProperty](textrun.md#static-strikethroughproperty)
 * [textProperty](textrun.md#static-textproperty)
 * [typeNameProperty](textrun.md#static-typenameproperty)
+* [underlineProperty](textrun.md#static-underlineproperty)
 * [weightProperty](textrun.md#static-weightproperty)
 
 ### Accessors
@@ -302,6 +304,12 @@ ___
 
 ___
 
+###  underline
+
+• **underline**: *boolean* = false
+
+___
+
 ###  weight
 
 • **weight**: *[TextWeight](../enums/textweight.md)* = Enums.TextWeight.Default
@@ -496,6 +504,12 @@ ___
         })
 
 *Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+
+___
+
+### `Static` underlineProperty
+
+▪ **underlineProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "underline", false)
 
 ___
 
