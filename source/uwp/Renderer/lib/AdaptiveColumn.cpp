@@ -163,7 +163,7 @@ namespace AdaptiveNamespace
     try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Column> column = std::make_shared<AdaptiveSharedNamespace::Column>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(column)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*column));
 
         column->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         column->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
@@ -184,19 +184,19 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
         {
-            column->SetBackgroundImage(sharedBackgroundImage);
+            column->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            column->SetSelectAction(sharedAction);
+            column->SetSelectAction(std::move(sharedAction));
         }
 
         GenerateSharedElements(m_items.Get(), column->GetItems());
 
-        sharedModel = column;
+        sharedModel = std::move(column);
         return S_OK;
     }
     CATCH_RETURN;

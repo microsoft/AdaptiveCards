@@ -27,6 +27,7 @@ public class ToggleInputParser extends BaseCardElementParser {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

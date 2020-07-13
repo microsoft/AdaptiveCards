@@ -25,6 +25,7 @@ public class ActionElementParser {
     swigCMemOwn = own;
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }
