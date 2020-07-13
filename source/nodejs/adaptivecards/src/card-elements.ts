@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
@@ -2389,9 +2389,23 @@ export abstract class Input extends CardElement implements IInput {
     private _renderedLabelElement?: HTMLElement;
     private _renderedInputControlElement?: HTMLElement;
 
-    private updateInputControlAriaLabelledBy() {
+    protected getAllLabelIds(): string[] {
+        let labelIds: string[] = [];
+
+        if (this._renderedLabelElement) {
+            labelIds.push(this._renderedLabelElement.id);
+        }
+
+        if (this._renderedErrorMessageElement) {
+            labelIds.push(this._renderedErrorMessageElement.id);
+        }
+
+        return labelIds;
+    }
+
+    protected updateInputControlAriaLabelledBy() {
         if (this._renderedInputControlElement) {
-            let labelIds: string[] = [];
+            let labelIds: string[] = this.getAllLabelIds();
 
             if (this._renderedLabelElement) {
                 labelIds.push(this._renderedLabelElement.id);
@@ -2796,6 +2810,24 @@ export class ToggleInput extends Input {
     //#endregion
 
     private _checkboxInputElement: HTMLInputElement;
+    private _checkboxInputLabelElement: HTMLElement | undefined;
+
+    protected updateInputControlAriaLabelledBy() {
+        if (this._checkboxInputElement) {
+            let joinedLabelIds = this.getAllLabelIds().join(" ");
+
+            if (this._checkboxInputLabelElement && this._checkboxInputLabelElement.id) {
+                joinedLabelIds += " " + this._checkboxInputLabelElement.id;
+            }
+
+            if (joinedLabelIds) {
+                this._checkboxInputElement.setAttribute("aria-labelledby", joinedLabelIds);
+            }
+            else {
+                this._checkboxInputElement.removeAttribute("aria-labelledby");
+            }
+        }
+    }
 
     protected internalRender(): HTMLElement | undefined {
         let element = document.createElement("div");
@@ -2839,19 +2871,20 @@ export class ToggleInput extends Input {
             label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
             label.wrap = this.wrap;
 
-            let labelElement = label.render();
+            this._checkboxInputLabelElement = label.render();
 
-            if (labelElement) {
-                labelElement.style.display = "inline-block";
-                labelElement.style.flex = "1 1 auto";
-                labelElement.style.marginLeft = "6px";
-                labelElement.style.verticalAlign = "middle";
+            if (this._checkboxInputLabelElement) {
+                this._checkboxInputLabelElement.id = Utils.generateUniqueId();
+                this._checkboxInputLabelElement.style.display = "inline-block";
+                this._checkboxInputLabelElement.style.flex = "1 1 auto";
+                this._checkboxInputLabelElement.style.marginLeft = "6px";
+                this._checkboxInputLabelElement.style.verticalAlign = "middle";
 
                 let spacerElement = document.createElement("div");
                 spacerElement.style.width = "6px";
 
                 Utils.appendChild(element, spacerElement);
-                Utils.appendChild(element, labelElement);
+                Utils.appendChild(element, this._checkboxInputLabelElement);
             }
         }
 
@@ -2864,6 +2897,12 @@ export class ToggleInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.Toggle";
+    }
+
+    focus() {
+        if (this._checkboxInputElement) {
+            this._checkboxInputElement.focus();
+        }
     }
 
     isSet(): boolean {
@@ -2968,6 +3007,7 @@ export class ChoiceSetInput extends Input {
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: HTMLInputElement[];
+    private _labels: Array<HTMLElement | undefined>;
 
     private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
@@ -2975,6 +3015,7 @@ export class ChoiceSetInput extends Input {
         element.style.width = "100%";
 
         this._toggleInputs = [];
+        this._labels = [];
 
         for (let choice of this.choices) {
             let input = document.createElement("input");
@@ -3024,7 +3065,10 @@ export class ChoiceSetInput extends Input {
 
             let labelElement = label.render();
 
+            this._labels.push(labelElement);
+
             if (labelElement) {
+                labelElement.id = Utils.generateUniqueId();
                 labelElement.style.display = "inline-block";
                 labelElement.style.flex = "1 1 auto";
                 labelElement.style.marginLeft = "6px";
@@ -3041,6 +3085,31 @@ export class ChoiceSetInput extends Input {
         }
 
         return element;
+    }
+
+    protected updateInputControlAriaLabelledBy() {
+        if (this.isMultiSelect || this.style === "expanded") {
+            let labelIds: string[] = this.getAllLabelIds();
+
+            for (let i = 0; i < this._toggleInputs.length; i++) {
+                let joinedLabelIds = labelIds.join(" ");
+                let label = this._labels[i];
+
+                if (label && label.id) {
+                    joinedLabelIds += " " + label.id;
+                }
+
+                if (joinedLabelIds) {
+                    this._toggleInputs[i].setAttribute("aria-labelledby", joinedLabelIds);
+                }
+                else {
+                    this._toggleInputs[i].removeAttribute("aria-labelledby");
+                }
+            }
+        }
+        else {
+            super.updateInputControlAriaLabelledBy();
+        }
     }
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -3122,6 +3191,17 @@ export class ChoiceSetInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
+    }
+
+    focus() {
+        if (this.isMultiSelect || this.style === "expanded") {
+            if (this._toggleInputs.length > 0) {
+                this._toggleInputs[0].focus();
+            }
+        }
+        else {
+            super.focus();
+        }
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -3262,11 +3342,11 @@ export class NumberInput extends Input {
 
         let result = true;
 
-        if (this.min) {
+        if (this.min !== undefined) {
             result = result && (this.value >= this.min);
         }
 
-        if (this.max) {
+        if (this.max !== undefined) {
             result = result && (this.value <= this.max);
         }
 
