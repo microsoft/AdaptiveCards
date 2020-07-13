@@ -93,11 +93,6 @@ public abstract class BaseInputHandler implements IInputHandler
         }
     }
 
-    public void setFocusToView()
-    {
-        m_view.requestFocus();
-    }
-
     protected BaseInputElement m_baseInputElement = null;
     protected View m_view = null;
     private StretchableInputLayout m_inputLayout = null;

@@ -357,11 +357,13 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BaseElement__SWIG_1(long jarg1, BaseElement jarg1_);
   public final static native void delete_BaseElement(long jarg1);
   public final static native String BaseElement_GetElementTypeString(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_SetElementTypeString(long jarg1, BaseElement jarg1_, String jarg2);
+  public final static native void BaseElement_SetElementTypeString__SWIG_0(long jarg1, BaseElement jarg1_, long jarg2);
+  public final static native void BaseElement_SetElementTypeString__SWIG_1(long jarg1, BaseElement jarg1_, String jarg2);
   public final static native String BaseElement_GetId(long jarg1, BaseElement jarg1_);
-  public final static native String BaseElement_GetIdSwigExplicitBaseElement(long jarg1, BaseElement jarg1_);
-  public final static native void BaseElement_SetId(long jarg1, BaseElement jarg1_, String jarg2);
-  public final static native void BaseElement_SetIdSwigExplicitBaseElement(long jarg1, BaseElement jarg1_, String jarg2);
+  public final static native void BaseElement_SetId__SWIG_0(long jarg1, BaseElement jarg1_, long jarg2);
+  public final static native void BaseElement_SetIdSwigExplicitBaseElement__SWIG_0(long jarg1, BaseElement jarg1_, long jarg2);
+  public final static native void BaseElement_SetId__SWIG_1(long jarg1, BaseElement jarg1_, String jarg2);
+  public final static native void BaseElement_SetIdSwigExplicitBaseElement__SWIG_1(long jarg1, BaseElement jarg1_, String jarg2);
   public final static native long BaseElement_GetInternalId(long jarg1, BaseElement jarg1_);
   public final static native String BaseElement_Serialize(long jarg1, BaseElement jarg1_);
   public final static native String BaseElement_SerializeSwigExplicitBaseElement(long jarg1, BaseElement jarg1_);
@@ -399,11 +401,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void BaseCardElement_SetSpacing(long jarg1, BaseCardElement jarg1_, int jarg2);
   public final static native void BaseCardElement_SetSpacingSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, int jarg2);
   public final static native boolean BaseCardElement_GetIsVisible(long jarg1, BaseCardElement jarg1_);
-  public final static native boolean BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_SetIsVisible(long jarg1, BaseCardElement jarg1_, boolean jarg2);
-  public final static native void BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_, boolean jarg2);
   public final static native int BaseCardElement_GetElementType(long jarg1, BaseCardElement jarg1_);
-  public final static native int BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(long jarg1, BaseCardElement jarg1_);
   public final static native void BaseCardElement_ParseJsonObject(long jarg1, ParseContext jarg1_, long jarg2, JsonValue jarg2_, long jarg3, BaseElement jarg3_);
   public final static native java.lang.Object BaseCardElement_swigOriginalObject(long jarg1, BaseCardElement jarg1_);
   public final static native long BaseCardElement_dynamic_cast(long jarg1, BaseElement jarg1_);
@@ -414,19 +413,17 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long new_BaseActionElement__SWIG_2(long jarg1, BaseActionElement jarg1_);
   public final static native void delete_BaseActionElement(long jarg1);
   public final static native String BaseActionElement_GetTitle(long jarg1, BaseActionElement jarg1_);
-  public final static native String BaseActionElement_GetTitleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetTitle(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native void BaseActionElement_SetTitleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetTitle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTitleSwigExplicitBaseActionElement__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetTitle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetTitleSwigExplicitBaseActionElement__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetIconUrl(long jarg1, BaseActionElement jarg1_);
-  public final static native String BaseActionElement_GetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetIconUrl(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native void BaseActionElement_SetIconUrlSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetIconUrl__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetIconUrl__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native String BaseActionElement_GetStyle(long jarg1, BaseActionElement jarg1_);
-  public final static native String BaseActionElement_GetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
-  public final static native void BaseActionElement_SetStyle(long jarg1, BaseActionElement jarg1_, String jarg2);
-  public final static native void BaseActionElement_SetStyleSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, String jarg2);
+  public final static native void BaseActionElement_SetStyle__SWIG_0(long jarg1, BaseActionElement jarg1_, long jarg2);
+  public final static native void BaseActionElement_SetStyle__SWIG_1(long jarg1, BaseActionElement jarg1_, String jarg2);
   public final static native int BaseActionElement_GetElementType(long jarg1, BaseActionElement jarg1_);
-  public final static native int BaseActionElement_GetElementTypeSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_);
   public final static native void BaseActionElement_GetResourceInformation(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native void BaseActionElement_GetResourceInformationSwigExplicitBaseActionElement(long jarg1, BaseActionElement jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long BaseActionElement_SerializeToJsonValue(long jarg1, BaseActionElement jarg1_);
@@ -1452,10 +1449,10 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long TextRun_SWIGSmartPtrUpcast(long jarg1);
   public final static native long RichTextElementProperties_SWIGSmartPtrUpcast(long jarg1);
 
-  public static String SwigDirector_BaseElement_GetId(BaseElement jself) {
-    return jself.GetId();
+  public static void SwigDirector_BaseElement_SetId__SWIG_0(BaseElement jself, long value) {
+    jself.SetId(new SWIGTYPE_p_std__string(value, false));
   }
-  public static void SwigDirector_BaseElement_SetId(BaseElement jself, String value) {
+  public static void SwigDirector_BaseElement_SetId__SWIG_1(BaseElement jself, String value) {
     jself.SetId(value);
   }
   public static String SwigDirector_BaseElement_Serialize(BaseElement jself) {
@@ -1467,10 +1464,10 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseElement_GetResourceInformation(BaseElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
   }
-  public static String SwigDirector_BaseCardElement_GetId(BaseCardElement jself) {
-    return jself.GetId();
+  public static void SwigDirector_BaseCardElement_SetId__SWIG_0(BaseCardElement jself, long value) {
+    jself.SetId(new SWIGTYPE_p_std__string(value, false));
   }
-  public static void SwigDirector_BaseCardElement_SetId(BaseCardElement jself, String value) {
+  public static void SwigDirector_BaseCardElement_SetId__SWIG_1(BaseCardElement jself, String value) {
     jself.SetId(value);
   }
   public static String SwigDirector_BaseCardElement_Serialize(BaseCardElement jself) {
@@ -1494,19 +1491,10 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseCardElement_SetSpacing(BaseCardElement jself, int value) {
     jself.SetSpacing(Spacing.swigToEnum(value));
   }
-  public static boolean SwigDirector_BaseCardElement_GetIsVisible(BaseCardElement jself) {
-    return jself.GetIsVisible();
+  public static void SwigDirector_BaseActionElement_SetId__SWIG_0(BaseActionElement jself, long value) {
+    jself.SetId(new SWIGTYPE_p_std__string(value, false));
   }
-  public static void SwigDirector_BaseCardElement_SetIsVisible(BaseCardElement jself, boolean value) {
-    jself.SetIsVisible(value);
-  }
-  public static int SwigDirector_BaseCardElement_GetElementType(BaseCardElement jself) {
-    return (jself.GetElementType()).swigValue();
-  }
-  public static String SwigDirector_BaseActionElement_GetId(BaseActionElement jself) {
-    return jself.GetId();
-  }
-  public static void SwigDirector_BaseActionElement_SetId(BaseActionElement jself, String value) {
+  public static void SwigDirector_BaseActionElement_SetId__SWIG_1(BaseActionElement jself, String value) {
     jself.SetId(value);
   }
   public static String SwigDirector_BaseActionElement_Serialize(BaseActionElement jself) {
@@ -1518,26 +1506,11 @@ public class AdaptiveCardObjectModelJNI {
   public static void SwigDirector_BaseActionElement_GetResourceInformation(BaseActionElement jself, long resourceUris) {
     jself.GetResourceInformation(new RemoteResourceInformationVector(resourceUris, false));
   }
-  public static String SwigDirector_BaseActionElement_GetTitle(BaseActionElement jself) {
-    return jself.GetTitle();
+  public static void SwigDirector_BaseActionElement_SetTitle__SWIG_0(BaseActionElement jself, long value) {
+    jself.SetTitle(new SWIGTYPE_p_std__string(value, false));
   }
-  public static void SwigDirector_BaseActionElement_SetTitle(BaseActionElement jself, String value) {
+  public static void SwigDirector_BaseActionElement_SetTitle__SWIG_1(BaseActionElement jself, String value) {
     jself.SetTitle(value);
-  }
-  public static String SwigDirector_BaseActionElement_GetIconUrl(BaseActionElement jself) {
-    return jself.GetIconUrl();
-  }
-  public static void SwigDirector_BaseActionElement_SetIconUrl(BaseActionElement jself, String value) {
-    jself.SetIconUrl(value);
-  }
-  public static String SwigDirector_BaseActionElement_GetStyle(BaseActionElement jself) {
-    return jself.GetStyle();
-  }
-  public static void SwigDirector_BaseActionElement_SetStyle(BaseActionElement jself, String value) {
-    jself.SetStyle(value);
-  }
-  public static int SwigDirector_BaseActionElement_GetElementType(BaseActionElement jself) {
-    return (jself.GetElementType()).swigValue();
   }
   public static long SwigDirector_ActionElementParser_Deserialize(ActionElementParser jself, long context, long value) {
     return BaseActionElement.getCPtr(jself.Deserialize((context == 0) ? null : new ParseContext(context, true), new JsonValue(value, false)));
