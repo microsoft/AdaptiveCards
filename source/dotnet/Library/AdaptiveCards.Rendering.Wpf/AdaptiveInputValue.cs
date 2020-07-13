@@ -19,6 +19,14 @@ namespace AdaptiveCards.Rendering.Wpf
         {
             InputElement = input;
             RenderedInputElement = renderedInput;
+            VisualElementForAccessibility = renderedInput;
+        }
+
+        public AdaptiveInputValue(AdaptiveInput input, UIElement renderedInput, UIElement visualElementForAccessibility)
+        {
+            InputElement = input;
+            RenderedInputElement = renderedInput;
+            VisualElementForAccessibility = visualElementForAccessibility;
         }
 
         public abstract string GetValue();
@@ -40,7 +48,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     helpText = ErrorMessage.Text;
                 }
-                AutomationProperties.SetHelpText(RenderedInputElement, helpText);
+
+                AutomationProperties.SetHelpText(VisualElementForAccessibility, helpText);
             }
         }
 
@@ -49,6 +58,8 @@ namespace AdaptiveCards.Rendering.Wpf
         public UIElement RenderedInputElement { get; set; }
 
         public TextBlock ErrorMessage { private get; set; }
+
+        public UIElement VisualElementForAccessibility { get; set; }
     }
 
     /// <summary>
@@ -57,6 +68,9 @@ namespace AdaptiveCards.Rendering.Wpf
     public abstract class AdaptiveInputValueNonEmptyValidation : AdaptiveInputValue
     {
         public AdaptiveInputValueNonEmptyValidation(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
+
+        public AdaptiveInputValueNonEmptyValidation(AdaptiveInput input, UIElement renderedInput, UIElement visualElementForAccessibility) :
+            base(input, renderedInput, visualElementForAccessibility) { }
 
         public override bool Validate()
         {
@@ -313,7 +327,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
     public class AdaptiveChoiceSetInputValue : AdaptiveInputValueNonEmptyValidation
     {
+        private UIElement uIElement;
+
         public AdaptiveChoiceSetInputValue(AdaptiveChoiceSetInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
+
+        public AdaptiveChoiceSetInputValue(AdaptiveChoiceSetInput inputElement, UIElement renderedElement, UIElement uIElement) : base(inputElement, renderedElement, uIElement) { }
 
         public override string GetValue()
         {
