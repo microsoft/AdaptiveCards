@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -349,7 +350,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
 
-        imageLoaderAsync.execute(image.GetUrl());
+        imageLoaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, image.GetUrl());
 
         TagContent tagContent = new TagContent(image, separator, viewGroup);
 

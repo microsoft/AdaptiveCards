@@ -4,6 +4,7 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
@@ -206,7 +207,7 @@ public class AdaptiveCardRenderer
                 loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
             }
 
-            loaderAsync.execute(backgroundImageProperties.GetUrl());
+            loaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, backgroundImageProperties.GetUrl());
         }
 
         BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
