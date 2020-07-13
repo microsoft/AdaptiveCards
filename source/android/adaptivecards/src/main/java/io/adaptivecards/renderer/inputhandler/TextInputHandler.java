@@ -51,4 +51,8 @@ public class TextInputHandler extends BaseInputHandler
         return isValid;
     }
 
+    public void setFocusToView()
+    {
+        m_view.requestFocus();
+    }
 }

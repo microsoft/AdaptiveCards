@@ -6,6 +6,7 @@ import android.content.Context;
 import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -73,6 +74,7 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
             checkBox.setLines(1);
             checkBox.setEllipsize(TextUtils.TruncateAt.END);
         }
+
         toggleInputHandler.setView(checkBox);
 
         TagContent tagContent = new TagContent(toggleInput, toggleInputHandler);
@@ -94,6 +96,9 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         {
             checkBox.setChecked(true);
         }
+
+        checkBox.setOnTouchListener(new ChoiceSetInputRenderer.FocusableChoiceListener<CheckBox>(checkBox));
+
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()
         {
             @Override
