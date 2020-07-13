@@ -27,6 +27,7 @@ public class DateInput extends BaseInputElement {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

@@ -27,6 +27,7 @@ public class ActionElementParserWrapper extends ActionElementParser {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

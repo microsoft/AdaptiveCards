@@ -1,5 +1,10 @@
 <resources>
 
+    <!-- Sample style definitions -->
+    <style name="adaptiveShowCardAction" parent="@style/Widget.AppCompat.Button.Colored">
+        <item name="android:drawableEnd">@drawable/show_card_arrow</item>
+    </style>
+
     <style name="adaptiveActionPositive" parent="@style/Widget.AppCompat.Button.Colored">
         <item name="android:colorAccent">@color/actionPositive</item>
     </style>
@@ -29,13 +34,15 @@
         <item name="editTextBackground">@drawable/border</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
-        <!-- Example on how to define your own style for Positive and Destructive Actions -->
-        <!--
+        <!-- Add your custom styles (samples defined above) for use by the AdaptiveCards SDK
+
         <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
         <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
         <item name="adaptiveInlineAction">@style/adaptiveInlineAction</item>
-        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item> -->
+        <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item>
+        <item name="adaptiveShowCardAction">@style/adaptiveShowCardAction</item>
 
+        -->
 
     </style>
 

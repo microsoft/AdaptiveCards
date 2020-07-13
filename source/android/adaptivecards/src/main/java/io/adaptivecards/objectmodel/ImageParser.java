@@ -27,6 +27,7 @@ public class ImageParser extends BaseCardElementParser {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

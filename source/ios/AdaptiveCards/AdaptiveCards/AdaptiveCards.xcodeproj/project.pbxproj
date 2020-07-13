@@ -61,6 +61,7 @@
 		6B5D2419212E1CF80010EB07 /* checked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2415212E1CF70010EB07 /* checked.png */; };
 		6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2416212E1CF70010EB07 /* unchecked-checkbox-24.png */; };
 		6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2417212E1CF70010EB07 /* unchecked.png */; };
+		6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B616C3F21CB1878003E29CE /* ACRToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B616C3D21CB1878003E29CE /* ACRToggleVisibilityTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */; };
 		6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1277,6 +1278,7 @@
 				F4C1F5EB1F2ABD6B0018CB78 /* ACRBaseActionElementRenderer.h in Headers */,
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
+				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

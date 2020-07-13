@@ -252,7 +252,7 @@ namespace AdaptiveNamespace::ActionHelpers
                                                  actionSentiment.Get(),
                                                  actionSentimentStyle.GetAddressOf()));
             RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(
-                renderContext, StringToWstring(HStringToUTF8(actionSentimentStyle.Get())), buttonFrameworkElement));
+                renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
         }
         return S_OK;
     }

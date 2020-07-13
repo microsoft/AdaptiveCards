@@ -27,6 +27,7 @@ public class TextRun extends Inline {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

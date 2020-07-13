@@ -140,7 +140,7 @@ void TextBlock::SetHorizontalAlignment(const HorizontalAlignment value)
     m_hAlignment = value;
 }
 
-std::string TextBlock::GetLanguage() const
+const std::string& TextBlock::GetLanguage() const
 {
     return m_textElementProperties->GetLanguage();
 }
