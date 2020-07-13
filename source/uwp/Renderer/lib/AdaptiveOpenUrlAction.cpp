@@ -64,7 +64,7 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::OpenUrlAction> openUrlAction =
             std::make_shared<AdaptiveSharedNamespace::OpenUrlAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(openUrlAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*openUrlAction));
 
         if (m_url != nullptr)
         {
@@ -76,7 +76,7 @@ namespace AdaptiveNamespace
             openUrlAction->SetUrl(urlString);
         }
 
-        sharedModel = openUrlAction;
+        sharedModel = std::move(openUrlAction);
         return S_OK;
     }
     CATCH_RETURN;

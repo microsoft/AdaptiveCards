@@ -46,7 +46,7 @@ namespace AdaptiveNamespace
         mediaSource->SetMimeType(HStringToUTF8(m_mimeType.Get()));
         mediaSource->SetUrl(HStringToUTF8(m_url.Get()));
 
-        sharedMediaSource = mediaSource;
+        sharedMediaSource = std::move(mediaSource);
         return S_OK;
     }
     CATCH_RETURN;

@@ -70,14 +70,14 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(timeInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*timeInput));
 
         timeInput->SetMax(HStringToUTF8(m_max.Get()));
         timeInput->SetMin(HStringToUTF8(m_min.Get()));
         timeInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         timeInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = timeInput;
+        sharedModel = std::move(timeInput);
 
         return S_OK;
     }
