@@ -90,6 +90,9 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             Image image = imageVector.get(i);
 
             // TODO: temporary - this will be handled in the object model
+            if(imageSize != ImageSize.Small && imageSize != ImageSize.Medium && imageSize != ImageSize.Large) {
+                imageSize = ImageSize.Medium;
+            }
             image.SetImageSize(imageSize);
 
             try
