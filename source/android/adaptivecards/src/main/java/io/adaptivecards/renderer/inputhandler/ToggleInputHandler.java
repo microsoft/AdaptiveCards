@@ -54,4 +54,11 @@ public class ToggleInputHandler extends BaseInputHandler
 
         return isValid;
     }
+
+    @Override
+    public void setFocusToView()
+    {
+        m_view.setFocusableInTouchMode(true);
+        m_view.requestFocus();
+    }
 }
