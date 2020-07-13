@@ -81,7 +81,7 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::ToggleInput> toggleInput =
             std::make_shared<AdaptiveSharedNamespace::ToggleInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(toggleInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*toggleInput));
 
         toggleInput->SetTitle(HStringToUTF8(m_title.Get()));
         toggleInput->SetValue(HStringToUTF8(m_value.Get()));
@@ -89,7 +89,7 @@ namespace AdaptiveNamespace
         toggleInput->SetValueOff(HStringToUTF8(m_valueOff.Get()));
         toggleInput->SetWrap(m_wrap);
 
-        sharedModel = toggleInput;
+        sharedModel = std::move(toggleInput);
 
         return S_OK;
     }

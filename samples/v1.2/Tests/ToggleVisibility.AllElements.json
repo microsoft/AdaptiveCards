@@ -10,10 +10,21 @@
 			"selectAction": {
 				"type": "Action.ToggleVisibility",
 				"targetElements": [
-					"id2"
+					"id2", "id10"
 				]
 			}
 		},
+        {
+            "type": "ActionSet",
+			"isVisible": false,
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "ActionSet Toggle Test"
+                }
+            ],
+            "id": "id10"
+        },
 		{
 			"type": "Container",
 			"id": "id2",
