@@ -10,9 +10,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACRInputLabelView">
             <connections>
-                <outlet property="errorMessageLabel" destination="UhI-YL-bG4" id="prf-YL-C9M"/>
-                <outlet property="label" destination="1Ch-uc-lfs" id="HZR-yx-GE6"/>
-                <outlet property="stackview" destination="KI8-l7-2VL" id="aTM-LY-iFb"/>
+                <outlet property="errorMessage" destination="UhI-YL-bG4" id="mY3-fQ-LVc"/>
+                <outlet property="label" destination="1Ch-uc-lfs" id="BEl-KZ-Pwn"/>
+                <outlet property="stack" destination="KI8-l7-2VL" id="bWt-JH-cgW"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>

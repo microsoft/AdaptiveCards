@@ -50,6 +50,8 @@
 		6B2242B422334492000ACDA1 /* Inline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242B322334492000ACDA1 /* Inline.cpp */; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B27CD6324BD343C00C0F90F /* ACRInputTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */; };
+		6B27CD6624BD52D600C0F90F /* ACRInputLabelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B27CD6724BD52D600C0F90F /* ACRInputLabelView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B27CD6524BD52D600C0F90F /* ACRInputLabelView.mm */; };
 		6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */ = {isa = PBXBuildFile; fileRef = F4F44B6A203FA8EF00A2F24C /* ACRUILabel.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B3787BA20CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */; };
 		6B3787BB20CB3E0E00015401 /* ACRContentHoldingUIScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -64,10 +66,6 @@
 		6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5D2417212E1CF70010EB07 /* unchecked.png */; };
 		6B5E9CBF24B84E7300757882 /* ACRTextEmailField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBE24B84E7300757882 /* ACRTextEmailField.xib */; };
 		6B5E9CC124B8541800757882 /* ACRInputLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CC024B8541800757882 /* ACRInputLabelView.xib */; };
-		6B5E9CCE24B9474200757882 /* ACRChoiceSetCellChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CCA24B9474100757882 /* ACRChoiceSetCellChecked.xib */; };
-		6B5E9CCF24B9474200757882 /* ACRChoiceSetCellCompactUnChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CCB24B9474100757882 /* ACRChoiceSetCellCompactUnChecked.xib */; };
-		6B5E9CD024B9474200757882 /* ACRChoiceSetCellUnChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CCC24B9474200757882 /* ACRChoiceSetCellUnChecked.xib */; };
-		6B5E9CD124B9474200757882 /* ACRChoiceSetCellCompactChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CCD24B9474200757882 /* ACRChoiceSetCellCompactChecked.xib */; };
 		6B616C3F21CB1878003E29CE /* ACRToggleVisibilityTarget.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B616C3D21CB1878003E29CE /* ACRToggleVisibilityTarget.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */; };
 		6B616C4321CB20D2003E29CE /* ACRActionToggleVisibilityRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -392,6 +390,8 @@
 		6B2242B322334492000ACDA1 /* Inline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Inline.cpp; path = ../../../../shared/cpp/ObjectModel/Inline.cpp; sourceTree = "<group>"; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRInputTableView.xib; sourceTree = "<group>"; };
+		6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelView.h; sourceTree = "<group>"; };
+		6B27CD6524BD52D600C0F90F /* ACRInputLabelView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRInputLabelView.mm; sourceTree = "<group>"; };
 		6B3787B820CB3E0E00015401 /* ACRContentHoldingUIScrollView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRContentHoldingUIScrollView.mm; sourceTree = "<group>"; };
 		6B3787B920CB3E0E00015401 /* ACRContentHoldingUIScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRContentHoldingUIScrollView.h; sourceTree = "<group>"; };
 		6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACORemoteResourceInformationPrivate.h; sourceTree = "<group>"; };
@@ -403,10 +403,6 @@
 		6B5D2417212E1CF70010EB07 /* unchecked.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = unchecked.png; sourceTree = "<group>"; };
 		6B5E9CBE24B84E7300757882 /* ACRTextEmailField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRTextEmailField.xib; sourceTree = "<group>"; };
 		6B5E9CC024B8541800757882 /* ACRInputLabelView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRInputLabelView.xib; sourceTree = "<group>"; };
-		6B5E9CCA24B9474100757882 /* ACRChoiceSetCellChecked.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRChoiceSetCellChecked.xib; sourceTree = "<group>"; };
-		6B5E9CCB24B9474100757882 /* ACRChoiceSetCellCompactUnChecked.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRChoiceSetCellCompactUnChecked.xib; sourceTree = "<group>"; };
-		6B5E9CCC24B9474200757882 /* ACRChoiceSetCellUnChecked.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRChoiceSetCellUnChecked.xib; sourceTree = "<group>"; };
-		6B5E9CCD24B9474200757882 /* ACRChoiceSetCellCompactChecked.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRChoiceSetCellCompactChecked.xib; sourceTree = "<group>"; };
 		6B616C3D21CB1878003E29CE /* ACRToggleVisibilityTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRToggleVisibilityTarget.h; sourceTree = "<group>"; };
 		6B616C3E21CB1878003E29CE /* ACRToggleVisibilityTarget.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleVisibilityTarget.mm; sourceTree = "<group>"; };
 		6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionToggleVisibilityRenderer.h; sourceTree = "<group>"; };
@@ -965,6 +961,8 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */,
+				6B27CD6524BD52D600C0F90F /* ACRInputLabelView.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
 				F495FC082022A18F0093D4DE /* ACRChoiceSetViewDataSource.mm */,
 				F495FC0D2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.h */,
@@ -1116,10 +1114,6 @@
 				6B9AB30120D32A89005C8E15 /* ACRButton.xib */,
 				6BF1D1C724AAD3FE00B3EFA2 /* ACRButtonExpandable.xib */,
 				6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */,
-				6B5E9CCA24B9474100757882 /* ACRChoiceSetCellChecked.xib */,
-				6B5E9CCD24B9474200757882 /* ACRChoiceSetCellCompactChecked.xib */,
-				6B5E9CCB24B9474100757882 /* ACRChoiceSetCellCompactUnChecked.xib */,
-				6B5E9CCC24B9474200757882 /* ACRChoiceSetCellUnChecked.xib */,
 				F460324420758583006C5358 /* ACRDatePicker.xib */,
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
 				6B5E9CC024B8541800757882 /* ACRInputLabelView.xib */,
@@ -1141,6 +1135,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B27CD6624BD52D600C0F90F /* ACRInputLabelView.h in Headers */,
 				6BBE841923CD184D00ECA586 /* ACREnums.h in Headers */,
 				6BBE841F23CE60E300ECA586 /* ACRMediaRenderer.h in Headers */,
 				6BBE841B23CD184D00ECA586 /* ACOWarning.h in Headers */,
@@ -1394,20 +1389,16 @@
 				6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */,
 				6BF4307C219126CD0068E432 /* ACRQuickActionMultilineView.xib in Resources */,
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
-				6B5E9CD124B9474200757882 /* ACRChoiceSetCellCompactChecked.xib in Resources */,
 				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
 				6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */,
 				6B5D241A212E1CF80010EB07 /* unchecked-checkbox-24.png in Resources */,
 				6B5D2419212E1CF80010EB07 /* checked.png in Resources */,
-				6B5E9CD024B9474200757882 /* ACRChoiceSetCellUnChecked.xib in Resources */,
 				F4603238207575C7006C5358 /* ACRLabelView.xib in Resources */,
 				F460324720759519006C5358 /* ACRDateTextField.xib in Resources */,
-				6B5E9CCF24B9474200757882 /* ACRChoiceSetCellCompactUnChecked.xib in Resources */,
 				6BE8DFD2249C45C9005EFE66 /* ACRToggleInputView.xib in Resources */,
 				F460324120757F38006C5358 /* ACRTextField.xib in Resources */,
 				6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */,
 				6BF1D1C824AAD3FE00B3EFA2 /* ACRButtonExpandable.xib in Resources */,
-				6B5E9CCE24B9474200757882 /* ACRChoiceSetCellChecked.xib in Resources */,
 				6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */,
 				6B5E9CBF24B84E7300757882 /* ACRTextEmailField.xib in Resources */,
 				6B5E9CC124B8541800757882 /* ACRInputLabelView.xib in Resources */,
@@ -1461,6 +1452,7 @@
 				7EF8879E21F14CDD00BAFF02 /* BackgroundImage.cpp in Sources */,
 				300ECB63219A12D100371DC5 /* AdaptiveBase64Util.cpp in Sources */,
 				F4F44B8E204A145200A2F24C /* ACOBaseCardElement.mm in Sources */,
+				6B27CD6724BD52D600C0F90F /* ACRInputLabelView.mm in Sources */,
 				6B9BDF7F20F40D1000F13155 /* ACOResourceResolvers.mm in Sources */,
 				F42741291EFB374A00399FBB /* ACRColumnSetRenderer.mm in Sources */,
 				F448731C1EE2261F00FCAFAE /* ParseUtil.cpp in Sources */,

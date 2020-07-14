@@ -5,6 +5,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACRInputLabelView.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -12,6 +13,7 @@
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
+#import "BaseInputElement.h"
 #import "UnknownAction.h"
 #import <UIKit/UIKit.h>
 
@@ -72,3 +74,7 @@ UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementP
 ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_ptr<UnknownAction> action);
 
 UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> const &config, ACRContainerStyle style, ForegroundColor textColor = ForegroundColor::Default, bool isSubtle = false);
+
+unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config);
+
+ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup);
