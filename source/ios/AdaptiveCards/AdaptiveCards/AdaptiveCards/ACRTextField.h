@@ -2,7 +2,7 @@
 //  ACRTextField
 //  ACRTextField.h
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ACOBaseCardElement.h"
@@ -15,4 +15,13 @@
 @property NSUInteger maxLength;
 
 - (void)dismissNumPad;
+@end
+
+@interface ACRTextEmailField : ACRTextField
+@end
+
+@interface ACRTextTelelphoneField : ACRTextField
+@end
+
+@interface ACRTextUrlField : ACRTextField
 @end

@@ -12,6 +12,11 @@
 
 @implementation ACRTextField
 
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    return [super initWithCoder:coder];
+}
+
 - (BOOL)validate:(NSError **)error
 {
     if (self.isRequired && !self.hasText) {
@@ -52,4 +57,13 @@
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return newLength <= _maxLength;
 }
+@end
+
+@implementation ACRTextEmailField : ACRTextField
+@end
+
+@implementation ACRTextTelelphoneField : ACRTextField
+@end
+
+@implementation ACRTextUrlField : ACRTextField
 @end

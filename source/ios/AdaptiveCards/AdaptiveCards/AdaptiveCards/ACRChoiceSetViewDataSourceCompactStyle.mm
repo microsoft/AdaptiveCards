@@ -111,6 +111,7 @@ static NSString *pickerCell = @"pickerCell";
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.backgroundColor = UIColor.clearColor;
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         UIPickerView *pickerView = nil;
@@ -127,7 +128,6 @@ static NSString *pickerCell = @"pickerCell";
         pickerView.hidden = NO;
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
-    cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
     return cell;
 }
 

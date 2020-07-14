@@ -45,18 +45,17 @@
     choiceSetView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
     NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
 
-    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedCheckboxReuseID];
-    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedCheckboxReuseID];
-    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
-    [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
-
     if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
-        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
-        [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+        ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
     }
+
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellUnChecked" bundle:bundle] forCellReuseIdentifier:uncheckedCheckboxReuseID];
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellChecked" bundle:bundle] forCellReuseIdentifier:checkedCheckboxReuseID];
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactChecked" bundle:bundle] forCellReuseIdentifier:checkedRadioButtonReuseID];
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactUnChecked" bundle:bundle] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;

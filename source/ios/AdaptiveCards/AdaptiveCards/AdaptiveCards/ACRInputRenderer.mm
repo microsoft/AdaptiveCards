@@ -14,6 +14,7 @@
 #import "ACRAggregateTarget.h"
 #import "ACRButton.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelView.h"
 #import "ACRQuickReplyMultilineView.h"
 #import "ACRQuickReplyView.h"
 #import "ACRSeparator.h"
@@ -112,23 +113,21 @@
             inputview = txtInput;
         }
 
-        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
-                                                      encoding:NSUTF8StringEncoding];
-        txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                         encoding:NSUTF8StringEncoding];
-        txtInput.maxLength = inputBlck->GetMaxLength();
-        txtInput.placeholder = placeHolderStr;
-        txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        txtInput.allowsEditingTextAttributes = YES;
-        txtInput.isRequired = inputBlck->GetIsRequired();
-
         switch (inputBlck->GetTextInputStyle()) {
             case TextInputStyle::Text: {
                 txtInput.keyboardType = UIKeyboardTypeAlphabet;
                 break;
             }
             case TextInputStyle::Email: {
-                txtInput.keyboardType = UIKeyboardTypeEmailAddress;
+                if (renderAction) {
+                    txtInput.keyboardType = UIKeyboardTypeEmailAddress;
+                } else {
+                    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+                    txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
+                    txtInput.delegate = txtInput;
+                    inputview = txtInput;
+                }
+
                 break;
             }
             case TextInputStyle::Tel: {
@@ -151,90 +150,116 @@
                 break;
             }
         }
-    }
+        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+                                                      encoding:NSUTF8StringEncoding];
+        txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                         encoding:NSUTF8StringEncoding];
+        txtInput.maxLength = inputBlck->GetMaxLength();
+        txtInput.placeholder = placeHolderStr;
+        txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+        txtInput.allowsEditingTextAttributes = YES;
+        txtInput.isRequired = inputBlck->GetIsRequired();
+        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
+        AdaptiveCards::InputsConfig inputConfig = config->GetInputs();
+        AdaptiveCards::InputLabelConfig *pLabelConfig = nil;
+        pLabelConfig = (inputBlck->GetIsRequired()) ? &inputConfig.label.requiredInputs : &inputConfig.label.optionalInputs;
 
-    [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        TextElementProperties textElementProperties;
+        textElementProperties.SetTextSize(pLabelConfig->size);
+        textElementProperties.SetTextWeight(pLabelConfig->weight);
+        textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
+        textElementProperties.SetTextColor(pLabelConfig->color);
 
-    if (elem->GetHeight() == HeightType::Stretch) {
-        ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputview];
+        UIFont *font = getFont(acoConfig, textElementProperties);
+        inputLabelView.
+        content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+        [inputLabelView.stackview insertArrangedSubview:txtInput atIndex:1];
+        inputview = inputLabelView;
 
-        // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
-        UIView *blankTrailingSpace = [[UIView alloc] init];
-        [textInputContainer addArrangedSubview:blankTrailingSpace];
-        [textInputContainer adjustHuggingForLastElement];
+        [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
 
-        [viewGroup addArrangedSubview:textInputContainer];
-    } else {
-        [viewGroup addArrangedSubview:inputview];
-    }
+        if (elem->GetHeight() == HeightType::Stretch) {
+            ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
+            [textInputContainer addArrangedSubview:inputview];
 
-    inputview.translatesAutoresizingMaskIntoConstraints = false;
-    NSString *format = [[NSString alloc] initWithFormat:@"H:|-[%%@]-|"];
-    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
-    [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
+            // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
+            UIView *blankTrailingSpace = [[UIView alloc] init];
+            [textInputContainer addArrangedSubview:blankTrailingSpace];
+            [textInputContainer adjustHuggingForLastElement];
 
-    // configures for action
-    if (renderAction) {
-        if (inputBlck->GetIsMultiline()) {
-            [inputs addObject:txtview];
+            [viewGroup addArrangedSubview:textInputContainer];
         } else {
-            [inputs addObject:txtInput];
+            [viewGroup addArrangedSubview:inputview];
         }
-        NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
-        NSDictionary *imageViewMap = [rootView getImageMap];
-        NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-        UIImage *img = imageViewMap[key];
-        button.iconPlacement = ACRNoTitle;
 
-        if (img) {
-            UIImageView *iconView = [[ACRUIImageView alloc] init];
-            iconView.image = img;
-            [button addSubview:iconView];
-            button.iconView = iconView;
-            [button setImageView:img withConfig:acoConfig];
-        } else if (key.length) {
-            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
-            NSString *key = [number stringValue];
-            UIImageView *view = [rootView getImageView:key];
-            if (view && view.image) {
-                button.iconView = view;
-                [button addSubview:view];
-                [button setImageView:view.image withConfig:acoConfig];
+        inputview.translatesAutoresizingMaskIntoConstraints = false;
+        if (inputBlck->GetTextInputStyle() != AdaptiveCards::TextInputStyle::Email) {
+            NSString *format = [[NSString alloc] initWithFormat:@"H:|-[%%@]-|"];
+            NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
+            [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
+        }
+
+        // configures for action
+        if (renderAction) {
+            if (inputBlck->GetIsMultiline()) {
+                [inputs addObject:txtview];
             } else {
-                button.iconView = view;
-                [button addSubview:view];
-                [rootView setImageView:key view:button];
+                [inputs addObject:txtInput];
             }
-            [NSLayoutConstraint constraintWithItem:button
-                                         attribute:NSLayoutAttributeWidth
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:view
-                                         attribute:NSLayoutAttributeWidth
-                                        multiplier:1.0
-                                          constant:0]
-                .active = YES;
+            NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+            NSDictionary *imageViewMap = [rootView getImageMap];
+            NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+            UIImage *img = imageViewMap[key];
+            button.iconPlacement = ACRNoTitle;
 
+            if (img) {
+                UIImageView *iconView = [[ACRUIImageView alloc] init];
+                iconView.image = img;
+                [button addSubview:iconView];
+                button.iconView = iconView;
+                [button setImageView:img withConfig:acoConfig];
+            } else if (key.length) {
+                NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)action.get()];
+                NSString *key = [number stringValue];
+                UIImageView *view = [rootView getImageView:key];
+                if (view && view.image) {
+                    button.iconView = view;
+                    [button addSubview:view];
+                    [button setImageView:view.image withConfig:acoConfig];
+                } else {
+                    button.iconView = view;
+                    [button addSubview:view];
+                    [rootView setImageView:key view:button];
+                }
+                [NSLayoutConstraint constraintWithItem:button
+                                             attribute:NSLayoutAttributeWidth
+                                             relatedBy:NSLayoutRelationEqual
+                                                toItem:view
+                                             attribute:NSLayoutAttributeWidth
+                                            multiplier:1.0
+                                              constant:0]
+                    .active = YES;
+
+            } else {
+                [button setTitle:title forState:UIControlStateNormal];
+            }
+            ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
+            [acoAction setElem:action];
+
+            NSObject *target;
+            if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], action, button, &target)) {
+                if (action->GetElementType() == ActionType::Submit) {
+                    quickReplyView.target = (ACRAggregateTarget *)target;
+                }
+                [viewGroup addTarget:target];
+            }
         } else {
-            [button setTitle:title forState:UIControlStateNormal];
+            [inputs addObject:inputview];
         }
-        ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
-        [acoAction setElem:action];
 
-        NSObject *target;
-        if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], action, button, &target)) {
-            if (action->GetElementType() == ActionType::Submit) {
-                quickReplyView.target = (ACRAggregateTarget *)target;
-            }
-            [viewGroup addTarget:target];
-        }
-    } else {
-        [inputs addObject:inputview];
+        configVisibility(inputview, elem);
+
+        return inputview;
     }
 
-    configVisibility(inputview, elem);
-
-    return inputview;
-}
-
-@end
+    @end
