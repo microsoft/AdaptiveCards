@@ -239,6 +239,22 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
         label.wrap = true;
         label.text = this.label;
 
+        let selectAction = new Adaptive.SubmitAction();
+        selectAction.onExecute = (sender: Adaptive.Action) => {
+            let toolTip = document.createElement("div");
+            toolTip.style.backgroundColor = "red";
+            toolTip.style.width = "150px";
+            toolTip.style.height = "150px";
+            toolTip.style.position = "absolute";
+            toolTip.style.left = "50px";
+            toolTip.style.top = "50px";
+            toolTip.style.zIndex = "100000000";
+
+            document.body.appendChild(toolTip);
+        }
+
+        label.selectAction = selectAction;
+
         let input = this.createInput(context);
         input.onValueChanged = () => {
             this.setPropertyValue(context, input.value);
