@@ -1,16 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-function getAccessor(name: string): string {
+function shouldUseIndexerSyntax(name: string): boolean {
     let regEx = /[a-zA-Z0-9_$]*/;
     let matches = regEx.exec(name);
 
     // If name doesn't only contain letters/digits/_
     // the accessor must use the indexer syntax
-    if (matches && matches[0] === name) {
-        return name;
-    }
-
-    return "[\"" + name + "\"]";
+    return !(matches && matches[0] === name);
 }   
 
 export type ValueType = "String" | "Boolean" | "Number" | "Array" | "Object";
@@ -291,20 +287,33 @@ export class FieldDefinition {
     }
 
     getPath(asLeaf: boolean = true): string {
-        let result: string = getAccessor(this.qualifiedName(asLeaf));
-        let currentField = this.parent;
+        let currentField: FieldDefinition = this;
+        let path: FieldDefinition[] = [];
 
         while (currentField) {
-            let qualifiedName = getAccessor(currentField.qualifiedName(false));
-
-            if (result[0] === "[") {
-                result = qualifiedName + result;
-            }
-            else {
-                result = qualifiedName + "." + result;
-            }
+            path.push(currentField);
 
             currentField = currentField.parent;
+        }
+
+        let result = "";
+        let forceIndexerSyntax: boolean = false;
+
+        for (let i = path.length - 1; i >= 0; i--) {
+            let qualifiedName = path[i].qualifiedName(false)
+
+            if (shouldUseIndexerSyntax(qualifiedName) || forceIndexerSyntax) {
+                qualifiedName = "['" + qualifiedName + "']";
+
+                forceIndexerSyntax = true;
+            }
+            else {
+                if (result) {
+                    result += ".";
+                }
+            }
+
+            result += qualifiedName;
         }
 
         return result;
