@@ -770,6 +770,8 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 export abstract class DesignerPeer extends DraggableElement {
     static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 
+    static onPopulatePropertySheet?: (sender: DesignerPeer, propertySheet: PropertySheet) => void;
+
     private _parent: DesignerPeer;
     private _cardObject: Adaptive.CardObject;
     private _children: Array<DesignerPeer> = [];
@@ -1095,6 +1097,10 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this.populatePropertySheet(propertySheet);
 
+        if (DesignerPeer.onPopulatePropertySheet) {
+            DesignerPeer.onPopulatePropertySheet(this, propertySheet);
+        }
+
         propertySheet.render(
             card,
             new PropertySheetContext(context, this));
@@ -1259,7 +1265,7 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 }
 
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly methodProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_0,
         "method",
@@ -1309,7 +1315,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -1969,7 +1975,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 }
 
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
-    static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
+    static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.ImageSize);
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -2190,11 +2196,11 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
     static readonly validationProperty = new CompoundPropertyEditor(
-        Adaptive.Versions.vNext,
+        Adaptive.Versions.v1_3,
         "validation",
         [
-            new EnumPropertyEditor(Adaptive.Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
+            new EnumPropertyEditor(Adaptive.Versions.v1_3, "necessity", "Necessity", Adaptive.InputValidationNecessity),
+            new StringPropertyEditor(Adaptive.Versions.v1_3, "errorMessage", "Error message")
         ]
     );
 

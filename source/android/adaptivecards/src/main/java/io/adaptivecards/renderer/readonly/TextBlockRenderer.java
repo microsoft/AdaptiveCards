@@ -158,6 +158,11 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
         }
 
+        if (textBlock.GetText().isEmpty())
+        {
+            return null;
+        }
+
         TextView textView = new TextView(context);
 
         View separator = setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);

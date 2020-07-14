@@ -9,16 +9,20 @@ using namespace AdaptiveSharedNamespace;
 
 constexpr const char* const BaseActionElement::defaultStyle;
 
-BaseActionElement::BaseActionElement(ActionType type) :
-    m_style(BaseActionElement::defaultStyle), m_type(type)
+BaseActionElement::BaseActionElement(ActionType type) : m_style(BaseActionElement::defaultStyle), m_type(type)
 {
     SetTypeString(ActionTypeToString(type));
     PopulateKnownPropertiesSet();
 }
 
-std::string BaseActionElement::GetTitle() const
+const std::string& BaseActionElement::GetTitle() const
 {
     return m_title;
+}
+
+void BaseActionElement::SetTitle(std::string&& value)
+{
+    m_title = std::move(value);
 }
 
 void BaseActionElement::SetTitle(const std::string& value)
@@ -26,9 +30,14 @@ void BaseActionElement::SetTitle(const std::string& value)
     m_title = value;
 }
 
-std::string BaseActionElement::GetIconUrl() const
+const std::string& BaseActionElement::GetIconUrl() const
 {
     return m_iconUrl;
+}
+
+void BaseActionElement::SetIconUrl(std::string&& value)
+{
+    m_iconUrl = std::move(value);
 }
 
 void BaseActionElement::SetIconUrl(const std::string& value)
@@ -36,9 +45,14 @@ void BaseActionElement::SetIconUrl(const std::string& value)
     m_iconUrl = value;
 }
 
-std::string BaseActionElement::GetStyle() const
+const std::string& BaseActionElement::GetStyle() const
 {
     return m_style;
+}
+
+void BaseActionElement::SetStyle(std::string&& value)
+{
+    m_style = std::move(value);
 }
 
 void BaseActionElement::SetStyle(const std::string& value)

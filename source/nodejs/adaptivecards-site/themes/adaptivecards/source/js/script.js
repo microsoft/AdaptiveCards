@@ -87,48 +87,48 @@ $(function () {
 				"foregroundColors": {
 					"default": {
 						"default": "#000000",
-						"subtle": "#767676"
+						"subtle": "#6f6f6f"
 					},
 					"accent": {
 						"default": "#0063B1",
 						"subtle": "#0063B1"
 					},
 					"attention": {
-						"default": "#FF0000",
-						"subtle": "#DDFF0000"
+						"default": "#ED0000",
+						"subtle": "#DDED0000"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
-						"default": "#c3ab23",
-						"subtle": "#DDc3ab23"
+						"default": "#B75C00",
+						"subtle": "#DDB75C00"
 					}
 				}
 			},
 			"emphasis": {
-				"backgroundColor": "#F0F0F0",
+				"backgroundColor": "#F9F9F9",
 				"foregroundColors": {
 					"default": {
 						"default": "#000000",
-						"subtle": "#767676"
+						"subtle": "#6f6f6f"
 					},
 					"accent": {
 						"default": "#2E89FC",
 						"subtle": "#882E89FC"
 					},
 					"attention": {
-						"default": "#FF0000",
-						"subtle": "#DDFF0000"
+						"default": "#ED0000",
+						"subtle": "#DDED0000"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
-						"default": "#c3ab23",
-						"subtle": "#DDc3ab23"
+						"default": "#B75C00",
+						"subtle": "#DDB75C00"
 					}
 				}
 			},
@@ -156,8 +156,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -189,8 +189,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -222,8 +222,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -255,8 +255,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -430,6 +430,7 @@ $(function () {
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
@@ -542,6 +543,9 @@ $(function () {
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
 
 	function updateSidebarTopOffset() {
@@ -554,11 +558,9 @@ $(function () {
 
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop).css("bottom", footerHeight - hiddenAfter);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });
