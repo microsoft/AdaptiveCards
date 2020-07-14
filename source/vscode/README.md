@@ -1,26 +1,19 @@
-# Adaptive Cards Viewer for Visual Studio Code
+## Features
+With AdaptiveCards Studio you can author cards directly in Visual Studio Code. 
+The Extension automatically detects all Adaptive Cards in your working space and lets you easily
+edit the card template and sample data. 
 
-![extension](https://adaptivecards.io/content/vscode-extension.png)
+## Extension Settings
 
-## Usage 
-When you are editing a .json file with a adaptive card $schema property you can view by using **Ctrl+Shift+V A**.
+To use the Extension you must configure it first!
 
-```javascript
-{
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "type": "AdaptiveCard",
-    "version": "1.0",
-    "body": [
+This extension contributes the following settings:
 
-    ]
-}
-```
+* `acstudio.defaultHostConfig`    : The HostConfig to be used when rendering cards
+* `acstudio.cmsAccessToken`            : (ALPHA) Access Token for the CMS used
+* `acstudio.cmsAccessUrl`              : (ALPHA) URL To the CMS
+* `acstudio.cmsFolder`                 : (ALPHA) The Folder where to store temporary files for CMS
 
 
-## Changes
-* 2.0 
-** Rewrote to use vscode webViews (loadHtml is deprecated)
-** changed to always use latest published renderer 
-
-* 1.x
-** First version, used hardwired prerelease 0.5 
+## Usage
+Open the Adaptive Cards Panel and select a card.... thats all you have to do :)
