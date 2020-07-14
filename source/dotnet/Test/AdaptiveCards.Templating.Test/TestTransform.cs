@@ -89,6 +89,40 @@ namespace AdaptiveCards.Templating.Test
     ]
 }", cardJson);
         }
+
+        [TestMethod]
+        public void TestBoolConversion()
+        {
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
+            ""$data"": {
+                ""boolValue"" : true
+             },
+            ""body"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Hello"",
+                    ""IsVisible"" : true
+                }
+            ]
+            }";
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello"",
+            ""IsVisible"" : true
+        }
+    ]
+}", cardJson);
+        }
         [TestMethod]
         public void TestEvaluationContext()
         {
