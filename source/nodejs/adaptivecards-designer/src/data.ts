@@ -1,5 +1,18 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+function getAccessor(name: string): string {
+    let regEx = /[a-zA-Z0-9_$]*/;
+    let matches = regEx.exec(name);
+
+    // If name doesn't only contain letters/digits/_
+    // the accessor must use the indexer syntax
+    if (matches && matches[0] === name) {
+        return name;
+    }
+
+    return "[\"" + name + "\"]";
+}   
+
 export type ValueType = "String" | "Boolean" | "Number" | "Array" | "Object";
 
 export interface IStringData {
@@ -278,11 +291,18 @@ export class FieldDefinition {
     }
 
     getPath(asLeaf: boolean = true): string {
-        let result: string = this.qualifiedName(asLeaf);
+        let result: string = getAccessor(this.qualifiedName(asLeaf));
         let currentField = this.parent;
 
         while (currentField) {
-            result = currentField.qualifiedName(false) + "." + result;
+            let qualifiedName = getAccessor(currentField.qualifiedName(false));
+
+            if (result[0] === "[") {
+                result = qualifiedName + result;
+            }
+            else {
+                result = qualifiedName + "." + result;
+            }
 
             currentField = currentField.parent;
         }
