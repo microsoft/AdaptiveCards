@@ -1,8 +1,8 @@
 {
 	"name": "adaptivecardsstudiobeta",
 	"displayName": "Adaptive Card Studio (BETA)",
-	"description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version and might contain bugs )",
-	"version": "0.6.2",
+	"description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version )",
+	"version": "0.6.4",
 	"publisher": "madewithcardsio",
 	"engines": {
 		"vscode": "^1.36.0"
@@ -154,7 +154,7 @@
 	"icon": "icon.png",
 	"galleryBanner": {
 		"color": "#3a96dd",
-		"theme": "light"
+		"theme": "dark"
 	},
 	"bugs": {
 		"url": "https://github.com/Microsoft/AdaptiveCards/issues"

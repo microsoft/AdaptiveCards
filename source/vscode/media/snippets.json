@@ -7,7 +7,7 @@
 	  "    \"text\": \"$0\"",
 	  "},"
 	],
-	"description": "Text Block (min)"
+	"description": "Text Block (full)"
   },"AC Text Block (all options)": {
 	"prefix": "ac-txtfull",
 	"scope": "json",
