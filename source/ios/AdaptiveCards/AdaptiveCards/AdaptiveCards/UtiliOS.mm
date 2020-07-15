@@ -760,6 +760,7 @@ ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shar
     NSMutableAttributedString *attributedLabel = nil;
 
     if (inputBlck->GetIsRequired()) {
+        inputLabelView.isRequired = YES;
         textElementProperties.SetTextSize(pLabelConfig->size);
         textElementProperties.SetTextWeight(pLabelConfig->weight);
         textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
@@ -797,7 +798,9 @@ ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shar
         RichTextElementProperties textElementProperties;
         textElementProperties.SetTextSize(pLabelConfig->size);
         textElementProperties.SetTextWeight(pLabelConfig->weight);
+        textElementProperties.SetTextColor(ForegroundColor::Attention);
         inputLabelView.errorMessage.attributedText = initAttributedText(acoConfig, errorMessage, textElementProperties, viewGroup.style);
+        inputLabelView.hasErrorMessage = YES;
     }
     inputLabelView.errorMessage.hidden = YES;
 

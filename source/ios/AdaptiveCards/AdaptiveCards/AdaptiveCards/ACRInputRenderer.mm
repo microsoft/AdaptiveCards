@@ -39,6 +39,62 @@
     return ACRTextInput;
 }
 
++ (ACRTextField *)configTextFiled:(const std::shared_ptr<TextInput> &)inputBlck renderAction:(BOOL)renderAction rootView:(ACRView *)rootView txtInput:(ACRTextField *)txtInput viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
+{
+    switch (inputBlck->GetTextInputStyle()) {
+        case TextInputStyle::Text: {
+            txtInput.keyboardType = UIKeyboardTypeAlphabet;
+            break;
+        }
+        case TextInputStyle::Email: {
+            if (renderAction) {
+                txtInput.keyboardType = UIKeyboardTypeEmailAddress;
+            } else {
+                NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+                txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
+                txtInput.delegate = txtInput;
+            }
+            
+            break;
+        }
+        case TextInputStyle::Tel: {
+            txtInput.keyboardType = UIKeyboardTypePhonePad;
+            CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
+            UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+            UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+            UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
+            [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
+            [toolBar sizeToFit];
+            txtInput.inputAccessoryView = toolBar;
+            break;
+        }
+        case TextInputStyle::Url: {
+            txtInput.keyboardType = UIKeyboardTypeURL;
+            break;
+        }
+        default: {
+            txtInput.keyboardType = UIKeyboardTypeAlphabet;
+            break;
+        }
+    }
+    
+    NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
+                                                  encoding:NSUTF8StringEncoding];
+    txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
+                                     encoding:NSUTF8StringEncoding];
+    txtInput.maxLength = inputBlck->GetMaxLength();
+    txtInput.placeholder = placeHolderStr;
+    txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+    txtInput.allowsEditingTextAttributes = YES;
+    txtInput.isRequired = inputBlck->GetIsRequired();
+    std::string cpattern = inputBlck->GetRegex();
+    if (!cpattern.empty()) {
+        NSString *pattern = [NSString stringWithCString:cpattern.c_str() encoding:NSUTF8StringEncoding];
+        txtInput.regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
+    }
+    return txtInput;
+}
+
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
            rootView:(ACRView *)rootView
              inputs:(NSMutableArray *)inputs
@@ -88,6 +144,7 @@
                                           constant:0]
                 .active = YES;
             inputview = multilineview;
+            
         } else {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -96,8 +153,10 @@
             txtview.scrollEnabled = NO;
             txtview.keyboardType = UIKeyboardTypeDefault;
             [txtview.layer setCornerRadius:5.0f];
-            inputview = txtview;
+            inputview = txtview;            
         }
+        ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup);
+        inputview = inputLabelView;
     } else {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyView nib for customizable UI
@@ -106,63 +165,20 @@
             button = quickReplyView.button;
             txtInput.delegate = quickReplyView;
             inputview = quickReplyView;
+            txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
+            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup);
+            inputview = inputLabelView;
+
         } else {
             NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
             txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             txtInput.delegate = txtInput;
             inputview = txtInput;
-        }
-
-        switch (inputBlck->GetTextInputStyle()) {
-            case TextInputStyle::Text: {
-                txtInput.keyboardType = UIKeyboardTypeAlphabet;
-                break;
-            }
-            case TextInputStyle::Email: {
-                if (renderAction) {
-                    txtInput.keyboardType = UIKeyboardTypeEmailAddress;
-                } else {
-                    NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-                    txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
-                    txtInput.delegate = txtInput;
-                    inputview = txtInput;
-                }
-
-                break;
-            }
-            case TextInputStyle::Tel: {
-                txtInput.keyboardType = UIKeyboardTypePhonePad;
-                CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
-                UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
-                UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-                UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:txtInput action:@selector(dismissNumPad)];
-                [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
-                [toolBar sizeToFit];
-                txtInput.inputAccessoryView = toolBar;
-                break;
-            }
-            case TextInputStyle::Url: {
-                txtInput.keyboardType = UIKeyboardTypeURL;
-                break;
-            }
-            default: {
-                txtInput.keyboardType = UIKeyboardTypeAlphabet;
-                break;
-            }
-        }
-
-        NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
-                                                      encoding:NSUTF8StringEncoding];
-        txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                         encoding:NSUTF8StringEncoding];
-        txtInput.maxLength = inputBlck->GetMaxLength();
-        txtInput.placeholder = placeHolderStr;
-        txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
-        txtInput.allowsEditingTextAttributes = YES;
-        txtInput.isRequired = inputBlck->GetIsRequired();
-        ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, txtInput, viewGroup);
-        inputview = inputLabelView;
-
+            txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
+            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, txtInput, viewGroup);
+            inputview = inputLabelView;
+        }        
+        
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 

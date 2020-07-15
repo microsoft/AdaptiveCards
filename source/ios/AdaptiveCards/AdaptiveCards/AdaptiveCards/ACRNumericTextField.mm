@@ -34,6 +34,8 @@
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
+    NSError *error;
+    [self validate:&error];
     dictionary[self.id] = self.text;
 }
 

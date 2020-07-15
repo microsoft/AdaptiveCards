@@ -48,4 +48,9 @@
 {
     [self resignFirstResponder];
 }
+
+- (ACRButton *)getButton
+{
+    return _button;
+}
 @end

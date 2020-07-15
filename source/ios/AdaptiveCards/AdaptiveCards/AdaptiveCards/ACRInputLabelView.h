@@ -6,9 +6,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACRIBaseInputHandler.h"
 
-@interface ACRInputLabelView : UIView 
+@interface ACRInputLabelView : UIView <ACRIBaseInputHandler>
 @property (weak, nonatomic) IBOutlet UILabel *errorMessage;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
+@property BOOL isRequired;
+@property BOOL hasErrorMessage;
 @end

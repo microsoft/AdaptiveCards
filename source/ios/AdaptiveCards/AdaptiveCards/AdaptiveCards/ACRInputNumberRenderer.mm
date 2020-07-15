@@ -52,10 +52,11 @@
     [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
-
+    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, numInputBlck, numInput, viewGroup);
+    
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-        [inputContainer addArrangedSubview:numInput];
+        [inputContainer addArrangedSubview:inputLabelView];
 
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
@@ -64,22 +65,14 @@
 
         [viewGroup addArrangedSubview:inputContainer];
     } else {
-        [viewGroup addArrangedSubview:numInput];
+        [viewGroup addArrangedSubview:inputLabelView];
     }
 
-    numInput.translatesAutoresizingMaskIntoConstraints = NO;
+    [inputs addObject:inputLabelView];
 
-    NSString *format = [[NSString alloc] initWithFormat:@"H:|-[%%@]-|"];
+    configVisibility(inputLabelView, elem);
 
-    NSDictionary *viewsMap = NSDictionaryOfVariableBindings(numInput);
-
-    [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
-
-    [inputs addObject:numInput];
-
-    configVisibility(numInput, elem);
-
-    return numInput;
+    return inputLabelView;
 }
 
 @end

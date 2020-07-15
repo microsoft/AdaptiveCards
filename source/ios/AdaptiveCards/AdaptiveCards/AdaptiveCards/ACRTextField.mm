@@ -25,6 +25,9 @@
         }
         return NO;
     } else
+        if (_regexPredicate) {
+            return [_regexPredicate evaluateWithObject:self.text];
+        }
         return YES;
 }
 

@@ -30,7 +30,18 @@
 
 - (IBAction)send:(UIButton *)sender
 {
-    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+    ACOAdaptiveCard *acoCard = [_view card];
+    NSArray<ACRIBaseInputHandler> *inputs = [acoCard getInputs];
+    BOOL hasValidationPassed = YES;
+    NSError *error = nil;
+    for (id<ACRIBaseInputHandler> input in inputs)
+    {
+        hasValidationPassed &= [input validate:&error];
+    }
+    
+    if (hasValidationPassed) {
+        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+    }
 }
 
 - (void)doSelectAction

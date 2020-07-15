@@ -52,18 +52,20 @@
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
     }
 
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellUnChecked" bundle:bundle] forCellReuseIdentifier:uncheckedCheckboxReuseID];
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellUnchecked" bundle:bundle] forCellReuseIdentifier:uncheckedCheckboxReuseID];
     [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellChecked" bundle:bundle] forCellReuseIdentifier:checkedCheckboxReuseID];
     [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactChecked" bundle:bundle] forCellReuseIdentifier:checkedRadioButtonReuseID];
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactUnChecked" bundle:bundle] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
+    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactUnchecked" bundle:bundle] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
     [inputs addObject:dataSource];
+    
+    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, choiceSet, choiceSetView, viewGroup);
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:choiceSetView];
+        [textInputContainer addArrangedSubview:inputLabelView];
 
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
@@ -72,12 +74,12 @@
 
         [viewGroup addArrangedSubview:textInputContainer];
     } else {
-        [viewGroup addArrangedSubview:choiceSetView];
+        [viewGroup addArrangedSubview:inputLabelView];
     }
 
-    configVisibility(choiceSetView, elem);
+    configVisibility(inputLabelView, elem);
 
-    return choiceSetView;
+    return inputLabelView;
 }
 
 @end
