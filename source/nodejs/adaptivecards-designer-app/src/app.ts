@@ -36,7 +36,16 @@ window.onload = function() {
 
 	if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
-	}
+    }
+    
+    // Uncomment to add/remove properties to/from the designer's property sheet
+    /*
+    ACDesigner.DesignerPeer.onPopulatePropertySheet = (sender: ACDesigner.DesignerPeer, propertySheet: ACDesigner.PropertySheet) => {
+        if (sender instanceof ACDesigner.TextBlockPeer) {
+            propertySheet.remove(ACDesigner.TextBlockPeer.maxLinesProperty);
+        }
+    }
+    */
 
 	let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 	designer.sampleCatalogueUrl = window.location.origin + "/sample-catalogue.json";
