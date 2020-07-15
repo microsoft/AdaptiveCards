@@ -10,6 +10,14 @@ export function isMobileOS(): boolean {
     return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
 }
 
+export function removeAllChildren(element: HTMLElement) {
+    if (element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+}
+
 /**
  * Generate a UUID prepended with "__ac-"
  */

@@ -436,7 +436,7 @@ export class ContainerStylePropertyEditor extends ChoicePropertyEditor {
 
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         if (value == "not_set") {
-            context.target[this.propertyName] = null;
+            context.target[this.propertyName] = undefined;
         }
         else {
             context.target[this.propertyName] = value;
@@ -646,13 +646,15 @@ interface INameValuePair {
 
 class NameValuePairPropertyEditor extends PropertySheetEntry {
     private collectionChanged(context: PropertySheetContext, nameValuePairs: INameValuePair[], refreshPropertySheet: boolean) {
-        context.target[this.collectionPropertyName] = [];
+        let newCollection: any[] = [];
 
         for (let nameValuePair of nameValuePairs) {
             let item = this.createCollectionItem(nameValuePair.name, nameValuePair.value);
 
-            context.target[this.collectionPropertyName].push(item);
+            newCollection.push(item);
         }
+
+        context.target[this.collectionPropertyName] = newCollection;
 
         context.peer.changed(refreshPropertySheet);
     }

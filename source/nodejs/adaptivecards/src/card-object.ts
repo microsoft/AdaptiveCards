@@ -58,6 +58,14 @@ export abstract class CardObject extends SerializableObject {
 
     private _shouldFallback: boolean = false;
 
+    protected abstract internalPropertyChanged(property: PropertyDefinition): void;
+
+    protected propertyChanged(property: PropertyDefinition) {
+        this.internalPropertyChanged(property);
+
+        super.propertyChanged(property);
+    }
+
     protected _parent?: CardObject;
     protected _renderedElement?: HTMLElement;
 

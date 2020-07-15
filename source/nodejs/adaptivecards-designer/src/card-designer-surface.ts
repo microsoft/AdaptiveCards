@@ -250,7 +250,7 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        this.renderCard()
+        // this.renderCard()
         this.updateLayout();
 
         if (updatePropertySheet && this.onSelectedPeerChanged) {
@@ -266,12 +266,20 @@ export class CardDesignerSurface {
         }
 
         if (this._updateCount == 0) {
-            this.renderCard();
+            // this.renderCard();
             this.updateLayout();
         }
     }
 
+    private _fullRenderCount: number = 0;
+
     private renderCard() {
+        /* REMOVE when finished */
+        document.title = "Render count: " + this._fullRenderCount;
+
+        this._fullRenderCount++;
+        /* -------------------- */
+
         this._cardHost.innerHTML = "";
 
         if (this.onCardValidated) {

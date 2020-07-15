@@ -589,11 +589,12 @@ export class SerializableObjectProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly objectType: SerializableObjectType) {
+        readonly objectType: SerializableObjectType,
+        defaultValue?: SerializableObject) {
         super(
             targetVersion,
             name,
-            undefined,
+            defaultValue,
             (sender: SerializableObject) => { return new this.objectType(); });
     }
 }
@@ -734,8 +735,15 @@ export abstract class SerializableObject {
 
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
+    private _updateCount: number = 0;
 
     protected abstract getSchemaKey(): string;
+
+    protected propertyChanged(property: PropertyDefinition) {
+        if (this._updateCount === 0 && this.onPropertyChanged) {
+            this.onPropertyChanged(this, property);
+        }
+    }
 
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
@@ -786,37 +794,46 @@ export abstract class SerializableObject {
         else {
             this._propertyBag[property.getInternalName()] = value;
         }
+
+        this.propertyChanged(property);
     }
 
     protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
         this._propertyBag = {};
         this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
-        if (source) {
-            let s = this.getSchema();
+        this.beginUpdate();
 
-            for (let i = 0; i < s.getCount(); i++) {
-                let property = s.getItemAt(i);
+        try {
+            if (source) {
+                let s = this.getSchema();
 
-                let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
+                for (let i = 0; i < s.getCount(); i++) {
+                    let property = s.getItemAt(i);
 
-                if (source.hasOwnProperty(property.name)) {
-                    if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
-                        propertyValue = property.parse(this, source, context);
+                    let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
+
+                    if (source.hasOwnProperty(property.name)) {
+                        if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
+                            propertyValue = property.parse(this, source, context);
+                        }
+                        else {
+                            context.logParseEvent(
+                                Enums.ValidationEvent.UnsupportedProperty,
+                                `Property "${property.name}" is supported in version ${property.targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
+                                this);
+                        }
                     }
-                    else {
-                        context.logParseEvent(
-                            Enums.ValidationEvent.UnsupportedProperty,
-                            `Property "${property.name}" is supported in version ${property.targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            this);
-                    }
+
+                    this.setValue(property, propertyValue);
                 }
-
-                this.setValue(property, propertyValue);
+            }
+            else {
+                this.resetDefaultValues();
             }
         }
-        else {
-            this.resetDefaultValues();
+        finally {
+            this.endUpdate();
         }
     }
 
@@ -844,6 +861,8 @@ export abstract class SerializableObject {
 
     maxVersion: Version = Versions.v1_3;
 
+    onPropertyChanged?: (sender: SerializableObject, property: PropertyDefinition) => void;
+
     constructor() {
         let s = this.getSchema();
 
@@ -853,6 +872,16 @@ export abstract class SerializableObject {
             if (property.onGetInitialValue) {
                 this.setValue(property, property.onGetInitialValue(this));
             }
+        }
+    }
+
+    beginUpdate() {
+        this._updateCount++;
+    }
+
+    endUpdate() {
+        if (this._updateCount > 0) {
+            this._updateCount--;
         }
     }
 
