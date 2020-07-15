@@ -1,7 +1,8 @@
 # Table of Contents
 1. [Input/Label Associations](#InputLabel-Associations)
 	1. [Basic Label Support in Adaptive Cards](#Basic-Label-Support-in-Adaptive-Cards) 
-		1. [Host Formatting](#Host-Formatting)
+		1. [Rendering](#Rendering)
+		2. [Host Formatting](#Host-Formatting)
 			1. [Text Formatting](#Text-formatting)
 			2. [Required indicators](#Required-indicators) 
 		3. [Card Author Formatting](#Card-Author-Formatting)
@@ -90,7 +91,7 @@ In that card, the label for the input is “Please enter your name:”, however 
 
  ## Basic Label Support in Adaptive Cards
 
-The basic addition that we are going to make to the schema is to add a label property to all input types. This approach provides a simple and concise way to label inputs, that hopefully encourages card authors to use it and receive the benefits of improvements to the issues called out above.
+The basic addition that we are going to make to the schema is to add a label string property to all input types. This approach provides a simple and concise way to label inputs, that hopefully encourages card authors to use it and receive the benefits of improvements to the issues called out above.
 
 ``` json
 {
@@ -112,9 +113,12 @@ The basic addition that we are going to make to the schema is to add a label pro
 	]
 }
 ```
-The label should be rendered above the input as if the card author had used a TextBlock to label their input.
 
-It is important to note that wrapping should always be performed for this type of labels as not doing so would provide a bad user experience. If users can't read the whole label for an input they may not be able to provide a correct answer.
+### Rendering
+
+The label will be rendered above the input as if the card author had used a TextBlock to label their input. It will ld have the same behavior as a TextBlock regarding handling empty/white space only text, and be drawn only if there is a non-empty non-whitespace value. 
+
+It is important to note that wrapping will always be performed for this type of labels as not doing so would provide a bad user experience. If users can't read the whole label for an input they may not be able to provide a correct answer.
 
 ### Host Formatting
 
