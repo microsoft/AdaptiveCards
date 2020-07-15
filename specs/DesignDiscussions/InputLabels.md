@@ -116,7 +116,7 @@ The basic addition that we are going to make to the schema is to add a label str
 
 ### Rendering
 
-The label will be rendered above the input as if the card author had used a TextBlock to label their input. It will ld have the same behavior as a TextBlock regarding handling empty/white space only text, and be drawn only if there is a non-empty non-whitespace value. 
+The label will be rendered above the input as if the card author had used a TextBlock to label their input. It will have the same behavior as a TextBlock regarding handling empty/white space only text, and be drawn only if there is a non-empty non-whitespace value. 
 
 It is important to note that wrapping will always be performed for this type of labels as not doing so would provide a bad user experience. If users can't read the whole label for an input they may not be able to provide a correct answer.
 
@@ -179,6 +179,8 @@ By default, we will mark required inputs with a `*`. We will also, however, prov
 	}
 }
 ```
+
+> Note: If an input is marked as required but does not have the label property set, no visual indicator will be shown indicating that the input is required. Renderers will return a warning in this case that can be surfaced to card authors in the designer and visualizers to warn authors of this behavior.
 
 ### Card Author Formatting
 This version of input labels does not allow for card authors to provide their own formatting for labels. Survey results show that this is not commonly done, and introducing it would create conflict with the styling provided by the host. For further discussion of ways to possibly add card author formatting in the future, see the Appendix. 
