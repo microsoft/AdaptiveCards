@@ -61,9 +61,15 @@ public class DateInputRenderer extends TextInputRenderer
 
         DateInput dateInput = Util.castTo(baseCardElement, DateInput.class);
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
-        String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
-        TagContent tagContent = new TagContent(dateInput, dateInputHandler);
 
+        String dateInputValue = dateInput.GetValue();
+        String dateString = "";
+        if (dateInputValue != null && !dateInputValue.isEmpty())
+        {
+            dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
+        }
+
+        TagContent tagContent = new TagContent(dateInput, dateInputHandler);
         EditText editText = renderInternal(
                 renderedCard,
                 context,

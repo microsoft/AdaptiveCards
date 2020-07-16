@@ -283,7 +283,10 @@ namespace AdaptiveNamespace
             {
                 return HandleInlineShowCardEvent(actionElement);
             }
-            // else fallthrough
+            else
+            {
+                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+            }
         }
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
         {
@@ -297,6 +300,10 @@ namespace AdaptiveNamespace
             if (!inputsAreValid)
             {
                 return S_OK;
+            }
+            else
+            {
+                return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:

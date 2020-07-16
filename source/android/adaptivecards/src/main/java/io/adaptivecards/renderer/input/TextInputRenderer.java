@@ -204,6 +204,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
         }
 
+        editText.setFocusable(true);
         textInputHandler.setView(editText);
         renderedCard.registerInputHandler(textInputHandler, renderArgs.getContainerCardId());
 
