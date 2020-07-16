@@ -788,6 +788,9 @@ export abstract class SerializableObject {
     }
 
     protected setValue(property: PropertyDefinition, value: any) {
+        // Explicitly setting a property should reset its value as initially parsed
+        delete this._rawProperties[property.name];
+
         if (value === undefined || value === null) {
             delete this._propertyBag[property.getInternalName()];
         }
@@ -800,7 +803,6 @@ export abstract class SerializableObject {
 
     protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
         this._propertyBag = {};
-        this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
 
         this.beginUpdate();
 
@@ -835,6 +837,9 @@ export abstract class SerializableObject {
         finally {
             this.endUpdate();
         }
+
+        // This has to be last otherwise parsing will reset raw property values
+        this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
     }
 
     protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {

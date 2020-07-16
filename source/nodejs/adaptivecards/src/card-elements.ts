@@ -91,7 +91,7 @@ export abstract class CardElement extends CardObject {
 
             this.updateRenderedElementVisibility();
 
-            if (this._renderedElement) {
+            if (this.renderedElement) {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
@@ -133,33 +133,33 @@ export abstract class CardElement extends CardObject {
     private updateRenderedElementVisibility() {
         let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-        if (this._renderedElement) {
+        if (this.renderedElement) {
             if (displayMode) {
-                this._renderedElement.style.display = displayMode;
+                this.renderedElement.style.display = displayMode;
             }
             else {
-                this._renderedElement.style.removeProperty("display");
+                this.renderedElement.style.removeProperty("display");
             }
         }
 
-        if (this._separatorElement) {
+        if (this.separatorElement) {
             if (this.parent && this.parent.isFirstElement(this)) {
-                this._separatorElement.style.display = "none";
+                this.separatorElement.style.display = "none";
             }
             else {
                 if (displayMode) {
-                    this._separatorElement.style.display = displayMode;
+                    this.separatorElement.style.display = displayMode;
                 }
                 else {
-                    this._separatorElement.style.removeProperty("display");
+                    this.separatorElement.style.removeProperty("display");
                 }
             }
         }
     }
 
     private hideElementDueToOverflow() {
-        if (this._renderedElement && this.isVisible) {
-            this._renderedElement.style.visibility = "hidden";
+        if (this.renderedElement && this.isVisible) {
+            this.renderedElement.style.visibility = "hidden";
 
             this.isVisible = false;
             raiseElementVisibilityChangedEvent(this, false);
@@ -167,8 +167,8 @@ export abstract class CardElement extends CardObject {
     }
 
     private showElementHiddenDueToOverflow() {
-        if (this._renderedElement && !this.isVisible) {
-            this._renderedElement.style.removeProperty("visibility");
+        if (this.renderedElement && !this.isVisible) {
+            this.renderedElement.style.removeProperty("visibility");
 
             this.isVisible = true;
             raiseElementVisibilityChangedEvent(this, false);
@@ -221,6 +221,7 @@ export abstract class CardElement extends CardObject {
             if (this.renderedElement) {
                 oldRenderedElement.parentElement.replaceChild(this.renderedElement, oldRenderedElement);
 
+                /*
                 if (oldSeparatorElement && oldSeparatorElement.parentElement) {
                     if (this.separatorElement) {
                         oldSeparatorElement.parentElement.replaceChild(this.separatorElement, oldSeparatorElement);
@@ -229,6 +230,9 @@ export abstract class CardElement extends CardObject {
                         oldSeparatorElement.parentElement.removeChild(oldSeparatorElement);
                     }
                 }
+                */
+
+                this.updateRenderedElementVisibility();
             }
         }
     }
@@ -258,7 +262,7 @@ export abstract class CardElement extends CardObject {
     }
 
     protected isDisplayed(): boolean {
-        return this._renderedElement !== undefined && this.isVisible && this._renderedElement.offsetHeight > 0;
+        return this.renderedElement !== undefined && this.isVisible && this.renderedElement.offsetHeight > 0;
     }
 
     protected abstract internalRender(): HTMLElement | undefined;
@@ -441,10 +445,20 @@ export abstract class CardElement extends CardObject {
     }
 
     render(): HTMLElement | undefined {
-        this._renderedElement = this.overrideInternalRender();
-        this._separatorElement = this.internalRenderSeparator();
+        let contentElement = this.overrideInternalRender();
 
-        if (this._renderedElement) {
+        if (contentElement) {
+            this._renderedElement = document.createElement("div");
+            this._renderedElement.classList.add("ac-element-host");
+
+            this._separatorElement = this.internalRenderSeparator();
+
+            if (this._separatorElement) {
+                this._renderedElement.appendChild(this._separatorElement);
+            }
+
+            this._renderedElement.appendChild(contentElement);
+    
             if (this.customCssSelector) {
                 this._renderedElement.classList.add(this.customCssSelector);
             }
@@ -453,7 +467,7 @@ export abstract class CardElement extends CardObject {
             this._defaultRenderedElementDisplayMode = this._renderedElement.style.display ? this._renderedElement.style.display : undefined;
 
             this.adjustRenderedElementSize(this._renderedElement);
-            this.updateLayout(false);
+            this.updateLayout(false);    
         }
         else if (this.isDesignMode()) {
             this._renderedElement = this.createPlaceholderElement();
@@ -530,7 +544,7 @@ export abstract class CardElement extends CardObject {
     }
 
     isHiddenDueToOverflow(): boolean {
-        return this._renderedElement !== undefined && this._renderedElement.style.visibility == 'hidden';
+        return this.renderedElement !== undefined && this.renderedElement.style.visibility == 'hidden';
     }
 
     getRootElement(): CardElement {
@@ -4702,7 +4716,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
     protected applyBackground() {
         if (this.renderedElement) {
-            this.renderedElement.style.removeProperty("backgroundColor");
+            this.renderedElement.style.removeProperty("background-color");
             
             if (this.getHasBackground()) {
                 let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
