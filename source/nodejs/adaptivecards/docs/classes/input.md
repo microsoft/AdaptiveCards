@@ -35,25 +35,30 @@
 * [_parent](input.md#protected-optional-_parent)
 * [_renderedElement](input.md#protected-optional-_renderedelement)
 * [customCssSelector](input.md#optional-customcssselector)
+* [errorMessage](input.md#optional-errormessage)
 * [height](input.md#height)
 * [horizontalAlignment](input.md#horizontalalignment)
 * [id](input.md#optional-id)
+* [isRequired](input.md#isrequired)
+* [label](input.md#optional-label)
 * [maxVersion](input.md#maxversion)
 * [onPreProcessPropertyValue](input.md#optional-onpreprocesspropertyvalue)
 * [onValueChanged](input.md#onvaluechanged)
 * [separator](input.md#separator)
 * [spacing](input.md#spacing)
+* [errorMessageProperty](input.md#static-errormessageproperty)
 * [heightProperty](input.md#static-heightproperty)
 * [horizontalAlignmentProperty](input.md#static-horizontalalignmentproperty)
 * [idProperty](input.md#static-idproperty)
+* [isRequiredProperty](input.md#static-isrequiredproperty)
 * [isVisibleProperty](input.md#static-isvisibleproperty)
+* [labelProperty](input.md#static-labelproperty)
 * [langProperty](input.md#static-langproperty)
 * [onRegisterCustomProperties](input.md#static-optional-onregistercustomproperties)
 * [requiresProperty](input.md#static-requiresproperty)
 * [separatorProperty](input.md#static-separatorproperty)
 * [spacingProperty](input.md#static-spacingproperty)
 * [typeNameProperty](input.md#static-typenameproperty)
-* [validationProperty](input.md#static-validationproperty)
 
 ### Accessors
 
@@ -76,7 +81,6 @@
 * [separatorElement](input.md#separatorelement)
 * [separatorOrientation](input.md#protected-separatororientation)
 * [useDefaultSizing](input.md#protected-usedefaultsizing)
-* [validation](input.md#validation)
 * [value](input.md#value)
 
 ### Methods
@@ -85,10 +89,12 @@
 * [applyPadding](input.md#protected-applypadding)
 * [asString](input.md#asstring)
 * [createPlaceholderElement](input.md#protected-createplaceholderelement)
+* [focus](input.md#focus)
 * [getActionAt](input.md#getactionat)
 * [getActionById](input.md#getactionbyid)
 * [getActionCount](input.md#getactioncount)
 * [getAllInputs](input.md#getallinputs)
+* [getAllLabelIds](input.md#protected-getalllabelids)
 * [getCustomProperty](input.md#getcustomproperty)
 * [getDefaultPadding](input.md#protected-getdefaultpadding)
 * [getEffectivePadding](input.md#geteffectivepadding)
@@ -131,6 +137,7 @@
 * [isRightMostElement](input.md#isrightmostelement)
 * [isSet](input.md#abstract-isset)
 * [isTopElement](input.md#istopelement)
+* [isValid](input.md#isvalid)
 * [overrideInternalRender](input.md#protected-overrideinternalrender)
 * [parse](input.md#parse)
 * [populateSchema](input.md#protected-populateschema)
@@ -150,6 +157,7 @@
 * [toJSON](input.md#tojson)
 * [truncateOverflow](input.md#protected-truncateoverflow)
 * [undoOverflowTruncation](input.md#protected-undooverflowtruncation)
+* [updateInputControlAriaLabelledBy](input.md#protected-updateinputcontrolarialabelledby)
 * [updateLayout](input.md#updatelayout)
 * [validateProperties](input.md#validateproperties)
 * [validateValue](input.md#validatevalue)
@@ -191,6 +199,12 @@ ___
 
 ___
 
+### `Optional` errorMessage
+
+• **errorMessage**? : *undefined | string*
+
+___
+
 ###  height
 
 • **height**: *[CardElementHeight](../README.md#cardelementheight)*
@@ -217,9 +231,21 @@ ___
 
 ___
 
+###  isRequired
+
+• **isRequired**: *boolean*
+
+___
+
+### `Optional` label
+
+• **label**? : *undefined | string*
+
+___
+
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -265,6 +291,12 @@ ___
 
 ___
 
+### `Static` errorMessageProperty
+
+▪ **errorMessageProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "errorMessage", true)
+
+___
+
 ### `Static` heightProperty
 
 ▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
@@ -300,11 +332,23 @@ ___
 
 ___
 
+### `Static` isRequiredProperty
+
+▪ **isRequiredProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "isRequired", false)
+
+___
+
 ### `Static` isVisibleProperty
 
 ▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
 
 *Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
+
+___
+
+### `Static` labelProperty
+
+▪ **labelProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "label", true)
 
 ___
 
@@ -368,15 +412,6 @@ ___
         })
 
 *Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
-
-___
-
-### `Static` validationProperty
-
-▪ **validationProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.vNext,
-        "validation",
-        InputValidationOptions)
 
 ## Accessors
 
@@ -560,9 +595,9 @@ ___
 
 ### `Protected` renderedInputControlElement
 
-• **get renderedInputControlElement**(): *HTMLElement*
+• **get renderedInputControlElement**(): *HTMLElement | undefined*
 
-**Returns:** *HTMLElement*
+**Returns:** *HTMLElement | undefined*
 
 ___
 
@@ -603,14 +638,6 @@ ___
 *Inherited from [CardElement](cardelement.md).[useDefaultSizing](cardelement.md#protected-usedefaultsizing)*
 
 **Returns:** *boolean*
-
-___
-
-###  validation
-
-• **get validation**(): *[InputValidationOptions](inputvalidationoptions.md)*
-
-**Returns:** *[InputValidationOptions](inputvalidationoptions.md)*
 
 ___
 
@@ -668,6 +695,14 @@ ___
 
 ___
 
+###  focus
+
+▸ **focus**(): *void*
+
+**Returns:** *void*
+
+___
+
 ###  getActionAt
 
 ▸ **getActionAt**(`index`: number): *[Action](action.md) | undefined*
@@ -712,11 +747,25 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Overrides [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
 
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
+
 **Returns:** *[Input](input.md)[]*
+
+___
+
+### `Protected` getAllLabelIds
+
+▸ **getAllLabelIds**(): *string[]*
+
+**Returns:** *string[]*
 
 ___
 
@@ -1236,6 +1285,14 @@ Name | Type |
 
 ___
 
+###  isValid
+
+▸ **isValid**(): *boolean*
+
+**Returns:** *boolean*
+
+___
+
 ### `Protected` overrideInternalRender
 
 ▸ **overrideInternalRender**(): *HTMLElement | undefined*
@@ -1269,7 +1326,7 @@ ___
 
 ▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-*Overrides [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
 
 **Parameters:**
 
@@ -1493,6 +1550,14 @@ ___
 ▸ **undoOverflowTruncation**(): *void*
 
 *Inherited from [CardElement](cardelement.md).[undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)*
+
+**Returns:** *void*
+
+___
+
+### `Protected` updateInputControlAriaLabelledBy
+
+▸ **updateInputControlAriaLabelledBy**(): *void*
 
 **Returns:** *void*
 
