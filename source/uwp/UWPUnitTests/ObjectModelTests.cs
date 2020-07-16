@@ -501,6 +501,30 @@ namespace UWPUnitTests
         }
 
         [TestMethod]
+        public void NumberInputEmptyProps()
+        {
+            AdaptiveNumberInput numberInput = new AdaptiveNumberInput
+            {
+                Max = null,
+                Min = null,
+                Value = null,
+                IsRequired = false
+            };
+
+            Assert.IsNull(numberInput.Max);
+            Assert.IsNull(numberInput.Min);
+            Assert.IsNull(numberInput.Value);
+
+            numberInput.Min = -1;
+            numberInput.Max = 1;
+            numberInput.Value = 0;
+
+            Assert.AreEqual(numberInput.Min, -1);
+            Assert.AreEqual(numberInput.Max, 1);
+            Assert.AreEqual(numberInput.Value, 0);
+        }
+
+        [TestMethod]
         public void DateInput()
         {
             AdaptiveDateInput dateInput = new AdaptiveDateInput

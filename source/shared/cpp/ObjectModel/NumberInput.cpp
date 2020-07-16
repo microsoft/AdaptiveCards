@@ -7,9 +7,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-NumberInput::NumberInput() :
-    BaseInputElement(CardElementType::NumberInput), m_value(0), m_max(std::numeric_limits<int>::max()),
-    m_min(std::numeric_limits<int>::min())
+NumberInput::NumberInput() : BaseInputElement(CardElementType::NumberInput)
 {
     PopulateKnownPropertiesSet();
 }
@@ -18,19 +16,19 @@ Json::Value NumberInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    if (m_min != std::numeric_limits<int>::min())
+    if (m_min)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min.value();
     }
 
-    if (m_max != std::numeric_limits<int>::max())
+    if (m_max)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max.value();
     }
 
-    if (m_value != 0)
+    if (m_value)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value.value();
     }
 
     if (!m_placeholder.empty())
@@ -51,32 +49,32 @@ void NumberInput::SetPlaceholder(const std::string& value)
     m_placeholder = value;
 }
 
-int NumberInput::GetValue() const
+std::optional<int> NumberInput::GetValue() const
 {
     return m_value;
 }
 
-void NumberInput::SetValue(const int value)
+void NumberInput::SetValue(const std::optional<int>& value)
 {
     m_value = value;
 }
 
-int NumberInput::GetMax() const
+std::optional<int> NumberInput::GetMax() const
 {
     return m_max;
 }
 
-void NumberInput::SetMax(const int value)
+void NumberInput::SetMax(const std::optional<int>& value)
 {
     m_max = value;
 }
 
-int NumberInput::GetMin() const
+std::optional<int> NumberInput::GetMin() const
 {
     return m_min;
 }
 
-void NumberInput::SetMin(const int value)
+void NumberInput::SetMin(const std::optional<int>& value)
 {
     m_min = value;
 }

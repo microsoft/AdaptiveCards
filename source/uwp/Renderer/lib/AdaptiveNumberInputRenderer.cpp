@@ -18,11 +18,9 @@ using namespace ABI::Windows::UI::Xaml::Input;
 namespace AdaptiveNamespace
 {
     HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept
-    try
     {
         return S_OK;
     }
-    CATCH_RETURN;
 
     HRESULT AdaptiveNumberInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                                 _In_ IAdaptiveRenderContext* renderContext,
@@ -59,11 +57,18 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        INT32 value;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> value;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Value(&value));
 
-        std::wstring stringValue = std::to_wstring(value);
-        RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+        if (value.Get())
+        {
+            int boxValue;
+            if (SUCCEEDED(value->get_Value(&boxValue)))
+            {
+                std::wstring stringValue = std::to_wstring(boxValue);
+                RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+            }
+        }
 
         ComPtr<ITextBox2> textBox2;
         RETURN_IF_FAILED(textBox.As(&textBox2));

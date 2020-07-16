@@ -473,7 +473,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveSeparator
     {
         AdaptiveSeparator();
@@ -488,8 +488,8 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
-    interface IAdaptiveTextElement 
+    ]
+    interface IAdaptiveTextElement
     {
         TextSize Size;
         TextWeight Weight;
@@ -506,7 +506,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveTextBlock : IAdaptiveCardElement, IAdaptiveTextElement
     {
         AdaptiveTextBlock();
@@ -536,7 +536,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveTextRun : IAdaptiveInline, IAdaptiveTextElement
     {
         AdaptiveTextRun();
@@ -554,7 +554,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveRichTextBlock : IAdaptiveCardElement
     {
         AdaptiveRichTextBlock();
@@ -569,7 +569,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveMediaSource
     {
         AdaptiveMediaSource();
@@ -584,7 +584,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveMedia : IAdaptiveCardElement
     {
         AdaptiveMedia();
@@ -601,7 +601,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveBackgroundImage
     {
         AdaptiveBackgroundImage();
@@ -620,7 +620,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveCard 
+    runtimeclass AdaptiveCard
     {
         AdaptiveCard();
 
@@ -652,7 +652,7 @@ AdaptiveNamespaceStart
 
         static AdaptiveCardParseResult FromJsonString(String adaptiveJson);
 
-        [method_name("FromJsonStringWithParserRegistration")] 
+        [method_name("FromJsonStringWithParserRegistration")]
         static AdaptiveCardParseResult FromJsonString(
             String adaptiveJson,
             AdaptiveElementParserRegistration elementRegistration,
@@ -666,7 +666,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveCardParseResult 
+    runtimeclass AdaptiveCardParseResult
     {
         AdaptiveCardParseResult();
 
@@ -681,7 +681,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveImage : IAdaptiveCardElement
     {
         AdaptiveImage();
@@ -703,7 +703,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveImageSet : IAdaptiveCardElement
     {
         AdaptiveImageSet();
@@ -719,7 +719,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    interface IAdaptiveInputElement 
+    interface IAdaptiveInputElement
     {
         Boolean IsRequired;
         String ErrorMessage;
@@ -747,7 +747,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveChoiceSetInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
         AdaptiveChoiceSetInput();
@@ -778,8 +778,8 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
-        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveNumberInput", 7c093cbd-cb81-4e3f-b3ae-82664ce87859),
-        contract(InternalContract, 1),
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveNumberInput", c91b6d6d-ee5d-465b-a86e-82f449b7c184),
+        contract(InternalContract, 2),
         internal
 #endif
     ]
@@ -787,10 +787,10 @@ AdaptiveNamespaceStart
     {
         AdaptiveNumberInput();
 
-        Int32 Max;
-        Int32 Min;
+        Windows.Foundation.IReference<Int32> Max;
+        Windows.Foundation.IReference<Int32> Min;
         String Placeholder;
-        Int32 Value;
+        Windows.Foundation.IReference<Int32> Value;
     };
 
     [
@@ -919,7 +919,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFact 
+    runtimeclass AdaptiveFact
     {
         AdaptiveFact();
 
@@ -964,7 +964,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveUnsupportedAction : IAdaptiveActionElement
     {
         AdaptiveUnsupportedAction();
@@ -977,7 +977,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveUnsupportedElement : IAdaptiveCardElement
     {
         AdaptiveUnsupportedElement();
@@ -990,7 +990,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveCardRenderer 
+    runtimeclass AdaptiveCardRenderer
     {
         AdaptiveCardRenderer();
 
@@ -1046,7 +1046,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveContainerStyleDefinition 
+    runtimeclass AdaptiveContainerStyleDefinition
     {
         AdaptiveContainerStyleDefinition();
 
@@ -1061,7 +1061,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveContainerStylesDefinition 
+    runtimeclass AdaptiveContainerStylesDefinition
     {
         AdaptiveContainerStylesDefinition();
 
@@ -1080,7 +1080,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFontSizesConfig 
+    runtimeclass AdaptiveFontSizesConfig
     {
         AdaptiveFontSizesConfig();
 
@@ -1098,7 +1098,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFontWeightsConfig 
+    runtimeclass AdaptiveFontWeightsConfig
     {
         AdaptiveFontWeightsConfig();
 
@@ -1114,7 +1114,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFontTypeDefinition 
+    runtimeclass AdaptiveFontTypeDefinition
     {
         AdaptiveFontTypeDefinition();
 
@@ -1130,7 +1130,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFontTypesDefinition 
+    runtimeclass AdaptiveFontTypesDefinition
     {
         AdaptiveFontTypesDefinition();
 
@@ -1145,7 +1145,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveHighlightColorConfig 
+    runtimeclass AdaptiveHighlightColorConfig
     {
         AdaptiveHighlightColorConfig();
 
@@ -1196,7 +1196,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveTextConfig 
+    runtimeclass AdaptiveTextConfig
     {
         AdaptiveTextConfig();
 
@@ -1224,7 +1224,7 @@ AdaptiveNamespaceStart
         UInt32 Medium;
         UInt32 Large;
         UInt32 ExtraLarge;
-        UInt32 Padding; 
+        UInt32 Padding;
     };
 
     [
@@ -1249,7 +1249,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveImageSizesConfig 
+    runtimeclass AdaptiveImageSizesConfig
     {
         AdaptiveImageSizesConfig();
 
@@ -1265,7 +1265,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveImageSetConfig 
+    runtimeclass AdaptiveImageSetConfig
     {
         AdaptiveImageSetConfig();
 
@@ -1280,7 +1280,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveImageConfig 
+    runtimeclass AdaptiveImageConfig
     {
         AdaptiveImageConfig();
 
@@ -1294,7 +1294,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveCardConfig 
+    runtimeclass AdaptiveCardConfig
     {
         AdaptiveCardConfig();
 
@@ -1308,7 +1308,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveFactSetConfig 
+    runtimeclass AdaptiveFactSetConfig
     {
         AdaptiveFactSetConfig();
 
@@ -1324,7 +1324,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveShowCardActionConfig 
+    runtimeclass AdaptiveShowCardActionConfig
     {
         AdaptiveShowCardActionConfig();
 
@@ -1340,7 +1340,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveActionsConfig 
+    runtimeclass AdaptiveActionsConfig
     {
         AdaptiveActionsConfig();
 
@@ -1361,7 +1361,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveMediaConfig 
+    runtimeclass AdaptiveMediaConfig
     {
         AdaptiveMediaConfig();
 
@@ -1378,7 +1378,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveHostConfig 
+    runtimeclass AdaptiveHostConfig
     {
         AdaptiveHostConfig();
 
@@ -1410,7 +1410,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveHostConfigParseResult 
+    runtimeclass AdaptiveHostConfigParseResult
     {
         AdaptiveHostConfigParseResult();
 
@@ -1460,7 +1460,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveShowCardAction : IAdaptiveActionElement
     {
         AdaptiveShowCardAction();
@@ -1474,7 +1474,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveSubmitAction : IAdaptiveActionElement
     {
         AdaptiveSubmitAction();
@@ -1489,7 +1489,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveToggleVisibilityTarget
     {
         AdaptiveToggleVisibilityTarget();
@@ -1504,7 +1504,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveToggleVisibilityAction : IAdaptiveActionElement
     {
         AdaptiveToggleVisibilityAction();
@@ -1518,7 +1518,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveCardResourceResolvers
     {
         AdaptiveCardResourceResolvers();
@@ -1547,7 +1547,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveCardGetResourceStreamArgs 
+    runtimeclass AdaptiveCardGetResourceStreamArgs
     {
         AdaptiveCardGetResourceStreamArgs();
 
@@ -1564,7 +1564,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass RenderedAdaptiveCard 
+    runtimeclass RenderedAdaptiveCard
     {
         RenderedAdaptiveCard();
 
@@ -1586,7 +1586,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveInputs 
+    runtimeclass AdaptiveInputs
     {
         AdaptiveInputs();
 
@@ -1600,7 +1600,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveRequirement
     {
         AdaptiveRequirement(String requirementName, String requirementversion);
@@ -1615,8 +1615,8 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
-    runtimeclass AdaptiveFeatureRegistration 
+    ]
+    runtimeclass AdaptiveFeatureRegistration
     {
         AdaptiveFeatureRegistration();
 
@@ -1632,7 +1632,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    interface IAdaptiveElementParser 
+    interface IAdaptiveElementParser
     {
         IAdaptiveCardElement FromJson(
             Windows.Data.Json.JsonObject inputJson,
@@ -1648,7 +1648,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveElementParserRegistration 
+    runtimeclass AdaptiveElementParserRegistration
     {
         AdaptiveElementParserRegistration();
 
@@ -1665,7 +1665,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveActionParserRegistration 
+    runtimeclass AdaptiveActionParserRegistration
     {
         AdaptiveActionParserRegistration();
 
@@ -1696,7 +1696,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveElementRendererRegistration 
+    runtimeclass AdaptiveElementRendererRegistration
     {
         void Set(String type, IAdaptiveElementRenderer parser);
         IAdaptiveElementRenderer Get(String type);
@@ -1710,7 +1710,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveActionRendererRegistration 
+    runtimeclass AdaptiveActionRendererRegistration
     {
         AdaptiveActionRendererRegistration();
 
@@ -1726,7 +1726,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveActionInvoker 
+    runtimeclass AdaptiveActionInvoker
     {
         AdaptiveActionInvoker();
 
@@ -1740,7 +1740,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveMediaEventInvoker 
+    runtimeclass AdaptiveMediaEventInvoker
     {
         AdaptiveMediaEventInvoker();
 
@@ -1754,7 +1754,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    interface IAdaptiveInputValue 
+    interface IAdaptiveInputValue
     {
         IAdaptiveInputElement InputElement { get; };
         String CurrentValue { get; };
@@ -1798,7 +1798,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    interface IAdaptiveElementRenderer 
+    interface IAdaptiveElementRenderer
     {
         Windows.UI.Xaml.UIElement Render(IAdaptiveCardElement element,
                                          AdaptiveRenderContext context,
@@ -1812,10 +1812,10 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    interface IAdaptiveActionRenderer 
+    interface IAdaptiveActionRenderer
     {
-        Windows.UI.Xaml.UIElement Render(IAdaptiveActionElement element, 
-                                         AdaptiveRenderContext context, 
+        Windows.UI.Xaml.UIElement Render(IAdaptiveActionElement element,
+                                         AdaptiveRenderContext context,
                                          AdaptiveRenderArgs renderArgs);
     };
 
@@ -1837,7 +1837,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveRichTextBlockRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
         AdaptiveRichTextBlockRenderer();
@@ -1849,7 +1849,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveImageRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
         AdaptiveImageRenderer();
@@ -2065,7 +2065,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass AdaptiveToggleVisibilityActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
         AdaptiveToggleVisibilityActionRenderer();
@@ -2078,9 +2078,9 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveRenderArgs 
+    runtimeclass AdaptiveRenderArgs
     {
-        AdaptiveRenderArgs(); 
+        AdaptiveRenderArgs();
 
         ContainerStyle ContainerStyle;
         IInspectable ParentElement;
@@ -2096,7 +2096,7 @@ AdaptiveNamespaceStart
         internal
 #endif
     ]
-    runtimeclass AdaptiveError 
+    runtimeclass AdaptiveError
     {
         AdaptiveError(ErrorStatusCode statusCode, String message);
 
@@ -2125,7 +2125,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass TileControl
     {
         TileControl();
@@ -2144,7 +2144,7 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ] 
+    ]
     runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
     {
         String GetAltText();

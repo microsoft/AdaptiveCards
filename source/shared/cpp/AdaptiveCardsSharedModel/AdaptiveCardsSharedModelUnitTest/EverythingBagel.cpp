@@ -256,9 +256,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Number_id"s, numberInput.GetId());
 
         Assert::IsTrue(numberInput.GetIsRequired());
-        Assert::AreEqual(10, numberInput.GetMax());
-        Assert::AreEqual(5, numberInput.GetMin());
-        Assert::AreEqual(7, numberInput.GetValue());
+        Assert::AreEqual(10, numberInput.GetMax().value());
+        Assert::AreEqual(5, numberInput.GetMin().value());
+        Assert::AreEqual(7, numberInput.GetValue().value());
         Assert::AreEqual("Input.Number_placeholder"s, numberInput.GetPlaceholder());
         Assert::IsTrue(numberInput.GetErrorMessage().empty());
     }
