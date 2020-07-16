@@ -64,13 +64,13 @@ Additionally, a `regex` property will be added to `Input.Text` to allow card aut
 ### Required and Optional indicators
 By default, the label of required inputs should be marked with a * suffix. This suffix is configurable in the host config. Further discussion of label formatting can be found in [InputLabels.md](https://github.com/microsoft/AdaptiveCards/blob/master/specs/DesignDiscussions/InputLabels.md), tracked by [Issue #203](https://github.com/microsoft/AdaptiveCards/issues/203).
 
-> Question: Do required/optional indicators appear on inputs without labels?
+> Note: If an input is marked as required but does not have the label property set, no visual indicator will be shown indicating that the input is required. Renderers will return a warning in this case that can be surfaced to card authors in the designer and visualizers to warn authors of this behavior.
 
 ![img](assets/InputValidation/Required.PNG)
 
 ### Invalid inputs and error messages
 
-When an input is vaidated and an error is found, the error text and invalid indication will be rendered in the host's `attention` color.
+When an input is validated and an error is found, the error text and invalid indication will be rendered in the host's `attention` color.
 
 ![img](assets/InputValidation/InputValidationExample.png)
 
@@ -104,9 +104,7 @@ No changes are being made to native styling support for this feature. The existi
 
 ### When to Validate
 
-For v1 of this feature, we will validate all inputs only when the user presses any submit button on the card.
-
->Question: Do we re-validate on each key-stroke once validation has been performed the first time, and if so do we continue to validate after on keystroke once it's been corrected?([#4231](https://github.com/microsoft/AdaptiveCards/issues/4231))
+For v1 of this feature, we will validate all inputs only when the user presses any submit button on the card. No validation on focus lost or key stroke will be performed.
 
 This behavior was decided on after discussion with MVPs. The [Annex](#Validating-on-focus-lost-and-host-configuration) discusses different approaches to when to validate, particularly the benefits of validating when the input loses focus for the first time, and possible future support of host configuration of this behavior.
 
@@ -189,9 +187,21 @@ The behaviour is as follows:
 
 To summarize, all the inputs in the card where the `Submit` action was clicked and all the inputs in all the "parent" cards are retrieved, no inputs in "sibling" cards are retrieved. In the diagram above, card A would be a "parent" of B and C, and card B and C are siblings.
 
->Question: Do we validate inputs that are hidden behind toggles? If we do, we still run into issues where a non-visible input may be validated. ([#4271](https://github.com/microsoft/AdaptiveCards/issues/4271))
+#### Known issues and concerns
 
-Further discussion of other alternatives considered, including a suggestion for possible future support of card author associations between inputs and actions, is covered in the [Annex](#Further-discussion-of-which-inputs-to-validate).
+##### Validating the "right" inputs
+Although we believe this approach will work well for the majority of cases, it is unlikely this heuristic (or any heuristic) will work for 100% of cards. Particular cases that may still run into issues include:
+
+ - Existing cards with show cards in mid-card action sets will no longer return inputs from those show cards when a submit buttons is pressed on the main card. This breaking change may cause issues for some card authors.
+ - Inputs that can be hidden behind a toggle visibility will be validated as any other input, and the error message will remain hidden as long as the input itself is hidden. This may cause confusion for users if they don't understand why their submit is blocked.
+ - Submits on inline actions will continue to submit (and therefore validate) all inputs on the card (and parent cards in the show card case). This may or may not be the expected behavior if the card author's intent was for that submit button to be associated exclusively with the input it is on.
+
+In the future, a mitigation for these scenarios could be to introduce card author associations between inputs and actions in order to allow card authors to further express their intent. For further discussion of this feature, and further discussions of other alternatives considered, please see the the [Annex](#Further-discussion-of-which-inputs-to-validate).
+
+##### Popup show cards
+Adaptive Cards allows hosts to configure show cards to a "popup" mode rather than inline. This mode sends the show card back to the host to be displayed in a manner of their choosing. If a host is in popup mode, it's unclear what the correct behavior would be with respect to validating inputs on the main card. 
+
+In general, popup show card support is not well supported, and may be removed altogether in the future ([#4392](https://github.com/microsoft/AdaptiveCards/issues/4392)). For v1 of this feature, input validation behavior across popup show cards is undefined ([#4369](https://github.com/microsoft/AdaptiveCards/issues/4369)). 
 
 ## Validation for ChoiceSet and Toggle Inputs
 
