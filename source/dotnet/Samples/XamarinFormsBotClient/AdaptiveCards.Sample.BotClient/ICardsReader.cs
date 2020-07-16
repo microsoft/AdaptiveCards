@@ -7,5 +7,7 @@ namespace AdaptiveCards.Sample.BotClient
     public interface ICardsReader
     {
         string[] ReadAdaptiveCardsJsons(string[] fileNames);
+
+        string ReadHostConfigJson(string filename);
     }
 }

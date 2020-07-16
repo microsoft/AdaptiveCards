@@ -19,5 +19,19 @@ namespace AdaptiveCards.Sample.BotClient.UWP
 
             return adaptiveCardJsons;
         }
+
+        public string ReadHostConfigJson(string fileName)
+        {
+            string hostConfigJson = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(fileName))
+            {
+                return hostConfigJson;
+            }
+
+            hostConfigJson = File.ReadAllText("Samples//" + fileName);
+
+            return hostConfigJson;
+        }
     }
 }

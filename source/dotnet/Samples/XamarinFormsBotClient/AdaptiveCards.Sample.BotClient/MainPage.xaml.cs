@@ -35,6 +35,13 @@ namespace AdaptiveCards.XamarinForms.BotClient
                                        "ImageGallery.json", "InputForm.json", "Inputs.json", "Restaurant.json", "Solitaire.json", "SportingEvent.json",
                                        "StockUpdate.json", "WeatherCompact.json", "WeatherLarge.json" };
 
+        String[] configFileNames =
+        {
+            "cortana-beta-dark.json", "cortana-beta-light.json", "cortana-skills.json", "microsoft-teams-dark.json", "microsoft-teams-light.json",
+            "outlook-desktop.json", "render-to-image.json", "sample.json", "skype.json", "testVariantHostConfig.json",
+            "webchat.json", "windows-notification.json", "windows-timeline.json"
+        };
+
         public MainPage()
         {
             InitializeComponent();
@@ -44,7 +51,9 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             base.OnAppearing();
 
-            _renderer = new AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer(new AdaptiveHostConfig());
+            ReadHostConfig();
+
+            _renderer = new AdaptiveCards.Rendering.Wpf.AdaptiveCardRenderer(this.CardsReader.HostConfig);
             // _renderer = new XamlRenderer(new AdaptiveHostConfig());
 
             _cardContainer = this.FindByName<StackLayout>("Items");
@@ -123,6 +132,11 @@ namespace AdaptiveCards.XamarinForms.BotClient
         private void ReadCards()
         {
             CardsReader.ReadAdaptiveCards(cardFileNames);
+        }
+
+        private void ReadHostConfig()
+        {
+            CardsReader.ReadHostConfig();
         }
     }
 }

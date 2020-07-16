@@ -22,7 +22,7 @@
     <AndroidEnableSGenConcurrent>true</AndroidEnableSGenConcurrent>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
     <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>   
+    </NuGetPackageImportStamp>
     <!-- <AndroidSupportedAbis>armeabi-v7a,x86</AndroidSupportedAbis> -->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -55,15 +55,13 @@
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
     <PackageReference Include="Xamarin.Android.Support.Design" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat" Version="28.0.0.3" />
     <PackageReference Include="Xamarin.Android.Support.v4" Version="28.0.0.3" />
@@ -142,6 +140,58 @@
       <Link>Assets\WeatherLarge.json</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\cortana-beta-dark.json">
+      <Link>Assets\cortana-beta-dark.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\cortana-beta-light.json">
+      <Link>Assets\cortana-beta-light.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\cortana-skills.json">
+      <Link>Assets\cortana-skills.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\microsoft-teams-dark.json">
+      <Link>Assets\microsoft-teams-dark.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\microsoft-teams-light.json">
+      <Link>Assets\microsoft-teams-light.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\outlook-desktop.json">
+      <Link>Assets\outlook-desktop.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\render-to-image.json">
+      <Link>Assets\render-to-image.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\sample.json">
+      <Link>Assets\sample.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\skype.json">
+      <Link>Assets\skype.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\testVariantHostConfig.json">
+      <Link>Assets\testVariantHostConfig.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\webchat.json">
+      <Link>Assets\webchat.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\windows-notification.json">
+      <Link>Assets\windows-notification.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="..\..\..\..\..\samples\HostConfig\windows-timeline.json">
+      <Link>Assets\windows-timeline.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
@@ -159,7 +209,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\Raw\" />
-  </ItemGroup>   
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
   <Import Project="..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\..\AdaptiveCards.XamarinForms.Renderer\packages\Xamarin.Forms.2.3.3.193\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

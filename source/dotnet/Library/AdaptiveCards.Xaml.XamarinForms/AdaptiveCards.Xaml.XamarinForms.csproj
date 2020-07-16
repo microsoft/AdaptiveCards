@@ -39,7 +39,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.MarkedNet" Version="1.0.11" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />
+    <PackageReference Include="Xamarin.Forms" Version="4.6.0.1141" />
   </ItemGroup>
 
   <ItemGroup>

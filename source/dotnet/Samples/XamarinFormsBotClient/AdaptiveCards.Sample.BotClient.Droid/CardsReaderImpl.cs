@@ -40,5 +40,25 @@ namespace AdaptiveCards.XamarinForms.BotClient.Droid
 
             return adaptiveCardJsons;
         }
+
+        public string ReadHostConfigJson(string filename)
+        {
+            Context context = Android.App.Application.Context;
+            AssetManager assetManager = context.Assets;
+
+            string hostConfigJson = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                return hostConfigJson;
+            }
+
+            using (StreamReader sr = new StreamReader(assetManager.Open(filename)))
+            {
+                hostConfigJson = sr.ReadToEnd();
+            }
+
+            return hostConfigJson;
+        }
     }
 }

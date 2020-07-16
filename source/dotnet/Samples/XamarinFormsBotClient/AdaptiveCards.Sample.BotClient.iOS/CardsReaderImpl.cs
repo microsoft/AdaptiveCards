@@ -36,5 +36,26 @@ namespace AdaptiveCards.XamarinForms.BotClient.iOS
 
             return adaptiveCardJsons;
         }
+
+        public string ReadHostConfigJson(string filename)
+        {
+            string hostConfigJson = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                return hostConfigJson;
+            }
+
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+            // Please pay attention to this stream's name: project's name + folder's name + file's name
+            using (var stream = assembly.GetManifestResourceStream("AdaptiveCards.XamarinForms.BotClient.iOS.Resources." + filename))
+            {
+                StreamReader reader = new StreamReader(stream);
+                hostConfigJson = reader.ReadToEnd();
+            }
+
+            return hostConfigJson;
+        }
     }
 }

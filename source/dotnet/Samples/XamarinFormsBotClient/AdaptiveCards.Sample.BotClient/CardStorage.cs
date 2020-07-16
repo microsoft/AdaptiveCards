@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Reflection;
 using System.Text;
+using AdaptiveCards.Rendering;
 using Xamarin.Forms;
 
 namespace AdaptiveCards.Sample.BotClient
@@ -11,6 +12,7 @@ namespace AdaptiveCards.Sample.BotClient
     {
         protected List<AdaptiveCard> AdaptiveCards = new List<AdaptiveCard>();
 
+        public AdaptiveHostConfig HostConfig { get; protected set; } = new AdaptiveHostConfig();
         public AdaptiveCard Get(int i)  
         {
             int adaptiveCardsCount = AdaptiveCards.Count;
@@ -30,6 +32,18 @@ namespace AdaptiveCards.Sample.BotClient
             {
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(cardJson);
                 AdaptiveCards.Add(parseResult.Card);
+            }
+        }
+
+        public void ReadHostConfig(string filename = null)
+        {
+            ICardsReader cardsReader = DependencyService.Get<ICardsReader>();
+
+            var hostConfigJson = cardsReader.ReadHostConfigJson(filename);
+
+            if (!string.IsNullOrWhiteSpace(hostConfigJson))
+            {
+                this.HostConfig = AdaptiveHostConfig.FromJson(hostConfigJson);
             }
         }
 
