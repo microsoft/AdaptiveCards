@@ -61,9 +61,10 @@
 
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
     dataSource.toggleSwitch = toggleView.toggle;
-    [inputs addObject:dataSource];
 
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, adaptiveToggleInput, toggleView, viewGroup);
+    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, adaptiveToggleInput, toggleView, viewGroup, dataSource);
+
+    [inputs addObject:inputLabelView];
     
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];

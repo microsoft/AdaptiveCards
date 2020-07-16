@@ -77,4 +77,4 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 
 unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config);
 
-ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup);
+ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup, NSObject<ACRIBaseInputHandler> *dataSource = nil);

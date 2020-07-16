@@ -52,7 +52,7 @@
         [viewGroup addArrangedSubview:inputLabelView];
     }
 
-    [inputs addObject:dateField];
+    [inputs addObject:inputLabelView];
 
     configVisibility(inputLabelView, elem);
 

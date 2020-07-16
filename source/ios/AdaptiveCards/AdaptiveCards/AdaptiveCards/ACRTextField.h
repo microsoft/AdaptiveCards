@@ -11,7 +11,6 @@
 
 @interface ACRTextField : UITextField <ACRIBaseInputHandler, UITextFieldDelegate>
 @property NSString *id;
-@property bool isRequired;
 @property NSPredicate *regexPredicate;
 
 @property NSUInteger maxLength;

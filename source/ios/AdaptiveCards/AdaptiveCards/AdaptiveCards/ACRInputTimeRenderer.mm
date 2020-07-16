@@ -54,7 +54,7 @@
         }
     }
 
-    [inputs addObject:field];
+    [inputs addObject:renderedview];
 
     configVisibility(renderedview, elem);
 

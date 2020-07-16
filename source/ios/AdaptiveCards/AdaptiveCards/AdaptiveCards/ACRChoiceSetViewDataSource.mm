@@ -188,7 +188,18 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
+    if (self.isRequired) {
+        if (_isMultiChoicesAllowed) {
+            for (id key in _userSelections) {
+                if ([_userSelections[key] boolValue]) {
+                    return YES;
+                }
+            }
+            return NO;
+        }
+        return _userSelections.count > 0 ? YES : NO;
+    }
+    
     return YES;
 }
 
@@ -234,5 +245,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 {
     return _spacing * 3 + cell.imageView.image.size.width;
 }
+
+@synthesize isRequired;
 
 @end

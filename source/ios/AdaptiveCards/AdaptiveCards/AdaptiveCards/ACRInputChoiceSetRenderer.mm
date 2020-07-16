@@ -43,7 +43,7 @@
     }
     ACRInputTableView *choiceSetView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
     choiceSetView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
-    NSObject<UITableViewDelegate, UITableViewDataSource> *dataSource = nil;
+    NSObject<UITableViewDelegate, UITableViewDataSource, ACRIBaseInputHandler> *dataSource = nil;
 
     if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
@@ -59,9 +59,9 @@
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-    [inputs addObject:dataSource];
     
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, choiceSet, choiceSetView, viewGroup);
+    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, choiceSet, choiceSetView, viewGroup, dataSource);
+    [inputs addObject:inputLabelView];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];

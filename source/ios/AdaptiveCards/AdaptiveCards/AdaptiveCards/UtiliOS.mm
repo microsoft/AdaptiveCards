@@ -748,7 +748,8 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
     return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
 }
 
-ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup)
+
+ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup, NSObject<ACRIBaseInputHandler> *dataSource)
 {
     const std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
@@ -758,7 +759,12 @@ ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shar
     RichTextElementProperties textElementProperties;
     AdaptiveCards::InputLabelConfig *pLabelConfig = &inputConfig.label.requiredInputs;
     NSMutableAttributedString *attributedLabel = nil;
-
+    inputLabelView.dataSource = dataSource;
+    
+    if (dataSource) {
+        dataSource.isRequired = inputBlck->GetIsRequired();
+    }
+    
     if (inputBlck->GetIsRequired()) {
         inputLabelView.isRequired = YES;
         textElementProperties.SetTextSize(pLabelConfig->size);

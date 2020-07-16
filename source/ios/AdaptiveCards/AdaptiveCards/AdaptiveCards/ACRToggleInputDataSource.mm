@@ -34,6 +34,9 @@ using namespace AdaptiveCards;
 - (BOOL)validate:(NSError **)error
 {
     // no need to validate
+    if (self.isRequired) {
+        return _toggleSwitch.on;
+    }
     return YES;
 }
 
@@ -41,5 +44,7 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = _toggleSwitch.on ? self.valueOn : self.valueOff;
 }
+
+@synthesize isRequired;
 
 @end

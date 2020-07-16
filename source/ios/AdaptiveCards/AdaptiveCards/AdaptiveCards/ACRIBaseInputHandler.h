@@ -10,6 +10,8 @@
 
 @protocol ACRIBaseInputHandler
 
+@property BOOL isRequired;
+
 - (BOOL)validate:(NSError **)error;
 
 - (void)getInput:(NSMutableDictionary *)dictionary;

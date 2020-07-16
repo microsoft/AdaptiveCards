@@ -8,12 +8,27 @@
 #import "ACRNumericTextField.h"
 
 @implementation ACRNumericTextField
+{
+    NSCharacterSet *_notDigits;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    [[NSMutableCharacterSet characterSetWithCharactersInString:@"-."] formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
+    _notDigits = [_notDigits invertedSet];
+    return self;
+}
 
 - (BOOL)validate:(NSError **)error
 {
     BOOL isValidated = YES;
     isValidated = [super validate:error];
     if (isValidated == YES) {
+        if([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
+            return NO;
+        }
         int val = [self.text intValue];
         if (val < self.min) {
             if (error) {
