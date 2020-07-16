@@ -5,7 +5,6 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 
 public class CustomRedActionElement extends BaseActionElement
 {
-
     public CustomRedActionElement(ActionType type) {
         super(type);
     }

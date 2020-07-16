@@ -38,7 +38,7 @@ public class CustomGreenActionRenderer extends BaseActionElementRenderer
         greenActionButton.setBackgroundColor(m_activity.getResources().getColor(R.color.greenActionColor));
         greenActionButton.setText(customAction.getMessage());
         greenActionButton.setAllCaps(false);
-        greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+        greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, customAction, cardActionHandler));
 
         viewGroup.addView(greenActionButton);
 

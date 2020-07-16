@@ -5,9 +5,14 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 
 public class CustomGreenActionElement extends BaseActionElement
 {
-
     public CustomGreenActionElement(ActionType type) {
         super(type);
+    }
+
+    @Override
+    public String GetElementTypeString()
+    {
+        return CustomActionId;
     }
 
     public String getMessage()

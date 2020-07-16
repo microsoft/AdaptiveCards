@@ -26,6 +26,7 @@ import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.inputhandler.IInputWatcher;
@@ -50,6 +51,8 @@ import java.util.TimerTask;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+
+import junit.framework.Assert;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
         implements ICardActionHandler, IInputWatcher
@@ -524,16 +527,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     }
 
     private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
-        SubmitAction submitAction = null;
-
-        if (actionElement instanceof SubmitAction)
-        {
-            submitAction = (SubmitAction) actionElement;
-        }
-        else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-        }
+        SubmitAction submitAction = Util.castTo(actionElement, SubmitAction.class);
 
         if (actionElement.GetId().equals("cardFileAction"))
         {
@@ -575,16 +569,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void onShowCard(BaseActionElement actionElement)
     {
-        ShowCardAction showCardAction = null;
-        if (actionElement instanceof ShowCardAction)
-        {
-            showCardAction = (ShowCardAction) actionElement;
-        }
-        else if ((showCardAction = ShowCardAction.dynamic_cast(actionElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-        }
-
+        ShowCardAction showCardAction = Util.castTo(actionElement, ShowCardAction.class);
         ShowCardFragment showCardFragment = new ShowCardFragment();
         String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
         HostConfig hostConfig;
@@ -608,18 +593,41 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void onOpenUrl(BaseActionElement actionElement)
     {
-        OpenUrlAction openUrlAction = null;
-        if (actionElement instanceof ShowCardAction)
-        {
-            openUrlAction = (OpenUrlAction) actionElement;
-        }
-        else if ((openUrlAction = OpenUrlAction.dynamic_cast(actionElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-        }
-
+        OpenUrlAction openUrlAction = Util.castTo(actionElement, OpenUrlAction.class);
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(openUrlAction.GetUrl()));
         this.startActivity(browserIntent);
+    }
+
+    private void onCustomAction(BaseActionElement actionElement)
+    {
+        BaseActionElement baseActionElement = actionElement.findImplObj();
+        if (actionElement.GetElementTypeString().equals(CustomGreenActionElement.CustomActionId))
+        {
+            try
+            {
+                CustomGreenActionElement customGreenAction = (CustomGreenActionElement)baseActionElement;
+                Assert.assertNotNull(customGreenAction);
+                showToast("You clicked on a green button", Toast.LENGTH_SHORT);
+            }
+            catch (Exception e)
+            {
+                baseActionElement.toString();
+                e.printStackTrace();
+            }
+        }
+        else if (actionElement.GetElementTypeString().equals(CustomRedActionElement.CustomActionId))
+        {
+            try
+            {
+                CustomRedActionElement customRedAction = (CustomRedActionElement) baseActionElement;
+                Assert.assertNotNull(customRedAction);
+                showToast("You clicked on a red button", Toast.LENGTH_SHORT);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -637,6 +645,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         else if (actionType == ActionType.OpenUrl)
         {
             onOpenUrl(actionElement);
+        }
+        else if (actionType == ActionType.Custom)
+        {
+            onCustomAction(actionElement);
         }
         else
         {

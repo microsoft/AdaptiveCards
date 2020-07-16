@@ -113,15 +113,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             // In case of the action being a ToggleVisibility action, store the action as ToggleVisibility action so no recasting must be made
             if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
-                m_toggleVisibilityAction = null;
-                if (m_action instanceof ToggleVisibilityAction)
-                {
-                    m_toggleVisibilityAction = (ToggleVisibilityAction) m_action;
-                }
-                else if ((m_toggleVisibilityAction = ToggleVisibilityAction.dynamic_cast(m_action)) == null)
-                {
-                    throw new InternalError("Unable to convert BaseActionElement to ToggleVisibilityAction object model.");
-                }
+                m_toggleVisibilityAction = Util.castTo(m_action, ToggleVisibilityAction.class);
             }
         }
 

@@ -38,7 +38,7 @@ public class CustomRedActionRenderer extends BaseActionElementRenderer
         backwardActionButton.setBackgroundColor(m_activity.getResources().getColor(R.color.redActionColor));
         backwardActionButton.setText(customAction.getBackwardString());
         backwardActionButton.setAllCaps(false);
-        backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
+        backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, customAction, cardActionHandler));
 
         viewGroup.addView(backwardActionButton);
 
