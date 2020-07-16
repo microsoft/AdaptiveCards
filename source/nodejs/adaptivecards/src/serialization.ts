@@ -129,7 +129,9 @@ export abstract class BaseSerializationContext {
 
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         }
         else {
             target[propertyName] = propertyValue;
