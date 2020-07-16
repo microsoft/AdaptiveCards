@@ -26,9 +26,6 @@ import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 public class InputUtil
 {
-
-
-
     public static View RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
     {
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
@@ -50,9 +47,14 @@ public class InputUtil
         if (isRequired)
         {
             int spanStart = text.length();
+            String requiredLabelSuffix = inputLabelConfig.getSuffix();
+            if (requiredLabelSuffix == null || requiredLabelSuffix.isEmpty())
+            {
+                requiredLabelSuffix = " *";
+            }
 
-            paragraph.append(" *");
-            paragraph = RichTextBlockRenderer.setColor(paragraph, spanStart, spanStart + 2, ForegroundColor.Attention, false, hostConfig, renderArgs);
+            paragraph.append(requiredLabelSuffix);
+            paragraph = RichTextBlockRenderer.setColor(paragraph, spanStart, spanStart + requiredLabelSuffix.length(), ForegroundColor.Attention, false, hostConfig, renderArgs);
         }
 
         TextView labelView = new TextView(context);
