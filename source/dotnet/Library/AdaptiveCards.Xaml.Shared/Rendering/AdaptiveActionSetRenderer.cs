@@ -59,6 +59,26 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiActionBar.Rows = actionsToProcess.Count();
 #elif XAMARIN
                 var uiActionBar = new Grid();
+                if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
+                {
+                    for (int i = 0; i < actionsToProcess.Count(); i++)
+                    {
+                        uiActionBar.ColumnDefinitions.Add(new ColumnDefinition
+                        {
+                            Width = GridLength.Auto
+                        });
+                    }
+                }
+                else
+                {
+                    for (int i = 0; i < actionsToProcess.Count(); i++)
+                    {
+                        uiActionBar.RowDefinitions.Add(new RowDefinition
+                        {
+                            Height = GridLength.Auto
+                        });
+                    }
+                }
 #endif
 
 #if WPF
@@ -126,7 +146,20 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
 
                     if (actionsConfig.ActionsOrientation == ActionsOrientation.Horizontal)
+                    {
                         Grid.SetColumn(uiAction, iPos++);
+                    }
+                    else
+                    {
+                        Grid.SetRow(uiAction, iPos++);
+                    }
+
+#if XAMARIN
+                    if (actionsConfig.ActionAlignment == AdaptiveHorizontalAlignment.Center)
+                    {
+                        uiAction.HorizontalOptions = LayoutOptions.CenterAndExpand;
+                    }
+#endif
 
                     uiActionBar.Children.Add(uiAction);
 
