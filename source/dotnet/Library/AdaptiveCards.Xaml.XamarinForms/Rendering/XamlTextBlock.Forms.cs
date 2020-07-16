@@ -14,7 +14,7 @@ namespace AdaptiveCards.Rendering
             uiTextBlock.Text = RendererUtilities.ApplyTextFunctions(textBlock.Text, "en");
             uiTextBlock.Style = context.GetStyle("Adaptive.TextBlock");
             // TODO: confirm text trimming
-            uiTextBlock.LineBreakMode = LineBreakMode.TailTruncation;
+            uiTextBlock.LineBreakMode = LineBreakMode.WordWrap;
 
             switch (textBlock.HorizontalAlignment)
             {
