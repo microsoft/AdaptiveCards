@@ -72,7 +72,17 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.Padding = new Thickness(0, 0, 0, 0);
                 contentStackPanel.Margin = new Thickness(0, 0, 0, 0);
             }
+
+            //uiButton.Text = action.Title;
+            //uiButton.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default);
+            //uiButton.Style = context.GetStyle($"Adaptive.Action.Title");
+
             uiButton.Content = contentStackPanel;
+#if WPF
+            //uiButton.Content = contentStackPanel;
+#else
+            //return uiButton;
+#endif
             FrameworkElement uiIcon = null;
 
             var uiTitle = new TextBlock
@@ -106,6 +116,21 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiIcon.Height = uiTitle.ActualHeight;
                     };
                 }
+#else
+                if (actionsConfig.IconPlacement == IconPlacement.AboveTitle)
+                {
+                    contentStackPanel.Orientation = StackOrientation.Vertical;
+                    uiIcon.HeightRequest = (double)actionsConfig.IconSize;
+                }
+                else
+                {
+                    contentStackPanel.Orientation = StackOrientation.Horizontal;
+                    //Size the image to the textblock, wait until layout is complete (size changed event)
+                    uiIcon.SizeChanged += (sender, e) =>
+                    {
+                        uiIcon.HeightRequest = uiTitle.Height;
+                    };
+                }
 #endif
                 contentStackPanel.Children.Add(uiIcon);
 
@@ -119,6 +144,9 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
                         VerticalAlignment = VerticalAlignment.Stretch,
                         Width = spacing,
+#else
+                        VerticalOptions = LayoutOptions.FillAndExpand,
+                        WidthRequest = spacing
 #endif
                     };
                     contentStackPanel.Children.Add(uiSep);
