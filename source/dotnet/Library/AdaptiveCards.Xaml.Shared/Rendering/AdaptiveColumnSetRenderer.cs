@@ -29,6 +29,9 @@ namespace AdaptiveCards.Rendering.Wpf
             border.Child = uiColumnSet;
 #elif XAMARIN
             Frame border = new Frame();
+            //Xamarin default this to having a shadow
+            //TODO: Confirm this on Xamarin Android
+            border.HasShadow = false;
             border.Content = uiColumnSet;
 #endif
 
