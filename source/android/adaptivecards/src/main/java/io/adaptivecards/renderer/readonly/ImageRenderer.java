@@ -116,7 +116,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         private int m_backgroundColor;
     }
 
-    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+    /**
+     * Get the pixels for the given ImageSize, as configured in the given ImageSizesConfig
+     * @param context
+     * @param imageSize parsed ImageSize
+     * @param imageSizesConfig ImageSizesConfig from host config
+     * @return size in pixels, scaled by screen density
+     */
+    private static int getImageSizePixels(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
 
         if (imageSize == ImageSize.Small) {
@@ -130,23 +137,57 @@ public class ImageRenderer extends BaseCardElementRenderer
         return imageSizeLimit;
     }
 
-    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize == ImageSize.Stretch) {
-            //ImageView must match parent for stretch to work
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        } else if (imageSize == ImageSize.Small) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getSmallSize()));
-        } else if (imageSize == ImageSize.Medium) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
-        } else if (imageSize == ImageSize.Large) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None){
-            throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
-        }
+    /**
+     * Set ImageView size according to 'height', 'width', and 'size' attributes of the given Image
+     * @param context
+     * @param imageView the view to resize
+     * @param image the parsed Image
+     * @param hostConfig the HostConfig that configures semantic 'size' values
+     * @param isInImageSet true if the Image was declared in an ImageSet
+     */
+    private static void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig, boolean isInImageSet)
+    {
+        long explicitWidth = image.GetPixelWidth();
+        long explicitHeight = image.GetPixelHeight();
+        ImageSize imageSize = image.GetImageSize();
 
         imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+
+        int viewWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int viewHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        // explicit height and/or width given
+        if (explicitWidth != 0 || explicitHeight != 0)
+        {
+            if (explicitWidth != 0 && explicitHeight != 0)
+            {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+            if (explicitWidth != 0)
+            {
+                viewWidth = Util.dpToPixels(context, explicitWidth);
+            }
+            if (explicitHeight != 0)
+            {
+                viewHeight = Util.dpToPixels(context, explicitHeight);
+            }
+        }
+        // stretch
+        else if (imageSize == ImageSize.Stretch)
+        {
+            viewWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        // semantic size from host config
+        else if ((imageSize == ImageSize.Small) || (imageSize == ImageSize.Medium) || (imageSize == ImageSize.Large))
+        {
+            viewWidth = getImageSizePixels(context, imageSize, hostConfig.GetImageSizes());
+        }
+        else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None) {
+            // TODO: Instead of failing, proceed to render w/ default size "auto"
+            throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
+        }
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
     }
 
     @Override
@@ -206,7 +247,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        int imageSizeLimit = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
             renderedCard,
             imageView,
@@ -302,7 +343,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         else
         {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
+            setImageSize(context, imageView, image, hostConfig, isInImageSet);
         }
 
         viewGroup.addView(imageView);
