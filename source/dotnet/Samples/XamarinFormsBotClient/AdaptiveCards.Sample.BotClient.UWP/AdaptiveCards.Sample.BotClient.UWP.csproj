@@ -248,6 +248,61 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\..\..\samples\HostConfig\cortana-beta-dark.json">
+      <Link>HostConfigs\cortana-beta-dark.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\cortana-beta-light.json">
+      <Link>HostConfigs\cortana-beta-light.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\cortana-skills.json">
+      <Link>HostConfigs\cortana-skills.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\microsoft-teams-dark.json">
+      <Link>HostConfigs\microsoft-teams-dark.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\microsoft-teams-light.json">
+      <Link>HostConfigs\microsoft-teams-light.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\outlook-desktop.json">
+      <Link>HostConfigs\outlook-desktop.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\render-to-image.json">
+      <Link>HostConfigs\render-to-image.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\sample.json">
+      <Link>HostConfigs\sample.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\skype.json">
+      <Link>HostConfigs\skype.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\testVariantHostConfig.json">
+      <Link>HostConfigs\testVariantHostConfig.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\webchat.json">
+      <Link>HostConfigs\webchat.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\windows-notification.json">
+      <Link>HostConfigs\windows-notification.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\..\..\samples\HostConfig\windows-timeline.json">
+      <Link>HostConfigs\windows-timeline.json</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

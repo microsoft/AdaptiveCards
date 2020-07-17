@@ -29,7 +29,7 @@ namespace AdaptiveCards.Sample.BotClient.UWP
                 return hostConfigJson;
             }
 
-            hostConfigJson = File.ReadAllText("Samples//" + fileName);
+            hostConfigJson = File.ReadAllText("HostConfigs//" + fileName);
 
             return hostConfigJson;
         }
