@@ -4,6 +4,25 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+export function formatString(s: string, ...args: any[]): string {
+    let result = s;
+
+    if (result) {
+        let regEx = /{(\d+)}/g;
+        let matches: RegExpExecArray | null;
+
+        while ((matches = regEx.exec(result)) != null) {
+            let index = parseInt(matches[1]);
+
+            if (args.length > index && args[index] !== null && args[index] !== undefined) {
+                result = result.substr(0, matches.index) + args[index].toString() + result.substr(matches.index + matches[0].length);
+            }
+        };
+    }
+
+    return result;
+}
+
 export function isMobileOS(): boolean {
     let userAgent = window.navigator.userAgent;
 

@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
+import * as Utils from "./utils";
+import { Strings} from "./strings";
 import { Dictionary, GlobalSettings } from "./shared";
 import { HostConfig } from "./host-config";
 import { HostCapabilities } from "./host-capabilities";
@@ -10,13 +12,15 @@ export class ValidationResults {
     readonly allIds: Dictionary<number> = {};
     readonly validationEvents: IValidationEvent[] = [];
 
-    addFailure(cardObject: CardObject, event: Enums.ValidationEvent, message: string) {
+    addFailure(cardObject: CardObject, event: Enums.ValidationEvent, message: string, ...args: any[]) {
+        let formattedMessage = args ? Utils.formatString(message, ...args) : message;
+
         this.validationEvents.push(
             {
                 phase: Enums.ValidationPhase.Validation,
                 source: cardObject,
                 event: event,
-                message: message
+                message: formattedMessage
             }
         );
     }
@@ -114,7 +118,8 @@ export abstract class CardObject extends SerializableObject {
                     context.addFailure(
                         this,
                         Enums.ValidationEvent.DuplicateId,
-                        "Duplicate Id: " + this.id);
+                        Strings.errors.duplicateId,
+                        this.id);
                 }
 
                 context.allIds[this.id] += 1;

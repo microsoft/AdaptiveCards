@@ -3,6 +3,7 @@
 import { GlobalSettings, SizeAndUnit } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
+import { Strings } from "./strings";
 
 export interface IValidationEvent {
     source?: SerializableObject,
@@ -45,8 +46,10 @@ export class Version {
 
         if (!result._isValid) {
             context.logParseEvent(
+                undefined,
                 Enums.ValidationEvent.InvalidPropertyValue,
-                "Invalid version string: " + result._versionString);
+                Strings.errors.invalidVersionString,
+                result._versionString);
         }
 
         return result;
@@ -212,21 +215,25 @@ export abstract class BaseSerializationContext {
     }
 
     logEvent(
+        source: SerializableObject | undefined,
         phase: Enums.ValidationPhase,
         event: Enums.ValidationEvent,
         message: string,
-        source?: SerializableObject) {
+        ...args: any[]) {
+        let formattedMessage = args ? Utils.formatString(message, ...args) : message;
+
         this._validationEvents.push(
             {
+                source: source,
                 phase: phase,
                 event: event,
-                message: message
+                message: formattedMessage
             }
         )
     }
 
-    logParseEvent(event: Enums.ValidationEvent, message: string, source?: SerializableObject) {
-        this.logEvent(Enums.ValidationPhase.Parse, event, message, source);
+    logParseEvent(source: SerializableObject | undefined, event: Enums.ValidationEvent, message: string, ...args: any[]) {
+        this.logEvent(source, Enums.ValidationPhase.Parse, event, message, ...args);
     }
 
     getEventAt(index: number): IValidationEvent {
@@ -280,9 +287,10 @@ export class StringProperty extends PropertyDefinition {
 
             if (!matches) {
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    `Invalid "${this.name}" value "${parsedValue}"`,
-                    sender);
+                    Strings.errors.invalidPropertyValue,
+                    parsedValue, this.name);
 
                 return undefined;
             }
@@ -361,9 +369,10 @@ export class PixelSizeProperty extends PropertyDefinition {
 
             if (!isValid) {
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    "Invalid \"minHeight\" value: " + source[this.name],
-                    sender);
+                    Strings.errors.invalidPropertyValue,
+                    source[this.name], "minHeight");
             }
         }
 
@@ -401,9 +410,10 @@ export class ValueSetProperty extends PropertyDefinition {
                     }
                     else {
                         context.logParseEvent(
+                            sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            sender);
+                            Strings.errors.propertyValueNotSupported,
+                            sourceValue, this.name, targetVersion, context.targetVersion);
 
                         return this.defaultValue;
                     }
@@ -412,9 +422,10 @@ export class ValueSetProperty extends PropertyDefinition {
         }
 
         context.logParseEvent(
+            sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            `Invalid "${this.name}" value "${sourceValue}"`,
-            sender);
+            Strings.errors.invalidPropertyValue,
+            sourceValue, this.name);
 
         return this.defaultValue;
     }
@@ -433,10 +444,11 @@ export class ValueSetProperty extends PropertyDefinition {
                 }
                 else {
                     context.logEvent(
+                        sender,
                         Enums.ValidationPhase.ToJSON,
                         Enums.ValidationEvent.InvalidPropertyValue,
-                        `"${this.name}" value "${value}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                        sender);
+                        Strings.errors.propertyValueNotSupported,
+                        value, this.name, targetVersion, context.targetVersion);
                 }
             }
         }
@@ -482,9 +494,10 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                     }
                     else {
                         context.logParseEvent(
+                            sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            sender);
+                            Strings.errors.propertyValueNotSupported,
+                            sourceValue, this.name, targetVersion, context.targetVersion);
 
                         return this.defaultValue;
                     }
@@ -493,9 +506,10 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
         }
 
         context.logParseEvent(
+            sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            `Invalid "${this.name}" value "${sourceValue}"`,
-            sender);
+            Strings.errors.invalidPropertyValue,
+            sourceValue, this.name);
 
         return this.defaultValue;
     }
@@ -515,10 +529,11 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                     }
                     else {
                         context.logEvent(
+                            sender,
                             Enums.ValidationPhase.ToJSON,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `Invalid "${this.name}" value "${value}"`,
-                            sender);
+                            Strings.errors.invalidPropertyValue,
+                            value, this.name);
                     }
                 }
             }
@@ -808,9 +823,10 @@ export abstract class SerializableObject {
                     }
                     else {
                         context.logParseEvent(
+                            this,
                             Enums.ValidationEvent.UnsupportedProperty,
-                            `Property "${property.name}" is supported in version ${property.targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            this);
+                            Strings.errors.propertyNotSupported,
+                            property.name, property.targetVersion, context.targetVersion);
                     }
                 }
 

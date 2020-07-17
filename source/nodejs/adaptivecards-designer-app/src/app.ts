@@ -37,6 +37,15 @@ window.onload = function() {
 	if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
     }
+
+    // Uncomment to add/remove properties to/from the renderer's schema
+    /*
+    Adaptive.SerializableObject.onRegisterCustomProperties = (sender: Adaptive.SerializableObject, schema: Adaptive.SerializableObjectSchema) => {
+        if (sender instanceof Adaptive.TextBlock) {
+            schema.remove(Adaptive.TextBlock.heightProperty);
+        }
+    }
+    */
     
     // Uncomment to add/remove properties to/from the designer's property sheet
     /*
