@@ -35,12 +35,10 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
-    
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, dateInput, dateField, viewGroup);
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-        [inputContainer addArrangedSubview:inputLabelView];
+        [inputContainer addArrangedSubview:dateField];
 
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
@@ -49,14 +47,14 @@
 
         [viewGroup addArrangedSubview:inputContainer];
     } else {
-        [viewGroup addArrangedSubview:inputLabelView];
+        [viewGroup addArrangedSubview:dateField];
     }
 
-    [inputs addObject:inputLabelView];
+    [inputs addObject:dateField];
 
-    configVisibility(inputLabelView, elem);
+    configVisibility(dateField, elem);
 
-    return inputLabelView;
+    return dateField;
 }
 
 @end

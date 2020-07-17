@@ -24,7 +24,7 @@
     return ACRTimeInput;
 }
 
-- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
+- (UIView *)render:(UIView *)viewGroup
            rootView:(ACRView *)rootView
              inputs:(NSMutableArray *)inputs
     baseCardElement:(ACOBaseCardElement *)acoElem
@@ -34,27 +34,25 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
-    
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, timeInput, field, viewGroup);
-    UIView *renderedview = inputLabelView;
+    UIView *renderedview = field;
 
     if (viewGroup) {
         if (elem->GetHeight() == HeightType::Stretch) {
             ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-            [inputContainer addArrangedSubview:renderedview];
+            [inputContainer addArrangedSubview:field];
 
             // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [inputContainer addArrangedSubview:blankTrailingSpace];
             [inputContainer adjustHuggingForLastElement];
-            [viewGroup addArrangedSubview:inputContainer];
+            [(UIStackView *)viewGroup addArrangedSubview:inputContainer];
             renderedview = inputContainer;
         } else {
-            [viewGroup addArrangedSubview:renderedview];
+            [(UIStackView *)viewGroup addArrangedSubview:field];
         }
     }
 
-    [inputs addObject:renderedview];
+    [inputs addObject:field];
 
     configVisibility(renderedview, elem);
 

@@ -11,7 +11,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRRendererPrivate.h"
-#import "ACRViewPrivate.h"
+#import "ACRView.h"
 #import "BaseActionElement.h"
 #import <UIKit/UIKit.h>
 
@@ -47,6 +47,12 @@
 
 - (void)createShowCard:(NSMutableArray *)inputs superview:(UIView<ACRIContentHoldingView> *)superview
 {
+    [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
+
+    if (!inputs) {
+        inputs = [[NSMutableArray alloc] init];
+    }
+
     // configure padding using LayoutGuid
     unsigned int padding = [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
 
@@ -56,18 +62,13 @@
     ACRColumnView *adcView = [[ACRColumnView alloc] initWithFrame:_rootView.frame
                                                        attributes:attributes];
 
-    ACRColumnView *parentRenderedCard = [_rootView peekCurrentShowCard];
-
-    [_rootView pushCurrentShowcard:adcView];
-
-    [_rootView setParent:parentRenderedCard child:adcView];
-
     [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
-                                  inputs:adcView.inputHandlers
+                                  inputs:inputs
                                  context:_rootView
                           containingView:adcView
                               hostconfig:_config];
-    [_rootView popCurrentShowcard];
+
+    [[_rootView card] setInputs:inputs];
 
     ContainerStyle containerStyle = ([_config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? _adaptiveCard->GetStyle() : [_config getHostConfig] -> GetActions().showCard.style;
 

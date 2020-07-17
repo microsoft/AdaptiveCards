@@ -8,6 +8,7 @@
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
+#import "ACRIBaseInputHandler.h"
 #import "ACRParseWarningPrivate.h"
 #import "AdaptiveCardParseException.h"
 #import "AdaptiveCardParseWarning.h"
@@ -19,12 +20,12 @@ using namespace AdaptiveCards;
 
 @implementation ACOAdaptiveCard {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
-    NSMutableArray<ACRIBaseInputHandler> *_inputs;
+    NSMutableArray *_inputs;
 }
 
 - (void)setInputs:(NSArray *)inputs
 {
-    _inputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] initWithArray:inputs];
+    _inputs = [[NSMutableArray alloc] initWithArray:inputs];
 }
 
 - (void)appendInputs:(NSArray *)inputs
@@ -46,7 +47,7 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (NSArray<ACRIBaseInputHandler> *)getInputs
+- (NSArray *)getInputs
 {
     return _inputs;
 }

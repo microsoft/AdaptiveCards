@@ -60,13 +60,4 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message;
 
-- (ACRColumnView *)getParent:(ACRColumnView *)child;
-
-- (void)setParent:(ACRColumnView *)parent child:(ACRColumnView *)child;
-
-- (void)pushCurrentShowcard:(ACRColumnView *)showcard;
-
-- (void)popCurrentShowcard;
-
-- (ACRColumnView *)peekCurrentShowCard;
 @end

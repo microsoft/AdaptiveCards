@@ -59,8 +59,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     ACRTargetBuilderDirector *_actionsTargetBuilderDirector;
     ACRTargetBuilderDirector *_selectActionsTargetBuilderDirector;
     ACRTargetBuilderDirector *_quickReplyTargetBuilderDirector;
-    NSMapTable<ACRColumnView *, ACRColumnView *> *_inputHandlerLookupTable;
-    NSMutableArray<ACRColumnView *> *_showcards;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -80,8 +78,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _imageViewContextMap = [[NSMutableDictionary alloc] init];
         _setOfRemovedObservers = [[NSMutableSet alloc] init];
         _paddingMap = [[NSMutableDictionary alloc] init];
-        _inputHandlerLookupTable = [[NSMapTable alloc] initWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableWeakMemory capacity:5];
-        _showcards = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -125,16 +121,13 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (UIView *)render
 {
+    NSMutableArray *inputs = [[NSMutableArray alloc] init];
+
     if (self.frame.size.width) {
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
-    [self pushCurrentShowcard:self];
-    [self setParent:nil child:self];
-
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:self.inputHandlers context:self containingView:self hostconfig:_hostConfig];
-
-    [self popCurrentShowcard];
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
 
     ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
 
@@ -741,39 +734,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message
 {
     [((NSMutableArray *)_warnings) addObject:[[ACOWarning alloc] initWith:statusCode message:message]];
-}
-
-- (ACRColumnView *)getParent:(ACRColumnView *)child
-{
-    return [_inputHandlerLookupTable objectForKey:child];
-}
-
-- (void)setParent:(ACRColumnView *)parent child:(ACRColumnView *)child
-{
-    [_inputHandlerLookupTable setObject:parent forKey:child];
-}
-
-- (void)pushCurrentShowcard:(ACRColumnView *)showcard;
-{
-    if (showcard) {
-        [_showcards addObject:showcard];
-    }
-}
-
-- (void)popCurrentShowcard
-{
-    if ([_showcards count]) {
-        [_showcards removeLastObject];
-    }
-}
-
-- (ACRColumnView *)peekCurrentShowCard
-{
-    ACRColumnView *showcard = nil;
-    if ([_showcards count]) {
-        showcard = _showcards.lastObject;
-    }
-    return showcard;
 }
 
 @end

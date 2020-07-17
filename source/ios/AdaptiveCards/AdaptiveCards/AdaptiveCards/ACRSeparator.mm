@@ -9,7 +9,6 @@
 #import "ACRContentStackView.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
-#import "UtiliOS.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
@@ -135,7 +134,7 @@ using namespace AdaptiveCards;
 
     if (Spacing::None != requestedSpacing) {
         ACRContentStackView *superview = (ACRContentStackView *)view;
-        unsigned int spacing = getSpacing(requestedSpacing, config);
+        unsigned int spacing = [ACRSeparator getSpacing:requestedSpacing hostConfig:config];
         separator = [[ACRSeparator alloc] initWithFrame:CGRectMake(0, 0, spacing, spacing)];
 
         if (separator) {
@@ -164,6 +163,26 @@ using namespace AdaptiveCards;
     }
 
     return separator;
+}
+
++ (unsigned int)getSpacing:(Spacing)spacing hostConfig:(std::shared_ptr<HostConfig> const &)config
+{
+    switch (spacing) {
+        case Spacing::ExtraLarge:
+            return config->GetSpacing().extraLargeSpacing;
+        case Spacing::Large:
+            return config->GetSpacing().largeSpacing;
+        case Spacing::Medium:
+            return config->GetSpacing().mediumSpacing;
+        case Spacing::Small:
+            return config->GetSpacing().smallSpacing;
+        case Spacing::Default:
+            return config->GetSpacing().defaultSpacing;
+        default:
+            break;
+    }
+
+    return 0;
 }
 
 - (void)drawRect:(CGRect)rect

@@ -61,14 +61,11 @@
 
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
     dataSource.toggleSwitch = toggleView.toggle;
+    [inputs addObject:dataSource];
 
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, adaptiveToggleInput, toggleView, viewGroup, dataSource);
-
-    [inputs addObject:inputLabelView];
-    
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputLabelView];
+        [textInputContainer addArrangedSubview:toggleView];
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
         [textInputContainer addArrangedSubview:blankTrailingSpace];
@@ -76,12 +73,12 @@
 
         [viewGroup addArrangedSubview:textInputContainer];
     } else {
-        [viewGroup addArrangedSubview:inputLabelView];
+        [viewGroup addArrangedSubview:toggleView];
     }
 
-    configVisibility(inputLabelView, elem);
+    configVisibility(toggleView, elem);
 
-    return inputLabelView;
+    return toggleView;
 }
 
 @end

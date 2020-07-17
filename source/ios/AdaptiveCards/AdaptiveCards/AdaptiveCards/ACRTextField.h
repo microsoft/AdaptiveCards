@@ -2,7 +2,7 @@
 //  ACRTextField
 //  ACRTextField.h
 //
-//  Copyright © 2020 Microsoft. All rights reserved.
+//  Copyright © 2017 Microsoft. All rights reserved.
 //
 
 #import "ACOBaseCardElement.h"
@@ -11,18 +11,8 @@
 
 @interface ACRTextField : UITextField <ACRIBaseInputHandler, UITextFieldDelegate>
 @property NSString *id;
-@property NSPredicate *regexPredicate;
-
+@property bool isRequired;
 @property NSUInteger maxLength;
 
 - (void)dismissNumPad;
-@end
-
-@interface ACRTextEmailField : ACRTextField
-@end
-
-@interface ACRTextTelelphoneField : ACRTextField
-@end
-
-@interface ACRTextUrlField : ACRTextField
 @end

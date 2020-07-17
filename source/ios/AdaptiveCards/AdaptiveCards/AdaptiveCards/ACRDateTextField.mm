@@ -53,6 +53,7 @@ using namespace AdaptiveCards;
             }
 
             year = month = day = 0;
+            NSString *minDateStr = nil, *maxDateStr = nil;
             if (preparser.TryParseSimpleDate(dateInput->GetMin(), year, month, day)) {
                 minDateStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
@@ -64,7 +65,7 @@ using namespace AdaptiveCards;
 
             formatter.timeStyle = NSDateFormatterNoStyle;
 
-            [formatter setDateFormat:@"yyyy-dd-MM"];
+            [formatter setDateFormat:@"yyyy-MM-dd"];
 
             picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
             picker.datePickerMode = UIDatePickerModeDate;
@@ -80,6 +81,7 @@ using namespace AdaptiveCards;
             }
 
             hours = minutes = 0;
+            NSString *minDateStr = nil, *maxDateStr = nil;
 
             if (preparser.TryParseSimpleTime(timeInput->GetMin(), hours, minutes)) {
                 minDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
@@ -90,10 +92,10 @@ using namespace AdaptiveCards;
                 maxDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
             }
 
-//            minDateStr = [NSString stringWithCString:timeInput->GetMin().c_str()
-//                                            encoding:NSUTF8StringEncoding];
-//            maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
-//                                            encoding:NSUTF8StringEncoding];
+            minDateStr = [NSString stringWithCString:timeInput->GetMin().c_str()
+                                            encoding:NSUTF8StringEncoding];
+            maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
+                                            encoding:NSUTF8StringEncoding];
             formatter.timeStyle = NSDateFormatterShortStyle;
 
             [formatter setDateFormat:@"HH:mm"];
@@ -102,6 +104,7 @@ using namespace AdaptiveCards;
         }
 
         NSDate *date = [formatter dateFromString:valueStr];
+        self.formatter = formatter;
         self.min = [formatter dateFromString:minDateStr];
         self.max = [formatter dateFromString:maxDateStr];
         self.placeholder = placeHolderStr;
@@ -109,8 +112,7 @@ using namespace AdaptiveCards;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.backgroundColor = UIColor.groupTableViewBackgroundColor;
-        self.formatter = formatter;
-  
+
         if (date) {
             picker.date = date;
         }

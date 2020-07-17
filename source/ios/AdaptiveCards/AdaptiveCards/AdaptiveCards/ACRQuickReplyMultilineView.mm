@@ -34,9 +34,4 @@
     self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 }
 
-- (ACRButton *)getButton
-{
-    return _button;
-}
-
 @end

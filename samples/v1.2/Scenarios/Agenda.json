@@ -127,7 +127,6 @@
 		},
 		{
 			"type": "ColumnSet",
-            "height": "stretch",
 			"columns": [
 				{
 					"type": "Column",
@@ -341,7 +340,6 @@
 		{
 			"type": "ColumnSet",
 			"spacing": "None",
-            "height": "stretch",
 			"columns": [
 				{
 					"type": "Column",

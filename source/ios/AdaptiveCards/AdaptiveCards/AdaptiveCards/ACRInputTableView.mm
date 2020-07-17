@@ -15,12 +15,10 @@ using namespace AdaptiveCards;
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
+    if (self) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        self.backgroundColor = UIColor.clearColor;
+    }
     return self;
 }
 
