@@ -45,6 +45,10 @@ using namespace AdaptiveCards;
     dictionary[self.id] = _toggleSwitch.on ? self.valueOn : self.valueOff;
 }
 
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+{
+}
+
 @synthesize isRequired;
 
 @end

@@ -38,27 +38,20 @@
 
 - (BOOL)validate:(NSError **)error
 {
-    if ((_stack.arrangedSubviews.count) == 3) {
-        NSObject<ACRIBaseInputHandler> *validator = [self.stack.arrangedSubviews[1] conformsToProtocol:@protocol(ACRIBaseInputHandler)] ?
-        self.stack.arrangedSubviews[1] : self.dataSource;
-        if ([validator conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-            NSError *error = nil;
-            if (self.isRequired) {
-                // add get value message
+    NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
+    if (inputHandler) {
+        NSError *error = nil;
+        if (NO == [inputHandler validate:&error]) {
+            if (self.hasErrorMessage) {
+                self.errorMessage.hidden = NO;
             }
-            
-            if (NO == [validator validate:&error]) {
-                if (self.hasErrorMessage) {
-                    self.errorMessage.hidden = NO;
-                }
-            } else {
-                if (self.hasErrorMessage) {
-                    self.errorMessage.hidden = YES;
-                }
-                self.stack.arrangedSubviews[1].layer.borderWidth = 0;
-                return YES;
+        } else {
+            if (self.hasErrorMessage) {
+                self.errorMessage.hidden = YES;
             }
-        }                
+            self.stack.arrangedSubviews[1].layer.borderWidth = 0;
+            return YES;
+        }
     }
     self.stack.arrangedSubviews[1].layer.borderWidth = 1;
     self.stack.arrangedSubviews[1].layer.cornerRadius = 6.0f;
@@ -66,12 +59,57 @@
     return NO;
 }
 
+- (NSObject<ACRIBaseInputHandler>  *)getInputHandler
+{
+    NSObject<ACRIBaseInputHandler> *inputHandler = nil;
+    id inputView = [self getInputView];
+    if (inputView) {
+        NSObject<ACRIBaseInputHandler> *inputHandler = [inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)] ? inputView : self.dataSource;
+        if ([inputHandler conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
+            return inputHandler;
+        }
+    }
+    return inputHandler;
+}
+
+- (id)getInputView
+{
+    if ((_stack.arrangedSubviews.count) == 3) {
+        return self.stack.arrangedSubviews[1];
+    }
+    return nil;
+}
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+{
+    id inputHandler = [self getInputHandler];
+    if (!inputHandler) {
+        return;
+    }
+    if ([inputHandler isKindOfClass:[UITextField class]]) {
+        [inputHandler setFocus:shouldBecomeFirstResponder];
+    } else {
+        UIView<ACRIBaseInputHandler> *inputView = [self getInputView];
+        if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
+            [ACRInputLabelView setFocus:shouldBecomeFirstResponder view:inputView];
+        }
+    }
+}
+
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    if ((_stack.arrangedSubviews.count) == 3 && [self.stack.arrangedSubviews[1] conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-        [self.stack.arrangedSubviews[1] getInput:dictionary];
+    id<ACRIBaseInputHandler> inputHandler = [self getInputHandler];
+    if (inputHandler) {
+        [inputHandler getInput:dictionary];
     }
-    
+}
+
++ (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view{
+    if (shouldBecomeFirstResponder) {
+        [view becomeFirstResponder];
+    } else {
+        [view resignFirstResponder];
+    }
 }
 
 @end

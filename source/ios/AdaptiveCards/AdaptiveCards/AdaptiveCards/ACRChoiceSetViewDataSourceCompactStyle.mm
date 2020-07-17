@@ -43,6 +43,7 @@ static NSString *pickerCell = @"pickerCell";
         _rootView = rootView;
         _delegate = (NSObject<UITableViewDelegate> *)_dataSource;
         _showPickerView = NO;
+        _defaultString = @"";
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
@@ -228,12 +229,17 @@ static NSString *pickerCell = @"pickerCell";
     dictionary[self.id] = _titlesMap[_userSelectedTitle];
 }
 
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+{
+}
+
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     if (row == 0) {
         _userSelectedTitle = @"";
+    } else {
+        _userSelectedTitle = [_titles objectAtIndex:row - 1];
     }
-    _userSelectedTitle = [_titles objectAtIndex:row - 1];
     _userSelectedRow = row - 1;
 }
 

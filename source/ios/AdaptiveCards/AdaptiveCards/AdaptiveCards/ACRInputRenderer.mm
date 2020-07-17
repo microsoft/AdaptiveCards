@@ -54,7 +54,7 @@
                 txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
                 txtInput.delegate = txtInput;
             }
-            
+
             break;
         }
         case TextInputStyle::Tel: {
@@ -77,7 +77,7 @@
             break;
         }
     }
-    
+
     NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
                                                   encoding:NSUTF8StringEncoding];
     txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
@@ -144,7 +144,7 @@
                                           constant:0]
                 .active = YES;
             inputview = multilineview;
-            
+
         } else {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -153,7 +153,7 @@
             txtview.scrollEnabled = NO;
             txtview.keyboardType = UIKeyboardTypeDefault;
             [txtview.layer setCornerRadius:5.0f];
-            inputview = txtview;            
+            inputview = txtview;
         }
         ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup);
         inputview = inputLabelView;
@@ -161,12 +161,12 @@
         if (renderAction) {
             // if action is defined, load ACRQuickReplyView nib for customizable UI
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
-            txtInput = quickReplyView.textFileld;
+            txtInput = quickReplyView.textField;
             button = quickReplyView.button;
             txtInput.delegate = quickReplyView;
             inputview = quickReplyView;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup);
+            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup, txtInput);
             inputview = inputLabelView;
 
         } else {
@@ -177,8 +177,8 @@
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
             ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, txtInput, viewGroup);
             inputview = inputLabelView;
-        }        
-        
+        }
+
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
@@ -197,18 +197,13 @@
     }
 
     inputview.translatesAutoresizingMaskIntoConstraints = false;
-    if (inputBlck->GetTextInputStyle() != AdaptiveCards::TextInputStyle::Email) {
-        NSString *format = [[NSString alloc] initWithFormat:@"H:|-[%%@]-|"];
-        NSDictionary *viewsMap = NSDictionaryOfVariableBindings(inputview);
-        [ACRBaseCardElementRenderer applyLayoutStyle:format viewsMap:viewsMap];
-    }
 
     // configures for action
     if (renderAction) {
         if (inputBlck->GetIsMultiline()) {
             [inputs addObject:txtview];
         } else {
-            [inputs addObject:txtInput];
+            [inputs addObject:inputview];
         }
         NSString *title = [NSString stringWithCString:action->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         NSDictionary *imageViewMap = [rootView getImageMap];

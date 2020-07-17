@@ -12,9 +12,8 @@
 #import <UIKit/UIKit.h>
 
 @interface ACRQuickReplyView : UIView <UITextFieldDelegate, ACRIQuickReply>
-@property (strong, nonatomic) IBOutlet UIView *contentView;
-@property (weak, nonatomic) IBOutlet ACRTextField *textFileld;
-@property (weak, nonatomic) IBOutlet UIView *spacing;
+@property (strong, nonatomic) IBOutlet UIStackView *stack;
+@property (weak, nonatomic) IBOutlet ACRTextField *textField;
 @property (weak, nonatomic) IBOutlet ACRButton *button;
 @property (weak, nonatomic) ACRAggregateTarget *target;
 @end

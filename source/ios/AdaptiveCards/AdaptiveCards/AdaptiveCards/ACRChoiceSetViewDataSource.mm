@@ -199,7 +199,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
         return _userSelections.count > 0 ? YES : NO;
     }
-    
+
     return YES;
 }
 
@@ -221,6 +221,10 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@","];
+}
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+{
 }
 
 - (NSString *)getTitlesOfChoices

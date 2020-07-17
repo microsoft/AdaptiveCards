@@ -7,17 +7,16 @@
 
 #import "ACRNumericTextField.h"
 
-@implementation ACRNumericTextField
-{
+@implementation ACRNumericTextField {
     NSCharacterSet *_notDigits;
 }
 
 - (instancetype)init
 {
     self = [super init];
-    
-    [[NSMutableCharacterSet characterSetWithCharactersInString:@"-."] formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
-    _notDigits = [_notDigits invertedSet];
+    NSMutableCharacterSet *characterSets = [NSMutableCharacterSet characterSetWithCharactersInString:@"-."];
+    [characterSets formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
+    _notDigits = [characterSets invertedSet];
     return self;
 }
 
@@ -26,7 +25,7 @@
     BOOL isValidated = YES;
     isValidated = [super validate:error];
     if (isValidated == YES) {
-        if([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
+        if ([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
             return NO;
         }
         int val = [self.text intValue];

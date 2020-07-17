@@ -10,32 +10,23 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ACRQuickReplyView">
             <connections>
-                <outlet property="button" destination="EcK-Et-wBC" id="2xY-xr-gxz"/>
-                <outlet property="contentView" destination="iN0-l3-epB" id="2WP-I1-2uB"/>
-                <outlet property="spacing" destination="ekl-JV-XBj" id="aOE-AO-cz3"/>
-                <outlet property="textFileld" destination="qCe-3b-abG" id="qbA-9z-Mbz"/>
+                <outlet property="button" destination="EcK-Et-wBC" id="T3l-NY-GXr"/>
+                <outlet property="stack" destination="lwJ-aQ-hBz" id="5rK-Ob-OIP"/>
+                <outlet property="textField" destination="qCe-3b-abG" id="Xsz-Ws-Kh0"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lwJ-aQ-hBz">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="110"/>
             <subviews>
-                <textField opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="qCe-3b-abG" customClass="ACRTextField">
-                    <rect key="frame" x="0.0" y="8" width="337" height="651"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="qCe-3b-abG" customClass="ACRTextField">
+                    <rect key="frame" x="0.0" y="0.0" width="162" height="110"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <view contentMode="scaleToFill" horizontalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ekl-JV-XBj">
-                    <rect key="frame" x="337" y="8" width="8" height="651"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="8" id="ioz-t8-qLe"/>
-                        <constraint firstAttribute="width" constant="8" id="w48-Vk-4qa"/>
-                    </constraints>
-                </view>
                 <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EcK-Et-wBC" customClass="ACRButton">
-                    <rect key="frame" x="345" y="8" width="30" height="651"/>
+                    <rect key="frame" x="170" y="0.0" width="30" height="110"/>
                     <state key="normal">
                         <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
@@ -49,21 +40,8 @@
                     </state>
                 </button>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <constraints>
-                <constraint firstItem="ekl-JV-XBj" firstAttribute="top" secondItem="qCe-3b-abG" secondAttribute="top" id="0Z3-dE-pW0"/>
-                <constraint firstItem="ekl-JV-XBj" firstAttribute="bottom" secondItem="qCe-3b-abG" secondAttribute="bottom" id="4BQ-D9-Gim"/>
-                <constraint firstItem="ekl-JV-XBj" firstAttribute="leading" secondItem="qCe-3b-abG" secondAttribute="trailing" id="A1L-1D-QQL"/>
-                <constraint firstItem="qCe-3b-abG" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="8" id="C7N-9g-iJO"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="EcK-Et-wBC" secondAttribute="trailing" id="K2e-Dy-tKR"/>
-                <constraint firstItem="qCe-3b-abG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="LA1-C3-wzT"/>
-                <constraint firstItem="ekl-JV-XBj" firstAttribute="bottom" secondItem="EcK-Et-wBC" secondAttribute="bottom" id="cIb-lH-5FX"/>
-                <constraint firstItem="EcK-Et-wBC" firstAttribute="leading" secondItem="ekl-JV-XBj" secondAttribute="trailing" id="iKf-Rx-zit"/>
-                <constraint firstItem="EcK-Et-wBC" firstAttribute="top" secondItem="ekl-JV-XBj" secondAttribute="top" id="v4t-rS-Pzd"/>
-                <constraint firstAttribute="bottom" secondItem="qCe-3b-abG" secondAttribute="bottom" constant="8" id="zqR-Ia-Ecj"/>
-            </constraints>
-            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
-            <point key="canvasLocation" x="142" y="65"/>
-        </view>
+            <viewLayoutGuide key="safeArea" id="Inw-9J-t5B"/>
+            <point key="canvasLocation" x="-160" y="476"/>
+        </stackView>
     </objects>
 </document>
