@@ -61,7 +61,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -75,13 +75,13 @@ ___
 
 ### `Static` errorMessageProperty
 
-▪ **errorMessageProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.vNext, "errorMessagwe")
+▪ **errorMessageProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "errorMessagwe")
 
 ___
 
 ### `Static` necessityProperty
 
-▪ **necessityProperty**: *[EnumProperty](enumproperty.md)‹[InputValidationNecessity](../enums/inputvalidationnecessity.md)›* = new EnumProperty(Versions.vNext, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional)
+▪ **necessityProperty**: *[EnumProperty](enumproperty.md)‹[InputValidationNecessity](../enums/inputvalidationnecessity.md)›* = new EnumProperty(Versions.v1_3, "necessity", Enums.InputValidationNecessity, Enums.InputValidationNecessity.Optional)
 
 ___
 
