@@ -29,9 +29,13 @@
 {
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     [bundle loadNibNamed:@"ACRQuickActionView" owner:self options:nil];
-    [self addSubview:self.contentView];
-    self.contentView.frame = self.bounds;
-    self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:self.stack];
+    self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
+    self.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:self.stack.leadingAnchor].active = YES;
+    [self.layoutMarginsGuide.trailingAnchor constraintEqualToAnchor:self.stack.trailingAnchor].active = YES;
+    [self.layoutMarginsGuide.topAnchor constraintEqualToAnchor:self.stack.topAnchor].active = YES;
+    [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:self.stack.bottomAnchor].active = YES;
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -47,5 +51,10 @@
 - (void)dismissNumPad
 {
     [self resignFirstResponder];
+}
+
+- (ACRButton *)getButton
+{
+    return _button;
 }
 @end

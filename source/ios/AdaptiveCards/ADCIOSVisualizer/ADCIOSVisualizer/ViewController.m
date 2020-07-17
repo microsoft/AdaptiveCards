@@ -417,31 +417,24 @@ const CGFloat kAdaptiveCardsWidth = 330;
         NSData *userInputsAsJson = [card inputs];
         NSString *str = [[NSString alloc] initWithData:userInputsAsJson
                                               encoding:NSUTF8StringEncoding];
-        if (!_userResponseLabel) {
-            _userResponseLabel = [[UILabel alloc] init];
-            _userResponseLabel.numberOfLines = 0;
-            _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
-            _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
-            [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
-        }
-        _userResponseLabel.text = str;
-        NSLog(@"user response fetched: %@ with %@", str, [action data]);
+        [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            UIAlertController *alertController =
-                [UIAlertController alertControllerWithTitle:@"successfully rendered new button type"
-                                                    message:newType.alertMessage
-                                             preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:nil]];
-            newType.alertController = alertController;
-            [self presentViewController:alertController animated:YES completion:nil];
+            newType.alertController = [self createAlertController:@"successfully rendered new button type" message:newType.alertMessage];
+            [self presentViewController:newType.alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
         NSLog(@"toggle visibility");
     }
+}
+
+- (UIAlertController *)createAlertController:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+    return alertController;
 }
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame

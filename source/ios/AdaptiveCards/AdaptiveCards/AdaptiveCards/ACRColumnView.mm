@@ -14,6 +14,7 @@
     self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
     self.isLastColumn = NO;
+    self.inputHandlers = [[NSMutableArray alloc] init];
 }
 
 - (void)addArrangedSubview:(UIView *)view

@@ -8,9 +8,15 @@
 #import "ACRTextField.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "TextInput.h"
+#import "ACRInputLabelView.h"
 
 
 @implementation ACRTextField
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    return [super initWithCoder:coder];
+}
 
 - (BOOL)validate:(NSError **)error
 {
@@ -20,12 +26,19 @@
         }
         return NO;
     } else
-        return YES;
+        if (_regexPredicate) {
+            return [_regexPredicate evaluateWithObject:self.text];
+        }
+    return YES;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     dictionary[self.id] = self.text;
+}
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder {
+    [ACRInputLabelView setFocus:shouldBecomeFirstResponder view:self];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -44,12 +57,23 @@
     if (!_maxLength) {
         return YES;
     }
-
+    
     if (range.length + range.location > textField.text.length) {
         return NO;
     }
-
+    
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return newLength <= _maxLength;
 }
+@synthesize isRequired;
+
+@end
+
+@implementation ACRTextEmailField : ACRTextField
+@end
+
+@implementation ACRTextTelelphoneField : ACRTextField
+@end
+
+@implementation ACRTextUrlField : ACRTextField
 @end
