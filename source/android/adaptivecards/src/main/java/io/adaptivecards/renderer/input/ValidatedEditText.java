@@ -15,6 +15,7 @@ public class ValidatedEditText extends EditText
     public ValidatedEditText(Context context) {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        getBackground().setColorFilter(null);
     }
 
     public ValidatedEditText(Context context, int errorColor) {

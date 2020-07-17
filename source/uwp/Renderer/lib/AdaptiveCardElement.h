@@ -45,7 +45,7 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement> sharedCardElement);
+        HRESULT CopySharedElementProperties(AdaptiveSharedNamespace::BaseCardElement& sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseCardElement>& sharedModel) = 0;
 

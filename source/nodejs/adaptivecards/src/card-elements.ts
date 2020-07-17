@@ -1,4 +1,4 @@
-// Copyright (c) Microsoft Corporation. All rights reserved.
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
@@ -130,19 +130,27 @@ export abstract class CardElement extends CardObject {
     }
 
     private updateRenderedElementVisibility() {
-        if (this._defaultRenderedElementDisplayMode) {
-            let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
+        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-            if (this._renderedElement) {
+        if (this._renderedElement) {
+            if (displayMode) {
                 this._renderedElement.style.display = displayMode;
             }
+            else {
+                this._renderedElement.style.removeProperty("display");
+            }
+        }
 
-            if (this._separatorElement) {
-                if (this.parent && this.parent.isFirstElement(this)) {
-                    this._separatorElement.style.display = "none";
+        if (this._separatorElement) {
+            if (this.parent && this.parent.isFirstElement(this)) {
+                this._separatorElement.style.display = "none";
+            }
+            else {
+                if (displayMode) {
+                    this._separatorElement.style.display = displayMode;
                 }
                 else {
-                    this._separatorElement.style.display = displayMode;
+                    this._separatorElement.style.removeProperty("display");
                 }
             }
         }
@@ -860,10 +868,6 @@ export class TextBlock extends BaseTextBlock {
         this._processedText = undefined;
     }
 
-    protected getRenderedDomElementType(): string {
-        return "div";
-    }
-
     protected internalRender(): HTMLElement | undefined {
         this._processedText = undefined;
 
@@ -871,7 +875,18 @@ export class TextBlock extends BaseTextBlock {
             let preProcessedText = this.preProcessPropertyValue(BaseTextBlock.textProperty);
             let hostConfig = this.hostConfig;
 
-            let element = document.createElement(this.getRenderedDomElementType());
+            let element: HTMLElement;
+            
+            if (this.forElementId) {
+                let labelElement = document.createElement("label");
+                labelElement.htmlFor = this.forElementId;
+
+                element = labelElement;
+            }
+            else {
+                element = document.createElement("div");
+            }
+
             element.classList.add(hostConfig.makeCssClassName("ac-textBlock"));
             element.style.overflow = "hidden";
 
@@ -1029,6 +1044,7 @@ export class TextBlock extends BaseTextBlock {
     }
 
     useMarkdown: boolean = true;
+    forElementId?: string;
 
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
@@ -1092,24 +1108,6 @@ export class TextBlock extends BaseTextBlock {
             this.truncateIfSupported(this._computedLineHeight * this.maxLines);
         }
     }
-}
-
-class Label extends TextBlock {
-    protected getRenderedDomElementType(): string {
-        return "label";
-    }
-
-    protected internalRender(): HTMLElement | undefined {
-        let renderedElement = <HTMLLabelElement>super.internalRender();
-
-        if (renderedElement && this.forElementId) {
-            renderedElement.htmlFor = this.forElementId;
-        }
-
-        return renderedElement;
-    }
-
-    forElementId: string;
 }
 
 export class TextRun extends BaseTextBlock {
@@ -1286,7 +1284,18 @@ export class RichTextBlock extends CardElement {
 
     protected internalRender(): HTMLElement | undefined {
         if (this._inlines.length > 0) {
-            let element = document.createElement("div");
+            let element: HTMLElement;
+
+            if (this.forElementId) {
+                let labelElement = document.createElement("label");
+                labelElement.htmlFor = this.forElementId;
+
+                element = labelElement;
+            }
+            else {
+                element = document.createElement("div");
+            }
+
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
             let parentContainer = this.getParentContainer();
@@ -1323,6 +1332,8 @@ export class RichTextBlock extends CardElement {
 
         return undefined;
     }
+
+    forElementId?: string;
 
     asString(): string | undefined {
         let result = "";
@@ -1615,22 +1626,45 @@ export class Image extends CardElement {
             }
         }
         else {
-            switch (this.size) {
-                case Enums.Size.Stretch:
-                    element.style.width = "100%";
-                    break;
-                case Enums.Size.Auto:
-                    element.style.maxWidth = "100%";
-                    break;
-                case Enums.Size.Small:
-                    element.style.width = this.hostConfig.imageSizes.small + "px";
-                    break;
-                case Enums.Size.Large:
-                    element.style.width = this.hostConfig.imageSizes.large + "px";
-                    break;
-                case Enums.Size.Medium:
-                    element.style.width = this.hostConfig.imageSizes.medium + "px";
-                    break;
+            if (this.maxHeight) {
+                // If the image is constrained in height, we set its height property and
+                // auto and stretch are ignored (default to medium). THis is necessary for
+                // ImageSet which uses a maximum image height as opposed to the cards width
+                // as a constraining dimension
+                switch (this.size) {
+                    case Enums.Size.Small:
+                        element.style.height = this.hostConfig.imageSizes.small + "px";
+                        break;
+                    case Enums.Size.Large:
+                        element.style.height = this.hostConfig.imageSizes.large + "px";
+                        break;
+                    default:
+                        element.style.height = this.hostConfig.imageSizes.medium + "px";
+                        break;
+                }
+
+                element.style.maxHeight = this.maxHeight + "px";
+            }
+            else {
+                switch (this.size) {
+                    case Enums.Size.Stretch:
+                        element.style.width = "100%";
+                        break;
+                    case Enums.Size.Auto:
+                        element.style.maxWidth = "100%";
+                        break;
+                    case Enums.Size.Small:
+                        element.style.width = this.hostConfig.imageSizes.small + "px";
+                        break;
+                    case Enums.Size.Large:
+                        element.style.width = this.hostConfig.imageSizes.large + "px";
+                        break;
+                    case Enums.Size.Medium:
+                        element.style.width = this.hostConfig.imageSizes.medium + "px";
+                        break;
+                }
+
+                element.style.maxHeight = "100%";
             }
         }
     }
@@ -1708,7 +1742,6 @@ export class Image extends CardElement {
 
                 raiseImageLoadedEvent(this);
             }
-            imageElement.style.maxHeight = "100%";
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
@@ -1744,6 +1777,8 @@ export class Image extends CardElement {
 
         return element;
     }
+
+    maxHeight?: number;
 
     getJsonTypeName(): string {
         return "Image";
@@ -1950,14 +1985,14 @@ export class ImageSet extends CardElementContainer {
     static readonly imageSizeProperty = new EnumProperty(
         Versions.v1_0,
         "imageSize",
-        Enums.Size,
-        Enums.Size.Medium);
+        Enums.ImageSize,
+        Enums.ImageSize.Medium);
 
     @property(ImageSet.imagesProperty)
     private _images: Image[] = [];
 
     @property(ImageSet.imageSizeProperty)
-    imageSize: Enums.Size = Enums.Size.Medium;
+    imageSize: Enums.ImageSize = Enums.ImageSize.Medium;
 
     //#endregion
 
@@ -1970,7 +2005,19 @@ export class ImageSet extends CardElementContainer {
             element.style.flexWrap = "wrap";
 
             for (let image of this._images) {
-                image.size = this.imageSize;
+                switch (this.imageSize) {
+                    case Enums.ImageSize.Small:
+                        image.size = Enums.Size.Small;
+                        break;
+                    case Enums.ImageSize.Large:
+                        image.size = Enums.Size.Large;
+                        break;
+                    default:
+                        image.size = Enums.Size.Medium;
+                        break;
+                }
+
+                image.maxHeight = this.hostConfig.imageSet.maxImageHeight;
 
                 let renderedImage = image.render();
 
@@ -1978,7 +2025,6 @@ export class ImageSet extends CardElementContainer {
                     renderedImage.style.display = "inline-flex";
                     renderedImage.style.margin = "0px";
                     renderedImage.style.marginRight = "10px";
-                    renderedImage.style.maxHeight = this.hostConfig.imageSet.maxImageHeight + "px";
 
                     Utils.appendChild(element, renderedImage);
                 }
@@ -2343,9 +2389,23 @@ export abstract class Input extends CardElement implements IInput {
     private _renderedLabelElement?: HTMLElement;
     private _renderedInputControlElement?: HTMLElement;
 
-    private updateInputControlAriaLabelledBy() {
+    protected getAllLabelIds(): string[] {
+        let labelIds: string[] = [];
+
+        if (this._renderedLabelElement) {
+            labelIds.push(this._renderedLabelElement.id);
+        }
+
+        if (this._renderedErrorMessageElement) {
+            labelIds.push(this._renderedErrorMessageElement.id);
+        }
+
+        return labelIds;
+    }
+
+    protected updateInputControlAriaLabelledBy() {
         if (this._renderedInputControlElement) {
-            let labelIds: string[] = [];
+            let labelIds: string[] = this.getAllLabelIds();
 
             if (this._renderedLabelElement) {
                 labelIds.push(this._renderedLabelElement.id);
@@ -2383,9 +2443,12 @@ export abstract class Input extends CardElement implements IInput {
         this._outerContainerElement.style.display = "flex";
         this._outerContainerElement.style.flexDirection = "column";
 
+        let renderedInputControlId = Utils.generateUniqueId();
+
         if (this.label) {
             let labelRichTextBlock = new RichTextBlock();
             labelRichTextBlock.setParent(this);
+            labelRichTextBlock.forElementId = renderedInputControlId;
 
             let labelInline = new TextRun(this.label);
             labelRichTextBlock.addInline(labelInline);
@@ -2420,6 +2483,7 @@ export abstract class Input extends CardElement implements IInput {
         this._renderedInputControlElement = this.internalRender();
 
         if (this._renderedInputControlElement) {
+            this._renderedInputControlElement.id = renderedInputControlId;
             this._renderedInputControlElement.style.minWidth = "0px";
 
             if (this.isNullable && this.isRequired) {
@@ -2746,6 +2810,24 @@ export class ToggleInput extends Input {
     //#endregion
 
     private _checkboxInputElement: HTMLInputElement;
+    private _checkboxInputLabelElement: HTMLElement | undefined;
+
+    protected updateInputControlAriaLabelledBy() {
+        if (this._checkboxInputElement) {
+            let joinedLabelIds = this.getAllLabelIds().join(" ");
+
+            if (this._checkboxInputLabelElement && this._checkboxInputLabelElement.id) {
+                joinedLabelIds += " " + this._checkboxInputLabelElement.id;
+            }
+
+            if (joinedLabelIds) {
+                this._checkboxInputElement.setAttribute("aria-labelledby", joinedLabelIds);
+            }
+            else {
+                this._checkboxInputElement.removeAttribute("aria-labelledby");
+            }
+        }
+    }
 
     protected internalRender(): HTMLElement | undefined {
         let element = document.createElement("div");
@@ -2781,7 +2863,7 @@ export class ToggleInput extends Input {
         Utils.appendChild(element, this._checkboxInputElement);
 
         if (this.title || this.isDesignMode()) {
-            let label = new Label();
+            let label = new TextBlock();
             label.setParent(this);
             label.forElementId = this._checkboxInputElement.id;
             label.hostConfig = this.hostConfig;
@@ -2789,19 +2871,20 @@ export class ToggleInput extends Input {
             label.useMarkdown = GlobalSettings.useMarkdownInRadioButtonAndCheckbox;
             label.wrap = this.wrap;
 
-            let labelElement = label.render();
+            this._checkboxInputLabelElement = label.render();
 
-            if (labelElement) {
-                labelElement.style.display = "inline-block";
-                labelElement.style.flex = "1 1 auto";
-                labelElement.style.marginLeft = "6px";
-                labelElement.style.verticalAlign = "middle";
+            if (this._checkboxInputLabelElement) {
+                this._checkboxInputLabelElement.id = Utils.generateUniqueId();
+                this._checkboxInputLabelElement.style.display = "inline-block";
+                this._checkboxInputLabelElement.style.flex = "1 1 auto";
+                this._checkboxInputLabelElement.style.marginLeft = "6px";
+                this._checkboxInputLabelElement.style.verticalAlign = "middle";
 
                 let spacerElement = document.createElement("div");
                 spacerElement.style.width = "6px";
 
                 Utils.appendChild(element, spacerElement);
-                Utils.appendChild(element, labelElement);
+                Utils.appendChild(element, this._checkboxInputLabelElement);
             }
         }
 
@@ -2814,6 +2897,12 @@ export class ToggleInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.Toggle";
+    }
+
+    focus() {
+        if (this._checkboxInputElement) {
+            this._checkboxInputElement.focus();
+        }
     }
 
     isSet(): boolean {
@@ -2918,6 +3007,7 @@ export class ChoiceSetInput extends Input {
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
     private _toggleInputs: HTMLInputElement[];
+    private _labels: Array<HTMLElement | undefined>;
 
     private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
@@ -2925,6 +3015,7 @@ export class ChoiceSetInput extends Input {
         element.style.width = "100%";
 
         this._toggleInputs = [];
+        this._labels = [];
 
         for (let choice of this.choices) {
             let input = document.createElement("input");
@@ -2964,7 +3055,7 @@ export class ChoiceSetInput extends Input {
 
             Utils.appendChild(compoundInput, input);
 
-            let label = new Label();
+            let label = new TextBlock();
             label.setParent(this);
             label.forElementId = input.id;
             label.hostConfig = this.hostConfig;
@@ -2974,7 +3065,10 @@ export class ChoiceSetInput extends Input {
 
             let labelElement = label.render();
 
+            this._labels.push(labelElement);
+
             if (labelElement) {
+                labelElement.id = Utils.generateUniqueId();
                 labelElement.style.display = "inline-block";
                 labelElement.style.flex = "1 1 auto";
                 labelElement.style.marginLeft = "6px";
@@ -2991,6 +3085,31 @@ export class ChoiceSetInput extends Input {
         }
 
         return element;
+    }
+
+    protected updateInputControlAriaLabelledBy() {
+        if (this.isMultiSelect || this.style === "expanded") {
+            let labelIds: string[] = this.getAllLabelIds();
+
+            for (let i = 0; i < this._toggleInputs.length; i++) {
+                let joinedLabelIds = labelIds.join(" ");
+                let label = this._labels[i];
+
+                if (label && label.id) {
+                    joinedLabelIds += " " + label.id;
+                }
+
+                if (joinedLabelIds) {
+                    this._toggleInputs[i].setAttribute("aria-labelledby", joinedLabelIds);
+                }
+                else {
+                    this._toggleInputs[i].removeAttribute("aria-labelledby");
+                }
+            }
+        }
+        else {
+            super.updateInputControlAriaLabelledBy();
+        }
     }
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -3072,6 +3191,17 @@ export class ChoiceSetInput extends Input {
 
     getJsonTypeName(): string {
         return "Input.ChoiceSet";
+    }
+
+    focus() {
+        if (this.isMultiSelect || this.style === "expanded") {
+            if (this._toggleInputs.length > 0) {
+                this._toggleInputs[0].focus();
+            }
+        }
+        else {
+            super.focus();
+        }
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -3212,11 +3342,11 @@ export class NumberInput extends Input {
 
         let result = true;
 
-        if (this.min) {
+        if (this.min !== undefined) {
             result = result && (this.value >= this.min);
         }
 
-        if (this.max) {
+        if (this.max !== undefined) {
             result = result && (this.value <= this.max);
         }
 
@@ -3527,7 +3657,7 @@ export abstract class Action extends CardObject {
         ],
         Enums.ActionStyle.Default);
     // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.vNext, "ignoreInputValidation", false);
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
@@ -6439,10 +6569,6 @@ class InlineAdaptiveCard extends AdaptiveCard {
         }
 
         return renderedCard;
-    }
-
-    getForbiddenActionTypes(): ActionType[] {
-        return [ ShowCardAction ];
     }
 }
 

@@ -69,7 +69,7 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
-                                           const std::wstring& resourceName,
+                                           HSTRING resourceName,
                                            _In_ IFrameworkElement* frameworkElement) noexcept
     {
         ComPtr<IResourceDictionary> resourceDictionary;
@@ -82,6 +82,13 @@ namespace AdaptiveNamespace::XamlHelpers
         }
 
         return S_OK;
+    }
+
+    HRESULT SetStyleFromResourceDictionary(_In_ IAdaptiveRenderContext* renderContext,
+                                           const wchar_t* resourceName,
+                                           _In_ IFrameworkElement* frameworkElement) noexcept
+    {
+        return SetStyleFromResourceDictionary(renderContext, HStringReference(resourceName).Get(), frameworkElement);
     }
 
     HRESULT XamlHelpers::SetSeparatorVisibility(_In_ IPanel* parentPanel)
@@ -644,69 +651,22 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    // TextBlock and RichTextBlock xaml types both support inlines, so we reuse the same method for rendering the " *" hint in both cases
-    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                  IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+                                         _In_ boolean isHint,
+                                         ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
-        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
-
-        // Create an inline for the *
-        ComPtr<IRun> starRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
-
-        HString starString;
-        UTF8ToHString(" *", starString.GetAddressOf());
-
-        RETURN_IF_FAILED(starRun->put_Text(starString.Get()));
-
-        // Set the color to Attention color
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        ABI::Windows::UI::Color attentionColor;
-        RETURN_IF_FAILED(
-            GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> starRunAsTextElement;
-        RETURN_IF_FAILED(starRun.As(&starRunAsTextElement));
-
-        RETURN_IF_FAILED(starRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
-
-        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> starRunAsInline;
-        RETURN_IF_FAILED(starRun.As(&starRunAsInline));
-
-        RETURN_IF_FAILED(xamlInlines->Append(starRunAsInline.Get()));
-
-        return S_OK;
-    }
-
-    HRESULT FormatLabelWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                      _In_ boolean isRequired,
-                                      ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
-    {
-        ComPtr<IAdaptiveHostConfig> hostConfig;
-        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
-
-        ComPtr<IAdaptiveInputsConfig> inputsConfig;
-        RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
-
-        ComPtr<IAdaptiveLabelConfig> labelConfig;
-        RETURN_IF_FAILED(inputsConfig->get_Label(&labelConfig));
-
-        ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
-        if (isRequired)
-        {
-            RETURN_IF_FAILED(labelConfig->get_RequiredInputs(&inputLabelConfig));
-        }
-        else
-        {
-            RETURN_IF_FAILED(labelConfig->get_OptionalInputs(&inputLabelConfig));
-        }
-
         ABI::AdaptiveNamespace::ForegroundColor textColor;
-        RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));      
+        RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
+        // If we're formatting a hint and the color has been set to default, then we have to render the hint with
+        // attention color, otherwise match the label color
+        if (isHint && textColor == ABI::AdaptiveNamespace::ForegroundColor::Default)
+        {
+            textColor = ABI::AdaptiveNamespace::ForegroundColor::Attention;
+        }
 
         ABI::Windows::UI::Color color;
-        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig.Get(), textColor, ContainerStyle_Default, false, false, &color));
+        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, textColor, ContainerStyle_Default, false, false, &color));
 
         ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> xamlLabelRun(labelRun);
 
@@ -719,9 +679,42 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
 
         UINT32 resultSize{};
-        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
 
         RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
+
+        return S_OK;
+    }
+
+    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+                                  IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    {
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
+
+        // Create an inline for the suffix
+        ComPtr<IRun> hintRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+
+        HString suffix;
+        RETURN_IF_FAILED(inputLabelConfig->get_Suffix(suffix.GetAddressOf()));
+
+        // If no suffix was defined, use * as default
+        if (WindowsIsStringEmpty(suffix.Get()))
+        {
+            RETURN_IF_FAILED(UTF8ToHString(" *", suffix.GetAddressOf()));
+        }
+
+        RETURN_IF_FAILED(hintRun->put_Text(suffix.Get()));
+
+        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun.Get());
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> hintRunAsTextElement;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsTextElement));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hintRunAsInline;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsInline));
+
+        RETURN_IF_FAILED(xamlInlines->Append(hintRunAsInline.Get()));
 
         return S_OK;
     }
@@ -765,14 +758,36 @@ namespace AdaptiveNamespace::XamlHelpers
 
             RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
 
-            // If the input is required, add a *
+            // If the input is required, add a * or other suffix if specified
             boolean isRequired;
             RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
 
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            ComPtr<IAdaptiveInputsConfig> inputsConfig;
+            RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+
+            ComPtr<IAdaptiveLabelConfig> labelConfig;
+            RETURN_IF_FAILED(inputsConfig->get_Label(&labelConfig));
+
+            ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
             if (isRequired)
             {
-                RETURN_IF_FAILED(AddRequiredHintInline(renderContext, xamlInlines.Get()));
+                RETURN_IF_FAILED(labelConfig->get_RequiredInputs(&inputLabelConfig));
             }
+            else
+            {
+                RETURN_IF_FAILED(labelConfig->get_OptionalInputs(&inputLabelConfig));
+            }
+
+            if (isRequired)
+            {
+                RETURN_IF_FAILED(AddRequiredHintInline(hostConfig.Get(), inputLabelConfig.Get(), xamlInlines.Get()));
+            }
+
+            RETURN_IF_FAILED(
+                FormatLabelRunWithHostConfig(hostConfig.Get(), inputLabelConfig.Get(), false /*isHint*/, labelRun.Get()));
 
             RETURN_IF_FAILED(xamlRichTextBlock->put_TextWrapping(TextWrapping_Wrap));
 
@@ -783,8 +798,7 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     // Error messages are formatted for text size and weight
-    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                             ITextBlock* errorMessage)
+    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext, ITextBlock* errorMessage)
     {
         ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
 
@@ -892,7 +906,7 @@ namespace AdaptiveNamespace::XamlHelpers
             XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
 
         ComPtr<IPanel> stackPanelAsPanel;
-        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));    
+        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
 
         ComPtr<IAdaptiveHostConfig> hostConfig;
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -998,7 +1012,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
             // Add the rendered error message
             XamlHelpers::AppendXamlElementToPanel(errorMessageControl.Get(), stackPanelAsPanel.Get());
-        }       
+        }
 
         // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
         ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
@@ -1041,7 +1055,7 @@ namespace AdaptiveNamespace::XamlHelpers
         // The input may need to go into a border to handle validation before being added to the stack panel.
         // inputUIElementParentContainer represents the current parent container.
         ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;
-        
+
         // If there's any validation on this input, and the caller has requested a validation border by passing
         // validationBorderOut, put the input inside a border
         boolean isRequired;
@@ -1061,7 +1075,7 @@ namespace AdaptiveNamespace::XamlHelpers
         // Different input renderers perform stuff differently
         // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
         // Input.Time and Input.Date let this method render the border for them
-        // Input.Toggle 
+        // Input.Toggle
         ComPtr<IUIElement> actualInputUIElement;
         if (validationBorderOut && hasValidation)
         {

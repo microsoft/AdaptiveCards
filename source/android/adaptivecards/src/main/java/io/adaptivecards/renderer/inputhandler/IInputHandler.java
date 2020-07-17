@@ -10,4 +10,5 @@ public interface IInputHandler
     void setInput(String input);
 
     boolean isValid();
+    void setFocusToView();
 }

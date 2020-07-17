@@ -97,7 +97,7 @@ namespace AdaptiveNamespace
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
         image->SetVerticalAlignment(static_cast<AdaptiveSharedNamespace::VerticalAlignment>(m_verticalAlignment));
 
-        sharedImage = image;
+        sharedImage = std::move(image);
         return S_OK;
     }
     CATCH_RETURN;

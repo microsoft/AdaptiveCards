@@ -30,6 +30,12 @@ namespace AdaptiveCards.Rendering
         public AdaptiveTextSize Size { get; set; } = AdaptiveTextSize.Default;
 
         /// <summary>
+        ///  Suffix to be displayed next to the label. Only respected for required inputs
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public string Suffix { get; set; } = " *";
+
+        /// <summary>
         ///  The text weight of the label
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]

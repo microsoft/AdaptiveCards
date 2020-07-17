@@ -210,6 +210,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             elementParserRegistration = new ElementParserRegistration();
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
+            elementParserRegistration.AddParser(CustomInput.customInputTypeString, new CustomInput.CustomInputParser());
 
             actionParserRegistration = new ActionParserRegistration();
             actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
@@ -293,6 +294,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         if (m_customElements.isChecked())
         {
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            CardRendererRegistration.getInstance().registerRenderer(CustomInput.customInputTypeString, new CustomInput.CustomInputRenderer());
         }
     }
 

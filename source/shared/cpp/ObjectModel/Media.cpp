@@ -26,7 +26,7 @@ Json::Value Media::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AltText)] = GetAltText();
     }
 
-    std::string sourcesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources);
+    const std::string& sourcesPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Sources);
     root[sourcesPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& source : m_sources)
     {

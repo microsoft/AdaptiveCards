@@ -69,16 +69,24 @@ public class BaseElement {
     return AdaptiveCardObjectModelJNI.BaseElement_GetElementTypeString(swigCPtr, this);
   }
 
+  public void SetElementTypeString(SWIGTYPE_p_std__string value) {
+    AdaptiveCardObjectModelJNI.BaseElement_SetElementTypeString__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
+  }
+
   public void SetElementTypeString(String value) {
-    AdaptiveCardObjectModelJNI.BaseElement_SetElementTypeString(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.BaseElement_SetElementTypeString__SWIG_1(swigCPtr, this, value);
   }
 
   public String GetId() {
-    return (getClass() == BaseElement.class) ? AdaptiveCardObjectModelJNI.BaseElement_GetId(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseElement_GetIdSwigExplicitBaseElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseElement_GetId(swigCPtr, this);
+  }
+
+  public void SetId(SWIGTYPE_p_std__string value) {
+    if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_SetId__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value)); else AdaptiveCardObjectModelJNI.BaseElement_SetIdSwigExplicitBaseElement__SWIG_0(swigCPtr, this, SWIGTYPE_p_std__string.getCPtr(value));
   }
 
   public void SetId(String value) {
-    if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_SetId(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseElement_SetIdSwigExplicitBaseElement(swigCPtr, this, value);
+    if (getClass() == BaseElement.class) AdaptiveCardObjectModelJNI.BaseElement_SetId__SWIG_1(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseElement_SetIdSwigExplicitBaseElement__SWIG_1(swigCPtr, this, value);
   }
 
   public InternalId GetInternalId() {
@@ -98,7 +106,7 @@ public class BaseElement {
   }
 
   public void SetAdditionalProperties(JsonValue additionalProperties) {
-    AdaptiveCardObjectModelJNI.BaseElement_SetAdditionalProperties(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
+    AdaptiveCardObjectModelJNI.BaseElement_SetAdditionalProperties__SWIG_0(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
   public FallbackType GetFallbackType() {
@@ -126,8 +134,8 @@ public class BaseElement {
     return AdaptiveCardObjectModelJNI.BaseElement_MeetsRequirements(swigCPtr, this, FeatureRegistration.getCPtr(hostProvides), hostProvides);
   }
 
-  public SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t_t GetRequirements() {
-    return new SWIGTYPE_p_std__shared_ptrT_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements(swigCPtr, this), true);
+  public SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t GetRequirements() {
+    return new SWIGTYPE_p_std__unordered_mapT_std__string_AdaptiveCards__SemanticVersion_t(AdaptiveCardObjectModelJNI.BaseElement_GetRequirements__SWIG_0(swigCPtr, this), false);
   }
 
   public void GetResourceInformation(RemoteResourceInformationVector resourceUris) {

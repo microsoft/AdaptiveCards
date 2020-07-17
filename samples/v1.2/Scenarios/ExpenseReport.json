@@ -51,14 +51,6 @@
 									"size": "ExtraLarge",
 									"text": "Trip to UAE",
 									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"spacing": "Small",
-									"size": "Small",
-									"weight": "Bolder",
-									"color": "Accent",
-									"text": "[ER-13052](https://adaptivecards.io)"
 								}
 							],
 							"width": "stretch"
@@ -80,6 +72,14 @@
 							"width": "auto"
 						}
 					]
+				},
+				{
+					"type": "TextBlock",
+					"spacing": "Small",
+					"size": "Small",
+					"weight": "Bolder",
+					"color": "Accent",
+					"text": "[ER-13052](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
@@ -107,7 +107,7 @@
 						},
 						{
 							"title": "Submitted to",
-							"value": "**David**   david@contoso.com"
+							"value": "**David**  david@contoso.com"
 						}
 					]
 				}

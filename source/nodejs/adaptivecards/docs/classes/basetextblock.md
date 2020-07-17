@@ -22,6 +22,7 @@
 
 * [_parent](basetextblock.md#protected-optional-_parent)
 * [_renderedElement](basetextblock.md#protected-optional-_renderedelement)
+* [ariaHidden](basetextblock.md#ariahidden)
 * [color](basetextblock.md#color)
 * [customCssSelector](basetextblock.md#optional-customcssselector)
 * [fontType](basetextblock.md#optional-fonttype)
@@ -109,6 +110,7 @@
 * [hasAllDefaultValues](basetextblock.md#hasalldefaultvalues)
 * [hasDefaultValue](basetextblock.md#hasdefaultvalue)
 * [indexOf](basetextblock.md#indexof)
+* [init](basetextblock.md#init)
 * [internalParse](basetextblock.md#protected-internalparse)
 * [internalRender](basetextblock.md#protected-abstract-internalrender)
 * [internalToJSON](basetextblock.md#protected-internaltojson)
@@ -154,9 +156,15 @@
 
 ###  constructor
 
-\+ **new BaseTextBlock**(): *[BaseTextBlock](basetextblock.md)*
+\+ **new BaseTextBlock**(`text?`: undefined | string): *[BaseTextBlock](basetextblock.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Overrides [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`text?` | undefined &#124; string |
 
 **Returns:** *[BaseTextBlock](basetextblock.md)*
 
@@ -175,6 +183,12 @@ ___
 • **_renderedElement**? : *HTMLElement*
 
 *Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+
+___
+
+###  ariaHidden
+
+• **ariaHidden**: *boolean* = false
 
 ___
 
@@ -230,7 +244,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -779,9 +793,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
@@ -1065,6 +1085,20 @@ Name | Type |
 `cardElement` | [CardElement](cardelement.md) |
 
 **Returns:** *number*
+
+___
+
+###  init
+
+▸ **init**(`textDefinition`: [BaseTextDefinition](basetextdefinition.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`textDefinition` | [BaseTextDefinition](basetextdefinition.md) |
+
+**Returns:** *void*
 
 ___
 
