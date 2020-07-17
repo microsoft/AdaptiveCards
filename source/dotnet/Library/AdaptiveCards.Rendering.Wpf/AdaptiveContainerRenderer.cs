@@ -358,13 +358,6 @@ namespace AdaptiveCards.Rendering.Wpf
                         }
                     }
                 }
-                else
-                {
-                    if (inputElement is AdaptiveTextInput)
-                    {
-
-                    }
-                }
 
                 AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement), inputElement.IsRequired);
 
