@@ -22,7 +22,7 @@
             "label": "Required Input.Toggle label",
 			"isRequired": true,
 			"errorMessage": "Required input"
-		}
+		},
 		{
 			"type": "Input.Toggle",
 			"id": "input3",

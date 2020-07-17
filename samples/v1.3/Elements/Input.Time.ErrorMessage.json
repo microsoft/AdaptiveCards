@@ -30,6 +30,7 @@
 			"label": "Required Input.Time with valid value between 9:00 am and 5:00 pm",
 			"min": "09:00",
 			"max": "17:00",
+			"isRequired":  true,
 			"errorMessage": "Please provide a time between 9:00 am and 5:00 pm"
 		}
 	],
