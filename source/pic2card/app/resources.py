@@ -3,13 +3,9 @@ import sys
 import os
 import io
 import base64
-import json
 import logging
 from urllib.parse import parse_qs, urlparse
 
-import numpy as np
-import cv2
-import requests
 from PIL import Image
 from flask import request
 from flask_restplus import Resource
@@ -63,8 +59,8 @@ class PredictJson(Resource):
                 # Upload smaller image.
                 response = {
                     "error": {
-                        "msg": f"Upload images of size <="
-                        " {config.IMG_MAX_UPLOAD_SIZE/(1024*1024)} MB.",
+                        "msg": "Upload images of size <="
+                        f" {config.IMG_MAX_UPLOAD_SIZE/(1024*1024)} MB.",
                         "code": 1002
                     }
                 }
@@ -118,6 +114,7 @@ class GetCardTemplates(Resource):
         templates = get_templates()
         return templates
 
+
 class DebugEndpoint(PredictJson):
 
     """
@@ -139,7 +136,5 @@ class DebugEndpoint(PredictJson):
         imgdata = base64.b64decode(bs64_img)
         image = Image.open(io.BytesIO(imgdata))
         debug = Debug(current_app.od_model)
-        images = debug.main(image=image, card_format=card_format)
+        images = debug.main(pil_image=image, card_format=card_format)
         return images
-
-

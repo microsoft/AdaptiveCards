@@ -16,8 +16,8 @@ class CustomModel(Model):
         pass
 
     def fit(self, dataset, val_dataset=None, epochs=10,
-            learning_rate=0.0005, momentum=0.9,
-            weight_decay=0.0005, gamma=0.1, lr_step_size=3, verbose=False):
+            learning_rate=0.00002, momentum=0.9,
+            weight_decay=0.00005, gamma=0.1, lr_step_size=3, verbose=False):
 
         # If doing custom training, the given images will most likely be
         # normalized. This should fix the issue of poor performance on
@@ -38,13 +38,18 @@ class CustomModel(Model):
         parameters = [p for p in self._model.parameters() if p.requires_grad]
         # Create an optimizer that uses SGD (stochastic gradient descent)
         # to train the parameters
-        optimizer = torch.optim.SGD(parameters, lr=learning_rate,
-                                    momentum=momentum,
-                                    weight_decay=weight_decay)
+        optimizer = torch.optim.SGD(parameters,
+                                    lr=learning_rate,
+                                    momentum=momentum)
         # Create a learning rate scheduler that decreases learning rate
         # by gamma every lr_step_size epochs
-        lr_scheduler = torch.optim.lr_scheduler.StepLR(
-            optimizer, step_size=lr_step_size, gamma=gamma)
+        # lr_scheduler = torch.optim.lr_scheduler.StepLR(
+        #     optimizer, step_size=lr_step_size, gamma=gamma
+        # )
+
+        lr_scheduler = torch.optim.lr_scheduler.MultiStepLR(
+            optimizer, milestones=[10, 20], gamma=gamma
+        )
 
         # Train on the entire dataset for the specified number of
         # times (epochs)
