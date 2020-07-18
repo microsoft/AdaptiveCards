@@ -82,7 +82,36 @@ namespace AdaptiveCards.Rendering.Wpf
             };
 
             image.SetBinding(Image.StretchProperty, binding);
+#else
+            image.Source = ImageSourceFromUri(url);
+
+            //var parameters = new AdaptiveConverterParameters(image, adaptiveImage, context);
+            //var binding = new Binding
+            //{
+            //    Source = RelativeBindingSource.Self,
+            //    Path = "Parent.WidthRequest",
+            //    Mode = BindingMode.OneWay,
+            //    Converter = new StretchConverter(),
+            //    ConverterParameter = parameters
+            //};
+
 #endif
+        }
+
+        private static ImageSource ImageSourceFromUri(Uri url)
+        {
+            ImageSource imageSource;
+            if (url.Scheme == "data")
+            {
+                var bytes = GetBase64FromDataUri(url);
+                imageSource = ImageSource.FromStream(() => new MemoryStream(bytes));
+            }
+            else
+            {
+                imageSource = ImageSource.FromUri(url);
+            }
+
+            return imageSource;
         }
 
         public class StretchConverter : IValueConverter
@@ -132,9 +161,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
         public static BitmapImage GetBitmapFromBase64(Uri dataUri)
         {
-            var encodedData = dataUri.AbsoluteUri.Substring(dataUri.AbsoluteUri.LastIndexOf(',') + 1);
-
-            var decodedDataUri = Convert.FromBase64String(encodedData);
+            byte[] decodedDataUri = GetBase64FromDataUri(dataUri);
             BitmapImage bitmap = new BitmapImage();
             bitmap.BeginInit();
             bitmap.StreamSource = new MemoryStream(decodedDataUri);
@@ -144,6 +171,16 @@ namespace AdaptiveCards.Rendering.Wpf
         }
 #endif
 
+        public static byte[] GetBase64FromDataUri(Uri dataUri)
+        {
+            var encodedData = dataUri.AbsoluteUri.Substring(dataUri.AbsoluteUri.LastIndexOf(',') + 1);
+
+            var decodedDataUri = Convert.FromBase64String(encodedData);
+            return decodedDataUri;
+        }
+
+
+
         public static async void SetBackgroundSource(this Grid grid, AdaptiveBackgroundImage adaptiveBackgroundImage, AdaptiveRenderContext context)
         {
             // Try to resolve the image URI
@@ -152,8 +189,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return;
             }
-
-#if WPF
+#if XAMARIN
+            grid.SetBackgroundImage(finalUri);
+#elif WPF
             BitmapImage bi = await context.ResolveImageSource(finalUri);
 
             if (bi != null)
@@ -226,6 +264,27 @@ namespace AdaptiveCards.Rendering.Wpf
                 case AdaptiveImageSize.Large:
                     imageview.Width = context.Config.ImageSizes.Large;
                     imageview.Height = context.Config.ImageSizes.Large;
+                    break;
+            }
+#elif XAMARIN
+            switch (image.Size)
+            {
+                case AdaptiveImageSize.Auto:
+                case AdaptiveImageSize.Stretch:
+                    imageview.VerticalOptions = LayoutOptions.FillAndExpand;
+                    imageview.HorizontalOptions = LayoutOptions.FillAndExpand;
+                    break;
+                case AdaptiveImageSize.Small:
+                    imageview.WidthRequest = context.Config.ImageSizes.Small;
+                    imageview.HeightRequest = context.Config.ImageSizes.Small;
+                    break;
+                case AdaptiveImageSize.Medium:
+                    imageview.WidthRequest = context.Config.ImageSizes.Medium;
+                    imageview.HeightRequest = context.Config.ImageSizes.Medium;
+                    break;
+                case AdaptiveImageSize.Large:
+                    imageview.WidthRequest = context.Config.ImageSizes.Large;
+                    imageview.HeightRequest = context.Config.ImageSizes.Large;
                     break;
             }
 #endif
