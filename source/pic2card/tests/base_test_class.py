@@ -32,4 +32,3 @@ class BaseAPITest(unittest.TestCase):
         """ To get the elapsed time for each test """
         elapsed = time.time() - self._started_at
         print('{} ({}s)'.format(self.id(), round(elapsed, 2)))
-
