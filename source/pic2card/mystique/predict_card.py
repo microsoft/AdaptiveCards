@@ -17,6 +17,7 @@ from mystique.image_extraction import ImageExtraction
 from mystique.card_template import DataBinding
 from mystique import config
 from mystique.extract_properties import CollectProperties
+from mystique.utils import timeit
 
 
 class PredictCard:
@@ -105,9 +106,10 @@ class PredictCard:
         image_np = np.asarray(image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         # Extract the design objects from faster rcnn model
-        output_dict, _ = self.od_model.get_objects(
-            image_np=image_np, image=image
-        )
+        with timeit("Model inference"):
+            output_dict, _ = self.od_model.get_objects(
+                image_np=image_np, image=image
+            )
         return self.generate_card(output_dict, image, image_np, card_format)
 
     def tf_serving_main(self, bs64_img: str, tf_server: str, model_name: str,
