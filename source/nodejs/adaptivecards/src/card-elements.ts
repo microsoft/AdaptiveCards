@@ -2570,6 +2570,13 @@ export abstract class Input extends CardElement implements IInput {
                 Enums.ValidationEvent.PropertyCantBeNull,
                 "All inputs must have a unique Id");
         }
+
+        if (this.isRequired && !this.label) {
+            context.addFailure(
+                this,
+                Enums.ValidationEvent.RequiredInputsShouldHaveLabel,
+                "Required inputs should have a label");
+        }
     }
 
     validateValue(): boolean {
