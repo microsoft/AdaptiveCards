@@ -2,6 +2,12 @@
 // Licensed under the MIT License. 
 const http = require('http');
 
+/** 
+ * This function takes an options argument, the platform name and the form data
+ * and returns a promise. The promise contains a function that sends the form data
+ * via HTTP POST request to the address mentioned in options. It sends back the response
+ * data on a successful HTTP POST request. Otherwise it sends back the error.  
+ */
 function getPostRequestPromise(options, platformName, formData) {
     const postReqPromise = new Promise(function(resolve, reject) {
       const postRequest = http.request(options, function(postResponse) {
