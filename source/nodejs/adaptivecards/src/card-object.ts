@@ -12,15 +12,13 @@ export class ValidationResults {
     readonly allIds: Dictionary<number> = {};
     readonly validationEvents: IValidationEvent[] = [];
 
-    addFailure(cardObject: CardObject, event: Enums.ValidationEvent, message: string, ...args: any[]) {
-        let formattedMessage = args ? Utils.formatString(message, ...args) : message;
-
+    addFailure(cardObject: CardObject, event: Enums.ValidationEvent, message: string) {
         this.validationEvents.push(
             {
                 phase: Enums.ValidationPhase.Validation,
                 source: cardObject,
                 event: event,
-                message: formattedMessage
+                message: message
             }
         );
     }
@@ -119,8 +117,7 @@ export abstract class CardObject extends SerializableObject {
                     context.addFailure(
                         this,
                         Enums.ValidationEvent.DuplicateId,
-                        Strings.errors.duplicateId,
-                        this.id);
+                        Strings.errors.duplicateId(this.id));
                 }
 
                 context.allIds[this.id] += 1;

@@ -48,8 +48,7 @@ export class Version {
             context.logParseEvent(
                 undefined,
                 Enums.ValidationEvent.InvalidPropertyValue,
-                Strings.errors.invalidVersionString,
-                result._versionString);
+                Strings.errors.invalidVersionString(result._versionString));
         }
 
         return result;
@@ -218,22 +217,19 @@ export abstract class BaseSerializationContext {
         source: SerializableObject | undefined,
         phase: Enums.ValidationPhase,
         event: Enums.ValidationEvent,
-        message: string,
-        ...args: any[]) {
-        let formattedMessage = args ? Utils.formatString(message, ...args) : message;
-
+        message: string) {
         this._validationEvents.push(
             {
                 source: source,
                 phase: phase,
                 event: event,
-                message: formattedMessage
+                message: message
             }
         )
     }
 
-    logParseEvent(source: SerializableObject | undefined, event: Enums.ValidationEvent, message: string, ...args: any[]) {
-        this.logEvent(source, Enums.ValidationPhase.Parse, event, message, ...args);
+    logParseEvent(source: SerializableObject | undefined, event: Enums.ValidationEvent, message: string) {
+        this.logEvent(source, Enums.ValidationPhase.Parse, event, message);
     }
 
     getEventAt(index: number): IValidationEvent {
@@ -291,8 +287,7 @@ export class StringProperty extends PropertyDefinition {
                 context.logParseEvent(
                     sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidPropertyValue,
-                    parsedValue, this.name);
+                    Strings.errors.invalidPropertyValue(parsedValue, this.name));
 
                 return undefined;
             }
@@ -373,8 +368,7 @@ export class PixelSizeProperty extends PropertyDefinition {
                 context.logParseEvent(
                     sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidPropertyValue,
-                    source[this.name], "minHeight");
+                    Strings.errors.invalidPropertyValue(source[this.name], "minHeight"));
             }
         }
 
@@ -414,8 +408,11 @@ export class ValueSetProperty extends PropertyDefinition {
                         context.logParseEvent(
                             sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            Strings.errors.propertyValueNotSupported,
-                            sourceValue, this.name, targetVersion, context.targetVersion);
+                            Strings.errors.propertyValueNotSupported(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
 
                         return this.defaultValue;
                     }
@@ -426,8 +423,7 @@ export class ValueSetProperty extends PropertyDefinition {
         context.logParseEvent(
             sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            Strings.errors.invalidPropertyValue,
-            sourceValue, this.name);
+            Strings.errors.invalidPropertyValue(sourceValue, this.name));
 
         return this.defaultValue;
     }
@@ -449,8 +445,11 @@ export class ValueSetProperty extends PropertyDefinition {
                         sender,
                         Enums.ValidationPhase.ToJSON,
                         Enums.ValidationEvent.InvalidPropertyValue,
-                        Strings.errors.propertyValueNotSupported,
-                        value, this.name, targetVersion, context.targetVersion);
+                        Strings.errors.propertyValueNotSupported(
+                            value,
+                            this.name,
+                            targetVersion.toString(),
+                            context.targetVersion.toString()));
                 }
             }
         }
@@ -498,8 +497,11 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                         context.logParseEvent(
                             sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            Strings.errors.propertyValueNotSupported,
-                            sourceValue, this.name, targetVersion, context.targetVersion);
+                            Strings.errors.propertyValueNotSupported(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
 
                         return this.defaultValue;
                     }
@@ -510,8 +512,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
         context.logParseEvent(
             sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            Strings.errors.invalidPropertyValue,
-            sourceValue, this.name);
+            Strings.errors.invalidPropertyValue(sourceValue, this.name));
 
         return this.defaultValue;
     }
@@ -534,8 +535,7 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                             sender,
                             Enums.ValidationPhase.ToJSON,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            Strings.errors.invalidPropertyValue,
-                            value, this.name);
+                            Strings.errors.invalidPropertyValue(value, this.name));
                     }
                 }
             }
@@ -829,8 +829,10 @@ export abstract class SerializableObject {
                             context.logParseEvent(
                                 this,
                                 Enums.ValidationEvent.UnsupportedProperty,
-                                Strings.errors.propertyNotSupported,
-                                property.name, property.targetVersion, context.targetVersion);
+                                Strings.errors.propertyNotSupported(
+                                    property.name,
+                                    property.targetVersion.toString(),
+                                    context.targetVersion.toString()));
                         }
                     }
 

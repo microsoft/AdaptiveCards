@@ -406,7 +406,7 @@ export abstract class CardElement extends CardObject {
     }
 
     getActionAt(index: number): Action | undefined {
-        throw new Error(Utils.formatString(Strings.errors.indexOutOfRange, index));
+        throw new Error(Strings.errors.indexOutOfRange(index));
     }
 
     remove(): boolean {
@@ -1216,13 +1216,13 @@ export class RichTextBlock extends CardElement {
 
     private internalAddInline(inline: CardElement, forceAdd: boolean = false) {
         if (!inline.isInline) {
-            throw new Error(Strings.errors.elementCannotBeUsedAsInline);
+            throw new Error(Strings.errors.elementCannotBeUsedAsInline());
         }
 
         let doAdd: boolean = inline.parent === undefined || forceAdd;
 
         if (!doAdd && inline.parent != this) {
-            throw new Error(Strings.errors.inlineAlreadyParented);
+            throw new Error(Strings.errors.inlineAlreadyParented());
         }
         else {
             inline.setParent(this);
@@ -1335,7 +1335,7 @@ export class RichTextBlock extends CardElement {
             return this._inlines[index];
         }
         else {
-            throw new Error(Utils.formatString(Strings.errors.indexOutOfRange, index));
+            throw new Error(Strings.errors.indexOutOfRange(index));
         }
     }
 
@@ -1514,8 +1514,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             context.logParseEvent(
                 sender,
                 Enums.ValidationEvent.InvalidPropertyValue,
-                Strings.errors.invalidPropertyValue,
-                sourceValue, this.name);
+                Strings.errors.invalidPropertyValue(sourceValue, this.name));
         }
 
         return result;
@@ -1838,15 +1837,14 @@ export abstract class CardElementContainer extends CardElement {
                 context.addFailure(
                     this,
                     Enums.ValidationEvent.InteractivityNotAllowed,
-                    Strings.errors.interactivityNotAllowed);
+                    Strings.errors.interactivityNotAllowed());
             }
 
             if (!this.isElementAllowed(item)) {
                 context.addFailure(
                     this,
                     Enums.ValidationEvent.InteractivityNotAllowed,
-                    Strings.errors.elementTypeNotAllowed,
-                    item.getJsonTypeName());
+                    Strings.errors.elementTypeNotAllowed(item.getJsonTypeName()));
             }
 
             item.internalValidateProperties(context);
@@ -2478,7 +2476,7 @@ export abstract class Input extends CardElement implements IInput {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.inputsMustHaveUniqueId);
+                Strings.errors.inputsMustHaveUniqueId());
         }
     }
 
@@ -3029,7 +3027,7 @@ export class ChoiceSetInput extends Input {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.CollectionCantBeEmpty,
-                Strings.errors.choiceSetMustHaveAtLeastOneChoice);
+                Strings.errors.choiceSetMustHaveAtLeastOneChoice());
         }
 
         for (let choice of this.choices) {
@@ -3037,7 +3035,7 @@ export class ChoiceSetInput extends Input {
                 context.addFailure(
                     this,
                     Enums.ValidationEvent.PropertyCantBeNull,
-                    Strings.errors.choiceSetChoicesMustHaveTitleAndValue);
+                    Strings.errors.choiceSetChoicesMustHaveTitleAndValue());
             }
         }
     }
@@ -3722,8 +3720,7 @@ export class OpenUrlAction extends Action {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.propertyMustBeSet,
-                "url");
+                Strings.errors.propertyMustBeSet("url"));
         }
     }
 
@@ -3958,8 +3955,7 @@ export class HttpAction extends Action {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.propertyMustBeSet,
-                "url");
+                Strings.errors.propertyMustBeSet("url"));
         }
 
         if (this.headers.length > 0) {
@@ -3968,7 +3964,7 @@ export class HttpAction extends Action {
                     context.addFailure(
                         this,
                         Enums.ValidationEvent.PropertyCantBeNull,
-                        Strings.errors.actionHttpHeadersMustHaveNameAndValue);
+                        Strings.errors.actionHttpHeadersMustHaveNameAndValue());
                 }
             }
         }
@@ -4016,7 +4012,7 @@ export class ShowCardAction extends Action {
             context.logParseEvent(
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.showCardMustHaveCard);
+                Strings.errors.showCardMustHaveCard());
         }
     }
 
@@ -4287,15 +4283,14 @@ class ActionCollection {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.TooManyActions,
-                Strings.errors.tooManyActions,
-                this._owner.hostConfig.actions.maxActions);
+                Strings.errors.tooManyActions(this._owner.hostConfig.actions.maxActions));
         }
 
         if (this.items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.InteractivityNotAllowed,
-                Strings.errors.interactivityNotAllowed);
+                Strings.errors.interactivityNotAllowed());
         }
 
         for (let item of this.items) {
@@ -4303,8 +4298,7 @@ class ActionCollection {
                 context.addFailure(
                     this._owner,
                     Enums.ValidationEvent.ActionTypeNotAllowed,
-                    Strings.errors.actionTypeNotAllowed,
-                    item.getJsonTypeName());
+                    Strings.errors.actionTypeNotAllowed(item.getJsonTypeName()));
             }
 
             item.internalValidateProperties(context);
@@ -4489,7 +4483,7 @@ class ActionCollection {
             action["_actionCollection"] = this;
         }
         else {
-            throw new Error(Strings.errors.actionAlreadyParented);
+            throw new Error(Strings.errors.actionAlreadyParented());
         }
     }
 
@@ -4825,8 +4819,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 context.addFailure(
                     this,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidPropertyValue,
-                    explicitStyle, "style");
+                    Strings.errors.invalidPropertyValue(explicitStyle, "style"));
             }
         }
     }
@@ -4972,11 +4965,11 @@ export class Container extends StylableCardElementContainer {
                 item.setParent(this);
             }
             else {
-                throw new Error(Utils.formatString(Strings.errors.elementTypeNotStandalone, item.getJsonTypeName()));
+                throw new Error(Strings.errors.elementTypeNotStandalone(item.getJsonTypeName()));
             }
         }
         else {
-            throw new Error(Strings.errors.elementAlreadyParented);
+            throw new Error(Strings.errors.elementAlreadyParented());
         }
     }
 
@@ -5368,8 +5361,7 @@ export class Column extends Container {
                 context.logParseEvent(
                     sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidColumnWidth,
-                    value);
+                    Strings.errors.invalidColumnWidth(value));
 
                 result = "auto";
             }
@@ -5479,8 +5471,7 @@ export class ColumnSet extends StylableCardElementContainer {
                 context.logParseEvent(
                     undefined,
                     Enums.ValidationEvent.ElementTypeNotAllowed,
-                    Strings.errors.elementTypeNotAllowed,
-                    typeName);
+                    Strings.errors.elementTypeNotAllowed(typeName));
             });
     }
 
@@ -5688,7 +5679,7 @@ export class ColumnSet extends StylableCardElementContainer {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.Hint,
-                Strings.hints.dontUseWeightedAndStrecthedColumnsInSameSet);
+                Strings.hints.dontUseWeightedAndStrecthedColumnsInSameSet());
         }
     }
 
@@ -5699,7 +5690,7 @@ export class ColumnSet extends StylableCardElementContainer {
             column.setParent(this);
         }
         else {
-            throw new Error(Strings.errors.columnAlreadyBelongsToAnotherSet);
+            throw new Error(Strings.errors.columnAlreadyBelongsToAnotherSet());
         }
     }
 
@@ -6010,8 +6001,7 @@ export class AdaptiveCard extends ContainerWithActions {
                 context.logParseEvent(
                     sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    Strings.errors.invalidCardVersion,
-                    version);
+                    Strings.errors.invalidCardVersion(version.toString()));
             }
 
             return version;
@@ -6045,11 +6035,11 @@ export class AdaptiveCard extends ContainerWithActions {
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
 
     static get processMarkdown(): (text: string) => string {
-        throw new Error(Strings.errors.processMarkdownEventRemoved);
+        throw new Error(Strings.errors.processMarkdownEventRemoved());
     }
 
     static set processMarkdown(value: (text: string) => string) {
-        throw new Error(Strings.errors.processMarkdownEventRemoved);
+        throw new Error(Strings.errors.processMarkdownEventRemoved());
     }
 
     static applyMarkdown(text: string): IMarkdownProcessingResult {
@@ -6178,22 +6168,20 @@ export class AdaptiveCard extends ContainerWithActions {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.MissingCardType,
-                Strings.errors.invalidCardType);
+                Strings.errors.invalidCardType());
         }
 
         if (!this.bypassVersionCheck && !this.version) {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.PropertyCantBeNull,
-                Strings.errors.propertyMustBeSet,
-                "version");
+                Strings.errors.propertyMustBeSet("version"));
         }
         else if (!this.isVersionSupported()) {
             context.addFailure(
                 this,
                 Enums.ValidationEvent.UnsupportedCardVersion,
-                Strings.errors.unsupportedCardVersion,
-                this.version, this.maxVersion);
+                Strings.errors.unsupportedCardVersion(this.version.toString(), this.maxVersion.toString()));
         }
     }
 
@@ -6375,7 +6363,7 @@ export class SerializationContext extends BaseSerializationContext {
                 }
                 else {
                     let tryToFallback = false;
-                    
+
                     result = createInstanceCallback(typeName);
 
                     if (!result) {
@@ -6464,15 +6452,13 @@ export class SerializationContext extends BaseSerializationContext {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownElementType,
-                        Strings.errors.unknownElementType,
-                        typeName);
+                        Strings.errors.unknownElementType(typeName));
                 }
                 else {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.ElementTypeNotAllowed,
-                        Strings.errors.elementTypeNotAllowed,
-                        typeName);
+                        Strings.errors.elementTypeNotAllowed(typeName));
                 }
             });
     }
@@ -6495,15 +6481,13 @@ export class SerializationContext extends BaseSerializationContext {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownActionType,
-                        Strings.errors.unknownActionType,
-                        typeName);
+                        Strings.errors.unknownActionType(typeName));
                 }
                 else {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.ActionTypeNotAllowed,
-                        Strings.errors.actionTypeNotAllowed,
-                        typeName);
+                        Strings.errors.actionTypeNotAllowed(typeName));
                 }
             });
     }
