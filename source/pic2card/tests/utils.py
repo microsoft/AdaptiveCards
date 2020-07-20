@@ -31,4 +31,3 @@ def get_response(client, api, headers, data):
     """ Returns the response of a post request """
     response = client.post(api, headers=headers, data=data)
     return response
-

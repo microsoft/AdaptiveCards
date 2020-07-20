@@ -12,6 +12,7 @@
 * [FillMode](enums/fillmode.md)
 * [FontType](enums/fonttype.md)
 * [HorizontalAlignment](enums/horizontalalignment.md)
+* [ImageSize](enums/imagesize.md)
 * [ImageStyle](enums/imagestyle.md)
 * [InputTextStyle](enums/inputtextstyle.md)
 * [InputValidationNecessity](enums/inputvalidationnecessity.md)
