@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="stylesheet" type="text/css"   href="/css/styles.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <body>
+    <div id = "header" class = "w3-container">
+      <img src="/images/AdaptiveCardsLogo.png" style="vertical-align: middle;"/>
+      <span style="vertical-align: middle;">Adaptive Card Preview</span>
+  </div>
+    <div id="0" class="results w3-container"  ></div>
+    <div id="1" class="results w3-container" ></div>
+    <div id="2" class="results w3-container" ></div>
     <script>
       const errorList = <%-errorList %>;
       const warningList = <%-warningList %>;
@@ -10,15 +19,23 @@
       const platformNames = <%-platformNames %>;
       for(var i = 0; i < platformNames.length; i++){
           var newHTML = document.createElement ('div');
+          var platformName = platformNames[i].trim();
+          var warnings = warningList[i];
+          var errors = errorList[i];
+          if(platformName == "Android"){
+            warnings = JSON.parse(warnings);
+            errors = JSON.parse(errors);
+          }
           newHTML.innerHTML   = '             \
-                <div id= '+ platformNames[i] +' >             \
-                    <img src = "data:image/png;base64,'+ imageList[i]+ '  "  <br>\
+          <div class="w3-container w3-center"><div id= '+ platformName+'Results'  +' class="w3-card-4">             \
+                    <p class="platformNameHeading">'+platformName+'</p><img src = "data:image/png;base64,'+ imageList[i]+ '  "  <br>\
                     <p>The above is rendered on '+ platformNames[i]+' </p> \
-                    <p> Warnings: '+warningList[i] +' </p>\
-                    <p> Errors: '+ errorList[i] + '</p>\
+                    <p> Warnings: '+warnings +' </p>\
+                    <p> Errors: '+ errors + '</p></div>\
                 </div>                          \
             ';
-          document.body.appendChild (newHTML);
+         // document.body.appendChild (newHTML);
+         document.getElementById(JSON.stringify(i)).appendChild(newHTML);
       }
     </script>
   </body>

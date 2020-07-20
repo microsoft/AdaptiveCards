@@ -15,13 +15,17 @@ const optionsTemplate = {
     }
 };
 
-const optionsForNodeJs = Object.assign({}, optionsTemplate);
+const optionsForNodeJs = JSON.parse(JSON.stringify(optionsTemplate));
 optionsForNodeJs["platformName"] = "Node JS";
 
-const optionsForWPF = Object.assign({}, optionsTemplate);
+const optionsForWPF = JSON.parse(JSON.stringify(optionsTemplate));
 optionsForWPF["platformName"] = "WPF";
 optionsForWPF["options"]["port"] = 4000;
 
-optionsArray = [JSON.stringify(optionsForNodeJs), JSON.stringify(optionsForWPF)];
+const optionsForAndroid = Object.assign({}, optionsTemplate);
+optionsForAndroid["platformName"] = "Android";
+optionsForAndroid["options"]["port"] = 7000
+
+optionsArray = [JSON.stringify(optionsForNodeJs), JSON.stringify(optionsForWPF), JSON.stringify(optionsForAndroid)];
 
 module.exports = optionsArray;

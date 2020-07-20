@@ -1,15 +1,22 @@
 <!DOCTYPE html>
 <html>
   <head>
-
+    <link rel="stylesheet" type="text/css"   href="/css/styles.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   </head>
   <body>
-
-    <h1>Consistent Cards</h1>
+    <div id = "header" class = "w3-container">
+      <img src="/images/AdaptiveCardsLogo.png" style="vertical-align: middle;"/>
+      <span style="vertical-align: middle;">Adaptive Card Preview</span>
+  </div>
+  <div id="form">
     <form action = "/" method=POST>
-      <textarea placeholder="card data" name ="cardData"></textarea><br>
-      <textarea placeholder="card template" name ="cardTemplate"></textarea><br>
-      <input type="submit" value="Submit">
+      <label for="cardData">Enter the Adaptive Card Data</label>
+      <textarea placeholder="card data" name ="cardData" id="cardData"></textarea><br>
+      <label for="cardTemplate">Enter the Adaptive Card Template</label>
+      <textarea placeholder="card template" name ="cardTemplate" id="cardTemplate"></textarea><br>
+      <input type="submit" class="w3-btn w3-blue" value="Submit">
     </form>
+  </div>
   </body>
 </html>
