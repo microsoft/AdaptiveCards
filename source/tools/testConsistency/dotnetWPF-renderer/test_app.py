@@ -5,9 +5,8 @@ import json
 from app import app
 from copy import deepcopy
 
-
-POST_URL = 'http://127.0.0.1:5000/'
-TEST_PARTIAL_RESULT_URL = 'http://127.0.0.1:5000/test'
+POST_ROUTE = '/'
+TEST_PARTIAL_RESULT_ROUTE = '/test'
 
 class TestFlaskApi(unittest.TestCase):
     def setUp(self):
@@ -20,7 +19,7 @@ class TestFlaskApi(unittest.TestCase):
         template = json.load(jsonFile)
         data = ""
         jsonFile.close()
-        response = self.app.post(POST_URL,
+        response = self.app.post(POST_ROUTE,
                                  data=dict(template=json.dumps(template),
                                            data=data
                                           )
@@ -40,7 +39,7 @@ class TestFlaskApi(unittest.TestCase):
         template = json.load(jsonFile)
         data = ""
         jsonFile.close()
-        response = self.app.post(POST_URL,
+        response = self.app.post(POST_ROUTE,
                                  data=dict(data=json.dumps(template),
                                            template=data
                                           )
@@ -53,7 +52,7 @@ class TestFlaskApi(unittest.TestCase):
         
 
     def testEmptyPayLoad(self):
-        response = self.app.post(POST_URL, 
+        response = self.app.post(POST_ROUTE, 
                                  data=dict(template="", 
                                            data=""
                                           )
@@ -68,7 +67,7 @@ class TestFlaskApi(unittest.TestCase):
     def testSendingInvalidJson(self):
         data = '{"title" : "invalid card data" '
         template = '{"title" : "invalid card template" '
-        response = self.app.post(POST_URL, 
+        response = self.app.post(POST_ROUTE, 
                                  data=dict(template=template,
                                            data=data
                                           )
@@ -95,7 +94,7 @@ class TestFlaskApi(unittest.TestCase):
                    "name": "Helen Byrde"
                }
         
-        response = self.app.post(POST_URL, 
+        response = self.app.post(POST_ROUTE, 
                                  data=dict(template=json.dumps(template),
                                            data=json.dumps(data)
                                           )
@@ -126,7 +125,7 @@ class TestFlaskApi(unittest.TestCase):
                    "name": "Helen Byrde"
                }
         
-        response = self.app.post(TEST_PARTIAL_RESULT_URL, 
+        response = self.app.post(TEST_PARTIAL_RESULT_ROUTE, 
                                  data=dict(template=json.dumps(template),
                                            data=json.dumps(data)
                                           )
