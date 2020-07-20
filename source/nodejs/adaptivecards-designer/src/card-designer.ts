@@ -8,6 +8,7 @@ import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { HostContainer } from "./containers/host-container";
+import { OpenImageDialog } from "./open-image-dialog";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
@@ -613,7 +614,7 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (dialog.selectedSample  && dialog.selectedSample.cardId !=="PIC_2_CARD") {
                         dialog.selectedSample.onDownloaded = () => {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
@@ -637,6 +638,10 @@ export class CardDesigner extends Designer.DesignContext {
                         };
                         dialog.selectedSample.download();
                     }
+                    else if(dialog.selectedSample.cardId ==="PIC_2_CARD")  {
+                        this.launchImagePopup();
+                    }
+
 
                     const newCardButton = this._newCardButton.renderedElement;
 
@@ -722,6 +727,18 @@ export class CardDesigner extends Designer.DesignContext {
             this.updateFullLayout();
         }
     }
+
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Upload Card Structure ";
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            this.setCardPayload(dialog.predictedCardJSON, true);
+        };
+    }
+
 
     private onResize() {
         this._cardEditor.layout();
