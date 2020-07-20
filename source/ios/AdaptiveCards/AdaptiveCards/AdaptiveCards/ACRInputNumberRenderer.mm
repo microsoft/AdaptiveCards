@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "ACRNumericTextField.h"
 #import "NumberInput.h"
 #import "UtiliOS.h"
@@ -52,8 +53,8 @@
     [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, numInputBlck, numInput, viewGroup);
-    
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:nil];
+
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
         [inputContainer addArrangedSubview:inputLabelView];

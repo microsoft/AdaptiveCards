@@ -7,8 +7,8 @@
 
 #import "ACRTextField.h"
 #import "ACOBaseCardElementPrivate.h"
-#import "TextInput.h"
 #import "ACRInputLabelView.h"
+#import "TextInput.h"
 
 
 @implementation ACRTextField
@@ -25,10 +25,9 @@
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
         }
         return NO;
-    } else
-        if (_regexPredicate) {
-            return [_regexPredicate evaluateWithObject:self.text];
-        }
+    } else if (_regexPredicate) {
+        return [_regexPredicate evaluateWithObject:self.text];
+    }
     return YES;
 }
 
@@ -37,8 +36,9 @@
     dictionary[self.id] = self.text;
 }
 
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder {
-    [ACRInputLabelView setFocus:shouldBecomeFirstResponder view:self];
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -57,11 +57,11 @@
     if (!_maxLength) {
         return YES;
     }
-    
+
     if (range.length + range.location > textField.text.length) {
         return NO;
     }
-    
+
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return newLength <= _maxLength;
 }

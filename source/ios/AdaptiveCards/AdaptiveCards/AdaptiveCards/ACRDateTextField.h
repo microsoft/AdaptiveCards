@@ -15,7 +15,6 @@
 @property NSDate *min;
 @property NSDate *max;
 @property NSRegularExpression *regularExpression;
-@property NSDateFormatter *formatter;
 
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<AdaptiveCards::BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle;

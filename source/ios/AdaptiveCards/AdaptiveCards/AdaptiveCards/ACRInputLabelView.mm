@@ -5,8 +5,10 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-#import "ACRInputLabelView.h"
-
+#import "ACOHostConfigPrivate.h"
+#import "ACRIContentHoldingView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "UtiliOS.h"
 
 @implementation ACRInputLabelView
 
@@ -29,11 +31,80 @@
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     UIView *contentView = [bundle loadNibNamed:@"ACRInputLabelView" owner:self options:nil][0];
     [self addSubview:contentView];
-    self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);    
+    self.layoutMargins = UIEdgeInsetsMake(0, 0, 0, 0);
     [self.layoutMarginsGuide.leadingAnchor constraintEqualToAnchor:contentView.leadingAnchor].active = YES;
     [self.layoutMarginsGuide.trailingAnchor constraintEqualToAnchor:contentView.trailingAnchor].active = YES;
     [self.layoutMarginsGuide.topAnchor constraintEqualToAnchor:contentView.topAnchor].active = YES;
-    [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor].active = YES;    
+    [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor].active = YES;
+}
+
+- (instancetype)initInputLabelView:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
+{
+    self = [self initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
+    if (self) {
+        const std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
+        AdaptiveCards::InputsConfig inputConfig = config->GetInputs();
+        self.stack.spacing = getSpacing(inputConfig.label.inputSpacing, config);
+        NSAttributedString *attributedSuffix = nil;
+        RichTextElementProperties textElementProperties;
+        AdaptiveCards::InputLabelConfig *pLabelConfig = &inputConfig.label.requiredInputs;
+        NSMutableAttributedString *attributedLabel = nil;
+        self.dataSource = dataSource;
+
+        if (dataSource) {
+            dataSource.isRequired = inputBlck->GetIsRequired();
+        }
+
+        if (inputBlck->GetIsRequired()) {
+            self.isRequired = YES;
+            textElementProperties.SetTextSize(pLabelConfig->size);
+            textElementProperties.SetTextWeight(pLabelConfig->weight);
+            textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
+            textElementProperties.SetTextColor(ForegroundColor::Attention);
+            std::string suffix = inputConfig.label.requiredInputs.suffix;
+            if (suffix.empty()) {
+                suffix = " *";
+            }
+            attributedSuffix = initAttributedText(acoConfig, suffix, textElementProperties, viewGroup.style);
+            self.label.hidden = NO;
+        }
+
+        std::string labelstring = inputBlck->GetLabel();
+        if (!labelstring.empty()) {
+            pLabelConfig = (inputBlck->GetIsRequired()) ? &inputConfig.label.requiredInputs : &inputConfig.label.optionalInputs;
+            textElementProperties.SetTextSize(pLabelConfig->size);
+            textElementProperties.SetTextWeight(pLabelConfig->weight);
+            textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
+            textElementProperties.SetTextColor(pLabelConfig->color);
+
+            attributedLabel = initAttributedText(acoConfig, labelstring, textElementProperties, viewGroup.style);
+            if (attributedSuffix) {
+                [attributedLabel appendAttributedString:attributedSuffix];
+            }
+            self.label.hidden = NO;
+        } else if (!inputBlck->GetIsRequired()) {
+            self.label.hidden = YES;
+        }
+
+        self.label.attributedText = attributedLabel;
+
+        std::string errorMessage = inputBlck->GetErrorMessage();
+        if (!errorMessage.empty()) {
+            AdaptiveCards::ErrorMessageConfig *pLabelConfig = &inputConfig.errorMessage;
+            RichTextElementProperties textElementProperties;
+            textElementProperties.SetTextSize(pLabelConfig->size);
+            textElementProperties.SetTextWeight(pLabelConfig->weight);
+            textElementProperties.SetTextColor(ForegroundColor::Attention);
+            self.errorMessage.attributedText = initAttributedText(acoConfig, errorMessage, textElementProperties, viewGroup.style);
+            self.hasErrorMessage = YES;
+        }
+        self.errorMessage.hidden = YES;
+
+        [self.stack insertArrangedSubview:inputView atIndex:1];
+        NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
+        inputHandler.isRequired = self.isRequired;
+    }
+    return self;
 }
 
 - (BOOL)validate:(NSError **)error
@@ -59,7 +130,7 @@
     return NO;
 }
 
-- (NSObject<ACRIBaseInputHandler>  *)getInputHandler
+- (NSObject<ACRIBaseInputHandler> *_Nullable)getInputHandler
 {
     NSObject<ACRIBaseInputHandler> *inputHandler = nil;
     id inputView = [self getInputView];
@@ -72,7 +143,7 @@
     return inputHandler;
 }
 
-- (id)getInputView
+- (UIView *)getInputView
 {
     if ((_stack.arrangedSubviews.count) == 3) {
         return self.stack.arrangedSubviews[1];
@@ -80,20 +151,15 @@
     return nil;
 }
 
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
     id inputHandler = [self getInputHandler];
-    if (!inputHandler) {
+    UIView *viewToFocus = [self getInputView];
+    if (!inputHandler || !viewToFocus) {
         return;
     }
-    if ([inputHandler isKindOfClass:[UITextField class]]) {
-        [inputHandler setFocus:shouldBecomeFirstResponder];
-    } else {
-        UIView<ACRIBaseInputHandler> *inputView = [self getInputView];
-        if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-            [ACRInputLabelView setFocus:shouldBecomeFirstResponder view:inputView];
-        }
-    }
+
+    [inputHandler setFocus:shouldBecomeFirstResponder view:viewToFocus];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
@@ -104,12 +170,14 @@
     }
 }
 
-+ (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view{
++ (void)commonSetFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
     if (shouldBecomeFirstResponder) {
         [view becomeFirstResponder];
     } else {
         [view resignFirstResponder];
     }
 }
+
 
 @end

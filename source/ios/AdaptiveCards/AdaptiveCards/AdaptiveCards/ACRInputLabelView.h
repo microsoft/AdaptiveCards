@@ -16,6 +16,6 @@
 @property BOOL isRequired;
 @property BOOL hasErrorMessage;
 
-+ (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view;
++ (void)commonSetFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view;
 
 @end

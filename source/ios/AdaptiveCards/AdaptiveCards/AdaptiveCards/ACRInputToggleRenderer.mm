@@ -10,6 +10,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ACRSeparator.h"
 #import "ACRToggleInputDataSource.h"
@@ -62,10 +63,10 @@
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
     dataSource.toggleSwitch = toggleView.toggle;
 
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, adaptiveToggleInput, toggleView, viewGroup, dataSource);
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView viewGroup:viewGroup dataSource:dataSource];
 
     [inputs addObject:inputLabelView];
-    
+
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:inputLabelView];

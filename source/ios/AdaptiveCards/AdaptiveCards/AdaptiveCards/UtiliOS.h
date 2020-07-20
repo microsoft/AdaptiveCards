@@ -5,7 +5,6 @@
 //
 
 #import "ACRErrors.h"
-#import "ACRInputLabelView.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -13,7 +12,6 @@
 #import "RichTextElementProperties.h"
 #import "TextBlock.h"
 #import "TextRun.h"
-#import "BaseInputElement.h"
 #import "UnknownAction.h"
 #import <UIKit/UIKit.h>
 
@@ -77,9 +75,10 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 
 unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config);
 
-ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup, NSObject<ACRIBaseInputHandler> *dataSource = nil);
 void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
 
 void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView);
 
 void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal);
+
+NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);

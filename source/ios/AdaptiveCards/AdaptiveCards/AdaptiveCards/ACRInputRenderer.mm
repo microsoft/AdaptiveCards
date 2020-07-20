@@ -14,7 +14,7 @@
 #import "ACRAggregateTarget.h"
 #import "ACRButton.h"
 #import "ACRContentHoldingUIView.h"
-#import "ACRInputLabelView.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "ACRQuickReplyMultilineView.h"
 #import "ACRQuickReplyView.h"
 #import "ACRSeparator.h"
@@ -155,7 +155,7 @@
             [txtview.layer setCornerRadius:5.0f];
             inputview = txtview;
         }
-        ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup);
+        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
         inputview = inputLabelView;
     } else {
         if (renderAction) {
@@ -166,7 +166,7 @@
             txtInput.delegate = quickReplyView;
             inputview = quickReplyView;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, inputview, viewGroup, txtInput);
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:txtInput];
             inputview = inputLabelView;
 
         } else {
@@ -175,7 +175,7 @@
             txtInput.delegate = txtInput;
             inputview = txtInput;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, inputBlck, txtInput, viewGroup);
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:nil];
             inputview = inputLabelView;
         }
 

@@ -661,7 +661,7 @@ unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &conf
         case Spacing::Default:
             return config->GetSpacing().defaultSpacing;
         default:
-	break;
+            break;
     }
 
     return 0;
@@ -731,70 +731,4 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
     auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
 
     return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
-}
-
-
-ACRInputLabelView *buildInputLabelView(ACOHostConfig *acoConfig, const std::shared_ptr<BaseInputElement> &inputBlck, UIView *inputView, UIView<ACRIContentHoldingView> *viewGroup, NSObject<ACRIBaseInputHandler> *dataSource)
-{
-    const std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
-    AdaptiveCards::InputsConfig inputConfig = config->GetInputs();
-    inputLabelView.stack.spacing = getSpacing(inputConfig.label.inputSpacing, config);
-    NSAttributedString *attributedSuffix = nil;
-    RichTextElementProperties textElementProperties;
-    AdaptiveCards::InputLabelConfig *pLabelConfig = &inputConfig.label.requiredInputs;
-    NSMutableAttributedString *attributedLabel = nil;
-    inputLabelView.dataSource = dataSource;
-    
-    if (dataSource) {
-        dataSource.isRequired = inputBlck->GetIsRequired();
-    }
-    
-    if (inputBlck->GetIsRequired()) {
-        inputLabelView.isRequired = YES;
-        textElementProperties.SetTextSize(pLabelConfig->size);
-        textElementProperties.SetTextWeight(pLabelConfig->weight);
-        textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
-        textElementProperties.SetTextColor(ForegroundColor::Attention);
-        std::string suffix = inputConfig.label.requiredInputs.suffix;
-        if (suffix.empty()) {
-            suffix = " *";
-        }
-        attributedSuffix = initAttributedText(acoConfig, suffix, textElementProperties, viewGroup.style);
-        inputLabelView.label.hidden = NO;
-    }
-
-    std::string labelstring = inputBlck->GetLabel();
-    if (!labelstring.empty()) {
-        pLabelConfig = (inputBlck->GetIsRequired()) ? &inputConfig.label.requiredInputs : &inputConfig.label.optionalInputs;
-        textElementProperties.SetTextSize(pLabelConfig->size);
-        textElementProperties.SetTextWeight(pLabelConfig->weight);
-        textElementProperties.SetIsSubtle(pLabelConfig->isSubtle);
-        textElementProperties.SetTextColor(pLabelConfig->color);
-
-        attributedLabel = initAttributedText(acoConfig, labelstring, textElementProperties, viewGroup.style);
-        if (attributedSuffix) {
-            [attributedLabel appendAttributedString:attributedSuffix];
-        }
-        inputLabelView.label.hidden = NO;
-    } else if (!inputBlck->GetIsRequired()) {
-        inputLabelView.label.hidden = YES;
-    }
-
-    inputLabelView.label.attributedText = attributedLabel;
-
-    std::string errorMessage = inputBlck->GetErrorMessage();
-    if (!errorMessage.empty()) {
-        AdaptiveCards::ErrorMessageConfig *pLabelConfig = &inputConfig.errorMessage;
-        RichTextElementProperties textElementProperties;
-        textElementProperties.SetTextSize(pLabelConfig->size);
-        textElementProperties.SetTextWeight(pLabelConfig->weight);
-        textElementProperties.SetTextColor(ForegroundColor::Attention);
-        inputLabelView.errorMessage.attributedText = initAttributedText(acoConfig, errorMessage, textElementProperties, viewGroup.style);
-        inputLabelView.hasErrorMessage = YES;
-    }
-    inputLabelView.errorMessage.hidden = YES;
-
-    [inputLabelView.stack insertArrangedSubview:inputView atIndex:1];
-    return inputLabelView;
 }

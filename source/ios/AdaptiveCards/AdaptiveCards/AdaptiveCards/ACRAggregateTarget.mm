@@ -44,9 +44,9 @@
             BOOL validationResult = [input validate:&error];
             [gatheredInputs addObject:input];
             if (hasValidationPassed && !validationResult) {
-                [input setFocus:YES];
+                [input setFocus:YES view:nil];
             } else {
-                [input setFocus:NO];
+                [input setFocus:NO view:nil];
             }
             hasValidationPassed &= validationResult;
         }

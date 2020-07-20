@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRDateTextField.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputTimeRenderer
@@ -34,8 +35,8 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
-    
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, timeInput, field, viewGroup);
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:timeInput inputView:field viewGroup:viewGroup dataSource:nil];
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {

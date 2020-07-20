@@ -10,6 +10,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRChoiceSetViewDataSource.h"
 #import "ACRChoiceSetViewDataSourceCompactStyle.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "ACRInputTableView.h"
 #import "ChoiceSetInput.h"
 #import "UtiliOS.h"
@@ -59,8 +60,8 @@
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-    
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, choiceSet, choiceSetView, viewGroup, dataSource);
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView viewGroup:viewGroup dataSource:dataSource];
     [inputs addObject:inputLabelView];
 
     if (elem->GetHeight() == HeightType::Stretch) {

@@ -10,6 +10,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRDateTextField.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputDateRenderer
@@ -35,8 +36,8 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
-    
-    ACRInputLabelView *inputLabelView = buildInputLabelView(acoConfig, dateInput, dateField, viewGroup);
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:dateInput inputView:dateField viewGroup:viewGroup dataSource:nil];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];

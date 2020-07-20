@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -223,8 +224,9 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
     dictionary[self.id] = [values componentsJoinedByString:@","];
 }
 
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
 - (NSString *)getTitlesOfChoices

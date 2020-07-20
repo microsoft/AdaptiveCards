@@ -8,9 +8,9 @@
 #import "ACRToggleInputDataSource.h"
 #import "ACRColumnSetView.h"
 #import "ACRIBaseCardElementRenderer.h"
+#import "ACRInputLabelView.h"
 #import "ACRUILabel.h"
 #import "HostConfig.h"
-#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -45,8 +45,9 @@ using namespace AdaptiveCards;
     dictionary[self.id] = _toggleSwitch.on ? self.valueOn : self.valueOff;
 }
 
-- (void)setFocus:(BOOL)shouldBecomeFirstResponder
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
 @synthesize isRequired;
