@@ -26,7 +26,10 @@ namespace AdaptiveCards.Rendering.Wpf
             itemsPanelTemplate.VisualTree = factory;
             uiImageSet.ItemsPanel = itemsPanelTemplate;
 #elif XAMARIN
-            var uiImageSet = new StackLayout { Orientation = StackOrientation.Vertical };
+            var uiImageSet = new FlexLayout();
+            uiImageSet.Wrap = FlexWrap.Wrap;
+            uiImageSet.Direction = FlexDirection.Row;
+            uiImageSet.JustifyContent = FlexJustify.SpaceBetween;
 #endif
 
             uiImageSet.Style = context.GetStyle("Adaptive.ImageSet");
@@ -39,7 +42,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     image.Size = context.Config.ImageSet.ImageSize;
 
                 var uiImage = context.Render(image);
+#if WPF
                 uiImageSet.Add(uiImage);
+#elif XAMARIN
+                uiImageSet.Children.Add(uiImage);
+#endif
+
             }
 
             return uiImageSet;

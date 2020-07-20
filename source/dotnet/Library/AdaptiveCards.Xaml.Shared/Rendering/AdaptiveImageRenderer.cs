@@ -84,7 +84,27 @@ namespace AdaptiveCards.Rendering.Wpf
 
             return RendererUtil.ApplySelectAction(uiBorder ?? uiImage, image, context);
 #elif XAMARIN
-            return uiImage;
+            // If we have a background color, we'll create a border for the background and put the image on top
+            if (!string.IsNullOrEmpty(image.BackgroundColor))
+            {
+                Color color = (Color)context.GetColor(image.BackgroundColor);
+                if (color.A != 0)
+                {
+                    uiBorder = new Frame()
+                    {
+                        Padding = 0,
+                        BackgroundColor = color,
+                        Content = uiImage,
+                        WidthRequest = uiImage.Width,
+                        HeightRequest = uiImage.Height,
+                        HorizontalOptions = uiImage.HorizontalOptions,
+                        VerticalOptions = uiImage.HorizontalOptions,
+                        Opacity = uiImage.Opacity
+                    };
+                }
+            }
+
+            return RendererUtil.ApplySelectAction(uiBorder ?? uiImage, image, context);
 #endif
         }
 

@@ -36,7 +36,9 @@ namespace AdaptiveCards.Rendering.Wpf
             Frame border = new Frame();
             //Xamarin default this to having a shadow
             //TODO: Confirm this on Xamarin Android
+            border.Padding = 0;
             border.HasShadow = false;
+            border.BackgroundColor = Color.Transparent;
             border.Content = uiContainer;
 #endif
 
@@ -45,15 +47,15 @@ namespace AdaptiveCards.Rendering.Wpf
 
             if (!inheritsStyleFromParent)
             {
-#if WPF
                 columnHasPadding = AdaptiveContainerRenderer.ApplyPadding(border, uiContainer, column, parentRenderArgs, context);
-#endif
 
                 // Apply background color
                 ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(column.Style);
 
 #if WPF
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+#elif XAMARIN
+                border.BackgroundColor = context.GetColor(containerStyle.BackgroundColor);
 #endif
 
                 childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;

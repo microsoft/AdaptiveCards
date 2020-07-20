@@ -8,7 +8,7 @@ namespace AdaptiveCards.Rendering
     {
         public static void SetBackgroundImage(this Grid grid, Uri uri)
         {
-            grid.Children.Add(new UI.Image() { Source = ImageSource.FromUri(uri) });
+            grid.Children.Add(new UI.Image() { Source = ImageSource.FromUri(uri), Aspect = Aspect.AspectFill });
         }
 
         public static void SetSource(this UI.Image image, Uri uri)
@@ -21,15 +21,15 @@ namespace AdaptiveCards.Rendering
             switch (alignment)
             {
                 case AdaptiveHorizontalAlignment.Left:
-                    image.HorizontalOptions = LayoutOptions.Start;
+                    image.HorizontalOptions = LayoutOptions.StartAndExpand;
                     break;
 
                 case AdaptiveHorizontalAlignment.Center:
-                    image.HorizontalOptions = LayoutOptions.Center;
+                    image.HorizontalOptions = LayoutOptions.CenterAndExpand;
                     break;
 
                 case AdaptiveHorizontalAlignment.Right:
-                    image.HorizontalOptions = LayoutOptions.End;
+                    image.HorizontalOptions = LayoutOptions.EndAndExpand;
                     break;
 
                 default:

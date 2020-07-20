@@ -31,7 +31,9 @@ namespace AdaptiveCards.Rendering.Wpf
             // This is the renderArgs that will be passed down to the children
             var childRenderArgs = new AdaptiveRenderArgs(parentRenderArgs);
 
-            Grid gridToReturn = null;
+            FrameworkElement gridToReturn = null;
+
+            ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
 #if WPF 
             Grid uiOuterContainer = new Grid();
             uiOuterContainer.Background = context.GetColorBrush(containerStyle.BackgroundColor);
@@ -45,7 +47,20 @@ namespace AdaptiveCards.Rendering.Wpf
             gridToReturn =  border;
 #else
             // TODO for xamarin
-            gridToReturn = uiContainer;
+            Grid uiOuterContainer = new Grid();
+            uiOuterContainer.BackgroundColor = context.GetColor(containerStyle.BackgroundColor);
+            uiOuterContainer.Children.Add(uiContainer);
+            Frame border = new Frame()
+            {
+                BorderColor = context.GetColor(containerStyle.BackgroundColor)
+                //TODO: Xamarin - Currently unsupported, implement when support is added - alternatively a custom renderer is needed
+                //BorderThickness = new Thickness(containerStyle.BorderThickness.Left, containerStyle.BorderThickness.Top, containerStyle.BorderThickness.Right, containerStyle.BorderThickness.Bottom)
+            };
+            border.Padding = 0;
+            border.HasShadow = false;
+            border.BackgroundColor = Color.Transparent;
+            border.Content = uiOuterContainer;
+            gridToReturn = border;
 #endif 
             RendererUtil.ApplyVerticalContentAlignment(uiContainer, container);
 #if WPF
@@ -58,14 +73,13 @@ namespace AdaptiveCards.Rendering.Wpf
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
-#if WPF
                 hasPadding = ApplyPadding(border, uiOuterContainer, container, parentRenderArgs, context);
-#endif
 
                 // Apply background color
-                ContainerStyleConfig containerStyle = context.Config.ContainerStyles.GetContainerStyleConfig(container.Style);
 #if WPF
                 border.Background = context.GetColorBrush(containerStyle.BackgroundColor);
+#elif XAMARIN
+                border.BackgroundColor = context.GetColor(containerStyle.BackgroundColor);
 #endif
 
                 childRenderArgs.ForegroundColors = containerStyle.ForegroundColors;
@@ -82,6 +96,25 @@ namespace AdaptiveCards.Rendering.Wpf
                     break;
                 case AdaptiveVerticalContentAlignment.Top:
                 default:
+                    break;
+            }
+#elif XAMARIN
+            switch (container.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    //TODO: And Expand??
+                    uiContainer.VerticalOptions = LayoutOptions.CenterAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    //TODO: And Expand??
+                    uiContainer.VerticalOptions = LayoutOptions.EndAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                    //TODO: And Expand??
+                    uiContainer.VerticalOptions = LayoutOptions.StartAndExpand;
+                    break;
+                default:
+                    uiContainer.VerticalOptions = LayoutOptions.FillAndExpand;
                     break;
             }
 #endif
@@ -101,8 +134,8 @@ namespace AdaptiveCards.Rendering.Wpf
             // Revert context's value to that of outside the Container
             context.RenderArgs = parentRenderArgs;
 
-            return gridToReturn;
-            // return RendererUtil.ApplySelectAction(border, container, context);
+            //return gridToReturn;
+            return RendererUtil.ApplySelectAction(border, container, context);
         }
 
         public static void AddContainerElements(Grid uiContainer, IList<AdaptiveElement> elements, AdaptiveRenderContext context)
@@ -130,7 +163,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 if (uiElement != null)
                 {
                     TagContent tag = null;
+#if WPF
                     Grid separator = null;
+#elif XAMARIN
+                    FrameworkElement separator = null;
+#endif
+
                     if (cardElement.Separator && uiContainer.Children.Count > 0)
                     {
                         separator = AddSeparator(context, cardElement, uiContainer);
@@ -144,6 +182,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
 #if WPF
                     uiElement.Tag = tag;
+#elif XAMARIN
+                    AdaptiveRenderContext.SetTag(uiElement, tag);
 #endif
 
                     // Sets the minHeight property for Container and ColumnSet
@@ -206,6 +246,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             panel.Tag = tag;
 #elif XAMARIN
                             StackLayout panel = new StackLayout();
+                            AdaptiveRenderContext.SetTag(panel, tag);
 #endif
                             panel.Children.Add(uiElement);                          
 
@@ -247,14 +288,18 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiSpa;
         }
 
-        public static Grid AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
+        public static FrameworkElement AddSeparator(AdaptiveRenderContext context, AdaptiveElement element, Grid uiContainer)
         {
             if (element.Spacing == AdaptiveSpacing.None && !element.Separator)
             {
                 return null;
             }
 
+#if WPF
             var uiSep = new Grid();
+#elif XAMARIN
+            var uiSep = new BoxView();
+#endif
             uiSep.Style = context.GetStyle($"Adaptive.Separator");
             int spacing = context.Config.GetSpacing(element.Spacing);
 
@@ -263,10 +308,18 @@ namespace AdaptiveCards.Rendering.Wpf
             var margin = (spacing - sepStyle.LineThickness) / 2;
             uiSep.Margin = new Thickness(0, margin, 0, margin);
             uiSep.SetHeight(sepStyle.LineThickness);
+
+#if XAMARIN
+            uiSep.VerticalOptions = LayoutOptions.CenterAndExpand;
+#endif
+
             if (!string.IsNullOrWhiteSpace(sepStyle.LineColor))
             {
+
 #if WPF
                 uiSep.SetBackgroundColor(sepStyle.LineColor, context);
+#elif XAMARIN
+                uiSep.BackgroundColor = context.GetColor(sepStyle.LineColor);
 #endif
             }
             uiContainer.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
@@ -303,9 +356,8 @@ namespace AdaptiveCards.Rendering.Wpf
             return bleedMargin;
         }
 
-#if WPF
         // For applying bleeding, we must know if the element has padding, so both properties are applied in the same method
-        public static bool ApplyPadding(Border border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveRenderArgs parentRenderArgs, AdaptiveRenderContext context)
+        public static bool ApplyPadding(FrameworkElement border, Grid uiElement, AdaptiveCollectionElement element, AdaptiveRenderArgs parentRenderArgs, AdaptiveRenderContext context)
         {
             bool canApplyPadding = false;
 
@@ -333,6 +385,5 @@ namespace AdaptiveCards.Rendering.Wpf
 
             return canApplyPadding;
         }
-#endif
     }
 }

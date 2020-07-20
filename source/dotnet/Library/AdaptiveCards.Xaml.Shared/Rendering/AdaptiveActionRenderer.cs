@@ -34,10 +34,11 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static Button CreateActionButton(AdaptiveAction action, AdaptiveRenderContext context)
         {
-            var uiButton = new Button
-            {
-                Style = context.GetStyle($"Adaptive.{action.Type}"),
-            };
+            var uiButton = new Button();
+
+            uiButton.BackgroundColor = context.GetColor("0080FF");
+
+            uiButton.Style = context.GetStyle($"Adaptive.{action.Type}");
 
             if (!String.IsNullOrWhiteSpace(action.Style))
             {
@@ -50,6 +51,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 else if (style == null && String.Equals(action.Style, "destructive", StringComparison.OrdinalIgnoreCase))
                 {
                     style = context.GetStyle("DestructiveActionDefaultStyle");
+                }
+                else if(style == null && String.Equals(action.Style, "default", StringComparison.OrdinalIgnoreCase))
+                {
+                    style = context.GetStyle("ActionDefaultStyle");
                 }
 
                 uiButton.Style = style;
@@ -78,19 +83,14 @@ namespace AdaptiveCards.Rendering.Wpf
             //uiButton.Style = context.GetStyle($"Adaptive.Action.Title");
 
             uiButton.Content = contentStackPanel;
-#if WPF
-            //uiButton.Content = contentStackPanel;
-#else
-            //return uiButton;
-#endif
+
             FrameworkElement uiIcon = null;
 
-            var uiTitle = new TextBlock
-            {
-                Text = action.Title,
-                FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default),
-                Style = context.GetStyle($"Adaptive.Action.Title")
-            };
+            var uiTitle = new TextBlock();
+            uiTitle.Text = action.Title;
+            uiTitle.TextColor = Color.White;
+            uiTitle.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, AdaptiveTextSize.Default);
+            uiTitle.Style = context.GetStyle($"Adaptive.Action.Title");
 
             if (action.IconUrl != null)
             {
@@ -145,7 +145,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         VerticalAlignment = VerticalAlignment.Stretch,
                         Width = spacing,
 #else
-                        VerticalOptions = LayoutOptions.FillAndExpand,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
                         WidthRequest = spacing
 #endif
                     };

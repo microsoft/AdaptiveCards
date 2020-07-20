@@ -62,6 +62,19 @@ namespace AdaptiveCards.Rendering.Wpf
                 default:
                     break;
             }
+#elif XAMARIN
+        switch (element.VerticalContentAlignment)
+            {
+                case AdaptiveVerticalContentAlignment.Center:
+                    uiElement.VerticalOptions = LayoutOptions.CenterAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    uiElement.VerticalOptions = LayoutOptions.EndAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                default:
+                    break;
+            }
 #endif
         }
 

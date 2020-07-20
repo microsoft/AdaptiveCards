@@ -20,13 +20,13 @@ namespace AdaptiveCards.Rendering.Wpf
     public class TagContent
     {
 
-        public TagContent(Grid separator, Grid elementContainer)
+        public TagContent(FrameworkElement separator, Grid elementContainer)
         {
             Separator = separator;
             ParentContainerElement = elementContainer;
         }
 
-        public Grid Separator { get; set; } = null;
+        public FrameworkElement Separator { get; set; } = null;
 
         /// <summary>
         /// Grid that contains the rendered element

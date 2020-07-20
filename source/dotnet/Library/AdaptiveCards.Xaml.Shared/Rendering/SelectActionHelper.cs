@@ -47,6 +47,13 @@ namespace AdaptiveCards.Rendering.Wpf
                     uiButton.Background = new SolidColorBrush(Colors.Transparent);
                 }
                 uiButton.BorderThickness = new Thickness(0);
+#elif XAMARIN
+                //TODO: Is this needed?
+                // Stretch both the button and button's content to avoid empty spaces
+                uiButton.HorizontalOptions = LayoutOptions.FillAndExpand;
+
+                uiButton.BackgroundColor = Color.Transparent;
+                //uiButton.BorderThickness = new Thickness(0);
 #endif
                 uiButton.Content = uiElement;
                 uiButton.Style = context.GetStyle("Adaptive.Action.Tap");
@@ -76,6 +83,9 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
             uiShowCardWrapper.DataContext = showCardAction;
+#elif XAMARIN
+            uiShowCardWrapper.BackgroundColor = context.GetColor("Transparent");
+            uiShowCardWrapper.BindingContext = showCardAction;
 #endif
 
             // Remove the card padding

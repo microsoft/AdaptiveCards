@@ -54,7 +54,7 @@ namespace AdaptiveCards.Rendering
 
         public static void SetBorderColor(this ContentButton view, string color, RenderContext context)
         {
-           // view.Button.BorderColor = Color.FromHex(color);
+            // view.Button.BorderColor = Color.FromHex(color);
         }
 
         public static void SetThickness(this ContentButton view, double thickness)
@@ -64,12 +64,12 @@ namespace AdaptiveCards.Rendering
 
         public static void SetFontWeight(this Xamarin.Forms.TextBlock text, int weight)
         {
-           // text.font
+            // text.font
         }
-		public static void SetPlaceholder (this TextBox textBlock, string placeholder)
-		{
-			textBlock.Placeholder = placeholder;
-		}
+        public static void SetPlaceholder(this TextBox textBlock, string placeholder)
+        {
+            textBlock.Placeholder = placeholder;
+        }
 
-	}
+    }
 }

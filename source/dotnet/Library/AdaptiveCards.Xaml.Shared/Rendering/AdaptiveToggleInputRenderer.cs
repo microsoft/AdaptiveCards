@@ -19,6 +19,10 @@ namespace AdaptiveCards.Rendering.Wpf
             AdaptiveChoiceSetRenderer.SetContent(uiToggle, input.Title, input.Wrap);
             uiToggle.Foreground =
                 context.GetColorBrush(context.Config.ContainerStyles.Default.ForegroundColors.Default.Default);
+#elif XAMARIN
+            //AdaptiveChoiceSetRenderer.SetContent(uiToggle, input.Title, input.Wrap);
+            uiToggle.Color =
+                context.GetColor(context.Config.ContainerStyles.Default.ForegroundColors.Default.Default);
 #endif
             uiToggle.SetState(input.Value == (input.ValueOn ?? "true"));
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");

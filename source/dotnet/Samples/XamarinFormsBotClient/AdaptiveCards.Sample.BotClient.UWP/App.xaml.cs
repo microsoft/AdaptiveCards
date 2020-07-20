@@ -39,6 +39,8 @@ namespace AdaptiveCards.XamarinForms.BotClient.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            global::Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
+
             Xamarin.Forms.Forms.Init(e);
 
             Frame rootFrame = Window.Current.Content as Frame;

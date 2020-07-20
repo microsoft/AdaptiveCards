@@ -19,7 +19,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             return element?.DataContext;
 #elif XAMARIN
-            return null;
+            return element?.BindingContext;
 #endif
         }
 
@@ -27,6 +27,8 @@ namespace AdaptiveCards.Rendering.Wpf
         {
 #if WPF
             element.DataContext = value;
+#elif XAMARIN
+            element.BindingContext = value;
 #endif
         }
 
@@ -54,7 +56,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             textBlock.Foreground = context.GetColorBrush(colorCode);
 #elif XAMARIN
-            // textBlock.TextColor = context.GetColorBrush(colorCode);
+           textBlock.TextColor = context.GetColor(colorCode);
 #endif
         }
 
@@ -65,6 +67,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             inlineRun.Foreground = context.GetColorBrush(colorCode);
 #elif XAMARIN
+            inlineRun.ForegroundColor = context.GetColor(colorCode);
 #endif
         }
 
@@ -75,6 +78,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             inlineRun.Background = context.GetColorBrush(colorCode);
 #elif XAMARIN
+            inlineRun.BackgroundColor = context.GetColor(colorCode);
 #endif
         }
 
@@ -105,7 +109,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #if WPF
             panel.Background = context.GetColorBrush(color);
 #elif XAMARIN
-            // panel.BackgroundColor = context.GetColorBrush(color);
+            panel.BackgroundColor = context.GetColor(color);
 #endif
         }
 
@@ -113,6 +117,8 @@ namespace AdaptiveCards.Rendering.Wpf
         {
 #if WPF
             view.BorderBrush = context.GetColorBrush(color);
+#elif XAMARIN
+            view.BorderColor = context.GetColor(color);
 #endif
         }
 
@@ -120,6 +126,8 @@ namespace AdaptiveCards.Rendering.Wpf
         {
 #if WPF
             view.BorderThickness = new Thickness(thickness);
+elif XAMARIN
+            view.BorderWidth = thickness;
 #endif
         }
 

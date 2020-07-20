@@ -145,6 +145,86 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 # endif
 
+            if (input.IsMultiSelect)
+            {
+                StackLayout stackLayout = new StackLayout
+                {
+                };
+
+                foreach (var choice in input.Choices)
+                {
+                    var grid = new Grid();
+
+                    grid.ColumnSpacing = 0;
+                    grid.RowSpacing = 0;
+                    grid.Padding = 0;
+                    grid.Margin = 0;
+
+                    grid.ColumnDefinitions = new ColumnDefinitionCollection
+                    {
+                        new ColumnDefinition() { Width = GridLength.Auto },
+                        new ColumnDefinition() { Width = GridLength.Auto }
+                    };
+
+                    var uiCheckbox = new CheckBox();
+
+                    uiCheckbox.Margin = 0;
+
+                    uiCheckbox.IsChecked = chosen.Contains(choice.Value);
+
+                    uiCheckbox.BindingContext = choice;
+
+                    uiCheckbox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.CheckBox");
+
+                    Grid.SetColumn(uiCheckbox, 0);
+
+                    grid.Children.Add(uiCheckbox);
+
+                    TextBlock choiceTextBlock = new TextBlock { Text = choice.Title, LineBreakMode = LineBreakMode.NoWrap, TextColor = uiCheckbox.Color };
+
+                    choiceTextBlock.Padding = 0;
+
+                    choiceTextBlock.Margin = 0;
+
+                    choiceTextBlock.VerticalOptions = LayoutOptions.CenterAndExpand;
+
+                    Grid.SetColumn(choiceTextBlock, 1);
+
+                    grid.Children.Add(choiceTextBlock);
+
+                    stackLayout.Children.Add(grid);
+                }
+
+                return stackLayout;
+            }
+            else if (input.Style == AdaptiveChoiceInputStyle.Expanded)
+            {
+                StackLayout stackLayout = new StackLayout
+                {
+                };
+
+                foreach (var choice in input.Choices)
+                {
+                    var radio = new RadioButton
+                    {
+                        Text = choice.Title,
+                        IsChecked = choice.IsSelected,
+                        BindingContext = choice,
+                        GroupName = input.Id,
+                        Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.Radio")
+                    };
+
+                    stackLayout.Children.Add(radio);
+                }
+
+                return stackLayout;
+            }
+            else
+            {
+                //Compact
+            }
+
+            
             string choiceText = "";// XamlUtilities.GetFallbackText(input);
             if (choiceText == null)
             {
@@ -195,6 +275,13 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiControl.Content = text;
             }
             return null;
+        }
+#elif XAMARIN
+        public static TextBlock SetContent(ContentView uiControl, string text, bool wrap)
+        {
+            TextBlock wrappedTextBlock = new TextBlock { Text = text, LineBreakMode =  wrap ? LineBreakMode.WordWrap : LineBreakMode.NoWrap };
+            uiControl.Content = wrappedTextBlock;
+            return wrappedTextBlock;
         }
 #endif
     }

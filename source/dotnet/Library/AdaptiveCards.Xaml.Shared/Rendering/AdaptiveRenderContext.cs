@@ -23,6 +23,19 @@ namespace AdaptiveCards.Rendering.Wpf
     /// </summary>
     public class AdaptiveRenderContext
     {
+        public static readonly BindableProperty TagProperty =
+  BindableProperty.CreateAttached("Tag", typeof(TagContent), typeof(FrameworkElement), null);
+
+        public static TagContent GetTag(BindableObject view)
+        {
+            return (TagContent)view.GetValue(TagProperty);
+        }
+
+        public static void SetTag(BindableObject view, TagContent value)
+        {
+            view.SetValue(TagProperty, value);
+        }
+
         public List<Task> AssetTasks { get; } = new List<Task>();
 
         public AdaptiveRenderContext(Action<object, AdaptiveActionEventArgs> actionCallback,
@@ -151,12 +164,36 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 #elif XAMARIN
+        private readonly Dictionary<string, Color> _colors = new Dictionary<string, Color>()
+        {
+            {"Accent", Color.FromHex("#0063b1") },
+            {"Attention", Color.FromHex("#ed0000") },
+            {"Warning", Color.FromHex("#b75c00") },
+            {"Good", Color.FromHex("#028a02") },
+            {"Light", Color.FromHex("#ffffff") },
+            {"Dark", Color.FromHex("#000000") },
+            {"Default", Color.FromHex("#000000") }
+        };
         // TODO
         public object GetColorBrush(string color)
         {
             return null;
         }
+
+        public Color GetColor(string color)
+        {
+            if (_colors.TryGetValue(color, out var brush))
+                return brush;
+
+
+            var colorRet = Color.FromHex(color);
+
+            _colors[color] = colorRet;
+
+            return colorRet == Color.Default ? Color.Black : colorRet;
+        }
 #endif
+
 
         public IDictionary<Button, FrameworkElement> ActionShowCards = new Dictionary<Button, FrameworkElement>();
         // contains showcard peers in actions set, and the AdaptiveInternalID is internal id of the actions set
@@ -307,8 +344,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 return tagContent;
             }
+#elif XAMARIN
+            return AdaptiveRenderContext.GetTag(element);
 #endif
-            return null;
         }
 
         /// <summary>
@@ -336,7 +374,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #endif
 
             // Hides the separator if any was rendered
-            Grid separator = tagContent.Separator;
+            FrameworkElement separator = tagContent.Separator;
             if (separator != null)
             {
 #if WPF
@@ -390,16 +428,26 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <param name="targetElements">Taget elements to change visibility</param>
         public void ToggleVisibility(IEnumerable<AdaptiveTargetElement> targetElements)
         {
-#if WPF
             HashSet<Grid> elementContainers = new HashSet<Grid>();
 
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
-                var element = LogicalTreeHelper.FindLogicalNode(CardRoot, targetElement.ElementId);
+#if WPF
+                var element = LogicalTreeHelper.FindLogicalNode(CardRoot.FindByName, targetElement.ElementId);
+#elif XAMARIN
+                var element = CardRoot.FindByName<Grid>(targetElement.ElementId);
+#endif
 
                 if (element != null && element is FrameworkElement elementFrameworkElement)
                 {
-                    bool isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
+                    bool isCurrentlyVisible;
+
+#if WPF
+                    isCurrentlyVisible = (elementFrameworkElement.Visibility == Visibility.Visible);
+#elif XAMARIN
+                    isCurrentlyVisible = elementFrameworkElement.IsVisible;
+#endif
+
 
                     // if we read something with the format {"elementId": <id>", "isVisible": true} or
                     // we just read the id and the element is not visible;
@@ -423,10 +471,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 ResetSeparatorVisibilityInsideContainer(elementContainer);
             }
-#endif
         }
 
-#if WPF
+
         /// <summary>
         /// Gets the actual rendered element as elements with 'stretch' height are contained inside a StackPanel
         /// </summary>
@@ -434,9 +481,13 @@ namespace AdaptiveCards.Rendering.Wpf
         /// <returns>Actual rendered element</returns>
         private FrameworkElement GetRenderedElement(FrameworkElement element)
         {
+#if WPF
             if (element is StackPanel containerPanel)
+#elif XAMARIN
+            if(element is StackLayout containerPanel)
+#endif
             {
-                UIElement uiElement = containerPanel.Children[0];
+                var uiElement = containerPanel.Children[0];
 
                 if (uiElement is FrameworkElement frameworkElement)
                 {
@@ -446,13 +497,13 @@ namespace AdaptiveCards.Rendering.Wpf
 
             return element;
         }
-#endif
+
 
         private void HandleSeparatorAndSpacing(bool isFirstVisible, FrameworkElement element, TagContent tagContent)
         {
             // Hide the spacing / separator for the first element
             // Separators and spacings are added as a grid
-            Grid separator = tagContent.Separator;
+            FrameworkElement separator = tagContent.Separator;
 
             if (separator != null)
             {
@@ -475,6 +526,10 @@ namespace AdaptiveCards.Rendering.Wpf
             {
 #if WPF
                 if (element.Visibility == Visibility.Visible)
+#elif XAMARIN
+                if (element.IsVisible)
+#endif
+
                 {
                     TagContent tagContent = GetTagContent(element);
 
@@ -484,7 +539,6 @@ namespace AdaptiveCards.Rendering.Wpf
                         isFirstVisible = false;
                     }
                 }
-#endif
             }
         }
 

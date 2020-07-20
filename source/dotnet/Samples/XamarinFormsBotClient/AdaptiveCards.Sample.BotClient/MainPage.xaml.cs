@@ -31,11 +31,11 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         StackLayout _cardContainer = null;
 
-        String[] cardFileNames = { "ActivityUpdate.json", "CalendarReminder.json", "FlightItinerary.json", "FlightUpdate.json", "FoodOrder.json",
+        string[] cardFileNames = { "ActivityUpdate.json", "CalendarReminder.json", "FlightItinerary.json", "FlightUpdate.json", "FoodOrder.json",
                                        "ImageGallery.json", "InputForm.json", "Inputs.json", "Restaurant.json", "Solitaire.json", "SportingEvent.json",
                                        "StockUpdate.json", "WeatherCompact.json", "WeatherLarge.json" };
 
-        String[] configFileNames =
+    string[] configFileNames =
         {
             "cortana-beta-dark.json", "cortana-beta-light.json", "cortana-skills.json", "microsoft-teams-dark.json", "microsoft-teams-light.json",
             "outlook-desktop.json", "render-to-image.json", "sample.json", "skype.json", "testVariantHostConfig.json",
@@ -89,7 +89,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
         {
             
             _cardContainer.Children.Clear();
-            for (int i = 0; i < 14; ++i)
+            for (int i = 0; i < cardFileNames.Count(); ++i)
             {
                 AdaptiveCard adaptiveCard = CardsReader.Get(i);
                 Stopwatch stopwatch = Stopwatch.StartNew();
@@ -97,7 +97,26 @@ namespace AdaptiveCards.XamarinForms.BotClient
                 _cardContainer.Children.Add(renderedCard.FrameworkElement);
                 stopwatch.Stop();
 
+                renderedCard.OnAction += RenderedCard_OnAction;
+                renderedCard.OnMediaClicked += RenderedCard_OnMediaClicked;
+
                 System.Diagnostics.Debug.WriteLine("Card: " + cardFileNames[i % cardFileNames.Length] + " - Time elapsed: " + stopwatch.ElapsedMilliseconds);
+            }
+        }
+
+        private void RenderedCard_OnMediaClicked(RenderedAdaptiveCard sender, AdaptiveMediaEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(sender.OriginatingCard.Speak))
+            {
+                Xamarin.Essentials.TextToSpeech.SpeakAsync(sender.OriginatingCard.Speak);
+            }
+        }
+
+        private void RenderedCard_OnAction(RenderedAdaptiveCard sender, AdaptiveActionEventArgs e)
+        {
+            if(e.Action is AdaptiveOpenUrlAction openUrlAction)
+            {
+                Xamarin.Essentials.Browser.OpenAsync(openUrlAction.Url);
             }
         }
 
@@ -136,7 +155,7 @@ namespace AdaptiveCards.XamarinForms.BotClient
 
         private void ReadHostConfig()
         {
-            CardsReader.ReadHostConfig();
+            CardsReader.ReadHostConfig(configFileNames[7]);
         }
     }
 }

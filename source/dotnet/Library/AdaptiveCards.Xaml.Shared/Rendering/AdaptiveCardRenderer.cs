@@ -138,6 +138,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
 #if WPF
             outerGrid.Background = context.GetColorBrush(context.Config.ContainerStyles.Default.BackgroundColor);
+#elif XAMARIN
+            outerGrid.BackgroundColor = context.GetColor(context.Config.ContainerStyles.Default.BackgroundColor);
 #endif
             outerGrid.SetBackgroundSource(card.BackgroundImage, context);
 
@@ -155,9 +157,10 @@ namespace AdaptiveCards.Rendering.Wpf
 
             grid.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
 
+#if WPF
             switch (card.VerticalContentAlignment)
             {
-#if WPF
+
                 case AdaptiveVerticalContentAlignment.Center:
                     grid.VerticalAlignment = VerticalAlignment.Center;
                     break;
@@ -165,10 +168,27 @@ namespace AdaptiveCards.Rendering.Wpf
                     grid.VerticalAlignment = VerticalAlignment.Bottom;
                     break;
                 case AdaptiveVerticalContentAlignment.Top:
-#endif
                 default:
                     break;
             }
+#elif XAMARIN
+            switch (card.VerticalContentAlignment)
+            {
+
+                case AdaptiveVerticalContentAlignment.Center:
+                    grid.VerticalOptions = LayoutOptions.CenterAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Bottom:
+                    grid.VerticalOptions = LayoutOptions.EndAndExpand;
+                    break;
+                case AdaptiveVerticalContentAlignment.Top:
+                    grid.VerticalOptions = LayoutOptions.StartAndExpand;
+                    break;
+                default:
+                    grid.VerticalOptions = LayoutOptions.FillAndExpand;
+                    break;
+            }
+#endif
 
 #if WPF
             outerGrid.MinHeight = card.PixelMinHeight;
@@ -228,10 +248,10 @@ namespace AdaptiveCards.Rendering.Wpf
             string attentionColor = HostConfig.ContainerStyles.Default.ForegroundColors.Attention.Default;
             string lighterAttentionColor = ColorUtil.GenerateLighterColor(attentionColor);
 
-            Resources["Adaptive.Action.Positive.Button.Static.Background"] = context.GetColorBrush(accentColor);
-            Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColorBrush(lighterAccentColor);
-            Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColorBrush(attentionColor);
-            Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColorBrush(lighterAttentionColor);
+            Resources["Adaptive.Action.Positive.Button.Static.Background"] = context.GetColor(accentColor);
+            Resources["Adaptive.Action.Positive.Button.MouseOver.Background"] = context.GetColor(lighterAccentColor);
+            Resources["Adaptive.Action.Destructive.Button.Foreground"] = context.GetColor(attentionColor);
+            Resources["Adaptive.Action.Destructive.Button.MouseOver.Foreground"] = context.GetColor(lighterAttentionColor);
 
             var element = context.Render(card);
 

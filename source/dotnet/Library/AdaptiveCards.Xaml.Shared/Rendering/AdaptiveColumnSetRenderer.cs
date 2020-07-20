@@ -31,6 +31,8 @@ namespace AdaptiveCards.Rendering.Wpf
             Frame border = new Frame();
             //Xamarin default this to having a shadow
             //TODO: Confirm this on Xamarin Android
+            border.Padding = 0;
+            border.BackgroundColor = Color.Transparent;
             border.HasShadow = false;
             border.Content = uiColumnSet;
 #endif
@@ -39,14 +41,14 @@ namespace AdaptiveCards.Rendering.Wpf
             bool hasPadding = false;
             if (!inheritsStyleFromParent)
             {
-#if WPF
                 hasPadding = AdaptiveContainerRenderer.ApplyPadding(border, uiColumnSet, columnSet, parentRenderArgs, context);
-#endif
 
                 // Apply background color
                 var columnSetStyle = context.Config.ContainerStyles.GetContainerStyleConfig(columnSet.Style);
 #if WPF
                 border.Background = context.GetColorBrush(columnSetStyle.BackgroundColor);
+#elif XAMARIN
+                border.BackgroundColor = context.GetColor(columnSetStyle.BackgroundColor);
 #endif
                 childrenRenderArgs.ForegroundColors = columnSetStyle.ForegroundColors;
             }
@@ -85,14 +87,18 @@ namespace AdaptiveCards.Rendering.Wpf
                     // Add vertical Separator
                     if (uiColumnSet.ColumnDefinitions.Count > 0 && (column.Separator || column.Spacing != AdaptiveSpacing.None))
                     {
+#if WPF
                         var uiSep = new Grid();
+#elif XAMARIN
+                        var uiSep = new BoxView();
+#endif
                         uiSep.Style = context.GetStyle($"Adaptive.VerticalSeparator");
 
 #if WPF
-                    uiSep.VerticalAlignment = VerticalAlignment.Stretch;
+                        uiSep.VerticalAlignment = VerticalAlignment.Stretch;
 #elif XAMARIN
                         // TOOD: check xamarin separator visual
-                        //sep.VerticalAlignment = VerticalAlignment.Stretch;
+                        uiSep.VerticalOptions = LayoutOptions.CenterAndExpand;
 #endif
 
                         int spacing = context.Config.GetSpacing(column.Spacing);
@@ -100,13 +106,16 @@ namespace AdaptiveCards.Rendering.Wpf
 
 #if WPF
                         uiSep.Width = context.Config.Separator.LineThickness;
+#elif XAMARIN
+                        uiSep.WidthRequest = context.Config.Separator.LineThickness;
 #endif
+
                         if (column.Separator && context.Config.Separator.LineColor != null)
                         {
 #if WPF
                             uiSep.Background = context.GetColorBrush(context.Config.Separator.LineColor);
 #elif XAMARIN
-                            // TODO
+                            uiSep.BackgroundColor = context.GetColor(context.Config.Separator.LineColor);
 #endif
                         }
 
@@ -132,7 +141,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
                     if (width == null || width == AdaptiveColumnWidth.Stretch.ToLower())
                     {
-                        columnDefinition = new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) };
+                        columnDefinition = new ColumnDefinition() { Width = GridLength.Star };
                     }
                     else if (width == AdaptiveColumnWidth.Auto.ToLower())
                     {
@@ -150,6 +159,8 @@ namespace AdaptiveCards.Rendering.Wpf
                             // Exact pixel (number followed by "px")
 #if WPF
                             columnDefinition = new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Pixel) };
+#elif XAMARIN
+                            columnDefinition = new ColumnDefinition() { Width = new GridLength((int)pxVal, GridUnitType.Absolute) };
 #endif
                         }
                         else
@@ -166,6 +177,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
 #if WPF
                     uiContainer.Tag = tag;
+#elif XAMARIN
+                    AdaptiveRenderContext.SetTag(uiContainer, tag);
 #endif
 
                     Grid.SetColumn(uiContainer, uiColumnSet.ColumnDefinitions.Count - 1);
