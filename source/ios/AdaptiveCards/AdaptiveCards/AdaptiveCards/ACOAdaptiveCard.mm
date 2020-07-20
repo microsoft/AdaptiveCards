@@ -8,6 +8,7 @@
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
+#import "ACRIBaseInputHandler.h"
 #import "ACRParseWarningPrivate.h"
 #import "AdaptiveCardParseException.h"
 #import "AdaptiveCardParseWarning.h"

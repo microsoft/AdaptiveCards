@@ -169,6 +169,7 @@ export enum ValidationEvent {
     UnsupportedCardVersion,
     DuplicateId,
     UnsupportedProperty,
+    RequiredInputsShouldHaveLabel,
     Other
 }
 
