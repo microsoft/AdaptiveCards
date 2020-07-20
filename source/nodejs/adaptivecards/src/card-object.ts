@@ -44,7 +44,8 @@ export abstract class CardObject extends SerializableObject {
     static readonly requiresProperty = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities);
+        HostCapabilities,
+        new HostCapabilities());
 
     protected getSchemaKey(): string {
         return this.getJsonTypeName();

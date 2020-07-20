@@ -13,6 +13,7 @@ export class GlobalSettings {
     static displayInputValidationErrors: boolean = true;
     static allowPreProcessingPropertyValues: boolean = false;
     static setTabIndexAtCardRoot: boolean = true;
+    static enableFallback: boolean = true;
 }
 
 export const ContentTypes = {

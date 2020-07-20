@@ -6367,7 +6367,6 @@ export class SerializationContext extends BaseSerializationContext {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
-            let tryToFallback = false;
             let typeName = Utils.parseString(source["type"]);
 
             if (typeName) {
@@ -6375,10 +6374,12 @@ export class SerializationContext extends BaseSerializationContext {
                     logParseEvent(typeName, TypeErrorType.ForbiddenType);
                 }
                 else {
+                    let tryToFallback = false;
+                    
                     result = createInstanceCallback(typeName);
 
                     if (!result) {
-                        tryToFallback = allowFallback;
+                        tryToFallback = GlobalSettings.enableFallback && allowFallback;
 
                         logParseEvent(typeName, TypeErrorType.UnknownType);
                     }
@@ -6386,7 +6387,7 @@ export class SerializationContext extends BaseSerializationContext {
                         result.setParent(parent);
                         result.parse(source, this);
 
-                        tryToFallback = result.shouldFallback() && allowFallback;
+                        tryToFallback = GlobalSettings.enableFallback && allowFallback && result.shouldFallback();
                     }
 
                     if (tryToFallback) {

@@ -38,6 +38,11 @@ window.onload = function() {
 		console.log("Local storage is not available.");
     }
 
+    // Uncomment to disable (de)serialization of a specific property
+    /*
+    Adaptive.CardElement.requiresProperty.isSerializationEnabled = false;
+    */
+
     // Uncomment to add/remove properties to/from the renderer's schema
     /*
     Adaptive.SerializableObject.onRegisterCustomProperties = (sender: Adaptive.SerializableObject, schema: Adaptive.SerializableObjectSchema) => {

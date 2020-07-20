@@ -266,6 +266,8 @@ export class PropertyDefinition {
 
     readonly sequentialNumber: number;
 
+    isSerializationEnabled: boolean = true;
+
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
@@ -606,11 +608,12 @@ export class SerializableObjectProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly objectType: SerializableObjectType) {
+        readonly objectType: SerializableObjectType,
+        defaultValue?: SerializableObject) {
         super(
             targetVersion,
             name,
-            undefined,
+            defaultValue,
             (sender: SerializableObject) => { return new this.objectType(); });
     }
 }
@@ -815,22 +818,24 @@ export abstract class SerializableObject {
             for (let i = 0; i < s.getCount(); i++) {
                 let property = s.getItemAt(i);
 
-                let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
+                if (property.isSerializationEnabled) {
+                    let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
-                if (source.hasOwnProperty(property.name)) {
-                    if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
-                        propertyValue = property.parse(this, source, context);
+                    if (source.hasOwnProperty(property.name)) {
+                        if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
+                            propertyValue = property.parse(this, source, context);
+                        }
+                        else {
+                            context.logParseEvent(
+                                this,
+                                Enums.ValidationEvent.UnsupportedProperty,
+                                Strings.errors.propertyNotSupported,
+                                property.name, property.targetVersion, context.targetVersion);
+                        }
                     }
-                    else {
-                        context.logParseEvent(
-                            this,
-                            Enums.ValidationEvent.UnsupportedProperty,
-                            Strings.errors.propertyNotSupported,
-                            property.name, property.targetVersion, context.targetVersion);
-                    }
+
+                    this.setValue(property, propertyValue);
                 }
-
-                this.setValue(property, propertyValue);
             }
         }
         else {
@@ -848,7 +853,7 @@ export abstract class SerializableObject {
             // Avoid serializing the same property multiple times. This is necessary
             // because some property definitions map to the same underlying schema
             // property
-            if (property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.name) === -1) {
+            if (property.isSerializationEnabled && property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.name) === -1) {
                 property.toJSON(this, target, this.getValue(property), context);
 
                 serializedProperties.push(property.name);
