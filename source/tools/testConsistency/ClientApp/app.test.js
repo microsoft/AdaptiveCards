@@ -6,7 +6,7 @@ const request = require("supertest");
 const app = require("./app");
 const fs = require("fs");
 
-test("The GET request to the index page should return a response code 200", function(done) {
+test("The index/main page is accessible", function(done) {
      request(app)
       .get("/")
       .then(function(response) {
@@ -15,7 +15,7 @@ test("The GET request to the index page should return a response code 200", func
       });
 });
 
-test("Sending no card data should still return a response code 200", function(done) {
+test("Non-Templated cards are supported: Static cards without any template parameter specified should be accepted by the API", function(done) {
     const templateBuffer = fs.readFileSync("../../../../samples/v1.0/Scenarios/ActivityUpdate.json");
     const template = templateBuffer.toString('utf8')
     request(app)
@@ -27,7 +27,7 @@ test("Sending no card data should still return a response code 200", function(do
       });
 });
 
-test("Sending no card template should still return a response code 200", function(done) {
+test("Sending only data of template card is permitted: The data of the templated card should be accepted by the API and relevant errors will be generated", function(done) {
     const data = {
                     "name": "Helen Byrde"
                  }
@@ -40,7 +40,7 @@ test("Sending no card template should still return a response code 200", functio
       });
 });
 
-test("Sending an empty form should still return a response code 200", function(done) {
+test("Empty card payload is permitted: The API should accept and handle the case where no input is provided", function(done) {
     const data = {
                     "name": "Helen Byrde"
                  }
@@ -53,7 +53,7 @@ test("Sending an empty form should still return a response code 200", function(d
       });
 });
 
-test("Sending invalid JSON data should still return a response code 200", function(done) {
+test("Invalid JSON is permitted: Sending invalid JSON data is possible so that errors are caught at the renderer level", function(done) {
     const data = '{"title" : "invalid card data" ';
     const template = '{"title" : "invalid card template" ';
     request(app)
@@ -65,7 +65,7 @@ test("Sending invalid JSON data should still return a response code 200", functi
       });
 });
 
-test("Sending a valid card PayLoad should return a response code 200", function(done) {
+test("Templated Cards are supported: A valid card template and along with valid data should be accepted by the API", function(done) {
    const template = {
                        "type": "AdaptiveCard",
                         "version": "1.0",
@@ -89,7 +89,7 @@ test("Sending a valid card PayLoad should return a response code 200", function(
       });
 }); 
 
-test("Receiving partial JSON data should return a response code 200", function(done) {
+test("Receiving Partial Result is permitted", function(done) {
     const template = {
                         "type": "AdaptiveCard",
                          "version": "1.0",
