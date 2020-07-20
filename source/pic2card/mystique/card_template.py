@@ -1,6 +1,4 @@
 """Module to generate data binding payload for the card design payload"""
-
-import json
 from typing import Dict, List
 from collections import OrderedDict
 
@@ -42,22 +40,23 @@ class DataBinding:
         @param root_elements: The json path of the deisgn object's position
         """
         choiceset_number = len(
-            [key[-1]for key in list(key_dict.keys()) if "InputChoiceSet" in key]
-            )
+            [key[-1]for key in list(key_dict.keys())
+             if "InputChoiceSet" in key]
+        )
         choiceset_number = "InputChoiceSet" + str(choiceset_number+1)
         key_dict[choiceset_number] = {}
         # extract template data and variable mapping for each choice inside
         # a choice set
-        for choice_ctr, choice in enumerate(design_object.get("choices", [""])):
+        for choice_ctr, choice in enumerate(
+                design_object.get("choices", [""])):
             key_dict[choiceset_number].update({
                 "choice"+str(choice_ctr+1): choice.get("title", "")
             })
             # update the design_object with the binding variable
-            design_object["choices"][choice_ctr]["title"] = (root_elements
-                                                             + choiceset_number
-                                                             + ".choice"
-                                                             + str(choice_ctr+1)
-                                                             + "}")
+            design_object["choices"][choice_ctr]["title"] = (
+                root_elements + choiceset_number + ".choice" +
+                str(choice_ctr+1) + "}"
+            )
 
     def group_text_and_image(self, design_object: Dict, key_dict: Dict,
                              root_elements: str):
@@ -75,10 +74,12 @@ class DataBinding:
         # extract the template data and variable name mapping
         key_dict.update({
             design_object.get("type", "")+str(object_number+1): (
-                design_object.get("text",
-                design_object.get("inlines", [{}])[0].get("text",
-                design_object.get("url", "")))
-            )})
+                design_object.get(
+                    "text", design_object.get("inlines", [{}])[0].get(
+                        "text", design_object.get("url", ""))
+                )
+            )
+        })
         template_variable = (root_elements
                              + design_object.get("type", "")
                              + str(object_number+1)
@@ -91,7 +92,8 @@ class DataBinding:
         else:
             design_object["url"] = template_variable
 
-    def group_actionset_and_inputtoogle(self, design_object: Dict, key_dict: Dict,
+    def group_actionset_and_inputtoogle(self, design_object: Dict,
+                                        key_dict: Dict,
                                         root_elements: str):
         """
         Update Individual actionsets and input toogle objects to the template
@@ -112,9 +114,11 @@ class DataBinding:
         # extract template data and variable mapping
         key_dict[object_number].update({
             text_label: (
-                design_object.get("actions", [{}])[0].get("title",
-                design_object.get("title", ""))
-            )})
+                design_object.get("actions", [{}])[0].get(
+                    "title", design_object.get("title", "")
+                )
+            )
+        })
         template_variable = (root_elements
                              + object_number
                              + "."
@@ -136,7 +140,8 @@ class DataBinding:
         @param key_dict: Dict where the design object should be grouped
         @param root_elements: The json path of the deisgn object's position
         """
-        if design_object.get("type", "") in ["TextBlock", "RichTextBlock", "Image"]:
+        if design_object.get("type", "") in [
+                "TextBlock", "RichTextBlock", "Image"]:
             self.group_text_and_image(design_object, key_dict, root_elements)
         if design_object.get("type", "") == "ImageSet":
             self.group_imagesets(design_object, key_dict, root_elements)
@@ -164,7 +169,8 @@ class DataBinding:
                 grouped_objects["ColumnSet" + str(column_set_number)] = []
                 for column_ctr, column in enumerate(obj.get("columns", [""])):
                     columns = {}
-                    for items_ctr, item in enumerate(column.get("items", [""])):
+                    for items_ctr, item in enumerate(
+                            column.get("items", [""])):
                         root_elements = ("${$root.ColumnSet"
                                          + str(column_set_number)
                                          + "["
