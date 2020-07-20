@@ -92,7 +92,7 @@ class TestFlaskApi(unittest.TestCase):
                                 ]
                     }
         data = {
-                   "name": "Matt Hidinger"
+                   "name": "Helen Byrde"
                }
         
         response = self.app.post(POST_URL, 
@@ -123,7 +123,7 @@ class TestFlaskApi(unittest.TestCase):
                                 ]
                     }
         data = {
-                   "name": "Matt Hidinger"
+                   "name": "Helen Byrde"
                }
         
         response = self.app.post(TEST_PARTIAL_RESULT_URL, 

@@ -29,7 +29,7 @@ test("Sending no card data should still return a response code 200", function(do
 
 test("Sending no card template should still return a response code 200", function(done) {
     const data = {
-                    "name": "Matt Hidinger"
+                    "name": "Helen Byrde"
                  }
     request(app)
       .post("/")
@@ -42,7 +42,7 @@ test("Sending no card template should still return a response code 200", functio
 
 test("Sending an empty form should still return a response code 200", function(done) {
     const data = {
-                    "name": "Matt Hidinger"
+                    "name": "Helen Byrde"
                  }
     request(app)
       .post("/")
@@ -78,7 +78,7 @@ test("Sending a valid card PayLoad should return a response code 200", function(
                 }
 
     const data = {
-                   "name": "Matt Hidinger"
+                   "name": "Helen Byrde"
                  }
     request(app)
       .post("/")
@@ -102,7 +102,7 @@ test("Receiving partial JSON data should return a response code 200", function(d
                  }
  
      const data = {
-                    "name": "Matt Hidinger"
+                    "name": "Helen Byrde"
                   }
      request(app)
        .post("/testIncompleteResult")
