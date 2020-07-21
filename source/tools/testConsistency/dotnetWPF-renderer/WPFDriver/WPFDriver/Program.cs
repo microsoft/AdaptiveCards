@@ -88,7 +88,8 @@ namespace WPFDriver
         private static async Task GetResultJsonString(AdaptiveCardParseResult parseResult, AdaptiveCardRenderer renderer, JObject resultJson, List<string> warningList)
         {
             AdaptiveCard adaptiveCard = parseResult.Card;
-            CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
+            int seconds = 30;
+            CancellationTokenSource cts = new CancellationTokenSource(TimeSpan.FromSeconds(seconds));
             RenderedAdaptiveCardImage adaptiveCardImage = await renderer.RenderCardToImageAsync(adaptiveCard, true, 400, cts.Token);
 
             foreach (var warning in parseResult.Warnings.Union(adaptiveCardImage.Warnings))
