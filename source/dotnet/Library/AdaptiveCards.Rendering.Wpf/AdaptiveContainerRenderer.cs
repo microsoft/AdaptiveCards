@@ -372,6 +372,10 @@ namespace AdaptiveCards.Rendering.Wpf
                         panel.Children.Add(RenderLabel(context, inputElement, elementForAccessibility));
                         AddSpacing(context, context.Config.Inputs.Label.InputSpacing, panel);
                     }
+                    else if (inputElement.IsRequired)
+                    {
+                        context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.EmptyLabelInRequiredInput, "Input is required but there's no label for required hint rendering"));
+                    }
 
                     panel.Children.Add(enclosingElement);
                     enclosingElement = panel;
