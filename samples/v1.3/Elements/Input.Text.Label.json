@@ -16,12 +16,6 @@
 			"label": "Required Input.Text label",
 			"isRequired": true,
 			"errorMessage": "Required input"
-		},
-		{
-			"type": "Input.Text",
-			"id": "input3",
-			"style": "text",
-			"label": "Longer label to verify label wrapping for an Input.Text. If that was not long enough, then this should make it long enough. Did you know that elephants are the only animal that cannot jump?"
 		}
 	],
 	"actions": [
