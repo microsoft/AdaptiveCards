@@ -24,6 +24,7 @@
 * [height](image.md#height)
 * [horizontalAlignment](image.md#horizontalalignment)
 * [id](image.md#optional-id)
+* [maxHeight](image.md#optional-maxheight)
 * [maxVersion](image.md#maxversion)
 * [onPreProcessPropertyValue](image.md#optional-onpreprocesspropertyvalue)
 * [pixelHeight](image.md#optional-pixelheight)
@@ -215,9 +216,15 @@ ___
 
 ___
 
+### `Optional` maxHeight
+
+• **maxHeight**? : *undefined | number*
+
+___
+
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 

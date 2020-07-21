@@ -10,7 +10,7 @@
 | **actions** | `Action[]` | No | The Actions to show in the card's action bar. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
 | **fallbackText** | `string` | No | Text shown when the client doesn't support the version specified (may contain markdown). | 1.0 |
-| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image of the card. | 1.2, 1.0 |
+| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF | 1.2, 1.0 |
 | **minHeight** | `string` | No | Specifies the minimum height of the card. | 1.2 |
 | **speak** | `string` | No | Specifies what should be spoken for this entire card. This is simple text or SSML fragment. | 1.0 |
 | **lang** | `string` | No | The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions. | 1.0 |
@@ -70,7 +70,7 @@ An Action that will be invoked when the card is tapped or selected. `Action.Show
 
 ## backgroundImage
 
-Specifies the background image of the card.
+Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF
 
 * **Type**: `BackgroundImage`, `uri`
 * **Version** : 1.2, 1.0

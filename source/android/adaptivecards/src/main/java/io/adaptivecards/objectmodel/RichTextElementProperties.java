@@ -27,6 +27,7 @@ public class RichTextElementProperties extends TextElementProperties {
     super.swigSetCMemOwn(own);
   }
 
+  @SuppressWarnings("deprecation")
   protected void finalize() {
     delete();
   }

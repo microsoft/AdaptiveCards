@@ -23,16 +23,22 @@ namespace AdaptiveSharedNamespace
         BaseActionElement& operator=(BaseActionElement&&) = default;
         ~BaseActionElement() = default;
 
-        virtual std::string GetTitle() const;
+        const std::string& GetTitle() const;
+
+        virtual void SetTitle(std::string&& value);
         virtual void SetTitle(const std::string& value);
 
-        virtual std::string GetIconUrl() const;
-        virtual void SetIconUrl(const std::string& value);
+        const std::string& GetIconUrl() const;
 
-        virtual std::string GetStyle() const;
-        virtual void SetStyle(const std::string& value);
+        void SetIconUrl(std::string&& value);
+        void SetIconUrl(const std::string& value);
 
-        virtual ActionType GetElementType() const;
+        const std::string& GetStyle() const;
+
+        void SetStyle(std::string&& value);
+        void SetStyle(const std::string& value);
+
+        ActionType GetElementType() const;
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
@@ -45,10 +51,12 @@ namespace AdaptiveSharedNamespace
     private:
         void PopulateKnownPropertiesSet();
 
+        static constexpr const char* const defaultStyle = "default";
+
         std::string m_title;
         std::string m_iconUrl;
         std::string m_style;
-        static constexpr const char* const defaultStyle = "default";
+
         ActionType m_type;
     };
 

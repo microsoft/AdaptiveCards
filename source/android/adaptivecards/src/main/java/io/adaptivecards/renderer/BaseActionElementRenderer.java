@@ -246,7 +246,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                 }
             }
 
-            v.setPressed(m_invisibleCard.getVisibility() != View.VISIBLE);
+            v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
             for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
                 View child = m_hiddenCardsLayout.getChildAt(i);

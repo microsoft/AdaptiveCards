@@ -54,7 +54,7 @@ namespace AdaptiveSharedNamespace
         void SetHorizontalAlignment(const HorizontalAlignment value);
 
         void SetLanguage(const std::string& value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
 
     private:
         bool m_wrap;
