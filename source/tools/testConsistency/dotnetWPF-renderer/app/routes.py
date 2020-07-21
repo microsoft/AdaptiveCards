@@ -31,7 +31,7 @@ def index():
         card_byte_buffer = bytes(card, 'utf-8')  # The subprocess module requires the input to be a byte stream
 
 
-        res_json = subprocess.run(['WPFRenderer/WPFRenderer/bin/Debug/WPFRenderer.exe'],
+        res_json = subprocess.run(['WPFDriver/WPFDriver/bin/Debug/WPFDriver.exe'],
                                     input=card_byte_buffer,
                                     capture_output=True 
                                     )
@@ -59,7 +59,7 @@ def test():
             card = '{"data": "" ' + ', "template" : ' + template + '}'
         card_byte_buffer = bytes(card, 'utf-8')
 
-        res_json = subprocess.run(['WPFRenderer/sendPartialResult/bin/Debug/netcoreapp3.1/sendPartialResult.exe'],
+        res_json = subprocess.run(['WPFDriver/sendPartialResult/bin/Debug/netcoreapp3.1/sendPartialResult.exe'],
                                     input=card_byte_buffer,
                                     capture_output=True 
                                     )

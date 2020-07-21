@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30204.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFRenderer", "WPFRenderer\WPFRenderer.csproj", "{15070D23-44C2-4046-9DE6-CBD2E3822B13}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDriver", "WPFDriver\WPFDriver.csproj", "{15070D23-44C2-4046-9DE6-CBD2E3822B13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFRendererTests", "WPFRendererTests\WPFRendererTests.csproj", "{C9EFE1A7-F9CF-4AA4-83F9-85C6BFB9D079}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFDriverTests", "WPFDriverTests\WPFDriverTests.csproj", "{C9EFE1A7-F9CF-4AA4-83F9-85C6BFB9D079}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SendPartialResult", "sendPartialResult\SendPartialResult.csproj", "{E00E6E07-1499-4774-8F32-AD618A1F9C06}"
 EndProject

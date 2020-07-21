@@ -12,7 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WPFRenderer
+namespace WPFDriver
 {
     public class Program
     {
@@ -96,17 +96,19 @@ namespace WPFRenderer
                 warningList.Add(warning.Message);
             }
 
-            Stream cardImgStream = adaptiveCardImage.ImageStream;
-            byte[] imageByteArray = new byte[cardImgStream.Length];
-            int currIndex = 0;
-            while (currIndex < cardImgStream.Length)
+            using (Stream cardImgStream = adaptiveCardImage.ImageStream)
             {
-                imageByteArray[currIndex] = Convert.ToByte(cardImgStream.ReadByte());
-                currIndex++;
-            }
-            string base64EncodedCardImage = Convert.ToBase64String(imageByteArray);
+                byte[] imageByteArray = new byte[cardImgStream.Length];
+                int currIndex = 0;
+                while (currIndex < cardImgStream.Length)
+                {
+                    imageByteArray[currIndex] = Convert.ToByte(cardImgStream.ReadByte());
+                    currIndex++;
+                }
+                string base64EncodedCardImage = Convert.ToBase64String(imageByteArray);
 
-            resultJson["imageData"] = base64EncodedCardImage;
+                resultJson["imageData"] = base64EncodedCardImage;
+            }
         }
     }
 }

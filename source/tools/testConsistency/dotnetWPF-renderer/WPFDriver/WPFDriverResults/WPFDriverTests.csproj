@@ -53,7 +53,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WPFRendererTests.cs" />
+    <Compile Include="WPFDriverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -61,9 +61,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPFRenderer\WPFRenderer.csproj">
+    <ProjectReference Include="..\WPFRenderer\WPFDriver.csproj">
       <Project>{15070d23-44c2-4046-9de6-cbd2e3822b13}</Project>
-      <Name>WPFRenderer</Name>
+      <Name>WPFDriver</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
