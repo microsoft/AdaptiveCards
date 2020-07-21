@@ -99,7 +99,7 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 Grid.SetRow(uiChoices, 1);
                 uiGrid.Children.Add(uiChoices);
-                inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices);
+                inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices, uiChoices.Children[0]);
             }
 
             context.InputValues.Add(input.Id, inputValue);
