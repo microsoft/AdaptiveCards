@@ -38,7 +38,7 @@
     [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor].active = YES;
 }
 
-- (instancetype)initInputLabelView:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
+- (instancetype)initInputLabelView:(ACRView *)rootView acoConfig:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
 {
     self = [self initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     if (self) {
@@ -103,6 +103,10 @@
         [self.stack insertArrangedSubview:inputView atIndex:1];
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
         inputHandler.isRequired = self.isRequired;
+        inputHandler.hasValidationProperties |= inputHandler.isRequired;
+        if (inputHandler.hasValidationProperties && errorMessage.empty()) {
+            [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"The input has validation, but there is no associated error message, consider adding error message to the input"];
+        }
     }
     return self;
 }
@@ -194,5 +198,7 @@
     }
     return YES;
 }
+
+@synthesize hasValidationProperties;
 
 @end

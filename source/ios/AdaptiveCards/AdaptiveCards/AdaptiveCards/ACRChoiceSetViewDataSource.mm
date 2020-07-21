@@ -253,5 +253,6 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 }
 
 @synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end

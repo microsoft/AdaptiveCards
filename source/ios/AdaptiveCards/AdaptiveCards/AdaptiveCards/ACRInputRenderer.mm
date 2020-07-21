@@ -92,6 +92,7 @@
         NSString *pattern = [NSString stringWithCString:cpattern.c_str() encoding:NSUTF8StringEncoding];
         txtInput.regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
     }
+    txtInput.hasValidationProperties = txtInput.isRequired || txtInput.maxLength || txtInput.regexPredicate;
     return txtInput;
 }
 
@@ -155,7 +156,7 @@
             [txtview.layer setCornerRadius:5.0f];
             inputview = txtview;
         }
-        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
+        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
         inputview = inputLabelView;
     } else {
         if (renderAction) {
@@ -166,7 +167,7 @@
             txtInput.delegate = quickReplyView;
             inputview = quickReplyView;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:txtInput];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:txtInput];
             inputview = inputLabelView;
 
         } else {
@@ -175,7 +176,7 @@
             txtInput.delegate = txtInput;
             inputview = txtInput;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:nil];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:nil];
             inputview = inputLabelView;
         }
 

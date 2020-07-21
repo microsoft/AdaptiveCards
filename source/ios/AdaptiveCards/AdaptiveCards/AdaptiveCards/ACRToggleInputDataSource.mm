@@ -51,5 +51,6 @@ using namespace AdaptiveCards;
 }
 
 @synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end

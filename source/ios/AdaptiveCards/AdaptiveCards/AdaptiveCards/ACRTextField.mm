@@ -57,7 +57,9 @@
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return newLength <= _maxLength;
 }
+
 @synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end
 

@@ -61,7 +61,7 @@
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView viewGroup:viewGroup dataSource:dataSource];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView viewGroup:viewGroup dataSource:dataSource];
     [inputs addObject:inputLabelView];
 
     if (elem->GetHeight() == HeightType::Stretch) {

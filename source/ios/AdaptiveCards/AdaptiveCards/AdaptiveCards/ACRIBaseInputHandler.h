@@ -12,8 +12,9 @@
 @protocol ACRIBaseInputHandler
 
 @property BOOL isRequired;
+@property BOOL hasValidationProperties;
 
-- (BOOL)validate:(NSError *_Nonnull*)error;
+- (BOOL)validate:(NSError * _Nullable * _Nullable)error;
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view;
 - (void)getInput:(NSMutableDictionary *_Nonnull)dictionary;
 

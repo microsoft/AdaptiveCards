@@ -259,5 +259,6 @@ static NSString *pickerCell = @"pickerCell";
     return [_titles objectAtIndex:row];
 }
 @synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end

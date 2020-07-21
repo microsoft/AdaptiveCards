@@ -53,7 +53,7 @@
     [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:nil];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:nil];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];

@@ -134,6 +134,7 @@ using namespace AdaptiveCards;
 
         self.inputAccessoryView = bar;
         self.inputView = picker;
+        self.hasValidationProperties = self.isRequired || self.max || self.min;
     }
 
     return self;

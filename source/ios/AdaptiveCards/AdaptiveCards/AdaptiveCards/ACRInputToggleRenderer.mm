@@ -63,7 +63,7 @@
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
     dataSource.toggleSwitch = toggleView.toggle;
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView viewGroup:viewGroup dataSource:dataSource];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView viewGroup:viewGroup dataSource:dataSource];
 
     [inputs addObject:inputLabelView];
 

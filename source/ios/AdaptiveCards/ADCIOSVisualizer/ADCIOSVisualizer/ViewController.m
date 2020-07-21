@@ -351,6 +351,14 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
     if (renderResult.succeeded) {
         ACRView *ad = renderResult.view;
+        NSMutableString *joinedString = [[NSMutableString alloc] init];
+        for (ACOWarning *warning in ad.warnings) {
+            [joinedString appendString:warning.message];
+        }
+        
+        if (ad.warnings.count) {
+            [self presentViewController:[self createAlertController:@"Warnings" message:joinedString] animated:YES completion:nil];
+        }
         ad.mediaDelegate = self;
         if (self.curView)
             [self.curView removeFromSuperview];

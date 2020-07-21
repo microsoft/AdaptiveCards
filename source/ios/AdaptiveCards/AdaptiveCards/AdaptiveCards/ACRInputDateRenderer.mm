@@ -37,7 +37,7 @@
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:acoConfig adptiveInputElement:dateInput inputView:dateField viewGroup:viewGroup dataSource:nil];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:dateInput inputView:dateField viewGroup:viewGroup dataSource:nil];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
