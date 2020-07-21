@@ -20,15 +20,7 @@
 
 - (BOOL)validate:(NSError **)error
 {
-    if (self.isRequired && !self.hasText) {
-        if (error) {
-            *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
-        }
-        return NO;
-    } else if (_regexPredicate) {
-        return [_regexPredicate evaluateWithObject:self.text];
-    }
-    return YES;
+    return [ACRInputLabelView commonTextUIValidate:self.isRequired hasText:self.hasText predicate:self.regexPredicate text:self.text error:error];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary

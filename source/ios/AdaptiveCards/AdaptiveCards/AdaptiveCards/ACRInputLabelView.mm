@@ -133,13 +133,16 @@
 - (NSObject<ACRIBaseInputHandler> *_Nullable)getInputHandler
 {
     NSObject<ACRIBaseInputHandler> *inputHandler = nil;
-    id inputView = [self getInputView];
-    if (inputView) {
-        NSObject<ACRIBaseInputHandler> *inputHandler = [inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)] ? inputView : self.dataSource;
-        if ([inputHandler conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-            return inputHandler;
+    if (self.dataSource && [self.dataSource conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
+        inputHandler = self.dataSource;
+    }
+    else {
+        id inputView = [self getInputView];
+        if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
+            inputHandler = inputView;
         }
     }
+    
     return inputHandler;
 }
 
@@ -179,5 +182,17 @@
     }
 }
 
++ (BOOL)commonTextUIValidate:(BOOL)isRequired hasText:(BOOL)hasText predicate:(NSPredicate *)predicate text:(NSString *)text error:(NSError *__autoreleasing *)error
+{
+    if (isRequired && !hasText) {
+        if (error) {
+            *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
+        }
+        return NO;
+    } else if (predicate) {
+        return [predicate evaluateWithObject:text];
+    }
+    return YES;
+}
 
 @end

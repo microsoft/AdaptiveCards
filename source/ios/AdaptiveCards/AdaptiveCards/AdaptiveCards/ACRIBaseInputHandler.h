@@ -13,8 +13,8 @@
 
 @property BOOL isRequired;
 
-- (BOOL)validate:(NSError **)error;
+- (BOOL)validate:(NSError *_Nonnull*)error;
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view;
-- (void)getInput:(NSMutableDictionary *)dictionary;
+- (void)getInput:(NSMutableDictionary *_Nonnull)dictionary;
 
 @end
