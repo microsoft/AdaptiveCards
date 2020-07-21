@@ -38,6 +38,60 @@ struct tm {
     int tm_isdst;
 };
 
+namespace std {
+  template<typename T> class optional {};
+}
+
+// std::optional<int>
+%typemap(jni) std::optional<int> "jobject"
+%typemap(jtype) std::optional<int> "Integer"
+%typemap(jstype) std::optional<int> "Integer"
+%typemap(in, noblock=1) std::optional<int> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (int)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<int> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int> "$javainput"
+%typemap(javaout) std::optional<int> {
+    return $jnicall;
+  }
+%template() std::optional<int>;
+
+%typemap(jni) std::optional<int>& "jobject"
+%typemap(jtype) std::optional<int>& "Integer"
+%typemap(jstype) std::optional<int>& "Integer"
+%typemap(in, noblock=1) std::optional<int>& {
+  std::optional<int> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<int>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<int>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int>& "$javainput"
+%typemap(javaout) std::optional<int>& {
+    return $jnicall;
+  }
+
 %include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>

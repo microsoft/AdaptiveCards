@@ -24,7 +24,6 @@ public class OpenUrlActionPropertiesTest
     @Test
     public void urlTest() throws Exception
     {
-
         {
             final String openUrlActionWithNoUrl = "{\"type\":\"Action.OpenUrl\"}";
 
@@ -32,10 +31,6 @@ public class OpenUrlActionPropertiesTest
             {
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(openUrlActionWithNoUrl), "1.0");
                 Assert.fail();
-            }
-            catch (IOException e)
-            {
-                Assert.assertEquals(true, e.getMessage().contains("Property is required but was found empty: url"));
             }
             catch (Exception e){
                 Assert.fail();
@@ -61,7 +56,6 @@ public class OpenUrlActionPropertiesTest
             OpenUrlAction parsedOpenUrlAction = TestUtil.castToOpenUrlAction(result.GetAdaptiveCard().GetActions().get(0));
             Assert.assertEquals("http://", parsedOpenUrlAction.GetUrl());
         }
-
     }
 
     public static final String s_defaultOpenUrlJson = "{\"type\":\"Action.OpenUrl\",\"url\":\"\"}\n";
