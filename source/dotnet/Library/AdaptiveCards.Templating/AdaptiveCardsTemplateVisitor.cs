@@ -364,7 +364,7 @@ namespace AdaptiveCards.Templating
                 {
                     ITerminalNode[] stringChildren = templatedStringContext.STRING();
                     // if ther are no string tokens, we do not quates
-                    if (stringChildren.Length == 0)
+                    if (stringChildren.Length == 0 && HasDataContext())
                     {
                         result.Append(ExpandTemplatedString(templatedStringContext.TEMPLATELITERAL(), true));
                         return result;
@@ -618,24 +618,17 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                if (value is string)
+                // this can be little counterintuitive, but template expand() is
+                // modifying serialized json string, so we serialize what's deserialized
+                var serializedValue = JsonConvert.SerializeObject(value);
+                if (!isTemplatedString && value is string)
                 {
-                    // this can be little counterintuitive, but template expand() is
-                    // modifying serialized json string, so we serialize what's deserialized
-                    var test = JsonConvert.SerializeObject(value);
-                    if (!isTemplatedString)
-                    {
-                        // length can not be less than 2 because template string will 
-                        // always have start and end token
-                        test = test.Substring(1, test.Length - 2);
-                    }
+                    // length can not be less than 2 because template string will 
+                    // always have start and end token
+                    serializedValue = serializedValue.Substring(1, serializedValue.Length - 2);
+                }
 
-                    result.Append(test);
-                }
-                else
-                {
-                    result.Append(value.ToString());
-                }
+                result.Append(serializedValue);
             }
             else
             {

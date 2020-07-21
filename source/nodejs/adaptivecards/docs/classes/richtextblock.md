@@ -19,6 +19,7 @@
 * [_parent](richtextblock.md#protected-optional-_parent)
 * [_renderedElement](richtextblock.md#protected-optional-_renderedelement)
 * [customCssSelector](richtextblock.md#optional-customcssselector)
+* [forElementId](richtextblock.md#optional-forelementid)
 * [height](richtextblock.md#height)
 * [horizontalAlignment](richtextblock.md#horizontalalignment)
 * [id](richtextblock.md#optional-id)
@@ -167,6 +168,12 @@ ___
 
 ___
 
+### `Optional` forElementId
+
+• **forElementId**? : *undefined | string*
+
+___
+
 ###  height
 
 • **height**: *[CardElementHeight](../README.md#cardelementheight)*
@@ -193,7 +200,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -533,13 +540,13 @@ ___
 
 ###  addInline
 
-▸ **addInline**(`inline`: [CardElement](cardelement.md)): *void*
+▸ **addInline**(`inline`: [CardElement](cardelement.md) | string): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`inline` | [CardElement](cardelement.md) |
+`inline` | [CardElement](cardelement.md) &#124; string |
 
 **Returns:** *void*
 
@@ -635,9 +642,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 

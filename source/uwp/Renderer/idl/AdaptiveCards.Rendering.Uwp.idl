@@ -317,6 +317,7 @@ AdaptiveNamespaceStart
         UnsupportedValue,
         PerformingFallback,
         CustomWarning,
+        EmptyLabelInRequiredInput,
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]

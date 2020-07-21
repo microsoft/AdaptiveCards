@@ -34,6 +34,7 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -204,6 +205,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
         }
 
+        editText.setFocusable(true);
         textInputHandler.setView(editText);
         renderedCard.registerInputHandler(textInputHandler, renderArgs.getContainerCardId());
 
@@ -365,6 +367,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         BaseActionElement action = textInput.GetInlineAction();
+
+        if (Util.isOfType(action, SubmitAction.class))
+        {
+            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+        }
 
         if (textInput.GetIsMultiline())
         {

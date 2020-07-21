@@ -24,6 +24,7 @@
 * [fontTypes](hostconfig.md#optional-fonttypes)
 * [hostCapabilities](hostconfig.md#hostcapabilities)
 * [imageSet](hostconfig.md#imageset)
+* [inputs](hostconfig.md#inputs)
 * [lineHeights](hostconfig.md#optional-lineheights)
 * [media](hostconfig.md#media)
 * [supportsInteractivity](hostconfig.md#supportsinteractivity)
@@ -121,6 +122,12 @@ ___
 ###  imageSet
 
 • **imageSet**: *[ImageSetConfig](imagesetconfig.md)* = new ImageSetConfig()
+
+___
+
+###  inputs
+
+• **inputs**: *[InputConfig](inputconfig.md)* = new InputConfig()
 
 ___
 

@@ -52,29 +52,33 @@ public class CustomInput extends BaseInputElement
         public CustomInputHandler(BaseInputElement baseInputElement, EditText editText)
         {
             super(baseInputElement);
-            m_editText = editText;
+            m_view = editText;
         }
 
         @Override
         public String getInput()
         {
-            return m_editText.getText().toString();
+            return ((EditText)m_view).getText().toString();
         }
 
         @Override
         public void setInput(String input)
         {
-            m_editText.setText(input);
+            ((EditText)m_view).setText(input);
         }
 
-        private EditText m_editText = null;
+        @Override
+        public void setFocusToView()
+        {
+            m_view.requestFocus();
+        }
     }
 
     /**
      * CustomInputRenderer as the name might hint, renders the custom input. This class extends
      * from BaseCardElementRenderer. It's important to set a tag to the rendered element so
      * some properties as visibility work properly.
-     */
+    */
     public static class CustomInputRenderer extends BaseCardElementRenderer
     {
         @Override

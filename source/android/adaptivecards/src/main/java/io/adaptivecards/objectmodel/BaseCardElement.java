@@ -113,15 +113,15 @@ public class BaseCardElement extends BaseElement {
   }
 
   public boolean GetIsVisible() {
-    return (getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetIsVisible(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetIsVisibleSwigExplicitBaseCardElement(swigCPtr, this);
+    return AdaptiveCardObjectModelJNI.BaseCardElement_GetIsVisible(swigCPtr, this);
   }
 
   public void SetIsVisible(boolean value) {
-    if (getClass() == BaseCardElement.class) AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisible(swigCPtr, this, value); else AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisibleSwigExplicitBaseCardElement(swigCPtr, this, value);
+    AdaptiveCardObjectModelJNI.BaseCardElement_SetIsVisible(swigCPtr, this, value);
   }
 
   public CardElementType GetElementType() {
-    return CardElementType.swigToEnum((getClass() == BaseCardElement.class) ? AdaptiveCardObjectModelJNI.BaseCardElement_GetElementType(swigCPtr, this) : AdaptiveCardObjectModelJNI.BaseCardElement_GetElementTypeSwigExplicitBaseCardElement(swigCPtr, this));
+    return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetElementType(swigCPtr, this));
   }
 
   public static void ParseJsonObject(ParseContext context, JsonValue json, BaseElement element) {
