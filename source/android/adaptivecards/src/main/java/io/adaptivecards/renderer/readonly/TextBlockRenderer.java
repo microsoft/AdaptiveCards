@@ -157,7 +157,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         textView.setTag(new TagContent(textBlock));
 
