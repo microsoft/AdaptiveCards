@@ -36,7 +36,12 @@ window.onload = function() {
 	if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
     }
-    
+
+    // Uncomment to disable (de)serialization of a specific property
+    /*
+    Adaptive.CardElement.requiresProperty.isSerializationEnabled = false;
+    */
+
     // Uncomment to add/remove properties to/from the designer's property sheet
     /*
     ACDesigner.DesignerPeer.onPopulatePropertySheet = (sender: ACDesigner.DesignerPeer, propertySheet: ACDesigner.PropertySheet) => {
