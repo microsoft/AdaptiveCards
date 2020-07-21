@@ -253,40 +253,34 @@ HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adap
 HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
 {
     // Call the base class to validate isRequired
-    boolean isBaseValid;
-    RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));
+    boolean isValid;
+    RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
 
-    // Check that min and max are satisfied
     int max, min;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
 
-    // For now we're only validating if min or max was set. Theoretically we should probably validate that the input is
-    // a number either way, but since we haven't enforced that in the past and the card author likely hasn't set an
-    // error message in that case, dont't fail validation for non-numbers unless min or max is set.
-    boolean minMaxValid = true;
-    if ((min != -MAXINT32) && (max != MAXINT32))
-    {
-        HString currentValue;
-        RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
+    HString currentValue;
+    RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
 
-        if (currentValue.IsValid())
+    // If there is a value, confirm that it's a number and within the min/max range
+    if (currentValue.IsValid())
+    {
+        int currentInt;
+        try
         {
-            int currentInt;
-            try
-            {
-                std::string currentValueStdString = HStringToUTF8(currentValue.Get());
-                currentInt = std::stoi(currentValueStdString);
-                minMaxValid = (currentInt < max) && (currentInt > min);
-            }
-            catch (...)
-            {
-                minMaxValid = false;
-            }
+            std::string currentValueStdString = HStringToUTF8(currentValue.Get());
+            currentInt = std::stoi(currentValueStdString);
+            isValid &= (currentInt < max) && (currentInt > min);
+        }
+        catch (...)
+        {
+            // If stoi failed this isn't a valid number
+            isValid = false;
         }
     }
 
-    *isInputValid = isBaseValid && minMaxValid;
+    *isInputValid = isValid;
 
     return S_OK;
 }
