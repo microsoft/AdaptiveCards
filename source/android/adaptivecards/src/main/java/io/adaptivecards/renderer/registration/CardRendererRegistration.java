@@ -459,7 +459,7 @@ public class CardRendererRegistration
             if (baseInputElement != null)
             {
                 // put the element in a Stretchable input layout and
-                HandleLabelAndValidation(mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs, tagContent);
+                HandleLabelAndValidation(renderedCard, mockLayout, viewGroup, baseInputElement, context, hostConfig, renderArgs, tagContent);
             }
             else
             {
@@ -505,7 +505,8 @@ public class CardRendererRegistration
         BaseCardElementRenderer.setVisibility(element.GetIsVisible(), renderedElementView);
     }
 
-    private static void HandleLabelAndValidation(ViewGroup mockLayout,
+    private static void HandleLabelAndValidation(RenderedAdaptiveCard renderedCard,
+                                                ViewGroup mockLayout,
                                                 ViewGroup container,
                                                 BaseInputElement element,
                                                 Context context,
@@ -543,6 +544,10 @@ public class CardRendererRegistration
                     true /* horizontalLine */);
 
                 inputLabel.setLabelFor(actualInput.getId());
+            }
+            else if (element.GetIsRequired())
+            {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.EMPTY_LABEL_IN_REQUIRED_INPUT, "Input is required but there's no label for required hint rendering"));
             }
 
             tagContent.SetStretchContainer(inputLayout);
