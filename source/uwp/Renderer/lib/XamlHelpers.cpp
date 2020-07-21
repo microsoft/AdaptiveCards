@@ -657,12 +657,15 @@ namespace AdaptiveNamespace::XamlHelpers
                                          ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
     {
         ABI::AdaptiveNamespace::ForegroundColor textColor;
-        RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
-        // If we're formatting a hint and the color has been set to default, then we have to render the hint with
-        // attention color, otherwise match the label color
-        if (isHint && textColor == ABI::AdaptiveNamespace::ForegroundColor::Default)
+
+        // If we're formatting a hint then use attention color
+        if (isHint)
         {
             textColor = ABI::AdaptiveNamespace::ForegroundColor::Attention;
+        }
+        else
+        {
+            RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
         }
 
         ABI::Windows::UI::Color color;
