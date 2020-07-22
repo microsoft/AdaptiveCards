@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.InputFilter;
@@ -288,7 +289,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                                         url,
                                         editText);
 
-                        imageLoader.execute(url);
+                        imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
                     else
