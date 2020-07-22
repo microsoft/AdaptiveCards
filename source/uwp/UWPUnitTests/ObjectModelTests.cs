@@ -502,7 +502,7 @@ namespace UWPUnitTests
             Assert.AreEqual("LabelText", numberInput.Label);
 
             var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
         }
 
         [TestMethod]
@@ -513,12 +513,14 @@ namespace UWPUnitTests
                 Max = null,
                 Min = null,
                 Value = null,
+                Placeholder = "some text",
                 IsRequired = false
             };
 
             Assert.IsNull(numberInput.Max);
             Assert.IsNull(numberInput.Min);
             Assert.IsNull(numberInput.Value);
+            Assert.AreEqual("{\"placeholder\":\"some text\",\"type\":\"Input.Number\"}", numberInput.ToJson().ToString());
 
             numberInput.Min = -1;
             numberInput.Max = 1;
@@ -527,6 +529,7 @@ namespace UWPUnitTests
             Assert.AreEqual(numberInput.Min, -1);
             Assert.AreEqual(numberInput.Max, 1);
             Assert.AreEqual(numberInput.Value, 0);
+            Assert.AreEqual("{\"max\":1,\"min\":-1,\"placeholder\":\"some text\",\"type\":\"Input.Number\",\"value\":0}", numberInput.ToJson().ToString());
         }
 
         [TestMethod]
