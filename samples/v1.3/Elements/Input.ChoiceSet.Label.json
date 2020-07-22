@@ -110,23 +110,6 @@
 					"value": "2"
 				}
 			]
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "input7",
-			"style": "compact",
-			"isMultiSelect": false,
-			"label": "Longer label to verify label wrapping for an Input.ChoiceSet. If that was not long enough, then this should make it long enough. Did you know that honeybees can flap their wings 200 times every second?",
-			"choices": [
-				{
-					"title": "Option 1",
-					"value": "1"
-				},
-				{
-					"title": "Option 2",
-					"value": "2"
-				}
-			]
 		}
 	],
 	"actions": [

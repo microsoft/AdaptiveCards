@@ -13,7 +13,7 @@
 			"label": "Input.Text with regex: ^\\w{5,10}$",
 			"type": "Input.Text",
 			"id": "id2",
-			"regex": "^\\w{5,50}$",
+			"regex": "^\\w{5,10}$",
 			"errorMessage": "Input must contain between 5 and 10 characters long."
 		},
 		{

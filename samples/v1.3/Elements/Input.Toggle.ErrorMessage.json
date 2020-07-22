@@ -12,7 +12,7 @@
 			"valueOff": "false",
 			"label": "Required Input.Toggle",
 			"isRequired": true,
-			"errorMessage": "This is a required input"
+			"errorMessage": "You must accept the terms and conditions"
 		}
 	],
 	"actions": [

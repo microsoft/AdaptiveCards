@@ -359,7 +359,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
 
-                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement), inputElement.IsRequired);
+                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement)?? elementForAccessibility, inputElement.IsRequired);
 
                 if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
                 {
@@ -449,7 +449,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             Inline labelTextInline = new Run(input.Label);
-            labelTextInline.SetColor(AdaptiveTextColor.Default, labelConfig.IsSubtle, context);
+            labelTextInline.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
             uiTextBlock.Inlines.Add(labelTextInline);
 
             if (input.IsRequired)
@@ -468,13 +468,8 @@ namespace AdaptiveCards.Rendering.Wpf
             uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(AdaptiveFontType.Default, labelConfig.Weight));
             uiTextBlock.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, labelConfig.Size);
 
-            if (labelConfig.Color != AdaptiveTextColor.Default)
-            {
-                uiTextBlock.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
-            }
-
             // For Input.Text we render inline actions inside of a Grid, so we set the property
-            AutomationProperties.SetLabeledBy(GetVisualElementForAccessibility(context, input), uiTextBlock);
+            AutomationProperties.SetLabeledBy(GetVisualElementForAccessibility(context, input) ?? renderedInput, uiTextBlock);
 
             return uiTextBlock;
         }
@@ -505,7 +500,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static UIElement GetVisualElementForAccessibility(AdaptiveRenderContext context, AdaptiveInput input)
         {
-            return context.InputValues[input.Id].VisualElementForAccessibility;
+            return context.InputValues[input.Id]?.VisualElementForAccessibility;
         }
     }
 }

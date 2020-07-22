@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Tuple
 import numpy as np
 
 import torch
@@ -6,10 +6,11 @@ import torchvision.transforms as T
 from detecto.core import Model
 from detecto.utils import read_image, normalize_transform
 
+from .od_base import AbstractObjectDetection
 from mystique import config
 
 
-class PtObjectDetection:
+class PtObjectDetection(AbstractObjectDetection):
     """
     Pytorch implementation of object detection classes.
     """
@@ -25,8 +26,7 @@ class PtObjectDetection:
                "textbox",
                "actionset",
                "image",
-               "rating",
-               "textboox"]
+               "rating"]
     model = None
 
     def __init__(self, model_path=None):
@@ -44,7 +44,8 @@ class PtObjectDetection:
         """ Load the saved model and pass the required classes """
         return Model.load(self.model_path, classes=self.classes)
 
-    def get_bboxes(self, image_path: str, img_pipeline=None) -> Dict:
+    def get_bboxes(self, image_path: str,
+                   img_pipeline=None) -> Tuple:
         """
         Do inference and return the bounding boxes compatible to caller.
         """
