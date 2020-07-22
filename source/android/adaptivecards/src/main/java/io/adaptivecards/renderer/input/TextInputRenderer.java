@@ -31,9 +31,10 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 
+import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -49,6 +50,7 @@ import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -148,6 +150,35 @@ public class TextInputRenderer extends BaseCardElementRenderer
         private BaseActionElement m_action = null;
     }
 
+    private class UnvalidatedTextWatcher implements TextWatcher
+    {
+
+        public UnvalidatedTextWatcher(TextInputHandler inputHandler)
+        {
+            m_textInputHandler = inputHandler;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after)
+        {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count)
+        {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s)
+        {
+            CardRendererRegistration.getInstance().notifyInputChange(m_textInputHandler.getId(), m_textInputHandler.getInput());
+        }
+
+        private TextInputHandler m_textInputHandler;
+    }
+
     protected EditText renderInternal(
             RenderedAdaptiveCard renderedCard,
             Context context,
@@ -157,11 +188,26 @@ public class TextInputRenderer extends BaseCardElementRenderer
             String placeHolder,
             final TextInputHandler textInputHandler,
             HostConfig hostConfig,
-            TagContent tagContent)
+            TagContent tagContent,
+            RenderArgs renderArgs,
+            boolean hasSpecificValidation)
     {
-        EditText editText = new EditText(context);
+        EditText editText = null;
+
+        if (baseInputElement.GetIsRequired() || hasSpecificValidation)
+        {
+            editText = new ValidatedEditText(context, getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
+        }
+        else
+        {
+            editText = new EditText(context);
+            editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            // editText.addTextChangedListener(new UnvalidatedTextWatcher(textInputHandler));
+        }
+
+        editText.setFocusable(true);
         textInputHandler.setView(editText);
-        renderedCard.registerInputHandler(textInputHandler);
+        renderedCard.registerInputHandler(textInputHandler, renderArgs.getContainerCardId());
 
         if (!TextUtils.isEmpty(value))
         {
@@ -270,44 +316,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if (baseInputElement.GetHeight() == HeightType.Stretch)
+
+        View returnableView = editText;
+        if (textInputViewGroup != null)
         {
-            LinearLayout containerLayout = new LinearLayout(context);
-
-            if (baseInputElement.GetHeight() == HeightType.Stretch)
-            {
-                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-
-            tagContent.SetStretchContainer(containerLayout);
-
-            // TextInputViewGroup is only used when there's an inline action
-            if (textInputViewGroup != null)
-            {
-                containerLayout.addView(textInputViewGroup);
-            }
-            else
-            {
-                containerLayout.addView(editText);
-            }
-
-            viewGroup.addView(containerLayout);
+            returnableView = textInputViewGroup;
         }
-        else
-        {
-            if (textInputViewGroup != null)
-            {
-                viewGroup.addView(textInputViewGroup);
-            }
-            else
-            {
-                viewGroup.addView(editText);
-            }
-        }
+
+        viewGroup.addView(returnableView);
 
         return editText;
     }
@@ -321,7 +337,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -329,19 +345,10 @@ public class TextInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        TextInput textInput = null;
-        if (baseCardElement instanceof TextInput)
-        {
-            textInput = (TextInput) baseCardElement;
-        }
-        else if ((textInput = TextInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextInput object model.");
-        }
+        TextInput textInput = Util.castTo(baseCardElement, TextInput.class);
 
         TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        View separator = setSpacingAndSeparator(context, viewGroup, textInput.GetSpacing(), textInput.GetSeparator(), hostConfig, true /* horizontal line */);
-        TagContent tagContent = new TagContent(textInput, textInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(textInput, textInputHandler);
         final EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -351,12 +358,20 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 textInput.GetPlaceholder(),
                 textInputHandler,
                 hostConfig,
-                tagContent);
+                tagContent,
+                renderArgs,
+                !textInput.GetRegex().isEmpty());
+
         editText.setSingleLine(!textInput.GetIsMultiline());
         editText.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         BaseActionElement action = textInput.GetInlineAction();
+
+        if (Util.isOfType(action, SubmitAction.class))
+        {
+            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+        }
 
         if (textInput.GetIsMultiline())
         {
@@ -379,15 +394,17 @@ public class TextInputRenderer extends BaseCardElementRenderer
             editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(maxLength)});
         }
 
-        if(action != null)
+        if (action != null)
         {
             // adds click listeners to buttons; it iterates through subviews, and grabs the button
             // this way is cleaner than modifying interface to accept a cardActionHandler
             // the subViewGroup has two child views
             View subView = viewGroup.getChildAt(viewGroup.getChildCount() - 1 );
-            if(subView instanceof ViewGroup) {
+            if (subView instanceof ViewGroup)
+            {
                 ViewGroup subViewGroup = (ViewGroup) subView;
-                for (int index = 0; index < subViewGroup.getChildCount(); ++index) {
+                for (int index = 0; index < subViewGroup.getChildCount(); ++index)
+                {
                     View view = subViewGroup.getChildAt(index);
                     if (view instanceof Button || view instanceof ImageButton)
                     {

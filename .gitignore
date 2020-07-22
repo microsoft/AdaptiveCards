@@ -294,3 +294,5 @@ twp.json
 
 # Python pycache 
 **/_pycache_
+# Android 
+**/.cxx/*

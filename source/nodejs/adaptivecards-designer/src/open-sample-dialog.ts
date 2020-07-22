@@ -52,27 +52,38 @@ class CatalogueItem {
         this.entry.onDownloaded = (sender: CatalogueEntry) => {
             thumbnailHost.removeChild(spinner);
 
-            if (sender.cardPayloadDownloaded) {
-                let cardPayload = JSON.parse(sender.cardPayload);
+            let success: boolean = sender.cardPayloadDownloaded;
 
-                if (sender.sampleData) {
-                    let template = new ACData.Template(cardPayload);
+            if (success) {
+                try {
+                    let cardPayload = JSON.parse(sender.cardPayload);
 
-                    cardPayload = template.expand(
-                        {
-                            $root: JSON.parse(sender.sampleData)
-                        }
-                    );
+                    if (sender.sampleData) {
+                        let template = new ACData.Template(cardPayload);
+
+                        cardPayload = template.expand(
+                            {
+                                $root: JSON.parse(sender.sampleData)
+                            }
+                        );
+                    }
+
+                    let card = new Adaptive.AdaptiveCard();
+                    card.parse(cardPayload);
+                    card.render();
+                    card.renderedElement.style.width = "100%";
+
+                    thumbnailHost.appendChild(card.renderedElement);
                 }
+                catch (e) {
+                    // Swallow the exception
+                    console.error("Unable to load card sample. Error: " + e);
 
-                let card = new Adaptive.AdaptiveCard();
-                card.parse(cardPayload);
-                card.render();
-                card.renderedElement.style.width = "100%";
-
-                thumbnailHost.appendChild(card.renderedElement);
+                    success = false;
+                }
             }
-            else {
+
+            if (!success) {
                 let errorMessage = document.createElement("div");
                 errorMessage.className = "acd-dialog-message";
                 errorMessage.innerText = "Preview not available";

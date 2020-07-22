@@ -152,7 +152,9 @@
   - [AdditionalProperties](#P-AdaptiveCards-AdaptiveInline-AdditionalProperties 'AdaptiveCards.AdaptiveInline.AdditionalProperties')
   - [Type](#P-AdaptiveCards-AdaptiveInline-Type 'AdaptiveCards.AdaptiveInline.Type')
 - [AdaptiveInput](#T-AdaptiveCards-AdaptiveInput 'AdaptiveCards.AdaptiveInput')
+  - [ErrorMessage](#P-AdaptiveCards-AdaptiveInput-ErrorMessage 'AdaptiveCards.AdaptiveInput.ErrorMessage')
   - [IsRequired](#P-AdaptiveCards-AdaptiveInput-IsRequired 'AdaptiveCards.AdaptiveInput.IsRequired')
+  - [Label](#P-AdaptiveCards-AdaptiveInput-Label 'AdaptiveCards.AdaptiveInput.Label')
   - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveInput.GetNonInteractiveValue')
 - [AdaptiveMedia](#T-AdaptiveCards-AdaptiveMedia 'AdaptiveCards.AdaptiveMedia')
   - [AltText](#P-AdaptiveCards-AdaptiveMedia-AltText 'AdaptiveCards.AdaptiveMedia.AltText')
@@ -207,6 +209,7 @@
   - [IsMultiline](#P-AdaptiveCards-AdaptiveTextInput-IsMultiline 'AdaptiveCards.AdaptiveTextInput.IsMultiline')
   - [MaxLength](#P-AdaptiveCards-AdaptiveTextInput-MaxLength 'AdaptiveCards.AdaptiveTextInput.MaxLength')
   - [Placeholder](#P-AdaptiveCards-AdaptiveTextInput-Placeholder 'AdaptiveCards.AdaptiveTextInput.Placeholder')
+  - [Regex](#P-AdaptiveCards-AdaptiveTextInput-Regex 'AdaptiveCards.AdaptiveTextInput.Regex')
   - [Style](#P-AdaptiveCards-AdaptiveTextInput-Style 'AdaptiveCards.AdaptiveTextInput.Style')
   - [Value](#P-AdaptiveCards-AdaptiveTextInput-Value 'AdaptiveCards.AdaptiveTextInput.Value')
 - [AdaptiveTextInputStyle](#T-AdaptiveCards-AdaptiveTextInputStyle 'AdaptiveCards.AdaptiveTextInputStyle')
@@ -263,6 +266,10 @@
 - [ContainerStyleConfig](#T-AdaptiveCards-Rendering-ContainerStyleConfig 'AdaptiveCards.Rendering.ContainerStyleConfig')
   - [BackgroundColor](#P-AdaptiveCards-Rendering-ContainerStyleConfig-BackgroundColor 'AdaptiveCards.Rendering.ContainerStyleConfig.BackgroundColor')
   - [ForegroundColors](#P-AdaptiveCards-Rendering-ContainerStyleConfig-ForegroundColors 'AdaptiveCards.Rendering.ContainerStyleConfig.ForegroundColors')
+- [ErrorMessageConfig](#T-AdaptiveCards-Rendering-ErrorMessageConfig 'AdaptiveCards.Rendering.ErrorMessageConfig')
+  - [Size](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Size 'AdaptiveCards.Rendering.ErrorMessageConfig.Size')
+  - [Spacing](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Spacing 'AdaptiveCards.Rendering.ErrorMessageConfig.Spacing')
+  - [Weight](#P-AdaptiveCards-Rendering-ErrorMessageConfig-Weight 'AdaptiveCards.Rendering.ErrorMessageConfig.Weight')
 - [FactSetConfig](#T-AdaptiveCards-Rendering-FactSetConfig 'AdaptiveCards.Rendering.FactSetConfig')
   - [Spacing](#P-AdaptiveCards-Rendering-FactSetConfig-Spacing 'AdaptiveCards.Rendering.FactSetConfig.Spacing')
   - [Title](#P-AdaptiveCards-Rendering-FactSetConfig-Title 'AdaptiveCards.Rendering.FactSetConfig.Title')
@@ -283,6 +290,15 @@
 - [IconPlacement](#T-AdaptiveCards-Rendering-IconPlacement 'AdaptiveCards.Rendering.IconPlacement')
   - [AboveTitle](#F-AdaptiveCards-Rendering-IconPlacement-AboveTitle 'AdaptiveCards.Rendering.IconPlacement.AboveTitle')
   - [LeftOfTitle](#F-AdaptiveCards-Rendering-IconPlacement-LeftOfTitle 'AdaptiveCards.Rendering.IconPlacement.LeftOfTitle')
+- [InputLabelConfig](#T-AdaptiveCards-Rendering-InputLabelConfig 'AdaptiveCards.Rendering.InputLabelConfig')
+  - [Color](#P-AdaptiveCards-Rendering-InputLabelConfig-Color 'AdaptiveCards.Rendering.InputLabelConfig.Color')
+  - [IsSubtle](#P-AdaptiveCards-Rendering-InputLabelConfig-IsSubtle 'AdaptiveCards.Rendering.InputLabelConfig.IsSubtle')
+  - [Size](#P-AdaptiveCards-Rendering-InputLabelConfig-Size 'AdaptiveCards.Rendering.InputLabelConfig.Size')
+  - [Suffix](#P-AdaptiveCards-Rendering-InputLabelConfig-Suffix 'AdaptiveCards.Rendering.InputLabelConfig.Suffix')
+  - [Weight](#P-AdaptiveCards-Rendering-InputLabelConfig-Weight 'AdaptiveCards.Rendering.InputLabelConfig.Weight')
+- [InputsConfig](#T-AdaptiveCards-Rendering-InputsConfig 'AdaptiveCards.Rendering.InputsConfig')
+- [LabelConfig](#T-AdaptiveCards-Rendering-LabelConfig 'AdaptiveCards.Rendering.LabelConfig')
+  - [InputSpacing](#P-AdaptiveCards-Rendering-LabelConfig-InputSpacing 'AdaptiveCards.Rendering.LabelConfig.InputSpacing')
 - [MediaConfig](#T-AdaptiveCards-Rendering-MediaConfig 'AdaptiveCards.Rendering.MediaConfig')
   - [AllowInlinePlayback](#P-AdaptiveCards-Rendering-MediaConfig-AllowInlinePlayback 'AdaptiveCards.Rendering.MediaConfig.AllowInlinePlayback')
   - [DefaultPoster](#P-AdaptiveCards-Rendering-MediaConfig-DefaultPoster 'AdaptiveCards.Rendering.MediaConfig.DefaultPoster')
@@ -1526,12 +1542,26 @@ AdaptiveCards
 
 Input is used as part of a Form CardElement to collect information from a user
 
+<a name='P-AdaptiveCards-AdaptiveInput-ErrorMessage'></a>
+### ErrorMessage `property`
+
+##### Summary
+
+Error message to be shown when validation fails
+
 <a name='P-AdaptiveCards-AdaptiveInput-IsRequired'></a>
 ### IsRequired `property`
 
 ##### Summary
 
-The input must have a value for it to be part of a Submit or Http action
+Sets the input as required for triggering Submit actions
+
+<a name='P-AdaptiveCards-AdaptiveInput-Label'></a>
+### Label `property`
+
+##### Summary
+
+Label to be shown next to input
 
 <a name='M-AdaptiveCards-AdaptiveInput-GetNonInteractiveValue'></a>
 ### GetNonInteractiveValue() `method`
@@ -1962,6 +1992,13 @@ hint of maximum length characters to collect(may be ignored by some clients)
 
 Placeholder text for the input desired
 
+<a name='P-AdaptiveCards-AdaptiveTextInput-Regex'></a>
+### Regex `property`
+
+##### Summary
+
+Regular expression used for validating the input
+
 <a name='P-AdaptiveCards-AdaptiveTextInput-Style'></a>
 ### Style `property`
 
@@ -2391,6 +2428,38 @@ The background color to use for this container
 
 The font colors to use for this container
 
+<a name='T-AdaptiveCards-Rendering-ErrorMessageConfig'></a>
+## ErrorMessageConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Properties which control rendering of media
+
+<a name='P-AdaptiveCards-Rendering-ErrorMessageConfig-Size'></a>
+### Size `property`
+
+##### Summary
+
+The text size of the label
+
+<a name='P-AdaptiveCards-Rendering-ErrorMessageConfig-Spacing'></a>
+### Spacing `property`
+
+##### Summary
+
+The text color of the label
+
+<a name='P-AdaptiveCards-Rendering-ErrorMessageConfig-Weight'></a>
+### Weight `property`
+
+##### Summary
+
+The text weight of the label
+
 <a name='T-AdaptiveCards-Rendering-FactSetConfig'></a>
 ## FactSetConfig `type`
 
@@ -2530,6 +2599,81 @@ Places the icons about the text in actions
 ##### Summary
 
 Place the icon to the left of the text in actions
+
+<a name='T-AdaptiveCards-Rendering-InputLabelConfig'></a>
+## InputLabelConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Properties which control rendering of media
+
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-Color'></a>
+### Color `property`
+
+##### Summary
+
+The text color of the label
+
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-IsSubtle'></a>
+### IsSubtle `property`
+
+##### Summary
+
+Make the label less prominent
+
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-Size'></a>
+### Size `property`
+
+##### Summary
+
+The text size of the label
+
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-Suffix'></a>
+### Suffix `property`
+
+##### Summary
+
+Suffix to be displayed next to the label. Only respected for required inputs
+
+<a name='P-AdaptiveCards-Rendering-InputLabelConfig-Weight'></a>
+### Weight `property`
+
+##### Summary
+
+The text weight of the label
+
+<a name='T-AdaptiveCards-Rendering-InputsConfig'></a>
+## InputsConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Properties which control rendering of media
+
+<a name='T-AdaptiveCards-Rendering-LabelConfig'></a>
+## LabelConfig `type`
+
+##### Namespace
+
+AdaptiveCards.Rendering
+
+##### Summary
+
+Properties which control rendering of input labels
+
+<a name='P-AdaptiveCards-Rendering-LabelConfig-InputSpacing'></a>
+### InputSpacing `property`
+
+##### Summary
+
+Specifies the spacing between the label and the input
 
 <a name='T-AdaptiveCards-Rendering-MediaConfig'></a>
 ## MediaConfig `type`

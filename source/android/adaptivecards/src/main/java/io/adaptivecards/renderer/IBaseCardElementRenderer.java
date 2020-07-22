@@ -25,5 +25,5 @@ public interface IBaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException;
+            RenderArgs renderArgs) throws Exception;
 }

@@ -268,5 +268,27 @@
 			"wrap": true
 		},
 		"spacing": 8
+	},
+	"inputs": 
+	{
+		"label": 
+		{
+			"inputSpacing": "small",
+			"requiredInputs": {
+				"suffix": " (required)",
+				"weight": "bolder",
+				"size": "medium"
+			},
+			"optionalInputs": {
+				"color": "dark",
+				"isSubtle": true
+			}
+		},
+		"errorMessage": 
+		{
+			"spacing": "small",
+			"size": "small",
+			"weight": "bolder"
+		}
 	}
 }

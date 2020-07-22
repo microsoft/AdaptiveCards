@@ -15,6 +15,8 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **errorMessage** | `string` | No | Error message to display when entered input is invalid | 1.3 |
+| **isRequired** | `boolean` | No | Whether or not this input is required | 1.3 |
 | **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
@@ -98,3 +100,13 @@ The `label` property should be rendered above the input box or time picker. Clic
 
 ### Accessibility
 The `label` property should be set as the accessibility text when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
+
+### Input Validation
+ If the input has `isRequired` true, and the card has `showRequiredInputHints`, the input should be marked with a * in the host's `attention` color. The * should be placed on the label in the case where the label is set, and otherwise be placed next to the date picker.
+ 
+ The `isRequired`, `min`, and `max` properties should be validated for this input type. If possible, `min` and `max` should be enforced by providing a control that does not allow the user to select a time outside of the specified range. For the `isRequired` (and for `max` and `min` if that's not possible), the validation should take place as follows:
+ 
+ - Validate the input when it loses focus for the first time.
+ - Once the field has been marked invalid, validate on each keystroke or selection so the user can see when it becomes valid.
+
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input.
