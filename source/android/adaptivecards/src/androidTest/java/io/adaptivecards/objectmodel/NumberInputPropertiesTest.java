@@ -75,12 +75,12 @@ public class NumberInputPropertiesTest
             final String inputNumberDefaultMax = "{\"id\":\"id\",\"type\":\"Input.Number\"}\n";
 
             NumberInput numberInput = TestUtil.createMockNumberInput();
-            numberInput.SetMax(2147483647);
+            numberInput.SetMax(null);
             Assert.assertEquals(inputNumberDefaultMax, numberInput.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputNumberDefaultMax), "1.0");
             NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(2147483647, parsedNumberInput.GetMax());
+            Assert.assertEquals(2147483647, parsedNumberInput.GetMax().intValue());
         }
 
         {
@@ -98,7 +98,7 @@ public class NumberInputPropertiesTest
 
                 ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(maxJson), "1.0");
                 NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedNumberInput.GetMax());
+                Assert.assertEquals(tests[i], parsedNumberInput.GetMax().intValue());
             }
         }
 
@@ -111,12 +111,12 @@ public class NumberInputPropertiesTest
             final String inputNumberDefaultMin = "{\"id\":\"id\",\"type\":\"Input.Number\"}\n";
 
             NumberInput numberInput = TestUtil.createMockNumberInput();
-            numberInput.SetMin(-2147483648);
+            numberInput.SetMin(null);
             Assert.assertEquals(inputNumberDefaultMin, numberInput.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputNumberDefaultMin), "1.0");
             NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(-2147483648, parsedNumberInput.GetMin());
+            Assert.assertEquals(-2147483648, parsedNumberInput.GetMin().intValue());
         }
 
         {
@@ -134,7 +134,7 @@ public class NumberInputPropertiesTest
 
                 ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(minJson), "1.0");
                 NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedNumberInput.GetMin());
+                Assert.assertEquals(tests[i], parsedNumberInput.GetMin().intValue());
             }
         }
 
@@ -185,12 +185,12 @@ public class NumberInputPropertiesTest
             final String inputNumberDefaultValue = "{\"id\":\"id\",\"type\":\"Input.Number\"}\n";
 
             NumberInput numberInput = TestUtil.createMockNumberInput();
-            numberInput.SetValue(0);
+            numberInput.SetValue(null);
             Assert.assertEquals(inputNumberDefaultValue, numberInput.Serialize());
 
             ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputNumberDefaultValue), "1.0");
             NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(0, parsedNumberInput.GetValue());
+            Assert.assertEquals(0, parsedNumberInput.GetValue().intValue());
         }
 
         {
@@ -207,7 +207,7 @@ public class NumberInputPropertiesTest
 
                 ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTextValueJson), "1.0");
                 NumberInput parsedNumberInput = TestUtil.castToNumberInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedNumberInput.GetValue());
+                Assert.assertEquals(tests[i], parsedNumberInput.GetValue().intValue());
             }
         }
     }

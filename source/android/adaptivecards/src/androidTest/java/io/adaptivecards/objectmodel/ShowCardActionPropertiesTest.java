@@ -19,7 +19,6 @@ public class ShowCardActionPropertiesTest
     @Test
     public void cardTest() throws Exception
     {
-
         {
             final String showCardActionWithNoCard = "{\"type\":\"Action.ShowCard\"}";
 
@@ -27,11 +26,6 @@ public class ShowCardActionPropertiesTest
             {
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(showCardActionWithNoCard), "1.0");
                 Assert.fail();
-            }
-            catch (IOException e)
-            {
-                // Expecting failure due to card not existing
-                Assert.assertEquals(true, e.getMessage().contains("Expected JSON Object"));
             }
             catch (Exception e){
                 Assert.fail();
@@ -45,11 +39,6 @@ public class ShowCardActionPropertiesTest
             {
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(showCardActionWithEmptyCard), "1.0");
                 Assert.fail();
-            }
-            catch (IOException e)
-            {
-                // Expecting failure due to card not existing
-                Assert.assertEquals(true, e.getMessage().contains("Expected JSON Object"));
             }
             catch (Exception e){
                 Assert.fail();
@@ -81,7 +70,6 @@ public class ShowCardActionPropertiesTest
             OpenUrlAction openUrlAction = TestUtil.castToOpenUrlAction(showCardActionCard.GetActions().get(0));
             Assert.assertEquals("http://", openUrlAction.GetUrl());
         }
-
     }
 
     public static final String s_defaultShowCardJson = "{\"type\":\"Action.ShowCard\"}\n";
