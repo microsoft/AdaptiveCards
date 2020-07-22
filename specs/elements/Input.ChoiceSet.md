@@ -16,6 +16,8 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **errorMessage** | `string` | No | Error message to display when entered input is invalid | 1.3 |
+| **isRequired** | `boolean` | No | Whether or not this input is required | 1.3 |
 | **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
@@ -118,3 +120,10 @@ The `label` property should be rendered above the choice set. In the case of a c
 
 ### Accessibility
 The `label` property should be set as the accessibility text for the choice set when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
+
+### Input Validation
+ If the input has `isRequired` true, and the card has `showRequiredInputHints`, the input should be marked with a * in the host's `attention` color. The * should be placed on the label in the case where the label is set.
+ 
+ The `isRequired`, property should be validated for this input type. The input should be validated when it loses focus for the first time.
+
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input.

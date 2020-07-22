@@ -4,7 +4,11 @@ package io.adaptivecards.renderer.inputhandler;
 
 import android.widget.EditText;
 
+import java.util.regex.Pattern;
+
 import io.adaptivecards.objectmodel.BaseInputElement;
+import io.adaptivecards.objectmodel.TextInput;
+import io.adaptivecards.renderer.Util;
 
 public class TextInputHandler extends BaseInputHandler
 {
@@ -26,5 +30,29 @@ public class TextInputHandler extends BaseInputHandler
     public String getInput()
     {
         return getEditText().getText().toString();
+    }
+
+    @Override
+    public boolean isValidOnSpecifics(String textInputValue)
+    {
+        TextInput textInput = Util.tryCastTo(m_baseInputElement, TextInput.class);
+        if (textInput == null)
+        {
+            return false;
+        }
+
+        boolean isValid = true;
+        String regex = textInput.GetRegex();
+        if (!regex.isEmpty())
+        {
+            isValid = Pattern.matches(regex, textInputValue);
+        }
+
+        return isValid;
+    }
+
+    public void setFocusToView()
+    {
+        m_view.requestFocus();
     }
 }

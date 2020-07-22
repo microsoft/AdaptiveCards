@@ -57,19 +57,9 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        ImageSet imageSet = null;
-        if (baseCardElement instanceof ImageSet)
-        {
-            imageSet = (ImageSet) baseCardElement;
-        }
-        else if ((imageSet = ImageSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ImageSet object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, imageSet.GetSpacing(), imageSet.GetSeparator(), hostConfig, true);
+        ImageSet imageSet = Util.castTo(baseCardElement, ImageSet.class);
 
         IBaseCardElementRenderer imageRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Image.toString());
         if (imageRenderer == null)
@@ -78,7 +68,7 @@ public class ImageSetRenderer extends BaseCardElementRenderer
         }
 
         HorizontalFlowLayout horizFlowLayout = new HorizontalFlowLayout(context);
-        horizFlowLayout.setTag(new TagContent(imageSet, separator, viewGroup));
+        horizFlowLayout.setTag(new TagContent(imageSet));
 
         setVisibility(baseCardElement.GetIsVisible(), horizFlowLayout);
 
@@ -90,6 +80,9 @@ public class ImageSetRenderer extends BaseCardElementRenderer
             Image image = imageVector.get(i);
 
             // TODO: temporary - this will be handled in the object model
+            if(imageSize != ImageSize.Small && imageSize != ImageSize.Medium && imageSize != ImageSize.Large) {
+                imageSize = ImageSize.Medium;
+            }
             image.SetImageSize(imageSize);
 
             try

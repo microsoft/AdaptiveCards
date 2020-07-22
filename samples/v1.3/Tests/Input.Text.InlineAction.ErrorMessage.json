@@ -1,0 +1,49 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.Text",
+			"id": "input1",
+			"label": "Required Input.Text with inline action",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		},
+		{
+			"type": "Input.Text",
+			"id": "input2",
+			"label": "Input.Text with regex: ^\\w{5,10}$ and inline action",
+			"regex": "^\\w{5,50}$",
+			"errorMessage": "Input must contain between 5 and 10 characters long.",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"label": "Input.Text with maxLength of 6 and inline action",
+			"maxLength": 6,
+			"errorMessage": "Input must contain 6 characters or less.",
+			"inlineAction": {
+				"type": "Action.Submit",
+				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"title": "Inline Action"
+			}
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
+}

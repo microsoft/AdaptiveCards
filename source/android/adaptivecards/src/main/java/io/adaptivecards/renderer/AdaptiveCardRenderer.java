@@ -20,6 +20,7 @@ import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.InternalId;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
@@ -57,7 +58,7 @@ public class AdaptiveCardRenderer
             HostConfig hostConfig)
     {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
-        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false);
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, new InternalId());
         result.setView(cardView);
         return result;
     }
@@ -68,7 +69,8 @@ public class AdaptiveCardRenderer
                                AdaptiveCard adaptiveCard,
                                ICardActionHandler cardActionHandler,
                                HostConfig hostConfig,
-                               boolean isInlineShowCard)
+                               boolean isInlineShowCard,
+                               InternalId containerCardId)
     {
         if (hostConfig == null)
         {
@@ -153,6 +155,8 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
+        renderArgs.setContainerCardId(adaptiveCard.GetInternalId());
+        renderedCard.setParentToCard(adaptiveCard.GetInternalId(), containerCardId);
         try
         {
             CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
@@ -160,6 +164,10 @@ public class AdaptiveCardRenderer
         // Catches the exception as the method throws it for performing fallback with elements inside the card,
         // no fallback should be performed here so we just catch the exception
         catch (AdaptiveFallbackException e){}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         if (hostConfig.GetSupportsInteractivity())
         {
