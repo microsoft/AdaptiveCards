@@ -2673,7 +2673,7 @@ Properties which control rendering of input labels
 
 ##### Summary
 
-Specifies the spacing bewteen the label and the input
+Specifies the spacing between the label and the input
 
 <a name='T-AdaptiveCards-Rendering-MediaConfig'></a>
 ## MediaConfig `type`

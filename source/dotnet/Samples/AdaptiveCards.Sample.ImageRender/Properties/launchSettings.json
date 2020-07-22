@@ -2,7 +2,7 @@
   "profiles": {
     "AdaptiveCards.Sample.ImageRender": {
       "commandName": "Project",
-      "commandLineArgs": "-r  -o ./out"
+      "commandLineArgs": "\" C:\\AdaptiveCards\\samples\\v1.0\\Scenarios\" -r  -o ./out"
     }
   }
 }
