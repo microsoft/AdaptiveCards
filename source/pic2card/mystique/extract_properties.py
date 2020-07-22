@@ -1,21 +1,27 @@
 """Module for extracting design element's properties"""
 
+import math
+from io import BytesIO
+import base64
+from typing import Tuple, Dict
+
 from pytesseract import pytesseract
 from PIL import Image
 import cv2
 import numpy as np
-import math
+
+from mystique import default_host_configs
 
 
 class ExtractProperties:
     """
-    Class handles of property extraction from the identified design 
+    Class handles of property extraction from the identified design
     elements.
     from all the design elements - extracts text
     from textual elements - extracts size, color, weight
-    from actionset elements - extracts style based on the background 
+    from actionset elements - extracts style based on the background
                               color
-    from image objects - extracts image size 
+    from image objects - extracts image size
     """
 
     def get_actionset_type(self, image=None, coords=None):
@@ -55,7 +61,10 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(
-                    np.sum((np.asarray(value) - np.asarray(background_color)) ** 2))
+                    np.sum(
+                        (np.asarray(value) - np.asarray(background_color)) ** 2
+                    )
+                )
                 if distance <= 150:
                     found_colors.append(key)
                     distances.append(distance)
@@ -64,48 +73,13 @@ class ExtractProperties:
             style = found_colors[index]
         return style
 
-    def get_image_size(self, image=None, image_cropped_size=None):
-        """[get the image size with respect to the card size]
-
-        Keyword Arguments:
-            image {[PIL image]} -- [input PIL image] (default: {None})
-            image_cropped_size {[tuple]} -- [tuple of cropped image 
-            width and height] (default: {None})
-
-        Returns:
-            [list] -- [list of sizes withrespect to columnset 
-            and inidiuval element]
-        """
-        sizes = ["Auto", "Auto"]
-        image_width, image_height = image.size
-        area_proportionate = (
-            (image_cropped_size[0]*image_cropped_size[1]) /
-            (image_width*image_height)
-        )*100
-        if area_proportionate >= 0 and area_proportionate <= 1:
-            sizes[0] = "Auto"
-        elif area_proportionate > 1 and area_proportionate <= 3:
-            sizes[0] = "Small"
-        elif area_proportionate > 3 and area_proportionate <= 5:
-            sizes[0] = "Medium"
-        elif area_proportionate > 5:
-            sizes[0] = "Large"
-
-        if area_proportionate >= 0 and area_proportionate < 4:
-            sizes[1] = "Small"
-        elif area_proportionate >= 4 and area_proportionate <= 9:
-            sizes[1] = "Medium"
-        elif area_proportionate > .0:
-            sizes[1] = "Auto"
-        return sizes
-
     def get_text(self, image=None, coords=None):
         """
-        Extract the text from the object coordinates 
+        Extract the text from the object coordinates
         in the input deisgn image using pytesseract.
 
         @param image: input PIL image
-        @param coords: tuple of coordinates from which 
+        @param coords: tuple of coordinates from which
                        text should be extracted
         @return: ocr text
         """
@@ -122,11 +96,11 @@ class ExtractProperties:
     def get_size_and_weight(self, image=None, coords=None):
         """
         Extract the size and weight of textual contents from
-        the input image by taking an average of each edge 
+        the input image by taking an average of each edge
         countour's of height and width of each character.
 
         @param image : input PIL image
-        @param coords: list of coordinated from which 
+        @param coords: list of coordinated from which
                        text and height should be extracted
         @return: size and weight
         """
@@ -136,7 +110,6 @@ class ExtractProperties:
         # preprocess
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         gray = cv2.blur(gray, (5, 5))
-        kernel = np.ones((5, 5), np.uint8)
         # edge detection
         edged = cv2.Canny(img, 30, 200)
         # contours bulding
@@ -207,7 +180,7 @@ class ExtractProperties:
         foreground color.
 
         @param image: input PIL image
-        @param coords: coordinates from which color needs to be 
+        @param coords: coordinates from which color needs to be
                        extracted
 
         @return: foreground color name
@@ -285,3 +258,109 @@ class ExtractProperties:
                 if distance < 150:
                     color = "Default"
         return color
+
+
+class CollectProperties(ExtractProperties):
+    """
+    Helps to collect the properties for respective design object.
+    """
+    def __init__(self, image):
+        self.pil_imgae = image
+
+    def actionset(self, coords: Tuple) -> Dict:
+        """
+        Returns the actionset properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(
+                    image=self.pil_imgae,
+                    xmin=coords[0],
+                    xmax=coords[2]
+                ),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+                "style": self.get_actionset_type(
+                    image=self.pil_imgae,
+                    coords=coords
+                )
+        }
+
+    def textbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the textbox properties of the extracted design object
+        @return: property object
+        """
+        size, weight = self.get_size_and_weight(image=self.pil_imgae,
+                                                coords=coords)
+        return {
+                "horizontal_alignment": self.get_alignment(
+                    image=self.pil_imgae,
+                    xmin=coords[0],
+                    xmax=coords[2]
+                ),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+                "size": size,
+                "weight": weight,
+                "color": self.get_colors(image=self.pil_imgae, coords=coords)
+
+        }
+
+    def radiobutton(self, coords: Tuple) -> Dict:
+        """
+        Returns the radiobutton properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(
+                    image=self.pil_imgae,
+                    xmin=coords[0],
+                    xmax=coords[2]
+                ),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def checkbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the checkbox properties of the extracted design object
+        @return: property object
+        """
+        return {
+                "horizontal_alignment": self.get_alignment(
+                    image=self.pil_imgae,
+                    xmin=coords[0],
+                    xmax=coords[2]
+                ),
+                "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def image(self, coords: Tuple) -> Dict:
+        """
+        Returns the image properties of the extracted design object
+        @return: property object
+        """
+        cropped = self.pil_imgae.crop(coords)
+        buff = BytesIO()
+        cropped.save(buff, format="PNG")
+        base64_string = base64.b64encode(
+                buff.getvalue()).decode()
+        data = f'data:image/png;base64,{base64_string}'
+
+        img_width, img_height = cropped.size
+        # set the closest size label for the image object's width and
+        # height
+        size = "Auto"
+        keys = list(default_host_configs.IMAGE_SIZE.keys())
+        width_key = min(keys, key=lambda x: abs(x - img_width))
+        height_key = min(keys, key=lambda x: abs(x - img_height))
+        if width_key == height_key:
+            size = default_host_configs.IMAGE_SIZE[width_key]
+        size = size
+        return {
+                "horizontal_alignment": self.get_alignment(
+                    image=self.pil_imgae,
+                    xmin=coords[0],
+                    xmax=coords[2]
+                ),
+                "data": data,
+                "size": size
+        }
