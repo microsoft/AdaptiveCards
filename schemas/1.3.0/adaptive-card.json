@@ -217,7 +217,7 @@
               "version": "1.0"
             }
           ],
-          "description": "Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF",
+          "description": "Specifies the background image of the card.",
           "version": "1.2"
         },
         "minHeight": {
@@ -243,12 +243,6 @@
             "fr",
             "es"
           ]
-        },
-        "showRequiredInputHints": {
-          "type": "boolean",
-          "description": "True if required fields should be visually indicated",
-          "version": "1.3",
-          "default": true
         },
         "verticalContentAlignment": {
           "$ref": "#/definitions/VerticalContentAlignment",
