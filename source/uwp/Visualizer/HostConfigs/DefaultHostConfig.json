@@ -275,13 +275,9 @@
 		"label": {
 			"inputSpacing": "small",
 			"requiredInputs": {
-				"suffix": " *",
-				"weight": "bolder",
-				"color": "attention",
-				"size": "medium"
+				"suffix": " *"
 			},
 			"optionalInputs": {
-				"color": "good",
 				"isSubtle": true,
 				"weight": "lighter"
 			}
