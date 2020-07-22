@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+
     public static class XceedTimeInput
     {
         static Regex TextFunctionRegex;
@@ -32,14 +33,16 @@ namespace AdaptiveCards.Rendering.Wpf
                     timePicker.Value = value;
                 TimeSpan minValue;
                 if (IsSupportedTimeFormat(input.Min) && TimeSpan.TryParse(input.Min, out minValue))
-                    timePicker.EndTime = minValue;
+                    timePicker.StartTime = minValue;
                 TimeSpan maxValue;
                 if (IsSupportedTimeFormat(input.Max) && TimeSpan.TryParse(input.Max, out maxValue))
                     timePicker.EndTime = maxValue;
                 timePicker.Watermark = input.Placeholder;
                 timePicker.Style = context.GetStyle("Adaptive.Input.Time");
                 timePicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => ToIso8601Time(timePicker.Text));
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedTimeInputValue(input, timePicker));
+
                 return timePicker;
             }
             else
@@ -48,19 +51,7 @@ namespace AdaptiveCards.Rendering.Wpf
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
                 return context.Render(textBlock);
             }
-
         }
-
-        static string ToIso8601Time(string text)
-        {
-            if(string.IsNullOrEmpty(text))
-                return string.Empty;
-
-            DateTime dateTime;
-            if(DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime))
-                return dateTime.ToString("HH:mm");
-
-            return text;
-        }
+       
     }
 }

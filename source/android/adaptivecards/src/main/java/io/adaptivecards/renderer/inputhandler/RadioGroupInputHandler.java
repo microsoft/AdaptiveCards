@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -31,10 +32,12 @@ public class RadioGroupInputHandler extends BaseInputHandler
         int index = getRadioGroup().getCheckedRadioButtonId();
 
         // if no item was selected, index == -1, return empty string
-        if (index >= 0) {
+        if (index >= 0)
+        {
             return choiceSetInput.GetChoices().get(index).GetValue();
         }
-        else {
+        else
+        {
             return "";
         }
     }
@@ -60,11 +63,24 @@ public class RadioGroupInputHandler extends BaseInputHandler
                 }
             }
         }
-
         else
         {
             // Indicates no item was selected
             radioGroup.check(-1);
+        }
+    }
+
+    @Override
+    public void setFocusToView()
+    {
+        RadioGroup radioGroup = (RadioGroup)m_view;
+
+        if (radioGroup.getChildCount() > 0)
+        {
+            RadioButton radioButton = (RadioButton)(radioGroup.getChildAt(0));
+
+            radioButton.setFocusableInTouchMode(true);
+            radioButton.requestFocus();
         }
     }
 

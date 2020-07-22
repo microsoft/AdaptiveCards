@@ -88,5 +88,15 @@ namespace AdaptiveCards
         {
             return Value ?? $"*[{Placeholder}]*";
         }
+
+        /// <summary>
+        /// Regular expression used for validating the input
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string Regex { get; set; }
     }
 }

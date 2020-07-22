@@ -121,12 +121,6 @@ export enum InputTextStyle {
     Email
 }
 
-export enum InputValidationNecessity {
-    Optional,
-    Required,
-    RequiredWithVisualCue
-}
-
 /*
     This should really be a string enum, e.g.
 
@@ -175,6 +169,7 @@ export enum ValidationEvent {
     UnsupportedCardVersion,
     DuplicateId,
     UnsupportedProperty,
+    RequiredInputsShouldHaveLabel,
     Other
 }
 
