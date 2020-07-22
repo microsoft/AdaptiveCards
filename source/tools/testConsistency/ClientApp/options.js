@@ -22,7 +22,7 @@ const optionsForWPF = JSON.parse(JSON.stringify(optionsTemplate));
 optionsForWPF["platformName"] = "WPF";
 optionsForWPF["options"]["port"] = 4000;
 
-const optionsForAndroid = Object.assign({}, optionsTemplate);
+const optionsForAndroid = JSON.parse(JSON.stringify(optionsTemplate));
 optionsForAndroid["platformName"] = "Android";
 optionsForAndroid["options"]["port"] = 7000
 
