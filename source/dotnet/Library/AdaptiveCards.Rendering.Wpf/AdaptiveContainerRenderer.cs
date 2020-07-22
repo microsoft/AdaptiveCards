@@ -449,7 +449,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
 
             Inline labelTextInline = new Run(input.Label);
-            labelTextInline.SetColor(AdaptiveTextColor.Default, labelConfig.IsSubtle, context);
+            labelTextInline.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
             uiTextBlock.Inlines.Add(labelTextInline);
 
             if (input.IsRequired)
@@ -467,11 +467,6 @@ namespace AdaptiveCards.Rendering.Wpf
 
             uiTextBlock.FontWeight = FontWeight.FromOpenTypeWeight(context.Config.GetFontWeight(AdaptiveFontType.Default, labelConfig.Weight));
             uiTextBlock.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, labelConfig.Size);
-
-            if (labelConfig.Color != AdaptiveTextColor.Default)
-            {
-                uiTextBlock.SetColor(labelConfig.Color, labelConfig.IsSubtle, context);
-            }
 
             // For Input.Text we render inline actions inside of a Grid, so we set the property
             AutomationProperties.SetLabeledBy(GetVisualElementForAccessibility(context, input) ?? renderedInput, uiTextBlock);
