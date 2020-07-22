@@ -18,8 +18,9 @@ namespace AdaptiveCards.Rendering
         public InputLabelConfig OptionalInputs { get; set; } = new InputLabelConfig();
 
         /// <summary>
-        /// Specifies the spacing bewteen the label and the input
+        /// Specifies the spacing between the label and the input
         /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public AdaptiveSpacing InputSpacing { get; set; }
     }
 }

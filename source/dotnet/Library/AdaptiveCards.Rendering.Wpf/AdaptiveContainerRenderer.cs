@@ -359,7 +359,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
 
-                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement), inputElement.IsRequired);
+                AutomationProperties.SetIsRequiredForForm(GetVisualElementForAccessibility(context, inputElement)?? elementForAccessibility, inputElement.IsRequired);
 
                 if ((!String.IsNullOrEmpty(inputElement.Label)) || (!String.IsNullOrEmpty(inputElement.ErrorMessage)))
                 {
@@ -469,7 +469,7 @@ namespace AdaptiveCards.Rendering.Wpf
             uiTextBlock.FontSize = context.Config.GetFontSize(AdaptiveFontType.Default, labelConfig.Size);
 
             // For Input.Text we render inline actions inside of a Grid, so we set the property
-            AutomationProperties.SetLabeledBy(GetVisualElementForAccessibility(context, input), uiTextBlock);
+            AutomationProperties.SetLabeledBy(GetVisualElementForAccessibility(context, input) ?? renderedInput, uiTextBlock);
 
             return uiTextBlock;
         }
@@ -500,7 +500,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public static UIElement GetVisualElementForAccessibility(AdaptiveRenderContext context, AdaptiveInput input)
         {
-            return context.InputValues[input.Id].VisualElementForAccessibility;
+            return context.InputValues[input.Id]?.VisualElementForAccessibility;
         }
     }
 }
