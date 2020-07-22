@@ -111,9 +111,8 @@ The `color`, `isSubtle`, `size`, and `weight` properties provided in the host co
 The `label` property should be set as the accessibility text for the choice set when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
 
 ### Input Validation
- If the input has `isRequired` true the If the input has `"isRequired":true` the input should be marked with the 
- `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. The suffix should be placed on the label in the case where the label is set, and otherwise be placed next to the input control.
+ If the input has `"isRequired":true` the label of the input should be marked with the `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. If a required input does not have a label, the suffix should not be used and a warning should be returned.
  
- The `isRequired`, property should be validated for this input type. The input should be validated when the user activates a submit action on the card. 
+ The `isRequired` property should be validated for this input type. The input should be validated when the user activates a submit action on the card. 
  
- If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color.
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color. If an error message is not present and `isRequired` is set, a warning should be returned.

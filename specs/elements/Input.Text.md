@@ -121,10 +121,8 @@ The `label` property should be set as the accessibility text when present. If th
 
 ### Input Validation
 
-If the input has `"isRequired":true` the input should be marked with the 
- `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. The suffix  should be placed on the label in the case where the label is set, and otherwise be placed next to the input control.
+ If the input has `"isRequired":true` the label of the input should be marked with the `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. If a required input does not have a label, the suffix should not be used and a warning should be returned.
  
  The `regex`, `isRequired`, and `maxLength` properties should be validated for this input type. If possible, `maxLength` should be enforced by providing a control that does not allow the user to enter more than the maximum number of characters. For the other properties (and for `maxLength` if not enforced by the control), the validation should take place when the user activates a submit action on the card.
 
- If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color.
-
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color. If an error message is not present and a property validated by input validation is set, a warning should be returned.
