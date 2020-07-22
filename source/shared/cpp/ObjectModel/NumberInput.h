@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "BaseInputElement.h"
 #include "ElementParserRegistration.h"
+#include <optional>
 
 namespace AdaptiveSharedNamespace
 {
