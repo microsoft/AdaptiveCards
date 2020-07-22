@@ -9,6 +9,7 @@
 #import "DateInput.h"
 #import "DateTimePreparser.h"
 #import "TimeInput.h"
+#import "ACRInputLabelView.h"
 
 using namespace AdaptiveCards;
 
@@ -159,7 +160,7 @@ using namespace AdaptiveCards;
 - (BOOL)validate:(NSError **)error
 {
     BOOL isValidated = YES;
-    isValidated = [super validate:error];
+    isValidated = [ACRInputLabelView commonTextUIValidate:self.isRequired hasText:self.hasText predicate:nil text:nil error:error];
     NSDate *date = [self getCurrentDate];
     if (isValidated == YES) {
         if ([date compare:self.min] == NSOrderedAscending) {
@@ -184,6 +185,11 @@ using namespace AdaptiveCards;
     dictionary[self.id] = (self.text.length == 0) ? self.text : [_encodeFormatter stringFromDate:[self getCurrentDate]];
 }
 
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+}
+
 - (NSDate *)getCurrentDate
 {
     return ((UIDatePicker *)self.inputView).date;
@@ -199,5 +205,11 @@ using namespace AdaptiveCards;
 
     formatter.locale = [NSLocale currentLocale];
 }
+
+@synthesize hasValidationProperties;
+
+@synthesize id;
+
+@synthesize isRequired;
 
 @end

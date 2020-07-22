@@ -70,6 +70,7 @@ static NSString *pickerCell = @"pickerCell";
             _titles = [NSArray arrayWithArray:mutableArrayStrings];
         }
         _userSelectedTitle = valuesMap[defaultValue];
+        self.hasValidationProperties = self.isRequired;
     }
     return self;
 }

@@ -42,7 +42,7 @@
         }
     }
 
-    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json", @"Input.Toggle.Label.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -173,8 +173,10 @@
     XCTAssertTrue(cardParseResult && cardParseResult.isValid);
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
     NSString *hashkey = @"FeedbackText";
-    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
-    XCTAssertNotNil(acrTextView);
+    ACRInputLabelView *acrInputLabelView = (ACRInputLabelView *)[renderResult.view viewWithTag:hashkey.hash];
+    
+    XCTAssertNotNil(acrInputLabelView);
+    ACRTextView *acrTextView = (ACRTextView *)acrInputLabelView.stack.arrangedSubviews[1];
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
@@ -188,7 +190,7 @@
     ACOAdaptiveCard *renderedCard = [renderResult.view card];
     NSData *json = [renderedCard inputs];
     NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableContainers error:nil];
-    XCTAssert([dictionary count] == 2);
+    XCTAssert([dictionary count] == 1);
 }
 
 // this test ensure that extending text render doesn't crash

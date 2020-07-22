@@ -79,6 +79,10 @@
 		6B7B1A9420B4D2AB00260731 /* Media.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9020B4D2AB00260731 /* Media.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B7B1A9720BE2CBC00260731 /* ACRUIImageView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */; };
 		6B7B1A9820BE2CBC00260731 /* ACRUIImageView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */; };
+		6B94F2E224C79C2700E2B310 /* ACRTextTelelphoneField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */; };
+		6B94F2E424C79CE000E2B310 /* ACRTextUrlField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */; };
 		6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */; };
 		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
 		6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -422,6 +426,10 @@
 		6B7B1A9020B4D2AB00260731 /* Media.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Media.h; path = ../../../../shared/cpp/ObjectModel/Media.h; sourceTree = "<group>"; };
 		6B7B1A9520BE2CBB00260731 /* ACRUIImageView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRUIImageView.mm; sourceTree = "<group>"; };
 		6B7B1A9620BE2CBC00260731 /* ACRUIImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRUIImageView.h; sourceTree = "<group>"; };
+		6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextInputHandler.h; sourceTree = "<group>"; };
+		6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextInputHandler.mm; sourceTree = "<group>"; };
+		6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRTextTelelphoneField.xib; sourceTree = "<group>"; };
+		6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRTextUrlField.xib; sourceTree = "<group>"; };
 		6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRCellForCompactMode.xib; sourceTree = "<group>"; };
 		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextView.h; sourceTree = "<group>"; };
@@ -1004,6 +1012,8 @@
 				6BF430762190DDCA0068E432 /* ACRQuickReplyView.mm */,
 				F429793C1F3155EF00E89914 /* ACRTextField.h */,
 				F429793D1F3155EF00E89914 /* ACRTextField.mm */,
+				6B94F2DB24C7997D00E2B310 /* ACRTextInputHandler.h */,
+				6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */,
 				6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */,
 				6B9AB30F20DD82A2005C8E15 /* ACRTextView.mm */,
 				6B9BDF7220E1BD0E00F13155 /* ACRToggleInputDataSource.h */,
@@ -1122,24 +1132,26 @@
 		F460323D20757AE6006C5358 /* XIB */ = {
 			isa = PBXGroup;
 			children = (
-				6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */,
-				6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */,
 				6B9AB30120D32A89005C8E15 /* ACRButton.xib */,
 				6BF1D1C724AAD3FE00B3EFA2 /* ACRButtonExpandable.xib */,
 				6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */,
+				6BEBF5A124BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib */,
+				6BEBF59D24BE63A200BE5A79 /* ACRChoiceSetCellCompactChecked.xib */,
+				6BEBF59F24BE672000BE5A79 /* ACRChoiceSetCellCompactUnchecked.xib */,
+				6BEBF5A324BE685200BE5A79 /* ACRChoiceSetCellUnchecked.xib */,
 				F460324420758583006C5358 /* ACRDatePicker.xib */,
 				F460324620759519006C5358 /* ACRDateTextField.xib */,
+				6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */,
+				6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */,
 				F4603237207575A3006C5358 /* ACRLabelView.xib */,
 				6B14FC60211BBBEA00A11CC5 /* ACRPickerView.xib */,
 				6BF4307B219126CD0068E432 /* ACRQuickActionMultilineView.xib */,
 				6BF430732190DCBF0068E432 /* ACRQuickActionView.xib */,
 				6B5E9CBE24B84E7300757882 /* ACRTextEmailField.xib */,
 				F460324020757F38006C5358 /* ACRTextField.xib */,
+				6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */,
+				6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */,
 				6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */,
-				6BEBF59D24BE63A200BE5A79 /* ACRChoiceSetCellCompactChecked.xib */,
-				6BEBF59F24BE672000BE5A79 /* ACRChoiceSetCellCompactUnchecked.xib */,
-				6BEBF5A324BE685200BE5A79 /* ACRChoiceSetCellUnchecked.xib */,
-				6BEBF5A124BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib */,
 			);
 			name = XIB;
 			sourceTree = "<group>";
@@ -1307,6 +1319,7 @@
 				6B1147D11F32E53A008846EC /* ACRActionDelegate.h in Headers */,
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */,
+				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1420,10 +1433,12 @@
 				6BEBF59E24BE63A300BE5A79 /* ACRChoiceSetCellCompactChecked.xib in Resources */,
 				6BD90D9024C64EBE00B040FB /* ACRInputLabelView.xib in Resources */,
 				6B5D241B212E1CF80010EB07 /* unchecked.png in Resources */,
+				6B94F2E224C79C2700E2B310 /* ACRTextTelelphoneField.xib in Resources */,
 				6BF1D1C824AAD3FE00B3EFA2 /* ACRButtonExpandable.xib in Resources */,
 				6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */,
 				6BEBF5A224BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib in Resources */,
 				6B5E9CBF24B84E7300757882 /* ACRTextEmailField.xib in Resources */,
+				6B94F2E424C79CE000E2B310 /* ACRTextUrlField.xib in Resources */,
 				6B27CD6324BD343C00C0F90F /* ACRInputTableView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1526,6 +1541,7 @@
 				6BAC0F2E228E2D7300E42DEB /* RichTextElementProperties.cpp in Sources */,
 				6B6840F91F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm in Sources */,
 				F42741131EF873A600399FBB /* ACRImageRenderer.mm in Sources */,
+				6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,

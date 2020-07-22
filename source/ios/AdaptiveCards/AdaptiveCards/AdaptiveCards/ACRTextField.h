@@ -9,11 +9,7 @@
 #import "ACRIBaseInputHandler.h"
 #import <UIKit/UIKit.h>
 
-@interface ACRTextField : UITextField <ACRIBaseInputHandler, UITextFieldDelegate>
-@property NSString *id;
-@property NSPredicate *regexPredicate;
-
-@property NSUInteger maxLength;
+@interface ACRTextField : UITextField <UITextFieldDelegate>
 
 - (void)dismissNumPad;
 @end

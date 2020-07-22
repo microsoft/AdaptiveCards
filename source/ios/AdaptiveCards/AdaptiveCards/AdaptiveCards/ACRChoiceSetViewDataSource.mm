@@ -62,6 +62,8 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             }
             ++index;
         }
+        
+        self.hasValidationProperties = self.isRequired;
     }
     return self;
 }

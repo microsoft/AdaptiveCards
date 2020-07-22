@@ -13,6 +13,7 @@
 
 @property BOOL isRequired;
 @property BOOL hasValidationProperties;
+@property NSString * _Nonnull id;
 
 - (BOOL)validate:(NSError * _Nullable * _Nullable)error;
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view;

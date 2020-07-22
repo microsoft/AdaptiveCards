@@ -11,9 +11,10 @@
 #import "ACRQuickReplyMultilineView.h"
 #import <UIKit/UIKit.h>
 
-@interface ACRQuickReplyView : UIView <UITextFieldDelegate, ACRIQuickReply>
+@interface ACRQuickReplyView : UIView <ACRIQuickReply>
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
-@property (weak, nonatomic) IBOutlet ACRTextField *textField;
+@property ACRTextField *textField;
 @property (weak, nonatomic) IBOutlet ACRButton *button;
 @property (weak, nonatomic) ACRAggregateTarget *target;
+- (void) addTextField:(ACRTextField *)textField;
 @end

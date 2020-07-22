@@ -38,13 +38,25 @@
     [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:self.stack.bottomAnchor].active = YES;
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void) addTextField:(ACRTextField *)textField
 {
-    if (_target) {
-        [_target send:self.button];
+    [self.stack insertArrangedSubview:textField atIndex:0];
+    [textField setContentHuggingPriority:249 forAxis:UILayoutConstraintAxisHorizontal];
+    [textField setContentCompressionResistancePriority:749 forAxis:UILayoutConstraintAxisHorizontal];
+    self.textField = textField;
+}
+
+- (BOOL)becomeFirstResponder {
+    if (self.textField) {
+        [self.textField becomeFirstResponder];
     }
-    [self resignFirstResponder];
-    [self endEditing:YES];
+    return YES;
+}
+
+- (BOOL)resignFirstResponder {
+    if (self) {
+        [self.textField resignFirstResponder];
+    }
     return YES;
 }
 

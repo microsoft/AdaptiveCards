@@ -114,6 +114,10 @@
 - (BOOL)validate:(NSError **)error
 {
     NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
+    UIView *inputView = [self getInputView];
+    if (inputView) {
+        [inputView resignFirstResponder];
+    }
     if (inputHandler) {
         NSError *error = nil;
         if (NO == [inputHandler validate:&error]) {

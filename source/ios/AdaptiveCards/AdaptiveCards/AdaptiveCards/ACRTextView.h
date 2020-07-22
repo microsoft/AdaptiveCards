@@ -10,9 +10,7 @@
 #import <UIKit/UIKit.h>
 
 @interface ACRTextView : UITextView <ACRIBaseInputHandler, UITextViewDelegate>
-@property NSString *id;
 @property NSString *placeholderText;
-@property bool isRequired;
 @property NSUInteger maxLength;
 @property IBInspectable UIColor *borderColor;
 @property NSPredicate *regexPredicate;

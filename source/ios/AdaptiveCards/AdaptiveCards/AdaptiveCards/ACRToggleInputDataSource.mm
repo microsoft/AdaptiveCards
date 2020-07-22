@@ -28,12 +28,12 @@ using namespace AdaptiveCards;
                                             encoding:NSUTF8StringEncoding];
     self.valueOff = [[NSString alloc] initWithCString:toggleInput->GetValueOff().c_str()
                                              encoding:NSUTF8StringEncoding];
+    self.hasValidationProperties = self.isRequired;
     return self;
 }
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
     if (self.isRequired) {
         return _toggleSwitch.on;
     }

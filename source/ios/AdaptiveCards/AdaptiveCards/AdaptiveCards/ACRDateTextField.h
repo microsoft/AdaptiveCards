@@ -11,7 +11,7 @@
 #import "SharedAdaptiveCard.h"
 #import <UIKit/UIKit.h>
 
-@interface ACRDateTextField : ACRTextField
+@interface ACRDateTextField : ACRTextField<ACRIBaseInputHandler>
 @property NSDate *min;
 @property NSDate *max;
 @property NSRegularExpression *regularExpression;

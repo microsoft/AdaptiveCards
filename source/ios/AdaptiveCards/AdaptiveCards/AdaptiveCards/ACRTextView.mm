@@ -165,4 +165,10 @@
     [textView resignFirstResponder];
 }
 
+@synthesize hasValidationProperties;
+
+@synthesize id;
+
+@synthesize isRequired;
+
 @end

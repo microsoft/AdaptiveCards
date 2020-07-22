@@ -20,6 +20,7 @@
 #import "ACRSeparator.h"
 #import "ACRShowCardTarget.h"
 #import "ACRTextField.h"
+#import "ACRTextInputHandler.h"
 #import "ACRTextView.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "ACRUIImageView.h"
@@ -39,26 +40,17 @@
     return ACRTextInput;
 }
 
-+ (ACRTextField *)configTextFiled:(const std::shared_ptr<TextInput> &)inputBlck renderAction:(BOOL)renderAction rootView:(ACRView *)rootView txtInput:(ACRTextField *)txtInput viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
++ (ACRTextField *)configTextFiled:(std::shared_ptr<TextInput> const &)inputBlock renderAction:(BOOL)renderAction rootView:(ACRView *)rootView txtInput:(ACRTextField *)txtInput viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup
 {
-    switch (inputBlck->GetTextInputStyle()) {
-        case TextInputStyle::Text: {
-            txtInput.keyboardType = UIKeyboardTypeDefault;
-            break;
-        }
+    switch (inputBlock->GetTextInputStyle()) {
         case TextInputStyle::Email: {
-            if (renderAction) {
-                txtInput.keyboardType = UIKeyboardTypeEmailAddress;
-            } else {
-                NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-                txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
-                txtInput.delegate = txtInput;
-            }
-
+            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+            txtInput = [bundle loadNibNamed:@"ACRTextEmailField" owner:rootView options:nil][0];
             break;
         }
         case TextInputStyle::Tel: {
-            txtInput.keyboardType = UIKeyboardTypePhonePad;
+            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+            txtInput = [bundle loadNibNamed:@"ACRTextTelelphoneField" owner:rootView options:nil][0];
             CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
             UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
             UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -69,30 +61,21 @@
             break;
         }
         case TextInputStyle::Url: {
-            txtInput.keyboardType = UIKeyboardTypeURL;
+            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+            txtInput = [bundle loadNibNamed:@"ACRTextUrlField" owner:rootView options:nil][0];
             break;
         }
+        case TextInputStyle::Text:
         default: {
-            txtInput.keyboardType = UIKeyboardTypeAlphabet;
+            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
+            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
             break;
         }
     }
-
-    NSString *placeHolderStr = [NSString stringWithCString:inputBlck->GetPlaceholder().c_str()
-                                                  encoding:NSUTF8StringEncoding];
-    txtInput.id = [NSString stringWithCString:inputBlck->GetId().c_str()
-                                     encoding:NSUTF8StringEncoding];
-    txtInput.maxLength = inputBlck->GetMaxLength();
-    txtInput.placeholder = placeHolderStr;
-    txtInput.text = [NSString stringWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
+    txtInput.placeholder = [NSString stringWithCString:inputBlock->GetPlaceholder().c_str()
+                                              encoding:NSUTF8StringEncoding];
+    txtInput.text = [NSString stringWithCString:inputBlock->GetValue().c_str() encoding:NSUTF8StringEncoding];
     txtInput.allowsEditingTextAttributes = YES;
-    txtInput.isRequired = inputBlck->GetIsRequired();
-    std::string cpattern = inputBlck->GetRegex();
-    if (!cpattern.empty()) {
-        NSString *pattern = [NSString stringWithCString:cpattern.c_str() encoding:NSUTF8StringEncoding];
-        txtInput.regexPredicate = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", pattern];
-    }
-    txtInput.hasValidationProperties = txtInput.isRequired || txtInput.maxLength || txtInput.regexPredicate;
     return txtInput;
 }
 
@@ -124,6 +107,7 @@
         }
     }
 
+    ACRTextInputHandler *textInputHandler = [[ACRTextInputHandler alloc] init:acoElem];
     if (inputBlck->GetIsMultiline()) {
         if (renderAction) {
             // if action is defined, load ACRQuickReplyMultilineView nib for customizable UI
@@ -162,23 +146,18 @@
         if (renderAction) {
             // if action is defined, load ACRQuickReplyView nib for customizable UI
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
-            txtInput = quickReplyView.textField;
             button = quickReplyView.button;
-            txtInput.delegate = quickReplyView;
-            inputview = quickReplyView;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:txtInput];
+            [quickReplyView addTextField:txtInput];            
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
 
         } else {
-            NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-            txtInput = [bundle loadNibNamed:@"ACRTextField" owner:rootView options:nil][0];
-            txtInput.delegate = txtInput;
-            inputview = txtInput;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView txtInput:txtInput viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:nil];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
         }
+        txtInput.delegate = textInputHandler;
 
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }

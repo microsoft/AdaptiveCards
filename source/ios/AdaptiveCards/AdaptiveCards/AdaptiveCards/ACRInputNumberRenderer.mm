@@ -13,6 +13,7 @@
 #import "ACRNumericTextField.h"
 #import "NumberInput.h"
 #import "UtiliOS.h"
+#import "ACRTextInputHandler.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -37,15 +38,16 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
     ACRNumericTextField *numInput = [[ACRNumericTextField alloc] init];
-    numInput.id = [NSString stringWithCString:numInputBlck->GetId().c_str()
-                                     encoding:NSUTF8StringEncoding];
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
     numInput.text = [NSString stringWithFormat:@"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
     numInput.borderStyle = UITextBorderStyleRoundedRect;
     numInput.keyboardType = UIKeyboardTypeDecimalPad;
-    numInput.min = numInputBlck->GetMin();
-    numInput.max = numInputBlck->GetMax();
+    
+    ACRNumberInputHandler *numberInputHandler = [[ACRNumberInputHandler alloc] init:acoElem];
+    
+    numInput.delegate = numberInputHandler;
+    
     CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
     UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
@@ -53,7 +55,7 @@
     [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
     [toolBar sizeToFit];
     numInput.inputAccessoryView = toolBar;
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:nil];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
