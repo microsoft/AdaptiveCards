@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -15,35 +16,6 @@ NSString *checkedCheckboxReuseID = @"checked-checkbox";
 NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
-
-const CGFloat padding = 16.0f;
-
-@implementation ACRChoiceSetCell
-
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        UIImage *iconImage = nil;
-        if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
-            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
-            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        } else {
-            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
-        }
-        self.imageView.image = iconImage;
-        self.textLabel.numberOfLines = 0;
-        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-        self.textLabel.adjustsFontSizeToFitWidth = NO;
-        self.backgroundColor = UIColor.clearColor;
-    }
-    return self;
-}
-
-@end
 
 @implementation ACRChoiceSetViewDataSource {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
@@ -90,6 +62,8 @@ const CGFloat padding = 16.0f;
             }
             ++index;
         }
+        
+        self.hasValidationProperties = self.isRequired;
     }
     return self;
 }
@@ -130,8 +104,6 @@ const CGFloat padding = 16.0f;
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
-    cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
 
     return cell;
@@ -176,7 +148,7 @@ const CGFloat padding = 16.0f;
         }
     }
 
-    [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
     _currentSelectedIndexPath = indexPath;
 }
 
@@ -199,28 +171,38 @@ const CGFloat padding = 16.0f;
     } else {
         textString = cell.textLabel.text;
     }
-    
-    if (_contentSize.width == 0 && tableView.contentSize.width && tableView.frame.size.height)
-    {
+
+    if (_contentSize.width == 0 && tableView.contentSize.width && tableView.frame.size.height) {
         _contentSize = tableView.contentSize;
         [tableView invalidateIntrinsicContentSize];
     }
-    
+
     CGSize labelStringSize =
         [textString boundingRectWithSize:CGSizeMake(tableView.contentSize.width - [self getNonInputWidth:cell], CGFLOAT_MAX)
                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                               attributes:@{NSFontAttributeName : cell.textLabel.font}
                                  context:nil]
             .size;
-    
+
     [tableView layoutIfNeeded];
-    
-    return labelStringSize.height + padding;
+
+    return labelStringSize.height + _spacing;
 }
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
+    if (self.isRequired) {
+        if (_isMultiChoicesAllowed) {
+            for (id key in _userSelections) {
+                if ([_userSelections[key] boolValue]) {
+                    return YES;
+                }
+            }
+            return NO;
+        }
+        return _userSelections.count > 0 ? YES : NO;
+    }
+
     return YES;
 }
 
@@ -244,6 +226,11 @@ const CGFloat padding = 16.0f;
     dictionary[self.id] = [values componentsJoinedByString:@","];
 }
 
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+}
+
 - (NSString *)getTitlesOfChoices
 {
     NSMutableArray *values = [[NSMutableArray alloc] init];
@@ -264,7 +251,10 @@ const CGFloat padding = 16.0f;
 
 - (float)getNonInputWidth:(UITableViewCell *)cell
 {
-    return padding * 3 + cell.imageView.image.size.width;
+    return _spacing * 3 + cell.imageView.image.size.width;
 }
+
+@synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end

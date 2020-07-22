@@ -43,6 +43,7 @@ static NSString *pickerCell = @"pickerCell";
         _rootView = rootView;
         _delegate = (NSObject<UITableViewDelegate> *)_dataSource;
         _showPickerView = NO;
+        _defaultString = @"";
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
@@ -68,8 +69,8 @@ static NSString *pickerCell = @"pickerCell";
         if ([mutableArrayStrings count]) {
             _titles = [NSArray arrayWithArray:mutableArrayStrings];
         }
-
         _userSelectedTitle = valuesMap[defaultValue];
+        self.hasValidationProperties = self.isRequired;
     }
     return self;
 }
@@ -103,7 +104,7 @@ static NSString *pickerCell = @"pickerCell";
         if ([_userSelectedTitle length] != 0) {
             cell.textLabel.text = _userSelectedTitle;
         } else {
-            cell.textLabel.text = ([_defaultString length]) ? _defaultString : @"";
+            cell.textLabel.text = _defaultString;
         }
         _textInCompactView = cell.textLabel.text;
         cell.textLabel.numberOfLines = 0;
@@ -111,6 +112,7 @@ static NSString *pickerCell = @"pickerCell";
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+        cell.backgroundColor = UIColor.clearColor;
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         UIPickerView *pickerView = nil;
@@ -127,7 +129,6 @@ static NSString *pickerCell = @"pickerCell";
         pickerView.hidden = NO;
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
-    cell.backgroundColor = UIColor.groupTableViewBackgroundColor;
     return cell;
 }
 
@@ -164,6 +165,7 @@ static NSString *pickerCell = @"pickerCell";
     if (self.rootView && indexPath.row == 0) {
         UITableViewCell *cell = [self tableView:tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
         UIPickerView *pickerView = [cell viewWithTag:pickerViewId];
+        _userSelectedTitle = [_titles objectAtIndex:[pickerView selectedRowInComponent:0]];
         CGRect oldFrame = tableView.frame;
         oldFrame.origin = [tableView convertPoint:tableView.frame.origin toView:nil];
         if (_showPickerView == YES) {
@@ -215,18 +217,31 @@ static NSString *pickerCell = @"pickerCell";
 
 - (BOOL)validate:(NSError **)error
 {
+    if (self.isRequired) {
+        BOOL result = !(!_userSelectedTitle || [_userSelectedTitle isEqualToString:_defaultString]);
+        return result;
+    }
     // no need to validate
     return YES;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = _titlesMap[_userSelectedTitle];
+    dictionary[self.id] = (_userSelectedTitle && _userSelectedTitle.length) ? _titlesMap[_userSelectedTitle] : @"";
+}
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UITableView *)tableView
+{
+    if (shouldBecomeFirstResponder) {
+        [tableView becomeFirstResponder];
+        [self tableView:tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
+    } else {
+        [tableView resignFirstResponder];
+    }
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
-    _userSelectedTitle = [_titles objectAtIndex:row];
     _userSelectedRow = row;
 }
 
@@ -244,4 +259,7 @@ static NSString *pickerCell = @"pickerCell";
 {
     return [_titles objectAtIndex:row];
 }
+@synthesize isRequired;
+@synthesize hasValidationProperties;
+
 @end
