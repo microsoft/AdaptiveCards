@@ -49,13 +49,23 @@ namespace AdaptiveNamespace
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionSet* actionSet,
                                   _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         HRESULT AddInlineShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                                   _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
+                                  _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
-        HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue);
+        HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue,
+                              _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* containerCardId);
+        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+        HRESULT LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+        HRESULT GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                              _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue);
+
         void SetFrameworkElement(_In_ ABI::Windows::UI::Xaml::IFrameworkElement* value);
         void SetOriginatingCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value);
         void SetOriginatingHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* value);
@@ -67,7 +77,8 @@ namespace AdaptiveNamespace
 
         HRESULT AddInlineShowCardHelper(AdaptiveCards::InternalId& internalId,
                                         _In_ ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement);
+                                        _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
 
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_originatingCard;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveHostConfig> m_originatingHostConfig;
@@ -80,7 +91,7 @@ namespace AdaptiveNamespace
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is a pair made up of the
         // id of the action set (InvalidId for actions in the bottom action bar) and the UIElement for the card.
-        std::unordered_map<AdaptiveSharedNamespace::InternalId, std::pair<AdaptiveSharedNamespace::InternalId, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>>, InternalIdKeyHash> m_showCards;
+        std::unordered_map<AdaptiveSharedNamespace::InternalId, std::pair<AdaptiveSharedNamespace::InternalId, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>>, InternalIdKeyHash> m_showCards;        
     };
 
     ActivatableClass(RenderedAdaptiveCard);

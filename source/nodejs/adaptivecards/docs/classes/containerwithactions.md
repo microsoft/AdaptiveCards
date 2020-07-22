@@ -972,9 +972,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Overrides [CardElementContainer](cardelementcontainer.md).[getAllInputs](cardelementcontainer.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
