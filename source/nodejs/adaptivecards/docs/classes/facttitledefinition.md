@@ -4,7 +4,7 @@
 
 ## Hierarchy
 
-* [FactTextDefinition](facttextdefinition.md)
+  ↳ [FactTextDefinition](facttextdefinition.md)
 
   ↳ **FactTitleDefinition**
 
@@ -50,7 +50,7 @@ Name | Type |
 
 • **color**: *[TextColor](../enums/textcolor.md)* = Enums.TextColor.Default
 
-*Inherited from [FactTextDefinition](facttextdefinition.md).[color](facttextdefinition.md#color)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[color](basetextdefinition.md#color)*
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 • **isSubtle**: *boolean* = false
 
-*Inherited from [FactTextDefinition](facttextdefinition.md).[isSubtle](facttextdefinition.md#issubtle)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[isSubtle](basetextdefinition.md#issubtle)*
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 • **size**: *[TextSize](../enums/textsize.md)* = Enums.TextSize.Default
 
-*Inherited from [FactTextDefinition](facttextdefinition.md).[size](facttextdefinition.md#size)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[size](basetextdefinition.md#size)*
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 • **weight**: *[TextWeight](../enums/textweight.md)* = Enums.TextWeight.Bolder
 
-*Overrides [FactTextDefinition](facttextdefinition.md).[weight](facttextdefinition.md#weight)*
+*Overrides [BaseTextDefinition](basetextdefinition.md).[weight](basetextdefinition.md#weight)*
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 ▸ **getDefaultWeight**(): *[TextWeight](../enums/textweight.md)*
 
-*Overrides [FactTextDefinition](facttextdefinition.md).[getDefaultWeight](facttextdefinition.md#getdefaultweight)*
+*Overrides [BaseTextDefinition](basetextdefinition.md).[getDefaultWeight](basetextdefinition.md#getdefaultweight)*
 
 **Returns:** *[TextWeight](../enums/textweight.md)*
 
@@ -107,5 +107,7 @@ ___
 ▸ **toJSON**(): *any*
 
 *Inherited from [FactTextDefinition](facttextdefinition.md).[toJSON](facttextdefinition.md#tojson)*
+
+*Overrides [BaseTextDefinition](basetextdefinition.md).[toJSON](basetextdefinition.md#tojson)*
 
 **Returns:** *any*

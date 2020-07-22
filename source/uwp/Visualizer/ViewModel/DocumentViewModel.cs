@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Controls;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
 using Windows.UI.Xaml.Media;
+using XamlCardVisualizer.CustomElements;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -85,8 +86,12 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                    AdaptiveElementParserRegistration reg = new AdaptiveElementParserRegistration();
+                    reg.Set(CustomInput.customInputType, new CustomInputParser());
 
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, reg, new AdaptiveActionParserRegistration());
+
+                    _renderer.ElementRenderers.Set(CustomInput.customInputType, new CustomInputRenderer());
                     _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (_renderedAdaptiveCard.FrameworkElement != null)
                     {
@@ -274,4 +279,5 @@ namespace AdaptiveCardVisualizer.ViewModel
             */
         }
     }
+    
 }

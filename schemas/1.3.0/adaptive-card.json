@@ -20,6 +20,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
+        "inputs": {},
         "requires": {}
       },
       "type": "object",
@@ -50,6 +51,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
+        "inputs": {},
         "requires": {}
       },
       "type": "object",
@@ -80,19 +82,60 @@
           ],
           "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
         },
-        "title": {},
-        "iconUrl": {},
-        "style": {},
-        "fallback": {},
-        "requires": {}
+        "inputs": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "$ref": "#/definitions/ActionInputs"
+            }
+          ],
+          "description": "None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it.",
+          "version": "1.3",
+          "default": "All"
+        },
+        "title": {
+          "type": "string",
+          "description": "Label for button or link that represents this action."
+        },
+        "iconUrl": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
+          "version": "1.1"
+        },
+        "style": {
+          "$ref": "#/definitions/ActionStyle",
+          "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
+          "version": "1.2"
+        },
+        "fallback": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ImplementationsOf.Action"
+            },
+            {
+              "$ref": "#/definitions/FallbackOption"
+            }
+          ],
+          "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
+          "version": "1.2"
+        },
+        "requires": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered.",
+          "version": "1.2"
+        }
       },
       "type": "object",
-      "additionalProperties": false,
-      "allOf": [
-        {
-          "$ref": "#/definitions/Extendable.Action"
-        }
-      ]
+      "additionalProperties": false
     },
     "Action.ToggleVisibility": {
       "description": "An action that toggles the visibility of associated card elements.",
@@ -115,6 +158,7 @@
         "iconUrl": {},
         "style": {},
         "fallback": {},
+        "inputs": {},
         "requires": {}
       },
       "type": "object",
@@ -243,6 +287,12 @@
             "fr",
             "es"
           ]
+        },
+        "showRequiredInputHints": {
+          "type": "boolean",
+          "description": "True if required fields should be visually indicated",
+          "version": "1.3",
+          "default": true
         },
         "verticalContentAlignment": {
           "$ref": "#/definitions/VerticalContentAlignment",
@@ -901,6 +951,8 @@
           "version": "1.2"
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -946,6 +998,8 @@
           "description": "The initial value for this field expressed in YYYY-MM-DD."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -988,6 +1042,8 @@
           "description": "Initial value for this field."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1026,6 +1082,10 @@
           "type": "string",
           "description": "Description of the input desired. Displayed when no text has been input."
         },
+        "regex": {
+          "type": "string",
+          "description": "Regular expression indicating the required format of this text input."
+        },
         "style": {
           "$ref": "#/definitions/TextInputStyle",
           "description": "Style hint for text input."
@@ -1040,6 +1100,8 @@
           "description": "The initial value for this field."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1082,6 +1144,8 @@
           "description": "The initial value for this field expressed in HH:MM."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1132,6 +1196,8 @@
           "version": "1.2"
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1336,6 +1402,19 @@
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "ActionInputs": {
+      "anyOf": [
+        {
+          "enum": [
+            "All",
+            "None"
+          ]
+        },
+        {
+          "pattern": "^([a|A][l|L][l|L])|([n|N][o|O][n|N][e|E])$"
         }
       ]
     },
@@ -2340,6 +2419,22 @@
           "description": "Describes what to do when an unknown element is encountered or the requires of this or any children can't be met.",
           "version": "1.2"
         },
+        "inputs": {
+          "anyOf": [
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "$ref": "#/definitions/ActionInputs"
+            }
+          ],
+          "description": "None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action.",
+          "version": "1.3",
+          "default": "None"
+        },
         "requires": {}
       },
       "type": "object",
@@ -2393,6 +2488,16 @@
         "id": {
           "type": "string",
           "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
+        },
+        "errorMessage": {
+          "type": "string",
+          "description": "Error message to display when entered input is invalid",
+          "version": "1.3"
+        },
+        "isRequired": {
+          "type": "boolean",
+          "description": "Whether or not this input is required",
+          "version": "1.3"
         },
         "label": {
           "anyOf": [

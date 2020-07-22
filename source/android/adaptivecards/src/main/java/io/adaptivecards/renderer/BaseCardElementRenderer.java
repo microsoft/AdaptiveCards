@@ -64,7 +64,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return android.graphics.Color.parseColor(colorCode);
     }
 
-    protected static View setSpacingAndSeparator(Context context,
+    public static View setSpacingAndSeparator(Context context,
                                                ViewGroup viewGroup,
                                                Spacing spacing,
                                                boolean separator,
@@ -112,7 +112,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         return view;
     }
 
-    protected static View setSpacingAndSeparator(
+    public static View setSpacingAndSeparator(
             Context context,
             ViewGroup viewGroup,
             Spacing spacing,
@@ -128,7 +128,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
      * @param view defines the rendered element to grab the TagContent from
      * @return TagContent form view
      */
-    protected static TagContent getTagContent(View view)
+    public static TagContent getTagContent(View view)
     {
         if (view != null)
         {
@@ -186,7 +186,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
      * @param isVisible defines whether the view should be visible or not
      * @param elementView defines the element view (layout, editText, button, etc)
      */
-    protected static void setVisibility(boolean isVisible, View elementView)
+    public static void setVisibility(boolean isVisible, View elementView)
     {
         setVisibility(isVisible, elementView, null);
     }

@@ -12,8 +12,6 @@
 
   ↳ [MediaSource](mediasource.md)
 
-  ↳ [InputValidationOptions](inputvalidationoptions.md)
-
   ↳ [Choice](choice.md)
 
   ↳ [HttpHeader](httpheader.md)

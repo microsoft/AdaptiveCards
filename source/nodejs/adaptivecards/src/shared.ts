@@ -9,7 +9,6 @@ export class GlobalSettings {
     static allowMarkForTextHighlighting: boolean = false;
     static alwaysBleedSeparators: boolean = false;
     static enableFullJsonRoundTrip: boolean = false;
-    static useBuiltInInputValidation: boolean = true;
     static displayInputValidationErrors: boolean = true;
     static allowPreProcessingPropertyValues: boolean = false;
     static setTabIndexAtCardRoot: boolean = true;

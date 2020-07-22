@@ -9,6 +9,7 @@
 | **isMultiline** | `boolean` | No | If `true`, allow multiple lines of input. | 1.0 |
 | **maxLength** | `number` | No | Hint of maximum length characters to collect (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no text has been input. | 1.0 |
+| **regex** | `string` | No | Regular expression indicating the required format of this text input. | 1.0 |
 | **style** | `TextInputStyle` | No | Style hint for text input. | 1.0 |
 | **inlineAction** | `ISelectAction` | No | The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action). | 1.2 |
 | **value** | `string` | No | The initial value for this field. | 1.0 |
@@ -17,6 +18,8 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **errorMessage** | `string` | No | Error message to display when entered input is invalid | 1.3 |
+| **isRequired** | `boolean` | No | Whether or not this input is required | 1.3 |
 | **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
@@ -126,3 +129,14 @@ The `label` property should be rendered above the input box. Clicking/tapping on
 
 ### Accessibility
 The `label` property should be set as the accessibility text when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
+
+### Input Validation
+ If the input has `isRequired` true, and the card has `showRequiredInputHints`, the input should be marked with a * in the host's `attention` color. The * should be placed on the label in the case where the label is set, and otherwise be placed next to the input box.
+ 
+ The `regex`, `isRequired`, and `maxLength` properties should be validated for this input type. If possible, `maxLength` should be enforced by providing a control that does not allow the user to enter more than the maximum number of characters. For the other properties (and for `maxLength` if that's not possible), the validation should take place as follows:
+ 
+ - Validate the input when it loses focus for the first time.
+ - Once the field has been marked invalid, validate on each keystroke so the user can see when it becomes valid.
+
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input.
+
