@@ -13,7 +13,7 @@
 
 @property NSPredicate *regexPredicate;
 @property NSUInteger maxLength;
-@property __weak NSString *text;
+@property NSString *text;
 @property BOOL hasText;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem;

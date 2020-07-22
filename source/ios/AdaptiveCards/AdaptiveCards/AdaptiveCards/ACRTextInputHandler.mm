@@ -99,6 +99,8 @@
     if (self) {
         self.isRequired = numberInputBlock->GetIsRequired();
         self.text = [NSString stringWithFormat:@"%d", numberInputBlock->GetValue()];
+        self.id = [NSString stringWithCString:numberInputBlock->GetId().c_str()
+        encoding:NSUTF8StringEncoding];
         if (self.text && self.text.length) {
             self.hasText = YES;
         }
