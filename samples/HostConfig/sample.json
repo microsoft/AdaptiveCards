@@ -269,11 +269,26 @@
 		},
 		"spacing": 8
 	},
-	"inputs": {
-		"label": {
+	"inputs": 
+	{
+		"label": 
+		{
+			"inputSpacing": "small",
 			"requiredInputs": {
-				"suffix": " (required)"
+				"suffix": " (required)",
+				"weight": "bolder",
+				"size": "medium"
+			},
+			"optionalInputs": {
+				"color": "dark",
+				"isSubtle": true
 			}
+		},
+		"errorMessage": 
+		{
+			"spacing": "small",
+			"size": "small",
+			"weight": "bolder"
 		}
 	}
 }
