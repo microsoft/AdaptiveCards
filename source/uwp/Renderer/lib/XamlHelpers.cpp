@@ -730,6 +730,10 @@ namespace AdaptiveNamespace::XamlHelpers
         HString inputLabel;
         RETURN_IF_FAILED(adaptiveInputElement->get_Label(inputLabel.GetAddressOf()));
 
+        // Retrieve if the input is required so we can file a warning if the label is empty
+        boolean isRequired;
+        RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
+
         if (inputLabel != nullptr)
         {
             // Create a rich text block for the label
@@ -760,11 +764,8 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(labelRun.As(&labelRunAsInline));
 
             RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
-
-            // If the input is required, add a * or other suffix if specified
-            boolean isRequired;
-            RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
-
+           
+            // Get the label config depending if the input is required
             ComPtr<IAdaptiveHostConfig> hostConfig;
             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
 
@@ -795,6 +796,13 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(xamlRichTextBlock->put_TextWrapping(TextWrapping_Wrap));
 
             RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
+        }
+        else if (isRequired)
+        {
+            // if there was no label but the input is required file a warning for the card author
+            RETURN_IF_FAILED(
+                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
+                                          HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
         return S_OK;
