@@ -97,7 +97,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         uiActionBar.HorizontalOptions = LayoutOptions.EndAndExpand;
                         break;
                     case AdaptiveHorizontalAlignment.Stretch:
-                        uiActionBar.HorizontalOptions = LayoutOptions.CenterAndExpand;
+                        uiActionBar.HorizontalOptions = LayoutOptions.FillAndExpand;
                         break;
                 }
                 uiActionBar.VerticalOptions = LayoutOptions.EndAndExpand;
@@ -170,13 +170,6 @@ namespace AdaptiveCards.Rendering.Wpf
                     {
                         Grid.SetRow(uiAction, iPos++);
                     }
-
-#if XAMARIN
-                    if (actionsConfig.ActionAlignment == AdaptiveHorizontalAlignment.Center)
-                    {
-                        uiAction.HorizontalOptions = LayoutOptions.CenterAndExpand;
-                    }
-#endif
 
                     uiActionBar.Children.Add(uiAction);
 
