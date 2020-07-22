@@ -20,12 +20,12 @@ using namespace AdaptiveCards;
 
 @implementation ACOAdaptiveCard {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
-    NSMutableArray *_inputs;
+    NSMutableArray<ACRIBaseInputHandler> *_inputs;
 }
 
 - (void)setInputs:(NSArray *)inputs
 {
-    _inputs = [[NSMutableArray alloc] initWithArray:inputs];
+    _inputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] initWithArray:inputs];
 }
 
 - (void)appendInputs:(NSArray *)inputs
@@ -47,7 +47,7 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (NSArray *)getInputs
+- (NSArray<ACRIBaseInputHandler> *)getInputs
 {
     return _inputs;
 }
