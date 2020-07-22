@@ -363,7 +363,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         AdaptiveChoice adaptiveChoice = item.DataContext as AdaptiveChoice;
                         return adaptiveChoice.Value;
                     }
-                    return null;
+                    return "";
                 }
                 else
                 {
@@ -376,7 +376,7 @@ namespace AdaptiveCards.Rendering.Wpf
                         if (radioBox.IsChecked == true)
                             return adaptiveChoice.Value;
                     }
-                    return null;
+                    return "";
                 }
             }
         }
