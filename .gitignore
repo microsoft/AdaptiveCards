@@ -291,3 +291,4 @@ cscope.po.out
 
 # Teamwork.com VS extension
 twp.json
+/source/dotnet/.mfractor

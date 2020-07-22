@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveTextInputRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveTimeInputRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveToggleInputRenderer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveXamarinDialectXamlMarkdownRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveXamlMarkdownRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveContainerRenderer.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Rendering\AdaptiveActionSetRenderer.cs" />

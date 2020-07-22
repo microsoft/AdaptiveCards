@@ -80,6 +80,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         private static TextBlock CreateControl(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
+#if WPF
             Marked marked = new Marked();
             marked.Options.Renderer = new AdaptiveXamlMarkdownRenderer();
             marked.Options.Mangle = false;
@@ -91,7 +92,7 @@ namespace AdaptiveCards.Rendering.Wpf
             StringReader stringReader = new StringReader(xaml);
 
             XmlReader xmlReader = XmlReader.Create(stringReader);
-#if WPF
+
             var uiTextBlock = (System.Windows.Controls.TextBlock)XamlReader.Load(xmlReader);
             uiTextBlock.Style = context.GetStyle($"Adaptive.{textBlock.Type}");
 
@@ -126,7 +127,6 @@ namespace AdaptiveCards.Rendering.Wpf
             return uiTextBlock;
 #elif XAMARIN
             var uiTextBlock = AdaptiveCards.Rendering.XamlTextBlock.CreateControl(textBlock, context);
-            uiTextBlock.FontSize = context.Config.GetFontSize(textBlock.FontType, textBlock.Size);
 
             return uiTextBlock;
 #endif
