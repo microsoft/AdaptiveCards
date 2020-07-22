@@ -2578,13 +2578,6 @@ export abstract class Input extends CardElement implements IInput {
                 Enums.ValidationEvent.RequiredInputsShouldHaveLabel,
                 "Required inputs should have a label");
         }
-
-        if (this.isRequired && !this.label) {
-            context.addFailure(
-                this,
-                Enums.ValidationEvent.RequiredInputsShouldHaveLabel,
-                "Required inputs should have a label");
-        }
     }
 
     validateValue(): boolean {

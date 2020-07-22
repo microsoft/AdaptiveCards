@@ -1,43 +1,1 @@
-{
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "Input.Date",
-			"id": "input1",
-			"label": "This is a required Input.Date",
-			"isRequired": true,
-			"errorMessage": "This date is required"
-		},
-		{
-			"type": "Input.Date",
-			"id": "input2",
-			"label": "Input.Date with valid min date of February 1st, 2012",
-			"min": "2012-02-01",
-			"errorMessage": "This date must be on or after February 1st, 2012"
-		},
-		{
-			"type": "Input.Date",
-			"id": "input3",
-			"label": "Input.Date with valid max date of November 2nd, 2021",
-			"max": "2021-11-02",
-			"errorMessage": "This date must be on or before November 2nd, 2021"
-		},
-		{
-			"type": "Input.Date",
-			"id": "input4",
-			"label": "Required Input.Date with valid value between April 1st, 2012 and January 7th, 2025",
-			"min": "2012-04-01",
-			"max": "2025-01-07",
-			"isRequired": true,
-			"errorMessage": "This date is required and must be between April 1st, 2012 and January 7th, 2025"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"title": "OK"
-		}
-	]
-}
+{	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",	"type": "AdaptiveCard",	"version": "1.0",	"body": [		{			"type": "Input.Date",			"id": "input1",			"label": "This is a required Input.Date",			"isRequired": true,			"errorMessage": "This date is required"		},		{			"type": "Input.Date",			"id": "input2",			"label": "Input.Date with valid min date of February 1st, 2012",			"min": "2012-02-01",			"errorMessage": "This date must be on or after February 1st, 2012"		},		{			"type": "Input.Date",			"id": "input3",			"label": "Input.Date with valid max date of November 2nd, 2021",			"max": "2021-11-02",			"errorMessage": "This date must be on or before November 2nd, 2021"		},		{			"type": "Input.Date",			"id": "input4",			"label": "Required Input.Date with valid value between April 1st, 2012 and January 7th, 2025",			"min": "2012-04-01",			"max": "2025-01-07",			"isRequired": true,			"errorMessage": "This date is required and must be between April 1st, 2012 and January 7th, 2025"		}	],	"actions": [		{			"type": "Action.Submit",			"title": "OK"		}	]}

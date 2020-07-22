@@ -1,43 +1,1 @@
-{
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "Input.Number",
-			"id": "input1",
-			"label": "Required Input.Number",
-			"isRequired": true,
-			"errorMessage": "This number is required"
-		},
-		{
-			"type": "Input.Number",
-			"id": "input2",
-			"label": "Input.Number with valid min of 5",
-			"min": 5,
-			"errorMessage": "This number must be greater than 5"
-		},
-		{
-			"type": "Input.Number",
-			"id": "input3",
-			"label": "Input.Number with valid max of 10",
-			"max": 10,
-			"errorMessage": "This number must be smaller than 10"
-		},
-		{
-			"type": "Input.Number",
-			"id": "input4",
-			"label": "Required Input.Number with valid range between 0 and 100",
-			"isRequired": true,
-			"min": 0,
-			"max": 100,
-			"errorMessage": "This number is required and must be between 0 and 100"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"title": "Submit"
-		}
-	]
-}
+{	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",	"type": "AdaptiveCard",	"version": "1.0",	"body": [		{			"type": "Input.Number",			"id": "input1",			"label": "Required Input.Number",			"isRequired": true,			"errorMessage": "This number is required"		},		{			"type": "Input.Number",			"id": "input2",			"label": "Input.Number with valid min of 5",			"min": 5,			"errorMessage": "This number must be greater than 5"		},		{			"type": "Input.Number",			"id": "input3",			"label": "Input.Number with valid max of 10",			"max": 10,			"errorMessage": "This number must be smaller than 10"		},		{			"type": "Input.Number",			"id": "input4",			"label": "Required Input.Number with valid range between 0 and 100",			"isRequired": true,			"min": 0,			"max": 100,			"errorMessage": "This number is required and must be between 0 and 100"		}	],	"actions": [		{			"type": "Action.Submit",			"title": "Submit"		}	]}

@@ -1,33 +1,1 @@
-{
-	"type": "AdaptiveCard",
-	"version": "1.3",
-	"body": [
-		{
-			"label": "Required Input.Text",
-			"type": "Input.Text",
-			"id": "id1",
-			"isRequired": true,
-			"errorMessage": "This is a required input"
-		},
-		{
-			"label": "Input.Text with regex: ^\\w{5,10}$",
-			"type": "Input.Text",
-			"id": "id2",
-			"regex": "^\\w{5,10}$",
-			"errorMessage": "Input must contain between 5 and 10 characters long."
-		},
-		{
-			"label": "Input.Text with maxLength of 6",
-			"type": "Input.Text",
-			"id": "id3",
-			"maxLength": 6,
-			"errorMessage": "Input must contain 6 characters or less."
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.Submit",
-			"title": "Submit"
-		}
-	]
-}
+{	"type": "AdaptiveCard",	"version": "1.3",	"body": [		{			"label": "Required Input.Text",			"type": "Input.Text",			"id": "id1",			"isRequired": true,			"errorMessage": "This is a required input"		},		{			"label": "Input.Text with regex: ([A-Z])\\w+",			"type": "Input.Text",			"id": "id2",			"regex": "([A-Z])\\w+",			"errorMessage": "This input must begin with a capital letter and contain only alphanumeric characters."		},		{			"label": "Input.Text with maxLength of 6",			"type": "Input.Text",			"id": "id3",			"maxLength": 6,			"errorMessage": "This input must contain 6 characters or less."		}	],	"actions": [		{			"type": "Action.Submit",			"title": "Submit"		}	]}
