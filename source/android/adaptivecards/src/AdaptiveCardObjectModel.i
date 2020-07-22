@@ -347,6 +347,22 @@ namespace Json {
   $result = *tmp;
 %}
 
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseInputElement> "new $typemap(jstype, AdaptiveCards::BaseInputElement)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseInputElement;") std::shared_ptr<AdaptiveCards::BaseInputElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseInputElement> "$typemap(jstype, AdaptiveCards::BaseInputElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseInputElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 %typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseActionElement> "new $typemap(jstype, AdaptiveCards::BaseActionElement)($1,true)";
 %typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseActionElement;") std::shared_ptr<AdaptiveCards::BaseActionElement> %{
   *($&1_type*)&j$1 = new $1_type($1);
@@ -458,6 +474,21 @@ namespace Json {
 %extend AdaptiveCards::BaseCardElement {
     static AdaptiveCards::BaseCardElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
         return dynamic_cast<AdaptiveCards::BaseCardElement *>(baseElement);
+    }
+};
+
+%exception AdaptiveCards::BaseInputElement::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseInputElement {
+    static AdaptiveCards::BaseInputElement *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseCardElement);
     }
 };
 

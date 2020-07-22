@@ -10,12 +10,41 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
 public class TextBlockPropertiesTest
 {
     static {
         System.loadLibrary("adaptivecards-native-lib");
+    }
+
+    @Test
+    public void CastTest()
+    {
+        final String textBlockNoDefaultValues =
+            "{\"color\":\"Accent\"," +
+                "\"fontType\":\"Monospace\"," +
+                "\"horizontalAlignment\":\"center\"," +
+                "\"isSubtle\":true," +
+                "\"maxLines\":1," +
+                "\"size\":\"Large\"," +
+                "\"text\":\"Sample text\"," +
+                "\"type\":\"TextBlock\"," +
+                "\"weight\":\"Bolder\"," +
+                "\"wrap\":true}\n";
+
+        try
+        {
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(textBlockNoDefaultValues), "1.0");
+            TextBlock textBlock = Util.castTo(result.GetAdaptiveCard().GetBody().get(0), TextBlock.class);
+
+            Assert.assertEquals(textBlock.GetText(), "Sample text");
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     @Test

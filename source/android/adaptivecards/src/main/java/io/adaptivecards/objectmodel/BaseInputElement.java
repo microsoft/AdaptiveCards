@@ -51,6 +51,14 @@ public class BaseInputElement extends BaseCardElement {
     this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_1(type.swigValue(), spacing.swigValue(), separator, height.swigValue()), true);
   }
 
+  public String GetLabel() {
+    return AdaptiveCardObjectModelJNI.BaseInputElement_GetLabel(swigCPtr, this);
+  }
+
+  public void SetLabel(String label) {
+    AdaptiveCardObjectModelJNI.BaseInputElement_SetLabel(swigCPtr, this, label);
+  }
+
   public boolean GetIsRequired() {
     return AdaptiveCardObjectModelJNI.BaseInputElement_GetIsRequired(swigCPtr, this);
   }
@@ -69,6 +77,11 @@ public class BaseInputElement extends BaseCardElement {
 
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
+  }
+
+  public static BaseInputElement dynamic_cast(BaseCardElement baseCardElement) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
+    return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
   }
 
 }

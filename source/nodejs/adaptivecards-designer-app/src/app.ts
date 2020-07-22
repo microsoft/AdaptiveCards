@@ -4,7 +4,6 @@ import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
 import * as ACDesigner from "adaptivecards-designer";
 import * as ACTemplating from "adaptivecards-templating";
-import * as Adaptive from "adaptivecards";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
@@ -37,7 +36,12 @@ window.onload = function() {
 	if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 		console.log("Local storage is not available.");
     }
-    
+
+    // Uncomment to disable (de)serialization of a specific property
+    /*
+    Adaptive.CardElement.requiresProperty.isSerializationEnabled = false;
+    */
+
     // Uncomment to add/remove properties to/from the designer's property sheet
     /*
     ACDesigner.DesignerPeer.onPopulatePropertySheet = (sender: ACDesigner.DesignerPeer, propertySheet: ACDesigner.PropertySheet) => {

@@ -212,4 +212,12 @@ public class HostConfig {
     AdaptiveCardObjectModelJNI.HostConfig_SetMedia(swigCPtr, this, MediaConfig.getCPtr(value), value);
   }
 
+  public InputsConfig GetInputs() {
+    return new InputsConfig(AdaptiveCardObjectModelJNI.HostConfig_GetInputs(swigCPtr, this), true);
+  }
+
+  public void SetInputs(InputsConfig value) {
+    AdaptiveCardObjectModelJNI.HostConfig_SetInputs(swigCPtr, this, InputsConfig.getCPtr(value), value);
+  }
+
 }

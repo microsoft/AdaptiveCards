@@ -346,7 +346,7 @@ export class CardDesignerSurface {
                 }
             }
 
-            cardToRender.parse(outputPayload, new Adaptive.SerializationContext());
+            cardToRender.parse(outputPayload, this._serializationContext);
         }
 
         let renderedCard = cardToRender.render();

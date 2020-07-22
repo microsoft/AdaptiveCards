@@ -139,7 +139,7 @@ namespace AdaptiveCards.Rendering.Wpf
                     Grid.SetColumn(uiContainer, uiColumnSet.ColumnDefinitions.Count - 1);
                     uiColumnSet.Children.Add(uiContainer);
 
-                    context.SetVisibility(uiContainer, column.IsVisible, tag);
+                    RendererUtil.SetVisibility(uiContainer, column.IsVisible, tag);
                 }
             }
 

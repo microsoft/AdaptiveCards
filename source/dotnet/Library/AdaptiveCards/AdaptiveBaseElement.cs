@@ -44,7 +44,7 @@ namespace AdaptiveCards
 
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            if (obj == null || !(obj is AdaptiveInternalID))
             {
                 return false;
             }

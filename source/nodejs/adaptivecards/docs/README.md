@@ -15,7 +15,6 @@
 * [ImageSize](enums/imagesize.md)
 * [ImageStyle](enums/imagestyle.md)
 * [InputTextStyle](enums/inputtextstyle.md)
-* [InputValidationNecessity](enums/inputvalidationnecessity.md)
 * [Orientation](enums/orientation.md)
 * [ShowCardActionMode](enums/showcardactionmode.md)
 * [Size](enums/size.md)
@@ -40,6 +39,7 @@
 * [BackgroundImage](classes/backgroundimage.md)
 * [BaseSerializationContext](classes/baseserializationcontext.md)
 * [BaseTextBlock](classes/basetextblock.md)
+* [BaseTextDefinition](classes/basetextdefinition.md)
 * [BoolProperty](classes/boolproperty.md)
 * [CardElement](classes/cardelement.md)
 * [CardElementContainer](classes/cardelementcontainer.md)
@@ -75,7 +75,8 @@
 * [ImageSet](classes/imageset.md)
 * [ImageSetConfig](classes/imagesetconfig.md)
 * [Input](classes/input.md)
-* [InputValidationOptions](classes/inputvalidationoptions.md)
+* [InputConfig](classes/inputconfig.md)
+* [InputLabelConfig](classes/inputlabelconfig.md)
 * [Media](classes/media.md)
 * [MediaConfig](classes/mediaconfig.md)
 * [MediaSource](classes/mediasource.md)
@@ -85,6 +86,7 @@
 * [PaddingDefinition](classes/paddingdefinition.md)
 * [PixelSizeProperty](classes/pixelsizeproperty.md)
 * [PropertyDefinition](classes/propertydefinition.md)
+* [RequiredInputLabelTextDefinition](classes/requiredinputlabeltextdefinition.md)
 * [RichTextBlock](classes/richtextblock.md)
 * [SerializableObject](classes/serializableobject.md)
 * [SerializableObjectCollectionProperty](classes/serializableobjectcollectionproperty.md)
@@ -486,6 +488,29 @@ ___
                         subtle: "#DDe69500"
                     }
                 }
+            }
+        },
+        inputs: {
+            label: {
+                requiredInputs: {
+                    color: Enums.TextColor.Accent,
+                    size: Enums.TextSize.ExtraLarge,
+                    weight: Enums.TextWeight.Bolder,
+                    isSubtle: true,
+                    suffix: " (required)",
+                    suffixColor: Enums.TextColor.Good
+                },
+                optionalInputs: {
+                    color: Enums.TextColor.Warning,
+                    size: Enums.TextSize.Medium,
+                    weight: Enums.TextWeight.Lighter,
+                    isSubtle: false
+                }
+            },
+            errorMessage: {
+                color: Enums.TextColor.Accent,
+                size: Enums.TextSize.Small,
+                weight: Enums.TextWeight.Bolder
             }
         },
         actions: {

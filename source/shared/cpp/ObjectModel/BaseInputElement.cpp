@@ -17,6 +17,16 @@ BaseInputElement::BaseInputElement(CardElementType elementType, Spacing spacing,
     PopulateKnownPropertiesSet();
 }
 
+std::string BaseInputElement::GetLabel() const
+{
+    return m_label;
+}
+
+void BaseInputElement::SetLabel(const std::string label)
+{
+    m_label = label;
+}
+
 bool BaseInputElement::GetIsRequired() const
 {
     return m_isRequired;
@@ -51,11 +61,17 @@ Json::Value BaseInputElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ErrorMessage)] = m_errorMessage;
     }
 
+    if (!m_label.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Label)] = m_label;
+    }
+
     return root;
 }
 
 void BaseInputElement::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired),
-                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ErrorMessage)});
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ErrorMessage),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Label)});
 }
