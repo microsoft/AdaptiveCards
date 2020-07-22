@@ -153,6 +153,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
+#if XAMARIN
+            uiTitle.HorizontalOptions = LayoutOptions.FillAndExpand;
+            uiButton.HorizontalOptions = LayoutOptions.FillAndExpand;
+            contentStackPanel.HorizontalOptions = LayoutOptions.FillAndExpand;
+#endif
+
             contentStackPanel.Children.Add(uiTitle);
 
             string name = context.GetType().Name.Replace("Action", String.Empty);
