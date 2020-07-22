@@ -24,10 +24,10 @@
           var platformName = platformNames[i].trim();
           var warnings = warningList[i];
           var errors = errorList[i];
-          if(platformName == "Android"){
-            warnings = JSON.parse(warnings);
-            errors = JSON.parse(errors);
-          }
+          // if(platformName == "Android"){
+          //   warnings = JSON.parse(warnings);
+          //   errors = JSON.parse(errors);
+          // }
           newHTML.innerHTML   = '             \
           <div class="w3-container w3-center"><div id= '+ platformName+'Results'  +' class="w3-card-4">             \
                     <p class="platformNameHeading">'+platformName+'</p><img src = "data:image/png;base64,'+ imageList[i]+ '  "  <br>\

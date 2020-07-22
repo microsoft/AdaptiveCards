@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. 
 // Licensed under the MIT License. 
 // To run these tests, first ensure that the flask app for nodeJs is running at 127.0.0.1 port 5000
-// and the flask app for .NET WPF is running at 127.0.0.1 port 4000. 
+// and the flask app for .NET WPF is running at 127.0.0.1 port 4000 and the flask app for 
+// android is running at 127.0.0.1 port 7000
 const request = require("supertest");
 const app = require("./app");
 const fs = require("fs");
