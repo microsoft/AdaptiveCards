@@ -6,13 +6,6 @@
 		"data": {
 			"type": "string|object",
 			"description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
-		},
-		"inputs": {
-			"type": "string[]|ActionInputs",
-			"description": "None, All, or an array of ids for inputs (or containers of inputs) that should be submitted with this action and validated before allowing it.",
-			"version": "1.3",
-			"default":"All",
-			"override": true
 		}
 	}
 }
