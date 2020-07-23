@@ -2,7 +2,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.CardElements;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -25,7 +25,6 @@ import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
 public class CustomInput extends BaseInputElement
 {

@@ -3,8 +3,8 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.support.v4.app.FragmentManager;
+
+import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
-import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
@@ -23,7 +22,6 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;

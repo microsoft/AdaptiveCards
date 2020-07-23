@@ -6,16 +6,14 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
+import androidx.fragment.app.DialogFragment;
 import android.widget.EditText;
 import android.widget.TimePicker;
 
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import io.adaptivecards.objectmodel.DateTimePreparser;
 import io.adaptivecards.objectmodel.TimeInput;
 
 public class TimePickerFragment extends DialogFragment

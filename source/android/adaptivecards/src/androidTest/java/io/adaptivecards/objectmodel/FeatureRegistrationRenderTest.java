@@ -1,16 +1,11 @@
 package io.adaptivecards.objectmodel;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.test.mock.MockContext;
-import android.widget.LinearLayout;
-
-import junit.framework.Assert;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Test;
 
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class FeatureRegistrationRenderTest

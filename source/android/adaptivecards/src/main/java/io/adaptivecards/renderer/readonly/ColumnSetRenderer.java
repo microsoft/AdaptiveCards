@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;

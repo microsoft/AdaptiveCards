@@ -3,8 +3,8 @@
 package io.adaptivecards.adaptivecardssample;
 
 import android.os.Build;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,7 +43,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;

@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.registration;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;

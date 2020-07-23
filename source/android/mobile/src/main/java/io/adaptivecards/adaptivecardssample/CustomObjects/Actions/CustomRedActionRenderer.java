@@ -2,7 +2,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.Actions;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
 

@@ -3,9 +3,8 @@
 package io.adaptivecards.renderer;
 
 import android.media.MediaDataSource;
-import android.media.MediaPlayer;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import io.adaptivecards.objectmodel.MediaSourceVector;
 

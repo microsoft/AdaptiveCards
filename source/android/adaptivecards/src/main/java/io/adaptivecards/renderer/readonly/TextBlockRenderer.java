@@ -4,7 +4,7 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
@@ -20,7 +20,6 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
