@@ -131,27 +131,29 @@ export abstract class CardElement extends CardObject {
     }
 
     private updateRenderedElementVisibility() {
-        let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
-
         if (this.renderedElement) {
-            if (displayMode) {
-                this.renderedElement.style.display = displayMode;
-            }
-            else {
-                this.renderedElement.style.removeProperty("display");
-            }
-        }
+            let displayMode = this.isDesignMode() || this.isVisible ? this._defaultRenderedElementDisplayMode : "none";
 
-        if (this.separatorElement) {
-            if (this.parent && this.parent.isFirstElement(this)) {
-                this.separatorElement.style.display = "none";
-            }
-            else {
+            if (this.renderedElement) {
                 if (displayMode) {
-                    this.separatorElement.style.display = displayMode;
+                    this.renderedElement.style.display = displayMode;
                 }
                 else {
-                    this.separatorElement.style.removeProperty("display");
+                    this.renderedElement.style.removeProperty("display");
+                }
+            }
+    
+            if (this.separatorElement) {
+                if (this.parent && this.parent.isFirstElement(this)) {
+                    this.separatorElement.style.display = "none";
+                }
+                else {
+                    if (displayMode) {
+                        this.separatorElement.style.display = displayMode;
+                    }
+                    else {
+                        this.separatorElement.style.removeProperty("display");
+                    }
                 }
             }
         }
@@ -213,7 +215,7 @@ export abstract class CardElement extends CardObject {
     protected internalPropertyChanged(property: PropertyDefinition) {
         let oldRenderedElement = this.renderedElement;
 
-        if (!this.isContainer() && oldRenderedElement && oldRenderedElement.parentElement) {
+        if (oldRenderedElement && oldRenderedElement.parentElement) {
             let oldSeparatorElement = this.separatorElement;
 
             this.render();
@@ -221,7 +223,6 @@ export abstract class CardElement extends CardObject {
             if (this.renderedElement) {
                 oldRenderedElement.parentElement.replaceChild(this.renderedElement, oldRenderedElement);
 
-                /*
                 if (oldSeparatorElement && oldSeparatorElement.parentElement) {
                     if (this.separatorElement) {
                         oldSeparatorElement.parentElement.replaceChild(this.separatorElement, oldSeparatorElement);
@@ -230,7 +231,6 @@ export abstract class CardElement extends CardObject {
                         oldSeparatorElement.parentElement.removeChild(oldSeparatorElement);
                     }
                 }
-                */
 
                 this.updateRenderedElementVisibility();
             }
@@ -252,12 +252,14 @@ export abstract class CardElement extends CardObject {
         return element;
     }
 
-    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        if (this.height === "auto") {
-            renderedElement.style.flex = "0 0 auto";
-        }
-        else {
-            renderedElement.style.flex = "1 1 auto";
+    protected adjustRenderedElementSize() {
+        if (this.renderedElement) {
+            if (this.height === "auto") {
+                this.renderedElement.style.flex = "0 0 auto";
+            }
+            else {
+                this.renderedElement.style.flex = "1 1 auto";
+            }
         }
     }
 
@@ -445,20 +447,11 @@ export abstract class CardElement extends CardObject {
     }
 
     render(): HTMLElement | undefined {
-        let contentElement = this.overrideInternalRender();
+        this._renderedElement = this.overrideInternalRender();
 
-        if (contentElement) {
-            this._renderedElement = document.createElement("div");
-            this._renderedElement.classList.add("ac-element-host");
-
+        if (this._renderedElement) {
             this._separatorElement = this.internalRenderSeparator();
 
-            if (this._separatorElement) {
-                this._renderedElement.appendChild(this._separatorElement);
-            }
-
-            this._renderedElement.appendChild(contentElement);
-    
             if (this.customCssSelector) {
                 this._renderedElement.classList.add(this.customCssSelector);
             }
@@ -466,7 +459,7 @@ export abstract class CardElement extends CardObject {
             this._renderedElement.style.boxSizing = "border-box";
             this._defaultRenderedElementDisplayMode = this._renderedElement.style.display ? this._renderedElement.style.display : undefined;
 
-            this.adjustRenderedElementSize(this._renderedElement);
+            this.adjustRenderedElementSize();
             this.updateLayout(false);    
         }
         else if (this.isDesignMode()) {
@@ -483,10 +476,6 @@ export abstract class CardElement extends CardObject {
 
     indexOf(cardElement: CardElement): number {
         return -1;
-    }
-
-    isContainer(): boolean {
-        return false;
     }
 
     isDesignMode(): boolean {
@@ -1859,6 +1848,16 @@ export abstract class CardElementContainer extends CardElement {
 
     //#endregion
 
+    protected static removeRenderedItem(item: CardElement) {
+        if (item.renderedElement && item.renderedElement.parentElement) {
+            item.renderedElement.parentElement.removeChild(item.renderedElement);
+        }
+
+        if (item.separatorElement && item.separatorElement.parentElement) {
+            item.separatorElement.parentElement.removeChild(item.separatorElement);
+        }
+    }
+
     protected isElementAllowed(element: CardElement) {
         return this.hostConfig.supportsInteractivity || !element.isInteractive;
     }
@@ -1902,10 +1901,6 @@ export abstract class CardElementContainer extends CardElement {
     abstract removeItem(item: CardElement): boolean;
 
     allowVerticalOverflow: boolean = false;
-
-    isContainer(): boolean {
-        return true;
-    }
 
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
@@ -4995,11 +4990,11 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
     //#endregion
 
-    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        super.adjustRenderedElementSize(renderedElement);
+    protected adjustRenderedElementSize() {
+        super.adjustRenderedElementSize();
 
-        if (this.minPixelHeight) {
-            renderedElement.style.minHeight = this.minPixelHeight + "px";
+        if (this.renderedElement && this.minPixelHeight) {
+            this.renderedElement.style.minHeight = this.minPixelHeight + "px";
         }
     }
 
@@ -5269,7 +5264,6 @@ export class Container extends StylableCardElementContainer {
     //#endregion
 
     private _items: CardElement[] = [];
-    private _renderedItems: CardElement[] = [];
 
     private insertItemAt(
         item: CardElement,
@@ -5283,6 +5277,27 @@ export class Container extends StylableCardElementContainer {
                 else {
                     this._items.splice(index, 0, item);
                 }
+
+                if (this.renderedElement) {
+                    CardElementContainer.removeRenderedItem(item);
+
+                    let insertBeforeRenderedItem: CardElement | undefined = undefined;
+
+                    // Let's not insert the item before itself
+                    index++;
+        
+                    while (index >= 0 && index < this._items.length) {
+                        if (this._items[index].renderedElement) {
+                            insertBeforeRenderedItem = this._items[index];
+        
+                            break;
+                        }
+        
+                        index++;
+                    }
+        
+                    this.renderItem(item, this.renderedElement, insertBeforeRenderedItem);
+                } 
 
                 item.setParent(this);
             }
@@ -5311,9 +5326,30 @@ export class Container extends StylableCardElementContainer {
         super.applyBackground();
     }
 
-    protected internalRender(): HTMLElement | undefined {
-        this._renderedItems = [];
+    protected renderItem(item: CardElement, container: HTMLElement, insertBefore?: CardElement) {
+        if (!item.renderedElement && this.isElementAllowed(item)) {
+            item.render();
+        }
 
+        // let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+
+        if (item.renderedElement) {
+            if (insertBefore && insertBefore.renderedElement) {
+                let insertBeforeElement = insertBefore.separatorElement ? insertBefore.separatorElement : insertBefore.renderedElement;
+
+                container.insertBefore(item.renderedElement, insertBeforeElement);
+            }
+            else {
+                container.appendChild(item.renderedElement);
+            }
+
+            if (item.separatorElement) {
+                container.insertBefore(item.separatorElement, item.renderedElement);
+            }
+        }
+    }
+
+    protected internalRender(): HTMLElement | undefined {
         // Cache hostConfig to avoid walking the parent hierarchy several times
         let hostConfig = this.hostConfig;
 
@@ -5356,19 +5392,7 @@ export class Container extends StylableCardElementContainer {
 
         if (this._items.length > 0) {
             for (let item of this._items) {
-                let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
-
-                if (renderedItem) {
-                    if (this._renderedItems.length > 0 && item.separatorElement) {
-                        item.separatorElement.style.flex = "0 0 auto";
-
-                        Utils.appendChild(element, item.separatorElement);
-                    }
-
-                    Utils.appendChild(element, renderedItem);
-
-                    this._renderedItems.push(item);
-                }
+                this.renderItem(item, element);
             }
         }
         else {
@@ -5471,9 +5495,9 @@ export class Container extends StylableCardElementContainer {
     }
 
     getFirstVisibleRenderedItem(): CardElement | undefined {
-        if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
-            for (let item of this._renderedItems) {
-                if (item.isVisible) {
+        if (this.renderedElement && this._items && this._items.length > 0) {
+            for (let item of this._items) {
+                if (item.renderedElement && item.isVisible) {
                     return item;
                 }
             };
@@ -5483,10 +5507,10 @@ export class Container extends StylableCardElementContainer {
     }
 
     getLastVisibleRenderedItem(): CardElement | undefined {
-        if (this.renderedElement && this._renderedItems && this._renderedItems.length > 0) {
-            for (let i = this._renderedItems.length - 1; i >= 0; i--) {
-                if (this._renderedItems[i].isVisible) {
-                    return this._renderedItems[i];
+        if (this.renderedElement && this._items && this._items.length > 0) {
+            for (let i = this._items.length - 1; i >= 0; i--) {
+                if (this._items[i].renderedElement && this._items[i].isVisible) {
+                    return this._items[i];
                 }
             }
         }
@@ -5554,7 +5578,9 @@ export class Container extends StylableCardElementContainer {
     }
 
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
-        this.insertItemAt(item, this._items.indexOf(insertBefore), false);
+        let insertBeforeIndex = this._items.indexOf(insertBefore);
+
+        this.insertItemAt(item, insertBeforeIndex, false);
     }
 
     insertItemAfter(item: CardElement, insertAfter: CardElement) {
@@ -5569,6 +5595,8 @@ export class Container extends StylableCardElementContainer {
 
             item.setParent(undefined);
 
+            CardElementContainer.removeRenderedItem(item);
+
             this.updateLayout();
 
             return true;
@@ -5579,7 +5607,6 @@ export class Container extends StylableCardElementContainer {
 
     clear() {
         this._items = [];
-        this._renderedItems = [];
     }
 
     getResourceInformation(): IResourceInformation[] {
@@ -5712,34 +5739,36 @@ export class Column extends Container {
 
     private _computedWeight: number = 0;
 
-    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        const minDesignTimeColumnHeight = 20;
+    protected adjustRenderedElementSize() {
+        if (this.renderedElement) {
+            const minDesignTimeColumnHeight = 20;
 
-        if (this.isDesignMode()) {
-            renderedElement.style.minWidth = "20px";
-            renderedElement.style.minHeight = (!this.minPixelHeight ? minDesignTimeColumnHeight : Math.max(this.minPixelHeight, minDesignTimeColumnHeight)) + "px";
-        }
-        else {
-            renderedElement.style.minWidth = "0";
-
-            if (this.minPixelHeight) {
-                renderedElement.style.minHeight = this.minPixelHeight + "px";
-            }
-        }
-
-        if (this.width === "auto") {
-            renderedElement.style.flex = "0 1 auto";
-        }
-        else if (this.width === "stretch") {
-            renderedElement.style.flex = "1 1 50px";
-        }
-        else if (this.width instanceof SizeAndUnit) {
-            if (this.width.unit == Enums.SizeUnit.Pixel) {
-                renderedElement.style.flex = "0 0 auto";
-                renderedElement.style.width = this.width.physicalSize + "px";
+            if (this.isDesignMode()) {
+                this.renderedElement.style.minWidth = "20px";
+                this.renderedElement.style.minHeight = (!this.minPixelHeight ? minDesignTimeColumnHeight : Math.max(this.minPixelHeight, minDesignTimeColumnHeight)) + "px";
             }
             else {
-                renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width.physicalSize) + "%";
+                this.renderedElement.style.minWidth = "0";
+
+                if (this.minPixelHeight) {
+                    this.renderedElement.style.minHeight = this.minPixelHeight + "px";
+                }
+            }
+
+            if (this.width === "auto") {
+                this.renderedElement.style.flex = "0 1 auto";
+            }
+            else if (this.width === "stretch") {
+                this.renderedElement.style.flex = "1 1 50px";
+            }
+            else if (this.width instanceof SizeAndUnit) {
+                if (this.width.unit == Enums.SizeUnit.Pixel) {
+                    this.renderedElement.style.flex = "0 0 auto";
+                    this.renderedElement.style.width = this.width.physicalSize + "px";
+                }
+                else {
+                    this.renderedElement.style.flex = "1 1 " + (this._computedWeight > 0 ? this._computedWeight : this.width.physicalSize) + "%";
+                }
             }
         }
     }
@@ -5797,6 +5826,25 @@ export class ColumnSet extends StylableCardElementContainer {
             });
     }
 
+    private renderColumn(column: Column, container: HTMLElement, insertBefore?: HTMLElement) {
+        if (!column.renderedElement) {
+            column.render();
+        }
+
+        if (column.renderedElement) {
+            if (insertBefore) {
+                container.insertBefore(column.renderedElement, insertBefore);
+            }
+            else {
+                container.appendChild(column.renderedElement);
+            }
+
+            if (column.separatorElement) {
+                container.insertBefore(column.separatorElement, column.renderedElement);
+            }
+        }
+    }
+
     protected internalRender(): HTMLElement | undefined {
         this._renderedColumns = [];
 
@@ -5841,17 +5889,9 @@ export class ColumnSet extends StylableCardElementContainer {
                     column["_computedWeight"] = computedWeight;
                 }
 
-                let renderedColumn = column.render();
+                this.renderColumn(column, element);
 
-                if (renderedColumn) {
-                    if (this._renderedColumns.length > 0 && column.separatorElement) {
-                        column.separatorElement.style.flex = "0 0 auto";
-
-                        Utils.appendChild(element, column.separatorElement);
-                    }
-
-                    Utils.appendChild(element, renderedColumn);
-
+                if (column.renderedElement) {
                     this._renderedColumns.push(column);
                 }
             }
@@ -6024,6 +6064,8 @@ export class ColumnSet extends StylableCardElementContainer {
                 this._columns.splice(itemIndex, 1);
 
                 item.setParent(undefined);
+
+                CardElementContainer.removeRenderedItem(item);
 
                 this.updateLayout();
 
