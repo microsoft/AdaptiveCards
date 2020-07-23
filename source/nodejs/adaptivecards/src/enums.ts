@@ -170,6 +170,7 @@ export enum ValidationEvent {
     DuplicateId,
     UnsupportedProperty,
     RequiredInputsShouldHaveLabel,
+    RequiredInputsShouldHaveErrorMessage,
     Other
 }
 

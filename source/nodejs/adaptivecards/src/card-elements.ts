@@ -2572,11 +2572,20 @@ export abstract class Input extends CardElement implements IInput {
                 Strings.errors.inputsMustHaveUniqueId());
         }
 
-        if (this.isRequired && !this.label) {
-            context.addFailure(
-                this,
-                Enums.ValidationEvent.RequiredInputsShouldHaveLabel,
-                "Required inputs should have a label");
+        if (this.isRequired) {
+            if (!this.label) {
+                context.addFailure(
+                    this,
+                    Enums.ValidationEvent.RequiredInputsShouldHaveLabel,
+                    "Required inputs should have a label");
+            }
+
+            if (!this.errorMessage) {
+                context.addFailure(
+                    this,
+                    Enums.ValidationEvent.RequiredInputsShouldHaveErrorMessage,
+                    "Required inputs should have an error message");
+            }
         }
     }
 
