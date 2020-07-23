@@ -39,7 +39,6 @@
     std::shared_ptr<NumberInput> numInputBlck = std::dynamic_pointer_cast<NumberInput>(elem);
     ACRNumericTextField *numInput = [[ACRNumericTextField alloc] init];
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
-    numInput.text = [NSString stringWithFormat:@"%d", numInputBlck->GetValue()];
     numInput.allowsEditingTextAttributes = YES;
     numInput.borderStyle = UITextBorderStyleRoundedRect;
     numInput.keyboardType = UIKeyboardTypeDecimalPad;
@@ -47,6 +46,7 @@
     ACRNumberInputHandler *numberInputHandler = [[ACRNumberInputHandler alloc] init:acoElem];
     
     numInput.delegate = numberInputHandler;
+    numInput.text = numberInputHandler.text;
     
     CGRect frame = CGRectMake(0, 0, viewGroup.frame.size.width, 30);
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];

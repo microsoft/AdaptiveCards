@@ -18,17 +18,17 @@ Json::Value NumberInput::SerializeToJsonValue() const
 
     if (m_min)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min.has_value() ? m_min.value_or(0) : Json::Value(Json::nullValue);
     }
 
     if (m_max)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = (m_max.has_value()) ? m_max.value_or(0) : Json::Value(Json::nullValue);
     }
 
     if (m_value)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = (m_value.has_value()) ? m_value.value_or(0) : Json::Value(Json::nullValue);
     }
 
     if (!m_placeholder.empty())
@@ -86,9 +86,18 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
     std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
-    numberInput->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
-    numberInput->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
+    
+    if (!ParseUtil::IsEmpty(json, AdaptiveCardSchemaKey::Value)) {
+        numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
+    }
+    
+    if (!ParseUtil::IsEmpty(json, AdaptiveCardSchemaKey::Max)) {
+        numberInput->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
+    }
+    
+    if (!ParseUtil::IsEmpty(json, AdaptiveCardSchemaKey::Min)) {
+        numberInput->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
+    }
 
     return numberInput;
 }

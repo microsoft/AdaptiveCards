@@ -40,6 +40,8 @@ namespace AdaptiveSharedNamespace
         unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
+    
+        bool IsEmpty(const Json::Value& json, AdaptiveCardSchemaKey key);
 
         CardElementType GetCardElementType(const Json::Value& json);
 

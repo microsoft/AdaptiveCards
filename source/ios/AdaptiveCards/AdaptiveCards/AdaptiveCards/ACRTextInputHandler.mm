@@ -98,18 +98,24 @@
     self = [super init];
     if (self) {
         self.isRequired = numberInputBlock->GetIsRequired();
-        self.text = [NSString stringWithFormat:@"%d", numberInputBlock->GetValue()];
-        if (self.text && self.text.length) {
-            self.hasText = YES;
-        }
+        auto value = numberInputBlock->GetValue();
+        self.text = (value.has_value()) ? [NSString stringWithFormat:@"%d", value.value_or(0)] : nil;
+        self.hasText = self.text != nil;
+        
         NSMutableCharacterSet *characterSets = [NSMutableCharacterSet characterSetWithCharactersInString:@"-."];
         [characterSets formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
         _notDigits = [characterSets invertedSet];
         self.id = [NSString stringWithCString:numberInputBlock->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
-        self.min = numberInputBlock->GetMin();
-        self.max = numberInputBlock->GetMax();
-        self.hasValidationProperties = self.isRequired || self.min || self.max;
+
+        auto minVal = numberInputBlock->GetMin();
+        self.hasMin = minVal.has_value();
+        self.min = minVal.value_or(0);
+
+        auto maxVal = numberInputBlock->GetMax();
+        self.hasMax = maxVal.has_value();
+        self.max = maxVal.value_or(0);
+        self.hasValidationProperties = self.isRequired || self.hasMin || self.hasMax;
     }
     return self;
 }
@@ -123,13 +129,13 @@
             return NO;
         }
         int val = [self.text intValue];
-        if (val < self.min) {
+        if (self.hasMin && val < self.min) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMin userInfo:nil];
             }
             return NO;
         }
-        if (val > self.max) {
+        if (self.hasMax && val > self.max) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorGreaterThanMax userInfo:nil];
             }
