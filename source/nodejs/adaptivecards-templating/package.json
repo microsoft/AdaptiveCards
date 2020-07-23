@@ -5,6 +5,11 @@
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"homepage": "https://adaptivecards.io",
+	"repository": {
+		"type" : "git",
+		"url" : "https://github.com/microsoft/AdaptiveCards.git",
+		"directory": "source/nodejs/adaptivecards-templating"
+	},
 	"keywords": [
 		"adaptivecards",
 		"adaptive",
