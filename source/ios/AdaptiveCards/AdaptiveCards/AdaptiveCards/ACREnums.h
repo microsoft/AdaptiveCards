@@ -23,5 +23,6 @@ typedef NS_ENUM(NSUInteger, ACRWarningStatusCode) {
     ACRInvalidDimensionSpecified,
     ACRInvalidLanguage,
     ACRInvalidValue,
+    ACRMissingInputErrorMessage,
     ACRCustomWarning,
 };

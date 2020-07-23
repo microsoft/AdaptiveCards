@@ -18,9 +18,11 @@
 
 * [_parent](textblock.md#protected-optional-_parent)
 * [_renderedElement](textblock.md#protected-optional-_renderedelement)
+* [ariaHidden](textblock.md#ariahidden)
 * [color](textblock.md#color)
 * [customCssSelector](textblock.md#optional-customcssselector)
 * [fontType](textblock.md#optional-fonttype)
+* [forElementId](textblock.md#optional-forelementid)
 * [height](textblock.md#height)
 * [horizontalAlignment](textblock.md#horizontalalignment)
 * [id](textblock.md#optional-id)
@@ -101,7 +103,6 @@
 * [getJsonTypeName](textblock.md#getjsontypename)
 * [getPadding](textblock.md#protected-getpadding)
 * [getParentContainer](textblock.md#getparentcontainer)
-* [getRenderedDomElementType](textblock.md#protected-getrendereddomelementtype)
 * [getResourceInformation](textblock.md#getresourceinformation)
 * [getRootElement](textblock.md#getrootelement)
 * [getRootObject](textblock.md#getrootobject)
@@ -111,6 +112,7 @@
 * [hasAllDefaultValues](textblock.md#hasalldefaultvalues)
 * [hasDefaultValue](textblock.md#hasdefaultvalue)
 * [indexOf](textblock.md#indexof)
+* [init](textblock.md#init)
 * [internalParse](textblock.md#protected-internalparse)
 * [internalRender](textblock.md#protected-internalrender)
 * [internalToJSON](textblock.md#protected-internaltojson)
@@ -156,9 +158,17 @@
 
 ###  constructor
 
-\+ **new TextBlock**(): *[TextBlock](textblock.md)*
+\+ **new TextBlock**(`text?`: undefined | string): *[TextBlock](textblock.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Inherited from [BaseTextBlock](basetextblock.md).[constructor](basetextblock.md#constructor)*
+
+*Overrides [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`text?` | undefined &#124; string |
 
 **Returns:** *[TextBlock](textblock.md)*
 
@@ -177,6 +187,14 @@ ___
 • **_renderedElement**? : *HTMLElement*
 
 *Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+
+___
+
+###  ariaHidden
+
+• **ariaHidden**: *boolean* = false
+
+*Inherited from [BaseTextBlock](basetextblock.md).[ariaHidden](basetextblock.md#ariahidden)*
 
 ___
 
@@ -201,6 +219,12 @@ ___
 • **fontType**? : *Enums.FontType*
 
 *Inherited from [BaseTextBlock](basetextblock.md).[fontType](basetextblock.md#optional-fonttype)*
+
+___
+
+### `Optional` forElementId
+
+• **forElementId**? : *undefined | string*
 
 ___
 
@@ -244,7 +268,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -847,9 +871,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
@@ -1030,14 +1060,6 @@ ___
 
 ___
 
-### `Protected` getRenderedDomElementType
-
-▸ **getRenderedDomElementType**(): *string*
-
-**Returns:** *string*
-
-___
-
 ###  getResourceInformation
 
 ▸ **getResourceInformation**(): *[IResourceInformation](../interfaces/iresourceinformation.md)[]*
@@ -1145,6 +1167,22 @@ Name | Type |
 `cardElement` | [CardElement](cardelement.md) |
 
 **Returns:** *number*
+
+___
+
+###  init
+
+▸ **init**(`textDefinition`: [BaseTextDefinition](basetextdefinition.md)): *void*
+
+*Inherited from [BaseTextBlock](basetextblock.md).[init](basetextblock.md#init)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`textDefinition` | [BaseTextDefinition](basetextdefinition.md) |
+
+**Returns:** *void*
 
 ___
 

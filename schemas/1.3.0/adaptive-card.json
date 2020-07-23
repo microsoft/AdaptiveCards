@@ -217,7 +217,7 @@
               "version": "1.0"
             }
           ],
-          "description": "Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF",
+          "description": "Specifies the background image of the card.",
           "version": "1.2"
         },
         "minHeight": {
@@ -901,6 +901,8 @@
           "version": "1.2"
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -946,6 +948,8 @@
           "description": "The initial value for this field expressed in YYYY-MM-DD."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -988,6 +992,8 @@
           "description": "Initial value for this field."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1026,6 +1032,10 @@
           "type": "string",
           "description": "Description of the input desired. Displayed when no text has been input."
         },
+        "regex": {
+          "type": "string",
+          "description": "Regular expression indicating the required format of this text input."
+        },
         "style": {
           "$ref": "#/definitions/TextInputStyle",
           "description": "Style hint for text input."
@@ -1040,6 +1050,8 @@
           "description": "The initial value for this field."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1082,6 +1094,8 @@
           "description": "The initial value for this field expressed in HH:MM."
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1132,6 +1146,8 @@
           "version": "1.2"
         },
         "id": {},
+        "errorMessage": {},
+        "isRequired": {},
         "label": {},
         "fallback": {},
         "height": {},
@@ -1336,6 +1352,19 @@
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Element"
+        }
+      ]
+    },
+    "ActionInputs": {
+      "anyOf": [
+        {
+          "enum": [
+            "All",
+            "None"
+          ]
+        },
+        {
+          "pattern": "^([a|A][l|L][l|L])|([n|N][o|O][n|N][e|E])$"
         }
       ]
     },
@@ -2394,18 +2423,18 @@
           "type": "string",
           "description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed."
         },
+        "errorMessage": {
+          "type": "string",
+          "description": "Error message to display when entered input is invalid",
+          "version": "1.3"
+        },
+        "isRequired": {
+          "type": "boolean",
+          "description": "Whether or not this input is required",
+          "version": "1.3"
+        },
         "label": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/TextBlock"
-            },
-            {
-              "$ref": "#/definitions/RichTextBlock"
-            }
-          ],
+          "type": "string",
           "description": "Label for this input",
           "version": "1.3"
         },

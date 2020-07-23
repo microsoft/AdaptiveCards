@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.IsVisible;
@@ -32,6 +34,7 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
@@ -63,12 +66,44 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    public static class FocusableChoiceListener<T extends CompoundButton> implements View.OnTouchListener
+    {
+        public FocusableChoiceListener(T firstView)
+        {
+            m_firstView = firstView;
+        }
+
+        @Override
+        public boolean onTouch(View view, MotionEvent motionEvent)
+        {
+            if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+            {
+                m_firstView.setFocusableInTouchMode(false);
+                m_firstView.clearFocus();
+
+                T clickableElement = (T) view;
+                // Checkboxes must change their values to the opposite one, radio buttons must always turn on
+                if (clickableElement instanceof CheckBox)
+                {
+                    clickableElement.setChecked(!clickableElement.isChecked());
+                }
+                else
+                {
+                    clickableElement.setChecked(true);
+                }
+
+            }
+            return true;
+        }
+
+        private T m_firstView;
+    }
+
     public View renderCheckBoxSet(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup)
+                RenderedAdaptiveCard renderedCard,
+                Context context,
+                ChoiceSetInput choiceSetInput,
+                RenderArgs renderArgs)
     {
         LinearLayout layout = new LinearLayout(context);
         layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -84,12 +119,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final CheckBoxSetInputHandler checkBoxSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxList);
         checkBoxSetInputHandler.setView(layout);
 
-        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler, separator, viewGroup));
+        layout.setTag(new TagContent(choiceSetInput, checkBoxSetInputHandler));
 
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
-            CheckBox checkBox = new CheckBox(context);
+            final CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
 
             if (!choiceSetInput.GetWrap())
@@ -111,10 +146,17 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                     CardRendererRegistration.getInstance().notifyInputChange(checkBoxSetInputHandler.getId(), checkBoxSetInputHandler.getInput());
                 }
             });
+
+            // Only for the first checkbox we'll add some extra behaviour as it's going to be the element to receive focus
+            // When validation fails we'll set the first checkbox with focusableInTouchMode = true, this makes the clicking
+            // inconsistent as it needs two clicks to check/uncheck, so once it's clicked, we'll remove the property to false
+            // and check/uncheck the box ourselves
+            checkBox.setOnTouchListener(new FocusableChoiceListener<CheckBox>(checkBoxList.get(0)));
+
             layout.addView(checkBox);
         }
 
-        renderedCard.registerInputHandler(checkBoxSetInputHandler);
+        renderedCard.registerInputHandler(checkBoxSetInputHandler, renderArgs.getContainerCardId());
         return layout;
     }
 
@@ -122,19 +164,19 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             RenderedAdaptiveCard renderedCard,
             Context context,
             ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup)
+            RenderArgs renderArgs)
     {
         RadioGroup radioGroup = new RadioGroup(context);
         final RadioGroupInputHandler radioGroupInputHandler = new RadioGroupInputHandler(choiceSetInput);
         radioGroupInputHandler.setView(radioGroup);
 
-        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler, separator, viewGroup));
+        radioGroup.setTag(new TagContent(choiceSetInput, radioGroupInputHandler));
 
         radioGroup.setOrientation(RadioGroup.VERTICAL);
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         String value = choiceSetInput.GetValue();
+
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
@@ -152,9 +194,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             {
                 radioButton.setChecked(true);
             }
+
             radioGroup.addView(radioButton);
+
+            radioButton.setOnTouchListener(new FocusableChoiceListener<RadioButton>((RadioButton) radioGroup.getChildAt(0)));
         }
-        renderedCard.registerInputHandler(radioGroupInputHandler);
+        renderedCard.registerInputHandler(radioGroupInputHandler, renderArgs.getContainerCardId());
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             @Override
@@ -163,6 +208,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().notifyInputChange(radioGroupInputHandler.getId(), radioGroupInputHandler.getInput());
             }
         });
+
         return radioGroup;
     }
 
@@ -170,8 +216,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             RenderedAdaptiveCard renderedCard,
             Context context,
             ChoiceSetInput choiceSetInput,
-            View separator,
-            ViewGroup viewGroup)
+            RenderArgs renderArgs)
     {
         final Vector<String> titleList = new Vector<>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
@@ -203,9 +248,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         final Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
 
-        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
+        spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
 
-        renderedCard.registerInputHandler(comboBoxInputHandler);
+        renderedCard.registerInputHandler(comboBoxInputHandler, renderArgs.getContainerCardId());
 
         class TextSpinnerAdapter extends ArrayAdapter<String>
         {
@@ -281,6 +326,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().notifyInputChange(comboBoxInputHandler.getId(), comboBoxInputHandler.getInput());
             }
         });
+
+        spinner.setFocusable(true);
         return spinner;
     }
 
@@ -293,7 +340,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -301,36 +348,25 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             return null;
         }
 
-        ChoiceSetInput choiceSetInput = null;
-        if (baseCardElement instanceof ChoiceSetInput)
-        {
-            choiceSetInput = (ChoiceSetInput) baseCardElement;
-        }
-        else if ((choiceSetInput = ChoiceSetInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ChoiceSetInput object model.");
-        }
+        ChoiceSetInput choiceSetInput = Util.castTo(baseCardElement, ChoiceSetInput.class);
 
-        View separator = setSpacingAndSeparator(context, viewGroup, choiceSetInput.GetSpacing(), choiceSetInput.GetSeparator(), hostConfig, true /* horizontal line */);
-
-        View view = null;
-
+        View inputView = null;
         if (choiceSetInput.GetIsMultiSelect())
         {
             // Create multi-select checkbox
-            view = renderCheckBoxSet(renderedCard, context, choiceSetInput, separator, viewGroup);
+            inputView = renderCheckBoxSet(renderedCard, context, choiceSetInput, renderArgs);
         }
         else
         {
             if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Expanded)
             {
                 // Create radio button group
-                view = renderRadioGroup(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderRadioGroup(renderedCard, context, choiceSetInput, renderArgs);
             }
             else if (choiceSetInput.GetChoiceSetStyle() == ChoiceSetStyle.Compact)
             {
                 // create ComboBox (Spinner)
-                view = renderComboBox(renderedCard, context, choiceSetInput, separator, viewGroup);
+                inputView = renderComboBox(renderedCard, context, choiceSetInput, renderArgs);
             }
             else
             {
@@ -338,25 +374,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
-        if (choiceSetInput.GetHeight() == HeightType.Stretch)
-        {
-            LinearLayout containerLayout = new LinearLayout(context);
-            containerLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        viewGroup.addView(inputView);
 
-            TagContent tagContent = (TagContent)view.getTag();
-            tagContent.SetStretchContainer(containerLayout);
-
-            containerLayout.addView(view);
-            viewGroup.addView(containerLayout);
-        }
-        else
-        {
-            viewGroup.addView(view);
-        }
-
-        setVisibility(choiceSetInput.GetIsVisible(), view);
-
-        return view;
+        return inputView;
     }
 
     private static ChoiceSetInputRenderer s_instance = null;

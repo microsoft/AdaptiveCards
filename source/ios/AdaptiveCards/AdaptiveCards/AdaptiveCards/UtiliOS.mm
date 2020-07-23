@@ -498,6 +498,55 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
+UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
+{
+    int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
+                                             textWeight:textProperties.GetTextWeight()];
+    // sanity check, 400 is the normal font;
+    if (fontweight <= 0 || fontweight > 900) {
+        fontweight = 400;
+    }
+    UIFont *font = nil;
+    fontweight -= 100;
+    fontweight /= 100;
+
+    if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+        const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                                                    @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
+        const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
+        if (textProperties.GetFontType() == FontType::Monospace) {
+            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
+                                                                                                UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+        } else {
+            font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+
+            if (textProperties.GetItalic()) {
+                font = [UIFont fontWithDescriptor:
+                                   getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
+                                             size:size];
+            }
+        }
+    } else {
+        // font weight as string since font weight as double doesn't work
+        // normailze fontweight for indexing
+        const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                    @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+        UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                                                             @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
+                                                               UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+
+        descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+        font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+    }
+    return font;
+}
+
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)
 {
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
@@ -534,50 +583,7 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
         NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
         data = @{@"html" : htmlData, @"options" : options};
     } else {
-        int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
-                                                 textWeight:textProperties.GetTextWeight()];
-        // sanity check, 400 is the normal font;
-        if (fontweight <= 0 || fontweight > 900) {
-            fontweight = 400;
-        }
-        UIFont *font = nil;
-        fontweight -= 100;
-        fontweight /= 100;
-
-        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
-            const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
-                                                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
-            const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
-            if (textProperties.GetFontType() == FontType::Monospace) {
-                const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                            @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
-                                                                                                    UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-                descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-                font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-            } else {
-                font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
-
-                if (textProperties.GetItalic()) {
-                    font = [UIFont fontWithDescriptor:
-                                       getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
-                                                 size:size];
-                }
-            }
-        } else {
-            // font weight as string since font weight as double doesn't work
-            // normailze fontweight for indexing
-            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                                                                 @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
-                                                                   UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-
-            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-        }
+        UIFont *font = getFont(hostConfig, textProperties);
 
         NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
         data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
@@ -624,8 +630,12 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
             @throw [ACOFallbackException fallbackException];
         }
         Json::Value blob = unknownAction->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        NSString *jsonString =
+        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];        
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
@@ -639,6 +649,26 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 {
     const std::string str = config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], textColor, isSubtle);
     return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config)
+{
+    switch (spacing) {
+        case Spacing::ExtraLarge:
+            return config->GetSpacing().extraLargeSpacing;
+        case Spacing::Large:
+            return config->GetSpacing().largeSpacing;
+        case Spacing::Medium:
+            return config->GetSpacing().mediumSpacing;
+        case Spacing::Small:
+            return config->GetSpacing().smallSpacing;
+        case Spacing::Default:
+            return config->GetSpacing().defaultSpacing;
+        default:
+            break;
+    }
+
+    return 0;
 }
 
 void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
@@ -697,4 +727,12 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
         [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
         [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
     }
+}
+
+NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style)
+{
+    UIFont *font = getFont(acoConfig, textElementProperties);
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
+
+    return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
 }

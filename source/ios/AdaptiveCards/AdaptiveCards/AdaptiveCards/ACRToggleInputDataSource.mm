@@ -8,9 +8,9 @@
 #import "ACRToggleInputDataSource.h"
 #import "ACRColumnSetView.h"
 #import "ACRIBaseCardElementRenderer.h"
+#import "ACRInputLabelView.h"
 #import "ACRUILabel.h"
 #import "HostConfig.h"
-#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -28,12 +28,15 @@ using namespace AdaptiveCards;
                                             encoding:NSUTF8StringEncoding];
     self.valueOff = [[NSString alloc] initWithCString:toggleInput->GetValueOff().c_str()
                                              encoding:NSUTF8StringEncoding];
+    self.hasValidationProperties = self.isRequired;
     return self;
 }
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
+    if (self.isRequired) {
+        return _toggleSwitch.on;
+    }
     return YES;
 }
 
@@ -41,5 +44,13 @@ using namespace AdaptiveCards;
 {
     dictionary[self.id] = _toggleSwitch.on ? self.valueOn : self.valueOff;
 }
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+}
+
+@synthesize isRequired;
+@synthesize hasValidationProperties;
 
 @end

@@ -25,7 +25,7 @@ class PredictJsonTestAPI(BaseAPITest):
         """ checks if the response is not empty or None """
         self.assertEqual(bool(self.output), True)
         self.assertEqual(len(self.output), 2)
-        self.assertEqual(len(self.output["card_json"]["body"]), 13)
+        self.assertTrue(len(self.output["card_json"]["body"]) > 0)
         self.assertIsNone(self.output["error"],
                           msg="Key 'Error' is not 'null'")
 
@@ -78,4 +78,3 @@ class PredictJsonTestAPI(BaseAPITest):
 
 if __name__ == "__main__":
     unittest.main()
-

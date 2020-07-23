@@ -1,6 +1,6 @@
 [Adaptive Cards Javascript SDK](../README.md) › [CustomProperty](customproperty.md)
 
-# Class: CustomProperty <**T**>
+# Class: CustomProperty ‹**T**›
 
 ## Type parameters
 

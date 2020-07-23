@@ -140,7 +140,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             Media media,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         ImageView posterView = null;
 
@@ -174,7 +174,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         // Draw play button on top of poster (or instead of the poster if no poster defined)
         ImageView playButtonView;
@@ -281,34 +281,12 @@ public class MediaRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        Media media = null;
-
-        if (baseCardElement instanceof Media)
-        {
-            media = (Media) baseCardElement;
-        }
-        else if ((media = Media.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Media object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
+        Media media = Util.castTo(baseCardElement, Media.class);
 
         LinearLayout mediaLayout = new LinearLayout(context);
-        mediaLayout.setTag(new TagContent(media, separator, viewGroup));
-
-        setVisibility(baseCardElement.GetIsVisible(), mediaLayout);
-
-        if( media.GetHeight() == HeightType.Stretch )
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        mediaLayout.setTag(new TagContent(media));
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);
