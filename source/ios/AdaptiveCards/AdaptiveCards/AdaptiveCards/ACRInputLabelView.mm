@@ -149,9 +149,9 @@
         inputHandler = self.dataSource;
     }
     else {
-        id inputView = [self getInputView];
+        UIView *inputView = [self getInputView];
         if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-            inputHandler = inputView;
+            inputHandler = (NSObject<ACRIBaseInputHandler> *)inputView;
         }
     }
     
@@ -168,7 +168,7 @@
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    id inputHandler = [self getInputHandler];
+    NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
@@ -179,7 +179,7 @@
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    id<ACRIBaseInputHandler> inputHandler = [self getInputHandler];
+    NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
     if (inputHandler) {
         [inputHandler getInput:dictionary];
     }
@@ -208,5 +208,7 @@
 }
 
 @synthesize hasValidationProperties;
+
+@synthesize id;
 
 @end
