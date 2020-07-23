@@ -21,7 +21,7 @@
 			"version": "1.3"
 		},
 		"label": {
-			"type": "string|TextBlock|RichTextBlock",
+			"type": "string",
 			"description": "Label for this input",
 			"version": "1.3"
 		}
