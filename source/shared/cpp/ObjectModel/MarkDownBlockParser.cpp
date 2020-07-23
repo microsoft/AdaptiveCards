@@ -263,7 +263,7 @@ bool EmphasisParser::IsLeftEmphasisDelimiter(const char ch) const
 
 bool EmphasisParser::IsRightEmphasisDelimiter(const char ch) const
 {
-    if ((ch == EOF || MarkDownBlockParser::IsSpace(ch)) && (m_lookBehind != DelimiterType::WhiteSpace) &&
+    if ((ch == EOF || ch == '\xff' || MarkDownBlockParser::IsSpace(ch)) && (m_lookBehind != DelimiterType::WhiteSpace) &&
         (m_checkLookAhead || m_checkIntraWord || m_currentDelimiterType == DelimiterType::Asterisk))
     {
         return true;
