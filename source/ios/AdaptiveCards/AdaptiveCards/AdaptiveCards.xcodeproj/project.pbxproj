@@ -807,7 +807,6 @@
 				6BBE841823CD184D00ECA586 /* ACOWarning.h */,
 				6BBE841723CD184D00ECA586 /* ACOWarning.mm */,
 				6B1147D01F32E53A008846EC /* ACRActionDelegate.h */,
-				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6BBE841623CD184D00ECA586 /* ACREnums.h */,
 				F42979401F322C3E00E89914 /* ACRErrors.h */,
 				F42979411F322C3E00E89914 /* ACRErrors.mm */,
@@ -1029,6 +1028,7 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B22425B21E80647000ACDA1 /* ACOParseContext.h */,
 				6B22425C21E80647000ACDA1 /* ACOParseContext.mm */,
 				6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */,
