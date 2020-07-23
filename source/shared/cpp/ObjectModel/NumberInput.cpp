@@ -86,9 +86,11 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
     std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
-    numberInput->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
-    numberInput->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
+
+    static const std::optional<int> emptyOptionalInt;
+    numberInput->SetValue(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Value, emptyOptionalInt));
+    numberInput->SetMax(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Max, emptyOptionalInt));
+    numberInput->SetMin(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Min, emptyOptionalInt));
 
     return numberInput;
 }
