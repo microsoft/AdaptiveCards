@@ -32,6 +32,10 @@ public class ToggleVisibilityActionPropertiesTest
             {
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(s_defaultToggleVisibilityActionJson), "1.0");
             }
+            catch (IOException e)
+            {
+                Assert.assertEquals(true, e.getMessage().contains("Could not parse required key: targetElements."));
+            }
             catch (Exception e)
             {
                 Assert.fail();

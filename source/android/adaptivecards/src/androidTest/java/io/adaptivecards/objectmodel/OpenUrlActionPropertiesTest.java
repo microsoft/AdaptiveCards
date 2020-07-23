@@ -32,6 +32,10 @@ public class OpenUrlActionPropertiesTest
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(openUrlActionWithNoUrl), "1.0");
                 Assert.fail();
             }
+            catch (IOException e)
+            {
+                Assert.assertEquals(true, e.getMessage().contains("Property is required but was found empty: url"));
+            }
             catch (Exception e){
                 Assert.fail();
             }

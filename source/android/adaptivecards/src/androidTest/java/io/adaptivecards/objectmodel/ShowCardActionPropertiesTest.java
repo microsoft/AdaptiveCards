@@ -27,6 +27,11 @@ public class ShowCardActionPropertiesTest
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(showCardActionWithNoCard), "1.0");
                 Assert.fail();
             }
+            catch (IOException e)
+            {
+                // Expecting failure due to card not existing
+                Assert.assertEquals(true, e.getMessage().contains("Expected JSON Object"));
+            }
             catch (Exception e){
                 Assert.fail();
             }
@@ -39,6 +44,11 @@ public class ShowCardActionPropertiesTest
             {
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(showCardActionWithEmptyCard), "1.0");
                 Assert.fail();
+            }
+            catch (IOException e)
+            {
+                // Expecting failure due to card not existing
+                Assert.assertEquals(true, e.getMessage().contains("Expected JSON Object"));
             }
             catch (Exception e){
                 Assert.fail();

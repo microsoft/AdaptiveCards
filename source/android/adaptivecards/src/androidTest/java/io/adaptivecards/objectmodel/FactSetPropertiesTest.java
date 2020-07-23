@@ -38,7 +38,7 @@ public class FactSetPropertiesTest
     }
 
     @Test
-    public void FactsTestjsdfhjisdc() throws Exception
+    public void FactsTest() throws Exception
     {
         {
             final String factSetEmptyFacts = "{\"facts\":[],\"type\":\"FactSet\"}\n";
@@ -50,11 +50,14 @@ public class FactSetPropertiesTest
                 AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(factSetEmptyFacts), "1.0");
                 Assert.fail();
             }
+            catch (IOException e)
+            {
+                Assert.assertEquals(true, e.getMessage().contains("Could not parse required key: facts. It was not found"));
+            }
             catch (Exception e)
             {
                 Assert.fail();
             }
-
         }
 
         {
