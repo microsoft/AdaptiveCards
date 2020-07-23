@@ -28,7 +28,7 @@ namespace AdaptiveNamespace
         // ITypePeek method
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
-        std::shared_ptr<FeatureRegistration> GetSharedFeatureRegistration();
+        const std::shared_ptr<FeatureRegistration>& GetSharedFeatureRegistration();
 
     private:
         std::shared_ptr<FeatureRegistration> m_sharedFeatureRegistration;

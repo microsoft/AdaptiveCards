@@ -1,6 +1,6 @@
 [Adaptive Cards Javascript SDK](../README.md) › [EnumProperty](enumproperty.md)
 
-# Class: EnumProperty <**TEnum**>
+# Class: EnumProperty ‹**TEnum**›
 
 ## Type parameters
 

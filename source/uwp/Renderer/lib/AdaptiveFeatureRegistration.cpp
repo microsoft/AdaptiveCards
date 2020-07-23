@@ -55,7 +55,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    std::shared_ptr<FeatureRegistration> AdaptiveFeatureRegistration::GetSharedFeatureRegistration()
+    const std::shared_ptr<FeatureRegistration>& AdaptiveFeatureRegistration::GetSharedFeatureRegistration()
     {
         return m_sharedFeatureRegistration;
     }

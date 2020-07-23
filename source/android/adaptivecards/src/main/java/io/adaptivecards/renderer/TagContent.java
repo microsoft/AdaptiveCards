@@ -27,18 +27,46 @@ public class TagContent
         m_id = id;
     }
 
-    public TagContent(BaseCardElement baseCardElement, View separatorView, ViewGroup viewContainer)
+    /**
+     * Constructor for tags that do not enclose an input element
+     * @param baseCardElement
+     */
+    public TagContent(BaseCardElement baseCardElement)
     {
         this(false);
         m_baseElement = baseCardElement;
-        m_separatorView = separatorView;
+    }
+
+    /**
+     * Constructor for tags that enclose an input element
+     * @param baseCardElement
+     * @param inputHandler
+     */
+    public TagContent(BaseCardElement baseCardElement, IInputHandler inputHandler)
+    {
+        m_baseElement = baseCardElement;
+        m_inputHandler = inputHandler;
+    }
+
+    @Deprecated
+    /**
+     * As of v1.3 all elements are rendered in a temporary viewContainer and then inserted into the actual view,
+     * the parameter viewContainer will be overriden with the actual viewContainer
+     */
+    public TagContent(BaseCardElement baseCardElement, ViewGroup viewContainer)
+    {
+        this(baseCardElement);
         m_viewContainer = viewContainer;
     }
 
-    public TagContent(BaseCardElement baseCardElement, IInputHandler inputHandler, View separatorView, ViewGroup viewContainer)
+    @Deprecated
+    /**
+     * As of v1.3 we are rendering spacing and separators for all elements, so passing the separator view is redundant
+     */
+    public TagContent(BaseCardElement baseCardElement, View separatorView, ViewGroup viewContainer)
     {
-        this(baseCardElement, separatorView, viewContainer);
-        m_inputHandler = inputHandler;
+        this(baseCardElement, viewContainer);
+        m_separatorView = separatorView;
     }
 
     public String GetId()
@@ -70,9 +98,19 @@ public class TagContent
         return m_isSeparator;
     }
 
+    public void SetSeparator(View separator)
+    {
+        m_separatorView = separator;
+    }
+
     public View GetSeparator()
     {
         return m_separatorView;
+    }
+
+    public void SetViewContainer(ViewGroup viewContainer)
+    {
+        m_viewContainer = viewContainer;
     }
 
     public ViewGroup GetViewContainer()

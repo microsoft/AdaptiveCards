@@ -28,7 +28,9 @@ public class TimeInputPropertiesTest
     public void AllPropertiesTest()
     {
         final String timeInputNoDefaultValues =
-            "{\"id\":\"id\"," +
+            "{\"errorMessage\":\"Error message\"," +
+                "\"id\":\"id\"," +
+                "\"label\":\"Input label\"," +
                 "\"max\":\"23:59\"," +
                 "\"min\":\"00:00\"," +
                 "\"placeholder\":\"Sample placeholder\"," +
@@ -36,6 +38,8 @@ public class TimeInputPropertiesTest
                 "\"value\":\"16:20\"}\n";
 
         TimeInput timeInput = TestUtil.createMockTimeInput();
+        timeInput.SetErrorMessage("Error message");
+        timeInput.SetLabel("Input label");
         timeInput.SetMax("23:59");
         timeInput.SetMin("00:00");
         timeInput.SetPlaceholder("Sample placeholder");
@@ -48,10 +52,12 @@ public class TimeInputPropertiesTest
     public void AllPropertiesWithInheritedTest()
     {
         final String timeInputNoDefaultValues =
-            "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+            "{\"errorMessage\":\"Error message\"," +
+                "\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
                 "\"height\":\"Stretch\"," +
                 "\"id\":\"id\"," +
                 "\"isVisible\":false," +
+                "\"label\":\"Input label\"," +
                 "\"max\":\"21:59\"," +
                 "\"min\":\"04:37\"," +
                 "\"placeholder\":\"Sample placeholder\"," +
@@ -61,10 +67,12 @@ public class TimeInputPropertiesTest
                 "\"value\":\"18:00\"}\n";
 
         TimeInput timeInput = TestUtil.createMockTimeInput();
+        timeInput.SetErrorMessage("Error message");
         timeInput.SetFallbackType(FallbackType.Content);
         timeInput.SetFallbackContent(TestUtil.createMockImage());
         timeInput.SetHeight(HeightType.Stretch);
         timeInput.SetIsVisible(false);
+        timeInput.SetLabel("Input label");
         timeInput.SetMax("21:59");
         timeInput.SetMin("04:37");
         timeInput.SetPlaceholder("Sample placeholder");
@@ -78,143 +86,104 @@ public class TimeInputPropertiesTest
     @Test
     public void MaxTest() throws Exception
     {
-        {
-            final String inputTimeDefaultMax = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetMax(); }
 
-            TimeInput timeInput = TestUtil.createMockTimeInput();
-            timeInput.SetMax("");
-            Assert.assertEquals(inputTimeDefaultMax, timeInput.Serialize());
+            @Override
+            public void set(String value, TimeInput element) { element.SetMax(value); }
+        };
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimeDefaultMax), "1.0");
-            TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedTimeInput.GetMax());
-        }
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
 
-        {
-            final String inputNumberMaxTemplate =
-                "{\"id\":\"id\",\"max\":\"%s\",\"type\":\"Input.Time\"}\n";
-            String[] tests = {"00:23", "7:46", "03:43", "02:22", "10:36", "13:52", "14:08", "19:10"};
-
-            for (int i = 0; i < tests.length; ++i)
-            {
-                String maxJson = String.format(inputNumberMaxTemplate, tests[i]);
-
-                TimeInput timeInput = TestUtil.createMockTimeInput();
-                timeInput.SetMax(tests[i]);
-                Assert.assertEquals(maxJson, timeInput.Serialize());
-
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(maxJson), "1.0");
-                TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedTimeInput.GetMax());
-            }
-        }
+        final String inputNumberMaxTemplate = "{\"id\":\"id\",\"max\":\"%s\",\"type\":\"Input.Time\"}\n";
+        TestUtil.executeTests(c, inputNumberMaxTemplate, c_timeTestCases);
     }
 
     @Test
     public void MinTest() throws Exception
     {
-        {
-            final String inputTimeDefaultMax = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetMin(); }
 
-            TimeInput timeInput = TestUtil.createMockTimeInput();
-            timeInput.SetMin("");
-            Assert.assertEquals(inputTimeDefaultMax, timeInput.Serialize());
+            @Override
+            public void set(String value, TimeInput element) { element.SetMin(value); }
+        };
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimeDefaultMax), "1.0");
-            TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedTimeInput.GetMin());
-        }
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
 
-        {
-            final String inputNumberMaxTemplate =
-                "{\"id\":\"id\",\"min\":\"%s\",\"type\":\"Input.Time\"}\n";
-            String[] tests = {"00:23", "7:46", "03:43", "02:22", "10:36", "13:52", "14:08", "19:10"};
-
-            for (int i = 0; i < tests.length; ++i)
-            {
-                String maxJson = String.format(inputNumberMaxTemplate, tests[i]);
-
-                TimeInput timeInput = TestUtil.createMockTimeInput();
-                timeInput.SetMin(tests[i]);
-                Assert.assertEquals(maxJson, timeInput.Serialize());
-
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(maxJson), "1.0");
-                TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedTimeInput.GetMin());
-            }
-        }
+        final String inputNumberMaxTemplate = "{\"id\":\"id\",\"min\":\"%s\",\"type\":\"Input.Time\"}\n";
+        TestUtil.executeTests(c, inputNumberMaxTemplate, c_timeTestCases);
     }
 
     @Test
     public void PlaceholderTest() throws Exception
     {
-        {
-            final String inputTimeDefaultPlaceholder = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetPlaceholder(); }
 
-            TimeInput timeInput = TestUtil.createMockTimeInput();
-            timeInput.SetPlaceholder("");
-            Assert.assertEquals(inputTimeDefaultPlaceholder, timeInput.Serialize());
+            @Override
+            public void set(String value, TimeInput element) { element.SetPlaceholder(value); }
+        };
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimeDefaultPlaceholder), "1.0");
-            TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedTimeInput.GetPlaceholder());
-        }
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
 
-        {
-            final String inputTimePlaceholderTemplate = "{\"id\":\"id\",\"placeholder\":\"%s\",\"type\":\"Input.Time\"}\n";
-            String tests[] = {"Sample text",
-                "This is just a little bit tiny teeny bit larger than the one before this one a.k.a. index [0]",
-                "The quick brown fox jumps over the lazy dog",
-                "{{DATE(2017-02-14T06:08:39Z,LONG)}}",
-                "This is some **bold** text"};
-
-            for (int i = 0; i < tests.length; ++i)
-            {
-                String inputTimePlaceholderJson = String.format(inputTimePlaceholderTemplate, tests[i]);
-
-                TimeInput timeInput = TestUtil.createMockTimeInput();
-                timeInput.SetPlaceholder(tests[i]);
-                Assert.assertEquals(inputTimePlaceholderJson, timeInput.Serialize());
-
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimePlaceholderJson), "1.0");
-                TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedTimeInput.GetPlaceholder());
-            }
-        }
+        final String inputTimePlaceholderTemplate = "{\"id\":\"id\",\"placeholder\":\"%s\",\"type\":\"Input.Time\"}\n";
+        TestUtil.executeTests(c, inputTimePlaceholderTemplate, TestUtil.c_regularStringTestCases);
+        TestUtil.executeTests(c, inputTimePlaceholderTemplate, TestUtil.c_dateStringTestCases);
     }
 
     @Test
     public void ValueTest() throws Exception
     {
-        {
-            final String inputTimeDefaultPlaceholder = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetValue(); }
 
-            TimeInput timeInput = TestUtil.createMockTimeInput();
-            timeInput.SetValue("");
-            Assert.assertEquals(inputTimeDefaultPlaceholder, timeInput.Serialize());
+            @Override
+            public void set(String value, TimeInput element) { element.SetValue(value); }
+        };
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimeDefaultPlaceholder), "1.0");
-            TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals("", parsedTimeInput.GetValue());
-        }
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
 
-        {
-            final String inputTimePlaceholderTemplate = "{\"id\":\"id\",\"type\":\"Input.Time\",\"value\":\"%s\"}\n";
-            String tests[] = {"07:15", "15:14", "17:30", "18:40", "19:53"};
+        final String inputTimePlaceholderTemplate = "{\"id\":\"id\",\"type\":\"Input.Time\",\"value\":\"%s\"}\n";
+        TestUtil.executeTests(c, inputTimePlaceholderTemplate, c_timeTestCases);
+    }
 
-            for (int i = 0; i < tests.length; ++i)
-            {
-                String inputTimePlaceholderJson = String.format(inputTimePlaceholderTemplate, tests[i]);
+    @Test
+    public void LabelTest() throws Exception
+    {
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetLabel(); }
 
-                TimeInput timeInput = TestUtil.createMockTimeInput();
-                timeInput.SetValue(tests[i]);
-                Assert.assertEquals(inputTimePlaceholderJson, timeInput.Serialize());
+            @Override
+            public void set(String value, TimeInput element) { element.SetLabel(value); }
+        };
 
-                ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputTimePlaceholderJson), "1.0");
-                TimeInput parsedTimeInput = TestUtil.castToTimeInput(result.GetAdaptiveCard().GetBody().get(0));
-                Assert.assertEquals(tests[i], parsedTimeInput.GetValue());
-            }
-        }
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
+
+        final String inputTextLabelTemplate = "{\"id\":\"id\",\"label\":\"%s\",\"type\":\"Input.Time\"}\n";
+        TestUtil.executeTests(c, inputTextLabelTemplate, TestUtil.c_regularStringTestCases);
+    }
+
+    @Test
+    public void ErrorMessageTest() throws Exception
+    {
+        TimeInputCommand<String> c = new TimeInputCommand<String>() {
+            @Override
+            public String get(TimeInput element) { return element.GetErrorMessage(); }
+
+            @Override
+            public void set(String value, TimeInput element) { element.SetErrorMessage(value); }
+        };
+
+        TestUtil.executeDefaultTestCase(c, c_defaultInputTime, "");
+
+        final String inputTextErrorMessageTemplate = "{\"errorMessage\":\"%s\",\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+        TestUtil.executeTests(c, inputTextErrorMessageTemplate, TestUtil.c_regularStringTestCases);
     }
 
     @Test
@@ -247,14 +216,24 @@ public class TimeInputPropertiesTest
             Assert.assertEquals((int)formatTestCase.first, calendar.get(Calendar.HOUR_OF_DAY));
             Assert.assertEquals((int)formatTestCase.second, calendar.get(Calendar.MINUTE));
         }
-
-        /*
-        String parsingTestCases[] = {};
-
-        Date value = TimeInputRenderer.getTimeFormat().parse(m_editText.getText().toString());
-        calendar = new GregorianCalendar();
-        */
-
     }
+
+    private abstract class TimeInputCommand<E> implements TestUtil.Command<TimeInput, E>
+    {
+        @Override
+        public TimeInput getMockObject()
+        {
+            return TestUtil.createMockTimeInput();
+        }
+
+        @Override
+        public TimeInput castTo(BaseCardElement element) {
+            return TestUtil.castToTimeInput(element);
+        }
+    }
+
+    private final String c_defaultInputTime = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
+
+    private final String c_timeTestCases[] = {"07:15", "15:14", "17:30", "18:40", "19:53", "00:23", "7:46", "03:43", "02:22", "10:36", "13:52", "14:08", "19:10"};
 
 }

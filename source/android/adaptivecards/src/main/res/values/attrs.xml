@@ -4,6 +4,7 @@
     <attr name="adaptiveActionDestructive" format="reference" />
     <attr name="adaptiveInlineAction" format="reference" />
     <attr name="adaptiveInlineActionImage" format="reference" />
+    <attr name="adaptiveShowCardAction" format="reference" />
     <style name="adaptiveInlineAction" format="reference" />
     <style name="adaptiveInlineActionImage" format="reference" />
 </resources>

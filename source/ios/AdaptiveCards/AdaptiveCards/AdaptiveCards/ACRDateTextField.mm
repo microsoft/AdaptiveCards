@@ -9,16 +9,22 @@
 #import "DateInput.h"
 #import "DateTimePreparser.h"
 #import "TimeInput.h"
+#import "ACRInputLabelView.h"
 
 using namespace AdaptiveCards;
 
-@implementation ACRDateTextField
+@implementation ACRDateTextField {
+    NSDateFormatter *_encodeFormatter;
+    NSDateFormatter *_decodeFormatter;
+    NSString *_dateFormatString;
+}
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     return self;
 }
+
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle
 {
@@ -30,10 +36,13 @@ using namespace AdaptiveCards;
         NSString *minDateStr = nil;
         NSString *maxDateStr = nil;
 
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        formatter.dateStyle = dateStyle;
-        formatter.locale = [NSLocale currentLocale];
+        _decodeFormatter = [[NSDateFormatter alloc] init];
+        [self configDateFormatter:_decodeFormatter formatterStyle:dateStyle];
+        _encodeFormatter = [[NSDateFormatter alloc] init];
+        [self configDateFormatter:_encodeFormatter formatterStyle:dateStyle];
+
         UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        picker.locale = [NSLocale currentLocale];
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
                                      encoding:NSUTF8StringEncoding];
@@ -41,19 +50,19 @@ using namespace AdaptiveCards;
 
         DateTimePreparser preparser;
 
+        NSDate *date = nil;
+
         if (dateStyle == NSDateFormatterShortStyle) {
             std::shared_ptr<DateInput> dateInput = std::dynamic_pointer_cast<DateInput>(elem);
 
             placeHolderStr = [NSString stringWithCString:dateInput->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
-
             unsigned int year, month, day;
             if (preparser.TryParseSimpleDate(dateInput->GetValue(), year, month, day)) {
                 valueStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
 
             year = month = day = 0;
-            NSString *minDateStr = nil, *maxDateStr = nil;
             if (preparser.TryParseSimpleDate(dateInput->GetMin(), year, month, day)) {
                 minDateStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
@@ -63,62 +72,56 @@ using namespace AdaptiveCards;
                 maxDateStr = [NSString stringWithFormat:@"%u-%u-%u", year, month, day];
             }
 
-            formatter.timeStyle = NSDateFormatterNoStyle;
-
-            [formatter setDateFormat:@"yyyy-MM-dd"];
-
-            picker.calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+            _dateFormatString = @"yyyy-MM-dd";
             picker.datePickerMode = UIDatePickerModeDate;
+            picker.calendar = [NSCalendar currentCalendar];
+
+            [_encodeFormatter setDateFormat:_dateFormatString];
+            date = [_encodeFormatter dateFromString:valueStr];
+            self.min = [_encodeFormatter dateFromString:minDateStr];
+            self.max = [_encodeFormatter dateFromString:maxDateStr];
+            [picker setMinimumDate:self.min];
+            [picker setMaximumDate:self.max];
         } else {
             std::shared_ptr<TimeInput> timeInput = std::dynamic_pointer_cast<TimeInput>(elem);
+            NSCalendar *calendar = [NSCalendar currentCalendar];
 
             placeHolderStr = [NSString stringWithCString:timeInput->GetPlaceholder().c_str()
                                                 encoding:NSUTF8StringEncoding];
-
             unsigned int hours = 0, minutes = 0;
             if (preparser.TryParseSimpleTime(timeInput->GetValue(), hours, minutes)) {
-                valueStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
+                valueStr = [NSString stringWithFormat:@"%02u:%02u", hours, minutes];
+                date = [calendar dateBySettingHour:hours minute:minutes second:0 ofDate:[NSDate date] options:0];
             }
 
             hours = minutes = 0;
-            NSString *minDateStr = nil, *maxDateStr = nil;
 
             if (preparser.TryParseSimpleTime(timeInput->GetMin(), hours, minutes)) {
-                minDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
+                self.min = [calendar dateBySettingHour:hours minute:minutes second:0 ofDate:[NSDate date] options:0];
+                [picker setMinimumDate:self.min];
             }
 
             hours = minutes = 0;
             if (preparser.TryParseSimpleTime(timeInput->GetMax(), hours, minutes)) {
-                maxDateStr = [NSString stringWithFormat:@"%u:%u", hours, minutes];
+                self.max = [calendar dateBySettingHour:hours minute:minutes second:0 ofDate:[NSDate date] options:0];
+                [picker setMaximumDate:self.max];
             }
-
-            minDateStr = [NSString stringWithCString:timeInput->GetMin().c_str()
-                                            encoding:NSUTF8StringEncoding];
-            maxDateStr = [NSString stringWithCString:timeInput->GetMax().c_str()
-                                            encoding:NSUTF8StringEncoding];
-            formatter.timeStyle = NSDateFormatterShortStyle;
-
-            [formatter setDateFormat:@"HH:mm"];
-
             picker.datePickerMode = UIDatePickerModeTime;
+            _dateFormatString = @"HH:mm";
+            [_encodeFormatter setDateFormat:_dateFormatString];
         }
 
-        NSDate *date = [formatter dateFromString:valueStr];
-        self.formatter = formatter;
-        self.min = [formatter dateFromString:minDateStr];
-        self.max = [formatter dateFromString:maxDateStr];
         self.placeholder = placeHolderStr;
-        self.text = valueStr;
         self.allowsEditingTextAttributes = NO;
         self.borderStyle = UITextBorderStyleRoundedRect;
         self.backgroundColor = UIColor.groupTableViewBackgroundColor;
+        self.delegate = self;
 
         if (date) {
             picker.date = date;
+            self.text = [_decodeFormatter stringFromDate:date];
         }
 
-        [picker setMinimumDate:self.min];
-        [picker setMaximumDate:self.max];
         [picker addTarget:self action:@selector(update:) forControlEvents:UIControlEventValueChanged];
 
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
@@ -132,6 +135,7 @@ using namespace AdaptiveCards;
 
         self.inputAccessoryView = bar;
         self.inputView = picker;
+        self.hasValidationProperties = self.isRequired || self.max || self.min;
     }
 
     return self;
@@ -140,20 +144,25 @@ using namespace AdaptiveCards;
 - (IBAction)dismiss
 {
     [self endEditing:YES];
-    self.text = [self.formatter stringFromDate:((UIDatePicker *)self.inputView).date];
+    self.text = [_decodeFormatter stringFromDate:[self getCurrentDate]];
 }
 
 - (IBAction)update:(UIDatePicker *)picker
 {
-    self.text = [self.formatter stringFromDate:picker.date];
+    self.text = [_decodeFormatter stringFromDate:[self getCurrentDate]];
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    return NO;
 }
 
 - (BOOL)validate:(NSError **)error
 {
     BOOL isValidated = YES;
-    isValidated = [super validate:error];
+    isValidated = [ACRInputLabelView commonTextUIValidate:self.isRequired hasText:self.hasText predicate:nil text:nil error:error];
+    NSDate *date = [self getCurrentDate];
     if (isValidated == YES) {
-        NSDate *date = [self.formatter dateFromString:self.text];
         if ([date compare:self.min] == NSOrderedAscending) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMinDate userInfo:nil];
@@ -173,7 +182,34 @@ using namespace AdaptiveCards;
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    dictionary[self.id] = self.text;
+    dictionary[self.id] = (self.text.length == 0) ? self.text : [_encodeFormatter stringFromDate:[self getCurrentDate]];
 }
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+}
+
+- (NSDate *)getCurrentDate
+{
+    return ((UIDatePicker *)self.inputView).date;
+}
+
+- (void)configDateFormatter:(NSDateFormatter *)formatter formatterStyle:(NSDateFormatterStyle)style
+{
+    if (style == NSDateFormatterShortStyle) {
+        formatter.dateStyle = NSDateFormatterMediumStyle;
+    } else {
+        formatter.timeStyle = NSDateFormatterShortStyle;
+    }
+
+    formatter.locale = [NSLocale currentLocale];
+}
+
+@synthesize hasValidationProperties;
+
+@synthesize id;
+
+@synthesize isRequired;
 
 @end

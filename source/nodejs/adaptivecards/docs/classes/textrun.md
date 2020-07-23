@@ -18,6 +18,7 @@
 
 * [_parent](textrun.md#protected-optional-_parent)
 * [_renderedElement](textrun.md#protected-optional-_renderedelement)
+* [ariaHidden](textrun.md#ariahidden)
 * [color](textrun.md#color)
 * [customCssSelector](textrun.md#optional-customcssselector)
 * [fontType](textrun.md#optional-fonttype)
@@ -34,6 +35,7 @@
 * [size](textrun.md#size)
 * [spacing](textrun.md#spacing)
 * [strikethrough](textrun.md#strikethrough)
+* [underline](textrun.md#underline)
 * [weight](textrun.md#weight)
 * [colorProperty](textrun.md#static-colorproperty)
 * [fontTypeProperty](textrun.md#static-fonttypeproperty)
@@ -54,6 +56,7 @@
 * [strikethroughProperty](textrun.md#static-strikethroughproperty)
 * [textProperty](textrun.md#static-textproperty)
 * [typeNameProperty](textrun.md#static-typenameproperty)
+* [underlineProperty](textrun.md#static-underlineproperty)
 * [weightProperty](textrun.md#static-weightproperty)
 
 ### Accessors
@@ -111,6 +114,7 @@
 * [hasAllDefaultValues](textrun.md#hasalldefaultvalues)
 * [hasDefaultValue](textrun.md#hasdefaultvalue)
 * [indexOf](textrun.md#indexof)
+* [init](textrun.md#init)
 * [internalParse](textrun.md#protected-internalparse)
 * [internalRender](textrun.md#protected-internalrender)
 * [internalToJSON](textrun.md#protected-internaltojson)
@@ -156,9 +160,17 @@
 
 ###  constructor
 
-\+ **new TextRun**(): *[TextRun](textrun.md)*
+\+ **new TextRun**(`text?`: undefined | string): *[TextRun](textrun.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Inherited from [BaseTextBlock](basetextblock.md).[constructor](basetextblock.md#constructor)*
+
+*Overrides [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`text?` | undefined &#124; string |
 
 **Returns:** *[TextRun](textrun.md)*
 
@@ -177,6 +189,14 @@ ___
 • **_renderedElement**? : *HTMLElement*
 
 *Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+
+___
+
+###  ariaHidden
+
+• **ariaHidden**: *boolean* = false
+
+*Inherited from [BaseTextBlock](basetextblock.md).[ariaHidden](basetextblock.md#ariahidden)*
 
 ___
 
@@ -250,7 +270,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -299,6 +319,12 @@ ___
 ###  strikethrough
 
 • **strikethrough**: *boolean* = false
+
+___
+
+###  underline
+
+• **underline**: *boolean* = false
 
 ___
 
@@ -496,6 +522,12 @@ ___
         })
 
 *Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+
+___
+
+### `Static` underlineProperty
+
+▪ **underlineProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "underline", false)
 
 ___
 
@@ -853,9 +885,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
@@ -1143,6 +1181,22 @@ Name | Type |
 `cardElement` | [CardElement](cardelement.md) |
 
 **Returns:** *number*
+
+___
+
+###  init
+
+▸ **init**(`textDefinition`: [BaseTextDefinition](basetextdefinition.md)): *void*
+
+*Inherited from [BaseTextBlock](basetextblock.md).[init](basetextblock.md#init)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`textDefinition` | [BaseTextDefinition](basetextdefinition.md) |
+
+**Returns:** *void*
 
 ___
 
