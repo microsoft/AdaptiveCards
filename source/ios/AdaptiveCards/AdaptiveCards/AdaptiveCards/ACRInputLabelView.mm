@@ -107,6 +107,10 @@
         if (inputHandler.hasValidationProperties && errorMessage.empty()) {
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"The input has validation, but there is no associated error message, consider adding error message to the input"];
         }
+        
+        if (self.isRequired && (!self.label || !self.label.text.length)) {
+            [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
+        }
     }
     return self;
 }
