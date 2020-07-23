@@ -129,6 +129,12 @@ a.ac-anchor:visited:active {
     border: 1px solid red !important;
 }
 
+.ac-input.ac-toggleInput.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed {
+    outline: 1px solid red;
+}
+
 .ac-input.ac-textInput {
     resize: none;
 }
