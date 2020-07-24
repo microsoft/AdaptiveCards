@@ -155,15 +155,46 @@ The resultant JSON string would look something like:
 
 The above workflow mentions the client making a POST request to one REST service. In reality, the client makes an asynchronous call to all the REST services(one per platform) and sends each of them the data via HTTP POST. It then displays each screenshot as it receives it from each of the REST services.
 
-The details about the REST API and REST endpoint are given below:
+### Communication between the Flask App and the Driver Program(Javascript and .NET WPF)
+- The flask app receives a post request from the web interface/client app with the relevant data. 
+- It spins up a child process(a node script for javascript and a console app for WPF) and sends the JSON string it created via stdin and listens on the process's stdout. 
+- The child process reads the data from its stdin and renders the card. 
+- It then takes a screenshot and sends the results back via stdout and exits. 
+- The flask app receives these results since it was listening on the process's stdout. 
+- The flask app sends these results back to the web interface.
+- It must be noted that this approach works for .NET WPF due to the renderCardToImageAsync.
+    - We create a simple .NET console application.
+    - This app receives the data from the flask app via stdin. 
+    - It creates the adaptive card and then simply calls the renderCardToImageAsync instead of rendering the card. 
+    - It sends the results back to the flask app via stdin.
 
 ### Android, IOS and UWP communication
-It is quite difficult to start an android,iOS or a UWP app as a child process and communicate with it via stdin. As an alternative, we can instead create a REST server within the app that is capable of accepting POST requests. Then, we can simply have our flask app send a post request to our platform app and get a response. 
+- It is quite difficult to start an android,iOS or a UWP app as a child process and communicate with it via stdin. 
+- As an alternative, we can instead create a REST server within the app that is capable of accepting POST requests. 
+- Then, we simply have our flask app send a post request to our platform app and get a response. 
+- It must be noted that apart from the communication, the app would behave in a similar manner and parse a similar input format and send a similar output format. 
+- One drawback in this approach is that we have a single app that must handle all requests and render the card on its own UI to get a screenshot. 
 
-It must be noted that apart from the communication, the app would behave in a similar manner and parse a similar input format and send a similar output format. 
 
 ### Android and IOS templating
 Since Android and IOS do not support templating right now, we can send the non-templated cards by just filling the template field in the form. The Flask Apps for these two platforms can simply send this data to the app and get the response back.
+
+
+### Child processes vs REST Server(Driver level)
+It is entirely possible to alter the javascript and the .NET WPF Implementation and use the REST approach(as used in Android, iOS and UWP) instead of using child processes and pipes. There are several benefits in using pipes and child processes instead of creating an app that embeds a REST server.
+
+- Child processes and pipes mean that each post request is independent from the other post requests. This means if multiple users submit post requests, each would be handled independtly on its own thread. 
+- This is different from how android, iOS and UWP work. There is only a single application that embeds the server and this application is always running. The details are given below:
+
+    - When a user sends a post request for UWP, iOS or Android, the flask app sends a post request to the app. 
+    - This app takes the data and renders the card on its own UI. 
+    - It then takes a screenshot of the card and creates the base64 encoded string along with the errors and warnings.
+    - It removes the card from its layout.
+    - It sends the result back as response. 
+    - This approach basically means that the app is only able to process one request at a time.
+- The benefit of using child proceses is that each request can spin its own child process and communicate with its standard input. There is no sharing of resources between requests and concurrency issues. 
+- In an ideal case, we would use child processes for Android, UWP and iOS. However, due to the limitations of stdin on these platforms, we have to rely on the REST approach.
+
 
 ### REST API Specifications
 The following gives an example of one REST API. It must be noted that for version 1, all the REST API are almost identical with respect to their request body, response and type of request.
