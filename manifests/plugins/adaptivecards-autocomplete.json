@@ -1,0 +1,81 @@
+{
+	"name": "adaptivecards-autocomplete",
+	"description": "Extends Input.ChoiceSet by adding remote autocomplete from a backend API",
+	"icon": "",
+	"screenshot": "",
+	"author": "Microsoft",
+	"license": "MIT",
+	"status": "experimental",
+	"standardsTrack": {
+		"version": "1.4"
+	},
+	"version": "0.1",
+	"compatibility": {
+		"JavaScript": {
+			"adaptivecards": {
+				"version": "^2.0.0",
+				"plugin": {
+					"type": "npm",
+					"name": "adaptivecards-autocomplete",
+					"bundleLink": "https://unpkg.com/adaptivecards/dist/adaptivecards.min.js"
+				}
+			}
+		},
+		"DotNet": {
+			"AdaptiveCards.Rendering.Wpf": {
+				"version": "^1.0.0",
+				"plugin": {
+					"type": "NuGet",
+					"name": "AdaptiveCards.Plugins.AutoComplete.Wpf"
+				}
+			}
+		}
+	},
+	"contributes": {
+		"elements": {
+			"propertyPrefix": "autocomplete",
+			"Input.ChoiceSet": {
+				"properties": {
+					"autocomplete": {
+						"type": "object",
+						"fallbackStatus": "critical|automatic",
+						"description": "Describes how to populate the choices from a remote data source",
+						"properties": {
+							"data": {
+								"type": "uri",
+								"description": "The URL to fetch data from"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"hostConfig": {
+		"properties": {
+			"registries": {
+				"type": "array",
+				"description": "The list of registries to lookup templates",
+				"items": {
+					"type": "uri"
+				}
+			}
+		}
+	},
+	"examples": [
+		{
+			"type": "AdaptiveCard",
+			"version": "1.0",
+			"body": [
+				{
+					"type": "Input.ChoiceSet",
+					"id": "myChoices",
+					"label": "Select a user",
+					"-autocomplete": {
+						"data": "https://myapi.com/getUsers"
+					}
+				}
+			]
+		}
+	]
+}

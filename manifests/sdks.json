@@ -1,0 +1,51 @@
+{
+	"version": "2020-07-23",
+	"sdks": {
+		"JavaScript": {
+			"adaptivecards": {
+				"license": "MIT",
+				"description": "Parsing and rendering Adaptive Cards for browsers and JavaScript engines",
+				"package": {
+					"type": "npm",
+					"name": "adaptivecards"
+				},
+				"repository": {
+					"type": "git",
+					"url": "https://github.com/microsoft/AdaptiveCards.git",
+					"directory": "source/nodejs/adaptivecards"
+				},
+				"bugs": "https://github.com/microsoft/AdaptiveCards/issues"
+			}
+		},
+		"DotNet": {
+			"AdaptiveCards": {
+				"license": "MIT",
+				"description": "Parsing and serializing Adaptive Cards",
+				"package": {
+					"type": "NuGet",
+					"name": "AdaptiveCards"
+				},
+				"repository": {
+					"type": "git",
+					"url": "https://github.com/microsoft/AdaptiveCards.git",
+					"directory": "source/dotnet/AdaptiveCards"
+				},
+				"bugs": "https://github.com/microsoft/AdaptiveCards/issues"
+			},
+			"AdaptiveCards.Rendering.Wpf": {
+				"license": "MIT",
+				"description": "Rendering Adaptive Cards using the Windows Presentation Framework (WPF)",
+				"package": {
+					"type": "NuGet",
+					"name": "AdaptiveCards.Rendering.Wpf"
+				},
+				"repository": {
+					"type": "git",
+					"url": "https://github.com/microsoft/AdaptiveCards.git",
+					"directory": "source/dotnet/AdaptiveCards"
+				},
+				"bugs": "https://github.com/microsoft/AdaptiveCards/issues"
+			}
+		}
+	}
+}

@@ -59,7 +59,7 @@ Excerpt of the CSS property [`border-width`](https://github.com/mdn/browser-comp
 
 And a slightly more complex schema exists to describe JavaScript "builtin" APIs, such as [Array](https://github.com/mdn/browser-compat-data/blob/master/javascript/builtins/Array.json)
 
-Another metaphor from the web: Edge provides [`-ms-high-contast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/-ms-high-contrast), which is not currently part of the standard or on a standards track. The W3C makes it very clear on their websites the state of any extension and which extension works in which browsers:
+Another metaphor from the web: Edge provides [`-ms-high-contast`](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/-ms-high-contrast), which is not currently part of the standard or on a standards track. The MDN makes it very clear on their websites the state of any extension and which extension works in which browsers:
 
 > **Non-standard**
 > 
@@ -292,9 +292,12 @@ Other possibilities:
 * `adaptivecards-youtube` - built in fallback to an image with a selectAction
 * `adaptivecards-semanticelements` - explore a POC from a while back where elements can be `Data.X` which will lookup the template for that data type from the template service and automatically expand it
 * `adaptivecards-colorpicker` - with fallback to `Input.ChoiceSet`
+* `adaptivecards-fluenticons` including icon properties for ChoiceSet choices, Actions, etc
    
 
 ## Requirements
+
+> Project board tracking this work is here:  https://github.com/microsoft/AdaptiveCards/projects/25
 
 1. Designer support. If a Host supports a plugin the Designer should reflect that (where possible)
 2. Adaptive Cards website will auto-generate a page that lists the plugins and which platforms are supported for each
