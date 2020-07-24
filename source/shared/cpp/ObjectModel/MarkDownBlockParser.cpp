@@ -51,15 +51,6 @@ void MarkDownBlockParser::ParseBlock(std::stringstream& stream)
         m_parsedResult.AppendParseResult(listParser.GetParsedResult());
         break;
     }
-    {
-        ListParser listParser;
-        // do syntax check of list
-        listParser.Match(stream);
-        // append list result to the rest
-        m_parsedResult.AppendParseResult(listParser.GetParsedResult());
-        break;
-    }
-
     // handles list block
     case '*':
     {
