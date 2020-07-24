@@ -1,4 +1,36 @@
-# ConsistentCards
+# Consistent Cards
+
+## Table of Contents
+- [Overview](#overview)
+    - [Problem Statement](#Problem-Statement)
+    - [Existing Solution](#Existing-Solution)
+    - [Project Idea](#Project-Idea)
+    - [Requirements](#Requirements)
+- [Technology Decisions](#Technology-Decisions)
+- [Architecture Details](#Architecture-Details)
+    - [UserExperience(Interface Mockups):](#UserExperience(Interface-Mockups))
+    - [Architecture Diagram](#Architecture-Diagram)
+    - [Key Components](#Key-Components)
+- [Workflow](#Workflow)
+    - [Sequence Diagram](#Sequence-Diagram)
+    - [Workflow Details](#Workflow-Details)
+    - [Communication between the Flask App and the Driver Program(Javascript and .NET WPF)](#Communication-between-the-Flask-App-and-the-Driver-Program(Javascript-and-.NET-WPF))
+    - [Android, IOS and UWP communication](#Android,-IOS-and-UWP-communication)
+    - [Android-and-IOS-templating](#Android-and-IOS-templating)
+    - [Child processes vs REST Server(Driver level)](#Child-processes-vs-REST-Server(Driver-level))
+    - [REST API Specifications](#REST-API-Specifications)
+        - [Endpoint](#Endpoint)
+        - [Type-of-Request](#Type-of-Request)
+        - [URL Parameters](#URL-Parameters)
+        - [Request Body(form data)](#Request-Body(form-data))
+    - [Error Handling](#Error-Handling)
+- [Deployment Details](#Deployment-Details)
+- [Q/A](#Q/A)
+- [Appendix](#Appendix)
+    - [Current Testing Tools](#Current-Testing-Tools)
+
+        
+
 
 ## Overview
 ### Problem Statement
@@ -31,8 +63,8 @@ The following are some of the major requirements:
 3.	The rendering scripts (called by the REST service) are written natively to each platform. This allows us to make use of the rendering SDK for that platform.
 4.	NodeJs is chosen for the front-end web application. It allows us to easily make asynchronous calls to all the cloud hosted REST services. 
 
-## Archietcture Details
-### UserExperience/Interface Mockups: 
+## Architecture Details
+### UserExperience(Interface Mockups) 
 The following pictures show what the app aims to achieve. The final product might look different, but the functionality would be identical:
 
 - The user goes to the URL and enters the card data and card template 
@@ -46,6 +78,8 @@ The following pictures show what the app aims to achieve. The final product migh
  ![](assets/ConsistentCards/Architecture_updated.jpg)
 
 The above diagram gives the overall architecture of the project. It is supposed to give an idea of the overall architecture and does not mention all the platforms. However, the actual project must cover all the platforms that support adaptive cards. 
+
+### Key Components
 The following are the key components of the project along with their purpose:
 1.	There is a front-end web-based client app. We will refer to this as the web interface.
     *	This is written in Node Js. 
@@ -67,11 +101,15 @@ The following are the key components of the project along with their purpose:
     *	It sends a JSON containing the screenshot of the card(base 64 encoded) along with any errors(list of strings) back to the Flask App (REST API) via stdout.
     *	It is also hosted on the VM along with its corresponding Flask App (REST API).
 
+
+## Workflow
+### Sequence Diagram
 The current workflow of a request and response is shown below: 
 
 
 ![](assets/ConsistentCards/workFlow.jpg)
 
+### Workflow Details
 The current flow is as follows:
 
 1.	The user inputs the card template and card data JSON files/strings on the client web App. 
@@ -179,6 +217,8 @@ The above workflow mentions the client making a POST request to one REST service
 ### Android and IOS templating
 Since Android and IOS do not support templating right now, we can send the non-templated cards by just filling the template field in the form. The Flask Apps for these two platforms can simply send this data to the app and get the response back.
 
+If a user enters a templated version of a card then they should get an error message saying that templating is not supported on these platforms. This should be the case until templating is supported.
+
 
 ### Child processes vs REST Server(Driver level)
 It is entirely possible to alter the javascript and the .NET WPF Implementation and use the REST approach(as used in Android, iOS and UWP) instead of using child processes and pipes. There are several benefits in using pipes and child processes instead of creating an app that embeds a REST server.
@@ -209,7 +249,7 @@ POST
 #### URL Parameters
 None
 
-#### Request Body(form-data)
+#### Request Body(form data)
 | name     | type   | description                                         |
 |----------|--------|-----------------------------------------------------|
 | template | *string* | A JSON string that corresponds to the card template |
@@ -260,7 +300,7 @@ Ans. NodeJS allows us to make asynchronous calls to all the REST API quite easil
 
 
 ## Appendix
-### Current Testing Tools:
+### Current Testing Tools
 Currently there is no testing toolkit that works across all the platforms to test the cards on all platforms. The following is the list of the platforms currently supported by Adaptive Cards and the present toolkit to test the cards.
 1.	**JavaScript:** 
 The JavaScript designer tool is used by the Adaptive Cards Team as well as card authors and host app developers to design adaptive cards. The cards are rendered on the website using the RC renderer package.
