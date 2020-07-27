@@ -5264,6 +5264,7 @@ export class Container extends StylableCardElementContainer {
     //#endregion
 
     private _items: CardElement[] = [];
+    private _itemsHostElement?: HTMLElement;
 
     private insertItemAt(
         item: CardElement,
@@ -5278,7 +5279,7 @@ export class Container extends StylableCardElementContainer {
                     this._items.splice(index, 0, item);
                 }
 
-                if (this.renderedElement) {
+                if (this._itemsHostElement) {
                     CardElementContainer.removeRenderedItem(item);
 
                     let insertBeforeRenderedItem: CardElement | undefined = undefined;
@@ -5296,7 +5297,7 @@ export class Container extends StylableCardElementContainer {
                         index++;
                     }
         
-                    this.renderItem(item, this.renderedElement, insertBeforeRenderedItem);
+                    this.renderItem(item, this._itemsHostElement, insertBeforeRenderedItem);
                 } 
 
                 item.setParent(this);
@@ -5390,9 +5391,15 @@ export class Container extends StylableCardElementContainer {
                 break;
         }
 
+        this._itemsHostElement = document.createElement("div");
+        this._itemsHostElement.style.display = "flex";
+        this._itemsHostElement.style.flexDirection = "column";
+
+        element.appendChild(this._itemsHostElement);
+
         if (this._items.length > 0) {
             for (let item of this._items) {
-                this.renderItem(item, element);
+                this.renderItem(item, this._itemsHostElement);
             }
         }
         else {
@@ -5578,13 +5585,17 @@ export class Container extends StylableCardElementContainer {
     }
 
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
-        let insertBeforeIndex = this._items.indexOf(insertBefore);
+        if (item !== insertBefore) {
+            let insertBeforeIndex = this._items.indexOf(insertBefore);
 
-        this.insertItemAt(item, insertBeforeIndex, false);
+            this.insertItemAt(item, insertBeforeIndex, false);
+        }
     }
 
     insertItemAfter(item: CardElement, insertAfter: CardElement) {
-        this.insertItemAt(item, this._items.indexOf(insertAfter) + 1, false);
+        if (item !== insertAfter) {
+            this.insertItemAt(item, this._items.indexOf(insertAfter) + 1, false);
+        }
     }
 
     removeItem(item: CardElement): boolean {
