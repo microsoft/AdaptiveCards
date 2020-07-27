@@ -55,7 +55,7 @@ export class Column extends React.Component {
 		if (!Utils.isNullOrEmpty(this.column.items) && (this.column.isVisible !== false)) {
 			children = Registry.getManager().parseRegistryComponents(this.column.items, this.context.onParseError);
 		}
-		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.column.style, isFirst: index === 0 }));
+		return children.map((ChildElement, index) => React.cloneElement(ChildElement, { containerStyle: this.column.style, isFirst: index === 0 , columnWidth: this.column.width}));
 	}
 
 	/**

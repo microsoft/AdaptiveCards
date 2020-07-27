@@ -41,7 +41,6 @@
 
 			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 			designer.assetPath = "https://unpkg.com/adaptivecards-designer@latest/dist";
-			designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.OpenPayload).isVisible = false;
 
 			designer.attachTo(document.getElementById("designerRootHost"));
 			// initialize monaco editor and tell the Designer when it's been loaded

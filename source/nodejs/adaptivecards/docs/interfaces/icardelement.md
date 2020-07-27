@@ -29,31 +29,23 @@
 
 • **height**? : *"auto" | "stretch"*
 
-*Defined in [schema.ts:39](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L39)*
-
 ___
 
 ### `Optional` horizontalAlignment
 
 • **horizontalAlignment**? : *[HorizontalAlignment](../enums/horizontalalignment.md)*
 
-*Defined in [schema.ts:36](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L36)*
-
 ___
 
 ### `Optional` id
 
-• **id**? : *string*
-
-*Defined in [schema.ts:34](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L34)*
+• **id**? : *undefined | string*
 
 ___
 
 ### `Optional` separator
 
-• **separator**? : *boolean*
-
-*Defined in [schema.ts:38](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L38)*
+• **separator**? : *undefined | false | true*
 
 ___
 
@@ -61,12 +53,8 @@ ___
 
 • **spacing**? : *[Spacing](../enums/spacing.md)*
 
-*Defined in [schema.ts:37](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L37)*
-
 ___
 
 ### `Optional` speak
 
-• **speak**? : *string*
-
-*Defined in [schema.ts:35](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/schema.ts#L35)*
+• **speak**? : *undefined | string*

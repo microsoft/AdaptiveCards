@@ -28,8 +28,6 @@
 
 \+ **new ShowCardActionConfig**(`obj?`: any): *[ShowCardActionConfig](showcardactionconfig.md)*
 
-*Defined in [host-config.ts:161](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L161)*
-
 **Parameters:**
 
 Name | Type |
@@ -44,23 +42,17 @@ Name | Type |
 
 • **actionMode**: *[ShowCardActionMode](../enums/showcardactionmode.md)* = Enums.ShowCardActionMode.Inline
 
-*Defined in [host-config.ts:159](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L159)*
-
 ___
 
 ###  inlineTopMargin
 
 • **inlineTopMargin**: *number* = 16
 
-*Defined in [host-config.ts:160](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L160)*
-
 ___
 
 ### `Optional` style
 
-• **style**? : *string* = Enums.ContainerStyle.Emphasis
-
-*Defined in [host-config.ts:161](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L161)*
+• **style**? : *undefined | string* = Enums.ContainerStyle.Emphasis
 
 ## Methods
 
@@ -68,12 +60,10 @@ ___
 
 ▸ **toJSON**(): *object*
 
-*Defined in [host-config.ts:171](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L171)*
-
 **Returns:** *object*
 
 * **actionMode**: *string* = Enums.ShowCardActionMode[this.actionMode]
 
 * **inlineTopMargin**: *number* = this.inlineTopMargin
 
-* **style**: *string* = this.style
+* **style**: *undefined | string* = this.style
