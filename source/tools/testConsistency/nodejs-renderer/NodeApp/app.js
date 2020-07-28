@@ -18,7 +18,9 @@ var cardPayLoad = "";
 const resultJsonString = '{ "imageData": "", "errors": "", "warnings" : ""}';
 var resultJson = JSON.parse(resultJsonString);
 var errorList = [];
+var warningList = [];
 resultJson.errors = errorList;
+resultJson.warnings = warningList;
 
 app.get('/', function(req, res) {
   res.render('home.ejs', {

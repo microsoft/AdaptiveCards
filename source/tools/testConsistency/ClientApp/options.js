@@ -26,6 +26,12 @@ const optionsForAndroid = JSON.parse(JSON.stringify(optionsTemplate));
 optionsForAndroid["platformName"] = "Android";
 optionsForAndroid["options"]["port"] = 7000
 
-optionsArray = [JSON.stringify(optionsForNodeJs), JSON.stringify(optionsForWPF), JSON.stringify(optionsForAndroid)];
+
+const optionsForUWP = JSON.parse(JSON.stringify(optionsTemplate));
+optionsForUWP["platformName"] = "UWP";
+optionsForUWP["options"]["port"] = 7700;
+
+
+optionsArray = [JSON.stringify(optionsForNodeJs), JSON.stringify(optionsForWPF), JSON.stringify(optionsForAndroid), JSON.stringify(optionsForUWP)];
 
 module.exports = optionsArray;

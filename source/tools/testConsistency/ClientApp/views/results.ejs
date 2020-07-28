@@ -14,6 +14,7 @@
     <div id="0" class="results w3-container"  ></div>
     <div id="1" class="results w3-container" ></div>
     <div id="2" class="results w3-container" ></div>
+    <div id="3" class="results w3-container" ></div>
     <script>
       const errorList = <%-errorList %>;
       const warningList = <%-warningList %>;
@@ -24,12 +25,20 @@
           var platformName = platformNames[i].trim();
           var warnings = warningList[i];
           var errors = errorList[i];
+          var warningHtml = "";
+          var errorHTML = "";
+          warnings.forEach(element => {
+            warningHtml += "<li>" + element; 
+          });
+          errors.forEach(element => {
+            errorHTML += "<li>" + element; 
+          });
           newHTML.innerHTML   = '             \
           <div class="w3-container w3-center"><div id= '+ platformName+'Results'  +' class="w3-card-4">             \
                     <p class="platformNameHeading">'+platformName+'</p><img src = "data:image/png;base64,'+ imageList[i]+ '  "  <br>\
                     <p>The above is rendered on '+ platformNames[i]+' </p> \
-                    <p> Warnings: '+warnings +' </p>\
-                    <p> Errors: '+ errors + '</p></div>\
+                    <p> Warnings: <ol>'+warningHtml +'</ol> </p>\
+                    <p> Errors: <ol>'+ errorHTML + '</ol></p></div>\
                 </div>                          \
             ';
          document.getElementById(JSON.stringify(i)).appendChild(newHTML);

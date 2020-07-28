@@ -10,7 +10,6 @@ POST_URL = 'http://127.0.0.1:5000/'
 
 class TestFlaskApi(unittest.TestCase):
     def setUp(self):
-        #self.backup_items = deepcopy(app.items)  # no references!
         self.app = app.test_client()
         self.app.testing = True
 

@@ -61,7 +61,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\WPFRenderer\WPFDriver.csproj">
+    <ProjectReference Include="..\WPFDriver\WPFDriver.csproj">
       <Project>{15070d23-44c2-4046-9de6-cbd2e3822b13}</Project>
       <Name>WPFDriver</Name>
     </ProjectReference>

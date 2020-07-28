@@ -57,7 +57,7 @@ namespace WPFRendererTests
             StringWriter writer = new StringWriter(sb);
             Console.SetOut(writer);
             Assert.AreEqual(0, sb.Length);
-            WPFRenderer.Program.Main();
+            WPFDriver.Program.Main();
             Assert.AreNotEqual(0, sb.Length);
             Logger.LogMessage(string.Format("The renderer returned a non-empty result json string of size: {0}", sb.Length));
             JObject result = JObject.Parse(sb.ToString());

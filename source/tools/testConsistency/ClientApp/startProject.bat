@@ -18,6 +18,11 @@ cd ../android-renderer
 :: start the flask app on port 7000.
 :: The port number can be changed by changing 7000 to desired port
 START flask run -p 7000
+:: navigate to the directory of the flask app for android
+cd ../uwp-renderer 
+:: start the flask app on port 7700.
+:: The port number can be changed by changing 7000 to desired port
+START flask run -p 7700
 :: navigate to the directory of the web interface
 cd ../ClientApp
 :: start the node serve(runs on localhost:8000 by default)
