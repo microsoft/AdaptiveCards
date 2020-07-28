@@ -1,5 +1,11 @@
  // Copyright (c) Microsoft Corporation. All rights reserved. 
  // Licensed under the MIT License. 
+ 
+/**
+ * This app encompasses the client app or web interface where the user is able to 
+ * provide the input and see their card rendered across multiple platforms.
+ */ 
+
 const express = require("express");
 const path = require('path');
 const bodyParser = require('body-parser');

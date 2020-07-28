@@ -10,3 +10,12 @@ The web interface is the client app written in node js. This app allows the user
 - to configure the port for the web interface change the line that says `node server.js` to  `node server.js -p PORT ` where PORT is your chosen port number.
 - to configure the REST API/Flask Apps, change the line that says `flask run` to `flask run -p PORT` where PORT is your chosen port number.
  
+## Adding more platforms to the web interface
+Once you have the new platform up and running and accessible via an HTTP POST REST endpoint, it can be added to the client as follows:
+- Add the details about the REST end point and request details in `options.js`
+- Add the following code to `results.ejs`:
+   ```
+       <div id="i" class="results w3-container" ></div>
+
+   ```
+   where `i` indicates the total number of platforms added so far.

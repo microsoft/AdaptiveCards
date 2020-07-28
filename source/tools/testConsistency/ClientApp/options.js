@@ -1,5 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved. 
 // Licensed under the MIT License. 
+
+/**
+ * This file contains the options for each platform. An option is the json object that 
+ * contains details about the route, payload and header for each platform. To add another 
+ * platform, simply add the options for the payload and add a necessary div in the results.ejs
+ */
+
 const optionsTemplate = {
     platformName: "",
     options: {
