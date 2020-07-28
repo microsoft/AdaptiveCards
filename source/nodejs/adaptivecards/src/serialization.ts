@@ -882,7 +882,20 @@ export abstract class SerializableObject {
     }
 
     parse(source: PropertyBag, context?: BaseSerializationContext) {
+
+        // Handle all parsing plugins first
+        //  plugins.filter(p => p.events.contains("parse")).forEach(plugin => {
+        //     (source, context) = plugin.beforeParse(source,context);
+        // });
+
         this.internalParse(source, context ? context : new SimpleSerializationContext());
+
+
+        // Handle all after parsing plugins
+        // plugins.filter(p => p.events.contains("parse")).forEach(plugin => {
+        //     (source, context) = plugin.beforeParse(source,context);
+        // });
+
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {

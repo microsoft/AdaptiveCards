@@ -5,6 +5,8 @@ import * as Utils from "./utils";
 import * as Shared from "./shared";
 import { HostCapabilities } from "./host-capabilities";
 
+import * as Plugins from "./IPlugin";
+
 function parseHostConfigEnum(targetEnum: { [s: number]: string }, value: string | number, defaultValue: number): number {
     if (typeof value === "string") {
         let parsedValue = Utils.parseEnum(targetEnum, value, defaultValue);
@@ -586,6 +588,9 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+
+    // List to store our PLugins for the HostConfig
+    readonly pluginList: Plugins.IPlugin[];
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
