@@ -1,14 +1,14 @@
 // #include <iostream>
 // #include <memory>
-// #include <stdio.h>
-
+#include <stdio.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/numpy.h>
 #include <opencv2/opencv.hpp>
 #include <torch/extension.h>
 
 using namespace cv;
 // using namespace std;
-
-// namespace py = pybind11;
+namespace py = pybind11;
 
 // // Scale sizes
 // int
@@ -80,7 +80,7 @@ struct TensorWrapper
   }
 };
 
-cv::Mat cvMatrix()
+cv::Mat cvMatrix(cv::Mat const &img)
 {
   cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
   return cvmat;
@@ -94,15 +94,40 @@ torch::Tensor testTensor()
 
 torch::Tensor d_sigmoid(torch::Tensor z)
 {
+  std::cout << CV_8UC3;
   auto s = torch::sigmoid(z);
   return (1 - s) * s;
 }
+
+torch::Tensor numpy_uint8_3c_to_cv_mat(py::array_t<unsigned char> &input)
+{
+  cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
+  if (input.ndim() != 3)
+    throw std::runtime_error("3-channel image must be 3 dims ");
+
+  torch::Tensor tmat = torch::from_blob(cvmat.data, {10, 10});
+  return tmat;
+}
+
+// cv::Mat numpy_uint8_3c_to_cv_mat(py::array_t<unsigned char> &input)
+// {
+
+//   if (input.ndim() != 3)
+//     throw std::runtime_error("3-channel image must be 3 dims ");
+
+//   py::buffer_info buf = input.request();
+
+//   cv::Mat mat(buf.shape[0], buf.shape[1], CV_8UC3, (unsigned char *)buf.ptr);
+
+//   return mat;
+// }
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
   m.def("get_tensor", &testTensor, "Get a sample tensor.");
   m.def("sigmoid", &d_sigmoid, "Sigmoid activation");
   m.def("cvMatrix", &cvMatrix, "Sigmoid activation");
+  m.def("np_to_mat", &numpy_uint8_3c_to_cv_mat, "numpy_unit8 to 3 channel cv::Mat");
   py::class_<TensorWrapper>(m, "TensorWrapper")
       .def(py::init<>())
       .def_readwrite("tensor", &TensorWrapper::tensor)
