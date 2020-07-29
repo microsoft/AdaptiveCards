@@ -83,6 +83,7 @@
 		6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */; };
 		6B94F2E224C79C2700E2B310 /* ACRTextTelelphoneField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */; };
 		6B94F2E424C79CE000E2B310 /* ACRTextUrlField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */; };
+		6B94F2E824C8F15600E2B310 /* ACRTextNumberField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B94F2E724C8F15600E2B310 /* ACRTextNumberField.xib */; };
 		6B9AB2FD20D327DB005C8E15 /* ACRCellForCompactMode.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */; };
 		6B9AB30220D32A89005C8E15 /* ACRButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B9AB30120D32A89005C8E15 /* ACRButton.xib */; };
 		6B9AB31020DD82A2005C8E15 /* ACRTextView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -430,6 +431,7 @@
 		6B94F2DC24C7997D00E2B310 /* ACRTextInputHandler.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRTextInputHandler.mm; sourceTree = "<group>"; };
 		6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRTextTelelphoneField.xib; sourceTree = "<group>"; };
 		6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRTextUrlField.xib; sourceTree = "<group>"; };
+		6B94F2E724C8F15600E2B310 /* ACRTextNumberField.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRTextNumberField.xib; sourceTree = "<group>"; };
 		6B9AB2FB20D327DB005C8E15 /* ACRCellForCompactMode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRCellForCompactMode.xib; sourceTree = "<group>"; };
 		6B9AB30120D32A89005C8E15 /* ACRButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRButton.xib; sourceTree = "<group>"; };
 		6B9AB30E20DD82A2005C8E15 /* ACRTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTextView.h; sourceTree = "<group>"; };
@@ -805,7 +807,6 @@
 				6BBE841823CD184D00ECA586 /* ACOWarning.h */,
 				6BBE841723CD184D00ECA586 /* ACOWarning.mm */,
 				6B1147D01F32E53A008846EC /* ACRActionDelegate.h */,
-				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6BBE841623CD184D00ECA586 /* ACREnums.h */,
 				F42979401F322C3E00E89914 /* ACRErrors.h */,
 				F42979411F322C3E00E89914 /* ACRErrors.mm */,
@@ -1027,6 +1028,7 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B22425B21E80647000ACDA1 /* ACOParseContext.h */,
 				6B22425C21E80647000ACDA1 /* ACOParseContext.mm */,
 				6B22425A21E80647000ACDA1 /* ACOParseContextPrivate.h */,
@@ -1149,6 +1151,7 @@
 				6BF430732190DCBF0068E432 /* ACRQuickActionView.xib */,
 				6B5E9CBE24B84E7300757882 /* ACRTextEmailField.xib */,
 				F460324020757F38006C5358 /* ACRTextField.xib */,
+				6B94F2E724C8F15600E2B310 /* ACRTextNumberField.xib */,
 				6B94F2E124C79C2700E2B310 /* ACRTextTelelphoneField.xib */,
 				6B94F2E324C79CE000E2B310 /* ACRTextUrlField.xib */,
 				6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */,
@@ -1418,6 +1421,7 @@
 			files = (
 				6BF430742190DCBF0068E432 /* ACRQuickActionView.xib in Resources */,
 				6B5D2418212E1CF80010EB07 /* checked-checkbox-24.png in Resources */,
+				6B94F2E824C8F15600E2B310 /* ACRTextNumberField.xib in Resources */,
 				6BF4307C219126CD0068E432 /* ACRQuickActionMultilineView.xib in Resources */,
 				F460324520758583006C5358 /* ACRDatePicker.xib in Resources */,
 				6B14FC61211BBBEA00A11CC5 /* ACRPickerView.xib in Resources */,
