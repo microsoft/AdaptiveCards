@@ -1,11 +1,11 @@
-// // #include <iostream>
-// // #include <memory>
-// // #include <stdio.h>
+// #include <iostream>
+// #include <memory>
+// #include <stdio.h>
 
-// // #include <opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include <torch/extension.h>
 
-// using namespace cv;
+using namespace cv;
 // using namespace std;
 
 // namespace py = pybind11;
@@ -62,38 +62,29 @@
 //   std::cout << "ok\n";
 // }
 
-// // struct TensorWrapper
-// // {
-// //   TensorWrapper()
-// //   {
-// //     tensor = torch::ones({3, 3}, torch::kInt32);
-// //     cvmat = cv::Mat::zeros(10, 10, CV_32F);
-// //   }
+struct TensorWrapper
+{
+  TensorWrapper()
+  {
+    tensor = torch::ones({3, 3}, torch::kInt32);
+    cvmat = cv::Mat::zeros(10, 10, CV_32F);
+  }
 
-// //   int size;
-// //   torch::Tensor tensor;
-// //   cv::Mat cvmat;
+  int size;
+  torch::Tensor tensor;
+  cv::Mat cvmat;
 
-// //   int myfunc()
-// //   {
-// //     return 0;
-// //   }
-// // };
+  int myfunc()
+  {
+    return 0;
+  }
+};
 
-// // PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
-// // {
-// //   py::class_<TensorWrapper>(m, "TensorWrapper")
-// //       .def(py::init<>())
-// //       .def_readwrite("tensor", &TensorWrapper::tensor)
-// //       .def_readwrite("size", &TensorWrapper::size)
-// //       .def_readwrite("cvmat", &TensorWrapper::cvmat);
-// // }
-
-// cv::Mat cvMatrix()
-// {
-//   cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
-//   return cvmat;
-// }
+cv::Mat cvMatrix()
+{
+  cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
+  return cvmat;
+}
 
 torch::Tensor testTensor()
 {
@@ -111,4 +102,10 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
   m.def("get_tensor", &testTensor, "Get a sample tensor.");
   m.def("sigmoid", &d_sigmoid, "Sigmoid activation");
+  m.def("cvMatrix", &cvMatrix, "Sigmoid activation");
+  py::class_<TensorWrapper>(m, "TensorWrapper")
+      .def(py::init<>())
+      .def_readwrite("tensor", &TensorWrapper::tensor)
+      .def_readwrite("size", &TensorWrapper::size)
+      .def_readwrite("cvmat", &TensorWrapper::cvmat);
 }

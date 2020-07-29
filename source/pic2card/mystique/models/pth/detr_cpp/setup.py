@@ -9,9 +9,9 @@ setup(name="detr_infer",
     ext_modules=[cpp_extension.CppExtension(
         name='detr_infer',
         sources=['detr_infer.cpp'],
-        # libraries=["opencv_core"],
-        # include_dirs=[opencv_inc_dir],
-        # library_dirs=[opencv_lib_dir]
+        libraries=["opencv_core"],
+        include_dirs=[opencv_inc_dir],
+        library_dirs=[opencv_lib_dir]
         #extra_compile_args=["-D_GLIBCXX_USE_CXX11_ABI=1"]
         )
     ],
