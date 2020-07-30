@@ -75,7 +75,7 @@ The following pictures show what the app aims to achieve. The final product migh
   ![](assets/ConsistentCards/result.png)
 
 ### Architecture Diagram 
- ![](assets/ConsistentCards/Architecture_updated.jpg)
+ ![](assets/ConsistentCards/newArchitecture.jpg)
 
 The above diagram gives the overall architecture of the project. It is supposed to give an idea of the overall architecture and does not mention all the platforms. However, the actual project must cover all the platforms that support adaptive cards. 
 
@@ -104,10 +104,18 @@ The following are the key components of the project along with their purpose:
 
 ## Workflow
 ### Sequence Diagram
-The current workflow of a request and response is shown below: 
+**JavaScript and .NET WPF**
+
+The current workflow of a request and response on JavaScript and .NET WPF is shown below: 
 
 
-![](assets/ConsistentCards/workFlow.jpg)
+![](assets/ConsistentCards/Javascript.jpg)
+
+**Android, UWP and iOS**
+
+The current workflow of a request and response on UWP, Android and iOS is shown below: 
+
+![](assets/ConsistentCards/UWP.jpg)
 
 ### Workflow Details
 The current flow is as follows:
@@ -159,7 +167,7 @@ The current flow is as follows:
         
     *(One of the benefits of using the above format is its extensibility. We can 	     easily allow the user to supply a host config and add another field to accommodate it in our JSON string above.)* 
 
-4.	The flask app then writes/prints this JSON string to the standard output and calls a specific driver program(for instance the nodejs driver) for a specific platform.
+4.	The flask app then writes/prints this JSON string to the standard output/sends it as an HTTP POST(depending on the platform) and calls a specific driver program(for instance the nodejs driver) for a specific platform.
 
 5.	The driver creates a new JSON string with fields for the image and errors as shown below: 
     
