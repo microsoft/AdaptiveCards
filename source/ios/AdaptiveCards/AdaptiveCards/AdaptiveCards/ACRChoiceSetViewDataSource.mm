@@ -99,13 +99,14 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
         cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
-
+    
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-
+    
     return cell;
 }
 
@@ -147,9 +148,10 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
-
-    [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
+
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -251,7 +253,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (float)getNonInputWidth:(UITableViewCell *)cell
 {
-    return _spacing * 3 + cell.imageView.image.size.width;
+    return cell.separatorInset.left + cell.indentationWidth + cell.accessoryView.frame.size.width + cell.imageView.image.size.width;
 }
 
 @synthesize isRequired;
