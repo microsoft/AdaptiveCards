@@ -298,13 +298,16 @@ First Version:
 
 ## Q/A
 1.	Why is a blocking API used over non-blocking API?
-Ans. Currently, the aim of this project is to allow users to provide a JSON input and see how their card would render across all platforms. The current blocking API design easily accomplishes this without having to store the user requests or information somewhere. The request takes a few seconds at most to complete. Therefore, the blocking API is chosen since it does not take long to process a user’s requests. 
+
+    Ans. Currently, the aim of this project is to allow users to provide a JSON input and see how their card would render across all platforms. The current blocking API design easily accomplishes this without having to store the user requests or information somewhere. The request takes a few seconds at most to complete. Therefore, the blocking API is chosen since it does not take long to process a user’s requests. 
 
 2.	Why is Python-Flask chosen for the REST API vs other frameworks such as nodeJs?
-Ans. Each REST API calls a driver program that can render the adaptive card. The REST API supplies the JSON data over std out and gets the result back via stdin. Python has the subprocess module that provides functions which can easily achieve this. The subprocess module allows us to make calls to different scripts from within python, supply them data via stdin and capture anything the scripts output to stdout. 
+
+    Ans. Each REST API calls a driver program that can render the adaptive card. The REST API supplies the JSON data over std out and gets the result back via stdin. Python has the subprocess module that provides functions which can easily achieve this. The subprocess module allows us to make calls to different scripts from within python, supply them data via stdin and capture anything the scripts output to stdout. 
 
 3.	Why is the client app written in nodeJS?
-Ans. NodeJS allows us to make asynchronous calls to all the REST API quite easily. We can use node promises and render each result on the client app as soon as we get it.
+
+    Ans. NodeJS allows us to make asynchronous calls to all the REST API quite easily. We can use node promises and render each result on the client app as soon as we get it.
 
 
 ## Appendix
