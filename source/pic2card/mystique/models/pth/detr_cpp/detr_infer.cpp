@@ -1,14 +1,4 @@
-// #include <iostream>
-// #include <memory>
-#include <stdio.h>
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
-#include <opencv2/opencv.hpp>
 #include <torch/extension.h>
-
-using namespace cv;
-// using namespace std;
-namespace py = pybind11;
 
 // // Scale sizes
 // int
@@ -62,52 +52,62 @@ namespace py = pybind11;
 //   std::cout << "ok\n";
 // }
 
-struct TensorWrapper
-{
-  TensorWrapper()
-  {
-    tensor = torch::ones({3, 3}, torch::kInt32);
-    cvmat = cv::Mat::zeros(10, 10, CV_32F);
-  }
+// struct TensorWrapper
+// {
+//   TensorWrapper()
+//   {
+//     tensor = torch::ones({3, 3}, torch::kInt32);
+//     cvmat = cv::Mat::zeros(10, 10, CV_32F);
+//   }
 
-  int size;
-  torch::Tensor tensor;
-  cv::Mat cvmat;
+//   int size;
+//   torch::Tensor tensor;
+//   cv::Mat cvmat;
 
-  int myfunc()
-  {
-    return 0;
-  }
-};
+//   int myfunc()
+//   {
+//     return 0;
+//   }
+// };
 
-cv::Mat cvMatrix(cv::Mat const &img)
-{
-  cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
-  return cvmat;
-}
+// cv::Mat cvMatrix()
+// {
+//   cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
+//   std::cout << "--> " << CV_8UC3 << std::endl;
+//   return cvmat;
+// }
 
 torch::Tensor testTensor()
 {
-  torch::Tensor tensor = torch::ones({3, 3}, torch::kInt32);
-  return tensor;
+    torch::Tensor tensor = torch::ones({3, 3}, torch::kInt32);
+    return tensor;
 }
 
 torch::Tensor d_sigmoid(torch::Tensor z)
 {
-  std::cout << CV_8UC3;
-  auto s = torch::sigmoid(z);
-  return (1 - s) * s;
+    auto s = torch::sigmoid(z);
+    return (1 - s) * s;
 }
 
-torch::Tensor numpy_uint8_3c_to_cv_mat(py::array_t<unsigned char> &input)
+cv::Mat addmat(cv::Mat &lhs, cv::Mat &rhs)
 {
-  cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
-  if (input.ndim() != 3)
-    throw std::runtime_error("3-channel image must be 3 dims ");
-
-  torch::Tensor tmat = torch::from_blob(cvmat.data, {10, 10});
-  return tmat;
+    return lhs + rhs;
 }
+
+// torch::Tensor numpy_uint8_3c_to_cv_mat(py::array input)
+// {
+//   cv::Mat cvmat = cv::Mat::zeros(10, 10, CV_32F);
+//   if (input.ndim() != 3)
+//     throw std::runtime_error("3-channel image must be 3 dims ");
+
+//   py::buffer_info buf = input.request();
+//   std::cout << "Buff shape: " << buf.shape[0] << " " << buf.shape[1] << " --- " << buf.ptr << " -> " << CV_32F << std::endl;
+//   cv::Mat mat(buf.shape[0], buf.shape[1], CV_8UC3, (unsigned char *)buf.ptr);
+//   // cv::Mat mat(buf.shape[0], buf.shape[1], 16, (unsigned char *)buf.ptr);
+
+//   torch::Tensor tmat = torch::from_blob(cvmat.data, {10, 10});
+//   return tmat;
+// }
 
 // cv::Mat numpy_uint8_3c_to_cv_mat(py::array_t<unsigned char> &input)
 // {
@@ -124,13 +124,24 @@ torch::Tensor numpy_uint8_3c_to_cv_mat(py::array_t<unsigned char> &input)
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
-  m.def("get_tensor", &testTensor, "Get a sample tensor.");
-  m.def("sigmoid", &d_sigmoid, "Sigmoid activation");
-  m.def("cvMatrix", &cvMatrix, "Sigmoid activation");
-  m.def("np_to_mat", &numpy_uint8_3c_to_cv_mat, "numpy_unit8 to 3 channel cv::Mat");
-  py::class_<TensorWrapper>(m, "TensorWrapper")
-      .def(py::init<>())
-      .def_readwrite("tensor", &TensorWrapper::tensor)
-      .def_readwrite("size", &TensorWrapper::size)
-      .def_readwrite("cvmat", &TensorWrapper::cvmat);
+    m.def("get_tensor", &testTensor, "Get a sample tensor.");
+    m.def("sigmoid", &d_sigmoid, "Sigmoid activation");
+    // m.def("cvMatrix", &cvMatrix, "Sigmoid activation");
+    m.def("addmat", &addmat, "add two point");
+    // m.def("np_to_mat", &numpy_uint8_3c_to_cv_mat, "numpy_unit8 to 3 channel cv::Mat");
+    // py::class_<TensorWrapper>(m, "TensorWrapper")
+    //     .def(py::init<>())
+    //     .def_readwrite("tensor", &TensorWrapper::tensor)
+    //     .def_readwrite("size", &TensorWrapper::size)
+    //     .def_readwrite("cvmat", &TensorWrapper::cvmat);
+
+    // m.def("base64_fn",
+    //       [](const std::string &s) {
+    //         std::cout << "utf-8 is icing on the cake.\n";
+    //         //std::cout << s << std::endl;
+
+    //         std::string out;
+    //         macaron::Base64::Decode(s, &&out);
+    //         std::cout << out.length() << std::endl;
+    //       });
 }
