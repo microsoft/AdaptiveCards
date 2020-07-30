@@ -10,6 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -19,8 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
+
 
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -181,7 +182,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         wrapper.addView(imageView);
         tagContent.SetStretchContainer(wrapper);
 
-        // Allow wrapper layout to grow if height is stretch
+        // Grow wrapper layout if height is stretch (assumes the parent is a vertical LinearLayout)
         if (image.GetHeight() == HeightType.Stretch)
         {
             wrapper.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
@@ -191,8 +192,11 @@ public class ImageRenderer extends BaseCardElementRenderer
             wrapper.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
-        int viewId = View.generateViewId();
-        imageView.setId(viewId);
+        // ConstraintLayout requires unique id
+        if(imageView.getId() == View.NO_ID) {
+            imageView.setId(View.generateViewId());
+        }
+
         long explicitWidth = image.GetPixelWidth();
         long explicitHeight = image.GetPixelHeight();
         ImageSize imageSize = image.GetImageSize();
@@ -201,55 +205,62 @@ public class ImageRenderer extends BaseCardElementRenderer
         // Set horizontal alignment
         if (image.GetHorizontalAlignment() == HorizontalAlignment.Center)
         {
-            imageConstraints.setHorizontalBias(viewId, 0.5f);
+            imageConstraints.setHorizontalBias(imageView.getId(), 0.5f);
         }
         else if (image.GetHorizontalAlignment() == HorizontalAlignment.Right)
         {
-            imageConstraints.setHorizontalBias(viewId, 1);
+            imageConstraints.setHorizontalBias(imageView.getId(), 1);
         }
         else
         {
-            imageConstraints.setHorizontalBias(viewId, 0);
+            imageConstraints.setHorizontalBias(imageView.getId(), 0);
         }
 
-        // By default, scale image
+        // By default, scale image and maintain aspect ratio
         imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ImageView.ScaleType.FIT_START);
-        imageConstraints.connect(viewId, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        imageConstraints.connect(viewId, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
-        imageConstraints.connect(viewId, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-        imageConstraints.constrainWidth(viewId, ConstraintSet.MATCH_CONSTRAINT);
-        imageConstraints.constrainHeight(viewId, ConstraintSet.WRAP_CONTENT);
 
-        // explicit height and/or width given
+        // By default, constrain view to top of parent, and stretch width to fill parent
+        imageConstraints.connect(imageView.getId(), ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
+        imageConstraints.connect(imageView.getId(), ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+        imageConstraints.connect(imageView.getId(), ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+        imageConstraints.constrainWidth(imageView.getId(), ConstraintSet.MATCH_CONSTRAINT);
+        imageConstraints.constrainHeight(imageView.getId(), ConstraintSet.WRAP_CONTENT);
+
+        // Explicit height and/or width given
         if (explicitWidth != 0 || explicitHeight != 0)
         {
             if (explicitWidth != 0 && explicitHeight != 0)
             {
+                // If both are set, ignore aspect ratio
                 imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             }
             if (explicitWidth != 0)
             {
+                // Stretch width + max width = exact width
                 imageConstraints.constrainMaxWidth(imageView.getId(), Util.dpToPixels(context, explicitWidth));
             }
             if (explicitHeight != 0)
             {
+                // Exact height
                 imageConstraints.constrainHeight(imageView.getId(), Util.dpToPixels(context, explicitHeight));
             }
         }
-        // semantic size from host config
+        // Semantic size from host config
         else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
         {
+            // Stretch width + max width = exact width
             imageConstraints.constrainMaxWidth(imageView.getId(), getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
         }
-        // don't scale image
+        // Don't scale image
         else if (imageSize == ImageSize.Auto || imageSize == ImageSize.None)
         {
-            imageConstraints.constrainWidth(viewId, ConstraintSet.WRAP_CONTENT);
+            // Disable stretch width
+            imageConstraints.constrainWidth(imageView.getId(), ConstraintSet.WRAP_CONTENT);
         }
         else if (imageSize != ImageSize.Stretch)
         {
-            // TODO: Instead of failing, proceed to render w/ default size "auto"
+            // TODO: Don't fail. Provide warning and then make a best-effort render w/ size "auto"
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 

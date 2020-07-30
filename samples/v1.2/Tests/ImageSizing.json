@@ -15,6 +15,18 @@
 	{
 	  "type": "Image",
 	  "url": "https://picsum.photos/id/133/300/200",
+	  "size": "Small",
+	  "horizontalAlignment": "Center"
+	},
+	{
+	  "type": "Image",
+	  "url": "https://picsum.photos/id/133/300/200",
+	  "size": "Small",
+	  "horizontalAlignment": "Right"
+	},
+	{
+	  "type": "Image",
+	  "url": "https://picsum.photos/id/133/300/200",
 	  "size": "Medium"
 	},
 	{
@@ -24,7 +36,8 @@
 	},
 	{
 	  "type": "Image",
-	  "url": "https://picsum.photos/id/133/300/200"
+	  "url": "https://picsum.photos/id/133/300/200",
+	  "size": "Auto"
 	},
 	{
 	  "type": "Image",
