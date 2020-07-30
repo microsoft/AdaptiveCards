@@ -40,11 +40,11 @@
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     ACRNumericTextField *numInput = [bundle loadNibNamed:@"ACRTextNumberField" owner:rootView options:nil][0];
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
-    numInput.text = [NSString stringWithFormat:@"%d", numInputBlck->GetValue()];
     
     ACRNumberInputHandler *numberInputHandler = [[ACRNumberInputHandler alloc] init:acoElem];
     
     numInput.delegate = numberInputHandler;
+    numInput.text = numberInputHandler.text;
     
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 

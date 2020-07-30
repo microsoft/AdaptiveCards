@@ -18,17 +18,17 @@ Json::Value NumberInput::SerializeToJsonValue() const
 
     if (m_min)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = *m_min;
     }
 
     if (m_max)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = *m_max;
     }
 
     if (m_value)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = *m_value;
     }
 
     if (!m_placeholder.empty())
