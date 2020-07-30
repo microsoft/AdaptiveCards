@@ -63,3 +63,6 @@ MODEL_REGISTRY = {
 }
 
 ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
+
+# Noise objects removal IOU threshold
+IOU_THRESHOLD = 0.5
