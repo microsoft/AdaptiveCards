@@ -69,7 +69,7 @@ The following pictures show what the app aims to achieve. The final product migh
 
 - The user goes to the URL and enters the card data and card template 
 
-  ![](assets/ConsistentCards/landingPageWithData.png)
+  ![](assets/ConsistentCards/landingPageWithData.jpg)
 
 - The user is shown pictures of what their card looks like when it’s rendered across the different platforms along with any errors that may have been encountered:
   ![](assets/ConsistentCards/result.png)
