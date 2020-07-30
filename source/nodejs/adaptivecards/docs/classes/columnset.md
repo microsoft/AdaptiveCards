@@ -162,6 +162,8 @@
 
 *Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
 
+Initializes a new SerializableObject instance.
+
 **Returns:** *[ColumnSet](columnset.md)*
 
 ## Properties
@@ -172,6 +174,8 @@
 
 *Inherited from [CardObject](cardobject.md).[_parent](cardobject.md#protected-optional-_parent)*
 
+The parent of this object. Do NOT set explicitly. This field is handled internally.
+
 ___
 
 ### `Protected` `Optional` _renderedElement
@@ -179,6 +183,8 @@ ___
 • **_renderedElement**? : *HTMLElement*
 
 *Inherited from [CardObject](cardobject.md).[_renderedElement](cardobject.md#protected-optional-_renderedelement)*
+
+The rendered DOM element for this object. Do NOT set explicitly. This field is handled internally.
 
 ___
 
@@ -212,6 +218,11 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[height](cardelement.md#height)*
 
+Specifies the height of this element withing its container. Some containers (such as Columns
+or Containers with a specified `minHeight` property) may be taller than is required by their
+content. In those cases, the `height` property allows for precise placement of this card element
+inside of its container.
+
 ___
 
 ###  horizontalAlignment
@@ -219,6 +230,8 @@ ___
 • **horizontalAlignment**: *[HorizontalAlignment](../enums/horizontalalignment.md)*
 
 *Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#horizontalalignment)*
+
+Specifies how this element is horizontally aligned within its container.
 
 ___
 
@@ -228,6 +241,8 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[id](cardobject.md#optional-id)*
 
+The id of this object.
+
 ___
 
 ###  maxVersion
@@ -235,6 +250,8 @@ ___
 • **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+
+The maximum Adaptive Card schema version supported by serializable objects.
 
 ___
 
@@ -252,6 +269,9 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)*
 
+This event allows a consuming application to pre-process the value of a property before it is rendered.
+This is useful for text processing, for instance.
+
 ___
 
 ###  separator
@@ -260,6 +280,10 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[separator](cardelement.md#separator)*
 
+Specifies if there should be a visible separator between this element and the one before it.
+A visible separator is never displayed for the first element in a container, even if
+`separator` is set to `true`.
+
 ___
 
 ###  spacing
@@ -267,6 +291,8 @@ ___
 • **spacing**: *[Spacing](../enums/spacing.md)*
 
 *Inherited from [CardElement](cardelement.md).[spacing](cardelement.md#spacing)*
+
+Specified the space between this element and the one that comes before it.
 
 ___
 
@@ -291,6 +317,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-heightproperty)*
 
+The definition of the `height` property.
+
 ___
 
 ### `Static` horizontalAlignmentProperty
@@ -303,6 +331,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-horizontalalignmentproperty)*
 
+The definition of the `horizontalAlignment` property.
+
 ___
 
 ### `Static` idProperty
@@ -310,6 +340,8 @@ ___
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
 *Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+
+The definition of the `id` property.
 
 ___
 
@@ -319,6 +351,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
 
+The definition of the `isVisible` property.
+
 ___
 
 ### `Static` langProperty
@@ -326,6 +360,8 @@ ___
 ▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
 
 *Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-langproperty)*
+
+The definition of the `lang` property.
 
 ___
 
@@ -343,6 +379,9 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
 
+This static event allows consuming applications to register to register custom properties to a `SerializableObject` schema.
+Note that while this event technically allows properties to be removed from a schema, it is not recommended to do so.
+
 ___
 
 ### `Static` requiresProperty
@@ -350,9 +389,12 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
+
+The definition of the `requires` property.
 
 ___
 
@@ -370,6 +412,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-separatorproperty)*
 
+The definition of the `separator` property
+
 ___
 
 ### `Static` spacingProperty
@@ -381,6 +425,8 @@ ___
         Enums.Spacing.Default)
 
 *Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-spacingproperty)*
+
+The definition of the `spacing` property.
 
 ___
 
@@ -415,6 +461,8 @@ ___
         })
 
 *Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+
+The definition of the `type` property
 
 ## Accessors
 
@@ -568,11 +616,15 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
 
+Gets a value indicating if this element is visible.
+
 **Returns:** *boolean*
 
 • **set isVisible**(`value`: boolean): *void*
 
 *Inherited from [CardElement](cardelement.md).[isVisible](cardelement.md#isvisible)*
+
+Sets a value indicating if this element is visible.
 
 **Parameters:**
 
@@ -590,11 +642,17 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
 
+Gets the locale this card element is authored in. Each individual element can have its own
+`lang` value, although in general `lang` is defined at the Adaptive Card level. If an element
+doesn't have an explicit `lang` value, the `lang` of its parent is returned.
+
 **Returns:** *string | undefined*
 
 • **set lang**(`value`: string | undefined): *void*
 
 *Inherited from [CardElement](cardelement.md).[lang](cardelement.md#lang)*
+
+Sets the locale this card element is authored in.
 
 **Parameters:**
 
@@ -652,6 +710,8 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[renderedElement](cardobject.md#renderedelement)*
 
+Gets the rendered DOM element for this object. `renderedElement` is initialized after the object has been rendered.
+
 **Returns:** *HTMLElement | undefined*
 
 ___
@@ -661,6 +721,8 @@ ___
 • **get requires**(): *HostCapabilities*
 
 *Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
+
+The list of capabilities required by this object.
 
 **Returns:** *HostCapabilities*
 
@@ -806,6 +868,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[createPlaceholderElement](cardelement.md#protected-createplaceholderelement)*
 
+Creates a placeholder DOM element in case this element is dropped. This is used only in design mode.
+
 **Returns:** *HTMLElement*
 
 ___
@@ -900,13 +964,17 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
 
+Gets the value of a custom property.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
+Name | Type | Description |
+------ | ------ | ------ |
+`name` | string | The custom property to get the value of. |
 
 **Returns:** *any*
+
+The value of the custom property.
 
 ___
 
@@ -1128,7 +1196,11 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[getRootObject](cardobject.md#getrootobject)*
 
+Walks the parent tree to find the root object this object is a child of. Typically the root object is the Adaptive Card.
+
 **Returns:** *[CardObject](cardobject.md)*
+
+The root object this object is a child of. If this object doesn't have a parent, then it is its own root.
 
 ___
 
@@ -1138,7 +1210,11 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
 
+Gets the schema of this serializable object.
+
 **Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+The schema of this serializable object.
 
 ___
 
@@ -1160,13 +1236,17 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
 
+Gets the value of the specified property.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
+Name | Type | Description |
+------ | ------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) | The property to get the value of. |
 
 **Returns:** *any*
+
+The value of the property.
 
 ___
 
@@ -1176,7 +1256,11 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
 
+Determines if all the properties of this serializable object have their default values.
+
 **Returns:** *boolean*
+
+`true` if all the properties have their default value, `false` otherwise.
 
 ___
 
@@ -1186,13 +1270,17 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
 
+Determines if the specified property has its default value.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
+Name | Type | Description |
+------ | ------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) | The property to check. |
 
 **Returns:** *boolean*
+
+`true` if the property has its default value, `false` otherwise.
 
 ___
 
@@ -1376,6 +1464,8 @@ ___
 
 *Inherited from [CardElement](cardelement.md).[isDisplayed](cardelement.md#protected-isdisplayed)*
 
+Indicates if this crd element id displayed, e.g. if it is rendered and visible on screen.
+
 **Returns:** *boolean*
 
 ___
@@ -1539,14 +1629,18 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)*
 
+Pre-processes the value of a property by invoking the `onPreProcessPropertyValue` event, if set.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`propertyValue?` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) | The property to pre-process the value of. |
+`propertyValue?` | any | The current value of the property. This value might itself be a processed version of the property's raw value. |
 
 **Returns:** *any*
+
+The processed value of the property.
 
 ___
 
@@ -1594,6 +1688,8 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
 
+Resets this object by reverting all its properties to their default values.
+
 **Returns:** *void*
 
 ___
@@ -1620,12 +1716,14 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
 
+Allows a consuming application to set custom properties on any serializable object instance.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`name` | string |
-`value` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`name` | string | The name of the custom property to set. |
+`value` | any | The value of the custom property.  |
 
 **Returns:** *void*
 
@@ -1653,11 +1751,14 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[setParent](cardobject.md#setparent)*
 
+Sets the parent of this object. Derived classes that hold references to other CardObject instances MUST sets those
+objects' parent.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | [CardObject](cardobject.md) &#124; undefined |
+Name | Type | Description |
+------ | ------ | ------ |
+`value` | [CardObject](cardobject.md) &#124; undefined | The new parent of this object.  |
 
 **Returns:** *void*
 
@@ -1669,11 +1770,13 @@ ___
 
 *Inherited from [CardObject](cardobject.md).[setShouldFallback](cardobject.md#setshouldfallback)*
 
+Marks this object for fallback. This method is used during deserialization and has no effect in other contexts. Do not use.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`value` | boolean |
+Name | Type | Description |
+------ | ------ | ------ |
+`value` | boolean | `true` to mark this object for fallback.  |
 
 **Returns:** *void*
 
@@ -1685,12 +1788,14 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
 
+Sets the value of a property.
+
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`value` | any |
+Name | Type | Description |
+------ | ------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) | The property to set the value of. |
+`value` | any | The new value of the property.  |
 
 **Returns:** *void*
 
@@ -1701,6 +1806,11 @@ ___
 ▸ **shouldFallback**(): *boolean*
 
 *Inherited from [CardObject](cardobject.md).[shouldFallback](cardobject.md#shouldfallback)*
+
+Indicates if this object should fall back, for example if its required capabilities are not satisfied. This method is
+only meaningful during deserialization.
+
+**`returns&#x60;true&#x60;`** if this object should fall back, `false` otherwise.
 
 **Returns:** *boolean*
 
@@ -1791,5 +1901,9 @@ ___
 ▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
 
 *Inherited from [CardObject](cardobject.md).[validateProperties](cardobject.md#validateproperties)*
+
+Validates the values of this object's properties.
+
+**`results`** The validation results to add potential failures to.
 
 **Returns:** *[ValidationResults](validationresults.md)*

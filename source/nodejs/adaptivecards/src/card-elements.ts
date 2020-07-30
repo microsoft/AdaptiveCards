@@ -13,14 +13,36 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
 
+/**
+ * Represents the height of a card element.
+ */
 export type CardElementHeight = "auto" | "stretch";
 
+/**
+ * Representd the base card element class. All actual card elements (TextBlock, Image, etc.) extend CardElement.
+ * Custom card element classes must extend CardElement.
+ */
 export abstract class CardElement extends CardObject {
     //#region Schema
 
+    /**
+     * The definition of the `lang` property.
+     */
     static readonly langProperty = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig);
+    
+    /**
+     * The definition of the `isVisible` property.
+     */
     static readonly isVisibleProperty = new BoolProperty(Versions.v1_2, "isVisible", true);
+    
+    /**
+     * The definition of the `separator` property
+     */
     static readonly separatorProperty = new BoolProperty(Versions.v1_0, "separator", false);
+
+    /**
+     * The definition of the `height` property.
+     */
     static readonly heightProperty = new ValueSetProperty(
         Versions.v1_1,
         "height",
@@ -29,29 +51,59 @@ export abstract class CardElement extends CardObject {
             { value: "stretch" }
         ],
         "auto");
+
+    /**
+     * The definition of the `horizontalAlignment` property.
+     */
     static readonly horizontalAlignmentProperty = new EnumProperty(
         Versions.v1_0,
         "horizontalAlignment",
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left);
+
+    /**
+     * The definition of the `spacing` property.
+     */
     static readonly spacingProperty = new EnumProperty(
         Versions.v1_0,
         "spacing",
         Enums.Spacing,
         Enums.Spacing.Default);
 
+    /**
+     * Specifies how this element is horizontally aligned within its container.
+     */
     @property(CardElement.horizontalAlignmentProperty)
     horizontalAlignment: Enums.HorizontalAlignment;
 
+    /**
+     * Specified the space between this element and the one that comes before it.
+     */
     @property(CardElement.spacingProperty)
     spacing: Enums.Spacing;
 
+    /**
+     * Specifies if there should be a visible separator between this element and the one before it.
+     * A visible separator is never displayed for the first element in a container, even if
+     * `separator` is set to `true`.
+     */
     @property(CardElement.separatorProperty)
     separator: boolean;
 
+    /**
+     * Specifies the height of this element withing its container. Some containers (such as Columns
+     * or Containers with a specified `minHeight` property) may be taller than is required by their
+     * content. In those cases, the `height` property allows for precise placement of this card element
+     * inside of its container.
+     */
     @property(CardElement.heightProperty)
     height: CardElementHeight;
 
+    /**
+     * Gets the locale this card element is authored in. Each individual element can have its own
+     * `lang` value, although in general `lang` is defined at the Adaptive Card level. If an element
+     * doesn't have an explicit `lang` value, the `lang` of its parent is returned.
+     */
     @property(CardElement.langProperty)
     get lang(): string | undefined {
         let lang = this.getValue(CardElement.langProperty);
@@ -69,15 +121,24 @@ export abstract class CardElement extends CardObject {
         }
     }
 
+    /**
+     * Sets the locale this card element is authored in.
+     */
     set lang(value: string | undefined) {
         this.setValue(CardElement.langProperty, value);
     }
 
+    /**
+     * Gets a value indicating if this element is visible.
+     */
     @property(CardElement.isVisibleProperty)
     get isVisible(): boolean {
         return this.getValue(CardElement.isVisibleProperty);
     }
 
+    /**
+     * Sets a value indicating if this element is visible.
+     */
     set isVisible(value: boolean) {
         // If the element is going to be hidden, reset any changes that were due
         // to overflow truncation (this ensures that if the element is later
@@ -210,6 +271,9 @@ export abstract class CardElement extends CardObject {
         return sizeChanged;
     }
 
+    /**
+     * Creates a placeholder DOM element in case this element is dropped. This is used only in design mode.
+     */
     protected createPlaceholderElement(): HTMLElement {
         let styleDefinition = this.getEffectiveStyleDefinition();
         let foregroundCssColor = Utils.stringToCssColor(styleDefinition.foregroundColors.default.subtle);
@@ -225,6 +289,12 @@ export abstract class CardElement extends CardObject {
         return element;
     }
 
+    /**
+     * Adjusts the size of the rendered DOM element (for example, to aply the `height` property). Derived
+     * classes may override this method if theyur have specific size adjustment needs. This method is called
+     * each time a card element is rendered.
+     * @param renderedElement The rendered DOM element to adjust the size of.
+     */
     protected adjustRenderedElementSize(renderedElement: HTMLElement) {
         if (this.height === "auto") {
             renderedElement.style.flex = "0 0 auto";
@@ -234,12 +304,19 @@ export abstract class CardElement extends CardObject {
         }
     }
 
+    /**
+     * Indicates if this crd element id displayed, e.g. if it is rendered and visible on screen.
+     */
     protected isDisplayed(): boolean {
         return this._renderedElement !== undefined && this.isVisible && this._renderedElement.offsetHeight > 0;
     }
 
+    /**
+     * Effectively renders the card element. Derived classes must override `internalRender`.
+     */
     protected abstract internalRender(): HTMLElement | undefined;
 
+    
     protected overrideInternalRender(): HTMLElement | undefined {
         return this.internalRender();
     }

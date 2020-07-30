@@ -685,9 +685,17 @@ export class CustomProperty<T> extends PropertyDefinition {
     }
 }
 
+/**
+ * Represents the schema (i.e. list of properties) for any serializable object.
+ */
 export class SerializableObjectSchema {
     private _properties: PropertyDefinition[] = [];
 
+    /**
+     * Finds the index of a property in the schema.
+     * @param property The property to find the index of.
+     * @returns -1 if the property couldn't be found, the zero-based index of the property otherwise.
+     */
     indexOf(property: PropertyDefinition): number {
         for (let i = 0; i < this._properties.length; i++) {
             if (this._properties[i] === property) {
@@ -698,6 +706,10 @@ export class SerializableObjectSchema {
         return -1;
     }
 
+    /**
+     * Adds one or more properties the the schema.
+     * @param properties The properties to add to the schema. Properties that are already part of the schema are not added.
+     */
     add(...properties: PropertyDefinition[]) {
         for (let i = 0; i < properties.length; i++) {
             if (this.indexOf(properties[i]) === -1) {
@@ -706,6 +718,10 @@ export class SerializableObjectSchema {
         }
     }
 
+    /**
+     * Removes one or more properties from the schema.
+     * @param properties The properties to remove from the schema.
+     */
     remove(...properties: PropertyDefinition[]) {
         for (let property of properties) {
             while (true) {
@@ -721,17 +737,27 @@ export class SerializableObjectSchema {
         }
     }
 
+    /**
+     * Gets a property at the specified index.
+     * @param index The index of the property to get.
+     * @returns The property at the specified index.
+     */
     getItemAt(index: number): PropertyDefinition {
         return this._properties[index];
     }
 
+    /**
+     * Gets the number of properties in the schema
+     */
     getCount(): number {
         return this._properties.length;
     }
 }
 
-// This is a decorator function, used to map SerializableObject descendant class members to
-// schema properties
+/**
+ * This is a decorator function, used to map `SerializableObject` descendant class members to
+ * schema properties. This function isn't meant to be used on its own.
+ */
 export function property(property: PropertyDefinition) {
     return function(target: any, propertyKey: string) {
         let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
@@ -745,9 +771,19 @@ export function property(property: PropertyDefinition) {
     }
 }
 
+/**
+ * Represents a property bag, i.e. a map of property values keyed on property names.
+ */
 export type PropertyBag = { [propertyName: string]: any };
 
+/**
+ * The base class for any object than can serialize/deserialize itself.
+ */
 export abstract class SerializableObject {
+    /**
+     * This static event allows consuming applications to register to register custom properties to a `SerializableObject` schema.
+     * Note that while this event technically allows properties to be removed from a schema, it is not recommended to do so.
+     */
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
@@ -755,8 +791,19 @@ export abstract class SerializableObject {
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
 
+    /**
+     * Get the unique schema key for this particular type of serializable object. This key is used by the SDK to index schemas for
+     * the various serializable objects it uses.
+     * @returns The schema key for this type of serializable object.
+     */
     protected abstract getSchemaKey(): string;
 
+    /**
+     * Populates a schema with properties by looking up publis static fields that are of type PropertyDefinition or derived.
+     * There is in general no need for a descendant class to override this method, unless that class uses custom schema
+     * population logic. When overriding this method, always call `super.populateSchema(schema)`
+     * @param schema The schema instance to populate.
+     */
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
         let properties: PropertyDefinition[] = [];
@@ -795,10 +842,20 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Gets the value of the specified property.
+     * @param property The property to get the value of.
+     * @returns The value of the property.
+     */
     protected getValue(property: PropertyDefinition): any {
         return this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
     }
 
+    /**
+     * Sets the value of a property.
+     * @param property The property to set the value of.
+     * @param value The new value of the property.
+     */
     protected setValue(property: PropertyDefinition, value: any) {
         if (value === undefined || value === null) {
             delete this._propertyBag[property.getInternalName()];
@@ -808,6 +865,12 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Parses the source object and initializes this serializable object's properties. Descendent classes
+     * should typically not override this method.
+     * @param source The source object to parse.
+     * @param context The serialization context.
+     */
     protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
         this._propertyBag = {};
         this._rawProperties = GlobalSettings.enableFullJsonRoundTrip ? (source ? source : {}) : {};
@@ -845,6 +908,11 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Serializes this serializable object to the specified target object.
+     * @param target The target object to sets the fields of.
+     * @param context The serialization context.
+     */
     protected internalToJSON(target: PropertyBag, context: BaseSerializationContext) {
         let s = this.getSchema();
         let serializedProperties: string[] = [];
@@ -863,12 +931,23 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Indicates if this object should be serialized, given the serialization context.
+     * @param context The serialization context.
+     * @returns `true` if this object should be serialized, `false` otherwise.
+     */
     protected shouldSerialize(context: BaseSerializationContext): boolean {
         return true;
     }
 
+    /**
+     * The maximum Adaptive Card schema version supported by serializable objects.
+     */
     maxVersion: Version = Versions.v1_3;
 
+    /**
+     * Initializes a new SerializableObject instance.
+     */
     constructor() {
         let s = this.getSchema();
 
@@ -881,10 +960,20 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Parses the specified source object and initializes the properties of this serializable object.
+     * @param source The source object to parse from.
+     * @param context The serialization context.
+     */
     parse(source: PropertyBag, context?: BaseSerializationContext) {
         this.internalParse(source, context ? context : new SimpleSerializationContext());
     }
 
+    /**
+     * Serializes this serializable object into a property bag.
+     * @param context The serialization context.
+     * @returns A property bag representing the serialized version of this serializable object.
+     */
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
         let effectiveContext = context ? context : new SimpleSerializationContext();
 
@@ -907,10 +996,19 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Determines if the specified property has its default value.
+     * @param property The property to check.
+     * @returns `true` if the property has its default value, `false` otherwise.
+     */
     hasDefaultValue(property: PropertyDefinition): boolean {
         return this.getValue(property) === property.defaultValue;
     }
 
+    /**
+     * Determines if all the properties of this serializable object have their default values.
+     * @returns `true` if all the properties have their default value, `false` otherwise.
+     */
     hasAllDefaultValues(): boolean {
         let s = this.getSchema();
 
@@ -925,6 +1023,9 @@ export abstract class SerializableObject {
         return true;
     }
 
+    /**
+     * Resets this object by reverting all its properties to their default values.
+     */
     resetDefaultValues() {
         let s = this.getSchema();
 
@@ -935,6 +1036,11 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Allows a consuming application to set custom properties on any serializable object instance.
+     * @param name The name of the custom property to set.
+     * @param value The value of the custom property.
+     */
     setCustomProperty(name: string, value: any) {
         let shouldDeleteProperty = (typeof value === "string" && !value) || value === undefined || value === null;
 
@@ -946,10 +1052,19 @@ export abstract class SerializableObject {
         }
     }
 
+    /**
+     * Gets the value of a custom property.
+     * @param name The custom property to get the value of.
+     * @returns The value of the custom property.
+     */
     getCustomProperty(name: string): any {
         return this._rawProperties[name];
     }
 
+    /**
+     * Gets the schema of this serializable object.
+     * @returns The schema of this serializable object.
+     */
     getSchema(): SerializableObjectSchema {
         let schema: SerializableObjectSchema = SerializableObject._schemaCache[this.getSchemaKey()];
 

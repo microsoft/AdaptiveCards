@@ -99,6 +99,7 @@
 * [SpacingDefinition](classes/spacingdefinition.md)
 * [StringProperty](classes/stringproperty.md)
 * [StringWithSubstitutions](classes/stringwithsubstitutions.md)
+* [Strings](classes/strings.md)
 * [StylableCardElementContainer](classes/stylablecardelementcontainer.md)
 * [SubmitAction](classes/submitaction.md)
 * [TextBlock](classes/textblock.md)
@@ -182,11 +183,15 @@ ___
 
 Ƭ **CardElementHeight**: *"auto" | "stretch"*
 
+Represents the height of a card element.
+
 ___
 
 ###  CardObjectType
 
 Ƭ **CardObjectType**: *object*
+
+Represents a CardObject type (constructor).
 
 #### Type declaration:
 
@@ -213,6 +218,8 @@ ___
 ###  PropertyBag
 
 Ƭ **PropertyBag**: *object*
+
+Represents a property bag, i.e. a map of property values keyed on property names.
 
 #### Type declaration:
 
@@ -695,6 +702,9 @@ ___
 ###  property
 
 ▸ **property**(`property`: [PropertyDefinition](classes/propertydefinition.md)): *(Anonymous function)*
+
+This is a decorator function, used to map `SerializableObject` descendant class members to
+schema properties. This function isn't meant to be used on its own.
 
 **Parameters:**
 
