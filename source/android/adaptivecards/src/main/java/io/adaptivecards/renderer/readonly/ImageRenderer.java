@@ -243,16 +243,14 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     /**
-     * Create container for this image (with stretch height if needed), and assign to TagContent's stretchContainer
+     * Create container for this image (with stretch height if needed)
      * @param context
      * @param image the parsed Image
-     * @param tagContent the image's TagContent
      * @return the container
      */
-    private static ConstraintLayout getContainer(Context context, Image image, TagContent tagContent)
+    private static ConstraintLayout getContainer(Context context, Image image)
     {
         ConstraintLayout container = new ConstraintLayout(context);
-        tagContent.SetStretchContainer(container);
 
         // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
         int weight = (image.GetHeight() == HeightType.Stretch) ? 1 : 0;
@@ -346,7 +344,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         // ConstraintLayout container for first-class images
         else
         {
-            ConstraintLayout container = getContainer(context, image, tagContent);
+            ConstraintLayout container = getContainer(context, image);
+            tagContent.SetStretchContainer(container);
             container.addView(imageView);
             getConstraints(context, imageView, image, hostConfig).applyTo(container);
             viewGroup.addView(container);
