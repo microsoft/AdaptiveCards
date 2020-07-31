@@ -244,6 +244,22 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(actualValue, 1);
         }
 
+        TEST_METHOD(GetOptionalIntTests)
+        {
+            std::optional<int> emptyOptionalInt;
+            auto jsonObj = s_GetValidJsonObject();
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetOptionalInt(jsonObj, AdaptiveCardSchemaKey::Accent, emptyOptionalInt, true); });
+            auto defaultValue = ParseUtil::GetOptionalInt(jsonObj, AdaptiveCardSchemaKey::Accent, emptyOptionalInt, false);
+            Assert::IsFalse(defaultValue.has_value());
+
+            auto jsonObjWithInvalidType = s_GetJsonObjectWithAccent("\"Invalid\""s);
+            Assert::ExpectException<AdaptiveCardParseException>([&]() { ParseUtil::GetOptionalInt(jsonObjWithInvalidType, AdaptiveCardSchemaKey::Accent, 0, true); });
+
+            auto jsonObjWithValidType = s_GetJsonObjectWithAccent("1"s);
+            auto actualValue = ParseUtil::GetOptionalInt(jsonObjWithValidType, AdaptiveCardSchemaKey::Accent, emptyOptionalInt, false);
+            Assert::AreEqual(actualValue.value(), 1);
+        }
+
         TEST_METHOD(GetUIntTests)
         {
             auto jsonObj = s_GetValidJsonObject();

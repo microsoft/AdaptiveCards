@@ -7,9 +7,7 @@
 
 using namespace AdaptiveSharedNamespace;
 
-NumberInput::NumberInput() :
-    BaseInputElement(CardElementType::NumberInput), m_value(0), m_max(std::numeric_limits<int>::max()),
-    m_min(std::numeric_limits<int>::min())
+NumberInput::NumberInput() : BaseInputElement(CardElementType::NumberInput)
 {
     PopulateKnownPropertiesSet();
 }
@@ -18,19 +16,19 @@ Json::Value NumberInput::SerializeToJsonValue() const
 {
     Json::Value root = BaseInputElement::SerializeToJsonValue();
 
-    if (m_min != std::numeric_limits<int>::min())
+    if (m_min)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = m_min;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Min)] = *m_min;
     }
 
-    if (m_max != std::numeric_limits<int>::max())
+    if (m_max)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = m_max;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Max)] = *m_max;
     }
 
-    if (m_value != 0)
+    if (m_value)
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = m_value;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Value)] = *m_value;
     }
 
     if (!m_placeholder.empty())
@@ -51,32 +49,32 @@ void NumberInput::SetPlaceholder(const std::string& value)
     m_placeholder = value;
 }
 
-int NumberInput::GetValue() const
+std::optional<int> NumberInput::GetValue() const
 {
     return m_value;
 }
 
-void NumberInput::SetValue(const int value)
+void NumberInput::SetValue(const std::optional<int>& value)
 {
     m_value = value;
 }
 
-int NumberInput::GetMax() const
+std::optional<int> NumberInput::GetMax() const
 {
     return m_max;
 }
 
-void NumberInput::SetMax(const int value)
+void NumberInput::SetMax(const std::optional<int>& value)
 {
     m_max = value;
 }
 
-int NumberInput::GetMin() const
+std::optional<int> NumberInput::GetMin() const
 {
     return m_min;
 }
 
-void NumberInput::SetMin(const int value)
+void NumberInput::SetMin(const std::optional<int>& value)
 {
     m_min = value;
 }
@@ -88,9 +86,11 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
     std::shared_ptr<NumberInput> numberInput = BaseInputElement::Deserialize<NumberInput>(context, json);
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
-    numberInput->SetValue(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Value, 0));
-    numberInput->SetMax(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Max, std::numeric_limits<int>::max()));
-    numberInput->SetMin(ParseUtil::GetInt(json, AdaptiveCardSchemaKey::Min, std::numeric_limits<int>::min()));
+
+    static const std::optional<int> emptyOptionalInt;
+    numberInput->SetValue(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Value, emptyOptionalInt));
+    numberInput->SetMax(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Max, emptyOptionalInt));
+    numberInput->SetMin(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Min, emptyOptionalInt));
 
     return numberInput;
 }
