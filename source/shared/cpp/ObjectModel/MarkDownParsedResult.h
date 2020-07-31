@@ -32,7 +32,7 @@ namespace AdaptiveSharedNamespace
 
         // Take a char and convert it html code gen and append it to the result. used to store MarkDown keywords such as
         // '[', ']', '(', ')'
-        void AddNewTokenToParsedResult(char ch);
+        void AddNewTokenToParsedResult(int ch);
 
         // Take string and convert it html code gen and append it to the result
         void AddNewTokenToParsedResult(std::string& word);
