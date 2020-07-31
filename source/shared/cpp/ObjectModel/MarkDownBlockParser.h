@@ -33,7 +33,8 @@ namespace AdaptiveSharedNamespace
 
         static constexpr bool IsAlnum(const int ch)
         {
-            return (ch < 0 || isalnum(ch));
+            const signed char newch = static_cast<signed char>(ch);
+            return (newch < 0 || isalnum(newch));
         }
 
         static constexpr bool IsCntrl(const int ch)

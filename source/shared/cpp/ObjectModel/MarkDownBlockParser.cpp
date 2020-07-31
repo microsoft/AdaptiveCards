@@ -530,7 +530,7 @@ void LinkParser::CaptureLinkToken()
     std::string html_string = html.str();
 
     // Generate a MarkDownStringHtmlGenerator object
-    std::shared_ptr<MarkDownHtmlGenerator> codeGen = std::make_shared<MarkDownStringHtmlGenerator>(html_string);
+    const std::shared_ptr<MarkDownHtmlGenerator> codeGen = std::make_shared<MarkDownStringHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
     m_parsedResult.FoundHtmlTags();
@@ -672,7 +672,8 @@ void ListParser::Match(std::stringstream& stream)
             // if it was asterisk, put the char back and start emphasis parsing
             if (IsAsterisk(ch))
             {
-                stream.putback(ch);
+                // ch is '*', it's safe to cast and put back
+                stream.putback(static_cast<unsigned char>(ch));
 
                 ParseTextAndEmphasis(stream);
             }
@@ -689,14 +690,14 @@ void ListParser::CaptureListToken()
 {
     std::ostringstream html;
     m_parsedResult.Translate();
-    std::string htmlString = m_parsedResult.GenerateHtmlString();
+    std::string const htmlString = m_parsedResult.GenerateHtmlString();
 
     html << "<li>";
     html << htmlString;
     html << "</li>";
 
     std::string html_string = html.str();
-    std::shared_ptr<MarkDownListHtmlGenerator> codeGen = std::make_shared<MarkDownListHtmlGenerator>(html_string);
+    std::shared_ptr<MarkDownListHtmlGenerator> const codeGen = std::make_shared<MarkDownListHtmlGenerator>(html_string);
 
     m_parsedResult.Clear();
     m_parsedResult.FoundHtmlTags();
@@ -743,14 +744,14 @@ void OrderedListParser::CaptureOrderedListToken(std::string& number_string)
 {
     std::ostringstream html;
     m_parsedResult.Translate();
-    std::string htmlString = m_parsedResult.GenerateHtmlString();
+    const std::string htmlString = m_parsedResult.GenerateHtmlString();
 
     html << "<li>";
     html << htmlString;
     html << "</li>";
 
     std::string html_string = html.str();
-    std::shared_ptr<MarkDownOrderedListHtmlGenerator> codeGen =
+    const std::shared_ptr<MarkDownOrderedListHtmlGenerator> codeGen =
         std::make_shared<MarkDownOrderedListHtmlGenerator>(html_string, number_string);
 
     m_parsedResult.Clear();
