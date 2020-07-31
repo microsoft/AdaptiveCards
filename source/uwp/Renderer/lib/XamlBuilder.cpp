@@ -4444,8 +4444,14 @@ namespace AdaptiveNamespace
             return;
         }
 
-        ABI::AdaptiveNamespace::ActionType actionType;
-        action->get_ActionType(&actionType);
+        // We only care about action type for creating the button below. If an action wasn't supplied (this can happen
+        // e.g. when using WrapInTouchTarget to build a media element), just default to a non-OpenUrl action type so
+        // that a generic button is used.
+        ABI::AdaptiveNamespace::ActionType actionType = ABI::AdaptiveNamespace::ActionType::Submit;
+        if (action != nullptr)
+        {
+            action->get_ActionType(&actionType);
+        }
 
         ComPtr<IButton> button;
         CreateAppropriateButton(actionType, button);
