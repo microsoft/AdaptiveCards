@@ -340,7 +340,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         // No container needed for image in ImageSet
         if(isInImageSet)
         {
-            setImageSize(context, imageView, image, hostConfig);
+            sizeImageForImageSet(context, imageView, image, hostConfig);
             viewGroup.addView(imageView);
         }
         // ConstraintLayout container for first-class images
