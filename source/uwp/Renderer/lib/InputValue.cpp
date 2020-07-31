@@ -277,14 +277,14 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
             {
                 int maxInt;
                 RETURN_IF_FAILED(max->get_Value(&maxInt));
-                isValid &= (currentInt < maxInt);
+                isValid &= (currentInt <= maxInt);
             }
 
             if (min.Get())
             {
                 int minInt;
                 RETURN_IF_FAILED(min->get_Value(&minInt));
-                isValid &= (currentInt > minInt);
+                isValid &= (currentInt >= minInt);
             }
         }
         catch (...)
