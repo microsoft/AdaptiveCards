@@ -159,7 +159,7 @@ class PredictCard:
             output_dict=prediction, pil_image=image)
         # Remove overlapping rcnn objects
         card_arrange = CardArrange()
-        card_arrange.remove_overlapping_objects(json_object=json_objects)
+        card_arrange.remove_noise_objects(json_objects)
 
         # get design object properties
         self.get_object_properties(json_objects["objects"], image)

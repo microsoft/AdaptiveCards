@@ -122,14 +122,22 @@ class ImageGrouping(GroupObjects):
                         "images": []
                 }
                 sizes = []
+                alignment = []
                 for ctr, design_object in enumerate(group):
                     index = objects.index(design_object)
                     if index not in delete_positions:
                         delete_positions.append(index)
                     sizes.append(design_object.get("size", "Auto"))
+                    alignment.append(design_object.get(
+                            "horizontal_alignment", "Left"))
                     self.card_arrange.append_objects(design_object,
                                                      image_set["images"])
+
+                # Assign the imageset's size and alignment property based on
+                # each image's alignment and size properties inside the imgaeset
                 image_set["imageSize"] = max(set(sizes), key=sizes.count)
+                image_set["horizontalAlignment"] = max(set(alignment),
+                                                       key=alignment.count)
                 body.append(image_set)
                 if ymins:
                     ymins.append(design_object.get("ymin"))
