@@ -61,21 +61,6 @@ public final class Util {
         }
     }
 
-    public static BaseInputElement castToInputElement(BaseCardElement cardElement)
-    {
-        BaseInputElement baseInputElement = null;
-        if (cardElement instanceof BaseInputElement)
-        {
-            baseInputElement = (BaseInputElement) cardElement;
-        }
-        else if ((baseInputElement = BaseInputElement.dynamic_cast(cardElement)) == null)
-        {
-            // throw new InternalError("Unable to convert BaseCardElement to BaseInputElement object model.");
-        }
-
-        return baseInputElement;
-    }
-
     /**
      *
      * @param cardElement
