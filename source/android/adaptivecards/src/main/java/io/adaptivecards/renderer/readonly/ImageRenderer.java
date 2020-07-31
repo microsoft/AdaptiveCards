@@ -280,8 +280,6 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
 
-        setVisibility(baseCardElement.GetIsVisible(), imageView);
-
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
         if (!TextUtils.isEmpty(imageBackgroundColor))
