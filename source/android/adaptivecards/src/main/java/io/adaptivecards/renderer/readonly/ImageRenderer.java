@@ -140,13 +140,13 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     /**
-     * Set ImageView size. Only for use in ImageSet. For first-class Images, use {@link #getConstraints}
+     * Set ImageView size. Only for use in ImageSet.
      * @param context
      * @param imageView the view to resize
      * @param image the parsed Image
      * @param hostConfig the HostConfig that configures semantic 'size' values
      */
-    private static void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    private static void sizeImageForImageSet(Context context, ImageView imageView, Image image, HostConfig hostConfig)
     {
         int semanticWidth = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
 
@@ -173,8 +173,8 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     /**
-     * Calculate constraints for placing this ImageView in a ConstraintLayout
-     * For sizing Images in ImageSets, use {@link #setImageSize}
+     * Calculate constraints for placing/sizing this ImageView in a ConstraintLayout
+     * For sizing Images in ImageSets, use {@link #sizeImageForImageSet}
      * @param context
      * @param imageView the view to constrain
      * @param image the parsed Image
