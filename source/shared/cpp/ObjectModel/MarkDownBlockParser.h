@@ -21,31 +21,23 @@ namespace AdaptiveSharedNamespace
         MarkDownParsedResult& GetParsedResult() { return m_parsedResult; }
 
     protected:
-        static constexpr bool IsSpace(const int ch)
-        {
-            return (ch > 0) && isspace(ch);
-        }
+        static constexpr bool IsSpace(const int ch) { return (ch > 0) && isspace(ch); }
 
-        static constexpr bool IsPunct(const int ch)
-        {
-            return (ch > 0) && ispunct(ch);
-        }
+        static constexpr bool IsPunct(const int ch) { return (ch > 0) && ispunct(ch); }
 
         static constexpr bool IsAlnum(const int ch)
         {
+            if (ch == EOF)
+            { 
+                return false;
+            }
             const signed char newch = static_cast<signed char>(ch);
             return (newch < 0 || isalnum(newch));
         }
 
-        static constexpr bool IsCntrl(const int ch)
-        {
-            return (ch > 0) && iscntrl(ch);
-        }
+        static constexpr bool IsCntrl(const int ch) { return (ch > 0) && iscntrl(ch); }
 
-        static constexpr bool IsDigit(const int ch)
-        {
-            return (ch > 0) && isdigit(ch);
-        }
+        static constexpr bool IsDigit(const int ch) { return (ch > 0) && isdigit(ch); }
 
         void ParseTextAndEmphasis(std::stringstream& stream);
 
