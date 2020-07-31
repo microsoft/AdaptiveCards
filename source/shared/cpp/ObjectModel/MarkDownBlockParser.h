@@ -27,12 +27,9 @@ namespace AdaptiveSharedNamespace
 
         static constexpr bool IsAlnum(const int ch)
         {
-            if (ch == EOF)
-            { 
-                return false;
-            }
-            const signed char newch = static_cast<signed char>(ch);
-            return (newch < 0 || isalnum(newch));
+            // we are assuming ch is  UTF-8 encoded,
+            // if MSB is set 1 in first byte of int, we treat it as part of non-latin char
+            return (ch > 0x07F || isalnum(ch));
         }
 
         static constexpr bool IsCntrl(const int ch) { return (ch > 0) && iscntrl(ch); }
