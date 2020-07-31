@@ -29,6 +29,7 @@ namespace AdaptiveCards.Rendering
             ForegroundColors = previousRenderArgs.ForegroundColors;
             BleedDirection = previousRenderArgs.BleedDirection;
             HasParentWithPadding = previousRenderArgs.HasParentWithPadding;
+            ContainerCardId = previousRenderArgs.ContainerCardId;
         }
 
         // Default value for the container style of the first adaptiveCard
