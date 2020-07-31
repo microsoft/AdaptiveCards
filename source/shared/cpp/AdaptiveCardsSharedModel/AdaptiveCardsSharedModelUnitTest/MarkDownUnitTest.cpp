@@ -695,19 +695,19 @@ namespace AdaptiveCardsSharedModelUnitTest
             MarkDownParser parser("");
             Assert::AreEqual<bool>(false, parser.IsEscaped());
 
-            parser.TransformToHtml();
+            (void) parser.TransformToHtml();
             Assert::AreEqual<bool>(false, parser.IsEscaped());
 
             MarkDownParser parser1("&");
-            parser1.TransformToHtml();
+            (void) parser1.TransformToHtml();
             Assert::AreEqual<bool>(true, parser1.IsEscaped());
 
             MarkDownParser parser2("Hello World&");
-            parser2.TransformToHtml();
+            (void) parser2.TransformToHtml();
             Assert::AreEqual<bool>(true, parser2.IsEscaped());
 
             MarkDownParser parser3(" & ");
-            parser3.TransformToHtml();
+            (void) parser3.TransformToHtml();
             Assert::AreEqual<bool>(true, parser3.IsEscaped());
         }
     };
