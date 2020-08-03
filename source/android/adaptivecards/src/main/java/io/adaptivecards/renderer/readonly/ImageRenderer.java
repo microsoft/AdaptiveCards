@@ -187,7 +187,19 @@ public class ImageRenderer extends BaseCardElementRenderer
             // TODO: Instead of failing, proceed to render w/ default size "auto"
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(viewWidth, viewHeight));
+
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        if (params == null)
+        {
+            params = new LinearLayout.LayoutParams(viewWidth, viewHeight);
+        }
+        else
+        {
+            params.width = viewWidth;
+            params.height = viewHeight;
+        }
+        
+        imageView.setLayoutParams(params);
     }
 
     @Override
