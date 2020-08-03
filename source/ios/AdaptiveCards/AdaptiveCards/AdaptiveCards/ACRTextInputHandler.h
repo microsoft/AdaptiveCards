@@ -13,7 +13,7 @@
 
 @property NSPredicate *regexPredicate;
 @property NSUInteger maxLength;
-@property __weak NSString *text;
+@property NSString *text;
 @property BOOL hasText;
 
 - (instancetype)init:(ACOBaseCardElement *)acoElem;
@@ -23,7 +23,9 @@
 @interface ACRNumberInputHandler : ACRTextInputHandler
 
 @property NSInteger min;
+@property bool hasMin;
 @property NSInteger max;
+@property bool hasMax;
 
 @end
 

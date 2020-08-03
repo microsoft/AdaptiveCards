@@ -54,7 +54,7 @@ public class Card
                 fillElementTypes(m_parsedCard.GetAdaptiveCard());
             }
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             m_exceptionDetailMessage = e.getMessage();
         }

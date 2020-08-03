@@ -87,20 +87,24 @@ const CGFloat kAdaptiveCardsWidth = 330;
     filebrowserView.hidden = YES;
 }
 
-- (BOOL)textViewShouldEndEditing:(UITextView *)textView {
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
     [textView resignFirstResponder];
     return YES;
 }
 
-- (void)dismissKeyboard {
+- (void)dismissKeyboard
+{
     [self.editView resignFirstResponder];
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     [textView becomeFirstResponder];
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     [textView resignFirstResponder];
 }
 
@@ -147,7 +151,8 @@ const CGFloat kAdaptiveCardsWidth = 330;
     self.compositeFileBrowserView.hidden = NO;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
                          @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
@@ -355,7 +360,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
         for (ACOWarning *warning in ad.warnings) {
             [joinedString appendString:warning.message];
         }
-        
+
         if (ad.warnings.count) {
             [self presentViewController:[self createAlertController:@"Warnings" message:joinedString] animated:YES completion:nil];
         }
@@ -423,7 +428,12 @@ const CGFloat kAdaptiveCardsWidth = 330;
         [self presentViewController:svc animated:YES completion:nil];
     } else if (action.type == ACRSubmit) {
         NSData *userInputsAsJson = [card inputs];
-        NSString *str = [[NSString alloc] initWithData:userInputsAsJson
+        NSString *actionDataField = [action data];
+
+        NSData *actionData = [actionDataField dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData *combinedData = [actionData mutableCopy];
+        [combinedData appendData:userInputsAsJson];
+        NSString *str = [[NSString alloc] initWithData:combinedData
                                               encoding:NSUTF8StringEncoding];
         [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
 
