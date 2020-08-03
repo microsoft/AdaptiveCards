@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -17,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.os.AsyncTask;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.CardElementType;
@@ -296,15 +296,15 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws Exception
+            RenderArgs renderArgs)
     {
         Image image = Util.castTo(baseCardElement, Image.class);
 
-        View separator = null;
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
+        View separator = null;
         if (isInImageSet)
         {
-            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, isInImageSet);
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
         }
 
         ImageView imageView = new ImageView(context);
