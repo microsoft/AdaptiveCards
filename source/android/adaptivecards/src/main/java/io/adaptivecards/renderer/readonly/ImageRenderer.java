@@ -14,13 +14,16 @@ import android.support.constraint.Barrier;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.constraint.Guideline;
+import android.support.constraint.Placeholder;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
@@ -196,29 +199,22 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
         int id = imageView.getId();
 
-        // Set horizontal alignment
-        constraints.setHorizontalBias(id, getHorizontalBias(image));
-
         // By default, scale image and maintain aspect ratio
         imageView.setAdjustViewBounds(true);
         imageView.setScaleType(ImageView.ScaleType.FIT_START);
 
         // By default, constrain view to top of parent, and expand width to parent
-        int parentEndGuideline = View.generateViewId();
-        constraints.create(parentEndGuideline, ConstraintSet.VERTICAL_GUIDELINE);
-        constraints.setGuidelineEnd(parentEndGuideline, 0);
+        constraints.clone(context, R.layout.image_constraint_layout);
 
-        int widthGuideline = View.generateViewId();
-        constraints.create(widthGuideline, ConstraintSet.VERTICAL_GUIDELINE);
+        // Set horizontal alignment
+        constraints.setHorizontalBias(R.id.widthPlaceholder, getHorizontalBias(image));
+        constraints.setHorizontalBias(id, getHorizontalBias(image));
 
-        int widthBarrier = View.generateViewId();
-        constraints.createBarrier(widthBarrier, Barrier.START, widthGuideline, parentEndGuideline);
-
-        constraints.connect(id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-//        constraints.connect(id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
         constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
         constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
         constraints.constrainHeight(id, ConstraintSet.WRAP_CONTENT);
+        constraints.connect(id, ConstraintSet.START, R.id.leftBarrier, ConstraintSet.START);
+        constraints.connect(id, ConstraintSet.END, R.id.rightBarrier, ConstraintSet.END);
 
         // Explicit height and/or width given
         if (explicitWidth != 0 || explicitHeight != 0)
@@ -230,9 +226,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             }
             if (explicitWidth != 0)
             {
-                // Limit width expansion to the given width (this approach ensures width never exceeds parent)
-                constraints.setGuidelineBegin(widthGuideline, Util.dpToPixels(context, explicitWidth));
-                constraints.connect(id, ConstraintSet.END, widthBarrier, ConstraintSet.START);
+                constraints.constrainWidth(R.id.widthPlaceholder, Util.dpToPixels(context, explicitWidth));
             }
             if (explicitHeight != 0)
             {
@@ -243,20 +237,18 @@ public class ImageRenderer extends BaseCardElementRenderer
         // Semantic size from host config
         else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
         {
-            // Limit width expansion to the given width (this approach ensures width never exceeds parent)
-            constraints.setGuidelineBegin(widthGuideline, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
-            constraints.connect(id, ConstraintSet.END, widthBarrier, ConstraintSet.START);
+            constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
         }
         // Don't scale image
         else if (imageSize == ImageSize.Stretch)
         {
-            constraints.connect(id, ConstraintSet.END, parentEndGuideline, ConstraintSet.START);
+            constraints.constrainWidth(R.id.widthPlaceholder, ConstraintSet.MATCH_CONSTRAINT);
         }
         else
         {
             // Disable width expansion
+            constraints.constrainWidth(R.id.widthPlaceholder, ConstraintSet.MATCH_CONSTRAINT);
             constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);
-            constraints.connect(id, ConstraintSet.END, parentEndGuideline, ConstraintSet.START);
         }
 
         return constraints;
@@ -270,11 +262,18 @@ public class ImageRenderer extends BaseCardElementRenderer
      */
     private static ConstraintLayout getContainer(Context context, Image image)
     {
-        ConstraintLayout container = new ConstraintLayout(context);
+        ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
         // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
         int weight = (image.GetHeight() == HeightType.Stretch) ? 1 : 0;
-        container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, weight));
+        if(image.GetHeight() == HeightType.Stretch)
+        {
+            container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        }
+        else
+        {
+            container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
 
         return container;
     }
