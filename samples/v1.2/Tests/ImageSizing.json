@@ -206,6 +206,58 @@
 			}
 			]
 		},
+	  {
+		"type": "ColumnSet",
+		"columns": [
+		  {
+			"type": "Column",
+			"width": "auto",
+			"items": [
+			  {
+				"type": "Image",
+				"url": "https://picsum.photos/id/133/300/200",
+				"size": "small"
+			  }
+			]
+		  },
+		  {
+			"type": "Column",
+			"width": "stretch",
+			"items": [
+			  {
+				"type": "TextBlock",
+				"text": "Hellooo!"
+			  }
+			]
+		  }
+		  ]
+		  },
+	  {
+		"type": "ColumnSet",
+		"columns": [
+		  {
+			"type": "Column",
+			"width": "auto",
+			"items": [
+			  {
+				"type": "Image",
+				"url": "https://picsum.photos/id/133/300/200",
+				"size": "auto"
+			  }
+			]
+		  },
+		  {
+			"type": "Column",
+			"width": "stretch",
+			"items": [
+			  {
+				"type": "TextBlock",
+				"text": "Hellooo!"
+			  }
+			]
+		  }
+		]
+	  },
 		{
 			"type": "TextBlock",
 			"text": "ImageSet[1] - ImageSize: Small"
