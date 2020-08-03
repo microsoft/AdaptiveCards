@@ -10,8 +10,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
+import android.support.constraint.Barrier;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.constraint.Guideline;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -202,8 +204,18 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setScaleType(ImageView.ScaleType.FIT_START);
 
         // By default, constrain view to top of parent, and expand width to parent
+        int parentEndGuideline = View.generateViewId();
+        constraints.create(parentEndGuideline, ConstraintSet.VERTICAL_GUIDELINE);
+        constraints.setGuidelineEnd(parentEndGuideline, 0);
+
+        int widthGuideline = View.generateViewId();
+        constraints.create(widthGuideline, ConstraintSet.VERTICAL_GUIDELINE);
+
+        int widthBarrier = View.generateViewId();
+        constraints.createBarrier(widthBarrier, Barrier.START, widthGuideline, parentEndGuideline);
+
         constraints.connect(id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START);
-        constraints.connect(id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
+//        constraints.connect(id, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END);
         constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
         constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
         constraints.constrainHeight(id, ConstraintSet.WRAP_CONTENT);
@@ -219,7 +231,8 @@ public class ImageRenderer extends BaseCardElementRenderer
             if (explicitWidth != 0)
             {
                 // Limit width expansion to the given width (this approach ensures width never exceeds parent)
-                constraints.constrainMaxWidth(id, Util.dpToPixels(context, explicitWidth));
+                constraints.setGuidelineBegin(widthGuideline, Util.dpToPixels(context, explicitWidth));
+                constraints.connect(id, ConstraintSet.END, widthBarrier, ConstraintSet.START);
             }
             if (explicitHeight != 0)
             {
@@ -231,14 +244,21 @@ public class ImageRenderer extends BaseCardElementRenderer
         else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
         {
             // Limit width expansion to the given width (this approach ensures width never exceeds parent)
-            constraints.constrainMaxWidth(id, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
+            constraints.setGuidelineBegin(widthGuideline, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
+            constraints.connect(id, ConstraintSet.END, widthBarrier, ConstraintSet.START);
         }
         // Don't scale image
-        else if (imageSize != ImageSize.Stretch)
+        else if (imageSize == ImageSize.Stretch)
+        {
+            constraints.connect(id, ConstraintSet.END, parentEndGuideline, ConstraintSet.START);
+        }
+        else
         {
             // Disable width expansion
-            constraints.constrainWidth(id, ConstraintSet.WRAP_CONTENT);
+            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);
+            constraints.connect(id, ConstraintSet.END, parentEndGuideline, ConstraintSet.START);
         }
+
         return constraints;
     }
 
