@@ -1367,6 +1367,18 @@ export class CardElementPeer extends DesignerPeer {
             { targetVersion: Adaptive.Versions.v1_1, name: "Stretch", value: "stretch" }
         ]);
 
+    private removePeer(peer: CardElementPeer): boolean {
+        if (peer.cardElement.parent) {
+            if (!peer.remove(true, false)) {
+                return false;
+            }
+
+            peer.parent.removeChild(peer);
+        }
+
+        return true;
+    }
+
     protected insertElementAfter(newElement: Adaptive.CardElement) {
         if (this.cardElement.parent instanceof Adaptive.Container) {
             this.cardElement.parent.insertItemAfter(newElement, this.cardElement);
@@ -1437,14 +1449,14 @@ export class CardElementPeer extends DesignerPeer {
 
     tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
         if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
-            let targetChild: DesignerPeer = null;
+            let targetPeer: DesignerPeer = null;
             let insertAfter: boolean;
 
             for (var i = 0; i < this.getChildCount(); i++) {
                 let rect = this.getChildAt(i).getBoundingRect();
 
                 if (rect.isInside(insertionPoint)) {
-                    targetChild = this.getChildAt(i);
+                    targetPeer = this.getChildAt(i);
 
                     insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
 
@@ -1452,41 +1464,71 @@ export class CardElementPeer extends DesignerPeer {
                 }
             }
 
-            if (targetChild != peer) {
-                if (peer.cardElement.parent) {
-                    if (!peer.remove(true, false)) {
-                        return false;
-                    }
+            if (targetPeer === peer) {
+                return false;
+            }
 
-                    peer.parent.removeChild(peer);
-                }
-
-                if (!targetChild) {
-                    let rect = this.getBoundingRect();
-
-                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
-
-                    if (this.cardElement.getItemCount() > 0 && insertAfter) {
-                        this.cardElement.insertItemAfter(peer.cardElement, this.cardElement.getItemAt(this.cardElement.getItemCount() - 1));
+            if (targetPeer) {
+                if (insertAfter) {
+                    if (peer.cardElement.index - (<CardElementPeer>targetPeer).cardElement.index !== 1) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+                
+                        this.cardElement.insertItemAfter(peer.cardElement, (<CardElementPeer>targetPeer).cardElement);
                     }
                     else {
-                        this.cardElement.insertItemAfter(peer.cardElement, null);
+                        return false;
                     }
                 }
                 else {
-                    if (insertAfter) {
-                        this.cardElement.insertItemAfter(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
+                    if ((<CardElementPeer>targetPeer).cardElement.index - peer.cardElement.index !== 1) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+                
+                        this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetPeer).cardElement);
                     }
                     else {
-                        this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetChild).cardElement);
+                        return false;
                     }
                 }
-
-                this.insertChild(peer, peer.cardElement.index);
-                this.changed(false);
-
-                return true;
             }
+            else {
+                let rect = this.getBoundingRect();
+
+                insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
+
+                if (insertAfter || this.cardElement.getItemCount() === 0) {
+                    if (!this.cardElement.isLastElement(peer.cardElement)) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+
+                        this.cardElement.addItem(peer.cardElement);
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    if (!this.cardElement.isFirstElement(peer.cardElement)) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+                        
+                        this.cardElement.insertItemAt(peer.cardElement, 0);
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+                
+            this.insertChild(peer, peer.cardElement.index);
+            this.changed(false);
+        
+            return true;
         }
 
         return false;

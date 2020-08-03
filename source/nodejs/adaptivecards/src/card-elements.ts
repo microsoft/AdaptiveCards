@@ -5266,38 +5266,40 @@ export class Container extends StylableCardElementContainer {
     private _items: CardElement[] = [];
     private _itemsHostElement?: HTMLElement;
 
-    private insertItemAt(
-        item: CardElement,
-        index: number,
-        forceInsert: boolean) {
+    private internalInsertItemAt(item: CardElement, index: number, forceInsert: boolean) {
         if (!item.parent || forceInsert) {
             if (item.isStandalone) {
-                if (index < 0 || index >= this._items.length) {
+                if (index >= this._items.length || this._items.length === 0) {
                     this._items.push(item);
+
+                    // this.renderItem(item, "afterLast");
                 }
                 else {
-                    this._items.splice(index, 0, item);
+                    this._items.splice(index >= 0 ? index : 0, 0, item);
+
+                    // this.renderItem(item, index >= 0 ? this._items[index] : "beforeFirst");
                 }
 
                 if (this._itemsHostElement) {
                     CardElementContainer.removeRenderedItem(item);
 
-                    let insertBeforeRenderedItem: CardElement | undefined = undefined;
+                    let insertionPoint: CardElement | "beforeFirst" | "afterLast" = "beforeFirst";
 
-                    // Let's not insert the item before itself
-                    index++;
-        
-                    while (index >= 0 && index < this._items.length) {
-                        if (this._items[index].renderedElement) {
-                            insertBeforeRenderedItem = this._items[index];
-        
-                            break;
+                    if (index >= 0) {
+                        insertionPoint = "afterLast";
+
+                        while (index < this._items.length) {
+                            if (this._items[index] !== item && this._items[index].renderedElement) {
+                                insertionPoint = this._items[index];
+            
+                                break;
+                            }
+            
+                            index++;
                         }
-        
-                        index++;
                     }
         
-                    this.renderItem(item, this._itemsHostElement, insertBeforeRenderedItem);
+                    this.renderItem(item, insertionPoint);
                 } 
 
                 item.setParent(this);
@@ -5327,25 +5329,29 @@ export class Container extends StylableCardElementContainer {
         super.applyBackground();
     }
 
-    protected renderItem(item: CardElement, container: HTMLElement, insertBefore?: CardElement) {
+    protected renderItem(item: CardElement, insertionPoint: CardElement | "beforeFirst" | "afterLast" = "afterLast") {
         if (!item.renderedElement && this.isElementAllowed(item)) {
             item.render();
         }
 
-        // let renderedItem = this.isElementAllowed(item) ? item.render() : undefined;
+        if (item.renderedElement && this._itemsHostElement) {
+            if (insertionPoint === "afterLast" || this._itemsHostElement.childElementCount === 0) {
+                this._itemsHostElement.appendChild(item.renderedElement);
+            }
+            else if (insertionPoint === "beforeFirst") {
+                this._itemsHostElement.insertBefore(item.renderedElement, this._itemsHostElement.firstChild);
+            }
+            else if (insertionPoint.renderedElement) {
+                let referenceDOMElement = insertionPoint.separatorElement ? insertionPoint.separatorElement : insertionPoint.renderedElement;
 
-        if (item.renderedElement) {
-            if (insertBefore && insertBefore.renderedElement) {
-                let insertBeforeElement = insertBefore.separatorElement ? insertBefore.separatorElement : insertBefore.renderedElement;
-
-                container.insertBefore(item.renderedElement, insertBeforeElement);
+                this._itemsHostElement.insertBefore(item.renderedElement, referenceDOMElement);
             }
             else {
-                container.appendChild(item.renderedElement);
+                this._itemsHostElement.appendChild(item.renderedElement);
             }
 
             if (item.separatorElement) {
-                container.insertBefore(item.separatorElement, item.renderedElement);
+                this._itemsHostElement.insertBefore(item.separatorElement, item.renderedElement);
             }
         }
     }
@@ -5399,7 +5405,7 @@ export class Container extends StylableCardElementContainer {
 
         if (this._items.length > 0) {
             for (let item of this._items) {
-                this.renderItem(item, this._itemsHostElement);
+                this.renderItem(item);
             }
         }
         else {
@@ -5477,7 +5483,7 @@ export class Container extends StylableCardElementContainer {
                 let element = context.parseElement(this, item, !this.isDesignMode());
 
                 if (element) {
-                    this.insertItemAt(element, -1, true);
+                    this.internalInsertItemAt(element, this._items.length, true);
                 }
             }
         }
@@ -5581,21 +5587,21 @@ export class Container extends StylableCardElementContainer {
     }
 
     addItem(item: CardElement) {
-        this.insertItemAt(item, -1, false);
+        this.internalInsertItemAt(item, this._items.length, false);
+    }
+
+    insertItemAt(item: CardElement, index: number) {
+        this.internalInsertItemAt(item, index, false);
     }
 
     insertItemBefore(item: CardElement, insertBefore: CardElement) {
-        if (item !== insertBefore) {
-            let insertBeforeIndex = this._items.indexOf(insertBefore);
+        let insertBeforeIndex = this._items.indexOf(insertBefore);
 
-            this.insertItemAt(item, insertBeforeIndex, false);
-        }
+        this.internalInsertItemAt(item, insertBeforeIndex, false);
     }
 
     insertItemAfter(item: CardElement, insertAfter: CardElement) {
-        if (item !== insertAfter) {
-            this.insertItemAt(item, this._items.indexOf(insertAfter) + 1, false);
-        }
+        this.internalInsertItemAt(item, this._items.indexOf(insertAfter) + 1, false);
     }
 
     removeItem(item: CardElement): boolean {
