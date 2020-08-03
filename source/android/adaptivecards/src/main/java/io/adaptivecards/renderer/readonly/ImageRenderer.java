@@ -198,7 +198,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             params.width = viewWidth;
             params.height = viewHeight;
         }
-        
+
         imageView.setLayoutParams(params);
     }
 
@@ -228,6 +228,8 @@ public class ImageRenderer extends BaseCardElementRenderer
 
         ImageView imageView = new ImageView(context);
         imageView.setTag(new TagContent(image, separator, viewGroup));
+
+        setVisibility(baseCardElement.GetIsVisible(), imageView);
 
         String imageBackgroundColor = image.GetBackgroundColor();
         int backgroundColor = 0;
