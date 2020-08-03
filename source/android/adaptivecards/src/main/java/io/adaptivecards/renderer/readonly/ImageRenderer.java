@@ -308,7 +308,7 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     @Override
-    public View render(
+    public ImageView render(
             RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
