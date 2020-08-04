@@ -35,6 +35,7 @@
 ### Properties
 
 * [defaultValue](propertydefinition.md#optional-defaultvalue)
+* [isSerializationEnabled](propertydefinition.md#isserializationenabled)
 * [name](propertydefinition.md#name)
 * [onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)
 * [sequentialNumber](propertydefinition.md#sequentialnumber)
@@ -68,6 +69,12 @@ Name | Type |
 ### `Optional` defaultValue
 
 • **defaultValue**? : *any*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
 
 ___
 
