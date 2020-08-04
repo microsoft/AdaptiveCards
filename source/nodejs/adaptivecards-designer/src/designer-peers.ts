@@ -1367,28 +1367,6 @@ export class CardElementPeer extends DesignerPeer {
             { targetVersion: Adaptive.Versions.v1_1, name: "Stretch", value: "stretch" }
         ]);
 
-    private removePeer(peer: CardElementPeer): boolean {
-        if (peer.cardElement.parent) {
-            if (!peer.remove(true, false)) {
-                return false;
-            }
-
-            peer.parent.removeChild(peer);
-        }
-
-        return true;
-    }
-
-    protected insertElementAfter(newElement: Adaptive.CardElement) {
-        if (this.cardElement.parent instanceof Adaptive.Container) {
-            this.cardElement.parent.insertItemAfter(newElement, this.cardElement);
-
-            var newPeer = CardDesignerSurface.cardElementPeerRegistry.createPeerInstance(this.designerSurface, this, newElement);
-
-            this.peerAdded(newPeer);
-        }
-    }
-
     protected internalRemove(): boolean {
         return this.cardElement.remove();
     }
@@ -1441,97 +1419,6 @@ export class CardElementPeer extends DesignerPeer {
 
     initializeCardElement() {
         // Do nothing in base implementation
-    }
-
-    canDrop(peer: DesignerPeer) {
-        return this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer;
-    }
-
-    tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
-        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
-            let targetPeer: DesignerPeer = null;
-            let insertAfter: boolean;
-
-            for (var i = 0; i < this.getChildCount(); i++) {
-                let rect = this.getChildAt(i).getBoundingRect();
-
-                if (rect.isInside(insertionPoint)) {
-                    targetPeer = this.getChildAt(i);
-
-                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
-
-                    break;
-                }
-            }
-
-            if (targetPeer === peer) {
-                return false;
-            }
-
-            if (targetPeer) {
-                if (insertAfter) {
-                    if (peer.cardElement.index - (<CardElementPeer>targetPeer).cardElement.index !== 1) {
-                        if (!this.removePeer(peer)) {
-                            return false;
-                        }
-                
-                        this.cardElement.insertItemAfter(peer.cardElement, (<CardElementPeer>targetPeer).cardElement);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else {
-                    if ((<CardElementPeer>targetPeer).cardElement.index - peer.cardElement.index !== 1) {
-                        if (!this.removePeer(peer)) {
-                            return false;
-                        }
-                
-                        this.cardElement.insertItemBefore(peer.cardElement, (<CardElementPeer>targetPeer).cardElement);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-            }
-            else {
-                let rect = this.getBoundingRect();
-
-                insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
-
-                if (insertAfter || this.cardElement.getItemCount() === 0) {
-                    if (!this.cardElement.isLastElement(peer.cardElement)) {
-                        if (!this.removePeer(peer)) {
-                            return false;
-                        }
-
-                        this.cardElement.addItem(peer.cardElement);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-                else {
-                    if (!this.cardElement.isFirstElement(peer.cardElement)) {
-                        if (!this.removePeer(peer)) {
-                            return false;
-                        }
-                        
-                        this.cardElement.insertItemAt(peer.cardElement, 0);
-                    }
-                    else {
-                        return false;
-                    }
-                }
-            }
-                
-            this.insertChild(peer, peer.cardElement.index);
-            this.changed(false);
-        
-            return true;
-        }
-
-        return false;
     }
 
     getBoundingRect(): Rect {
@@ -1611,7 +1498,130 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
     }
 }
 
-export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
+export abstract class BaseContainerPeer<TContainer extends Adaptive.Container> extends TypedCardElementPeer<TContainer> {
+    private removePeer(peer: CardElementPeer): boolean {
+        if (peer.cardElement.parent) {
+            if (!peer.remove(true, false)) {
+                return false;
+            }
+
+            peer.parent.removeChild(peer);
+        }
+
+        return true;
+    }
+    
+    protected isContainer(): boolean {
+        return true;
+    }
+
+    canDrop(peer: DesignerPeer) {
+        return peer instanceof CardElementPeer;
+    }
+
+    tryDrop(peer: DesignerPeer, insertionPoint: IPoint): boolean {
+        if (peer instanceof CardElementPeer) {
+            let targetPeer: DesignerPeer | undefined = undefined;
+            let insertAfter: boolean = false;
+
+            for (var i = 0; i < this.getChildCount(); i++) {
+                let rect = this.getChildAt(i).getBoundingRect();
+
+                if (rect.isInside(insertionPoint) && this.getChildAt(i).getCardObject() instanceof Adaptive.CardElement) {
+                    targetPeer = this.getChildAt(i);
+
+                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
+
+                    break;
+                }
+            }
+
+            if (targetPeer === peer) {
+                return false;
+            }
+
+            if (targetPeer) {
+                let targetCardElement = <Adaptive.CardElement>targetPeer.getCardObject();
+
+                if (insertAfter) {
+                    if (peer.cardElement.index - targetCardElement.index !== 1) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+                
+                        this.cardElement.insertItemAfter(peer.cardElement, targetCardElement);
+                    }
+                    else {
+                        return false;
+                    }
+                }
+                else {
+                    if (targetCardElement.index - peer.cardElement.index !== 1) {
+                        if (!this.removePeer(peer)) {
+                            return false;
+                        }
+                
+                        this.cardElement.insertItemBefore(peer.cardElement, targetCardElement);
+                    }
+                    else {
+                        return false;
+                    }
+                }
+            }
+            else {
+                let rect = this.getBoundingRect();
+
+                if (this.cardElement.getItemCount() === 0) {
+                    if (!this.removePeer(peer)) {
+                        return false;
+                    }
+
+                    this.cardElement.addItem(peer.cardElement);
+                }
+                else {
+                    insertAfter = (insertionPoint.y - rect.top) >= (rect.height / 2);
+
+                    if (insertAfter) {
+                        if (this.cardElement.indexOf(peer.cardElement) !== this.cardElement.getItemCount() - 1) {
+                            if (!this.removePeer(peer)) {
+                                return false;
+                            }
+
+                            this.cardElement.addItem(peer.cardElement);
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                    else {
+                        if (this.cardElement.indexOf(peer.cardElement) !== 0) {
+                            if (!this.removePeer(peer)) {
+                                return false;
+                            }
+                            
+                            this.cardElement.insertItemAt(peer.cardElement, 0);
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+                }
+            }
+                
+            this.insertChild(peer, peer.cardElement.index);
+
+            peer.updateLayout();
+
+            this.changed(false);
+        
+            return true;
+        }
+
+        return false;
+    }
+}
+
+export class AdaptiveCardPeer extends BaseContainerPeer<Adaptive.AdaptiveCard> {
     static readonly langProperty = new StringPropertyEditor(Adaptive.Versions.v1_1, "lang", "Language");
     static readonly fallbackTextProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "fallbackText", "Fallback text", false, true);
     static readonly speakProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "speak", "Speak");
@@ -1728,7 +1738,7 @@ export class AdaptiveCardPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard
     }
 }
 
-export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
+export class ColumnPeer extends BaseContainerPeer<Adaptive.Column> {
     private static readonly pixelWidthProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_1, "width", "Width in pixels", Adaptive.SizeUnit.Pixel);
     private static readonly weightProperty = new SizeAndUnitPropertyEditor(Adaptive.Versions.v1_0, "width", "Weight", Adaptive.SizeUnit.Weight);
 
@@ -1743,10 +1753,6 @@ export class ColumnPeer extends TypedCardElementPeer<Adaptive.Column> {
             { targetVersion: Adaptive.Versions.v1_1, name: "Pixels", value: "pixels" }
         ],
         true);
-
-    protected isContainer(): boolean {
-        return true;
-    }
 
     protected internalGetTreeItemText(): string {
         if (this.cardElement.width instanceof Adaptive.SizeAndUnit) {
@@ -1903,7 +1909,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
     }
 }
 
-export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
+export class ContainerPeer extends BaseContainerPeer<Adaptive.Container> {
     static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
     static readonly minHeightProperty = new NumberPropertyEditor(Adaptive.Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
     static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Adaptive.Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
@@ -1919,10 +1925,6 @@ export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
             new EnumPropertyEditor(Adaptive.Versions.v1_2, "verticalAlignment", "Vertical alignment", Adaptive.VerticalAlignment)
         ]
     );
-
-    protected isContainer(): boolean {
-        return true;
-    }
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);

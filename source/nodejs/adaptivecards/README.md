@@ -32,6 +32,7 @@ Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
+| **vNext** | A new `protected CardElement.internalUpdateLayout(processChildren: boolean = true)` has been introduced. It is called internally by `CardElement.updateLayout()`. In previous versions, descendent classes could override `updateLayout()` to implement custom layout logic; with this change, descendent classes should override `internalUpdateLayout()` instead. Descendent classes that continue to override `updateLayout` will cause degraded rendering performance. |
 | **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
 || The `isNullOrEmpty(value: string): boolean` function has been **REMOVED**. Use `if (!stringValue)` instead. |
 || The library is now compiled with the `noImplicitAny` flag. As a result, anything that can be undefined/not set now has the `undefined` value. All uses of `null` have been removed. |

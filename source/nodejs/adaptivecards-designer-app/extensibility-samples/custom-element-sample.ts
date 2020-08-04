@@ -98,8 +98,8 @@ export class ProgressBar extends AC.CardElement {
         return ProgressBar.JsonTypeName;
     }
 
-    updateLayout(processChildren: boolean = true) {
-        super.updateLayout(processChildren);
+    protected internalUpdateLayout(processChildren: boolean = true) {
+        super.internalUpdateLayout(processChildren);
 
         if (this.renderedElement) {
             if (this.title) {

@@ -329,6 +329,11 @@ export abstract class CardElement extends CardObject {
         return context.elementRegistry.findByName(this.getJsonTypeName()) !== undefined;
     }
 
+    protected internalUpdateLayout(processChildren: boolean = true) {
+        this.updateRenderedElementVisibility();
+        this.applyPadding();
+    }
+
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -470,8 +475,15 @@ export abstract class CardElement extends CardObject {
     }
 
     updateLayout(processChildren: boolean = true) {
-        this.updateRenderedElementVisibility();
-        this.applyPadding();
+        if (!this.getIsUpdating()) {
+            this.internalUpdateLayout(processChildren);
+        }
+    }
+
+    endUpdate() {
+        super.endUpdate();
+
+        this.updateLayout();
     }
 
     indexOf(cardElement: CardElement): number {
@@ -485,11 +497,11 @@ export abstract class CardElement extends CardObject {
     }
 
     isFirstElement(element: CardElement): boolean {
-        return true;
+        return false;
     }
 
     isLastElement(element: CardElement): boolean {
-        return true;
+        return false;
     }
 
     isAtTheVeryLeft(): boolean {
@@ -1074,6 +1086,17 @@ export class TextBlock extends BaseTextBlock {
         }
     }
 
+    protected internalUpdateLayout(processChildren: boolean = false) {
+        super.internalUpdateLayout(processChildren);
+
+        if (GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
+            // Reset the element's innerHTML in case the available room for
+            // content has increased
+            this.restoreOriginalContent();
+            this.truncateIfSupported(this._computedLineHeight * this.maxLines);
+        }
+    }
+
     useMarkdown: boolean = true;
     forElementId?: string;
 
@@ -1127,17 +1150,6 @@ export class TextBlock extends BaseTextBlock {
 
     getJsonTypeName(): string {
         return "TextBlock";
-    }
-
-    updateLayout(processChildren: boolean = false) {
-        super.updateLayout(processChildren);
-
-        if (GlobalSettings.useAdvancedTextBlockTruncation && this.maxLines && this.isDisplayed()) {
-            // Reset the element's innerHTML in case the available room for
-            // content has increased
-            this.restoreOriginalContent();
-            this.truncateIfSupported(this._computedLineHeight * this.maxLines);
-        }
     }
 }
 
@@ -1890,6 +1902,16 @@ export abstract class CardElementContainer extends CardElement {
         }
     }
 
+    protected internalUpdateLayout(processChildren: boolean = true) {
+        super.internalUpdateLayout(processChildren);
+
+        if (processChildren) {
+            for (let i = 0; i < this.getItemCount(); i++) {
+                this.getItemAt(i).updateLayout();
+            }
+        }
+    }
+
     protected get isSelectable(): boolean {
         return false;
     }
@@ -1972,16 +1994,6 @@ export abstract class CardElementContainer extends CardElement {
         }
 
         return element;
-    }
-
-    updateLayout(processChildren: boolean = true) {
-        super.updateLayout(processChildren);
-
-        if (processChildren) {
-            for (let i = 0; i < this.getItemCount(); i++) {
-                this.getItemAt(i).updateLayout();
-            }
-        }
     }
 
     getAllInputs(processActions: boolean = true): Input[] {
@@ -5103,6 +5115,12 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         this._bleed = value;
     }
 
+    protected internalUpdateLayout(processChildren: boolean = true) {
+        super.internalUpdateLayout(processChildren);
+
+        this.applyBackground();
+    }
+
     protected get renderedActionCount(): number {
         return 0;
     }
@@ -5113,12 +5131,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
 
     protected get allowCustomStyle(): boolean {
         return true;
-    }
-
-    updateLayout(processChildren: boolean = true) {
-        super.updateLayout(processChildren);
-
-        this.applyBackground();
     }
 
     isBleeding(): boolean {
@@ -5303,6 +5315,8 @@ export class Container extends StylableCardElementContainer {
                 } 
 
                 item.setParent(this);
+
+                this.getRootElement().updateLayout(true);
             }
             else {
                 throw new Error(Strings.errors.elementTypeNotStandalone(item.getJsonTypeName()));
@@ -5614,7 +5628,7 @@ export class Container extends StylableCardElementContainer {
 
             CardElementContainer.removeRenderedItem(item);
 
-            this.updateLayout();
+            this.getRootElement().updateLayout(true);
 
             return true;
         }
@@ -5964,8 +5978,10 @@ export class ColumnSet extends StylableCardElementContainer {
     }
 
     isFirstElement(element: CardElement): boolean {
+        let designMode = this.isDesignMode();
+
         for (let column of this._columns) {
-            if (column.isVisible) {
+            if (column.isVisible || designMode) {
                 return column == element;
             }
         }
@@ -6519,6 +6535,16 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
+    protected internalUpdateLayout(processChildren: boolean = true) {
+        super.internalUpdateLayout(processChildren);
+
+        if (GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
+            let padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Default);
+
+            this['handleOverflow']((<HTMLElement>this.renderedElement).offsetHeight - padding);
+        }
+    }
+
     protected get renderIfEmpty(): boolean {
         return true;
     }
@@ -6608,16 +6634,6 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
-    }
-
-    updateLayout(processChildren: boolean = true) {
-        super.updateLayout(processChildren);
-
-        if (GlobalSettings.useAdvancedCardBottomTruncation && this.isDisplayed()) {
-            let padding = this.hostConfig.getEffectiveSpacing(Enums.Spacing.Default);
-
-            this['handleOverflow']((<HTMLElement>this.renderedElement).offsetHeight - padding);
-        }
     }
 
     shouldFallback(): boolean {

@@ -250,9 +250,6 @@ export class CardDesignerSurface {
     }
 
     private peerChanged(peer: DesignerPeers.DesignerPeer, updatePropertySheet: boolean) {
-        // this.renderCard()
-        this.updateLayout();
-
         if (updatePropertySheet && this.onSelectedPeerChanged) {
             this.onSelectedPeerChanged(this._selectedPeer);
         }

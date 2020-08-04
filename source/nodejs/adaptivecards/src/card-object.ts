@@ -144,6 +144,38 @@ export abstract class CardObject extends SerializableObject {
         return result;
     }
 
+    getIsUpdating(): boolean {
+        let result = super.getIsUpdating();
+
+        if (!result && this.parent) {
+            result = this.parent.getIsUpdating();
+        }
+
+        return result;
+    }
+
+    beginUpdate() {
+        let rootObject = this.getRootObject();
+        
+        if (rootObject !== this) {
+            rootObject.beginUpdate();
+        }
+        else {
+            super.beginUpdate();
+        }
+    }
+
+    endUpdate() {
+        let rootObject = this.getRootObject();
+        
+        if (rootObject !== this) {
+            rootObject.endUpdate();
+        }
+        else {
+            super.endUpdate();
+        }
+    }
+
     get parent(): CardObject | undefined {
         return this._parent;
     }

@@ -759,7 +759,7 @@ export abstract class SerializableObject {
     protected abstract getSchemaKey(): string;
 
     protected propertyChanged(property: PropertyDefinition) {
-        if (this._updateCount === 0 && this.onPropertyChanged) {
+        if (!this.getIsUpdating() && this.onPropertyChanged) {
             this.onPropertyChanged(this, property);
         }
     }
@@ -823,43 +823,36 @@ export abstract class SerializableObject {
     protected internalParse(source: PropertyBag, context: BaseSerializationContext) {
         this._propertyBag = {};
 
-        this.beginUpdate();
+        if (source) {
+            let s = this.getSchema();
 
-        try {
-            if (source) {
-                let s = this.getSchema();
+            for (let i = 0; i < s.getCount(); i++) {
+                let property = s.getItemAt(i);
 
-                for (let i = 0; i < s.getCount(); i++) {
-                    let property = s.getItemAt(i);
+                if (property.isSerializationEnabled) {
+                    let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
-                    if (property.isSerializationEnabled) {
-                        let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
-
-                        if (source.hasOwnProperty(property.name)) {
-                            if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
-                                propertyValue = property.parse(this, source, context);
-                            }
-                            else {
-                                context.logParseEvent(
-                                    this,
-                                    Enums.ValidationEvent.UnsupportedProperty,
-                                    Strings.errors.propertyNotSupported(
-                                        property.name,
-                                        property.targetVersion.toString(),
-                                        context.targetVersion.toString()));
-                            }
+                    if (source.hasOwnProperty(property.name)) {
+                        if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
+                            propertyValue = property.parse(this, source, context);
                         }
-
-                        this.setValue(property, propertyValue);
+                        else {
+                            context.logParseEvent(
+                                this,
+                                Enums.ValidationEvent.UnsupportedProperty,
+                                Strings.errors.propertyNotSupported(
+                                    property.name,
+                                    property.targetVersion.toString(),
+                                    context.targetVersion.toString()));
+                        }
                     }
+
+                    this.setValue(property, propertyValue);
                 }
             }
-            else {
-                this.resetDefaultValues();
-            }
         }
-        finally {
-            this.endUpdate();
+        else {
+            this.resetDefaultValues();
         }
 
         // This has to be last otherwise parsing will reset raw property values
@@ -915,7 +908,14 @@ export abstract class SerializableObject {
     }
 
     parse(source: PropertyBag, context?: BaseSerializationContext) {
-        this.internalParse(source, context ? context : new SimpleSerializationContext());
+        this.beginUpdate();
+
+        try {
+            this.internalParse(source, context ? context : new SimpleSerializationContext());
+        }
+        finally {
+            this.endUpdate();
+        }
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
@@ -995,5 +995,9 @@ export abstract class SerializableObject {
         }
 
         return schema;
+    }
+
+    getIsUpdating(): boolean {
+        return this._updateCount > 0;
     }
 }
