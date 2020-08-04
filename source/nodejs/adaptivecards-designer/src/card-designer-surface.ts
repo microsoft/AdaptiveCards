@@ -268,15 +268,7 @@ export class CardDesignerSurface {
         }
     }
 
-    private _fullRenderCount: number = 0;
-
     private renderCard() {
-        /* REMOVE when finished */
-        document.title = "Render count: " + this._fullRenderCount;
-
-        this._fullRenderCount++;
-        /* -------------------- */
-
         this._cardHost.innerHTML = "";
 
         if (this.onCardValidated) {
