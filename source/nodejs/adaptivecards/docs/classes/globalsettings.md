@@ -14,6 +14,7 @@
 * [allowPreProcessingPropertyValues](globalsettings.md#static-allowpreprocessingpropertyvalues)
 * [alwaysBleedSeparators](globalsettings.md#static-alwaysbleedseparators)
 * [displayInputValidationErrors](globalsettings.md#static-displayinputvalidationerrors)
+* [enableFallback](globalsettings.md#static-enablefallback)
 * [enableFullJsonRoundTrip](globalsettings.md#static-enablefulljsonroundtrip)
 * [setTabIndexAtCardRoot](globalsettings.md#static-settabindexatcardroot)
 * [useAdvancedCardBottomTruncation](globalsettings.md#static-useadvancedcardbottomtruncation)
@@ -43,6 +44,12 @@ ___
 ### `Static` displayInputValidationErrors
 
 ▪ **displayInputValidationErrors**: *boolean* = true
+
+___
+
+### `Static` enableFallback
+
+▪ **enableFallback**: *boolean* = true
 
 ___
 
