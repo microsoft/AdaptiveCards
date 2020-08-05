@@ -1,17 +1,16 @@
+import os
 from setuptools import setup, Extension
 from torch.utils import cpp_extension
 
-#opencv_inc_dir = "/home/haridas/projects/opensource/detr/libs/opencv-4.3.0/build/release/include/opencv4/"
-#opencv_lib_dir = "/home/haridas/projects/opensource/detr/libs/opencv-4.3.0/build/release/lib"
+os.environ["CXX"] = "g++-8"
+os.environ["CC"] = "g++-8"
 
-
+# Required libopencv-3.2-dev and libopencv-3.2
 setup(name="detr",
     ext_modules=[cpp_extension.CppExtension(
         name='detr',
         sources=['detr.cpp'],
-        libraries=["opencv_core"],
-        #include_dirs=[opencv_inc_dir],
-        #library_dirs=[opencv_lib_dir],
+        libraries=["opencv_core", "opencv_imgproc"],
         extra_compile_args=["-fno-inline"]
         )
     ],
