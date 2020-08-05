@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](pixelsizeproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](pixelsizeproperty.md#isserializationenabled)
 * [name](pixelsizeproperty.md#name)
 * [onGetInitialValue](pixelsizeproperty.md#optional-ongetinitialvalue)
 * [sequentialNumber](pixelsizeproperty.md#sequentialnumber)
@@ -54,6 +55,14 @@ Name | Type |
 • **defaultValue**? : *any*
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

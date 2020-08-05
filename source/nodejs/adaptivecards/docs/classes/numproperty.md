@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](numproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](numproperty.md#isserializationenabled)
 * [name](numproperty.md#name)
 * [onGetInitialValue](numproperty.md#optional-ongetinitialvalue)
 * [sequentialNumber](numproperty.md#sequentialnumber)
@@ -54,6 +55,14 @@ Name | Type |
 • **defaultValue**? : *any*
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

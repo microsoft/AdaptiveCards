@@ -20,7 +20,7 @@
 
 ### `Static` latest
 
-▪ **latest**: *[Version](version.md)‹›* = Versions.v1_2
+▪ **latest**: *[Version](version.md)‹›* = Versions.v1_3
 
 ___
 
@@ -44,4 +44,4 @@ ___
 
 ### `Static` v1_3
 
-▪ **v1_3**: *[Version](version.md)‹›* = new Version(1, 3, "1.3 (Preview)")
+▪ **v1_3**: *[Version](version.md)‹›* = new Version(1, 3)

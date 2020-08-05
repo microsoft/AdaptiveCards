@@ -22,19 +22,19 @@
 						"items": [
 							{
 								"type": "Input.Text",
-								"placeholder": "First Name",
+								"label": "First Name",
 								"id": "FirstName",
 								"isRequired": true,
 								"errorMessage": "First Name is required"
 							},
 							{
 								"type": "Input.Text",
-								"placeholder": "Middle Name",
+								"label": "Middle Name",
 								"id": "MiddleName"
 							},
 							{
 								"type": "Input.Text",
-								"placeholder": "Last Name",
+								"label": "Last Name",
 								"id": "LastName",
 								"isRequired": true,
 								"errorMessage": "Last Name is required"
@@ -56,12 +56,12 @@
 									"items": [
 										{
 											"type": "Input.Text",
-											"placeholder": "Address line 1",
+											"label": "Address line 1",
 											"id": "AddressLine1"
 										},
 										{
 											"type": "Input.Text",
-											"placeholder": "Address line 2",
+											"label": "Address line 2",
 											"id": "AddressLine2"
 										},
 										{
@@ -73,7 +73,7 @@
 													"items": [
 														{
 															"type": "Input.Text",
-															"placeholder": "City",
+															"label": "City",
 															"id": "City"
 														}
 													]
@@ -84,7 +84,7 @@
 													"items": [
 														{
 															"type": "Input.Text",
-															"placeholder": "State",
+															"label": "State",
 															"id": "State"
 														}
 													]
@@ -95,7 +95,7 @@
 													"items": [
 														{
 															"type": "Input.Text",
-															"placeholder": "Zip Code",
+															"label": "Zip Code",
 															"id": "Zip"
 														}
 													]
@@ -115,17 +115,17 @@
 										"body": [
 											{
 												"type": "Input.Text",
-												"placeholder": "Cell Number",
+												"label": "Cell Number",
 												"id": "CellPhone"
 											},
 											{
 												"type": "Input.Text",
-												"placeholder": "Home Number",
+												"label": "Home Number",
 												"id": "HomePhone"
 											},
 											{
 												"type": "Input.Text",
-												"placeholder": "Email Address",
+												"label": "Email Address",
 												"id": "Email"
 											}
 										],
