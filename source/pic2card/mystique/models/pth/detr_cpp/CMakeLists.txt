@@ -26,10 +26,8 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 include_directories(${TORCH_INCLUDE_DIRS})
 include_directories(${Python_INCLUDE_DIRS})
 
-# add_executable(detr detr_infer.cpp)
-pybind11_add_module(detr detr.cpp)
-
-# add_library(deter_inference detr_infer.cpp)
+add_executable(detr detr_infer.cpp)
+# pybind11_add_module(detr detr.cpp)
 
 target_link_libraries(detr PRIVATE ${OpenCV_LIBS})
 target_link_libraries(detr PRIVATE ${TORCH_LIBRARIES})
