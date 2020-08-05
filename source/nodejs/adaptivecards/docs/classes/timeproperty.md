@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](timeproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](timeproperty.md#isserializationenabled)
 * [name](timeproperty.md#name)
 * [onGetInitialValue](timeproperty.md#optional-ongetinitialvalue)
 * [onParse](timeproperty.md#onparse)
@@ -56,6 +57,14 @@ Name | Type |
 *Inherited from [CustomProperty](customproperty.md).[defaultValue](customproperty.md#optional-defaultvalue)*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

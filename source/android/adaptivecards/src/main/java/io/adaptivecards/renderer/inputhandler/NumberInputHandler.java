@@ -54,7 +54,18 @@ public class NumberInputHandler extends TextInputHandler
             return false;
         }
 
-        return (numberInput.GetMin() <= inputValue) && (inputValue <= numberInput.GetMax());
+        boolean isValid = true;
+        if (numberInput.GetMin() != null)
+        {
+            isValid = (numberInput.GetMin() <= inputValue);
+        }
+
+        if (numberInput.GetMax() != null)
+        {
+            isValid = isValid && (inputValue <= numberInput.GetMax());
+        }
+
+        return isValid;
     }
 
 }

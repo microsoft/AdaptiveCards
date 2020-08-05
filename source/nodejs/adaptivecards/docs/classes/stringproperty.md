@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](stringproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](stringproperty.md#isserializationenabled)
 * [name](stringproperty.md#name)
 * [onGetInitialValue](stringproperty.md#optional-ongetinitialvalue)
 * [regEx](stringproperty.md#optional-regex)
@@ -58,6 +59,14 @@ Name | Type | Default |
 • **defaultValue**? : *undefined | string*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 
