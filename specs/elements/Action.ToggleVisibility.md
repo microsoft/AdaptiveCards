@@ -7,7 +7,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
-| **targetElements** | `TargetElement[]` | No | The array of TargetElements | 1.2 |
+| **targetElements** | `TargetElement[]` | No | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
 
 **Inherited properties**
 
@@ -22,7 +22,7 @@
 
 ## targetElements
 
-The array of TargetElements
+The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information.
 
 * **Type**: `TargetElement[]`
 * **Required**: No

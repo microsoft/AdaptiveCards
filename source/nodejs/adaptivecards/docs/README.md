@@ -99,6 +99,7 @@
 * [SpacingDefinition](classes/spacingdefinition.md)
 * [StringProperty](classes/stringproperty.md)
 * [StringWithSubstitutions](classes/stringwithsubstitutions.md)
+* [Strings](classes/strings.md)
 * [StylableCardElementContainer](classes/stylablecardelementcontainer.md)
 * [SubmitAction](classes/submitaction.md)
 * [TextBlock](classes/textblock.md)

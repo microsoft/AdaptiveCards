@@ -17,6 +17,8 @@
 * [MissingCardType](validationevent.md#missingcardtype)
 * [Other](validationevent.md#other)
 * [PropertyCantBeNull](validationevent.md#propertycantbenull)
+* [RequiredInputsShouldHaveErrorMessage](validationevent.md#requiredinputsshouldhaveerrormessage)
+* [RequiredInputsShouldHaveLabel](validationevent.md#requiredinputsshouldhavelabel)
 * [TooManyActions](validationevent.md#toomanyactions)
 * [UnknownActionType](validationevent.md#unknownactiontype)
 * [UnknownElementType](validationevent.md#unknownelementtype)
@@ -88,6 +90,18 @@ ___
 ###  PropertyCantBeNull
 
 • **PropertyCantBeNull**:
+
+___
+
+###  RequiredInputsShouldHaveErrorMessage
+
+• **RequiredInputsShouldHaveErrorMessage**:
+
+___
+
+###  RequiredInputsShouldHaveLabel
+
+• **RequiredInputsShouldHaveLabel**:
 
 ___
 

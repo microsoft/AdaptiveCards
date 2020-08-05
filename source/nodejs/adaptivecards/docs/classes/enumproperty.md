@@ -22,6 +22,7 @@
 
 * [defaultValue](enumproperty.md#optional-defaultvalue)
 * [enumType](enumproperty.md#enumtype)
+* [isSerializationEnabled](enumproperty.md#isserializationenabled)
 * [name](enumproperty.md#name)
 * [onGetInitialValue](enumproperty.md#optional-ongetinitialvalue)
 * [sequentialNumber](enumproperty.md#sequentialnumber)
@@ -71,6 +72,14 @@ ___
 ###  enumType
 
 • **enumType**: *TEnum*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 
