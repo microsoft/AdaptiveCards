@@ -43,6 +43,12 @@ public class NumberInputHandler extends TextInputHandler
             return false;
         }
 
+        // Before performing any validation, if the input value is empty and is not required, then it's valid
+        if (numberInputValue.isEmpty() && !numberInput.GetIsRequired())
+        {
+            return true;
+        }
+
         int inputValue = 0;
         try
         {
@@ -50,15 +56,8 @@ public class NumberInputHandler extends TextInputHandler
         }
         catch (Exception ex)
         {
-            // Parsing failed, consider it invalid if it was not required otherwise it's invalid
-            if (numberInputValue.isEmpty() && !numberInput.GetIsRequired())
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            // Parsing failed, consider it invalid
+            return false;
         }
 
         boolean isValid = true;
