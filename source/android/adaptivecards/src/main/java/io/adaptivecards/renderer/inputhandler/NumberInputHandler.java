@@ -50,8 +50,15 @@ public class NumberInputHandler extends TextInputHandler
         }
         catch (Exception ex)
         {
-            // Something failed, don't consider valid
-            return false;
+            // Parsing failed, consider it invalid if it was not required otherwise it's invalid
+            if (numberInputValue.isEmpty() && !numberInput.GetIsRequired())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         boolean isValid = true;
