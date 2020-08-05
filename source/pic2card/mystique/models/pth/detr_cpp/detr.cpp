@@ -1,10 +1,5 @@
-#include <vector>
 #include <torch/extension.h>
 #include <torch/script.h>
-#include <torch/python.h>
-#include <torch/torch.h>
-#include <torch/csrc/utils/tensor_numpy.h>
-#include <torch/csrc/python_headers.h>
 
 #include "detr.hpp"
 
@@ -31,13 +26,12 @@ struct Detr
         model = torch::jit::load(model_path);
     }
 
-    //c10::IValue predict(cv::Mat &image)
     const std::vector<cv::Mat> predict(cv::Mat &image)
     {
         cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
         image.convertTo(image, CV_32FC3, 1.0f / 255.0f);
         cv::Size imsize = image.size();
-        std::cout << "Width: " << imsize.width << std::endl;
+        // std::cout << "Width: " << imsize.width << std::endl;
         torch::Tensor imTensor = torch::from_blob(image.data, { 1, imsize.width, imsize.height, 3 });
         imTensor = imTensor.permute({ 0, 3, 1, 2 });
         imTensor[0][0] = imTensor[0][0].sub_(0.485).div_(0.229);
@@ -50,13 +44,13 @@ struct Detr
 
         torch::Tensor predLogits = outDict.at("pred_logits").toTensor();
         torch::Tensor predBoxes = outDict.at("pred_boxes").toTensor();
-        //return predLogits;
-        std::cout << "PredLogits Size: " << predLogits.size(1) << " " << predLogits.size(2) << std::endl;
-        std::cout << "predBoxes Size: " << predBoxes.size(1) << " " << predBoxes.size(2) << std::endl;
 
-        // return torch::utils::tensor_to_numpy(predLogits.detach().cpu());
-        // return predLogits.detach().cpu();
-        //std::cout << predLogits.size(0) << std::endl;
+        // //return predLogits;
+        // std::cout << "PredLogits Size: " << predLogits.size(1) << " " << predLogits.size(2) << std::endl;
+        // std::cout << "predBoxes Size: " << predBoxes.size(1) << " " << predBoxes.size(2) << std::endl;
+
+
+        // Map the torch::Tensor to cv::Mat, helps to avoid torch package dependency at python side.
         predLogits = predLogits.to(torch::kCPU);
         cv::Mat cvMatLogits(predLogits.size(1), predLogits.size(2), CV_32F);
         std::memcpy((void*)cvMatLogits.data, predLogits.data_ptr(), sizeof(torch::kF32)*predLogits.numel());
@@ -69,30 +63,6 @@ struct Detr
     }
 };
 
-struct MatrixMultiplier
-{
-    MatrixMultiplier(int A, int B)
-    {
-        tensor_ =
-            torch::ones({ A, B }, torch::dtype(torch::kFloat64).requires_grad(true));
-    }
-    torch::Tensor forward(torch::Tensor weights)
-    {
-        return tensor_.mm(weights);
-    }
-    torch::Tensor get() const
-    {
-        return tensor_;
-    }
-
-private:
-    torch::Tensor tensor_;
-};
-
-bool function_taking_optional(c10::optional<torch::Tensor> tensor)
-{
-    return tensor.has_value();
-}
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
 {
@@ -105,14 +75,4 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, m)
         .def("load", &Detr::loadModel)
         .def("predict", &Detr::predict)
         .def_readonly("model", &Detr::model);
-
-    m.def(
-        "function_taking_optional",
-        &function_taking_optional,
-        "function_taking_optional");
-
-    py::class_<MatrixMultiplier>(m, "MatrixMultiplier")
-        .def(py::init<int, int>())
-        .def("forward", &MatrixMultiplier::forward)
-        .def("get", &MatrixMultiplier::get);
 }

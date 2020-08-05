@@ -2,7 +2,6 @@ import detr
 import numpy as np
 from PIL import Image
 import unittest
-#import torch
 
 
 class TestDetrLib(unittest.TestCase):
@@ -13,6 +12,7 @@ class TestDetrLib(unittest.TestCase):
         self.img_np = np.asarray(img)
 
     def test_add_np_array(self):
+        "Check numpy Type conversion works"
         arr1 = np.array([[1, 2, 3], [2, 3, 4], [3, 4, 5]], dtype=np.uint8)
         res = detr.addmat(arr1, arr1)
         exp_res = np.array([[2, 4, 6], [4, 6, 8], [6, 8, 10]], dtype=np.uint8)
@@ -26,17 +26,8 @@ class TestDetrLib(unittest.TestCase):
     def test_model_loading(self):
         model = detr.Detr(self.model_path)
         model.load()
-        #import pdb; pdb.set_trace()
-        print(model.predict(self.img_np))
+        pred_logits, pred_boxes = model.predict(self.img_np)
 
-    #     #import pdb; pdb.set_trace()
-
-    def test_matrix_mal(self):
-        mm = detr.MatrixMultiplier(3, 4)
-        #print(mm.getstr())
-        #print(mm.getvector())
-        #print(mm.randomTensor())
-            
-
-
-
+        self.assertEqual(pred_logits.shape, (60, 7))
+        self.assertEqual(pred_boxes.shape, (60, 4))
+        #print(pred_logits.shape, pred_boxes.shape)
