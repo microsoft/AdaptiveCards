@@ -1,43 +1,32 @@
 {
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Please provide the following information:"
+			"text": "${formTitle}"
 		}
 	],
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"actions": [
 		{
 			"type": "Action.ShowCard",
-			"title": "1. Name",
+			"title": "${nameCard.title}",
 			"card": {
 				"type": "AdaptiveCard",
 				"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 				"body": [
 					{
 						"type": "Container",
-						"id": "nameProperties",
+						"id": "${nameCard.idPrefix}Properties",
 						"items": [
 							{
+								"$data": "${nameCard.fields}",
 								"type": "Input.Text",
-								"label": "First Name",
-								"id": "FirstName",
-								"isRequired": true,
-								"errorMessage": "First Name is required"
-							},
-							{
-								"type": "Input.Text",
-								"label": "Middle Name",
-								"id": "MiddleName"
-							},
-							{
-								"type": "Input.Text",
-								"label": "Last Name",
-								"id": "LastName",
-								"isRequired": true,
-								"errorMessage": "Last Name is required"
+								"label": "${label}",
+								"id": "${id}",
+								"isRequired": "${required}",
+								"errorMessage": "'${label}' is required"
 							}
 						]
 					}
@@ -45,58 +34,37 @@
 				"actions": [
 					{
 						"type": "Action.ShowCard",
-						"title": "2. Address",
+						"title": "${addressCard.title}",
 						"card": {
 							"type": "AdaptiveCard",
 							"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 							"body": [
 								{
 									"type": "Container",
-									"id": "addressProperties",
+									"id": "${addressCard.idPrefix}Properties",
 									"items": [
 										{
+											"$data": "${addressCard.textInputFields}",
 											"type": "Input.Text",
-											"label": "Address line 1",
-											"id": "AddressLine1"
-										},
-										{
-											"type": "Input.Text",
-											"label": "Address line 2",
-											"id": "AddressLine2"
+											"label": "${label}",
+											"id": "${id}",
+											"isRequired": "${required}",
+											"errorMessage": "'${label} is required"
 										},
 										{
 											"type": "ColumnSet",
 											"columns": [
 												{
+													"$data": "${addressCard.columnFields}",
 													"type": "Column",
 													"width": "stretch",
 													"items": [
 														{
 															"type": "Input.Text",
-															"label": "City",
-															"id": "City"
-														}
-													]
-												},
-												{
-													"type": "Column",
-													"width": "stretch",
-													"items": [
-														{
-															"type": "Input.Text",
-															"label": "State",
-															"id": "State"
-														}
-													]
-												},
-												{
-													"type": "Column",
-													"width": "stretch",
-													"items": [
-														{
-															"type": "Input.Text",
-															"label": "Zip Code",
-															"id": "Zip"
+															"label": "${label}",
+															"id": "${id}",
+															"isRequired": "${required}",
+															"errorMessage": "'${label}' is required"
 														}
 													]
 												}
@@ -108,25 +76,18 @@
 							"actions": [
 								{
 									"type": "Action.ShowCard",
-									"title": "3. Phone/Email",
+									"title": "${contactCard.title}",
 									"card": {
 										"type": "AdaptiveCard",
 										"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 										"body": [
 											{
+												"$data": "${contactCard.fields}",
 												"type": "Input.Text",
-												"label": "Cell Number",
-												"id": "CellPhone"
-											},
-											{
-												"type": "Input.Text",
-												"label": "Home Number",
-												"id": "HomePhone"
-											},
-											{
-												"type": "Input.Text",
-												"label": "Email Address",
-												"id": "Email"
+												"label": "${label}",
+												"id": "${id}",
+												"isRequired": "${required}",
+												"errorMessage": "'${label}' is required"
 											}
 										],
 										"actions": [
