@@ -80,9 +80,53 @@ publishing {
     publications {
         adaptivecards(MavenPublication) {
             groupId 'io.adaptivecards'
-            version System.getenv('ACSDKVERSION') + '-' + System.getenv('BUILD_BUILDNUMBER')
+            version System.getenv('XES_PACKAGEVERSIONNUMBER') ?: '0.0.0'
             artifact(sourceJar)
             artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
+            artifactId 'adaptivecards-android'
+
+            pom.withXml {
+                // Appends the nodes corresponding to general information
+                asNode().appendNode('name', 'Android Adaptive Cards Library')
+                asNode().appendNode('description', 'Android Adaptive Cards Lib')
+                asNode().appendNode('url', 'https://github.com/Microsoft/AdaptiveCards')
+
+                // Appends the nodes corresponding to the licenses
+                def licensesNode = asNode().appendNode('licenses')
+                def licenseNode = licensesNode.appendNode('license')
+                licenseNode.appendNode('name', 'MIT')
+                licenseNode.appendNode('url', 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE')
+                licenseNode.appendNode('distribution', 'repo')
+
+                // Appends the nodes corresponding with the developers
+                def developersNode = asNode().appendNode('developers')
+                def developerNode = developersNode.appendNode('developer')
+                developerNode.appendNode('id', 'microsoft')
+                developerNode.appendNode('name', 'adaptivecards')
+
+                // Appends the node corresponding to scm
+                def scmNode = asNode().appendNode('scm')
+                scmNode.appendNode('url', 'https://github.com/Microsoft/AdaptiveCards')
+
+                // for dependencies and exclusions
+                def dependenciesNode = asNode().appendNode('dependencies')
+                configurations.implementation.allDependencies.withType(ModuleDependency) { ModuleDependency dp ->
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', dp.group)
+                    dependencyNode.appendNode('artifactId', dp.name)
+                    dependencyNode.appendNode('version', dp.version)
+
+                    // for exclusions
+                    if (dp.excludeRules.size() > 0) {
+                        def exclusions = dependencyNode.appendNode('exclusions')
+                        dp.excludeRules.each { ExcludeRule ex ->
+                            def exclusion = exclusions.appendNode('exclusion')
+                            exclusion.appendNode('groupId', ex.group)
+                            exclusion.appendNode('artifactId', ex.module)
+                        }
+                    }
+                }
+            }
         }
     }
 
