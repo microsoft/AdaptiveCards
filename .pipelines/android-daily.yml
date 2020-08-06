@@ -1,4 +1,4 @@
-name: $(date:yyyy.MM.dd)-$(rev:r)
+name: $(Year:yyyy).$(Month).$(DayOfMonth)-$(rev:r)
 schedules:
 - cron: "0 10 * * Mon-Fri"
   displayName: 3:00 AM Pacific (UTC-8) Daily Build (M-F)
