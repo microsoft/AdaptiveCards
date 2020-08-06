@@ -7,8 +7,8 @@ import unittest
 class TestDetrLib(unittest.TestCase):
     def setUp(self):
         self.model_path = "/mnt1/haridas/projects/pic2card-models/pytorch/detr_trace.pt"
-        image = "/home/haridas/projects/mystique/data/templates_test_data/1.png"
-        img = Image.open(image)
+        self.image_path = "/home/haridas/projects/mystique/data/templates_test_data/1.png"
+        img = Image.open(self.image_path)
         self.img_np = np.asarray(img)
 
     def test_add_np_array(self):
@@ -28,6 +28,6 @@ class TestDetrLib(unittest.TestCase):
         model.load()
         pred_logits, pred_boxes = model.predict(self.img_np)
 
+        print(pred_logits.shape)
         self.assertEqual(pred_logits.shape, (60, 7))
         self.assertEqual(pred_boxes.shape, (60, 4))
-        #print(pred_logits.shape, pred_boxes.shape)

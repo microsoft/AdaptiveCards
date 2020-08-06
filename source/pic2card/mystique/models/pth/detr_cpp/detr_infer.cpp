@@ -1,29 +1,31 @@
 #include <iostream>
+#include <string>
+#include <tuple>
 
 #include <opencv2/opencv.hpp>
-
 #include <torch/extension.h>
 #include <torch/script.h>
+#include <torch/torch.h>
 
-using namespace std;
-using namespace cv;
+
+// using namespace std;
+// using namespace cv;
 
 // Scale sizes
 int main(int argc, const char *argv[])
 {
-    string model_path = "/mnt1/haridas/projects/pic2card-models/pytorch/detr_trace.pt";
-    string image_path = "/mnt1/haridas/projects/mystique/data/templates_test_data/1.png";
+    std::string model_path = "/mnt1/haridas/projects/pic2card-models/pytorch/detr_trace.pt";
+    std::string image_path = "/mnt1/haridas/projects/mystique/data/templates_test_data/1.png";
 
     // if (argc != 3)
     // {
     //   std::cerr << "usage: detr-app <path-to-exported-script-module> <image-path> \n";
     //   return -1;
     // }
-
     try
     {
         // Deserialize image_pathiptModule from a file using torch::jit::load().
-        Mat image = cv::imread(image_path, 1);
+        cv::Mat image = cv::imread(image_path, 1);
         cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
         //cv::Size scale(500, 600);
         //cv::resize(image, image, scale);
@@ -52,11 +54,25 @@ int main(int argc, const char *argv[])
         // auto outDict = output.toGenericDict();
 
         //std::cout << "PredLogits: " << outDict.at("pred_logits") << " pred Boxes: " << outDict.at("pred_boxes") << std::endl;
+        torch::Tensor predLogits = outDict.at("pred_logits")
+            .toTensor()
+            .squeeze()
+            .softmax(-1);
+        predLogits = predLogits.narrow(1, 0, predLogits.size(1) - 1);
 
-        auto predLogits = outDict.at("pred_logits").toTensor();
-        auto predBoxes = outDict.at("pred_boxes").toTensor();
+        torch::Tensor predBoxes = outDict.at("pred_boxes").toTensor().squeeze();
+
+        auto keep = predLogits.max(-1);
+        auto keep1 = std::get<0>(keep); // apply threshold mask.
+        torch::Tensor mask = keep1.ge_(0.8);
+
+        mask = mask.to(torch::kBool);
+        std::cout << mask << std::endl;
+        //predBoxes = predBoxes.masked_select(mask);
+        predLogits = predLogits.index_select(0, mask);
+        // auto keep = predBoxes.max(-1) > 0.8;
         //std::vector<torch::Tensor> test = predLogits.toTensor();
-        std::cout << predBoxes;
+    std::cout << predLogits;
     }
     catch (const c10::Error &e)
     {

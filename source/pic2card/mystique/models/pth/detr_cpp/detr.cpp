@@ -30,34 +30,46 @@ struct Detr
     {
         cv::cvtColor(image, image, cv::COLOR_BGR2RGB);
         image.convertTo(image, CV_32FC3, 1.0f / 255.0f);
-        cv::Size imsize = image.size();
+        // cv::Size imsize = image.size();
         // std::cout << "Width: " << imsize.width << std::endl;
-        torch::Tensor imTensor = torch::from_blob(image.data, { 1, imsize.width, imsize.height, 3 });
+
+        torch::Tensor imTensor = torch::from_blob(
+            image.data,
+            { 1, image.rows, image.cols, 3 }
+        );
         imTensor = imTensor.permute({ 0, 3, 1, 2 });
+
         imTensor[0][0] = imTensor[0][0].sub_(0.485).div_(0.229);
         imTensor[0][1] = imTensor[0][1].sub_(0.456).div_(0.224);
         imTensor[0][2] = imTensor[0][2].sub_(0.406).div_(0.225);
+
+        // std::cout << "Image size: " << imTensor.size(0) << " " << imTensor.size(1) 
+        //     << " " << imTensor.size(2) << " " <<imTensor.size(3) << std::endl;
 
         std::vector<torch::jit::IValue> inputs;
         inputs.push_back(imTensor);
         auto outDict = model.forward(inputs).toGenericDict();
 
-        torch::Tensor predLogits = outDict.at("pred_logits").toTensor();
-        torch::Tensor predBoxes = outDict.at("pred_boxes").toTensor();
+        torch::Tensor predLogits = outDict.at("pred_logits")
+            .toTensor()
+            .squeeze()
+            .softmax(-1);
+
+        // predLogits = predLogits.narrow(1, 0, predLogits.size(1) - 1);
+        torch::Tensor predBoxes = outDict.at("pred_boxes").toTensor().squeeze();
 
         // //return predLogits;
-        // std::cout << "PredLogits Size: " << predLogits.size(1) << " " << predLogits.size(2) << std::endl;
-        // std::cout << "predBoxes Size: " << predBoxes.size(1) << " " << predBoxes.size(2) << std::endl;
+        // std::cout << "PredLogits Size: " << predLogits.size(0) << " " << predLogits.size(1) << std::endl;
+        // std::cout << "predBoxes Size: " << predBoxes.size(0) << " " << predBoxes.size(1) << std::endl;
 
+        // // Map the torch::Tensor to cv::Mat, helps to avoid torch package dependency at python side.
+        predLogits = predLogits.to(torch::kCPU).to(torch::kF32);
+        cv::Mat cvMatLogits(predLogits.size(0), predLogits.size(1), CV_32F);
+        std::memcpy((void*)cvMatLogits.data, predLogits.data_ptr(), sizeof(float)*predLogits.numel());
 
-        // Map the torch::Tensor to cv::Mat, helps to avoid torch package dependency at python side.
-        predLogits = predLogits.to(torch::kCPU);
-        cv::Mat cvMatLogits(predLogits.size(1), predLogits.size(2), CV_32F);
-        std::memcpy((void*)cvMatLogits.data, predLogits.data_ptr(), sizeof(torch::kF32)*predLogits.numel());
-
-        predBoxes = predBoxes.to(torch::kCPU);
-        cv::Mat cvMatBoxes(predBoxes.size(1), predBoxes.size(2), CV_32F);
-        std::memcpy((void*)cvMatBoxes.data, predBoxes.data_ptr(), sizeof(torch::kF32)*predBoxes.numel());
+        predBoxes = predBoxes.to(torch::kCPU).to(torch::kF32);
+        cv::Mat cvMatBoxes(predBoxes.size(0), predBoxes.size(1), CV_32F);
+        std::memcpy((void*)cvMatBoxes.data, predBoxes.data_ptr(), sizeof(float)*predBoxes.numel());
 
         return { cvMatLogits, cvMatBoxes };
     }
