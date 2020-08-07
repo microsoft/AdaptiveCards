@@ -1,8 +1,26 @@
 package io.adaptivecards.objectmodel;
 
+import android.support.test.InstrumentationRegistry;
+import android.text.TextUtils;
+import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.input.ChoiceSetInputRenderer;
+import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
+import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
+import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
+import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 
 import static org.junit.Assert.*;
 
@@ -209,6 +227,72 @@ public class ChoiceSetInputPropertiesTest
         public ChoiceSetInput castTo(BaseCardElement element) {
             return TestUtil.castToChoiceSetInput(element);
         }
+    }
+
+    @Test
+    public void isRequiredCompactValidation()
+    {
+        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        choiceSetInput.SetIsRequired(true);
+
+        ComboBoxInputHandler choiceSetInputHandler = new ComboBoxInputHandler(choiceSetInput);
+        Spinner spinner = new Spinner(InstrumentationRegistry.getContext());
+        spinner.setAdapter(new ArrayAdapter<String>(InstrumentationRegistry.getContext(), android.R.layout.simple_spinner_item, new String[]{"sample title", ""}));
+        spinner.setSelection(1);
+        choiceSetInputHandler.setView(spinner);
+
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(choiceSetInputHandler);
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, choiceSetInputHandler.isValid());
+
+        choiceSetInputHandler.setInput("sample value");
+        Assert.assertEquals(true, choiceSetInputHandler.isValid());
+    }
+
+    @Test
+    public void isRequiredExpandedValidation()
+    {
+        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Expanded);
+        choiceSetInput.SetIsRequired(true);
+
+        RadioGroupInputHandler choiceSetInputHandler = new RadioGroupInputHandler(choiceSetInput);
+
+        RadioGroup radioGroup = new RadioGroup(InstrumentationRegistry.getContext());
+        RadioButton radioButton = new RadioButton(InstrumentationRegistry.getContext());
+        radioButton.setText("sample title");
+        radioGroup.addView(radioButton);
+        choiceSetInputHandler.setView(radioGroup);
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, choiceSetInputHandler.isValid());
+
+        choiceSetInputHandler.setInput("sample value");
+        Assert.assertEquals(true, choiceSetInputHandler.isValid());
+    }
+
+    @Test
+    public void isRequiredMultiselectValidation()
+    {
+        ChoiceSetInput choiceSetInput = TestUtil.createMockChoiceSetInput();
+        choiceSetInput.SetChoiceSetStyle(ChoiceSetStyle.Expanded);
+        choiceSetInput.SetIsMultiSelect(true);
+        choiceSetInput.SetIsRequired(true);
+
+        List<CheckBox> checkBoxes = new ArrayList<>();
+        CheckBox checkBox = new CheckBox(InstrumentationRegistry.getContext());
+        checkBox.setText("sample title");
+        checkBoxes.add(checkBox);
+
+        CheckBoxSetInputHandler choiceSetInputHandler = new CheckBoxSetInputHandler(choiceSetInput, checkBoxes);
+        choiceSetInputHandler.setView(new CheckBox(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, choiceSetInputHandler.isValid());
+
+        choiceSetInputHandler.setInput("sample value");
+        Assert.assertEquals(true, choiceSetInputHandler.isValid());
     }
 
     private final String c_defaultInputChoiceSet = "{\"choices\":[{\"title\":\"sample title\",\"value\":\"sample value\"}]," +

@@ -1,8 +1,15 @@
 package io.adaptivecards.objectmodel;
 
+import android.support.test.InstrumentationRegistry;
+import android.widget.CheckBox;
+import android.widget.EditText;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
+
+import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
+import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 
 import static org.junit.Assert.*;
 
@@ -210,6 +217,23 @@ public class ToggleInputPropertiesTest
         }
     }
 
-    private final String c_defaultInputToggle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
+    @Test
+    public void isRequiredValidation()
+    {
+        ToggleInput toggleInput = TestUtil.createMockToggleInput();
+        toggleInput.SetIsRequired(true);
 
+        ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
+        toggleInputHandler.setView(new CheckBox(InstrumentationRegistry.getContext()));
+
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(toggleInputHandler);
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, toggleInputHandler.isValid());
+
+        toggleInputHandler.setInput("true");
+        Assert.assertEquals(true, toggleInputHandler.isValid());
+    }
+
+    private final String c_defaultInputToggle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
 }

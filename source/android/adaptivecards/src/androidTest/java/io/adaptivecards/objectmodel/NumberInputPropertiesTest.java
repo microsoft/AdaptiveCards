@@ -293,7 +293,6 @@ public class NumberInputPropertiesTest
     private final Integer[] c_smallNumberValues = {-485239, -115866, -43089, -6581, -711, -264, -101};
     private final Integer[] c_inRangeNumberValues = {-100, -80, -42, 0, 22, 57, 100};
     private final Integer[] c_largeNumberValues = {101, 381, 706, 6778, 13213, 344586, 757867};
-
     private final String[] c_invalidNumberValues = {"aWord", "b", "312c", "-", ".", "4+9", "7."};
 
     private final String c_defaultInputNumber = "{\"id\":\"id\",\"type\":\"Input.Number\"}\n";

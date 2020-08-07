@@ -1,6 +1,8 @@
 package io.adaptivecards.objectmodel;
 
+import android.support.test.InstrumentationRegistry;
 import android.util.Pair;
+import android.widget.EditText;
 
 import junit.framework.Assert;
 
@@ -13,6 +15,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 import io.adaptivecards.renderer.input.TimeInputRenderer;
+import io.adaptivecards.renderer.inputhandler.DateInputHandler;
+import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
 import static org.junit.Assert.*;
@@ -231,6 +235,106 @@ public class TimeInputPropertiesTest
             return TestUtil.castToTimeInput(element);
         }
     }
+
+    @Test
+    public void MinValidationTest() throws Exception
+    {
+        DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetMin(c_inRangeTimeValues[0]);
+
+        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
+        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, dateInputHandler.isValid());
+
+        // Validate only min
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(c_smallTimeValues, false, specsExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(String.class, c_inRangeTimeValues, c_largeTimeValues), true, specsExecutor);
+
+        // Validate non-required + min
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(c_smallTimeValues, false, gralExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(String.class, c_inRangeTimeValues, c_largeTimeValues), true, gralExecutor);
+    }
+
+    @Test
+    public void MaxValidationTest() throws Exception
+    {
+        DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetMax(c_inRangeTimeValues[c_inRangeTimeValues.length - 1]);
+
+        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
+        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, dateInputHandler.isValid());
+
+        // Validate only max
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallTimeValues, c_inRangeTimeValues), true, specsExecutor);
+        TestUtil.runValidationTests(c_largeTimeValues, false, specsExecutor);
+
+        // Validate non-required + max
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallTimeValues, c_inRangeTimeValues), true, gralExecutor);
+        TestUtil.runValidationTests(c_largeTimeValues, false, gralExecutor);
+    }
+
+    @Test
+    public void MinMaxValidationTest() throws Exception
+    {
+        DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetMin(c_inRangeTimeValues[0]);
+        dateInput.SetMax(c_inRangeTimeValues[c_inRangeTimeValues.length - 1]);
+
+        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
+        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, dateInputHandler.isValid());
+
+        // Validate min + max
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(c_smallTimeValues, false, specsExecutor);
+        TestUtil.runValidationTests(c_inRangeTimeValues, true, specsExecutor);
+        TestUtil.runValidationTests(c_largeTimeValues, false, specsExecutor);
+
+        // Validate min + max + non-required
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
+        TestUtil.runValidationTests(c_smallTimeValues, false, gralExecutor);
+        TestUtil.runValidationTests(c_inRangeTimeValues, true, gralExecutor);
+        TestUtil.runValidationTests(c_largeTimeValues, false, gralExecutor);
+
+        TestUtil.runValidationTests(c_invalidDateValues, false, gralExecutor);
+    }
+
+    @Test
+    public void isRequiredValidation()
+    {
+        NumberInput numberInput = TestUtil.createMockNumberInput();
+        numberInput.SetIsRequired(true);
+
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, numberInputHandler.isValid());
+
+        // Invalid numbers should not succeed as required
+        TestUtil.runValidationTests(c_invalidDateValues, false, gralExecutor);
+
+        // Validate required
+        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallTimeValues, c_inRangeTimeValues, c_largeTimeValues), true, gralExecutor);
+    }
+
+    private final String[] c_smallTimeValues = {"00:00", "02:12", "04:17", "05:33", "06:53", "07:04", "08:26"};
+    private final String[] c_inRangeTimeValues = {"8:27", "09:35", "10:08", "13:47", "14:50", "16:16", "17:42"};
+    private final String[] c_largeTimeValues = {"17:43", "19:56", "20:11", "21:42", "22:51", "23:21", "23:59"};
+    private final String[] c_invalidDateValues = {"aWord", "b", "312c", "-", ".", "4+9", "7."};
 
     private final String c_defaultInputTime = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
 
