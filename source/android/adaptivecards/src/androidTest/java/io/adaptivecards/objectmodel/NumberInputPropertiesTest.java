@@ -1,7 +1,14 @@
 package io.adaptivecards.objectmodel;
 
+import android.support.test.InstrumentationRegistry;
+import android.widget.EditText;
+
 import junit.framework.Assert;
 import org.junit.Test;
+
+import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
+import io.adaptivecards.renderer.inputhandler.IInputHandler;
+import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
 
 public class NumberInputPropertiesTest
 {
@@ -187,6 +194,107 @@ public class NumberInputPropertiesTest
             return TestUtil.castToNumberInput(element);
         }
     }
+
+    @Test
+    public void MinValidationTest() throws Exception
+    {
+        NumberInput numberInput = TestUtil.createMockNumberInput();
+        numberInput.SetMin(c_inRangeNumberValues[0]);
+
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, numberInputHandler.isValid());
+
+        // Validate only min
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(c_smallNumberValues, false, specsExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_inRangeNumberValues, c_largeNumberValues), true, specsExecutor);
+
+        // Validate non-required + min
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(c_smallNumberValues, false, gralExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_inRangeNumberValues, c_largeNumberValues), true, gralExecutor);
+    }
+
+    @Test
+    public void MaxValidationTest() throws Exception
+    {
+        NumberInput numberInput = TestUtil.createMockNumberInput();
+        numberInput.SetMax(c_inRangeNumberValues[c_inRangeNumberValues.length - 1]);
+
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, numberInputHandler.isValid());
+
+        // Validate only max
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues), true, specsExecutor);
+        TestUtil.runValidationTests(c_largeNumberValues, false, specsExecutor);
+
+        // Validate non-required + max
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues), true, gralExecutor);
+        TestUtil.runValidationTests(c_largeNumberValues, false, gralExecutor);
+    }
+
+    @Test
+    public void MinMaxValidationTest() throws Exception
+    {
+        NumberInput numberInput = TestUtil.createMockNumberInput();
+        numberInput.SetMin(c_inRangeNumberValues[0]);
+        numberInput.SetMax(c_inRangeNumberValues[c_inRangeNumberValues.length - 1]);
+
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        // Validate that empty input is always valid
+        Assert.assertEquals(true, numberInputHandler.isValid());
+
+        // Validate min + max
+        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(c_smallNumberValues, false, specsExecutor);
+        TestUtil.runValidationTests(c_inRangeNumberValues, true, specsExecutor);
+        TestUtil.runValidationTests(c_largeNumberValues, false, specsExecutor);
+
+        // Validate min + max + non-required
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+        TestUtil.runValidationTests(c_smallNumberValues, false, gralExecutor);
+        TestUtil.runValidationTests(c_inRangeNumberValues, true, gralExecutor);
+        TestUtil.runValidationTests(c_largeNumberValues, false, gralExecutor);
+
+        TestUtil.runValidationTests(c_invalidNumberValues, false, gralExecutor);
+    }
+
+    @Test
+    public void isRequiredValidation()
+    {
+        NumberInput numberInput = TestUtil.createMockNumberInput();
+        numberInput.SetIsRequired(true);
+
+        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
+        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+
+        // Validate that empty input is always invalid
+        Assert.assertEquals(false, numberInputHandler.isValid());
+
+        // Invalid numbers should not succeed as required
+        TestUtil.runValidationTests(c_invalidNumberValues, false, gralExecutor);
+
+        // Validate required
+        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues, c_largeNumberValues), true, gralExecutor);
+    }
+
+    private final Integer[] c_smallNumberValues = {-485239, -115866, -43089, -6581, -711, -264, -101};
+    private final Integer[] c_inRangeNumberValues = {-100, -80, -42, 0, 22, 57, 100};
+    private final Integer[] c_largeNumberValues = {101, 381, 706, 6778, 13213, 344586, 757867};
+
+    private final String[] c_invalidNumberValues = {"aWord", "b", "312c", "-", ".", "4+9", "7."};
 
     private final String c_defaultInputNumber = "{\"id\":\"id\",\"type\":\"Input.Number\"}\n";
 }
