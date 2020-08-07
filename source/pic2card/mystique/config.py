@@ -59,7 +59,8 @@ MODEL_REGISTRY = {
     "tf_faster_rcnn": "mystique.detect_objects.ObjectDetection",
     "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
     "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
-    "pth_detr": "mystique.obj_detect.DetrOD"
+    "pth_detr": "mystique.obj_detect.DetrOD",
+    "pth_detr_cpp": "mystique.obj_detect.DetrCppOD"
 }
 
 ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
