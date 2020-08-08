@@ -25,6 +25,8 @@
         - [Request Body(form data)](#Request-Body(form-data))
     - [Error Handling](#Error-Handling)
 - [Deployment Details](#Deployment-Details)
+    - [First Version](#First-Version)
+    - [Future Version](#Future-Version)
 - [Q/A](#Q/A)
 - [Appendix](#Appendix)
     - [Current Testing Tools](#Current-Testing-Tools)
@@ -291,11 +293,39 @@ We would want to use cloud hosting services to deploy our project. Some of the m
 2.	It should not require us to manually set up the VMs.
 3.	The process of deployment should be easily repeatable.
 
-First Version:
--	For the first version of the project, we are planning to manually host each REST API and the driver app on a separate VM.
--	This would serve as an initial tool for the Adaptive Cards Team and also serve as a proof of concept.
--	We would not be exposing the REST endpoints publicly. These can only be accessed through the client app.
 
+### First Version: 
+- For the first version of the project, we are planning to use docker containers. 
+- Host each Flask App along with its corresponding driver program on a docker container and add this container to a container registry on azure. 
+    - **JavaScript**: 
+        1. Use a Linux Docker Image
+    - **.NET WPF**:
+        1. Use a Windows Docker Image (specifically framework/sdk:4.7.2)
+    - **.UWP**:
+        1. Use a Windows Docker Image
+        2. Package the UWP driver as an AppX with an alias "UWPDriver"
+        3. Install and run this app along with the REST API on the docker container
+    - **Android**:
+        1. Use a Linux Docker Image
+        2. Package the android app as an apk.
+        3. Install and start this app on an Android virtual device on the docker container along with the REST API.
+- Add all the driver programs to a shared private network so that the REST end points(for the post requests) are not publicly accessible. 
+- Host the Client/Web Interface as a stand alone web app on azure and allow it to communicate.
+- The client would have a public IP and public REST end points.
+- The client would be able to communicate with the docker container hosted Flask Apps.
+
+### Future Version: 
+- For the future, look into hosting services like 
+    - Expo (https://expo.io/)
+    - Appetize(https://appetize.io/)
+    - TestCloud(https://appcenter.ms/)
+- If possible, host the UWP, Android and iOS drivers on these services. 
+    - Then, host the JavaScript driver and .NET WPF Driver as REST apps that act as drivers as well. 
+    - Host the REST services on Azure. 
+    - Host the UWP, Android and iOS drivers on one of the above mentioned services.
+    - Transition away from the docker container approach. 
+- If we decide to proceed with the docker container approach:
+    - Move towards an automated deployment that does not involve manually setting up the dockerfiles and pushing the docker images.
 ## Q/A
 1.	Why is a blocking API used over non-blocking API?
 
@@ -325,3 +355,9 @@ Internal nightly builds are available on https://appcenter.ms/. These are again 
 
 4.	**iOS:**
 This is similar to android. The internal nightly builds are available on https://appcenter.ms/. These again link against the source code and not the SDKs shipped publicly.
+
+5. **.NET HTML:** 
+Currently there is no tooling support in the visualizer tool available at this point. 
+
+6. **.NET WPF:** 
+There is an older version of the visualizer tool available on the Windows Store. This links against the source code and not the nuget packages. 
