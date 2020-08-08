@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 export type Size = "auto" | "stretch" | "small" | "medium" | "large";
-export type TextSize  = "small" | "default" | "medium" | "large" | "extraLarge";
+export type TextSize = "small" | "default" | "medium" | "large" | "extraLarge";
 export type HorizontalAlignment = "left" | "center" | "right";
 export type VerticalAlignment = "top" | "center" | "bottom";
 export type Spacing = "none" | "small" | "default" | "medium" | "large" | "extraLarge" | "padding";
@@ -42,6 +42,49 @@ export interface ICardElement {
 
 export interface IBackgroundImage {
     url: string;
+}
+
+export interface IChartDataSet {
+    label?: string,
+    data: number[],
+
+    borderColor?: string,
+    borderColors?: string[],
+    
+    backgroundColor?: string,
+    backgroundColors?: string[],
+}
+
+export interface IChartData {
+    labels?: string[],
+    dataSets: IChartDataSet[],
+    backgroundColor?: string,
+    borderColor?: string
+}
+
+export interface IChartOptions {
+    cutoutPercentage?: number
+}
+
+export interface IChart {
+    data: IChartData;
+    options?: IChartOptions;
+}
+
+export interface IBarChart extends IChart {
+    type: "BarChart";
+}
+
+export interface IPieChart extends IChart {
+    type: "PieChart";
+}
+
+export interface ILineChart extends IChart {
+    type: "LineChart";
+}
+
+export interface IRadarChart extends IChart {
+    type: "RadarChart";
 }
 
 export interface ITextBlock extends ICardElement {

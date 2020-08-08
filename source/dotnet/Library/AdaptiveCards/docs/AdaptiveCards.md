@@ -25,6 +25,8 @@
   - [RemoveSupportedAction\`\`1()](#M-AdaptiveCards-Rendering-AdaptiveActionHandlers-RemoveSupportedAction``1 'AdaptiveCards.Rendering.AdaptiveActionHandlers.RemoveSupportedAction``1')
 - [AdaptiveActionSet](#T-AdaptiveCards-AdaptiveActionSet 'AdaptiveCards.AdaptiveActionSet')
   - [Actions](#P-AdaptiveCards-AdaptiveActionSet-Actions 'AdaptiveCards.AdaptiveActionSet.Actions')
+- [AdaptiveBarChart](#T-AdaptiveCards-AdaptiveBarChart 'AdaptiveCards.AdaptiveBarChart')
+  - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveBarChart-#ctor 'AdaptiveCards.AdaptiveBarChart.#ctor')
 - [AdaptiveCard](#T-AdaptiveCards-AdaptiveCard 'AdaptiveCards.AdaptiveCard')
   - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveCard-#ctor-AdaptiveCards-AdaptiveSchemaVersion- 'AdaptiveCards.AdaptiveCard.#ctor(AdaptiveCards.AdaptiveSchemaVersion)')
   - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveCard-#ctor-System-String- 'AdaptiveCards.AdaptiveCard.#ctor(System.String)')
@@ -53,6 +55,9 @@
 - [AdaptiveCardRendererBase\`2](#T-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2')
   - [ElementRenderers](#P-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-ElementRenderers 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.ElementRenderers')
   - [HostConfig](#P-AdaptiveCards-Rendering-AdaptiveCardRendererBase`2-HostConfig 'AdaptiveCards.Rendering.AdaptiveCardRendererBase`2.HostConfig')
+- [AdaptiveChart](#T-AdaptiveCards-AdaptiveChart 'AdaptiveCards.AdaptiveChart')
+  - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveChart-#ctor 'AdaptiveCards.AdaptiveChart.#ctor')
+  - [Data](#P-AdaptiveCards-AdaptiveChart-Data 'AdaptiveCards.AdaptiveChart.Data')
 - [AdaptiveChoice](#T-AdaptiveCards-AdaptiveChoice 'AdaptiveCards.AdaptiveChoice')
   - [IsSelected](#P-AdaptiveCards-AdaptiveChoice-IsSelected 'AdaptiveCards.AdaptiveChoice.IsSelected')
   - [Speak](#P-AdaptiveCards-AdaptiveChoice-Speak 'AdaptiveCards.AdaptiveChoice.Speak')
@@ -154,6 +159,8 @@
 - [AdaptiveInput](#T-AdaptiveCards-AdaptiveInput 'AdaptiveCards.AdaptiveInput')
   - [IsRequired](#P-AdaptiveCards-AdaptiveInput-IsRequired 'AdaptiveCards.AdaptiveInput.IsRequired')
   - [GetNonInteractiveValue()](#M-AdaptiveCards-AdaptiveInput-GetNonInteractiveValue 'AdaptiveCards.AdaptiveInput.GetNonInteractiveValue')
+- [AdaptiveLineChart](#T-AdaptiveCards-AdaptiveLineChart 'AdaptiveCards.AdaptiveLineChart')
+  - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveLineChart-#ctor 'AdaptiveCards.AdaptiveLineChart.#ctor')
 - [AdaptiveMedia](#T-AdaptiveCards-AdaptiveMedia 'AdaptiveCards.AdaptiveMedia')
   - [AltText](#P-AdaptiveCards-AdaptiveMedia-AltText 'AdaptiveCards.AdaptiveMedia.AltText')
   - [Poster](#P-AdaptiveCards-AdaptiveMedia-Poster 'AdaptiveCards.AdaptiveMedia.Poster')
@@ -167,6 +174,10 @@
 - [AdaptiveOpenUrlAction](#T-AdaptiveCards-AdaptiveOpenUrlAction 'AdaptiveCards.AdaptiveOpenUrlAction')
   - [Url](#P-AdaptiveCards-AdaptiveOpenUrlAction-Url 'AdaptiveCards.AdaptiveOpenUrlAction.Url')
   - [UrlString](#P-AdaptiveCards-AdaptiveOpenUrlAction-UrlString 'AdaptiveCards.AdaptiveOpenUrlAction.UrlString')
+- [AdaptivePieChart](#T-AdaptiveCards-AdaptivePieChart 'AdaptiveCards.AdaptivePieChart')
+  - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptivePieChart-#ctor 'AdaptiveCards.AdaptivePieChart.#ctor')
+- [AdaptiveRadarChart](#T-AdaptiveCards-AdaptiveRadarChart 'AdaptiveCards.AdaptiveRadarChart')
+  - [#ctor(schemaVersion)](#M-AdaptiveCards-AdaptiveRadarChart-#ctor 'AdaptiveCards.AdaptiveRadarChart.#ctor')
 - [AdaptiveRenderException](#T-AdaptiveCards-Rendering-AdaptiveRenderException 'AdaptiveCards.Rendering.AdaptiveRenderException')
   - [CardFallbackText](#P-AdaptiveCards-Rendering-AdaptiveRenderException-CardFallbackText 'AdaptiveCards.Rendering.AdaptiveRenderException.CardFallbackText')
 - [AdaptiveRichTextBlock](#T-AdaptiveCards-AdaptiveRichTextBlock 'AdaptiveCards.AdaptiveRichTextBlock')
@@ -260,6 +271,19 @@
 - [AdaptiveTypedElementConverter](#T-AdaptiveCards-AdaptiveTypedElementConverter 'AdaptiveCards.AdaptiveTypedElementConverter')
   - [TypedElementTypes](#F-AdaptiveCards-AdaptiveTypedElementConverter-TypedElementTypes 'AdaptiveCards.AdaptiveTypedElementConverter.TypedElementTypes')
 - [AdaptiveVisitor](#T-AdaptiveCards-Rendering-AdaptiveVisitor 'AdaptiveCards.Rendering.AdaptiveVisitor')
+- [ChartData](#T-AdaptiveCards-ChartData 'AdaptiveCards.ChartData')
+  - [BackgroundColor](#P-AdaptiveCards-ChartData-BackgroundColor 'AdaptiveCards.ChartData.BackgroundColor')
+  - [BorderColor](#P-AdaptiveCards-ChartData-BorderColor 'AdaptiveCards.ChartData.BorderColor')
+  - [DataSets](#P-AdaptiveCards-ChartData-DataSets 'AdaptiveCards.ChartData.DataSets')
+  - [Labels](#P-AdaptiveCards-ChartData-Labels 'AdaptiveCards.ChartData.Labels')
+  - [Options](#P-AdaptiveCards-ChartData-Options 'AdaptiveCards.ChartData.Options')
+- [ChartDataSet](#T-AdaptiveCards-ChartDataSet 'AdaptiveCards.ChartDataSet')
+  - [BackgroundColors](#P-AdaptiveCards-ChartDataSet-BackgroundColors 'AdaptiveCards.ChartDataSet.BackgroundColors')
+  - [BorderColors](#P-AdaptiveCards-ChartDataSet-BorderColors 'AdaptiveCards.ChartDataSet.BorderColors')
+  - [Data](#P-AdaptiveCards-ChartDataSet-Data 'AdaptiveCards.ChartDataSet.Data')
+  - [Label](#P-AdaptiveCards-ChartDataSet-Label 'AdaptiveCards.ChartDataSet.Label')
+- [ChartOptions](#T-AdaptiveCards-ChartOptions 'AdaptiveCards.ChartOptions')
+  - [CutoutPercentage](#P-AdaptiveCards-ChartOptions-CutoutPercentage 'AdaptiveCards.ChartOptions.CutoutPercentage')
 - [ContainerStyleConfig](#T-AdaptiveCards-Rendering-ContainerStyleConfig 'AdaptiveCards.Rendering.ContainerStyleConfig')
   - [BackgroundColor](#P-AdaptiveCards-Rendering-ContainerStyleConfig-BackgroundColor 'AdaptiveCards.Rendering.ContainerStyleConfig.BackgroundColor')
   - [ForegroundColors](#P-AdaptiveCards-Rendering-ContainerStyleConfig-ForegroundColors 'AdaptiveCards.Rendering.ContainerStyleConfig.ForegroundColors')
@@ -497,6 +521,30 @@ ActionSet
 ##### Summary
 
 Actions of the action set
+
+<a name='T-AdaptiveCards-AdaptiveBarChart'></a>
+## AdaptiveBarChart `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Adaptive card rendering chartdata as a bar chart.
+
+<a name='M-AdaptiveCards-AdaptiveBarChart-#ctor'></a>
+### #ctor(schemaVersion) `constructor`
+
+##### Summary
+
+Creates an AdaptiveCard using a specific schema version
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| schemaVersion | [M:AdaptiveCards.AdaptiveBarChart.#ctor](#T-M-AdaptiveCards-AdaptiveBarChart-#ctor 'M:AdaptiveCards.AdaptiveBarChart.#ctor') | The schema version to use |
 
 <a name='T-AdaptiveCards-AdaptiveCard'></a>
 ## AdaptiveCard `type`
@@ -748,6 +796,37 @@ The dictionary of supported element types and their associated rendering functio
 ##### Summary
 
 A Host Configuration object to determine base styling and behavior of the rendered card
+
+<a name='T-AdaptiveCards-AdaptiveChart'></a>
+## AdaptiveChart `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Adaptive card which has flexible container
+
+<a name='M-AdaptiveCards-AdaptiveChart-#ctor'></a>
+### #ctor(schemaVersion) `constructor`
+
+##### Summary
+
+Creates an AdaptiveCard using a specific schema version
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| schemaVersion | [M:AdaptiveCards.AdaptiveChart.#ctor](#T-M-AdaptiveCards-AdaptiveChart-#ctor 'M:AdaptiveCards.AdaptiveChart.#ctor') | The schema version to use |
+
+<a name='P-AdaptiveCards-AdaptiveChart-Data'></a>
+### Data `property`
+
+##### Summary
+
+The facts to be displayed.
 
 <a name='T-AdaptiveCards-AdaptiveChoice'></a>
 ## AdaptiveChoice `type`
@@ -1544,6 +1623,30 @@ The string that will be rendered on a a host with "SupportsInteractivity" set to
 
 This method has no parameters.
 
+<a name='T-AdaptiveCards-AdaptiveLineChart'></a>
+## AdaptiveLineChart `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Adaptive card rendering chartdata as a bar chart.
+
+<a name='M-AdaptiveCards-AdaptiveLineChart-#ctor'></a>
+### #ctor(schemaVersion) `constructor`
+
+##### Summary
+
+Creates an AdaptiveCard using a specific schema version
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| schemaVersion | [M:AdaptiveCards.AdaptiveLineChart.#ctor](#T-M-AdaptiveCards-AdaptiveLineChart-#ctor 'M:AdaptiveCards.AdaptiveLineChart.#ctor') | The schema version to use |
+
 <a name='T-AdaptiveCards-AdaptiveMedia'></a>
 ## AdaptiveMedia `type`
 
@@ -1651,6 +1754,54 @@ Url to open using default operating system browser
 ##### Summary
 
 This is necessary for XML serialization. You should use the [Url](#F-Url 'Url') property directly.
+
+<a name='T-AdaptiveCards-AdaptivePieChart'></a>
+## AdaptivePieChart `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Adaptive card rendering chartdata as a bar chart.
+
+<a name='M-AdaptiveCards-AdaptivePieChart-#ctor'></a>
+### #ctor(schemaVersion) `constructor`
+
+##### Summary
+
+Creates an AdaptiveCard using a specific schema version
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| schemaVersion | [M:AdaptiveCards.AdaptivePieChart.#ctor](#T-M-AdaptiveCards-AdaptivePieChart-#ctor 'M:AdaptiveCards.AdaptivePieChart.#ctor') | The schema version to use |
+
+<a name='T-AdaptiveCards-AdaptiveRadarChart'></a>
+## AdaptiveRadarChart `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Adaptive card rendering chartdata as a bar chart.
+
+<a name='M-AdaptiveCards-AdaptiveRadarChart-#ctor'></a>
+### #ctor(schemaVersion) `constructor`
+
+##### Summary
+
+Creates an AdaptiveCard using a specific schema version
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| schemaVersion | [M:AdaptiveCards.AdaptiveRadarChart.#ctor](#T-M-AdaptiveCards-AdaptiveRadarChart-#ctor 'M:AdaptiveCards.AdaptiveRadarChart.#ctor') | The schema version to use |
 
 <a name='T-AdaptiveCards-Rendering-AdaptiveRenderException'></a>
 ## AdaptiveRenderException `type`
@@ -2369,6 +2520,105 @@ AdaptiveCards.Rendering
 ##### Summary
 
 Utility class which allows you to visit every node
+
+<a name='T-AdaptiveCards-ChartData'></a>
+## ChartData `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+ChartData
+
+<a name='P-AdaptiveCards-ChartData-BackgroundColor'></a>
+### BackgroundColor `property`
+
+##### Summary
+
+Background color for chart RGB or RGBA(#,#,#,#))
+
+<a name='P-AdaptiveCards-ChartData-BorderColor'></a>
+### BorderColor `property`
+
+##### Summary
+
+Border color to use for this data set. RGBA(#,#,#,#)
+
+<a name='P-AdaptiveCards-ChartData-DataSets'></a>
+### DataSets `property`
+
+##### Summary
+
+the data sets to render.
+
+<a name='P-AdaptiveCards-ChartData-Labels'></a>
+### Labels `property`
+
+##### Summary
+
+The labels for each element in the dataset
+
+<a name='P-AdaptiveCards-ChartData-Options'></a>
+### Options `property`
+
+##### Summary
+
+Options for the chart
+
+<a name='T-AdaptiveCards-ChartDataSet'></a>
+## ChartDataSet `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+ChartDataSet
+
+<a name='P-AdaptiveCards-ChartDataSet-BackgroundColors'></a>
+### BackgroundColors `property`
+
+##### Summary
+
+Background colors to use for this data set. RGBA(#,#,#,#)
+
+<a name='P-AdaptiveCards-ChartDataSet-BorderColors'></a>
+### BorderColors `property`
+
+##### Summary
+
+Border colors to use for this data set. RGBA(#,#,#,#)
+
+<a name='P-AdaptiveCards-ChartDataSet-Data'></a>
+### Data `property`
+
+##### Summary
+
+Data
+
+<a name='P-AdaptiveCards-ChartDataSet-Label'></a>
+### Label `property`
+
+##### Summary
+
+Label for the data set
+
+<a name='T-AdaptiveCards-ChartOptions'></a>
+## ChartOptions `type`
+
+##### Namespace
+
+AdaptiveCards
+
+<a name='P-AdaptiveCards-ChartOptions-CutoutPercentage'></a>
+### CutoutPercentage `property`
+
+##### Summary
+
+Control pie chart cutut percentage.  > 0 gives you a donut chart. max value 50.
 
 <a name='T-AdaptiveCards-Rendering-ContainerStyleConfig'></a>
 ## ContainerStyleConfig `type`
