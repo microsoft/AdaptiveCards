@@ -5,7 +5,6 @@ import * as Controls from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
-import * as ACData from "adaptivecards-templating";
 import * as Shared from "./shared";
 import { HostContainer } from "./containers";
 import { FieldDefinition } from "./data";
@@ -325,9 +324,9 @@ export class CardDesignerSurface {
 
             if (Shared.GlobalSettings.enableDataBindingSupport) {
                 try {
-                    let template = new ACData.Template(inputPayload);
+                    let template = new Adaptive.Template(inputPayload);
 
-                    let evaluationContext: ACData.IEvaluationContext;
+                    let evaluationContext: Adaptive.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
                         evaluationContext = { $root: this.context.sampleData };
@@ -594,13 +593,13 @@ export class CardDesignerSurface {
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
-                let expression = ACData.Template.parseInterpolatedString(value);
+                let expression = Adaptive.parseInterpolatedString(value);
 
                 if (typeof expression === "string") {
                     return expression;
                 }
                 else {
-                    let evaluationContext: ACData.IEvaluationContext;
+                    let evaluationContext: Adaptive.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
                         evaluationContext = { $root: this.context.sampleData };
@@ -609,7 +608,7 @@ export class CardDesignerSurface {
                         evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
                     }
 
-                    let evaluationResult = ACData.Template.tryEvaluateExpression(expression, evaluationContext, true);
+                    let evaluationResult = Adaptive.tryEvaluateExpression(expression, evaluationContext, true);
 
                     return typeof evaluationResult.value === "string" ? evaluationResult.value : value;
                 }

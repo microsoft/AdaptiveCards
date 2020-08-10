@@ -35,6 +35,9 @@
 		"type": "git",
 		"url": "git://git@github.com/microsoft/AdaptiveCards.git"
 	},
+	"dependencies": {
+		"adaptive-expressions": "^4.9.2"
+	},
 	"devDependencies": {
 		"@types/jest": "^26.0.3",
 		"@typescript-eslint/eslint-plugin": "^3.4.0",

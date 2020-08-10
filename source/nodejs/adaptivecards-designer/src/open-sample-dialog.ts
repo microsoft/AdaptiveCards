@@ -1,5 +1,4 @@
 import { SampleCatalogue, CatalogueEntry } from "./catalogue";
-import * as ACData from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import { Dialog } from "./dialog";
 import { Downloader } from "./downloader";
@@ -59,7 +58,7 @@ class CatalogueItem {
                     let cardPayload = JSON.parse(sender.cardPayload);
 
                     if (sender.sampleData) {
-                        let template = new ACData.Template(cardPayload);
+                        let template = new Adaptive.Template(cardPayload);
 
                         cardPayload = template.expand(
                             {

@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
+import { PropertyBag, PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
 import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
@@ -9,7 +9,7 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+    NumProperty, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
 
@@ -646,12 +646,12 @@ export abstract class CardElement extends CardObject {
 }
 
 export class ActionProperty extends PropertyDefinition {
-    parse(sender: SerializableObject, source: PropertyBag, context: SerializationContext): Action | undefined {
+    parseValue(sender: SerializableObject, value: any, context: SerializationContext): Action | undefined {
         let parent = <CardElement>sender;
 
         return context.parseAction(
             parent,
-            source[this.name],
+            value,
             this.forbiddenActionTypes,
             parent.isDesignMode());
     }
@@ -1552,23 +1552,18 @@ export class FactSet extends CardElement {
 }
 
 class ImageDimensionProperty extends PropertyDefinition {
-    getInternalName(): string {
-        return this.internalName;
-    }
-
-    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): number | undefined {
+    parseValue(sender: SerializableObject, value: any, context: BaseSerializationContext): number | undefined {
         let result: number | undefined = undefined;
-        let sourceValue = source[this.name];
 
-        if (sourceValue === undefined) {
+        if (value === undefined) {
             return this.defaultValue;
         }
 
         let isValid = false;
 
-        if (typeof sourceValue === "string") {
+        if (typeof value === "string") {
             try {
-                let size = SizeAndUnit.parse(sourceValue, true);
+                let size = SizeAndUnit.parse(value, true);
 
                 if (size.unit == Enums.SizeUnit.Pixel) {
                     result = size.physicalSize;
@@ -1585,10 +1580,14 @@ class ImageDimensionProperty extends PropertyDefinition {
             context.logParseEvent(
                 sender,
                 Enums.ValidationEvent.InvalidPropertyValue,
-                Strings.errors.invalidPropertyValue(sourceValue, this.name));
+                Strings.errors.invalidPropertyValue(value, this.name));
         }
 
         return result;
+    }
+
+    getInternalName(): string {
+        return this.internalName;
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: number | undefined, context: BaseSerializationContext) {
@@ -4166,9 +4165,9 @@ export class ToggleVisibilityAction extends Action {
 }
 
 class StringWithSubstitutionProperty extends PropertyDefinition  {
-    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): StringWithSubstitutions {
+    parseValue(sender: SerializableObject, value: any, context: BaseSerializationContext): StringWithSubstitutions {
         let result = new StringWithSubstitutions();
-        result.set(Utils.parseString(source[this.name]));
+        result.set(Utils.parseString(value));
 
         return result;
     }
