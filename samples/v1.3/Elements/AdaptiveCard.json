@@ -1,7 +1,7 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.3",
 	"body": [
 		{
 			"type": "Container",
@@ -93,7 +93,7 @@
 						"type": "Input.Text",
 						"id": "comment",
 						"isMultiline": true,
-						"placeholder": "Enter your comment"
+						"label": "Enter your comment"
 					}
 				],
 				"actions": [

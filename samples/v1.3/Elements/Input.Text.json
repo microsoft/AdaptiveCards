@@ -1,17 +1,19 @@
 {
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
-	"version": "1.0",
+	"version": "1.3",
 	"body": [
 		{
-			"type": "Input.Date",
+			"type": "Input.Text",
 			"id": "input1",
-			"label": "Default Input.Date label"
+			"style": "text",
+			"label": "Default Input.Text label"
 		},
 		{
-			"type": "Input.Date",
+			"type": "Input.Text",
 			"id": "input2",
-			"label": "Required Input.Date label",
+			"style": "text",
+			"label": "Required Input.Text label",
 			"isRequired": true,
 			"errorMessage": "Required input"
 		}
@@ -19,7 +21,7 @@
 	"actions": [
 		{
 			"type": "Action.Submit",
-			"title": "OK"
+			"title": "Submit"
 		}
 	]
 }
