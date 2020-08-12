@@ -9,4 +9,5 @@ export * from "./host-config";
 export * from "./shared";
 export * from "./utils";
 export * from "./strings";
+export * from "./IPlugin";
 export { IAdaptiveCard, ICardElement } from "./schema";
