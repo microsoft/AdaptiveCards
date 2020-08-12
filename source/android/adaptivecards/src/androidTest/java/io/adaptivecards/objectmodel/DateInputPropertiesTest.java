@@ -270,7 +270,7 @@ public class DateInputPropertiesTest
         TestUtil.runValidationTests(c_inRangeDateValues, true, gralExecutor);
         TestUtil.runValidationTests(c_largeDateValues, false, gralExecutor);
 
-        TestUtil.runValidationTests(c_invalidDateValues, false, gralExecutor);
+        TestUtil.runValidationTests(c_invalidDateValues, true, gralExecutor);
     }
 
     @Test
