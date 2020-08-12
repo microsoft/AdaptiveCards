@@ -23,10 +23,14 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.FactSet;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSet;
+import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.Media;
+import io.adaptivecards.objectmodel.ParseContext;
 import io.adaptivecards.objectmodel.RichTextBlock;
 import io.adaptivecards.objectmodel.SubmitAction;
+import io.adaptivecards.objectmodel.SubmitActionParser;
 import io.adaptivecards.objectmodel.TextBlock;
+import io.adaptivecards.objectmodel.TextBlockParser;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 
 public final class Util {
@@ -193,4 +197,70 @@ public final class Util {
             throw new ClassCastException("Unable to find dynamic_cast method in " + actionElementType.getName() + ".");
         }
     }
+
+    private static void CopyActionProperties(BaseActionElement origin, BaseActionElement dest)
+    {
+        dest.SetId(origin.GetId());
+        dest.SetIconUrl(origin.GetIconUrl());
+        dest.SetStyle(origin.GetStyle());
+        dest.SetTitle(origin.GetTitle());
+        dest.SetFallbackContent(origin.GetFallbackContent());
+        dest.SetFallbackType(origin.GetFallbackType());
+    }
+
+    public static void deserializeBaseActionProperties(ParseContext context, JsonValue value, BaseActionElement actionElement)
+    {
+        BaseActionElement baseActionElement = BaseActionElement.ExtractBaseProperties(context, value);
+        CopyActionProperties(baseActionElement, actionElement);
+    }
+
+    public static void deserializeBaseActionPropertiesFromString(ParseContext context, String jsonString, BaseActionElement actionElement)
+    {
+        BaseActionElement baseActionElement = BaseActionElement.ExtractBasePropertiesFromString(context, jsonString);
+        CopyActionProperties(baseActionElement, actionElement);
+    }
+
+    private static void CopyCardElementProperties(BaseCardElement origin, BaseCardElement dest)
+    {
+        dest.SetId(origin.GetId());
+        dest.SetHeight(origin.GetHeight());
+        dest.SetIsVisible(origin.GetIsVisible());
+        dest.SetSeparator(origin.GetSeparator());
+        dest.SetSpacing(origin.GetSpacing());
+        dest.SetFallbackContent(origin.GetFallbackContent());
+        dest.SetFallbackType(origin.GetFallbackType());
+    }
+
+    public static void deserializeBaseCardElementProperties(ParseContext context, JsonValue value, BaseCardElement cardElement)
+    {
+        BaseCardElement baseCardElement = BaseCardElement.ExtractBaseProperties(context, value);
+        CopyCardElementProperties(baseCardElement, cardElement);
+    }
+
+    public static void deserializeBaseCardElementPropertiesFromString(ParseContext context, String jsonString, BaseCardElement cardElement)
+    {
+        BaseCardElement baseCardElement = BaseCardElement.ExtractBasePropertiesFromString(context, jsonString);
+        CopyCardElementProperties(baseCardElement, cardElement);
+    }
+
+    private static void CopyInputProperties(BaseInputElement origin, BaseInputElement dest)
+    {
+        CopyCardElementProperties(origin, dest);
+        dest.SetIsRequired(origin.GetIsRequired());
+        dest.SetErrorMessage(origin.GetErrorMessage());
+        dest.SetLabel(origin.GetLabel());
+    }
+
+    public static void deserializeBaseInputProperties(ParseContext context, JsonValue value, BaseInputElement inputElement)
+    {
+        BaseInputElement baseInputElement = BaseInputElement.ExtractBaseProperties(context, value);
+        CopyInputProperties(baseInputElement, inputElement);
+    }
+
+    public static void deserializeBaseInputPropertiesFromString(ParseContext context, String jsonString, BaseInputElement inputElement)
+    {
+        BaseInputElement baseInputElement = BaseInputElement.ExtractBasePropertiesFromString(context, jsonString);
+        CopyInputProperties(baseInputElement, inputElement);
+    }
+
 }

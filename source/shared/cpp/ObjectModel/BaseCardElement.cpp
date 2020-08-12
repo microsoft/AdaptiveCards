@@ -136,3 +136,26 @@ void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& con
 
     throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse element of type " + typeString);
 }
+
+std::shared_ptr<BaseCardElement> BaseCardElement::ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+{
+    return BaseCardElement::ExtractBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseCardElement> BaseCardElement::ExtractBaseProperties(ParseContext& context, const Json::Value& json)
+{
+    std::shared_ptr<BaseCardElement> baseCardElement = std::make_shared<BaseCardElement>();
+
+    ParseUtil::ThrowIfNotJsonObject(json);
+
+    baseCardElement->DeserializeBase<BaseCardElement>(context, json);
+    baseCardElement->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
+    baseCardElement->SetHeight(
+        ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
+    baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
+    baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+    baseCardElement->SetSpacing(
+        ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
+
+    return baseCardElement;
+}

@@ -75,6 +75,16 @@ public class BaseInputElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseInputElement_SetErrorMessage(swigCPtr, this, errorMessage);
   }
 
+  public static BaseInputElement ExtractBasePropertiesFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_ExtractBasePropertiesFromString(ParseContext.getCPtr(context), context, jsonString);
+    return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
+  }
+
+  public static BaseInputElement ExtractBaseProperties(ParseContext context, JsonValue json) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_ExtractBaseProperties(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json);
+    return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
+  }
+
   public JsonValue SerializeToJsonValue() {
     return new JsonValue(AdaptiveCardObjectModelJNI.BaseInputElement_SerializeToJsonValue(swigCPtr, this), true);
   }

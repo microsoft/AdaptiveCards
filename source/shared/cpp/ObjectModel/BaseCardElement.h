@@ -42,6 +42,9 @@ namespace AdaptiveSharedNamespace
 
         CardElementType GetElementType() const;
 
+        static std::shared_ptr<BaseCardElement> ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseCardElement> ExtractBaseProperties(ParseContext& context, const Json::Value& json);
+
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);

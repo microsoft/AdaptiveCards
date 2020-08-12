@@ -12,6 +12,7 @@ namespace AdaptiveSharedNamespace
     class BaseInputElement : public BaseCardElement
     {
     public:
+        BaseInputElement();
         BaseInputElement(CardElementType elementType);
         BaseInputElement(CardElementType type, Spacing spacing, bool separator, HeightType height);
 
@@ -25,6 +26,9 @@ namespace AdaptiveSharedNamespace
 
         std::string GetErrorMessage() const;
         void SetErrorMessage(const std::string errorMessage);
+
+        static std::shared_ptr<BaseInputElement> ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseInputElement> ExtractBaseProperties(ParseContext& context, const Json::Value& json);
 
         Json::Value SerializeToJsonValue() const override;
 

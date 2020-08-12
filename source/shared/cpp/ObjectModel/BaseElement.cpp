@@ -176,4 +176,5 @@ namespace AdaptiveSharedNamespace
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Invalid value for requires (should be object)");
         }
     }
+
 }

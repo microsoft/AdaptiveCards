@@ -4,6 +4,8 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import io.adaptivecards.renderer.Util;
+
 import static org.junit.Assert.*;
 
 public class BaseActionElementPropertiesTest
@@ -224,6 +226,88 @@ public class BaseActionElementPropertiesTest
             OpenUrlAction parsedOpenUrlAction = TestUtil.castToOpenUrlAction(result.GetAdaptiveCard().GetActions().get(0));
             Assert.assertEquals("Sample Title", parsedOpenUrlAction.GetTitle());
         }
+    }
+
+    @Test
+    public void ExtractBaseActionPropertiesFromStringTest() throws Exception
+    {
+        class MockCustomAction extends BaseActionElement
+        {
+            public MockCustomAction(ActionType type) {
+                super(type);
+            }
+        }
+
+        class MockCustomActionParser extends ActionElementParser
+        {
+            // This is the method that is called during parsing
+            @Override
+            public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+            {
+                MockCustomAction customAction = new MockCustomAction(ActionType.Custom);
+                Util.deserializeBaseActionProperties(context, value, customAction);
+
+                Assert.assertEquals(customAction.GetIconUrl(), "http://");
+                Assert.assertEquals(customAction.GetId(), "Sample id");
+                Assert.assertEquals(customAction.GetStyle(), "positive");
+                String title = customAction.GetTitle();
+                Assert.assertEquals(title, "Sample Title");
+                Assert.assertEquals(customAction.GetFallbackType(), FallbackType.Content);
+
+                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
+                Assert.assertEquals(customAction.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+
+                return customAction;
+            }
+
+            @Override
+            public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+            {
+                MockCustomAction customAction = new MockCustomAction(ActionType.Custom);
+                Util.deserializeBaseActionPropertiesFromString(context, jsonString, customAction);
+
+                Assert.assertEquals(customAction.GetIconUrl(), "http://");
+                Assert.assertEquals(customAction.GetId(), "Sample id");
+                Assert.assertEquals(customAction.GetStyle(), "positive");
+                Assert.assertEquals(customAction.GetTitle(), "Sample Title");
+                Assert.assertEquals(customAction.GetFallbackType(), FallbackType.Content);
+
+                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
+                Assert.assertEquals(customAction.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+
+                return customAction;
+            }
+        }
+
+        final String customElementJson = "{\"fallback\":{\"data\":{\"data\":\"Some data\"},\"type\":\"Action.Submit\"}," +
+            "\"iconUrl\":\"http://\"," +
+            "\"id\":\"Sample id\"," +
+            "\"style\":\"positive\"," +
+            "\"title\":\"Sample Title\"," +
+            "\"type\":\"CustomAction\"}\n";
+
+        ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
+        MockCustomActionParser actionParser = new MockCustomActionParser();
+        actionParserRegistration.AddParser("CustomAction", actionParser);
+        ParseContext parseContext = new ParseContext(null, actionParserRegistration);
+
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseActionJsonInCard(customElementJson), "1.0", parseContext);
+        AdaptiveCard adaptiveCard = result.GetAdaptiveCard();
+
+        BaseActionElement action = adaptiveCard.GetActions().get(0);
+
+        // Verify that the element in the card has all the properties
+        Assert.assertEquals(action.GetIconUrl(), "http://");
+        Assert.assertEquals(action.GetId(), "Sample id");
+        Assert.assertEquals(action.GetStyle(), "positive");
+        Assert.assertEquals(action.GetTitle(), "Sample Title");
+        Assert.assertEquals(action.GetFallbackType(), FallbackType.Content);
+
+        // TODO: We need an util class method to cast from BaseElement to BaseCardElement
+        Assert.assertEquals(action.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+
+        // Verify that the DeserializeFromString method works
+        actionParser.DeserializeFromString(parseContext, customElementJson);
     }
 
 }

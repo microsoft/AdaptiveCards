@@ -46,6 +46,9 @@ namespace AdaptiveSharedNamespace
         template <typename T>
         static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
+        static std::shared_ptr<BaseActionElement> ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseActionElement> ExtractBaseProperties(ParseContext& context, const Json::Value& json);
+
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     private:
@@ -59,6 +62,8 @@ namespace AdaptiveSharedNamespace
 
         ActionType m_type;
     };
+
+    
 
     template <typename T>
     std::shared_ptr<T> BaseActionElement::Deserialize(ParseContext& context, const Json::Value& json)
