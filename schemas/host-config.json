@@ -108,6 +108,49 @@
 				}
 			}
 		},
+		"ErrorMessageConfig": {
+			"type": "object",
+			"description": "Controls styling for input error messages",
+			"version": "1.3",
+			"properties": {
+				"size": {
+					"type": "string",
+					"description": "Font size to use for the error message",
+					"default": "default",
+					"enum": [
+						"small",
+						"default",
+						"medium",
+						"large",
+						"extraLarge"
+					]
+				},
+				"spacing": {
+					"type": "string",
+					"description": "Amount of spacing to be used between input and error message",
+					"default": "default",
+					"enum": [
+						"default",
+						"none",
+						"small",
+						"medium",
+						"large",
+						"extraLarge",
+						"padding"
+					]
+				},
+				"weight": {
+					"type": "string",
+					"description": "Font weight that should be used for error messages",
+					"default": "default",
+					"enum": [
+						"lighter",
+						"default",
+						"bolder"
+					]
+				}
+			}
+		},
 		"FactSetConfig": {
 			"type": "object",
 			"description": "Controls the display of `FactSet`s",
@@ -304,6 +347,100 @@
 					"type": "integer",
 					"description": "Large image size value",
 					"default": 180
+				}
+			}
+		},
+		"InputsConfig": {
+			"type": "object",
+			"description": "Controls display and behavior of Input types",
+			"version": "1.3",
+			"properties": {
+				"label": {
+					"$ref": "#/definitions/InputLabelConfig"
+				},
+				"errorMessage": {
+					"$ref": "#/definitions/ErrorMessageConfig"
+				}
+			}
+		},
+		"InputLabelConfig": {
+			"type": "object",
+			"description": "Controls display of input labels",
+			"version": "1.3",
+			"properties": {
+				"color": {
+					"type": "string",
+					"description": "Color of the label",
+					"default": "default",
+					"enum": [
+						"default",
+						"dark",
+						"light",
+						"accent",
+						"good",
+						"warning",
+						"attention"
+					]
+				},
+				"isSubtle": {
+					"type": "boolean",
+					"description": "Whether the label should be displayed using a lighter weight font",
+					"default": false
+				},
+				"size": {
+					"type": "string",
+					"description": "Size of the label text",
+					"default": "default",
+					"enum": [
+						"small",
+						"default",
+						"medium",
+						"large",
+						"extraLarge"
+					]
+				},
+				"suffix": {
+					"type": "string",
+					"description": "Suffix that should be appended to labels of this type"
+				},
+				"weight": {
+					"type": "string",
+					"default": "default",
+					"description": "Font weight that should be used for this type of label",
+					"enum": [
+						"Lighter",
+						"Default",
+						"Bolder"
+					]
+				}
+			}
+		},
+		"LabelConfig": {
+			"type": "object",
+			"description": "Controls display of input labels",
+			"version": "1.3",
+			"properties": {
+				"inputSpacing": {
+					"type": "string",
+					"description": "Amount of spacing to be used between label and input",
+					"default": "default",
+					"enum": [
+						"default",
+						"none",
+						"small",
+						"medium",
+						"large",
+						"extraLarge",
+						"padding"
+					]
+				},
+				"requiredInputs": {
+					"$ref": "#/definitions/LabelConfig",
+					"description": "Label config for required Inputs"
+				},
+				"optionalInputs": {
+					"$ref": "#/definitions/LabelConfig",
+					"description": "Label config for optional Inputs"
 				}
 			}
 		},
