@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content" />
 
             </HorizontalScrollView>
-            
+
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"

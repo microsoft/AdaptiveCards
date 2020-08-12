@@ -18,6 +18,7 @@ using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Documents;
 using namespace ABI::Windows::UI::Xaml::Input;
 using namespace ABI::Windows::UI::Xaml::Media;
 using namespace ABI::Windows::UI::Xaml::Media::Imaging;
@@ -229,19 +230,6 @@ namespace AdaptiveNamespace::XamlHelpers
         return S_OK;
     }
 
-    void AddInputValueToContext(_In_ IAdaptiveRenderContext* renderContext,
-                                _In_ IAdaptiveCardElement* adaptiveCardElement,
-                                _In_ IUIElement* inputUiElement)
-    {
-        ComPtr<IAdaptiveCardElement> cardElement(adaptiveCardElement);
-        ComPtr<IAdaptiveInputElement> inputElement;
-        THROW_IF_FAILED(cardElement.As(&inputElement));
-
-        ComPtr<InputValue> input;
-        THROW_IF_FAILED(MakeAndInitialize<InputValue>(&input, inputElement.Get(), inputUiElement));
-        THROW_IF_FAILED(renderContext->AddInputValue(input.Get()));
-    }
-
     bool SupportsInteractivity(_In_ IAdaptiveHostConfig* hostConfig)
     {
         boolean supportsInteractivity;
@@ -382,7 +370,8 @@ namespace AdaptiveNamespace::XamlHelpers
     HRESULT RenderFallback(_In_ IAdaptiveCardElement* currentElement,
                            _In_ IAdaptiveRenderContext* renderContext,
                            _In_ IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ IUIElement** result)
+                           _COM_Outptr_ IUIElement** result,
+                           _COM_Outptr_ IAdaptiveCardElement** renderedElement)
     {
         ComPtr<IAdaptiveElementRendererRegistration> elementRenderers;
         RETURN_IF_FAILED(renderContext->get_ElementRenderers(&elementRenderers));
@@ -417,12 +406,13 @@ namespace AdaptiveNamespace::XamlHelpers
             {
                 // perform this element's fallback
                 hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
+                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
             }
 
             if (hr == E_PERFORM_FALLBACK)
             {
                 // The fallback content told us to fallback, make a recursive call to this method
-                RETURN_IF_FAILED(RenderFallback(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl));
+                RETURN_IF_FAILED(RenderFallback(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl, renderedElement));
             }
             else
             {
@@ -658,6 +648,532 @@ namespace AdaptiveNamespace::XamlHelpers
         Thickness margin = {(double)padding, (double)padding, (double)padding, (double)padding};
 
         RETURN_IF_FAILED(localElement->put_Margin(margin));
+        return S_OK;
+    }
+
+    HRESULT FormatLabelRunWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                         _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+                                         _In_ boolean isHint,
+                                         ABI::Windows::UI::Xaml::Documents::IRun* labelRun)
+    {
+        ABI::AdaptiveNamespace::ForegroundColor textColor;
+
+        // If we're formatting a hint then use attention color
+        if (isHint)
+        {
+            textColor = ABI::AdaptiveNamespace::ForegroundColor::Attention;
+        }
+        else
+        {
+            RETURN_IF_FAILED(inputLabelConfig->get_Color(&textColor));
+        }
+
+        ABI::Windows::UI::Color color;
+        RETURN_IF_FAILED(GetColorFromAdaptiveColor(hostConfig, textColor, ContainerStyle_Default, false, false, &color));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IRun> xamlLabelRun(labelRun);
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> labelRunAsTextElement;
+        RETURN_IF_FAILED(xamlLabelRun.As(&labelRunAsTextElement));
+
+        RETURN_IF_FAILED(labelRunAsTextElement->put_Foreground(XamlHelpers::GetSolidColorBrush(color).Get()));
+
+        ABI::AdaptiveNamespace::TextSize textSize;
+        RETURN_IF_FAILED(inputLabelConfig->get_Size(&textSize));
+
+        UINT32 resultSize{};
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig, ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+
+        RETURN_IF_FAILED(labelRunAsTextElement->put_FontSize(resultSize));
+
+        return S_OK;
+    }
+
+    HRESULT AddRequiredHintInline(_In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
+                                  _In_ ABI::AdaptiveNamespace::IAdaptiveInputLabelConfig* inputLabelConfig,
+                                  IVector<ABI::Windows::UI::Xaml::Documents::Inline*>* inlines)
+    {
+        ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines(inlines);
+
+        // Create an inline for the suffix
+        ComPtr<IRun> hintRun = XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+
+        HString suffix;
+        RETURN_IF_FAILED(inputLabelConfig->get_Suffix(suffix.GetAddressOf()));
+
+        // If no suffix was defined, use * as default
+        if (WindowsIsStringEmpty(suffix.Get()))
+        {
+            RETURN_IF_FAILED(UTF8ToHString(" *", suffix.GetAddressOf()));
+        }
+
+        RETURN_IF_FAILED(hintRun->put_Text(suffix.Get()));
+
+        FormatLabelRunWithHostConfig(hostConfig, inputLabelConfig, true /*isHint*/, hintRun.Get());
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::ITextElement> hintRunAsTextElement;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsTextElement));
+
+        ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> hintRunAsInline;
+        RETURN_IF_FAILED(hintRun.As(&hintRunAsInline));
+
+        RETURN_IF_FAILED(xamlInlines->Append(hintRunAsInline.Get()));
+
+        return S_OK;
+    }
+
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* /*renderArgs*/,
+                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl)
+    {
+        HString inputLabel;
+        RETURN_IF_FAILED(adaptiveInputElement->get_Label(inputLabel.GetAddressOf()));
+
+        // Retrieve if the input is required so we can file a warning if the label is empty
+        boolean isRequired;
+        RETURN_IF_FAILED(adaptiveInputElement->get_IsRequired(&isRequired));
+
+        if (inputLabel != nullptr)
+        {
+            // Create a rich text block for the label
+            ComPtr<IRichTextBlock> xamlRichTextBlock = XamlHelpers::CreateXamlClass<IRichTextBlock>(
+                HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RichTextBlock));
+
+            // Add a paragraph for the inlines
+            ComPtr<IVector<Block*>> xamlBlocks;
+            RETURN_IF_FAILED(xamlRichTextBlock->get_Blocks(&xamlBlocks));
+
+            ComPtr<IParagraph> xamlParagraph =
+                XamlHelpers::CreateXamlClass<IParagraph>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Paragraph));
+
+            ComPtr<IBlock> paragraphAsBlock;
+            RETURN_IF_FAILED(xamlParagraph.As(&paragraphAsBlock));
+            RETURN_IF_FAILED(xamlBlocks->Append(paragraphAsBlock.Get()));
+
+            // Add the Inlines
+            ComPtr<IVector<ABI::Windows::UI::Xaml::Documents::Inline*>> xamlInlines;
+            RETURN_IF_FAILED(xamlParagraph->get_Inlines(&xamlInlines));
+
+            // First inline is the label from the card
+            ComPtr<IRun> labelRun =
+                XamlHelpers::CreateXamlClass<IRun>(HStringReference(RuntimeClass_Windows_UI_Xaml_Documents_Run));
+            RETURN_IF_FAILED(labelRun->put_Text(inputLabel.Get()));
+
+            ComPtr<ABI::Windows::UI::Xaml::Documents::IInline> labelRunAsInline;
+            RETURN_IF_FAILED(labelRun.As(&labelRunAsInline));
+
+            RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
+
+            // Get the label config depending if the input is required
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            ComPtr<IAdaptiveInputsConfig> inputsConfig;
+            RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+
+            ComPtr<IAdaptiveLabelConfig> labelConfig;
+            RETURN_IF_FAILED(inputsConfig->get_Label(&labelConfig));
+
+            ComPtr<IAdaptiveInputLabelConfig> inputLabelConfig;
+            if (isRequired)
+            {
+                RETURN_IF_FAILED(labelConfig->get_RequiredInputs(&inputLabelConfig));
+            }
+            else
+            {
+                RETURN_IF_FAILED(labelConfig->get_OptionalInputs(&inputLabelConfig));
+            }
+
+            if (isRequired)
+            {
+                RETURN_IF_FAILED(AddRequiredHintInline(hostConfig.Get(), inputLabelConfig.Get(), xamlInlines.Get()));
+            }
+
+            RETURN_IF_FAILED(
+                FormatLabelRunWithHostConfig(hostConfig.Get(), inputLabelConfig.Get(), false /*isHint*/, labelRun.Get()));
+
+            RETURN_IF_FAILED(xamlRichTextBlock->put_TextWrapping(TextWrapping_Wrap));
+
+            RETURN_IF_FAILED(xamlRichTextBlock.CopyTo(labelControl));
+        }
+        else if (isRequired)
+        {
+            // if there was no label but the input is required file a warning for the card author
+            RETURN_IF_FAILED(renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
+                HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
+        }
+
+        return S_OK;
+    }
+
+    // Error messages are formatted for text size and weight
+    HRESULT FormatErrorMessageWithHostConfig(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext, ITextBlock* errorMessage)
+    {
+        ComPtr<ITextBlock> xamlErrorMessage(errorMessage);
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(hostConfig.GetAddressOf()));
+
+        ComPtr<IAdaptiveInputsConfig> inputsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Inputs(inputsConfig.GetAddressOf()));
+
+        ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
+        RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+
+        // Set size defined in host config
+        ABI::AdaptiveNamespace::TextSize textSize;
+        RETURN_IF_FAILED(errorMessageConfig->get_Size(&textSize));
+
+        UINT32 resultSize{};
+        RETURN_IF_FAILED(GetFontSizeFromFontType(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textSize, &resultSize));
+
+        RETURN_IF_FAILED(xamlErrorMessage->put_FontSize(resultSize));
+
+        // Set weight defined in host config
+        ABI::AdaptiveNamespace::TextWeight textWeight;
+        RETURN_IF_FAILED(errorMessageConfig->get_Weight(&textWeight));
+
+        ABI::Windows::UI::Text::FontWeight resultWeight;
+        RETURN_IF_FAILED(GetFontWeightFromStyle(hostConfig.Get(), ABI::AdaptiveNamespace::FontType_Default, textWeight, &resultWeight));
+
+        RETURN_IF_FAILED(xamlErrorMessage->put_FontWeight(resultWeight));
+
+        return S_OK;
+    }
+
+    HRESULT RenderInputErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                    _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** errorMessageControl)
+    {
+        // Add the error message if present
+        HString errorMessage;
+        RETURN_IF_FAILED(adaptiveInputElement->get_ErrorMessage(errorMessage.GetAddressOf()));
+
+        if (errorMessage.IsValid())
+        {
+            ComPtr<ITextBlock> errorMessageTextBlock =
+                XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+            RETURN_IF_FAILED(errorMessageTextBlock->put_Text(errorMessage.Get()));
+
+            // Set the color to Attention color
+            ComPtr<IAdaptiveHostConfig> hostConfig;
+            RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+            ABI::Windows::UI::Color attentionColor;
+            RETURN_IF_FAILED(
+                GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
+
+            RETURN_IF_FAILED(errorMessageTextBlock->put_Foreground(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+
+            // Format the error message through host config
+            RETURN_IF_FAILED(FormatErrorMessageWithHostConfig(renderContext, errorMessageTextBlock.Get()));
+
+            // Error message should begin collapsed and only be show when validated
+            ComPtr<IUIElement> errorMessageTextBlockAsUIElement;
+            RETURN_IF_FAILED(errorMessageTextBlock.As(&errorMessageTextBlockAsUIElement));
+
+            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement->put_Visibility(Visibility_Collapsed));
+            RETURN_IF_FAILED(errorMessageTextBlock->put_TextWrapping(TextWrapping_Wrap));
+
+            RETURN_IF_FAILED(errorMessageTextBlockAsUIElement.CopyTo(errorMessageControl));
+        }
+
+        return S_OK;
+    }
+
+    HRESULT CreateValidationBorder(_In_ ABI::Windows::UI::Xaml::IUIElement* childElement,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   _COM_Outptr_ ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder)
+    {
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ABI::Windows::UI::Color attentionColor;
+        RETURN_IF_FAILED(
+            GetColorFromAdaptiveColor(hostConfig.Get(), ForegroundColor_Attention, ContainerStyle_Default, false, false, &attentionColor));
+
+        // Create a border in the attention color. The thickness is 0 for now so it won't be visibile until validation is run
+        ComPtr<IBorder> validationBorder;
+        validationBorder = XamlHelpers::CreateXamlClass<IBorder>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_Border));
+
+        RETURN_IF_FAILED(validationBorder->put_BorderBrush(XamlHelpers::GetSolidColorBrush(attentionColor).Get()));
+
+        RETURN_IF_FAILED(validationBorder->put_Child(childElement));
+
+        RETURN_IF_FAILED(validationBorder.CopyTo(elementWithBorder));
+        return S_OK;
+    }
+
+    HRESULT HandleLabelAndErrorMessage(_In_ IAdaptiveInputElement* adaptiveInput,
+                                       _In_ IAdaptiveRenderContext* renderContext,
+                                       _In_ IAdaptiveRenderArgs* renderArgs,
+                                       _Out_ IUIElement** inputLayout)
+    {
+        // Create a new stack panel to add the label and error message
+        // The contents from the input panel will be copied to the new panel
+        ComPtr<IStackPanel> inputStackPanel =
+            XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+
+        ComPtr<IPanel> stackPanelAsPanel;
+        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
+
+        ComPtr<IAdaptiveHostConfig> hostConfig;
+        RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+        ComPtr<IAdaptiveInputsConfig> inputsConfig;
+        RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+
+        // Render the label and add it to the stack panel
+        ComPtr<IUIElement> label;
+        RETURN_IF_FAILED(XamlHelpers::RenderInputLabel(adaptiveInput, renderContext, renderArgs, &label));
+        XamlHelpers::AppendXamlElementToPanel(label.Get(), stackPanelAsPanel.Get());
+
+        // Render the spacing between the label and the input
+        if (label != nullptr)
+        {
+            ComPtr<IAdaptiveLabelConfig> labelConfig;
+            RETURN_IF_FAILED(inputsConfig->get_Label(labelConfig.GetAddressOf()));
+
+            ABI::AdaptiveNamespace::Spacing labelSpacing;
+            RETURN_IF_FAILED(labelConfig->get_InputSpacing(&labelSpacing));
+
+            UINT spacing{};
+            RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), labelSpacing, &spacing));
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
+
+            ComPtr<IPanel> inputPanel;
+            RETURN_IF_FAILED(inputStackPanel.As(&inputPanel));
+            XamlHelpers::AppendXamlElementToPanel(separator.Get(), inputPanel.Get());
+        }
+
+        ComPtr<IUIElement> actualUIElement;
+
+        // Copy the contents into the new panel and get the rendered element to set acessibility properties
+        ComPtr<IUIElement> localInputLayout(*inputLayout);
+        ComPtr<IPanel> inputPanel;
+        if (SUCCEEDED(localInputLayout.As(&inputPanel)))
+        {
+            ComPtr<IVector<UIElement*>> panelChildren;
+            RETURN_IF_FAILED(inputPanel->get_Children(&panelChildren));
+
+            unsigned int childrenCount{};
+            RETURN_IF_FAILED(panelChildren->get_Size(&childrenCount));
+
+            // We only copy one element into the input layout, if there's only one element, then we can assume it's our layout
+            if (childrenCount == 1)
+            {
+                ComPtr<IUIElement> onlyElement;
+                RETURN_IF_FAILED(panelChildren->GetAt(0, &onlyElement));
+
+                // We enclose multiple items using a border, so we try to check for it
+                ComPtr<IBorder> inputBorder;
+                if (SUCCEEDED(onlyElement.As(&inputBorder)))
+                {
+                    RETURN_IF_FAILED(inputBorder->get_Child(actualUIElement.GetAddressOf()));
+                }
+                else
+                {
+                    actualUIElement = onlyElement;
+                }
+
+                RETURN_IF_FAILED(panelChildren->RemoveAt(0));
+                XamlHelpers::AppendXamlElementToPanel(onlyElement.Get(), stackPanelAsPanel.Get());
+            }
+            else
+            {
+                for (unsigned int i{}; i < childrenCount; ++i)
+                {
+                    ComPtr<IUIElement> child;
+                    RETURN_IF_FAILED(panelChildren->GetAt(i, &child));
+                    RETURN_IF_FAILED(panelChildren->RemoveAt(i));
+
+                    XamlHelpers::AppendXamlElementToPanel(child.Get(), stackPanelAsPanel.Get());
+                }
+            }
+        }
+        else
+        {
+            actualUIElement = localInputLayout;
+            XamlHelpers::AppendXamlElementToPanel(localInputLayout.Get(), stackPanelAsPanel.Get());
+        }
+
+        // Add the error message if there's validation and one exists
+        ComPtr<IUIElement> errorMessageControl;
+        XamlHelpers::RenderInputErrorMessage(adaptiveInput, renderContext, &errorMessageControl);
+        if (errorMessageControl != nullptr)
+        {
+            // Render the spacing between the input and the error message
+            ComPtr<IAdaptiveErrorMessageConfig> errorMessageConfig;
+            RETURN_IF_FAILED(inputsConfig->get_ErrorMessage(errorMessageConfig.GetAddressOf()));
+
+            ABI::AdaptiveNamespace::Spacing errorSpacing;
+            RETURN_IF_FAILED(errorMessageConfig->get_Spacing(&errorSpacing));
+
+            UINT spacing{};
+            RETURN_IF_FAILED(GetSpacingSizeFromSpacing(hostConfig.Get(), errorSpacing, &spacing));
+            auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
+
+            ComPtr<IAdaptiveInputValue> inputValue;
+            renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf());
+            RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
+
+            XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
+
+            // Add the rendered error message
+            XamlHelpers::AppendXamlElementToPanel(errorMessageControl.Get(), stackPanelAsPanel.Get());
+        }
+
+        // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationPropertiesStatics));
+
+        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+
+        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+        RETURN_IF_FAILED(actualUIElement.As(&inputUIElementAsDependencyObject));
+
+        // The AutomationProperties.LabeledBy property allows an input to have more context for people using a screen
+        // reader, as it reads the label we rendered previously
+        if (label != nullptr)
+        {
+            RETURN_IF_FAILED(automationPropertiesStatics->SetLabeledBy(inputUIElementAsDependencyObject.Get(), label.Get()));
+        }
+
+        RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
+
+        return S_OK;
+    }
+
+    HRESULT HandleInputLayoutAndValidation(IAdaptiveInputElement* adaptiveInput,
+                                           IUIElement* inputUIElement,
+                                           boolean hasTypeSpecificValidation,
+                                           _In_ IAdaptiveRenderContext* renderContext,
+                                           IUIElement** inputLayout,
+                                           IBorder** validationBorderOut)
+    {
+        // Create a stack panel for the input and related controls
+        ComPtr<IStackPanel> inputStackPanel =
+            XamlHelpers::CreateXamlClass<IStackPanel>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_StackPanel));
+
+        ComPtr<IPanel> stackPanelAsPanel;
+        RETURN_IF_FAILED(inputStackPanel.As(&stackPanelAsPanel));
+
+        // The input may need to go into a border to handle validation before being added to the stack panel.
+        // inputUIElementParentContainer represents the current parent container.
+        ComPtr<IUIElement> inputUIElementParentContainer = inputUIElement;
+
+        // If there's any validation on this input, and the caller has requested a validation border by passing
+        // validationBorderOut, put the input inside a border
+        boolean isRequired;
+        RETURN_IF_FAILED(adaptiveInput->get_IsRequired(&isRequired));
+
+        boolean hasValidation = (hasTypeSpecificValidation || isRequired);
+
+        if (hasValidation)
+        {
+            // If we have validation, we should have an error message to display if it fails. If we don't, return a
+            // warning to encourage the card author to add one.
+
+            HString errorMessage;
+            RETURN_IF_FAILED(adaptiveInput->get_ErrorMessage(errorMessage.GetAddressOf()));
+
+            if (!errorMessage.IsValid())
+            {
+                RETURN_IF_FAILED(
+                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::MissingValidationErrorMessage,
+                                              HStringReference(L"Inputs with validation should include an errorMessage").Get()));
+            }
+        }
+
+        ComPtr<IBorder> validationBorder;
+        if (validationBorderOut && hasValidation)
+        {
+            RETURN_IF_FAILED(XamlHelpers::CreateValidationBorder(inputUIElement, renderContext, &validationBorder));
+            RETURN_IF_FAILED(validationBorder.As(&inputUIElementParentContainer));
+        }
+
+        XamlHelpers::AppendXamlElementToPanel(inputUIElementParentContainer.Get(), stackPanelAsPanel.Get());
+
+        // Different input renderers perform stuff differently
+        // Input.Text and Input.Number render the border previously so the object received as parameter may be a border
+        // Input.Time and Input.Date let this method render the border for them
+        // Input.Toggle
+        ComPtr<IUIElement> actualInputUIElement;
+        if (validationBorderOut && hasValidation)
+        {
+            RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+        }
+        else
+        {
+            if (hasValidation)
+            {
+                // This handles the case when the sent item was a Input.Text or Input.Number as we have to get the actual TextBox from the border
+                if (SUCCEEDED(inputUIElementParentContainer.As(&validationBorder)))
+                {
+                    RETURN_IF_FAILED(validationBorder->get_Child(&actualInputUIElement));
+                }
+                else
+                {
+                    actualInputUIElement = inputUIElement;
+                }
+            }
+            else
+            {
+                actualInputUIElement = inputUIElement;
+            }
+        }
+
+        // Create an AutomationPropertiesStatics object so we can set the accessibility properties that label allow us to use.
+        ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+        RETURN_IF_FAILED(
+            GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                 &automationPropertiesStatics));
+
+        // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+        // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+        ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+        RETURN_IF_FAILED(actualInputUIElement.As(&inputUIElementAsDependencyObject));
+
+        // The AutomationProperties.IsRequiredForForm property allows an input to provide a little bit of extra information to
+        // people using a screen reader by specifying if an input is required. Visually we represent this with a hint.
+        RETURN_IF_FAILED(automationPropertiesStatics->SetIsRequiredForForm(inputUIElementAsDependencyObject.Get(), isRequired));
+
+        // In the case of Input.Toggle we have to define the DescribedBy property to put the title in it
+        ComPtr<IAdaptiveInputElement> localAdaptiveInput(adaptiveInput);
+        ComPtr<IAdaptiveToggleInput> adaptiveToggleInput;
+        if (SUCCEEDED(localAdaptiveInput.As(&adaptiveToggleInput)))
+        {
+            ComPtr<IContentControl> uiInpuElementAsContentControl;
+            RETURN_IF_FAILED(actualInputUIElement.As(&uiInpuElementAsContentControl));
+
+            ComPtr<IInspectable> content;
+            RETURN_IF_FAILED(uiInpuElementAsContentControl->get_Content(content.GetAddressOf()));
+
+            ComPtr<IDependencyObject> contentAsDependencyObject;
+            RETURN_IF_FAILED(content.As(&contentAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics5;
+            RETURN_IF_FAILED(automationPropertiesStatics.As(&automationPropertiesStatics5));
+
+            ComPtr<IVector<DependencyObject*>> uiElementDescribers;
+            RETURN_IF_FAILED(automationPropertiesStatics5->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
+                                                                          uiElementDescribers.GetAddressOf()));
+
+            RETURN_IF_FAILED(uiElementDescribers->Append(contentAsDependencyObject.Get()));
+        }
+
+        RETURN_IF_FAILED(stackPanelAsPanel.CopyTo(inputLayout));
+
+        if (validationBorderOut)
+        {
+            RETURN_IF_FAILED(validationBorder.CopyTo(validationBorderOut));
+        }
+
         return S_OK;
     }
 }

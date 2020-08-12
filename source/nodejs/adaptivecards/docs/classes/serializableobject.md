@@ -12,8 +12,6 @@
 
   ↳ [MediaSource](mediasource.md)
 
-  ↳ [InputValidationOptions](inputvalidationoptions.md)
-
   ↳ [Choice](choice.md)
 
   ↳ [HttpHeader](httpheader.md)
@@ -61,7 +59,7 @@
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 ___
 

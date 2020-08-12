@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -35,6 +36,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.ToggleInput;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
@@ -143,6 +145,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
+
+
                     return createButtonWithTheme(context, buttonStyle.data);
                 }
                 else
@@ -185,6 +189,12 @@ public class ActionElementRenderer extends BaseActionElementRenderer
 
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
+        SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
+        if (action != null)
+        {
+            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+        }
+
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
         ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
@@ -225,7 +235,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     hostConfig.GetSpacing().getDefaultSpacing(),
                     context
             );
-            imageLoader.execute(baseActionElement.GetIconUrl());
+            imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, baseActionElement.GetIconUrl());
         }
 
         viewGroup.addView(button);
@@ -249,7 +259,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
 
         return button;
     }

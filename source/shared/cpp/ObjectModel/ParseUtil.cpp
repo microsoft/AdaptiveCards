@@ -162,7 +162,8 @@ namespace AdaptiveSharedNamespace
         if (propertyValue.empty())
         {
             // handle "backgroundImageUrl": <string>
-            const std::string& backgroundImageUrlPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
+            const std::string& backgroundImageUrlPropertyName =
+                AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
             propertyValue = json.get(backgroundImageUrlPropertyName, Json::Value());
         }
 
@@ -238,6 +239,35 @@ namespace AdaptiveSharedNamespace
     }
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
+    {
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        if (!propertyValue.isInt())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Value for property " + propertyName + " was invalid. Expected type int.");
+        }
+
+        return propertyValue.asInt();
+    }
+
+    std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
+                                                 AdaptiveCardSchemaKey key,
+                                                 std::optional<int> defaultValue,
+                                                 bool isRequired /*=false*/)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
@@ -358,10 +388,7 @@ namespace AdaptiveSharedNamespace
 
         Json::Value jsonValue;
 
-        const bool ok = reader->parse(
-            jsonString.data(),
-            jsonString.data() + jsonString.size(),
-            &jsonValue, nullptr);
+        const bool ok = reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, nullptr);
 
         if (!ok)
         {
@@ -454,6 +481,47 @@ namespace AdaptiveSharedNamespace
         if (!selectAction.empty())
         {
             return ParseUtil::GetActionFromJsonValue(context, selectAction);
+        }
+
+        return nullptr;
+    }
+
+    std::shared_ptr<BaseCardElement> ParseUtil::GetLabelFromJsonValue(ParseContext& context, const Json::Value& json)
+    {
+        if (json.empty() || !json.isObject())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Expected a Json object to extract Label element");
+        }
+
+        // Get the element's type
+        std::string typeString = ToLowercase(GetTypeAsString(json));
+
+        if ((typeString != ToLowercase(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextBlock))) &&
+            (typeString != ToLowercase(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::RichTextBlock))))
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Element type is not a string, TextBlock or RichTextBlock");
+        }
+
+        auto parser = context.elementParserRegistration->GetParser(typeString);
+
+        // Parse it if it's allowed by the current parsers
+        if (parser != nullptr)
+        {
+            // Use the parser that maps to the type
+            return parser->Deserialize(context, json);
+        }
+
+        return nullptr;
+    }
+
+    std::shared_ptr<BaseCardElement> ParseUtil::GetLabel(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key)
+    {
+        auto label = ParseUtil::ExtractJsonValue(json, key);
+
+        if (!label.empty())
+        {
+            return ParseUtil::GetLabelFromJsonValue(context, label);
         }
 
         return nullptr;

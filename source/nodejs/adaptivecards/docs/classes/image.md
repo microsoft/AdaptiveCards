@@ -24,6 +24,7 @@
 * [height](image.md#height)
 * [horizontalAlignment](image.md#horizontalalignment)
 * [id](image.md#optional-id)
+* [maxHeight](image.md#optional-maxheight)
 * [maxVersion](image.md#maxversion)
 * [onPreProcessPropertyValue](image.md#optional-onpreprocesspropertyvalue)
 * [pixelHeight](image.md#optional-pixelheight)
@@ -215,9 +216,15 @@ ___
 
 ___
 
+### `Optional` maxHeight
+
+• **maxHeight**? : *undefined | number*
+
+___
+
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -371,7 +378,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -737,9 +745,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 

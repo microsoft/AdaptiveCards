@@ -57,6 +57,7 @@ export class PropertySheetCategory {
     static readonly StyleCategory = "Style";
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
+    static readonly Validation = "Validation";
 
     private _entries: PropertySheetEntry[] = [];
 
@@ -770,6 +771,8 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 export abstract class DesignerPeer extends DraggableElement {
     static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 
+    static onPopulatePropertySheet?: (sender: DesignerPeer, propertySheet: PropertySheet) => void;
+
     private _parent: DesignerPeer;
     private _cardObject: Adaptive.CardObject;
     private _children: Array<DesignerPeer> = [];
@@ -1095,6 +1098,10 @@ export abstract class DesignerPeer extends DraggableElement {
 
         this.populatePropertySheet(propertySheet);
 
+        if (DesignerPeer.onPopulatePropertySheet) {
+            DesignerPeer.onPopulatePropertySheet(this, propertySheet);
+        }
+
         propertySheet.render(
             card,
             new PropertySheetContext(context, this));
@@ -1285,11 +1292,9 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (Adaptive.GlobalSettings.useBuiltInInputValidation) {
-            propertySheet.add(
-                PropertySheetCategory.DefaultCategory,
-                HttpActionPeer.ignoreInputValidationProperty);
-        }
+        propertySheet.add(
+            PropertySheetCategory.DefaultCategory,
+            HttpActionPeer.ignoreInputValidationProperty);
 
         propertySheet.add(
             defaultCategory,
@@ -2189,21 +2194,29 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly validationProperty = new CompoundPropertyEditor(
+    static readonly labelProperty = new StringPropertyEditor(
         Adaptive.Versions.v1_3,
-        "validation",
-        [
-            new EnumPropertyEditor(Adaptive.Versions.v1_3, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Adaptive.Versions.v1_3, "errorMessage", "Error message")
-        ]
-    );
+        "label",
+        "Label");
+
+    static readonly isRequiredProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "isRequired",
+        "Required");
+
+    static readonly errorMessageProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "errorMessage",
+        "Error message");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.add(defaultCategory, InputPeer.labelProperty);
         propertySheet.add(
-            "Validation",
-            InputPeer.validationProperty);
+            PropertySheetCategory.Validation,
+            InputPeer.isRequiredProperty,
+            InputPeer.errorMessageProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
@@ -2218,6 +2231,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
     static readonly maxLengthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly regexProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "regex", "Pattern");
+
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2255,6 +2270,10 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             defaultCategory,
             TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.Validation,
+            TextInputPeer.regexProperty);
     }
 
     initializeCardElement() {

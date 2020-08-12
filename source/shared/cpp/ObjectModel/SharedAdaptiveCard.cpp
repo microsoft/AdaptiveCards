@@ -103,6 +103,8 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
 }
 
 #ifdef __ANDROID__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                std::string rendererVersion,
                                                                ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
