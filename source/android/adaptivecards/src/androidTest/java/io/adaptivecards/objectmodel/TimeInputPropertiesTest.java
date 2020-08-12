@@ -364,7 +364,7 @@ public class TimeInputPropertiesTest
     private final String[] c_smallTimeValues = {"00:00", "02:12", "04:17", "05:33", "06:53", "07:04", "08:26"};
     private final String[] c_inRangeTimeValues = {"08:27", "09:35", "10:08", "13:47", "14:50", "16:16", "17:42"};
     private final String[] c_largeTimeValues = {"17:43", "19:56", "20:11", "21:42", "22:51", "23:21", "23:59"};
-    private final String[] c_invalidTimeValues = {"aWord", "b", "312c", "-", ".", "4+9", "7."};
+    private final String[] c_invalidTimeValues = {"aWord", "1:1", "2:3:432:5:6", "12-12-2012", ":", "12_23"};
 
     private final String c_defaultInputTime = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
 

@@ -294,7 +294,7 @@ public class DateInputPropertiesTest
     private final String[] c_smallDateValues = {"1994-07-24", "1995-05-18", "1995-05-26", "1996-11-26", "1996-11-29", "1997-08-30", "1998-03-09"};
     private final String[] c_inRangeDateValues = {"1998-03-10", "1999-03-03", "1999-11-08", "2002-01-21", "2005-03-22", "2005-10-21", "2007-09-05"};
     private final String[] c_largeDateValues = {"2007-09-06", "2010-09-14", "2011-08-30", "2011-10-19", "2017-10-21", "2017-11-07", "2018-08-14"};
-    private final String[] c_invalidDateValues = {"aWord", "b", "312c", "-", ".", "4+9", "7."};
+    private final String[] c_invalidDateValues = {"aWord", "12-12-2012", "12:02", "2011/08/30", "2013-13-13", "a-b-c", "7."};
 
     private final String c_defaultInputDate = "{\"id\":\"id\",\"type\":\"Input.Date\"}\n";
     private final String[] c_dateInputTests = {"0000-01-01", "1521-08-13", "1776-07-04", "1917-03-08", "1975-04-04", "1993-02-04", "2019-06-18", "2552-08-30"};
