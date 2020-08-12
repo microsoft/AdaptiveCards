@@ -79,7 +79,7 @@ What follows is a starting point to grok this problem.
 
 1. **Facilitate non-stanadard experimentation** and vendor-specific innovation. Embrace "extensions" as a necessary part of building a standard.
 2. **Create clarity around Schema Extensions**: what Hosts/platforms they work in; whether they are on a standards-track or not. Provide plenty of guidance on how to properly utilize extensions.
-3. **Formalize a means for the community to develop and submit extensions for standards consideration.** 
+3. **Make it easy to submit extensions for standards consideration.** 
    1. (E.g., Contoso can create a Charting extension that works on JavaScript and Android. By proposing their extension as a standard they have a consistent and normalized way of describing the schema, and a self-contained implementation/reference renderers that can be easily reviewed and ported to other platforms.)
    
 ## Benefits
