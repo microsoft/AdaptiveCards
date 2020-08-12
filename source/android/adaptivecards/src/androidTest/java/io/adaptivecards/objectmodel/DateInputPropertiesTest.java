@@ -276,19 +276,16 @@ public class DateInputPropertiesTest
     @Test
     public void isRequiredValidation()
     {
-        NumberInput numberInput = TestUtil.createMockNumberInput();
-        numberInput.SetIsRequired(true);
+        DateInput dateInput = TestUtil.createMockDateInput();
+        dateInput.SetIsRequired(true);
 
-        NumberInputHandler numberInputHandler = new NumberInputHandler(numberInput);
-        numberInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
+        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
+        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
 
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
+        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
 
         // Validate that empty input is always invalid
-        Assert.assertEquals(false, numberInputHandler.isValid());
-
-        // Invalid numbers should not succeed as required
-        TestUtil.runValidationTests(c_invalidDateValues, false, gralExecutor);
+        Assert.assertEquals(false, dateInputHandler.isValid());
 
         // Validate required
         TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallDateValues, c_inRangeDateValues, c_largeDateValues), true, gralExecutor);
