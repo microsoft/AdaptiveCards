@@ -48,6 +48,12 @@ public class TextInputHandler extends BaseInputHandler
             isValid = Pattern.matches(regex, textInputValue);
         }
 
+        long maxLength = textInput.GetMaxLength();
+        if (maxLength != 0)
+        {
+            isValid &= (textInputValue.length() <= maxLength);
+        }
+
         return isValid;
     }
 

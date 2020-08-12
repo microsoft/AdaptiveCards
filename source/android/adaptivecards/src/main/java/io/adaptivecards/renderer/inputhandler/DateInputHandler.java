@@ -53,6 +53,12 @@ public class DateInputHandler extends TextInputHandler
             return false;
         }
 
+        // if the date is not required and the date is empty, consider it as valid
+        if (!dateInput.GetIsRequired() && inputValue.isEmpty())
+        {
+            return true;
+        }
+
         Date currentDate = RendererUtil.getDate(inputValue).getTime();
 
         String minDate = dateInput.GetMin();

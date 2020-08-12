@@ -39,12 +39,24 @@ public class TimeInputHandler extends TextInputHandler
         try
         {
             Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
-           return s_simpleDateFormat.format(time);
+            return s_simpleDateFormat.format(time);
         }
         catch (ParseException e)
         {
             return editText.getText().toString();
         }
+    }
+
+    @Override
+    public void setInput(String text)
+    {
+        String formattedTime = "";
+        if (RendererUtil.isValidTime(text) && !text.isEmpty())
+        {
+            formattedTime = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(text).getTime());
+        }
+
+        super.setInput(formattedTime);
     }
 
     @Override
@@ -56,10 +68,16 @@ public class TimeInputHandler extends TextInputHandler
             return false;
         }
 
+        // If the time is not required and the time is empty, then consider it valid
+        if (!timeInput.GetIsRequired() && timeInputValue.isEmpty())
+        {
+            return true;
+        }
+
         Date currentTime = null;
         try
         {
-            currentTime = getCurrentValue(getInput());
+            currentTime = getCurrentValue(timeInputValue);
         }
         catch (Exception e)
         {
