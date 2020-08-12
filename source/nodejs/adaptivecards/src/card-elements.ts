@@ -2249,6 +2249,29 @@ export class Media extends CardElement {
                 }
             }
 
+            playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
+                if (e.keyCode == 13 || e.keyCode == 32) { // space or enter
+                    if (this.hostConfig.media.allowInlinePlayback) {
+                        if (this.renderedElement) {
+                            let mediaPlayerElement = this.renderMediaPlayer();
+
+                            this.renderedElement.innerHTML = "";
+                            this.renderedElement.appendChild(mediaPlayerElement);
+
+                            mediaPlayerElement.play();
+                        }
+                    }
+                    else {
+                        if (Media.onPlay) {
+                            e.preventDefault();
+                            e.cancelBubble = true;
+
+                            Media.onPlay(this);
+                        }
+                    }
+                }
+            }
+
             let playButtonInnerElement = document.createElement("div");
             playButtonInnerElement.className = this.hostConfig.makeCssClassName("ac-media-playButton-arrow");
             playButtonInnerElement.style.width = playButtonArrowWidth + "px";
