@@ -2180,6 +2180,31 @@ export class Media extends CardElement {
         }
     }
 
+    private handlePlayButtonInvoke(event: UIEvent) : void
+    {
+        if (this.hostConfig.media.allowInlinePlayback) {
+            event.preventDefault();
+            event.cancelBubble = true;
+
+            if (this.renderedElement) {
+                let mediaPlayerElement = this.renderMediaPlayer();
+
+                this.renderedElement.innerHTML = "";
+                this.renderedElement.appendChild(mediaPlayerElement);
+
+                mediaPlayerElement.play();
+            }
+        }
+        else {
+            if (Media.onPlay) {
+                event.preventDefault();
+                event.cancelBubble = true;
+
+                Media.onPlay(this);
+            }
+        }
+    }
+
     private renderPoster(): HTMLElement {
         const playButtonArrowWidth = 12;
         const playButtonArrowHeight = 15;
@@ -2226,49 +2251,12 @@ export class Media extends CardElement {
             playButtonOuterElement.style.alignItems = "center";
             playButtonOuterElement.style.justifyContent = "center";
             playButtonOuterElement.onclick = (e) => {
-                if (this.hostConfig.media.allowInlinePlayback) {
-                    e.preventDefault();
-                    e.cancelBubble = true;
-
-                    if (this.renderedElement) {
-                        let mediaPlayerElement = this.renderMediaPlayer();
-
-                        this.renderedElement.innerHTML = "";
-                        this.renderedElement.appendChild(mediaPlayerElement);
-
-                        mediaPlayerElement.play();
-                    }
-                }
-                else {
-                    if (Media.onPlay) {
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        Media.onPlay(this);
-                    }
-                }
+                this.handlePlayButtonInvoke(e);
             }
 
             playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
                 if (e.keyCode == 13 || e.keyCode == 32) { // space or enter
-                    if (this.hostConfig.media.allowInlinePlayback) {
-                        if (this.renderedElement) {
-                            let mediaPlayerElement = this.renderMediaPlayer();
-
-                            this.renderedElement.innerHTML = "";
-                            this.renderedElement.appendChild(mediaPlayerElement);
-
-                            mediaPlayerElement.play();
-                        }
-                    }
-                    else {
-                        if (Media.onPlay) {
-                            e.preventDefault();
-                            e.cancelBubble = true;
-
-                            Media.onPlay(this);
-                        }
-                    }
+                    this.handlePlayButtonInvoke(e);
                 }
             }
 
