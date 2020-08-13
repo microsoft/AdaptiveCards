@@ -65,6 +65,12 @@ public final class Util {
         }
     }
 
+    /**
+     * Casts the baseElement into a BaseCardElement
+     *
+     * @param baseElement BaseElement to be casted into BaseCardElement
+     * @return Casted BaseCardElement object if succeeded, null otherwise
+     */
     public static BaseCardElement tryCastToBaseCardElement(BaseElement baseElement)
     {
         try
@@ -77,7 +83,14 @@ public final class Util {
         }
     }
 
-    public static BaseCardElement castToBaseCardElement(BaseElement baseElement)
+    /**
+     * Casts the baseElement into a BaseCardElement. Throws a ClassCastException if the element cannot be casted
+     *
+     * @param baseElement BaseElement to be casted into BaseCardElement
+     * @return Casted BaseCardElement object
+     * @throws ClassCastException
+     */
+    public static BaseCardElement castToBaseCardElement(BaseElement baseElement) throws ClassCastException
     {
         BaseCardElement baseCardElement;
         if (baseElement instanceof BaseCardElement)
@@ -162,6 +175,12 @@ public final class Util {
         }
     }
 
+    /**
+     * Casts the baseElement into a BaseActionElement
+     *
+     * @param baseElement BaseElement to be casted into BaseActionElement
+     * @return Casted BaseActionElement object if succeeded, null otherwise
+     */
     public static BaseActionElement tryCastToBaseActionElement(BaseElement baseElement)
     {
         try
@@ -174,7 +193,14 @@ public final class Util {
         }
     }
 
-    public static BaseActionElement castToBaseActionElement(BaseElement baseElement)
+    /**
+     * Casts the baseElement into a BaseActionElement. Throws a ClassCastException if the element cannot be casted
+     *
+     * @param baseElement BaseElement to be casted into BaseActionElement
+     * @return Casted BaseActionElement object
+     * @throws ClassCastException
+     */
+    public static BaseActionElement castToBaseActionElement(BaseElement baseElement) throws ClassCastException
     {
         BaseActionElement baseActionElement;
         if (baseElement instanceof BaseActionElement)
