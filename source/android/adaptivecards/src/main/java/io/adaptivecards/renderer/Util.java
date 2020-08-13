@@ -66,11 +66,12 @@ public final class Util {
     }
 
     /**
+     * Checks if the provided cardElement is of the specified type
      *
-     * @param cardElement
-     * @param cardElementType
-     * @param <T>
-     * @return
+     * @param cardElement BaseCardElement to be queried
+     * @param cardElementType Type of card element to be queried
+     * @param <T> Class of card element to be queried, extends from BaseCardElement
+     * @return True if the card element is of the queried type
      */
     public static<T extends BaseCardElement> boolean isOfType(BaseCardElement cardElement, Class<T> cardElementType)
     {
@@ -78,11 +79,12 @@ public final class Util {
     }
 
     /**
+     * Casts the provided cardElement into the specified type
      *
-     * @param cardElement
-     * @param cardElementType
-     * @param <T>
-     * @return
+     * @param cardElement BaseCardElement to be casted
+     * @param cardElementType Class for the cardElement to be casted into
+     * @param <T> Class of card to be casted to, extends from BaseCardElement
+     * @return The casted card element if cardElement is of type cardElementType, null otherwise
      */
     public static<T extends BaseCardElement> T tryCastTo(BaseCardElement cardElement, Class<T> cardElementType)
     {
@@ -97,11 +99,14 @@ public final class Util {
     }
 
     /**
+     * Casts the provided cardElement into the specified type. Throws an Exception if it doesn't
+     * match the specified type
      *
-     * @param cardElement
-     * @param cardElementType
-     * @param <T>
-     * @return
+     * @param cardElement BaseCardElement to be casted
+     * @param cardElementType Class for the cardElement to be casted into
+     * @param <T> Class of card to be casted to, extends from BaseCardElement
+     * @return The casted card element if cardElement is of type cardElementType, otherwise throws ClassCastException
+     * @throws ClassCastException
      */
     public static<T extends BaseCardElement> T castTo(BaseCardElement cardElement, Class<T> cardElementType) throws ClassCastException
     {
@@ -132,11 +137,12 @@ public final class Util {
     }
 
     /**
+     * Checks if the provided actionElement is of the specified type
      *
-     * @param actionElement
-     * @param actionElementType
-     * @param <T>
-     * @return
+     * @param actionElement BaseActionElement to be queried
+     * @param actionElementType Type of action to be queried
+     * @param <T> Class of action to be queried, extends from BaseActionElement
+     * @return True if the action is of the queried type
      */
     public static<T extends BaseActionElement> boolean isOfType(BaseActionElement actionElement, Class<T> actionElementType)
     {
@@ -144,11 +150,12 @@ public final class Util {
     }
 
     /**
+     * Casts the provided actionElement into the specified type
      *
-     * @param actionElement
-     * @param actionElementType
-     * @param <T>
-     * @return
+     * @param actionElement BaseActionElement to be casted
+     * @param actionElementType Class for the actionElement to be casted into
+     * @param <T> Class of action to be casted to, extends from BaseActionElement
+     * @return The casted action element if actionElement is of type actionElementType, null otherwise
      */
     public static<T extends BaseActionElement> T tryCastTo(BaseActionElement actionElement, Class<T> actionElementType)
     {
@@ -163,11 +170,13 @@ public final class Util {
     }
 
     /**
+     * Casts the provided actionElement into the specified type. Throws an Exception if it doesn't
+     * match the specified type
      *
-     * @param actionElement
-     * @param actionElementType
-     * @param <T>
-     * @return
+     * @param actionElement BaseActionElement to be casted
+     * @param actionElementType Class for the actionElement to be casted into
+     * @param <T> Class of action to be casted to, extends from BaseActionElement
+     * @return The casted action element if actionElement is of type actionElementType, otherwise throws ClassCastException
      * @throws ClassCastException
      */
     public static<T extends BaseActionElement> T castTo(BaseActionElement actionElement, Class<T> actionElementType) throws ClassCastException
@@ -208,12 +217,26 @@ public final class Util {
         dest.SetFallbackType(origin.GetFallbackType());
     }
 
+    /**
+     * Deserializes the properties in all base action elements (id, iconUrl, style, title, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the Deserialize method
+     * @param value JsonValue object passed down as a parameter in the Deserialize method
+     * @param actionElement BaseActionElement to be populated
+     */
     public static void deserializeBaseActionProperties(ParseContext context, JsonValue value, BaseActionElement actionElement)
     {
         BaseActionElement baseActionElement = BaseActionElement.ExtractBaseProperties(context, value);
         CopyActionProperties(baseActionElement, actionElement);
     }
 
+    /**
+     * Deserializes the properties in all base action elements (id, iconUrl, style, title, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the Deserialize method
+     * @param jsonString Json string to be deserialized (passed down as a parameter in the DeserializeFromString method)
+     * @param actionElement BaseActionElement to be populated
+     */
     public static void deserializeBaseActionPropertiesFromString(ParseContext context, String jsonString, BaseActionElement actionElement)
     {
         BaseActionElement baseActionElement = BaseActionElement.ExtractBasePropertiesFromString(context, jsonString);
@@ -231,12 +254,26 @@ public final class Util {
         dest.SetFallbackType(origin.GetFallbackType());
     }
 
+    /**
+     * Deserializes the properties in all base card elements (id, height, isVisible, separator, spacing, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the Deserialize method
+     * @param value JsonValue object passed down as a parameter in the Deserialize method
+     * @param cardElement BaseCardElement to be populated
+     */
     public static void deserializeBaseCardElementProperties(ParseContext context, JsonValue value, BaseCardElement cardElement)
     {
         BaseCardElement baseCardElement = BaseCardElement.ExtractBaseProperties(context, value);
         CopyCardElementProperties(baseCardElement, cardElement);
     }
 
+    /**
+     * Deserializes the properties in all base card elements (id, height, isVisible, separator, spacing, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the DeserializeFromString method
+     * @param jsonString Json string to be deserialized (passed down as a parameter in the DeserializeFromString method)
+     * @param cardElement BaseCardElement to be populated
+     */
     public static void deserializeBaseCardElementPropertiesFromString(ParseContext context, String jsonString, BaseCardElement cardElement)
     {
         BaseCardElement baseCardElement = BaseCardElement.ExtractBasePropertiesFromString(context, jsonString);
@@ -251,12 +288,28 @@ public final class Util {
         dest.SetLabel(origin.GetLabel());
     }
 
+    /**
+     * Deserializes the properties in all input elements (isRequired, errorMessage, label)
+     * and the properties found in all base card elements (id, height, isVisible, separator, spacing, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the Deserialize method
+     * @param value JsonValue object passed down as a parameter in the Deserialize method
+     * @param inputElement BaseInputElement to be populated
+     */
     public static void deserializeBaseInputProperties(ParseContext context, JsonValue value, BaseInputElement inputElement)
     {
         BaseInputElement baseInputElement = BaseInputElement.ExtractBaseProperties(context, value);
         CopyInputProperties(baseInputElement, inputElement);
     }
 
+    /**
+     * Deserializes the properties in all input elements (isRequired, errorMessage, label)
+     * and the properties found in all base card elements (id, height, isVisible, separator, spacing, fallback)
+     *
+     * @param context ParseContext object passed down as a parameter in the DeserializeFromString method
+     * @param jsonString Json string to be deserialized (passed down as a parameter in the DeserializeFromString method)
+     * @param inputElement BaseInputElement to be populated
+     */
     public static void deserializeBaseInputPropertiesFromString(ParseContext context, String jsonString, BaseInputElement inputElement)
     {
         BaseInputElement baseInputElement = BaseInputElement.ExtractBasePropertiesFromString(context, jsonString);
