@@ -1,13 +1,13 @@
 {
 	"name": "adaptivecards-templating",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Adaptive Card data binding and templating engine for JavaScript",
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"homepage": "https://adaptivecards.io",
 	"repository": {
-		"type" : "git",
-		"url" : "https://github.com/microsoft/AdaptiveCards.git",
+		"type": "git",
+		"url": "https://github.com/microsoft/AdaptiveCards.git",
 		"directory": "source/nodejs/adaptivecards-templating"
 	},
 	"keywords": [
