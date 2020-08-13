@@ -1,0 +1,169 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "id": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "definitions": {
+    "Class": {
+      "description": "Expresses a class",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The name of the class"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the class"
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/Property"
+          },
+          "description": "Properties of the class"
+        },
+        "isAbstract": {
+          "type": "boolean",
+          "description": "Specifies whether this class is abstract"
+        },
+        "extends": {
+          "type": "string",
+          "description": "Class that this class extends from"
+        },
+        "shorthand": {
+          "type": "string",
+          "description": "Name of one of the properties that represents a shorthand version of this class"
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON schema for the JSON file"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    },
+    "Enum": {
+      "description": "Expresses an enum",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The name of the enum"
+        },
+        "values": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/EnumValue"
+          },
+          "description": "The values in the enum"
+        },
+        "$schema": {
+          "type": "string",
+          "format": "uri",
+          "description": "JSON schema for the JSON file"
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "values"
+      ]
+    },
+    "EnumValue": {
+      "description": "Expresses an enum value",
+      "anyOf": [
+        {
+          "type": "string",
+          "description": "The name of the enum value"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "enum": [
+                "EnumValue"
+              ],
+              "description": "Must be `EnumValue`"
+            },
+            "value": {
+              "type": "string",
+              "description": "The name of the enum value"
+            },
+            "description": {
+              "type": "string",
+              "description": "A description of the enum value"
+            }
+          },
+          "required": [
+            "value"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Property": {
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "The type of the property"
+        },
+        "description": {
+          "type": "string",
+          "description": "A description of the property"
+        },
+        "required": {
+          "type": "boolean",
+          "description": "Specifies whether the property is required",
+          "default": false
+        },
+        "shorthands": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Property"
+          },
+          "description": "Shorthand alternatives for this property"
+        },
+        "default": {
+          "description": "The default value of this property"
+        },
+        "examples": {
+          "type": "array",
+          "description": "Examples of this value"
+        },
+        "override": {
+          "type": "boolean",
+          "description": "Set this to true if you're overriding a property from an extended class. This will prevent a warning from being emitted."
+        }
+      },
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type"
+      ]
+    }
+  },
+  "anyOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Class"
+        }
+      ],
+      "required": [
+        "type"
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/definitions/Enum"
+        }
+      ],
+      "required": [
+        "type"
+      ]
+    }
+  ]
+}

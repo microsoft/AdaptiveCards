@@ -18,16 +18,10 @@ export class ActionSet extends React.Component {
 		let payload = this.props.json;
 
 		return (
-			<ElementWrapper json={payload} style={styles.actionButtonContainer} isFirst={this.props.isFirst}>
+			<ElementWrapper json={payload} isFirst={this.props.isFirst}>
 				<ActionWrapper actions={payload.actions} />
 			</ElementWrapper>
 		);
 	}
 }
-
-const styles = StyleSheet.create({
-	actionButtonContainer: {
-		flex: 1,
-	}
-});
 

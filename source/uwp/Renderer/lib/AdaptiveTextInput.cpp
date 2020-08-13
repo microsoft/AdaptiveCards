@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveTextInput.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveTextInput.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -15,14 +13,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
         return RuntimeClassInitialize(textInput);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput) try
+    HRESULT AdaptiveTextInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TextInput>& sharedTextInput)
+    try
     {
         if (sharedTextInput == nullptr)
         {
@@ -111,11 +111,12 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveTextInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(textInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*textInput));
 
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
@@ -129,10 +130,10 @@ namespace AdaptiveNamespace
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_inlineAction.Get(), sharedAction));
-            textInput->SetInlineAction(sharedAction);
+            textInput->SetInlineAction(std::move(sharedAction));
         }
 
-        sharedModel = textInput;
+        sharedModel = std::move(textInput);
 
         return S_OK;
     }

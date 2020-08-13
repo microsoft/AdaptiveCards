@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSpacingConfig.h"
 
 using namespace Microsoft::WRL;
@@ -8,14 +9,16 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize() noexcept
+    try
     {
         SpacingConfig spacingConfig;
         return RuntimeClassInitialize(spacingConfig);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept try
+    HRESULT AdaptiveSpacingConfig::RuntimeClassInitialize(SpacingConfig spacingConfig) noexcept
+    try
     {
         m_small = spacingConfig.smallSpacing;
         m_medium = spacingConfig.mediumSpacing;

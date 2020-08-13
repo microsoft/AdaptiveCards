@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "Util.h"
+
 #include "AdaptiveTextConfig.h"
 
 using namespace Microsoft::WRL;
@@ -9,7 +9,8 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTextConfig::RuntimeClassInitialize() noexcept
+    try
     {
         TextConfig textConfig;
         return RuntimeClassInitialize(textConfig);

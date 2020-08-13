@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveImage.h"
 
-#include "Util.h"
+#include "AdaptiveImage.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -16,14 +15,16 @@ namespace AdaptiveNamespace
 {
     AdaptiveImage::AdaptiveImage() {}
 
-    HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImage::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
         return RuntimeClassInitialize(image);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage) try
+    HRESULT AdaptiveImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Image>& sharedImage)
+    try
     {
         if (sharedImage == nullptr)
         {
@@ -142,17 +143,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedImage) try
+    HRESULT AdaptiveImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedImage)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Image> image = std::make_shared<AdaptiveSharedNamespace::Image>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(image)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*image));
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            image->SetSelectAction(sharedAction);
+            image->SetSelectAction(std::move(sharedAction));
         }
 
         image->SetUrl(HStringToUTF8(m_url.Get()));
@@ -171,7 +173,7 @@ namespace AdaptiveNamespace
         image->SetPixelWidth(m_pixelWidth);
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
 
-        sharedImage = image;
+        sharedImage = std::move(image);
         return S_OK;
     }
     CATCH_RETURN;

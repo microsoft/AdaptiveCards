@@ -5,13 +5,13 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACOParseContext.h"
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import "ACOParseContext.h"
 
 @class ACOFeatureRegistration;
 
-@interface ACOBaseCardElement:NSObject
+@interface ACOBaseCardElement : NSObject
 
 - (NSData *)additionalProperty;
 
@@ -67,6 +67,6 @@ typedef NS_ENUM(NSInteger, ACRBleedDirection) {
 
 @protocol ACOIBaseCardElementParser
 
-- (ACOBaseCardElement *)deserialize:(NSData *)json parseContext:(ACOParseContext* )parseContext;
+- (ACOBaseCardElement *)deserialize:(NSData *)json parseContext:(ACOParseContext *)parseContext;
 
 @end

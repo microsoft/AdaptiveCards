@@ -10,17 +10,19 @@
 
 @implementation ACRUIImageView
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
     self = [super initWithCoder:aDecoder];
-    if(self) {
+    if (self) {
         self.tag = eACRUIImageTag;
     }
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if(self) {
+    if (self) {
         self.tag = eACRUIImageTag;
         self.desiredSize = frame.size;
     }
@@ -30,7 +32,7 @@
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    if(_isPersonStyle) {
+    if (_isPersonStyle) {
         CGFloat radius = self.bounds.size.width / 2.0;
         [self.layer setCornerRadius:radius];
         [self.layer setMasksToBounds:YES];

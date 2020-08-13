@@ -6,14 +6,13 @@
 //
 
 #import "ACRViewController.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACRView.h"
 
 using namespace AdaptiveCards;
 
-@implementation ACRViewController
-{
+@implementation ACRViewController {
     ACOAdaptiveCard *_adaptiveCard;
     ACOHostConfig *_hostConfig;
     CGRect _guideFrame;
@@ -26,13 +25,13 @@ using namespace AdaptiveCards;
     return self;
 }
 
-- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>) acrActionDelegate
+- (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config frame:(CGRect)frame delegate:(id<ACRActionDelegate>)acrActionDelegate
 {
     self = [self initWithNibName:nil bundle:nil];
-    if(self){
+    if (self) {
         _guideFrame = frame;
         _adaptiveCard = card;
-        if(config){
+        if (config) {
             _hostConfig = config;
         } else {
             std::shared_ptr<HostConfig> cHostConfig = std::make_shared<HostConfig>();

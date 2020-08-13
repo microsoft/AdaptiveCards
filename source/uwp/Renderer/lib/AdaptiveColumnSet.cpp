@@ -23,14 +23,16 @@ namespace AdaptiveNamespace
         m_columns = Microsoft::WRL::Make<Vector<ABI::AdaptiveNamespace::AdaptiveColumn*>>();
     }
 
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
         return RuntimeClassInitialize(columnSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) noexcept try
+    HRESULT AdaptiveColumnSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ColumnSet>& sharedColumnSet) noexcept
+    try
     {
         if (sharedColumnSet == nullptr)
         {
@@ -117,16 +119,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) noexcept try
+    HRESULT AdaptiveColumnSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ColumnSet> columnSet = std::make_shared<AdaptiveSharedNamespace::ColumnSet>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(columnSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*columnSet));
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            columnSet->SetSelectAction(sharedAction);
+            columnSet->SetSelectAction(std::move(sharedAction));
         }
 
         XamlHelpers::IterateOverVector<ABI::AdaptiveNamespace::AdaptiveColumn, IAdaptiveColumn>(m_columns.Get(), [&](IAdaptiveColumn* column) {
@@ -142,7 +145,7 @@ namespace AdaptiveNamespace
                 return E_UNEXPECTED;
             }
 
-            columnSet->GetColumns().push_back(sharedColumn);
+            columnSet->GetColumns().push_back(std::move(sharedColumn));
 
             return S_OK;
         });
@@ -151,7 +154,7 @@ namespace AdaptiveNamespace
         columnSet->SetMinHeight(m_minHeight);
         columnSet->SetBleed(m_bleed);
 
-        sharedModel = columnSet;
+        sharedModel = std::move(columnSet);
         return S_OK;
     }
     CATCH_RETURN;

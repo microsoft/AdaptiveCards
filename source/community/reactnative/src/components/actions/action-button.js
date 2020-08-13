@@ -154,10 +154,9 @@ export class ActionButton extends React.Component {
 	 * @returns {Array} computedStyles - Styles based on the config
      */
 	getButtonStyles = () => {
-		let computedStyles = [this.styleConfig.buttonBackgroundColor,
-		this.styleConfig.buttonBorderRadius,
-		this.styleConfig.actionIconFlex,
-		styles.button];
+		let computedStyles = [this.styleConfig.button,
+		this.styleConfig.actionIconFlex, styles.button];
+		
 		if (this.sentiment == Enums.Sentiment.Positive) {
 			computedStyles.push(this.styleConfig.defaultPositiveButtonBackgroundColor);
 		}
@@ -171,8 +170,7 @@ export class ActionButton extends React.Component {
 	*/
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
-		this.styleConfig.buttonTitleColor,
-		this.styleConfig.buttonTitleTransform];
+		this.styleConfig.buttonTitle];
 		if (this.sentiment == Enums.Sentiment.Destructive) {
 			computedStyles.push(this.styleConfig.defaultDestructiveButtonForegroundColor);
 		}
@@ -204,8 +202,8 @@ const styles = StyleSheet.create({
 		justifyContent: Constants.CenterString,
 		padding: 10,
 		marginBottom: 10,
-		marginRight: 10,
 		flexGrow: 1,
+		marginHorizontal: 5
 	},
 	buttonIcon: {
 		marginLeft: 5,

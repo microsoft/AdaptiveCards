@@ -5,10 +5,8 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRTextField.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRNumericTextField:ACRTextField
-@property NSInteger min;
-@property NSInteger max;
+@interface ACRNumericTextField : ACRTextField
 @end

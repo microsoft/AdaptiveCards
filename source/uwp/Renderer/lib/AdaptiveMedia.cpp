@@ -9,14 +9,16 @@ using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveMedia::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
         return RuntimeClassInitialize(media);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia) try
+    HRESULT AdaptiveMedia::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Media>& sharedMedia)
+    try
     {
         if (sharedMedia == nullptr)
         {
@@ -53,18 +55,19 @@ namespace AdaptiveNamespace
         return m_sources.CopyTo(sources);
     }
 
-    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedMedia) try
+    HRESULT AdaptiveMedia::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedMedia)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Media> media = std::make_shared<AdaptiveSharedNamespace::Media>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(media)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*media));
 
         media->SetPoster(HStringToUTF8(m_poster.Get()));
         media->SetAltText(HStringToUTF8(m_altText.Get()));
 
         RETURN_IF_FAILED(GenerateSharedMediaSources(m_sources.Get(), media->GetSources()));
 
-        sharedMedia = media;
+        sharedMedia = std::move(media);
         return S_OK;
     }
     CATCH_RETURN;

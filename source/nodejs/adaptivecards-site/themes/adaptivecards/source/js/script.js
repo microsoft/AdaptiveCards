@@ -1,24 +1,38 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+if (typeof hljs !== 'undefined') {
+	hljs.configure({
+		tabReplace: '  '
+	});
+
+	hljs.initHighlightingOnLoad();
+}
+
 $(function () {
-	// Adaptive Cards
-	AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
-		var message = "Action executed\n";
-		message += "    Title: " + action.title + "\n";
+	if(localStorage.getItem("enable-templating") === null) {
+		localStorage.setItem("enable-templating", true);
+	}
 
-		if (action instanceof AdaptiveCards.OpenUrlAction) {
-			message += "    Type: Action.OpenUrl\n";
-			message += "    Url: " + action.url + "\n";
-		} else if (action instanceof AdaptiveCards.SubmitAction) {
-			message += "    Type: Action.Submit";
-			message += "    Data: " + JSON.stringify(action.data);
-		} else {
-			message += "    Type: <unknown>";
-		}
+	$("#enableTemplating").prop("checked", localStorage.getItem("enable-templating") === "true");
 
-		alert(message);
-	};
+	if (typeof AdaptiveCards !== 'undefined') {
+		AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
+			var message = "Action executed\n";
+			message += "    Title: " + action.title + "\n";
 
+			if (action instanceof AdaptiveCards.OpenUrlAction) {
+				message += "    Type: Action.OpenUrl\n";
+				message += "    Url: " + action.url + "\n";
+			} else if (action instanceof AdaptiveCards.SubmitAction) {
+				message += "    Type: Action.Submit";
+				message += "    Data: " + JSON.stringify(action.data);
+			} else {
+				message += "    Type: <unknown>";
+			}
+
+			alert(message);
+		};
+	}
 
 
 	var hostConfig = {
@@ -73,48 +87,48 @@ $(function () {
 				"foregroundColors": {
 					"default": {
 						"default": "#000000",
-						"subtle": "#767676"
+						"subtle": "#6f6f6f"
 					},
 					"accent": {
 						"default": "#0063B1",
 						"subtle": "#0063B1"
 					},
 					"attention": {
-						"default": "#FF0000",
-						"subtle": "#DDFF0000"
+						"default": "#ED0000",
+						"subtle": "#DDED0000"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
-						"default": "#c3ab23",
-						"subtle": "#DDc3ab23"
+						"default": "#B75C00",
+						"subtle": "#DDB75C00"
 					}
 				}
 			},
 			"emphasis": {
-				"backgroundColor": "#F0F0F0",
+				"backgroundColor": "#F9F9F9",
 				"foregroundColors": {
 					"default": {
 						"default": "#000000",
-						"subtle": "#767676"
+						"subtle": "#6f6f6f"
 					},
 					"accent": {
 						"default": "#2E89FC",
 						"subtle": "#882E89FC"
 					},
 					"attention": {
-						"default": "#FF0000",
-						"subtle": "#DDFF0000"
+						"default": "#ED0000",
+						"subtle": "#DDED0000"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
-						"default": "#c3ab23",
-						"subtle": "#DDc3ab23"
+						"default": "#B75C00",
+						"subtle": "#DDB75C00"
 					}
 				}
 			},
@@ -142,8 +156,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -175,8 +189,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -208,8 +222,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -241,8 +255,8 @@ $(function () {
 						"subtle": "#DDcc3300"
 					},
 					"good": {
-						"default": "#54a254",
-						"subtle": "#DD54a254"
+						"default": "#028A02",
+						"subtle": "#DD027502"
 					},
 					"warning": {
 						"default": "#e69500",
@@ -294,72 +308,259 @@ $(function () {
 		}
 	}
 
+	$("#closeVideo").click(function () {
+		$("#overviewVideo")[0].pause();
+		$('#videoModal').css("display", "none");
+	});
 
+	$("#watchVideo").click(function () {
+		$("#overviewVideo")[0].play();
+		$('#videoModal').css("display", "block");
 
-	$('.adaptivecard').each(function () {
+	});
 
+	$(document).keyup(function (e) {
+		if (e.keyCode === 27) $('#closeVideo').click();
+	});
 
-		var cardUrl = $(this).attr("data-card-url");
-		var el = $(this);
-		if (cardUrl) {
-			$.getJSON(cardUrl, function (json) { renderCard(el, JSON.parse(json)); });
-		} else {
-			renderCard($(this), JSON.parse(el.text()));
+	// Loop videos
+	$("video").each(function () {
+		var $video = $(this);
+		var loopDelay = $video.attr("data-loop-delay");
+		if (loopDelay) {
+			$video.on("ended", function () {
+				setTimeout(function () {
+					$video[0].play();
+				}, loopDelay);
+			});
 		}
 	});
 
-	function renderCard(el, json) {
 
+	$('.ac-properties table').addClass("w3-table w3-bordered");
+
+
+	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
+	function copyToClipboard(str) {
+		const el = document.createElement('textarea');
+		el.value = str;
+		el.setAttribute('readonly', '');
+		el.style.position = 'absolute';
+		el.style.left = '-9999px';
+		document.body.appendChild(el);
+		const selected =
+			document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+		if (selected) {
+			document.getSelection().removeAllRanges();
+			document.getSelection().addRange(selected);
+		}
+	}
+
+
+	function renderAllCards() {
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+
+		$(".show-with-templating").css("display", "none");
+		$(".hide-with-templating").css("display", "block");
+
+		$(".adaptivecard").each(function () {
+
+			var cardUrl = $(this).attr("data-card-url");
+			var templateUrl = $(this).attr("data-template-url");
+			var dataUrl = $(this).attr("data-data-url");
+			var el = $(this);
+
+			if (templateUrl && enableTemplating) {
+
+				$(".show-with-templating").css("display", "block");
+				$(".hide-with-templating").css("display", "none");
+
+				$.getJSON(templateUrl, function (templateJson) {
+					$.getJSON(dataUrl, function (dataJson) {
+						renderCard(el, templateJson, dataJson);
+					});
+				});
+			}
+			else if (cardUrl) {
+				$.getJSON(cardUrl, function (json) { renderCard(el, json); });
+			} else {
+				renderCard($(this), el.text());
+			}
+		});
+	}
+	renderAllCards();
+
+	function renderCard(el, json, dataJson) {
+		if (typeof json === "string")
+			json = JSON.parse(json);
+
+		if (dataJson && typeof dataJson === "string")
+			dataJson = JSON.parse(dataJson);
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
+		AdaptiveCards.GlobalSettings.setTabIndexAtCardRoot = false;
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
-		adaptiveCard.parse(json);
-		var renderedCard = adaptiveCard.render();
+		var renderedCard;
+
+		if (dataJson) {
+			var template = new ACData.Template(json);
+			adaptiveCard.parse(template.expand({
+				$root: dataJson
+			}));
+			renderedCard = adaptiveCard.render();
+		} else {
+			adaptiveCard.parse(json);
+			renderedCard = adaptiveCard.render();
+		}
 
 		el.text('').append(renderedCard).show();
 	}
 
-	$('.ac-properties table').addClass("w3-table w3-bordered w3-responsive");
+	$("#enableTemplating").change(function () {
+		localStorage.setItem("enable-templating", this.checked);
+		renderAllCards();
 
-	hljs.configure({
-		tabReplace: '  '
 	});
 
-	$('pre code').each(function (i, block) {
-		hljs.highlightBlock(block);
+	$("button.copy-code").click(function (e) {
+		var content = $(this).parent().next("pre").text();
+		copyToClipboard(content);
+    	$("button.copy-code").focus();
 	});
+
+	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		if(!designerUrl || !cardUrl) {
+			alert("Whoops, something went wrong. Please click the Feedback button in the top right and let us know what happened.");
+			return;
+		}
+
+		designerUrl += "?card=" + cardUrl;
+
+		if(dataUrl) {
+			designerUrl += "&data=" + dataUrl
+		}
+
+		window.open(designerUrl);
+	}
+
+	$("button.try-adaptivecard").click(function (e) {
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var designerUrl = cardEl.attr("data-designer-url");
+		var cardUrl = cardEl.attr("data-card-url");
+		var dataUrl = cardEl.attr("data-data-url");
+		var templateUrl = cardEl.attr("data-template-url");
+
+		if (enableTemplating && dataUrl && templateUrl) {
+			launchDesigner(designerUrl, templateUrl, dataUrl);
+		} else {
+			launchDesigner(designerUrl, cardUrl);
+		}
+	});
+
+	function invokeFeedback(e) {
+		e.preventDefault();
+		window.open("https://github.com/Microsoft/AdaptiveCards/issues/new?title="
+			+ encodeURIComponent("[Website] [Your feedback title here]")
+			+ "&body=" + encodeURIComponent("\r\n\r\n[Your detailed feedback here]\r\n\r\n---\r\n* URL: "
+			+ window.location.href));
+	}
+
+	$("#feedback-button").on({
+	click: invokeFeedback,
+	keydown: function (e) {
+		if (e.key === "Enter") {
+			invokeFeedback(e);
+		}
+	}});
 
 	$('#menu-nav').on('change', function () {
 		window.location = this.value;
 	});
 
+	function isInViewport(elem) {
+		var bounding = elem.getBoundingClientRect();
+		return (
+			bounding.top >= 0 &&
+			bounding.left >= 0 &&
+			bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+			bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+		);
+	};
+
+	var videos = document.querySelectorAll('video[data-autoplay]');
+	$(window).scroll(function (event) {
+		videos.forEach(function (video) {
+			if (isInViewport(video)) {
+				video.play();
+			} else {
+				video.pause();
+			}
+		});
+	});
+
+	// Resize youtube videos
+	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
+	var $allVideos = $("iframe");
+
+	// Figure out and save aspect ratio for each video
+	$allVideos.each(function () {
+		$(this)
+			.data('aspectRatio', this.height / this.width)
+			.removeAttr('height')
+			.removeAttr('width');
+	});
+
+	// When the window is resized
+	$(window).resize(function () {
+
+		// Resize all videos according to their own aspect ratio
+		$allVideos.each(function () {
+			var $el = $(this);
+			var newWidth = $el.parent().innerWidth();
+			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
+		});
+
+		// Kick off one resize to fix all videos on page load
+	}).resize();
+
 	// Code for making sidebar sticky
 	var headerHolder;
+	var footerHolder;
 	var sidebar = $(".sidebar");
 
 	if (sidebar.length > 0) {
 		headerHolder = $(".header-holder");
+		footerHolder = $(".footer-holder");
 
 		updateSidebarTopOffset();
 
 		$(document).scroll(function () {
 			updateSidebarTopOffset();
 		});
+		$(document).resize(function () {
+			updateSidebarTopOffset();
+		});
 	}
-
 
 	function updateSidebarTopOffset() {
 		var headerHeight = headerHolder.height();
+		var footerHeight = footerHolder.height();
 		var scrollOffset = $(document).scrollTop();
+		var windowHeight = $(window).height();
+		var footerPosition = footerHolder.offset().top;
+		var hiddenAfter = (footerPosition + footerHeight) - (scrollOffset + windowHeight);
+
 		var topPadding = 24;
 
-		var calculatedTop = headerHeight - scrollOffset + topPadding;
-		if (calculatedTop < topPadding) {
-			calculatedTop = topPadding;
-		}
+		var calculatedTop = Math.max(headerHeight - scrollOffset + topPadding, topPadding);
+		var calculatedBottom = Math.max(footerHeight - hiddenAfter, 0);
 
-		sidebar.css("top", calculatedTop);
+		sidebar.css("top", calculatedTop).css("bottom", calculatedBottom);
 	}
 });

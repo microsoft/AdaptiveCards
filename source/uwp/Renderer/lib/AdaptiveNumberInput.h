@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "NumberInput.h"
 #include "AdaptiveInputElement.h"
 
@@ -27,14 +25,14 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Placeholder(_Outptr_ HSTRING* placeholder);
         IFACEMETHODIMP put_Placeholder(_In_ HSTRING placeholder);
 
-        IFACEMETHODIMP get_Value(_Out_ INT32* value);
-        IFACEMETHODIMP put_Value(INT32 value);
+        IFACEMETHODIMP get_Value(_Out_ ABI::Windows::Foundation::IReference<int32_t>** value);
+        IFACEMETHODIMP put_Value(ABI::Windows::Foundation::IReference<int32_t>* value);
 
-        IFACEMETHODIMP get_Max(_Out_ INT32* value);
-        IFACEMETHODIMP put_Max(INT32 value);
+        IFACEMETHODIMP get_Max(_Out_ ABI::Windows::Foundation::IReference<int32_t>** value);
+        IFACEMETHODIMP put_Max(ABI::Windows::Foundation::IReference<int32_t>* value);
 
-        IFACEMETHODIMP get_Min(_Out_ INT32* value);
-        IFACEMETHODIMP put_Min(INT32 value);
+        IFACEMETHODIMP get_Min(_Out_ ABI::Windows::Foundation::IReference<int32_t>** value);
+        IFACEMETHODIMP put_Min(ABI::Windows::Foundation::IReference<int32_t>* value);
 
         // IAdaptiveInputElement
         IFACEMETHODIMP get_IsRequired(_Out_ boolean* isRequired)
@@ -53,6 +51,16 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP put_ErrorMessage(_In_ HSTRING errorMessage)
         {
             return AdaptiveInputElementBase::put_ErrorMessage(errorMessage);
+        }
+
+        IFACEMETHODIMP get_Label(_Outptr_ HSTRING* label)
+        {
+            return AdaptiveInputElementBase::get_Label(label);
+        }
+
+        IFACEMETHODIMP put_Label(_In_ HSTRING label)
+        {
+            return AdaptiveInputElementBase::put_Label(label);
         }
 
         // IAdaptiveCardElement
@@ -115,10 +123,10 @@ namespace AdaptiveNamespace
             return AdaptiveCardElementBase::put_AdditionalProperties(value);
         }
 
-        IFACEMETHODIMP MeetsRequirements(_In_ ABI::AdaptiveNamespace::IAdaptiveFeatureRegistration* featureRegistration,
-                                         _Out_ boolean* value)
+        IFACEMETHODIMP get_Requirements(
+            _COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>** requirements)
         {
-            return AdaptiveCardElementBase::MeetsRequirements(featureRegistration, value);
+            return AdaptiveCardElementBase::get_Requirements(requirements);
         }
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result)
@@ -141,9 +149,9 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-        INT32 m_max;
-        INT32 m_min;
-        INT32 m_value;
+        winrt::com_ptr<ABI::Windows::Foundation::IReference<int32_t>> m_max;
+        winrt::com_ptr<ABI::Windows::Foundation::IReference<int32_t>> m_min;
+        winrt::com_ptr<ABI::Windows::Foundation::IReference<int32_t>> m_value;
         Microsoft::WRL::Wrappers::HString m_placeholder;
     };
 

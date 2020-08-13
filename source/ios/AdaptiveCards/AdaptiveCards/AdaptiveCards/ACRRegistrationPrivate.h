@@ -3,7 +3,7 @@
 
 using namespace AdaptiveCards;
 
-@interface ACOFeatureRegistration()
+@interface ACOFeatureRegistration ()
 
 - (std::shared_ptr<FeatureRegistration>)getSharedFeatureRegistration;
 

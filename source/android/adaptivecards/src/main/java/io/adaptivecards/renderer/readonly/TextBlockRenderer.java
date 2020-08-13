@@ -24,6 +24,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -55,22 +56,22 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
-    static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
+    public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
     {
         textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
     }
 
-    void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
+    public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
     {
         textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, type), m_textWeightMap.get(textWeight));
     }
 
-    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
+    public static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
@@ -146,24 +147,19 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        TextBlock textBlock = null;
-        if (baseCardElement instanceof TextBlock)
+        TextBlock textBlock = Util.castTo(baseCardElement, TextBlock.class);
+
+        if (textBlock.GetText().isEmpty())
         {
-            textBlock = (TextBlock) baseCardElement;
-        }
-        else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
+            return null;
         }
 
         TextView textView = new TextView(context);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        View separator = setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-
-        textView.setTag(new TagContent(textBlock, separator, viewGroup));
-        setVisibility(baseCardElement.GetIsVisible(), textView);
+        textView.setTag(new TagContent(textBlock));
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
@@ -182,15 +178,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-
-        if( textBlock.GetHeight() == HeightType.Stretch )
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())

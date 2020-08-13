@@ -29,28 +29,29 @@ namespace AdaptiveSharedNamespace
         Json::Value SerializeToJsonValue() const override;
 
         virtual bool GetSeparator() const;
-        virtual void SetSeparator(const bool value);
+        virtual void SetSeparator(bool value);
 
         HeightType GetHeight() const;
-        void SetHeight(const HeightType value);
+        void SetHeight(HeightType value);
 
         virtual Spacing GetSpacing() const;
-        virtual void SetSpacing(const Spacing value);
+        virtual void SetSpacing(Spacing value);
 
-        virtual bool GetIsVisible() const;
-        virtual void SetIsVisible(const bool value);
+        bool GetIsVisible() const;
+        void SetIsVisible(bool value);
 
-        virtual const CardElementType GetElementType() const;
+        CardElementType GetElementType() const;
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     protected:
-        static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction);
-        void PopulateKnownPropertiesSet() override;
+        static Json::Value SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction);
 
     private:
+        void PopulateKnownPropertiesSet();
+
         CardElementType m_type;
         Spacing m_spacing;
         HeightType m_height;

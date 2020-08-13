@@ -10,11 +10,9 @@
 #include "AdaptiveMediaEventArgs.h"
 #include "AdaptiveShowCardAction.h"
 #include "RenderedAdaptiveCard.h"
-#include "vector.h"
-#include <windows.foundation.collections.h>
-#include <Windows.UI.Xaml.h>
 #include "XamlBuilder.h"
 #include "XamlHelpers.h"
+#include "ElementTagContent.h"
 
 using namespace concurrency;
 using namespace Microsoft::WRL;
@@ -153,11 +151,110 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    static HRESULT HandleToggleVisibilityClick(_In_ IFrameworkElement* cardFrameworkElement, _In_ IAdaptiveActionElement* action)
+    {
+        ComPtr<IAdaptiveActionElement> localAction(action);
+        ComPtr<IAdaptiveToggleVisibilityAction> toggleAction;
+        RETURN_IF_FAILED(localAction.As(&toggleAction));
+
+        ComPtr<IVector<AdaptiveToggleVisibilityTarget*>> targets;
+        RETURN_IF_FAILED(toggleAction->get_TargetElements(&targets));
+
+        ComPtr<IIterable<AdaptiveToggleVisibilityTarget*>> targetsIterable;
+        RETURN_IF_FAILED(targets.As<IIterable<AdaptiveToggleVisibilityTarget*>>(&targetsIterable));
+
+        boolean hasCurrent;
+        ComPtr<IIterator<AdaptiveToggleVisibilityTarget*>> targetIterator;
+        HRESULT hr = targetsIterable->First(&targetIterator);
+        RETURN_IF_FAILED(targetIterator->get_HasCurrent(&hasCurrent));
+
+        std::unordered_set<IPanel*> parentPanels;
+        while (SUCCEEDED(hr) && hasCurrent)
+        {
+            ComPtr<IAdaptiveToggleVisibilityTarget> currentTarget;
+            RETURN_IF_FAILED(targetIterator->get_Current(&currentTarget));
+
+            HString toggleId;
+            RETURN_IF_FAILED(currentTarget->get_ElementId(toggleId.GetAddressOf()));
+
+            ABI::AdaptiveNamespace::IsVisible toggle;
+            RETURN_IF_FAILED(currentTarget->get_IsVisible(&toggle));
+
+            ComPtr<IInspectable> toggleElement;
+            RETURN_IF_FAILED(cardFrameworkElement->FindName(toggleId.Get(), &toggleElement));
+
+            if (toggleElement != nullptr)
+            {
+                ComPtr<IUIElement> toggleElementAsUIElement;
+                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsUIElement));
+
+                ComPtr<IFrameworkElement> toggleElementAsFrameworkElement;
+                RETURN_IF_FAILED(toggleElement.As(&toggleElementAsFrameworkElement));
+
+                ComPtr<IInspectable> tag;
+                RETURN_IF_FAILED(toggleElementAsFrameworkElement->get_Tag(&tag));
+
+                ComPtr<IElementTagContent> elementTagContent;
+                RETURN_IF_FAILED(tag.As(&elementTagContent));
+
+                Visibility visibilityToSet = Visibility_Visible;
+                if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleTrue)
+                {
+                    visibilityToSet = Visibility_Visible;
+                }
+                else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleFalse)
+                {
+                    visibilityToSet = Visibility_Collapsed;
+                }
+                else if (toggle == ABI::AdaptiveNamespace::IsVisible_IsVisibleToggle)
+                {
+                    boolean currentVisibility{};
+                    RETURN_IF_FAILED(elementTagContent->get_ExpectedVisibility(&currentVisibility));
+                    visibilityToSet = (currentVisibility) ? Visibility_Collapsed : Visibility_Visible;
+                }
+
+                RETURN_IF_FAILED(toggleElementAsUIElement->put_Visibility(visibilityToSet));
+                RETURN_IF_FAILED(elementTagContent->set_ExpectedVisibility(visibilityToSet == Visibility_Visible));
+
+                ComPtr<IPanel> parentPanel;
+                RETURN_IF_FAILED(elementTagContent->get_ParentPanel(&parentPanel));
+                parentPanels.insert(parentPanel.Get());
+
+                ComPtr<IAdaptiveCardElement> cardElement;
+                RETURN_IF_FAILED(elementTagContent->get_AdaptiveCardElement(&cardElement));
+
+                // If the element we're toggling is a column, we'll need to change the width on the column definition
+                ComPtr<IAdaptiveColumn> cardElementAsColumn;
+                if (SUCCEEDED(cardElement.As(&cardElementAsColumn)))
+                {
+                    ComPtr<IColumnDefinition> columnDefinition;
+                    RETURN_IF_FAILED(elementTagContent->get_ColumnDefinition(&columnDefinition));
+                    RETURN_IF_FAILED(XamlHelpers::HandleColumnWidth(cardElementAsColumn.Get(),
+                                                                    (visibilityToSet == Visibility_Visible),
+                                                                    columnDefinition.Get()));
+                }
+            }
+
+            hr = targetIterator->MoveNext(&hasCurrent);
+        }
+
+        for (auto parentPanel : parentPanels)
+        {
+            if (parentPanel)
+            {
+                XamlHelpers::SetSeparatorVisibility(parentPanel);
+            }
+        }
+
+        return S_OK;
+    }
+
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
         // get the inputElements in Json form.
         ComPtr<IAdaptiveInputs> gatheredInputs;
         RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
+
         ComPtr<IAdaptiveActionEventArgs> eventArgs;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
 
@@ -167,7 +264,9 @@ namespace AdaptiveNamespace
         switch (actionType)
         {
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_ToggleVisibility:
-            return XamlBuilder::HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
+        {
+            return HandleToggleVisibilityClick(m_frameworkElement.Get(), actionElement);
+        }
 
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_ShowCard:
         {
@@ -184,14 +283,35 @@ namespace AdaptiveNamespace
             {
                 return HandleInlineShowCardEvent(actionElement);
             }
-            // else fallthrough
+            else
+            {
+                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+            }
         }
-
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
+        {
+            ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
+            ComPtr<IAdaptiveSubmitAction> submitAction;
+            RETURN_IF_FAILED(localActionElement.As(&submitAction));
+
+            boolean inputsAreValid;
+            RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
+
+            if (!inputsAreValid)
+            {
+                return S_OK;
+            }
+            else
+            {
+                return m_actionEvents->InvokeAll(this, eventArgs.Get());
+            }
+        }
+        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_OpenUrl:
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Custom:
         default:
+        {
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
+        }
         }
     }
 
@@ -220,13 +340,15 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCard(_In_ IAdaptiveActionSet* actionSet,
                                                     _In_ IAdaptiveShowCardAction* showCardAction,
-                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement) try
+                                                    _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                                    ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    try
     {
         InternalId actionSetId;
         ComPtr<AdaptiveNamespace::AdaptiveActionSet> actionSetImpl = PeekInnards<AdaptiveNamespace::AdaptiveActionSet>(actionSet);
         actionSetId = actionSetImpl->GetInternalId();
 
-        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement));
+        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement, renderArgs));
 
         return S_OK;
     }
@@ -234,13 +356,15 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                                                     ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                                    ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement) try
+                                                    ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                                    ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    try
     {
         InternalId actionSetId;
         ComPtr<AdaptiveNamespace::AdaptiveCard> adaptiveCardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(adaptiveCard);
         actionSetId = adaptiveCardImpl->GetInternalId();
 
-        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement));
+        RETURN_IF_FAILED(AddInlineShowCardHelper(actionSetId, showCardAction, showCardFrameworkElement, renderArgs));
 
         return S_OK;
     }
@@ -248,7 +372,9 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::AddInlineShowCardHelper(AdaptiveCards::InternalId& actionSetId,
                                                           ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                                          ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement) try
+                                                          ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                                          ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    try
     {
         ComPtr<AdaptiveNamespace::AdaptiveShowCardAction> showCardImpl =
             PeekInnards<AdaptiveNamespace::AdaptiveShowCardAction>(showCardAction);
@@ -256,12 +382,61 @@ namespace AdaptiveNamespace
 
         m_showCards.emplace(std::make_pair(showCardActionId, std::make_pair(actionSetId, showCardFrameworkElement)));
 
+        // We also add the parent card relationship here
+        ComPtr<IAdaptiveShowCardAction> localShowCardAction(showCardAction);
+        ComPtr<IAdaptiveCard> card;
+        RETURN_IF_FAILED(localShowCardAction->get_Card(card.GetAddressOf()));
+
+        RETURN_IF_FAILED(LinkCardToParent(card.Get(), renderArgs));
+
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ IAdaptiveInputValue* inputItem)
+    HRESULT RenderedAdaptiveCard::AddInputValue(_In_ IAdaptiveInputValue* inputItem, _In_ IAdaptiveRenderArgs* renderArgs)
     {
-        return m_inputs->AddInputValue(inputItem);
+        return m_inputs->AddInputValue(inputItem, renderArgs);
     }
+
+    HRESULT RenderedAdaptiveCard::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    {
+        return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
+    }
+
+    InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)
+    {
+        ComPtr<AdaptiveCard> cardImpl = PeekInnards<AdaptiveNamespace::AdaptiveCard>(card);
+        return cardImpl->GetInternalId();
+    }
+
+    HRESULT RenderedAdaptiveCard::LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
+                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    {
+        // We get the card internal id from the showcard action
+        InternalId cardId = GetInternalIdFromCard(card);
+
+        // Then we get the parent card internal id from the renderArgs
+        ComPtr<IAdaptiveRenderArgs> localRenderArgs(renderArgs);
+        InternalId parentCardId = InternalId();
+        if (renderArgs)
+        {
+            ComPtr<IAdaptiveCard> parentCard;
+            RETURN_IF_FAILED(localRenderArgs->get_ParentCard(parentCard.GetAddressOf()));
+
+            if (parentCard)
+            {
+                parentCardId = GetInternalIdFromCard(parentCard.Get());
+            }
+        }
+
+        return m_inputs->LinkCardToParent(cardId, parentCardId);
+    }
+
+    HRESULT RenderedAdaptiveCard::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                                                _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    {
+        return m_inputs->GetInputValue(inputElement, inputValue);
+    }
+
 }

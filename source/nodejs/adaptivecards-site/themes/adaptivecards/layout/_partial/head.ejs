@@ -1,90 +1,64 @@
-<!DOCTYPE html>
-<html>
 <head>
-  <meta charset="utf-8">
-  <%
-	var title = page.title;
+	<meta charset="utf-8">
+	<%
+		var title = page.title;
 
-	if (is_archive()){
-		title = __("archive_a");
+		if (is_archive()){
+			title = __("archive_a");
 
-		if (is_month()){
-		title += ": " + page.year + "/" + page.month;
-		} else if (is_year()){
-		title += ": " + page.year;
+			if (is_month()){
+			title += ": " + page.year + "/" + page.month;
+			} else if (is_year()){
+			title += ": " + page.year;
+			}
+		} else if (is_category()){
+			title = __("category") + ": " + page.category;
+		} else if (is_tag()){
+			title = __("tag") + ": " + page.tag;
 		}
-	} else if (is_category()){
-		title = __("category") + ": " + page.category;
-	} else if (is_tag()){
-		title = __("tag") + ": " + page.tag;
-	}
 	%>
 	<title><% if (title){ %><%= title %> | <% } %><%= config.title %></title>
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-	<%- open_graph({twitter_id: theme.twitter, google_plus: theme.google_plus, fb_admins: theme.fb_admins, fb_app_id: theme.fb_app_id}) %>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="alternate" href="<%- url_for(config.feed.path) %>" title="<%= config.title %>" type="application/atom+xml">
+	<link rel="icon" href="<%- url_for('content/favicon.ico') %>">
 
-	<% if (theme.rss){ %>
-		<link rel="alternate" href="<%- theme.rss %>" title="<%= config.title %>" type="application/atom+xml">
+	<% if(is_post()) { %>
+		<meta name="twitter:card" content="summary_large_image">
+		<meta name="twitter:title" content="Adaptive Cards | <%- page.title %>">
+		<meta name="twitter:description" content="<%- page.subtitle %>">
+		<meta name="twitter:creator" content="<%- locals['page.author.twitter'] ? '@' + page.author.twitter : '""' %>">
+		<meta name="twitter:image" content="<%- url_for(page.featured_image) %>">
+		<meta name="twitter:domain" content="adaptivecards.io">
 	<% } %>
-
-	<% if (theme.favicon){ %>
-		<link rel="icon" href="<%- theme.favicon %>">
-	<% } %>
-
-	<link rel="stylesheet" href="https://statics-uhf-eas.akamaized.net/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/ec-f8ec33/b7-01890e/67-f66a05/bb-33df2f/d6-3f8236/1c-14fb9c/8e-0f0147/17-1042c1?ver=2.0" type="text/css" media="all" /><link rel="stylesheet" href="https://statics-uhf-eus.akamaized.net/statics/override.css?c=4" type="text/css" />
 
 	<% if(is_current("visualizer")) { %>
-		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<%- css("visualizer/css/visualizer.css") %>
-	<% } else if(is_current("designer")) { %>
-		<style type="text/css">
-			.content {
-				height: calc(100vh - 97px) !important;
-			}
+		<%- hashed_asset("css/w3.css") %>
+		<%- hashed_asset("visualizer/css/visualizer.css") %>
+	<% } else if(!is_current("designer")) { %>
+		<%- hashed_asset("node_modules/@fortawesome/fontawesome-free/css/all.min.css") %>
+		<%- hashed_asset("node_modules/highlightjs/styles/default.css") %>
 
-			* {
-				box-sizing: border-box;
-			}
-
-			body {
-				font-family: 'Segoe UI', sans-serif;
-				font-size: 14px;
-				font-weight: normal;
-			}
-		</style>
-	<% } else { %>
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-		<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">	  
-
-		<%- css("css/extracted.css") %>
-		<%- css("visualizer/css/outlook.css") %>
-		<%- css("css/style.css") %>
+		<%- hashed_asset("css/w3.css") %>
+		<%- hashed_asset("css/extracted.css") %> 
+		<%- hashed_asset("visualizer/css/outlook.css") %>
+		<%- hashed_asset("css/style.css") %>
 	<% } %>
 
 
-	<script type="text/javascript">  var appInsights=window.appInsights||function(a){    function b(a){c[a]=function(){var b=arguments;c.queue.push(function(){c[a].apply(c,b)})}}var c={config:a},d=document,e=window;setTimeout(function(){var b=d.createElement("script");b.src=a.url||"https://az416426.vo.msecnd.net/scripts/a/ai.0.js",d.getElementsByTagName("script")[0].parentNode.appendChild(b)});try{c.cookie=d.cookie}catch(a){}c.queue=[];for(var f=["Event","Exception","Metric","PageView","Trace","Dependency"];f.length;)b("track"+f.pop());if(b("setAuthenticatedUserContext"),b("clearAuthenticatedUserContext"),b("startTrackEvent"),b("stopTrackEvent"),b("startTrackPage"),b("stopTrackPage"),b("flush"),!a.disableExceptionTracking){f="onerror",b("_"+f);var g=e[f];e[f]=function(a,b,d,e,h){var i=g&&g(a,b,d,e,h);return!0!==i&&c["_"+f](a,b,d,e,h),i}}return c    }({        instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"    });      window.appInsights=appInsights,appInsights.queue&&0===appInsights.queue.length&&appInsights.trackPageView();</script>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
+	<%- hashed_asset("node_modules/jquery/dist/jquery.min.js") %>
 
 
 	<% /* from UHF MSDocsHeader-AdaptiveCards */ %>
-	<script src="https://statics-uhf-eas.akamaized.net/shell/_scrf/js/themes=default/54-af9f9f/c0-247156/de-099401/e1-a50eee/e7-954872/d8-97d509/f0-251fe2/46-be1318/77-04a268/7f-652c90/63-077520/a4-34de62/2f-2c5417/db-bc0148/bc-5b77d5/78-4c7d22/df-e4d70f/e4-8302f6/cd-23d3b0/6d-1e7ed0/b7-cadaa7/ca-40b7b0/c3-6454d7/f9-7592d3/db-2792b1/f9-fa0ea3/7e-cda2d3/32-6dafa3/b0-8ba565/e0-3c9860/91-97a04f/1f-100dea/33-abe4df/85-2572bb/8f-d24839?ver=2.0&amp;iife=1" defer=""></script>
+	<link rel="stylesheet" href="https://www.microsoft.com/onerfstatics/marketingsites-wcus-prod/west-european/shell/_scrf/css/themes=default.device=uplevel_web_pc/59-469920/ad-9005a4/bd-292223/26-13ca9e/b7-1464e7/8e-a868c0/58-faa810/34-4fda9f?ver=2.0" type="text/css" media="all" />
+	<link rel='stylesheet' href='https://statics-marketingsites-wcus-ms-com.akamaized.net/statics/override.css?c=7' type='text/css' />
+	<script src="https://www.microsoft.com/onerfstatics/marketingsites-wcus-prod/shell/_scrf/js/themes=default/54-af9f9f/c0-247156/de-099401/e1-a50eee/e7-954872/d8-97d509/f0-251fe2/46-be1318/77-04a268/11-240c7b/63-077520/a4-34de62/1b-c96630/db-bc0148/dc-7e9864/78-4c7d22/39-97e6ff/16-4c1a9d/cd-23d3b0/6d-1e7ed0/b7-cadaa7/ca-40b7b0/4e-ee3a55/3e-f5c39b/c3-6454d7/f9-7592d3/92-10345d/79-499886/7e-cda2d3/62-95a6e7/93-283c2d/e0-3c9860/91-97a04f/1f-100dea/33-abe4df/f2-fae105?ver=2.0&iife=1"></script>
 
-	<% /* Load scripts based on the URL */ %>
-	<% if(is_current("visualizer")) { %>
-		<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>  
-		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- js("visualizer/monaco-loader.js") %>
-		<%- js("visualizer/adaptivecards-visualizer.min.js") %>
-	<% } else if(is_current("designer")) { %>
-		<%- js('node_modules/monaco-editor/min/vs/loader.js') %>  
-		<%- js("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
-	<% } else { %>
-		<%- js('node_modules/adaptivecards/dist/adaptivecards.min.js') %>	
-		<%- js('js/script.js') %>
-	<% } %> 
-
+	<script type="text/javascript">
+		var sdkInstance="appInsightsSDK";window[sdkInstance]="appInsights";var aiName=window[sdkInstance],aisdk=window[aiName]||function(e){function n(e){t[e]=function(){var n=arguments;t.queue.push(function(){t[e].apply(t,n)})}}var t={config:e};t.initialize=!0;var i=document,a=window;setTimeout(function(){var n=i.createElement("script");n.src=e.url||"https://az416426.vo.msecnd.net/scripts/b/ai.2.min.js",i.getElementsByTagName("script")[0].parentNode.appendChild(n)});try{t.cookie=i.cookie}catch(e){}t.queue=[],t.version=2;for(var r=["Event","PageView","Exception","Trace","DependencyData","Metric","PageViewPerformance"];r.length;)n("track"+r.pop());n("startTrackPage"),n("stopTrackPage");var s="Track"+r[0];if(n("start"+s),n("stop"+s),n("setAuthenticatedUserContext"),n("clearAuthenticatedUserContext"),n("flush"),!(!0===e.disableExceptionTracking||e.extensionConfig&&e.extensionConfig.ApplicationInsightsAnalytics&&!0===e.extensionConfig.ApplicationInsightsAnalytics.disableExceptionTracking)){n("_"+(r="onerror"));var o=a[r];a[r]=function(e,n,i,a,s){var c=o&&o(e,n,i,a,s);return!0!==c&&t["_"+r]({message:e,url:n,lineNumber:i,columnNumber:a,error:s}),c},e.autoExceptionInstrumented=!0}return t}(
+		{
+		  instrumentationKey:"bd0c4f36-dd0f-4984-8f32-32cb44d6055a"
+		}
+		);window[aiName]=aisdk,aisdk.queue&&0===aisdk.queue.length&&aisdk.trackPageView({});
+	</script>
 </head>

@@ -6,15 +6,17 @@
 //
 
 #import "ACRInputToggleRenderer.h"
-#import "ACRInputTableView.h"
-#import "ACRContentHoldingUIView.h"
-#import "ACRSeparator.h"
-#import "ToggleInput.h"
-#import "ACRColumnSetView.h"
-#import "ACOHostConfigPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRColumnSetView.h"
+#import "ACRContentHoldingUIView.h"
+#import "ACRInputLabelViewPrivate.h"
+#import "ACRInputTableView.h"
+#import "ACRSeparator.h"
 #import "ACRToggleInputDataSource.h"
-#import "Util.h"
+#import "ACRToggleInputView.h"
+#import "ToggleInput.h"
+#import "UtiliOS.h"
 
 @implementation ACRInputToggleRenderer
 
@@ -30,31 +32,44 @@
 }
 
 - (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
-          rootView:(ACRView *)rootView
-            inputs:(NSMutableArray *)inputs
-   baseCardElement:(ACOBaseCardElement *)acoElem
-        hostConfig:(ACOHostConfig *)acoConfig;
+           rootView:(ACRView *)rootView
+             inputs:(NSMutableArray *)inputs
+    baseCardElement:(ACOBaseCardElement *)acoElem
+         hostConfig:(ACOHostConfig *)acoConfig;
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<ToggleInput> toggleBlck = std::dynamic_pointer_cast<ToggleInput>(elem);
+    std::shared_ptr<ToggleInput> adaptiveToggleInput = std::dynamic_pointer_cast<ToggleInput>(elem);
 
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
-    if(!bundle){ // https://github.com/Microsoft/AdaptiveCards/issues/1834
+    if (!bundle) { // https://github.com/Microsoft/AdaptiveCards/issues/1834
         return nil;
     }
-    ACRInputTableView *inputTableView = [bundle loadNibNamed:@"ACRInputTableView" owner:self options:nil][0];
-    inputTableView.frame = CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height);
-    [inputTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:toggleBlck WithHostConfig:config];
-    inputTableView.delegate = dataSource;
-    inputTableView.dataSource = dataSource;
 
-    [inputs addObject:dataSource];
+    ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, viewGroup.frame.size.height)];
 
-    if(elem->GetHeight() == HeightType::Stretch){
+    toggleView.title.text = [NSString stringWithCString:adaptiveToggleInput->GetTitle().c_str() encoding:NSUTF8StringEncoding];
+    toggleView.title.textColor = getForegroundUIColorFromAdaptiveAttribute(config, viewGroup.style);
+    toggleView.title.adjustsFontSizeToFitWidth = NO;
+    if (!adaptiveToggleInput->GetWrap()) {
+        toggleView.title.numberOfLines = 1;
+        toggleView.title.lineBreakMode = NSLineBreakByTruncatingTail;
+    }
+
+    if (adaptiveToggleInput->GetValue() != adaptiveToggleInput->GetValueOn()) {
+        toggleView.toggle.on = NO;
+    }
+
+    ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
+    dataSource.toggleSwitch = toggleView.toggle;
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView viewGroup:viewGroup dataSource:dataSource];
+
+    [inputs addObject:inputLabelView];
+
+    if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
-        [textInputContainer addArrangedSubview:inputTableView];
+        [textInputContainer addArrangedSubview:inputLabelView];
         // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
         UIView *blankTrailingSpace = [[UIView alloc] init];
         [textInputContainer addArrangedSubview:blankTrailingSpace];
@@ -62,12 +77,12 @@
 
         [viewGroup addArrangedSubview:textInputContainer];
     } else {
-        [viewGroup addArrangedSubview:inputTableView];
+        [viewGroup addArrangedSubview:inputLabelView];
     }
 
-    configVisibility(inputTableView, elem);
+    configVisibility(inputLabelView, elem);
 
-    return inputTableView;
+    return inputLabelView;
 }
 
 @end

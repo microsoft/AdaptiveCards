@@ -84,6 +84,11 @@ namespace AdaptiveSharedNamespace
         static ColorConfig Deserialize(const Json::Value& json, const ColorConfig& defaultValue);
     };
 
+    // TODO: microsoft/AdaptiveCards#3460 each ColorConfig below needs a HighlightColorConfig initializer
+#ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
     struct ColorsConfig
     {
         ColorConfig defaultColor = {"#FF000000", "#B2000000"};
@@ -96,6 +101,9 @@ namespace AdaptiveSharedNamespace
 
         static ColorsConfig Deserialize(const Json::Value& json, const ColorsConfig& defaultValue);
     };
+#ifdef __clang__
+    #pragma clang diagnostic pop
+#endif
 
     struct TextConfig
     {
@@ -289,6 +297,43 @@ namespace AdaptiveSharedNamespace
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
 
+    struct InputLabelConfig
+    {
+        ForegroundColor color = ForegroundColor::Default;
+        bool isSubtle = false; 
+        TextSize size = TextSize::Default;
+        std::string suffix = std::string();
+        TextWeight weight = TextWeight::Default;
+
+        static InputLabelConfig Deserialize(const Json::Value& json, const InputLabelConfig& defaultValue);
+    };
+
+    struct LabelConfig
+    {
+        Spacing inputSpacing = Spacing::Default;
+        InputLabelConfig requiredInputs;
+        InputLabelConfig optionalInputs;
+
+        static LabelConfig Deserialize(const Json::Value& json, const LabelConfig& defaultValue);
+    };
+
+    struct ErrorMessageConfig
+    {
+        TextSize size = TextSize::Default;
+        Spacing spacing = Spacing::Default;
+        TextWeight weight = TextWeight::Default;
+
+        static ErrorMessageConfig Deserialize(const Json::Value& json, const ErrorMessageConfig& defaultValue);
+    };
+
+    struct InputsConfig
+    {
+        LabelConfig label;
+        ErrorMessageConfig errorMessage;
+
+        static InputsConfig Deserialize(const Json::Value& json, const InputsConfig& defaultValue);
+    };
+
     struct MediaConfig
     {
         std::string defaultPoster;
@@ -364,6 +409,9 @@ namespace AdaptiveSharedNamespace
         MediaConfig GetMedia() const;
         void SetMedia(const MediaConfig value);
 
+        InputsConfig GetInputs() const;
+        void SetInputs(const InputsConfig value);
+
     private:
         const ContainerStyleDefinition& GetContainerStyle(ContainerStyle style) const;
         const ColorConfig& GetContainerColorConfig(const ColorsConfig& colors, ForegroundColor color) const;
@@ -384,5 +432,6 @@ namespace AdaptiveSharedNamespace
         ActionsConfig _actions;
         ContainerStylesDefinition _containerStyles;
         MediaConfig _media;
+        InputsConfig _inputs;
     };
 }

@@ -26,6 +26,12 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept override;
+
+        static HRESULT BuildShowCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* showCard,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                     bool isBottomActionBar,
+                                     _Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiShowCard) noexcept;
     };
 
     ActivatableClass(AdaptiveShowCardActionRenderer);

@@ -9,7 +9,7 @@
     },
     "backgroundImage": {
       "type": "BackgroundImage",
-      "description": "Specifies the background image.",
+      "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
       "version": "1.2",
       "shorthands": [
         {

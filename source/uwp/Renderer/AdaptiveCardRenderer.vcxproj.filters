@@ -111,6 +111,14 @@
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
+    <ClCompile Include="lib\AdaptiveRequirement.cpp" />
+    <ClCompile Include="lib\ActionHelpers.cpp" />
+    <ClCompile Include="lib\XamlHelpers.cpp" />
+    <ClCompile Include="lib\LinkButton.cpp" />
+    <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
+    <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -229,8 +237,18 @@
     <ClInclude Include="lib\ElementTagContent.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
+    <ClInclude Include="lib\AdaptiveRequirement.h" />
+    <ClInclude Include="lib\ActionHelpers.h" />
+    <ClInclude Include="lib\LinkButton.h" />
+    <ClInclude Include="lib\AdaptiveInputLabelConfig.h" />
+    <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
+    <ClInclude Include="lib\AdaptiveInputsConfig.h" />
+    <ClInclude Include="lib\AdaptiveLabelConfig.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

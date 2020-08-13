@@ -5,15 +5,18 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRIContentHoldingView.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRContentStackView:UIView<ACRIContentHoldingView>
+@interface ACRContentStackView : UIView <ACRIContentHoldingView>
 
-@property (nonnull) UIStackView* stackView;
 @property (weak, nullable) UIView *backgroundView;
-@property (nonnull) NSArray<NSLayoutConstraint *>* widthconstraint;
-@property (nonnull) NSArray<NSLayoutConstraint *>* heightconstraint;
+@property (nonnull) NSArray<NSLayoutConstraint *> *widthconstraint;
+@property (nonnull) NSArray<NSLayoutConstraint *> *heightconstraint;
+@property CGSize combinedContentSize;
+@property UILayoutConstraintAxis axis;
+@property UIStackViewDistribution distribution;
+@property UIStackViewAlignment alignment;
 
 @property BOOL isActionSet;
 
@@ -32,10 +35,26 @@
 - (void)applyPadding:(unsigned int)padding priority:(unsigned int)priority;
 
 - (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
-     bottom:(CGFloat)bottom right:(CGFloat)right
-     priority:(unsigned int)priority location:(ACRBleedDirection)location;
+                   bottom:(CGFloat)bottom
+                    right:(CGFloat)right
+                 priority:(unsigned int)priority
+                 location:(ACRBleedDirection)location;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *)target direction:(ACRBleedDirection)direction parentView:(UIView *)parent;
+- (UIView *_Nullable)getLastArrangedSubview;
 
-- (void)removeViewFromContentStackView:(UIView *)view;
+// return the largest width from the given subviews Excluding the view
+- (CGFloat)getMaxWidthOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
+
+// return the largest height from the given subviews Excluding the view
+- (CGFloat)getMaxHeightOfSubviewsAfterExcluding:(UIView *_Nonnull)view;
+
+- (void)increaseIntrinsicContentSize:(UIView *_Nonnull)view;
+
+- (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
+
+- (void)hideIfSubviewsAreAllHidden;
+
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nonnull)parent;
+
+- (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
 @end

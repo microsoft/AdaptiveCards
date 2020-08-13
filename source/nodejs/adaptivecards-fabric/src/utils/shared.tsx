@@ -4,7 +4,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import * as AC from "adaptivecards";
-import { Button, IconButton, IconType, PrimaryButton, IStyle } from "office-ui-fabric-react";
+import { Button, IconButton, IconType, PrimaryButton, IStyle } from "@fluentui/react";
 
 export const getDiv = (): HTMLDivElement => document.createElement("div");
 

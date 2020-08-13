@@ -18,7 +18,7 @@ namespace AdaptiveNamespace
         AdaptiveRuntime(AdaptiveCardRenderer);
 
     public:
-        HRESULT RuntimeClassInitialize();
+        HRESULT RuntimeClassInitialize() noexcept;
 
         // IAdaptiveCardRenderer
         IFACEMETHODIMP put_OverrideStyles(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* overrideDictionary);
@@ -62,6 +62,13 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_ResourceResolvers(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardResourceResolvers** value);
 
     private:
+        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
+                                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
+        void InitializeDefaultResourceDictionary();
+        void UpdateActionSentimentResourceDictionary();
+        HRESULT TryInsertResourceToSentimentResourceDictionary(const std::wstring& resourceName, _In_ IInspectable* value);
+        HRESULT SetMergedDictionary();
+
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_overrideDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_defaultResourceDictionary;
         Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> m_mergedResourceDictionary;
@@ -76,12 +83,6 @@ namespace AdaptiveNamespace
         bool m_explicitDimensions = false;
         UINT32 m_desiredWidth = 0;
         UINT32 m_desiredHeight = 0;
-
-        HRESULT CreateAdaptiveCardFromJsonString(_In_ HSTRING adaptiveJson,
-                                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardParseResult** adaptiveCard);
-        void InitializeDefaultResourceDictionary();
-        void UpdateActionSentimentResourceDictionary();
-        HRESULT SetMergedDictionary();
     };
 
     ActivatableClass(AdaptiveCardRenderer);

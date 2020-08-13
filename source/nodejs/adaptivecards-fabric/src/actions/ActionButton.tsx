@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import * as React from "react";
-import { PrimaryButton, CompoundButton } from "office-ui-fabric-react";
+import { PrimaryButton, CompoundButton } from "@fluentui/react";
 import * as AC from "adaptivecards";
 
 export interface ActionButtonProps {

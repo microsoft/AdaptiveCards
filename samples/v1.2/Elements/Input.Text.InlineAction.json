@@ -12,7 +12,7 @@
 			"id": "input1",
 			"inlineAction": {
 				"type": "Action.Submit",
-				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
 				"title": "Reply"
 			}
 		},
@@ -27,7 +27,7 @@
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",
-				"url": "http://adaptivecards.io"
+				"url": "https://adaptivecards.io"
 			}
 		},
 		{
@@ -40,7 +40,7 @@
 			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.Submit",
-				"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
 				"title": "Reply"
 			}
 		},
@@ -51,7 +51,7 @@
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",
-				"url": "http://adaptivecards.io"
+				"url": "https://adaptivecards.io"
 			}
 		}
 	]

@@ -12,11 +12,11 @@ namespace AdaptiveCards.Rendering.Wpf
             FrameworkElement frameworkElement,
             AdaptiveCard originatingCard,
             IList<AdaptiveWarning> warnings,
-            IDictionary<string, Func<string>> inputBindings)
+            ref IDictionary<string, Func<string>> inputBindings)
             : base(originatingCard, warnings)
         {
             FrameworkElement = frameworkElement;
-            UserInputs = new RenderedAdaptiveCardInputs(inputBindings);
+            UserInputs = new RenderedAdaptiveCardInputs(ref inputBindings);
         }
 
         /// <summary>
