@@ -51,14 +51,6 @@
 									"size": "ExtraLarge",
 									"text": "${purpose}",
 									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"spacing": "Small",
-									"size": "Small",
-									"weight": "Bolder",
-									"color": "Accent",
-									"text": "[${code}](https://adaptivecards.io)"
 								}
 							],
 							"width": "stretch"
@@ -80,6 +72,14 @@
 							"width": "auto"
 						}
 					]
+				},
+				{
+					"type": "TextBlock",
+					"spacing": "Small",
+					"size": "Small",
+					"weight": "Bolder",
+					"color": "Accent",
+					"text": "[${code}](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
@@ -164,155 +164,155 @@
 			"$data": "${expenses}",
 			"type" : "Container",
 			"items": [
-			{
-				"type": "ColumnSet",
-				"columns": [
-					{
-						"type": "Column",
-						"items": [
-							{
-								"type": "TextBlock",
-								"text": "${formatDateTime(created_time, 'MM-dd')}",
-								"wrap": true
-							}
-						],
-						"width": "auto"
-					},
-					{
-						"type": "Column",
-						"spacing": "Medium",
-						"items": [
-							{
-								"type": "TextBlock",
-								"text": "${description}",
-								"wrap": true
-							}
-						],
-						"width": "stretch"
-					},
-					{
-						"type": "Column",
-						"items": [
-							{
-								"type": "TextBlock",
-								"text": "$${formatNumber(total, 2)}",
-								"wrap": true
-							}
-						],
-						"width": "auto"
-					},
-					{
-						"type": "Column",
-						"id": "chevronDown${$index}",
-						"spacing": "Small",
-						"verticalContentAlignment": "Center",
-						"items": [
-							{
-								"type": "Image",
-								"selectAction": {
-									"type": "Action.ToggleVisibility",
-									"title": "collapse",
-									"targetElements": [
-										"cardContent${$index}",
-										"chevronUp${$index}",
-										"chevronDown${$index}"
-									]
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "${formatDateTime(created_time, 'MM-dd')}",
+									"wrap": true
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"spacing": "Medium",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "${description}",
+									"wrap": true
+								}
+							],
+							"width": "stretch"
+						},
+						{
+							"type": "Column",
+							"items": [
+								{
+									"type": "TextBlock",
+									"text": "$${formatNumber(total, 2)}",
+									"wrap": true
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"id": "chevronDown${$index}",
+							"spacing": "Small",
+							"verticalContentAlignment": "Center",
+							"items": [
+								{
+									"type": "Image",
+									"selectAction": {
+										"type": "Action.ToggleVisibility",
+										"title": "collapse",
+										"targetElements": [
+											"cardContent${$index}",
+											"chevronUp${$index}",
+											"chevronDown${$index}"
+										]
+									},
+									"url": "https://adaptivecards.io/content/down.png",
+									"width": "20px",
+									"altText": "collapsed"
+								}
+							],
+							"width": "auto"
+						},
+						{
+							"type": "Column",
+							"id": "chevronUp${$index}",
+							"isVisible": false,
+							"spacing": "Small",
+							"verticalContentAlignment": "Center",
+							"items": [
+								{
+									"type": "Image",
+									"selectAction": {
+										"type": "Action.ToggleVisibility",
+										"title": "expand",
+										"targetElements": [
+											"cardContent${$index}",
+											"chevronUp${$index}",
+											"chevronDown${$index}"
+										]
+									},
+									"url": "https://adaptivecards.io/content/up.png",
+									"width": "20px",
+									"altText": "expanded"
+								}
+							],
+							"width": "auto"
+						}
+					]
+				},
+				{
+					"type": "Container",
+					"id": "cardContent${$index}",
+					"isVisible": false,
+					"items": [
+						{
+							"type": "Container",
+							"items": [
+								{
+									"$data": "${custom_fields}",
+									"type": "TextBlock",
+									"text": "* ${value}",
+									"isSubtle": true,
+									"wrap": true
 								},
-								"url": "https://adaptivecards.io/content/down.png",
-								"width": "20px",
-								"altText": "collapsed"
-							}
-						],
-						"width": "auto"
-					},
-					{
-						"type": "Column",
-						"id": "chevronUp${$index}",
-						"isVisible": false,
-						"spacing": "Small",
-						"verticalContentAlignment": "Center",
-						"items": [
-							{
-								"type": "Image",
-								"selectAction": {
-									"type": "Action.ToggleVisibility",
-									"title": "expand",
-									"targetElements": [
-										"cardContent${$index}",
-										"chevronUp${$index}",
-										"chevronDown${$index}"
+								{
+									"type": "Container",
+									"items": [
+										{
+											"type": "Input.Text",
+											"id": "comment${$index}",
+											"placeholder": "Add your comment here."
+										}
 									]
-								},
-								"url": "https://adaptivecards.io/content/up.png",
-								"width": "20px",
-								"altText": "expanded"
-							}
-						],
-						"width": "auto"
-					}
-				]
-			},
-			{
-				"type": "Container",
-				"id": "cardContent${$index}",
-				"isVisible": false,
-				"items": [
-					{
-						"type": "Container",
-						"items": [
-							{
-								"$data": "${custom_fields}",
-								"type": "TextBlock",
-								"text": "* ${value}",
-								"isSubtle": true,
-								"wrap": true
-							},
-							{
-								"type": "Container",
-								"items": [
-									{
-										"type": "Input.Text",
-										"id": "comment${$index}",
-										"placeholder": "Add your comment here."
-									}
-								]
-							}
-						]
-					},
-					{
-						"type": "Container",
-						"items": [
-							{
-								"type": "ColumnSet",
-								"columns": [
-									{
-										"type": "Column",
-										"items": [
-											{
-												"type": "ActionSet",
-												"actions": [
-													{
-														"type": "Action.Submit",
-														"title": "Send",
-														"data": {
-															"id": "_qkQW8dJlUeLVi7ZMEzYVw",
-															"action": "comment",
-															"lineItem": 1
+								}
+							]
+						},
+						{
+							"type": "Container",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "ActionSet",
+													"actions": [
+														{
+															"type": "Action.Submit",
+															"title": "Send",
+															"data": {
+																"id": "_qkQW8dJlUeLVi7ZMEzYVw",
+																"action": "comment",
+																"lineItem": 1
+															}
 														}
-													}
-												]
-											}
-										],
-										"width": "auto"
-									}
-								]
-							}
-						]
-					}
-				]
-			}
+													]
+												}
+											],
+											"width": "auto"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
 			]
-		},		
+		},
 		{
 			"type": "ColumnSet",
 			"spacing": "Large",
