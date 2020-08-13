@@ -65,6 +65,32 @@ public final class Util {
         }
     }
 
+    public static BaseCardElement tryCastToBaseCardElement(BaseElement baseElement)
+    {
+        try
+        {
+            return castToBaseCardElement(baseElement);
+        }
+        catch (ClassCastException ex)
+        {
+            return null;
+        }
+    }
+
+    public static BaseCardElement castToBaseCardElement(BaseElement baseElement)
+    {
+        BaseCardElement baseCardElement;
+        if (baseElement instanceof BaseCardElement)
+        {
+            baseCardElement = (BaseCardElement) baseElement;
+        }
+        else if ((baseCardElement = BaseCardElement.dynamic_cast(baseElement)) == null)
+        {
+            throw new ClassCastException("Unable to convert BaseElement to BaseCardElement object model.");
+        }
+        return baseCardElement;
+    }
+
     /**
      * Checks if the provided cardElement is of the specified type
      *
@@ -134,6 +160,32 @@ public final class Util {
         {
             throw new ClassCastException("Unable to find dynamic_cast method in " + cardElementType.getName() + ".");
         }
+    }
+
+    public static BaseActionElement tryCastToBaseActionElement(BaseElement baseElement)
+    {
+        try
+        {
+            return castToBaseActionElement(baseElement);
+        }
+        catch (ClassCastException ex)
+        {
+            return null;
+        }
+    }
+
+    public static BaseActionElement castToBaseActionElement(BaseElement baseElement)
+    {
+        BaseActionElement baseActionElement;
+        if (baseElement instanceof BaseActionElement)
+        {
+            baseActionElement = (BaseActionElement) baseElement;
+        }
+        else if ((baseActionElement = BaseActionElement.dynamic_cast(baseElement)) == null)
+        {
+            throw new ClassCastException("Unable to convert BaseElement to BaseCardElement object model.");
+        }
+        return baseActionElement;
     }
 
     /**

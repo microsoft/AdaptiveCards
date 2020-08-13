@@ -297,8 +297,8 @@ public class BaseCardElementPropertiesTest
                 Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
                 Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customElement.GetFallbackContent().GetElementTypeString(), "Image");
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
                 return customElement;
             }
@@ -316,8 +316,8 @@ public class BaseCardElementPropertiesTest
                 Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
                 Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customElement.GetFallbackContent().GetElementTypeString(), "Image");
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
                 return customElement;
             }
@@ -349,8 +349,8 @@ public class BaseCardElementPropertiesTest
         Assert.assertEquals(cardElement.GetSpacing(), Spacing.Medium);
         Assert.assertEquals(cardElement.GetFallbackType(), FallbackType.Content);
 
-        // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-        Assert.assertEquals(cardElement.GetFallbackContent().GetElementTypeString(), "Image");
+        BaseCardElement fallbackContent = Util.castToBaseCardElement(cardElement.GetFallbackContent());
+        Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
         // Verify that the DeserializeFromString method works
         customElementParser.DeserializeFromString(parseContext, customElementJson);
@@ -385,8 +385,8 @@ public class BaseCardElementPropertiesTest
                 Assert.assertEquals(customElement.GetIsRequired(), true);
                 Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customElement.GetFallbackContent().GetElementTypeString(), "Image");
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
                 return customElement;
             }
@@ -407,8 +407,8 @@ public class BaseCardElementPropertiesTest
                 Assert.assertEquals(customElement.GetIsRequired(), true);
                 Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customElement.GetFallbackContent().GetElementTypeString(), "Image");
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
                 return customElement;
             }
@@ -446,8 +446,8 @@ public class BaseCardElementPropertiesTest
         Assert.assertEquals(cardElement.GetIsRequired(), true);
         Assert.assertEquals(cardElement.GetFallbackType(), FallbackType.Content);
 
-        // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-        Assert.assertEquals(cardElement.GetFallbackContent().GetElementTypeString(), "Image");
+        BaseCardElement fallbackContent = Util.castToBaseCardElement(cardElement.GetFallbackContent());
+        Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
 
         // Verify that the DeserializeFromString method works
         customElementParser.DeserializeFromString(parseContext, customElementJson);

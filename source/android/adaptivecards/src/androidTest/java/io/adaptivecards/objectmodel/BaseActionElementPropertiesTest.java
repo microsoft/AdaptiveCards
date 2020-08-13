@@ -254,8 +254,8 @@ public class BaseActionElementPropertiesTest
                 Assert.assertEquals(title, "Sample Title");
                 Assert.assertEquals(customAction.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customAction.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+                BaseActionElement fallbackAction = Util.castToBaseActionElement(customAction.GetFallbackContent());
+                Assert.assertEquals(fallbackAction.GetElementType(), ActionType.Submit);
 
                 return customAction;
             }
@@ -272,8 +272,8 @@ public class BaseActionElementPropertiesTest
                 Assert.assertEquals(customAction.GetTitle(), "Sample Title");
                 Assert.assertEquals(customAction.GetFallbackType(), FallbackType.Content);
 
-                // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-                Assert.assertEquals(customAction.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+                BaseActionElement fallbackAction = Util.castToBaseActionElement(customAction.GetFallbackContent());
+                Assert.assertEquals(fallbackAction.GetElementType(), ActionType.Submit);
 
                 return customAction;
             }
@@ -303,8 +303,8 @@ public class BaseActionElementPropertiesTest
         Assert.assertEquals(action.GetTitle(), "Sample Title");
         Assert.assertEquals(action.GetFallbackType(), FallbackType.Content);
 
-        // TODO: We need an util class method to cast from BaseElement to BaseCardElement
-        Assert.assertEquals(action.GetFallbackContent().GetElementTypeString(), "Action.Submit");
+        BaseActionElement fallbackAction = Util.castToBaseActionElement(action.GetFallbackContent());
+        Assert.assertEquals(fallbackAction.GetElementType(), ActionType.Submit);
 
         // Verify that the DeserializeFromString method works
         actionParser.DeserializeFromString(parseContext, customElementJson);
