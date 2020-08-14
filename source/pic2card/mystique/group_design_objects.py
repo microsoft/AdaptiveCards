@@ -1,5 +1,5 @@
 """Module for grouping deisgn objects into different containers"""
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple, Optional
 from operator import itemgetter
 
 
@@ -96,7 +96,7 @@ class ImageGrouping(GroupObjects):
                 and x_diff <= self.IMAGE_SET_X_RANGE)
 
     def group_image_objects(self, image_objects, body, objects, ymins=None,
-                            is_column=None) -> List[Dict]:
+                            is_column=None) -> [List, Optional[Tuple]]:
         """
         Groups the image objects into imagesets which are in
         closer ymin range.
@@ -108,11 +108,16 @@ class ImageGrouping(GroupObjects):
         @param objects: list of all design objects
         @param is_column: boolean value to check if an object is inside a
         columnset or not
+
+        @return: List of remaining image objects after the grouping if the
+                 grouping is done outside the columnset container
+                 else returned list of remaining image objects along
+                 with its coordinate values.
         """
         # group the image objects based on ymin
         groups = self.object_grouping(image_objects, self.imageset_condition)
         delete_positions = []
-        xmin = None
+        design_object_coords = []
         for group in groups:
             group = sorted(group, key=lambda i: i["xmin"])
             if len(group) > 1:
@@ -132,21 +137,24 @@ class ImageGrouping(GroupObjects):
                             "horizontal_alignment", "Left"))
                     self.card_arrange.append_objects(design_object,
                                                      image_set["images"])
-
                 # Assign the imageset's size and alignment property based on
                 # each image's alignment and size properties inside the imgaeset
                 image_set["imageSize"] = max(set(sizes), key=sizes.count)
                 image_set["horizontalAlignment"] = max(set(alignment),
                                                        key=alignment.count)
+                image_set["coords"] = str(group[0].get("coords"))
                 body.append(image_set)
                 if ymins:
                     ymins.append(design_object.get("ymin"))
                 if is_column:
-                    xmin = group[0].get("xmin")
+                    design_object_coords.append(group[0].get("xmin"))
+                    design_object_coords.append(group[0].get("ymin"))
+                    design_object_coords.append(group[0].get("xmax"))
+                    design_object_coords.append(group[0].get("ymax"))
         objects = [design_objects for ctr, design_objects in enumerate(objects)
                    if ctr not in delete_positions]
         if is_column:
-            return objects, xmin
+            return objects, design_object_coords
         else:
             return objects
 

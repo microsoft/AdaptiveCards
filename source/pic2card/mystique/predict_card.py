@@ -177,7 +177,7 @@ class PredictCard:
         }
 
         body, ymins = card_arrange.build_card_json(
-            objects=json_objects.get("objects", []))
+            objects=json_objects.get("objects", []), image=image)
         # Sort the elements vertically
         body = [x for _, x in sorted(zip(ymins, body),
                                      key=lambda x: x[0])]

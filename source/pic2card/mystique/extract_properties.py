@@ -4,12 +4,12 @@ import base64
 import math
 import operator
 from io import BytesIO
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 
 import cv2
 import numpy as np
 from PIL import Image
-from mystique import default_host_configs
+from mystique import config
 from pytesseract import pytesseract
 
 
@@ -273,6 +273,88 @@ class ExtractProperties:
                     color = "Default"
         return color
 
+    def get_column_width_keys(self, default_config: Dict, ratio: Tuple,
+                              column_set: Dict, column_number: int) -> None:
+        """
+        Extract the column width key from the default config which is minimum
+        in distance with the given point / ratio
+        @param default_config: the default host config dict for the column width
+        @param ratio: the point derived from the column coordinates
+        @param column_set: dict of columns
+        @param column_number: the position of the column
+        """
+        keys = list(default_config.keys())
+        distances = [np.sqrt(np.sum(((np.asarray(ratio) -
+                                      np.asarray(tuple(point))) ** 2)))
+                     for point in keys]
+        key = keys[distances.index(min(distances))]
+        column_set["columns"][column_number]["width"] = default_config[key]
+
+    def extract_column_width(self, column_set: Dict,
+                             column_coords: List[List], image: Image) -> None:
+        """
+        Extract column width property for the given columnset based on the
+        mid point distance between 2 design objects.
+        @param column_set: list of column design objects
+        @param column_coords: each column's coordinate values of a column set
+        @param image: input PIL image
+        """
+        column_xmin, column_ymin, column_xmax, column_ymax = column_coords
+        for ctr, column in enumerate(column_set["columns"]):
+            if ctr + 1 < len(column_set["columns"]):
+                mid_point1 = np.asarray(
+                        ((column_xmin[ctr] + column_xmax[ctr])/2,
+                         (column_ymin[ctr] + column_ymax[ctr])/2))
+                mid_point2 = np.asarray(
+                        ((column_xmin[ctr+1] + column_xmax[ctr+1]) / 2,
+                         (column_ymin[ctr+1] + column_ymax[ctr+1]) / 2))
+
+                a = np.asarray((column_xmin[ctr], column_ymin[ctr]))
+                b = np.asarray((column_xmax[ctr+1], column_ymax[ctr+1]))
+                end_distance = np.sqrt(np.sum(((a - b) ** 2)))
+                mid_distance = np.sqrt(np.sum(((mid_point1 - mid_point2) ** 2)))
+                mid_distance = (mid_distance / end_distance) * 100
+                ratio = (1, mid_distance)
+                self.get_column_width_keys(
+                        config.COLUMN_WIDTH_DISTANCE, ratio,
+                        column_set, ctr)
+            if ctr == len(column_set["columns"]) - 1:
+                w, h = image.size
+                last_diff = (abs(column_xmax[ctr] - w) / w) * 100
+                ratio = (1, last_diff)
+                self.get_column_width_keys(
+                        config.LAST_COLUMN_THRESHOLD, ratio,
+                        column_set, ctr)
+
+    def extract_image_size(self, cropped_image: Image,
+                           pil_image: Image) -> str:
+        """
+        Returns the image size value based on the width and height ratios
+        of the image objects to the actual design image.
+        @param cropped_image: image object
+        @param pil_image: input design image
+
+        @return: image width value
+        """
+        img_width, img_height = cropped_image.size
+        width, height = pil_image.size
+        width_ratio = (img_width / width) * 100
+        height_ratio = (img_height / height) * 100
+        # if the width and height ratio differs more the 25% return the size as
+        # Auto
+        if abs(width_ratio - height_ratio) > 20:
+            return "Auto"
+        else:
+            # select the image size based on the minimum distance with
+            # the default host config values for image size
+            keys = list(config.IMAGE_SIZE_RATIOS.keys())
+            ratio = (width_ratio, height_ratio)
+            distances = [np.sqrt(np.sum(((np.asarray(ratio) -
+                                          np.asarray(tuple(point))) ** 2)))
+                         for point in keys]
+            key = keys[distances.index(min(distances))]
+            return config.IMAGE_SIZE_RATIOS[key]
+
 
 class CollectProperties(ExtractProperties):
     """
@@ -295,17 +377,21 @@ class CollectProperties(ExtractProperties):
             alignment = max(alignment, key=alignment.count)
             column.update({"horizontalAlignment": alignment})
 
-    def columnset(self, columnset: Dict):
+    def columnset(self, columnset: Dict, column_coords: List[List],
+                  image: Image):
         """
         Updates the horizontal alignment property for the columnset,
         based on the horizontal alignment of each column inside the columnset.
 
         @param columnset: Columnset dict
+        @param image: input PIL image
+        @param column_coords: each column's coordinates values of a column set
         """
         alignment = list(map(operator.itemgetter('horizontalAlignment'),
                              columnset["columns"]))
         alignment = max(alignment, key=alignment.count)
         columnset.update({"horizontalAlignment": alignment})
+        self.extract_column_width(columnset, column_coords, image)
 
     def actionset(self, coords: Tuple) -> Dict:
         """
@@ -385,16 +471,7 @@ class CollectProperties(ExtractProperties):
                 buff.getvalue()).decode()
         data = f'data:image/png;base64,{base64_string}'
 
-        img_width, img_height = cropped.size
-        # set the closest size label for the image object's width and
-        # height
-        size = "Auto"
-        keys = list(default_host_configs.IMAGE_SIZE.keys())
-        width_key = min(keys, key=lambda x: abs(x - img_width))
-        height_key = min(keys, key=lambda x: abs(x - img_height))
-        if width_key == height_key:
-            size = default_host_configs.IMAGE_SIZE[width_key]
-        size = size
+        size = self.extract_image_size(cropped, self.pil_imgae)
         return {
                 "horizontal_alignment": self.get_alignment(
                         image=self.pil_imgae,
