@@ -966,7 +966,7 @@ export class CardDesigner extends Designer.DesignContext {
                     text: (trigger) => JSON.stringify(this.getCard(), null, 4)
                 })
                 .on("error", () => this._copyJSONButton.renderedElement.focus())
-                .on("success", () => this._copyJSONButton.renderedElement.focus())
+                .on("success", () => this._copyJSONButton.renderedElement.focus());
         }
 
         // Tool palette panel
