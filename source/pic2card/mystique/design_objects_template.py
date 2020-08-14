@@ -40,7 +40,9 @@ class ObjectTemplate:
                     "title": self.design_object.get("data"),
                     "style": self.design_object.get("style"),
             }],
-            "spacing": "Medium"
+            "spacing": "Medium",
+            "horizontalAlignment": self.design_object.get(
+                "horizontal_alignment", "")
         }
 
     def image(self) -> Dict:
@@ -65,6 +67,8 @@ class ObjectTemplate:
         return {
             "type": "Input.Toggle",
             "title": self.design_object.get("data", ""),
+            "horizontalAlignment": self.design_object.get(
+                "horizontal_alignment", "")
         }
 
     def richtextbox(self) -> Dict:
@@ -94,4 +98,6 @@ class ObjectTemplate:
         return {
             "title": self.design_object.get("data", ""),
             "value": "",
+            "horizontalAlignment": self.design_object.get(
+                "horizontal_alignment", "")
         }
