@@ -36,13 +36,10 @@ class PredictCard:
         """
         Returns the design elements from the faster rcnn model with its
         properties mapped
-
         @param output_dict: output dict from the object detection
         @param pil_image: input PIL image
-
         @return: Collected json of the design objects
                  and list of detected object's coordinates
-
         """
         boxes = output_dict["detection_boxes"]
         scores = output_dict["detection_scores"]
@@ -80,7 +77,6 @@ class PredictCard:
                               pil_image: Image) -> None:
         """
         Extract each design object's properties.
-
         @param design_objects: List of design objects collected from the model.
         @param pil_image: Input PIL image
         """
@@ -94,11 +90,9 @@ class PredictCard:
         """
         Handles the different components calling and returns the
         predicted card json to the API
-
         @param labels_path: faster rcnn model's label path
         @param forzen_graph_path: faster rcnn model path
         @param image: input image path
-
         @return: predicted card json
         """
         image = image.convert("RGB")
@@ -145,7 +139,6 @@ class PredictCard:
         """
         From the object detection result and image, generate adaptive
         card object.
-
         @param prediction: Prediction result from rcnn model
         @param image: PIL Image object to crop the regions.
         @param image_np: Array representation of the image.
@@ -177,7 +170,7 @@ class PredictCard:
         }
 
         body, ymins = card_arrange.build_card_json(
-            objects=json_objects.get("objects", []))
+            objects=json_objects.get("objects", []), image=image)
         # Sort the elements vertically
         body = [x for _, x in sorted(zip(ymins, body),
                                      key=lambda x: x[0])]
@@ -212,7 +205,6 @@ class PredictCard:
                           image: Image):
         """
         Collects the image objects using the custom image pipeline
-
         @param json_objects: list of design objects from the rcnn model
         @param detected_coords: list of coordinates of the design objects
         @param card_arrange: CardArrange object
