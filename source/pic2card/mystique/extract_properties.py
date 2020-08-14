@@ -5,12 +5,11 @@ import math
 import operator
 from io import BytesIO
 from typing import Tuple, Dict
-
-import cv2
 import numpy as np
 from PIL import Image
+from pytesseract import pytesseract, Output
 from mystique import default_host_configs
-from pytesseract import pytesseract
+# from mystique.utils import text_size_processing
 
 
 class ExtractProperties:
@@ -40,19 +39,19 @@ class ExtractProperties:
         # extract the background color
         background_color = quantized.getpalette()[:3]
         colors = {
-                "destructive": [
-                        (255, 0, 0),
-                        (180, 8, 0),
-                        (220, 54, 45),
-                        (194, 25, 18),
-                        (143, 7, 0)
-                ],
-                "positive": [
-                        (0, 0, 255),
-                        (7, 47, 95),
-                        (18, 97, 160),
-                        (56, 149, 211)
-                ]
+            "destructive": [
+                (255, 0, 0),
+                (180, 8, 0),
+                (220, 54, 45),
+                (194, 25, 18),
+                (143, 7, 0)
+            ],
+            "positive": [
+                (0, 0, 255),
+                (7, 47, 95),
+                (18, 97, 160),
+                (56, 149, 211)
+            ]
         }
         style = "default"
         found_colors = []
@@ -61,10 +60,10 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(
-                        np.sum(
-                                (np.asarray(value) - np.asarray(
-                                        background_color)) ** 2
-                        )
+                    np.sum(
+                        (np.asarray(value) - np.asarray(
+                            background_color)) ** 2
+                    )
                 )
                 if distance <= 150:
                     found_colors.append(key)
@@ -92,7 +91,7 @@ class ExtractProperties:
                                              Image.ANTIALIAS)
 
         return pytesseract.image_to_string(
-                cropped_image, lang="eng", config="--psm 6")
+            cropped_image, lang="eng", config="--psm 6")
 
     def get_size_and_weight(self, image=None, coords=None):
         """
@@ -106,49 +105,54 @@ class ExtractProperties:
         @return: size and weight
         """
         cropped_image = image.crop(coords)
+        image_width, image_height = image.size
         img = np.asarray(cropped_image)
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        # preprocess
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        gray = cv2.blur(gray, (5, 5))
         # edge detection
-        edged = cv2.Canny(img, 30, 200)
-        # contours bulding
-        _, contours, _ = cv2.findContours(
-                edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        box_width = []
+        img_data = pytesseract.image_to_data(img, output_type=Output.DICT)
         box_height = []
-        # calculate the average width and height of the contour
-        # coords of the object
-        for c in contours:
-            (x, y, w, h) = cv2.boundingRect(c)
-            box_width.append(w)
-            box_height.append(h)
+        box_width = []
+        n_boxes = len(img_data['level'])
+        for i in range(n_boxes):
+            if len(img_data['text'][i]) > 1:  # to ignore img with wrong bbox
+                (_, _, w, h) = (img_data['left'][i], img_data['top'][i],
+                                img_data['width'][i], img_data['height'][i])
+                # h = text_size_processing(img_data['text'][i], h)
+                w = w/len(img_data['text'][i])  # Approximate character width
+                box_height.append(h)
+                box_width.append(w)
+        font_size = default_host_configs.FONT_SIZE
+        font_weight = default_host_configs.FONT_WEIGHT
 
-        weights = sum(box_width) / len(box_width)
-        heights = sum(box_height) / len(box_height)
-        size = "Default"
-        weight = "Default"
-
-        if heights <= 5.5:
-            size = "Small"
-        elif 5.5 < heights <= 7:
-            size = "Default"
-        elif 7 < heights <= 15:
-            size = "Medium"
-        elif 15 < heights <= 20:
-            size = "Large"
+        # Handling of unrecognized characters
+        if len(box_height) == 0:
+            heights_ratio = font_size['default']
+            weights_ratio = font_weight['default']
         else:
-            size = "ExtraLarge"
+            heights = int(np.mean(box_height))
+            heights_ratio = round((heights/image_height), 4)
+            weights = int(np.mean(box_width))
+            weights_ratio = round((weights/image_width), 4)
 
-        if (size == "Small" or size == "Default") and weights >= 5:
+        if font_size['small'] < heights_ratio < font_size['default']:
+            size = "Small"
+        elif font_size['default'] < heights_ratio < font_size['medium']:
+            size = "Default"
+        elif font_size['medium'] < heights_ratio < font_size['large']:
+            size = "Medium"
+        elif font_size['large'] < heights_ratio < font_size['extralarge']:
+            size = "Large"
+        elif font_size['extralarge'] < heights_ratio:
+            size = "ExtraLarge"
+        else:
+            size = "Default"
+
+        # TODO: Fine tune weights threshold
+        if font_weight['lighter'] > weights_ratio:
+            weight = "Lighter"
+        elif font_weight['bolder'] < weights_ratio:
             weight = "Bolder"
-        elif size == "Medium" and weights > 6.5:
-            weight = "Bolder"
-        elif size == "Large" and weights > 8:
-            weight = "Bolder"
-        elif size == "ExtraLarge" and weights > 9:
-            weight = "Bolder"
+        else:
+            weight = "Default"
 
         return size, weight
 
@@ -205,46 +209,46 @@ class ExtractProperties:
         dominant_color = q.getpalette()[3:6]
 
         colors = {
-                "Attention": [
-                        (255, 0, 0),
-                        (180, 8, 0),
-                        (220, 54, 45),
-                        (194, 25, 18),
-                        (143, 7, 0)
-                ],
-                "Accent": [
-                        (0, 0, 255),
-                        (7, 47, 95),
-                        (18, 97, 160),
-                        (56, 149, 211)
-                ],
-                "Good": [
-                        (0, 128, 0),
-                        (145, 255, 0),
-                        (30, 86, 49),
-                        (164, 222, 2),
-                        (118, 186, 27),
-                        (76, 154, 42),
-                        (104, 187, 89)
-                ],
-                "Dark": [
-                        (0, 0, 0),
-                        (76, 76, 76),
-                        (51, 51, 51),
-                        (102, 102, 102),
-                        (153, 153, 153)
-                ],
-                "Light": [
-                        (255, 255, 255)
-                ],
-                "Warning": [
-                        (255, 255, 0),
-                        (255, 170, 0),
-                        (184, 134, 11),
-                        (218, 165, 32),
-                        (234, 186, 61),
-                        (234, 162, 33)
-                ]
+            "Attention": [
+                (255, 0, 0),
+                (180, 8, 0),
+                (220, 54, 45),
+                (194, 25, 18),
+                (143, 7, 0)
+            ],
+            "Accent": [
+                (0, 0, 255),
+                (7, 47, 95),
+                (18, 97, 160),
+                (56, 149, 211)
+            ],
+            "Good": [
+                (0, 128, 0),
+                (145, 255, 0),
+                (30, 86, 49),
+                (164, 222, 2),
+                (118, 186, 27),
+                (76, 154, 42),
+                (104, 187, 89)
+            ],
+            "Dark": [
+                (0, 0, 0),
+                (76, 76, 76),
+                (51, 51, 51),
+                (102, 102, 102),
+                (153, 153, 153)
+            ],
+            "Light": [
+                (255, 255, 255)
+            ],
+            "Warning": [
+                (255, 255, 0),
+                (255, 170, 0),
+                (184, 134, 11),
+                (218, 165, 32),
+                (234, 186, 61),
+                (234, 162, 33)
+            ]
         }
         color = "Default"
         found_colors = []
@@ -253,7 +257,7 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(np.sum(
-                        (np.asarray(value) - np.asarray(dominant_color)) ** 2))
+                    (np.asarray(value) - np.asarray(dominant_color)) ** 2))
                 if distance <= 150:
                     found_colors.append(key)
                     distances.append(distance)
@@ -266,9 +270,9 @@ class ExtractProperties:
                 background = q.getpalette()[:3]
                 foreground = q.getpalette()[3:6]
                 distance = np.sqrt(
-                        np.sum(
-                                (np.asarray(background) -
-                                 np.asarray(foreground)) ** 2))
+                    np.sum(
+                        (np.asarray(background) -
+                         np.asarray(foreground)) ** 2))
                 if distance < 150:
                     color = "Default"
         return color
@@ -291,7 +295,7 @@ class CollectProperties(ExtractProperties):
         """
         for column in columns:
             alignment = list(map(operator.itemgetter('horizontalAlignment'),
-                             column["items"]))
+                                 column["items"]))
             alignment = max(alignment, key=alignment.count)
             column.update({"horizontalAlignment": alignment})
 
@@ -313,16 +317,16 @@ class CollectProperties(ExtractProperties):
         @return: property object
         """
         return {
-                "horizontal_alignment": self.get_alignment(
-                        image=self.pil_imgae,
-                        xmin=coords[0],
-                        xmax=coords[2]
-                ),
-                "data": self.get_text(image=self.pil_imgae, coords=coords),
-                "style": self.get_actionset_type(
-                        image=self.pil_imgae,
-                        coords=coords
-                )
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "style": self.get_actionset_type(
+                image=self.pil_imgae,
+                coords=coords
+            )
         }
 
     def textbox(self, coords: Tuple) -> Dict:
@@ -333,15 +337,15 @@ class CollectProperties(ExtractProperties):
         size, weight = self.get_size_and_weight(image=self.pil_imgae,
                                                 coords=coords)
         return {
-                "horizontal_alignment": self.get_alignment(
-                        image=self.pil_imgae,
-                        xmin=coords[0],
-                        xmax=coords[2]
-                ),
-                "data": self.get_text(image=self.pil_imgae, coords=coords),
-                "size": size,
-                "weight": weight,
-                "color": self.get_colors(image=self.pil_imgae, coords=coords)
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "size": size,
+            "weight": weight,
+            "color": self.get_colors(image=self.pil_imgae, coords=coords)
 
         }
 
@@ -351,12 +355,12 @@ class CollectProperties(ExtractProperties):
         @return: property object
         """
         return {
-                "horizontal_alignment": self.get_alignment(
-                        image=self.pil_imgae,
-                        xmin=coords[0],
-                        xmax=coords[2]
-                ),
-                "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
         }
 
     def checkbox(self, coords: Tuple) -> Dict:
@@ -365,12 +369,12 @@ class CollectProperties(ExtractProperties):
         @return: property object
         """
         return {
-                "horizontal_alignment": self.get_alignment(
-                        image=self.pil_imgae,
-                        xmin=coords[0],
-                        xmax=coords[2]
-                ),
-                "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
         }
 
     def image(self, coords: Tuple) -> Dict:
@@ -382,7 +386,7 @@ class CollectProperties(ExtractProperties):
         buff = BytesIO()
         cropped.save(buff, format="PNG")
         base64_string = base64.b64encode(
-                buff.getvalue()).decode()
+            buff.getvalue()).decode()
         data = f'data:image/png;base64,{base64_string}'
 
         img_width, img_height = cropped.size
@@ -396,11 +400,11 @@ class CollectProperties(ExtractProperties):
             size = default_host_configs.IMAGE_SIZE[width_key]
         size = size
         return {
-                "horizontal_alignment": self.get_alignment(
-                        image=self.pil_imgae,
-                        xmin=coords[0],
-                        xmax=coords[2]
-                ),
-                "data": data,
-                "size": size
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": data,
+            "size": size
         }
