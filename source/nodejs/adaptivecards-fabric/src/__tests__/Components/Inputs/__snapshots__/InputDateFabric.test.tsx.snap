@@ -12,36 +12,35 @@ exports[`InputDateExtended renders component correctly 1`] = `
       style="width: 100%; min-width: 0px;"
     >
       <div
-        class="ms-DatePicker root-46"
+        class="ms-DatePicker root-40"
         id="date"
       >
         <div
-          aria-expanded="false"
           aria-haspopup="true"
-          role="combobox"
         >
           <div
-            class="ms-TextField textField-51"
+            class="ms-TextField textField-45"
           >
             <div
-              class="ms-TextField-wrapper wrapper-52"
+              class="ms-TextField-wrapper"
             >
               <div
-                class="ms-TextField-fieldGroup fieldGroup-53"
+                class="ms-TextField-fieldGroup fieldGroup-46"
               >
                 <input
+                  aria-expanded="false"
                   aria-invalid="false"
-                  class="ms-TextField-field field-54"
+                  class="ms-TextField-field field-47"
                   id="date-label"
                   placeholder="Enter a date"
+                  role="combobox"
                   type="text"
                   value="Tue May 14 2019"
                 />
                 <i
                   aria-hidden="true"
-                  class="ms-DatePicker-event--without-label msDatePickerDisabled icon-61"
+                  class="ms-DatePicker-event--without-label msDatePickerDisabled icon-54"
                   data-icon-name="Calendar"
-                  role="presentation"
                 >
                   
                 </i>

@@ -1,0 +1,24 @@
+<div class="w3-padding w3-center">
+	<div class="w3-border-top" style="max-width: 450px; margin: auto">
+
+		<p class="w3-large quote">&quot;<%- quote %>&quot;</p>
+
+		<div class="w3-cell-row">
+			<div class="w3-cell w3-right-align">
+				<img src="<%- profilePic %>"
+					alt="Profile picture" class="w3-circle w3-image" style="width: 50px; margin-right: 8px;" />
+			</div>
+			<div class="w3-cell w3-cell-middle w3-left-align">
+				<p class="author"><%- author %></p>
+				<p class="title"><%- title %></p>
+			</div>
+			<div class="w3-cell w3-left-align">
+				<img src="<%- productLogo %>" title="<%= typeof productName !== 'undefined' ? productName : '' %>"
+					alt="Product logo" class="w3-border-left w3-padding w3-image" style="width:60px;" />
+			</div>
+
+		</div>
+
+	</div>
+
+</div>

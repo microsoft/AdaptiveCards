@@ -7,8 +7,8 @@
 using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
-    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment), m_hasPadding(false),
-    m_hasBleed(false), m_parentalId(), m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0)
+    BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment),
+    m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_parentalId()
 {
 }
 

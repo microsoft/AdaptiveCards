@@ -52,7 +52,7 @@
 						},
 						{
 							"type": "Image",
-							"url": "http://adaptivecards.io/content/cats/1.png",
+							"url": "https://adaptivecards.io/content/cats/1.png",
 							"height": "stretch",
 							"isVisible": false,
 							"size": "small"
@@ -70,11 +70,11 @@
 							"images": [
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/1.png"
+									"url": "https://adaptivecards.io/content/cats/1.png"
 								},
 								{
 									"type": "Image",
-									"url": "http://adaptivecards.io/content/cats/2.png"
+									"url": "https://adaptivecards.io/content/cats/2.png"
 								}
 							]
 						},
@@ -118,7 +118,7 @@
 							"inlineAction": {
 								"type": "Action.OpenUrl",
 								"title": "Reply",
-								"url": "http://adaptivecards.io"
+								"url": "https://adaptivecards.io"
 							}
 						},
 						{

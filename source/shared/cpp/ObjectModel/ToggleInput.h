@@ -36,7 +36,7 @@ namespace AdaptiveSharedNamespace
         void SetWrap(bool value);
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         std::string m_title;
         std::string m_value;

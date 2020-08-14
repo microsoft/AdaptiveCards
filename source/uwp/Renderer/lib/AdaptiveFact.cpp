@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveFact.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -14,7 +13,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveFact::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<Fact>());
         return S_OK;
@@ -47,7 +47,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel) try
+    HRESULT AdaptiveFact::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Fact>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Fact> fact = std::make_shared<AdaptiveSharedNamespace::Fact>();
 
@@ -66,7 +67,7 @@ namespace AdaptiveNamespace
             fact->SetLanguage(language);
         }
 
-        sharedModel = fact;
+        sharedModel = std::move(fact);
         return S_OK;
     }
     CATCH_RETURN;

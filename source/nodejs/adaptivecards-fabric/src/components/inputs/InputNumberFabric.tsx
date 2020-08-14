@@ -3,7 +3,7 @@
 
 import * as React from "react";
 import * as AC from "adaptivecards";
-import * as FabricUI from "office-ui-fabric-react";
+import * as FabricUI from "@fluentui/react";
 import * as Shared from "../../utils/shared";
 
 export class InputNumberFabric extends Shared.ReactInputElement {

@@ -1,8 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { InputDateFabric } from "../../../Components/Inputs/InputDateFabric";
-import { initializeIcons } from "@uifabric/icons";
+import { InputDateFabric } from "../../../components/inputs/InputDateFabric";
+import { initializeIcons } from "@fluentui/react";
 import * as TestUtils from "../../TestUtils";
 
 initializeIcons();

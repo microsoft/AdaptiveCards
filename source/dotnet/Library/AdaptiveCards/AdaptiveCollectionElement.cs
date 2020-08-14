@@ -16,24 +16,32 @@ namespace AdaptiveCards
     /// </summary>
     public abstract class AdaptiveCollectionElement : AdaptiveElement
     {
-
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
         [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlIgnore]
 #endif
         [DefaultValue(null)]
         public AdaptiveContainerStyle? Style { get; set; }
+
+#if !NETSTANDARD1_3
+        // Xml Serializer doesn't handle nullable value types, but this trick allows us to serialize only if non-null
+        [JsonIgnore]
+        [XmlAttribute("Style")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public AdaptiveContainerStyle StyleXml { get { return (Style.HasValue) ? Style.Value : AdaptiveContainerStyle.Default; } set { Style = value; } }
+        public bool ShouldSerializeStyleXml() => this.Style.HasValue;
+#endif
 
         /// <summary>
         ///     The content alignment for the element inside the container.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveVerticalContentAlignment), "top")]
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
@@ -53,7 +61,7 @@ namespace AdaptiveCards
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
-        [XmlElement]
+        [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Bleed { get; set; }

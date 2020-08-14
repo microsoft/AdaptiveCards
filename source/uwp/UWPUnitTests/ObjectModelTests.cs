@@ -443,9 +443,12 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "TextInputId",
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
+
+            Assert.AreEqual("LabelText", textInput.Label);
 
             ValidateBaseElementProperties(textInput, "TextInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -483,6 +486,7 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "NumberInputId",
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
@@ -495,9 +499,37 @@ namespace UWPUnitTests
             Assert.AreEqual(40, numberInput.Min);
             Assert.AreEqual("Placeholder", numberInput.Placeholder);
             Assert.AreEqual(42, numberInput.Value);
+            Assert.AreEqual("LabelText", numberInput.Label);
 
             var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+        }
+
+        [TestMethod]
+        public void NumberInputEmptyProps()
+        {
+            AdaptiveNumberInput numberInput = new AdaptiveNumberInput
+            {
+                Max = null,
+                Min = null,
+                Value = null,
+                Placeholder = "some text",
+                IsRequired = false
+            };
+
+            Assert.IsNull(numberInput.Max);
+            Assert.IsNull(numberInput.Min);
+            Assert.IsNull(numberInput.Value);
+            Assert.AreEqual("{\"placeholder\":\"some text\",\"type\":\"Input.Number\"}", numberInput.ToJson().ToString());
+
+            numberInput.Min = -1;
+            numberInput.Max = 1;
+            numberInput.Value = 0;
+
+            Assert.AreEqual(numberInput.Min, -1);
+            Assert.AreEqual(numberInput.Max, 1);
+            Assert.AreEqual(numberInput.Value, 0);
+            Assert.AreEqual("{\"max\":1,\"min\":-1,\"placeholder\":\"some text\",\"type\":\"Input.Number\",\"value\":0}", numberInput.ToJson().ToString());
         }
 
         [TestMethod]
@@ -513,10 +545,13 @@ namespace UWPUnitTests
                 Id = "DateInputId",
                 IsRequired = true,
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
                 Value = "2018-01-14",
             };
+
+            Assert.AreEqual("LabelText", dateInput.Label);
 
             ValidateBaseElementProperties(dateInput, "DateInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -543,9 +578,12 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "TimeInputId",
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
+
+            Assert.AreEqual("LabelText", timeInput.Label);
 
             ValidateBaseElementProperties(timeInput, "TimeInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -573,9 +611,12 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ToggleInputId",
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
+
+            Assert.AreEqual("LabelText", toggleInput.Label);
 
             ValidateBaseElementProperties(toggleInput, "ToggleInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -619,9 +660,12 @@ namespace UWPUnitTests
                 Height = HeightType.Stretch,
                 Id = "ChoiceSetInputId",
                 IsVisible = false,
+                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
+
+            Assert.AreEqual("LabelText", choiceSet.Label);
 
             ValidateBaseElementProperties(choiceSet, "ChoiceSetInputId", false, true, Spacing.Medium, HeightType.Stretch);
 
@@ -800,6 +844,7 @@ namespace UWPUnitTests
                 Strikethrough = true,
                 Text = "This is text run number 1",
                 Weight = TextWeight.Bolder,
+                Underline = true,
             };
 
             Assert.AreEqual(ForegroundColor.Accent, textRun1.Color);
@@ -812,6 +857,7 @@ namespace UWPUnitTests
             Assert.AreEqual(TextSize.Large, textRun1.Size);
             Assert.AreEqual("This is text run number 1", textRun1.Text);
             Assert.AreEqual(TextWeight.Bolder, textRun1.Weight);
+            Assert.IsTrue(textRun1.Underline);
 
             textRun1.SelectAction = new AdaptiveSubmitAction
             {
@@ -846,7 +892,37 @@ namespace UWPUnitTests
             Assert.AreEqual("This is text run number 3", (richTextBlock.Inlines[2] as AdaptiveTextRun).Text);
 
             var jsonString = richTextBlock.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+            Assert.AreEqual("{\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"RichTextBlockId\",\"inlines\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"highlight\":true,\"isSubtle\":true,\"italic\":true,\"selectAction\":{\"title\":\"Select Action\",\"type\":\"Action.Submit\"},\"size\":\"Large\",\"strikethrough\":true,\"text\":\"This is text run number 1\",\"type\":\"TextRun\",\"underline\":true,\"weight\":\"Bolder\"},{\"text\":\"This is text run number 2\",\"type\":\"TextRun\"},{\"text\":\"This is text run number 3\",\"type\":\"TextRun\"}],\"isVisible\":false,\"separator\":true,\"spacing\":\"large\",\"type\":\"RichTextBlock\"}", jsonString);
+        }
+
+        [TestMethod]
+        public void Fallback()
+        {
+            AdaptiveTextBlock textBlockDrop = new AdaptiveTextBlock
+            {
+                Text = "This text block has fallback type Drop",
+                FallbackType = FallbackType.Drop
+            };
+
+            textBlockDrop.Requirements.Add(new AdaptiveRequirement("foo", "1.2.3.4"));
+
+            Assert.AreEqual(FallbackType.Drop, textBlockDrop.FallbackType);
+
+            var jsonString = textBlockDrop.ToJson().ToString();
+            Assert.AreEqual("{\"fallback\":\"drop\",\"requires\":{\"foo\":\"1.2.3.4\"},\"text\":\"This text block has fallback type Drop\",\"type\":\"TextBlock\"}", jsonString);
+
+            AdaptiveTextBlock textBlockNone = new AdaptiveTextBlock
+            {
+                Text = "This text block has fallback explicitly set to None",
+                FallbackType = FallbackType.None
+            };
+
+            textBlockNone.Requirements.Add(new AdaptiveRequirement("foo", "*"));
+
+            Assert.AreEqual(FallbackType.None, textBlockNone.FallbackType);
+
+            jsonString = textBlockNone.ToJson().ToString();
+            Assert.AreEqual("{\"requires\":{\"foo\":\"0.0.0.0\"},\"text\":\"This text block has fallback explicitly set to None\",\"type\":\"TextBlock\"}", jsonString);
         }
     }
 }

@@ -1,0 +1,39 @@
+{
+  "name": "ac-typed-schema",
+  "version": "0.6.0",
+  "private": true,
+  "description": "Generates the element/property tables for our specs based on the schema file.",
+  "author": "AdaptiveCards",
+  "license": "MIT",
+  "main": "lib/typed-schema.js",
+  "types": "lib/typed-schema.d.ts",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "scripts": {
+    "clean": "rimraf build lib dist",
+    "build": "tsc",
+    "dts": "dts-generator --prefix ac-typed-schema --project . --out dist/typed-schema.d.ts",
+    "lint": "eslint -c ../.eslintrc.js src/**/*.ts",
+    "release": "npm run build && npm run dts && npm run generate-adaptive-schema",
+    "test": "mocha",
+    "build-and-test": "npm run build && npm run test",
+    "generate-schema": "echo 'test' > ./schema/lib/Type.json && node ./lib/command-line.js ./schema/src Class,Enum classType > ./schema/lib/Type.json",
+    "generate-adaptive-schema": "node ./lib/command-line.js ../../../schemas/src AdaptiveCard > ../../../schemas/adaptive-card.json"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^3.4.0",
+    "@typescript-eslint/eslint-plugin-tslint": "^3.4.0",
+    "@typescript-eslint/parser": "^3.4.0",
+    "eslint": "^7.3.1",
+    "glob": "^7.1.6",
+    "js-yaml": "^3.13.1",
+    "markdown-table": "^1.1.3",
+    "mocha": "^6.2.3",
+    "p-iteration": "^1.1.8",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.5",
+    "webpack-cli": "^3.3.12"
+  }
+}

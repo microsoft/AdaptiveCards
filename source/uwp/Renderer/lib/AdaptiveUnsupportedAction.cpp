@@ -3,13 +3,13 @@
 #include "pch.h"
 
 #include "AdaptiveUnsupportedAction.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL::Wrappers;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
             std::make_shared<AdaptiveSharedNamespace::UnknownAction>();
@@ -17,7 +17,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownAction>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::UnknownAction>& sharedUnknown)
+    try
     {
         if (sharedUnknown == nullptr)
         {
@@ -35,7 +36,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedUnknown) try
+    HRESULT AdaptiveUnsupportedAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedUnknown)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::UnknownAction> unknownAction =
             std::make_shared<AdaptiveSharedNamespace::UnknownAction>();
@@ -43,9 +45,9 @@ namespace AdaptiveNamespace
         HString typeString;
         RETURN_IF_FAILED(get_ActionTypeString(typeString.GetAddressOf()));
         unknownAction->SetElementTypeString(HStringToUTF8(typeString.Get()));
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(unknownAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*unknownAction));
 
-        sharedUnknown = unknownAction;
+        sharedUnknown = std::move(unknownAction);
         return S_OK;
     }
     CATCH_RETURN;

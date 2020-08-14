@@ -18,7 +18,7 @@ namespace AdaptiveCards.Rendering.Html
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 2);
+            return new AdaptiveSchemaVersion(1, 3);
         }
 
         /// <summary>
@@ -944,7 +944,7 @@ namespace AdaptiveCards.Rendering.Html
                 .Style("box-sizing", "border-box")
                 .Style("text-align", textBlock.HorizontalAlignment.ToString().ToLower())
                 .Style("color", context.GetColor(textBlock.Color, textBlock.IsSubtle, false))
-                .Style("line-height", $"{lineHeight.ToString("F")}px")
+                .Style("line-height", $"{lineHeight.ToString("F", System.Globalization.CultureInfo.InvariantCulture)}px")
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
@@ -1065,7 +1065,7 @@ namespace AdaptiveCards.Rendering.Html
             var uiTextRun = new HtmlTag("span", true)
                 .AddClass($"ac-{textRun.Type.Replace(".", "").ToLower()}")
                 .Style("color", context.GetColor(textRun.Color, textRun.IsSubtle, false))
-                .Style("line-height", $"{lineHeight.ToString("F")}px")
+                .Style("line-height", $"{lineHeight.ToString("F", System.Globalization.CultureInfo.InvariantCulture)}px")
                 .Style("font-size", $"{fontSize}px")
                 .Style("font-weight", $"{weight}");
 
@@ -1076,9 +1076,17 @@ namespace AdaptiveCards.Rendering.Html
                 uiTextRun.Style("font-style", "italic");
             }
 
-            if (textRun.Strikethrough)
+            if (textRun.Strikethrough && textRun.Underline)
+            {
+                uiTextRun.Style("text-decoration", "line-through underline");
+            }
+            else if (textRun.Strikethrough)
             {
                 uiTextRun.Style("text-decoration", "line-through");
+            }
+            else if (textRun.Underline)
+            {
+                uiTextRun.Style("text-decoration", "underline");
             }
 
             if (textRun.Highlight)

@@ -20,7 +20,7 @@ Json::Value Inline::SerializeToJsonValue() const
     return root;
 }
 
-const InlineElementType Inline::GetInlineType() const
+InlineElementType Inline::GetInlineType() const
 {
     return m_type;
 }
@@ -30,12 +30,17 @@ std::string Inline::GetInlineTypeString() const
     return InlineElementTypeToString(m_type);
 }
 
-Json::Value Inline::GetAdditionalProperties() const
+const Json::Value& Inline::GetAdditionalProperties() const
 {
     return m_additionalProperties;
 }
 
-void Inline::SetAdditionalProperties(Json::Value const& value)
+void Inline::SetAdditionalProperties(Json::Value&& value)
+{
+    m_additionalProperties = std::move(value);
+}
+
+void Inline::SetAdditionalProperties(const Json::Value& value)
 {
     m_additionalProperties = value;
 }

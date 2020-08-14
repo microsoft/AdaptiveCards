@@ -12,6 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -35,6 +36,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.ToggleInput;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
@@ -69,16 +71,20 @@ public class ActionElementRenderer extends BaseActionElementRenderer
     {
         private IconPlacement m_iconPlacement;
         private long m_iconSize;
+        private long m_padding;
+        private Context m_context;
 
-        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize)
+        protected ActionElementRendererIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String imageBaseUrl, IconPlacement iconPlacement, long iconSize, long padding, Context context)
         {
             super(renderedCard, containerView, imageBaseUrl, containerView.getResources().getDisplayMetrics().widthPixels);
             m_iconPlacement = iconPlacement;
             m_iconSize = iconSize;
+            m_padding = padding;
+            m_context = context;
         }
 
         @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
+        public Bitmap styleBitmap(Bitmap bitmap)
         {
             Button button = (Button) super.m_view;
 
@@ -99,7 +105,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
             double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
 
-            return Bitmap.createScaledBitmap(bitmap, (int)(imageWidth * 2), (int)(imageHeight * 2), false);
+            return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, (int)imageWidth), Util.dpToPixels(m_context, (int)imageHeight), false);
         }
 
         @Override
@@ -113,8 +119,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             }
             else
             {
-                button.setCompoundDrawablesWithIntrinsicBounds(drawableIcon, null, null, null);
-                button.requestLayout();
+                button.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableIcon, null, null, null);
+                button.setCompoundDrawablePadding(Util.dpToPixels(m_context, (int) m_padding));
             }
         }
     }
@@ -139,6 +145,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
+
+
                     return createButtonWithTheme(context, buttonStyle.data);
                 }
                 else
@@ -174,7 +182,18 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         RenderedAdaptiveCard renderedCard,
         RenderArgs renderArgs)
     {
+        TypedValue buttonStyle = new TypedValue();
+        if (baseActionElement.GetElementType() == ActionType.ShowCard && context.getTheme().resolveAttribute(R.attr.adaptiveShowCardAction, buttonStyle, true)) {
+            context = new ContextThemeWrapper(context, buttonStyle.data);
+        }
+
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
+
+        SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
+        if (action != null)
+        {
+            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+        }
 
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
@@ -212,17 +231,11 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     button,
                     hostConfig.GetImageBaseUrl(),
                     iconPlacement,
-                    hostConfig.GetActions().getIconSize()
+                    hostConfig.GetActions().getIconSize(),
+                    hostConfig.GetSpacing().getDefaultSpacing(),
+                    context
             );
-            imageLoader.execute(baseActionElement.GetIconUrl());
-
-            // Only when the icon must be placed to the left of the title, we have to do this
-            if (iconPlacement == IconPlacement.LeftOfTitle) {
-                int padding = (int) hostConfig.GetSpacing().getDefaultSpacing();
-                ButtonOnLayoutChangedListener layoutChangedListener = new ButtonOnLayoutChangedListener();
-                layoutChangedListener.setPadding(padding);
-                button.addOnLayoutChangeListener(layoutChangedListener);
-            }
+            imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, baseActionElement.GetIconUrl());
         }
 
         viewGroup.addView(button);
@@ -246,7 +259,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
 
         return button;
     }

@@ -10,11 +10,12 @@
 #import "ACVTableViewController.h"
 #import <AdaptiveCards/ACFramework.h>
 
-@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer>
+@interface ViewController:UIViewController <ACVTableViewControllerDelegate, ACRActionDelegate, ACRMediaDelegate, ACRIBaseActionSetRenderer, UITextViewDelegate>
 
 @property (strong, nonatomic) ACVTableViewController *ACVTabVC;
 @property (strong, nonatomic) UITextView *editView;
 @property (strong, nonatomic) UIStackView *buttonLayout;
+@property (strong, nonatomic) UIStackView *compositeFileBrowserView;
 @property (strong, nonatomic) UIButton *tryButton;
 @property (strong, nonatomic) UIButton *applyButton;
 @property (strong, nonatomic) UIButton *enableCustomRendererButton;
@@ -22,6 +23,7 @@
 @property (strong, nonatomic) NSString *hostconfig;
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
+@property (strong, nonatomic) ACOAdaptiveCardParseResult *errorCard;
 @property ACRView *curView;
 @property UIScrollView *scrView;
 

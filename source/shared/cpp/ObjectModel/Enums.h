@@ -86,6 +86,8 @@ namespace AdaptiveSharedNamespace
         Inlines,
         InlineTopMargin,
         InputNecessityIndicators,
+        Inputs,
+        InputSpacing,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -94,6 +96,7 @@ namespace AdaptiveSharedNamespace
         IsVisible,
         Italic,
         Items,
+        Label,
         Language,
         Large,
         Left,
@@ -115,6 +118,7 @@ namespace AdaptiveSharedNamespace
         MinHeight,
         Monospace,
         NumberInput,
+        OptionalInputs,
         Padding,
         Placeholder,
         PlayButton,
@@ -123,6 +127,7 @@ namespace AdaptiveSharedNamespace
         Repeat,
         RepeatHorizontally,
         RepeatVertically,
+        RequiredInputs,
         Requires,
         RichTextBlock,
         Right,
@@ -141,6 +146,7 @@ namespace AdaptiveSharedNamespace
         Strikethrough,
         Style,
         Subtle,
+        Suffix,
         SupportsInteractivity,
         TargetElements,
         Text,
@@ -154,6 +160,7 @@ namespace AdaptiveSharedNamespace
         ToggleInput,
         Top,
         Type,
+        Underline,
         Url,
         Value,
         ValueOff,
@@ -370,7 +377,8 @@ namespace AdaptiveSharedNamespace
         RequiredPropertyMissing,
         InvalidPropertyValue,
         UnsupportedParserOverride,
-        IdCollision
+        IdCollision,
+        CustomError,
     };
     // No mapping to string needed
 
@@ -390,6 +398,9 @@ namespace AdaptiveSharedNamespace
         InvalidColorFormat,
         InvalidDimensionSpecified,
         InvalidLanguage,
+        InvalidValue,
+        CustomWarning,
+        EmptyLabelInRequiredInput,
     };
     // No mapping to string needed
 

@@ -21,14 +21,16 @@ namespace AdaptiveNamespace
         m_items = Microsoft::WRL::Make<Vector<IAdaptiveCardElement*>>();
     }
 
-    HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveContainer::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
         return RuntimeClassInitialize(container);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer) try
+    HRESULT AdaptiveContainer::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::Container>& sharedContainer)
+    try
     {
         if (sharedContainer == nullptr)
         {
@@ -144,16 +146,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveContainer::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::Container> container = std::make_shared<AdaptiveSharedNamespace::Container>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(container)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*container));
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            container->SetSelectAction(sharedAction);
+            container->SetSelectAction(std::move(sharedAction));
         }
 
         container->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
@@ -164,14 +167,14 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
         {
-            container->SetBackgroundImage(sharedBackgroundImage);
+            container->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
         container->SetBleed(m_bleed);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 
-        sharedModel = container;
+        sharedModel = std::move(container);
         return S_OK;
     }
     CATCH_RETURN;

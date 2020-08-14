@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 "use strict";
 
-var fs = require("hexo-fs");
-var path = require("path");
-
 hexo.extend.generator.register("generator-designer", function (locals) {
 
     return {
@@ -12,7 +9,9 @@ hexo.extend.generator.register("generator-designer", function (locals) {
         layout: "designer",
         data: {
 			title: "Designer",
-			hideBreadcrumb: true
+			hideBreadcrumb: true,
+			hideFooter: true,
+			previewFeaturesEnabled: process.env.DESIGNER_PREVIEW_FEATURES === "1"
         }
     };
 });

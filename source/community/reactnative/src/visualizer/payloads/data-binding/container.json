@@ -1,0 +1,64 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "2.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "bleed": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "${creator.profileImage}",
+                            "altText": "Profile picture",
+                            "size": "Small",
+                            "style": "Person"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Hi ${name}!",
+                            "size": "Medium"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Here's a bit about your org...",
+                            "spacing": "None"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Your manager is: **${manager.name}**"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Your peers are:"
+        },
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "$data": "${peers}",
+                    "title": "${name}",
+                    "value": "${title}"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Release-104"
+        }
+    ]
+}

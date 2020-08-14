@@ -14,12 +14,34 @@ namespace AdaptiveNamespace
 {
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize() noexcept { return S_OK; }
 
+    // This constructor is kept so all elements keep working as expected
     HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
                                                        _In_opt_ IInspectable* parentElement,
-                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept try
+                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
+    try
     {
         m_containerStyle = containerStyle;
         m_parentElement = parentElement;
+
+        if (renderArgs)
+        {
+            RETURN_IF_FAILED(renderArgs->get_AncestorHasFallback(&m_ancestorHasFallback));
+            RETURN_IF_FAILED(renderArgs->get_ParentCard(&m_parentCard));
+        }
+
+        return S_OK;
+    }
+    CATCH_RETURN;
+
+    HRESULT AdaptiveRenderArgs::RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+                                                       _In_opt_ IInspectable* parentElement,
+                                                       _In_ ABI::AdaptiveNamespace::IAdaptiveCard* parentCard,
+                                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept
+    try
+    {
+        m_containerStyle = containerStyle;
+        m_parentElement = parentElement;
+        m_parentCard = parentCard;
 
         if (renderArgs)
         {
@@ -86,6 +108,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveRenderArgs::put_AncestorHasFallback(boolean hasFallback)
     {
         m_ancestorHasFallback = hasFallback;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveRenderArgs::get_ParentCard(_COM_Outptr_ IAdaptiveCard** value)
+    {
+        return m_parentCard.CopyTo(value);
+    }
+
+    HRESULT AdaptiveRenderArgs::put_ParentCard(_In_ IAdaptiveCard* value)
+    {
+        m_parentCard = value;
         return S_OK;
     }
 }

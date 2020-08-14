@@ -39,8 +39,7 @@ export default class Visualizer extends React.Component {
         selectedPayload: null,
         activeOption: Constants.AdaptiveCards,
         payloads: Payloads.AdaptiveCardPayloads,
-        scenarios: Payloads.AdaptiveCardScenarios,
-        activeIndex: 0 // payload - scenarios selector
+        activeIndexValue: Constants.PayloadHeader // payload - scenarios selector
     };
 
     constructor(props) {
@@ -48,15 +47,13 @@ export default class Visualizer extends React.Component {
     }
 
     render() {
-        const { activeIndex, payloads, scenarios } = this.state;
-
-        const items = activeIndex === 0 ? payloads : scenarios;
+        const items = this.getPayloadItems();
         return (
-            <View style={styles.container}>
+            <View style={{ flex: 1 }}>
                 <TouchableOpacity onPress={() => this.onMoreOptionsClick()} style={styles.moreContainer}>
                     <Image source={moreIcon} style={styles.moreIcon} />
                 </TouchableOpacity>
-                {scenarios && scenarios.length > 0 ? this.segmentedControl() : this.header()}
+                {this.state.activeOption !== Constants.OtherCards ? this.segmentedControl() : this.header()}
                 <FlatList
                     data={items}
                     keyExtractor={(item, index) => index.toString()}
@@ -76,6 +73,7 @@ export default class Visualizer extends React.Component {
                     }}>
                     <Renderer
                         payload={this.state.selectedPayload}
+                        isDataBinding={Constants.DataBinding === this.state.activeIndexValue}
                         onModalClose={this.closeModal}
                     />
                 </Modal>
@@ -92,23 +90,40 @@ export default class Visualizer extends React.Component {
     }
 
     /**
-     * @description Segment control for payloads and scenarios.
+     * @description get payload item depends on the activeIndexValue
+     */
+    getPayloadItems = () => {
+        switch (this.state.activeIndexValue) {
+            case Constants.PayloadHeader:
+                return this.state.payloads;
+            case Constants.Scenarios:
+                return Payloads.AdaptiveCardScenarios;
+            case Constants.DataBinding:
+                return Payloads.DataBindingPayloads;
+            default:
+                return this.state.payloads;
+        }
+    }
+
+    /**
+     * @description Segment control for Payloads, Scenarios and DataBinding.
      */
     segmentedControl = () => {
         const segmentedItems = [
-            { title: 'Payloads', value: 'payloads' },
-            { title: 'Scenarios', value: 'scenarios' }
+            { title: Constants.PayloadHeader, value: Constants.PayloadHeader },
+            { title: Constants.Scenarios, value: Constants.Scenarios },
+            { title: Constants.DataBinding, value: Constants.DataBinding }
         ];
         return (
             <SegmentedControl
                 items={segmentedItems}
-                onStatusChange={(index) => this.segmentedControlStatusDidChange(index)}
+                onStatusChange={(index) => this.segmentedControlStatusDidChange(segmentedItems[index].value)}
             />
         );
     }
 
     /**
-     * @description Add header for payloads as there is no scenarios
+     * @description Add header for payloads if the active option is other card type
      */
     header = () => (
         <View style={styles.header}>
@@ -145,11 +160,11 @@ export default class Visualizer extends React.Component {
 
     /**
      * @description Invoked on payload type segmented control status change
-     * @param {number} index - index of the selected item
+     * @param {string} indexValue - value of the selected index in segmented control
      */
-    segmentedControlStatusDidChange = (index) => {
+    segmentedControlStatusDidChange = (indexValue) => {
         this.setState({
-            activeIndex: index
+            activeIndexValue: indexValue
         });
     }
 
@@ -182,8 +197,7 @@ export default class Visualizer extends React.Component {
                         isMoreVisible: false,
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
-                        scenarios: Payloads.AdaptiveCardScenarios,
-                        activeIndex : 0
+                        activeIndexValue: Constants.PayloadHeader
                     });
                 else this.closeMoreOptions();
                 break;
@@ -193,8 +207,7 @@ export default class Visualizer extends React.Component {
                         isMoreVisible: false,
                         activeOption: Constants.OtherCards,
                         payloads: Payloads.OtherCardPayloads,
-                        scenarios: [],
-                        activeIndex : 0
+                        activeIndexValue: Constants.PayloadHeader
                     });
                 else this.closeMoreOptions();
                 break;
@@ -204,8 +217,7 @@ export default class Visualizer extends React.Component {
                         isMoreVisible: false,
                         activeOption: Constants.AdaptiveCards,
                         payloads: Payloads.AdaptiveCardPayloads,
-                        scenarios: Payloads.AdaptiveCardScenarios,
-                        activeIndex : 0
+                        activeIndexValue: Constants.PayloadHeader
                     });
                 else this.closeMoreOptions();
                 break;
@@ -232,9 +244,6 @@ export default class Visualizer extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
     payloadPicker: {
         width: '100%',
         height: 150,
@@ -261,7 +270,6 @@ const styles = StyleSheet.create({
         height: 25
     },
     moreOptionsModal: {
-        flex: 1,
         backgroundColor: "rgba(0, 0, 0, 0.1)"
     },
     more: {

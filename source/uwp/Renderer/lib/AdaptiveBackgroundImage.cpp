@@ -16,7 +16,8 @@ namespace AdaptiveNamespace
 {
     AdaptiveBackgroundImage::AdaptiveBackgroundImage() {}
 
-    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> image =
             std::make_shared<AdaptiveSharedNamespace::BackgroundImage>();
@@ -24,8 +25,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage) try
+    HRESULT AdaptiveBackgroundImage::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage)
+    try
     {
         if (sharedImage == nullptr)
         {
@@ -85,7 +86,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveBackgroundImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage) try
+    HRESULT AdaptiveBackgroundImage::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage>& sharedImage)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> image =
             std::make_shared<AdaptiveSharedNamespace::BackgroundImage>();
@@ -95,7 +97,7 @@ namespace AdaptiveNamespace
         image->SetHorizontalAlignment(static_cast<AdaptiveSharedNamespace::HorizontalAlignment>(m_horizontalAlignment));
         image->SetVerticalAlignment(static_cast<AdaptiveSharedNamespace::VerticalAlignment>(m_verticalAlignment));
 
-        sharedImage = image;
+        sharedImage = std::move(image);
         return S_OK;
     }
     CATCH_RETURN;

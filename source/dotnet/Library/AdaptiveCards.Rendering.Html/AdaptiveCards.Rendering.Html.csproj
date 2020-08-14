@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net4.5.2;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>net4.5.2;netstandard1.3;netstandard2.0</TargetFrameworks>
     <Authors>Microsoft</Authors>
     <Summary>Adaptive Card renderer for generating HTML tags</Summary>
     <Description>This library provides the ability to render an Adaptive Card into HTML, typically used for server-side card rendering</Description>
@@ -17,7 +17,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Microsoft.MarkedNet" Version="1.0.13" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
   </ItemGroup>
 
@@ -26,17 +27,8 @@
   </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
-    <PackageReference Include="MarkedNet">
-      <Version>2.1.2</Version>
-    </PackageReference>
     <PackageReference Include="System.Reflection.TypeExtensions">
-      <Version>4.4.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net4.5.2'">
-    <PackageReference Include="MarkedNet">
-      <Version>2.1.2</Version>
+      <Version>4.7.0</Version>
     </PackageReference>
   </ItemGroup>
 

@@ -5,18 +5,20 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <UIKit/UIKit.h>
-#import "ACRActionDelegate.h"
 #import "ACOAdaptiveCard.h"
 #import "ACOHostConfig.h"
+#import "ACOWarning.h"
+#import "ACRActionDelegate.h"
 #import "ACRColumnView.h"
 #import "ACRIMedia.h"
+#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
-@interface ACRView:ACRColumnView
+@interface ACRView : ACRColumnView
 
-@property (weak) id<ACRActionDelegate>acrActionDelegate;
-@property (weak) id<ACRMediaDelegate>mediaDelegate;
+@property (weak) id<ACRActionDelegate> acrActionDelegate;
+@property (weak) id<ACRMediaDelegate> mediaDelegate;
+@property NSArray<ACOWarning *> *warnings;
 
 - (instancetype)init:(ACOAdaptiveCard *)card hostconfig:(ACOHostConfig *)config widthConstraint:(float)width;
 - (instancetype)init:(ACOAdaptiveCard *)card
@@ -39,4 +41,5 @@
 - (UIView *)render;
 
 - (void)waitForAsyncTasksToFinish;
+
 @end

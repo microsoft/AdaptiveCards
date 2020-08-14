@@ -5,15 +5,26 @@
 	"body": [
 		{
 			"type": "Image",
-			"url": "http://adaptivecards.io/content/cats/1.png",
+			"url": "https://adaptivecards.io/content/cats/1.png",
 			"id": "id1",
 			"selectAction": {
 				"type": "Action.ToggleVisibility",
 				"targetElements": [
-					"id2"
+					"id2", "id10"
 				]
 			}
 		},
+        {
+            "type": "ActionSet",
+			"isVisible": false,
+            "actions": [
+                {
+                    "type": "Action.Submit",
+                    "title": "ActionSet Toggle Test"
+                }
+            ],
+            "id": "id10"
+        },
 		{
 			"type": "Container",
 			"id": "id2",
@@ -31,7 +42,7 @@
 				},
 				{
 					"type": "Image",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				}
 			]
 		},
@@ -144,11 +155,11 @@
 			"images": [
 				{
 					"type": "Image",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				},
 				{
 					"type": "Image",
-					"url": "http://adaptivecards.io/content/cats/1.png"
+					"url": "https://adaptivecards.io/content/cats/1.png"
 				}
 			]
 		},

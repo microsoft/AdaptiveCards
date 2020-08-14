@@ -19,6 +19,7 @@ using Windows.UI.Xaml.Controls;
 using AdaptiveCardVisualizer.Helpers;
 using AdaptiveCardVisualizer.ResourceResolvers;
 using Windows.UI.Xaml.Media;
+using XamlCardVisualizer.CustomElements;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
@@ -56,7 +57,8 @@ namespace AdaptiveCardVisualizer.ViewModel
             var newErrors = await PayloadValidator.ValidateAsync(payload);
             if (newErrors.Any(i => i.Type == ErrorViewModelType.Error))
             {
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
                 return;
             }
 
@@ -74,7 +76,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Message = "Initializing renderer error: " + ex.ToString(),
                     Type = ErrorViewModelType.Error
                 });
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
                 return;
             }
 
@@ -83,8 +86,12 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject);
+                    AdaptiveElementParserRegistration reg = new AdaptiveElementParserRegistration();
+                    reg.Set(CustomInput.customInputType, new CustomInputParser());
 
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, reg, new AdaptiveActionParserRegistration());
+
+                    _renderer.ElementRenderers.Set(CustomInput.customInputType, new CustomInputRenderer());
                     _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (_renderedAdaptiveCard.FrameworkElement != null)
                     {
@@ -185,7 +192,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                 {
                     (RenderedCard as FrameworkElement).VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
                 }
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
             }
             catch (Exception ex)
             {
@@ -195,7 +203,8 @@ namespace AdaptiveCardVisualizer.ViewModel
                     Message = "Rendering failed",
                     Type = ErrorViewModelType.Error
                 });
-                MakeErrorsLike(newErrors);
+                errors = newErrors;
+                TimeCounter.ResetCounter();
             }
         }
 
@@ -221,50 +230,54 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         public static void InitializeRenderer(AdaptiveHostConfig hostConfig)
         {
-            try
+            _renderer = new AdaptiveCardRenderer();
+            if (hostConfig != null)
             {
-                _renderer = new AdaptiveCardRenderer();
-                if (hostConfig != null)
-                {
-                    _renderer.HostConfig = hostConfig;
-                }
-
-                // Add a feature representing this version of the visualizer. used for test cards.
-                _renderer.FeatureRegistration.Set("acTest", "1.0");
-
-                if (Settings.UseFixedDimensions)
-                {
-                    _renderer.SetFixedDimensions(320, 180);
-                }
-
-                // Custom resource resolvers
-                _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
-
-                /*
-                 *Example on how to override the Action Positive and Destructive styles
-                Style positiveStyle = new Style(typeof(Button));
-                positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
-                Style destructiveStyle = new Style(typeof(Button));
-                destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
-                Style otherStyle = new Style(typeof(Button));
-                otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
-                otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
-
-                _renderer.OverrideStyles = new ResourceDictionary();
-                _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
-                _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
-                _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
-                */
-
+                _renderer.HostConfig = hostConfig;
             }
-            catch
+
+            // Add a feature representing this version of the visualizer. used for test cards.
+            _renderer.FeatureRegistration.Set("acTest", "1.0");
+
+            if (Settings.UseFixedDimensions)
             {
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-                throw;
+                _renderer.SetFixedDimensions(320, 180);
             }
+
+            // Custom resource resolvers
+            _renderer.ResourceResolvers.Set("symbol", new MySymbolResourceResolver());
+
+            _renderer.OverrideStyles = new ResourceDictionary();
+
+            Style textInputBorderStyle = new Style(typeof(TextBox));
+            textInputBorderStyle.Setters.Add(new Setter(TextBox.BorderBrushProperty, new SolidColorBrush(Windows.UI.Color.FromArgb(0x6C, 0, 0, 0))));
+
+            Style dateInputBorderStyle = new Style(typeof(CalendarDatePicker));
+            dateInputBorderStyle.Setters.Add(new Setter(CalendarDatePicker.BorderBrushProperty, new SolidColorBrush(Windows.UI.Color.FromArgb(0x6C, 0, 0, 0))));
+
+            Style timeInputBorderStyle = new Style(typeof(TimePicker));
+            timeInputBorderStyle.Setters.Add(new Setter(TimePicker.BorderBrushProperty, new SolidColorBrush(Windows.UI.Color.FromArgb(0x6C, 0, 0, 0))));
+
+            _renderer.OverrideStyles.Add("Adaptive.Input.Text", textInputBorderStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Input.Number", textInputBorderStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Input.Time", timeInputBorderStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Input.Date", dateInputBorderStyle);
+
+            /*
+                *Example on how to override the Action Positive and Destructive styles
+            Style positiveStyle = new Style(typeof(Button));
+            positiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.LawnGreen)));
+            Style destructiveStyle = new Style(typeof(Button));
+            destructiveStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Red)));
+            Style otherStyle = new Style(typeof(Button));
+            otherStyle.Setters.Add(new Setter(Button.BackgroundProperty, new SolidColorBrush(Windows.UI.Colors.Yellow)));
+            otherStyle.Setters.Add(new Setter(Button.ForegroundProperty, new SolidColorBrush(Windows.UI.Colors.DarkRed)));
+
+            _renderer.OverrideStyles.Add("Adaptive.Action.Positive", positiveStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Action.Destructive", destructiveStyle);
+            _renderer.OverrideStyles.Add("Adaptive.Action.other", otherStyle);
+            */
         }
     }
+    
 }

@@ -55,4 +55,11 @@ public class ComboBoxInputHandler extends BaseInputHandler
 
         getSpinner().setSelection(selectedPosition);
     }
+
+    @Override
+    public void setFocusToView()
+    {
+        m_view.requestFocus();
+        m_view.performClick();
+    }
 }

@@ -1,10 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveTimeInput.h"
 
-#include "Util.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveTimeInput.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -15,14 +13,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
         return RuntimeClassInitialize(timeInput);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput) try
+    HRESULT AdaptiveTimeInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::TimeInput>& sharedTimeInput)
+    try
     {
         if (sharedTimeInput == nullptr)
         {
@@ -65,18 +65,19 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveTimeInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::TimeInput> timeInput = std::make_shared<AdaptiveSharedNamespace::TimeInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(timeInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*timeInput));
 
         timeInput->SetMax(HStringToUTF8(m_max.Get()));
         timeInput->SetMin(HStringToUTF8(m_min.Get()));
         timeInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         timeInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = timeInput;
+        sharedModel = std::move(timeInput);
 
         return S_OK;
     }

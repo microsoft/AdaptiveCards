@@ -21,6 +21,42 @@ export function isaNumber(value) {
 	return false;
 }
 
+export function getSize(sizeValue){
+	return sizeValue ? parseInt(sizeValue, 10): undefined;
+}
+
+/**
+ * @description
+ * This function will return the Number for the specified pixel string / number
+ * it will return null, if it is not an number.
+ * for example..convertStringToNumber('100')    // 100
+				convertStringToNumber('100px')  // 100
+				convertStringToNumber('100a5')  // 100
+				convertStringToNumber(100)  	  // 100
+				convertStringToNumber('ABC')    // null
+				convertStringToNumber(null)     // null
+				convertStringToNumber('ABC100')   // null 
+ * @param {string/number} value 
+ */
+export function convertStringToNumber(value) {
+	let intValue = parseInt(value);
+	if (isNaN(intValue)) {
+		return null;
+	} else {
+		return intValue;
+	}
+}
+
+/**
+ * @description
+ * This function will return the whether the string is pixel
+ * it will return true, if it is pixel value.
+ * @param {string} value 
+ */
+export function isPixelValue(value) {
+	return isString(value) && value.indexOf('px') >= 0
+}
+
 /**
  * @description
  * This function will return the Enum value for the specified Key if its present or

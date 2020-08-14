@@ -2,7 +2,7 @@
 
 This package "lights-up" the Adaptive Card renderer with [Office Fabric UI](https://developer.microsoft.com/en-us/fabric#/controls/web) input controls.
 
-![Adaptive cards fabric animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/master/source/nodejs/adaptivecards-fabric/adaptivecards-fabric.gif)
+![Adaptive cards fabric animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/main/source/nodejs/adaptivecards-fabric/adaptivecards-fabric.gif)
 
 
 ## Extended Controls
@@ -26,7 +26,7 @@ npm install adaptivecards-fabric
 **NOTE**: you must also install the necessary peer dependencies:
 
 * adaptivecards
-* office-ui-fabric-react
+* @fluentui/react
 * react
 * react-dom
 
@@ -52,7 +52,7 @@ let card = {
     "body": [
         {
             "type": "Image",
-            "url": "http://adaptivecards.io/content/adaptive-card-50.png"
+            "url": "https://adaptivecards.io/content/adaptive-card-50.png"
         },
         {
             "type": "TextBlock",
@@ -63,12 +63,12 @@ let card = {
         {
             "type": "Action.OpenUrl",
             "title": "Learn more",
-            "url": "http://adaptivecards.io"
+            "url": "https://adaptivecards.io"
         },
         {
             "type": "Action.OpenUrl",
             "title": "GitHub",
-            "url": "http://github.com/Microsoft/AdaptiveCards"
+            "url": "https://github.com/Microsoft/AdaptiveCards"
         }
     ]
 };

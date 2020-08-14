@@ -16,6 +16,7 @@ import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -53,17 +54,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
-        RenderArgs renderArgs) throws AdaptiveFallbackException
+        RenderArgs renderArgs) throws Exception
     {
-        ColumnSet columnSet = null;
-        if (baseCardElement instanceof ColumnSet)
-        {
-            columnSet = (ColumnSet) baseCardElement;
-        }
-        else if ((columnSet = ColumnSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
-        }
+        ColumnSet columnSet = Util.castTo(baseCardElement, ColumnSet.class);
 
         IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column.toString());
         if (columnRenderer == null)
@@ -71,13 +64,10 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
         LinearLayout layout = new LinearLayout(context);
-
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
@@ -114,7 +104,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
-        TagContent tagContent = new TagContent(columnSet, separator, viewGroup);
+        TagContent tagContent = new TagContent(columnSet);
 
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
@@ -136,7 +126,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
 
         layout.setTag(tagContent);
-        setVisibility(baseCardElement.GetIsVisible(), layout);
 
         ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
         ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);

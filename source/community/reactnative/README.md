@@ -17,6 +17,13 @@ import AdaptiveCard from 'adaptivecards-reactnative'
                themeConfig={}
                onExecuteAction={} 
                onParseError={} 
+               containerStyle={{
+                    width:100, 
+                    height: 100, 
+                    flexGrow:1, 
+                    backgroundColor:'lightblue'
+               }}
+               contentHeight={500} 
                ref="referenceVariable"/>
 ```
 
@@ -27,6 +34,8 @@ Prop | Type | Description | Required
 **themeConfig** | `{object}` | JSON Theme Config to customize styles | NO
 **onExecuteAction** | `{Event Handler}` | Method to be executed on card actions | NO
 **onParseError** | `{Event Handler}` | Method to be executed on JSON parse errors | NO
+**containerStyle** | `{object}` | Style used to override the adaptive card container style | NO
+**contentHeight** | `{number}` | Value used to override the adaptive card height | NO
 **ref** | `React.createRef()` |  Reference variable used to invoke the methods exposed by AdaptiveCards.(Example: In order to fetch the image & media URLs across the payload, one can use like this `this.refs.referenceVariable.getResourceInformation()`  | NO
 
 ## Extensibility
@@ -46,31 +55,115 @@ Registry.getManager().registerComponent('Rating',RatingComponent);
 ```
 Registry.getManager().removeComponent('Input.Date');
 ```
+
+## DataBinding
+The [adaptivecards-templating](https://www.npmjs.com/package/adaptivecards-templating) library is used for DataBinding.
+
+[![Version](https://img.shields.io/npm/v/adaptivecards-templating.svg)](https://www.npmjs.com/package/adaptivecards-templating)
+
+**Breaking Change**
+
+*adaptivecards-reactnative v2.2+ uses *adaptivecards-templating v1.0.0-rc.0* which migrated from older data binding [syntax](https://docs.microsoft.com/en-us/adaptive-cards/templating/#breaking-changes-as-of-may-2020) to [Adaptive Expression Language](https://docs.microsoft.com/en-us/azure/bot-service/bot-builder-concept-adaptive-expressions?view=azure-bot-service-4.0).
+
+So data-binding for older templates will not work in adaptivecards-reactnative v2.2+
+
+**Usage**
+```jsx
+import AdaptiveCard from '../adaptive-card';
+import * as ACData from 'adaptivecards-templating';
+
+// Sample template payload
+var templatePayload = {
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "2.0",
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Hi {employee.name}! Here's a bit about your organisation"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Your manager is: {employee.manager.name}"
+        },
+        {
+            "type": "TextBlock",
+            "text": "2 of your peers are: {employee.peers[0].name}, {employee.peers[1].name}"
+        }
+    ]
+};
+        
+// Create a Template instance from the template payload
+var template = new ACData.Template(templatePayload);
+
+// Create a data binding context, and set its $root property to the
+// data object to bind the template to
+var context = {
+    "$root": {
+        "employee": {
+            "name": "David Claux",
+            "manager": {
+                "name": "Matt Hidinger"
+            },
+            "peers": [
+                {
+                    "name": "Andrew Leader"
+                },
+                {
+                    "name": "Shalini Joshi"
+                }
+            ]
+        }
+    }
+}
+
+// "Expand" the template - this generates the final payload for the Adaptive Card,
+templatePayload = template.expand(context);
+
+//Render the adaptive card with templatePayload
+<AdaptiveCard payload={templatePayload}/>
+```
+
 ## Theme Config
-* For customising UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCard/>`.
+* For customizing UI styles of elements, Host App can pass styles (plain JSON object) as an optional prop to root element `<AdaptiveCards/>`.
+* Currently below elements are supported in the theme config.
+    * input 
+    * button
+    * choice Set
+    * date picker
+    * time picker
 
 * Host app can provide `platform specific styles` as seen in the below example. For same styles across platforms, pass the styles without platform.
 
 **Examples**   
-In this example, styles passed for element `input` are applied to both iOS and Android whereas for `button`, platform specific styles are applied.
-
+In this example, styles passed for element `input` are applied to all the platforms whereas for `button` platform-specific styles are applied. 
 ```css
     customThemeConfig = {
         input: {
             borderColor: "#000000",
             backgroundColor: "#F5F5F5",
+            borderRadius: 4,
+            borderWidth: 1,
         },
         button: {
             "ios": {
-                textTransform: 'none',
+                color: 'white',
+                backgroundColor: "#1D9BF6",
             },
             "android": {
-                textTransform: 'uppercase'
+                color: 'white',
+                backgroundColor: "#1D9BF6",
+            },
+            "windows": {
+                color: 'white',
+                backgroundColor: "#1D9BF6",
             }
         }
     }
+    
+<AdaptiveCards themeConfig={customThemeConfig} payload={payload} />
 ```
-Refer this [wiki page](https://github.com/Imaginea/AdaptiveCards/wiki/Extensibility---Theme-Config) to view the complete list of customizable theme config properties.
+Refer this [wiki page](https://github.com/microsoft/AdaptiveCards/wiki/React-Native-Theme-Config-Support) to view the complete list of customizable theme config properties.
 
 ##  Examples / Visualizer
 There are lot of sample JSON payloads covering all element types with few real case scenarios are available within this project.   
@@ -82,7 +175,7 @@ To see the visualizer,
 * Android **> `react-native run-android`**
 * Windows **> `react-native start`**  and  **`Launch Simulator from Visual Studio`**
 
-**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/master/RNWCS/docs/GettingStarted.md for react-native-windows setup
+**Notes:** Follow https://github.com/Microsoft/react-native-windows/blob/main/RNWCS/docs/GettingStarted.md for react-native-windows setup
 
 
 ##  About Adaptive Card

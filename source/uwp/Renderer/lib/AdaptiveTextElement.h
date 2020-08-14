@@ -2,9 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
-
 namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("4BC6640A-8FBE-4DE0-81FD-119BC10877F1") AdaptiveTextElement : public IUnknown
@@ -31,6 +28,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_FontType(_Out_ ABI::AdaptiveNamespace::FontType* fontType);
         IFACEMETHODIMP put_FontType(ABI::AdaptiveNamespace::FontType fontType);
 
+        IFACEMETHODIMP get_Underline(_Out_ boolean* underline);
+        IFACEMETHODIMP put_Underline(_In_ boolean underline);
+
     protected:
         template<typename T> HRESULT InitializeTextElement(const std::shared_ptr<T>& sharedModel)
         {
@@ -45,23 +45,23 @@ namespace AdaptiveNamespace
             return S_OK;
         }
 
-        template<typename T> HRESULT SetTextElementProperties(std::shared_ptr<T> sharedCardElement)
+        template<typename T> HRESULT CopyTextElementProperties(T& sharedCardElement)
         {
-            sharedCardElement->SetIsSubtle(m_subtle);
-            sharedCardElement->SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
-            sharedCardElement->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
-            sharedCardElement->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
-            sharedCardElement->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
+            sharedCardElement.SetIsSubtle(m_subtle);
+            sharedCardElement.SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
+            sharedCardElement.SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
+            sharedCardElement.SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
+            sharedCardElement.SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
 
             std::string text;
             RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
-            sharedCardElement->SetText(text);
+            sharedCardElement.SetText(text);
 
             if (!(WindowsIsStringEmpty(m_language.Get())))
             {
                 std::string language;
                 RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
-                sharedCardElement->SetLanguage(language);
+                sharedCardElement.SetLanguage(language);
             }
             return S_OK;
         }
