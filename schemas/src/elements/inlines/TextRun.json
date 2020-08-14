@@ -42,6 +42,11 @@
       "type": "boolean",
       "description": "If `true`, displays the text with strikethrough."
     },
+    "underline": {
+      "type": "boolean",
+      "description": "If `true`, displays the text underlined.",
+      "default": false
+    },
     "weight": {
       "type": "FontWeight",
       "description": "Controls the weight of the text."
