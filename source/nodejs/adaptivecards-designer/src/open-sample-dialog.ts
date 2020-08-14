@@ -164,7 +164,12 @@ export class OpenSampleDialog extends Dialog {
 
         this.catalogue.onDownloaded = (sender: SampleCatalogue) => {
             if (sender.isDownloaded) {
-                this.setContent(this.renderCatalogue());
+                let catalogue = this.renderCatalogue();
+                this.setContent(catalogue);
+
+                // now set focus on the first card in the catalog (usually the Blank Card)
+                let firstChild = catalogue.firstElementChild as HTMLElement;
+                firstChild.focus();
             }
             else {
                 this.setContent(this.renderMessage("The catalogue couldn't be loaded. Please try again later.", false));
