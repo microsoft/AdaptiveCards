@@ -1,5 +1,6 @@
 import time
 import io
+import re
 from typing import Optional, Dict
 import glob
 import xml.etree.ElementTree as Et
@@ -18,7 +19,7 @@ COLORS = [
     [0.000, 0.447, 0.888],
     [0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
     [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]
- ]
+]
 
 
 @contextmanager
@@ -123,3 +124,17 @@ def load_od_instance():
     module = import_module(module_path)
     od_obj = getattr(module, class_name)()
     return od_obj
+
+
+def text_size_processing(text, height):
+    """
+    Reduces the extra pixels to normalize the height of text boxes
+    @param text: input extraced text from pytesseract
+    @param height: input height of the extracted text
+    @return: height int
+    """
+    extra_pixel_char = r"y|g|j|p|q"
+    match = re.search(extra_pixel_char, text)
+    if (match or text[0].isupper()):
+        height -= 2
+    return height
