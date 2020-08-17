@@ -884,21 +884,4 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         m_jsonEditText.setEnabled(true);
         m_configEditText.setEnabled(true);
     }
-
-    public void onClickFileBrowser(View view)
-    {
-        Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        fileBrowserIntent.setType("*/*");
-        fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        fileBrowserIntent.putExtra(IS_CARD, view.getId() == R.id.loadCardButton);
-
-        try {
-            startActivityForResult(
-                Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"),
-                view.getId() == R.id.loadCardButton ? FILE_SELECT_CARD : FILE_SELECT_CONFIG);
-        } catch (android.content.ActivityNotFoundException ex) {
-            // Potentially direct the user to the Market with a Dialog
-            Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
-        }
-    }
 }

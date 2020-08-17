@@ -23,6 +23,7 @@
 ### Properties
 
 * [defaultValue](customproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](customproperty.md#isserializationenabled)
 * [name](customproperty.md#name)
 * [onGetInitialValue](customproperty.md#optional-ongetinitialvalue)
 * [onParse](customproperty.md#onparse)
@@ -90,6 +91,14 @@ Name | Type |
 • **defaultValue**? : *T*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

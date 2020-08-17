@@ -41,6 +41,8 @@ namespace AdaptiveSharedNamespace
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
+        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
+
         CardElementType GetCardElementType(const Json::Value& json);
 
         CardElementType TryGetCardElementType(const Json::Value& json);
@@ -207,9 +209,9 @@ namespace AdaptiveSharedNamespace
         T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
         return result;
     }
-    
+
     // Element [de]serialization
-    
+
     // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
     // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
     template<typename T>
