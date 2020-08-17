@@ -389,6 +389,18 @@ export interface IVersionedValue<TValue> {
 }
 
 export class ValueSetProperty extends PropertyDefinition {
+    isValidValue(value: string, context: BaseSerializationContext): boolean {
+        for (let versionedValue of this.values) {
+            if (value.toLowerCase() === versionedValue.value.toLowerCase()) {
+                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+
+                return targetVersion.compareTo(context.targetVersion) <= 0;
+            }
+        }
+
+        return false;
+    }
+
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string | undefined {
         let sourceValue = source[this.name];
 
