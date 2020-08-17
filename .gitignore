@@ -292,7 +292,5 @@ cscope.po.out
 # Teamwork.com VS extension
 twp.json
 
-# Python pycache 
-**/_pycache_
 # Android 
 **/.cxx/*
