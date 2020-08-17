@@ -970,10 +970,10 @@ export class CardDesigner extends Designer.DesignContext {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => {
-                        return JSON.stringify(this.getBoundCard(), null, 4);
-                    }
-                });
+                    text: (trigger) => JSON.stringify(this.getBoundCard(), null, 4)
+                })
+                .on("error", () => this._copyJSONButton.renderedElement.focus())
+                .on("success", () => this._copyJSONButton.renderedElement.focus());
         }
 
         // Tool palette panel
