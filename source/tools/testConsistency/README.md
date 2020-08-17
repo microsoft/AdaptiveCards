@@ -4,6 +4,9 @@ This project provides a web app to test the consistency of an adaptive card payl
 
 ![](assets/results.PNG)
 
+## Link to Spec 
+[Consistent Cards Spec](https://github.com/microsoft/AdaptiveCards/blob/main/specs/DesignDiscussions/ConsistentCards.md)
+
 This directory contains the following directories:
 1. **nodejs-renderer**: This contains the driver program and corresponding Flask App for the node js.
 2. **uwp-renderer**: This contains the driver app and corresponding Flask App for the uwp.
