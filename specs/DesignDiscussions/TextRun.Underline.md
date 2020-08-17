@@ -20,7 +20,7 @@ TextRuns are rendered using SpannableStrings, between the possible spans to use 
 
 NSMutableAttributedString are able to set underlines in the whole text and in some specific ranges using [NSUnderlineStyle](https://developer.apple.com/documentation/uikit/nsunderlinestyle)
 
-### .NET HTML
+### .NET HTML / JavaScript
 
 The `<u>` tag allows underlining but the style "text-decoration" property ended up being used as strikethrough also uses it and it can hold the values "line-through" and "underline" at the same time
 
