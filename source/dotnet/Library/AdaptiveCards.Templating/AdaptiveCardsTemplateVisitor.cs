@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace AdaptiveCards.Templating
@@ -43,6 +44,30 @@ namespace AdaptiveCards.Templating
             /// <param name="rootDataContext">root data context</param>
             public DataContext(JToken jtoken, JToken rootDataContext)
             {
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
+            /// </summary>
+            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
+            /// <param name="text">json in string</param>
+            /// <param name="rootDataContext">a root data context</param>
+            public DataContext(string text, JToken rootDataContext)
+            {
+                // disable date parsing handling
+                var jsonReader = new JsonTextReader(new StringReader(text)) { DateParseHandling = DateParseHandling.None };
+                var jtoken = JToken.Load(jsonReader);
+                Init(jtoken, rootDataContext);
+            }
+
+            /// <summary>
+            /// Initializer method that takes jtoken and root data context to initialize a data context object
+            /// </summary>
+            /// <param name="jtoken">current data context</param>
+            /// <param name="rootDataContext">root data context</param>
+            private void Init(JToken jtoken, JToken rootDataContext)
+            {
                 AELMemory = (jtoken is JObject) ? new SimpleObjectMemory(jtoken) : new SimpleObjectMemory(new JObject());
 
                 token = jtoken;
@@ -55,16 +80,6 @@ namespace AdaptiveCards.Templating
 
                 AELMemory.SetValue(dataKeyword, token);
                 AELMemory.SetValue(rootKeyword, rootDataContext);
-            }
-
-            /// <summary>
-            /// overload contructor that takes <paramref name="text"/> which is <c>string</c>
-            /// </summary>
-            /// <exception cref="JsonException"><c>JToken.Parse(text)</c> can throw JsonException if <paramref name="text"/> is invalid json</exception>
-            /// <param name="text">json in string</param>
-            /// <param name="rootDataContext">a root data context</param>
-            public DataContext(string text, JToken rootDataContext) : this(JToken.Parse(text), rootDataContext)
-            {
             }
 
             /// <summary>
@@ -92,8 +107,17 @@ namespace AdaptiveCards.Templating
             if (data?.Length != 0)
             {
                 // set data as root data context
-                root = JToken.Parse(data);
-                PushDataContext(data, root);
+                try
+                {
+                    var jsonReader = new JsonTextReader(new StringReader(data)) { DateParseHandling = DateParseHandling.None };
+                    root = JToken.Load(jsonReader);
+                    PushDataContext(data, root);
+                }
+                catch (JsonException innerException)
+                {
+                    throw new AdaptiveTemplateException("Setting root data failed with given data context", innerException);
+                }
+                
             }
 
             // if null, set default option
@@ -140,21 +164,18 @@ namespace AdaptiveCards.Templating
             DataContext parentDataContext = GetCurrentDataContext();
             if (jpath == null || parentDataContext == null)
             {
-                return;
+                throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            try
+            var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
+            if (error == null)
             {
-                var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
-                if (error == null)
-                {
-                    dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
-                }
+                dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
             }
-            catch (JsonException)
+            else
             {
-                // we swallow the error here
-                // as result, no data context will be set, and won't be evaluated using the given data context
+                // if there was an error during parsing data, it's irrecoverable
+                throw new Exception(error);
             }
         }
 
@@ -193,14 +214,8 @@ namespace AdaptiveCards.Templating
             // get value node from pair node
             // i.e. $data : "value"
             IParseTree templateDataValueNode = context.value();
-            // value was json object or json array, we take this json value and create a new data context
-            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueObjectContext || templateDataValueNode is AdaptiveCardsTemplateParser.ValueArrayContext)
-            {
-                string childJson = templateDataValueNode.GetText();
-                PushDataContext(childJson, root);
-            }
             // refer to label, valueTemplateStringWithRoot in AdaptiveCardsTemplateParser.g4 for the grammar this branch is checking
-            else if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
+            if (templateDataValueNode is AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)
             {
                 // call a visit method for further processing
                 Visit(templateDataValueNode);
@@ -214,7 +229,31 @@ namespace AdaptiveCards.Templating
                 {
                     // retrieve template literal and create a data context
                     var templateLiteral = (templateStrings[0] as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
-                    PushTemplatedDataContext(templateLiteral.GetText());
+                    try
+                    {
+                        PushTemplatedDataContext(templateLiteral.GetText());
+                    }
+                    catch (ArgumentNullException)
+                    {
+                        throw new ArgumentNullException($"Check if parent data context is set, or please enter a non-null value for '{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}'");
+                    }
+                    catch (JsonException innerException)
+                    {
+                        throw new AdaptiveTemplateException($"'{templateLiteral.Symbol.Text}' at line, '{templateLiteral.Symbol.Line}' is malformed for '$data : ' pair", innerException);
+                    }
+                }
+            }
+            else
+            // else clause handles all of the ordinary json values 
+            {
+                string childJson = templateDataValueNode.GetText();
+                try
+                {
+                    PushDataContext(childJson, root);
+                }
+                catch (JsonException innerException)
+                {
+                    throw new AdaptiveTemplateException($"parsing data failed at line, '{context.Start.Line}', '{childJson}' was given", innerException);
                 }
             }
 
@@ -252,8 +291,20 @@ namespace AdaptiveCards.Templating
             }
 
             // retrieves templateRoot of the grammar as in this method's summary
-            var child = context.templateRoot();
-            PushTemplatedDataContext(child.GetText());
+            var child = context.templateRoot() as AdaptiveCardsTemplateParser.TemplateStringWithRootContext;
+            try
+            {
+                PushTemplatedDataContext(child.GetText());
+            }
+            catch (ArgumentNullException)
+            {
+                throw new ArgumentException($"Check if parent data context is set, or please enter a non-null value for '{context.GetText()}' at line, '{context.Start.Line}'");
+            }
+            catch (JsonException innerException)
+            {
+                throw new AdaptiveTemplateException($"value of '$data : ', json pair, '{child.TEMPLATEROOT().Symbol.Text}' at line, '{child.TEMPLATEROOT().Symbol.Line}' is malformed", innerException);
+            }
+
             return new AdaptiveCardsTemplateResult();
         }
 
@@ -313,7 +364,7 @@ namespace AdaptiveCards.Templating
                 {
                     ITerminalNode[] stringChildren = templatedStringContext.STRING();
                     // if ther are no string tokens, we do not quates
-                    if (stringChildren.Length == 0)
+                    if (stringChildren.Length == 0 && HasDataContext())
                     {
                         result.Append(ExpandTemplatedString(templatedStringContext.TEMPLATELITERAL(), true));
                         return result;
@@ -406,31 +457,47 @@ namespace AdaptiveCards.Templating
                 if (isArrayType)
                 {
                     // set new data context
-                    PushDataContext(dataContext.GetDataContextAtIndex(iObj));
+                    try
+                    {
+                        PushDataContext(dataContext.GetDataContextAtIndex(iObj));
+                    }
+                    catch (Exception e)
+                    {
+                        throw new Exception($"setting data context failed with '{context.GetText()}' at line, '{context.Start.Line}'", e);
+                    }
                 }
 
                 // parse obj
                 AdaptiveCardsTemplateResult result = new AdaptiveCardsTemplateResult(context.LCB().GetText());
                 var whenEvaluationResult = AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated;
+                bool isPairAdded = false;
 
                 for (int iPair = 0; iPair < pairs.Length; iPair++)
                 {
                     var pair = pairs[iPair];
-                    // if the pair refers to same pair that was used for data cotext, do not add its entry
+                    // if the pair refers to same pair that was used for data context, do not add its entry
                     if (pair != dataPair)
                     {
                         var returnedResult = Visit(pair);
+
+                        // add a delimiter, e.g ',' before appending
+                        // a pair after first pair is added
+                        if (isPairAdded && !returnedResult.IsWhen)
+                        {
+                            result.Append(jsonPairDelimieter);
+                        }
+
+                        result.Append(returnedResult);
+
                         if (returnedResult.IsWhen)
                         {
                             whenEvaluationResult = returnedResult.WhenEvaluationResult;
                         }
-                        result.Append(returnedResult);
-
-                        // add a delimiter, ','
-                        if (iPair != pairs.Length - 1 && !returnedResult.IsWhen)
+                        else
                         {
-                            result.Append(jsonPairDelimieter);
+                            isPairAdded = true;
                         }
+
                     }
                 }
 
@@ -551,17 +618,17 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                if (value is string && isTemplatedString)
+                // this can be little counterintuitive, but template expand() is
+                // modifying serialized json string, so we serialize what's deserialized
+                var serializedValue = JsonConvert.SerializeObject(value);
+                if (!isTemplatedString && value is string)
                 {
-                    result.Append("\"");
+                    // length can not be less than 2 because template string will 
+                    // always have start and end token
+                    serializedValue = serializedValue.Substring(1, serializedValue.Length - 2);
                 }
 
-                result.Append(value.ToString());
-
-                if (value is string && isTemplatedString)
-                {
-                    result.Append("\"");
-                }
+                result.Append(serializedValue);
             }
             else
             {

@@ -19,9 +19,10 @@ TextElementProperties::TextElementProperties() :
 }
 
 TextElementProperties::TextElementProperties(const TextConfig& config, const std::string& text, const std::string& language) :
-    m_text(text), m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType),
-    m_textColor(config.color), m_isSubtle(config.isSubtle), m_language(language)
+    m_textSize(config.size), m_textWeight(config.weight), m_fontType(config.fontType), m_textColor(config.color),
+    m_isSubtle(config.isSubtle), m_language(language)
 {
+    SetText(text);
 }
 
 Json::Value TextElementProperties::SerializeToJsonValue(Json::Value& root) const
@@ -61,9 +62,44 @@ std::string TextElementProperties::GetText() const
     return m_text;
 }
 
+// Convert some HTML entities into characters
+std::string TextElementProperties::_ProcessHTMLEntities(const std::string& input)
+{
+    static const std::regex htmlEntities("&(amp|quot|lt|gt|nbsp);");
+
+    if (std::regex_search(input, htmlEntities))
+    {
+        // this needs to be kept up to date with htmlEntities above
+        // clang-format off
+        static const std::vector<std::pair<std::regex, std::string>> replacements =
+            {
+                { std::regex("&quot;"), "\"" },
+                { std::regex("&lt;"), "<" },
+                { std::regex("&gt;"), ">" },
+                { std::regex("&nbsp;"), " " },
+                { std::regex("&amp;"), "&" } // amp must be last
+            };
+        // clang-format on
+
+        // handle entities
+        std::string output = input;
+
+        for (const auto& replacement : replacements)
+        {
+            output = std::regex_replace(output, replacement.first, replacement.second);
+        }
+
+        return output;
+    }
+    else
+    {
+        return input;
+    }
+}
+
 void TextElementProperties::SetText(const std::string& value)
 {
-    m_text = value;
+    m_text = _ProcessHTMLEntities(value);
 }
 
 DateTimePreparser TextElementProperties::GetTextForDateParsing() const
@@ -121,7 +157,7 @@ void TextElementProperties::SetIsSubtle(const bool value)
     m_isSubtle = value;
 }
 
-std::string TextElementProperties::GetLanguage() const
+const std::string& TextElementProperties::GetLanguage() const
 {
     return m_language;
 }

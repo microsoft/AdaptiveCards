@@ -28,6 +28,7 @@ import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import io.adaptivecards.adaptivecardssample.CustomObjects.Actions.*;
@@ -51,7 +52,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class MainActivityAdaptiveCardsSample extends FragmentActivity
-        implements ICardActionHandler
+        implements ICardActionHandler, IInputWatcher
 {
 
     // Used to load the 'adaptivecards-native-lib' library on application startup.
@@ -63,10 +64,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private RemoteClientConnection m_remoteClientConnection;
     private Button m_buttonScanQr;
     private Button m_buttonDisconnect;
-    private View m_adaptiveCardPickerGroup;
-    private View m_hostConfigPickerGroup;
     private EditText m_jsonEditText;
     private EditText m_configEditText;
+    private TextView m_selectedCardText;
+    private TextView m_selectedHostConfigText;
     private Timer m_timer=new Timer();
     private final long DELAY = 1000; // milliseconds
 
@@ -85,17 +86,18 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_adaptive_cards_sample);
 
-        m_buttonScanQr = (Button)findViewById(R.id.buttonScanQr);
-        m_buttonDisconnect = (Button)findViewById(R.id.buttonDisconnect);
-        m_adaptiveCardPickerGroup = findViewById(R.id.adaptiveCardPickerGroup);
-        m_hostConfigPickerGroup = findViewById(R.id.hostConfigPickerGroup);
+        m_buttonScanQr = findViewById(R.id.buttonScanQr);
+        m_buttonDisconnect = findViewById(R.id.buttonDisconnect);
 
         setupTabs();
         setupOptions();
 
+        m_selectedCardText = findViewById(R.id.selectedCardText);
+        m_selectedHostConfigText = findViewById(R.id.selectedHostConfigText);
+
         // Add text change handler
-        m_jsonEditText = (EditText) findViewById(R.id.jsonAdaptiveCard);
-        m_configEditText = (EditText) findViewById(R.id.hostConfig);
+        m_jsonEditText = findViewById(R.id.jsonAdaptiveCard);
+        m_configEditText = findViewById(R.id.hostConfig);
 
         TextWatcher watcher = new TextWatcher()
         {
@@ -114,6 +116,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_jsonEditText.addTextChangedListener(watcher);
         m_configEditText.addTextChangedListener(watcher);
+
+        renderImporterCard(true);
     }
 
     public class SwitchListener implements CompoundButton.OnCheckedChangeListener
@@ -143,6 +147,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         TabHost tabHost = (TabHost) findViewById(R.id.tabHost);
         tabHost.setup();
+        tabHost.addTab(tabHost.newTabSpec("tab_importer").setIndicator("Import").setContent(R.id.importer));
         tabHost.addTab(tabHost.newTabSpec("tab_visual").setIndicator("Visual").setContent(R.id.Visual));
         tabHost.addTab(tabHost.newTabSpec("tab_json").setIndicator("JSON").setContent(R.id.JSON));
         tabHost.addTab(tabHost.newTabSpec("tab_config").setIndicator("Config").setContent(R.id.config));
@@ -205,6 +210,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             elementParserRegistration = new ElementParserRegistration();
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
+            elementParserRegistration.AddParser(CustomInput.customInputTypeString, new CustomInput.CustomInputParser());
 
             actionParserRegistration = new ActionParserRegistration();
             actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
@@ -288,6 +294,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         if (m_customElements.isChecked())
         {
             CardRendererRegistration.getInstance().registerRenderer("blah", new CustomBlahRenderer());
+            CardRendererRegistration.getInstance().registerRenderer(CustomInput.customInputTypeString, new CustomInput.CustomInputRenderer());
         }
     }
 
@@ -343,25 +350,57 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    /**
+     * Render importer UI (defined as an AdaptiveCard) in the importer tab
+     * @param showErrorToast show toast on IO errors, if True
+     */
+    private void renderImporterCard(boolean showErrorToast)
+    {
+        try
+        {
+            ParseResult parseResult = AdaptiveCard.DeserializeFromString(readStream(getResources().openRawResource(R.raw.importer_card)), AdaptiveCardRenderer.VERSION);
+            LinearLayout importerLayout = (LinearLayout) findViewById(R.id.importerCardLayout);
+            importerLayout.removeAllViews();
+
+            CardRendererRegistration.getInstance().setInputWatcher(this);
+
+            RenderedAdaptiveCard importerCard = AdaptiveCardRenderer.getInstance().render(this, getSupportFragmentManager(), parseResult.GetAdaptiveCard(), this);
+            importerLayout.addView(importerCard.getView());
+        }
+        catch (Exception ex)
+        {
+            if (showErrorToast) {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     private static final int FILE_SELECT_CARD = 0;
     private static final int FILE_SELECT_CONFIG = 1;
-    public void onClickFileBrowser(View view)
+    /**
+     * Creates file manager intent to allow user to choose JSON file for import.
+     * @param fileType indicates card JSON (FILE_SELECT_CARD) or host config JSON (FILE_SELECT_CONFIG)
+     */
+    public void onClickFileBrowser(int fileType)
     {
         Intent fileBrowserIntent = new Intent(Intent.ACTION_GET_CONTENT);
         fileBrowserIntent.setType("*/*");
         fileBrowserIntent.addCategory(Intent.CATEGORY_OPENABLE);
-        fileBrowserIntent.putExtra(IS_CARD, view.getId() == R.id.loadCardButton);
 
         try {
             startActivityForResult(
-                    Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"),
-                    view.getId() == R.id.loadCardButton ? FILE_SELECT_CARD : FILE_SELECT_CONFIG);
+                Intent.createChooser(fileBrowserIntent, "Select a JSON File to Open"), fileType);
         } catch (android.content.ActivityNotFoundException ex) {
             // Potentially direct the user to the Market with a Dialog
             Toast.makeText(this, "Please install a File Manager.", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * Reads file at uri into a String
+     * @param uri file path
+     * @return file contents
+     */
     private String loadFile(Uri uri)
     {
         // Get the Uri of the selected file
@@ -371,10 +410,35 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             return null;
         }
 
-        InputStream inputStream = null;
         try
         {
-            inputStream = getContentResolver().openInputStream(uri);
+            return readStream(getContentResolver().openInputStream(uri));
+        }
+        catch (FileNotFoundException e)
+        {
+            try
+            {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                return readStream(inputStream);
+            }
+            catch (Exception e2)
+            {
+                Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Reads inputStream into a String
+     * @param inputStream stream to read from
+     * @return file contents
+     */
+    private String readStream(InputStream inputStream)
+    {
+        try
+        {
             BufferedReader r = new BufferedReader(new InputStreamReader(inputStream));
             StringBuilder total = new StringBuilder();
             String line;
@@ -386,10 +450,6 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
             return total.toString();
         }
-        catch (FileNotFoundException e)
-        {
-            Toast.makeText(this, "File " + uri.getPath() + " was not found.", Toast.LENGTH_SHORT).show();
-        }
         catch (IOException ioExcep)
         {
 
@@ -398,50 +458,34 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return null;
     }
 
-    private void loadAdaptiveCard(Intent data)
+    /**
+     * Load given AdaptiveCard
+     * @param fileName name of chosen card JSON file
+     * @param card file contents
+     */
+    private void loadAdaptiveCard(String fileName, String card)
     {
-
-        String fullString = loadFile(data.getData());
-        if (fullString.isEmpty())
+        if (card.isEmpty())
         {
+            Toast.makeText(this, "Card was empty.", Toast.LENGTH_SHORT).show();
             return;
         }
-        loadAdaptiveCard(fullString);
-
-        EditText fileEditText = (EditText) findViewById(R.id.fileEditText);
-        List path = data.getData().getPathSegments();
-        fileEditText.setText((String)path.get(path.size()-1));
-
-    }
-
-    private void loadAdaptiveCard(String payload)
-    {
-        m_jsonEditText.setText(payload);
+        m_selectedCardText.setText(fileName);
+        m_jsonEditText.setText(card);
 
         // Render it immediately
         renderAdaptiveCard(true);
     }
 
-
-    private void loadHostConfig(Intent data)
+    /**
+     * Load given host config
+     * @param fileName name of chosen host config JSON file
+     * @param hostConfig file contents
+     */
+    private void loadHostConfig(String fileName, String hostConfig)
     {
-        String fullString = loadFile(data.getData());
-        if (fullString.isEmpty())
-        {
-            return;
-        }
-
-        loadHostConfig(fullString);
-
-        EditText fileEditText = (EditText) findViewById(R.id.hostConfigFileEditText);
-        List path = data.getData().getPathSegments();
-        fileEditText.setText((String)path.get(path.size()-1));
-
-    }
-
-    private void loadHostConfig(String hostConfigStr)
-    {
-        m_configEditText.setText(hostConfigStr);
+        m_selectedHostConfigText.setText(fileName);
+        m_configEditText.setText(hostConfig);
 
         // Render it immediately
         renderAdaptiveCard(true);
@@ -457,13 +501,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             case FILE_SELECT_CARD:
                 if (resultCode == RESULT_OK)
                 {
-                    loadAdaptiveCard(data);
+                    String fileName = data.getData().getLastPathSegment();
+                    loadAdaptiveCard(fileName, loadFile(data.getData()));
                 }
                 break;
             case FILE_SELECT_CONFIG:
                 if (resultCode == RESULT_OK)
                 {
-                    loadHostConfig(data);
+                    String fileName = data.getData().getLastPathSegment();
+                    loadHostConfig(fileName, loadFile(data.getData()));
                 }
                 break;
         }
@@ -479,10 +525,23 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
         SubmitAction submitAction = null;
-        if (actionElement instanceof SubmitAction) {
+
+        if (actionElement instanceof SubmitAction)
+        {
             submitAction = (SubmitAction) actionElement;
-        } else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null) {
+        }
+        else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
+        {
             throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
+        if (actionElement.GetId().equals("cardFileAction"))
+        {
+            onClickFileBrowser(FILE_SELECT_CARD);
+        }
+        else if (actionElement.GetId().equals("hostConfigFileAction"))
+        {
+            onClickFileBrowser(FILE_SELECT_CONFIG);
         }
 
         String data = submitAction.GetDataJson();
@@ -597,6 +656,35 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         showToast("Media ended playing: " + mediaElement, Toast.LENGTH_LONG);
     }
 
+
+    /**
+     * Handles input change notifications from AdaptiveCards
+     * @param id card input's id
+     * @param value new input value
+     */
+    @Override
+    public void onInputChange(String id, String value)
+    {
+        try
+        {
+            if (id.equals("sampleCardName") && !value.isEmpty())
+            {
+                String filename = value.substring(value.lastIndexOf('/'));
+                loadAdaptiveCard(filename, readStream(getAssets().open(value)));
+            }
+            else if (id.equals("sampleHostConfigName") && !value.isEmpty())
+            {
+                String filename = value.substring(value.lastIndexOf('/'));
+                loadHostConfig(filename, readStream(getAssets().open(value)));
+            }
+        }
+        catch (IOException e)
+        {
+            Toast.makeText(this, "Failed to open " + value, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
     public void showToast(String text, int duration)
     {
         class RunnableExtended implements Runnable
@@ -703,7 +791,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadAdaptiveCard(cPayload);
+                                loadAdaptiveCard("", cPayload);
                             }
                         });
                     }
@@ -715,7 +803,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                loadHostConfig(hPayload);
+                                loadHostConfig("", hPayload);
                             }
                         });
                     }
@@ -787,16 +875,12 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void goToReadOnlyState()
     {
-        m_adaptiveCardPickerGroup.setVisibility(View.GONE);
-        m_hostConfigPickerGroup.setVisibility(View.GONE);
         m_jsonEditText.setEnabled(false);
         m_configEditText.setEnabled(false);
     }
 
     private void goToEditableState()
     {
-        m_adaptiveCardPickerGroup.setVisibility(View.VISIBLE);
-        m_hostConfigPickerGroup.setVisibility(View.VISIBLE);
         m_jsonEditText.setEnabled(true);
         m_configEditText.setEnabled(true);
     }

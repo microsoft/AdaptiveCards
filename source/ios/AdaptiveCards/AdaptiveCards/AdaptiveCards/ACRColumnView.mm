@@ -2,7 +2,7 @@
 //  ACRColumnView
 //  ACRColumnView.mm
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ACRColumnView.h"
@@ -14,9 +14,28 @@
     self.axis = UILayoutConstraintAxisVertical;
     [super config:attributes];
     self.isLastColumn = NO;
+    self.inputHandlers = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
 }
 
 - (void)addArrangedSubview:(UIView *)view
+{
+    [self configureWidthOfView:view];
+
+    [super addArrangedSubview:view];
+
+    [self increaseIntrinsicContentSize:view];
+}
+
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex
+{
+    [self configureWidthOfView:view];
+
+    [super insertArrangedSubview:view atIndex:insertionIndex];
+
+    [self increaseIntrinsicContentSize:view];
+}
+
+- (void)configureWidthOfView:(UIView *)view
 {
     // if auto, maintain content size whenever possible
     if ([self.columnWidth isEqualToString:@"auto"]) {
@@ -36,10 +55,6 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
-
-    [super addArrangedSubview:view];
-
-    [self increaseIntrinsicContentSize:view];
 }
 
 - (void)increaseIntrinsicContentSize:(UIView *)view

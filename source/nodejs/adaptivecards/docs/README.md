@@ -12,9 +12,9 @@
 * [FillMode](enums/fillmode.md)
 * [FontType](enums/fonttype.md)
 * [HorizontalAlignment](enums/horizontalalignment.md)
+* [ImageSize](enums/imagesize.md)
 * [ImageStyle](enums/imagestyle.md)
 * [InputTextStyle](enums/inputtextstyle.md)
-* [InputValidationNecessity](enums/inputvalidationnecessity.md)
 * [Orientation](enums/orientation.md)
 * [ShowCardActionMode](enums/showcardactionmode.md)
 * [Size](enums/size.md)
@@ -23,23 +23,28 @@
 * [TextColor](enums/textcolor.md)
 * [TextSize](enums/textsize.md)
 * [TextWeight](enums/textweight.md)
-* [ValidationError](enums/validationerror.md)
+* [ValidationEvent](enums/validationevent.md)
+* [ValidationPhase](enums/validationphase.md)
 * [VerticalAlignment](enums/verticalalignment.md)
 
 ### Classes
 
 * [Action](classes/action.md)
+* [ActionProperty](classes/actionproperty.md)
 * [ActionSet](classes/actionset.md)
 * [ActionStyle](classes/actionstyle.md)
-* [ActionTypeRegistry](classes/actiontyperegistry.md)
 * [ActionsConfig](classes/actionsconfig.md)
 * [AdaptiveCard](classes/adaptivecard.md)
 * [AdaptiveCardConfig](classes/adaptivecardconfig.md)
 * [BackgroundImage](classes/backgroundimage.md)
+* [BaseSerializationContext](classes/baseserializationcontext.md)
 * [BaseTextBlock](classes/basetextblock.md)
+* [BaseTextDefinition](classes/basetextdefinition.md)
+* [BoolProperty](classes/boolproperty.md)
 * [CardElement](classes/cardelement.md)
 * [CardElementContainer](classes/cardelementcontainer.md)
 * [CardObject](classes/cardobject.md)
+* [CardObjectRegistry](classes/cardobjectregistry.md)
 * [Choice](classes/choice.md)
 * [ChoiceSetInput](classes/choicesetinput.md)
 * [ColorDefinition](classes/colordefinition.md)
@@ -51,8 +56,9 @@
 * [ContainerStyleDefinition](classes/containerstyledefinition.md)
 * [ContainerStyleSet](classes/containerstyleset.md)
 * [ContainerWithActions](classes/containerwithactions.md)
+* [CustomProperty](classes/customproperty.md)
 * [DateInput](classes/dateinput.md)
-* [ElementTypeRegistry](classes/elementtyperegistry.md)
+* [EnumProperty](classes/enumproperty.md)
 * [Fact](classes/fact.md)
 * [FactSet](classes/factset.md)
 * [FactSetConfig](classes/factsetconfig.md)
@@ -60,7 +66,8 @@
 * [FactTitleDefinition](classes/facttitledefinition.md)
 * [FontTypeDefinition](classes/fonttypedefinition.md)
 * [FontTypeSet](classes/fonttypeset.md)
-* [HostCapabilities](classes/hostcapabilities.md)
+* [GlobalRegistry](classes/globalregistry.md)
+* [GlobalSettings](classes/globalsettings.md)
 * [HostConfig](classes/hostconfig.md)
 * [HttpAction](classes/httpaction.md)
 * [HttpHeader](classes/httpheader.md)
@@ -68,20 +75,31 @@
 * [ImageSet](classes/imageset.md)
 * [ImageSetConfig](classes/imagesetconfig.md)
 * [Input](classes/input.md)
-* [InputValidationOptions](classes/inputvalidationoptions.md)
+* [InputConfig](classes/inputconfig.md)
+* [InputLabelConfig](classes/inputlabelconfig.md)
 * [Media](classes/media.md)
 * [MediaConfig](classes/mediaconfig.md)
 * [MediaSource](classes/mediasource.md)
+* [NumProperty](classes/numproperty.md)
 * [NumberInput](classes/numberinput.md)
 * [OpenUrlAction](classes/openurlaction.md)
 * [PaddingDefinition](classes/paddingdefinition.md)
+* [PixelSizeProperty](classes/pixelsizeproperty.md)
+* [PropertyDefinition](classes/propertydefinition.md)
+* [RequiredInputLabelTextDefinition](classes/requiredinputlabeltextdefinition.md)
 * [RichTextBlock](classes/richtextblock.md)
 * [SerializableObject](classes/serializableobject.md)
+* [SerializableObjectCollectionProperty](classes/serializableobjectcollectionproperty.md)
+* [SerializableObjectProperty](classes/serializableobjectproperty.md)
+* [SerializableObjectSchema](classes/serializableobjectschema.md)
+* [SerializationContext](classes/serializationcontext.md)
 * [ShowCardAction](classes/showcardaction.md)
 * [ShowCardActionConfig](classes/showcardactionconfig.md)
 * [SizeAndUnit](classes/sizeandunit.md)
 * [SpacingDefinition](classes/spacingdefinition.md)
+* [StringProperty](classes/stringproperty.md)
 * [StringWithSubstitutions](classes/stringwithsubstitutions.md)
+* [Strings](classes/strings.md)
 * [StylableCardElementContainer](classes/stylablecardelementcontainer.md)
 * [SubmitAction](classes/submitaction.md)
 * [TextBlock](classes/textblock.md)
@@ -89,13 +107,14 @@
 * [TextInput](classes/textinput.md)
 * [TextRun](classes/textrun.md)
 * [TimeInput](classes/timeinput.md)
+* [TimeProperty](classes/timeproperty.md)
 * [ToggleInput](classes/toggleinput.md)
 * [ToggleVisibilityAction](classes/togglevisibilityaction.md)
-* [TypeRegistry](classes/typeregistry.md)
 * [UUID](classes/uuid.md)
-* [ValidationFailure](classes/validationfailure.md)
 * [ValidationResults](classes/validationresults.md)
+* [ValueSetProperty](classes/valuesetproperty.md)
 * [Version](classes/version.md)
+* [Versions](classes/versions.md)
 
 ### Interfaces
 
@@ -109,34 +128,38 @@
 * [IResourceInformation](interfaces/iresourceinformation.md)
 * [ISeparationDefinition](interfaces/iseparationdefinition.md)
 * [ITypeRegistration](interfaces/ityperegistration.md)
-* [IValidationError](interfaces/ivalidationerror.md)
+* [IValidationEvent](interfaces/ivalidationevent.md)
+* [IVersionedValue](interfaces/iversionedvalue.md)
 
 ### Type aliases
 
+* [ActionType](README.md#actiontype)
 * [CardElementHeight](README.md#cardelementheight)
+* [CardObjectType](README.md#cardobjecttype)
 * [ColumnWidth](README.md#columnwidth)
 * [Dictionary](README.md#dictionary)
-* [HostCapabilityMap](README.md#hostcapabilitymap)
-* [HostCapabilityVersion](README.md#hostcapabilityversion)
+* [PropertyBag](README.md#propertybag)
+* [SerializableObjectType](README.md#serializableobjecttype)
+* [TargetVersion](README.md#targetversion)
+
+### Variables
+
+* [defaultHostConfig](README.md#const-defaulthostconfig)
 
 ### Functions
 
 * [appendChild](README.md#appendchild)
-* [createActionInstance](README.md#createactioninstance)
-* [createElementInstance](README.md#createelementinstance)
 * [generateUniqueId](README.md#generateuniqueid)
-* [getBoolValue](README.md#getboolvalue)
-* [getEnumValue](README.md#getenumvalue)
+* [getEnumValueByName](README.md#getenumvaluebyname)
 * [getFitStatus](README.md#getfitstatus)
-* [getNumberValue](README.md#getnumbervalue)
-* [getStringValue](README.md#getstringvalue)
-* [isNullOrEmpty](README.md#isnullorempty)
-* [parseHostConfigEnum](README.md#parsehostconfigenum)
+* [isMobileOS](README.md#ismobileos)
+* [isVersionLessOrEqual](README.md#isversionlessorequal)
+* [parseBool](README.md#parsebool)
+* [parseEnum](README.md#parseenum)
+* [parseNumber](README.md#parsenumber)
+* [parseString](README.md#parsestring)
+* [property](README.md#property)
 * [renderSeparation](README.md#renderseparation)
-* [setArrayProperty](README.md#setarrayproperty)
-* [setEnumProperty](README.md#setenumproperty)
-* [setNumberProperty](README.md#setnumberproperty)
-* [setProperty](README.md#setproperty)
 * [stringToCssColor](README.md#stringtocsscolor)
 * [truncate](README.md#truncate)
 
@@ -146,11 +169,29 @@
 
 ## Type aliases
 
+###  ActionType
+
+Ƭ **ActionType**: *object*
+
+#### Type declaration:
+
+* **new __type**(): *[Action](classes/action.md)*
+
+___
+
 ###  CardElementHeight
 
 Ƭ **CardElementHeight**: *"auto" | "stretch"*
 
-*Defined in [card-elements.ts:293](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L293)*
+___
+
+###  CardObjectType
+
+Ƭ **CardObjectType**: *object*
+
+#### Type declaration:
+
+* **new __type**(): *[CardObject](classes/cardobject.md)*
 
 ___
 
@@ -158,15 +199,11 @@ ___
 
 Ƭ **ColumnWidth**: *[SizeAndUnit](classes/sizeandunit.md) | "auto" | "stretch"*
 
-*Defined in [card-elements.ts:5819](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L5819)*
-
 ___
 
 ###  Dictionary
 
 Ƭ **Dictionary**: *object*
-
-*Defined in [shared.ts:22](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L22)*
 
 #### Type declaration:
 
@@ -174,85 +211,361 @@ ___
 
 ___
 
-###  HostCapabilityMap
+###  PropertyBag
 
-Ƭ **HostCapabilityMap**: *object*
-
-*Defined in [host-config.ts:479](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L479)*
+Ƭ **PropertyBag**: *object*
 
 #### Type declaration:
 
-* \[ **key**: *string*\]: [HostCapabilityVersion](README.md#hostcapabilityversion)
+* \[ **propertyName**: *string*\]: any
 
 ___
 
-###  HostCapabilityVersion
+###  SerializableObjectType
 
-Ƭ **HostCapabilityVersion**: *[Version](classes/version.md) | "*"*
+Ƭ **SerializableObjectType**: *object*
 
-*Defined in [host-config.ts:478](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L478)*
+#### Type declaration:
+
+* **new __type**(): *[SerializableObject](classes/serializableobject.md)*
+
+___
+
+###  TargetVersion
+
+Ƭ **TargetVersion**: *[Version](classes/version.md) | "*"*
+
+## Variables
+
+### `Const` defaultHostConfig
+
+• **defaultHostConfig**: *[HostConfig](classes/hostconfig.md)* = new HostConfig(
+    {
+        supportsInteractivity: true,
+        spacing: {
+            small: 10,
+            default: 20,
+            medium: 30,
+            large: 40,
+            extraLarge: 50,
+            padding: 20
+        },
+        separator: {
+            lineThickness: 1,
+            lineColor: "#EEEEEE"
+        },
+        fontTypes: {
+            default: {
+                fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+                fontSizes: {
+                    small: 12,
+                    default: 14,
+                    medium: 17,
+                    large: 21,
+                    extraLarge: 26
+                },
+                fontWeights: {
+                    lighter: 200,
+                    default: 400,
+                    bolder: 600
+                }
+            },
+            monospace: {
+                fontFamily: "'Courier New', Courier, monospace",
+                fontSizes: {
+                    small: 12,
+                    default: 14,
+                    medium: 17,
+                    large: 21,
+                    extraLarge: 26
+                },
+                fontWeights: {
+                    lighter: 200,
+                    default: 400,
+                    bolder: 600
+                }
+            }
+        },
+        imageSizes: {
+            small: 40,
+            medium: 80,
+            large: 160
+        },
+        containerStyles: {
+            default: {
+                backgroundColor: "#FFFFFF",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            emphasis: {
+                backgroundColor: "#08000000",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            accent: {
+                backgroundColor: "#C7DEF9",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            good: {
+                backgroundColor: "#CCFFCC",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            attention: {
+                backgroundColor: "#FFC5B2",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            },
+            warning: {
+                backgroundColor: "#FFE2B2",
+                foregroundColors: {
+                    default: {
+                        default: "#333333",
+                        subtle: "#EE333333"
+                    },
+                    dark: {
+                        default: "#000000",
+                        subtle: "#66000000"
+                    },
+                    light: {
+                        default: "#FFFFFF",
+                        subtle: "#33000000"
+                    },
+                    accent: {
+                        default: "#2E89FC",
+                        subtle: "#882E89FC"
+                    },
+                    attention: {
+                        default: "#cc3300",
+                        subtle: "#DDcc3300"
+                    },
+                    good: {
+                        default: "#028A02",
+                        subtle: "#DD027502"
+                    },
+                    warning: {
+                        default: "#e69500",
+                        subtle: "#DDe69500"
+                    }
+                }
+            }
+        },
+        inputs: {
+            label: {
+                requiredInputs: {
+                    color: Enums.TextColor.Accent,
+                    size: Enums.TextSize.ExtraLarge,
+                    weight: Enums.TextWeight.Bolder,
+                    isSubtle: true,
+                    suffix: " (required)",
+                    suffixColor: Enums.TextColor.Good
+                },
+                optionalInputs: {
+                    color: Enums.TextColor.Warning,
+                    size: Enums.TextSize.Medium,
+                    weight: Enums.TextWeight.Lighter,
+                    isSubtle: false
+                }
+            },
+            errorMessage: {
+                color: Enums.TextColor.Accent,
+                size: Enums.TextSize.Small,
+                weight: Enums.TextWeight.Bolder
+            }
+        },
+        actions: {
+            maxActions: 5,
+            spacing: Enums.Spacing.Default,
+            buttonSpacing: 10,
+            showCard: {
+                actionMode: Enums.ShowCardActionMode.Inline,
+                inlineTopMargin: 16
+            },
+            actionsOrientation: Enums.Orientation.Horizontal,
+            actionAlignment: Enums.ActionAlignment.Left
+        },
+        adaptiveCard: {
+            allowCustomStyle: false
+        },
+        imageSet: {
+            imageSize: Enums.Size.Medium,
+            maxImageHeight: 100
+        },
+        factSet: {
+            title: {
+                color: Enums.TextColor.Default,
+                size: Enums.TextSize.Default,
+                isSubtle: false,
+                weight: Enums.TextWeight.Bolder,
+                wrap: true,
+                maxWidth: 150,
+            },
+            value: {
+                color: Enums.TextColor.Default,
+                size: Enums.TextSize.Default,
+                isSubtle: false,
+                weight: Enums.TextWeight.Default,
+                wrap: true,
+            },
+            spacing: 10
+        }
+    })
 
 ## Functions
 
 ###  appendChild
 
-▸ **appendChild**(`node`: Node, `child`: Node): *void*
-
-*Defined in [utils.ts:25](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L25)*
-
-Appends `child` to `node` if `child` is valid
+▸ **appendChild**(`node`: Node, `child`: Node | undefined): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `node` | Node |
-`child` | Node |
+`child` | Node &#124; undefined |
 
 **Returns:** *void*
-
-___
-
-###  createActionInstance
-
-▸ **createActionInstance**(`parent`: [CardElement](classes/cardelement.md), `json`: any, `forbiddenActionTypes`: string[], `allowFallback`: boolean, `errors`: Array‹[IValidationError](interfaces/ivalidationerror.md)›): *[Action](classes/action.md)*
-
-*Defined in [card-elements.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L99)*
-
-Instantiates an [`Action`](classes/action.md) for a [`CardElement`](classes/cardelement.md)
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`parent` | [CardElement](classes/cardelement.md) | The [`CardElement`](classes/cardelement.md) for which to create an [`Action`](classes/action.md) |
-`json` | any | A json object containing [`Action`](classes/action.md) properties |
-`forbiddenActionTypes` | string[] | A list of action types that are not allowed to be created |
-`allowFallback` | boolean | Whether to allow element fallback to occur |
-`errors` | Array‹[IValidationError](interfaces/ivalidationerror.md)› | A list of validation errors encountered while parsing the action  |
-
-**Returns:** *[Action](classes/action.md)*
-
-___
-
-###  createElementInstance
-
-▸ **createElementInstance**(`parent`: [CardElement](classes/cardelement.md), `json`: any, `allowFallback`: boolean, `errors`: Array‹[IValidationError](interfaces/ivalidationerror.md)›): *[CardElement](classes/cardelement.md)*
-
-*Defined in [card-elements.ts:135](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L135)*
-
-Instantiates a [`CardElement`](classes/cardelement.md)
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`parent` | [CardElement](classes/cardelement.md) | The parent of this [`CardElement`](classes/cardelement.md) |
-`json` | any | A json object containing [`CardElement`](classes/cardelement.md) properties |
-`allowFallback` | boolean | Whether to allow element fallback to occur |
-`errors` | Array‹[IValidationError](interfaces/ivalidationerror.md)› | A list of validation errors encountered while parsing the action  |
-
-**Returns:** *[CardElement](classes/cardelement.md)*
 
 ___
 
@@ -260,69 +573,30 @@ ___
 
 ▸ **generateUniqueId**(): *string*
 
-*Defined in [utils.ts:10](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L10)*
-
 Generate a UUID prepended with "__ac-"
 
 **Returns:** *string*
 
 ___
 
-###  getBoolValue
+###  getEnumValueByName
 
-▸ **getBoolValue**(`value`: any, `defaultValue`: boolean): *boolean*
-
-*Defined in [utils.ts:48](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L48)*
+▸ **getEnumValueByName**(`enumType`: object, `name`: string): *number | undefined*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`value` | any |
-`defaultValue` | boolean |
+`enumType` | object |
+`name` | string |
 
-**Returns:** *boolean*
-
-`value` if it's a `boolean` or if it's `"true"` or `"false"`. Otherwise returns `defaultValue || undefined`
-
-___
-
-###  getEnumValue
-
-▸ **getEnumValue**(`targetEnum`: object, `name`: string, `defaultValue`: number): *number*
-
-*Defined in [utils.ts:82](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L82)*
-
-Convert from a `string` to an `enum` value
-``` typescript
-enum Test {
-     Pass,
-     Fail,
-     Unknown
-}
-getEnumValue(Test, "Fail", Test.Unknown); // returns 1 (Test.Fail)
-getEnumValue(Test, "Not an enum value", Test.Unknown); // returns 2 (Test.Unknown)
-```
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`targetEnum` | object | `enum` to resolve against |
-`name` | string | `string` to look up |
-`defaultValue` | number | value to use if lookup fails |
-
-**Returns:** *number*
-
-Numeric `enum` value if lookup succeeded. Otherwise `defaultValue`
+**Returns:** *number | undefined*
 
 ___
 
 ###  getFitStatus
 
 ▸ **getFitStatus**(`element`: HTMLElement, `containerEnd`: number): *[ContainerFitStatus](enums/containerfitstatus.md)*
-
-*Defined in [utils.ts:325](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L325)*
 
 **Parameters:**
 
@@ -335,85 +609,107 @@ Name | Type |
 
 ___
 
-###  getNumberValue
+###  isMobileOS
 
-▸ **getNumberValue**(`obj`: any, `defaultValue`: number): *number*
-
-*Defined in [utils.ts:41](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L41)*
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`obj` | any | - |
-`defaultValue` | number | undefined |
-
-**Returns:** *number*
-
-`obj` if `obj` is of type `number`. Otherwise, returns `defaultValue || undefined`
-
-___
-
-###  getStringValue
-
-▸ **getStringValue**(`obj`: any, `defaultValue`: string): *string*
-
-*Defined in [utils.ts:34](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L34)*
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`obj` | any | - |
-`defaultValue` | string | undefined |
-
-**Returns:** *string*
-
-`obj.toString()` if `obj` is of type `string`. Otherwise, returns `defaultValue || undefined`
-
-___
-
-###  isNullOrEmpty
-
-▸ **isNullOrEmpty**(`value`: string): *boolean*
-
-*Defined in [utils.ts:18](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L18)*
-
-**Parameters:**
-
-Name | Type | Description |
------- | ------ | ------ |
-`value` | string | string to test |
+▸ **isMobileOS**(): *boolean*
 
 **Returns:** *boolean*
 
-`true` if `string` is `undefined`, `null`, or `""`
-
 ___
 
-###  parseHostConfigEnum
+###  isVersionLessOrEqual
 
-▸ **parseHostConfigEnum**(`targetEnum`: object, `value`: string | number, `defaultValue`: any): *any*
-
-*Defined in [utils.ts:175](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L175)*
+▸ **isVersionLessOrEqual**(`version`: [TargetVersion](README.md#targetversion), `targetVersion`: [TargetVersion](README.md#targetversion)): *boolean*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`targetEnum` | object |
-`value` | string &#124; number |
-`defaultValue` | any |
+`version` | [TargetVersion](README.md#targetversion) |
+`targetVersion` | [TargetVersion](README.md#targetversion) |
 
-**Returns:** *any*
+**Returns:** *boolean*
+
+___
+
+###  parseBool
+
+▸ **parseBool**(`value`: any, `defaultValue?`: undefined | false | true): *boolean | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | any |
+`defaultValue?` | undefined &#124; false &#124; true |
+
+**Returns:** *boolean | undefined*
+
+___
+
+###  parseEnum
+
+▸ **parseEnum**(`enumType`: object, `name`: string, `defaultValue?`: undefined | number): *number | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`enumType` | object |
+`name` | string |
+`defaultValue?` | undefined &#124; number |
+
+**Returns:** *number | undefined*
+
+___
+
+###  parseNumber
+
+▸ **parseNumber**(`obj`: any, `defaultValue?`: undefined | number): *number | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`obj` | any |
+`defaultValue?` | undefined &#124; number |
+
+**Returns:** *number | undefined*
+
+___
+
+###  parseString
+
+▸ **parseString**(`obj`: any, `defaultValue?`: undefined | string): *string | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`obj` | any |
+`defaultValue?` | undefined &#124; string |
+
+**Returns:** *string | undefined*
+
+___
+
+###  property
+
+▸ **property**(`property`: [PropertyDefinition](classes/propertydefinition.md)): *(Anonymous function)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](classes/propertydefinition.md) |
+
+**Returns:** *(Anonymous function)*
 
 ___
 
 ###  renderSeparation
 
-▸ **renderSeparation**(`hostConfig`: [HostConfig](classes/hostconfig.md), `separationDefinition`: [ISeparationDefinition](interfaces/iseparationdefinition.md), `orientation`: [Orientation](enums/orientation.md)): *HTMLElement*
-
-*Defined in [utils.ts:187](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L187)*
+▸ **renderSeparation**(`hostConfig`: [HostConfig](classes/hostconfig.md), `separationDefinition`: [ISeparationDefinition](interfaces/iseparationdefinition.md), `orientation`: [Orientation](enums/orientation.md)): *HTMLElement | undefined*
 
 **Parameters:**
 
@@ -423,107 +719,27 @@ Name | Type |
 `separationDefinition` | [ISeparationDefinition](interfaces/iseparationdefinition.md) |
 `orientation` | [Orientation](enums/orientation.md) |
 
-**Returns:** *HTMLElement*
-
-___
-
-###  setArrayProperty
-
-▸ **setArrayProperty**(`target`: object, `propertyName`: string, `propertyValue`: any[]): *void*
-
-*Defined in [utils.ts:156](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L156)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`target` | object |
-`propertyName` | string |
-`propertyValue` | any[] |
-
-**Returns:** *void*
-
-___
-
-###  setEnumProperty
-
-▸ **setEnumProperty**(`enumType`: object, `target`: object, `propertyName`: string, `propertyValue`: number, `defaultValue`: number): *void*
-
-*Defined in [utils.ts:134](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L134)*
-
-**Parameters:**
-
-Name | Type | Default |
------- | ------ | ------ |
-`enumType` | object | - |
-`target` | object | - |
-`propertyName` | string | - |
-`propertyValue` | number | - |
-`defaultValue` | number | undefined |
-
-**Returns:** *void*
-
-___
-
-###  setNumberProperty
-
-▸ **setNumberProperty**(`target`: object, `propertyName`: string, `propertyValue`: number, `defaultValue`: number): *void*
-
-*Defined in [utils.ts:125](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L125)*
-
-**Parameters:**
-
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`target` | object | - | `object` to set property on |
-`propertyName` | string | - | Name of property to set |
-`propertyValue` | number | - | Value to set property to |
-`defaultValue` | number | undefined | Value to use if `propertyValue` isn't valid  |
-
-**Returns:** *void*
-
-___
-
-###  setProperty
-
-▸ **setProperty**(`target`: object, `propertyName`: string, `propertyValue`: any, `defaultValue`: any): *void*
-
-*Defined in [utils.ts:110](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L110)*
-
-**Parameters:**
-
-Name | Type | Default | Description |
------- | ------ | ------ | ------ |
-`target` | object | - | `object` to set property on |
-`propertyName` | string | - | Name of property to set |
-`propertyValue` | any | - | Value to set property to |
-`defaultValue` | any | undefined | Value to use if `propertyValue` isn't valid  |
-
-**Returns:** *void*
+**Returns:** *HTMLElement | undefined*
 
 ___
 
 ###  stringToCssColor
 
-▸ **stringToCssColor**(`color`: string): *string*
-
-*Defined in [utils.ts:222](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L222)*
+▸ **stringToCssColor**(`color`: string | undefined): *string | undefined*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`color` | string |
+`color` | string &#124; undefined |
 
-**Returns:** *string*
+**Returns:** *string | undefined*
 
 ___
 
 ###  truncate
 
-▸ **truncate**(`element`: HTMLElement, `maxHeight`: number, `lineHeight?`: number): *void*
-
-*Defined in [utils.ts:240](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/utils.ts#L240)*
+▸ **truncate**(`element`: HTMLElement, `maxHeight`: number, `lineHeight?`: undefined | number): *void*
 
 **Parameters:**
 
@@ -531,7 +747,7 @@ Name | Type |
 ------ | ------ |
 `element` | HTMLElement |
 `maxHeight` | number |
-`lineHeight?` | number |
+`lineHeight?` | undefined &#124; number |
 
 **Returns:** *void*
 
@@ -541,16 +757,10 @@ Name | Type |
 
 ### ▪ **ContentTypes**: *object*
 
-*Defined in [shared.ts:5](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L5)*
-
 ###  applicationJson
 
 • **applicationJson**: *string* = "application/json"
 
-*Defined in [shared.ts:6](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L6)*
-
 ###  applicationXWwwFormUrlencoded
 
 • **applicationXWwwFormUrlencoded**: *string* = "application/x-www-form-urlencoded"
-
-*Defined in [shared.ts:7](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/shared.ts#L7)*

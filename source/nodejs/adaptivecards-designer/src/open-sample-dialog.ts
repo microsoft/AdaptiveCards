@@ -9,9 +9,23 @@ class CatalogueItem {
 
     constructor(readonly entry: CatalogueEntry) { }
 
+    private static _id = 0;
+    private static getNewItemId(prefix: string): string {
+        let newId = prefix + "-" + CatalogueItem._id;
+
+        CatalogueItem._id++;
+
+        return newId;
+    }
+
     render(): HTMLElement {
+        const newItemId = CatalogueItem.getNewItemId("acd-open-sample-item-title");
+
         let element = document.createElement("div");
         element.className = "acd-open-sample-item";
+        element.tabIndex = 0;
+        element.setAttribute("aria-labelledBy", newItemId);
+        element.setAttribute("role", "listitem");
         element.onclick = (e) => {
             if (this.onClick) {
                 this.onClick(this);
@@ -30,6 +44,7 @@ class CatalogueItem {
 
         let displayNameElement = document.createElement("div");
         displayNameElement.className = "acd-open-sample-item-title";
+        displayNameElement.id = newItemId;
         displayNameElement.innerText = this.entry.displayName;
 
         element.append(thumbnailHost, displayNameElement);
@@ -37,27 +52,38 @@ class CatalogueItem {
         this.entry.onDownloaded = (sender: CatalogueEntry) => {
             thumbnailHost.removeChild(spinner);
 
-            if (sender.cardPayloadDownloaded) {
-                let cardPayload = JSON.parse(sender.cardPayload);
+            let success: boolean = sender.cardPayloadDownloaded;
 
-                if (sender.sampleData) {
-                    let template = new ACData.Template(cardPayload);
+            if (success) {
+                try {
+                    let cardPayload = JSON.parse(sender.cardPayload);
 
-                    cardPayload = template.expand(
-                        {
-                            $root: JSON.parse(sender.sampleData)
-                        }
-                    );
+                    if (sender.sampleData) {
+                        let template = new ACData.Template(cardPayload);
+
+                        cardPayload = template.expand(
+                            {
+                                $root: JSON.parse(sender.sampleData)
+                            }
+                        );
+                    }
+
+                    let card = new Adaptive.AdaptiveCard();
+                    card.parse(cardPayload);
+                    card.render();
+                    card.renderedElement.style.width = "100%";
+
+                    thumbnailHost.appendChild(card.renderedElement);
                 }
+                catch (e) {
+                    // Swallow the exception
+                    console.error("Unable to load card sample. Error: " + e);
 
-                let card = new Adaptive.AdaptiveCard();
-                card.parse(cardPayload);
-                card.render();
-                card.renderedElement.style.width = "100%";
-
-                thumbnailHost.appendChild(card.renderedElement);
+                    success = false;
+                }
             }
-            else {
+
+            if (!success) {
                 let errorMessage = document.createElement("div");
                 errorMessage.className = "acd-dialog-message";
                 errorMessage.innerText = "Preview not available";
@@ -115,6 +141,7 @@ export class OpenSampleDialog extends Dialog {
     private renderCatalogue(): HTMLElement {
         let renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-sample-item-container";
+        renderedElement.setAttribute("role", "list");
 
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
@@ -138,7 +165,12 @@ export class OpenSampleDialog extends Dialog {
 
         this.catalogue.onDownloaded = (sender: SampleCatalogue) => {
             if (sender.isDownloaded) {
-                this.setContent(this.renderCatalogue());
+                let catalogue = this.renderCatalogue();
+                this.setContent(catalogue);
+
+                // now set focus on the first card in the catalog (usually the Blank Card)
+                let firstChild = catalogue.firstElementChild as HTMLElement;
+                firstChild.focus();
             }
             else {
                 this.setContent(this.renderMessage("The catalogue couldn't be loaded. Please try again later.", false));

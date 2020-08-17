@@ -18,15 +18,11 @@
 
 • **Auto**:
 
-*Defined in [enums.ts:14](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L14)*
-
 ___
 
 ###  Large
 
 • **Large**:
-
-*Defined in [enums.ts:18](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L18)*
 
 ___
 
@@ -34,20 +30,14 @@ ___
 
 • **Medium**:
 
-*Defined in [enums.ts:17](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L17)*
-
 ___
 
 ###  Small
 
 • **Small**:
 
-*Defined in [enums.ts:16](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L16)*
-
 ___
 
 ###  Stretch
 
 • **Stretch**:
-
-*Defined in [enums.ts:15](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L15)*

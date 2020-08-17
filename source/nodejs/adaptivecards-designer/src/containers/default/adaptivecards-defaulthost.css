@@ -137,14 +137,20 @@ a.ac-anchor:visited:active {
 }
 
 .ac-input.ac-input-required {
-    background-image: linear-gradient(45deg, transparent, transparent 50%, red 50%, red 100%);
-    background-position: top right;
-    background-size: .5em .5em;
-    background-repeat: no-repeat;
 }
 
-.ac-input.ac-input-validation-failed {
+.ac-input.ac-textInput.ac-input-validation-failed,
+.ac-input.ac-numberInput.ac-input-validation-failed,
+.ac-input.ac-dateInput.ac-input-validation-failed,
+.ac-input.ac-timeInput.ac-input-validation-failed,
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
     border: 1px solid red !important;
+}
+
+.ac-input.ac-toggleInput.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed {
+    outline: 1px solid red;
 }
 
 .ac-input-container {

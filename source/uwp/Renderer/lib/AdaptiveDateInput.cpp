@@ -69,14 +69,14 @@ namespace AdaptiveNamespace
     try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*dateInput));
 
         dateInput->SetMax(HStringToUTF8(m_max.Get()));
         dateInput->SetMin(HStringToUTF8(m_min.Get()));
         dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         dateInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = dateInput;
+        sharedModel = std::move(dateInput);
 
         return S_OK;
     }

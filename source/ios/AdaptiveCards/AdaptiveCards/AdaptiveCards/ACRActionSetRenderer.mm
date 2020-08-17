@@ -1,5 +1,5 @@
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ACRActionSetRenderer.h"
@@ -39,11 +39,13 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<ActionSet> actionSetElem = std::dynamic_pointer_cast<ActionSet>(elem);
     [[rootView card] setInputs:inputs];
-    return [self renderButtons:rootView
-                        inputs:(NSMutableArray *)inputs
-                     superview:viewGroup
-                         elems:actionSetElem->GetActions()
-                    hostConfig:acoConfig];
+    UIView *containingView = [self renderButtons:rootView
+                                          inputs:(NSMutableArray *)inputs
+                                       superview:viewGroup
+                                           elems:actionSetElem->GetActions()
+                                      hostConfig:acoConfig];
+    configVisibility(containingView, elem);
+    return containingView;
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
@@ -77,16 +79,26 @@
         childview.axis = UILayoutConstraintAxisHorizontal;
     } else {
         childview.axis = UILayoutConstraintAxisVertical;
+        UIStackViewAlignment alignment;
+        switch (adaptiveActionConfig.actionAlignment) {
+            case ActionAlignment::Center:
+                alignment = UIStackViewAlignmentCenter;
+                break;
+            case ActionAlignment::Left:
+                alignment = UIStackViewAlignmentLeading;
+                break;
+            case ActionAlignment::Right:
+                alignment = UIStackViewAlignmentTrailing;
+                break;
+            default:
+                alignment = UIStackViewAlignmentFill;
+        }
+        childview.alignment = alignment;
     }
 
     ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     // set width
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
-    [superview addArrangedSubview:containingView];
-    [containingView.widthAnchor constraintLessThanOrEqualToAnchor:superview.widthAnchor
-                                                       multiplier:1.0
-                                                         constant:0]
-        .active = YES;
 
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
@@ -104,6 +116,8 @@
                        mesage:@"Some actions were not rendered due to exceeding the maximum number "
                               @"of actions allowed"];
     }
+
+    NSUInteger stackIndex = [superview arrangedSubviewsCounts];
 
     for (auto i = 0; i < uMaxActionsToRender; i++) {
         const auto &elem = elems.at(i);
@@ -164,42 +178,10 @@
     [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor multiplier:1.0].active = YES;
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeTop
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeTop
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeBottom
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeBottom
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeLeading
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeLeading
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
-    [NSLayoutConstraint constraintWithItem:containingView
-                                 attribute:NSLayoutAttributeTrailing
-                                 relatedBy:NSLayoutRelationEqual
-                                    toItem:childview
-                                 attribute:NSLayoutAttributeTrailing
-                                multiplier:1.0
-                                  constant:0]
-        .active = YES;
+    containingView.stretch = adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch;
 
-    if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
-        containingView.stretch = true;
-    }
+    // this step ensures that action set view is added before subviews added by show cards
+    [superview insertArrangedSubview:containingView atIndex:stackIndex];
 
     return containingView;
 }

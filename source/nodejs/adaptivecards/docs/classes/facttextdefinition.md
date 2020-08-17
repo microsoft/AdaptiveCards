@@ -4,7 +4,9 @@
 
 ## Hierarchy
 
-* **FactTextDefinition**
+* [BaseTextDefinition](basetextdefinition.md)
+
+  ↳ **FactTextDefinition**
 
   ↳ [FactTitleDefinition](facttitledefinition.md)
 
@@ -33,7 +35,7 @@
 
 \+ **new FactTextDefinition**(`obj?`: any): *[FactTextDefinition](facttextdefinition.md)*
 
-*Defined in [host-config.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L99)*
+*Overrides [BaseTextDefinition](basetextdefinition.md).[constructor](basetextdefinition.md#constructor)*
 
 **Parameters:**
 
@@ -49,7 +51,7 @@ Name | Type |
 
 • **color**: *[TextColor](../enums/textcolor.md)* = Enums.TextColor.Default
 
-*Defined in [host-config.ts:96](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L96)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[color](basetextdefinition.md#color)*
 
 ___
 
@@ -57,7 +59,7 @@ ___
 
 • **isSubtle**: *boolean* = false
 
-*Defined in [host-config.ts:97](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L97)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[isSubtle](basetextdefinition.md#issubtle)*
 
 ___
 
@@ -65,7 +67,7 @@ ___
 
 • **size**: *[TextSize](../enums/textsize.md)* = Enums.TextSize.Default
 
-*Defined in [host-config.ts:95](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L95)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[size](basetextdefinition.md#size)*
 
 ___
 
@@ -73,7 +75,7 @@ ___
 
 • **weight**: *[TextWeight](../enums/textweight.md)* = Enums.TextWeight.Default
 
-*Defined in [host-config.ts:98](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L98)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[weight](basetextdefinition.md#weight)*
 
 ___
 
@@ -81,15 +83,13 @@ ___
 
 • **wrap**: *boolean* = true
 
-*Defined in [host-config.ts:99](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L99)*
-
 ## Methods
 
 ###  getDefaultWeight
 
 ▸ **getDefaultWeight**(): *[TextWeight](../enums/textweight.md)*
 
-*Defined in [host-config.ts:111](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L111)*
+*Inherited from [BaseTextDefinition](basetextdefinition.md).[getDefaultWeight](basetextdefinition.md#getdefaultweight)*
 
 **Returns:** *[TextWeight](../enums/textweight.md)*
 
@@ -99,6 +99,6 @@ ___
 
 ▸ **toJSON**(): *any*
 
-*Defined in [host-config.ts:115](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/host-config.ts#L115)*
+*Overrides [BaseTextDefinition](basetextdefinition.md).[toJSON](basetextdefinition.md#tojson)*
 
 **Returns:** *any*

@@ -3,6 +3,7 @@
 import { GlobalSettings, SizeAndUnit } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
+import { Strings } from "./strings";
 
 export interface IValidationEvent {
     source?: SerializableObject,
@@ -45,8 +46,9 @@ export class Version {
 
         if (!result._isValid) {
             context.logParseEvent(
+                undefined,
                 Enums.ValidationEvent.InvalidPropertyValue,
-                "Invalid version string: " + result._versionString);
+                Strings.errors.invalidVersionString(result._versionString));
         }
 
         return result;
@@ -104,8 +106,8 @@ export class Versions {
     static readonly v1_0 = new Version(1, 0);
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
-    static readonly latest = Versions.v1_2;
-    static readonly vNext = new Version(1000, 0, "vNext");
+    static readonly v1_3 = new Version(1, 3);
+    static readonly latest = Versions.v1_3;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -129,7 +131,9 @@ export abstract class BaseSerializationContext {
 
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
-            delete target[propertyName];
+            if (!GlobalSettings.enableFullJsonRoundTrip) {
+                delete target[propertyName];
+            }
         }
         else {
             target[propertyName] = propertyValue;
@@ -210,12 +214,13 @@ export abstract class BaseSerializationContext {
     }
 
     logEvent(
+        source: SerializableObject | undefined,
         phase: Enums.ValidationPhase,
         event: Enums.ValidationEvent,
-        message: string,
-        source?: SerializableObject) {
+        message: string) {
         this._validationEvents.push(
             {
+                source: source,
                 phase: phase,
                 event: event,
                 message: message
@@ -223,8 +228,8 @@ export abstract class BaseSerializationContext {
         )
     }
 
-    logParseEvent(event: Enums.ValidationEvent, message: string, source?: SerializableObject) {
-        this.logEvent(Enums.ValidationPhase.Parse, event, message, source);
+    logParseEvent(source: SerializableObject | undefined, event: Enums.ValidationEvent, message: string) {
+        this.logEvent(source, Enums.ValidationPhase.Parse, event, message);
     }
 
     getEventAt(index: number): IValidationEvent {
@@ -241,6 +246,8 @@ export abstract class BaseSerializationContext {
 class SimpleSerializationContext extends BaseSerializationContext {}
 
 export class PropertyDefinition {
+    private static _sequentialNumber: number = 0;
+
     getInternalName(): string {
         return this.name;
     }
@@ -253,11 +260,19 @@ export class PropertyDefinition {
         context.serializeValue(target, this.name, value, this.defaultValue);
     }
 
+    readonly sequentialNumber: number;
+
+    isSerializationEnabled: boolean = true;
+
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
         readonly defaultValue?: any,
-        readonly onGetInitialValue?: (sender: SerializableObject) => any) { }
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+            this.sequentialNumber = PropertyDefinition._sequentialNumber;
+
+            PropertyDefinition._sequentialNumber++;
+        }
 }
 
 export class StringProperty extends PropertyDefinition {
@@ -270,9 +285,9 @@ export class StringProperty extends PropertyDefinition {
 
             if (!matches) {
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    `Invalid "${this.name}" value "${parsedValue}"`,
-                    sender);
+                    Strings.errors.invalidPropertyValue(parsedValue, this.name));
 
                 return undefined;
             }
@@ -351,9 +366,9 @@ export class PixelSizeProperty extends PropertyDefinition {
 
             if (!isValid) {
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    "Invalid \"minHeight\" value: " + source[this.name],
-                    sender);
+                    Strings.errors.invalidPropertyValue(source[this.name], "minHeight"));
             }
         }
 
@@ -374,6 +389,18 @@ export interface IVersionedValue<TValue> {
 }
 
 export class ValueSetProperty extends PropertyDefinition {
+    isValidValue(value: string, context: BaseSerializationContext): boolean {
+        for (let versionedValue of this.values) {
+            if (value.toLowerCase() === versionedValue.value.toLowerCase()) {
+                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+
+                return targetVersion.compareTo(context.targetVersion) <= 0;
+            }
+        }
+
+        return false;
+    }
+
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string | undefined {
         let sourceValue = source[this.name];
 
@@ -391,9 +418,13 @@ export class ValueSetProperty extends PropertyDefinition {
                     }
                     else {
                         context.logParseEvent(
+                            sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            sender);
+                            Strings.errors.propertyValueNotSupported(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
 
                         return this.defaultValue;
                     }
@@ -402,9 +433,9 @@ export class ValueSetProperty extends PropertyDefinition {
         }
 
         context.logParseEvent(
+            sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            `Invalid "${this.name}" value "${sourceValue}"`,
-            sender);
+            Strings.errors.invalidPropertyValue(sourceValue, this.name));
 
         return this.defaultValue;
     }
@@ -423,19 +454,25 @@ export class ValueSetProperty extends PropertyDefinition {
                 }
                 else {
                     context.logEvent(
+                        sender,
                         Enums.ValidationPhase.ToJSON,
                         Enums.ValidationEvent.InvalidPropertyValue,
-                        `"${this.name}" value "${value}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                        sender);
+                        Strings.errors.propertyValueNotSupported(
+                            value,
+                            this.name,
+                            targetVersion.toString(),
+                            context.targetVersion.toString()));
                 }
             }
         }
 
-        context.serializeValue(
-            target,
-            this.name,
-            valueFound ? value : undefined,
-            this.defaultValue);
+        if (valueFound) {
+            context.serializeValue(
+                target,
+                this.name,
+                value,
+                this.defaultValue);
+        }
     }
 
     constructor(
@@ -470,9 +507,13 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                     }
                     else {
                         context.logParseEvent(
+                            sender,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `"${this.name}" value "${sourceValue}" is supported in version ${targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            sender);
+                            Strings.errors.propertyValueNotSupported(
+                                sourceValue,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
 
                         return this.defaultValue;
                     }
@@ -481,9 +522,9 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
         }
 
         context.logParseEvent(
+            sender,
             Enums.ValidationEvent.InvalidPropertyValue,
-            `Invalid "${this.name}" value "${sourceValue}"`,
-            sender);
+            Strings.errors.invalidPropertyValue(sourceValue, this.name));
 
         return this.defaultValue;
     }
@@ -503,10 +544,10 @@ export class EnumProperty<TEnum extends { [s: number]: string }> extends Propert
                     }
                     else {
                         context.logEvent(
+                            sender,
                             Enums.ValidationPhase.ToJSON,
                             Enums.ValidationEvent.InvalidPropertyValue,
-                            `Invalid "${this.name}" value "${value}"`,
-                            sender);
+                            Strings.errors.invalidPropertyValue(value, this.name));
                     }
                 }
             }
@@ -579,11 +620,12 @@ export class SerializableObjectProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly objectType: SerializableObjectType) {
+        readonly objectType: SerializableObjectType,
+        defaultValue?: SerializableObject) {
         super(
             targetVersion,
             name,
-            undefined,
+            defaultValue,
             (sender: SerializableObject) => { return new this.objectType(); });
     }
 }
@@ -729,19 +771,35 @@ export abstract class SerializableObject {
 
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
+        let properties: PropertyDefinition[] = [];
 
         for (let propertyName in ctor) {
             try {
                 let propertyValue = ctor[propertyName];
 
                 if (propertyValue instanceof PropertyDefinition) {
-                    schema.add(propertyValue);
+                    properties.push(propertyValue);
                 }
             }
             catch {
                 // If a property happens to have a getter function and
                 // it throws an exception, we need to catch it here
             }
+        }
+
+        if (properties.length > 0) {
+            let sortedProperties = properties.sort((p1: PropertyDefinition, p2: PropertyDefinition) => {
+                if (p1.sequentialNumber > p2.sequentialNumber) {
+                    return 1;
+                }
+                else if (p1.sequentialNumber < p2.sequentialNumber) {
+                    return -1;
+                }
+
+                return 0;
+            });
+
+            schema.add(...sortedProperties);
         }
 
         if (SerializableObject.onRegisterCustomProperties) {
@@ -772,21 +830,26 @@ export abstract class SerializableObject {
             for (let i = 0; i < s.getCount(); i++) {
                 let property = s.getItemAt(i);
 
-                let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
+                if (property.isSerializationEnabled) {
+                    let propertyValue = property.onGetInitialValue ? property.onGetInitialValue(this) : undefined;
 
-                if (source.hasOwnProperty(property.name)) {
-                    if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
-                        propertyValue = property.parse(this, source, context);
+                    if (source.hasOwnProperty(property.name)) {
+                        if (property.targetVersion.compareTo(context.targetVersion) <= 0) {
+                            propertyValue = property.parse(this, source, context);
+                        }
+                        else {
+                            context.logParseEvent(
+                                this,
+                                Enums.ValidationEvent.UnsupportedProperty,
+                                Strings.errors.propertyNotSupported(
+                                    property.name,
+                                    property.targetVersion.toString(),
+                                    context.targetVersion.toString()));
+                        }
                     }
-                    else {
-                        context.logParseEvent(
-                            Enums.ValidationEvent.UnsupportedProperty,
-                            `Property "${property.name}" is supported in version ${property.targetVersion.toString()}, but you are using version ${context.targetVersion.toString()}`,
-                            this);
-                    }
+
+                    this.setValue(property, propertyValue);
                 }
-
-                this.setValue(property, propertyValue);
             }
         }
         else {
@@ -804,7 +867,7 @@ export abstract class SerializableObject {
             // Avoid serializing the same property multiple times. This is necessary
             // because some property definitions map to the same underlying schema
             // property
-            if (property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.name) === -1) {
+            if (property.isSerializationEnabled && property.targetVersion.compareTo(context.targetVersion) <= 0 && serializedProperties.indexOf(property.name) === -1) {
                 property.toJSON(this, target, this.getValue(property), context);
 
                 serializedProperties.push(property.name);
@@ -816,7 +879,7 @@ export abstract class SerializableObject {
         return true;
     }
 
-    maxVersion: Version = Versions.latest;
+    maxVersion: Version = Versions.v1_3;
 
     constructor() {
         let s = this.getSchema();

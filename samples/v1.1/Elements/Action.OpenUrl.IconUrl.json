@@ -12,7 +12,7 @@
 	"actions": [
 		{
 			"type": "Action.OpenUrl",
-			"iconUrl": "http://adaptivecards.io/content/cats/1.png",
+			"iconUrl": "https://adaptivecards.io/content/cats/1.png",
 			"url": "https://adaptivecards.io",
 			"title": "With Icon"
 		}

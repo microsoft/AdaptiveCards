@@ -38,6 +38,60 @@ struct tm {
     int tm_isdst;
 };
 
+namespace std {
+  template<typename T> class optional {};
+}
+
+// std::optional<int>
+%typemap(jni) std::optional<int> "jobject"
+%typemap(jtype) std::optional<int> "Integer"
+%typemap(jstype) std::optional<int> "Integer"
+%typemap(in, noblock=1) std::optional<int> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (int)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<int> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int> "$javainput"
+%typemap(javaout) std::optional<int> {
+    return $jnicall;
+  }
+%template() std::optional<int>;
+
+%typemap(jni) std::optional<int>& "jobject"
+%typemap(jtype) std::optional<int>& "Integer"
+%typemap(jstype) std::optional<int>& "Integer"
+%typemap(in, noblock=1) std::optional<int>& {
+  std::optional<int> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<int>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<int>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int>& "$javainput"
+%typemap(javaout) std::optional<int>& {
+    return $jnicall;
+  }
+
 %include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
@@ -293,6 +347,22 @@ namespace Json {
   $result = *tmp;
 %}
 
+%typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseInputElement> "new $typemap(jstype, AdaptiveCards::BaseInputElement)($1,true)";
+%typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseInputElement;") std::shared_ptr<AdaptiveCards::BaseInputElement> %{
+  *($&1_type*)&j$1 = new $1_type($1);
+%}
+
+%typemap(javadirectorout) std::shared_ptr<AdaptiveCards::BaseInputElement> "$typemap(jstype, AdaptiveCards::BaseInputElement).getCPtr($javacall)";
+%typemap(directorout) std::shared_ptr<AdaptiveCards::BaseInputElement> %{
+  $&1_type tmp = NULL;
+  *($&1_type*)&tmp = *($&1_type*)&$input;
+  if (!tmp) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Attempt to dereference null $1_type");
+    return NULL;
+  }
+  $result = *tmp;
+%}
+
 %typemap(javadirectorin) std::shared_ptr<AdaptiveCards::BaseActionElement> "new $typemap(jstype, AdaptiveCards::BaseActionElement)($1,true)";
 %typemap(directorin,descriptor="Lio/adaptivecards/objectmodel/BaseActionElement;") std::shared_ptr<AdaptiveCards::BaseActionElement> %{
   *($&1_type*)&j$1 = new $1_type($1);
@@ -404,6 +474,21 @@ namespace Json {
 %extend AdaptiveCards::BaseCardElement {
     static AdaptiveCards::BaseCardElement *dynamic_cast(AdaptiveCards::BaseElement *baseElement) {
         return dynamic_cast<AdaptiveCards::BaseCardElement *>(baseElement);
+    }
+};
+
+%exception AdaptiveCards::BaseInputElement::dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::BaseInputElement {
+    static AdaptiveCards::BaseInputElement *dynamic_cast(AdaptiveCards::BaseCardElement *baseCardElement) {
+        return dynamic_cast<AdaptiveCards::BaseInputElement *>(baseCardElement);
     }
 };
 

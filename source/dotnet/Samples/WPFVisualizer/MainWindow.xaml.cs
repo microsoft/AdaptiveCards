@@ -18,15 +18,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
-using System.Collections.ObjectModel;
-using System.Threading;
 using ICSharpCode.AvalonEdit;
 
 namespace WpfVisualizer
@@ -86,8 +82,10 @@ namespace WpfVisualizer
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomInput>();
 
             Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+            Renderer.ElementRenderers.Set<MyCustomInput>(MyCustomInput.Render);
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();
@@ -128,6 +126,8 @@ namespace WpfVisualizer
                 templateData = null;
             }
 
+            string expandedPayload = ""; 
+
             try
             {
                 // don't throw error, but should affect work flow and performance.
@@ -145,8 +145,19 @@ namespace WpfVisualizer
                 //     "name": "Mickey Mouse"
                 // };
 
-                var transformedPaylaod = template.Expand(context);
-                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(transformedPaylaod);
+                expandedPayload = template.Expand(context);
+            }
+
+            catch (Exception e)
+            {
+                // if an exception thrown, we parse and render cards as it is
+                ShowError(e);
+                expandedPayload = CardPayload;
+            }
+
+            try
+            {
+                AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(expandedPayload);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -250,7 +261,7 @@ namespace WpfVisualizer
         {
             var textBlock = new TextBlock
             {
-                Text = "ERROR: " + err.Message,
+                Text = err.Message + "\nSource : " + err.Source,
                 TextWrapping = TextWrapping.Wrap,
                 Style = Resources["Error"] as Style
             };

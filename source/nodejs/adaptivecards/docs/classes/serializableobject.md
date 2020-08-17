@@ -2,8 +2,6 @@
 
 # Class: SerializableObject
 
-Represents an object that can be serialized to/from JSON
-
 ## Hierarchy
 
 * **SerializableObject**
@@ -14,8 +12,6 @@ Represents an object that can be serialized to/from JSON
 
   ↳ [MediaSource](mediasource.md)
 
-  ↳ [InputValidationOptions](inputvalidationoptions.md)
-
   ↳ [Choice](choice.md)
 
   ↳ [HttpHeader](httpheader.md)
@@ -24,20 +20,58 @@ Represents an object that can be serialized to/from JSON
 
 ## Index
 
+### Constructors
+
+* [constructor](serializableobject.md#constructor)
+
+### Properties
+
+* [maxVersion](serializableobject.md#maxversion)
+* [onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)
+
 ### Methods
 
 * [getCustomProperty](serializableobject.md#getcustomproperty)
+* [getSchema](serializableobject.md#getschema)
+* [getSchemaKey](serializableobject.md#protected-abstract-getschemakey)
+* [getValue](serializableobject.md#protected-getvalue)
+* [hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)
+* [hasDefaultValue](serializableobject.md#hasdefaultvalue)
+* [internalParse](serializableobject.md#protected-internalparse)
+* [internalToJSON](serializableobject.md#protected-internaltojson)
 * [parse](serializableobject.md#parse)
+* [populateSchema](serializableobject.md#protected-populateschema)
+* [resetDefaultValues](serializableobject.md#resetdefaultvalues)
 * [setCustomProperty](serializableobject.md#setcustomproperty)
+* [setValue](serializableobject.md#protected-setvalue)
+* [shouldSerialize](serializableobject.md#protected-shouldserialize)
 * [toJSON](serializableobject.md#tojson)
+
+## Constructors
+
+###  constructor
+
+\+ **new SerializableObject**(): *[SerializableObject](serializableobject.md)*
+
+**Returns:** *[SerializableObject](serializableobject.md)*
+
+## Properties
+
+###  maxVersion
+
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
+
+___
+
+### `Static` `Optional` onRegisterCustomProperties
+
+▪ **onRegisterCustomProperties**? : *undefined | function*
 
 ## Methods
 
 ###  getCustomProperty
 
 ▸ **getCustomProperty**(`name`: string): *any*
-
-*Defined in [card-elements.ts:200](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L200)*
 
 **Parameters:**
 
@@ -49,18 +83,120 @@ Name | Type |
 
 ___
 
-###  parse
+###  getSchema
 
-▸ **parse**(`json`: any, `errors?`: Array‹[IValidationError](../interfaces/ivalidationerror.md)›): *void*
+▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
 
-*Defined in [card-elements.ts:172](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L172)*
+**Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
+
+___
+
+### `Protected` `Abstract` getSchemaKey
+
+▸ **getSchemaKey**(): *string*
+
+**Returns:** *string*
+
+___
+
+### `Protected` getValue
+
+▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`json` | any |
-`errors?` | Array‹[IValidationError](../interfaces/ivalidationerror.md)› |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *any*
+
+___
+
+###  hasAllDefaultValues
+
+▸ **hasAllDefaultValues**(): *boolean*
+
+**Returns:** *boolean*
+
+___
+
+###  hasDefaultValue
+
+▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+
+**Returns:** *boolean*
+
+___
+
+### `Protected` internalParse
+
+▸ **internalParse**(`source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
+### `Protected` internalToJSON
+
+▸ **internalToJSON**(`target`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`target` | [PropertyBag](../README.md#propertybag) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
+###  parse
+
+▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`source` | [PropertyBag](../README.md#propertybag) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *void*
+
+___
+
+### `Protected` populateSchema
+
+▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`schema` | [SerializableObjectSchema](serializableobjectschema.md) |
+
+**Returns:** *void*
+
+___
+
+###  resetDefaultValues
+
+▸ **resetDefaultValues**(): *void*
 
 **Returns:** *void*
 
@@ -69,8 +205,6 @@ ___
 ###  setCustomProperty
 
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
-
-*Defined in [card-elements.ts:189](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L189)*
 
 **Parameters:**
 
@@ -83,10 +217,43 @@ Name | Type |
 
 ___
 
+### `Protected` setValue
+
+▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`property` | [PropertyDefinition](propertydefinition.md) |
+`value` | any |
+
+**Returns:** *void*
+
+___
+
+### `Protected` shouldSerialize
+
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *boolean*
+
+___
+
 ###  toJSON
 
-▸ **toJSON**(): *any*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Defined in [card-elements.ts:176](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L176)*
+**Parameters:**
 
-**Returns:** *any*
+Name | Type |
+------ | ------ |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *[PropertyBag](../README.md#propertybag) | undefined*

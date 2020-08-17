@@ -1,10 +1,10 @@
 [Adaptive Cards Javascript SDK](../README.md) › [ITypeRegistration](ityperegistration.md)
 
-# Interface: ITypeRegistration <**T**>
+# Interface: ITypeRegistration ‹**T**›
 
 ## Type parameters
 
-▪ **T**
+▪ **T**: *[SerializableObject](../classes/serializableobject.md)*
 
 ## Hierarchy
 
@@ -14,25 +14,28 @@
 
 ### Properties
 
-* [createInstance](ityperegistration.md#createinstance)
+* [objectType](ityperegistration.md#objecttype)
+* [schemaVersion](ityperegistration.md#schemaversion)
 * [typeName](ityperegistration.md#typename)
 
 ## Properties
 
-###  createInstance
+###  objectType
 
-• **createInstance**: *function*
-
-*Defined in [card-elements.ts:6387](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L6387)*
+• **objectType**: *object*
 
 #### Type declaration:
 
-▸ (): *T*
+* **new __type**(): *T*
+
+___
+
+###  schemaVersion
+
+• **schemaVersion**: *[Version](../classes/version.md)*
 
 ___
 
 ###  typeName
 
 • **typeName**: *string*
-
-*Defined in [card-elements.ts:6386](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L6386)*

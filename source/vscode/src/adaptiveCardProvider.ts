@@ -92,8 +92,8 @@ export class AdaptiveCardDocumentContentProvider implements vscode.TextDocumentC
                                 subtle: "#DDcc3300"
                             },
                             good: {
-                                normal: "#54a254",
-                                subtle: "#DD54a254"
+                                normal: "#028A02",
+                                subtle: "#DD027502"
                             },
                             warning: {
                                 normal: "#e69500",

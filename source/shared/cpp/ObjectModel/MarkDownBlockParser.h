@@ -21,30 +21,22 @@ namespace AdaptiveSharedNamespace
         MarkDownParsedResult& GetParsedResult() { return m_parsedResult; }
 
     protected:
-        static constexpr bool IsSpace(const char ch)
+        static constexpr bool IsSpace(const int ch) { return (ch > 0) && isspace(ch); }
+
+        static constexpr bool IsPunct(const int ch) { return (ch > 0) && ispunct(ch); }
+
+        static constexpr bool IsAlnum(const int ch)
         {
-            return (ch > 0) && isspace(ch);
+            // we are assuming ch is  UTF-8 encoded,
+            // if MSB is set 1 in first byte of int, we treat it as part of non-latin char
+            return (ch > 0x07F || isalnum(ch));
         }
 
-        static constexpr bool IsPunct(const char ch)
-        {
-            return (ch > 0) && ispunct(ch);
-        }
+        static constexpr bool IsCntrl(const int ch) { return (ch > 0) && iscntrl(ch); }
 
-        static constexpr bool IsAlnum(const char ch)
-        {
-            return (ch < 0 || isalnum(ch));
-        }
+        static constexpr bool IsDigit(const int ch) { return (ch > 0) && isdigit(ch); }
 
-        static constexpr bool IsCntrl(const char ch)
-        {
-            return (ch > 0) && iscntrl(ch);
-        }
-
-        static constexpr bool IsDigit(const char ch)
-        {
-            return (ch > 0) && isdigit(ch);
-        }
+        void ParseTextAndEmphasis(std::stringstream& stream);
 
         // Holds parsed results
         MarkDownParsedResult m_parsedResult;
@@ -70,10 +62,10 @@ namespace AdaptiveSharedNamespace
         void Match(std::stringstream&) override;
 
         // Captures remaining charaters in given token and causes the emphasis parsing to terminate
-        void Flush(char ch, std::string& currentToken);
+        void Flush(const int ch, std::string& currentToken);
 
         // check if given character is * or _
-        bool IsMarkDownDelimiter(char ch) const;
+        bool IsMarkDownDelimiter(const int ch) const;
 
         void CaptureCurrentCollectedStringAsRegularToken(std::string& currentToken);
         void CaptureCurrentCollectedStringAsRegularToken();
@@ -84,15 +76,15 @@ namespace AdaptiveSharedNamespace
             return m_currentDelimiterType == emphasisType;
         }
         void ResetCurrentEmphasisState() { m_delimiterCnts = 0; }
-        bool IsLeftEmphasisDelimiter(const char ch) const;
-        bool IsRightEmphasisDelimiter(const char ch) const;
+        bool IsLeftEmphasisDelimiter(const int ch) const;
+        bool IsRightEmphasisDelimiter(const int ch) const;
         // Attempt to capture current emphasis as left emphasis
-        bool TryCapturingLeftEmphasisToken(char ch, std::string& currentToken);
+        bool TryCapturingLeftEmphasisToken(const int ch, std::string& currentToken);
         // Attempt to capture current emphasis as right emphasis
-        bool TryCapturingRightEmphasisToken(char ch, std::string& currentToken);
-        void CaptureEmphasisToken(char ch, std::string& currentToken);
-        void UpdateLookBehind(char ch);
-        static constexpr DelimiterType GetDelimiterTypeForChar(const char ch)
+        bool TryCapturingRightEmphasisToken(const int ch, std::string& currentToken);
+        void CaptureEmphasisToken(const int ch, std::string& currentToken);
+        void UpdateLookBehind(const int ch);
+        static constexpr DelimiterType GetDelimiterTypeForChar(const int ch)
         {
             return (ch == '*') ? DelimiterType::Asterisk : DelimiterType::Underscore;
         };
@@ -165,9 +157,11 @@ namespace AdaptiveSharedNamespace
         bool MatchNewListItem(std::stringstream&);
         bool MatchNewBlock(std::stringstream&);
         bool MatchNewOrderedListItem(std::stringstream&, std::string&);
-        static constexpr bool IsHyphen(const char ch) { return ch == '-'; };
-        static constexpr bool IsDot(const char ch) { return ch == '.'; };
-        static constexpr bool IsNewLine(const char ch) { return (ch == '\r') || (ch == '\n'); };
+        static constexpr bool IsHyphen(const int ch) { return ch == '-'; };
+        static constexpr bool IsPlus(const int ch) { return ch == '+'; };
+        static constexpr bool IsAsterisk(const int ch) { return ch == '*'; };
+        static constexpr bool IsDot(const int ch) { return ch == '.'; };
+        static constexpr bool IsNewLine(const int ch) { return (ch == '\r') || (ch == '\n'); };
 
     protected:
         void ParseSubBlocks(std::stringstream&);

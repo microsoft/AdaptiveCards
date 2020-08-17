@@ -182,39 +182,7 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                                           constant:0]
                 .active = YES;
 
-            switch (backgroundImageProperties->GetVerticalAlignment()) {
-                case VerticalAlignment::Bottom:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeBottom
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeBottom
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-                case VerticalAlignment::Center:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeCenterY
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeCenterY
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-                case VerticalAlignment::Top:
-                default:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeTop
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeTop
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-            }
+            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
             break;
         }
         case ImageFillMode::RepeatVertically: {
@@ -242,47 +210,15 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                                         multiplier:1.0
                                           constant:0]
                 .active = YES;
-            switch (backgroundImageProperties->GetHorizontalAlignment()) {
-                case HorizontalAlignment::Right:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeRight
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeRight
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-                case HorizontalAlignment::Center:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeCenterX
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeCenterX
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-                case HorizontalAlignment::Left:
-                default:
-                    [NSLayoutConstraint constraintWithItem:imageView
-                                                 attribute:NSLayoutAttributeLeft
-                                                 relatedBy:NSLayoutRelationEqual
-                                                    toItem:superView
-                                                 attribute:NSLayoutAttributeLeft
-                                                multiplier:1.0
-                                                  constant:0]
-                        .active = YES;
-                    break;
-            }
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
             break;
         }
         case ImageFillMode::Cover:
         default: {
             imageView.contentMode = UIViewContentModeScaleAspectFill;
             // Fill Mode Description
-            // ScaleAspectFill increases one dimension proportionally if
-            // corresponding dimension increases
+            // ScaleAspectFill increases one dimension of image proportionally if
+            // corresponding dimension increases but it does not increase view surroinding the image
             // find which dimension is in deficit and act accordingly
             // when both dimensions are in deficit find the most deficient dimension
             // and increase
@@ -302,40 +238,31 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
             }
 
             if (isDeficientInWidth and isDeficientInHeight) {
-                CGFloat widthDeficiencyRaito = targetViewSize.width / sourceSize.width;
-                CGFloat heightDifficiencyRaito = targetViewSize.height / sourceSize.height;
-                // we choose one with bigger difficienty in ratio, and by increasing the
-                // dimension, the other dimension will be increaed by the same % since it's
-                // cover mode
+                CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
+                CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
+                // m * a >= x
+                // m * b >= y
+                // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
+                // then m is max of (a/x, b/y)
+                // we applies m to image view's corresponding axis.
+                // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
                 if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-                    [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+                    configWidthAndHeightAnchors(superView, imageView, false);
                 } else {
-                    [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+                    configWidthAndHeightAnchors(superView, imageView, true);
                 }
             } else if (isDeficientInWidth) {
-                [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+                configWidthAndHeightAnchors(superView, imageView, false);
             } else if (isDeficientInHeight) {
-                [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+                configWidthAndHeightAnchors(superView, imageView, true);
             }
 
-            [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
+            configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
 
-            switch (backgroundImageProperties->GetHorizontalAlignment()) {
-                case HorizontalAlignment::Right:
-                    [imageView.trailingAnchor constraintEqualToAnchor:superView.trailingAnchor]
-                        .active = YES;
-                    break;
-                case HorizontalAlignment::Left:
-                    [imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor]
-                        .active = YES;
-                    break;
-                case HorizontalAlignment::Center:
-                    [imageView.centerXAnchor constraintEqualToAnchor:superView.centerXAnchor]
-                        .active = YES;
-                    break;
-            }
+            configHorizontalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
 
             superView.clipsToBounds = YES;
+
             break;
         }
     }
@@ -571,6 +498,55 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
+UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
+{
+    int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
+                                             textWeight:textProperties.GetTextWeight()];
+    // sanity check, 400 is the normal font;
+    if (fontweight <= 0 || fontweight > 900) {
+        fontweight = 400;
+    }
+    UIFont *font = nil;
+    fontweight -= 100;
+    fontweight /= 100;
+
+    if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+        const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                                                    @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
+        const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
+        if (textProperties.GetFontType() == FontType::Monospace) {
+            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
+                                                                                                UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+        } else {
+            font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+
+            if (textProperties.GetItalic()) {
+                font = [UIFont fontWithDescriptor:
+                                   getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
+                                             size:size];
+            }
+        }
+    } else {
+        // font weight as string since font weight as double doesn't work
+        // normailze fontweight for indexing
+        const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                    @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+        UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                                                             @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
+                                                               UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+
+        descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+        font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+    }
+    return font;
+}
+
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)
 {
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
@@ -607,50 +583,7 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
         NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
         data = @{@"html" : htmlData, @"options" : options};
     } else {
-        int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
-                                                 textWeight:textProperties.GetTextWeight()];
-        // sanity check, 400 is the normal font;
-        if (fontweight <= 0 || fontweight > 900) {
-            fontweight = 400;
-        }
-        UIFont *font = nil;
-        fontweight -= 100;
-        fontweight /= 100;
-
-        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
-            const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
-                                                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
-            const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
-            if (textProperties.GetFontType() == FontType::Monospace) {
-                const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                            @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
-                                                                                                    UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-                descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-                font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-            } else {
-                font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
-
-                if (textProperties.GetItalic()) {
-                    font = [UIFont fontWithDescriptor:
-                                       getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
-                                                 size:size];
-                }
-            }
-        } else {
-            // font weight as string since font weight as double doesn't work
-            // normailze fontweight for indexing
-            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                                                                 @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
-                                                                   UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-
-            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-        }
+        UIFont *font = getFont(hostConfig, textProperties);
 
         NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
         data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
@@ -697,8 +630,12 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
             @throw [ACOFallbackException fallbackException];
         }
         Json::Value blob = unknownAction->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        NSString *jsonString =
+        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];        
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
@@ -712,4 +649,90 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 {
     const std::string str = config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], textColor, isSubtle);
     return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config)
+{
+    switch (spacing) {
+        case Spacing::ExtraLarge:
+            return config->GetSpacing().extraLargeSpacing;
+        case Spacing::Large:
+            return config->GetSpacing().largeSpacing;
+        case Spacing::Medium:
+            return config->GetSpacing().mediumSpacing;
+        case Spacing::Small:
+            return config->GetSpacing().smallSpacing;
+        case Spacing::Default:
+            return config->GetSpacing().defaultSpacing;
+        default:
+            break;
+    }
+
+    return 0;
+}
+
+void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
+{
+    if (!backgroundImageProperties || !superView || !imageView) {
+        return;
+    }
+
+    switch (backgroundImageProperties->GetVerticalAlignment()) {
+        case VerticalAlignment::Bottom:
+            [imageView.bottomAnchor constraintEqualToAnchor:superView.bottomAnchor].active = YES;
+            break;
+        case VerticalAlignment::Center:
+            [imageView.centerYAnchor constraintEqualToAnchor:superView.centerYAnchor].active = YES;
+            break;
+        case VerticalAlignment::Top:
+        default:
+            [imageView.topAnchor constraintEqualToAnchor:superView.topAnchor].active = YES;
+            break;
+    }
+}
+
+void configHorizontalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
+{
+    if (!backgroundImageProperties || !superView || !imageView) {
+        return;
+    }
+
+    switch (backgroundImageProperties->GetHorizontalAlignment()) {
+        case HorizontalAlignment::Right:
+            [imageView.trailingAnchor constraintEqualToAnchor:superView.trailingAnchor].active = YES;
+            break;
+        case HorizontalAlignment::Center:
+            [imageView.centerXAnchor constraintEqualToAnchor:superView.centerXAnchor].active = YES;
+            break;
+        case HorizontalAlignment::Left:
+        default:
+            [imageView.leadingAnchor constraintEqualToAnchor:superView.leadingAnchor].active = YES;
+            break;
+    }
+}
+
+void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal)
+{
+    if (!imageView || !imageView.image || !superView) {
+        return;
+    }
+    CGSize targetViewSize = superView.frame.size;
+    CGSize sourceSize = imageView.image.size;
+    if (isComplimentaryAxisHorizontal) {
+        CGFloat complementaryWidth = sourceSize.height ? sourceSize.width * targetViewSize.height / sourceSize.height : 1;
+        [imageView.widthAnchor constraintEqualToConstant:complementaryWidth].active = YES;
+        [imageView.heightAnchor constraintEqualToAnchor:superView.heightAnchor].active = YES;
+    } else {
+        CGFloat complementaryHeight = sourceSize.width ? sourceSize.height * targetViewSize.width / sourceSize.width : 1;
+        [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+        [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
+    }
+}
+
+NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style)
+{
+    UIFont *font = getFont(acoConfig, textElementProperties);
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
+
+    return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
 }

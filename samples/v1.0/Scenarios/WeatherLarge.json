@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-	"backgroundImage": "http://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
+	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -28,8 +28,7 @@
 							"type": "TextBlock",
 							"text": "Monday April 1",
 							"weight": "bolder",
-							"size": "large",
-							"color": "light"
+							"size": "large"
 						},
 						{
 							"type": "TextBlock",
@@ -39,13 +38,11 @@
 						},
 						{
 							"type": "TextBlock",
-							"isSubtle": true,
 							"text": "20% chance of rain",
 							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
-							"isSubtle": true,
 							"text": "Winds 5 mph NE",
 							"spacing": "none"
 						}
@@ -73,18 +70,18 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "62"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "52",
-							"spacing": "none"
+							"type": "FactSet",
+							"horizontalAlignment": "right",
+							"facts": [
+								{
+									"title": "High",
+									"value": "62"
+								},
+								{
+									"title": "Low",
+									"value": "52"
+								}
+							]
 						}
 					],
 					"selectAction": {
@@ -110,18 +107,17 @@
 							"altText": "Drizzly weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "60"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "48",
-							"spacing": "none"
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "60"
+								},
+								{
+									"title": "Low",
+									"value": "48"
+								}
+							]
 						}
 					],
 					"selectAction": {
@@ -147,18 +143,17 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "59"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "49",
-							"spacing": "none"
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "59"
+								},
+								{
+									"title": "Low",
+									"value": "49"
+								}
+							]
 						}
 					],
 					"selectAction": {
@@ -184,18 +179,17 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "64"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "51",
-							"spacing": "none"
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "64"
+								},
+								{
+									"title": "Low",
+									"value": "51"
+								}
+							]
 						}
 					],
 					"selectAction": {

@@ -10,8 +10,18 @@
 			"description": "Unique identifier for the value. Used to identify collected input when the Submit action is performed.",
 			"override": true
 		},
+		"errorMessage": {
+			"type": "string",
+			"description": "Error message to display when entered input is invalid",
+			"version": "1.3"
+		},
+		"isRequired": {
+			"type": "boolean",
+			"description": "Whether or not this input is required",
+			"version": "1.3"
+		},
 		"label": {
-			"type": "string|TextBlock|RichTextBlock",
+			"type": "string",
 			"description": "Label for this input",
 			"version": "1.3"
 		}

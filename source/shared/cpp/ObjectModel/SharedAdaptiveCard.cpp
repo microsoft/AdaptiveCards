@@ -95,7 +95,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, std::string rendererVersion)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, const std::string& rendererVersion)
 #endif // __ANDROID__
 {
     ParseContext context;
@@ -103,11 +103,13 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
 }
 
 #ifdef __ANDROID__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
                                                                std::string rendererVersion,
                                                                ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, std::string rendererVersion, ParseContext& context)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, const std::string& rendererVersion, ParseContext& context)
 #endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
@@ -144,7 +146,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json,
                                                        std::string rendererVersion,
                                                        ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, std::string rendererVersion, ParseContext& context)
+std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, const std::string& rendererVersion, ParseContext& context)
 #endif // __ANDROID__
 {
     ParseUtil::ThrowIfNotJsonObject(json);
@@ -236,7 +238,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
 std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
                                                                  std::string rendererVersion) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, std::string rendererVersion)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, const std::string& rendererVersion)
 #endif // __ANDROID__
 {
     ParseContext context;
@@ -248,7 +250,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::stri
                                                                  std::string rendererVersion,
                                                                  ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, std::string rendererVersion, ParseContext& context)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, const std::string& rendererVersion, ParseContext& context)
 #endif // __ANDROID__
 {
     return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), rendererVersion, context);
@@ -311,14 +313,14 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
             InputNecessityIndicatorsToString(m_inputNecessityIndicators);
     }
 
-    std::string bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
+    const std::string& bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
     root[bodyPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : GetBody())
     {
         root[bodyPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
-    std::string actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
+    const std::string& actionsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions);
     root[actionsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& action : GetActions())
     {
@@ -405,7 +407,7 @@ void AdaptiveCard::SetStyle(const ContainerStyle value)
     m_style = value;
 }
 
-std::string AdaptiveCard::GetLanguage() const
+const std::string& AdaptiveCard::GetLanguage() const
 {
     return m_language;
 }
