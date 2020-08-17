@@ -26,7 +26,7 @@ namespace AdaptiveSharedNamespace
         DateTimePreparser GetValueForDateParsing() const;
 
         void SetLanguage(const std::string& value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
 
         static std::shared_ptr<Fact> Deserialize(const ParseContext& context, const Json::Value& root);
         static std::shared_ptr<Fact> DeserializeFromString(const ParseContext& context, const std::string& jsonString);

@@ -242,6 +242,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(textInput.GetErrorMessage().empty());
         Assert::AreEqual("([A-Z])\\w+"s, textInput.GetRegex());
 
+        Assert::AreEqual("Input.Text_label"s, textInput.GetLabel());
+
         auto inlineAction = std::static_pointer_cast<SubmitAction>(textInput.GetInlineAction());
         Assert::IsTrue((bool)inlineAction);
         Assert::AreEqual("Input.Text_Action.Submit"s, inlineAction->GetTitle());
@@ -256,11 +258,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Number_id"s, numberInput.GetId());
 
         Assert::IsTrue(numberInput.GetIsRequired());
-        Assert::AreEqual(10, numberInput.GetMax());
-        Assert::AreEqual(5, numberInput.GetMin());
-        Assert::AreEqual(7, numberInput.GetValue());
+        Assert::AreEqual(10, numberInput.GetMax().value());
+        Assert::AreEqual(5, numberInput.GetMin().value());
+        Assert::AreEqual(7, numberInput.GetValue().value());
         Assert::AreEqual("Input.Number_placeholder"s, numberInput.GetPlaceholder());
         Assert::IsTrue(numberInput.GetErrorMessage().empty());
+        Assert::AreEqual("Input.Number_label"s, numberInput.GetLabel());
     }
 
     void ValidateInputDate(const DateInput &dateInput)
@@ -275,6 +278,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
+		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -288,6 +292,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("13:00"s, timeInput.GetValue());
         Assert::IsTrue(timeInput.GetIsRequired());
         Assert::AreEqual("Input.Time.ErrorMessage"s, timeInput.GetErrorMessage());
+        Assert::AreEqual("Input.Time_label"s, timeInput.GetLabel());
     }
 
     void ValidateInputToggle(const ToggleInput &toggleInput)
@@ -302,6 +307,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Toggle_off"s, toggleInput.GetValueOff());
         Assert::IsFalse(toggleInput.GetIsRequired());
         Assert::IsTrue(toggleInput.GetErrorMessage().empty());
+        Assert::AreEqual("Input.Toggle_label"s, toggleInput.GetLabel());
     }
 
     void ValidateTextBlockInInput(const TextBlock &textBlock)
@@ -337,6 +343,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             expectedTitle.append("_title");
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
+
+		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)

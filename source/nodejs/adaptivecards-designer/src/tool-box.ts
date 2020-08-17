@@ -1,4 +1,5 @@
 import { SettingsManager } from "./settings-manager";
+import { KEY_ENTER, KEY_SPACE } from "adaptivecards-controls";
 
 export interface IToolboxCommand {
     title: string;
@@ -44,7 +45,7 @@ export class Toolbox {
             this.onToggled(this);
         }
     }
-    
+
     onToggled: (sender: Toolbox) => void;
 
     readonly id: string;
@@ -65,6 +66,7 @@ export class Toolbox {
         this._renderedElement.style.overflow = "auto";
         this._renderedElement.style.display = "flex";
         this._renderedElement.style.flexDirection = "column";
+        this._renderedElement.style.position = "relative";
 
         this._headerRootElement = document.createElement("div");
         this._headerRootElement.innerHTML = "";
@@ -107,17 +109,23 @@ export class Toolbox {
 
         this._expandCollapseButtonElement = document.createElement("span");
         this._expandCollapseButtonElement.className = "acd-toolbox-header-commandButton";
-        this._expandCollapseButtonElement.title = "Hide";
+        this._expandCollapseButtonElement.title = "Hide " + this.title;
+        this._expandCollapseButtonElement.tabIndex = 0;
+        this._expandCollapseButtonElement.setAttribute("role", "button");
+        this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
 
         this._expandCollapseButtonElement.appendChild(this._headerIconElement);
 
-        this._expandCollapseButtonElement.onmousedown = (e) => {
-            e.preventDefault();
+        this._expandCollapseButtonElement.onkeydown = (e) => {
+            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+                this.toggle();
 
-            return true;
+                e.preventDefault();
+                this._expandCollapseButtonElement.focus();
+            }
         }
 
         this._expandCollapseButtonElement.onclick = (e) => {
@@ -153,7 +161,8 @@ export class Toolbox {
                 this._collapsedTabContainer.appendChild(this._headerRootElement);
             }
 
-            this._expandCollapseButtonElement.title = "Show";
+            this._expandCollapseButtonElement.title = "Show " + this.title;
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", "false");
 
             this._isExpanded = false;
 
@@ -172,7 +181,8 @@ export class Toolbox {
                 this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
             }
 
-            this._expandCollapseButtonElement.title = "Hide";
+            this._expandCollapseButtonElement.title = "Hide " + this.title;
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
 
             this._isExpanded = true;
 
@@ -220,7 +230,7 @@ export class Toolbox {
                 }
 
                 let isExpandedSetting = SettingsManager.tryLoadBooleanSetting("Toolbox" + this.id + "IsExpanded", true);
-        
+
                 if (isExpandedSetting.succeeded) {
                     if (isExpandedSetting.value) {
                         this.expand();

@@ -3,28 +3,46 @@
 
 <head>
 	<title>Adaptive Cards Designer</title>
+	<style type="text/css">
+		* {
+			box-sizing: border-box;
+		}
+
+		html {
+			overflow: hidden !important;
+		}
+
+		body {
+			font-family: 'Segoe UI', sans-serif;
+			font-size: 14px;
+			font-weight: normal;
+			height: 100vh;
+			margin: 0;
+			padding: 0;
+		}
+
+		#designerRootHost {
+			height: 100vh;
+		}
+	</style>
+
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
 	<!-- Use your own copy of monaco if you prefer -->
 	<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
-	<script src="https://unpkg.com/adaptivecards-designer@0.7.0/dist/adaptivecards-designer.min.js"></script>
+	<script src="https://unpkg.com/adaptivecards-designer@latest/dist/adaptivecards-designer.min.js"></script>
 
 	<script type="text/javascript">
-		window.onload = function() {
+		window.onload = function () {
 			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
-			
-			let hostContainers = [];
-			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
 
-			let designer = new ACDesigner.CardDesigner(hostContainers);
-			designer.assetPath = "https://unpkg.com/adaptivecards-designer@0.7.0/dist";
+			let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
+			designer.assetPath = "https://unpkg.com/adaptivecards-designer@latest/dist";
 
 			designer.attachTo(document.getElementById("designerRootHost"));
-
 			// initialize monaco editor and tell the Designer when it's been loaded
 			require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
 			require(['vs/editor/editor.main'], function () {

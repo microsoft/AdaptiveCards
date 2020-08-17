@@ -49,16 +49,14 @@ namespace AdaptiveNamespace
         void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
-
         static UINT s_bleedMargin;
 
         unsigned int m_visibleCount{};
         unsigned int m_measuredCount{};
 
-        unsigned int m_accessKeyCount{};
+        unsigned int m_stretchableItemCount{};
         float m_calculatedSize{};
         bool m_allElementsRendered{};
-        std::set<std::string> m_stretchableItems;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalContentAlignment{};
 
         // true if this represents the mainPanel.

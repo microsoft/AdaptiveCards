@@ -4,29 +4,28 @@
 //
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
-#import <Foundation/Foundation.h>
 #import "ACOAdaptiveCardParseResult.h"
-#import "ACRIBaseInputHandler.h"
-#import "SharedAdaptiveCard.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACORemoteResourceInformationPrivate.h"
+#import "ACRErrors.h"
+#import "ACRIBaseInputHandler.h"
+#import "ACRParseWarningPrivate.h"
 #import "AdaptiveCardParseException.h"
 #import "AdaptiveCardParseWarning.h"
-#import "ACRParseWarningPrivate.h"
 #import "ParseResult.h"
-#import "ACRErrors.h"
-#import "ACORemoteResourceInformationPrivate.h"
+#import "SharedAdaptiveCard.h"
+#import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
 
-@implementation ACOAdaptiveCard
-{
+@implementation ACOAdaptiveCard {
     std::shared_ptr<AdaptiveCard> _adaptiveCard;
-    NSMutableArray *_inputs;
+    NSMutableArray<ACRIBaseInputHandler> *_inputs;
 }
 
-- (void)setInputs:(NSArray *) inputs
+- (void)setInputs:(NSArray *)inputs
 {
-    _inputs = [[NSMutableArray alloc] initWithArray:inputs];
+    _inputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] initWithArray:inputs];
 }
 
 - (void)appendInputs:(NSArray *)inputs
@@ -36,10 +35,9 @@ using namespace AdaptiveCards;
 
 - (NSData *)inputs
 {
-    if(_inputs){
+    if (_inputs) {
         NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] init];
-        for(id<ACRIBaseInputHandler> input in _inputs)
-        {
+        for (id<ACRIBaseInputHandler> input in _inputs) {
             [input getInput:dictionary];
         }
 
@@ -49,7 +47,7 @@ using namespace AdaptiveCards;
     return nil;
 }
 
-- (NSArray *)getInputs
+- (NSArray<ACRIBaseInputHandler> *)getInputs
 {
     return _inputs;
 }
@@ -57,23 +55,19 @@ using namespace AdaptiveCards;
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 {
     ACOAdaptiveCardParseResult *result = nil;
-    if(payload)
-    {
-        try
-        {
+    if (payload) {
+        try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
             std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.3"));
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
-            for(const auto &warning : parseWarnings){
+            for (const auto &warning : parseWarnings) {
                 ACRParseWarning *acrParseWarning = [[ACRParseWarning alloc] initWithParseWarning:warning];
                 [acrParseWarnings addObject:acrParseWarning];
             }
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
-        }
-        catch(const AdaptiveCardParseException& e)
-        {
+        } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
             NSInteger errorCode = (long)errorStatusCode;
@@ -81,7 +75,7 @@ using namespace AdaptiveCards;
             NSError *parseError = [NSError errorWithDomain:ACRParseErrorDomain
                                                       code:errorCode
                                                   userInfo:nil];
-            NSArray<NSError *> *errors = @[parseError];
+            NSArray<NSError *> *errors = @[ parseError ];
             result = [[ACOAdaptiveCardParseResult alloc] init:nil errors:errors warnings:nil];
         }
     }
@@ -102,12 +96,12 @@ using namespace AdaptiveCards;
 {
     NSMutableArray *mutableRemoteResources = nil;
     std::vector<RemoteResourceInformation> remoteResourceVector = _adaptiveCard->GetResourceInformation();
-    if(!remoteResourceVector.empty()){
+    if (!remoteResourceVector.empty()) {
         mutableRemoteResources = [[NSMutableArray alloc] init];
-        for(const auto &remoteResource : remoteResourceVector){
+        for (const auto &remoteResource : remoteResourceVector) {
             ACORemoteResourceInformation *remoteResourceObjc =
                 [[ACORemoteResourceInformation alloc] initWithRemoteResourceInformation:remoteResource];
-            if(remoteResourceObjc){
+            if (remoteResourceObjc) {
                 [mutableRemoteResources addObject:remoteResourceObjc];
             }
         }

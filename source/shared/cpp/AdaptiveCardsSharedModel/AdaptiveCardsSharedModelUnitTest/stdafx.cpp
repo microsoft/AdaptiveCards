@@ -6,9 +6,11 @@
 
 #include "stdafx.h"
 
+#ifndef __clang__
 #pragma managed(push, off)
 ExcludeFromCodeCoverage(BasicStringExclusion, L"*std::*");
 ExcludeFromCodeCoverage(TestExclusion, L"AdaptiveCardsSharedModelUnitTest::*");
 ExcludeSourceFromCodeCoverage(JsonCppExclusion, L"*\\jsoncpp.cpp");
 ExcludeSourceFromCodeCoverage(JsonHeaderExclusion, L"*\\json.h");
 #pragma managed(pop)
+#endif

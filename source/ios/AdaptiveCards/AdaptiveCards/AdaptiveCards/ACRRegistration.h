@@ -7,47 +7,48 @@
 //
 @class ACRBaseCardElementRenderer;
 
-#import "ACRBaseActionElementRenderer.h"
 #import "ACOBaseCardElement.h"
+#import "ACRBaseActionElementRenderer.h"
 
-@interface ACRRegistration:NSObject
+@interface ACRRegistration : NSObject
 
-+ (ACRRegistration *)getInstance;
++ (ACRRegistration *_Nonnull)getInstance;
 
-- (ACRBaseCardElementRenderer *)getRenderer:(NSNumber *) cardElementType;
+- (ACRBaseCardElementRenderer *_Nullable)getRenderer:(NSNumber *_Nonnull)cardElementType;
 
-- (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *) cardElementType;
+- (ACRBaseActionElementRenderer *_Nullable)getActionRenderer:(NSNumber *_Nonnull)cardElementType;
 
-- (id<ACRIBaseActionSetRenderer>)getActionSetRenderer;
+- (id<ACRIBaseActionSetRenderer>_Nullable)getActionSetRenderer;
 
-- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType;
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer cardElementType:(NSNumber *_Nonnull)cardElementType;
 
-- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType;
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *_Nullable)renderer cardElementType:(ACRCardElementType)cardElementType;
 
-- (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer;
+- (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>_Nullable)actionsetRenderer;
 
-- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser key:(NSString *)key;;
+- (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *_Nonnull)customElementPars_Nonnuller key:(NSString *_Nonnull)key;
+;
 
-- (NSObject<ACOIBaseCardElementParser> *)getCustomElementParser:(NSString *)key;
+- (NSObject<ACOIBaseCardElementParser> *_Nullable)getCustomElementParser:(NSString *_Nonnull)key;
 
-- (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *)renderer key:(NSString *)key;
+- (void)setCustomElementRenderer:(ACRBaseCardElementRenderer *_Nonnull)renderer key:(NSString *_Nonnull)key;
 
 - (BOOL)isElementRendererOverridden:(ACRCardElementType)cardElementType;
 
-- (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType;
+- (BOOL)isActionRendererOverridden:(NSNumber *_Nonnull)cardElementType;
 
-- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *)parser key:(NSString *)key;
+- (void)setCustomActionElementParser:(NSObject<ACOIBaseActionElementParser> *_Nonnull)parser key:(NSString *_Nonnull)key;
 
-- (NSObject<ACOIBaseActionElementParser> *)getCustomActionElementParser:(NSString *)key;
+- (NSObject<ACOIBaseActionElementParser> *_Nullable)getCustomActionElementParser:(NSString *_Nonnull)key;
 
-- (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *)renderer key:(NSString *)key;
+- (void)setCustomActionRenderer:(ACRBaseActionElementRenderer *_Nonnull)renderer key:(NSString *_Nonnull)key;
 
-- (ACOParseContext *)getParseContext;
+- (ACOParseContext *_Nonnull)getParseContext;
 
 @end
 
-@interface ACOFeatureRegistration:NSObject
-+ (ACOFeatureRegistration *)getInstance;
+@interface ACOFeatureRegistration : NSObject
++ (ACOFeatureRegistration *_Nonnull)getInstance;
 - (void)addFeature:(nullable NSString *)featureName featureVersion:(nullable NSString *)version;
 - (void)removeFeature:(nullable NSString *)featureName;
 - (nonnull NSString *)getFeatureVersion:(nullable NSString *)featureName;

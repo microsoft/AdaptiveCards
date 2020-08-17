@@ -44,8 +44,8 @@ export const defaultConfigPayload: string = `{
 			"subtle": "#DD00FF00"
 		},
 		"warning": {
-			"normal": "#FF0000",
-			"subtle": "#DDFF0000"
+			"normal": "#ED0000",
+			"subtle": "#DDED0000"
 		}
 	},
 	"imageSizes": {
@@ -282,7 +282,7 @@ export const defaultPayload: string = `{
 				    {
 				        "type": "Action.OpenUrl",
 						"title": "OK",
-						"url": "http://adaptivecards.io"
+						"url": "https://adaptivecards.io"
 			        }
 				]
 			}
@@ -290,7 +290,7 @@ export const defaultPayload: string = `{
 		{
 			"type": "Action.OpenUrl",
 			"title": "View",
-			"url": "http://adaptivecards.io"
+			"url": "https://adaptivecards.io"
 		}
 	]
 }`;

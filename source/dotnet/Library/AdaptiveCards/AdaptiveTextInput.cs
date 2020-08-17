@@ -80,6 +80,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public AdaptiveAction InlineAction { get; set; }
 
@@ -87,5 +88,15 @@ namespace AdaptiveCards
         {
             return Value ?? $"*[{Placeholder}]*";
         }
+
+        /// <summary>
+        /// Regular expression used for validating the input
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string Regex { get; set; }
     }
 }

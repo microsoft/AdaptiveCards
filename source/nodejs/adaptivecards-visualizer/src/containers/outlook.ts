@@ -3,6 +3,7 @@
 import { HostContainer } from "./host-container";
 import * as Adaptive from "adaptivecards";
 import * as outlookConfiguration from "../../../../../samples/HostConfig/outlook-desktop.json";
+import { SerializationContext } from "adaptivecards";
 
 export class OutlookContainer extends HostContainer {
     protected renderContainer(adaptiveCard: Adaptive.AdaptiveCard, target: HTMLElement): HTMLElement {
@@ -21,17 +22,17 @@ export class OutlookContainer extends HostContainer {
     public initialize() {
         super.initialize();
 
-        Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
-        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
+        Adaptive.GlobalRegistry.actions.unregister("Action.Submit");
+        Adaptive.GlobalRegistry.actions.register("Action.Http", Adaptive.HttpAction);
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
-        Adaptive.AdaptiveCard.allowMarkForTextHighlighting = true;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.GlobalSettings.allowMarkForTextHighlighting = true;
     }
 
-    private parsePadding(json: any): Adaptive.PaddingDefinition {
-        if (json) {
-            if (typeof json === "string") {
-                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, json, Adaptive.Spacing.None);
+    private parsePadding(source: any): Adaptive.PaddingDefinition {
+        if (source) {
+            if (typeof source === "string") {
+                var uniformPadding = Adaptive.parseEnum(Adaptive.Spacing, source, Adaptive.Spacing.None);
 
                 return new Adaptive.PaddingDefinition(
                     uniformPadding,
@@ -39,21 +40,21 @@ export class OutlookContainer extends HostContainer {
                     uniformPadding,
                     uniformPadding);
             }
-            else if (typeof json === "object") {
+            else if (typeof source === "object") {
                 return new Adaptive.PaddingDefinition(
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
+                    Adaptive.parseEnum(Adaptive.Spacing, source["top"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["right"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["bottom"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["left"], Adaptive.Spacing.None));
             }
         }
 
         return null;
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
-        if (element instanceof Adaptive.Container && json["rtl"] != undefined) {
-            //element.rtl = json["rtl"];
+    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) {
+        if (element instanceof Adaptive.Container && typeof source["rtl"] === "boolean") {
+            element.rtl = source["rtl"];
         }
 
         if (element instanceof Adaptive.AdaptiveCard) {
@@ -62,14 +63,14 @@ export class OutlookContainer extends HostContainer {
 
             card["resources"] = { actions: actionArray };
 
-            if (typeof json["resources"] === "object") {
-                var actionResources = json["resources"]["actions"] as Array<any>;
+            if (typeof source["resources"] === "object") {
+                var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
-                    let action = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionResources[i]["type"]);
+                    let action = Adaptive.GlobalRegistry.actions.createInstance(actionResources[i]["type"], context.targetVersion);
 
                     if (action) {
-                        action.parse(actionResources[i]);
+                        action.parse(actionResources[i], context);
                         action.setParent(card);
 
                         actionArray.push(action);
@@ -79,7 +80,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Container) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.Container>element).padding = padding;
@@ -87,7 +88,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.ColumnSet) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.ColumnSet>element).padding = padding;
@@ -122,10 +123,8 @@ export class OutlookContainer extends HostContainer {
 
     public setHostCapabilities(hostConfig: Adaptive.HostConfig) {
         // Uncomment to test "requires" clause
-        hostConfig.hostCapabilities.capabilities = {
-            helloWorld: "*",
-            whatNow: new Adaptive.Version(2, 3)
-        };
+        hostConfig.hostCapabilities.addCapability("helloWorld", "*");
+        hostConfig.hostCapabilities.addCapability("whatNot", new Adaptive.Version(2, 3));
     }
 
     public getHostConfig(): Adaptive.HostConfig {

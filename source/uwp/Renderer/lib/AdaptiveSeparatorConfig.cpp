@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveSeparatorConfig.h"
 
 using namespace Microsoft::WRL;
@@ -8,14 +9,16 @@ using namespace ABI::AdaptiveNamespace;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize() noexcept
+    try
     {
         SeparatorConfig separatorConfig;
         return RuntimeClassInitialize(separatorConfig);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept try
+    HRESULT AdaptiveSeparatorConfig::RuntimeClassInitialize(SeparatorConfig sharedSeparatorConfig) noexcept
+    try
     {
         RETURN_IF_FAILED(GetColorFromString(sharedSeparatorConfig.lineColor, &m_lineColor));
         m_lineThickness = sharedSeparatorConfig.lineThickness;

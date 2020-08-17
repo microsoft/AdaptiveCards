@@ -11,11 +11,11 @@ Here's a list of the schema URLs you can reference
 
 ### Generating the schema
 
-The Adaptive Card schema is generated from "typed schema" files located in the `src` folder. These typed schema files are much easier to author. The schema is then **compiled** into the standard JSON schema file using the nodejs `typed-schema` project in Adaptive Cards. The fact that it's compiled means we can support case-insensitive enums (via lengthy regex expressions) and it also means it's way easier to update the schema and produce a reliable and correct schema without having to worry about `#/definitions` and everything!
+The Adaptive Card schema is generated from "typed schema" files located in the `src` folder. These typed schema files are much easier to author. The schema is then **compiled** into the standard JSON schema file using the nodejs `ac-typed-schema` project in Adaptive Cards. The fact that it's compiled means we can support case-insensitive enums (via lengthy regex expressions) and it also means it's way easier to update the schema and produce a reliable and correct schema without having to worry about `#/definitions` and everything!
 
 Our schema explorer on the website is also generated from the typed schema files in the `src` folder.
 
-To generate the schema, see `../source/nodejs/typed-schema`.
+To generate the schema, see `../source/nodejs/ac-typed-schema`.
 
 ### Non-extensible schema
 

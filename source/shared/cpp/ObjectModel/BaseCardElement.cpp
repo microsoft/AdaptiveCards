@@ -12,17 +12,14 @@
 using namespace AdaptiveSharedNamespace;
 
 BaseCardElement::BaseCardElement(CardElementType type, Spacing spacing, bool separator, HeightType height) :
-    m_type(type), m_spacing(spacing),
-    m_height(height), m_separator(separator),
-    m_isVisible(true)
+    m_type(type), m_spacing(spacing), m_height(height), m_separator(separator), m_isVisible(true)
 {
     SetTypeString(CardElementTypeToString(type));
     PopulateKnownPropertiesSet();
 }
 
 BaseCardElement::BaseCardElement(CardElementType type) :
-    m_type(type), m_spacing(Spacing::Default), m_separator(false),
-    m_height(HeightType::Auto), m_isVisible(true)
+    m_type(type), m_spacing(Spacing::Default), m_height(HeightType::Auto), m_separator(false), m_isVisible(true)
 {
     SetTypeString(CardElementTypeToString(type));
     PopulateKnownPropertiesSet();
@@ -42,7 +39,7 @@ bool BaseCardElement::GetSeparator() const
     return m_separator;
 }
 
-void BaseCardElement::SetSeparator(const bool value)
+void BaseCardElement::SetSeparator(bool value)
 {
     m_separator = value;
 }
@@ -52,7 +49,7 @@ Spacing BaseCardElement::GetSpacing() const
     return m_spacing;
 }
 
-void BaseCardElement::SetSpacing(const Spacing value)
+void BaseCardElement::SetSpacing(Spacing value)
 {
     m_spacing = value;
 }
@@ -62,7 +59,7 @@ HeightType BaseCardElement::GetHeight() const
     return m_height;
 }
 
-void BaseCardElement::SetHeight(const HeightType value)
+void BaseCardElement::SetHeight(HeightType value)
 {
     m_height = value;
 }
@@ -72,12 +69,12 @@ bool BaseCardElement::GetIsVisible() const
     return m_isVisible;
 }
 
-void BaseCardElement::SetIsVisible(const bool value)
+void BaseCardElement::SetIsVisible(bool value)
 {
     m_isVisible = value;
 }
 
-const CardElementType BaseCardElement::GetElementType() const
+CardElementType BaseCardElement::GetElementType() const
 {
     return m_type;
 }
@@ -109,7 +106,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     return root;
 }
 
-Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction)
 {
     if (selectAction != nullptr)
     {
@@ -118,7 +115,9 @@ Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseAct
     return Json::Value();
 }
 
-void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element)
+void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context,
+                                      const Json::Value& json,
+                                      std::shared_ptr<BaseElement>& element)
 {
     const std::string typeString = ParseUtil::GetTypeAsString(json);
     std::shared_ptr<BaseCardElementParser> parser = context.elementParserRegistration->GetParser(typeString);
@@ -131,7 +130,7 @@ void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& con
     auto parsedElement = parser->Deserialize(context, json);
     if (parsedElement != nullptr)
     {
-        element = parsedElement;
+        element = std::move(parsedElement);
         return;
     }
 

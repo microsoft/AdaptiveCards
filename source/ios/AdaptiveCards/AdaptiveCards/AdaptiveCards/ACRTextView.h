@@ -5,16 +5,15 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
-#import "ACRIBaseInputHandler.h"
 #import "ACOBaseCardElement.h"
+#import "ACRIBaseInputHandler.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRTextView:UITextView<ACRIBaseInputHandler, UITextViewDelegate>
-@property NSString* id;
-@property NSString* placeholderText;
-@property bool isRequired;
+@interface ACRTextView : UITextView <ACRIBaseInputHandler, UITextViewDelegate>
+@property NSString *placeholderText;
 @property NSUInteger maxLength;
-@property IBInspectable UIColor* borderColor;
+@property IBInspectable UIColor *borderColor;
+@property NSPredicate *regexPredicate;
 
 - (instancetype)initWithFrame:(CGRect)frame element:(ACOBaseCardElement *)element;
 - (void)configWithSharedModel:(ACOBaseCardElement *)element;

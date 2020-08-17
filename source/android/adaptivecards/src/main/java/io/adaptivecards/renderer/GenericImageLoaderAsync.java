@@ -77,7 +77,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             String uriScheme = getUriScheme(path);
             IResourceResolver resourceResolver = CardRendererRegistration.getInstance().getResourceResolver(uriScheme);
 
-            if(resourceResolver != null)
+            if (resourceResolver != null)
             {
                 if (m_maxWidth != -1)
                 {
@@ -96,7 +96,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
             //Step 2: If resource resolver doesn't exist, then try with treating it as a dataUri
             // Let's try to see if we got the image in the card as a base64 encoded string
             // The syntax of data URIs as in RFX 2397 is  data:[<media type>][;base64],<data>
-            if(uriScheme.equals("data"))
+            if (uriScheme.equals("data"))
             {
                 return loadDataUriImage(path);
             }
@@ -244,7 +244,7 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     }
 
     // By default, this function keeps the bitmap as is
-    protected Bitmap styleBitmap(Bitmap bitmap)
+    public Bitmap styleBitmap(Bitmap bitmap)
     {
         return bitmap;
     }

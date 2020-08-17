@@ -14,14 +14,16 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
         return RuntimeClassInitialize(dateInput);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput) try
+    HRESULT AdaptiveDateInput::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::DateInput>& sharedDateInput)
+    try
     {
         if (sharedDateInput == nullptr)
         {
@@ -63,17 +65,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveDateInput::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::DateInput> dateInput = std::make_shared<AdaptiveSharedNamespace::DateInput>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(dateInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*dateInput));
 
         dateInput->SetMax(HStringToUTF8(m_max.Get()));
         dateInput->SetMin(HStringToUTF8(m_min.Get()));
         dateInput->SetPlaceholder(HStringToUTF8(m_placeholder.Get()));
         dateInput->SetValue(HStringToUTF8(m_value.Get()));
 
-        sharedModel = dateInput;
+        sharedModel = std::move(dateInput);
 
         return S_OK;
     }

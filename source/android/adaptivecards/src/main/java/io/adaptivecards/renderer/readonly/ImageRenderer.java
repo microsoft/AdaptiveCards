@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.os.AsyncTask;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.CardElementType;
@@ -83,7 +84,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
+        public Bitmap styleBitmap(Bitmap bitmap)
         {
             if (bitmap != null && m_imageStyle == ImageStyle.Person)
             {
@@ -115,37 +116,187 @@ public class ImageRenderer extends BaseCardElementRenderer
         private int m_backgroundColor;
     }
 
-    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+    /**
+     * Get the pixels for the given ImageSize, as configured in the given ImageSizesConfig
+     * @param context
+     * @param imageSize parsed ImageSize
+     * @param imageSizesConfig ImageSizesConfig from host config
+     * @return size in pixels, scaled by screen density
+     */
+    private static int getImageSizePixels(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
 
-        if (imageSize == ImageSize.Small) {
+        if (imageSize == ImageSize.Small)
+        {
             imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getSmallSize());
-        } else if (imageSize == ImageSize.Medium) {
+        }
+        else if (imageSize == ImageSize.Medium)
+        {
             imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getMediumSize());
-        } else if (imageSize == ImageSize.Large) {
+        }
+        else if (imageSize == ImageSize.Large)
+        {
             imageSizeLimit = Util.dpToPixels(context, imageSizesConfig.getLargeSize());
         }
 
         return imageSizeLimit;
     }
 
-    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize == ImageSize.Stretch) {
-            //ImageView must match parent for stretch to work
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        } else if (imageSize == ImageSize.Small) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getSmallSize()));
-        } else if (imageSize == ImageSize.Medium) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getMediumSize()));
-        } else if (imageSize == ImageSize.Large) {
-            imageView.setMaxWidth(Util.dpToPixels(context, imageSizesConfig.getLargeSize()));
-        } else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None){
+    /**
+     * Set ImageView size according to 'height', 'width', and 'size' attributes of the given Image
+     * @param context
+     * @param imageView the view to resize
+     * @param image the parsed Image
+     * @param hostConfig the HostConfig that configures semantic 'size' values
+     * @param isInImageSet true if the Image was declared in an ImageSet
+     */
+    private static void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig, boolean isInImageSet)
+    {
+        long explicitWidth = image.GetPixelWidth();
+        long explicitHeight = image.GetPixelHeight();
+        ImageSize imageSize = image.GetImageSize();
+
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+
+        int viewWidth = ViewGroup.LayoutParams.WRAP_CONTENT;
+        int viewHeight = ViewGroup.LayoutParams.WRAP_CONTENT;
+
+        // explicit height and/or width given
+        if (explicitWidth != 0 || explicitHeight != 0)
+        {
+            if (explicitWidth != 0 && explicitHeight != 0)
+            {
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+            if (explicitWidth != 0)
+            {
+                viewWidth = Util.dpToPixels(context, explicitWidth);
+            }
+            if (explicitHeight != 0)
+            {
+                viewHeight = Util.dpToPixels(context, explicitHeight);
+            }
+        }
+        // stretch
+        else if (imageSize == ImageSize.Stretch)
+        {
+            viewWidth = ViewGroup.LayoutParams.MATCH_PARENT;
+        }
+        // semantic size from host config
+        else if ((imageSize == ImageSize.Small) || (imageSize == ImageSize.Medium) || (imageSize == ImageSize.Large))
+        {
+            viewWidth = getImageSizePixels(context, imageSize, hostConfig.GetImageSizes());
+        }
+        else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None) {
+            // TODO: Instead of failing, proceed to render w/ default size "auto"
             throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
         }
 
-        imageView.setAdjustViewBounds(true);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) imageView.getLayoutParams();
+        if (params == null)
+        {
+            params = new LinearLayout.LayoutParams(viewWidth, viewHeight);
+        }
+        else
+        {
+            params.width = viewWidth;
+            params.height = viewHeight;
+        }
+        
+        imageView.setLayoutParams(params);
+    }
+
+    private int getBackgroundColorFromHexCode(String hexColorCode)
+    {
+        int backgroundColor = 0;
+        if (!TextUtils.isEmpty(hexColorCode))
+        {
+            // check that it has 9 characters and that the color string isn't a color name
+            if (hexColorCode.length() == 9 && hexColorCode.charAt(0) == '#')
+            {
+                try
+                {
+                    // if the color string is not valid, parseColor will throw a IllegalArgumentException
+                    // so we just turn the color to transparent on the catch statement
+                    backgroundColor = Color.parseColor(hexColorCode);
+                }
+                catch (IllegalArgumentException e)
+                {
+                    backgroundColor = 0;
+                }
+            }
+            else
+            {
+                backgroundColor = 0;
+            }
+        }
+
+        return backgroundColor;
+    }
+
+    private int getImageHorizontalAlignment(Image image)
+    {
+        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
+        int gravity = Gravity.LEFT;
+
+        if (horizontalAlignment == HorizontalAlignment.Center)
+        {
+            gravity = Gravity.CENTER_HORIZONTAL;
+        }
+        else if (horizontalAlignment == HorizontalAlignment.Right)
+        {
+            gravity = Gravity.RIGHT;
+        }
+
+        return gravity;
+    }
+
+    private View setImageHeightAndHorizontalAlignment(Context context, boolean isInImageSet, ImageView imageView, Image image, TagContent tagContent)
+    {
+        int height = LinearLayout.LayoutParams.WRAP_CONTENT, width = LinearLayout.LayoutParams.WRAP_CONTENT, weight = 0;
+
+        // The expected behavior for the image must be:
+        // If the image has stretch size:
+        //      width grows as big as the parent but only uses as much vertical space as needed
+        // If the image has stretch size and also stretches in height:
+        //      width grows as big as the parent and uses as much leftover vertical space as there is
+        // If the image has a fixed or auto size:
+        //      width is limited to image size or defined size and only uses as much vertical space as needed
+        // If the image has a fixed or auto size and also stretched in height:
+        //      width is limited to image size or defined size and uses as much leftover vertical space as there is
+        if (image.GetImageSize() == ImageSize.Stretch)
+        {
+            width = LinearLayout.LayoutParams.MATCH_PARENT;
+        }
+
+        if (image.GetHeight() == HeightType.Stretch)
+        {
+            height = LinearLayout.LayoutParams.MATCH_PARENT;
+            weight = 1;
+        }
+
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height, weight);
+
+        // Set horizontal alignment for the image
+        layoutParams.gravity = getImageHorizontalAlignment(image);
+
+        // If the image is part of an imageSet or has height auto, we set the layout parameter to
+        // it and return just the view, otherwise we have to create a layout to grow in height and
+        // contain the image avoiding it to grow larger and making the background color to stretch
+        if (isInImageSet || image.GetHeight() != HeightType.Stretch)
+        {
+            imageView.setLayoutParams(layoutParams);
+            return imageView;
+        }
+        else
+        {
+            LinearLayout stretchLayout = new LinearLayout(context);
+            stretchLayout.setLayoutParams(layoutParams);
+            stretchLayout.addView(imageView);
+            tagContent.SetStretchContainer(stretchLayout);
+            return stretchLayout;
+        }
     }
 
     @Override
@@ -159,53 +310,25 @@ public class ImageRenderer extends BaseCardElementRenderer
             HostConfig hostConfig,
             RenderArgs renderArgs)
     {
-        Image image;
-        if (baseCardElement instanceof Image)
-        {
-            image = (Image) baseCardElement;
-        }
-        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
-        }
+        Image image = Util.castTo(baseCardElement, Image.class);
 
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+        View separator = null;
+        if (isInImageSet)
+        {
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+        }
 
         ImageView imageView = new ImageView(context);
-        imageView.setTag(new TagContent(image, separator, viewGroup));
 
-        setVisibility(baseCardElement.GetIsVisible(), imageView);
-
-        String imageBackgroundColor = image.GetBackgroundColor();
-        int backgroundColor = 0;
-        if (!TextUtils.isEmpty(imageBackgroundColor))
-        {
-            // check that it has 9 characters and that the color string isn't a color name
-            if (imageBackgroundColor.length() == 9 && imageBackgroundColor.charAt(0) == '#')
-            {
-                try
-                {
-                    // if the color string is not valid, parseColor will throw a IllegalArgumentException so we just turn the color to transparent on the catch statement
-                    backgroundColor = Color.parseColor(imageBackgroundColor);
-                }
-                catch (IllegalArgumentException e)
-                {
-                    backgroundColor = 0;
-                }
-            }
-            else
-            {
-                backgroundColor = 0;
-            }
-        }
+        int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
 
         if(image.GetImageStyle() != ImageStyle.Person)
         {
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        int imageSizeLimit = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
             renderedCard,
             imageView,
@@ -220,91 +343,22 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
 
-        imageLoaderAsync.execute(image.GetUrl());
+        imageLoaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, image.GetUrl());
 
-        LinearLayout.LayoutParams layoutParams;
-        if (image.GetImageSize() == ImageSize.Stretch)
-        {
-            //ImageView must match parent for stretch to work
-            if (image.GetHeight() == HeightType.Stretch)
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
-            }
-            else
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            }
-        }
-        else
-        {
-            if (image.GetHeight() == HeightType.Stretch)
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT, 1);
-            }
-            else
-            {
-                layoutParams = new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-            }
-        }
+        TagContent tagContent = new TagContent(image, separator, viewGroup);
 
-        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
-        if (horizontalAlignment == HorizontalAlignment.Right)
-        {
-            layoutParams.gravity = Gravity.RIGHT;
-        }
-        else if (horizontalAlignment == HorizontalAlignment.Center)
-        {
-            layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
-        }
+        View imageContainer = setImageHeightAndHorizontalAlignment(context, isInImageSet, imageView, image, tagContent);
+        setImageSize(context, imageView, image, hostConfig, isInImageSet);
+
+        viewGroup.addView(imageContainer);
+        imageView.setTag(tagContent);
+        setVisibility(baseCardElement.GetIsVisible(), imageView);
 
         if (image.GetSelectAction() != null)
         {
             imageView.setClickable(true);
             imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
         }
-
-        //set horizontalAlignment
-        imageView.setLayoutParams(layoutParams);
-
-        long pixelWidth = image.GetPixelWidth();
-        long pixelHeight = image.GetPixelHeight();
-        boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
-        boolean isAspectRatioNeeded = !((pixelHeight != 0) && (pixelWidth != 0));
-
-        if (hasExplicitSize)
-        {
-            int widthInPixels = Util.dpToPixels(context, pixelWidth);
-            int heightInPixels = Util.dpToPixels(context, pixelHeight);
-            if (isAspectRatioNeeded)
-            {
-                if (pixelWidth != 0)
-                {
-                    imageView.setMaxWidth(widthInPixels);
-                }
-
-                if (pixelHeight != 0)
-                {
-                    imageView.setMaxHeight(heightInPixels);
-                }
-
-                imageView.setAdjustViewBounds(true);
-            }
-            else
-            {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageView.setMaxWidth(widthInPixels);
-                imageView.setMaxHeight(heightInPixels);
-
-                imageView.getLayoutParams().height = heightInPixels;
-                imageView.getLayoutParams().width = widthInPixels;
-            }
-        }
-        else
-        {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes());
-        }
-
-        viewGroup.addView(imageView);
 
         return imageView;
     }

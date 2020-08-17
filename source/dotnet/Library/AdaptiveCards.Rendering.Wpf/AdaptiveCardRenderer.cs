@@ -17,7 +17,7 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         protected override AdaptiveSchemaVersion GetSupportedSchemaVersion()
         {
-            return new AdaptiveSchemaVersion(1, 2);
+            return new AdaptiveSchemaVersion(1, 3);
         }
 
         protected Action<object, AdaptiveActionEventArgs> ActionCallback;
@@ -165,9 +165,14 @@ namespace AdaptiveCards.Rendering.Wpf
 
             outerGrid.Children.Add(grid);
 
-            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
-            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context);
+            AdaptiveInternalID parentCardId = context.RenderArgs.ContainerCardId;
+            context.ParentCards.Add(card.InternalID, parentCardId);
+            context.RenderArgs.ContainerCardId = card.InternalID;
 
+            AdaptiveContainerRenderer.AddContainerElements(grid, card.Body, context);
+            AdaptiveActionSetRenderer.AddRenderedActions(grid, card.Actions, context, card.InternalID);
+
+            context.RenderArgs.ContainerCardId = parentCardId;
 
             if (card.SelectAction != null)
             {
@@ -222,7 +227,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             var element = context.Render(card);
 
-            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, context.InputBindings);
+            renderCard = new RenderedAdaptiveCard(element, card, context.Warnings, ref context.InputBindings);
 
             return renderCard;
         }

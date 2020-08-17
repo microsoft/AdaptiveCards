@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveToggleVisibilityTarget.h"
-#include "Util.h"
-#include <windows.foundation.collections.h>
 #include "ToggleVisibilityTarget.h"
 
 using namespace Microsoft::WRL;
@@ -15,7 +14,8 @@ using namespace ABI::Windows::UI::Xaml::Controls;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleVisibilityTarget::RuntimeClassInitialize() noexcept
+    try
     {
         RuntimeClassInitialize(std::make_shared<ToggleVisibilityTarget>());
         return S_OK;
@@ -45,7 +45,8 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel) try
+    HRESULT AdaptiveToggleVisibilityTarget::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityTarget> toggleTarget =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityTarget>();
@@ -55,7 +56,7 @@ namespace AdaptiveNamespace
         toggleTarget->SetElementId(id);
         toggleTarget->SetIsVisible((AdaptiveSharedNamespace::IsVisible)m_visibilityToggle);
 
-        sharedModel = toggleTarget;
+        sharedModel = std::move(toggleTarget);
         return S_OK;
     }
     CATCH_RETURN;

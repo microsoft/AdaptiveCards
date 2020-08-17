@@ -1,9 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
+
 #include "AdaptiveToggleVisibilityAction.h"
-#include "Util.h"
-#include "Vector.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
@@ -12,7 +11,8 @@ using namespace ABI::Windows::Foundation::Collections;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
@@ -20,8 +20,8 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(
-        const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction) try
+    HRESULT AdaptiveToggleVisibilityAction::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction>& sharedToggleVisibilityAction)
+    try
     {
         if (sharedToggleVisibilityAction == nullptr)
         {
@@ -47,16 +47,16 @@ namespace AdaptiveNamespace
         return m_targetElements.CopyTo(targetElements);
     }
 
-    HRESULT AdaptiveToggleVisibilityAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) try
+    HRESULT AdaptiveToggleVisibilityAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ToggleVisibilityAction> toggleVisibilityAction =
             std::make_shared<AdaptiveSharedNamespace::ToggleVisibilityAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(
-            std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(toggleVisibilityAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*toggleVisibilityAction));
 
         RETURN_IF_FAILED(GenerateSharedToggleElements(m_targetElements.Get(), toggleVisibilityAction->GetTargetElements()));
 
-        sharedModel = toggleVisibilityAction;
+        sharedModel = std::move(toggleVisibilityAction);
         return S_OK;
     }
     CATCH_RETURN;

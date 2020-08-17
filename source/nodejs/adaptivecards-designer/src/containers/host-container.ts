@@ -1,10 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Adaptive from "adaptivecards";
+import { GlobalSettings, GlobalRegistry, CardObjectRegistry, CardElement, Action, HostConfig, SerializationContext, Version, Versions } from "adaptivecards";
 import * as hostConfig from "../hostConfigs/sample.json";
 
 export abstract class HostContainer {
     private _cardHost: HTMLElement;
+    private _elementsRegistry = new CardObjectRegistry<CardElement>();
+    private _actionsRegistry = new CardObjectRegistry<Action>();
 
     readonly name: string;
     readonly styleSheet: string;
@@ -15,34 +17,42 @@ export abstract class HostContainer {
 
         this._cardHost = document.createElement("div");
         this._cardHost.className = "cardHost";
+
+        GlobalRegistry.populateWithDefaultElements(this._elementsRegistry);
+        GlobalRegistry.populateWithDefaultActions(this._actionsRegistry);
     }
 
     abstract renderTo(hostElement: HTMLElement);
 
     public initialize() {
-        Adaptive.AdaptiveCard.elementTypeRegistry.reset();
-        Adaptive.AdaptiveCard.actionTypeRegistry.reset();
+        GlobalSettings.useMarkdownInRadioButtonAndCheckbox = true;
+        GlobalSettings.useAdvancedCardBottomTruncation = false;
+        GlobalSettings.useAdvancedTextBlockTruncation = true;
+    }
 
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = true;
-        Adaptive.AdaptiveCard.useAdvancedCardBottomTruncation = false;
-        Adaptive.AdaptiveCard.useAdvancedTextBlockTruncation = true;
+    public createSerializationContext(targetVersion: Version): SerializationContext {
+        let context = new SerializationContext(targetVersion);
+        context.setElementRegistry(this.elementsRegistry);
+        context.setActionRegistry(this.actionsRegistry);
+
+        return context;
     }
 
     public getBackgroundColor(): string {
         return "#F6F6F6";
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
+    public parseElement(element: CardElement, source: any, context: SerializationContext) {
         // Do nothing in base implementation
     }
 
-    public anchorClicked(element: Adaptive.CardElement, anchor: HTMLAnchorElement): boolean {
+    public anchorClicked(element: CardElement, anchor: HTMLAnchorElement): boolean {
         // Not handled by the host container by default
         return false;
     }
 
-    public getHostConfig(): Adaptive.HostConfig {
-        return new Adaptive.HostConfig(hostConfig);
+    public getHostConfig(): HostConfig {
+        return new HostConfig(hostConfig);
     }
 
     supportsActionBar: boolean = false;
@@ -53,5 +63,17 @@ export abstract class HostContainer {
 
     get isFixedHeight(): boolean {
         return false;
+    }
+
+    get elementsRegistry(): CardObjectRegistry<CardElement> {
+        return this._elementsRegistry;
+    }
+
+    get actionsRegistry(): CardObjectRegistry<Action> {
+        return this._actionsRegistry;
+    }
+
+    get targetVersion(): Version {
+        return Versions.v1_0;
     }
 }

@@ -3,7 +3,6 @@
 #include "pch.h"
 #include "AdaptiveActionsConfig.h"
 #include "AdaptiveShowCardActionConfig.h"
-#include "Util.h"
 
 using namespace Microsoft::WRL;
 using namespace ABI::AdaptiveNamespace;
@@ -11,7 +10,8 @@ using namespace ABI::Windows::UI;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveActionsConfig::RuntimeClassInitialize() noexcept
+    try
     {
         ActionsConfig actionsConfig;
         return RuntimeClassInitialize(actionsConfig);

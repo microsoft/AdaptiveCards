@@ -1,16 +1,20 @@
 {
-  "version": "independent",
-  "packages": [
-    "adaptivecards*/**",
-    "spec-generator/**",
-    "typed-schema/**"
-  ],
-  "command": {
-    "publish": {
-      "ignoreChanges": [
-        "**/__tests__/**",
-        "*.md"
-      ]
-    }
-  }
+	"version": "independent",
+	"packages": [
+		"adaptivecards*/**",
+		"aclint/**",
+		"spec-generator/**",
+		"ac-typed-schema/**"
+	],
+	"command": {
+		"publish": {
+			"ignoreChanges": [
+				"**/dist/**",
+				"**/lib/**",
+				"**/node_modules/**",
+				"**/__tests__/**",
+				"*.md"
+			]
+		}
+	}
 }

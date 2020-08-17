@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.objectmodel;
 
 import android.util.Pair;
@@ -8,10 +10,41 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.readonly.RendererUtil;
+
 public class TextBlockPropertiesTest
 {
     static {
         System.loadLibrary("adaptivecards-native-lib");
+    }
+
+    @Test
+    public void CastTest()
+    {
+        final String textBlockNoDefaultValues =
+            "{\"color\":\"Accent\"," +
+                "\"fontType\":\"Monospace\"," +
+                "\"horizontalAlignment\":\"center\"," +
+                "\"isSubtle\":true," +
+                "\"maxLines\":1," +
+                "\"size\":\"Large\"," +
+                "\"text\":\"Sample text\"," +
+                "\"type\":\"TextBlock\"," +
+                "\"weight\":\"Bolder\"," +
+                "\"wrap\":true}\n";
+
+        try
+        {
+            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(textBlockNoDefaultValues), "1.0");
+            TextBlock textBlock = Util.castTo(result.GetAdaptiveCard().GetBody().get(0), TextBlock.class);
+
+            Assert.assertEquals(textBlock.GetText(), "Sample text");
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
     @Test
@@ -305,6 +338,34 @@ public class TextBlockPropertiesTest
             TextBlock parsedTextBlock = TestUtil.castToTextBlock(result.GetAdaptiveCard().GetBody().get(0));
             Assert.assertEquals((boolean)testTuple.first, parsedTextBlock.GetWrap());
         }
+    }
+
+    @Test
+    public void TestLineBreaks () throws Exception
+    {
+        final String textWithNewLines = "This is some string\nAnd this is another line\r";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "This is some string\nAnd this is another line";
+
+        // "(\n\r, \r\n, \r, \n)" are all considered line breaks that are converted to \n
+        // The last line breaks are also removed in the handleSpecialText function
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
+    }
+
+    @Test
+    public void TestNumberedList () throws Exception
+    {
+        final String textWithNewLines = "1. Green\r2. Orange\r3. Blue";
+        // This looks counter intuitive but without the replacement of '\n\r' for "<br/>" the
+        // output will only contain a blank space where '\n' is expected
+        final String expectedHtml = "1. Green\n2. Orange\n3. Blue";
+
+        String html = RendererUtil.handleSpecialText(textWithNewLines).toString();
+
+        Assert.assertEquals(expectedHtml, html);
     }
 
     // This string is the result for an empty textblock or a textblock with all default values

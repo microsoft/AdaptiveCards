@@ -5,16 +5,16 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 #import "ACRIBaseInputHandler.h"
-#import "SharedAdaptiveCard.h"
-#import "BaseInputElement.h"
 #import "ACRTextField.h"
+#import "BaseInputElement.h"
+#import "SharedAdaptiveCard.h"
+#import <UIKit/UIKit.h>
 
-@interface ACRDateTextField:ACRTextField
+@interface ACRDateTextField : ACRTextField<ACRIBaseInputHandler>
 @property NSDate *min;
 @property NSDate *max;
-@property NSDateFormatter *formatter;
+@property NSRegularExpression *regularExpression;
 
 - (instancetype)initWithTimeDateInput:(std::shared_ptr<AdaptiveCards::BaseInputElement> const &)elem
                             dateStyle:(NSDateFormatterStyle)dateStyle;

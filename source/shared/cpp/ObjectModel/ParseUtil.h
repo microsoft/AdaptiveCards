@@ -41,6 +41,8 @@ namespace AdaptiveSharedNamespace
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);
 
+        std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
+
         CardElementType GetCardElementType(const Json::Value& json);
 
         CardElementType TryGetCardElementType(const Json::Value& json);
@@ -55,12 +57,18 @@ namespace AdaptiveSharedNamespace
 
         Json::Value ExtractJsonValue(const Json::Value& jsonRoot, AdaptiveCardSchemaKey key, bool isRequired = false);
 
-        template<typename T>
+        template<typename T, typename Fn>
         T GetEnumValue(const Json::Value& json,
                        AdaptiveCardSchemaKey key,
                        T defaultEnumValue,
-                       std::function<T(const std::string& name)> enumConverter,
+                       Fn enumConverter,
                        bool isRequired = false);
+
+        template<typename T>
+        std::shared_ptr<T> GetElementOfType(ParseContext& context,
+                                            const Json::Value& json,
+                                            AdaptiveCardSchemaKey key,
+                                            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer);
 
         template<typename T>
         std::vector<std::shared_ptr<T>> GetElementCollection(bool isTopToBottomContainer,
@@ -101,19 +109,23 @@ namespace AdaptiveSharedNamespace
         void ExpectKeyAndValueType(const Json::Value& json, const char* expectedKey, std::function<void(const Json::Value&)> throwIfWrongType);
 
         std::string ToLowercase(const std::string& value);
+
+        std::shared_ptr<BaseCardElement> GetLabel(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key);
+
+        std::shared_ptr<BaseCardElement> GetLabelFromJsonValue(ParseContext& context, const Json::Value& json);
     };
 
-    template<typename T>
+    template<typename T, typename Fn>
     T ParseUtil::GetEnumValue(const Json::Value& json,
                               AdaptiveCardSchemaKey key,
                               T defaultEnumValue,
-                              std::function<T(const std::string& name)> enumConverter,
+                              Fn enumConverter,
                               bool isRequired)
     {
         std::string propertyValueStr = "";
         try
         {
-            const std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+            const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
             auto const& propertyValue = json.get(propertyName, Json::Value());
             if (propertyValue.empty())
             {
@@ -142,6 +154,17 @@ namespace AdaptiveSharedNamespace
             // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
             return defaultEnumValue;
         }
+    }
+
+    template<typename T>
+    std::shared_ptr<T> ParseUtil::GetElementOfType(
+        ParseContext& context,
+        const Json::Value& json,
+        AdaptiveCardSchemaKey key,
+        const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer)
+    {
+        auto el = deserializer(context, json);
+        return el;
     }
 
     template<typename T>
@@ -186,9 +209,9 @@ namespace AdaptiveSharedNamespace
         T result = jsonObject.empty() ? defaultValue : deserializer(jsonObject, defaultValue);
         return result;
     }
-    
+
     // Element [de]serialization
-    
+
     // A little template jiu-jitsu here -- given the provided parameters, we need BaseElement::ParseJsonObject to
     // call either BaseCardElement::ParseJsonObject or BaseActionElement::ParseJsonObject.
     template<typename T>

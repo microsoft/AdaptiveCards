@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29317.48
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards", "Library\AdaptiveCards\AdaptiveCards.csproj", "{D40ACA37-F5EA-4D3F-B443-CE714AA479A1}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdaptiveCards.Sample.WPFVisualizer", "Samples\WPFVisualizer\AdaptiveCards.Sample.WPFVisualizer.csproj", "{96144C6C-2E37-4A84-95AB-7F01D9222F2F}"
 EndProject
 Project("{C7167F0D-BC9F-4E6E-AFE1-012C56B48DB5}") = "AdaptiveCards.Sample.WPFVisualizer.PackageProject", "Samples\WPFVisualizer.PackageProject\AdaptiveCards.Sample.WPFVisualizer.PackageProject.wapproj", "{71340F5E-2B3B-4F1D-B113-236BBB0D7632}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdaptiveCards.Templating", "Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj", "{83599799-97B3-4B42-A580-B4CA81DD54CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +91,18 @@ Global
 		{71340F5E-2B3B-4F1D-B113-236BBB0D7632}.Release|x86.ActiveCfg = Release|x86
 		{71340F5E-2B3B-4F1D-B113-236BBB0D7632}.Release|x86.Build.0 = Release|x86
 		{71340F5E-2B3B-4F1D-B113-236BBB0D7632}.Release|x86.Deploy.0 = Release|x86
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Debug|x86.Build.0 = Debug|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x64.Build.0 = Release|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x86.ActiveCfg = Release|Any CPU
+		{83599799-97B3-4B42-A580-B4CA81DD54CF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

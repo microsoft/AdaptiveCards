@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include "Enums.h"
 #include "TextInput.h"
 
 namespace AdaptiveNamespace
@@ -28,6 +26,13 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
+
+    private:
+        HRESULT HandleLayoutAndValidation(ABI::AdaptiveNamespace::IAdaptiveTextInput* adaptiveTextInput,
+                                          ABI::Windows::UI::Xaml::Controls::ITextBox* textBox,
+                                          ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                          ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                          ABI::Windows::UI::Xaml::IUIElement** inputLayout);
     };
 
     ActivatableClass(AdaptiveTextInputRenderer);

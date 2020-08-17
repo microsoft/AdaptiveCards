@@ -10,13 +10,13 @@ namespace AdaptiveSharedNamespace
 {
     ParseContext::ParseContext() :
         elementParserRegistration{std::make_shared<ElementParserRegistration>()},
-        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_idStack{}, m_elementIds{},
+        actionParserRegistration{std::make_shared<ActionParserRegistration>()}, warnings{}, m_elementIds{}, m_idStack{},
         m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{}, m_canFallbackToAncestor(false)
     {
     }
 
     ParseContext::ParseContext(std::shared_ptr<ElementParserRegistration> elementRegistration, std::shared_ptr<ActionParserRegistration> actionRegistration) :
-        warnings{}, m_idStack{}, m_elementIds{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{},
+        warnings{}, m_elementIds{}, m_idStack{}, m_parentalContainerStyles{}, m_parentalPadding{}, m_parentalBleedDirection{},
         m_canFallbackToAncestor(false)
     {
         elementParserRegistration = (elementRegistration) ? elementRegistration : std::make_shared<ElementParserRegistration>();
@@ -244,7 +244,7 @@ namespace AdaptiveSharedNamespace
             }
         }
         AdaptiveSharedNamespace::InternalId invalidId;
-        return std::move(invalidId);
+        return invalidId;
     }
 
     ContainerStyle ParseContext::GetParentalContainerStyle() const
@@ -267,7 +267,7 @@ namespace AdaptiveSharedNamespace
             return m_parentalPadding.back();
         }
         AdaptiveSharedNamespace::InternalId invalidId;
-        return std::move(invalidId);
+        return invalidId;
     }
 
     void ParseContext::SaveContextForCollectionTypeElement(const CollectionTypeElement& current)
@@ -325,5 +325,5 @@ namespace AdaptiveSharedNamespace
 
     void ParseContext::SetLanguage(const std::string& value) { m_language = value; }
 
-    std::string ParseContext::GetLanguage() const { return m_language; }
+    const std::string& ParseContext::GetLanguage() const { return m_language; }
 }

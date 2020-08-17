@@ -81,9 +81,10 @@ export const Orientation = Object.freeze({
 
 export const BackgroundImageMode = Object.freeze({
 	Stretch: 0,
-	RepeatHorizontally: 1,
-	RepeatVertically: 2,
-	Repeat: 3
+	Cover: 1, 
+	RepeatHorizontally: 2,
+	RepeatVertically: 3,
+	Repeat: 4
 });
 
 export const ActionIconPlacement = Object.freeze({
@@ -177,4 +178,14 @@ export const ElementType = Object.freeze({
 	ActionOpenUrl: 'Action.OpenUrl',
 	ActionToggleVisibility: 'Action.ToggleVisibility',
 	ActionSet: 'ActionSet'
+});
+
+export const ThemeElement = Object.freeze({
+	Input: "input",
+	Button: "button",
+	InputDate: "inputDate",
+	InputTime: "inputTime",
+	RadioButton: "radioButton",
+	CheckBox: "checkBox",
+	ChoiceSetTitle: "choiceSetTitle",
 });

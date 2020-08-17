@@ -2,16 +2,12 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "AdaptiveCards.Rendering.Uwp.h"
-#include <windows.foundation.h>
-#include "Enums.h"
-
 namespace AdaptiveNamespace
 {
     class DECLSPEC_UUID("CDCCC115-7C53-4A04-9F5B-754BBC00C80E") AdaptiveActionElementBase : public IUnknown
     {
     public:
-        InternalId GetInternalId() { return m_internalId; }
+        InternalId GetInternalId() const { return m_internalId; }
 
     protected:
         HRESULT InitializeBaseElement(const std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel);
@@ -40,7 +36,7 @@ namespace AdaptiveNamespace
 
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
-        HRESULT SetSharedElementProperties(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement> sharedCardElement);
+        HRESULT CopySharedElementProperties(AdaptiveSharedNamespace::BaseActionElement& sharedCardElement);
 
         virtual HRESULT GetSharedModel(std::shared_ptr<BaseActionElement>& sharedModel) = 0;
 

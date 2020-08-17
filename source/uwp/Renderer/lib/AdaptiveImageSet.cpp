@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 #include "pch.h"
-#include "AdaptiveImageSet.h"
 
-#include "Util.h"
-#include "Vector.h"
-#include <windows.foundation.collections.h>
+#include "AdaptiveImageSet.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -18,14 +15,16 @@ namespace AdaptiveNamespace
 {
     AdaptiveImageSet::AdaptiveImageSet() { m_images = Microsoft::WRL::Make<Vector<AdaptiveImage*>>(); }
 
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize() noexcept
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
         return RuntimeClassInitialize(imageSet);
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet) try
+    HRESULT AdaptiveImageSet::RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ImageSet>& sharedImageSet)
+    try
     {
         if (sharedImageSet == nullptr)
         {
@@ -64,17 +63,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel) try
+    HRESULT AdaptiveImageSet::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>& sharedModel)
+    try
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(imageSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*imageSet));
 
         imageSet->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
 
         RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
 
-        sharedModel = imageSet;
+        sharedModel = std::move(imageSet);
         return S_OK;
     }
     CATCH_RETURN;

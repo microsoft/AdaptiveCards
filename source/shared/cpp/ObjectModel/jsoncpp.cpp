@@ -75,7 +75,10 @@ license you like.
 #pragma warning(disable : ALL_CPPCORECHECK_WARNINGS)
 #endif
 
-
+#ifdef __clang__
+    #pragma clang diagnostic push
+    #pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#endif
 
 #include "json/json.h"
 
@@ -5383,6 +5386,10 @@ JSONCPP_OSTREAM& operator<<(JSONCPP_OSTREAM& sout, Value const& root) {
 // //////////////////////////////////////////////////////////////////////
 // End of content of file: src/lib_json/json_writer.cpp
 // //////////////////////////////////////////////////////////////////////
+
+#ifdef __clang__
+    #pragma clang diagnostic pop
+#endif
 
 #ifdef USE_CPPCORECHECK
 #pragma warning(pop)

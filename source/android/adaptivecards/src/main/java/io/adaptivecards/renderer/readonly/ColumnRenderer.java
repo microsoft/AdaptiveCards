@@ -16,6 +16,7 @@ import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
+import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -57,24 +58,17 @@ public class ColumnRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException
+            RenderArgs renderArgs) throws Exception
     {
-        Column column;
-        if (baseCardElement instanceof Column)
-        {
-            column = (Column) baseCardElement;
-        }
-        else if ((column = Column.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
-        }
+        Column column = Util.castTo(baseCardElement, Column.class);
 
         LinearLayout.LayoutParams layoutParams;
+        // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
         LinearLayout returnedView = new LinearLayout(context);
         returnedView.setOrientation(LinearLayout.VERTICAL);
-        returnedView.setTag(new TagContent(column, separator, viewGroup));
+        returnedView.setTag(new TagContent(column));
 
         // Add this two for allowing children to bleed
         returnedView.setClipChildren(false);
@@ -156,30 +150,32 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
         else
         {
-            if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
+            try
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
+                // I'm not sure what's going on here
+                float columnWeight = Float.parseFloat(columnSize);
+                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                layoutParams.width = 0;
+                layoutParams.weight = columnWeight;
                 returnedView.setLayoutParams(layoutParams);
             }
-            else if (columnSize.equals(g_columnSizeAuto))
+            catch (NumberFormatException numFormatExcep)
             {
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                returnedView.setLayoutParams(layoutParams);
-            }
-            else
-            {
-                try
+                if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
                 {
-                    // I'm not sure what's going on here
-                    float columnWeight = Float.parseFloat(columnSize);
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    layoutParams.width = 0;
-                    layoutParams.weight = columnWeight;
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
                     returnedView.setLayoutParams(layoutParams);
                 }
-                catch (NumberFormatException numFormatExcep)
+                else
                 {
-                    throw new IllegalArgumentException("Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>).");
+                    // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
+                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                    returnedView.setLayoutParams(layoutParams);
+
+                    if (!columnSize.equals(g_columnSizeAuto))
+                    {
+                        renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INVALID_COLUMN_WIDTH_VALUE, "Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>)."));
+                    }
                 }
             }
         }
