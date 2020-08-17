@@ -162,7 +162,8 @@ namespace AdaptiveSharedNamespace
         if (propertyValue.empty())
         {
             // handle "backgroundImageUrl": <string>
-            const std::string& backgroundImageUrlPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
+            const std::string& backgroundImageUrlPropertyName =
+                AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
             propertyValue = json.get(backgroundImageUrlPropertyName, Json::Value());
         }
 
@@ -238,6 +239,35 @@ namespace AdaptiveSharedNamespace
     }
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
+    {
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        if (!propertyValue.isInt())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Value for property " + propertyName + " was invalid. Expected type int.");
+        }
+
+        return propertyValue.asInt();
+    }
+
+    std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
+                                                 AdaptiveCardSchemaKey key,
+                                                 std::optional<int> defaultValue,
+                                                 bool isRequired /*=false*/)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
@@ -358,10 +388,7 @@ namespace AdaptiveSharedNamespace
 
         Json::Value jsonValue;
 
-        const bool ok = reader->parse(
-            jsonString.data(),
-            jsonString.data() + jsonString.size(),
-            &jsonValue, nullptr);
+        const bool ok = reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, nullptr);
 
         if (!ok)
         {

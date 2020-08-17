@@ -18,12 +18,7 @@ using namespace ABI::Windows::UI::Xaml::Input;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN;
+    HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveNumberInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                                 _In_ IAdaptiveRenderContext* renderContext,
@@ -60,13 +55,17 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        INT32 value;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> value;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Value(&value));
 
-        if (value != MAXINT32)
+        if (value.Get())
         {
-            std::wstring stringValue = std::to_wstring(value);
-            RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+            int boxValue;
+            if (SUCCEEDED(value->get_Value(&boxValue)))
+            {
+                std::wstring stringValue = std::to_wstring(boxValue);
+                RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+            }
         }
 
         ComPtr<ITextBox2> textBox2;
@@ -89,24 +88,21 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(textBox.As(&textBoxAsUIElement));
 
         // If there's any validation on this input, put the input inside a border
-        int max;
-        int min;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Max(&max));
+
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Min(&min));
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(numberInputAsAdaptiveInput.Get(),
-                                                                     textBoxAsUIElement.Get(),
-                                                                     (max != MAXINT32 || min != -MAXINT32),
-                                                                     renderContext,
-                                                                     &inputLayout,
-                                                                     &validationBorder));
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            numberInputAsAdaptiveInput.Get(), textBoxAsUIElement.Get(), (max.Get() || min.Get()), renderContext, &inputLayout, &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<NumberInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<NumberInputValue>(
-            &input, adaptiveNumberInput.Get(), textBox.Get(), validationBorder.Get()));
+        RETURN_IF_FAILED(
+            MakeAndInitialize<NumberInputValue>(&input, adaptiveNumberInput.Get(), textBox.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(numberInputControl));

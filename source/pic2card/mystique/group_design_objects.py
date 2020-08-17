@@ -1,5 +1,5 @@
 """Module for grouping deisgn objects into different containers"""
-from typing import List, Dict, Callable
+from typing import List, Dict, Callable, Tuple, Optional
 from operator import itemgetter
 
 
@@ -16,7 +16,6 @@ class GroupObjects:
         Groups the given List of design objects for the any given condition.
         @param design_objects: objects
         @param condition: Grouping condition function
-
         @return: Grouped list of design objects.
         """
         groups = []
@@ -77,7 +76,6 @@ class ImageGrouping(GroupObjects):
         """
         Returns a condition boolean value for grouping image objects into
         imagesets
-
         @param design_object1: image object
         @param design_object2: image object
         @return: boolean value
@@ -96,11 +94,10 @@ class ImageGrouping(GroupObjects):
                 and x_diff <= self.IMAGE_SET_X_RANGE)
 
     def group_image_objects(self, image_objects, body, objects, ymins=None,
-                            is_column=None) -> List[Dict]:
+                            is_column=None) -> [List, Optional[Tuple]]:
         """
         Groups the image objects into imagesets which are in
         closer ymin range.
-
         @param image_objects: list of image objects
         @param body: list card deisgn elements.
         @param ymins: list of ymins of card design
@@ -108,11 +105,15 @@ class ImageGrouping(GroupObjects):
         @param objects: list of all design objects
         @param is_column: boolean value to check if an object is inside a
         columnset or not
+        @return: List of remaining image objects after the grouping if the
+                 grouping is done outside the columnset container
+                 else returned list of remaining image objects along
+                 with its coordinate values.
         """
         # group the image objects based on ymin
         groups = self.object_grouping(image_objects, self.imageset_condition)
         delete_positions = []
-        xmin = None
+        design_object_coords = []
         for group in groups:
             group = sorted(group, key=lambda i: i["xmin"])
             if len(group) > 1:
@@ -122,23 +123,34 @@ class ImageGrouping(GroupObjects):
                         "images": []
                 }
                 sizes = []
+                alignment = []
                 for ctr, design_object in enumerate(group):
                     index = objects.index(design_object)
                     if index not in delete_positions:
                         delete_positions.append(index)
                     sizes.append(design_object.get("size", "Auto"))
+                    alignment.append(design_object.get(
+                            "horizontal_alignment", "Left"))
                     self.card_arrange.append_objects(design_object,
                                                      image_set["images"])
+                # Assign the imageset's size and alignment property based on
+                # each image's alignment and size properties inside the imgaeset
                 image_set["imageSize"] = max(set(sizes), key=sizes.count)
+                image_set["horizontalAlignment"] = max(set(alignment),
+                                                       key=alignment.count)
+                image_set["coords"] = str(group[0].get("coords"))
                 body.append(image_set)
                 if ymins:
                     ymins.append(design_object.get("ymin"))
                 if is_column:
-                    xmin = group[0].get("xmin")
+                    design_object_coords.append(group[0].get("xmin"))
+                    design_object_coords.append(group[0].get("ymin"))
+                    design_object_coords.append(group[0].get("xmax"))
+                    design_object_coords.append(group[0].get("ymax"))
         objects = [design_objects for ctr, design_objects in enumerate(objects)
                    if ctr not in delete_positions]
         if is_column:
-            return objects, xmin
+            return objects, design_object_coords
         else:
             return objects
 
@@ -177,7 +189,6 @@ class ColumnsGrouping(GroupObjects):
         """
         Returns a condition boolean value for grouping objects into
         columnsets
-
         @param design_object1: design object
         @param design_object2: design object
         @return: boolean value
@@ -237,7 +248,6 @@ class ColumnsGrouping(GroupObjects):
         """
         Returns a condition boolean value for grouping columnset grouped
         objects into different columns.
-
         @param design_object1: design object
         @param design_object2: design object
         @return: boolean value
@@ -281,7 +291,6 @@ class ChoicesetGrouping(GroupObjects):
         """
         Returns a condition boolean value for grouping radio buttion objects
         into choiceset
-
         @param design_object1: image object
         @param design_object2: image object
         @return: boolean value
@@ -304,7 +313,6 @@ class ChoicesetGrouping(GroupObjects):
         """
         Groups the choice elements into choicesets based on
         the closer ymin range
-
         @param radiobutton_objects: list of individual choice
                                                  elements
         @param body: list of card deisgn elements

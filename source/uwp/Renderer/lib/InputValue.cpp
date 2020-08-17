@@ -256,8 +256,10 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
     boolean isValid;
     RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
 
-    int max, min;
+    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
+
+    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
 
     HString currentValue;
@@ -266,12 +268,24 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
     // If there is a value, confirm that it's a number and within the min/max range
     if (currentValue.IsValid())
     {
-        int currentInt;
         try
         {
-            std::string currentValueStdString = HStringToUTF8(currentValue.Get());
-            currentInt = std::stoi(currentValueStdString);
-            isValid &= (currentInt < max) && (currentInt > min);
+            const std::string currentValueStdString = HStringToUTF8(currentValue.Get());
+            int currentInt = std::stoi(currentValueStdString);
+
+            if (max.Get())
+            {
+                int maxInt;
+                RETURN_IF_FAILED(max->get_Value(&maxInt));
+                isValid &= (currentInt <= maxInt);
+            }
+
+            if (min.Get())
+            {
+                int minInt;
+                RETURN_IF_FAILED(min->get_Value(&minInt));
+                isValid &= (currentInt >= minInt);
+            }
         }
         catch (...)
         {
