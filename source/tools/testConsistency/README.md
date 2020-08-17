@@ -69,7 +69,7 @@ Make the following changes to the files dotnetWPF-renderer folder under source/t
 
 5. Host the docker image on an azure container registry.
 
-### Details about Hosting JavaScript Driver
+### Hosting JavaScript Driver
 Make the following changes to the files nodejs-renderer folder under source/tools/testConsistency before deploying it on a docker container:
 1. In **REST_nodeJs.py** add the following lines at the end:
    ``` 
