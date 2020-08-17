@@ -283,7 +283,7 @@ namespace AdaptiveCards.Rendering.Wpf
                             if (!(element is AdaptiveElement) ||
                                 (element is AdaptiveElement adaptiveElement && adaptiveElement.Height == AdaptiveHeight.Auto))
                             {
-                                RendererElementsWithId.Add(element.Id, rendered);
+                                RenderedElementsWithId.Add(element.Id, rendered);
                             }
                         }
 
@@ -385,7 +385,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
             foreach (AdaptiveTargetElement targetElement in targetElements)
             {
-                var element = RendererElementsWithId[targetElement.ElementId];
+                var element = RenderedElementsWithId[targetElement.ElementId];
 
                 if (element != null && element is FrameworkElement elementFrameworkElement)
                 {
