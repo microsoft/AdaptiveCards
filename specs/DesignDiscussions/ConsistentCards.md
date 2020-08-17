@@ -299,8 +299,10 @@ We would want to use cloud hosting services to deploy our project. Some of the m
 - Host each Flask App along with its corresponding driver program on a docker container and add this container to a container registry on azure. 
     - **JavaScript**: 
         1. Use a Linux Docker Image
+        2. Host the REST API along with the driver program on azure container registry
     - **.NET WPF**:
         1. Use a Windows Docker Image (specifically framework/sdk:4.7.2)
+        2. Host the REST API along with the driver program on azure container registry
     - **.UWP**:
         1. Use a Windows Docker Image
         2. Package the UWP driver as an AppX with an alias "UWPDriver"
@@ -309,10 +311,12 @@ We would want to use cloud hosting services to deploy our project. Some of the m
         1. Use a Linux Docker Image
         2. Package the android app as an apk.
         3. Install and start this app on an Android virtual device on the docker container along with the REST API.
-- Add all the driver programs to a shared private network so that the REST end points(for the post requests) are not publicly accessible. 
-- Host the Client/Web Interface as a stand alone web app on azure and allow it to communicate.
-- The client would have a public IP and public REST end points.
-- The client would be able to communicate with the docker container hosted Flask Apps.
+- Host the Client/Web Interface as a stand alone web app on azure and allow it to communicate with the other REST API.
+- Use an azure virtual network with the following two network security groups:
+    1. Front-end: This security group would allow traffic to go through within the VNet as well as over ports 80 (HTTP) and 443(HTTPS). The Client/Web Interface would be on this network security group. 
+    2. Back-end: This security group would allow traffic to go through only within the VNet. The REST end points for each driver program would be on this network security group. This would allow the REST end points to communicate with the client and not be publicly accessible. 
+
+
 
 ### Future Version: 
 - For the future, look into hosting services like 
