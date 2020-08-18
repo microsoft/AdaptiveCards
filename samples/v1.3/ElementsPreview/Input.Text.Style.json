@@ -9,13 +9,13 @@
 			"label": "Comment (style: text)",
 			"style": "text"
 		},
-        {
-            "type": "Input.Text",
-            "id": "myEmail",
-            "placeholder": "john.doe@adaptivecards.io",
+		{
+			"type": "Input.Text",
+			"id": "myEmail",
+			"placeholder": "john.doe@adaptivecards.io",
 			"label": "Email Address (style: email)",
 			"style": "email"
-        },
+		},
 		{
 			"type": "Input.Text",
 			"id": "myTel",
