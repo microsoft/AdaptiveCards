@@ -198,36 +198,36 @@
 					"width": "auto"
 				},
 				{
-                    "type": "Column",
-                    "spacing": "Small",
-                    "selectAction": {
-                        "type": "Action.ToggleVisibility",
-                        "targetElements": [
-                            "cardContent1",
-                            "chevronDown1",
-                            "chevronUp1"
-                        ]
-                    },
-                    "verticalContentAlignment": "Center",
-                    "items": [
-                        {
-                            "type": "Image",
-                            "id": "chevronDown1",
-                            "url": "https://adaptivecards.io/content/down.png",
-                            "width": "20px",
-                            "altText": "Details collapsed"
-                        },
-                        {
-                            "type": "Image",
-                            "id": "chevronUp1",
-                            "url": "https://adaptivecards.io/content/up.png",
-                            "width": "20px",
-                            "altText": "Details expanded",
-                            "isVisible": false
-                        }
-                    ],
-                    "width": "auto"
-                }
+					"type": "Column",
+					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent1",
+							"chevronDown1",
+							"chevronUp1"
+						]
+					},
+					"verticalContentAlignment": "Center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown1",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Details collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp1",
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Details expanded",
+							"isVisible": false
+						}
+					],
+					"width": "auto"
+				}
 			]
 		},
 		{
@@ -333,36 +333,36 @@
 					"width": "auto"
 				},
 				{
-                    "type": "Column",
-                    "spacing": "Small",
-                    "selectAction": {
-                        "type": "Action.ToggleVisibility",
-                        "targetElements": [
-                            "cardContent2",
-                            "chevronDown2",
-                            "chevronUp2"
-                        ]
-                    },
-                    "verticalContentAlignment": "Center",
-                    "items": [
-                        {
-                            "type": "Image",
-                            "id": "chevronDown2",
-                            "url": "https://adaptivecards.io/content/down.png",
-                            "width": "20px",
-                            "altText": "Details collapsed"
-                        },
-                        {
-                            "type": "Image",
-                            "id": "chevronUp2",
-                            "url": "https://adaptivecards.io/content/up.png",
-                            "width": "20px",
-                            "altText": "Details expanded",
-                            "isVisible": false
-                        }
-                    ],
-                    "width": "auto"
-                }
+					"type": "Column",
+					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent2",
+							"chevronDown2",
+							"chevronUp2"
+						]
+					},
+					"verticalContentAlignment": "Center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown2",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Details collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp2",
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Details expanded",
+							"isVisible": false
+						}
+					],
+					"width": "auto"
+				}
 			]
 		},
 		{
@@ -462,36 +462,36 @@
 					"width": "auto"
 				},
 				{
-                    "type": "Column",
-                    "spacing": "Small",
-                    "selectAction": {
-                        "type": "Action.ToggleVisibility",
-                        "targetElements": [
-                            "cardContent3",
-                            "chevronDown3",
-                            "chevronUp3"
-                        ]
-                    },
-                    "verticalContentAlignment": "Center",
-                    "items": [
-                        {
-                            "type": "Image",
-                            "id": "chevronDown3",
-                            "url": "https://adaptivecards.io/content/down.png",
-                            "width": "20px",
-                            "altText": "Details collapsed"
-                        },
-                        {
-                            "type": "Image",
-                            "id": "chevronUp3",
-                            "url": "https://adaptivecards.io/content/up.png",
-                            "width": "20px",
-                            "altText": "Details expanded",
-                            "isVisible": false
-                        }
-                    ],
-                    "width": "auto"
-                }
+					"type": "Column",
+					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent3",
+							"chevronDown3",
+							"chevronUp3"
+						]
+					},
+					"verticalContentAlignment": "Center",
+					"items": [
+						{
+							"type": "Image",
+							"id": "chevronDown3",
+							"url": "https://adaptivecards.io/content/down.png",
+							"width": "20px",
+							"altText": "Details collapsed"
+						},
+						{
+							"type": "Image",
+							"id": "chevronUp3",
+							"url": "https://adaptivecards.io/content/up.png",
+							"width": "20px",
+							"altText": "Details expanded",
+							"isVisible": false
+						}
+					],
+					"width": "auto"
+				}
 			]
 		},
 		{
