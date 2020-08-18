@@ -11,7 +11,7 @@
 ### Properties
 
 * [allIds](validationresults.md#allids)
-* [failures](validationresults.md#failures)
+* [validationEvents](validationresults.md#validationevents)
 
 ### Methods
 
@@ -21,31 +21,26 @@
 
 ###  allIds
 
-• **allIds**: *Shared.Dictionary‹number›*
-
-*Defined in [card-elements.ts:222](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L222)*
+• **allIds**: *[Dictionary](../README.md#dictionary)‹number›*
 
 ___
 
-###  failures
+###  validationEvents
 
-• **failures**: *[ValidationFailure](validationfailure.md)[]* = []
-
-*Defined in [card-elements.ts:223](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L223)*
+• **validationEvents**: *[IValidationEvent](../interfaces/ivalidationevent.md)[]* = []
 
 ## Methods
 
 ###  addFailure
 
-▸ **addFailure**(`cardObject`: [CardObject](cardobject.md), `error`: [IValidationError](../interfaces/ivalidationerror.md)): *void*
-
-*Defined in [card-elements.ts:225](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/card-elements.ts#L225)*
+▸ **addFailure**(`cardObject`: [CardObject](cardobject.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `cardObject` | [CardObject](cardobject.md) |
-`error` | [IValidationError](../interfaces/ivalidationerror.md) |
+`event` | [ValidationEvent](../enums/validationevent.md) |
+`message` | string |
 
 **Returns:** *void*

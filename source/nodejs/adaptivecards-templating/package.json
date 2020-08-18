@@ -1,9 +1,17 @@
 {
 	"name": "adaptivecards-templating",
-	"version": "0.1.1-alpha.1",
+	"version": "1.0.0-rc.0",
 	"description": "Adaptive Card data binding and templating engine for JavaScript",
 	"author": "AdaptiveCards",
 	"license": "MIT",
+	"homepage": "https://adaptivecards.io",
+	"keywords": [
+		"adaptivecards",
+		"adaptive",
+		"cards",
+		"microsoft",
+		"bot"
+	],
 	"main": "lib/adaptivecards-templating.js",
 	"types": "lib/adaptivecards-templating.d.ts",
 	"files": [
@@ -34,5 +42,8 @@
 		"webpack-cli": "^3.3.6",
 		"webpack-concat-plugin": "^3.0.0",
 		"webpack-dev-server": "^3.7.2"
+	},
+	"dependencies": {
+		"adaptive-expressions": "^4.9.0"
 	}
 }

@@ -13,6 +13,10 @@ abstract class BaseCortanaContainer extends HostContainer {
 
         hostElement.appendChild(frame);
     }
+
+    get targetVersion(): Adaptive.Version {
+        return Adaptive.Versions.v1_2;
+    }
 }
 
 export class LightCortanaContainer extends BaseCortanaContainer {

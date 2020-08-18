@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "1.3.0-alpha.5",
+	"version": "2.0.0-rc.0",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -28,7 +28,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --name adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "eslint src/*.ts",
-		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts",
+		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" \"npm:docs\" && concurrently \"npm:test\" \"npm:dts\"",
 		"docs": "npx typedoc"
 	},
 	"repository": {
@@ -39,6 +39,7 @@
 		"@types/jest": "^23.3.14",
 		"@typescript-eslint/eslint-plugin": "^2.27.0",
 		"@typescript-eslint/parser": "^2.27.0",
+		"concurrently": "^5.2.0",
 		"eslint": "^6.8.0",
 		"jest": "^24.8.0",
 		"rimraf": "^2.6.3",

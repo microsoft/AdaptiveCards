@@ -17,15 +17,11 @@
 
 • **Email**:
 
-*Defined in [enums.ts:115](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L115)*
-
 ___
 
 ###  Tel
 
 • **Tel**:
-
-*Defined in [enums.ts:113](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L113)*
 
 ___
 
@@ -33,12 +29,8 @@ ___
 
 • **Text**:
 
-*Defined in [enums.ts:112](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L112)*
-
 ___
 
 ###  Url
 
 • **Url**:
-
-*Defined in [enums.ts:114](https://github.com/microsoft/AdaptiveCards/blob/a61c5fd56/source/nodejs/adaptivecards/src/enums.ts#L114)*

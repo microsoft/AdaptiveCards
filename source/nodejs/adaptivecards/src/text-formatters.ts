@@ -3,28 +3,34 @@
 abstract class AbstractTextFormatter {
     private _regularExpression: RegExp;
 
-    protected abstract internalFormat(lang: string, matches: RegExpExecArray): string;
+    protected abstract internalFormat(lang: string | undefined, matches: RegExpExecArray): string;
 
     constructor(regularExpression: RegExp) {
         this._regularExpression = regularExpression;
     }
 
-    format(lang: string, input: string): string {
-        var matches;
-        var result = input;
+    format(lang: string | undefined, input: string | undefined): string | undefined {
+        let matches;
 
-        while ((matches = this._regularExpression.exec(input)) != null) {
-            result = result.replace(matches[0], this.internalFormat(lang, matches));
-        };
+        if (input) {
+            let result = input;
 
-        return result;
+            while ((matches = this._regularExpression.exec(input)) != null) {
+                result = result.replace(matches[0], this.internalFormat(lang, matches));
+            };
+
+            return result;
+        }
+        else {
+            return input;
+        }
     }
 }
 
 class DateFormatter extends AbstractTextFormatter {
-    protected internalFormat(lang: string, matches: RegExpExecArray): string {
-        var date = new Date(Date.parse(matches[1]));
-        var format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
+    protected internalFormat(lang: string | undefined, matches: RegExpExecArray): string {
+        let date = new Date(Date.parse(matches[1]));
+        let format = matches[2] != undefined ? matches[2].toLowerCase() : "compact";
 
         if (format != "compact") {
             return date.toLocaleDateString(lang, { day: "numeric", weekday: format, month: format, year: "numeric" });
@@ -36,23 +42,23 @@ class DateFormatter extends AbstractTextFormatter {
 }
 
 class TimeFormatter extends AbstractTextFormatter {
-    protected internalFormat(lang: string, matches: RegExpExecArray): string {
-        var date = new Date(Date.parse(matches[1]));
+    protected internalFormat(lang: string | undefined, matches: RegExpExecArray): string {
+        let date = new Date(Date.parse(matches[1]));
 
         return date.toLocaleTimeString(lang, { hour: 'numeric', minute: '2-digit' });
     }
 }
 
-export function formatText(lang: string, text: string): string {
-    const formatters: Array<AbstractTextFormatter> = [
+export function formatText(lang: string | undefined, text: string | undefined): string | undefined {
+    const formatters: AbstractTextFormatter[] = [
         new DateFormatter(/\{{2}DATE\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))(?:, ?(COMPACT|LONG|SHORT))?\)\}{2}/g),
         new TimeFormatter(/\{{2}TIME\((\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|(?:(?:-|\+)\d{2}:\d{2})))\)\}{2}/g)
     ];
 
-    var result = text;
+    let result = text;
 
-    for (var i = 0; i < formatters.length; i++) {
-        result = formatters[i].format(lang, result);
+    for (let formatter of formatters) {
+        result = formatter.format(lang, result);
     }
 
     return result;
