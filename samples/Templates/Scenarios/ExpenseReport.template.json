@@ -203,7 +203,6 @@
 						},
 						{
 							"type": "Column",
-							"id": "chevronDown${$index}",
 							"spacing": "Small",
 							"selectAction": {
 								"type": "Action.ToggleVisibility",
