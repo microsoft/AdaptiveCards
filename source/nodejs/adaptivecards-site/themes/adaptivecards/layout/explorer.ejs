@@ -3,12 +3,12 @@
 	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
 		style="width: 200px">
 		<div class="sidebar__inner">
-			<ul class="toc-tree">
+			<ul class="toc-tree" role="tree">
 				<% page.schema.forEach(function(root) { %>
-				<li><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
-					<ul>
+				<li role="treeitem" aria-expanded="true"><span><i class="fa fa-angle-down"></i> <%= root.title %></span>
+					<ul role="group">
 						<% root.children.forEach(function(child) { %>
-						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>'>
+						<li class='<%= page.childPath === child.htmlPath ? "selectedHolder" : "" %>' role="treeitem">
 							<a href="<%- url_for(child.htmlPath) %>"><%= child.name %></a>
 						</li>
 						<% }) %>
