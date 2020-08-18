@@ -42,103 +42,65 @@ task sourceJar(type: Jar) {
     classifier "sources"
 }
 
-task createPom {
-    doLast {
-        pom {
-            project {
-                groupId 'io.adaptivecards'
-                artifactId 'adaptivecards-android'
-                version System.getenv('XES_PACKAGEVERSIONNUMBER') ?: '0.0.0'
-                name 'Android Adaptive Cards Library'
-                description 'Android Adaptive Cards Lib'
-                url 'https://github.com/Microsoft/AdaptiveCards'
-                packaging 'aar'
-                scm {
-                    url 'https://github.com/Microsoft/AdaptiveCards'
-                }
+def projectInfo = {
+    name = 'Android Adaptive Cards Library'
+    description 'Android Adaptive Cards Lib'
+    url = 'https://github.com/Microsoft/AdaptiveCards'
 
-                licenses {
-                    license {
-                        name 'MIT'
-                        url 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
-                        distribution 'repo'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'microsoft'
-                        name 'adaptivecards'
-                    }
-                }
-            }
-        }.writeTo("pom.xml")
+    scm {
+        url = 'https://github.com/Microsoft/AdaptiveCards'
     }
-}
 
-publishing {
-    publications {
-        adaptivecards(MavenPublication) {
-            groupId 'io.adaptivecards'
-            version System.getenv('ACSDKVERSION') + '-' + System.getenv('BUILD_BUILDNUMBER')
-            artifact(sourceJar)
-            artifact("$buildDir/outputs/aar/adaptivecards-release.aar")
+    licenses {
+        license {
+            name = 'MIT'
+            url = 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
+            distribution = 'repo'
         }
     }
 
-    repositories {
-        maven {
-            url 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards/maven/v1'
-            credentials {
-                username "AZURE_ARTIFACTS"
-                password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
-            }
-        }
+    organization {
+        name = 'Microsoft'
+        url = 'https://microsoft.com/'
     }
 }
 
-uploadArchives {
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+
+                groupId = 'io.adaptivecards'
+                artifactId = 'adaptivecards-android'
+
+                // Get version from PackageES, or fallback to Azure Pipeline build number
+                version = System.getenv('XES_PACKAGEVERSIONNUMBER') ?: System.getenv('BUILD_BUILDNUMBER') ?: '0.0.0'
+
+                pom projectInfo
+            }
+
+        }
+
         repositories {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                pom.artifactId ="adaptivecards-android"
-
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2") {
-                    authentication(userName: NexusUserName, password: NexusPassword)
+            // Publish to Azure Artifacts feed
+            maven {
+                name = 'azuredevops'
+                url = 'https://microsoft.pkgs.visualstudio.com/_packaging/AdaptiveCards/maven/v1'
+                credentials {
+                    username "AZURE_ARTIFACTS"
+                    password System.getenv("AZURE_ARTIFACTS_ENV_ACCESS_TOKEN") ?: "${azureArtifactsGradleAccessToken}"
                 }
-                pom {
-                    setGroupId "io.adaptivecards"
-                    setVersion System.getenv("XES_PACKAGEVERSIONNUMBER") ?:"0.0.0"
-                }
-
-                pom.project {
-                    name 'Android Adaptive Cards Library'
-                    description 'Android Adaptive Cards Lib'
-                    url 'https://github.com/Microsoft/AdaptiveCards'
-
-                    scm {
-                        url  'https://github.com/Microsoft/AdaptiveCards'
-                    }
-
-                    licenses {
-                        license {
-                            name 'MIT'
-                            url 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
-                            distribution 'repo'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id 'microsoft'
-                            name 'adaptivecards'
-                        }
-                    }
-                }
-
             }
+            // Save to local directory "artifact"
+            maven {
+                name = 'localArtifact'
+                url = "artifact"
+            }
+            // TODO: Add SonaType OSS repository to publish directly
         }
     }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')

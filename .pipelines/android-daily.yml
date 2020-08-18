@@ -1,0 +1,57 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth)-$(rev:r)
+
+pr: none
+trigger: none
+
+schedules:
+- cron: "0 10 * * Mon-Fri"
+  displayName: 3:00 AM Pacific (UTC-8) Daily Build (M-F)
+  branches:
+   include:
+   - main
+
+pool:
+  name: Hosted Ubuntu 1604
+  demands: java
+
+#Your build pipeline references an undefined variable named ‘gradleprop.secureFilePath’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+steps:
+- task: DownloadSecureFile@1
+  name: gradleproperties
+  displayName: 'Download secure file'
+  inputs:
+    secureFile: gradle.properties.4
+
+- bash: |
+   # Write your commands here
+   
+   # Use the environment variables input below to pass secret variables to this script
+   cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
+   
+   
+  displayName: 'Bash Script'
+
+- bash: |
+   #!/usr/bin/env bash
+   
+   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed. Please remove.
+   
+   unset ANDROID_NDK_HOME
+   sudo ${ANDROID_HOME}/tools/bin/sdkmanager --verbose --install "ndk;21.0.6113669"
+  displayName: 'Get NDK (won''t be needed w/ Android Gradle Plugin 4.1+)'
+
+- task: Gradle@2
+  displayName: 'gradlew adaptivecards:build'
+  inputs:
+    gradleWrapperFile: source/android/gradlew
+    workingDirectory: source/android
+    tasks: 'adaptivecards:build'
+
+- task: Gradle@2
+  displayName: 'gradlew publish'
+  inputs:
+    gradleWrapperFile: source/android/gradlew
+    workingDirectory: source/android
+    tasks: 'adaptivecards:publish'
+    publishJUnitResults: false
