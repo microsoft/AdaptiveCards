@@ -153,14 +153,19 @@ namespace AdaptiveCards.Rendering.Wpf
                             tag.ViewIndex = rowDefinitionIndex;
 
                             enclosingElement.Tag = tag;
-                            enclosingElement.Name = cardElement.Id;
+
+                            if (!String.IsNullOrEmpty(cardElement.Id))
+                            {
+                                // All elements are added to the dictionary when rendered but elements
+                                // with labels or errorMessages have to be enclosed so that has to be added instead
+                                context.RenderedElementsWithId[cardElement.Id] = enclosingElement;
+                            }
 
                             RendererUtil.SetVisibility(enclosingElement, cardElement.IsVisible, tag);
                         }
                         else
                         {
                             rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
-
                             uiContainer.RowDefinitions.Add(rowDefinition);
 
                             // Row definition is stored in the tag for containers and elements that stretch
@@ -181,7 +186,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
                                 if (!String.IsNullOrEmpty(cardElement.Id))
                                 {
-                                    panel.Name = cardElement.Id;
+                                    // All elements are added to the dictionary when rendered but elements
+                                    // with height stretch are enclosed in a panel that must be added instead
+                                    context.RenderedElementsWithId.Add(cardElement.Id, panel);
                                 }
 
                                 if (rendereableElement is AdaptiveInput)

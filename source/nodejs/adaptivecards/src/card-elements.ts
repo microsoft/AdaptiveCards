@@ -1535,7 +1535,13 @@ class ImageDimensionProperty extends PropertyDefinition {
                 }
             }
             catch {
-                // Do nothing. A parse error is emitted below
+                // Swallow the exception
+            }
+
+            // If the source value isn't valid per this property definition,
+            // check its validity per the fallback property, if specified 
+            if (!isValid && this.fallbackProperty) {
+                isValid = this.fallbackProperty.isValidValue(sourceValue, context);
             }
         }
 
@@ -1559,7 +1565,8 @@ class ImageDimensionProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly internalName: string) {
+        readonly internalName: string,
+        readonly fallbackProperty?: ValueSetProperty) {
         super(targetVersion, name);
     }
 }
@@ -1581,7 +1588,7 @@ export class Image extends CardElement {
         Enums.Size,
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "width", "pixelWidth");
-    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight");
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight", CardElement.heightProperty);
     static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
