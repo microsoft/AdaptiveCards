@@ -95,26 +95,41 @@ namespace UWPUnitTests
             Assert.AreEqual(height, element.Height);
         }
 
+
+        public void ValidateBaseInputProperties(
+            IAdaptiveInputElement input,
+            string errorMessage,
+            bool isRequired,
+            string label)
+        {
+            Assert.AreEqual(errorMessage, input.ErrorMessage);
+            Assert.AreEqual(isRequired, input.IsRequired);
+            Assert.AreEqual(label, input.Label);
+        }
+
         [TestMethod]
         public void TextBlock()
         {
             AdaptiveTextBlock textBlock = new AdaptiveTextBlock
             {
+                // Text Block Properties
                 Color = ForegroundColor.Accent,
                 FontType = FontType.Monospace,
-                Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
-                Id = "TextBlockId",
                 IsSubtle = true,
-                IsVisible = false,
                 Language = "en",
                 MaxLines = 3,
-                Separator = true,
                 Size = TextSize.Large,
-                Spacing = Spacing.Large,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
-                Wrap = true
+                Wrap = true,
+
+                // Base Element Properties
+                Height = HeightType.Stretch,
+                Id = "TextBlockId",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.Large,
             };
 
             ValidateBaseElementProperties(textBlock, "TextBlockId", false, true, Spacing.Large, HeightType.Stretch);
@@ -139,19 +154,22 @@ namespace UWPUnitTests
         {
             AdaptiveImage image = new AdaptiveImage
             {
+                // Image Properties
                 AltText = "This is a picture",
                 BackgroundColor = "0xffffffff",
-                Height = HeightType.Stretch,
                 HorizontalAlignment = HAlignment.Center,
-                Id = "ImageId",
-                IsVisible = false,
                 PixelHeight = 50,
                 PixelWidth = 40,
-                Separator = true,
                 Size = ImageSize.Medium,
-                Spacing = Spacing.Large,
                 Style = ImageStyle.Person,
-                Url = "https://www.stuff.com/picture.jpg"
+                Url = "https://www.stuff.com/picture.jpg",
+
+                // Base Element Properties
+                Height = HeightType.Stretch,
+                Id = "ImageId",
+                IsVisible = false,
+                Separator = true,
+                Spacing = Spacing.Large,
             };
 
             ValidateBaseElementProperties(image, "ImageId", false, true, Spacing.Large, HeightType.Stretch);
@@ -192,13 +210,16 @@ namespace UWPUnitTests
 
             AdaptiveMedia media = new AdaptiveMedia
             {
+                // Media Properties
                 AltText = "This is some audio",
+                Poster = "https://www.stuff.com/poster.jpg",
+
+                // Base Element Properties
                 Height = HeightType.Stretch,
                 Id = "MediaId",
                 IsVisible = false,
-                Poster = "https://www.stuff.com/poster.jpg",
                 Separator = true,
-                Spacing = Spacing.Large
+                Spacing = Spacing.Large,
             };
 
             ValidateBaseElementProperties(media, "MediaId", false, true, Spacing.Large, HeightType.Stretch);
@@ -221,21 +242,24 @@ namespace UWPUnitTests
         {
             AdaptiveContainer container = new AdaptiveContainer
             {
+                // Container Properties
                 Bleed = true,
+                Style = ContainerStyle.Emphasis,
+                VerticalContentAlignment = VerticalContentAlignment.Bottom,
+
+                // Base Element Properties
                 Height = HeightType.Stretch,
                 Id = "ContainerId",
                 IsVisible = false,
                 Separator = true,
                 Spacing = Spacing.ExtraLarge,
-                Style = ContainerStyle.Emphasis,
-                VerticalContentAlignment = VerticalContentAlignment.Bottom
             };
 
             ValidateBaseElementProperties(container, "ContainerId", false, true, Spacing.ExtraLarge, HeightType.Stretch);
 
+            Assert.IsTrue(container.Bleed);
             Assert.AreEqual(ContainerStyle.Emphasis, container.Style);
             Assert.AreEqual(VerticalContentAlignment.Bottom, container.VerticalContentAlignment);
-            Assert.IsTrue(container.Bleed);
 
             container.SelectAction = new AdaptiveSubmitAction
             {
@@ -268,15 +292,18 @@ namespace UWPUnitTests
         {
             AdaptiveColumn column1 = new AdaptiveColumn
             {
+                // Column Properties
                 Bleed = true,
+                Width = "50px",
+                Style = ContainerStyle.Emphasis,
+                VerticalContentAlignment = VerticalContentAlignment.Bottom,
+
+                // Base Element Properties
                 Height = HeightType.Stretch,
                 Id = "ColumnId",
                 IsVisible = false,
-                Width = "50px",
                 Separator = true,
                 Spacing = Spacing.Small,
-                Style = ContainerStyle.Emphasis,
-                VerticalContentAlignment = VerticalContentAlignment.Bottom,
             };
 
             ValidateBaseElementProperties(column1, "ColumnId", false, true, Spacing.Small, HeightType.Stretch);
@@ -327,17 +354,22 @@ namespace UWPUnitTests
 
             AdaptiveColumnSet columnSet = new AdaptiveColumnSet
             {
+                // ColumnSet Properties
                 Bleed = true,
+                Style = ContainerStyle.Emphasis,
+
+                // Base Element Properties
                 Height = HeightType.Stretch,
                 Id = "ColumnSetId",
                 IsVisible = false,
                 Separator = true,
                 Spacing = Spacing.Small,
-                Style = ContainerStyle.Emphasis,
             };
 
-            Assert.IsTrue(columnSet.Bleed);
             ValidateBaseElementProperties(columnSet, "ColumnSetId", false, true, Spacing.Small, HeightType.Stretch);
+
+            Assert.IsTrue(columnSet.Bleed);
+            Assert.AreEqual(ContainerStyle.Emphasis, columnSet.Style);
 
             columnSet.Columns.Add(column1);
             columnSet.Columns.Add(column2);
@@ -407,7 +439,10 @@ namespace UWPUnitTests
 
             AdaptiveImageSet imageSet = new AdaptiveImageSet
             {
+                // ImageSet Property
                 ImageSize = ImageSize.Small,
+
+                // Base Element Properties
                 Height = HeightType.Stretch,
                 Id = "ImageSetId",
                 IsVisible = false,
@@ -433,33 +468,36 @@ namespace UWPUnitTests
         {
             AdaptiveTextInput textInput = new AdaptiveTextInput
             {
+                // Input.Text Properties
                 IsMultiline = true,
                 MaxLength = 5,
                 Placeholder = "Placeholder",
-                Value = "Value",
-                ErrorMessage = "Text Input Error Message",
                 Regex = "([A-Z])\\w+",
                 TextInputStyle = TextInputStyle.Email,
+                Value = "Value",
+
+                // Input Properties
+                ErrorMessage = "Text Input Error Message",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "TextInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
 
-            Assert.AreEqual("LabelText", textInput.Label);
-
             ValidateBaseElementProperties(textInput, "TextInputId", false, true, Spacing.Medium, HeightType.Stretch);
+            ValidateBaseInputProperties(textInput, "Text Input Error Message", true, "LabelText");
 
-            Assert.IsFalse(textInput.IsRequired);
-            Assert.AreEqual("Text Input Error Message", textInput.ErrorMessage);
-            Assert.AreEqual("([A-Z])\\w+", textInput.Regex);
-            Assert.AreEqual(true, textInput.IsMultiline);
+            Assert.IsTrue(textInput.IsMultiline);
             Assert.AreEqual<uint>(5, textInput.MaxLength);
             Assert.AreEqual("Placeholder", textInput.Placeholder);
-            Assert.AreEqual("Value", textInput.Value);
+            Assert.AreEqual("([A-Z])\\w+", textInput.Regex);
             Assert.AreEqual(TextInputStyle.Email, textInput.TextInputStyle);
+            Assert.AreEqual("Value", textInput.Value);
 
             textInput.InlineAction = new AdaptiveSubmitAction
             {
@@ -469,7 +507,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Inline Action", textInput.InlineAction.Title);
 
             var jsonString = textInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Text Input Error Message\",\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isVisible\":false,\"maxLength\":5,\"placeholder\":\"Placeholder\",\"regex\":\"([A-Z])\\\\w+\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Text Input Error Message\",\"height\":\"Stretch\",\"id\":\"TextInputId\",\"inlineAction\":{\"title\":\"Inline Action\",\"type\":\"Action.Submit\"},\"isMultiline\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"maxLength\":5,\"placeholder\":\"Placeholder\",\"regex\":\"([A-Z])\\\\w+\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Email\",\"type\":\"Input.Text\",\"value\":\"Value\"}", jsonString);
         }
 
         [TestMethod]
@@ -477,32 +515,35 @@ namespace UWPUnitTests
         {
             AdaptiveNumberInput numberInput = new AdaptiveNumberInput
             {
+                // Input.Number Properties
                 Max = 50,
                 Min = 40,
                 Placeholder = "Placeholder",
                 Value = 42,
-                IsRequired = false,
+
+                // Input Properties
                 ErrorMessage = "Number Input Error Message",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "NumberInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
 
             ValidateBaseElementProperties(numberInput, "NumberInputId", false, true, Spacing.Medium, HeightType.Stretch);
+            ValidateBaseInputProperties(numberInput, "Number Input Error Message", true, "LabelText");
 
-            Assert.IsFalse(numberInput.IsRequired);
-            Assert.AreEqual("Number Input Error Message", numberInput.ErrorMessage);
             Assert.AreEqual(50, numberInput.Max);
             Assert.AreEqual(40, numberInput.Min);
             Assert.AreEqual("Placeholder", numberInput.Placeholder);
             Assert.AreEqual(42, numberInput.Value);
-            Assert.AreEqual("LabelText", numberInput.Label);
 
             var jsonString = numberInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Number Input Error Message\",\"height\":\"Stretch\",\"id\":\"NumberInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":50,\"min\":40,\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Number\",\"value\":42}", jsonString);
         }
 
         [TestMethod]
@@ -537,33 +578,35 @@ namespace UWPUnitTests
         {
             AdaptiveDateInput dateInput = new AdaptiveDateInput
             {
-                ErrorMessage = "Date Input Error Message",
+                // Input.Date Properties
                 Max = "2019-01-14",
                 Min = "2017-01-14",
                 Placeholder = "Placeholder",
+                Value = "2018-01-14",
+
+                // Input Properties
+                ErrorMessage = "Date Input Error Message",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "DateInputId",
-                IsRequired = true,
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
-                Value = "2018-01-14",
             };
 
-            Assert.AreEqual("LabelText", dateInput.Label);
-
             ValidateBaseElementProperties(dateInput, "DateInputId", false, true, Spacing.Medium, HeightType.Stretch);
+            ValidateBaseInputProperties(dateInput, "Date Input Error Message", true, "LabelText");
 
-            Assert.IsTrue(dateInput.IsRequired);
-            Assert.AreEqual("Date Input Error Message", dateInput.ErrorMessage);
             Assert.AreEqual("2019-01-14", dateInput.Max);
             Assert.AreEqual("2017-01-14", dateInput.Min);
             Assert.AreEqual("Placeholder", dateInput.Placeholder);
             Assert.AreEqual("2018-01-14", dateInput.Value);
 
             var jsonString = dateInput.ToJson().ToString();
-            Assert.AreEqual("{\"errorMessage\":\"Date Input Error Message\",\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":true,\"isVisible\":false,\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"Date Input Error Message\",\"height\":\"Stretch\",\"id\":\"DateInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"max\":\"2019-01-14\",\"min\":\"2017-01-14\",\"placeholder\":\"Placeholder\",\"separator\":true,\"spacing\":\"medium\",\"type\":\"Input.Date\",\"value\":\"2018-01-14\"}", jsonString);
         }
 
         [TestMethod]
@@ -571,24 +614,27 @@ namespace UWPUnitTests
         {
             AdaptiveTimeInput timeInput = new AdaptiveTimeInput
             {
+                // Input.Time Properties
                 Max = "05:00",
                 Min = "01:00",
                 Placeholder = "Placeholder",
                 Value = "02:00",
+
+                // Input Properties
+                ErrorMessage = "ErrorMessage",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "TimeInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
 
-            Assert.AreEqual("LabelText", timeInput.Label);
-
             ValidateBaseElementProperties(timeInput, "TimeInputId", false, true, Spacing.Medium, HeightType.Stretch);
-
-            Assert.IsFalse(timeInput.IsRequired);
-            Assert.IsTrue(timeInput.ErrorMessage.Length == 0);
+            ValidateBaseInputProperties(timeInput, "ErrorMessage", true, "LabelText");
 
             Assert.AreEqual("05:00", timeInput.Max);
             Assert.AreEqual("01:00", timeInput.Min);
@@ -603,25 +649,28 @@ namespace UWPUnitTests
         {
             AdaptiveToggleInput toggleInput = new AdaptiveToggleInput
             {
+                // Input.Toggle Properties
                 Title = "Title",
                 Value = "Value",
                 ValueOff = "ValueOff",
                 ValueOn = "ValueOn",
                 Wrap = true,
+
+                // Input Properties
+                ErrorMessage = "ErrorMessage",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "ToggleInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
 
-            Assert.AreEqual("LabelText", toggleInput.Label);
-
             ValidateBaseElementProperties(toggleInput, "ToggleInputId", false, true, Spacing.Medium, HeightType.Stretch);
-
-            Assert.IsFalse(toggleInput.IsRequired);
-            Assert.IsTrue(toggleInput.ErrorMessage.Length == 0);
+            ValidateBaseInputProperties(toggleInput, "ErrorMessage", true, "LabelText");
 
             Assert.AreEqual("Title", toggleInput.Title);
             Assert.AreEqual("Value", toggleInput.Value);
@@ -630,7 +679,7 @@ namespace UWPUnitTests
             Assert.AreEqual(true, toggleInput.Wrap);
 
             var jsonString = toggleInput.ToJson().ToString();
-            Assert.AreEqual("{\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ToggleInputId\",\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"title\":\"Title\",\"type\":\"Input.Toggle\",\"value\":\"Value\",\"valueOff\":\"ValueOff\",\"valueOn\":\"ValueOn\",\"wrap\":true}", jsonString);
         }
 
         [TestMethod]
@@ -653,21 +702,27 @@ namespace UWPUnitTests
 
             AdaptiveChoiceSetInput choiceSet = new AdaptiveChoiceSetInput
             {
+                // Input.ChoiceSet Properties
                 ChoiceSetStyle = ChoiceSetStyle.Expanded,
                 IsMultiSelect = true,
                 Value = "Value2",
                 Wrap = true,
+
+                // Input Properties
+                ErrorMessage = "ErrorMessage",
+                IsRequired = true,
+                Label = "LabelText",
+
+                // BaseElement Properties
                 Height = HeightType.Stretch,
                 Id = "ChoiceSetInputId",
                 IsVisible = false,
-                Label = "LabelText",
                 Separator = true,
                 Spacing = Spacing.Medium,
             };
 
-            Assert.AreEqual("LabelText", choiceSet.Label);
-
             ValidateBaseElementProperties(choiceSet, "ChoiceSetInputId", false, true, Spacing.Medium, HeightType.Stretch);
+            ValidateBaseInputProperties(choiceSet, "ErrorMessage", true, "LabelText");
 
             Assert.AreEqual(ChoiceSetStyle.Expanded, choiceSet.ChoiceSetStyle);
             Assert.AreEqual(true, choiceSet.IsMultiSelect);
@@ -681,7 +736,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Value2", choiceSet.Choices[1].Value);
 
             var jsonString = choiceSet.ToJson().ToString();
-            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isVisible\":false,\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
+            Assert.AreEqual("{\"choices\":[{\"title\":\"Title1\",\"value\":\"Value1\"},{\"title\":\"Title2\",\"value\":\"Value2\"}],\"errorMessage\":\"ErrorMessage\",\"height\":\"Stretch\",\"id\":\"ChoiceSetInputId\",\"isMultiSelect\":true,\"isRequired\":true,\"isVisible\":false,\"label\":\"LabelText\",\"separator\":true,\"spacing\":\"medium\",\"style\":\"Expanded\",\"type\":\"Input.ChoiceSet\",\"value\":\"Value2\",\"wrap\":true}", jsonString);
         }
 
         public void ValidateBaseActionProperties(
