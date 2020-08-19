@@ -92,7 +92,7 @@ The following are the key components of the project along with their purpose:
     *	Each REST API contains a single REST endpoint. This is the route that accepts the HTTP POST request from the client app.
     *	Each REST API will accept the JSON data via an HTTP POST. It will call a renderer script and send it the JSON data
     *	Each REST API receives a JSON from the renderer that contains the screenshot as well as any errors in rendering.
-    *	Because each REST API calls a renderer program, each REST API and corresponding renderer are hosted on a separate VM that supports the renderer. For instance the REST API for iOS and the iOS renderer are hosted on a Mac VM. Similarly, the UWP renderer and corresponding REST API are hosted on a Windows VM.
+    *	Because each REST API calls a renderer program, each REST API and corresponding renderer are hosted on a separate VM/docker container that supports the renderer. For instance the REST API for iOS and the iOS renderer are hosted on a Mac VM. Similarly, the UWP renderer and corresponding REST API are hosted on a Windows VM/docker image.
     *	The REST API is the same for each platform and it is abstracted away from the renderer.
     *	For the first version of this project, there will be one REST API per platform and therefore one REST end point per platform. These would be something like /nodejs, /dotnetWPF etc.
 3.	There is a rendering app connected to each REST API. We will refer to this as the driver.
@@ -101,7 +101,7 @@ The following are the key components of the project along with their purpose:
     *	It uses the templating SDK (for its specific platform) and the rendering SDK (for its specific platform) to render the adaptive card. 
     *	It takes a screenshot of the rendered card.
     *	It sends a JSON containing the screenshot of the card(base 64 encoded) along with any errors(list of strings) back to the Flask App (REST API) via stdout.
-    *	It is also hosted on the VM along with its corresponding Flask App (REST API).
+    *	It is also hosted on the VM/docker container along with its corresponding Flask App (REST API).
 
 
 ## Workflow
@@ -124,7 +124,7 @@ The current flow is as follows:
 
 1.	The user inputs the card template and card data JSON files/strings on the client web App. 
 
-    ![](assets/ConsistentCards/landingPageWithData.png)
+    ![](assets/ConsistentCards/landingPageWithData.jpg)
 
 2.	This JSON data is sent to the FlaskApp(REST API) via an HTTP POST request.
 3.	The flask app parses the json data and creates a new JSON string with two fields: “card”, “template”. These fields correspond to the json data respective to each field. The following example shows how this string would look like for a particular user input:
