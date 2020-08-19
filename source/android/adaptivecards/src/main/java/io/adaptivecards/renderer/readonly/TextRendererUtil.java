@@ -62,12 +62,12 @@ public class TextRendererUtil
         {
             typeface = Typeface.MONOSPACE;
         }
-        else if (customTypefaces.containsKey(fontFamily)) {
+        else if (customTypefaces.containsKey(fontFamily))
+        {
             typeface = customTypefaces.get(fontFamily);
         }
         else
         {
-
             typeface = Typeface.create(fontFamily, Typeface.NORMAL);
         }
 

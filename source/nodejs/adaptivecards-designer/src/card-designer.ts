@@ -699,8 +699,9 @@ export class CardDesigner extends Designer.DesignContext {
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
-            "Copy card JSON",
+            "Copy card payload",
             "acd-icon-copy");
+        this._copyJSONButton.toolTip = "Copy the generated JSON payload of the card (template bound with data) to the clipboard. To copy only the template payload, use the Card Payload Editor.";
         this.toolbar.addElement(this._copyJSONButton);
 
         this._togglePreviewButton = new ToolbarButton(
@@ -969,10 +970,10 @@ export class CardDesigner extends Designer.DesignContext {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => {
-                        return JSON.stringify(this.getCard(), null, 4);
-                    }
-                });
+                    text: (trigger) => JSON.stringify(this.getBoundCard(), null, 4)
+                })
+                .on("error", () => this._copyJSONButton.renderedElement.focus())
+                .on("success", () => this._copyJSONButton.renderedElement.focus());
         }
 
         // Tool palette panel
@@ -1094,6 +1095,10 @@ export class CardDesigner extends Designer.DesignContext {
 
     getCard(): object {
         return this._designerSurface ? this._designerSurface.getCardPayloadAsObject() : undefined;
+    }
+
+    getBoundCard(): object {
+        return this._designerSurface ? this._designerSurface.getBoundCardPayloadAsObject() : undefined;
     }
 
     undo() {
