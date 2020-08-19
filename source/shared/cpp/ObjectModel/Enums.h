@@ -85,7 +85,6 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
-        InputNecessityIndicators,
         Inputs,
         InputSpacing,
         IsMultiSelect,

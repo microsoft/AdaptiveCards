@@ -83,7 +83,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
-            {AdaptiveCardSchemaKey::InputNecessityIndicators, "inputNecessityIndicators"},
             {AdaptiveCardSchemaKey::Inputs, "inputs"},
             {AdaptiveCardSchemaKey::InputSpacing, "inputSpacing"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
