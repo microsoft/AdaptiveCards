@@ -487,12 +487,4 @@ namespace AdaptiveSharedNamespace
         Drop,
         Content
     };
-
-    enum class InputNecessityIndicators
-    {
-        None,
-        RequiredInputs,
-        OptionalInputs
-    };
-    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

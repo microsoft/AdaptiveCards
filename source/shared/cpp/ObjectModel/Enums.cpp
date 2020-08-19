@@ -329,9 +329,4 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
-
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InputNecessityIndicators, InputNecessityIndicators::None, {
-            {InputNecessityIndicators::None, "None"},
-            {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
-            {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
 }
