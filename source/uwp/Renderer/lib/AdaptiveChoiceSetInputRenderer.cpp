@@ -106,7 +106,6 @@ namespace AdaptiveNamespace
         ComPtr<IComboBox> comboBox =
             XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
-        
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
         ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
         RETURN_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));
@@ -172,17 +171,13 @@ namespace AdaptiveNamespace
 
         ComPtr<IUIElement> inputLayout;
         ComPtr<IBorder> validationBorder;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
-                                                    comboBoxAsUIElement.Get(),
-                                                    false,
-                                                    renderContext,
-                                                    &inputLayout,
-                                                    &validationBorder));
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInputAsAdaptiveInput.Get(), comboBoxAsUIElement.Get(), false, renderContext, &inputLayout, &validationBorder));
 
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
         RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
-            &input, adaptiveChoiceSetInput, comboBoxAsUIElement.Get(), validationBorder.Get()));
+            &input, adaptiveChoiceSetInput, renderContext, comboBoxAsUIElement.Get(), validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         return inputLayout.CopyTo(choiceInputSet);
@@ -270,17 +265,13 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(stackPanel.As(&choiceSetAsUIElement));
 
         ComPtr<IUIElement> inputLayout;
-        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(adaptiveChoiceSetInputAsAdaptiveInput.Get(),
-                                                    choiceSetAsUIElement.Get(),
-                                                    false,
-                                                    renderContext,
-                                                    &inputLayout,
-                                                    nullptr));
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            adaptiveChoiceSetInputAsAdaptiveInput.Get(), choiceSetAsUIElement.Get(), false, renderContext, &inputLayout, nullptr));
 
         // Create the InputValue and add it to the context
         ComPtr<ChoiceSetInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<ChoiceSetInputValue>(
-            &input, adaptiveChoiceSetInput, choiceSetAsUIElement.Get(), nullptr);
+        RETURN_IF_FAILED(
+            MakeAndInitialize<ChoiceSetInputValue>(&input, adaptiveChoiceSetInput, renderContext, choiceSetAsUIElement.Get(), nullptr);
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs)));
 
         return inputLayout.CopyTo(choiceInputSet);

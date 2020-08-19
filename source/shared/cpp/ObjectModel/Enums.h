@@ -82,6 +82,7 @@ namespace AdaptiveSharedNamespace
         ImageSize,
         ImageSizes,
         Images,
+        InitialValidation,
         InlineAction,
         Inlines,
         InlineTopMargin,
@@ -495,4 +496,12 @@ namespace AdaptiveSharedNamespace
         OptionalInputs
     };
     DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
+
+    enum class InitialValidation
+    {
+        OnFocusLost,
+        OnFocusLostWithInput,
+        OnSubmit
+    };
+    DECLARE_ADAPTIVECARD_ENUM(InitialValidation);
 }
