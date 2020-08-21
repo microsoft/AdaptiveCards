@@ -1,0 +1,67 @@
+apply plugin: 'com.android.application'
+
+android {
+
+
+    compileSdkVersion 29
+    buildToolsVersion "30.0.0"
+
+    sourceSets {
+        test {
+            resources.srcDirs += ['src/test/resources']
+
+        }
+        androidTest {
+            resources.srcDirs += ['src/androidTest/resources']
+        }
+    }
+    defaultConfig {
+        applicationId "com.example.androiddriver"
+        minSdkVersion 26
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude "META-INF/LICENSE*"
+    }
+
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    testImplementation 'junit:junit:4.13'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+    implementation 'io.adaptivecards:adaptivecards-android:1.2.10'
+    //implementation group: 'org.json', name: 'json', version: '20200518'
+    //noinspection DuplicatePlatformClasses
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    implementation 'javax.json:javax.json-api:1.0'
+    //implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.12'
+    implementation group: 'org.apache.httpcomponents' , name: 'httpclient-android' , version: '4.3.5.1'
+    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
+    implementation 'pl.pragmatists:JUnitParams:1.1.1'
+
+    //testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.7.0-M1'
+
+
+}
