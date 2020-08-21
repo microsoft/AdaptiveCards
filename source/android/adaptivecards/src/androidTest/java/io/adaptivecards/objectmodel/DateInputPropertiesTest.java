@@ -1,20 +1,15 @@
 package io.adaptivecards.objectmodel;
 
 import android.support.test.InstrumentationRegistry;
-import android.util.Pair;
+import android.support.v4.app.FragmentManager;
 import android.widget.EditText;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Date;
+import org.junit.runner.Description;
 
 import io.adaptivecards.renderer.inputhandler.DateInputHandler;
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
-
-import static org.junit.Assert.*;
 
 public class DateInputPropertiesTest
 {
@@ -198,103 +193,6 @@ public class DateInputPropertiesTest
             return TestUtil.castToDateInput(element);
         }
     }
-
-    @Test
-    public void MinValidationTest() throws Exception
-    {
-        DateInput dateInput = TestUtil.createMockDateInput();
-        dateInput.SetMin(c_inRangeDateValues[0]);
-
-        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
-        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        // Validate that empty input is always valid
-        Assert.assertEquals(true, dateInputHandler.isValid());
-
-        // Validate only min
-        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(c_smallDateValues, false, specsExecutor);
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_inRangeDateValues, c_largeDateValues), true, specsExecutor);
-
-        // Validate non-required + min
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(c_smallDateValues, false, gralExecutor);
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_inRangeDateValues, c_largeDateValues), true, gralExecutor);
-    }
-
-    @Test
-    public void MaxValidationTest() throws Exception
-    {
-        DateInput dateInput = TestUtil.createMockDateInput();
-        dateInput.SetMax(c_inRangeDateValues[c_inRangeDateValues.length - 1]);
-
-        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
-        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        // Validate that empty input is always valid
-        Assert.assertEquals(true, dateInputHandler.isValid());
-
-        // Validate only max
-        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallDateValues, c_inRangeDateValues), true, specsExecutor);
-        TestUtil.runValidationTests(c_largeDateValues, false, specsExecutor);
-
-        // Validate non-required + max
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallDateValues, c_inRangeDateValues), true, gralExecutor);
-        TestUtil.runValidationTests(c_largeDateValues, false, gralExecutor);
-    }
-
-    @Test
-    public void MinMaxValidationTest() throws Exception
-    {
-        DateInput dateInput = TestUtil.createMockDateInput();
-        dateInput.SetMin(c_inRangeDateValues[0]);
-        dateInput.SetMax(c_inRangeDateValues[c_inRangeDateValues.length - 1]);
-
-        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
-        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        // Validate that empty input is always valid
-        Assert.assertEquals(true, dateInputHandler.isValid());
-
-        // Validate min + max
-        TestUtil.SpecificsValidationExecutor specsExecutor = new TestUtil.SpecificsValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(c_smallDateValues, false, specsExecutor);
-        TestUtil.runValidationTests(c_inRangeDateValues, true, specsExecutor);
-        TestUtil.runValidationTests(c_largeDateValues, false, specsExecutor);
-
-        // Validate min + max + non-required
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
-        TestUtil.runValidationTests(c_smallDateValues, false, gralExecutor);
-        TestUtil.runValidationTests(c_inRangeDateValues, true, gralExecutor);
-        TestUtil.runValidationTests(c_largeDateValues, false, gralExecutor);
-
-        TestUtil.runValidationTests(c_invalidDateValues, true, gralExecutor);
-    }
-
-    @Test
-    public void isRequiredValidation()
-    {
-        DateInput dateInput = TestUtil.createMockDateInput();
-        dateInput.SetIsRequired(true);
-
-        DateInputHandler dateInputHandler = new DateInputHandler(dateInput, null);
-        dateInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(dateInputHandler);
-
-        // Validate that empty input is always invalid
-        Assert.assertEquals(false, dateInputHandler.isValid());
-
-        // Validate required
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_smallDateValues, c_inRangeDateValues, c_largeDateValues), true, gralExecutor);
-    }
-
-    private final String[] c_smallDateValues = {"1994-07-24", "1995-05-18", "1995-05-26", "1996-11-26", "1996-11-29", "1997-08-30", "1998-03-09"};
-    private final String[] c_inRangeDateValues = {"1998-03-10", "1999-03-03", "1999-11-08", "2002-01-21", "2005-03-22", "2005-10-21", "2007-09-05"};
-    private final String[] c_largeDateValues = {"2007-09-06", "2010-09-14", "2011-08-30", "2011-10-19", "2017-10-21", "2017-11-07", "2018-08-14"};
-    private final String[] c_invalidDateValues = {"aWord", "12-12-2012", "12:02", "2011/08/30", "2013-13-13", "a-b-c", "7."};
 
     private final String c_defaultInputDate = "{\"id\":\"id\",\"type\":\"Input.Date\"}\n";
     private final String[] c_dateInputTests = {"0000-01-01", "1521-08-13", "1776-07-04", "1917-03-08", "1975-04-04", "1993-02-04", "2019-06-18", "2552-08-30"};

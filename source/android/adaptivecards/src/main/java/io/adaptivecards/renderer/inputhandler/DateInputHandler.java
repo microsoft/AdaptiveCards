@@ -59,6 +59,11 @@ public class DateInputHandler extends TextInputHandler
             return true;
         }
 
+        if (!RendererUtil.isValidDate(inputValue))
+        {
+            return false;
+        }
+
         Date currentDate = RendererUtil.getDate(inputValue).getTime();
 
         String minDate = dateInput.GetMin();
