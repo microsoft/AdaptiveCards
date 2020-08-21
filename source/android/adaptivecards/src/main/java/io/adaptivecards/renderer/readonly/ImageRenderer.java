@@ -10,11 +10,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
 import android.os.AsyncTask;
-import android.support.constraint.Barrier;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
-import android.support.constraint.Guideline;
-import android.support.constraint.Placeholder;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -178,89 +175,12 @@ public class ImageRenderer extends BaseCardElementRenderer
     }
 
     /**
-     * Calculate constraints for placing/sizing this ImageView in a ConstraintLayout
-     * For sizing Images in ImageSets, use {@link #sizeImageForImageSet}
-     * @param context
-     * @param imageView the view to constrain
-     * @param image the parsed Image
-     * @param hostConfig the HostConfig that configures semantic 'size' values
-     * @return
-     */
-    private static ConstraintSet getConstraints(Context context, ImageView imageView, Image image, HostConfig hostConfig)
-    {
-        long explicitWidth = image.GetPixelWidth();
-        long explicitHeight = image.GetPixelHeight();
-        ImageSize imageSize = image.GetImageSize();
-        ConstraintSet constraints = new ConstraintSet();
-
-        // ConstraintSet requires unique id
-        if(imageView.getId() == View.NO_ID) {
-            imageView.setId(View.generateViewId());
-        }
-        int id = imageView.getId();
-
-        // By default, scale image and maintain aspect ratio
-        imageView.setAdjustViewBounds(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_START);
-
-        // By default, constrain view to top of parent, and expand width to parent
-        constraints.clone(context, R.layout.image_constraint_layout);
-
-        // Set horizontal alignment
-        constraints.setHorizontalBias(R.id.widthPlaceholder, getHorizontalBias(image));
-        constraints.setHorizontalBias(id, getHorizontalBias(image));
-
-        constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
-        constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
-        constraints.constrainHeight(id, ConstraintSet.WRAP_CONTENT);
-        constraints.connect(id, ConstraintSet.START, R.id.leftBarrier, ConstraintSet.START);
-        constraints.connect(id, ConstraintSet.END, R.id.rightBarrier, ConstraintSet.END);
-
-        // Explicit height and/or width given
-        if (explicitWidth != 0 || explicitHeight != 0)
-        {
-            if (explicitWidth != 0 && explicitHeight != 0)
-            {
-                // If both are set, ignore aspect ratio
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            }
-            if (explicitWidth != 0)
-            {
-                constraints.constrainWidth(R.id.widthPlaceholder, Util.dpToPixels(context, explicitWidth));
-            }
-            if (explicitHeight != 0)
-            {
-                // Exact height
-                constraints.constrainHeight(id, Util.dpToPixels(context, explicitHeight));
-            }
-        }
-        // Semantic size from host config
-        else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
-        {
-            constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
-        }
-        // Don't scale image
-        else if (imageSize == ImageSize.Stretch)
-        {
-            constraints.constrainWidth(R.id.widthPlaceholder, ConstraintSet.MATCH_CONSTRAINT);
-        }
-        else
-        {
-            // Disable width expansion
-            constraints.constrainWidth(R.id.widthPlaceholder, ConstraintSet.MATCH_CONSTRAINT);
-            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);
-        }
-
-        return constraints;
-    }
-
-    /**
-     * Create container for this image (with stretch height if needed)
+     * Create container for this image (with stretch height if needed).
      * @param context
      * @param image the parsed Image
      * @return the container
      */
-    private static ConstraintLayout getContainer(Context context, Image image)
+    private static ConstraintLayout createContainer(Context context, Image image)
     {
         ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
@@ -276,6 +196,85 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         return container;
+    }
+
+    /**
+     * Generate constraints to layout this ImageView in a container returned by {@link #createContainer}
+     * @param context
+     * @param imageView the view to constrain
+     * @param image the parsed Image
+     * @param hostConfig the HostConfig that configures semantic 'size' values
+     * @return
+     */
+    private static ConstraintSet createConstraints(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    {
+        long explicitWidth = image.GetPixelWidth();
+        long explicitHeight = image.GetPixelHeight();
+        ImageSize imageSize = image.GetImageSize();
+        ConstraintSet constraints = new ConstraintSet();
+
+        // ConstraintSet requires unique id
+        if(imageView.getId() == View.NO_ID) {
+            imageView.setId(View.generateViewId());
+        }
+        int id = imageView.getId();
+
+        // Start with base constraints from XML layout
+        constraints.clone(context, R.layout.image_constraint_layout);
+
+        // Constrain width to left/right barriers (defined in layout), and no stretch by default
+        constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
+        constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);
+        constraints.connect(id, ConstraintSet.START, R.id.leftBarrier, ConstraintSet.START);
+        constraints.connect(id, ConstraintSet.END, R.id.rightBarrier, ConstraintSet.END);
+
+        // By default, height scales with width to maintain aspect ratio
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+        constraints.constrainHeight(id, ConstraintSet.WRAP_CONTENT);
+        constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+
+        // Set horizontal alignment (on both placeholder and ImageView)
+        constraints.setHorizontalBias(R.id.widthPlaceholder, getHorizontalBias(image));
+        constraints.setHorizontalBias(id, getHorizontalBias(image));
+
+        // Explicit height and/or width given
+        if (explicitWidth != 0 || explicitHeight != 0)
+        {
+            if (explicitWidth != 0 && explicitHeight != 0)
+            {
+                // If both are set, ignore aspect ratio
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+            if (explicitWidth != 0)
+            {
+                // Set placeholder width, which will adjust left/right barriers (defined in layout)
+                constraints.constrainWidth(R.id.widthPlaceholder, Util.dpToPixels(context, explicitWidth));
+                // Stretch image width to barriers
+                constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+            }
+            if (explicitHeight != 0)
+            {
+                // Exact height
+                constraints.constrainHeight(id, Util.dpToPixels(context, explicitHeight));
+            }
+        }
+        // Semantic size from host config
+        else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
+        {
+            // Set placeholder width, which will adjust left/right barriers (defined in layout)
+            constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
+            // Stretch image width to barriers
+            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+        }
+        // Scale to parent width
+        else if (imageSize == ImageSize.Stretch)
+        {
+            // Stretch image width up to the barriers
+            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+        }
+
+        return constraints;
     }
 
     private int getBackgroundColorFromHexCode(String hexColorCode)
@@ -363,10 +362,10 @@ public class ImageRenderer extends BaseCardElementRenderer
         // ConstraintLayout container for first-class images
         else
         {
-            ConstraintLayout container = getContainer(context, image);
+            ConstraintLayout container = createContainer(context, image);
             tagContent.SetStretchContainer(container);
             container.addView(imageView);
-            getConstraints(context, imageView, image, hostConfig).applyTo(container);
+            createConstraints(context, imageView, image, hostConfig).applyTo(container);
             viewGroup.addView(container);
         }
 
