@@ -38,25 +38,14 @@ public class TimeInputHandler extends TextInputHandler
         EditText editText = getEditText();
         try
         {
-            Date time = DateFormat.getTimeInstance().parse(editText.getText().toString());
+            String text = editText.getText().toString();
+            Date time = DateFormat.getTimeInstance(DateFormat.SHORT).parse(text);
             return s_simpleDateFormat.format(time);
         }
         catch (ParseException e)
         {
             return editText.getText().toString();
         }
-    }
-
-    @Override
-    public void setInput(String text)
-    {
-        String formattedTime = "";
-        if (RendererUtil.isValidTime(text) && !text.isEmpty())
-        {
-            formattedTime = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(text).getTime());
-        }
-
-        super.setInput(formattedTime);
     }
 
     @Override
@@ -74,6 +63,11 @@ public class TimeInputHandler extends TextInputHandler
             return true;
         }
 
+        if (!RendererUtil.isValidTime(timeInputValue))
+        {
+            return false;
+        }
+
         Date currentTime = null;
         try
         {
@@ -87,21 +81,29 @@ public class TimeInputHandler extends TextInputHandler
         String minTime = timeInput.GetMin();
         if (!minTime.isEmpty())
         {
-            Date min = RendererUtil.getTime(minTime).getTime();
-            if (!beforeOrSame(min, currentTime))
+            try
             {
-                return false;
+                Date min = getCurrentValue(minTime);
+                if (!beforeOrSame(min, currentTime))
+                {
+                    return false;
+                }
             }
+            catch (Exception e) { /* if the minTime cannot be parsed, skip the min check */ }
         }
 
         String maxTime = timeInput.GetMax();
         if (!maxTime.isEmpty())
         {
-            Date max = RendererUtil.getTime(maxTime).getTime();
-            if (!beforeOrSame(currentTime, max))
+            try
             {
-                return false;
+                Date max = RendererUtil.getTime(maxTime).getTime();
+                if (!beforeOrSame(currentTime, max))
+                {
+                    return false;
+                }
             }
+            catch (Exception e) { /* if the maxTime cannot be parsed, skip the max check */ }
         }
 
         return true;
@@ -109,7 +111,9 @@ public class TimeInputHandler extends TextInputHandler
 
     private Date getCurrentValue(String timeInputValue) throws Exception
     {
-        Date currentTime = TimeInputRenderer.getTimeFormat().parse(timeInputValue);
+        String formattedTime = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInputValue).getTime());
+
+        Date currentTime = TimeInputRenderer.getTimeFormat().parse(formattedTime);
         Calendar currentValueDate = Calendar.getInstance();
         currentValueDate.setTime(currentTime);
 
@@ -127,9 +131,9 @@ public class TimeInputHandler extends TextInputHandler
 
     /**
      * The before method in Date doesn't work as the miliseconds difference introduced by calculations messes the behaviour
-     * @param before
-     * @param after
-     * @return
+     * @param before The date expected to be the same or prior to after
+     * @param after The date expected to be the same or later than before
+     * @return True if before is the same or prior to after
      */
     private boolean beforeOrSame(Date before, Date after)
     {
