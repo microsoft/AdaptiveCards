@@ -54,7 +54,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         // Add tag for rendering process
         rootLayout.setTag(new TagContent(actionSet));
-        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
         rootLayout.setFocusable(true);
         rootLayout.setFocusableInTouchMode(true);
@@ -72,7 +72,7 @@ public class ActionSetRenderer extends BaseCardElementRenderer
         // This layout will contain the cards hidden until a showcard action is pressed
         LinearLayout showCardsLayout = new LinearLayout(context);
         showCardsLayout.setBackgroundColor(Color.parseColor(color));
-        showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        showCardsLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         rootLayout.addView(showCardsLayout);
 
