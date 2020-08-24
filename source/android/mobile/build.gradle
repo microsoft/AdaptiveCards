@@ -45,7 +45,7 @@ dependencies {
     implementation 'com.journeyapps:zxing-android-embedded:3.6.0'
     implementation 'com.android.support:support-v4:28.0.0'
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'org.webrtc:google-webrtc:1.0.27306'
+    implementation 'org.webrtc:google-webrtc:1.0.30039'
     testImplementation 'junit:junit:4.12'
     implementation project(':adaptivecards')
 }
