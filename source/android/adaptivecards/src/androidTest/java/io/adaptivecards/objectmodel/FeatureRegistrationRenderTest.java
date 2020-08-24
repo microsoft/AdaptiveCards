@@ -2,7 +2,6 @@ package io.adaptivecards.objectmodel;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
-import android.test.mock.MockContext;
 import android.widget.LinearLayout;
 
 import junit.framework.Assert;
