@@ -28,11 +28,27 @@ class TestDetrLib(unittest.TestCase):
         self.assertEqual(self.model_path, detr1.model_path)
         self.assertEqual(self.model_path, detr1.get_model_path())
 
-    def test_model_loading(self):
+    def test_model_inference(self):
         model = detr.Detr(self.model_path)
-        model.load()
         pred_logits, pred_boxes = model.predict(self.img_np)
 
-        print(pred_logits.shape)
         self.assertEqual(pred_logits.shape, (60, 7))
         self.assertEqual(pred_boxes.shape, (60, 4))
+
+    def test_image_resizing(self):
+        model = detr.Detr(self.model_path)
+        self.assertEqual(
+            model.get_new_size(400, 300, 800, 1333),
+            [800, 600])
+
+        self.assertEqual(
+            model.get_new_size(800, 300, 800, 1333),
+            [500, 187])
+
+        self.assertEqual(
+            model.get_new_size(300, 500, 800, 1333),
+            [480, 800])
+
+        self.assertEqual(
+            model.get_new_size(1500, 1500, 800, 1333),
+            [800, 800])

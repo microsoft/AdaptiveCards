@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentActivity;
@@ -28,6 +29,7 @@ import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -79,6 +81,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private Switch m_customImageLoader;
     private Switch m_customMediaLoader;
     private Switch m_onlineImageLoader;
+    private Switch m_customTypeface;
     private Switch m_httpResourceResolver;
 
     @Override
@@ -177,6 +180,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_onlineImageLoader = (Switch) findViewById(R.id.onlineImageLoader);
         m_onlineImageLoader.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomOnlineImageLoader)));
+
+        m_customTypeface = (Switch) findViewById(R.id.customTypeface);
+        m_customTypeface.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomTypeface)));
 
         m_httpResourceResolver = (Switch) findViewById(R.id.httpResourceResolver);
         m_httpResourceResolver.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsHttpResourceResolver)));
@@ -298,12 +304,30 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
     }
 
+    private void registerCustomTypeface()
+    {
+        if (m_customTypeface.isChecked())
+        {
+            Typeface typeface = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                typeface = getResources().getFont(R.font.bethellen_regular);
+            }
+            else
+            {
+                typeface = Typeface.createFromAsset(getAssets(), "fonts/bethellen_regular.ttf");
+            }
+            TextRendererUtil.registerCustomTypeface("MyCustomFont", typeface);
+        }
+    }
+
     private void registerCustomFeatures()
     {
         registerCustomImageLoaders();
         registerCustomMediaLoaders();
         registerFeatureRegistration();
         registerCustomElementRenderers();
+        registerCustomTypeface();
     }
 
     private void renderAdaptiveCard(boolean showErrorToast)
