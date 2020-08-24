@@ -15,7 +15,6 @@ import static org.junit.Assert.*;
 
 public class ToggleInputPropertiesTest
 {
-
     static {
         System.loadLibrary("adaptivecards-native-lib");
     }
@@ -215,24 +214,6 @@ public class ToggleInputPropertiesTest
         public ToggleInput castTo(BaseCardElement element) {
             return TestUtil.castToToggleInput(element);
         }
-    }
-
-    @Test
-    public void isRequiredValidation()
-    {
-        ToggleInput toggleInput = TestUtil.createMockToggleInput();
-        toggleInput.SetIsRequired(true);
-
-        ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
-        toggleInputHandler.setView(new CheckBox(InstrumentationRegistry.getContext()));
-
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(toggleInputHandler);
-
-        // Validate that empty input is always invalid
-        Assert.assertEquals(false, toggleInputHandler.isValid());
-
-        toggleInputHandler.setInput("true");
-        Assert.assertEquals(true, toggleInputHandler.isValid());
     }
 
     private final String c_defaultInputToggle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
