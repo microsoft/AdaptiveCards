@@ -125,9 +125,9 @@
 						"type": "Input.Toggle",
 						"id": "Vegetarian",
 						"title": "Please prepare it vegan",
+						"label": "Would you like it prepared vegan?"
 						"valueOn": "vegan",
 						"valueOff": "notVegan",
-						"label": "Would you like it prepared vegan?"
 					},
 					{
 						"type": "Input.Text",
