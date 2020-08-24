@@ -1,17 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.widget.CheckBox;
-import android.widget.EditText;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
-import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
-
-import static org.junit.Assert.*;
 
 public class ToggleInputPropertiesTest
 {

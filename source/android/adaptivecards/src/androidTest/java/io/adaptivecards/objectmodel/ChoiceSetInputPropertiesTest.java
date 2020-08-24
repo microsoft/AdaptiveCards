@@ -1,28 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.text.TextUtils;
-import android.widget.ArrayAdapter;
-import android.widget.CheckBox;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Spinner;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.input.ChoiceSetInputRenderer;
-import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
-import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
-import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
-import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
-
-import static org.junit.Assert.*;
 
 public class ChoiceSetInputPropertiesTest
 {

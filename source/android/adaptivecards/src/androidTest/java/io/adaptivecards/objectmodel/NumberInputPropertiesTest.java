@@ -1,14 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.widget.EditText;
-
 import junit.framework.Assert;
 import org.junit.Test;
-
-import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
 
 public class NumberInputPropertiesTest
 {

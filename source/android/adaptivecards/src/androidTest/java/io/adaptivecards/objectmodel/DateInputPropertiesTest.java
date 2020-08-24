@@ -1,15 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.support.v4.app.FragmentManager;
-import android.widget.EditText;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-import org.junit.runner.Description;
-
-import io.adaptivecards.renderer.inputhandler.DateInputHandler;
 
 public class DateInputPropertiesTest
 {
