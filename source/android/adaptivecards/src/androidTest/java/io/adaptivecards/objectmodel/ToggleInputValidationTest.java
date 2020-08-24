@@ -37,7 +37,7 @@ public class ToggleInputValidationTest
     }
 
     /**
-     * VerifyIsRequiredValidationFailsWithNoSetValue
+     * VerifyValidationSucceedsWithNoSetValue
      * @testDescription Verifies that a not required input will succeed when no value has been set
      */
     @Test
