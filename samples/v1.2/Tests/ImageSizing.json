@@ -202,6 +202,10 @@
 			]
 		},
 		{
+			"type": "TextBlock",
+			"text": "Col 1 - Width: Auto; Image - Size: Small"
+		},
+		{
 			"type": "ColumnSet",
 			"columns": [
 				{
