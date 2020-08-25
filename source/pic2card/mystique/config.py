@@ -86,3 +86,9 @@ LAST_COLUMN_THRESHOLD = {
         (1.0, 3.68): "stretch",
         (1.0, 22.40): "auto"
 }
+# COLUMNSET GROUPING THRESHOLDS
+COLUMNSET_GROUPING = {
+        "ymin_difference": 10.0,
+        "ymax-ymin_difference": 3,
+        "xmax-xmin_difference": 100
+}
