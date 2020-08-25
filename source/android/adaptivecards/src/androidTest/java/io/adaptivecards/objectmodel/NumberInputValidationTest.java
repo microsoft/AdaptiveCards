@@ -157,7 +157,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMinValidationFailsWithSmallValues
-     * @testDescription Verifies that the min validation (isValidOnSpecifics) fails when a prior number to the min number has been set
+     * @testDescription Verifies that the min validation (isValidOnSpecifics) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifySpecificMinValidationFailsWithSmallValues()
@@ -171,7 +171,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMinValidationSucceedsWithInRangeAndLargeValues
-     * @testDescription Verifies that the min validation (isValidOnSpecifics) succeeds when the same or later number to the min number has been set
+     * @testDescription Verifies that the min validation (isValidOnSpecifics) succeeds when the same or greater number to the min number has been set
      */
     @Test
     public void VerifySpecificMinValidationSucceedsWithInRangeAndLargeValues()
@@ -213,7 +213,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMinValidationFailsWithSmallValues
-     *  @testDescription Verifies that the min validation (isValid) fails when a prior number to the min number has been set
+     *  @testDescription Verifies that the min validation (isValid) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifyMinValidationFailsWithSmallValues()
@@ -227,7 +227,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMinValidationSucceedsWithInRangeAndLargeValues
-     * @testDescription Verifies that the min validation (isValid) succeeds when the same or later number to the min number has been set
+     * @testDescription Verifies that the min validation (isValid) succeeds when the same or greater number to the min number has been set
      */
     @Test
     public void VerifyMinValidationSucceedsWithInRangeAndLargeValues()
@@ -268,7 +268,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMinValidationFailsWithSmallValues
-     * @testDescription Verifies that the min and isRequired validation (isValid) fails when a prior number to the min number has been set
+     * @testDescription Verifies that the min and isRequired validation (isValid) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifyRequiredMinValidationFailsWithSmallValues()
@@ -282,7 +282,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMinValidationSucceedsWithInRangeAndLargeValues
-     * @testDescription Verifies that the min and isRequired validation (isValid) succeeds when the same or later number to the min number has been set
+     * @testDescription Verifies that the min and isRequired validation (isValid) succeeds when the same or greater number to the min number has been set
      */
     @Test
     public void VerifyRequiredMinValidationSucceedsWithInRangeAndLargeValues()
@@ -324,8 +324,8 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMaxValidationSucceedsWithSmallAndInRangeValues
-     * @testDescription Verifies that the max validation (isValidOnSpecifics) succeeds when same
-     * or prior number to the max number has been set
+     * @testDescription Verifies that the max validation (isValidOnSpecifics) succeeds when the input
+     * number is equals or less than the max number has been set
      */
     @Test
     public void VerifySpecificMaxValidationSucceedsWithSmallAndInRangeValues()
@@ -339,7 +339,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMaxValidationFailsWithLargeValues
-     * @testDescription Verifies that the max validation (isValidOnSpecifics) fails when a later number to the max number has been set
+     * @testDescription Verifies that the max validation (isValidOnSpecifics) fails when a greater number to the max number has been set
      */
     @Test
     public void VerifySpecificMaxValidationFailsWithLargeValues()
@@ -381,7 +381,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMaxValidationSucceedsWithSmallAndInRangeValues
-     * @testDescription Verifies that the max validation (isValid) succeeds when the same or a prior number to the max number has been set
+     * @testDescription Verifies that the max validation (isValid) succeeds when the input number is equals or less than the max number
      */
     @Test
     public void VerifyMaxValidationSucceedsWithSmallAndInRangeValues()
@@ -395,7 +395,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMaxValidationSucceedsWithLargeValues
-     * @testDescription Verifies that the max validation (isValid) fails when a later number to the max number has been set
+     * @testDescription Verifies that the max validation (isValid) fails when a greater number to the max number has been set
      */
     @Test
     public void VerifyMaxValidationSucceedsWithLargeValues()
@@ -436,8 +436,8 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMaxValidationSucceedsWithSmallAndInRangeValues
-     * @testDescription  Verifies that the max and isRequired validation (isValid) succeeds when the same
-     * or a prior number to the max number has been set
+     * @testDescription  Verifies that the max and isRequired validation (isValid) succeeds when the
+     * input value is equals or less than the max number has been set
      */
     @Test
     public void VerifyRequiredMaxValidationSucceedsWithSmallAndInRangeValues()
@@ -451,7 +451,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMaxValidationFailsWithLargeValues
-     * @testDescription  Verifies that the max and isRequired validation (isValid) fail when a later number to the max number has been set
+     * @testDescription  Verifies that the max and isRequired validation (isValid) fail when a greater number to the max number has been set
      */
     @Test
     public void VerifyRequiredMaxValidationFailsWithLargeValues()
@@ -482,7 +482,7 @@ public class NumberInputValidationTest
      * @testDescription Verifies that the min and max validation (isValidOnSpecifics) succeeds when no number has been set
      */
     @Test
-    public void SpecificMinMaxValidationForNonRequiredAndEmptyInputTest()
+    public void VerifySpecificMinMaxValidationSucceedsWithNoSetValue()
     {
         NumberInput numberInput = createNumberInputWithValidationProperties(c_inRangeNumberValues[0], c_inRangeNumberValues[c_inRangeNumberValues.length - 1]);
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
@@ -492,7 +492,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMinMaxValidationFailsWithSmallValues
-     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) fails when a prior number to the min number has been set
+     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifySpecificMinMaxValidationFailsWithSmallValues()
@@ -506,9 +506,8 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMinMaxValidationSucceedsWithInRangeValues
-     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) succeeds when a
-     * number has been set and it is the same or a later number to the min number and is the same or a prior
-     * number to the max number
+     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) succeeds when
+     * the input number is greater or equals than the min number and is the less or equals than the max number
      */
     @Test
     public void VerifySpecificMinMaxValidationSucceedsWithInRangeValues()
@@ -522,7 +521,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifySpecificMinMaxValidationFailsWithLargeValues
-     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) fails when a later number to the max number has been set
+     * @testDescription Verifies that the min and max validation (isValidOnSpecifics) fails when a greater number to the max number has been set
      */
     @Test
     public void VerifySpecificMinMaxValidationFailsWithLargeValues()
@@ -563,7 +562,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMinMaxValidationFailsWithSmallValues
-     * @testDescription Verifies that the min and max validation (isValid) fails when a prior number to the min number has been set
+     * @testDescription Verifies that the min and max validation (isValid) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifyMinMaxValidationFailsWithSmallValues()
@@ -577,8 +576,8 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMinMaxValidationSucceedsWithInRangeValues
-     * @testDescription Verifies that the min and max validation (isValid) succeeds when a number has been set and
-     * it is the same or a later number to the min number and is the same or a prior number to the max number
+     * @testDescription Verifies that the min and max validation (isValid) succeeds when the input value
+     * is greater or equals than the min number and is the less or equals than the max number
      */
     @Test
     public void VerifyMinMaxValidationSucceedsWithInRangeValues()
@@ -592,7 +591,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyMinMaxValidationFailsWithLargeValues
-     * @testDescription Verifies that the min and max validation (isValid) fails when a later number to the max number has been set
+     * @testDescription Verifies that the min and max validation (isValid) fails when a greater number to the max number has been set
      */
     @Test
     public void VerifyMinMaxValidationFailsWithLargeValues()
@@ -633,7 +632,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMinMaxValidationFailsWithSmallValues
-     * @testDescription Verifies that the isRequired, min and max validation (isValid) fails when a prior number to the min number has been set
+     * @testDescription Verifies that the isRequired, min and max validation (isValid) fails when a smaller number to the min number has been set
      */
     @Test
     public void VerifyRequiredMinMaxValidationFailsWithSmallValues()
@@ -647,8 +646,8 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMinMaxValidationSucceedsWithInRangeValues
-     * @testDescription Verifies that the isRequired, min and max validation (isValid) succeeds when a number has been set and
-     * it is the same or a later number to the min number and is the same or a prior number to the max number
+     * @testDescription Verifies that the isRequired, min and max validation (isValid) succeeds when
+     * the input value is greater or equals than min value and is less or equals than the max value
      */
     @Test
     public void VerifyRequiredMinMaxValidationSucceedsWithInRangeValues()
@@ -662,7 +661,7 @@ public class NumberInputValidationTest
 
     /**
      * VerifyRequiredMinMaxValidationFailsWithLargeValues
-     * @testDescription Verifies that the isRequired, min and max validation (isValid) fails when a later number to the max number has been set
+     * @testDescription Verifies that the isRequired, min and max validation (isValid) fails when a greater number to the max number has been set
      */
     @Test
     public void VerifyRequiredMinMaxValidationFailsWithLargeValues()
