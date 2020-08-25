@@ -1,153 +1,340 @@
 {
-    "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.2",
-    "body": [
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "size": "Small"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "size": "Medium"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "size": "Large"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "size": "Stretch"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "width": "250px"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "height": "100px"
-        },
-        {
-            "type": "Image",
-            "url": "https://picsum.photos/id/133/300/200",
-            "height": "100px",
-            "width": "250px"
-        },
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "width": "50px",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Col 1"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Small"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Large"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Stretch"
-                        }
-                    ]
-                },
-                {
-                    "type": "Column",
-                    "width": "stretch",
-                    "items": [
-                        {
-                            "type": "TextBlock",
-                            "text": "Column 2"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Small"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Large"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200"
-                        },
-                        {
-                            "type": "Image",
-                            "url": "https://picsum.photos/id/133/300/200",
-                            "size": "Stretch"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "https://picsum.photos/id/133/300/200"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "Small",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "https://picsum.photos/id/133/300/200"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "Medium",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "https://picsum.photos/id/133/300/200"
-                }
-            ]
-        },
-        {
-            "type": "ImageSet",
-            "imageSize": "Large",
-            "images": [
-                {
-                    "type": "Image",
-                    "url": "https://picsum.photos/id/133/300/200"
-                }
-            ]
-        }
-    ]
+	"type": "AdaptiveCard",
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "(default)"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Small"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Small"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Small, Align: Center"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Small",
+			"horizontalAlignment": "Center"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Small, Align: Right"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Small",
+			"horizontalAlignment": "Right"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Medium"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Medium"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Large"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Large"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Auto"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Auto"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Size: Stretch"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"size": "Stretch"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Width: 250px"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"width": "250px"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Height: 100px"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"height": "100px"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Width: 250px, Height: 100px"
+		},
+		{
+			"type": "Image",
+			"url": "https://picsum.photos/id/133/300/200",
+			"height": "100px",
+			"width": "250px"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Col 1 - Width: 50px; Col 2 - Width: Stretch",
+			"wrap": true
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "50px",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Width: 10px",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"width": "10px"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Size: Large",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "Large"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Height: Stretch",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"height": "stretch"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Size: Stretch",
+							"wrap": true
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "Stretch"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Size: Small"
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "Small"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Size: Large"
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "Large"
+						},
+						{
+							"type": "TextBlock",
+							"text": "(default)"
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200"
+						},
+						{
+							"type": "TextBlock",
+							"text": "Size: Stretch"
+						},
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "Stretch"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Col 1 - Width: Auto; Image - Size: Small"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "small"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Hellooo!"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "Col 1 - Width: Auto; Image - Size: Auto"
+		},
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"width": "auto",
+					"items": [
+						{
+							"type": "Image",
+							"url": "https://picsum.photos/id/133/300/200",
+							"size": "auto"
+						}
+					]
+				},
+				{
+					"type": "Column",
+					"width": "stretch",
+					"items": [
+						{
+							"type": "TextBlock",
+							"text": "Hellooo!"
+						}
+					]
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "ImageSet[1] - ImageSize: Small"
+		},
+		{
+			"type": "ImageSet",
+			"imageSize": "Small",
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "ImageSet[1] - (default)"
+		},
+		{
+			"type": "ImageSet",
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "ImageSet[1] - ImageSize: Large"
+		},
+		{
+			"type": "ImageSet",
+			"imageSize": "Large",
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "ImageSet[6] - ImageSize: Medium"
+		},
+		{
+			"type": "ImageSet",
+			"imageSize": "Medium",
+			"images": [
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				},
+				{
+					"type": "Image",
+					"url": "https://picsum.photos/id/133/300/200"
+				}
+			]
+		}
+	]
 }
