@@ -41,7 +41,6 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "Silver Star Mountain, Maps",
 				"url": "ms-cortana:silver-star-mountain"
 			}
 		},
@@ -79,7 +78,6 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "Kitchen Remodel, With EMPHASIS",
 				"url": "ms-cortana:kitchen-remodel"
 			}
 		},
@@ -116,7 +114,6 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "The Witcher, Netflix",
 				"url": "ms-cortana:the-witcher"
 			}
 		}
