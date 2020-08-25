@@ -304,7 +304,7 @@ public final class Util {
      */
     public static void deserializeBaseActionProperties(ParseContext context, JsonValue value, BaseActionElement actionElement)
     {
-        BaseActionElement baseActionElement = BaseActionElement.ExtractBaseProperties(context, value);
+        BaseActionElement baseActionElement = BaseActionElement.DeserializeBaseProperties(context, value);
         CopyActionProperties(baseActionElement, actionElement);
     }
 
@@ -317,7 +317,7 @@ public final class Util {
      */
     public static void deserializeBaseActionPropertiesFromString(ParseContext context, String jsonString, BaseActionElement actionElement)
     {
-        BaseActionElement baseActionElement = BaseActionElement.ExtractBasePropertiesFromString(context, jsonString);
+        BaseActionElement baseActionElement = BaseActionElement.DeserializeBasePropertiesFromString(context, jsonString);
         CopyActionProperties(baseActionElement, actionElement);
     }
 
@@ -341,7 +341,7 @@ public final class Util {
      */
     public static void deserializeBaseCardElementProperties(ParseContext context, JsonValue value, BaseCardElement cardElement)
     {
-        BaseCardElement baseCardElement = BaseCardElement.ExtractBaseProperties(context, value);
+        BaseCardElement baseCardElement = BaseCardElement.DeserializeBaseProperties(context, value);
         CopyCardElementProperties(baseCardElement, cardElement);
     }
 
@@ -354,7 +354,7 @@ public final class Util {
      */
     public static void deserializeBaseCardElementPropertiesFromString(ParseContext context, String jsonString, BaseCardElement cardElement)
     {
-        BaseCardElement baseCardElement = BaseCardElement.ExtractBasePropertiesFromString(context, jsonString);
+        BaseCardElement baseCardElement = BaseCardElement.DeserializeBasePropertiesFromString(context, jsonString);
         CopyCardElementProperties(baseCardElement, cardElement);
     }
 
@@ -376,7 +376,7 @@ public final class Util {
      */
     public static void deserializeBaseInputProperties(ParseContext context, JsonValue value, BaseInputElement inputElement)
     {
-        BaseInputElement baseInputElement = BaseInputElement.ExtractBaseProperties(context, value);
+        BaseInputElement baseInputElement = BaseInputElement.DeserializeBaseProperties(context, value);
         CopyInputProperties(baseInputElement, inputElement);
     }
 
@@ -390,7 +390,7 @@ public final class Util {
      */
     public static void deserializeBaseInputPropertiesFromString(ParseContext context, String jsonString, BaseInputElement inputElement)
     {
-        BaseInputElement baseInputElement = BaseInputElement.ExtractBasePropertiesFromString(context, jsonString);
+        BaseInputElement baseInputElement = BaseInputElement.DeserializeBasePropertiesFromString(context, jsonString);
         CopyInputProperties(baseInputElement, inputElement);
     }
 
