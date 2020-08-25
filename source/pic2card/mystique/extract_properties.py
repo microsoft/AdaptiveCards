@@ -8,6 +8,7 @@ from typing import Tuple, Dict, List
 
 import numpy as np
 from PIL import Image
+
 from mystique import config, default_host_configs
 from pytesseract import pytesseract, Output
 
@@ -22,6 +23,60 @@ class ExtractProperties:
                               color
     from image objects - extracts image size
     """
+    def find_iou(self, coord1, coord2, inter_object=False,
+                 columns_group=False) -> List:
+        """
+        Finds the intersecting bounding boxes by finding
+           the highest x and y ranges of the 2 coordinates
+           and determine the intersection by deciding weather
+           the new xmin>xmax or the new ymin>ymax.
+           For non image objects, includes finding the intersection
+           area to a threshold to determine intersection
+        @param coord1: list of coordinates of 1st object
+        @param coord2: list of coordinates of 2nd object
+        @param inter_object: check for cleaning between different overlapping
+                             objects.
+        @param columns_group: If the intersection finding is needed in columns
+                              grouping use case
+        @return: [True/False, point1 area, point2 area]
+
+        """
+        x5 = max(coord1[0], coord2[0])
+        y5 = max(coord1[1], coord2[1])
+        x6 = min(coord1[2], coord2[2])
+        y6 = min(coord1[3], coord2[3])
+
+        # no intersection
+        if x6 - x5 <= 0 or y6 - y5 <= 0:
+            return [False]
+
+        intersection_area = (x6 - x5) * (y6 - y5)
+        point1_area = (coord1[2] - coord1[0]) * (coord1[3] - coord1[1])
+        point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
+        iou = (intersection_area
+               / (point1_area + point2_area - intersection_area))
+
+        # find if given 2 objects intersects or not
+        if columns_group:
+            if ((point1_area + point2_area - intersection_area == 0)
+                    or iou > 0):
+                return [True]
+            return [False]
+
+        # -if iou check is for inter object overlap removal check only for
+        # intersection.
+        # -if not for inter objects overlap check for iou >= threshold
+        # -if the intersection area covers more than 50% of the smaller object
+        if ((point1_area + point2_area - intersection_area == 0)
+                or (inter_object and iou > 0)
+                or (iou >= config.IOU_THRESHOLD)
+                or (iou <= config.IOU_THRESHOLD
+                    and
+                    (intersection_area /
+                     min(point1_area, point2_area)) >= 0.50)):
+            return [True, point1_area, point2_area]
+
+        return [False]
 
     def get_actionset_type(self, image=None, coords=None):
         """
@@ -274,7 +329,7 @@ class ExtractProperties:
         """
         Extract the column width key from the default config which is minimum
         in distance with the given point / ratio
-        @param default_config: default host config dict for the column width
+        @param default_config: the default host config dict for the column width
         @param ratio: the point derived from the column coordinates
         @param column_set: dict of columns
         @param column_number: the position of the column
@@ -287,29 +342,37 @@ class ExtractProperties:
         column_set["columns"][column_number]["width"] = default_config[key]
 
     def extract_column_width(self, column_set: Dict,
-                             column_coords: List[List], image: Image) -> None:
+                             column_coords: List[List],
+                             column_coords_min: List[List],
+                             image: Image) -> None:
         """
         Extract column width property for the given columnset based on the
         mid point distance between 2 design objects.
         @param column_set: list of column design objects
-        @param column_coords: each column's coordinate values of a column set
+        @param column_coords: each column's max coordinate values of a
+                              column set
         @param image: input PIL image
+        @param column_coords_min: each column's min coordinate values of a
+                                  column set
         """
         column_xmin, column_ymin, column_xmax, column_ymax = column_coords
+        (column_xmin_min, column_ymin_min,
+         column_xmax_min, column_ymax_min) = column_coords_min
         for ctr, column in enumerate(column_set["columns"]):
             if ctr + 1 < len(column_set["columns"]):
                 mid_point1 = np.asarray(
-                    ((column_xmin[ctr] + column_xmax[ctr])/2,
-                     (column_ymin[ctr] + column_ymax[ctr])/2))
+                        ((column_xmin[ctr] + column_xmax[ctr])/2,
+                         (column_ymin[ctr] + column_ymax[ctr])/2))
                 mid_point2 = np.asarray(
-                    ((column_xmin[ctr+1] + column_xmax[ctr+1]) / 2,
-                     (column_ymin[ctr+1] + column_ymax[ctr+1]) / 2))
+                        ((column_xmin_min[ctr + 1]
+                          + column_xmax_min[ctr + 1]) / 2,
+                         (column_ymin_min[ctr + 1]
+                          + column_ymax_min[ctr + 1]) / 2))
 
                 a = np.asarray((column_xmin[ctr], column_ymin[ctr]))
                 b = np.asarray((column_xmax[ctr+1], column_ymax[ctr+1]))
                 end_distance = np.sqrt(np.sum(((a - b) ** 2)))
-                mid_distance = np.sqrt(np.sum(((mid_point1 - mid_point2)
-                                               ** 2)))
+                mid_distance = np.sqrt(np.sum(((mid_point1 - mid_point2) ** 2)))
                 mid_distance = (mid_distance / end_distance) * 100
                 ratio = (1, mid_distance)
                 self.get_column_width_keys(
@@ -366,26 +429,41 @@ class CollectProperties(ExtractProperties):
         based on the horizontal alignment of each items inside the column
         @param columns: List of columns  [ for a columnset ]
         """
+        preference_order = ["Left", "Center", "Right"]
         for column in columns:
             alignment = list(map(operator.itemgetter('horizontalAlignment'),
                                  column["items"]))
-            alignment = max(alignment, key=alignment.count)
+            if len(alignment) == len(list(set(alignment))):
+                alignment.sort(key=(preference_order+alignment).index)
+                alignment = alignment[0]
+            else:
+                alignment = max(alignment, key=alignment.count)
             column.update({"horizontalAlignment": alignment})
 
     def columnset(self, columnset: Dict, column_coords: List[List],
-                  image: Image):
+                  column_coords_min: List[List],
+                  image: Image) -> None:
         """
         Updates the horizontal alignment property for the columnset,
         based on the horizontal alignment of each column inside the columnset.
         @param columnset: Columnset dict
         @param image: input PIL image
-        @param column_coords: each column's coordinates values of a column set
+        @param column_coords: each column's max coordinates values of a
+                              column set
+        @param column_coords_min: each column's min coordinates values of a
+                                  column set
         """
+        preference_order = ["Left", "Center", "Right"]
         alignment = list(map(operator.itemgetter('horizontalAlignment'),
                              columnset["columns"]))
-        alignment = max(alignment, key=alignment.count)
+        if len(alignment) == len(list(set(alignment))):
+            alignment.sort(key=(preference_order + alignment).index)
+            alignment = alignment[0]
+        else:
+            alignment = max(alignment, key=alignment.count)
         columnset.update({"horizontalAlignment": alignment})
-        self.extract_column_width(columnset, column_coords, image)
+        self.extract_column_width(columnset, column_coords, column_coords_min,
+                                  image)
 
     def actionset(self, coords: Tuple) -> Dict:
         """
