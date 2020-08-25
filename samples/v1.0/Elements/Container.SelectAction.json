@@ -8,12 +8,11 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Cool Link"
+					"text": "Cool link"
 				}
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "Cool Link",
 				"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
 			}
 		},
@@ -23,28 +22,12 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "Emphasized Link"
+					"text": "Emphasis link"
 				}
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"title": "Emphasized Link",
 				"url": "https://msn.com"
-			}
-		},
-		{
-			"type": "Container",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "This is a really long text block that should wrap, hope it works!",
-					"wrap": true
-				}
-			],
-			"selectAction": {
-				"type": "Action.Submit",
-				"title": "Wrapping Text Submit",
-				"data": "Submitted!"
 			}
 		},
 		{
