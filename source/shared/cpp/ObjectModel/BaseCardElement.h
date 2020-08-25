@@ -42,8 +42,8 @@ namespace AdaptiveSharedNamespace
 
         CardElementType GetElementType() const;
 
-        static std::shared_ptr<BaseCardElement> ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
-        static std::shared_ptr<BaseCardElement> ExtractBaseProperties(ParseContext& context, const Json::Value& json);
+        static std::shared_ptr<BaseCardElement> DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseCardElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);       
 
         template<typename T> static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
@@ -54,6 +54,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         void PopulateKnownPropertiesSet();
+        static void DeserializeBaseProperties(ParseContext& context, const Json::Value& json, std::shared_ptr<BaseCardElement>& element);
 
         CardElementType m_type;
         Spacing m_spacing;
@@ -66,17 +67,7 @@ namespace AdaptiveSharedNamespace
     {
         std::shared_ptr<T> cardElement = std::make_shared<T>();
         std::shared_ptr<BaseCardElement> baseCardElement = std::static_pointer_cast<BaseCardElement>(cardElement);
-
-        ParseUtil::ThrowIfNotJsonObject(json);
-
-        baseCardElement->DeserializeBase<BaseCardElement>(context, json);
-        baseCardElement->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
-        baseCardElement->SetHeight(
-            ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
-        baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
-        baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
-        baseCardElement->SetSpacing(
-            ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
+        DeserializeBaseProperties(context, json, baseCardElement);
 
         // Walk all properties and put any unknown ones in the additional properties json
         HandleUnknownProperties(json, baseCardElement->m_knownProperties, baseCardElement->m_additionalProperties);

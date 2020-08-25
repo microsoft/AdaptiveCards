@@ -137,25 +137,28 @@ void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& con
     throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse element of type " + typeString);
 }
 
-std::shared_ptr<BaseCardElement> BaseCardElement::ExtractBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+std::shared_ptr<BaseCardElement> BaseCardElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
 {
-    return BaseCardElement::ExtractBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
+    return BaseCardElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
 }
 
-std::shared_ptr<BaseCardElement> BaseCardElement::ExtractBaseProperties(ParseContext& context, const Json::Value& json)
+std::shared_ptr<BaseCardElement> BaseCardElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json)
 {
     std::shared_ptr<BaseCardElement> baseCardElement = std::make_shared<BaseCardElement>();
+    DeserializeBaseProperties(context, json, baseCardElement);
+    return baseCardElement;
+}
 
+void BaseCardElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json, std::shared_ptr<BaseCardElement>& element)
+{
     ParseUtil::ThrowIfNotJsonObject(json);
 
-    baseCardElement->DeserializeBase<BaseCardElement>(context, json);
-    baseCardElement->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
-    baseCardElement->SetHeight(
+    element->DeserializeBase<BaseCardElement>(context, json);
+    element->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
+    element->SetHeight(
         ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
-    baseCardElement->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
-    baseCardElement->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
-    baseCardElement->SetSpacing(
+    element->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
+    element->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+    element->SetSpacing(
         ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
-
-    return baseCardElement;
 }
