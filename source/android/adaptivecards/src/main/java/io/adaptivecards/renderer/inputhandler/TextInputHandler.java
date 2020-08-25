@@ -41,6 +41,12 @@ public class TextInputHandler extends BaseInputHandler
             return false;
         }
 
+        // If the input is not required and the input is empty, consider it valid
+        if (!textInput.GetIsRequired() && textInputValue.isEmpty())
+        {
+            return true;
+        }
+
         boolean isValid = true;
         String regex = textInput.GetRegex();
         if (!regex.isEmpty())

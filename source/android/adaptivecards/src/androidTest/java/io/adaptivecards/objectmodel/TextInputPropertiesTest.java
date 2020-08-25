@@ -1,21 +1,10 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
-import android.util.Pair;
-import android.widget.EditText;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
+import android.util.Pair;
 import java.util.ArrayList;
-
-import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
-import io.adaptivecards.renderer.inputhandler.TextInputHandler;
-
-import static org.junit.Assert.*;
 
 public class TextInputPropertiesTest
 {
@@ -325,72 +314,6 @@ public class TextInputPropertiesTest
             return TestUtil.castToTextInput(element);
         }
     }
-
-    @Test
-    public void RegexValidationTest()
-    {
-        TextInput textInput = TestUtil.createMockTextInput();
-        textInput.SetRegex("^0x[0-9A-Fa-f]+$");
-
-        TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        textInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(textInputHandler);
-
-        // Validate that empty input is always invalid
-        Assert.assertEquals(false, textInputHandler.isValid());
-
-        // Good Regex values should yield all trues
-        TestUtil.runValidationTests(c_regexValidValues, true, gralExecutor);
-
-        // Bad Regex values should yield all falses
-        TestUtil.runValidationTests(c_regexInvalidValues, false, gralExecutor);
-    }
-
-    @Test
-    public void MaxLengthValidationTest()
-    {
-        TextInput textInput = TestUtil.createMockTextInput();
-        textInput.SetMaxLength(6);
-
-        TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        textInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(textInputHandler);
-
-        // Validate that empty input is always valid
-        Assert.assertEquals(true, textInputHandler.isValid());
-
-        // Good Regex values should yield all trues
-        TestUtil.runValidationTests(c_shortStrings, true, gralExecutor);
-
-        // Long words should yield all falses
-        TestUtil.runValidationTests(c_longStrings, false, gralExecutor);
-    }
-
-    @Test
-    public void isRequiredValidationTest()
-    {
-        TextInput textInput = TestUtil.createMockTextInput();
-        textInput.SetIsRequired(true);
-
-        TextInputHandler textInputHandler = new TextInputHandler(textInput);
-        textInputHandler.setView(new EditText(InstrumentationRegistry.getContext()));
-
-        TestUtil.GeneralValidationExecutor gralExecutor = new TestUtil.GeneralValidationExecutor(textInputHandler);
-
-        // Validate that empty input is always invalid
-        Assert.assertEquals(false, textInputHandler.isValid());
-
-        // Validate required
-        TestUtil.runValidationTests(TestUtil.concat(String.class, c_regexValidValues, c_regexInvalidValues, c_shortStrings, c_longStrings), true, gralExecutor);
-    }
-
-    public final String[] c_shortStrings = {"short", "words", "are", "really", "cool!"};
-    public final String[] c_longStrings = {"largerer", "worders", "are way", "bettter!!!", "looooooooooooooong word is long"};
-
-    public final String[] c_regexInvalidValues = {"0x", "hjasdg", "0xSJKDHNASD", "0x1234m", "12123", "x978ab", "0x89723-]"};
-    public final String[] c_regexValidValues = {"0x0", "0xab1", "0xabc", "0x123", "0x1D2A6E", "0x978ab" ,"0x1234567890abcdefABCDEF"};
 
     private String c_defaultInputText = "{\"id\":\"id\",\"type\":\"Input.Text\"}\n";
 }
