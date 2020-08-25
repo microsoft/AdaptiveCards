@@ -43,12 +43,16 @@ public class BaseInputElement extends BaseCardElement {
     super.delete();
   }
 
+  public BaseInputElement() {
+    this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_0(), true);
+  }
+
   public BaseInputElement(CardElementType elementType) {
-    this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_0(elementType.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_1(elementType.swigValue()), true);
   }
 
   public BaseInputElement(CardElementType type, Spacing spacing, boolean separator, HeightType height) {
-    this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_1(type.swigValue(), spacing.swigValue(), separator, height.swigValue()), true);
+    this(AdaptiveCardObjectModelJNI.new_BaseInputElement__SWIG_2(type.swigValue(), spacing.swigValue(), separator, height.swigValue()), true);
   }
 
   public String GetLabel() {
@@ -75,13 +79,13 @@ public class BaseInputElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.BaseInputElement_SetErrorMessage(swigCPtr, this, errorMessage);
   }
 
-  public static BaseInputElement ExtractBasePropertiesFromString(ParseContext context, String jsonString) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_ExtractBasePropertiesFromString(ParseContext.getCPtr(context), context, jsonString);
+  public static BaseInputElement DeserializeBasePropertiesFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_DeserializeBasePropertiesFromString(ParseContext.getCPtr(context), context, jsonString);
     return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
   }
 
-  public static BaseInputElement ExtractBaseProperties(ParseContext context, JsonValue json) {
-    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_ExtractBaseProperties(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json);
+  public static BaseInputElement DeserializeBaseProperties(ParseContext context, JsonValue json) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseInputElement_DeserializeBaseProperties(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json);
     return (cPtr == 0) ? null : new BaseInputElement(cPtr, true);
   }
 
