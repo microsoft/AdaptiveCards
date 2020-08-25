@@ -167,7 +167,7 @@ namespace AdaptiveCards.Templating
                 throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
+            var (value, error) = new ValueExpression("=" + jpath).TryGetValue(parentDataContext.AELMemory);
             if (error == null)
             {
                 var serializedValue = JsonConvert.SerializeObject(value);
