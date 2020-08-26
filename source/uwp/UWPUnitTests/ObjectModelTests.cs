@@ -294,9 +294,9 @@ namespace UWPUnitTests
             {
                 // Column Properties
                 Bleed = true,
-                Width = "50px",
                 Style = ContainerStyle.Emphasis,
                 VerticalContentAlignment = VerticalContentAlignment.Bottom,
+                Width = "50px",
 
                 // Base Element Properties
                 Height = HeightType.Stretch,
@@ -309,10 +309,10 @@ namespace UWPUnitTests
             ValidateBaseElementProperties(column1, "ColumnId", false, true, Spacing.Small, HeightType.Stretch);
 
             Assert.IsTrue(column1.Bleed);
-            Assert.AreEqual("50px", column1.Width);
-            Assert.AreEqual<uint>(50, column1.PixelWidth);
             Assert.AreEqual(ContainerStyle.Emphasis, column1.Style);
             Assert.AreEqual(VerticalContentAlignment.Bottom, column1.VerticalContentAlignment);
+            Assert.AreEqual("50px", column1.Width);
+            Assert.AreEqual<uint>(50, column1.PixelWidth);
 
             column1.SelectAction = new AdaptiveSubmitAction
             {
