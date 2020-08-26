@@ -273,6 +273,7 @@
 	{
 		"label": 
 		{
+			"inputSpacing": "small",
 			"requiredInputs": {
 				"suffix": " (required)",
 				"weight": "bolder",
