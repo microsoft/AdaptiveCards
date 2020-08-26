@@ -21,7 +21,6 @@ namespace UWPUnitTests
                 },
                 FallbackText = "Fallback Text",
                 Height = HeightType.Stretch,
-                InputNecessityIndicators = InputNecessityIndicators.RequiredInputs,
                 Language = "en",
                 Speak = "This is a card",
                 Style = ContainerStyle.Emphasis,
@@ -32,7 +31,6 @@ namespace UWPUnitTests
             Assert.AreEqual("https://www.stuff.com/background.jpg", card.BackgroundImage.Url);
             Assert.AreEqual("Fallback Text", card.FallbackText);
             Assert.AreEqual(HeightType.Stretch, card.Height);
-            Assert.AreEqual(InputNecessityIndicators.RequiredInputs, card.InputNecessityIndicators);
             Assert.AreEqual("en", card.Language);
             Assert.AreEqual("This is a card", card.Speak);
             Assert.AreEqual(ContainerStyle.Emphasis, card.Style);
@@ -77,7 +75,7 @@ namespace UWPUnitTests
             Assert.AreEqual("Submit Two", card.Actions[1].Title);
 
             var jsonString = card.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"inputNecessityIndicators\":\"RequiredInputs\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
+            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
         }
 
         public void ValidateBaseElementProperties(
