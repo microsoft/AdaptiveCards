@@ -1,1 +1,234 @@
-{	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",	"type": "AdaptiveCard",	"version": "1.0",	"body": [		{			"type": "TextBlock",			"size": "medium",			"weight": "bolder",			"text": "Input.Text elements",			"horizontalAlignment": "center"		},		{			"type": "TextBlock",			"text": "Name"		},		{			"type": "Input.Text",			"style": "text",			"id": "SimpleVal"		},		{			"type": "TextBlock",			"text": "Homepage"		},		{			"type": "Input.Text",			"style": "url",			"id": "UrlVal"		},		{			"type": "TextBlock",			"text": "Email"		},		{			"type": "Input.Text",			"style": "email",			"id": "EmailVal"		},		{			"type": "TextBlock",			"text": "Phone"		},		{			"type": "Input.Text",			"style": "tel",			"id": "TelVal"		},		{			"type": "TextBlock",			"text": "Comments"		},		{			"type": "Input.Text",			"style": "text",			"isMultiline": true,			"id": "MultiLineVal"		},		{			"type": "TextBlock",			"text": "Quantity"		},		{			"type": "Input.Number",			"min": -5,			"max": 5,			"value": 1,			"id": "NumVal"		},		{			"type": "TextBlock",			"text": "Due Date"		},		{			"type": "Input.Date",			"id": "DateVal",			"value": "2017-09-20"		},		{			"type": "TextBlock",			"text": "Start time"		},		{			"type": "Input.Time",			"id": "TimeVal",			"value": "16:59"		},		{			"type": "TextBlock",			"size": "medium",			"weight": "bolder",			"text": "Input.ChoiceSet",			"horizontalAlignment": "center"		},		{			"type": "TextBlock",			"text": "What color do you want? (compact)"		},		{			"type": "Input.ChoiceSet",			"id": "CompactSelectVal",			"style": "compact",			"value": "1",			"choices": [				{					"title": "Red",					"value": "1"				},				{					"title": "Green",					"value": "2"				},				{					"title": "Blue",					"value": "3"				}			]		},		{			"type": "TextBlock",			"text": "What color do you want? (expanded)"		},		{			"type": "Input.ChoiceSet",			"id": "SingleSelectVal",			"style": "expanded",			"value": "1",			"choices": [				{					"title": "Red",					"value": "1"				},				{					"title": "Green",					"value": "2"				},				{					"title": "Blue",					"value": "3"				}			]		},		{			"type": "TextBlock",			"text": "What colors do you want? (multiselect)"		},		{			"type": "Input.ChoiceSet",			"id": "MultiSelectVal",			"isMultiSelect": true,			"value": "1,3",			"choices": [				{					"title": "Red",					"value": "1"				},				{					"title": "Green",					"value": "2"				},				{					"title": "Blue",					"value": "3"				}			]		},		{			"type": "TextBlock",			"size": "medium",			"weight": "bolder",			"text": "Input.Toggle",			"horizontalAlignment": "center"		},		{			"type": "Input.Toggle",			"title": "I accept the terms and conditions (True/False)",			"valueOn": "true",			"valueOff": "false",			"id": "AcceptsTerms"		},		{			"type": "Input.Toggle",			"title": "Red cars are better than other cars",			"valueOn": "RedCars",			"valueOff": "NotRedCars",			"id": "ColorPreference"		}	],	"actions": [		{			"type": "Action.Submit",			"title": "Submit",			"data": {				"id": "1234567890"			}		},		{			"type": "Action.ShowCard",			"title": "Show Card",			"card": {				"type": "AdaptiveCard",				"body": [					{						"type": "TextBlock",						"text": "Enter comment"					},					{						"type": "Input.Text",						"style": "text",						"id": "CommentVal"					}				],				"actions": [					{						"type": "Action.Submit",						"title": "OK"					}				]			}		}	]}
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Container",
+			"verticalContentAlignment": "Center",
+			"style": "warning",
+			"items": [
+				{
+					"type": "TextBlock",
+					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [[NEW SAMPLE NAME]] for an updated version of this card.",
+					"wrap": true
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"size": "medium",
+			"weight": "bolder",
+			"text": "Input.Text elements",
+			"horizontalAlignment": "center"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Name"
+		},
+		{
+			"type": "Input.Text",
+			"style": "text",
+			"id": "SimpleVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Homepage"
+		},
+		{
+			"type": "Input.Text",
+			"style": "url",
+			"id": "UrlVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Email"
+		},
+		{
+			"type": "Input.Text",
+			"style": "email",
+			"id": "EmailVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Phone"
+		},
+		{
+			"type": "Input.Text",
+			"style": "tel",
+			"id": "TelVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Comments"
+		},
+		{
+			"type": "Input.Text",
+			"style": "text",
+			"isMultiline": true,
+			"id": "MultiLineVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Quantity"
+		},
+		{
+			"type": "Input.Number",
+			"min": -5,
+			"max": 5,
+			"value": 1,
+			"id": "NumVal"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Due Date"
+		},
+		{
+			"type": "Input.Date",
+			"id": "DateVal",
+			"value": "2017-09-20"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Start time"
+		},
+		{
+			"type": "Input.Time",
+			"id": "TimeVal",
+			"value": "16:59"
+		},
+		{
+			"type": "TextBlock",
+			"size": "medium",
+			"weight": "bolder",
+			"text": "Input.ChoiceSet",
+			"horizontalAlignment": "center"
+		},
+		{
+			"type": "TextBlock",
+			"text": "What color do you want? (compact)"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "CompactSelectVal",
+			"style": "compact",
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "What color do you want? (expanded)"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "SingleSelectVal",
+			"style": "expanded",
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "What colors do you want? (multiselect)"
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "MultiSelectVal",
+			"isMultiSelect": true,
+			"value": "1,3",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "TextBlock",
+			"size": "medium",
+			"weight": "bolder",
+			"text": "Input.Toggle",
+			"horizontalAlignment": "center"
+		},
+		{
+			"type": "Input.Toggle",
+			"title": "I accept the terms and conditions (True/False)",
+			"valueOn": "true",
+			"valueOff": "false",
+			"id": "AcceptsTerms"
+		},
+		{
+			"type": "Input.Toggle",
+			"title": "Red cars are better than other cars",
+			"valueOn": "RedCars",
+			"valueOff": "NotRedCars",
+			"id": "ColorPreference"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit",
+			"data": {
+				"id": "1234567890"
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Show Card",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "Enter comment"
+					},
+					{
+						"type": "Input.Text",
+						"style": "text",
+						"id": "CommentVal"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "OK"
+					}
+				]
+			}
+		}
+	]
+}
