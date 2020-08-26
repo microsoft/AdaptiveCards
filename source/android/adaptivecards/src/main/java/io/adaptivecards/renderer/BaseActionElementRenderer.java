@@ -166,15 +166,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
 
         private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig, RenderArgs renderArgs)
         {
-            ShowCardAction showCardAction = null;
-            if (m_action instanceof ShowCardAction)
-            {
-                showCardAction = (ShowCardAction) m_action;
-            }
-            else if ((showCardAction = ShowCardAction.dynamic_cast(m_action)) == null)
-            {
-                throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-            }
+            ShowCardAction showCardAction = Util.castTo(m_action, ShowCardAction.class);
 
             m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(),
                                                                                 m_cardActionHandler, hostConfig, true, renderArgs.getContainerCardId());
@@ -243,6 +235,17 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
+            // Reset all other buttons
+            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            for (int i = 0; i < parentContainer.getChildCount(); ++i)
+            {
+                View actionInActionSet = parentContainer.getChildAt(i);
+                if (v != actionInActionSet)
+                {
+                    actionInActionSet.setSelected(false);
+                }
+            }
+
             for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
                 View child = m_hiddenCardsLayout.getChildAt(i);
