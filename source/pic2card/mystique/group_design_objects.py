@@ -1,6 +1,9 @@
 """Module for grouping deisgn objects into different containers"""
-from typing import List, Dict, Callable, Tuple, Optional
 from operator import itemgetter
+from typing import List, Dict, Callable, Tuple, Optional
+
+from mystique import config
+from mystique.extract_properties import ExtractProperties
 
 
 class GroupObjects:
@@ -8,7 +11,6 @@ class GroupObjects:
     Handles the grouping of given list of objects for any set conditions that
     is passed.
     """
-
     def object_grouping(self, design_objects: List[Dict],
                         condition: Callable[[Dict, Dict],
                                             bool]) -> List[List[Dict]]:
@@ -87,7 +89,7 @@ class ImageGrouping(GroupObjects):
             xmax = design_object2.get("xmax")
             xmin = design_object1.get("xmin")
         ymin_diff = abs(
-            design_object1.get("ymin") - design_object2.get("ymin")
+                design_object1.get("ymin") - design_object2.get("ymin")
         )
         x_diff = abs(xmax - xmin)
         return (ymin_diff <= self.IMAGE_SET_YMIN_RANGE
@@ -115,8 +117,10 @@ class ImageGrouping(GroupObjects):
         delete_positions = []
         design_object_coords = []
         for group in groups:
-            group = sorted(group, key=lambda i: i["xmin"])
+            group = [dict(t) for t in {tuple(d.items()) for d in group}]
+            # group = self.remove_duplicates(group)
             if len(group) > 1:
+                group = sorted(group, key=lambda i: i["xmin"])
                 image_set = {
                         "type": "ImageSet",
                         "imageSize": "Auto",
@@ -124,6 +128,7 @@ class ImageGrouping(GroupObjects):
                 }
                 sizes = []
                 alignment = []
+                image_xmins = []
                 for ctr, design_object in enumerate(group):
                     index = objects.index(design_object)
                     if index not in delete_positions:
@@ -131,13 +136,23 @@ class ImageGrouping(GroupObjects):
                     sizes.append(design_object.get("size", "Auto"))
                     alignment.append(design_object.get(
                             "horizontal_alignment", "Left"))
+                    image_xmins.append(design_object.get("xmin"))
                     self.card_arrange.append_objects(design_object,
                                                      image_set["images"])
+                image_set["images"] = [x for _, x in sorted(
+                        zip(image_xmins,
+                            image_set["images"]),
+                        key=lambda x: x[0])]
                 # Assign the imageset's size and alignment property based on
                 # each image's alignment and size properties inside the imgaeset
                 image_set["imageSize"] = max(set(sizes), key=sizes.count)
-                image_set["horizontalAlignment"] = max(set(alignment),
-                                                       key=alignment.count)
+                preference_order = ["Left", "Center", "Right"]
+                if len(alignment) == len(list(set(alignment))):
+                    alignment.sort(key=(preference_order + alignment).index)
+                    image_set["horizontalAlignment"] = alignment[0]
+                else:
+                    image_set["horizontalAlignment"] = max(set(alignment),
+                                                           key=alignment.count)
                 image_set["coords"] = str(group[0].get("coords"))
                 body.append(image_set)
                 if ymins:
@@ -159,30 +174,120 @@ class ColumnsGrouping(GroupObjects):
     """
     Groups the design objects into different columns of a columnset
     """
-
-    # design objects inside each column-set are grouped into columns based on 2
-    # conditions on the axis difference:
-    # If both are non-image objects the objects should be within 25px of
-    # y range  [ymax- ymin ] and 100px of xmin range or vice versa .
-    # If any one is a image object then objects should be within the range of
-    #    100px in both x and y range
-    COLUMNS_ROW_DIFF_1 = 25.0
-    COLUMNS_ROW_DIFF_2 = 100.0
-
-    # design objects are grouped into a column-set based on 3 conditions:
-    # If y range between any objects are within 11px
-    # If ymax - ymin range between any objects are within 15px and x range
-    #    within 100px
-    # If there's a image object then the adjacent non image object should be
-    #   within the y ranges of the image object provided exception of 2 cases
-    #   where either one of the ymin range or ymax range can go beyond the
-    #   image range for the given set of design objects.[ Not both ]
-    COLUMNSET_YMIN_RANGE = 11
-    COLUMNSET_Y_RANGE = 15
-    COLUMNSET_X_RANGE = 100
-
     def __init__(self, card_arrange):
         self.card_arrange = card_arrange
+
+    def horizontal_inclusive(self, object_one: Dict, object_two: Dict) -> bool:
+        """
+        Returns the horizonral inclusive condition
+        @param object_one: design object one
+        @param object_two: design object two
+        @return: the boolean value of the inclusive condition
+        """
+
+        return (((object_one and object_two) and (
+                                (object_one.get("xmin") <= object_two.get(
+                                        "xmin") <= object_one.get(
+                                        "xmax") and object_one.get(
+                                        "xmin") <= object_two.get(
+                                        "xmax") <= object_one.get(
+                                        "xmax"))
+                                or (object_two.get("xmin") <= object_one.get(
+                                    "xmin") <= object_two.get(
+                                    "xmax") <= object_one.get("xmax") and
+                                    object_two.get(
+                                    "xmax") <= object_one.get(
+                                    "xmax")
+                                    ) or (object_one.get(
+                                          "xmin") <= object_two.get(
+                                          "xmin") <= object_one.get(
+                                          "xmax") <= object_two.get(
+                                          "xmax") and object_two.get(
+                                          "xmax") >= object_one.get("xmin")
+                                          ))
+                 ) or ((object_two and object_one) and
+                       ((object_two.get("xmin")
+                         <= object_one.get("xmin")
+                        <= object_two.get("xmax")
+                         and object_two.get("xmin")
+                         <= object_one.get("xmax")
+                         <= object_two.get("xmax"))
+                        or (object_one.get("xmin")
+                            <= object_one.get("xmin")
+                            and object_one.get("xmax")
+                            <= object_two.get("xmax")
+                            and object_two.get("xmin")
+                            <= object_one.get("xmax")
+                            <= object_two.get("xmax"))
+                        or (object_two.get("xmin")
+                            <= object_one.get("xmin")
+                            <= object_two.get("xmax")
+                            <= object_one.get("xmax")
+                            and object_one.get("xmax")
+                            >= object_two.get("xmin"))))
+                )
+
+    def vertical_inclusive(self, object_one: Dict, object_two: Dict) -> bool:
+        """
+        Returns the vertical inclusive condition
+
+        @param object_one: design object one
+        @param object_two: design object two
+        @return: the boolean value of the inclusive condition
+        """
+        return (
+                ((object_one and object_two) and
+                    ((object_one.get("ymin")
+                      <= object_two.get("ymin") <= object_one.get("ymax")
+                      and object_one.get("ymin") <= object_two.get("ymax")
+                      <= object_one.get("ymax"))
+                     or (object_two.get("ymin") <= object_one.get(
+                                    "ymin") <= object_two.get(
+                                    "ymax") <= object_one.get("ymax")
+                         and object_two.get("ymax") <= object_one.get("ymax"))
+                     or (object_one.get("ymin") <= object_two.get("ymin")
+                         <= object_one.get("ymax") <= object_two.get("ymax")
+                         and object_two.get("ymax") >= object_one.get("ymin"))
+                     ))
+                or ((object_two and object_one)
+                    and ((object_two.get("ymin") <= object_one.get("ymin")
+                          <= object_two.get("ymax") and object_two.get("ymin")
+                          <= object_one.get("ymax") <= object_two.get("ymax"))
+                         or (object_one.get("ymin") <= object_one.get("ymin")
+                             and object_one.get("ymax")
+                             <= object_two.get("ymax")
+                             and object_two.get("ymin")
+                             <= object_one.get("ymax")
+                             <= object_two.get("ymax"))
+                         or (object_two.get("ymin") <= object_one.get("ymin")
+                             <= object_two.get("ymax")
+                             <= object_one.get("ymax")
+                             and object_one.get("ymax")
+                             >= object_two.get("ymin"))
+                         ))
+        )
+
+    def max_min_difference(self, design_object1: Dict,
+                           design_object2: Dict, way: str) -> float:
+        """
+        Returns the ymax-ymin difference of the 2 deisgn objects
+
+        @param design_object1: design object one
+        @param design_object2: design object two
+        @param way: xmax-xmin or ymax-ymin difference
+
+        @return: rounded ymax-ymin difference
+        """
+        max = "ymax"
+        min = "ymin"
+        if way == "x":
+            max = "xmax"
+            min = "xmin"
+
+        if design_object1.get(min) < design_object2.get(min):
+            return round(abs(design_object2.get(min) - design_object1.get(max)))
+        else:
+            return round(abs(design_object1.get(min) - design_object2.get(max)))
 
     def columns_condition(self, design_object1: Dict,
                           design_object2: Dict) -> bool:
@@ -193,15 +298,9 @@ class ColumnsGrouping(GroupObjects):
         @param design_object2: design object
         @return: boolean value
         """
-        if design_object1.get("ymin") < design_object2.get("ymin"):
-            ymax = design_object1.get("ymax")
-            ymin = design_object2.get("ymin")
-        else:
-            ymax = design_object2.get("ymax")
-            ymin = design_object1.get("ymin")
-        y_diff = round(abs(ymin - ymax))
-        xmin_diff = abs(
-                design_object1.get("xmin") - design_object2.get("xmin"))
+
+        y_diff = self.max_min_difference(design_object1, design_object2,
+                                         way="y")
 
         object_one = None
         object_two = None
@@ -218,30 +317,14 @@ class ColumnsGrouping(GroupObjects):
             object_one = design_object1
             object_two = design_object2
         return (design_object1 != design_object2 and (
-                (abs(
-                    design_object1.get(
-                        "ymin", 0
-                    ) - design_object2.get("ymin", 0)
-                ) <= self.COLUMNSET_YMIN_RANGE)
-                or (y_diff <= self.COLUMNSET_Y_RANGE
-                    and xmin_diff <= self.COLUMNSET_X_RANGE)
-                or ((object_one and object_two) and (
-                    (object_one.get("ymin") <= object_two.get(
-                        "ymin") <= object_one.get("ymax") and object_one.get(
-                        "ymin") <= object_two.get("ymax") <= object_one.get(
-                        "ymax"))
-                    or (object_two.get("ymin") <= object_one.get(
-                        "ymin") and object_two.get("ymax") <= object_one.get(
-                            "ymax") and object_one.get(
-                                "ymin") <= object_two.get(
-                                    "ymax") <= object_one.get("ymax")
-                        ) or (object_one.get("ymin") <= object_two.get(
-                            "ymin") <= object_one.get(
-                                "ymax") <= object_two.get(
-                                    "ymax") and object_two.get(
-                                        "ymax") >= object_one.get("ymin")
-                        )
-                ))))
+                (abs(design_object1.get("ymin", 0)
+                     - design_object2.get("ymin", 0))
+                 <= config.COLUMNSET_GROUPING.get("ymin_difference", ""))
+                or self.vertical_inclusive(object_one, object_two)
+                or (y_diff <
+                    config.COLUMNSET_GROUPING.get("ymax-ymin_difference", "")
+                    and self.horizontal_inclusive(object_one, object_two)
+                    )))
 
     def columns_row_condition(self, design_object1: Dict,
                               design_object2: Dict) -> bool:
@@ -252,24 +335,53 @@ class ColumnsGrouping(GroupObjects):
         @param design_object2: design object
         @return: boolean value
         """
+        extract_properites = ExtractProperties()
+        x_diff = self.max_min_difference(design_object1, design_object2,
+                                         way="x")
+        point1 = (design_object1.get("xmin"), design_object1.get("ymin"),
+                  design_object1.get("xmax"), design_object1.get("ymax"))
+        point2 = (design_object2.get("xmin"), design_object2.get("ymin"),
+                  design_object2.get("xmax"), design_object2.get("ymax"))
+
         if design_object1.get("ymin") < design_object2.get("ymin"):
-            ymax = design_object1.get("ymax")
-            ymin = design_object2.get("ymin")
+            object_one = design_object1
+            object_two = design_object2
         else:
-            ymax = design_object2.get("ymax")
-            ymin = design_object1.get("ymin")
-        y_diff = round(abs(ymin - ymax))
-        xmin_diff = abs(
-            design_object1.get("xmin") - design_object2.get("xmin")
-        )
-        return (design_object1 != design_object2 and (
-                (y_diff <= self.COLUMNS_ROW_DIFF_1
-                 and xmin_diff <= self.COLUMNS_ROW_DIFF_2)
-                or (design_object1.get("object", "") == "image"
-                    and y_diff <= self.COLUMNS_ROW_DIFF_2
-                    and xmin_diff <= self.COLUMNS_ROW_DIFF_2)
-                or (y_diff <= self.COLUMNS_ROW_DIFF_2
-                    and xmin_diff <= self.COLUMNS_ROW_DIFF_1)))
+            object_one = design_object2
+            object_two = design_object1
+
+        condition = (design_object1 != design_object2
+                     and ((design_object1.get("object") == "image"
+                           and design_object2.get("object") == "image"
+                           and abs(design_object1.get("ymin")
+                                   - design_object2.get("ymin"))
+                           <= config.COLUMNSET_GROUPING.get("ymin_difference")
+                           and x_diff <= config.COLUMNSET_GROUPING.get(
+                                "xmax-xmin_difference", ""))
+                          or self.horizontal_inclusive(object_one, object_two)
+                          )
+                     )
+
+        intersection = extract_properites.find_iou(point1, point2,
+                                                   columns_group=True)[0]
+        if intersection and point1 != point2:
+            condition = condition and (
+                    intersection
+                    and (
+                            (object_one.get("xmin") <=
+                             object_two.get("xmin") <= object_one.get("xmax")
+                             and object_one.get("xmin") <=
+                             object_two.get("xmax") <= object_one.get("xmax")
+                             )
+                            or (object_two.get("xmin") <=
+                                object_one.get("xmin") <= object_two.get("xmax")
+                                and object_two.get("xmin") <=
+                                object_one.get("xmax") <= object_two.get("xmax")
+                                )
+                    )
+            )
+
+        return condition
 
 
 class ChoicesetGrouping(GroupObjects):
@@ -337,9 +449,19 @@ class ChoicesetGrouping(GroupObjects):
                     "choices": [],
                     "style": "expanded"
             }
+            alignment = []
             for design_object in group:
                 self.card_arrange.append_objects(design_object,
                                                  choice_set["choices"])
+                alignment.append(design_object.get("horizontal_alignment",
+                                                   "Left"))
+            preference_order = ["Left", "Center", "Right"]
+            if len(alignment) == len(list(set(alignment))):
+                alignment.sort(key=(preference_order + alignment).index)
+                choice_set["horizontalAlignment"] = alignment[0]
+            else:
+                choice_set["horizontalAlignment"] = max(set(alignment),
+                                                        key=alignment.count)
 
             body.append(choice_set)
             if ymins is not None and len(group) > 0:
