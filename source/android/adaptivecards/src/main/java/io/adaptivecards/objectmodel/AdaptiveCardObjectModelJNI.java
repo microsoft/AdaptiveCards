@@ -332,9 +332,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getHeightTypeEnum();
   public final static native String HeightTypeToString(int jarg1);
   public final static native int HeightTypeFromString(String jarg1);
-  public final static native long getInputNecessityIndicatorsEnum();
-  public final static native String InputNecessityIndicatorsToString(int jarg1);
-  public final static native int InputNecessityIndicatorsFromString(String jarg1);
   public final static native long AdaptiveBase64Util_Decode(String jarg1);
   public final static native String AdaptiveBase64Util_Encode(long jarg1, CharVector jarg1_);
   public final static native String AdaptiveBase64Util_ExtractDataFromUri(String jarg1);
@@ -851,8 +848,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetHeight(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetMinHeight(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetMinHeight(long jarg1, AdaptiveCard jarg1_, long jarg2);
-  public final static native int AdaptiveCard_GetInputNecessityIndicators(long jarg1, AdaptiveCard jarg1_);
-  public final static native void AdaptiveCard_SetInputNecessityIndicators(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetSelectAction(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetSelectAction(long jarg1, AdaptiveCard jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);

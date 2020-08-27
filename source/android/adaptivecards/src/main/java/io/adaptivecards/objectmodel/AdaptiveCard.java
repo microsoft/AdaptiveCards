@@ -133,14 +133,6 @@ public class AdaptiveCard {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetMinHeight(swigCPtr, this, value);
   }
 
-  public InputNecessityIndicators GetInputNecessityIndicators() {
-    return InputNecessityIndicators.swigToEnum(AdaptiveCardObjectModelJNI.AdaptiveCard_GetInputNecessityIndicators(swigCPtr, this));
-  }
-
-  public void SetInputNecessityIndicators(InputNecessityIndicators value) {
-    AdaptiveCardObjectModelJNI.AdaptiveCard_SetInputNecessityIndicators(swigCPtr, this, value.swigValue());
-  }
-
   public BaseActionElement GetSelectAction() {
     long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetSelectAction(swigCPtr, this);
     return (cPtr == 0) ? null : new BaseActionElement(cPtr, true);
