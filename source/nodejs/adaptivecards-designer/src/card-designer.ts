@@ -735,7 +735,10 @@ export class CardDesigner extends Designer.DesignContext {
         dialog.height = "80%";
         dialog.open();
         dialog.onClose = (d) => {
-            this.setCardPayload(dialog.predictedCardJSON, true);
+            const { template, data } = dialog.predictedCardJSON;
+			const addToUndoStack = true;
+            this.setCardPayload(template, addToUndoStack);
+            this.setSampleDataPayload(data);
         };
     }
 
