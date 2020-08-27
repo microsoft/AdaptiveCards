@@ -93,13 +93,13 @@ public class CustomInput extends BaseInputElement
         public BaseCardElement Deserialize(ParseContext context, JsonValue value)
         {
             CustomInput element = new CustomInput(CardElementType.Custom);
+            Util.deserializeBaseInputProperties(context, value, element);
+
             element.SetElementTypeString(customInputTypeString);
             String val = value.getString();
             try
             {
                 JSONObject obj = new JSONObject(val);
-                element.SetId(obj.getString("id"));
-                element.SetLabel(obj.getString("label"));
             }
             catch (JSONException e)
             {
@@ -112,12 +112,12 @@ public class CustomInput extends BaseInputElement
         public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
         {
             CustomInput element = new CustomInput(CardElementType.Custom);
+            Util.deserializeBaseInputPropertiesFromString(context, jsonString, element);
+
             element.SetElementTypeString(customInputTypeString);
             try
             {
                 JSONObject obj = new JSONObject(jsonString);
-                element.SetId(obj.getString("id"));
-                element.SetLabel(obj.getString("label"));
             }
             catch (JSONException e)
             {
