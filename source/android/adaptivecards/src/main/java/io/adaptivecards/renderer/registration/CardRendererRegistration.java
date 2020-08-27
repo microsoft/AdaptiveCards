@@ -368,16 +368,7 @@ public class CardRendererRegistration
                         // Try to render the fallback element
                         try
                         {
-                            BaseCardElement fallbackCardElement = null;
-                            if (fallbackElement instanceof BaseCardElement)
-                            {
-                                fallbackCardElement = (BaseCardElement) fallbackElement;
-                            }
-                            else if ((fallbackCardElement = BaseCardElement.dynamic_cast(fallbackElement)) == null)
-                            {
-                                throw new InternalError("Unable to convert BaseElement to BaseCardElement object model.");
-                            }
-
+                            BaseCardElement fallbackCardElement = Util.castToBaseCardElement(fallbackElement);
                             IBaseCardElementRenderer fallbackRenderer = m_typeToRendererMap.get(fallbackElement.GetElementTypeString());
 
                             if (fallbackRenderer == null)

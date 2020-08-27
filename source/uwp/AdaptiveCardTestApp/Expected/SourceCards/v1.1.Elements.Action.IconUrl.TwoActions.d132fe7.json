@@ -1,0 +1,25 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.1",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card has two actions, one of which has an icon. The icon is always placed to the left of title.",
+			"wrap": true
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"iconUrl": "https://adaptivecards.io/content/cats/2.png",
+			"url": "https://adaptivecards.io",
+			"title": "With Icon"
+		},
+		{
+			"type": "Action.OpenUrl",
+			"url": "https://adaptivecards.io",
+			"title": "Without Icon"
+		}
+	]
+}
