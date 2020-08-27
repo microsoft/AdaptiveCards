@@ -172,6 +172,12 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
 %}
 
+
+%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
+%shared_ptr(AdaptiveCards::ElementParserRegistration)
+%shared_ptr(AdaptiveCards::ActionParserRegistration)
+%shared_ptr(AdaptiveCards::ParseContext)
+
 %shared_ptr(AdaptiveCards::BaseElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
@@ -181,8 +187,6 @@ namespace std {
 %shared_ptr(AdaptiveCards::ActionElementParserWrapper)
 %shared_ptr(AdaptiveCards::BaseCardElementParserWrapper)
 %shared_ptr(AdaptiveCards::CollectionTypeElement)
-%shared_ptr(AdaptiveCards::ElementParserRegistration)
-%shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::FeatureRegistration)
 %shared_ptr(AdaptiveCards::BackgroundImage)
 %shared_ptr(AdaptiveCards::Container)
@@ -203,8 +207,6 @@ namespace std {
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
-%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
-%shared_ptr(AdaptiveCards::ParseContext)
 %shared_ptr(AdaptiveCards::ParseResult)
 %shared_ptr(AdaptiveCards::RemoteResourceInformation)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
@@ -842,15 +844,20 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+
+
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
+%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ParseContext.h"
+
+
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
 %include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 %include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
-%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
-%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
-%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
 %include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
@@ -868,7 +875,6 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
-%include "../../../shared/cpp/ObjectModel/ParseContext.h"
 %include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"

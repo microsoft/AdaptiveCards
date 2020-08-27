@@ -6,6 +6,11 @@
 
 using namespace AdaptiveSharedNamespace;
 
+BaseInputElement::BaseInputElement() : BaseCardElement(CardElementType::Custom), m_isRequired(false)
+{
+    PopulateKnownPropertiesSet();
+}
+
 BaseInputElement::BaseInputElement(CardElementType elementType) : BaseCardElement(elementType), m_isRequired(false)
 {
     PopulateKnownPropertiesSet();
@@ -74,4 +79,26 @@ void BaseInputElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IsRequired),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ErrorMessage),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Label)});
+}
+
+std::shared_ptr<BaseInputElement> BaseInputElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+{
+    return BaseInputElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseInputElement> BaseInputElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json)
+{
+    std::shared_ptr<BaseInputElement> baseInputElement = BaseCardElement::Deserialize<BaseInputElement>(context, json);
+    DeserializeBaseProperties(context, json, baseInputElement);
+    return baseInputElement;
+}
+
+void BaseInputElement::DeserializeBaseProperties(ParseContext& /*context*/, const Json::Value& json, std::shared_ptr<BaseInputElement>& element)
+{
+    ParseUtil::ThrowIfNotJsonObject(json);
+
+    element->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id, true));
+    element->SetIsRequired(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsRequired, false));
+    element->SetErrorMessage(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ErrorMessage));
+    element->SetLabel(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Label));
 }
