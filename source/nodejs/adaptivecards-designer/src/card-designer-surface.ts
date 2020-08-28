@@ -280,9 +280,9 @@ export class CardDesignerSurface {
 
             if (Shared.GlobalSettings.enableDataBindingSupport) {
                 try {
-                    let template = new ACData.Template(inputPayload);
+                    let template = new Adaptive.Template(inputPayload);
 
-                    let evaluationContext: ACData.IEvaluationContext;
+                    let evaluationContext: Adaptive.IEvaluationContext;
 
                     if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
                         evaluationContext = { $root: this.context.sampleData };

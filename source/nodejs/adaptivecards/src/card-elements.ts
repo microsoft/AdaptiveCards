@@ -1578,7 +1578,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             // If the source value isn't valid per this property definition,
             // check its validity per the fallback property, if specified 
             if (!isValid && this.fallbackProperty) {
-                isValid = this.fallbackProperty.isValidValue(sourceValue, context);
+                isValid = this.fallbackProperty.isValidValue(value, context);
             }
         }
 
