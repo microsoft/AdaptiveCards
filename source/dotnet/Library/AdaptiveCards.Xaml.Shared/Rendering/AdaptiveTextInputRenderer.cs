@@ -25,14 +25,12 @@ namespace AdaptiveCards.Rendering.Wpf
                     // TODO 
 #endif
             }
-#if WPF
+
             if (input.MaxLength > 0)
             {
                 textBox.MaxLength = input.MaxLength;
             }
-#elif XAMARIN 
-                    // TODO 
-#endif
+
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
             textBox.SetContext(input);
