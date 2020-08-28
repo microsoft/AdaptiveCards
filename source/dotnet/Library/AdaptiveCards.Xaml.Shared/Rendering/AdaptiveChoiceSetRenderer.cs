@@ -222,6 +222,30 @@ namespace AdaptiveCards.Rendering.Wpf
             else
             {
                 //Compact
+
+                StackLayout stackLayout = new StackLayout
+                {
+                };
+
+                Picker picker = new Picker();
+
+                picker.ItemDisplayBinding = new Binding("Title");
+
+                picker.ItemsSource = input.Choices;
+
+                context.InputBindings.Add(input.Id, () =>
+                {
+                    AdaptiveChoice adaptiveChoice = picker.SelectedItem as AdaptiveChoice;
+                    if (picker.SelectedItem != null)
+                    {
+                        return adaptiveChoice.Value;
+                    }
+                    return null;
+                });
+
+                stackLayout.Children.Add(picker);
+
+                return stackLayout;
             }
 
             
