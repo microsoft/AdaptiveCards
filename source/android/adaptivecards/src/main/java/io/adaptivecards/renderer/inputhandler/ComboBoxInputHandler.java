@@ -41,7 +41,8 @@ public class ComboBoxInputHandler extends BaseInputHandler
     {
         ChoiceSetInput choiceSetInput = (ChoiceSetInput) m_baseInputElement;
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
-        int selectedPosition = 0;
+        // When the input has an empty default a new option is added as the last element
+        int selectedPosition = choiceSetInput.GetValue().isEmpty() ? choiceInputVector.size() : 0;
 
         for (int i = 0; i < choiceInputVector.size(); i++)
         {

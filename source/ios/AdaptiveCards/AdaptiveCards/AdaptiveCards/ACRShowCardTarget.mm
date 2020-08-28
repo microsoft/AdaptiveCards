@@ -87,10 +87,12 @@
 
 - (IBAction)toggleVisibilityOfShowCard
 {
-    _button.selected = !_button.selected;
+
+    BOOL isSelected = _button.selected;
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
+    _button.selected = !isSelected;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
@@ -102,7 +104,6 @@
         CGRect oldFrame = showCardFrame;
         oldFrame.size.height = 0;
         showCardFrame.size.height += [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
-        ;
         [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
     }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
@@ -116,6 +117,7 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
+    _button.selected = NO;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];

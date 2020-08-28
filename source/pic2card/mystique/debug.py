@@ -161,7 +161,7 @@ class Debug:
         # {"image": self.plot_debug_images(image_np, image_copy)}
         debug_output = {"image": image_model_base64_string}
         # generate card from existing workflow
-        predict_json = predict_card.main(
-            image=pil_image, card_format=card_format)
+        predict_json = predict_card.generate_card(output_dict, pil_image,
+                                                  image_np, card_format)
         debug_output.update(predict_json)
         return debug_output

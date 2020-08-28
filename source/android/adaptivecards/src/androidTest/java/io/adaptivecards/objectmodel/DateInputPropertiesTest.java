@@ -1,15 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.util.Pair;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-
-import java.util.ArrayList;
-import java.util.Date;
-
-import static org.junit.Assert.*;
 
 public class DateInputPropertiesTest
 {
