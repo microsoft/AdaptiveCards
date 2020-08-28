@@ -126,7 +126,7 @@ namespace AdaptiveCards.Rendering.Wpf
         {
 #if WPF
             view.BorderThickness = new Thickness(thickness);
-elif XAMARIN
+#elif XAMARIN
             view.BorderWidth = thickness;
 #endif
         }
@@ -144,6 +144,9 @@ elif XAMARIN
             public static void SetPlaceholder(this TextBox textBlock, string placeholder)
         {
             //UWP doesnt have the concept of placeholder for TextBox
+#if XAMARIN
+            textBlock.Placeholder = placeholder;
+#endif
         }
     }
 }
