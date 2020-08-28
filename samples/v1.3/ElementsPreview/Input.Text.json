@@ -6,16 +6,25 @@
 		{
 			"type": "Input.Text",
 			"id": "input1",
-			"style": "text",
-			"label": "Default Input.Text label"
+			"label": "Enter name (required)",
+			"isRequired": true,
+			"errorMessage": "Name must not be blank",
+			"maxLength": 50
 		},
 		{
 			"type": "Input.Text",
 			"id": "input2",
-			"style": "text",
-			"label": "Required Input.Text label",
-			"isRequired": true,
-			"errorMessage": "Required input"
+			"label": "Enter multiline comment",
+			"maxLength": 500,
+			"isMultiline": true
+		},
+		{
+			"type": "Input.Text",
+			"id": "input3",
+			"label": "Enter another comment",
+			"maxLength": 500,
+			"isMultiline": true,
+			"value": "This value was pre-filled"
 		}
 	],
 	"actions": [
