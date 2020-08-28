@@ -61,7 +61,12 @@ public class TimeInputRenderer extends TextInputRenderer
         TimeInput timeInput = Util.castTo(baseCardElement, TimeInput.class);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
+        String time = "";
+        String value = timeInput.GetValue();
+        if (RendererUtil.isValidTime(value) && !value.isEmpty())
+        {
+            time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
+        }
 
         TagContent tagContent = new TagContent(timeInput, timeInputHandler);
         EditText editText = renderInternal(
@@ -94,7 +99,6 @@ public class TimeInputRenderer extends TextInputRenderer
 
                 FragmentManager fm = timeInputHandler.getFragmentManager();
                 timePickerFragment.show(fm, TITLE);
-
             }
         });
 

@@ -406,7 +406,10 @@ namespace AdaptiveNamespace::XamlHelpers
             {
                 // perform this element's fallback
                 hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                if (renderedElement)
+                {
+                    RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                }
             }
 
             if (hr == E_PERFORM_FALLBACK)

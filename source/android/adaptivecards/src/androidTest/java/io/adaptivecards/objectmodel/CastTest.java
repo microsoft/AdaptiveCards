@@ -23,8 +23,6 @@ public class CastTest
 
         BaseCardElement baseCardElement = Util.castTo(baseInputElement, BaseCardElement.class);
         Assert.assertNotNull(baseCardElement);
-
-
     }
 
     @Test
