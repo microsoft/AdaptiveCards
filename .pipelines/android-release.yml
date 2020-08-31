@@ -1,0 +1,49 @@
+name: $(Year:yyyy).$(Month).$(DayOfMonth)-$(rev:r)
+
+pr:none
+triggers:none
+
+pool:
+  name: Project Rome
+  demands: java
+
+#Your build pipeline references an undefined variable named ‘Parameters.wrapperScript’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘Parameters.wrapperScript’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+
+steps:
+- task: PkgESSetupBuild@10
+  displayName: 'Package ES - Setup Build'
+  inputs:
+    disableOutputRedirect: true
+    disableOwnership: true
+
+- task: Gradle@2
+  displayName: build
+  inputs:
+    tasks: 'adaptivecards:build'
+    workingDirectory: source/android
+    publishJUnitResults: false
+
+- task: Gradle@2
+  displayName: 'publish'
+  inputs:
+    tasks: 'adaptivecards:publish'
+    workingDirectory: source/android
+    publishJUnitResults: false
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: |
+     **/artifact/**
+     
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    OverWrite: true
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
