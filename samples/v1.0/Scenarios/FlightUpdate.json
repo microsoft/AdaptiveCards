@@ -122,7 +122,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "KL0605",
+							"text": "KL605",
 							"spacing": "small"
 						}
 					]
@@ -140,7 +140,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "10:10 AM",
+							"text": "2:20 AM",
 							"color": "attention",
 							"weight": "bolder",
 							"horizontalAlignment": "center",
@@ -161,7 +161,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "12:00 AM",
+							"text": "8:20 PM",
 							"color": "attention",
 							"horizontalAlignment": "right",
 							"weight": "bolder",
@@ -182,7 +182,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Amsterdam",
+							"text": "Amsterdam Airport",
 							"isSubtle": true
 						},
 						{
@@ -215,7 +215,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "San Francisco",
+							"text": "San Francisco Airport",
 							"isSubtle": true,
 							"horizontalAlignment": "right"
 						},
