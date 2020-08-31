@@ -91,15 +91,15 @@
 						},
 						{
 							"title": "Duration",
-							"value": "2019/06/19 - 2019/06/25"
+							"value": "2019-06-19 - 2019-06-21"
 						},
 						{
 							"title": "Submitted On",
-							"value": "2019/04/14"
+							"value": "2019-04-14"
 						},
 						{
 							"title": "Reimbursable Amount",
-							"value": "$ 404.30"
+							"value": "$ 400.00"
 						},
 						{
 							"title": "Awaiting approval from",
@@ -168,7 +168,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "06/19",
+							"text": "06-19",
 							"wrap": true
 						}
 					],
@@ -191,7 +191,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 300",
+							"text": "$300.00",
 							"wrap": true
 						}
 					],
@@ -246,7 +246,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Leg 2 on Tue,Jun 19th, 2019 at 7:15 PM.",
+							"text": "* Leg 2 on Tue, Jun 19th, 2019 at 7:15 PM.",
 							"isSubtle": true,
 							"wrap": true
 						},
@@ -303,7 +303,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "Center",
-							"text": "06/19",
+							"text": "06-19",
 							"wrap": true
 						}
 					],
@@ -326,7 +326,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 100",
+							"text": "$100.00",
 							"wrap": true
 						}
 					],
@@ -432,7 +432,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "Center",
-							"text": "06/25",
+							"text": "06-21",
 							"wrap": true
 						}
 					],
@@ -444,7 +444,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Air Travel Expense",
+							"text": "Excess Baggage Cost",
 							"wrap": true
 						}
 					],
@@ -455,7 +455,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 4.30",
+							"text": "$50.38",
 							"wrap": true
 						}
 					],
@@ -575,11 +575,11 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "404.30"
+							"text": "$450.38"
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 50.38 \t"
 						},
 						{
 							"type": "TextBlock",
@@ -619,7 +619,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$ 404.30"
+									"text": "$ 400.00"
 								}
 							],
 							"width": "auto"
@@ -680,13 +680,13 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "* Expense submitted by **Matt** on Wed, Apr 14th, 2019",
+							"text": "* Expense submitted by **Matt Hidinger** on Mon, Jul 15, 2019",
 							"isSubtle": true,
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Expense approved by **Thomas** on Thu, Apr 15th, 2019",
+							"text": "* Expense approved by **Thomas** on Mon, Jul 15, 2019",
 							"isSubtle": true,
 							"wrap": true
 						}
