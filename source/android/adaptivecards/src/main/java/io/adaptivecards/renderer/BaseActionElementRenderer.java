@@ -247,6 +247,17 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
+            // Reset all other buttons
+            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            for (int i = 0; i < parentContainer.getChildCount(); ++i)
+            {
+                View actionInActionSet = parentContainer.getChildAt(i);
+                if (v != actionInActionSet)
+                {
+                    actionInActionSet.setSelected(false);
+                }
+            }
+
             for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
                 View child = m_hiddenCardsLayout.getChildAt(i);
