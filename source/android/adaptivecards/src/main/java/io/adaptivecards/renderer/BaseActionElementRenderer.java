@@ -171,7 +171,15 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
 
         private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig)
         {
-            ShowCardAction showCardAction = Util.castTo(m_action, ShowCardAction.class);
+            ShowCardAction showCardAction = null;
+            if (m_action instanceof ShowCardAction)
+            {
+                showCardAction = (ShowCardAction) m_action;
+            }
+            else if ((showCardAction = ShowCardAction.dynamic_cast(m_action)) == null)
+            {
+                throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+            }
 
             m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(), m_cardActionHandler, hostConfig, true);
             m_invisibleCard.setVisibility(View.GONE);
