@@ -4,7 +4,7 @@ pr: none
 trigger: none
 
 pool:
-  name: Hosted Ubuntu 1604
+  name: Package ES Standard Build
   demands: java
 
 steps:
