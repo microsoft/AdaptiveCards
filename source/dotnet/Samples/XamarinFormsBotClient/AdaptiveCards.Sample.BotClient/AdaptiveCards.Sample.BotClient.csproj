@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.4</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <!--<PackageTargetFallback>$(PackageTargetFallback);portable-win+net45+wp8+win81+wpa8;portable-net45+win8+wpa81</PackageTargetFallback>-->
     <ProduceAssemblyReference>true</ProduceAssemblyReference>
     <!--<EnableDefaultEmbeddedResources>false</EnableDefaultEmbeddedResources>-->
