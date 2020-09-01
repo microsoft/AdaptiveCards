@@ -98,7 +98,7 @@ namespace AdaptiveCards.Rendering.Wpf
 #endif
         }
 
-        private static ImageSource ImageSourceFromUri(Uri url)
+        public static ImageSource ImageSourceFromUri(Uri url)
         {
             ImageSource imageSource;
             if (url.Scheme == "data")

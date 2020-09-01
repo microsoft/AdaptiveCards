@@ -8,7 +8,9 @@ namespace AdaptiveCards.Rendering
     {
         public static void SetBackgroundImage(this Grid grid, Uri uri)
         {
-            grid.Children.Add(new UI.Image() { Source = ImageSource.FromUri(uri), Aspect = Aspect.AspectFill });
+            var source = AdaptiveCards.Rendering.Wpf.ImageExtensions.ImageSourceFromUri(uri);
+
+            grid.Children.Add(new UI.Image() { Source = source, Aspect = Aspect.AspectFill });
         }
 
         public static void SetSource(this UI.Image image, Uri uri)
