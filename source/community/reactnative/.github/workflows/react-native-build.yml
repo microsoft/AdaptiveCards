@@ -1,0 +1,26 @@
+# This workflow will install npm dependencies and run tests
+name: react-native-build
+
+on:
+  push:
+    branches: [ reactnative/release-2.2-tests ]
+    paths:
+    - 'source/community/reactnative/**'
+  pull_request:
+    branches: [ reactnative/release-2.2 ]
+    paths:
+    - 'source/community/reactnative/**'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: |
+        cd source/community/reactnative/
+        sudo rm -rf node_modules
+        npm install
+    - name: Test with jest
+      run: |
+        npm test

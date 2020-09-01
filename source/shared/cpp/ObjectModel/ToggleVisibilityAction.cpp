@@ -25,7 +25,7 @@ Json::Value ToggleVisibilityAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
 
-    std::string targetElementsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TargetElements);
+    const std::string& targetElementsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TargetElements);
     root[targetElementsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& targetElement : GetTargetElements())
     {

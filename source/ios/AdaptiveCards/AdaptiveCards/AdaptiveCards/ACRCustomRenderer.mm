@@ -40,8 +40,12 @@
     if (reg) {
         NSString *type = [NSString stringWithCString:customElem->GetElementTypeString().c_str() encoding:NSUTF8StringEncoding];
         Json::Value blob = customElem->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        NSString *jsonString =
+        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
 
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];

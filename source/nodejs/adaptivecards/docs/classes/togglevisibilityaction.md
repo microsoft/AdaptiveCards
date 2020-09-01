@@ -136,7 +136,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -218,7 +218,7 @@ ___
 
 ### `Static` ignoreInputValidationProperty
 
-▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.vNext, "ignoreInputValidation", false)
+▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false)
 
 *Inherited from [Action](action.md).[ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)*
 
@@ -237,7 +237,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -467,9 +468,15 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [Action](action.md).[getAllInputs](action.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
@@ -617,15 +624,9 @@ ___
 
 ### `Protected` internalGetReferencedInputs
 
-▸ **internalGetReferencedInputs**(`allInputs`: [Input](input.md)[]): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
+▸ **internalGetReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
 *Inherited from [Action](action.md).[internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`allInputs` | [Input](input.md)[] |
 
 **Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
@@ -939,15 +940,16 @@ ___
 
 ###  updateActionButtonCssStyle
 
-▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement): *void*
+▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: ActionButtonState): *void*
 
 *Inherited from [Action](action.md).[updateActionButtonCssStyle](action.md#updateactionbuttoncssstyle)*
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`actionButtonElement` | HTMLElement |
+Name | Type | Default |
+------ | ------ | ------ |
+`actionButtonElement` | HTMLElement | - |
+`buttonState` | ActionButtonState | ActionButtonState.Normal |
 
 **Returns:** *void*
 
@@ -955,11 +957,15 @@ ___
 
 ###  validateInputs
 
-▸ **validateInputs**(): *[Input](input.md)‹›[]*
+▸ **validateInputs**(): *[Input](input.md)[]*
 
 *Inherited from [Action](action.md).[validateInputs](action.md#validateinputs)*
 
-**Returns:** *[Input](input.md)‹›[]*
+Validates the inputs associated with this action.
+
+**Returns:** *[Input](input.md)[]*
+
+A list of inputs that failed validation, or an empty array if no input failed validation.
 
 ___
 

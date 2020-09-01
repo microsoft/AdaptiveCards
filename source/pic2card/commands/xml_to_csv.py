@@ -1,53 +1,25 @@
-"""This module converts the labelled traning and testing xmls generated 
+"""This module converts the labelled traning and testing xmls generated
    from the labelImg tool to object:boundary:image mapped csv.
 """
-import os
-import glob
-import pandas as pd
-import xml.etree.ElementTree as Et
+import click
+
+from mystique.utils import xml_to_csv
 
 
-def xml_to_csv(path):
-    """
-    Maps the xml labels of each object
-    to the image file
-
-    @param path: images path 
-
-    @return: xml dataframe
-    """
-    xml_list = []
-    for xml_file in glob.glob(path + "/*.xml"):
-        tree = Et.parse(xml_file)
-        root = tree.getroot()
-        for member in root.findall("object"):
-            value = (root.find("filename").text,
-                     int(root.find("size")[0].text),
-                     int(root.find("size")[1].text),
-                     member[0].text,
-                     int(member[4][0].text),
-                     int(member[4][1].text),
-                     int(member[4][2].text),
-                     int(member[4][3].text)
-                     )
-            xml_list.append(value)
-    column_name = ["filename", "width", "height", "class", "xmin",
-                   "ymin", "xmax", "ymax"]
-    xml_df = pd.DataFrame(xml_list, columns=column_name)
-    return xml_df
-
-
-def main():
+@click.command()
+@click.option("--labelmg-dir", required=True,
+              help="path to the xml and png file from labelmg")
+@click.option("--csv-out-file", required=True,
+              help="Export the bbox in csv format")
+def main(labelmg_dir, csv_out_file):
     """
     Writes the mapped object boundaries:image csv rows into the
     data folder
     """
-    for folder in ["train", "test"]:
-        image_path = os.path.join(os.getcwd(), ("../data/" + folder))
-        xml_df = xml_to_csv(image_path)
-        xml_df.to_csv(("../images/" + folder + "_labels.csv"),
-                      index=None)
-        print("Successfully converted xml to csv.")
+    xml_df = xml_to_csv(labelmg_dir)
+    xml_df.to_csv(csv_out_file, index=False)
+    print("Successfully converted xml to csv.")
 
 
-main()
+if __name__ == "__main__":
+    main()

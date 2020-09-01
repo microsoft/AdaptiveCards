@@ -6,7 +6,6 @@
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
-	"inputNecessityIndicators": "requiredInputs",
 	"body": [
 		{
 			"type": "TextBlock",
@@ -183,6 +182,7 @@
 					"type": "Input.Text",
 					"id": "Input.Text_id",
 					"isMultiline": false,
+					"label": "Input.Text_label",
 					"maxLength": 10,
 					"placeholder": "Input.Text_placeholder",
 					"style": "text",
@@ -199,6 +199,7 @@
 				{
 					"type": "Input.Number",
 					"id": "Input.Number_id",
+					"label": "Input.Number_label",
 					"max": 10,
 					"min": 5,
 					"placeholder": "Input.Number_placeholder",
@@ -208,6 +209,7 @@
 				{
 					"type": "Input.Date",
 					"id": "Input.Date_id",
+					"label": "Input.Date_label",
 					"min": "8/1/2018",
 					"max": "1/1/2020",
 					"placeholder": "Input.Date_placeholder",
@@ -216,6 +218,7 @@
 				{
 					"type": "Input.Time",
 					"id": "Input.Time_id",
+					"label": "Input.Time_label",
 					"min": "10:00",
 					"max": "17:00",
 					"value": "13:00",
@@ -226,6 +229,7 @@
 				{
 					"type": "Input.Toggle",
 					"id": "Input.Toggle_id",
+					"label": "Input.Toggle_label",
 					"title": "Input.Toggle_title",
 					"value": "Input.Toggle_on",
 					"valueOff": "Input.Toggle_off",
@@ -241,6 +245,7 @@
 					"type": "Input.ChoiceSet",
 					"id": "Input.ChoiceSet_id",
 					"isMultiSelect": true,
+					"label": "Input.ChoiceSet_label",
 					"style": "compact",
 					"value": "Input.Choice2,Input.Choice4",
 					"choices": [

@@ -101,20 +101,18 @@ export class MediaConfig {
     }
 }
 
-export class FactTextDefinition {
+export class BaseTextDefinition {
     size: Enums.TextSize = Enums.TextSize.Default;
     color: Enums.TextColor = Enums.TextColor.Default;;
     isSubtle: boolean = false;
     weight: Enums.TextWeight = Enums.TextWeight.Default;
-    wrap: boolean = true;
 
     constructor(obj?: any) {
         if (obj) {
-            this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], Enums.TextSize.Default);
-            this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], Enums.TextColor.Default);
+            this.size = parseHostConfigEnum(Enums.TextSize, obj["size"], this.size);
+            this.color = parseHostConfigEnum(Enums.TextColor, obj["color"], this.color);
             this.isSubtle = obj["isSubtle"] || this.isSubtle;
             this.weight = parseHostConfigEnum(Enums.TextWeight, obj["weight"], this.getDefaultWeight());
-            this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
         }
     }
 
@@ -127,9 +125,75 @@ export class FactTextDefinition {
             size: Enums.TextSize[this.size],
             color: Enums.TextColor[this.color],
             isSubtle: this.isSubtle,
-            weight: Enums.TextWeight[this.weight],
-            wrap: this.wrap
+            weight: Enums.TextWeight[this.weight]
         }
+    }
+}
+
+export class RequiredInputLabelTextDefinition extends BaseTextDefinition {
+    suffix?: string = " *";
+    suffixColor: Enums.TextColor = Enums.TextColor.Attention;
+
+    constructor(obj?: any) {
+        super(obj);
+
+        if (obj) {
+            this.suffix = obj["suffix"] || this.suffix;
+            this.suffixColor = parseHostConfigEnum(Enums.TextColor, obj["suffixColor"], this.suffixColor);
+        }
+    }
+
+    toJSON(): any {
+        let result = super.toJSON();
+        result["suffix"] = this.suffix;
+        result["suffixColor"] = Enums.TextColor[this.suffixColor];
+
+        return result;
+    }
+}
+
+export class InputLabelConfig {
+    inputSpacing: Enums.Spacing = Enums.Spacing.Small;
+    readonly requiredInputs: RequiredInputLabelTextDefinition = new RequiredInputLabelTextDefinition();
+    readonly optionalInputs: BaseTextDefinition = new BaseTextDefinition();
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.inputSpacing = parseHostConfigEnum(Enums.Spacing, obj["inputSpacing"], this.inputSpacing);
+            this.requiredInputs = new RequiredInputLabelTextDefinition(obj["requiredInputs"]);
+            this.optionalInputs = new BaseTextDefinition(obj["optionalInputs"]);
+        }
+    }
+}
+
+export class InputConfig {
+    readonly label: InputLabelConfig = new InputLabelConfig();
+    readonly errorMessage: BaseTextDefinition = new BaseTextDefinition({ color: Enums.TextColor.Attention });
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.label = new InputLabelConfig(obj["label"]);
+            this.errorMessage = new BaseTextDefinition(obj["errorMessage"]);
+        }
+    }
+}
+
+export class FactTextDefinition extends BaseTextDefinition {
+    wrap: boolean = true;
+
+    constructor(obj?: any) {
+        super(obj);
+
+        if (obj) {
+            this.wrap = obj["wrap"] != null ? obj["wrap"] : this.wrap;
+        }
+    }
+
+    toJSON(): any {
+        let result = super.toJSON();
+        result["wrap"] = this.wrap;
+
+        return result;
     }
 }
 
@@ -278,7 +342,7 @@ export class ContainerStyleDefinition {
             "dark": { default: "#000000", subtle: "#66000000" },
             "light": { default: "#FFFFFF", subtle: "#33000000" },
             "accent": { default: "#2E89FC", subtle: "#882E89FC" },
-            "good": { default: "#54A254", subtle: "#DD54A254" },
+            "good": { default: "#028A02", subtle: "#DD027502" },
             "warning": { default: "#E69500", subtle: "#DDE69500" },
             "attention": { default: "#CC3300", subtle: "#DDCC3300" }
         }
@@ -516,6 +580,7 @@ export class HostConfig {
     };
 
     readonly containerStyles: ContainerStyleSet = new ContainerStyleSet();
+    readonly inputs: InputConfig = new InputConfig();
     readonly actions: ActionsConfig = new ActionsConfig();
     readonly adaptiveCard: AdaptiveCardConfig = new AdaptiveCardConfig();
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
@@ -572,6 +637,7 @@ export class HostConfig {
                 lineColor: obj.separator && obj.separator["lineColor"] || this.separator.lineColor
             }
 
+            this.inputs = new InputConfig(obj.inputs || this.inputs);
             this.actions = new ActionsConfig(obj.actions || this.actions);
             this.adaptiveCard = new AdaptiveCardConfig(obj.adaptiveCard || this.adaptiveCard);
             this.imageSet = new ImageSetConfig(obj["imageSet"]);
@@ -725,8 +791,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -758,8 +824,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -791,8 +857,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -824,8 +890,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -857,8 +923,8 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
@@ -890,14 +956,37 @@ export const defaultHostConfig: HostConfig = new HostConfig(
                         subtle: "#DDcc3300"
                     },
                     good: {
-                        default: "#54a254",
-                        subtle: "#DD54a254"
+                        default: "#028A02",
+                        subtle: "#DD027502"
                     },
                     warning: {
                         default: "#e69500",
                         subtle: "#DDe69500"
                     }
                 }
+            }
+        },
+        inputs: {
+            label: {
+                requiredInputs: {
+                    color: Enums.TextColor.Accent,
+                    size: Enums.TextSize.ExtraLarge,
+                    weight: Enums.TextWeight.Bolder,
+                    isSubtle: true,
+                    suffix: " (required)",
+                    suffixColor: Enums.TextColor.Good
+                },
+                optionalInputs: {
+                    color: Enums.TextColor.Warning,
+                    size: Enums.TextSize.Medium,
+                    weight: Enums.TextWeight.Lighter,
+                    isSubtle: false
+                }
+            },
+            errorMessage: {
+                color: Enums.TextColor.Accent,
+                size: Enums.TextSize.Small,
+                weight: Enums.TextWeight.Bolder
             }
         },
         actions: {

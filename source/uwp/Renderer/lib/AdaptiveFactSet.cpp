@@ -57,10 +57,10 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::FactSet> factSet = std::make_shared<AdaptiveSharedNamespace::FactSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(factSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*factSet));
         RETURN_IF_FAILED(GenerateSharedFacts(m_facts.Get(), factSet->GetFacts()));
 
-        sharedModel = factSet;
+        sharedModel = std::move(factSet);
 
         return S_OK;
     }

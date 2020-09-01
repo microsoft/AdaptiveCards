@@ -96,19 +96,6 @@
 
 			designer.toolbar.getElementById(ACDesigner.CardDesigner.ToolbarCommands.HostAppPicker).width = "auto";
 
-
-			let visualizerButton = new ACDesigner.ToolbarButton(
-				"visualizerButton",
-				"Classic Visualizer",
-				null,
-				function () {
-					window.open("<%- config.root %>visualizer")
-				}
-			);
-			visualizerButton.separator = true;
-			visualizerButton.alignment = ACDesigner.ToolbarElementAlignment.Right;
-			designer.toolbar.addElement(visualizerButton);
-
 			let feedbackButton = new ACDesigner.ToolbarButton(
 				"feedbackButton",
 				"Feedback",
@@ -198,31 +185,7 @@
 			} else {
 				designer.setCard({
 					"type": "AdaptiveCard",
-					"body": [
-						{
-							"type": "Container",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/)",
-									"size": "Medium",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "Click the **Preview mode** toolbar button to see the card bound to the **Sample Data** in the lower-right. Sample Data helps design your card by simulating the real data.",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "When you're ready to populate it with real data, use the Adaptive Card [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk).",
-									"wrap": true
-								}
-							],
-							"style": "good",
-							"bleed": true
-						},
-						{
+					"body": [{
 							"type": "TextBlock",
 							"size": "Medium",
 							"weight": "Bolder",

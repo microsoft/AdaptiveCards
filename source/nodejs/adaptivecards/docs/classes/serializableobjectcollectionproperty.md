@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](serializableobjectcollectionproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](serializableobjectcollectionproperty.md#isserializationenabled)
 * [name](serializableobjectcollectionproperty.md#name)
 * [objectType](serializableobjectcollectionproperty.md#objecttype)
 * [onGetInitialValue](serializableobjectcollectionproperty.md#optional-ongetinitialvalue)
@@ -56,6 +57,14 @@ Name | Type |
 • **defaultValue**? : *any*
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

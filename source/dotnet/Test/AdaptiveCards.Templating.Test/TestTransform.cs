@@ -5,7 +5,6 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
-using System.Collections.Generic;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -86,6 +85,40 @@ namespace AdaptiveCards.Templating.Test
         {
             ""type"": ""TextBlock"",
             ""text"": ""2017-02-14T06:08:00Z""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestBoolConversion()
+        {
+            string jsonTemplate = @"{
+            ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
+            ""$data"": {
+                ""boolValue"" : true
+             },
+            ""body"": [
+                {
+                    ""type"": ""TextBlock"",
+                    ""text"": ""Hello"",
+                    ""IsVisible"" : true
+                }
+            ]
+            }";
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello"",
+            ""IsVisible"" : true
         }
     ]
 }", cardJson);
@@ -290,36 +323,29 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
-        public void TestExceptionHandling()
+        public void TestSortFunctionInDataCreateAnArray()
         {
-            // ${LineItem} doesn't exist in the data context provided
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
             ""body"": [
               {
-                ""type"": ""Container"",
-                ""items"": [
-                  {
-                    ""$data"": ""${LineItem}"",
-                    ""type"": ""TextBlock"",
-                    ""$when"": ""${Milage > 0}"",
-                    ""text"": ""${Milage}""
-                  }
+                ""id"": ""Test"",
+                ""type"": ""Input.ChoiceSet"",
+                ""style"": ""expanded"",
+                ""isMultiSelect"": true,
+                ""choices"": [
+                    {
+                      ""$data"": ""${sortBy(createArray(4, 3, 1, 2))}"",
+                      ""title"": ""Test"",
+                      ""value"": ""Test""
+                    }
                 ]
               }
             ]
-        }";
+          }";
 
-            string jsonData = @"{
-              ""LineItems"": [
-                {
-                    ""Milage"": 10
-                },
-                {
-                    ""Milage"": 0
-                }
-              ]
-            }";
+            string jsonData = @"{}";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
             var context = new EvaluationContext
@@ -330,19 +356,13 @@ namespace AdaptiveCards.Templating.Test
             try
             {
                 string cardJson = transformer.Expand(context);
-                Assert.Fail("There should be an exception");
             }
             catch (AdaptiveTemplateException e)
             {
-                Assert.AreEqual(@"'${LineItem}' at line, '8' is malformed for '$data : ' pair", e.Message);
-            }
-            catch
-            {
-                Assert.Fail();
-                throw;
+                Assert.Fail("No exception should be thrown");
             }
         }
-
+        
         [TestMethod]
         public void TestNullArgumentExceptionHandling()
         {
@@ -450,6 +470,79 @@ namespace AdaptiveCards.Templating.Test
 
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
+        }
+
+        [TestMethod]
+        public void TestDataContextCommaRemoal()
+        {
+            var testString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                      {
+                          ""type"": ""Container"",
+                          ""items"": [
+                              {
+                                  ""type"": ""TextBlock"",
+                                  ""text"": ""${name}""
+                              }
+                          ],
+                          ""$data"": ""${$root.LineItems}"" 
+                          ]
+                      }
+                    ]
+                }";
+            var expectedString =
+                @"{
+                    ""type"": ""AdaptiveCard"",
+                    ""body"": [
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Matt""
+                            } ]
+                    },
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""David""
+                            }
+                        ]
+                    },
+                    {
+                        ""type"": ""Container"",
+                        ""items"": [ 
+                            {
+                                ""type"": ""TextBlock"",
+                                ""text"": ""Thomas""
+                            }
+                        ]
+                    }
+                ]
+            }";
+
+            string jsonData = @"{
+              ""LineItems"": [
+                  { ""name"": ""Matt"" }, 
+                  { ""name"": ""David"" }, 
+                  { ""name"": ""Thomas"" }
+                ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(testString);
+            AdaptiveCardTemplate transformer2 = new AdaptiveCardTemplate(expectedString);
+            var context = new EvaluationContext()
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+            string expectedcardJson = transformer2.Expand(context);
+            Assert.AreEqual(expectedcardJson, cardJson);
         }
 
         [TestMethod]
@@ -1883,6 +1976,36 @@ namespace AdaptiveCards.Templating.Test
             var context = new EvaluationContext();
             string cardJson = transformer.Expand(context);
             AssertJsonEqual(expectedString, cardJson);
+        }
+        
+        class Data
+        { 
+            public string title { get; set; }
+        };
+        [TestMethod]
+        public void TestDoubleQuote()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"size\": \"Medium\",\"weight\": \"Bolder\",\"text\": \"${title}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            Data dt = new Data()
+            {
+                title = "Test with\n\r \"quotes\""
+            };
+
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+            try
+            {
+                var jsonOb = Newtonsoft.Json.JsonConvert.DeserializeObject(st);
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                Assert.Fail();
+            }
         }
     }
     [TestClass]

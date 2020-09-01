@@ -1042,7 +1042,74 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
 
+        [TestMethod]
+        public void InputLabelSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Input.Text"",
+      ""id"": ""id"",
+      ""label"": ""Sample label""
+    }
+  ]
+}";
 
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveTextInput()
+                    {
+                        Id = "id",
+                        Label = "Sample label"
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+
+        [TestMethod]
+        public void InputIsRequiredLabelSerialization()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.2"",
+  ""body"": [
+    {
+      ""type"": ""Input.Text"",
+      ""id"": ""id"",
+      ""isRequired"": true
+    }
+  ]
+}";
+
+            var card = new AdaptiveCard("1.2")
+            {
+                Body =
+                {
+                    new AdaptiveTextInput()
+                    {
+                        Id = "id",
+                        IsRequired = true
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
 
     }
 }

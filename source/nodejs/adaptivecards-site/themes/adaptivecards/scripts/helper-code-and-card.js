@@ -14,13 +14,13 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 	let dataAttribute = null;
 
 	const templating = dataPath && fs.existsSync(dataPath);
-	
+
 	let div = `
 	<div class="w3-cell-row w3-margin-bottom reverse-order-mobile code-and-card">
-		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet hide-with-templating" style="display: ${templating ? 'none' : 'display'}">
+		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet hide-with-templating">
 			<div class="codeHeader">
 				<span class="language">JSON</span>
-				<button aria-label="Copy code" class="action copy-code">
+				<button aria-label="Copy Adaptive Card sample JSON" class="action copy-code">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
@@ -36,14 +36,14 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet show-with-templating">
 			<div class="codeHeader">
 				<span class="language">Data JSON</span>
-				<button aria-label="Copy code" class="action copy-code">
+				<button aria-label="Copy sample data JSON" class="action copy-code">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
 			<pre><code class="json w3-mobile code-short">${fs.readFileSync(dataPath)}</code></pre>
 			<div class="codeHeader">
 				<span class="language">Template JSON</span>
-				<button aria-label="Copy code" class="action copy-code">
+				<button aria-label="Copy Adaptive Card Template sample JSON" class="action copy-code">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>

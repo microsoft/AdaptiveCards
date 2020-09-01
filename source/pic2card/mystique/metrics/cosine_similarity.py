@@ -1,14 +1,12 @@
-"""Module to Calculate Cosine similarity between the testing and 
+"""Module to Calculate Cosine similarity between the testing and
    generated card json
 """
 import argparse
-import base64
 import json
 from mystique.utils.predict_card import PredictCard
 import os
 import re
 
-import requests
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -33,8 +31,8 @@ def build_generated_card_json(images, path, testing_file_path):
     for image in images:
         print(path+image)
         if image not in generated_images:
-            with open(path+image, "rb") as image_file:
-                base64_string = base64.b64encode(image_file.read()).decode()
+            # with open(path+image, "rb") as image_file:
+            #    base64_string = base64.b64encode(image_file.read()).decode()
             response = PredictCard().main(image_path=path+image,
                                           frozen_graph_path=model_path,
                                           labels_path=label_path)
@@ -74,7 +72,7 @@ def get_vectors(*strs):
 
 def get_jaccard_sim(str1, str2):
     """
-    Returns the jaccard similarity between the test and generated card 
+    Returns the jaccard similarity between the test and generated card
     json
 
     @param str1: string one
@@ -131,12 +129,16 @@ def main(testing_file_path, testing_images_path):
             print("Cosine Similarities:\n", json.dumps(
                 cosine_similarities, indent=2))
             print("Average Cosine Similarity:",
-                  (sum([float(l) for l in list(cosine_similarities.values())])
+                  (sum([
+                      float(ll) for ll in list(cosine_similarities.values())]
+                  )
                    / len(list(cosine_similarities.values())))*100)
             print("Jaccard Similarities:\n", json.dumps(
                 jaccard_similarities, indent=2))
             print("Average Jaccard Similarity:",
-                  (sum([float(l) for l in list(jaccard_similarities.values())])
+                  (sum([
+                      float(ll) for ll in list(jaccard_similarities.values())
+                  ])
                    / len(list(jaccard_similarities.values())))*100)
 
     else:

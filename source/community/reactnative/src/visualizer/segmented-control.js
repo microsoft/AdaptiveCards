@@ -61,7 +61,7 @@ export default class SegmentedControl extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#f9f9f9',
         marginVertical: 10
     },
     control: {

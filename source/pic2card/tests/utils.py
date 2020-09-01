@@ -22,6 +22,12 @@ def generate_base64():
     upper = string.ascii_uppercase
     lower = string.ascii_lowercase
     digits = string.digits
-    rand_b64 = "".join(choice(upper + lower + digits) for _ in range(3966961))
+    rand_b64 = "".join(choice(upper + lower + digits) for _ in range(2000001))
     payload_data = f'{{"image": "{rand_b64}"}}'
     return payload_data
+
+
+def get_response(client, api, headers, data):
+    """ Returns the response of a post request """
+    response = client.post(api, headers=headers, data=data)
+    return response

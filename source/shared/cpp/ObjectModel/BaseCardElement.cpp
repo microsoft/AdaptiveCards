@@ -39,7 +39,7 @@ bool BaseCardElement::GetSeparator() const
     return m_separator;
 }
 
-void BaseCardElement::SetSeparator(const bool value)
+void BaseCardElement::SetSeparator(bool value)
 {
     m_separator = value;
 }
@@ -49,7 +49,7 @@ Spacing BaseCardElement::GetSpacing() const
     return m_spacing;
 }
 
-void BaseCardElement::SetSpacing(const Spacing value)
+void BaseCardElement::SetSpacing(Spacing value)
 {
     m_spacing = value;
 }
@@ -59,7 +59,7 @@ HeightType BaseCardElement::GetHeight() const
     return m_height;
 }
 
-void BaseCardElement::SetHeight(const HeightType value)
+void BaseCardElement::SetHeight(HeightType value)
 {
     m_height = value;
 }
@@ -69,7 +69,7 @@ bool BaseCardElement::GetIsVisible() const
     return m_isVisible;
 }
 
-void BaseCardElement::SetIsVisible(const bool value)
+void BaseCardElement::SetIsVisible(bool value)
 {
     m_isVisible = value;
 }
@@ -106,7 +106,7 @@ Json::Value BaseCardElement::SerializeToJsonValue() const
     return root;
 }
 
-Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement> selectAction)
+Json::Value BaseCardElement::SerializeSelectAction(const std::shared_ptr<BaseActionElement>& selectAction)
 {
     if (selectAction != nullptr)
     {
@@ -130,9 +130,35 @@ void BaseCardElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& con
     auto parsedElement = parser->Deserialize(context, json);
     if (parsedElement != nullptr)
     {
-        element = parsedElement;
+        element = std::move(parsedElement);
         return;
     }
 
     throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Unable to parse element of type " + typeString);
+}
+
+std::shared_ptr<BaseCardElement> BaseCardElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+{
+    return BaseCardElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseCardElement> BaseCardElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json)
+{
+    std::shared_ptr<BaseCardElement> baseCardElement = std::make_shared<BaseCardElement>();
+    DeserializeBaseProperties(context, json, baseCardElement);
+    return baseCardElement;
+}
+
+void BaseCardElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json, std::shared_ptr<BaseCardElement>& element)
+{
+    ParseUtil::ThrowIfNotJsonObject(json);
+
+    element->DeserializeBase<BaseCardElement>(context, json);
+    element->SetCanFallbackToAncestor(context.GetCanFallbackToAncestor());
+    element->SetHeight(
+        ParseUtil::GetEnumValue<HeightType>(json, AdaptiveCardSchemaKey::Height, HeightType::Auto, HeightTypeFromString));
+    element->SetIsVisible(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IsVisible, true));
+    element->SetSeparator(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Separator, false));
+    element->SetSpacing(
+        ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::Spacing, Spacing::Default, SpacingFromString));
 }

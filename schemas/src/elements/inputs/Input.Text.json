@@ -16,8 +16,13 @@
 			"type": "string",
 			"description": "Description of the input desired. Displayed when no text has been input."
 		},
+		"regex": {
+			"type": "string",
+			"description": "Regular expression indicating the required format of this text input."
+		},
 		"style": {
-			"type": "TextInputStyle"
+			"type": "TextInputStyle",
+			"description": "Style hint for text input."
 		},
 		"inlineAction": {
 			"type": "ISelectAction",

@@ -12,17 +12,17 @@ exports[`InputTimeExtended should render input time correctly 1`] = `
       style="width: 100%; min-width: 0px;"
     >
       <div
-        class="ms-TextField root-47"
+        class="ms-TextField root-41"
       >
         <div
-          class="ms-TextField-wrapper wrapper-48"
+          class="ms-TextField-wrapper"
         >
           <div
-            class="ms-TextField-fieldGroup fieldGroup-49"
+            class="ms-TextField-fieldGroup fieldGroup-42"
           >
             <input
               aria-invalid="false"
-              class="ms-TextField-field field-50"
+              class="ms-TextField-field field-43"
               id="time"
               max="17:00"
               min="09:00"

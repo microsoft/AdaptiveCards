@@ -572,7 +572,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private _targetVersion: Adaptive.Version = Adaptive.Versions.latest;
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.v1_3;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -588,7 +588,6 @@ export class CardDesigner extends Designer.DesignContext {
         if (Shared.GlobalSettings.showVersionPicker) {
             this._versionChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.VersionPicker);
             this._versionChoicePicker.label = "Target version:"
-            this._versionChoicePicker.width = 80;
             this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
             this._versionChoicePicker.separator = true;
 
@@ -637,6 +636,12 @@ export class CardDesigner extends Designer.DesignContext {
                             }
                         };
                         dialog.selectedSample.download();
+                    }
+
+                    const newCardButton = this._newCardButton.renderedElement;
+
+                    if (newCardButton) {
+                        newCardButton.focus();
                     }
                 };
                 dialog.open();
@@ -694,8 +699,9 @@ export class CardDesigner extends Designer.DesignContext {
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
-            "Copy card JSON",
+            "Copy card payload",
             "acd-icon-copy");
+        this._copyJSONButton.toolTip = "Copy the generated JSON payload of the card (template bound with data) to the clipboard. To copy only the template payload, use the Card Payload Editor.";
         this.toolbar.addElement(this._copyJSONButton);
 
         this._togglePreviewButton = new ToolbarButton(
@@ -814,6 +820,7 @@ export class CardDesigner extends Designer.DesignContext {
 
         Adaptive.GlobalSettings.enableFullJsonRoundTrip = true;
         Adaptive.GlobalSettings.allowPreProcessingPropertyValues = true;
+        Adaptive.GlobalSettings.setTabIndexAtCardRoot = false;
 
         Adaptive.AdaptiveCard.onProcessMarkdown = (text: string, result: Adaptive.IMarkdownProcessingResult) => {
             CardDesigner.internalProcessMarkdown(text, result);
@@ -846,6 +853,8 @@ export class CardDesigner extends Designer.DesignContext {
 
         // Setup card JSON editor
         this._cardEditorToolbox.content = document.createElement("div");
+        this._cardEditorToolbox.content.setAttribute("role", "region");
+        this._cardEditorToolbox.content.setAttribute("aria-label", "card payload editor");
         this._cardEditorToolbox.content.style.overflow = "hidden";
 
         this._cardEditor = monaco.editor.create(
@@ -869,6 +878,8 @@ export class CardDesigner extends Designer.DesignContext {
         if (this._sampleDataEditorToolbox) {
             // Setup sample data JSON editor
             this._sampleDataEditorToolbox.content = document.createElement("div");
+            this._sampleDataEditorToolbox.content.setAttribute("role", "region");
+            this._sampleDataEditorToolbox.content.setAttribute("aria-label", "sample data editor");
             this._sampleDataEditorToolbox.content.style.overflow = "hidden";
 
             this._sampleDataEditor = monaco.editor.create(
@@ -929,20 +940,20 @@ export class CardDesigner extends Designer.DesignContext {
         root.style.overflow = "hidden";
 
         root.innerHTML =
-            '<div id="toolbarHost"></div>' +
+            '<div id="toolbarHost" role="region" aria-label="toolbar"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedLeft" style="border-right: 1px solid #D2D2D2;"></div>' +
-                '<div id="toolPalettePanel" class="acd-toolPalette-pane"></div>' +
+                '<div id="toolPalettePanel" class="acd-toolPalette-pane" role="region" aria-label="card elements"></div>' +
                 '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
                     '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
-                        '<div id="cardArea" class="acd-designer-cardArea">' +
+                        '<div id="cardArea" class="acd-designer-cardArea" role="region" aria-label="card preview">' +
                             '<div style="flex: 1 1 100%; overflow: auto;">' +
                                 '<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>' +
                             '</div>' +
                             '<div id="errorPane" class="acd-error-pane acd-hidden"></div>' +
                         '</div>' +
-                        '<div id="treeViewPanel" class="acd-treeView-pane"></div>' +
-                       '<div id="propertySheetPanel" class="acd-propertySheet-pane"></div>' +
+                        '<div id="treeViewPanel" class="acd-treeView-pane" role="region" aria-label="card structure"></div>' +
+                       '<div id="propertySheetPanel" class="acd-propertySheet-pane" role="region" aria-label="element properties"></div>' +
                     '</div>' +
                     '<div id="jsonEditorPanel" class="acd-json-editor-pane"></div>' +
                     '<div id="bottomCollapsedPaneTabHost" class="acd-horizontalCollapsedTabContainer" style="border-top: 1px solid #D2D2D2;"></div>' +
@@ -963,10 +974,10 @@ export class CardDesigner extends Designer.DesignContext {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => {
-                        return JSON.stringify(this.getCard(), null, 4);
-                    }
-                });
+                    text: (trigger) => JSON.stringify(this.getBoundCard(), null, 4)
+                })
+                .on("error", () => this._copyJSONButton.renderedElement.focus())
+                .on("success", () => this._copyJSONButton.renderedElement.focus());
         }
 
         // Tool palette panel
@@ -1088,6 +1099,10 @@ export class CardDesigner extends Designer.DesignContext {
 
     getCard(): object {
         return this._designerSurface ? this._designerSurface.getCardPayloadAsObject() : undefined;
+    }
+
+    getBoundCard(): object {
+        return this._designerSurface ? this._designerSurface.getBoundCardPayloadAsObject() : undefined;
     }
 
     undo() {
