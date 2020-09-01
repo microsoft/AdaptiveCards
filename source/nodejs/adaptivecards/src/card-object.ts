@@ -43,6 +43,7 @@ export abstract class CardObject extends SerializableObject {
         Versions.v1_2,
         "requires",
         HostCapabilities,
+        false,
         new HostCapabilities());
 
     protected getSchemaKey(): string {

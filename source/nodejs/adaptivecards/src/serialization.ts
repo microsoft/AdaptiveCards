@@ -408,9 +408,9 @@ export class StringArrayProperty extends PropertyDefinition {
             }
             else {
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    `Invalid array value "${value}" of type "${typeof value}" ignored for "${this.name}".`,
-                    sender);
+                    `Invalid array value "${value}" of type "${typeof value}" ignored for "${this.name}".`);
             }
         }
 

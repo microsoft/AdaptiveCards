@@ -94,9 +94,9 @@ export class RefreshActionProperty extends Adaptive.PropertyDefinition {
         }
         else {
             context.logParseEvent(
+                sender,
                 Adaptive.ValidationEvent.ActionTypeNotAllowed,
-                "The \"refresh\" property must have its \"action\" field defined set to an Action.Execute object",
-                sender);
+                "The \"refresh\" property must have its \"action\" field defined set to an Action.Execute object");
 
             return undefined;
         }

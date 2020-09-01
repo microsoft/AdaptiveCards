@@ -45,13 +45,15 @@ module.exports = (env, argv) => {
         },
 		plugins: [
 			new CopyWebpackPlugin(
-				[
-					{
-						from: 'src/*.css',
-						to: '.',
-						flatten: true
-					}
-				]
+				{
+					patterns: [
+						{
+							from: 'src/*.css',
+							to: '.',
+							flatten: true
+						}
+					]
+				}
 			)
             /*
 			new HtmlWebpackPlugin({
