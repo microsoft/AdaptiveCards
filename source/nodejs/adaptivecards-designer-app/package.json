@@ -15,9 +15,9 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
-		"adaptivecards": "^2.1.0",
+		"adaptivecards": "^2.3.0",
 		"adaptivecards-controls": "^0.4.0",
-		"adaptivecards-designer": "^1.1.0",
+		"adaptivecards-designer": "^1.3.0",
 		"eslint": "^7.3.1",
 		"file-loader": "^6.0.0",
 		"markdown-it": "^8.4.0",
@@ -30,6 +30,6 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
-		"adaptivecards-templating": "^1.1.0"
+		"adaptivecards-templating": "^1.3.0"
 	}
 }
