@@ -656,7 +656,7 @@ export abstract class BaseTextBlock extends CardElement {
         Versions.v1_2,
         "fontType",
         Enums.FontType);
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -909,6 +909,7 @@ export class TextBlock extends BaseTextBlock {
 
                     if (this.selectAction.title) {
                         element.setAttribute("aria-label", this.selectAction.title);
+                        element.title = this.selectAction.title;
                     }
 
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1170,6 +1171,10 @@ export class TextRun extends BaseTextBlock {
                     if (this.selectAction) {
                         this.selectAction.execute();
                     }
+                }
+
+                if (this.selectAction.title) {
+                    anchor.title = this.selectAction.title;
                 }
 
                 anchor.innerText = formattedText;
@@ -1589,7 +1594,7 @@ export class Image extends CardElement {
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "width", "pixelWidth");
     static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight", CardElement.heightProperty);
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1759,6 +1764,7 @@ export class Image extends CardElement {
 
                 if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
+                    imageElement.title = this.selectAction.title;
                 }
 
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1810,7 +1816,7 @@ export class Image extends CardElement {
 export abstract class CardElementContainer extends CardElement {
     //#region Schema
 
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1909,6 +1915,7 @@ export abstract class CardElementContainer extends CardElement {
 
                 if (this._selectAction.title) {
                     element.setAttribute("aria-label", this._selectAction.title);
+                    element.title = this._selectAction.title;
                 }
 
                 element.onclick = (e) => {
@@ -6535,6 +6542,10 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
+    }
+
+    toJSON(context?: SerializationContext): PropertyBag | undefined {
+        return super.toJSON(context ? context : new SerializationContext(this.version));
     }
 
     updateLayout(processChildren: boolean = true) {
