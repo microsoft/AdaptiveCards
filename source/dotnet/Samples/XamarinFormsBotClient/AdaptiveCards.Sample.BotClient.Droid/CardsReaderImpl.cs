@@ -12,7 +12,6 @@ using Android.Widget;
 using System.IO;
 using Xamarin.Forms;
 using Android.Content.Res;
-using Android.Content;
 
 [assembly: Xamarin.Forms.Dependency(typeof(AdaptiveCards.XamarinForms.BotClient.Droid.CardsReaderImpl))]
 namespace AdaptiveCards.XamarinForms.BotClient.Droid

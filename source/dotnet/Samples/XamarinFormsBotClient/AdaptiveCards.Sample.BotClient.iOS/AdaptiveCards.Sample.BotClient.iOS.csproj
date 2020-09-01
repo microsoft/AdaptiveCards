@@ -233,9 +233,6 @@
       <HintPath>..\..\..\packages\HtmlAgilityPack.NetCore.1.5.0.1\lib\netstandard1.3\HtmlAgilityPack.NetCore.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.MarkedNet, Version=1.0.11.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\..\packages\Microsoft.MarkedNet.1.0.11\lib\netstandard1.3\Microsoft.MarkedNet.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\..\packages\Newtonsoft.Json.11.0.2\lib\netstandard2.0\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -259,11 +256,18 @@
     <Reference Include="Xamarin.Forms.Xaml">
       <HintPath>..\..\..\packages\Xamarin.Forms.4.7.0.1142\lib\Xamarin.iOS10\Xamarin.Forms.Xaml.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.MarkedNet">
+      <HintPath>..\..\..\packages\Microsoft.MarkedNet.1.0.13\lib\netstandard1.3\Microsoft.MarkedNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards.Sample.BotClient\AdaptiveCards.Sample.BotClient.csproj">
       <Project>{FC31DF54-5DA6-46CA-86F5-817B351AF60F}</Project>
       <Name>AdaptiveCards.Sample.BotClient</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\AdaptiveCards.Xamarin.Platforms.iOS\AdaptiveCards.XamarinForms.Platforms.iOS.csproj">
+      <Project>{2F793F51-CC68-41F1-BE87-5431F0BFA196}</Project>
+      <Name>AdaptiveCards.XamarinForms.Platforms.iOS</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />

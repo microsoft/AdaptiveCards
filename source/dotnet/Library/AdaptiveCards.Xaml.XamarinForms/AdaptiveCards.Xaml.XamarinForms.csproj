@@ -37,15 +37,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.MarkedNet" Version="1.0.11" />
+    <PackageReference Include="Microsoft.MarkedNet" Version="1.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Xamarin.Forms" Version="4.7.0.1142" />
+    <PackageReference Include="NuGet.Build.Packaging" Version="0.2.5-dev.8">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Effects\" />
+  </ItemGroup>
   <Import Project="..\AdaptiveCards.Xaml.Shared\AdaptiveCards.Xaml.Shared.projitems" Label="Shared" />
 
 </Project>

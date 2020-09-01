@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using AdaptiveCards.Rendering.Wpf;
+using AdaptiveCards.Xaml.XamarinForms;
 using Microsoft.MarkedNet;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -11,9 +12,9 @@ namespace AdaptiveCards.Rendering
 
     public static partial class XamlTextBlock
     {
-        public static Xamarin.Forms.TextBlock CreateControl(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
+        public static TextBlock CreateControl(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            var uiTextBlock = new Xamarin.Forms.TextBlock();
+            var uiTextBlock = new TextBlock();
 
             var text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
 

@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Controls;
 #elif XAMARIN
+using AdaptiveCards.Xaml.XamarinForms;
 using Xamarin.Forms;
 using FrameworkElement = Xamarin.Forms.View;
 #endif

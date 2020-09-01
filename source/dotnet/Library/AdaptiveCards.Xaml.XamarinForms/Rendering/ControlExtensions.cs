@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Xamarin.Forms;
+using AdaptiveCards.Xaml.XamarinForms;
 
 namespace AdaptiveCards.Rendering
 {
@@ -32,17 +33,17 @@ namespace AdaptiveCards.Rendering
             control.Children.Add(item);
         }
 
-        public static void SetColor(this Xamarin.Forms.TextBlock textBlock, string color, RenderContext context)
+        public static void SetColor(this TextBlock textBlock, string color, RenderContext context)
         {
             textBlock.TextColor = Color.FromHex(color);
         }
 
-        public static void SetBackgroundColor(this Xamarin.Forms.View view, string color, RenderContext context)
+        public static void SetBackgroundColor(this View view, string color, RenderContext context)
         {
             view.BackgroundColor = Color.FromHex(color);
         }
 
-        public static void SetHeight(this Xamarin.Forms.View view, double height)
+        public static void SetHeight(this View view, double height)
         {
             view.HeightRequest = height;
         }
@@ -62,7 +63,7 @@ namespace AdaptiveCards.Rendering
             //view.Button.BorderWidth = thickness;
         }
 
-        public static void SetFontWeight(this Xamarin.Forms.TextBlock text, int weight)
+        public static void SetFontWeight(this TextBlock text, int weight)
         {
             // text.font
         }

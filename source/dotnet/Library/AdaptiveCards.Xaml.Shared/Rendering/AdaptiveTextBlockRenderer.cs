@@ -12,6 +12,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
 #elif XAMARIN
+using AdaptiveCards.Xaml.XamarinForms;
 using Xamarin.Forms;
 using FrameworkElement = Xamarin.Forms.View;
 #endif

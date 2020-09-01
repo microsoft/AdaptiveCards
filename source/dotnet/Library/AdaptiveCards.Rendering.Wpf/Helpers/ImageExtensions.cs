@@ -28,6 +28,11 @@ namespace AdaptiveCards.Rendering.Wpf
             public AdaptiveImage AdaptiveImage {get; set;}
             public AdaptiveRenderContext AdaptiveContext {get; set;}
         }
+
+        public static void ToRadialImage(this Image image)
+        {
+        }
+
         /// <summary>
         /// Renders the element to a bitmap
         /// </summary>

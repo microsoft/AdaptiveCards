@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 #elif XAMARIN
+using AdaptiveCards.Xaml.XamarinForms;
 using FrameworkElement = Xamarin.Forms.View;
 using Xamarin.Forms;
 using Button = AdaptiveCards.Rendering.ContentButton;

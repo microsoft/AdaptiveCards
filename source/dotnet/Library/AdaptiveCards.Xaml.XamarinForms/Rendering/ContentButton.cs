@@ -22,14 +22,14 @@ namespace AdaptiveCards.Rendering
             set => TextBlock.Text = value;
         }
 
-        internal Xamarin.Forms.TextBlock TextBlock
+        internal AdaptiveCards.Xaml.XamarinForms.TextBlock TextBlock
         {
             get
             {
-                var textblock = Content as Xamarin.Forms.TextBlock;
+                var textblock = Content as AdaptiveCards.Xaml.XamarinForms.TextBlock;
                 if (textblock == null)
                 {
-                    Content = textblock = new Xamarin.Forms.TextBlock();
+                    Content = textblock = new AdaptiveCards.Xaml.XamarinForms.TextBlock();
                 }
                 return textblock;
             }

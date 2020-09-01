@@ -53,7 +53,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiImage.OpacityMask = mask;
 #elif XAMARIN
                 //TODO
-#endif 
+                uiImage.ToRadialImage();
+
+#endif
             }
             uiImage.Style = context.GetStyle(style);
 

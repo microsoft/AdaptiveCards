@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7BEDD04F-E95B-4936-B203-998F03B63167}</ProjectGuid>
+    <Description>AdaptiveCards.XamarinForms.Platforms</Description>
+    <PackageId>AdaptiveCards.Xamarin.Platforms</PackageId>
+    <PackageVersion>1.0.0</PackageVersion>
+    <Authors>davidthompson</Authors>
+    <DevelopmentDependency>false</DevelopmentDependency>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>AdaptiveCards.XamarinForms.Platforms</RootNamespace>
+    <UsePartialTypes>false</UsePartialTypes>
+    <AssemblyName>AdaptiveCards.Xamarin.Platforms.NuGet</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <OutputPath>bin\Debug</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="NuGet.Build.Packaging">
+      <Version>0.2.5-dev.8</Version>
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Xamarin.Forms">
+      <Version>4.7.0.1142</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AdaptiveCards.Xamarin.Platforms.Android\AdaptiveCards.XamarinForms.Platforms.Android.csproj">
+      <Project>{527F6674-7FF5-4A6F-B3FB-41245C379A70}</Project>
+      <Name>AdaptiveCards.XamarinForms.Platforms.Android</Name>
+      <SkipGetTargetFrameworkProperties></SkipGetTargetFrameworkProperties>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <AdditionalProperties></AdditionalProperties>
+    </ProjectReference>
+    <ProjectReference Include="..\AdaptiveCards.Xamarin.Platforms.iOS\AdaptiveCards.XamarinForms.Platforms.iOS.csproj">
+      <Project>{2F793F51-CC68-41F1-BE87-5431F0BFA196}</Project>
+      <Name>AdaptiveCards.XamarinForms.Platforms.iOS</Name>
+      <SkipGetTargetFrameworkProperties></SkipGetTargetFrameworkProperties>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <AdditionalProperties></AdditionalProperties>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.Common.targets" />
+  <Import Project="$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets" Condition="Exists('$(NuGetAuthoringPath)\NuGet.Packaging.Authoring.targets')" />
+</Project>

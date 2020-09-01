@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 #elif XAMARIN
+using AdaptiveCards.Xaml.XamarinForms;
 using Xamarin.Forms;
 using FrameworkElement = Xamarin.Forms.View;
 #endif

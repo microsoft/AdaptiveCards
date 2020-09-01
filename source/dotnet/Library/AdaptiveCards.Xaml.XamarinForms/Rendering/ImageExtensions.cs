@@ -7,21 +7,27 @@ namespace AdaptiveCards.Rendering
 {
     public static class ImageExtensions
     {
-        public static void SetSource(this Xamarin.Forms.Image image, string url, RenderContext context)
+        public static void ToRadialImage(this Image image)
+        {
+            Effect item = Effect.Resolve(Xaml.XamarinForms.ControlConstants.CircleEffectResolutionName);
+            image.Effects.Add(item);
+        }
+
+        public static void SetSource(this Image image, string url, RenderContext context)
         {
             if (string.IsNullOrWhiteSpace(url))
                 return;
             image.SetSource(new Uri(url));
         }
 
-        public static void SetBackgroundSource(this Xamarin.Forms.Grid grid, string url, RenderContext context)
+        public static void SetBackgroundSource(this Grid grid, string url, RenderContext context)
         {
             if (string.IsNullOrWhiteSpace(url))
                 return;
             grid.SetBackgroundImage(new Uri(url));
         }
 
-        public static void SetImageProperties(this Xamarin.Forms.Image imageview, AdaptiveImage image, RenderContext context)
+        public static void SetImageProperties(this Image imageview, AdaptiveImage image, RenderContext context)
         {
             switch (image.Size)
             {

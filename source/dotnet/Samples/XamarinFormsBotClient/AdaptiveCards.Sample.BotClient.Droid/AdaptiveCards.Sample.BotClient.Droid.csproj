@@ -75,6 +75,10 @@
       <Project>{FC31DF54-5DA6-46CA-86F5-817B351AF60F}</Project>
       <Name>AdaptiveCards.Sample.BotClient</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\AdaptiveCards.Xamarin.Platforms.Android\AdaptiveCards.XamarinForms.Platforms.Android.csproj">
+      <Project>{527F6674-7FF5-4A6F-B3FB-41245C379A70}</Project>
+      <Name>AdaptiveCards.XamarinForms.Platforms.Android</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CardsReaderImpl.cs" />

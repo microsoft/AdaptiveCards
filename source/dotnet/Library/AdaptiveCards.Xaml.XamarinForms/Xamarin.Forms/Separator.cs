@@ -1,4 +1,6 @@
-﻿namespace Xamarin.Forms
+﻿using Xamarin.Forms;
+
+namespace AdaptiveCards.Xaml.XamarinForms
 {
     public class Rectangle : BoxView
     {

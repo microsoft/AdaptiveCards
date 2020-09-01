@@ -27,6 +27,9 @@ namespace AdaptiveCards.XamarinForms.BotClient.iOS
             global::Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
 
             global::Xamarin.Forms.Forms.Init();
+
+            AdaptiveCards.XamarinForms.Platforms.iOS.Cards.Init();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);

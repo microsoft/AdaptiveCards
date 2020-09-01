@@ -24,6 +24,9 @@ namespace AdaptiveCards.XamarinForms.BotClient.Droid
             global::Xamarin.Forms.Forms.SetFlags("RadioButton_Experimental");
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            AdaptiveCards.XamarinForms.Platforms.Android.Cards.Init();
+
             LoadApplication(new App());
         }
     }

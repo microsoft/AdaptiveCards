@@ -4,6 +4,7 @@ using System.Windows;
 #if WPF
 using System.Windows.Controls;
 #elif XAMARIN
+using AdaptiveCards.Xaml.XamarinForms;
 using Xamarin.Forms;
 using FrameworkElement = Xamarin.Forms.View;
 #endif
