@@ -59,6 +59,13 @@ def projectInfo = {
         }
     }
 
+    developers {
+        developer {
+            id = "microsoft"
+            name = "adaptivecards"
+        }
+    }
+
     organization {
         name = 'Microsoft'
         url = 'https://microsoft.com/'
