@@ -44,7 +44,7 @@ task sourceJar(type: Jar) {
 
 def projectInfo = {
     name = 'Android Adaptive Cards Library'
-    description 'Android Adaptive Cards Lib'
+    description = 'Android Adaptive Cards Lib'
     url = 'https://github.com/Microsoft/AdaptiveCards'
 
     scm {
@@ -56,6 +56,13 @@ def projectInfo = {
             name = 'MIT'
             url = 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
             distribution = 'repo'
+        }
+    }
+
+    developers {
+        developer {
+            id = "microsoft"
+            name = "adaptivecards"
         }
     }
 
