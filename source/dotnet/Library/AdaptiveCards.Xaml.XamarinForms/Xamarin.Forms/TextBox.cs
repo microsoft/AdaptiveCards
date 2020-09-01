@@ -1,8 +1,8 @@
-﻿using Xamarin.Forms;
+using Xamarin.Forms;
 
 namespace AdaptiveCards.Xaml.XamarinForms
 {
-    public class TextBox : Editor
+    public class TextBox : Entry
     {
         public bool AcceptsReturn
         {
