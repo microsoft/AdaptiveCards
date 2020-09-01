@@ -1,20 +1,3 @@
-export const sampleData = {
-    title: "Publish Adaptive Card Schema",
-    description: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-    creator: {
-        name: "Matt Hidinger",
-        profileImage: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
-    },
-    createdUtc: "2017-02-14T06:08:39Z",
-    viewUrl: "https://adaptivecards.io",
-    properties: [
-        { key: "Board", value: "Adaptive Cards" },
-        { key: "List", value: "Backlog" },
-        { key: "Assigned to", value: "Matt Hidinger" },
-        { key: "Due date", value: "Not set" }
-    ]
-};
-
 /*
     autoRefresh: {
         userIds: [ "john@contoso.com", "jane@contoso.com" ],
@@ -34,7 +17,7 @@ export const sampleCard = {
             type: "TextBlock",
             size: "Medium",
             weight: "Bolder",
-            text: "${title}"
+            text: "Publish Adaptive Card Schema"
         },
         {
             type: "ColumnSet",
@@ -45,7 +28,7 @@ export const sampleCard = {
                         {
                             type: "Image",
                             style: "Person",
-                            url: "${creator.profileImage}",
+                            url: "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
                             size: "Small"
                         }
                     ],
@@ -57,13 +40,13 @@ export const sampleCard = {
                         {
                             type: "TextBlock",
                             weight: "Bolder",
-                            text: "${creator.name}",
+                            text: "Matt Hidinger",
                             wrap: true
                         },
                         {
                             type: "TextBlock",
                             spacing: "None",
-                            text: "Created {{DATE(${createdUtc},SHORT)}}",
+                            text: "Created {{DATE(2017-02-14T06:08:39Z,SHORT)}}",
                             isSubtle: true,
                             wrap: true
                         }
@@ -74,17 +57,16 @@ export const sampleCard = {
         },
         {
             type: "TextBlock",
-            text: "${description}",
+            text: "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
             wrap: true
         },
         {
             type: "FactSet",
             facts: [
-                {
-                    $data: "${properties}",
-                    title: "${key}:",
-                    value: "${value}"
-                }
+                { title: "Board", value: "Adaptive Cards" },
+                { title: "List", value: "Backlog" },
+                { title: "Assigned to", value: "Matt Hidinger" },
+                { title: "Due date", value: "Not set" }
             ]
         }
     ],

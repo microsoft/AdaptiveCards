@@ -1,19 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as AAF from "adaptivecards-aaf";
 import * as Shared from "./shared";
-import "adaptivecards-aaf/dist/aaf.css";
-import "adaptivecards-aaf/dist/adaptivecards.css";
+import * as Adaptive from "adaptivecards";
+import "adaptivecards/dist/adaptivecards.css";
 import { TestHttpChannelAdapter } from "./test-http-channel-adapter";
 
 window.onload = function() {
-    AAF.GlobalSettings.allowTemplates = true;
-    AAF.GlobalSettings.refresh.mode = AAF.RefreshMode.Automatic;
+    Adaptive.GlobalSettings.applets.refresh.mode = Adaptive.RefreshMode.Automatic;
 
-    let sampleCardAndData = Shared.sampleCard;
-    sampleCardAndData["$data"] = Shared.sampleData;
-
-    let applet = new AAF.AdaptiveApplet();
+    let applet = new Adaptive.AdaptiveApplet();
     /*
     applet.onCardChanged = (sender: AAF.AdaptiveApplet) => {
         if (sender.card) {
@@ -28,7 +23,7 @@ window.onload = function() {
 
     applet.channelAdapter = new TestHttpChannelAdapter("https://acv2testbot.azurewebsites.net/aaftestbot/invoke");
 
-    applet.setCard(sampleCardAndData);
+    applet.setCard(Shared.sampleCard);
     // applet.onActivityRequestFailed = (sender, response) => { return 2000; }
     applet.onActivityRequestSucceeded = (sender, response) => {
         if (typeof response.content === "string") {

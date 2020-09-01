@@ -17,12 +17,9 @@
 		"typescript": "^3.2.2",
 		"webpack": "^4.27.1",
 		"webpack-cli": "^3.1.2",
-		"webpack-dev-server": "^3.1.14",
-		"adaptivecards": "^2.0.0-rc.0",
-		"adaptivecards-templating": "^1.0.0-rc.0",
-		"adaptive-expressions": "^4.9.2"
+		"webpack-dev-server": "^3.1.14"
 	},
 	"dependencies": {
-		"adaptivecards-aaf": "^0.1.0-alpha.1"
+		"adaptivecards": "^2.0.0-rc.0"
 	}
 }

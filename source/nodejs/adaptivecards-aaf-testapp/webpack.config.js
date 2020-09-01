@@ -1,8 +1,6 @@
 const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -39,14 +37,6 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
-            //new CleanWebpackPlugin(['dist']),
-            /*
-			new CopyWebpackPlugin([{
-				from: 'node_modules/adaptivecards-designer/dist/containers/*',
-				to: 'containers/',
-				flatten: true
-            }]),
-            */
             new HtmlWebpackPlugin({
 				title: "AAF JavaScript Runtime test application",
 				template: "./index.html"

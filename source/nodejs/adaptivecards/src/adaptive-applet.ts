@@ -1,8 +1,11 @@
-import * as Adaptive from "adaptivecards";
-import * as Templating from "adaptivecards-templating";
+import { GlobalSettings } from "./shared";
+import * as Enums from "./enums";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 import { Strings } from "./strings";
+import { SubmitAction, SerializationContext, CardElement, AdaptiveCard, Action, GlobalRegistry, Input } from "./card-elements";
+import { StringProperty, Versions, property, PropertyDefinition, PropertyBag, SerializableObject, Version, SerializableObjectProperty } from "./serialization";
+import { CardObjectRegistry } from "./registry";
 
 function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
@@ -10,17 +13,17 @@ function clearElementChildren(element: HTMLElement) {
     }
 }
 
-function logEvent(level: LogLevel, message?: any, ...optionalParams: any[]) {
-    if (GlobalSettings.logEnabled) {
-        if (GlobalSettings.onLogEvent) {
-            GlobalSettings.onLogEvent(level, message, optionalParams);
+function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]) {
+    if (GlobalSettings.applets.logEnabled) {
+        if (GlobalSettings.applets.onLogEvent) {
+            GlobalSettings.applets.onLogEvent(level, message, optionalParams);
         }
         else {
             switch (level) {
-                case LogLevel.Warning:
+                case Enums.LogLevel.Warning:
                     console.warn(message, optionalParams);
                     break;
-                case LogLevel.Error:
+                case Enums.LogLevel.Error:
                     console.error(message, optionalParams);
                     break;
                 default:
@@ -31,47 +34,12 @@ function logEvent(level: LogLevel, message?: any, ...optionalParams: any[]) {
     }
 }
 
-export enum RefreshMode {
-    Disabled,
-    Manual,
-    Automatic
-}
-
-export enum LogLevel {
-    Info,
-    Warning,
-    Error
-}
-
-export type Refresh = {
-    mode: RefreshMode;
-    timeBetweenAutomaticRefreshes: number;
-    maximumConsecutiveRefreshes: number;
-}
-
-export class GlobalSettings {
-    static logEnabled: boolean = true;
-    static logLevel: LogLevel = LogLevel.Error;
-    static maximumRetryAttempts: number = 3;
-    static defaultTimeBetweenRetryAttempts: number = 3000; // 3 seconds
-    static authPromptWidth: number = 400;
-    static authPromptHeight: number = 600;
-    static allowTemplates: boolean = false;
-    static readonly refresh: Refresh = {
-        mode: RefreshMode.Manual,
-        timeBetweenAutomaticRefreshes: 3000, // 3 seconds
-        maximumConsecutiveRefreshes: 3
-    };
-
-    static onLogEvent?: (level: LogLevel, message?: any, ...optionalParams: any[]) => void;
-}
-
-export class ExecuteAction extends Adaptive.SubmitAction {
+export class ExecuteAction extends SubmitAction {
     //#region Schema
 
-    static readonly verbProperty = new Adaptive.StringProperty(Adaptive.Versions.v1_2, "verb");
+    static readonly verbProperty = new StringProperty(Versions.v1_2, "verb");
 
-    @Adaptive.property(ExecuteAction.verbProperty)
+    @property(ExecuteAction.verbProperty)
     verb: string;
 
     //#endregion
@@ -81,8 +49,8 @@ export class ExecuteAction extends Adaptive.SubmitAction {
     }
 }
 
-export class RefreshActionProperty extends Adaptive.PropertyDefinition {
-    parse(sender: RefreshDefinition, source: Adaptive.PropertyBag, context: Adaptive.SerializationContext): ExecuteAction | undefined {
+export class RefreshActionProperty extends PropertyDefinition {
+    parse(sender: RefreshDefinition, source: PropertyBag, context: SerializationContext): ExecuteAction | undefined {
         let action = context.parseAction(
             sender.parent,
             source[this.name],
@@ -95,28 +63,28 @@ export class RefreshActionProperty extends Adaptive.PropertyDefinition {
         else {
             context.logParseEvent(
                 sender,
-                Adaptive.ValidationEvent.ActionTypeNotAllowed,
+                Enums.ValidationEvent.ActionTypeNotAllowed,
                 "The \"refresh\" property must have its \"action\" field defined set to an Action.Execute object");
 
             return undefined;
         }
     }
 
-    toJSON(sender: Adaptive.SerializableObject, target: Adaptive.PropertyBag, value: ExecuteAction | undefined, context: Adaptive.SerializationContext) {
+    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
         context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
     }
 
-    constructor(readonly targetVersion: Adaptive.Version, readonly name: string) {
+    constructor(readonly targetVersion: Version, readonly name: string) {
         super(targetVersion, name, undefined);
     }
 }
 
-export class RefreshDefinition extends Adaptive.SerializableObject {
+export class RefreshDefinition extends SerializableObject {
     //#region Schema
 
-    static readonly actionProperty = new RefreshActionProperty(Adaptive.Versions.v1_0, "action");
+    static readonly actionProperty = new RefreshActionProperty(Versions.v1_0, "action");
 
-    @Adaptive.property(RefreshDefinition.actionProperty)
+    @property(RefreshDefinition.actionProperty)
     get action(): ExecuteAction {
         return this.getValue(RefreshDefinition.actionProperty);
     }
@@ -135,15 +103,15 @@ export class RefreshDefinition extends Adaptive.SerializableObject {
 
     //#endregion
 
-    parent: Adaptive.CardElement;
+    parent: CardElement;
 }
 
-export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
+export class AdaptiveAppletCard extends AdaptiveCard {
     //#region Schema
 
-    static readonly refreshProperty = new Adaptive.SerializableObjectProperty(Adaptive.Versions.v1_0, "refresh", RefreshDefinition, true);
+    static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_0, "refresh", RefreshDefinition, true);
 
-    @Adaptive.property(AdaptiveAppletCard.refreshProperty)
+    @property(AdaptiveAppletCard.refreshProperty)
     get refresh(): RefreshDefinition | undefined {
         return this.getValue(AdaptiveAppletCard.refreshProperty);
     }
@@ -164,25 +132,24 @@ export class AdaptiveAppletCard extends Adaptive.AdaptiveCard {
 }
 
 export class AdaptiveApplet {
-    private static _elementsRegistry = new Adaptive.CardObjectRegistry<Adaptive.CardElement>();
-    private static _actionsRegistry = new Adaptive.CardObjectRegistry<Adaptive.Action>();
+    private static _elementsRegistry = new CardObjectRegistry<CardElement>();
+    private static _actionsRegistry = new CardObjectRegistry<Action>();
 
     static initialize() {
-        Adaptive.GlobalRegistry.populateWithDefaultElements(AdaptiveApplet._elementsRegistry);
-        Adaptive.GlobalRegistry.populateWithDefaultActions(AdaptiveApplet._actionsRegistry);
+        GlobalRegistry.populateWithDefaultElements(AdaptiveApplet._elementsRegistry);
+        GlobalRegistry.populateWithDefaultActions(AdaptiveApplet._actionsRegistry);
 
         AdaptiveApplet._actionsRegistry.unregister("Action.Submit");
-        AdaptiveApplet._actionsRegistry.register("Action.Execute", ExecuteAction, Adaptive.Versions.v1_2);
+        AdaptiveApplet._actionsRegistry.register("Action.Execute", ExecuteAction, Versions.v1_2);
     }
 
     private _card?: AdaptiveAppletCard;
     private _cardPayload: any;
-    private _cardData: any;
     private _allowAutomaticCardUpdate: boolean = false;
     private _refreshButtonHostElement: HTMLElement;
     private _cardHostElement: HTMLElement;
 
-    private displayCard(card: Adaptive.AdaptiveCard) {
+    private displayCard(card: AdaptiveCard) {
         if (card.renderedElement) {
             clearElementChildren(this._cardHostElement);
 
@@ -206,8 +173,8 @@ export class AdaptiveApplet {
         else {
             let cardPayload: object;
             
-            if (GlobalSettings.refresh.mode === RefreshMode.Automatic) {
-                let autoRefreshPausedMessage = Strings.refresh.automaticRefreshPaused;
+            if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic) {
+                let autoRefreshPausedMessage = Strings.runtime.automaticRefreshPaused();
 
                 if (autoRefreshPausedMessage[autoRefreshPausedMessage.length - 1] !== " ") {
                     autoRefreshPausedMessage += " ";
@@ -224,7 +191,7 @@ export class AdaptiveApplet {
                                 autoRefreshPausedMessage,
                                 {
                                     type: "TextRun",
-                                    text: Strings.refresh.clckToRestartAutomaticRefresh,
+                                    text: Strings.runtime.clckToRestartAutomaticRefresh(),
                                     selectAction: {
                                         type: "Action.Submit",
                                         id: "refreshCard"
@@ -246,7 +213,7 @@ export class AdaptiveApplet {
                             inlines: [
                                 {
                                     type: "TextRun",
-                                    text: Strings.refresh.refreshThisCard,
+                                    text: Strings.runtime.refreshThisCard(),
                                     selectAction: {
                                         type: "Action.Submit",
                                         id: "refreshCard"
@@ -258,9 +225,9 @@ export class AdaptiveApplet {
                 };
             }
 
-            let card = new Adaptive.AdaptiveCard();
-            card.parse(cardPayload, new Adaptive.SerializationContext(Adaptive.Versions.v1_2));
-            card.onExecuteAction = (action: Adaptive.Action) => {
+            let card = new AdaptiveCard();
+            card.parse(cardPayload, new SerializationContext(Versions.v1_2));
+            card.onExecuteAction = (action: Action) => {
                 if (action.id === "refreshCard") {
                     clearElementChildren(this._refreshButtonHostElement);
                     
@@ -311,7 +278,7 @@ export class AdaptiveApplet {
         }
     }
 
-    private createMagicCodeInputCard(attemptNumber: number): Adaptive.AdaptiveCard {
+    private createMagicCodeInputCard(attemptNumber: number): AdaptiveCard {
         let payload = {
             type: "AdaptiveCard",
             version: "1.0",
@@ -358,7 +325,7 @@ export class AdaptiveApplet {
             ]
         };
 
-        let card = new Adaptive.AdaptiveCard();
+        let card = new AdaptiveCard();
         card.parse(payload);
 
         return card;
@@ -366,60 +333,38 @@ export class AdaptiveApplet {
 
     private cancelAutomaticRefresh() {
         if (this._allowAutomaticCardUpdate) {
-            logEvent(LogLevel.Warning, "Automatic card refresh has been cancelled as a result of the user interacting with the card.");
+            logEvent(Enums.LogLevel.Warning, "Automatic card refresh has been cancelled as a result of the user interacting with the card.");
         }
 
         this._allowAutomaticCardUpdate = false;
     }
 
     private internalSetCard(payload: any, consecutiveRefreshes: number) {
-        if (typeof payload === "object") {
-            if (payload["type"] === "AdaptiveCard") {
-                if (payload["$data"] !== undefined) {
-                    this._cardData = payload["$data"];
-                    delete payload["$data"];
-                }
-
-                this._cardPayload = payload;
-            }
-            else {
-                this._cardData = payload;
-            }
+        if (typeof payload === "object" && payload["type"] === "AdaptiveCard") {
+            this._cardPayload = payload;
         }
 
         if (this._cardPayload) {
             try {
                 let card = new AdaptiveAppletCard();
 
-                let serializationContext = new Adaptive.SerializationContext();
+                let serializationContext = new SerializationContext();
                 serializationContext.setElementRegistry(AdaptiveApplet._elementsRegistry);
                 serializationContext.setActionRegistry(AdaptiveApplet._actionsRegistry);
 
-                if (this._cardData && GlobalSettings.allowTemplates) {
-                    let template = new Templating.Template(this._cardPayload);
-                    let expandedCardPayload = template.expand(
-                        {
-                            $root: this._cardData
-                        }
-                    );
-
-                    card.parse(expandedCardPayload, serializationContext);
-                }
-                else {
-                    card.parse(this._cardPayload, serializationContext);
-                }
+                card.parse(this._cardPayload, serializationContext);
 
                 let doChangeCard = this.onCardChanging ? this.onCardChanging(this, this._cardPayload) : true;
 
                 if (doChangeCard) {
                     this._card = card;
-                    this._card.onExecuteAction = (action: Adaptive.Action) => {
+                    this._card.onExecuteAction = (action: Action) => {
                         // If the user takes an action, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
 
                         this.internalExecuteAction(action, ActivityInvocationTrigger.Manual, 0);
                     }
-                    this._card.onInputValueChanged = (input: Adaptive.Input) => {
+                    this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
                     }
@@ -434,14 +379,14 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.refresh) {
-                            if (GlobalSettings.refresh.mode === RefreshMode.Automatic && consecutiveRefreshes < GlobalSettings.refresh.maximumConsecutiveRefreshes) {
-                                if (GlobalSettings.refresh.timeBetweenAutomaticRefreshes <= 0) {
-                                    logEvent(LogLevel.Info, "Triggering automatic card refresh number " + (consecutiveRefreshes + 1));
+                            if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic && consecutiveRefreshes < GlobalSettings.applets.refresh.maximumConsecutiveRefreshes) {
+                                if (GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes <= 0) {
+                                    logEvent(Enums.LogLevel.Info, "Triggering automatic card refresh number " + (consecutiveRefreshes + 1));
 
                                     this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
                                 }
                                 else {
-                                    logEvent(LogLevel.Info, "Scheduling automatic card refresh number " + (consecutiveRefreshes + 1) + " in " + GlobalSettings.refresh.timeBetweenAutomaticRefreshes + "ms");
+                                    logEvent(Enums.LogLevel.Info, "Scheduling automatic card refresh number " + (consecutiveRefreshes + 1) + " in " + GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes + "ms");
 
                                     let action = this._card.refresh.action;
 
@@ -453,16 +398,16 @@ export class AdaptiveApplet {
                                                 this.internalExecuteAction(action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
                                             }
                                         },
-                                        GlobalSettings.refresh.timeBetweenAutomaticRefreshes
+                                        GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes
                                     )
                                 }
                             }
-                            else if (GlobalSettings.refresh.mode !== RefreshMode.Disabled) {
+                            else if (GlobalSettings.applets.refresh.mode !== Enums.RefreshMode.Disabled) {
                                 if (consecutiveRefreshes > 0) {
-                                    logEvent(LogLevel.Warning, "Stopping automatic refreshes after " + consecutiveRefreshes + " consecutive refreshes. Showing a manual refresh button instead.");
+                                    logEvent(Enums.LogLevel.Warning, "Stopping automatic refreshes after " + consecutiveRefreshes + " consecutive refreshes. Showing a manual refresh button instead.");
                                 }
                                 else {
-                                    logEvent(LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled. Showing manual refresh button instead.");
+                                    logEvent(Enums.LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled. Showing manual refresh button instead.");
                                 }
 
                                 this.displayRefreshButton(this._card.refresh.action);
@@ -473,12 +418,12 @@ export class AdaptiveApplet {
             }
             catch (error) {
                 // Ignore all errors
-                logEvent(LogLevel.Error, "setCard: " + error);
+                logEvent(Enums.LogLevel.Error, "setCard: " + error);
             }
         }
     }
 
-    private internalExecuteAction(action: Adaptive.Action, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number) {
+    private internalExecuteAction(action: Action, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number) {
         if (this.channelAdapter) {
             if (action instanceof ExecuteAction) {
                 let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
@@ -503,7 +448,7 @@ export class AdaptiveApplet {
     }
 
     private activityRequestFailed(response: ActivityResponse): number {
-        return this.onActivityRequestFailed ? this.onActivityRequestFailed(this, response) : GlobalSettings.defaultTimeBetweenRetryAttempts;
+        return this.onActivityRequestFailed ? this.onActivityRequestFailed(this, response) : GlobalSettings.applets.defaultTimeBetweenRetryAttempts;
     }
 
     private async internalSendActivityRequestAsync(request: ActivityRequest) {
@@ -521,17 +466,17 @@ export class AdaptiveApplet {
             let response: ActivityResponse | undefined = undefined;
 
             if (request.attemptNumber === 0) {
-                logEvent(LogLevel.Info, "Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+                logEvent(Enums.LogLevel.Info, "Sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
             }
             else {
-                logEvent(LogLevel.Info, "Re-sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
+                logEvent(Enums.LogLevel.Info, "Re-sending activity request to channel (attempt " + (request.attemptNumber + 1) + ")");
             }
 
             try {
                 response = await this.channelAdapter.sendRequestAsync(request);
             }
             catch (error) {
-                logEvent(LogLevel.Error, "Activity request failed: " + error);
+                logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
 
                 this.renderedElement.removeChild(overlay);
 
@@ -551,37 +496,37 @@ export class AdaptiveApplet {
                         }
 
                         if (typeof response.content === "string") {
-                            logEvent(LogLevel.Info, "The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
+                            logEvent(Enums.LogLevel.Info, "The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
                         }
                         else if (typeof response.content === "object") {
                             switch (response.content["type"]) {
                                 case "AdaptiveCard":
-                                    logEvent(LogLevel.Info, "The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
+                                    logEvent(Enums.LogLevel.Info, "The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
 
                                     this.internalSetCard(response.content, request.consecutiveRefreshes);
 
                                     break;
                                 case "Activity.InvocationError.Unauthorized":
-                                    logEvent(LogLevel.Info, "The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
+                                    logEvent(Enums.LogLevel.Info, "The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
 
-                                    if ((request.attemptNumber + 1) <= GlobalSettings.maximumRetryAttempts) {
+                                    if ((request.attemptNumber + 1) <= GlobalSettings.applets.maximumRetryAttempts) {
                                         let loginUrl: URL;
 
                                         try {
                                             loginUrl = new URL(response.content["loginUrl"]);
                                         }
                                         catch (e) {
-                                            logEvent(LogLevel.Error, "Invalid loginUrl: " + response.content["loginUrl"]);
+                                            logEvent(Enums.LogLevel.Error, "Invalid loginUrl: " + response.content["loginUrl"]);
 
                                             throw e;
                                         }
 
-                                        logEvent(LogLevel.Info, "Login required at " + loginUrl.toString());
+                                        logEvent(Enums.LogLevel.Info, "Login required at " + loginUrl.toString());
 
                                         let magicCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
                                         magicCodeInputCard.render();
-                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Adaptive.Action) => {
-                                            if (this.card && submitMagicCodeAction instanceof Adaptive.SubmitAction) {
+                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Action) => {
+                                            if (this.card && submitMagicCodeAction instanceof SubmitAction) {
                                                 switch (submitMagicCodeAction.id) {
                                                     case "submitMagicCode":
                                                         let magicCode: string | undefined = undefined;
@@ -604,13 +549,13 @@ export class AdaptiveApplet {
 
                                                         break;
                                                     case "cancel":
-                                                        logEvent(LogLevel.Warning, "Authentication cancelled by user.");
+                                                        logEvent(Enums.LogLevel.Warning, "Authentication cancelled by user.");
 
                                                         this.displayCard(this.card);
 
                                                         break;
                                                     default:
-                                                        logEvent(LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
+                                                        logEvent(Enums.LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
 
                                                         alert("Something went wrong. This action can't be handled.");
 
@@ -621,13 +566,13 @@ export class AdaptiveApplet {
 
                                         this.displayCard(magicCodeInputCard);
 
-                                        let left = window.screenX + (window.outerWidth - GlobalSettings.authPromptWidth) / 2;
-                                        let top = window.screenY + (window.outerHeight - GlobalSettings.authPromptHeight) / 2;
+                                        let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
+                                        let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
 
-                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.authPromptWidth},height=${GlobalSettings.authPromptHeight},left=${left},top=${top}`);
+                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`);
                                     }
                                     else {
-                                        logEvent(LogLevel.Error, "Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+                                        logEvent(Enums.LogLevel.Error, "Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
 
                                         alert("Authentication failed.");
                                     }
@@ -650,8 +595,8 @@ export class AdaptiveApplet {
                     default:
                         let retryIn: number = this.activityRequestFailed(response);
 
-                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.maximumRetryAttempts) {
-                            logEvent(LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
+                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.applets.maximumRetryAttempts) {
+                            logEvent(Enums.LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
 
                             request.attemptNumber++;
 
@@ -664,7 +609,7 @@ export class AdaptiveApplet {
                                 });
                         }
                         else {
-                            logEvent(LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+                            logEvent(Enums.LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
 
                             this.renderedElement.removeChild(overlay);
 
