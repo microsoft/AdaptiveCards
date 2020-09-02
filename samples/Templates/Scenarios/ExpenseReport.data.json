@@ -79,7 +79,7 @@
 				{
 					"customfield_id": "16367000000277001",
 					"label": "Other Name",
-					"value": "Leg 2 on Tue,Jun 19th, 2019 at 7:15 PM."
+					"value": "Leg 2 on Tue, Jun 19th, 2019 at 7:15 PM."
 				}				
 			],
 			"project_id": "27927000001243001",
@@ -205,7 +205,7 @@
 		{
 			"expense_id": "16367000000083065",
 			"date": "2019-06-21",
-			"description": "Excess Bagage Cost",
+			"description": "Excess Baggage Cost",
 			"created_by": "636967159200000000",
 			"created_by_name": "PATRICIA",
 			"employee_number": "E001",
