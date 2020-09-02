@@ -134,6 +134,7 @@ function measure:
         end
         if width is stretch
             measure Column as if width is auto
+            add column width to stretch width
             increase stretch counter
         end
         if width is auto
@@ -151,11 +152,11 @@ function measure:
             end
         end
     else if total width < width:
-        increase factor = (width - total width) / stretch counter
+        stretch column width = (stretch width + total width - width) / stretch counter
         
         for each Column in ColumnSet
             if width is stretch
-                measure Column with measuredColumn * increase factor
+                measure Column with stretch column width
             end
         end
     end
