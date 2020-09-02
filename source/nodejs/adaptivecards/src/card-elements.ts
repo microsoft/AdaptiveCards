@@ -5010,7 +5010,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
 
             if (styleDefinition.backgroundColor) {
-                this.renderedElement.style.backgroundColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
+                const bgColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
+                this.renderedElement.style.backgroundColor = bgColor;
+                this.renderedElement.style.border = "1px solid " + bgColor;
             }
         }
     }
