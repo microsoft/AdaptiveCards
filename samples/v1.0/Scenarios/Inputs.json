@@ -10,7 +10,9 @@
 			"items": [
 				{
 					"type": "TextBlock",
-					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [[NEW SAMPLE NAME]] for an updated version of this card.",
+					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. 
+					Because of this, it doesn't properly support accessibility. It's included here for historical purposes. 
+					Please see [Inputs With Labels](https://adaptivecards.io/samples/InputsWithLabels.html for an updated version of this card.",
 					"wrap": true
 				}
 			]
