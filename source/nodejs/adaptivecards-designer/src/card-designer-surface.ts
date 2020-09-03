@@ -237,8 +237,6 @@ export class CardDesignerSurface {
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
                 }
-
-                this._designerSurface.focus();
             }
 
             this.updatePeerCommandsLayout();
@@ -271,6 +269,43 @@ export class CardDesignerSurface {
         }
     }
 
+    private generateCardToRender(asPreview: boolean): Adaptive.AdaptiveCard {
+        let cardToRender: Adaptive.AdaptiveCard = this.card;
+
+        if (asPreview) {
+            let inputPayload = this.card.toJSON(this._serializationContext);
+
+            cardToRender = new Adaptive.AdaptiveCard();
+            cardToRender.hostConfig = this.card.hostConfig;
+
+            let outputPayload = inputPayload;
+
+            if (Shared.GlobalSettings.enableDataBindingSupport) {
+                try {
+                    let template = new ACData.Template(inputPayload);
+
+                    let evaluationContext: ACData.IEvaluationContext;
+
+                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
+                        evaluationContext = { $root: this.context.sampleData };
+                    }
+                    else {
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                    }
+
+                    outputPayload = template.expand(evaluationContext);
+                }
+                catch (e) {
+                    console.log("Template expansion error: " + e.message);
+                }
+            }
+
+            cardToRender.parse(outputPayload, this._serializationContext);
+        }
+
+        return cardToRender;
+    }
+
     private renderCard() {
         this._cardHost.innerHTML = "";
 
@@ -286,13 +321,9 @@ export class CardDesignerSurface {
             this.onCardValidated(allValidationEvents);
         }
 
-        let cardToRender: Adaptive.AdaptiveCard = this.card;
+        let cardToRender = this.generateCardToRender(this.isPreviewMode);
 
         if (this.isPreviewMode) {
-            let inputPayload = this.card.toJSON(this._serializationContext);
-
-            cardToRender = new Adaptive.AdaptiveCard();
-            cardToRender.hostConfig = this.card.hostConfig;
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
                 let message: string = "Action executed\n";
                 message += "    Title: " + action.title + "\n";
@@ -323,30 +354,6 @@ export class CardDesignerSurface {
 
                 alert(message);
             };
-
-            let outputPayload = inputPayload;
-
-            if (Shared.GlobalSettings.enableDataBindingSupport) {
-                try {
-                    let template = new ACData.Template(inputPayload);
-
-                    let evaluationContext: ACData.IEvaluationContext;
-
-                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
-                    }
-                    else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
-                    }
-
-                    outputPayload = template.expand(evaluationContext);
-                }
-                catch (e) {
-                    console.log("Template expansion error: " + e.message);
-                }
-            }
-
-            cardToRender.parse(outputPayload, new Adaptive.SerializationContext());
         }
 
         let renderedCard = cardToRender.render();
@@ -734,6 +741,10 @@ export class CardDesignerSurface {
         catch (e) {
             console.warn("Invalid JSON string. " + e);
         }
+    }
+
+    getBoundCardPayloadAsObject(): object {
+        return this.generateCardToRender(true).toJSON(this._serializationContext);
     }
 
     updateLayout(isFullRefresh: boolean = true) {

@@ -9,25 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.DateInput;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TimeInput;
 import io.adaptivecards.renderer.inputhandler.TimeInputHandler;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 
-import java.sql.Time;
 import java.text.DateFormat;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.Vector;
 
 import static android.text.InputType.TYPE_NULL;
 
@@ -56,7 +50,7 @@ public class TimeInputRenderer extends TextInputRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         if (!hostConfig.GetSupportsInteractivity())
         {
@@ -64,22 +58,17 @@ public class TimeInputRenderer extends TextInputRenderer
             return null;
         }
 
-        TimeInput timeInput = null;
-        if (baseCardElement instanceof TimeInput)
-        {
-            timeInput = (TimeInput) baseCardElement;
-        }
-        else if ((timeInput = TimeInput.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TimeInput object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, timeInput.GetSpacing(), timeInput.GetSeparator(), hostConfig, true /* horizontal line */);
+        TimeInput timeInput = Util.castTo(baseCardElement, TimeInput.class);
 
         TimeInputHandler timeInputHandler = new TimeInputHandler(timeInput, fragmentManager);
-        String time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
+        String time = "";
+        String value = timeInput.GetValue();
+        if (RendererUtil.isValidTime(value) && !value.isEmpty())
+        {
+            time = TimeInputRenderer.getTimeFormat().format(RendererUtil.getTime(timeInput.GetValue()).getTime());
+        }
 
-        TagContent tagContent = new TagContent(timeInput, timeInputHandler, separator, viewGroup);
+        TagContent tagContent = new TagContent(timeInput, timeInputHandler);
         EditText editText = renderInternal(
                 renderedCard,
                 context,
@@ -89,7 +78,9 @@ public class TimeInputRenderer extends TextInputRenderer
                 timeInput.GetPlaceholder(),
                 timeInputHandler,
                 hostConfig,
-                tagContent);
+                tagContent,
+                renderArgs,
+                (!timeInput.GetMin().isEmpty()) || (!timeInput.GetMax().isEmpty()) /* hasSpecificValidation */);
         editText.setRawInputType(TYPE_NULL);
         editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
@@ -108,7 +99,6 @@ public class TimeInputRenderer extends TextInputRenderer
 
                 FragmentManager fm = timeInputHandler.getFragmentManager();
                 timePickerFragment.show(fm, TITLE);
-
             }
         });
 

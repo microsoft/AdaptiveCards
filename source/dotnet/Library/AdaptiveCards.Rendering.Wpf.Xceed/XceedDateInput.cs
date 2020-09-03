@@ -7,7 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
-
     public static class XceedDateInput
     {
         static Regex textFunctionRegex;
@@ -40,7 +39,9 @@ namespace AdaptiveCards.Rendering.Wpf
                     datePicker.DisplayDateEnd = maxValue;
                 datePicker.Style = context.GetStyle("Adaptive.Input.Date");
                 datePicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => ToIso8601Date(datePicker.Text));
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedDateInputValue(input, datePicker));
+
                 return datePicker;
             }
             else
@@ -51,16 +52,5 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        static string ToIso8601Date(string text)
-        {
-            if (string.IsNullOrEmpty(text))
-                return string.Empty;
-
-            DateTime dateTime;
-            if (DateTime.TryParse(text, null, System.Globalization.DateTimeStyles.RoundtripKind, out dateTime))
-                return dateTime.ToString("yyyy-MM-dd");
-
-            return text;
-        }
     }
 }

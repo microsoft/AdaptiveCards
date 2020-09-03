@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 import * as AC from "adaptivecards";
-import { initializeIcons } from "office-ui-fabric-react";
+import { initializeIcons } from "@fluentui/react";
 import * as Components from ".";
 import * as Actions from "../actions";
 

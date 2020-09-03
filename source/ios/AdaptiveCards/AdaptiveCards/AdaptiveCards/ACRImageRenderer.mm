@@ -103,6 +103,7 @@
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
 
     if (!view) {
+        [viewGroup addSubview:wrappingview];
         return wrappingview;
     }
     wrappingview.desiredContentSize = intrinsicContentSize;
@@ -145,7 +146,7 @@
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;

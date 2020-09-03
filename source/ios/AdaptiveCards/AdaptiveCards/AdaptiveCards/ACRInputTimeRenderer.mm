@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRDateTextField.h"
+#import "ACRInputLabelViewPrivate.h"
 #import "UtiliOS.h"
 
 @implementation ACRInputTimeRenderer
@@ -24,7 +25,7 @@
     return ACRTimeInput;
 }
 
-- (UIView *)render:(UIView *)viewGroup
+- (UIView *)render:(UIView<ACRIContentHoldingView> *)viewGroup
            rootView:(ACRView *)rootView
              inputs:(NSMutableArray *)inputs
     baseCardElement:(ACOBaseCardElement *)acoElem
@@ -34,25 +35,27 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
-    UIView *renderedview = field;
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field viewGroup:viewGroup dataSource:nil];
+    UIView *renderedview = inputLabelView;
 
     if (viewGroup) {
         if (elem->GetHeight() == HeightType::Stretch) {
             ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
-            [inputContainer addArrangedSubview:field];
+            [inputContainer addArrangedSubview:renderedview];
 
             // Add a blank view so the input field doesnt grow as large as it can and so it keeps the same behavior as Android and UWP
             UIView *blankTrailingSpace = [[UIView alloc] init];
             [inputContainer addArrangedSubview:blankTrailingSpace];
             [inputContainer adjustHuggingForLastElement];
-            [(UIStackView *)viewGroup addArrangedSubview:inputContainer];
+            [viewGroup addArrangedSubview:inputContainer];
             renderedview = inputContainer;
         } else {
-            [(UIStackView *)viewGroup addArrangedSubview:field];
+            [viewGroup addArrangedSubview:renderedview];
         }
     }
 
-    [inputs addObject:field];
+    [inputs addObject:renderedview];
 
     configVisibility(renderedview, elem);
 

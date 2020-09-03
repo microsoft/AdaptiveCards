@@ -115,7 +115,7 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput> choiceSet =
             std::make_shared<AdaptiveSharedNamespace::ChoiceSetInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(choiceSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*choiceSet));
 
         choiceSet->SetChoiceSetStyle(static_cast<AdaptiveSharedNamespace::ChoiceSetStyle>(m_choiceSetStyle));
         choiceSet->SetIsMultiSelect(m_isMultiSelect);
@@ -124,7 +124,7 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(GenerateSharedChoices(m_choices.Get(), choiceSet->GetChoices()));
 
-        sharedModel = choiceSet;
+        sharedModel = std::move(choiceSet);
         return S_OK;
     }
     CATCH_RETURN;

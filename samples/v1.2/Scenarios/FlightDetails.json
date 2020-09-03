@@ -30,25 +30,25 @@
 									"size": "ExtraLarge",
 									"weight": "Lighter",
 									"color": "Accent",
-									"text": "Flight to Paris",
+									"text": "Flight to JFK",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"spacing": "Small",
-									"text": "Delta Air Lines flight 8471",
+									"text": "Continental Air Lines flight UA110",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"spacing": "None",
-									"text": "Confirmation code: ABCDEF",
+									"text": "Confirmation code: RXJ34P",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"spacing": "None",
-									"text": "10 hours 45 minutes",
+									"text": "4 hours 15 minutes",
 									"wrap": true
 								}
 							],
@@ -76,7 +76,7 @@
 													"type": "TextBlock",
 													"size": "ExtraLarge",
 													"weight": "Lighter",
-													"text": "BLR"
+													"text": "SFO"
 												}
 											],
 											"width": "auto"
@@ -116,7 +116,7 @@
 													"horizontalAlignment": "Right",
 													"size": "ExtraLarge",
 													"weight": "Lighter",
-													"text": "CDG"
+													"text": "JFK"
 												}
 											],
 											"width": "auto"
@@ -132,7 +132,7 @@
 												{
 													"type": "TextBlock",
 													"size": "Medium",
-													"text": "1:55 AM"
+													"text": "8:15 PM"
 												}
 											],
 											"width": 1
@@ -144,7 +144,7 @@
 													"type": "TextBlock",
 													"horizontalAlignment": "Right",
 													"size": "Medium",
-													"text": "8:10 AM"
+													"text": "3:30 AM"
 												}
 											],
 											"width": 1
@@ -160,7 +160,7 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"text": "November 12, 2017",
+													"text": "Sat, Mar 4, 2017",
 													"isSubtle": true,
 													"wrap": true
 												}
@@ -173,7 +173,7 @@
 												{
 													"type": "TextBlock",
 													"horizontalAlignment": "Right",
-													"text": "November 12, 2017",
+													"text": "Sat, Mar 4, 2017",
 													"isSubtle": true,
 													"wrap": true
 												}
@@ -191,7 +191,7 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"text": "Bengaluru",
+													"text": "San Francisco",
 													"isSubtle": true
 												}
 											],
@@ -203,7 +203,7 @@
 												{
 													"type": "TextBlock",
 													"horizontalAlignment": "Right",
-													"text": "Paris",
+													"text": "New York",
 													"isSubtle": true
 												}
 											],

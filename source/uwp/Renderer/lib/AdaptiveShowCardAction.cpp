@@ -60,16 +60,16 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::ShowCardAction> showCardAction =
             std::make_shared<AdaptiveSharedNamespace::ShowCardAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(showCardAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*showCardAction));
 
         ComPtr<AdaptiveNamespace::AdaptiveCard> card = PeekInnards<AdaptiveNamespace::AdaptiveCard>(m_card);
 
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedCard;
         RETURN_IF_FAILED(card->GetSharedModel(sharedCard));
 
-        showCardAction->SetCard(sharedCard);
+        showCardAction->SetCard(std::move(sharedCard));
 
-        sharedModel = showCardAction;
+        sharedModel = std::move(showCardAction);
         return S_OK;
     }
     CATCH_RETURN;

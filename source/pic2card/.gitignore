@@ -1,9 +1,13 @@
-/venv/
-/models/
+/venv
+/models
 .ipynb_checkpoints
 /object_detection/training/faster_rcnn_inception_v2_coco_2018_01_28/
 .DS_Store
-
-
 *.pyc
 *.sw*
+Icon*
+__pycache__
+
+# Cpp related
+build/
+libs/

@@ -6,7 +6,7 @@ namespace AdaptiveCards
     public class AdaptiveWarning
     {
         // TODO #2749: temporary warning code for fallback card. Remove when common set of error codes created and integrated.
-        public enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12, MaxActionsExceeded = 13 };
+        public enum WarningStatusCode { UnsupportedSchemaVersion = 7, InvalidLanguage = 12, MaxActionsExceeded = 13, EmptyLabelInRequiredInput = 14 };
 
         public AdaptiveWarning(int code, string message)
         {
