@@ -80,6 +80,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ImageSize, "imageSize"},
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
             {AdaptiveCardSchemaKey::Images, "images"},
+            {AdaptiveCardSchemaKey::InitialValidation, "initialValidation"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
@@ -334,4 +335,9 @@ namespace AdaptiveSharedNamespace
             {InputNecessityIndicators::None, "None"},
             {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
             {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InitialValidation, InitialValidation::OnFocusLost, {
+            {InitialValidation::OnFocusLost, "OnFocusLost"},
+            {InitialValidation::OnFocusLostWithInput, "OnFocusLostWithInput"},
+            {InitialValidation::OnSubmit, "OnSubmit"}});
 }

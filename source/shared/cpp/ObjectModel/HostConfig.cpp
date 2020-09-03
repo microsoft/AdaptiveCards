@@ -200,7 +200,8 @@ TextConfig TextConfig::Deserialize(const Json::Value& json, const TextConfig& de
 
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
-    result.fontType = ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
+    result.fontType =
+        ParseUtil::GetEnumValue<FontType>(json, AdaptiveCardSchemaKey::FontType, defaultValue.fontType, FontTypeFromString);
 
     result.color = ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, defaultValue.color, ForegroundColorFromString);
 
@@ -314,7 +315,7 @@ InputLabelConfig InputLabelConfig::Deserialize(const Json::Value& json, const In
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
     result.suffix = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Suffix, defaultValue.suffix);
-    
+
     result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
 
     return result;
@@ -324,17 +325,14 @@ LabelConfig LabelConfig::Deserialize(const Json::Value& json, const LabelConfig&
 {
     LabelConfig result;
 
-    result.inputSpacing = ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::InputSpacing, defaultValue.inputSpacing, SpacingFromString);
+    result.inputSpacing =
+        ParseUtil::GetEnumValue<Spacing>(json, AdaptiveCardSchemaKey::InputSpacing, defaultValue.inputSpacing, SpacingFromString);
 
-    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::RequiredInputs,
-                                                                                             defaultValue.requiredInputs,
-                                                                                             InputLabelConfig::Deserialize);
+    result.requiredInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(
+        json, AdaptiveCardSchemaKey::RequiredInputs, defaultValue.requiredInputs, InputLabelConfig::Deserialize);
 
-    result.optionalInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::OptionalInputs,
-                                                                                             defaultValue.optionalInputs,
-                                                                                             InputLabelConfig::Deserialize);
+    result.optionalInputs = ParseUtil::ExtractJsonValueAndMergeWithDefault<InputLabelConfig>(
+        json, AdaptiveCardSchemaKey::OptionalInputs, defaultValue.optionalInputs, InputLabelConfig::Deserialize);
 
     return result;
 }
@@ -356,19 +354,21 @@ InputsConfig InputsConfig::Deserialize(const Json::Value& json, const InputsConf
 {
     InputsConfig result;
 
-    result.errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(json,
-                                                                                             AdaptiveCardSchemaKey::ErrorMessage,
-                                                                                             defaultValue.errorMessage,
-                                                                                             ErrorMessageConfig::Deserialize);
+    result.errorMessage = ParseUtil::ExtractJsonValueAndMergeWithDefault<ErrorMessageConfig>(
+        json, AdaptiveCardSchemaKey::ErrorMessage, defaultValue.errorMessage, ErrorMessageConfig::Deserialize);
 
     result.label = ParseUtil::ExtractJsonValueAndMergeWithDefault<LabelConfig>(json,
                                                                                AdaptiveCardSchemaKey::Label,
                                                                                defaultValue.label,
                                                                                LabelConfig::Deserialize);
 
+    result.initialValidation = ParseUtil::GetEnumValue<InitialValidation>(json,
+                                                                          AdaptiveCardSchemaKey::InitialValidation,
+                                                                          defaultValue.initialValidation,
+                                                                          InitialValidationFromString);
+
     return result;
 }
-
 
 SpacingConfig SpacingConfig::Deserialize(const Json::Value& json, const SpacingConfig& defaultValue)
 {

@@ -330,6 +330,7 @@ namespace AdaptiveSharedNamespace
     {
         LabelConfig label;
         ErrorMessageConfig errorMessage;
+        InitialValidation initialValidation = InitialValidation::OnFocusLost;
 
         static InputsConfig Deserialize(const Json::Value& json, const InputsConfig& defaultValue);
     };

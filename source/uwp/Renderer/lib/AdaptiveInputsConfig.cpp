@@ -21,7 +21,8 @@ namespace AdaptiveNamespace
     {
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveErrorMessageConfig>(m_errorMessage.GetAddressOf(), inputsConfig.errorMessage));
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveLabelConfig>(m_label.GetAddressOf(), inputsConfig.label));
-       
+        m_initialValidation = static_cast<ABI::AdaptiveNamespace::InitialValidation>(inputsConfig.initialValidation);
+
         return S_OK;
     }
 
@@ -44,6 +45,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveInputsConfig::put_Label(_In_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig* inputLabels)
     {
         m_label = inputLabels;
+        return S_OK;
+    }
+    HRESULT AdaptiveInputsConfig::get_InitialValidation(ABI::AdaptiveNamespace::InitialValidation* initialValidation)
+    {
+        *initialValidation = m_initialValidation;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveInputsConfig::put_InitialValidation(ABI::AdaptiveNamespace::InitialValidation initialValidation)
+    {
+        m_initialValidation = initialValidation;
         return S_OK;
     }
 }
