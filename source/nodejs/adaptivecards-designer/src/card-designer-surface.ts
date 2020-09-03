@@ -237,8 +237,6 @@ export class CardDesignerSurface {
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
                 }
-
-                this._designerSurface.focus();
             }
 
             this.updatePeerCommandsLayout();

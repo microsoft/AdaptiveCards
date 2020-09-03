@@ -9,7 +9,7 @@
 | **isMultiline** | `boolean` | No | If `true`, allow multiple lines of input. | 1.0 |
 | **maxLength** | `number` | No | Hint of maximum length characters to collect (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no text has been input. | 1.0 |
-| **regex** | `string` | No | Regular expression indicating the required format of this text input. | 1.0 |
+| **regex** | `string` | No | Regular expression indicating the required format of this text input. | 1.3 |
 | **style** | `TextInputStyle` | No | Style hint for text input. | 1.0 |
 | **inlineAction** | `ISelectAction` | No | The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action). | 1.2 |
 | **value** | `string` | No | The initial value for this field. | 1.0 |
