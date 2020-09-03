@@ -356,7 +356,7 @@
 			"version": "1.3",
 			"properties": {
 				"label": {
-					"$ref": "#/definitions/InputLabelConfig"
+					"$ref": "#/definitions/LabelConfig"
 				},
 				"errorMessage": {
 					"$ref": "#/definitions/ErrorMessageConfig"
@@ -435,11 +435,11 @@
 					]
 				},
 				"requiredInputs": {
-					"$ref": "#/definitions/LabelConfig",
+					"$ref": "#/definitions/InputLabelConfig",
 					"description": "Label config for required Inputs"
 				},
 				"optionalInputs": {
-					"$ref": "#/definitions/LabelConfig",
+					"$ref": "#/definitions/InputLabelConfig",
 					"description": "Label config for optional Inputs"
 				}
 			}
@@ -652,6 +652,9 @@
 		},
 		"media": {
 			"$ref": "#/definitions/MediaConfig"
+		},
+		"inputs":{
+			"$ref": "#/definitions/InputsConfig"
 		}
 	}
 }
