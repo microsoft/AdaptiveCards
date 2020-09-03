@@ -18,6 +18,7 @@
 
 * [defaultValue](actionproperty.md#optional-defaultvalue)
 * [forbiddenActionTypes](actionproperty.md#forbiddenactiontypes)
+* [isSerializationEnabled](actionproperty.md#isserializationenabled)
 * [name](actionproperty.md#name)
 * [onGetInitialValue](actionproperty.md#optional-ongetinitialvalue)
 * [sequentialNumber](actionproperty.md#sequentialnumber)
@@ -60,6 +61,14 @@ ___
 ###  forbiddenActionTypes
 
 • **forbiddenActionTypes**: *string[]*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

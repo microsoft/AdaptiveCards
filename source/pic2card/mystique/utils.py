@@ -1,11 +1,25 @@
 import time
-from typing import Optional
+import io
+import re
+from typing import Optional, Dict
 import glob
 import xml.etree.ElementTree as Et
 from contextlib import contextmanager
-import pandas as pd
+from importlib import import_module
 
-from mystique.config import ID_TO_LABEL
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from PIL import Image
+
+from mystique import config
+
+# Colro map used for the plotting.
+COLORS = [
+    [0.000, 0.447, 0.888],
+    [0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
+    [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]
+]
 
 
 @contextmanager
@@ -57,4 +71,71 @@ def xml_to_csv(labelmg_dir: str) -> pd.DataFrame:
 
 
 def id_to_label(label_id: int) -> Optional[str]:
-    return ID_TO_LABEL.get(label_id)
+    return config.ID_TO_LABEL.get(label_id)
+
+
+def plot_results(pil_img: Image,
+                 classes: np.array,
+                 scores: np.array,
+                 boxes: np.array,
+                 label_map: Dict = None,
+                 score_threshold=0.8) -> io.BytesIO:
+    """
+    Generic bounding box plotting, inspired from detr implementation.
+
+    Returns binary representation of the image with bounding box drawn, Use
+    `Image.open` to render the image.
+    """
+    label_map = label_map or config.ID_TO_LABEL
+    plt.imshow(pil_img)
+    plt.margins(0, 0)
+    plt.axis('off')
+    ax = plt.gca()
+
+    keep = scores >= score_threshold
+    scores = scores[keep]
+    boxes = boxes[keep]
+    classes = classes[keep]
+
+    for cl_id, score, (xmin, ymin, xmax, ymax), c in zip(classes,
+                                                         scores,
+                                                         boxes.tolist(),
+                                                         COLORS * 100):
+
+        ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
+                                   fill=False, color=c, linewidth=1))
+        text = f'{label_map[cl_id]}: {score:0.2f}'
+        ax.text(xmin, ymin, text, fontsize=8,
+                bbox=dict(facecolor='yellow', alpha=0.5))
+
+    img_buf = io.BytesIO()
+    plt.savefig(img_buf, format="png", bbox_inches='tight', pad_inches=0)
+    img_buf.seek(0)
+    plt.close()
+    return img_buf
+
+
+def load_od_instance():
+    """
+    Load the object detection instance from class_path
+    """
+    class_path = config.MODEL_REGISTRY[config.ACTIVE_MODEL_NAME]
+    p_split = class_path.split(".")
+    module_path, class_name = ".".join(p_split[:-1]), p_split[-1]
+    module = import_module(module_path)
+    od_obj = getattr(module, class_name)()
+    return od_obj
+
+
+def text_size_processing(text, height):
+    """
+    Reduces the extra pixels to normalize the height of text boxes
+    @param text: input extraced text from pytesseract
+    @param height: input height of the extracted text
+    @return: height int
+    """
+    extra_pixel_char = r"y|g|j|p|q"
+    match = re.search(extra_pixel_char, text)
+    if (match or text[0].isupper()):
+        height -= 2
+    return height

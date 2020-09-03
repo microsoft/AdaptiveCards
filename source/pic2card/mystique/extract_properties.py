@@ -1,31 +1,89 @@
 """Module for extracting design element's properties"""
 
-from pytesseract import pytesseract
-from PIL import Image
-import cv2
-import numpy as np
+import base64
 import math
+import operator
+from io import BytesIO
+from typing import Tuple, Dict, List
+
+import numpy as np
+from PIL import Image
+
+from mystique import config, default_host_configs
+from pytesseract import pytesseract, Output
 
 
 class ExtractProperties:
     """
-    Class handles of property extraction from the identified design 
+    Class handles of property extraction from the identified design
     elements.
     from all the design elements - extracts text
     from textual elements - extracts size, color, weight
-    from actionset elements - extracts style based on the background 
+    from actionset elements - extracts style based on the background
                               color
-    from image objects - extracts image size 
+    from image objects - extracts image size
     """
+    def find_iou(self, coord1, coord2, inter_object=False,
+                 columns_group=False) -> List:
+        """
+        Finds the intersecting bounding boxes by finding
+           the highest x and y ranges of the 2 coordinates
+           and determine the intersection by deciding weather
+           the new xmin>xmax or the new ymin>ymax.
+           For non image objects, includes finding the intersection
+           area to a threshold to determine intersection
+        @param coord1: list of coordinates of 1st object
+        @param coord2: list of coordinates of 2nd object
+        @param inter_object: check for cleaning between different overlapping
+                             objects.
+        @param columns_group: If the intersection finding is needed in columns
+                              grouping use case
+        @return: [True/False, point1 area, point2 area]
+
+        """
+        x5 = max(coord1[0], coord2[0])
+        y5 = max(coord1[1], coord2[1])
+        x6 = min(coord1[2], coord2[2])
+        y6 = min(coord1[3], coord2[3])
+
+        # no intersection
+        if x6 - x5 <= 0 or y6 - y5 <= 0:
+            return [False]
+
+        intersection_area = (x6 - x5) * (y6 - y5)
+        point1_area = (coord1[2] - coord1[0]) * (coord1[3] - coord1[1])
+        point2_area = (coord2[2] - coord2[0]) * (coord2[3] - coord2[1])
+        iou = (intersection_area
+               / (point1_area + point2_area - intersection_area))
+
+        # find if given 2 objects intersects or not
+        if columns_group:
+            if ((point1_area + point2_area - intersection_area == 0)
+                    or iou > 0):
+                return [True]
+            return [False]
+
+        # -if iou check is for inter object overlap removal check only for
+        # intersection.
+        # -if not for inter objects overlap check for iou >= threshold
+        # -if the intersection area covers more than 50% of the smaller object
+        if ((point1_area + point2_area - intersection_area == 0)
+                or (inter_object and iou > 0)
+                or (iou >= config.IOU_THRESHOLD)
+                or (iou <= config.IOU_THRESHOLD
+                    and
+                    (intersection_area /
+                     min(point1_area, point2_area)) >= 0.50)):
+            return [True, point1_area, point2_area]
+
+        return [False]
 
     def get_actionset_type(self, image=None, coords=None):
         """
         Returns the actionset style by finding the
         closes background color of the obejct
-
         @param image: input PIL image
         @param coords: object's coordinate
-
         @return : style string of the actionset
         """
         cropped_image = image.crop(coords)
@@ -55,7 +113,11 @@ class ExtractProperties:
         for key, values in colors.items():
             for value in values:
                 distance = np.sqrt(
-                    np.sum((np.asarray(value) - np.asarray(background_color)) ** 2))
+                    np.sum(
+                        (np.asarray(value) - np.asarray(
+                            background_color)) ** 2
+                    )
+                )
                 if distance <= 150:
                     found_colors.append(key)
                     distances.append(distance)
@@ -64,48 +126,12 @@ class ExtractProperties:
             style = found_colors[index]
         return style
 
-    def get_image_size(self, image=None, image_cropped_size=None):
-        """[get the image size with respect to the card size]
-
-        Keyword Arguments:
-            image {[PIL image]} -- [input PIL image] (default: {None})
-            image_cropped_size {[tuple]} -- [tuple of cropped image 
-            width and height] (default: {None})
-
-        Returns:
-            [list] -- [list of sizes withrespect to columnset 
-            and inidiuval element]
-        """
-        sizes = ["Auto", "Auto"]
-        image_width, image_height = image.size
-        area_proportionate = (
-            (image_cropped_size[0]*image_cropped_size[1]) /
-            (image_width*image_height)
-        )*100
-        if area_proportionate >= 0 and area_proportionate <= 1:
-            sizes[0] = "Auto"
-        elif area_proportionate > 1 and area_proportionate <= 3:
-            sizes[0] = "Small"
-        elif area_proportionate > 3 and area_proportionate <= 5:
-            sizes[0] = "Medium"
-        elif area_proportionate > 5:
-            sizes[0] = "Large"
-
-        if area_proportionate >= 0 and area_proportionate < 4:
-            sizes[1] = "Small"
-        elif area_proportionate >= 4 and area_proportionate <= 9:
-            sizes[1] = "Medium"
-        elif area_proportionate > .0:
-            sizes[1] = "Auto"
-        return sizes
-
     def get_text(self, image=None, coords=None):
         """
-        Extract the text from the object coordinates 
+        Extract the text from the object coordinates
         in the input deisgn image using pytesseract.
-
         @param image: input PIL image
-        @param coords: tuple of coordinates from which 
+        @param coords: tuple of coordinates from which
                        text should be extracted
         @return: ocr text
         """
@@ -113,7 +139,7 @@ class ExtractProperties:
         cropped_image = image.crop(coords)
         cropped_image = cropped_image.convert("LA")
         w, h = cropped_image.size
-        cropped_image = cropped_image.resize((w*10, h*10),
+        cropped_image = cropped_image.resize((w * 10, h * 10),
                                              Image.ANTIALIAS)
 
         return pytesseract.image_to_string(
@@ -122,76 +148,90 @@ class ExtractProperties:
     def get_size_and_weight(self, image=None, coords=None):
         """
         Extract the size and weight of textual contents from
-        the input image by taking an average of each edge 
+        the input image by taking an average of each edge
         countour's of height and width of each character.
 
         @param image : input PIL image
-        @param coords: list of coordinated from which 
+        @param coords: list of coordinated from which
                        text and height should be extracted
         @return: size and weight
         """
         cropped_image = image.crop(coords)
+        image_width, image_height = image.size
         img = np.asarray(cropped_image)
-        img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
-        # preprocess
-        gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        gray = cv2.blur(gray, (5, 5))
-        kernel = np.ones((5, 5), np.uint8)
         # edge detection
-        edged = cv2.Canny(img, 30, 200)
-        # contours bulding
-        _, contours, _ = cv2.findContours(
-            edged, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-        box_width = []
+        img_data = pytesseract.image_to_data(img, output_type=Output.DICT)
         box_height = []
-        # calculate the average width and height of the contour
-        # coords of the object
-        for c in contours:
-            (x, y, w, h) = cv2.boundingRect(c)
-            box_width.append(w)
-            box_height.append(h)
+        box_width = []
+        n_boxes = len(img_data['level'])
+        for i in range(n_boxes):
+            if len(img_data['text'][i]) > 1:  # to ignore img with wrong bbox
+                (_, _, w, h) = (img_data['left'][i], img_data['top'][i],
+                                img_data['width'][i], img_data['height'][i])
+                # h = text_size_processing(img_data['text'][i], h)
+                w = w/len(img_data['text'][i])  # Approximate character width
+                box_height.append(h)
+                box_width.append(w)
+        font_size = default_host_configs.FONT_SIZE
+        font_weight = default_host_configs.FONT_WEIGHT
 
-        weights = sum(box_width) / len(box_width)
-        heights = sum(box_height) / len(box_height)
-        size = "Default"
-        weight = "Default"
-
-        if heights <= 5.5:
-            size = "Small"
-        elif 5.5 < heights <= 7:
-            size = "Default"
-        elif 7 < heights <= 15:
-            size = "Medium"
-        elif 15 < heights <= 20:
-            size = "Large"
+        # Handling of unrecognized characters
+        if len(box_height) == 0:
+            heights_ratio = font_size['default']
+            weights_ratio = font_weight['default']
         else:
-            size = "ExtraLarge"
+            heights = int(np.mean(box_height))
+            heights_ratio = round((heights/image_height), 4)
+            weights = int(np.mean(box_width))
+            weights_ratio = round((weights/image_width), 4)
 
-        if (size == "Small" or size == "Default") and weights >= 5:
+        if font_size['small'] < heights_ratio < font_size['default']:
+            size = "Small"
+        elif font_size['default'] < heights_ratio < font_size['medium']:
+            size = "Default"
+        elif font_size['medium'] < heights_ratio < font_size['large']:
+            size = "Medium"
+        elif font_size['large'] < heights_ratio < font_size['extralarge']:
+            size = "Large"
+        elif font_size['extralarge'] < heights_ratio:
+            size = "ExtraLarge"
+        else:
+            size = "Default"
+
+        # TODO: Fine tune weights threshold
+        if font_weight['lighter'] > weights_ratio:
+            weight = "Lighter"
+        elif font_weight['bolder'] < weights_ratio:
             weight = "Bolder"
-        elif size == "Medium" and weights > 6.5:
-            weight = "Bolder"
-        elif size == "Large" and weights > 8:
-            weight = "Bolder"
-        elif size == "ExtraLarge" and weights > 9:
-            weight = "Bolder"
+        else:
+            weight = "Default"
 
         return size, weight
 
     def get_alignment(self, image=None, xmin=None, xmax=None):
         """
         Get the horizontal alignment of the elements by defining a
-        thresold based on the xmin and xmax of each object.
-
+        ratio based on the xmin and xmax center of each object.
+        if a element's xmin and xmax avg lies within:
+        0 - 45 % [ left range ] of the image width
+        45 - 55% [ center rance ] of the image width
+        > 55% [ right range ] of the image width
         @param image: input PIL image
         @param xmin: xmin of the object detected
         @param xmax: xmax of the object detected
-
-        @return: position string[ Left/Right/Center]
+        @return: position string[Left/Right/Center]
         """
 
         avg = math.ceil((xmin + xmax) / 2)
         w, h = image.size
+        #  if an object lies within the 15% of the start of the image then the
+        #  object is considered as left by default [to avoid any lengthy
+        # textbox coming into center when considering the xmin and xmax center]
+        left_range = (w * 15) / 100
+        if math.floor(xmin) <= math.ceil(left_range) or abs(
+                xmin - left_range) < 10:
+            return "Left"
+
         if 0 <= (avg / w) * 100 < 45:
             return "Left"
         elif 45 <= (avg / w) * 100 < 55:
@@ -205,11 +245,9 @@ class ExtractProperties:
         [cropped to the coordiantes] into 2 colors mainly
         background and foreground and find the closest matching
         foreground color.
-
         @param image: input PIL image
-        @param coords: coordinates from which color needs to be 
+        @param coords: coordinates from which color needs to be
                        extracted
-
         @return: foreground color name
         """
         cropped_image = image.crop(coords)
@@ -285,3 +323,233 @@ class ExtractProperties:
                 if distance < 150:
                     color = "Default"
         return color
+
+    def get_column_width_keys(self, default_config: Dict, ratio: Tuple,
+                              column_set: Dict, column_number: int) -> None:
+        """
+        Extract the column width key from the default config which is minimum
+        in distance with the given point / ratio
+        @param default_config: the default host config dict for the column width
+        @param ratio: the point derived from the column coordinates
+        @param column_set: dict of columns
+        @param column_number: the position of the column
+        """
+        keys = list(default_config.keys())
+        distances = [np.sqrt(np.sum(((np.asarray(ratio) -
+                                      np.asarray(tuple(point))) ** 2)))
+                     for point in keys]
+        key = keys[distances.index(min(distances))]
+        column_set["columns"][column_number]["width"] = default_config[key]
+
+    def extract_column_width(self, column_set: Dict,
+                             column_coords: List[List],
+                             column_coords_min: List[List],
+                             image: Image) -> None:
+        """
+        Extract column width property for the given columnset based on the
+        mid point distance between 2 design objects.
+        @param column_set: list of column design objects
+        @param column_coords: each column's max coordinate values of a
+                              column set
+        @param image: input PIL image
+        @param column_coords_min: each column's min coordinate values of a
+                                  column set
+        """
+        column_xmin, column_ymin, column_xmax, column_ymax = column_coords
+        (column_xmin_min, column_ymin_min,
+         column_xmax_min, column_ymax_min) = column_coords_min
+        for ctr, column in enumerate(column_set["columns"]):
+            if ctr + 1 < len(column_set["columns"]):
+                mid_point1 = np.asarray(
+                        ((column_xmin[ctr] + column_xmax[ctr])/2,
+                         (column_ymin[ctr] + column_ymax[ctr])/2))
+                mid_point2 = np.asarray(
+                        ((column_xmin_min[ctr + 1]
+                          + column_xmax_min[ctr + 1]) / 2,
+                         (column_ymin_min[ctr + 1]
+                          + column_ymax_min[ctr + 1]) / 2))
+
+                a = np.asarray((column_xmin[ctr], column_ymin[ctr]))
+                b = np.asarray((column_xmax[ctr+1], column_ymax[ctr+1]))
+                end_distance = np.sqrt(np.sum(((a - b) ** 2)))
+                mid_distance = np.sqrt(np.sum(((mid_point1 - mid_point2) ** 2)))
+                mid_distance = (mid_distance / end_distance) * 100
+                ratio = (1, mid_distance)
+                self.get_column_width_keys(
+                    config.COLUMN_WIDTH_DISTANCE, ratio,
+                    column_set, ctr)
+            if ctr == len(column_set["columns"]) - 1:
+                w, h = image.size
+                last_diff = (abs(column_xmax[ctr] - w) / w) * 100
+                ratio = (1, last_diff)
+                self.get_column_width_keys(
+                    config.LAST_COLUMN_THRESHOLD, ratio,
+                    column_set, ctr)
+
+    def extract_image_size(self, cropped_image: Image,
+                           pil_image: Image) -> str:
+        """
+        Returns the image size value based on the width and height ratios
+        of the image objects to the actual design image.
+        @param cropped_image: image object
+        @param pil_image: input design image
+        @return: image width value
+        """
+        img_width, img_height = cropped_image.size
+        width, height = pil_image.size
+        width_ratio = (img_width / width) * 100
+        height_ratio = (img_height / height) * 100
+        # if the width and height ratio differs more the 25% return the size as
+        # Auto
+        if abs(width_ratio - height_ratio) > 20:
+            return "Auto"
+        else:
+            # select the image size based on the minimum distance with
+            # the default host config values for image size
+            keys = list(config.IMAGE_SIZE_RATIOS.keys())
+            ratio = (width_ratio, height_ratio)
+            distances = [np.sqrt(np.sum(((np.asarray(ratio) -
+                                          np.asarray(tuple(point))) ** 2)))
+                         for point in keys]
+            key = keys[distances.index(min(distances))]
+            return config.IMAGE_SIZE_RATIOS[key]
+
+
+class CollectProperties(ExtractProperties):
+    """
+    Helps to collect the properties for respective design object.
+    """
+
+    def __init__(self, image=None):
+        self.pil_imgae = image
+
+    def column(self, columns: Dict):
+        """
+        Updates the horizontal alignment property for the columns,
+        based on the horizontal alignment of each items inside the column
+        @param columns: List of columns  [ for a columnset ]
+        """
+        preference_order = ["Left", "Center", "Right"]
+        for column in columns:
+            alignment = list(map(operator.itemgetter('horizontalAlignment'),
+                                 column["items"]))
+            if len(alignment) == len(list(set(alignment))):
+                alignment.sort(key=(preference_order+alignment).index)
+                alignment = alignment[0]
+            else:
+                alignment = max(alignment, key=alignment.count)
+            column.update({"horizontalAlignment": alignment})
+
+    def columnset(self, columnset: Dict, column_coords: List[List],
+                  column_coords_min: List[List],
+                  image: Image) -> None:
+        """
+        Updates the horizontal alignment property for the columnset,
+        based on the horizontal alignment of each column inside the columnset.
+        @param columnset: Columnset dict
+        @param image: input PIL image
+        @param column_coords: each column's max coordinates values of a
+                              column set
+        @param column_coords_min: each column's min coordinates values of a
+                                  column set
+        """
+        preference_order = ["Left", "Center", "Right"]
+        alignment = list(map(operator.itemgetter('horizontalAlignment'),
+                             columnset["columns"]))
+        if len(alignment) == len(list(set(alignment))):
+            alignment.sort(key=(preference_order + alignment).index)
+            alignment = alignment[0]
+        else:
+            alignment = max(alignment, key=alignment.count)
+        columnset.update({"horizontalAlignment": alignment})
+        self.extract_column_width(columnset, column_coords, column_coords_min,
+                                  image)
+
+    def actionset(self, coords: Tuple) -> Dict:
+        """
+        Returns the actionset properties of the extracted design object
+        @return: property object
+        """
+        return {
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "style": self.get_actionset_type(
+                image=self.pil_imgae,
+                coords=coords
+            )
+        }
+
+    def textbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the textbox properties of the extracted design object
+        @return: property object
+        """
+        size, weight = self.get_size_and_weight(image=self.pil_imgae,
+                                                coords=coords)
+        return {
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+            "size": size,
+            "weight": weight,
+            "color": self.get_colors(image=self.pil_imgae, coords=coords)
+
+        }
+
+    def radiobutton(self, coords: Tuple) -> Dict:
+        """
+        Returns the radiobutton properties of the extracted design object
+        @return: property object
+        """
+        return {
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def checkbox(self, coords: Tuple) -> Dict:
+        """
+        Returns the checkbox properties of the extracted design object
+        @return: property object
+        """
+        return {
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": self.get_text(image=self.pil_imgae, coords=coords),
+        }
+
+    def image(self, coords: Tuple) -> Dict:
+        """
+        Returns the image properties of the extracted design object
+        @return: property object
+        """
+        cropped = self.pil_imgae.crop(coords)
+        buff = BytesIO()
+        cropped.save(buff, format="PNG")
+        base64_string = base64.b64encode(
+            buff.getvalue()).decode()
+        data = f'data:image/png;base64,{base64_string}'
+
+        size = self.extract_image_size(cropped, self.pil_imgae)
+        return {
+            "horizontal_alignment": self.get_alignment(
+                image=self.pil_imgae,
+                xmin=coords[0],
+                xmax=coords[2]
+            ),
+            "data": data,
+            "size": size
+        }

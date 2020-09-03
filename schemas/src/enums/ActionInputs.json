@@ -1,0 +1,14 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"classType": "Enum",
+	"values": [
+		{
+			"value": "All",
+			"description": "All inputs will be validated and submitted for this Action."
+		},
+		{
+			"value": "None",
+			"description": "None of the inputs will be validated or submitted for this Action."
+		}
+	]
+}

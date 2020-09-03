@@ -13,7 +13,9 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle("Adaptive.Input.Text.Time");
             textBox.SetContext(input);
-            context.InputBindings.Add(input.Id, () => textBox.Text);
+
+            context.InputValues.Add(input.Id, new AdaptiveTimeInputValue(input, textBox));
+
             return textBox;
         }
     }

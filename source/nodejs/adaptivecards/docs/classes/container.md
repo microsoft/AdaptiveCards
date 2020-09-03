@@ -247,7 +247,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -386,7 +386,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -918,11 +919,17 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[getAllInputs](cardelementcontainer.md#getallinputs)*
 
 *Overrides [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 

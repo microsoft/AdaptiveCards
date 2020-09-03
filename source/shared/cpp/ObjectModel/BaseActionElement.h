@@ -46,10 +46,14 @@ namespace AdaptiveSharedNamespace
         template <typename T>
         static std::shared_ptr<T> Deserialize(ParseContext& context, const Json::Value& json);
 
+        static std::shared_ptr<BaseActionElement> DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString);
+        static std::shared_ptr<BaseActionElement> DeserializeBaseProperties(ParseContext& context, const Json::Value& json);
+
         static void ParseJsonObject(AdaptiveSharedNamespace::ParseContext& context, const Json::Value& json, std::shared_ptr<BaseElement>& element);
 
     private:
         void PopulateKnownPropertiesSet();
+        static void DeserializeBaseProperties(ParseContext& context, const Json::Value& json, std::shared_ptr<BaseActionElement>& element);
 
         static constexpr const char* const defaultStyle = "default";
 
@@ -65,13 +69,7 @@ namespace AdaptiveSharedNamespace
     {
         std::shared_ptr<T> cardElement = std::make_shared<T>();
         std::shared_ptr<BaseActionElement> baseActionElement = std::static_pointer_cast<BaseActionElement>(cardElement);
-
-        ParseUtil::ThrowIfNotJsonObject(json);
-
-        baseActionElement->DeserializeBase<BaseActionElement>(context, json);
-        baseActionElement->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
-        baseActionElement->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
-        baseActionElement->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+        DeserializeBaseProperties(context, json, baseActionElement);
 
         // Walk all properties and put any unknown ones in the additional properties json
         HandleUnknownProperties(json, baseActionElement->m_knownProperties, baseActionElement->m_additionalProperties);

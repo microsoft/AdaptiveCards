@@ -9,17 +9,18 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.os.AsyncTask;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
-import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
-import io.adaptivecards.objectmodel.CardElementType;
-import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
@@ -28,7 +29,6 @@ import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -115,7 +115,14 @@ public class ImageRenderer extends BaseCardElementRenderer
         private int m_backgroundColor;
     }
 
-    private static int getImageSizeLimit(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
+    /**
+     * Get the pixels for the given ImageSize, as configured in the given ImageSizesConfig
+     * @param context
+     * @param imageSize parsed ImageSize
+     * @param imageSizesConfig ImageSizesConfig from host config
+     * @return size in pixels, scaled by screen density
+     */
+    private static int getImageSizePixels(Context context, ImageSize imageSize, ImageSizesConfig imageSizesConfig) {
         int imageSizeLimit = context.getResources().getDisplayMetrics().widthPixels;
 
         if (imageSize == ImageSize.Small)
@@ -134,79 +141,140 @@ public class ImageRenderer extends BaseCardElementRenderer
         return imageSizeLimit;
     }
 
-    private static void setImageSize(Context context, ImageView imageView, ImageSize imageSize, ImageSizesConfig imageSizesConfig, boolean isInImageSet) {
-        imageView.setScaleType(ImageView.ScaleType.CENTER);
-        if (imageSize == ImageSize.Stretch)
-        {
-            if (!isInImageSet)
-            {
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if ((imageSize == ImageSize.Small) || (imageSize == ImageSize.Medium) || (imageSize == ImageSize.Large))
-        {
-            int size = getImageSizeLimit(context, imageSize, imageSizesConfig);
-
-            if (imageView.getLayoutParams() == null)
-            {
-                imageView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            }
-            else
-            {
-                imageView.getLayoutParams().height = size;
-                imageView.getLayoutParams().width = size;
-            }
-
-            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
-        }
-        else if (imageSize != ImageSize.Auto && imageSize != ImageSize.None)
-        {
-            throw new IllegalArgumentException("Unknown image size: " + imageSize.toString());
-        }
+    /**
+     * Set ImageView size. Only for use in ImageSet.
+     * @param context
+     * @param imageView the view to resize
+     * @param image the parsed Image
+     * @param hostConfig the HostConfig that configures semantic 'size' values
+     */
+    private static void sizeImageForImageSet(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    {
+        int semanticWidth = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
 
         imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(semanticWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
     }
 
-    private void setImageSize(Context context, ImageView imageView, Image image, HostConfig hostConfig, boolean isInImageSet)
-    {
-        long pixelWidth = image.GetPixelWidth();
-        long pixelHeight = image.GetPixelHeight();
-        boolean hasExplicitSize = ((pixelHeight != 0) || (pixelWidth != 0));
-        boolean isAspectRatioNeeded = !((pixelHeight != 0) && (pixelWidth != 0));
-
-        if (hasExplicitSize)
+    /**
+     * Calculate horizontal bias for ConstraintLayout
+     * @param image the parsed Image
+     * @return horizontal bias
+     */
+    private static float getHorizontalBias(Image image) {
+        if (image.GetHorizontalAlignment() == HorizontalAlignment.Center)
         {
-            int widthInPixels = Util.dpToPixels(context, pixelWidth);
-            int heightInPixels = Util.dpToPixels(context, pixelHeight);
-            if (isAspectRatioNeeded)
-            {
-                if (pixelWidth != 0)
-                {
-                    imageView.setMaxWidth(widthInPixels);
-                }
+            return 0.5f;
+        }
+        if (image.GetHorizontalAlignment() == HorizontalAlignment.Right)
+        {
+            return 1;
+        }
+        return 0;
+    }
 
-                if (pixelHeight != 0)
-                {
-                    imageView.setMaxHeight(heightInPixels);
-                }
+    /**
+     * Create container for this image (with stretch height if needed).
+     * @param context
+     * @param image the parsed Image
+     * @return the container
+     */
+    private static ConstraintLayout createContainer(Context context, Image image)
+    {
+        ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
-                imageView.setAdjustViewBounds(true);
-            }
-            else
-            {
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                imageView.setMaxWidth(widthInPixels);
-                imageView.setMaxHeight(heightInPixels);
-
-                imageView.getLayoutParams().height = heightInPixels;
-                imageView.getLayoutParams().width = widthInPixels;
-            }
+        // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
+        int weight = (image.GetHeight() == HeightType.Stretch) ? 1 : 0;
+        if(image.GetHeight() == HeightType.Stretch)
+        {
+            container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
         else
         {
-            setImageSize(context, imageView, image.GetImageSize(), hostConfig.GetImageSizes(), isInImageSet);
+            container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
+
+        return container;
+    }
+
+    /**
+     * Generate constraints to layout this ImageView in a container returned by {@link #createContainer}
+     * @param context
+     * @param imageView the view to constrain
+     * @param image the parsed Image
+     * @param hostConfig the HostConfig that configures semantic 'size' values
+     * @return
+     */
+    private static ConstraintSet createConstraints(Context context, ImageView imageView, Image image, HostConfig hostConfig)
+    {
+        long explicitWidth = image.GetPixelWidth();
+        long explicitHeight = image.GetPixelHeight();
+        ImageSize imageSize = image.GetImageSize();
+        ConstraintSet constraints = new ConstraintSet();
+
+        // ConstraintSet requires unique id
+        if(imageView.getId() == View.NO_ID) {
+            imageView.setId(View.generateViewId());
+        }
+        int id = imageView.getId();
+
+        // Start with base constraints from XML layout
+        constraints.clone(context, R.layout.image_constraint_layout);
+
+        // Constrain width to left/right barriers (defined in layout), and no stretch by default
+        constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
+        constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);
+        constraints.connect(id, ConstraintSet.START, R.id.leftBarrier, ConstraintSet.START);
+        constraints.connect(id, ConstraintSet.END, R.id.rightBarrier, ConstraintSet.END);
+
+        // By default, height scales with width to maintain aspect ratio
+        imageView.setAdjustViewBounds(true);
+        imageView.setScaleType(ImageView.ScaleType.FIT_START);
+        constraints.constrainHeight(id, ConstraintSet.WRAP_CONTENT);
+        constraints.connect(id, ConstraintSet.TOP, ConstraintSet.PARENT_ID, ConstraintSet.TOP);
+
+        // Set horizontal alignment (on both placeholder and ImageView)
+        constraints.setHorizontalBias(R.id.widthPlaceholder, getHorizontalBias(image));
+        constraints.setHorizontalBias(id, getHorizontalBias(image));
+
+        // Explicit height and/or width given
+        if (explicitWidth != 0 || explicitHeight != 0)
+        {
+            if (explicitWidth != 0 && explicitHeight != 0)
+            {
+                // If both are set, ignore aspect ratio
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
+            if (explicitWidth != 0)
+            {
+                // Set placeholder width, which will adjust left/right barriers (defined in layout)
+                constraints.constrainWidth(R.id.widthPlaceholder, Util.dpToPixels(context, explicitWidth));
+                // Stretch image width to barriers
+                constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+            }
+            if (explicitHeight != 0)
+            {
+                // Exact height
+                constraints.constrainHeight(id, Util.dpToPixels(context, explicitHeight));
+            }
+        }
+        // Semantic size from host config
+        else if (imageSize == ImageSize.Small || imageSize == ImageSize.Medium || imageSize == ImageSize.Large)
+        {
+            // Set placeholder width, which will adjust left/right barriers (defined in layout)
+            constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
+            // Stretch image width to barriers
+            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+        }
+        // Scale to parent width
+        else if (imageSize == ImageSize.Stretch)
+        {
+            // Stretch image width up to the barriers
+            constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+        }
+
+        return constraints;
     }
 
     private int getBackgroundColorFromHexCode(String hexColorCode)
@@ -237,72 +305,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         return backgroundColor;
     }
 
-    private int getImageHorizontalAlignment(Image image)
-    {
-        HorizontalAlignment horizontalAlignment = image.GetHorizontalAlignment();
-        int gravity = Gravity.LEFT;
-
-        if (horizontalAlignment == HorizontalAlignment.Center)
-        {
-            gravity = Gravity.CENTER_HORIZONTAL;
-        }
-        else if (horizontalAlignment == HorizontalAlignment.Right)
-        {
-            gravity = Gravity.RIGHT;
-        }
-
-        return gravity;
-    }
-
-    private View setImageHeightAndHorizontalAlignment(Context context, boolean isInImageSet, ImageView imageView, Image image, TagContent tagContent)
-    {
-        int height = LinearLayout.LayoutParams.WRAP_CONTENT, width = LinearLayout.LayoutParams.WRAP_CONTENT, weight = 0;
-
-        // The expected behavior for the image must be:
-        // If the image has stretch size:
-        //      width grows as big as the parent but only uses as much vertical space as needed
-        // If the image has stretch size and also stretches in height:
-        //      width grows as big as the parent and uses as much leftover vertical space as there is
-        // If the image has a fixed or auto size:
-        //      width is limited to image size or defined size and only uses as much vertical space as needed
-        // If the image has a fixed or auto size and also stretched in height:
-        //      width is limited to image size or defined size and uses as much leftover vertical space as there is
-        if (image.GetImageSize() == ImageSize.Stretch)
-        {
-            width = LinearLayout.LayoutParams.MATCH_PARENT;
-        }
-
-        if (image.GetHeight() == HeightType.Stretch)
-        {
-            height = LinearLayout.LayoutParams.MATCH_PARENT;
-            weight = 1;
-        }
-
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, height, weight);
-
-        // Set horizontal alignment for the image
-        layoutParams.gravity = getImageHorizontalAlignment(image);
-
-        // If the image is part of an imageSet or has height auto, we set the layout parameter to
-        // it and return just the view, otherwise we have to create a layout to grow in height and
-        // contain the image avoiding it to grow larger and making the background color to stretch
-        if (isInImageSet || image.GetHeight() != HeightType.Stretch)
-        {
-            imageView.setLayoutParams(layoutParams);
-            return imageView;
-        }
-        else
-        {
-            LinearLayout stretchLayout = new LinearLayout(context);
-            stretchLayout.setLayoutParams(layoutParams);
-            stretchLayout.addView(imageView);
-            tagContent.SetStretchContainer(stretchLayout);
-            return stretchLayout;
-        }
-    }
-
     @Override
-    public View render(
+    public ImageView render(
             RenderedAdaptiveCard renderedCard,
             Context context,
             FragmentManager fragmentManager,
@@ -310,20 +314,16 @@ public class ImageRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        Image image;
-        if (baseCardElement instanceof Image)
-        {
-            image = (Image) baseCardElement;
-        }
-        else if ((image = Image.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Image object model.");
-        }
+        Image image = Util.castTo(baseCardElement, Image.class);
 
+        View separator = null;
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
-        View separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, !isInImageSet /* horizontal line */, isInImageSet);
+        if (isInImageSet)
+        {
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, isInImageSet);
+        }
 
         ImageView imageView = new ImageView(context);
 
@@ -334,7 +334,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageView.setBackgroundColor(backgroundColor);
         }
 
-        int imageSizeLimit = getImageSizeLimit(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        int imageSizeLimit = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
             renderedCard,
             imageView,
@@ -349,14 +349,26 @@ public class ImageRenderer extends BaseCardElementRenderer
             imageLoaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
         }
 
-        imageLoaderAsync.execute(image.GetUrl());
+        imageLoaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, image.GetUrl());
 
         TagContent tagContent = new TagContent(image, separator, viewGroup);
 
-        View imageContainer = setImageHeightAndHorizontalAlignment(context, isInImageSet, imageView, image, tagContent);
-        setImageSize(context, imageView, image, hostConfig, isInImageSet);
+        // No container needed for image in ImageSet
+        if(isInImageSet)
+        {
+            sizeImageForImageSet(context, imageView, image, hostConfig);
+            viewGroup.addView(imageView);
+        }
+        // ConstraintLayout container for first-class images
+        else
+        {
+            ConstraintLayout container = createContainer(context, image);
+            tagContent.SetStretchContainer(container);
+            container.addView(imageView);
+            createConstraints(context, imageView, image, hostConfig).applyTo(container);
+            viewGroup.addView(container);
+        }
 
-        viewGroup.addView(imageContainer);
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 

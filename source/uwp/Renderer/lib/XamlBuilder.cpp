@@ -74,7 +74,7 @@ namespace AdaptiveNamespace
                 }
             }
             ComPtr<IAdaptiveRenderArgs> renderArgs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, nullptr));
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveRenderArgs>(&renderArgs, containerStyle, nullptr, adaptiveCard, nullptr));
 
             ComPtr<IPanel> bodyElementContainer;
             ComPtr<IUIElement> rootElement;
@@ -109,7 +109,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(adaptiveCard->get_Body(&body));
             ComPtr<IAdaptiveRenderArgs> bodyRenderArgs;
             RETURN_IF_FAILED(
-                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get(), nullptr));
+                MakeAndInitialize<AdaptiveRenderArgs>(&bodyRenderArgs, containerStyle, rootAsFrameworkElement.Get(), adaptiveCard, nullptr));
             RETURN_IF_FAILED(
                 BuildPanelChildren(body.Get(), bodyElementContainer.Get(), renderContext, bodyRenderArgs.Get(), [](IUIElement*) {}));
 
@@ -343,7 +343,6 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveFeatureRegistration> featureRegistration;
         RETURN_IF_FAILED(renderContext->get_FeatureRegistration(&featureRegistration));
         ComPtr<AdaptiveFeatureRegistration> featureRegistrationImpl = PeekInnards<AdaptiveFeatureRegistration>(featureRegistration);
-        std::shared_ptr<FeatureRegistration> sharedFeatureRegistration = featureRegistrationImpl->GetSharedFeatureRegistration();
 
         HRESULT hr = XamlHelpers::IterateOverVectorWithFailure<IAdaptiveCardElement>(children, ancestorHasFallback, [&](IAdaptiveCardElement* element) {
             HRESULT hr = S_OK;
@@ -372,15 +371,17 @@ namespace AdaptiveNamespace
 
             // If we have a renderer, render the element
             ComPtr<IUIElement> newControl;
+            ComPtr<IAdaptiveCardElement> renderedElement;
             if (SUCCEEDED(hr) && elementRenderer != nullptr)
             {
                 hr = elementRenderer->Render(element, renderContext, renderArgs, newControl.GetAddressOf());
+                renderedElement = element;
             }
 
             // If we don't have a renderer, or if the renderer told us to perform fallback, try falling back
             if (elementRenderer == nullptr || hr == E_PERFORM_FALLBACK)
             {
-                RETURN_IF_FAILED(XamlHelpers::RenderFallback(element, renderContext, renderArgs, &newControl));
+                RETURN_IF_FAILED(XamlHelpers::RenderFallback(element, renderContext, renderArgs, &newControl, &renderedElement));
             }
 
             // If we got a control, add a separator if needed and the control to the parent panel
@@ -388,6 +389,13 @@ namespace AdaptiveNamespace
             {
                 ComPtr<IUIElement> separator;
                 XamlHelpers::AddSeparatorIfNeeded(iElement, element, hostConfig.Get(), renderContext, parentPanel, &separator);
+
+                // If the renderedElement was an input, render the label and error message
+                ComPtr<IAdaptiveInputElement> inputElement;
+                if (SUCCEEDED(renderedElement.As(&inputElement)))
+                {
+                    XamlHelpers::HandleLabelAndErrorMessage(inputElement.Get(), renderContext, renderArgs, newControl.GetAddressOf());
+                }
 
                 RETURN_IF_FAILED(XamlHelpers::AddRenderedControl(newControl.Get(), element, parentPanel, separator.Get(), nullptr, childCreatedCallback));
             }

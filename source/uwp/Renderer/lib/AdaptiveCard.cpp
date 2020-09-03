@@ -165,8 +165,6 @@ namespace AdaptiveNamespace
             static_cast<ABI::AdaptiveNamespace::VerticalContentAlignment>(sharedAdaptiveCard->GetVerticalContentAlignment());
         m_height = static_cast<ABI::AdaptiveNamespace::HeightType>(sharedAdaptiveCard->GetHeight());
         m_minHeight = sharedAdaptiveCard->GetMinHeight();
-        m_inputNecessityIndicators =
-            static_cast<ABI::AdaptiveNamespace::InputNecessityIndicators>(sharedAdaptiveCard->GetInputNecessityIndicators());
 
         auto backgroundImage = sharedAdaptiveCard->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -281,18 +279,6 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    IFACEMETHODIMP AdaptiveCard::get_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators* inputNecessityIndicators)
-    {
-        *inputNecessityIndicators = m_inputNecessityIndicators;
-        return S_OK;
-    }
-
-    IFACEMETHODIMP AdaptiveCard::put_InputNecessityIndicators(ABI::AdaptiveNamespace::InputNecessityIndicators inputNecessityIndicators)
-    {
-        m_inputNecessityIndicators = inputNecessityIndicators;
-        return S_OK;
-    }
-
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -317,25 +303,23 @@ namespace AdaptiveNamespace
         std::shared_ptr<AdaptiveSharedNamespace::BackgroundImage> sharedBackgroundImage;
         if (adaptiveBackgroundImage && SUCCEEDED(adaptiveBackgroundImage->GetSharedModel(sharedBackgroundImage)))
         {
-            adaptiveCard->SetBackgroundImage(sharedBackgroundImage);
+            adaptiveCard->SetBackgroundImage(std::move(sharedBackgroundImage));
         }
 
         adaptiveCard->SetStyle(static_cast<AdaptiveSharedNamespace::ContainerStyle>(m_style));
         adaptiveCard->SetVerticalContentAlignment(static_cast<AdaptiveSharedNamespace::VerticalContentAlignment>(m_verticalAlignment));
-        adaptiveCard->SetInputNecessityIndicators(
-            static_cast<AdaptiveSharedNamespace::InputNecessityIndicators>(m_inputNecessityIndicators));
 
         if (m_selectAction != nullptr)
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
-            adaptiveCard->SetSelectAction(sharedAction);
+            adaptiveCard->SetSelectAction(std::move(sharedAction));
         }
 
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
 
-        sharedModel = adaptiveCard;
+        sharedModel = std::move(adaptiveCard);
         return S_OK;
     }
 

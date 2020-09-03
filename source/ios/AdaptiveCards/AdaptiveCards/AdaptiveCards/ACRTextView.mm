@@ -7,6 +7,7 @@
 
 #import "ACRTextView.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRInputLabelView.h"
 #import "TextInput.h"
 
 @implementation ACRTextView
@@ -33,6 +34,7 @@
         self.text = _placeholderText;
         self.textColor = [UIColor lightGrayColor];
     }
+
     self.isRequired = inputBlck->GetIsRequired();
     self.delegate = self;
     self.id = [NSString stringWithCString:inputBlck->GetId().c_str()
@@ -92,21 +94,19 @@
 }
 
 - (BOOL)validate:(NSError **)error
-{
-    if (self.isRequired && !self.hasText) {
-        if (error) {
-            *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
-        }
-        return NO;
-    } else {
-        return YES;
-    }
+{    
+    return [ACRInputLabelView commonTextUIValidate:self.isRequired hasText:self.hasText predicate:self.regexPredicate text:self.text error:error];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
     dictionary[self.id] = ([_placeholderText isEqualToString:self.text]) ? @"" : self.text;
 }
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view {
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+}
+
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -129,11 +129,11 @@
     if (!_maxLength) {
         return YES;
     }
-
+    
     if (range.length + range.location > textView.text.length) {
         return NO;
     }
-
+    
     NSUInteger newLength = [textView.text length] + [text length] - range.length;
     return newLength <= _maxLength;
 }
@@ -142,7 +142,12 @@
 {
     if (_placeholderText && [textView.text isEqualToString:_placeholderText]) {
         textView.text = @"";
-        textView.textColor = [UIColor blackColor];
+        if (@available(iOS 13.0, *)) {
+            textView.textColor = [UIColor labelColor];
+        } else {
+            // Fallback on earlier versions
+            textView.textColor = [UIColor blackColor];
+        }
     }
     [textView becomeFirstResponder];
 }
@@ -150,9 +155,20 @@
 {
     if (![textView.text length]) {
         textView.text = _placeholderText;
-        textView.textColor = [UIColor lightGrayColor];
+        if (@available(iOS 13.0, *)) {
+            textView.textColor = [UIColor placeholderTextColor];
+        } else {
+            // Fallback on earlier versions
+            textView.textColor = [UIColor lightGrayColor];
+        }
     }
     [textView resignFirstResponder];
 }
+
+@synthesize hasValidationProperties;
+
+@synthesize id;
+
+@synthesize isRequired;
 
 @end
