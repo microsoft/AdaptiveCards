@@ -95,6 +95,8 @@ export abstract class CardElement extends CardObject {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
+
+        this._renderedElement?.setAttribute("aria-expanded", value.toString());
     }
 
     //#endregion
@@ -4098,8 +4100,27 @@ export class ToggleVisibilityAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
 
+    private updateAriaControlsAttribute() {
+        // apply aria labels to make it clear which elements this action will toggle
+        if (this.targetElements) {
+            const elementIds = Object.keys(this.targetElements);
+
+            if (elementIds.length > 0) {
+                this._renderedElement?.setAttribute("aria-controls", elementIds.join(" "));
+            }
+            else {
+                this._renderedElement?.removeAttribute("aria-controls");
+            }
+        }
+    }
+
     getJsonTypeName(): string {
         return ToggleVisibilityAction.JsonTypeName;
+    }
+
+    render(baseCssClass: string = "ac-pushButton") {
+        super.render(baseCssClass);
+        this.updateAriaControlsAttribute();
     }
 
     execute() {
@@ -4121,10 +4142,12 @@ export class ToggleVisibilityAction extends Action {
 
     addTargetElement(elementId: string, isVisible: boolean | undefined = undefined) {
         this.targetElements[elementId] = isVisible;
+        this.updateAriaControlsAttribute();
     }
 
     removeTargetElement(elementId: string) {
         delete this.targetElements[elementId];
+        this.updateAriaControlsAttribute();
     }
 }
 
