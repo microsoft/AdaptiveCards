@@ -4,9 +4,20 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.support.v4.app.FragmentManager;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import com.google.android.flexbox.AlignContent;
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.flexbox.JustifyContent;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
@@ -45,6 +56,56 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    void recalculateRatioWidths(FlexboxLayout columnSetLayout)
+    {
+        int renderedColumnCount = columnSetLayout.getChildCount();
+        float ratioTotal = 0.0f;
+        // Instead of passing though all elements twice, just save what columns need to be recalculated
+        // The first value refers to the rendered view index and the second value refers to the ratio
+        ArrayList<Pair<Integer, Float>> columnsToRecalculate = new ArrayList<>();
+
+        for (int i = 0; i < renderedColumnCount; ++i)
+        {
+            View renderedColumn = columnSetLayout.getChildAt(i);
+
+            Object tag = renderedColumn.getTag();
+            if (tag != null && tag instanceof TagContent)
+            {
+                TagContent columnTag = (TagContent) renderedColumn.getTag();
+                if (!columnTag.IsSeparator())
+                {
+                    Column column = Util.castTo(columnTag.GetBaseElement(), Column.class);
+
+                    String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
+                    try
+                    {
+                        float columnRatio = Float.parseFloat(columnSize);
+                        ratioTotal += columnRatio;
+                        columnsToRecalculate.add(new Pair<>(i, columnRatio));
+                    }
+                    // This is just for retrieving the rendered ratios, we don't mind anything else
+                    catch (Exception e) { }
+                }
+            }
+        }
+
+        for (Pair<Integer, Float> columnToRecalculate : columnsToRecalculate)
+        {
+            View renderedColumn = columnSetLayout.getChildAt(columnToRecalculate.first);
+
+            ViewGroup.LayoutParams layoutParams = renderedColumn.getLayoutParams();
+
+            if (layoutParams != null && layoutParams instanceof FlexboxLayout.LayoutParams)
+            {
+                FlexboxLayout.LayoutParams flexBoxLayoutParams = (FlexboxLayout.LayoutParams)layoutParams;
+                flexBoxLayoutParams.setFlexGrow(1);
+                flexBoxLayoutParams.setFlexShrink(1);
+                flexBoxLayoutParams.setFlexBasisPercent((columnToRecalculate.second * 100) / ratioTotal);
+            }
+        }
+
+    }
+
     @Override
     public View render(
         RenderedAdaptiveCard renderedCard,
@@ -67,13 +128,19 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
-        LinearLayout layout = new LinearLayout(context);
+        // FlexboxLayout columnSetLayout = new FlexboxLayout(context);
+
+
+        FlexboxLayout columnSetLayout = new FlexboxLayout(context);
 
         // Add this two for allowing children to bleed
-        layout.setClipChildren(false);
-        layout.setClipToPadding(false);
+        columnSetLayout.setClipChildren(false);
+        columnSetLayout.setClipToPadding(false);
 
-        setMinHeight(columnSet.GetMinHeight(), layout, context);
+        columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
+        columnSetLayout.setFlexDirection(FlexDirection.ROW);
+
+        setMinHeight(columnSet.GetMinHeight(), columnSetLayout, context);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
@@ -91,17 +158,19 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    context,
                                                                                    fragmentManager,
                                                                                    column,
-                                                                                   layout,
+                                                                                   columnSetLayout,
                                                                                    cardActionHandler,
                                                                                    hostConfig,
                                                                                    columnRenderArgs,
                                                                                    featureRegistration);
         }
 
+        recalculateRatioWidths(columnSetLayout);
+
         if (columnSet.GetSelectAction() != null)
         {
-            layout.setClickable(true);
-            layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
+            columnSetLayout.setClickable(true);
+            columnSetLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
         }
 
         TagContent tagContent = new TagContent(columnSet);
@@ -112,25 +181,25 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             stretchLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
             stretchLayout.setOrientation(LinearLayout.VERTICAL);
 
-            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            columnSetLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
 
             tagContent.SetStretchContainer(stretchLayout);
 
-            stretchLayout.addView(layout);
+            stretchLayout.addView(columnSetLayout);
             viewGroup.addView(stretchLayout);
         }
         else
         {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            viewGroup.addView(layout);
+            columnSetLayout.setLayoutParams(new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.MATCH_PARENT, FlexboxLayout.LayoutParams.MATCH_PARENT));
+            viewGroup.addView(columnSetLayout);
         }
 
-        layout.setTag(tagContent);
+        columnSetLayout.setTag(tagContent);
 
-        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
-        ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
+        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, columnSetLayout, context, hostConfig);
+        ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
 
-        return layout;
+        return columnSetLayout;
     }
 
     private static ColumnSetRenderer s_instance = null;

@@ -223,16 +223,16 @@ public class CardRendererRegistration
         return m_featureRegistration;
     }
 
-    public View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            Object tag,
-            BaseCardElementVector baseCardElementList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
+
+
+    public View renderColumnAndContainer(RenderedAdaptiveCard renderedCard,
+                                       Context context,
+                                       FragmentManager fragmentManager,
+                                       ViewGroup viewGroup,
+                                       BaseCardElementVector baseCardElementList,
+                                       ICardActionHandler cardActionHandler,
+                                       HostConfig hostConfig,
+                                       RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -240,34 +240,30 @@ public class CardRendererRegistration
             return viewGroup;
         }
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        layout.setOrientation(LinearLayout.VERTICAL);
+        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 
-        // Add this two for allowing children to bleed
-        layout.setClipChildren(false);
-        layout.setClipToPadding(false);
-
-        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
-
-        if (tag instanceof BaseCardElement)
+        for (int i = 0; i < size; i++)
         {
-            if(tag instanceof Column)
-            {
-                Column column = (Column)tag;
-                verticalContentAlignment = column.GetVerticalContentAlignment();
-            }
-            else if(tag instanceof Container)
-            {
-                Container container = (Container)tag;
-                verticalContentAlignment = container.GetVerticalContentAlignment();
-            }
+            BaseCardElement cardElement = baseCardElementList.get(i);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, hostConfig, renderArgs, featureRegistration);
         }
-        else if(tag instanceof AdaptiveCard)
+
+        return viewGroup;
+    }
+
+    public View renderElements(RenderedAdaptiveCard renderedCard,
+                       Context context,
+                       FragmentManager fragmentManager,
+                       ViewGroup viewGroup,
+                       BaseCardElementVector baseCardElementList,
+                       ICardActionHandler cardActionHandler,
+                       HostConfig hostConfig,
+                       RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
+    {
+        long size;
+        if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
         {
-            AdaptiveCard adaptiveCard = (AdaptiveCard)tag;
-            verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
+            return viewGroup;
         }
 
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
@@ -275,42 +271,10 @@ public class CardRendererRegistration
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, layout, cardActionHandler, hostConfig, renderArgs, featureRegistration);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, hostConfig, renderArgs, featureRegistration);
         }
 
-        // This is made as the last operation so we can assure the contents were rendered properly
-        if (verticalContentAlignment != VerticalContentAlignment.Top)
-        {
-            LinearLayout verticalAlignmentLayout = new LinearLayout(context);
-            verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
-            verticalAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            if (verticalContentAlignment == VerticalContentAlignment.Center)
-            {
-                verticalAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
-            }
-            else
-            {
-                verticalAlignmentLayout.setGravity(Gravity.BOTTOM);
-            }
-
-            verticalAlignmentLayout.addView(layout);
-
-            if (viewGroup != null)
-            {
-                viewGroup.addView(verticalAlignmentLayout);
-            }
-        }
-        else
-        {
-            if (viewGroup != null)
-            {
-                viewGroup.addView(layout);
-            }
-        }
-
-        return layout;
+        return viewGroup;
     }
 
     public void renderElementAndPerformFallback(
