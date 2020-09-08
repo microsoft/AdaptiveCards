@@ -96,7 +96,9 @@ export abstract class CardElement extends CardObject {
             }
         }
 
-        this._renderedElement?.setAttribute("aria-expanded", value.toString());
+        if (this._renderedElement) {
+            this._renderedElement.setAttribute("aria-expanded", value.toString());
+        }
     }
 
     //#endregion
@@ -424,6 +426,10 @@ export abstract class CardElement extends CardObject {
         this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
+            if (this.id) {
+                this._renderedElement.id = this.id;
+            }
+
             if (this.customCssSelector) {
                 this._renderedElement.classList.add(this.customCssSelector);
             }
@@ -4105,11 +4111,13 @@ export class ToggleVisibilityAction extends Action {
         if (this.targetElements) {
             const elementIds = Object.keys(this.targetElements);
 
-            if (elementIds.length > 0) {
-                this._renderedElement?.setAttribute("aria-controls", elementIds.join(" "));
-            }
-            else {
-                this._renderedElement?.removeAttribute("aria-controls");
+            if (this._renderedElement) {
+                if (elementIds.length > 0) {
+                    this._renderedElement.setAttribute("aria-controls", elementIds.join(" "));
+                }
+                else {
+                    this._renderedElement.removeAttribute("aria-controls");
+                }
             }
         }
     }
