@@ -128,9 +128,25 @@
                                             "type": "Column",
                                             "items": [
                                                 {
-                                                    "type": "TextBlock",
-                                                    "size": "Medium",
-                                                    "text": "{{TIME(${string(reservationFor.departureTime)})}}"
+                                                    "type": "RichTextBlock",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "{{TIME(${string(reservationFor.departureTime)})}}\r"
+														},
+														{
+															"type": "TextRun",
+															"text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}\r",
+															"isSubtle": true,
+															"wrap": true
+														},
+														{
+															"type": "TextRun",
+														    "text": "${reservationFor.departureAirport.city}",
+															"isSubtle": true
+														}
+													]
                                                 }
                                             ],
                                             "width": 1
@@ -139,77 +155,32 @@
                                             "type": "Column",
                                             "items": [
                                                 {
-                                                    "type": "TextBlock",
-                                                    "horizontalAlignment": "Right",
-                                                    "size": "Medium",
-                                                    "text": "{{TIME(${string(reservationFor.arrivalTime)})}}"
+                                                    "type": "RichTextBlock",
+                                                    "horizontalAlignment": "right",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "{{TIME(${string(reservationFor.arrivalTime)})}}\r"
+														},
+														{
+															"type": "TextRun",
+															"text": "{{DATE(${string(reservationFor.arrivalTime)}, SHORT)}}\r",
+															"isSubtle": true,
+															"wrap": true
+														},
+														{
+															"type": "TextRun",
+														    "text": "${reservationFor.arrivalAirport.city}",
+															"isSubtle": true
+														}
+													]
                                                 }
                                             ],
                                             "width": 1
                                         }
-                                    ]
-                                },
-                                {
-                                    "type": "ColumnSet",
-                                    "spacing": "None",
-                                    "columns": [
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}",
-                                                    "isSubtle": true,
-                                                    "wrap": true
-                                                }
-                                            ],
-                                            "width": 1
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "horizontalAlignment": "Right",
-                                                    "text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}",
-                                                    "isSubtle": true,
-                                                    "wrap": true
-                                                }
-                                            ],
-                                            "width": 1
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "ColumnSet",
-                                    "spacing": "None",
-                                    "columns": [
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "text": "${reservationFor.departureAirport.city}",
-                                                    "isSubtle": true
-                                                }
-                                            ],
-                                            "width": 1
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "horizontalAlignment": "Right",
-                                                    "text": "${reservationFor.arrivalAirport.city}",
-                                                    "isSubtle": true
-                                                }
-                                            ],
-                                            "width": 1
-                                        }
-                                    ],
-                                    "height": "stretch"
-                                },
+									]
+								}
                                 {
                                     "type": "ActionSet",
                                     "separator": true,
