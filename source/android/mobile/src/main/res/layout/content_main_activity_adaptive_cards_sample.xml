@@ -76,6 +76,110 @@
                 android:layout_height="match_parent">
 
                 <LinearLayout
+                    android:id="@+id/Visual"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.flexbox.FlexboxLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:flexDirection="row"
+                            app:flexWrap="nowrap">
+
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:flexDirection="column"
+                                app:layout_flexShrink="1"
+                                app:layout_flexBasisPercent="50%">
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="San Francisco ia  EWlly asjkhnjkasdn jnasjdn jas"/>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="SFO" />
+                            </com.google.android.flexbox.FlexboxLayout>
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent"
+                                app:layout_flexShrink="0"/>
+
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:layout_flexShrink="1"
+                                app:flexDirection="column">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text=" "/>
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="40dp" />
+
+                            </com.google.android.flexbox.FlexboxLayout>
+
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="match_parent"
+                                app:layout_flexShrink="0" />
+
+                            <com.google.android.flexbox.FlexboxLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                app:flexDirection="column"
+                                app:layout_flexShrink="1"
+                                app:layout_flexBasisPercent="50%">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Amsterdam"/>
+                                <ImageView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp" />
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="AM" />
+
+                            </com.google.android.flexbox.FlexboxLayout>
+
+                        </com.google.android.flexbox.FlexboxLayout>
+
+                    </LinearLayout>
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <LinearLayout
+                            android:id="@+id/visualAdaptiveCardLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/border"
+                            android:orientation="vertical"
+                            ></LinearLayout>
+                    </ScrollView>
+
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/importer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -95,26 +199,8 @@
                     </ScrollView>
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/Visual"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
 
-                    <ScrollView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1">
 
-                        <LinearLayout
-                            android:id="@+id/visualAdaptiveCardLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/border"
-                            android:orientation="vertical"
-                            ></LinearLayout>
-                    </ScrollView>
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/JSON"

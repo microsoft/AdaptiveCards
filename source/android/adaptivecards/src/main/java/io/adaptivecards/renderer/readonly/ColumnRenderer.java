@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
@@ -56,8 +57,10 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, LinearLayout linearLayout, FlexboxLayout.LayoutParams columnLayout)
+    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, FlexboxLayout linearLayout)
     {
+        ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
+
         int alignment = AlignItems.FLEX_START;
         int gravity = Gravity.TOP;
 
@@ -78,15 +81,17 @@ public class ColumnRenderer extends BaseCardElementRenderer
                 break;
         }
 
-        linearLayout.setGravity(gravity);
-        // columnLayout.setAlignItems(alignment);
+
+        // linearLayout.setGravity(gravity);
+        linearLayout.setAlignItems(alignment);
     }
 
-    private void setColumnWidth(RenderedAdaptiveCard renderedCard, Context context, Column column, LinearLayout columnLayout)
+    private void setColumnWidth(RenderedAdaptiveCard renderedCard, Context context, Column column, FlexboxLayout columnLayout)
     {
         FlexboxLayout.LayoutParams layoutParams;
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         long pixelWidth = column.GetPixelWidth();
+
         if (pixelWidth != 0)
         {
             layoutParams = new FlexboxLayout.LayoutParams(Util.dpToPixels(context, pixelWidth), FlexboxLayout.LayoutParams.MATCH_PARENT);
@@ -99,9 +104,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
                 // Set ratio to column
                 float columnWeight = Float.parseFloat(columnSize);
                 layoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.setFlexGrow(1);
-                layoutParams.setFlexShrink(1);
                 layoutParams.setFlexBasisPercent(columnWeight);
+                layoutParams.setFlexShrink(1);
                 columnLayout.setLayoutParams(layoutParams);
             }
             catch (NumberFormatException numFormatExcep)
@@ -119,7 +123,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
                     layoutParams = new FlexboxLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                     layoutParams.setFlexGrow(0);
-                    layoutParams.setFlexShrink(1);
+                    layoutParams.setFlexShrink(0);
                     columnLayout.setLayoutParams(layoutParams);
 
                     if (!columnSize.equals(g_columnSizeAuto))
@@ -147,8 +151,9 @@ public class ColumnRenderer extends BaseCardElementRenderer
         // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        LinearLayout columnLayout = new LinearLayout(context);
-        columnLayout.setOrientation(LinearLayout.VERTICAL);
+        FlexboxLayout columnLayout = new FlexboxLayout(context);
+        columnLayout.setFlexDirection(FlexDirection.COLUMN);
+        // columnLayout.setOrientation(LinearLayout.VERTICAL);
         columnLayout.setTag(new TagContent(column));
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
@@ -185,7 +190,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, column.GetBackgroundImage(), hostConfig, columnLayout);
         setColumnWidth(renderedCard, context, column, columnLayout);
-        setVerticalContentAlignment(column.GetVerticalContentAlignment(), columnLayout, (FlexboxLayout.LayoutParams) columnLayout.getLayoutParams());
+
+        setVerticalContentAlignment(column.GetVerticalContentAlignment(), columnLayout);
 
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);

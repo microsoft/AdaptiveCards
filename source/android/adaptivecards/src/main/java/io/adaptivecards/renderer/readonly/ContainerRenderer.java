@@ -66,7 +66,6 @@ public class ContainerRenderer extends BaseCardElementRenderer
         Container container = Util.castTo(baseCardElement, Container.class);
 
         StretchableElementLayout containerView = new StretchableElementLayout(context, container.GetHeight() == HeightType.Stretch);
-        containerView.getLayoutParams().width = ViewGroup.LayoutParams.WRAP_CONTENT;
         containerView.setTag(new TagContent(container));
         containerView.setOrientation(LinearLayout.VERTICAL);
 

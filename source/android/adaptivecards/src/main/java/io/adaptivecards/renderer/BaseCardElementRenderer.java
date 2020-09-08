@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 import java.util.Set;
 
 import io.adaptivecards.objectmodel.ColorsConfig;
@@ -82,28 +84,56 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
         int separatorColor = android.graphics.Color.parseColor(hostConfig.GetSeparator().getLineColor());
 
         View view = new ImageView(context);
-        LinearLayout.LayoutParams params;
-        if (separator && separatorThickness > 0)
+
+        if (horizontalLine)
         {
-            view.setBackgroundColor(separatorColor);
-            params = new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams params;
+            if (separator && separatorThickness > 0)
+            {
+                view.setBackgroundColor(separatorColor);
+                params = new LinearLayout.LayoutParams(
                     horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
                     horizontalLine ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
-            params.setMargins(
+                params.setMargins(
                     horizontalLine ? 0 : spacingSize / 2 /* left */,
                     horizontalLine ? spacingSize / 2 : 0 /* top */,
                     horizontalLine ? 0 : spacingSize / 2 /* right */,
                     horizontalLine ? spacingSize / 2 : 0 /* bottom */);
+            }
+            else
+            {
+                // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
+                // use more space than needed (making a second row of images to render below the space for the imageSet)
+                params = new LinearLayout.LayoutParams(
+                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
+                    horizontalLine ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
+            }
+            view.setLayoutParams(params);
         }
         else
         {
-            // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
-            // use more space than needed (making a second row of images to render below the space for the imageSet)
-            params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
-                    horizontalLine ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
+            FlexboxLayout.LayoutParams params;
+            if (separator && separatorThickness > 0)
+            {
+                view.setBackgroundColor(separatorColor);
+                params = new FlexboxLayout.LayoutParams(separatorThickness, FlexboxLayout.LayoutParams.MATCH_PARENT);
+                params.setMargins(
+                    horizontalLine ? 0 : spacingSize / 2 /* left */,
+                    horizontalLine ? spacingSize / 2 : 0 /* top */,
+                    horizontalLine ? 0 : spacingSize / 2 /* right */,
+                    horizontalLine ? spacingSize / 2 : 0 /* bottom */);
+            }
+            else
+            {
+                // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
+                // use more space than needed (making a second row of images to render below the space for the imageSet)
+                params = new FlexboxLayout.LayoutParams(spacingSize, isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT);
+            }
+            params.setFlexShrink(0);
+            params.setFlexGrow(0);
+
+            view.setLayoutParams(params);
         }
-        view.setLayoutParams(params);
 
         // If the element has no tag, then we know it's a separator
         view.setTag(new TagContent(true /* isSeparator */));

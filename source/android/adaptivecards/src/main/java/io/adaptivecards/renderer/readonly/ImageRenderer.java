@@ -185,7 +185,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
         // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
-        int weight = (image.GetHeight() == HeightType.Stretch) ? 1 : 0;
         if(image.GetHeight() == HeightType.Stretch)
         {
             container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
@@ -266,6 +265,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
             // Stretch image width to barriers
             constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
+            constraints.constrainMinWidth(id, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
         }
         // Scale to parent width
         else if (imageSize == ImageSize.Stretch)
@@ -335,6 +335,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         int imageSizeLimit = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
+        imageView.setMinimumWidth(imageSizeLimit);
+
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
             renderedCard,
             imageView,
@@ -354,7 +356,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         TagContent tagContent = new TagContent(image, separator, viewGroup);
 
         // No container needed for image in ImageSet
-        if(isInImageSet)
+        if (isInImageSet)
         {
             sizeImageForImageSet(context, imageView, image, hostConfig);
             viewGroup.addView(imageView);

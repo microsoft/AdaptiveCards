@@ -98,9 +98,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             if (layoutParams != null && layoutParams instanceof FlexboxLayout.LayoutParams)
             {
                 FlexboxLayout.LayoutParams flexBoxLayoutParams = (FlexboxLayout.LayoutParams)layoutParams;
-                flexBoxLayoutParams.setFlexGrow(1);
-                flexBoxLayoutParams.setFlexShrink(1);
-                flexBoxLayoutParams.setFlexBasisPercent((columnToRecalculate.second * 100) / ratioTotal);
+                flexBoxLayoutParams.setFlexGrow(0);
+                flexBoxLayoutParams.setFlexShrink(2);
+                flexBoxLayoutParams.setFlexBasisPercent((columnToRecalculate.second * 90) / ratioTotal);
             }
         }
 
