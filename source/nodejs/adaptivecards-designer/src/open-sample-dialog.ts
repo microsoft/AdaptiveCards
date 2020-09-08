@@ -142,7 +142,8 @@ export class OpenSampleDialog extends Dialog {
         let renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-sample-item-container";
         renderedElement.setAttribute("role", "list");
-
+		// Adding Pic2Card option
+		renderedElement.appendChild(this.renderImageOption());
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
             item.onClick = (sender: CatalogueItem) => {
@@ -153,8 +154,6 @@ export class OpenSampleDialog extends Dialog {
 
             renderedElement.appendChild(item.render());
         }
-// Adding Pic2Card option
-renderedElement.appendChild(this.renderImageOption());
         return renderedElement;
     }
 
