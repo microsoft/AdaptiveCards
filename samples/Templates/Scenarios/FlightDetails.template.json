@@ -133,11 +133,11 @@
 														{
 															"type": "TextRun",
 															"size": "medium",
-															"text": "{{TIME(${string(reservationFor.departureTime)})}}\r"
+															"text": "{{TIME(${string(reservationFor.departureTime)})}}\\n"
 														},
 														{
 															"type": "TextRun",
-															"text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}\r",
+															"text": "{{DATE(${string(reservationFor.departureTime)}, SHORT)}}\\n",
 															"isSubtle": true,
 															"wrap": true
 														},
@@ -161,11 +161,11 @@
 														{
 															"type": "TextRun",
 															"size": "medium",
-															"text": "{{TIME(${string(reservationFor.arrivalTime)})}}\r"
+															"text": "{{TIME(${string(reservationFor.arrivalTime)})}}\\n"
 														},
 														{
 															"type": "TextRun",
-															"text": "{{DATE(${string(reservationFor.arrivalTime)}, SHORT)}}\r",
+															"text": "{{DATE(${string(reservationFor.arrivalTime)}, SHORT)}}\\n",
 															"isSubtle": true,
 															"wrap": true
 														},
