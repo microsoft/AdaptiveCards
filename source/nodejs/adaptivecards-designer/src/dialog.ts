@@ -36,7 +36,7 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
-
+    preventDefaultAction:boolean = true; // Flag for enabling preventDefault action
     constructor() {
         this.closeButton = new DialogButton("Close");
         this.closeButton.onClick = (sender) => {
@@ -50,7 +50,7 @@ export abstract class Dialog {
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                this.close();
+                this.preventDefaultAction && this.close();
             }
 
             let dialogFrameElement = document.createElement("div");
@@ -66,9 +66,11 @@ export abstract class Dialog {
             dialogFrameElement.onclick = (e) => {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
+                if(this.preventDefaultAction) {
                 e.cancelBubble = true;
 
                 return false;
+                }
             }
 
             // keyboard navigation support

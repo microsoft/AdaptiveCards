@@ -995,12 +995,38 @@ a.default-ac-anchor:visited:active {
     cursor: pointer;
 }
 /* PIC2CARD css changes*/
-.acd-image-conatainer {
+.acd-pic2card-conatainer {
     display: flex;
     overflow: hidden;
     background-color: #f9f9f9;
     margin: 10px;
     position: relative;
+    flex-direction: column;
+}
+
+.acd-poweredby-title {
+    font-family: Helvetica;
+    font-size: 13px;
+    color: #0a0a0a;
+    margin-top: 7px;
+    margin-right: 9px;
+    display: flex;
+    justify-content: flex-end;
+}
+.acd-poweredby-title .link {
+    margin-left: 3px;
+    color: #0367c1;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+.acd-poweredby-title .link:hover {
+    color: blue;
+}
+
+.acd-sample-list {
+    overflow: auto;
+    height: calc(100% - 40px);
 }
 
 .acd-sample-image-container {
@@ -1009,7 +1035,7 @@ a.default-ac-anchor:visited:active {
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    overflow: auto;
+    height: 100%;
 }
 
 .acd-image-upload-container {
@@ -1022,7 +1048,7 @@ a.default-ac-anchor:visited:active {
 .acd-image-title {
     width: 60%;
     margin: 0 auto;
-    margin-top: 30px;
+    margin-top: 20px;
     font-family: Helvetica;
     font-size: 16px;
     color: #0a0a0a;
@@ -1089,6 +1115,7 @@ a.default-ac-anchor:visited:active {
     outline: none;
     text-align: center;
     line-height: 30px;
+    margin-top: 7px;
 }
 
 .acd-file-type:hover::before {
@@ -1101,7 +1128,7 @@ a.default-ac-anchor:visited:active {
 
 .acd-image-file-note {
     font-family: Helvetica;
-    font-size: 10px;
+    font-size: 11px;
     color: #0a0a0a;
     margin-top: 7px;
 }
@@ -1116,13 +1143,80 @@ a.default-ac-anchor:visited:active {
     background-color: rgba(235, 237, 240, 0.32);
     justify-content: space-evenly;
 }
+.acd-checkbox-container {
+    align-items: center;
+    display: flex;
+    font-family: Helvetica;
+    font-size: 11px;
+    margin-top: 7px;
+    font-weight: bold;
+    color: #0a0a0a;
+}
+.acd-checkbox-element {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+.acd-custom-checkbox {
+    height: 14px;
+    width: 14px;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 1px solid#286ec0;
+}
+.acd-custom-checkbox::after {
+    position: absolute;
+    content: "";
+    left: 12px;
+    top: 12px;
+    height: 0;
+    width: 0;
+    border-radius: 5px;
+    border: solid #009bff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(0deg) scale(0);
+    opacity: 1;
+}
 
+.acd-checkbox-element:checked ~ .acd-custom-checkbox {
+    border-radius: 2px;
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+    border: 1px solid #286ec0;
+    background-color: #286ec0;
+}
+
+.acd-checkbox-element:checked ~ .acd-custom-checkbox::after {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+    top: 0px;
+    left: 4px;
+    width: 2px;
+    height: 9px;
+    border: solid white;
+    border-radius: 0;
+    background-color: transparent;
+    border-width: 0 2px 2px 0;
+}
+
+.acd-label-element {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+a.poweredby-link {
+    text-decoration: none;
+}
 .acd-image-container {
     width: 400px;
     height: 300px;
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.acd-sample-container {
+    display: flex;
+    height: calc(100% - 21px);
 }
 .acd-image-upload:hover {
     box-shadow: 0 0 20px -5px #cccccc;

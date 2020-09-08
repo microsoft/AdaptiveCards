@@ -731,14 +731,16 @@ export class CardDesigner extends Designer.DesignContext {
     private launchImagePopup() {
         let dialog = new OpenImageDialog();
         dialog.title = "Upload Card Structure ";
+        dialog.closeButton.caption = "Cancel";
+        dialog.preventDefaultAction = false;
         dialog.width = "80%";
         dialog.height = "80%";
         dialog.open();
         dialog.onClose = (d) => {
-            const { template, data } = dialog.predictedCardJSON;
+            const { card, data } = dialog.predictedCardJSON;
 			const addToUndoStack = true;
-            this.setCardPayload(template, addToUndoStack);
-            this.setSampleDataPayload(data);
+			this.setCardPayload(card, addToUndoStack);
+			this.setSampleDataPayload(data);
         };
     }
 
