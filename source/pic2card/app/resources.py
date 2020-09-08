@@ -12,7 +12,6 @@ from flask_restplus import Resource
 from flask import current_app
 
 from mystique.predict_card import PredictCard
-from mystique.debug import Debug
 from mystique import config
 from .utils import get_templates
 
@@ -132,6 +131,7 @@ class DebugEndpoint(PredictJson):
 
         Make use of the frozen graph for inferencing.
         """
+        from mystique.debug import Debug
 
         imgdata = base64.b64decode(bs64_img)
         image = Image.open(io.BytesIO(imgdata))
