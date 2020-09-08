@@ -1,134 +1,134 @@
 {
-    "type": "AdaptiveCard",
-    "body": [
-        {
-            "type": "ColumnSet",
-            "columns": [
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "Container",
-                            "backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
-                            "items": [
-                                {
-                                    "type": "Image",
-                                    "horizontalAlignment": "Center",
-                                    "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
-                                }
-                            ],
-                            "bleed": true
-                        },
-                        {
-                            "type": "Container",
-                            "spacing": "None",
-                            "style": "emphasis",
-                            "items": [
-                                {
-                                    "type": "TextBlock",
-                                    "size": "ExtraLarge",
-                                    "weight": "Lighter",
-                                    "color": "Accent",
-                                    "text": "Flight to ${reservationFor.arrivalAirport.iataCode}",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "spacing": "Small",
-                                    "text": "${reservationFor.provider.name}  Air Lines flight ${reservationFor.flightNumber} ",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "spacing": "None",
-                                    "text": "Confirmation code: ${reservationId}",
-                                    "wrap": true
-                                },
-                                {
-                                    "type": "TextBlock",
-                                    "spacing": "None",
-                                    "text": "4 hours 15 minutes",
-                                    "wrap": true
-                                }
-                            ],
-                            "bleed": true,
-                            "height": "stretch"
-                        }
-                    ],
-                    "width": 45,
-                    "height": "stretch"
-                },
-                {
-                    "type": "Column",
-                    "items": [
-                        {
-                            "type": "Container",
-                            "height": "stretch",
-                            "items": [
-                                {
-                                    "type": "ColumnSet",
-                                    "columns": [
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "size": "ExtraLarge",
-                                                    "weight": "Lighter",
-                                                    "text": "${reservationFor.departureAirport.iataCode}"
-                                                }
-                                            ],
-                                            "width": "auto"
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "verticalContentAlignment": "Center",
-                                            "items": [
-                                                {
-                                                    "type": "Image",
-                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
-                                                    "width": "10000px",
-                                                    "height": "2px"
-                                                }
-                                            ],
-                                            "width": "stretch"
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "spacing": "Small",
-                                            "verticalContentAlignment": "Center",
-                                            "items": [
-                                                {
-                                                    "type": "Image",
-                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
-                                                    "height": "16px"
-                                                }
-                                            ],
-                                            "width": "auto"
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "TextBlock",
-                                                    "horizontalAlignment": "Right",
-                                                    "size": "ExtraLarge",
-                                                    "weight": "Lighter",
-                                                    "text": "${reservationFor.arrivalAirport.iataCode}"
-                                                }
-                                            ],
-                                            "width": "auto"
-                                        }
-                                    ]
-                                },
-                                {
-                                    "type": "ColumnSet",
-                                    "columns": [
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "RichTextBlock",
+	"type": "AdaptiveCard",
+	"body": [
+		{
+			"type": "ColumnSet",
+			"columns": [
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Container",
+							"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+							"items": [
+								{
+									"type": "Image",
+									"horizontalAlignment": "center",
+									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
+								}
+							],
+							"bleed": true
+						},
+						{
+							"type": "Container",
+							"spacing": "none",
+							"style": "emphasis",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "extraLarge",
+									"weight": "lighter",
+									"color": "Accent",
+									"text": "Flight to ${reservationFor.arrivalAirport.iataCode}",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "small",
+									"text": "${reservationFor.provider.name}  Air Lines flight ${reservationFor.flightNumber} ",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "Confirmation code: ${reservationId}",
+									"wrap": true
+								},
+								{
+									"type": "TextBlock",
+									"spacing": "none",
+									"text": "4 hours 15 minutes",
+									"wrap": true
+								}
+							],
+							"bleed": true,
+							"height": "stretch"
+						}
+					],
+					"width": 45,
+					"height": "stretch"
+				},
+				{
+					"type": "Column",
+					"items": [
+						{
+							"type": "Container",
+							"height": "stretch",
+							"items": [
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "${reservationFor.departureAirport.iataCode}"
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"verticalContentAlignment": "center",
+											"items": [
+												{
+													"type": "Image",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+													"width": "10000px",
+													"height": "2px"
+												}
+											],
+											"width": "stretch"
+										},
+										{
+											"type": "Column",
+											"spacing": "small",
+											"verticalContentAlignment": "center",
+											"items": [
+												{
+													"type": "Image",
+													"url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
+													"height": "16px"
+												}
+											],
+											"width": "auto"
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "TextBlock",
+													"horizontalAlignment": "right",
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "${reservationFor.arrivalAirport.iataCode}"
+												}
+											],
+											"width": "auto"
+										}
+									]
+								},
+								{
+									"type": "ColumnSet",
+									"columns": [
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "RichTextBlock",
 													"inlines": [
 														{
 															"type": "TextRun",
@@ -143,20 +143,20 @@
 														},
 														{
 															"type": "TextRun",
-														    "text": "${reservationFor.departureAirport.city}",
+															"text": "${reservationFor.departureAirport.city}",
 															"isSubtle": true
 														}
 													]
-                                                }
-                                            ],
-                                            "width": 1
-                                        },
-                                        {
-                                            "type": "Column",
-                                            "items": [
-                                                {
-                                                    "type": "RichTextBlock",
-                                                    "horizontalAlignment": "right",
+												}
+											],
+											"width": 1
+										},
+										{
+											"type": "Column",
+											"items": [
+												{
+													"type": "RichTextBlock",
+													"horizontalAlignment": "right",
 													"inlines": [
 														{
 															"type": "TextRun",
@@ -171,41 +171,41 @@
 														},
 														{
 															"type": "TextRun",
-														    "text": "${reservationFor.arrivalAirport.city}",
+															"text": "${reservationFor.arrivalAirport.city}",
 															"isSubtle": true
 														}
 													]
-                                                }
-                                            ],
-                                            "width": 1
-                                        }
+												}
+											],
+											"width": 1
+										}
 									]
+								},
+								{
+									"type": "ActionSet",
+									"separator": true,
+									"actions": [
+										{
+											"type": "Action.Submit",
+											"title": "Check in",
+											"style": "positive"
+										},
+										{
+											"type": "Action.Submit",
+											"title": "View in calendar"
+										}
+									],
+									"spacing": "medium"
 								}
-                                {
-                                    "type": "ActionSet",
-                                    "separator": true,
-                                    "actions": [
-                                        {
-                                            "type": "Action.Submit",
-                                            "title": "Check in",
-                                            "style": "positive"
-                                        },
-                                        {
-                                            "type": "Action.Submit",
-                                            "title": "View in calendar"
-                                        }
-                                    ],
-                                    "spacing": "Medium"
-                                }
-                            ]
-                        }
-                    ],
-                    "width": 55
-                }
-            ],
-            "height": "stretch"
-        }
-    ],
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.0"
+							]
+						}
+					],
+					"width": 55
+				}
+			],
+			"height": "stretch"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"version": "1.0"
 }
