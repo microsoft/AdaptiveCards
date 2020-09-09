@@ -47,10 +47,10 @@ ID_TO_LABEL = {
 # On True [ uses custom image pipeline for image objects]
 # On False [ uses RCNN model image obejcts ]
 # Default is False
-USE_CUSTOM_IMAGE_PIPELINE = False
+# USE_CUSTOM_IMAGE_PIPELINE = False
 
 # RCNN model confidence score cutoff
-MODEL_CONFIDENCE = 90.0
+MODEL_CONFIDENCE = 80.0
 
 # Extra textbox padding - 5px
 TEXTBOX_PADDING = 5
@@ -58,7 +58,7 @@ TEXTBOX_PADDING = 5
 MODEL_REGISTRY = {
     "tf_faster_rcnn": "mystique.detect_objects.ObjectDetection",
     "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
-    "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
+    # "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
     "pth_detr": "mystique.obj_detect.DetrOD",
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD"
 }
