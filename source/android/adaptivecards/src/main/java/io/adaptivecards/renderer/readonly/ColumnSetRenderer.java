@@ -3,8 +3,9 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.util.Pair;
+
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -22,7 +23,6 @@ import java.util.Locale;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
@@ -141,6 +141,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
+        columnSetLayout.setAlignContent(AlignContent.FLEX_START);
+        columnSetLayout.setAlignItems(AlignItems.FLEX_START);
 
         setMinHeight(columnSet.GetMinHeight(), columnSetLayout, context);
 

@@ -1,13 +1,8 @@
 package io.adaptivecards.objectmodel;
 
-import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-
 import junit.framework.Assert;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 

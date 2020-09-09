@@ -2,13 +2,11 @@
 // Licensed under the MIT License.
 package com.example.mobilechatapp;
 
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
-
-import java.util.List;
 
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ParseResult;

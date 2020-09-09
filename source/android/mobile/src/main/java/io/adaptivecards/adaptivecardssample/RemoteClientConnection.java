@@ -2,26 +2,19 @@
 // Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.util.Log;
-import android.widget.Toast;
+import androidx.annotation.Nullable;
 
-import com.android.volley.AuthFailureError;
+import android.util.Log;
+
 import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Network;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
@@ -37,8 +30,6 @@ import org.webrtc.RtpReceiver;
 import org.webrtc.SdpObserver;
 import org.webrtc.SessionDescription;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 public class RemoteClientConnection

@@ -3,7 +3,7 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.inputhandler.NumberInputHandler;
-import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 
 public class NumberInputRenderer extends TextInputRenderer
 {
