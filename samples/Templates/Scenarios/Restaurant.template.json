@@ -25,35 +25,14 @@
 						{
 							"type": "TextBlock",
 							"$when": "${aggregateRating.ratingValue <= 1}",
-							"text": "${aggregateRating.ratingValue} ★☆☆☆☆ (one star) (${aggregateRating.reviewCount} reviews) · ${priceRange}",
+							"text": "${aggregateRating.ratingValue} star (${aggregateRating.reviewCount} reviews) · ${priceRange}",
 							"isSubtle": true,
 							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
-							"$when": "${aggregateRating.ratingValue <= 2}",
-							"text": "${aggregateRating.ratingValue} ★★☆☆☆ (two stars) (${aggregateRating.reviewCount} reviews) · ${priceRange}",
-							"isSubtle": true,
-							"spacing": "none"
-						},
-						{
-							"type": "TextBlock",
-							"$when": "${aggregateRating.ratingValue <= 3}",
-							"text": "${aggregateRating.ratingValue} ★★★☆☆ (three stars) (${aggregateRating.reviewCount} reviews) · ${priceRange}",
-							"isSubtle": true,
-							"spacing": "none"
-						},
-						{
-							"type": "TextBlock",
-							"$when": "${aggregateRating.ratingValue <= 4}",
-							"text": "${aggregateRating.ratingValue} ★★★★☆ (four stars) (${aggregateRating.reviewCount} reviews) · ${priceRange}",
-							"isSubtle": true,
-							"spacing": "none"
-						},
-						{
-							"type": "TextBlock",
-							"$when": "${aggregateRating.ratingValue <= 5}",
-							"text": "${aggregateRating.ratingValue} ★★★★★ (five stars) (${aggregateRating.reviewCount} reviews) · ${priceRange}",
+							"$when": "${aggregateRating.ratingValue >= 2}",
+							"text": "${aggregateRating.ratingValue} stars (${aggregateRating.reviewCount} reviews) · ${priceRange}",
 							"isSubtle": true,
 							"spacing": "none"
 						},
