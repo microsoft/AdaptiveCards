@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexItem;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -106,7 +107,12 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             // Set ratio to column
             float columnWeight = Float.parseFloat(columnSize);
-            columnLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+            FlexboxLayout.LayoutParams linearLayoutParams = new FlexboxLayout.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT);
+            linearLayoutParams.setFlexGrow(columnWeight);
+            linearLayoutParams.setFlexShrink(1);
+            // linearLayoutParams.width = 0;
+            // linearLayoutParams.weight = columnWeight;
+            columnLayout.setLayoutParams(linearLayoutParams);
             return columnLayout;
         }
         else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
@@ -155,7 +161,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ViewGroup columnLayout = null;
 
         // Due to flexbox not being able to calculate ratios correctly, ratios will be considered a special case of sorts, if this doesn't work then F :(
-        if (hasRatioWidth(column))
+        if (false /*hasRatioWidth(column)*/)
         {
             columnLayout = new LinearLayout(context);
             ((LinearLayout)columnLayout).setOrientation(LinearLayout.VERTICAL);

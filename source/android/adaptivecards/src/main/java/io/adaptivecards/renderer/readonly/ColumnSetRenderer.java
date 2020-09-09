@@ -98,8 +98,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             if (layoutParams != null && layoutParams instanceof FlexboxLayout.LayoutParams)
             {
                 FlexboxLayout.LayoutParams flexBoxLayoutParams = (FlexboxLayout.LayoutParams)layoutParams;
-                flexBoxLayoutParams.setFlexGrow(0);
-                flexBoxLayoutParams.setFlexShrink(2);
+                // flexBoxLayoutParams.setFlexGrow(0);
+                // flexBoxLayoutParams.setFlexShrink(2);
                 // flexBoxLayoutParams.setFlexBasisPercent((columnToRecalculate.second * 100) / ratioTotal);
             }
         }
@@ -167,7 +167,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    featureRegistration);
         }
 
-        recalculateRatioWidths(columnSetLayout);
+        // recalculateRatioWidths(columnSetLayout);
 
         if (columnSet.GetSelectAction() != null)
         {
