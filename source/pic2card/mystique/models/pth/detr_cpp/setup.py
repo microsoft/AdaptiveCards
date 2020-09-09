@@ -2,8 +2,8 @@ import os
 from setuptools import setup
 from torch.utils import cpp_extension
 
-os.environ["CXX"] = "g++-8"
-os.environ["CC"] = "g++-8"
+# os.environ["CXX"] = "g++-8"
+# os.environ["CC"] = "g++-8"
 
 
 curr_dir = os.path.dirname(__file__)
