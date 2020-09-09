@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
@@ -303,7 +305,16 @@ public class CardRendererRegistration
         // - mockLayout is a layout to contain the rendered element, as android renderers have to add
         //      the drawn views into the container view, it makes it easier to do not draw something unwanted
         //      into the final rendered card
-        LinearLayout mockLayout = new LinearLayout(context);
+        ViewGroup mockLayout = null;
+
+        if (Util.isOfType(cardElement, Column.class))
+        {
+            mockLayout = new FlexboxLayout(context);
+        }
+        else
+        {
+            mockLayout = new LinearLayout(context);
+        }
 
         try
         {

@@ -12,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.AlignContent;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexDirection;
-import com.google.android.flexbox.FlexItem;
 import com.google.android.flexbox.FlexWrap;
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -105,7 +105,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             // Set ratio to column
             float columnWeight = Float.parseFloat(columnSize);
-            FlexboxLayout.LayoutParams linearLayoutParams = new FlexboxLayout.LayoutParams(10, ViewGroup.LayoutParams.MATCH_PARENT);
+
+            FlexboxLayout.LayoutParams linearLayoutParams = new FlexboxLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT);
             linearLayoutParams.setFlexGrow(columnWeight);
             linearLayoutParams.setFlexShrink(1);
             // linearLayoutParams.width = 0;
@@ -170,6 +171,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
             ((FlexboxLayout)columnLayout).setFlexDirection(FlexDirection.COLUMN);
         }
         columnLayout.setTag(new TagContent(column));
+
+
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
         ViewGroup itemsContainer = setColumnWidth(renderedCard, context, column, columnLayout);
