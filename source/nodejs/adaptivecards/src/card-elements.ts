@@ -95,6 +95,10 @@ export abstract class CardElement extends CardObject {
                 raiseElementVisibilityChangedEvent(this);
             }
         }
+
+        if (this._renderedElement) {
+            this._renderedElement.setAttribute("aria-expanded", value.toString());
+        }
     }
 
     //#endregion
@@ -422,6 +426,10 @@ export abstract class CardElement extends CardObject {
         this._separatorElement = this.internalRenderSeparator();
 
         if (this._renderedElement) {
+            if (this.id) {
+                this._renderedElement.id = this.id;
+            }
+
             if (this.customCssSelector) {
                 this._renderedElement.classList.add(this.customCssSelector);
             }
@@ -656,7 +664,7 @@ export abstract class BaseTextBlock extends CardElement {
         Versions.v1_2,
         "fontType",
         Enums.FontType);
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -909,6 +917,7 @@ export class TextBlock extends BaseTextBlock {
 
                     if (this.selectAction.title) {
                         element.setAttribute("aria-label", this.selectAction.title);
+                        element.title = this.selectAction.title;
                     }
 
                     element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1170,6 +1179,10 @@ export class TextRun extends BaseTextBlock {
                     if (this.selectAction) {
                         this.selectAction.execute();
                     }
+                }
+
+                if (this.selectAction.title) {
+                    anchor.title = this.selectAction.title;
                 }
 
                 anchor.innerText = formattedText;
@@ -1535,7 +1548,13 @@ class ImageDimensionProperty extends PropertyDefinition {
                 }
             }
             catch {
-                // Do nothing. A parse error is emitted below
+                // Swallow the exception
+            }
+
+            // If the source value isn't valid per this property definition,
+            // check its validity per the fallback property, if specified 
+            if (!isValid && this.fallbackProperty) {
+                isValid = this.fallbackProperty.isValidValue(sourceValue, context);
             }
         }
 
@@ -1559,7 +1578,8 @@ class ImageDimensionProperty extends PropertyDefinition {
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
-        readonly internalName: string) {
+        readonly internalName: string,
+        readonly fallbackProperty?: ValueSetProperty) {
         super(targetVersion, name);
     }
 }
@@ -1581,8 +1601,8 @@ export class Image extends CardElement {
         Enums.Size,
         Enums.Size.Auto);
     static readonly pixelWidthProperty = new ImageDimensionProperty(Versions.v1_1, "width", "pixelWidth");
-    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight");
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly pixelHeightProperty = new ImageDimensionProperty(Versions.v1_1, "height", "pixelHeight", CardElement.heightProperty);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1752,6 +1772,7 @@ export class Image extends CardElement {
 
                 if (this.selectAction.title) {
                     imageElement.setAttribute("aria-label", <string>this.selectAction.title);
+                    imageElement.title = this.selectAction.title;
                 }
 
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1803,7 +1824,7 @@ export class Image extends CardElement {
 export abstract class CardElementContainer extends CardElement {
     //#region Schema
 
-    static readonly selectActionProperty = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ]);
+    static readonly selectActionProperty = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ]);
 
     protected populateSchema(schema: SerializableObjectSchema) {
         super.populateSchema(schema);
@@ -1902,6 +1923,7 @@ export abstract class CardElementContainer extends CardElement {
 
                 if (this._selectAction.title) {
                     element.setAttribute("aria-label", this._selectAction.title);
+                    element.title = this._selectAction.title;
                 }
 
                 element.onclick = (e) => {
@@ -2180,6 +2202,31 @@ export class Media extends CardElement {
         }
     }
 
+    private handlePlayButtonInvoke(event: UIEvent) : void
+    {
+        if (this.hostConfig.media.allowInlinePlayback) {
+            event.preventDefault();
+            event.cancelBubble = true;
+
+            if (this.renderedElement) {
+                let mediaPlayerElement = this.renderMediaPlayer();
+
+                this.renderedElement.innerHTML = "";
+                this.renderedElement.appendChild(mediaPlayerElement);
+
+                mediaPlayerElement.play();
+            }
+        }
+        else {
+            if (Media.onPlay) {
+                event.preventDefault();
+                event.cancelBubble = true;
+
+                Media.onPlay(this);
+            }
+        }
+    }
+
     private renderPoster(): HTMLElement {
         const playButtonArrowWidth = 12;
         const playButtonArrowHeight = 15;
@@ -2226,26 +2273,12 @@ export class Media extends CardElement {
             playButtonOuterElement.style.alignItems = "center";
             playButtonOuterElement.style.justifyContent = "center";
             playButtonOuterElement.onclick = (e) => {
-                if (this.hostConfig.media.allowInlinePlayback) {
-                    e.preventDefault();
-                    e.cancelBubble = true;
+                this.handlePlayButtonInvoke(e);
+            }
 
-                    if (this.renderedElement) {
-                        let mediaPlayerElement = this.renderMediaPlayer();
-
-                        this.renderedElement.innerHTML = "";
-                        this.renderedElement.appendChild(mediaPlayerElement);
-
-                        mediaPlayerElement.play();
-                    }
-                }
-                else {
-                    if (Media.onPlay) {
-                        e.preventDefault();
-                        e.cancelBubble = true;
-
-                        Media.onPlay(this);
-                    }
+            playButtonOuterElement.onkeypress = (e: KeyboardEvent) => {
+                if (e.keyCode == 13 || e.keyCode == 32) { // space or enter
+                    this.handlePlayButtonInvoke(e);
                 }
             }
 
@@ -4073,8 +4106,29 @@ export class ToggleVisibilityAction extends Action {
     // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
     static readonly JsonTypeName: "Action.ToggleVisibility" = "Action.ToggleVisibility";
 
+    private updateAriaControlsAttribute() {
+        // apply aria labels to make it clear which elements this action will toggle
+        if (this.targetElements) {
+            const elementIds = Object.keys(this.targetElements);
+
+            if (this._renderedElement) {
+                if (elementIds.length > 0) {
+                    this._renderedElement.setAttribute("aria-controls", elementIds.join(" "));
+                }
+                else {
+                    this._renderedElement.removeAttribute("aria-controls");
+                }
+            }
+        }
+    }
+
     getJsonTypeName(): string {
         return ToggleVisibilityAction.JsonTypeName;
+    }
+
+    render(baseCssClass: string = "ac-pushButton") {
+        super.render(baseCssClass);
+        this.updateAriaControlsAttribute();
     }
 
     execute() {
@@ -4096,10 +4150,12 @@ export class ToggleVisibilityAction extends Action {
 
     addTargetElement(elementId: string, isVisible: boolean | undefined = undefined) {
         this.targetElements[elementId] = isVisible;
+        this.updateAriaControlsAttribute();
     }
 
     removeTargetElement(elementId: string) {
         delete this.targetElements[elementId];
+        this.updateAriaControlsAttribute();
     }
 }
 
@@ -4985,7 +5041,9 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
 
             if (styleDefinition.backgroundColor) {
-                this.renderedElement.style.backgroundColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
+                const bgColor = <string>Utils.stringToCssColor(styleDefinition.backgroundColor);
+                this.renderedElement.style.backgroundColor = bgColor;
+                this.renderedElement.style.border = "1px solid " + bgColor;
             }
         }
     }
@@ -6517,6 +6575,10 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
+    }
+
+    toJSON(context?: SerializationContext): PropertyBag | undefined {
+        return super.toJSON(context ? context : new SerializationContext(this.version));
     }
 
     updateLayout(processChildren: boolean = true) {

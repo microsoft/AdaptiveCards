@@ -47,10 +47,10 @@ ID_TO_LABEL = {
 # On True [ uses custom image pipeline for image objects]
 # On False [ uses RCNN model image obejcts ]
 # Default is False
-USE_CUSTOM_IMAGE_PIPELINE = False
+# USE_CUSTOM_IMAGE_PIPELINE = False
 
 # RCNN model confidence score cutoff
-MODEL_CONFIDENCE = 90.0
+MODEL_CONFIDENCE = 80.0
 
 # Extra textbox padding - 5px
 TEXTBOX_PADDING = 5
@@ -58,7 +58,7 @@ TEXTBOX_PADDING = 5
 MODEL_REGISTRY = {
     "tf_faster_rcnn": "mystique.detect_objects.ObjectDetection",
     "tfs_faster_rcnn": "mystique.detect_objects.TfsObjectDetection",
-    "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
+    # "pth_faster_rcnn": "mystique.obj_detect.PtObjectDetection",
     "pth_detr": "mystique.obj_detect.DetrOD",
     "pth_detr_cpp": "mystique.obj_detect.DetrCppOD"
 }
@@ -67,3 +67,28 @@ ACTIVE_MODEL_NAME = os.environ.get("ACTIVE_MODEL_NAME", "tf_faster_rcnn")
 
 # Noise objects removal IOU threshold
 IOU_THRESHOLD = 0.5
+
+# Threshold values of w,h ratio of each image object labels
+IMAGE_SIZE_RATIOS = {
+        (10.23, 11.92): "Small",
+        (19.99, 15.0): "Medium",
+        (24.51, 16.33): "Large"
+}
+# Threshold values of mid point distance between 2 design objects column with
+# labels
+COLUMN_WIDTH_DISTANCE = {
+        (1.0, 46.63): "auto",
+        (1.0, 80.40): "stretch"
+}
+# Threshold values of the mid point distance for the last column in the columns
+# and the input image's width, height for the column width labels
+LAST_COLUMN_THRESHOLD = {
+        (1.0, 3.68): "stretch",
+        (1.0, 22.40): "auto"
+}
+# COLUMNSET GROUPING THRESHOLDS
+COLUMNSET_GROUPING = {
+        "ymin_difference": 10.0,
+        "ymax-ymin_difference": 3,
+        "xmax-xmin_difference": 100
+}

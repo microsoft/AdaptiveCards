@@ -1,0 +1,3 @@
+# To serve from frozen graph you have to install the tf core libraries.
+# It comes close to 1.7GB
+tensorflow==1.15.2

@@ -388,16 +388,6 @@ AdaptiveNamespaceStart
         All = Left | Right | Up | Down
     } BleedDirection;
 
-    [version(NTDDI_WIN10_RS1), flags]
-#ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
-#endif
-    typedef[v1_enum] enum InputNecessityIndicators {
-        None = 0,
-        RequiredInputs,
-        OptionalInputs
-    } InputNecessityIndicators;
-
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -639,7 +629,6 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         HeightType Height;
         UInt32 MinHeight;
-        InputNecessityIndicators InputNecessityIndicators;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();

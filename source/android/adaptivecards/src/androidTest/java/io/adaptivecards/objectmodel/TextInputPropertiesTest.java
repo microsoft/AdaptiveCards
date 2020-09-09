@@ -1,16 +1,10 @@
 package io.adaptivecards.objectmodel;
 
-import android.util.Pair;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-import org.w3c.dom.Text;
 
-import java.lang.reflect.Array;
+import android.util.Pair;
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class TextInputPropertiesTest
 {
