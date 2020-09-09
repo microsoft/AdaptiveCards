@@ -32,7 +32,11 @@
         self.text = [[NSString alloc] initWithCString:inputBlck->GetValue().c_str() encoding:NSUTF8StringEncoding];
     } else if ([_placeholderText length]) {
         self.text = _placeholderText;
-        self.textColor = [UIColor lightGrayColor];
+        if (@available(iOS 13.0, *)) {
+            self.textColor = [UIColor placeholderTextColor];
+        } else {
+            self.textColor = [UIColor lightGrayColor];
+        }
     }
 
     self.isRequired = inputBlck->GetIsRequired();
