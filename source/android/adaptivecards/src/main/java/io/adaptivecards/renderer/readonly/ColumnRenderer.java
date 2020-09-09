@@ -91,6 +91,20 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
     }
 
+    private boolean hasRatioWidth(Column column)
+    {
+        try
+        {
+            String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
+            Float.parseFloat(columnSize);
+            return true;
+        }
+        catch (NumberFormatException ex)
+        {
+            return false;
+        }
+    }
+
     private ViewGroup setColumnWidth(RenderedAdaptiveCard renderedCard, Context context, Column column, ViewGroup columnLayout)
     {
 
@@ -155,41 +169,16 @@ public class ColumnRenderer extends BaseCardElementRenderer
         // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        ViewGroup columnLayout = null;
-
-        // Due to flexbox not being able to calculate ratios correctly, ratios will be considered a special case of sorts, if this doesn't work then F :(
-        if (false /*hasRatioWidth(column)*/)
-        {
-            columnLayout = new LinearLayout(context);
-            ((LinearLayout)columnLayout).setOrientation(LinearLayout.VERTICAL);
-        }
-        else
-        {
-            columnLayout = new FlexboxLayout(context);
-            ((FlexboxLayout)columnLayout).setFlexDirection(FlexDirection.COLUMN);
-        }
+        FlexboxLayout columnLayout = new FlexboxLayout(context);
+        columnLayout.setFlexDirection(FlexDirection.COLUMN);
+        columnLayout.setClipChildren(false);
+        columnLayout.setClipToPadding(false);
         columnLayout.setTag(new TagContent(column));
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
+
         ViewGroup itemsContainer = setColumnWidth(renderedCard, context, column, columnLayout);
-
-        if (column.GetMinHeight() != 0)
-        {
-            if (itemsContainer instanceof FlexboxLayout)
-            {
-                LinearLayout newItemsContainer = new LinearLayout(context);
-                newItemsContainer.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-                newItemsContainer.setOrientation(LinearLayout.VERTICAL);
-                itemsContainer.addView(newItemsContainer);
-
-                itemsContainer = newItemsContainer;
-            }
-
-            setMinHeight(column.GetMinHeight(), itemsContainer, context);
-        }
-
-        columnLayout.setClipChildren(false);
-        columnLayout.setClipToPadding(false);
+        itemsContainer = setMinHeight(column.GetMinHeight(), (FlexboxLayout) itemsContainer, context);
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(column, containerStyle);
@@ -219,44 +208,15 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, column.GetBackgroundImage(), hostConfig, columnLayout);
 
-
-        setVerticalContentAlignment(column.GetVerticalContentAlignment(), columnLayout);
+        setVerticalContentAlignment(column.GetVerticalContentAlignment(), itemsContainer);
 
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
 
-        if (column.GetSelectAction() != null)
-        {
-            columnLayout.setClickable(true);
-            columnLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, column.GetSelectAction(), cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler);
 
         viewGroup.addView(columnLayout);
         return columnLayout;
-    }
-
-    private boolean hasRatioWidth(Column column)
-    {
-        String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
-        long pixelWidth = column.GetPixelWidth();
-
-        if (pixelWidth != 0)
-        {
-            return false;
-        }
-        else
-        {
-            try
-            {
-                // Set ratio to column
-                Float.parseFloat(columnSize);
-                return true;
-            }
-            catch (NumberFormatException ex)
-            {
-                return false;
-            }
-        }
     }
 
     private static ColumnRenderer s_instance = null;

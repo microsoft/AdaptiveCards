@@ -201,13 +201,7 @@ public class AdaptiveCardRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, adaptiveCard.GetBackgroundImage(), hostConfig, cardLayout);
-
-        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
-        if (selectAction != null)
-        {
-            rootLayout.setClickable(true);
-            rootLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard,selectAction, cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler);
 
         return rootLayout;
     }

@@ -234,4 +234,28 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             view.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
         }
     }
+
+    /**
+     * Sets the minimum height for Collection elements
+     * @param minHeight minimum height in pixels. Retrieved from minHeight property
+     * @param flexboxLayout Collection element view to apply minimum height to
+     * @param context Context for calculating actual height to render
+     */
+    protected static ViewGroup setMinHeight(long minHeight, FlexboxLayout flexboxLayout, Context context)
+    {
+        if (minHeight != 0)
+        {
+            // For some reason, flexbox has problems managing the minHeight property, so we have to create an extra linear layout
+            LinearLayout nestedLinearLayout = new LinearLayout(context);
+            nestedLinearLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            nestedLinearLayout.setOrientation(LinearLayout.VERTICAL);
+            flexboxLayout.addView(nestedLinearLayout);
+
+            setMinHeight(minHeight, nestedLinearLayout, context);
+
+            return nestedLinearLayout;
+        }
+
+        return flexboxLayout;
+    }
 }

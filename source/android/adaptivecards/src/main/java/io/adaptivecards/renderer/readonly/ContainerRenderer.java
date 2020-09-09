@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
+import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.CollectionTypeElement;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ContainerBleedDirection;
@@ -223,6 +224,15 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
                 loaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, backgroundImageUrl);
             }
+        }
+    }
+
+    public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler)
+    {
+        if (selectAction != null)
+        {
+            view.setClickable(true);
+            view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
         }
     }
 

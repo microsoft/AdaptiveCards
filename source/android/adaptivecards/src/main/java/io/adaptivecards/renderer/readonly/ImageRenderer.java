@@ -375,11 +375,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 
-        if (image.GetSelectAction() != null)
-        {
-            imageView.setClickable(true);
-            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler);
 
         return imageView;
     }

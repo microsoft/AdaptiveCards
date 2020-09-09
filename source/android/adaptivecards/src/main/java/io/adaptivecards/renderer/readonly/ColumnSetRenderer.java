@@ -19,6 +19,7 @@ import com.google.android.flexbox.JustifyContent;
 import java.util.ArrayList;
 import java.util.Locale;
 
+import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
@@ -56,58 +57,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    void recalculateRatioWidths(FlexboxLayout columnSetLayout)
-    {
-        int renderedColumnCount = columnSetLayout.getChildCount();
-        float ratioTotal = 0.0f;
-        // Instead of passing though all elements twice, just save what columns need to be recalculated
-        // The first value refers to the rendered view index and the second value refers to the ratio
-        ArrayList<Pair<Integer, Float>> columnsToRecalculate = new ArrayList<>();
-
-        for (int i = 0; i < renderedColumnCount; ++i)
-        {
-            View renderedColumn = columnSetLayout.getChildAt(i);
-
-            Object tag = renderedColumn.getTag();
-            if (tag != null && tag instanceof TagContent)
-            {
-                TagContent columnTag = (TagContent) renderedColumn.getTag();
-                if (!columnTag.IsSeparator())
-                {
-                    Column column = Util.castTo(columnTag.GetBaseElement(), Column.class);
-
-                    String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
-                    try
-                    {
-                        float columnRatio = Float.parseFloat(columnSize);
-                        ratioTotal += columnRatio;
-                        columnsToRecalculate.add(new Pair<>(i, columnRatio));
-                    }
-                    // This is just for retrieving the rendered ratios, we don't mind anything else
-                    catch (Exception e) { }
-                }
-            }
-        }
-
-        for (Pair<Integer, Float> columnToRecalculate : columnsToRecalculate)
-        {
-            View renderedColumn = columnSetLayout.getChildAt(columnToRecalculate.first);
-
-            ViewGroup.LayoutParams layoutParams = renderedColumn.getLayoutParams();
-
-            if (layoutParams != null && layoutParams instanceof FlexboxLayout.LayoutParams)
-            {
-                FlexboxLayout.LayoutParams flexBoxLayoutParams = (FlexboxLayout.LayoutParams)layoutParams;
-                flexBoxLayoutParams.setFlexGrow(0);
-                flexBoxLayoutParams.setFlexShrink(2);
-                // flexBoxLayoutParams.setFlexBasisPercent((columnToRecalculate.second * 100) / ratioTotal);
-            }
-        }
-
-
-        columnSetLayout.requestLayout();
-    }
-
     @Override
     public View render(
         RenderedAdaptiveCard renderedCard,
@@ -129,9 +78,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
 
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
-
-        // FlexboxLayout columnSetLayout = new FlexboxLayout(context);
-
 
         FlexboxLayout columnSetLayout = new FlexboxLayout(context);
 
@@ -167,16 +113,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    featureRegistration);
         }
 
-        recalculateRatioWidths(columnSetLayout);
-
-        if (columnSet.GetSelectAction() != null)
-        {
-            columnSetLayout.setClickable(true);
-            columnSetLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler);
 
         TagContent tagContent = new TagContent(columnSet);
-
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
             LinearLayout stretchLayout = new LinearLayout(context);
@@ -184,7 +123,6 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             stretchLayout.setOrientation(LinearLayout.VERTICAL);
 
             columnSetLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-
             tagContent.SetStretchContainer(stretchLayout);
 
             stretchLayout.addView(columnSetLayout);
