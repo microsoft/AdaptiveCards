@@ -106,7 +106,10 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             // Set ratio to column
             float columnWeight = Float.parseFloat(columnSize);
-            columnLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, columnWeight));
+            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(0, FlexboxLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.setFlexGrow(columnWeight);
+            layoutParams.setFlexShrink(1);
+            columnLayout.setLayoutParams(layoutParams);
             return columnLayout;
         }
         else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
@@ -155,7 +158,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ViewGroup columnLayout = null;
 
         // Due to flexbox not being able to calculate ratios correctly, ratios will be considered a special case of sorts, if this doesn't work then F :(
-        if (hasRatioWidth(column))
+        if (false /*hasRatioWidth(column)*/)
         {
             columnLayout = new LinearLayout(context);
             ((LinearLayout)columnLayout).setOrientation(LinearLayout.VERTICAL);
