@@ -225,34 +225,6 @@ public class CardRendererRegistration
         return m_featureRegistration;
     }
 
-
-
-    public View renderColumnAndContainer(RenderedAdaptiveCard renderedCard,
-                                       Context context,
-                                       FragmentManager fragmentManager,
-                                       ViewGroup viewGroup,
-                                       BaseCardElementVector baseCardElementList,
-                                       ICardActionHandler cardActionHandler,
-                                       HostConfig hostConfig,
-                                       RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
-    {
-        long size;
-        if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
-        {
-            return viewGroup;
-        }
-
-        FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
-
-        for (int i = 0; i < size; i++)
-        {
-            BaseCardElement cardElement = baseCardElementList.get(i);
-            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, hostConfig, renderArgs, featureRegistration);
-        }
-
-        return viewGroup;
-    }
-
     public View renderElements(RenderedAdaptiveCard renderedCard,
                        Context context,
                        FragmentManager fragmentManager,

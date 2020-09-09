@@ -4,26 +4,17 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
-import io.adaptivecards.objectmodel.BackgroundImage;
-import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.BaseCardElementVector;
-import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.InternalId;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.readonly.ContainerRenderer;

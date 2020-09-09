@@ -9,12 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
-import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.renderer.http.HttpRequestResult;

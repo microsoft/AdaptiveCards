@@ -11,11 +11,6 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.Set;
-
-import io.adaptivecards.objectmodel.ColorsConfig;
-import io.adaptivecards.objectmodel.Container;
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.objectmodel.SpacingConfig;
@@ -71,7 +66,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                                                Spacing spacing,
                                                boolean separator,
                                                HostConfig hostConfig,
-                                               boolean horizontalLine,
+                                               boolean isHorizontalSpacing,
                                                boolean isImageSet)
     {
         if (viewGroup.getChildCount() <= 0)
@@ -85,28 +80,28 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
 
         View view = new ImageView(context);
 
-        if (horizontalLine)
+        if (isHorizontalSpacing)
         {
             LinearLayout.LayoutParams params;
             if (separator && separatorThickness > 0)
             {
                 view.setBackgroundColor(separatorColor);
                 params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
-                    horizontalLine ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
+                    isHorizontalSpacing ? LinearLayout.LayoutParams.MATCH_PARENT : separatorThickness,
+                    isHorizontalSpacing ? separatorThickness : LinearLayout.LayoutParams.MATCH_PARENT);
                 params.setMargins(
-                    horizontalLine ? 0 : spacingSize / 2 /* left */,
-                    horizontalLine ? spacingSize / 2 : 0 /* top */,
-                    horizontalLine ? 0 : spacingSize / 2 /* right */,
-                    horizontalLine ? spacingSize / 2 : 0 /* bottom */);
+                    isHorizontalSpacing ? 0 : spacingSize / 2 /* left */,
+                    isHorizontalSpacing ? spacingSize / 2 : 0 /* top */,
+                    isHorizontalSpacing ? 0 : spacingSize / 2 /* right */,
+                    isHorizontalSpacing ? spacingSize / 2 : 0 /* bottom */);
             }
             else
             {
                 // As ImageSets use HorizontalFlowLayout, assigning the spacing between images as MatchParent will make them
                 // use more space than needed (making a second row of images to render below the space for the imageSet)
                 params = new LinearLayout.LayoutParams(
-                    horizontalLine ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
-                    horizontalLine ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
+                    isHorizontalSpacing ? LinearLayout.LayoutParams.MATCH_PARENT : spacingSize,
+                    isHorizontalSpacing ? spacingSize : (isImageSet ? 0 : LinearLayout.LayoutParams.MATCH_PARENT));
             }
             view.setLayoutParams(params);
         }
@@ -118,10 +113,10 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
                 view.setBackgroundColor(separatorColor);
                 params = new FlexboxLayout.LayoutParams(separatorThickness, FlexboxLayout.LayoutParams.MATCH_PARENT);
                 params.setMargins(
-                    horizontalLine ? 0 : spacingSize / 2 /* left */,
-                    horizontalLine ? spacingSize / 2 : 0 /* top */,
-                    horizontalLine ? 0 : spacingSize / 2 /* right */,
-                    horizontalLine ? spacingSize / 2 : 0 /* bottom */);
+                    isHorizontalSpacing ? 0 : spacingSize / 2 /* left */,
+                    isHorizontalSpacing ? spacingSize / 2 : 0 /* top */,
+                    isHorizontalSpacing ? 0 : spacingSize / 2 /* right */,
+                    isHorizontalSpacing ? spacingSize / 2 : 0 /* bottom */);
             }
             else
             {
@@ -238,7 +233,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
     /**
      * Sets the minimum height for Collection elements
      * @param minHeight minimum height in pixels. Retrieved from minHeight property
-     * @param flexboxLayout Collection element view to apply minimum height to
+     * @param flexboxLayout Column or ColumnSet element view to apply minimum height to
      * @param context Context for calculating actual height to render
      */
     protected static ViewGroup setMinHeight(long minHeight, FlexboxLayout flexboxLayout, Context context)

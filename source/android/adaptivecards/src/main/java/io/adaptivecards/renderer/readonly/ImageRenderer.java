@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -266,7 +265,6 @@ public class ImageRenderer extends BaseCardElementRenderer
             constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
             // Stretch image width to barriers
             constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
-            constraints.constrainWidth(id, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
         }
         // Scale to parent width
         else if (imageSize == ImageSize.Stretch)
@@ -336,8 +334,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         int imageSizeLimit = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
-        imageView.setMinimumWidth(imageSizeLimit);
-
         ImageRendererImageLoaderAsync imageLoaderAsync = new ImageRendererImageLoaderAsync(
             renderedCard,
             imageView,

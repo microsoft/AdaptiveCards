@@ -114,9 +114,8 @@
                             android:orientation="vertical"
                             ></LinearLayout>
                     </ScrollView>
-
                 </LinearLayout>
-                
+
                 <LinearLayout
                     android:id="@+id/JSON"
                     android:layout_width="match_parent"
