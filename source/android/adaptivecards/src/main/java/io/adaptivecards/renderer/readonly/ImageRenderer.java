@@ -213,7 +213,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         ConstraintSet constraints = new ConstraintSet();
 
         // ConstraintSet requires unique id
-        if(imageView.getId() == View.NO_ID) {
+        if(imageView.getId() == View.NO_ID)
+        {
             imageView.setId(View.generateViewId());
         }
         int id = imageView.getId();
@@ -265,7 +266,7 @@ public class ImageRenderer extends BaseCardElementRenderer
             constraints.constrainWidth(R.id.widthPlaceholder, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
             // Stretch image width to barriers
             constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_SPREAD);
-            constraints.constrainMinWidth(id, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
+            constraints.constrainWidth(id, getImageSizePixels(context, imageSize, hostConfig.GetImageSizes()));
         }
         // Scale to parent width
         else if (imageSize == ImageSize.Stretch)
