@@ -994,8 +994,9 @@ a.default-ac-anchor:visited:active {
     color: #2d7bb7 !important;
     cursor: pointer;
 }
+
 /* PIC2CARD css changes*/
-.acd-pic2card-conatainer {
+.acd-pic2card-container {
     display: flex;
     overflow: hidden;
     background-color: #f9f9f9;
@@ -1013,6 +1014,7 @@ a.default-ac-anchor:visited:active {
     display: flex;
     justify-content: flex-end;
 }
+
 .acd-poweredby-title .link {
     margin-left: 3px;
     color: #0367c1;
@@ -1020,6 +1022,7 @@ a.default-ac-anchor:visited:active {
     font-weight: bold;
     font-size: 14px;
 }
+
 .acd-poweredby-title .link:hover {
     color: blue;
 }
@@ -1081,6 +1084,7 @@ a.default-ac-anchor:visited:active {
 	background-color: black;
 	opacity:.4;
 }
+
 .acd-image-spinner {
 	position: absolute;
 	width: 28px;
@@ -1112,9 +1116,11 @@ a.default-ac-anchor:visited:active {
     height: 40px;
     color: white;
 }
+
 .acd-file-type::-webkit-file-upload-button {
     visibility: hidden;
 }
+
 .acd-file-type::before,
 .acd-card-button {
     content: attr(button-name);
@@ -1148,10 +1154,12 @@ a.default-ac-anchor:visited:active {
     color: #0a0a0a;
     margin-top: 7px;
 }
+
 .acd-image-file-note .link {
     color: #0367c1;
     cursor: pointer;
 }
+
 .acd-image-upload {
     width: 400px;
     height: 300px;
@@ -1159,6 +1167,7 @@ a.default-ac-anchor:visited:active {
     background-color: rgba(235, 237, 240, 0.32);
     justify-content: space-evenly;
 }
+
 .acd-checkbox-container {
     align-items: center;
     display: flex;
@@ -1168,11 +1177,13 @@ a.default-ac-anchor:visited:active {
     font-weight: bold;
     color: #0a0a0a;
 }
+
 .acd-checkbox-element {
     position: absolute;
     opacity: 0;
     cursor: pointer;
 }
+
 .acd-custom-checkbox {
     height: 14px;
     width: 14px;
@@ -1180,6 +1191,7 @@ a.default-ac-anchor:visited:active {
     border-radius: 2px;
     border: 1px solid#286ec0;
 }
+
 .acd-custom-checkbox::after {
     position: absolute;
     content: "";
@@ -1223,6 +1235,7 @@ a.default-ac-anchor:visited:active {
 a.poweredby-link {
     text-decoration: none;
 }
+
 .acd-image-container {
     width: 400px;
     height: 300px;
@@ -1230,10 +1243,12 @@ a.poweredby-link {
     flex-direction: column;
     align-items: center;
 }
+
 .acd-sample-container {
     display: flex;
     height: calc(100% - 21px);
 }
+
 .acd-image-upload:hover {
     box-shadow: 0 0 20px -5px #cccccc;
     border: 1.5px dashed #cccccc;
@@ -1281,6 +1296,7 @@ a.poweredby-link {
     margin-top: 10px;
     width: 80%;
 }
+
 .acd-try-now-button {
     width: 138px;
     height: 31px;
@@ -1294,6 +1310,7 @@ a.poweredby-link {
     cursor: pointer;
     margin-top: 10px;
 }
+
 .acd-error-text {
     font-size: 13px;
     margin-top: 10px;
