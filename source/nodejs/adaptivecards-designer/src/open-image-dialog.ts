@@ -142,7 +142,7 @@ export class OpenImageDialog extends Dialog {
         return labelElement;
     }
 
-    private checkFileSize(file) {
+    private checkFileSize(file: File) {
         const filesize = parseInt((file.size / 1024 / 1024).toFixed(4)); // MB
         return filesize < this.allowedImageSize;
     }
@@ -157,7 +157,7 @@ export class OpenImageDialog extends Dialog {
             if (this.checkFileSize(inputElement.files[0])) {
                 const reader = new FileReader();
                 reader.readAsDataURL(inputElement.files[0]);
-                reader.onload = () => this.renderImage(reader.result);
+                reader.onload = () => this.renderImage(reader.result as string);
                 reader.onerror = (error) => console.log(error);
             } else {
                 this._inputTemplate.removeChild(this._buttonContainer);
@@ -183,7 +183,7 @@ export class OpenImageDialog extends Dialog {
         this._buttonContainer.appendChild(errorContent);
     }
 
-    private onCardFailure(spinnerElement) {
+    private onCardFailure(spinnerElement: HTMLElement) {
         this.removeContent(spinnerElement);
         this._inputTemplate.removeChild(this._buttonContainer);
         this._inputTemplate.appendChild(this.renderUploadButton("file"));
@@ -226,7 +226,7 @@ export class OpenImageDialog extends Dialog {
         return spinnerHostElement;
     }
 
-    private renderImage(imageContent) {
+    private renderImage(imageContent: string) {
         this._imageElement.setAttribute("src", imageContent);
         this._uploadedImage = imageContent;
         this._inputTemplate.removeChild(this._buttonContainer);
