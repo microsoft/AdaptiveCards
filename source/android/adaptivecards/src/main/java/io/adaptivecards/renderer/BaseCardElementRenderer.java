@@ -80,7 +80,7 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
 
         View view = new ImageView(context);
 
-        if (isHorizontalSpacing)
+        if (isHorizontalSpacing || isImageSet)
         {
             LinearLayout.LayoutParams params;
             if (separator && separatorThickness > 0)

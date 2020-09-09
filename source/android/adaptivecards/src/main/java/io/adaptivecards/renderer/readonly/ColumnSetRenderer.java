@@ -119,7 +119,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         }
         else
         {
-            columnSetLayout.setLayoutParams(new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.MATCH_PARENT, FlexboxLayout.LayoutParams.MATCH_PARENT));
+            columnSetLayout.setLayoutParams(new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.MATCH_PARENT, FlexboxLayout.LayoutParams.WRAP_CONTENT));
             viewGroup.addView(columnSetLayout);
         }
 
