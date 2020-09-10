@@ -2,21 +2,9 @@
     "type": "AdaptiveCard",
     "body": [
         {
-			"type": "Container",
-			"verticalContentAlignment": "center",
-			"style": "warning",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [Activity Update With Labels](https://adaptivecards.io/samples/ActivityUpdateWithLabels.html) for an updated version of this card.",
-					"wrap": true
-				}
-			]
-		},
-        {
             "type": "TextBlock",
-            "size": "Medium",
-            "weight": "Bolder",
+            "size": "medium",
+            "weight": "bolder",
             "text": "${title}"
         },
         {
@@ -27,9 +15,9 @@
                     "items": [
                         {
                             "type": "Image",
-                            "style": "Person",
+                            "style": "person",
                             "url": "${creator.profileImage}",
-                            "size": "Small"
+                            "size": "small"
                         }
                     ],
                     "width": "auto"
@@ -39,13 +27,13 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "weight": "Bolder",
+                            "weight": "bolder",
                             "text": "${creator.name}",
                             "wrap": true
                         },
                         {
                             "type": "TextBlock",
-                            "spacing": "None",
+                            "spacing": "none",
                             "text": "Created {{DATE(${string(createdUtc)}, SHORT)}}",
                             "isSubtle": true,
                             "wrap": true
@@ -80,13 +68,14 @@
                 "body": [
                     {
                         "type": "Input.Date",
+                        "label": "Enter the due date",
                         "id": "dueDate"
                     },
                     {
                         "type": "Input.Text",
                         "id": "comment",
-                        "placeholder": "Add a comment",
-                        "isMultiline": true
+                        "isMultiline": true,
+                        "label": "Add a comment"
                     }
                 ],
                 "actions": [

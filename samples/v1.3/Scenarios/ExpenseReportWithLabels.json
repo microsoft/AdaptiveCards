@@ -13,8 +13,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "Large",
-									"weight": "Bolder",
+									"size": "large",
+									"weight": "bolder",
 									"text": "**EXPENSE APPROVAL**"
 								}
 							],
@@ -75,15 +75,15 @@
 				},
 				{
 					"type": "TextBlock",
-					"spacing": "Small",
-					"size": "Small",
-					"weight": "Bolder",
-					"color": "Accent",
+					"spacing": "small",
+					"size": "small",
+					"weight": "bolder",
+					"color": "accent",
 					"text": "[ER-13052](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
-					"spacing": "Large",
+					"spacing": "large",
 					"facts": [
 						{
 							"title": "Submitted By",
@@ -115,7 +115,7 @@
 		},
 		{
 			"type": "Container",
-			"spacing": "Large",
+			"spacing": "large",
 			"style": "emphasis",
 			"items": [
 				{
@@ -126,7 +126,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "DATE"
 								}
 							],
@@ -134,11 +134,11 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Large",
+							"spacing": "large",
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "CATEGORY"
 								}
 							],
@@ -149,7 +149,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "AMOUNT"
 								}
 							],
@@ -176,7 +176,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -200,8 +200,8 @@
 				{
 					"type": "Column",
 					"id": "chevronDown1",
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -320,7 +320,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
+							"horizontalAlignment": "center",
 							"text": "06/19",
 							"wrap": true
 						}
@@ -329,7 +329,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -353,7 +353,7 @@
 				{
 					"type": "Column",
 					"id": "chevronDown2",
-					"spacing": "Small",
+					"spacing": "small",
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
@@ -378,8 +378,8 @@
 					"type": "Column",
 					"id": "chevronUp2",
 					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -467,7 +467,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
+							"horizontalAlignment": "center",
 							"text": "06/25",
 							"wrap": true
 						}
@@ -476,7 +476,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -500,8 +500,8 @@
 				{
 					"type": "Column",
 					"id": "chevronDown3",
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -525,8 +525,8 @@
 					"type": "Column",
 					"id": "chevronUp3",
 					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -597,7 +597,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Large",
+			"spacing": "large",
 			"separator": true,
 			"columns": [
 				{
@@ -605,19 +605,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Total Expense Amount \t",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Non-reimbursable Amount",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Advance Amount",
 							"wrap": true
 						}
@@ -660,7 +660,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"text": "Amount to be Reimbursed",
 									"wrap": true
 								}
@@ -672,7 +672,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "$ 404.30"
 								}
 							],
@@ -705,12 +705,12 @@
 									"chevronDown4"
 								]
 							},
-							"verticalContentAlignment": "Center",
+							"verticalContentAlignment": "center",
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
-									"color": "Accent",
+									"horizontalAlignment": "right",
+									"color": "accent",
 									"text": "Show history",
 									"wrap": true
 								}
@@ -730,12 +730,12 @@
 									"chevronDown4"
 								]
 							},
-							"verticalContentAlignment": "Center",
+							"verticalContentAlignment": "center",
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
-									"color": "Accent",
+									"horizontalAlignment": "right",
+									"color": "accent",
 									"text": "Hide history",
 									"wrap": true
 								}

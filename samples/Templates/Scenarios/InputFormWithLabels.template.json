@@ -4,18 +4,6 @@
     "version": "1.0",
     "body": [
         {
-			"type": "Container",
-			"verticalContentAlignment": "center",
-			"style": "warning",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [Input Form With Labels](https://adaptivecards.io/samples/InputFormWithLabels.html) for an updated version of this card.",
-					"wrap": true
-				}
-			]
-		},
-        {
             "type": "ColumnSet",
             "columns": [
                 {
@@ -25,8 +13,8 @@
                         {
                             "type": "TextBlock",
                             "text": "${title}",
-                            "weight": "Bolder",
-                            "size": "Medium"
+                            "weight": "bolder",
+                            "size": "medium"
                         },
                         {
                             "type": "TextBlock",
@@ -39,7 +27,7 @@
                             "text": "${disclaimer}",
                             "isSubtle": true,
                             "wrap": true,
-                            "size": "Small"
+                            "size": "small"
                         },
                         {
                             "type": "Container",
@@ -52,8 +40,12 @@
                                 },
                                 {
                                     "type": "Input.Text",
+                                    "label": "${label}",
                                     "id": "${if(title == 'Your Name', 'myName', if(title == 'Your email', 'myEmail', 'myTel'))}",
-                                    "placeholder": "${placeholder}"
+                                    "placeholder": "${placeholder}",
+                                    "regex": "${validation}",
+                                    "errorMessage": "${error}",
+                                    "isRequired": true
                                 }
                             ]
                         }

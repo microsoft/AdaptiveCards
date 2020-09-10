@@ -103,7 +103,7 @@
 						"type": "Input.Text",
 						"id": "comment",
 						"isMultiline": true,
-						"label": "Enter your comment"
+						"label": "Add a comment"
 					}
 				],
 				"actions": [

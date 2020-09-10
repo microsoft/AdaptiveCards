@@ -3,18 +3,6 @@
 	"body": [
 		{
 			"type": "Container",
-			"verticalContentAlignment": "center",
-			"style": "warning",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [Expense Report With Labels](https://adaptivecards.io/samples/ExpenseReportWithLabels.html) for an updated version of this card.",
-					"wrap": true
-				}
-			]
-		},
-		{
-			"type": "Container",
 			"style": "emphasis",
 			"items": [
 				{
@@ -25,8 +13,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "Large",
-									"weight": "Bolder",
+									"size": "large",
+									"weight": "bolder",
 									"text": "**EXPENSE APPROVAL**"
 								}
 							],
@@ -87,15 +75,15 @@
 				},
 				{
 					"type": "TextBlock",
-					"spacing": "Small",
-					"size": "Small",
-					"weight": "Bolder",
-					"color": "Accent",
+					"spacing": "small",
+					"size": "small",
+					"weight": "bolder",
+					"color": "accent",
 					"text": "[${code}](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
-					"spacing": "Large",
+					"spacing": "large",
 					"facts": [
 						{
 							"title": "Submitted By",
@@ -127,7 +115,7 @@
 		},
 		{
 			"type": "Container",
-			"spacing": "Large",
+			"spacing": "large",
 			"style": "emphasis",
 			"items": [
 				{
@@ -138,7 +126,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "DATE"
 								}
 							],
@@ -146,11 +134,11 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Large",
+							"spacing": "large",
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "CATEGORY"
 								}
 							],
@@ -161,7 +149,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "AMOUNT"
 								}
 							],
@@ -192,7 +180,7 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Medium",
+							"spacing": "medium",
 							"items": [
 								{
 									"type": "TextBlock",
@@ -215,7 +203,7 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Small",
+							"spacing": "small",
 							"selectAction": {
 								"type": "Action.ToggleVisibility",
 								"title": "expand",
@@ -225,7 +213,7 @@
 									"chevronUp${$index}"
 								]
 							},
-							"verticalContentAlignment": "Center",
+							"verticalContentAlignment": "center",
 							"items": [
 								{
 									"type": "Image",
@@ -268,7 +256,7 @@
 										{
 											"type": "Input.Text",
 											"id": "comment${$index}",
-											"placeholder": "Add your comment here."
+											"label": "Add your comment here"
 										}
 									]
 								}
@@ -310,7 +298,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Large",
+			"spacing": "large",
 			"separator": true,
 			"columns": [
 				{
@@ -318,19 +306,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Total Expense Amount \t",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Non-reimbursable Amount",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Advance Amount",
 							"wrap": true
 						}
@@ -373,7 +361,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"text": "Amount to be Reimbursed",
 									"wrap": true
 								}
@@ -385,7 +373,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}"
 								}
 							],
@@ -418,16 +406,16 @@
 						{
 							"type": "TextBlock",
 							"id": "showHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Show history",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"id": "hideHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Hide history",
 							"wrap": true,
 							"isVisible": false
@@ -486,8 +474,10 @@
 									{
 										"type": "Input.Text",
 										"id": "RejectCommentID",
-										"placeholder": "Please specify an appropriate reason for rejection.",
-										"isMultiline": true
+										"label": "Please specify an appropriate reason for rejection",
+										"isMultiline": true,
+										"isRequired": true,
+										"errorMessage": "A reason for rejection is necessary"
 									}
 								],
 								"actions": [
