@@ -323,36 +323,29 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
-        public void TestExceptionHandling()
+        public void TestSortFunctionInDataCreateAnArray()
         {
-            // ${LineItem} doesn't exist in the data context provided
             string jsonTemplate = @"{
             ""type"": ""AdaptiveCard"",
+            ""version"": ""1.0"",
             ""body"": [
               {
-                ""type"": ""Container"",
-                ""items"": [
-                  {
-                    ""$data"": ""${LineItem}"",
-                    ""type"": ""TextBlock"",
-                    ""$when"": ""${Milage > 0}"",
-                    ""text"": ""${Milage}""
-                  }
+                ""id"": ""Test"",
+                ""type"": ""Input.ChoiceSet"",
+                ""style"": ""expanded"",
+                ""isMultiSelect"": true,
+                ""choices"": [
+                    {
+                      ""$data"": ""${sortBy(createArray(4, 3, 1, 2))}"",
+                      ""title"": ""Test"",
+                      ""value"": ""Test""
+                    }
                 ]
               }
             ]
-        }";
+          }";
 
-            string jsonData = @"{
-              ""LineItems"": [
-                {
-                    ""Milage"": 10
-                },
-                {
-                    ""Milage"": 0
-                }
-              ]
-            }";
+            string jsonData = @"{}";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
             var context = new EvaluationContext
@@ -363,19 +356,13 @@ namespace AdaptiveCards.Templating.Test
             try
             {
                 string cardJson = transformer.Expand(context);
-                Assert.Fail("There should be an exception");
             }
             catch (AdaptiveTemplateException e)
             {
-                Assert.AreEqual(@"'${LineItem}' at line, '8' is malformed for '$data : ' pair", e.Message);
-            }
-            catch
-            {
-                Assert.Fail();
-                throw;
+                Assert.Fail("No exception should be thrown");
             }
         }
-
+        
         [TestMethod]
         public void TestNullArgumentExceptionHandling()
         {
