@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { IPoint } from "./miscellaneous";
+import { KEY_ENTER, KEY_ESCAPE, KEY_SPACE, KEY_UP, KEY_DOWN, KEY_LEFT, KEY_RIGHT } from "adaptivecards-controls";
 
 export const DRAG_THRESHOLD = 10;
 
@@ -8,6 +9,7 @@ export abstract class DraggableElement {
     private _renderedElement: HTMLElement;
     private _isPointerOver: boolean;
     private _isPointerDown: boolean;
+    private _isKeyboardDrag: boolean;
     private _lastClickedPoint: IPoint;
     private _dragging: boolean;
 
@@ -29,9 +31,18 @@ export abstract class DraggableElement {
         }
     }
 
+    protected get isKeyboardDrag(): boolean {
+        return this._isKeyboardDrag;
+    }
+
+    protected set isKeyboardDrag(value: boolean) {
+        this._isKeyboardDrag = value;
+    }
+
     protected startDrag() {
         if (this.isDraggable() && !this.dragging) {
             this.dragging = true;
+            this._renderedElement.setAttribute("aria-grabbed", "true");
 
             if (this.onStartDrag) {
                 this.onStartDrag(this);
@@ -61,6 +72,27 @@ export abstract class DraggableElement {
             if (Math.abs(e.offsetX - this._lastClickedPoint.x) >= DRAG_THRESHOLD || Math.abs(e.offsetY - this._lastClickedPoint.y) >= DRAG_THRESHOLD) {
                 this.releasePointerCapture(e.pointerId);
 
+                this.startDrag();
+            }
+        }
+    }
+
+    protected keydown(e: KeyboardEvent) {
+        if (this.isKeyboardDrag) {
+            // already dragging, need to handle arrows/TAB, SPC/RET, and ESC/other keys
+            switch (e.charCode) {
+                case KEY_ESCAPE:
+                default:
+                    {
+                        this.endDrag();
+                        break;
+                    }
+            }
+        }
+        else {
+            // not dragging yet, begin drag on correct stroke
+            if (e.charCode === KEY_SPACE) {
+                this.isKeyboardDrag = true;
                 this.startDrag();
             }
         }
@@ -96,6 +128,7 @@ export abstract class DraggableElement {
     onEndDrag: (sender: DraggableElement) => void;
     onClick: (sender: DraggableElement) => void;
     onDoubleClick: (sender: DraggableElement) => void;
+    onKeydown: (sender: DraggableElement) => void;
 
     isDraggable(): boolean {
         return true;
@@ -104,6 +137,7 @@ export abstract class DraggableElement {
     endDrag() {
         if (this.dragging) {
             this.dragging = false;
+            this._renderedElement.setAttribute("aria-grabbed", "false");
 
             if (this.onEndDrag) {
                 this.onEndDrag(this);
@@ -118,12 +152,16 @@ export abstract class DraggableElement {
 
     render(): HTMLElement {
         this._renderedElement = this.internalRender();
+        this._renderedElement.setAttribute("aria-grabbed", "false");
+        this._renderedElement.setAttribute("draggable", "true");
+        this._renderedElement.tabIndex = 0;
 
         let dragSourceElement = this.getDragSourceElement();
         dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
         if (this.isDraggable()) {
+            dragSourceElement.onkeydown = (e: KeyboardEvent) => { this.keydown(e); };
             dragSourceElement.onmousedown = (e: MouseEvent) => { e.preventDefault(); };
             dragSourceElement.onpointerenter = () => { this.isPointerOver = true; };
             dragSourceElement.onpointerleave = () => { this.isPointerOver = false; };

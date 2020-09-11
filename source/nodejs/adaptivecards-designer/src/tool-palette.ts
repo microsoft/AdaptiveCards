@@ -17,6 +17,7 @@ export abstract class BasePaletteItem extends DraggableElement {
 
         let iconElement = document.createElement("div");
         iconElement.classList.add("acd-icon", "acd-toolPalette-icon", this.getIconClass());
+        iconElement.setAttribute("aria-hidden", "true");
         iconElement.style.flex = "0 0 auto";
 
         let labelElement = document.createElement("div");

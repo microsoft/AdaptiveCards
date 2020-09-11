@@ -521,6 +521,7 @@ export class CardDesignerSurface {
 
         this._designerSurface = document.createElement("div");
         this._designerSurface.classList.add("acd-designersurface");
+        this._designerSurface.setAttribute("aria-dropeffect", "copy");
         this._designerSurface.tabIndex = 0;
         this._designerSurface.style.position = "absolute";
         this._designerSurface.style.left = "0";

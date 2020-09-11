@@ -680,7 +680,7 @@
     flex: 1 1 100%;
 }
 
-.acd-palette-item:hover {
+.acd-palette-item:hover, .acd-palette-item:focus {
     background-color: #EEEEEE;
 }
 
