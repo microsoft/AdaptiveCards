@@ -5,109 +5,89 @@
 	"body": [
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input1",
+			"id": "myColor",
 			"style": "compact",
+			"title": "What color do you want? (isMultiSelect:false, style:compact)",
 			"isMultiSelect": false,
-			"label": "Default Input.ChoiceSet label (compact)",
+			"value": "1",
 			"choices": [
 				{
-					"title": "Option 1",
+					"title": "Red",
 					"value": "1"
 				},
 				{
-					"title": "Option 2",
+					"title": "Green",
 					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
 				}
 			]
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input2",
+			"id": "myColor2",
+			"style": "expanded",
+			"title": "What color do you want? (isMultiSelect:false, style:expanded)",
+			"isMultiSelect": false,
+			"value": "1",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "myColor3",
+			"isMultiSelect": true,
+			"value": "1,3",
 			"style": "compact",
-			"isMultiSelect": false,
-			"label": "Required Input.ChoiceSet label (compact)",
-			"isRequired": true,
-			"errorMessage": "Required input",
+			"title": "What colors do you want? (isMultiSelect:true, style:compact)",
 			"choices": [
 				{
-					"title": "Option 1",
+					"title": "Red",
 					"value": "1"
 				},
 				{
-					"title": "Option 2",
+					"title": "Green",
 					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
 				}
 			]
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input3",
-			"style": "expanded",
-			"isMultiSelect": false,
-			"label": "Default Input.ChoiceSet label (expanded)",
-			"choices": [
-				{
-					"title": "Option 1",
-					"value": "1"
-				},
-				{
-					"title": "Option 2",
-					"value": "2"
-				}
-			]
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "input4",
-			"style": "expanded",
-			"isMultiSelect": false,
-			"label": "Required Input.ChoiceSet label (expanded)",
-			"isRequired": true,
-			"errorMessage": "Required input",
-			"choices": [
-				{
-					"title": "Option 1",
-					"value": "1"
-				},
-				{
-					"title": "Option 2",
-					"value": "2"
-				}
-			]
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "input5",
-			"style": "expanded",
+			"id": "myColor4",
 			"isMultiSelect": true,
-			"label": "Default Input.ChoiceSet label (expanded, multiselect)",
-			"choices": [
-				{
-					"title": "Option 1",
-					"value": "1"
-				},
-				{
-					"title": "Option 2",
-					"value": "2"
-				}
-			]
-		},
-		{
-			"type": "Input.ChoiceSet",
-			"id": "input6",
+			"value": "1",
 			"style": "expanded",
-			"isMultiSelect": true,
-			"isRequired": true,
-			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
-			"errorMessage": "Required input",
+			"title": "What colors do you want? (isMultiSelect:true, style:expanded)",
 			"choices": [
 				{
-					"title": "Option 1",
+					"title": "Red",
 					"value": "1"
 				},
 				{
-					"title": "Option 2",
+					"title": "Green",
 					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
 				}
 			]
 		}

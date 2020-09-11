@@ -5,21 +5,17 @@
 	"body": [
 		{
 			"type": "Input.Number",
-			"id": "input1",
-			"label": "Default Input.Number label"
-		},
-		{
-			"type": "Input.Number",
-			"id": "input2",
-			"label": "Require Input.Number label",
-			"isRequired": true,
-			"errorMessage": "Required input"
+			"id": "number",
+			"title": "Choose a number from 1 to 10",
+			"min": 1,
+			"max": 10,
+			"value": 3
 		}
 	],
 	"actions": [
 		{
 			"type": "Action.Submit",
-			"title": "Submit"
+			"title": "OK"
 		}
 	]
 }

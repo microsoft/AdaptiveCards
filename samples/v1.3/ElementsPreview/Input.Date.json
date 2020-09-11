@@ -5,15 +5,9 @@
 	"body": [
 		{
 			"type": "Input.Date",
-			"id": "input1",
-			"label": "Default Input.Date label"
-		},
-		{
-			"type": "Input.Date",
-			"id": "input2",
-			"label": "Required Input.Date label",
-			"isRequired": true,
-			"errorMessage": "Required input"
+			"id": "date",
+			"label": "Enter a date",
+			"value": "2017-10-12"
 		}
 	],
 	"actions": [
