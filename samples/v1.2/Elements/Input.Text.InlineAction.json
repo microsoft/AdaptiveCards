@@ -26,7 +26,7 @@
 			"id": "input2",
 			"inlineAction": {
 				"type": "Action.OpenUrl",
-				"title": "Cat",
+				"title": "Reply",
 				"url": "https://adaptivecards.io"
 			}
 		},
@@ -50,7 +50,7 @@
 			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.OpenUrl",
-				"title": "Cat",
+				"title": "Reply",
 				"url": "https://adaptivecards.io"
 			}
 		}
