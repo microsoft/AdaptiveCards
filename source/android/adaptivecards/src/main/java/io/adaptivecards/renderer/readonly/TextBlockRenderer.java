@@ -4,18 +4,23 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.fonts.Font;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.graphics.fonts.FontStyle;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
@@ -68,7 +73,25 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
     {
-        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, type), m_textWeightMap.get(textWeight));
+        Typeface typeface = TextRendererUtil.getTextFormat(hostConfig, type, textWeight == TextWeight.Lighter);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        {
+            Typeface weightedTypeface = Typeface.create(typeface, (int) hostConfig.GetFontWeight(type, textWeight), false);
+            textView.setTypeface(weightedTypeface);
+        }
+        else
+        {
+            if (textWeight == TextWeight.Bolder)
+            {
+                textView.setTypeface(typeface, Typeface.BOLD);
+            }
+            else
+            {
+                textView.setTypeface(typeface);
+            }
+        }
+
     }
 
     public static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
