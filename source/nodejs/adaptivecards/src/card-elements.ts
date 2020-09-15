@@ -5286,6 +5286,10 @@ export class Container extends StylableCardElementContainer {
         return this.getValue(Container.backgroundImageProperty);
     }
 
+    set backgroundImage(value: BackgroundImage){
+        this.setValue(Container.backgroundImageProperty, value);
+    }
+
     @property(Container.verticalContentAlignmentProperty)
     verticalContentAlignment: Enums.VerticalAlignment = Enums.VerticalAlignment.Top;
 
