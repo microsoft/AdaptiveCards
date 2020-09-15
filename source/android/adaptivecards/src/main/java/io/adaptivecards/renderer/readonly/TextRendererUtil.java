@@ -187,6 +187,12 @@ public class TextRendererUtil
             }
         }
 
+        // If the font was not found but it was requested as light, default to sans-serif-light
+        if (isLightWeigthed)
+        {
+            return getSystemTypeface("sans-serif-light");
+        }
+
         return Typeface.create((String) null, Typeface.NORMAL);
     }
 
