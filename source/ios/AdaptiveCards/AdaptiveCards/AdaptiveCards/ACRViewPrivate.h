@@ -47,6 +47,8 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
 
+- (void)updatePaddingMap:(InternalId const &)adaptivCollectionInternalId hasPadding:(BOOL)hasPadding corespondingView:(UIView *)corespondingView;
+
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
 
 - (ACRTargetBuilderDirector *)getActionsTargetBuilderDirector;

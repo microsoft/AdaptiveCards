@@ -89,7 +89,7 @@
             .active = YES;
     }
 
-    [column setClipsToBounds:TRUE];
+    [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer

@@ -21,6 +21,7 @@
 #import "MarkDownParser.h"
 #import "RichTextElementProperties.h"
 #import "TextRun.h"
+#import "ACRColumnSetView.h"
 
 using namespace AdaptiveCards;
 
@@ -282,49 +283,51 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
             // bleed specification requires that there should be at leat one parental object with
             // padding
             if (collection->GetCanBleed()) {
-                InternalId internalId = collection->GetParentalId();
-                ACRContentStackView *view =
-                    (ACRContentStackView *)[rootView getBleedTarget:internalId];
+                InternalId parentInternalId = collection->GetParentalId();
+                ACRContentStackView *parentView =
+                    (ACRContentStackView *)[rootView getBleedTarget:parentInternalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
                 ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
-                view = view ? view : rootView;
+                if (![parentView isKindOfClass:[ACRColumnSetView class]]) {
+                    parentView = nil;
+                }
 
-                if (view) {
-                    // 1. create a background view (bv).
-                    // 2. bv is added to bleed target view (tv), which is also a parent view.
-                    // bv is then pinned to the tv according to the bleed direction
-                    // bv gets current container view's (cv) container style
-                    // and cv's container style is reset to transparent, such that
-                    // bv's container style will be diplayed.
-                    // container view's stack view (csv) holds content views, and bv dislpays
-                    // container style we transpose them, and get the final result
+                // 1. create a background view (bv).
+                // 2. bv is added to bleed target view (tv), which is also a parent view.
+                // bv is then pinned to the tv according to the bleed direction
+                // bv gets current container view's (cv) container style
+                // and cv's container style is reset to transparent, such that
+                // bv's container style will be diplayed.
+                // container view's stack view (csv) holds content views, and bv dislpays
+                // container style we transpose them, and get the final result
 
-                    UIView *backgroundView = [[UIView alloc] init];
-                    container.backgroundView = backgroundView;
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                UIView *backgroundView = [[UIView alloc] init];
+                container.backgroundView = backgroundView;
+                backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                    UIView *marginalView = view.backgroundView ? view.backgroundView : view;
-                    [marginalView addSubview:backgroundView];
-                    [marginalView sendSubviewToBack:backgroundView];
-                    backgroundView.backgroundColor = container.backgroundColor;
-                    container.backgroundColor = UIColor.clearColor;
+                //UIView *parentBackgroundView = parentView.backgroundView ? parentView.backgroundView : parentView;
+                //[parentBackgroundView addSubview:backgroundView];
+                //[parentBackgroundView sendSubviewToBack:backgroundView];
+                [container addSubview:backgroundView];
+                [container sendSubviewToBack:backgroundView];
+                backgroundView.backgroundColor = container.backgroundColor;
+                container.backgroundColor = UIColor.clearColor;
 
-                    [container bleed:config->GetSpacing().paddingSpacing
-                            priority:1000
-                              target:backgroundView
-                           direction:direction
-                          parentView:marginalView];
+                [container bleed:config->GetSpacing().paddingSpacing
+                        priority:1000
+                          target:backgroundView
+                       direction:direction
+                      parentView:parentView];
 
-                    if ([container layer].borderWidth) {
-                        [backgroundView layer].borderWidth = [container layer].borderWidth;
-                        [container layer].borderWidth = 0;
-                    }
+                if ([container layer].borderWidth) {
+                    [backgroundView layer].borderWidth = [container layer].borderWidth;
+                    [container layer].borderWidth = 0;
+                }
 
-                    if ([container layer].borderColor) {
-                        [backgroundView layer].borderColor = [container layer].borderColor;
-                        [container layer].borderColor = 0;
-                    }
+                if ([container layer].borderColor) {
+                    [backgroundView layer].borderColor = [container layer].borderColor;
+                    [container layer].borderColor = 0;
                 }
             }
         }
@@ -635,7 +638,8 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
         std::stringstream sstream;
         writer->write(blob, &sstream);
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];        
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
