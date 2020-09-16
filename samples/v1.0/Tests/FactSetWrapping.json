@@ -23,6 +23,48 @@
 					"value": "Value 5"
 				}
 			]
+		},
+		{
+			"type": "TextBlock",
+			"text": "FactSet with missing facts property is below",
+			"wrap": true
+		},
+		{
+			"type": "FactSet"
+		},
+		{
+			"type": "TextBlock",
+			"text": "FactSet with 0 facts is below",
+			"wrap": true
+		},
+		{
+			"type": "FactSet",
+			"facts": []
+		},
+		{
+			"type": "TextBlock",
+			"text": "FactSet with facts wihout Title, without Value, wihout both, and a random property is below",
+			"wrap": true
+		},
+		{
+			"type": "FactSet",
+			"facts": [
+			{
+				"value": "value"
+			},
+			{
+				"title": "title"
+			},
+			{
+			},
+			{
+				"title": "title",
+				"value": "value"
+			},
+			{
+				"hello" : "ha ha ha"
+			}
+			]
 		}
 	]
 }
