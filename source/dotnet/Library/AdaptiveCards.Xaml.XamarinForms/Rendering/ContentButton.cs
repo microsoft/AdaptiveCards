@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Xamarin.Forms;
 
 namespace AdaptiveCards.Rendering
@@ -16,23 +16,25 @@ namespace AdaptiveCards.Rendering
         }
         public event EventHandler Click;
 
-        public string Text
-        {
-            get => TextBlock.Text;
-            set => TextBlock.Text = value;
-        }
+        // Text is wrapped in a stacklayout, so to get this prop would mean walking
+        // the children of that rather than accessing and overwriting
+        //public string Text
+        //{
+        //    get => TextBlock.Text;
+        //    set => TextBlock.Text = value;
+        //}
 
-        internal AdaptiveCards.Xaml.XamarinForms.TextBlock TextBlock
-        {
-            get
-            {
-                var textblock = Content as AdaptiveCards.Xaml.XamarinForms.TextBlock;
-                if (textblock == null)
-                {
-                    Content = textblock = new AdaptiveCards.Xaml.XamarinForms.TextBlock();
-                }
-                return textblock;
-            }
-        }
+        //internal AdaptiveCards.Xaml.XamarinForms.TextBlock TextBlock
+        //{
+        //    get
+        //    {
+        //        var textblock = Content as AdaptiveCards.Xaml.XamarinForms.TextBlock;
+        //        if (textblock == null)
+        //        {
+        //            Content = textblock = new AdaptiveCards.Xaml.XamarinForms.TextBlock();
+        //        }
+        //        return textblock;
+        //    }
+        //}
     }
 }
