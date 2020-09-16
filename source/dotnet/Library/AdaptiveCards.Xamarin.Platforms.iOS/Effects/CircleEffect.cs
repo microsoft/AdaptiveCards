@@ -18,9 +18,6 @@ namespace AdaptiveCards.XamarinForms.Platforms.iOS.Effects
     [Preserve(AllMembers = true)]
     public class CircleEffect : PlatformEffect
     {
-        [Preserve]
-        public CircleEffect() => Console.WriteLine("CircleEffect");
-
         protected override void OnAttached()
         {
             try
