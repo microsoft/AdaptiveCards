@@ -96,7 +96,6 @@
     backgroundView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
     [adcView sendSubviewToBack:backgroundView];
     [backgroundView.leadingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.leadingAnchor].active = YES;
-
     [backgroundView.trailingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.trailingAnchor].active = YES;
     [backgroundView.topAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.topAnchor].active = YES;
     [backgroundView.bottomAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.bottomAnchor].active = YES;

@@ -186,16 +186,6 @@ static int kToggleVisibilityContext;
         if ([topPaddingAttrib boolValue]) {
             top = [topPaddingAttrib floatValue];
         }
-
-        NSNumber *leftPaddingAttrib = attributes[@"padding-left"];
-        if ([leftPaddingAttrib boolValue]) {
-            left = [leftPaddingAttrib floatValue];
-        }
-
-        NSNumber *rightPaddingAttrib = attributes[@"padding-right"];
-        if ([rightPaddingAttrib boolValue]) {
-            right = [rightPaddingAttrib floatValue];
-        }
     }
 
     [self applyPaddingToTop:top

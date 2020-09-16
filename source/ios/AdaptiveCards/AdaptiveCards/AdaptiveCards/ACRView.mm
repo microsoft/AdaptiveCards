@@ -690,14 +690,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)updatePaddingMap:(InternalId const &)adaptivCollectionInternalId hasPadding:(BOOL)hasPadding corespondingView:(UIView *)corespondingView
-{
-    if (hasPadding && corespondingView) {
-        NSNumber *key = [NSNumber numberWithUnsignedLongLong:adaptivCollectionInternalId.Hash()];
-        _paddingMap[[key stringValue]] = corespondingView;
-    }
-}
-
 // This adjustment is needed because during parsing the card, host config can't be accessed
 - (void)updatePaddingMapForTopElements:(std::shared_ptr<BaseCardElement> const &)element rootView:(ACRView *)view card:(std::shared_ptr<AdaptiveCard> const &)card
 {
@@ -713,10 +705,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId
 {
-    // check if there is bleed target, if not then return current card
     NSNumber *key = [NSNumber numberWithUnsignedLongLong:internalId.Hash()];
-    UIView *targetView = _paddingMap[[key stringValue]];
-    return targetView;
+    return _paddingMap[[key stringValue]];
 }
 
 // get fallback content and add them async task queue
