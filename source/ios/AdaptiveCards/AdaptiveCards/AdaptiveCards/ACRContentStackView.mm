@@ -198,27 +198,12 @@ static int kToggleVisibilityContext;
         }
     }
 
-    if (attributes) {
-        [self applyPaddingToTop:top
-                           left:left
-                         bottom:bottom
-                          right:right
-                       priority:1000
-                       location:ACRBleedToAll];
-    } else {
-        /*
-        [_stackView.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor].active = YES;
-        [_stackView.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor].active = YES;
-        [_stackView.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor].active = YES;
-        [_stackView.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor].active = YES;
-   */
-
-
-        [_stackView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor].active = YES;
-        [_stackView.topAnchor constraintEqualToAnchor:self.topAnchor].active = YES;
-        [_stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor].active = YES;
-        [_stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor].active = YES;
-    }
+    [self applyPaddingToTop:top
+                       left:left
+                     bottom:bottom
+                      right:right
+                   priority:1000
+                   location:ACRBleedToAll];
 }
 
 - (CGSize)intrinsicContentSize
@@ -420,7 +405,7 @@ static int kToggleVisibilityContext;
     NSInteger bleedDirection = ~(~0 & direction);
 
     [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
-   
+
     CGFloat paddingInFloat = padding;
     CGFloat top = (direction & ACRBleedToTopEdge) ? -paddingInFloat : 0;
     CGFloat leading = (direction & ACRBleedToLeadingEdge) ? -paddingInFloat : 0;
@@ -432,11 +417,11 @@ static int kToggleVisibilityContext;
     } else {
         self.layoutMargins = UIEdgeInsetsMake(top, leading, bottom, trailing);
     }
-    
+
     [target.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor].active = YES;
     [target.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor].active = YES;
     [target.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor].active = YES;
-    
+
     if (parent && (direction & ACRBleedToBottomEdge)) {
         [target.bottomAnchor constraintEqualToAnchor:parent.bottomAnchor].active = YES;
     } else {

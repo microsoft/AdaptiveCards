@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRColumnSetView.h"
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
@@ -21,7 +22,6 @@
 #import "MarkDownParser.h"
 #import "RichTextElementProperties.h"
 #import "TextRun.h"
-#import "ACRColumnSetView.h"
 
 using namespace AdaptiveCards;
 
@@ -272,6 +272,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig)
 {
+    configBleed(rootView, elem, container, acoConfig, nil);
+}
+
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
+                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
+{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -289,7 +295,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
                 ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
-                if (![parentView isKindOfClass:[ACRColumnSetView class]]) {
+                if (![parentView isKindOfClass:[ACRColumnSetView class]] || parentView != superview) {
                     parentView = nil;
                 }
 
@@ -306,9 +312,6 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                 container.backgroundView = backgroundView;
                 backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                //UIView *parentBackgroundView = parentView.backgroundView ? parentView.backgroundView : parentView;
-                //[parentBackgroundView addSubview:backgroundView];
-                //[parentBackgroundView sendSubviewToBack:backgroundView];
                 [container addSubview:backgroundView];
                 [container sendSubviewToBack:backgroundView];
                 backgroundView.backgroundColor = container.backgroundColor;

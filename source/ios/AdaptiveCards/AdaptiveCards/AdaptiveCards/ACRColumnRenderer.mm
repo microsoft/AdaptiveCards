@@ -45,7 +45,7 @@
 
     [viewGroup addArrangedSubview:column];
 
-    configBleed(rootView, elem, column, acoConfig);
+    configBleed(rootView, elem, column, acoConfig, viewGroup);
 
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 

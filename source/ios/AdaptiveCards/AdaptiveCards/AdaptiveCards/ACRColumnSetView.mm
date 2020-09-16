@@ -13,7 +13,7 @@
 {
     super.axis = UILayoutConstraintAxisHorizontal;
     super.distribution = UIStackViewDistributionFill;
-    super.alignment = UIStackViewAlignmentFill;
+    super.alignment = UIStackViewAlignmentLeading;
     [super config:attributes];
     self.isLastColumn = NO;
 }

@@ -27,6 +27,9 @@ void configSeparatorVisibility(ACRSeparator *view,
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig);
 
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
+                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview);
+
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
                            UIView *containerView, ACRView *rootView);
 
