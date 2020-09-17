@@ -4,7 +4,6 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.fonts.Font;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.graphics.fonts.FontStyle;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
