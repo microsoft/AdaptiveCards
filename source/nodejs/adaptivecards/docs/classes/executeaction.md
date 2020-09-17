@@ -1,102 +1,104 @@
-[Adaptive Cards Javascript SDK](../README.md) › [OpenUrlAction](openurlaction.md)
+[Adaptive Cards Javascript SDK](../README.md) › [ExecuteAction](executeaction.md)
 
-# Class: OpenUrlAction
+# Class: ExecuteAction
 
 ## Hierarchy
 
-  ↳ [Action](action.md)
+  ↳ [SubmitAction](submitaction.md)
 
-  ↳ **OpenUrlAction**
+  ↳ **ExecuteAction**
 
 ## Index
 
 ### Constructors
 
-* [constructor](openurlaction.md#constructor)
+* [constructor](executeaction.md#constructor)
 
 ### Properties
 
-* [_parent](openurlaction.md#protected-optional-_parent)
-* [_renderedElement](openurlaction.md#protected-optional-_renderedelement)
-* [iconUrl](openurlaction.md#optional-iconurl)
-* [id](openurlaction.md#optional-id)
-* [maxVersion](openurlaction.md#maxversion)
-* [onExecute](openurlaction.md#onexecute)
-* [onPreProcessPropertyValue](openurlaction.md#optional-onpreprocesspropertyvalue)
-* [style](openurlaction.md#style)
-* [title](openurlaction.md#optional-title)
-* [url](openurlaction.md#optional-url)
-* [JsonTypeName](openurlaction.md#static-jsontypename)
-* [iconUrlProperty](openurlaction.md#static-iconurlproperty)
-* [idProperty](openurlaction.md#static-idproperty)
-* [ignoreInputValidationProperty](openurlaction.md#static-ignoreinputvalidationproperty)
-* [onRegisterCustomProperties](openurlaction.md#static-optional-onregistercustomproperties)
-* [requiresProperty](openurlaction.md#static-requiresproperty)
-* [styleProperty](openurlaction.md#static-styleproperty)
-* [titleProperty](openurlaction.md#static-titleproperty)
-* [typeNameProperty](openurlaction.md#static-typenameproperty)
-* [urlProperty](openurlaction.md#static-urlproperty)
+* [_parent](executeaction.md#protected-optional-_parent)
+* [_renderedElement](executeaction.md#protected-optional-_renderedelement)
+* [iconUrl](executeaction.md#optional-iconurl)
+* [id](executeaction.md#optional-id)
+* [maxVersion](executeaction.md#maxversion)
+* [onExecute](executeaction.md#onexecute)
+* [onPreProcessPropertyValue](executeaction.md#optional-onpreprocesspropertyvalue)
+* [style](executeaction.md#style)
+* [title](executeaction.md#optional-title)
+* [verb](executeaction.md#verb)
+* [JsonTypeName](executeaction.md#static-jsontypename)
+* [dataProperty](executeaction.md#static-dataproperty)
+* [iconUrlProperty](executeaction.md#static-iconurlproperty)
+* [idProperty](executeaction.md#static-idproperty)
+* [ignoreInputValidationProperty](executeaction.md#static-ignoreinputvalidationproperty)
+* [onRegisterCustomProperties](executeaction.md#static-optional-onregistercustomproperties)
+* [requiresProperty](executeaction.md#static-requiresproperty)
+* [styleProperty](executeaction.md#static-styleproperty)
+* [titleProperty](executeaction.md#static-titleproperty)
+* [typeNameProperty](executeaction.md#static-typenameproperty)
+* [verbProperty](executeaction.md#static-verbproperty)
 
 ### Accessors
 
-* [hostConfig](openurlaction.md#hostconfig)
-* [ignoreInputValidation](openurlaction.md#ignoreinputvalidation)
-* [isPrimary](openurlaction.md#isprimary)
-* [parent](openurlaction.md#parent)
-* [renderedElement](openurlaction.md#renderedelement)
-* [requires](openurlaction.md#requires)
+* [data](executeaction.md#data)
+* [hostConfig](executeaction.md#hostconfig)
+* [ignoreInputValidation](executeaction.md#ignoreinputvalidation)
+* [isPrimary](executeaction.md#isprimary)
+* [parent](executeaction.md#parent)
+* [renderedElement](executeaction.md#renderedelement)
+* [requires](executeaction.md#requires)
 
 ### Methods
 
-* [addCssClasses](openurlaction.md#protected-addcssclasses)
-* [execute](openurlaction.md#execute)
-* [getActionById](openurlaction.md#getactionbyid)
-* [getAllInputs](openurlaction.md#getallinputs)
-* [getAriaRole](openurlaction.md#getariarole)
-* [getCustomProperty](openurlaction.md#getcustomproperty)
-* [getHref](openurlaction.md#gethref)
-* [getJsonTypeName](openurlaction.md#getjsontypename)
-* [getReferencedInputs](openurlaction.md#getreferencedinputs)
-* [getResourceInformation](openurlaction.md#getresourceinformation)
-* [getRootObject](openurlaction.md#getrootobject)
-* [getSchema](openurlaction.md#getschema)
-* [getSchemaKey](openurlaction.md#protected-getschemakey)
-* [getValue](openurlaction.md#protected-getvalue)
-* [hasAllDefaultValues](openurlaction.md#hasalldefaultvalues)
-* [hasDefaultValue](openurlaction.md#hasdefaultvalue)
-* [internalGetReferencedInputs](openurlaction.md#protected-internalgetreferencedinputs)
-* [internalParse](openurlaction.md#protected-internalparse)
-* [internalPrepareForExecution](openurlaction.md#protected-internalprepareforexecution)
-* [internalToJSON](openurlaction.md#protected-internaltojson)
-* [internalValidateInputs](openurlaction.md#protected-internalvalidateinputs)
-* [internalValidateProperties](openurlaction.md#internalvalidateproperties)
-* [parse](openurlaction.md#parse)
-* [populateSchema](openurlaction.md#protected-populateschema)
-* [preProcessPropertyValue](openurlaction.md#preprocesspropertyvalue)
-* [prepareForExecution](openurlaction.md#prepareforexecution)
-* [remove](openurlaction.md#remove)
-* [render](openurlaction.md#render)
-* [resetDefaultValues](openurlaction.md#resetdefaultvalues)
-* [setCustomProperty](openurlaction.md#setcustomproperty)
-* [setParent](openurlaction.md#setparent)
-* [setShouldFallback](openurlaction.md#setshouldfallback)
-* [setValue](openurlaction.md#protected-setvalue)
-* [shouldFallback](openurlaction.md#shouldfallback)
-* [shouldSerialize](openurlaction.md#protected-shouldserialize)
-* [toJSON](openurlaction.md#tojson)
-* [updateActionButtonCssStyle](openurlaction.md#updateactionbuttoncssstyle)
-* [validateInputs](openurlaction.md#validateinputs)
-* [validateProperties](openurlaction.md#validateproperties)
+* [addCssClasses](executeaction.md#protected-addcssclasses)
+* [execute](executeaction.md#execute)
+* [getActionById](executeaction.md#getactionbyid)
+* [getAllInputs](executeaction.md#getallinputs)
+* [getAriaRole](executeaction.md#getariarole)
+* [getCustomProperty](executeaction.md#getcustomproperty)
+* [getHref](executeaction.md#gethref)
+* [getJsonTypeName](executeaction.md#getjsontypename)
+* [getReferencedInputs](executeaction.md#getreferencedinputs)
+* [getResourceInformation](executeaction.md#getresourceinformation)
+* [getRootObject](executeaction.md#getrootobject)
+* [getSchema](executeaction.md#getschema)
+* [getSchemaKey](executeaction.md#protected-getschemakey)
+* [getValue](executeaction.md#protected-getvalue)
+* [hasAllDefaultValues](executeaction.md#hasalldefaultvalues)
+* [hasDefaultValue](executeaction.md#hasdefaultvalue)
+* [internalGetReferencedInputs](executeaction.md#protected-internalgetreferencedinputs)
+* [internalParse](executeaction.md#protected-internalparse)
+* [internalPrepareForExecution](executeaction.md#protected-internalprepareforexecution)
+* [internalToJSON](executeaction.md#protected-internaltojson)
+* [internalValidateInputs](executeaction.md#protected-internalvalidateinputs)
+* [internalValidateProperties](executeaction.md#internalvalidateproperties)
+* [parse](executeaction.md#parse)
+* [populateSchema](executeaction.md#protected-populateschema)
+* [preProcessPropertyValue](executeaction.md#preprocesspropertyvalue)
+* [prepareForExecution](executeaction.md#prepareforexecution)
+* [remove](executeaction.md#remove)
+* [render](executeaction.md#render)
+* [resetDefaultValues](executeaction.md#resetdefaultvalues)
+* [setCustomProperty](executeaction.md#setcustomproperty)
+* [setParent](executeaction.md#setparent)
+* [setShouldFallback](executeaction.md#setshouldfallback)
+* [setValue](executeaction.md#protected-setvalue)
+* [shouldFallback](executeaction.md#shouldfallback)
+* [shouldSerialize](executeaction.md#protected-shouldserialize)
+* [toJSON](executeaction.md#tojson)
+* [updateActionButtonCssStyle](executeaction.md#updateactionbuttoncssstyle)
+* [validateInputs](executeaction.md#validateinputs)
+* [validateProperties](executeaction.md#validateproperties)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new OpenUrlAction**(): *[OpenUrlAction](openurlaction.md)*
+\+ **new ExecuteAction**(): *[ExecuteAction](executeaction.md)*
 
 *Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
 
-**Returns:** *[OpenUrlAction](openurlaction.md)*
+**Returns:** *[ExecuteAction](executeaction.md)*
 
 ## Properties
 
@@ -182,15 +184,25 @@ ___
 
 ___
 
-### `Optional` url
+###  verb
 
-• **url**? : *undefined | string*
+• **verb**: *string*
 
 ___
 
 ### `Static` JsonTypeName
 
-▪ **JsonTypeName**: *"Action.OpenUrl"* = "Action.OpenUrl"
+▪ **JsonTypeName**: *"Action.Submit"* = "Action.Submit"
+
+*Inherited from [SubmitAction](submitaction.md).[JsonTypeName](submitaction.md#static-jsontypename)*
+
+___
+
+### `Static` dataProperty
+
+▪ **dataProperty**: *[PropertyDefinition](propertydefinition.md)‹›* = new PropertyDefinition(Versions.v1_0, "data")
+
+*Inherited from [SubmitAction](submitaction.md).[dataProperty](submitaction.md#static-dataproperty)*
 
 ___
 
@@ -279,11 +291,33 @@ ___
 
 ___
 
-### `Static` urlProperty
+### `Static` verbProperty
 
-▪ **urlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "url")
+▪ **verbProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_2, "verb")
 
 ## Accessors
+
+###  data
+
+• **get data**(): *object | undefined*
+
+*Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)*
+
+**Returns:** *object | undefined*
+
+• **set data**(`value`: object | undefined): *void*
+
+*Inherited from [SubmitAction](submitaction.md).[data](submitaction.md#data)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | object &#124; undefined |
+
+**Returns:** *void*
+
+___
 
 ###  hostConfig
 
@@ -301,9 +335,25 @@ ___
 
 • **get ignoreInputValidation**(): *boolean*
 
-*Inherited from [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
+*Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)*
+
+*Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
 
 **Returns:** *boolean*
+
+• **set ignoreInputValidation**(`value`: boolean): *void*
+
+*Inherited from [SubmitAction](submitaction.md).[ignoreInputValidation](submitaction.md#ignoreinputvalidation)*
+
+*Overrides [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | boolean |
+
+**Returns:** *void*
 
 ___
 
@@ -423,7 +473,7 @@ ___
 
 ▸ **getAriaRole**(): *string*
 
-*Overrides [Action](action.md).[getAriaRole](action.md#getariarole)*
+*Inherited from [Action](action.md).[getAriaRole](action.md#getariarole)*
 
 **Returns:** *string*
 
@@ -449,7 +499,7 @@ ___
 
 ▸ **getHref**(): *string | undefined*
 
-*Overrides [Action](action.md).[getHref](action.md#gethref)*
+*Inherited from [Action](action.md).[getHref](action.md#gethref)*
 
 **Returns:** *string | undefined*
 
@@ -459,7 +509,7 @@ ___
 
 ▸ **getJsonTypeName**(): *string*
 
-*Overrides [CardObject](cardobject.md).[getJsonTypeName](cardobject.md#abstract-getjsontypename)*
+*Overrides [SubmitAction](submitaction.md).[getJsonTypeName](submitaction.md#getjsontypename)*
 
 **Returns:** *string*
 
@@ -563,7 +613,9 @@ ___
 
 ▸ **internalGetReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
-*Inherited from [Action](action.md).[internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)*
+*Inherited from [SubmitAction](submitaction.md).[internalGetReferencedInputs](submitaction.md#protected-internalgetreferencedinputs)*
+
+*Overrides [Action](action.md).[internalGetReferencedInputs](action.md#protected-internalgetreferencedinputs)*
 
 **Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
@@ -590,7 +642,9 @@ ___
 
 ▸ **internalPrepareForExecution**(`inputs`: [Dictionary](../README.md#dictionary)‹[Input](input.md)› | undefined): *void*
 
-*Inherited from [Action](action.md).[internalPrepareForExecution](action.md#protected-internalprepareforexecution)*
+*Inherited from [SubmitAction](submitaction.md).[internalPrepareForExecution](submitaction.md#protected-internalprepareforexecution)*
+
+*Overrides [Action](action.md).[internalPrepareForExecution](action.md#protected-internalprepareforexecution)*
 
 **Parameters:**
 
@@ -639,7 +693,7 @@ ___
 
 ▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
 
-*Overrides [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)*
+*Inherited from [CardObject](cardobject.md).[internalValidateProperties](cardobject.md#internalvalidateproperties)*
 
 **Parameters:**
 

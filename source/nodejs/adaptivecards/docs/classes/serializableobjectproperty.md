@@ -19,6 +19,7 @@
 * [defaultValue](serializableobjectproperty.md#optional-defaultvalue)
 * [isSerializationEnabled](serializableobjectproperty.md#isserializationenabled)
 * [name](serializableobjectproperty.md#name)
+* [nullable](serializableobjectproperty.md#nullable)
 * [objectType](serializableobjectproperty.md#objecttype)
 * [onGetInitialValue](serializableobjectproperty.md#optional-ongetinitialvalue)
 * [sequentialNumber](serializableobjectproperty.md#sequentialnumber)
@@ -34,18 +35,19 @@
 
 ###  constructor
 
-\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
+\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `nullable`: boolean, `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
 
 **Parameters:**
 
-Name | Type |
------- | ------ |
-`targetVersion` | [Version](version.md) |
-`name` | string |
-`objectType` | [SerializableObjectType](../README.md#serializableobjecttype) |
-`defaultValue?` | [SerializableObject](serializableobject.md) |
+Name | Type | Default |
+------ | ------ | ------ |
+`targetVersion` | [Version](version.md) | - |
+`name` | string | - |
+`objectType` | [SerializableObjectType](../README.md#serializableobjecttype) | - |
+`nullable` | boolean | false |
+`defaultValue?` | [SerializableObject](serializableobject.md) | - |
 
 **Returns:** *[SerializableObjectProperty](serializableobjectproperty.md)*
 
@@ -72,6 +74,12 @@ ___
 • **name**: *string*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+
+___
+
+###  nullable
+
+• **nullable**: *boolean*
 
 ___
 

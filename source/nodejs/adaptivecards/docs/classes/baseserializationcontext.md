@@ -32,6 +32,7 @@
 * [serializeEnum](baseserializationcontext.md#serializeenum)
 * [serializeNumber](baseserializationcontext.md#serializenumber)
 * [serializeValue](baseserializationcontext.md#serializevalue)
+* [shouldSerialize](baseserializationcontext.md#shouldserialize)
 
 ## Constructors
 
@@ -183,3 +184,17 @@ Name | Type | Default |
 `defaultValue` | any | undefined |
 
 **Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

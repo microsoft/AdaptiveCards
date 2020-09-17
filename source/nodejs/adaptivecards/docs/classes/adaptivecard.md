@@ -8,6 +8,8 @@
 
   ↳ **AdaptiveCard**
 
+  ↳ [AdaptiveAppletCard](adaptiveappletcard.md)
+
 ## Index
 
 ### Constructors
@@ -541,6 +543,7 @@ ___
         Versions.v1_2,
         "requires",
         HostCapabilities,
+        false,
         new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
@@ -563,7 +566,7 @@ ___
 
 ### `Static` selectActionProperty
 
-▪ **selectActionProperty**: *[ActionProperty](actionproperty.md)‹›* = new ActionProperty(Versions.v1_0, "selectAction", [ "Action.ShowCard" ])
+▪ **selectActionProperty**: *[ActionProperty](actionproperty.md)‹›* = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ])
 
 *Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-selectactionproperty)*
 
@@ -2141,15 +2144,15 @@ ___
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
+▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
 
-*Overrides [CardElement](cardelement.md).[shouldSerialize](cardelement.md#protected-shouldserialize)*
+*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context` | [SerializationContext](serializationcontext.md) |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -2169,9 +2172,7 @@ ___
 
 ▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [CardElement](cardelement.md).[toJSON](cardelement.md#tojson)*
-
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Overrides [CardElement](cardelement.md).[toJSON](cardelement.md#tojson)*
 
 **Parameters:**
 

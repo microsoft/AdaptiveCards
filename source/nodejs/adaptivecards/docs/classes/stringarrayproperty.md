@@ -1,41 +1,39 @@
-[Adaptive Cards Javascript SDK](../README.md) › [ValueSetProperty](valuesetproperty.md)
+[Adaptive Cards Javascript SDK](../README.md) › [StringArrayProperty](stringarrayproperty.md)
 
-# Class: ValueSetProperty
+# Class: StringArrayProperty
 
 ## Hierarchy
 
 * [PropertyDefinition](propertydefinition.md)
 
-  ↳ **ValueSetProperty**
+  ↳ **StringArrayProperty**
 
 ## Index
 
 ### Constructors
 
-* [constructor](valuesetproperty.md#constructor)
+* [constructor](stringarrayproperty.md#constructor)
 
 ### Properties
 
-* [defaultValue](valuesetproperty.md#optional-defaultvalue)
-* [isSerializationEnabled](valuesetproperty.md#isserializationenabled)
-* [name](valuesetproperty.md#name)
-* [onGetInitialValue](valuesetproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](valuesetproperty.md#sequentialnumber)
-* [targetVersion](valuesetproperty.md#targetversion)
-* [values](valuesetproperty.md#values)
+* [defaultValue](stringarrayproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](stringarrayproperty.md#isserializationenabled)
+* [name](stringarrayproperty.md#name)
+* [onGetInitialValue](stringarrayproperty.md#optional-ongetinitialvalue)
+* [sequentialNumber](stringarrayproperty.md#sequentialnumber)
+* [targetVersion](stringarrayproperty.md#targetversion)
 
 ### Methods
 
-* [getInternalName](valuesetproperty.md#getinternalname)
-* [isValidValue](valuesetproperty.md#isvalidvalue)
-* [parse](valuesetproperty.md#parse)
-* [toJSON](valuesetproperty.md#tojson)
+* [getInternalName](stringarrayproperty.md#getinternalname)
+* [parse](stringarrayproperty.md#parse)
+* [toJSON](stringarrayproperty.md#tojson)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new ValueSetProperty**(`targetVersion`: [Version](version.md), `name`: string, `values`: [IVersionedValue](../interfaces/iversionedvalue.md)‹string›[], `defaultValue?`: undefined | string, `onGetInitialValue?`: undefined | function): *[ValueSetProperty](valuesetproperty.md)*
+\+ **new StringArrayProperty**(`targetVersion`: [Version](version.md), `name`: string, `defaultValue?`: string[], `onGetInitialValue?`: undefined | function): *[StringArrayProperty](stringarrayproperty.md)*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
 
@@ -45,17 +43,16 @@ Name | Type |
 ------ | ------ |
 `targetVersion` | [Version](version.md) |
 `name` | string |
-`values` | [IVersionedValue](../interfaces/iversionedvalue.md)‹string›[] |
-`defaultValue?` | undefined &#124; string |
+`defaultValue?` | string[] |
 `onGetInitialValue?` | undefined &#124; function |
 
-**Returns:** *[ValueSetProperty](valuesetproperty.md)*
+**Returns:** *[StringArrayProperty](stringarrayproperty.md)*
 
 ## Properties
 
 ### `Optional` defaultValue
 
-• **defaultValue**? : *undefined | string*
+• **defaultValue**? : *string[]*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
 
@@ -99,12 +96,6 @@ ___
 
 *Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
 
-___
-
-###  values
-
-• **values**: *[IVersionedValue](../interfaces/iversionedvalue.md)‹string›[]*
-
 ## Methods
 
 ###  getInternalName
@@ -117,24 +108,9 @@ ___
 
 ___
 
-###  isValidValue
-
-▸ **isValidValue**(`value`: string, `context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | string |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
-
-**Returns:** *boolean*
-
-___
-
 ###  parse
 
-▸ **parse**(`sender`: [SerializableObject](serializableobject.md), `source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *string | undefined*
+▸ **parse**(`sender`: [SerializableObject](serializableobject.md), `source`: [PropertyBag](../README.md#propertybag), `context`: [BaseSerializationContext](baseserializationcontext.md)): *string[] | undefined*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[parse](propertydefinition.md#parse)*
 
@@ -146,13 +122,13 @@ Name | Type |
 `source` | [PropertyBag](../README.md#propertybag) |
 `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
-**Returns:** *string | undefined*
+**Returns:** *string[] | undefined*
 
 ___
 
 ###  toJSON
 
-▸ **toJSON**(`sender`: [SerializableObject](serializableobject.md), `target`: [PropertyBag](../README.md#propertybag), `value`: string | undefined, `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
+▸ **toJSON**(`sender`: [SerializableObject](serializableobject.md), `target`: [PropertyBag](../README.md#propertybag), `value`: string[] | undefined, `context`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[toJSON](propertydefinition.md#tojson)*
 
@@ -162,7 +138,7 @@ Name | Type |
 ------ | ------ |
 `sender` | [SerializableObject](serializableobject.md) |
 `target` | [PropertyBag](../README.md#propertybag) |
-`value` | string &#124; undefined |
+`value` | string[] &#124; undefined |
 `context` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *void*

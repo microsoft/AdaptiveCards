@@ -1,97 +1,59 @@
-[Adaptive Cards Javascript SDK](../README.md) › [CardObject](cardobject.md)
+[Adaptive Cards Javascript SDK](../README.md) › [RefreshDefinition](refreshdefinition.md)
 
-# Class: CardObject
+# Class: RefreshDefinition
 
 ## Hierarchy
 
 * [SerializableObject](serializableobject.md)
 
-  ↳ **CardObject**
-
-  ↳ [CardElement](cardelement.md)
-
-  ↳ [Action](action.md)
+  ↳ **RefreshDefinition**
 
 ## Index
 
 ### Constructors
 
-* [constructor](cardobject.md#constructor)
+* [constructor](refreshdefinition.md#constructor)
 
 ### Properties
 
-* [_parent](cardobject.md#protected-optional-_parent)
-* [_renderedElement](cardobject.md#protected-optional-_renderedelement)
-* [id](cardobject.md#optional-id)
-* [maxVersion](cardobject.md#maxversion)
-* [onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)
-* [idProperty](cardobject.md#static-idproperty)
-* [onRegisterCustomProperties](cardobject.md#static-optional-onregistercustomproperties)
-* [requiresProperty](cardobject.md#static-requiresproperty)
-* [typeNameProperty](cardobject.md#static-typenameproperty)
+* [maxVersion](refreshdefinition.md#maxversion)
+* [parent](refreshdefinition.md#parent)
+* [actionProperty](refreshdefinition.md#static-actionproperty)
+* [onRegisterCustomProperties](refreshdefinition.md#static-optional-onregistercustomproperties)
 
 ### Accessors
 
-* [hostConfig](cardobject.md#hostconfig)
-* [parent](cardobject.md#parent)
-* [renderedElement](cardobject.md#renderedelement)
-* [requires](cardobject.md#requires)
+* [action](refreshdefinition.md#action)
 
 ### Methods
 
-* [getCustomProperty](cardobject.md#getcustomproperty)
-* [getJsonTypeName](cardobject.md#abstract-getjsontypename)
-* [getRootObject](cardobject.md#getrootobject)
-* [getSchema](cardobject.md#getschema)
-* [getSchemaKey](cardobject.md#protected-getschemakey)
-* [getValue](cardobject.md#protected-getvalue)
-* [hasAllDefaultValues](cardobject.md#hasalldefaultvalues)
-* [hasDefaultValue](cardobject.md#hasdefaultvalue)
-* [internalParse](cardobject.md#protected-internalparse)
-* [internalToJSON](cardobject.md#protected-internaltojson)
-* [internalValidateProperties](cardobject.md#internalvalidateproperties)
-* [parse](cardobject.md#parse)
-* [populateSchema](cardobject.md#protected-populateschema)
-* [preProcessPropertyValue](cardobject.md#preprocesspropertyvalue)
-* [resetDefaultValues](cardobject.md#resetdefaultvalues)
-* [setCustomProperty](cardobject.md#setcustomproperty)
-* [setParent](cardobject.md#setparent)
-* [setShouldFallback](cardobject.md#setshouldfallback)
-* [setValue](cardobject.md#protected-setvalue)
-* [shouldFallback](cardobject.md#shouldfallback)
-* [shouldSerialize](cardobject.md#protected-shouldserialize)
-* [toJSON](cardobject.md#tojson)
-* [validateProperties](cardobject.md#validateproperties)
+* [getCustomProperty](refreshdefinition.md#getcustomproperty)
+* [getSchema](refreshdefinition.md#getschema)
+* [getSchemaKey](refreshdefinition.md#protected-getschemakey)
+* [getValue](refreshdefinition.md#protected-getvalue)
+* [hasAllDefaultValues](refreshdefinition.md#hasalldefaultvalues)
+* [hasDefaultValue](refreshdefinition.md#hasdefaultvalue)
+* [internalParse](refreshdefinition.md#protected-internalparse)
+* [internalToJSON](refreshdefinition.md#protected-internaltojson)
+* [parse](refreshdefinition.md#parse)
+* [populateSchema](refreshdefinition.md#protected-populateschema)
+* [resetDefaultValues](refreshdefinition.md#resetdefaultvalues)
+* [setCustomProperty](refreshdefinition.md#setcustomproperty)
+* [setValue](refreshdefinition.md#protected-setvalue)
+* [shouldSerialize](refreshdefinition.md#protected-shouldserialize)
+* [toJSON](refreshdefinition.md#tojson)
 
 ## Constructors
 
 ###  constructor
 
-\+ **new CardObject**(): *[CardObject](cardobject.md)*
+\+ **new RefreshDefinition**(): *[RefreshDefinition](refreshdefinition.md)*
 
 *Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
 
-**Returns:** *[CardObject](cardobject.md)*
+**Returns:** *[RefreshDefinition](refreshdefinition.md)*
 
 ## Properties
-
-### `Protected` `Optional` _parent
-
-• **_parent**? : *[CardObject](cardobject.md)*
-
-___
-
-### `Protected` `Optional` _renderedElement
-
-• **_renderedElement**? : *HTMLElement*
-
-___
-
-### `Optional` id
-
-• **id**? : *undefined | string*
-
-___
 
 ###  maxVersion
 
@@ -101,15 +63,15 @@ ___
 
 ___
 
-### `Optional` onPreProcessPropertyValue
+###  parent
 
-• **onPreProcessPropertyValue**? : *undefined | function*
+• **parent**: *[CardElement](cardelement.md)*
 
 ___
 
-### `Static` idProperty
+### `Static` actionProperty
 
-▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
+▪ **actionProperty**: *[RefreshActionProperty](refreshactionproperty.md)‹›* = new RefreshActionProperty(Versions.v1_0, "action")
 
 ___
 
@@ -119,62 +81,23 @@ ___
 
 *Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
 
-___
-
-### `Static` requiresProperty
-
-▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.v1_2,
-        "requires",
-        HostCapabilities,
-        false,
-        new HostCapabilities())
-
-___
-
-### `Static` typeNameProperty
-
-▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
-        Versions.v1_0,
-        "type",
-        undefined,
-        undefined,
-        undefined,
-        (sender: object) => {
-            return (<CardObject>sender).getJsonTypeName()
-        })
-
 ## Accessors
 
-###  hostConfig
+###  action
 
-• **get hostConfig**(): *[HostConfig](hostconfig.md)*
+• **get action**(): *[ExecuteAction](executeaction.md)*
 
-**Returns:** *[HostConfig](hostconfig.md)*
+**Returns:** *[ExecuteAction](executeaction.md)*
 
-___
+• **set action**(`value`: [ExecuteAction](executeaction.md)): *void*
 
-###  parent
+**Parameters:**
 
-• **get parent**(): *[CardObject](cardobject.md) | undefined*
+Name | Type |
+------ | ------ |
+`value` | [ExecuteAction](executeaction.md) |
 
-**Returns:** *[CardObject](cardobject.md) | undefined*
-
-___
-
-###  renderedElement
-
-• **get renderedElement**(): *HTMLElement | undefined*
-
-**Returns:** *HTMLElement | undefined*
-
-___
-
-###  requires
-
-• **get requires**(): *HostCapabilities*
-
-**Returns:** *HostCapabilities*
+**Returns:** *void*
 
 ## Methods
 
@@ -191,22 +114,6 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
-
-___
-
-### `Abstract` getJsonTypeName
-
-▸ **getJsonTypeName**(): *string*
-
-**Returns:** *string*
-
-___
-
-###  getRootObject
-
-▸ **getRootObject**(): *[CardObject](cardobject.md)*
-
-**Returns:** *[CardObject](cardobject.md)*
 
 ___
 
@@ -306,20 +213,6 @@ Name | Type |
 
 ___
 
-###  internalValidateProperties
-
-▸ **internalValidateProperties**(`context`: [ValidationResults](validationresults.md)): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`context` | [ValidationResults](validationresults.md) |
-
-**Returns:** *void*
-
-___
-
 ###  parse
 
 ▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
@@ -353,21 +246,6 @@ Name | Type |
 
 ___
 
-###  preProcessPropertyValue
-
-▸ **preProcessPropertyValue**(`property`: [PropertyDefinition](propertydefinition.md), `propertyValue?`: any): *any*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`property` | [PropertyDefinition](propertydefinition.md) |
-`propertyValue?` | any |
-
-**Returns:** *any*
-
-___
-
 ###  resetDefaultValues
 
 ▸ **resetDefaultValues**(): *void*
@@ -395,34 +273,6 @@ Name | Type |
 
 ___
 
-###  setParent
-
-▸ **setParent**(`value`: [CardObject](cardobject.md) | undefined): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | [CardObject](cardobject.md) &#124; undefined |
-
-**Returns:** *void*
-
-___
-
-###  setShouldFallback
-
-▸ **setShouldFallback**(`value`: boolean): *void*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`value` | boolean |
-
-**Returns:** *void*
-
-___
-
 ### `Protected` setValue
 
 ▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
@@ -437,14 +287,6 @@ Name | Type |
 `value` | any |
 
 **Returns:** *void*
-
-___
-
-###  shouldFallback
-
-▸ **shouldFallback**(): *boolean*
-
-**Returns:** *boolean*
 
 ___
 
@@ -477,11 +319,3 @@ Name | Type |
 `context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
-
-___
-
-###  validateProperties
-
-▸ **validateProperties**(): *[ValidationResults](validationresults.md)*
-
-**Returns:** *[ValidationResults](validationresults.md)*

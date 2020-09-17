@@ -14,6 +14,8 @@
 
   ↳ [PixelSizeProperty](pixelsizeproperty.md)
 
+  ↳ [StringArrayProperty](stringarrayproperty.md)
+
   ↳ [ValueSetProperty](valuesetproperty.md)
 
   ↳ [EnumProperty](enumproperty.md)
@@ -25,6 +27,8 @@
   ↳ [CustomProperty](customproperty.md)
 
   ↳ [ActionProperty](actionproperty.md)
+
+  ↳ [RefreshActionProperty](refreshactionproperty.md)
 
 ## Index
 

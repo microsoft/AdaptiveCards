@@ -21,6 +21,10 @@
 * [useAdvancedTextBlockTruncation](globalsettings.md#static-useadvancedtextblocktruncation)
 * [useMarkdownInRadioButtonAndCheckbox](globalsettings.md#static-usemarkdowninradiobuttonandcheckbox)
 
+### Object literals
+
+* [applets](globalsettings.md#static-applets)
+
 ## Properties
 
 ### `Static` allowMarkForTextHighlighting
@@ -80,3 +84,41 @@ ___
 ### `Static` useMarkdownInRadioButtonAndCheckbox
 
 ▪ **useMarkdownInRadioButtonAndCheckbox**: *boolean* = true
+
+## Object literals
+
+### `Static` applets
+
+### ▪ **applets**: *object*
+
+###  authPromptHeight
+
+• **authPromptHeight**: *number* = 600
+
+###  authPromptWidth
+
+• **authPromptWidth**: *number* = 400
+
+###  defaultTimeBetweenRetryAttempts
+
+• **defaultTimeBetweenRetryAttempts**: *number* = 3000
+
+###  logEnabled
+
+• **logEnabled**: *true* = true
+
+###  logLevel
+
+• **logLevel**: *[Error](../enums/loglevel.md#error)* = Enums.LogLevel.Error
+
+###  maximumRetryAttempts
+
+• **maximumRetryAttempts**: *number* = 3
+
+▪ **refresh**: *object*
+
+* **maximumConsecutiveRefreshes**: *number* = 3
+
+* **mode**: *[Manual](../enums/refreshmode.md#manual)* = Enums.RefreshMode.Manual
+
+* **timeBetweenAutomaticRefreshes**: *number* = 3000
