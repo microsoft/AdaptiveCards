@@ -34,8 +34,8 @@
 	},
 	"dependencies": {
 		"adaptive-expressions": "^4.9.2",
-		"adaptivecards": "^2.1.0",
-		"adaptivecards-controls": "^0.4.0",
+		"adaptivecards": "^3.0.0-alpha.0",
+		"adaptivecards-controls": "^0.4.1",
 		"adaptivecards-templating": "^1.1.0",
 		"clipboard": "^2.0.1"
 	},
