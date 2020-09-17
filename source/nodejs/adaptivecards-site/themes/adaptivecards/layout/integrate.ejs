@@ -1,0 +1,30 @@
+<div id="content-wrapper" class="w3-row integrate" style="max-width:1564px">
+
+	Integrate with adaptive cards!
+
+	<h2>Card Hosts</h2>
+	<% page.hosts.forEach(function(host) { %>
+		<div class="w3-container">
+			<p><%= host.name %></p>
+			<p><%= host.description %></p>
+			<p>Schema Version: <%= host.schemaVersion %></p>
+			<a href='<%= host.getStartedUrl %>'>Get Started</a>
+
+			<p>Supported Plugins</p>
+			<% host.plugins.forEach(function(plugin) { %>
+				<div class="w3-container">
+					<%= plugin.name %>
+				</div>
+			<% }) %>
+		
+		</div>
+	<% }) %>
+
+
+	<h2>Plugins</h2>
+	<% page.plugins.forEach(function(plugin) { %>
+		<div class="w3-container">
+			<%= plugin.name %>
+		</div>
+	<% }) %>
+</div>

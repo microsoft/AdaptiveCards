@@ -102,6 +102,9 @@ What follows is a starting point to grok this problem.
 1. Designer support. If a Host supports an extension, the Designer should reflect that (where possible)
 1. Card-authors can explicitly require extensions using the `requires` and `fallback` mechanism
 
+> TODO: Make comp of Designer improvements
+> 
+
 ### Extension manifests
 
 Imagine this file sitting at the root of a extension's GitHub repo. The code for the extensions will exist on each supported platform, and be packaged and deployed using the existing platform tools. 

@@ -1,0 +1,31 @@
+<div class="w3-row-padding w3-margin-top">
+  <div class="w3-col s12 m4"></div>
+
+  <div class="w3-col s12 m4"></div>
+</div>
+
+<!-- TODO: link to manifest file in GitHub? -->
+
+<h3>Compatibility</h3>
+
+
+<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+<i class="fa fa-check-circle" aria-hidden="true"></i>
+<i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+
+<h3>Example</h3>
+
+<% examples.forEach(function(example) { %>
+<div class="w3-container w3-cell w3-mobile w3-rest code-snippet">
+  <div class="codeHeader">
+    <span class="language">JSON</span>
+    <button
+      aria-label="Copy Adaptive Card sample JSON"
+      class="action copy-code"
+    >
+      <span><i class="far fa-copy" aria-hidden="true"></i> Copy</span>
+    </button>
+  </div>
+  <pre><code class="json w3-mobile"><%= example %></code></pre>
+</div>
+<% }) %>

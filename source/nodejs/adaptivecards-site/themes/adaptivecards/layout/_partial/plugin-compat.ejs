@@ -1,0 +1,49 @@
+
+<table class="bc-table bc-table-web">
+	<thead>
+	  <tr class="bc-platforms">
+		<td></td>
+		<th class="bc-platform-desktop" colspan="<%- plugins.hosts.length %>">
+		  <span>Hosts</span>
+		</th>
+		<th class="bc-platform-mobile" colspan="<%- plugin.platforms.length %>">
+		  <span>Platforms</span>
+		</th>
+	  </tr>
+	  <tr class="bc-browsers">
+		<td></td>
+		<% hosts.concat(platforms).forEach(function(item)) { %>
+		<th class="bc-browser-chrome">
+		  <span class="bc-head-txt-label bc-head-icon-chrome">
+			<%- item.name %>
+		  </span>
+		</th>
+		<% } %>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+		<th scope="row">
+		  <code><%= name %></code>
+		</th>
+		<% hosts.concat(platforms).forEach(function(item)) { %>
+		<td
+		  class="bc-supports-no bc-browser-chrome"
+		  aria-expanded="false"
+		  aria-controls="bc-history-1"
+		>
+		  <span class="bc-browser-name"><%- item.isSupported %></span
+		  ><abbr class="bc-level-no only-icon" title="No support">
+			<span>No support</span>
+		  </abbr>
+		  No
+		  <div class="bc-icons">
+			<abbr class="only-icon" title="See implementation notes"
+			  ><span>Notes</span><i class="ic-footnote"></i
+			></abbr>
+		  </div>
+		</td>
+		<% } %>
+	  </tr>
+	</tbody>
+  </table>

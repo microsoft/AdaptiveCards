@@ -4,7 +4,7 @@
 var typedschema = require("ac-typed-schema");
 var path = require("path");
 
-hexo.extend.generator.register("generator-explorer", function (locals) {
+hexo.extend.generator2.register("generator-explorer", function (locals) {
 
     return new Promise(function (resolve, reject) {
 
@@ -15,7 +15,7 @@ hexo.extend.generator.register("generator-explorer", function (locals) {
 				rootDefinition: "AdaptiveCard",
 				examplesPath: "../../../samples"
 			});
-			
+
 			var pages = [];
 
 			schemaModel.forEach(function (root) {
