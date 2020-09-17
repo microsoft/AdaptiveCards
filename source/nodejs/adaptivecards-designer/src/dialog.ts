@@ -36,7 +36,7 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
-    preventLightDismissal: boolean = true; // Flag for enabling preventDefault action
+    preventLightDismissal: boolean = false; // Flag for enabling preventDefault action
     constructor() {
         this.closeButton = new DialogButton("Close");
         this.closeButton.onClick = (sender) => {
@@ -50,7 +50,7 @@ export abstract class Dialog {
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                if (this.preventLightDismissal) {
+                if (!this.preventLightDismissal) {
                     this.close();
                 }
             };
@@ -71,7 +71,7 @@ export abstract class Dialog {
             dialogFrameElement.onclick = (e) => {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
-                if (this.preventLightDismissal) {
+                if (!this.preventLightDismissal) {
                     e.cancelBubble = true;
                     return false;
                 }
@@ -103,8 +103,7 @@ export abstract class Dialog {
             titleElement.style.flex = "1 1 auto";
 
             let xButton = document.createElement("button");
-            xButton.className =
-                "acd-icon acd-dialog-titleBar-button acd-icon-remove";
+            xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";
             xButton.style.flex = "0 0 auto";
             xButton.title = "Close";
             xButton.onclick = (e) => {

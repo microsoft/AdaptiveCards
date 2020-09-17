@@ -19,10 +19,7 @@ class CatalogueItem {
     }
 
     render(): HTMLElement {
-        const newItemId = CatalogueItem.getNewItemId(
-            "acd-open-sample-item-title"
-        );
-
+        const newItemId = CatalogueItem.getNewItemId("acd-open-sample-item-title");
         let element = document.createElement("div");
         element.className = "acd-open-sample-item";
         element.tabIndex = 0;
@@ -63,9 +60,11 @@ class CatalogueItem {
                     if (sender.sampleData) {
                         let template = new ACData.Template(cardPayload);
 
-                        cardPayload = template.expand({
-                            $root: JSON.parse(sender.sampleData),
-                        });
+                        cardPayload = template.expand(
+							{
+								$root: JSON.parse(sender.sampleData)
+							}
+						);
                     }
 
                     let card = new Adaptive.AdaptiveCard();
@@ -74,7 +73,8 @@ class CatalogueItem {
                     card.renderedElement.style.width = "100%";
 
                     thumbnailHost.appendChild(card.renderedElement);
-                } catch (e) {
+				} 
+				catch (e) {
                     // Swallow the exception
                     console.error("Unable to load card sample. Error: " + e);
 
@@ -142,7 +142,8 @@ export class OpenSampleDialog extends Dialog {
         renderedElement.className = "acd-open-sample-item-container";
         renderedElement.setAttribute("role", "list");
         // Adding Pic2Card option
-        renderedElement.appendChild(this.renderImageOption());
+		renderedElement.appendChild(this.renderImageOption());
+		
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
             item.onClick = (sender: CatalogueItem) => {

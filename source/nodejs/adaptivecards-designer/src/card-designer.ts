@@ -854,7 +854,7 @@ export class CardDesigner extends Designer.DesignContext {
         let dialog = new OpenImageDialog();
         dialog.title = "Upload Card Structure ";
         dialog.closeButton.caption = "Cancel";
-        dialog.preventLightDismissal = false;
+        dialog.preventLightDismissal = true;
         dialog.width = "80%";
         dialog.height = "80%";
         dialog.open();
