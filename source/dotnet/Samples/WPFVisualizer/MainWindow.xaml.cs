@@ -157,7 +157,20 @@ namespace WpfVisualizer
 
             try
             {
+                //Stopwatch stopWatch = new Stopwatch();
+                //stopWatch.Start();
+
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(expandedPayload);
+
+                //stopWatch.Stop();
+                // Get the elapsed time as a TimeSpan value.
+                //TimeSpan ts = stopWatch.Elapsed;
+
+                // Format and display the TimeSpan value.
+                //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
+                //    ts.Hours, ts.Minutes, ts.Seconds,
+                //    ts.Milliseconds / 10);
+                //Console.WriteLine("RunTime " + elapsedTime);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -190,12 +203,14 @@ namespace WpfVisualizer
                 cardGrid.Children.Clear();
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
+                /*
                 // Report any warnings
                 var allWarnings = parseResult.Warnings.Union(renderedCard.Warnings);
                 foreach (var warning in allWarnings)
                 {
                     ShowWarning(warning.Message);
                 }
+                */
             }
             catch (AdaptiveRenderException ex)
             {

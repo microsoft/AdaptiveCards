@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\AdaptiveCards.Templating\AdaptiveCards.Templating.csproj" />
+    <ProjectReference Include="..\..\Library\AdaptiveCards\AdaptiveCards.csproj" />
   </ItemGroup>
 
 </Project>
