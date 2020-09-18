@@ -11,7 +11,7 @@ export class DialogButton {
         element.innerText = this.caption;
         element.onclick = (e) => {
             this.clicked();
-        }
+        };
 
         return element;
     }
@@ -36,12 +36,12 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
-
+    preventLightDismissal: boolean = false; // Flag for enabling preventDefault action
     constructor() {
         this.closeButton = new DialogButton("Close");
         this.closeButton.onClick = (sender) => {
             this.close();
-        }
+        };
     }
 
     open() {
@@ -50,8 +50,10 @@ export abstract class Dialog {
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                this.close();
-            }
+                if (!this.preventLightDismissal) {
+                    this.close();
+                }
+            };
 
             let dialogFrameElement = document.createElement("div");
             dialogFrameElement.className = "acd-dialog-frame";
@@ -60,16 +62,20 @@ export abstract class Dialog {
             dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-modal", "true");
-            dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
+            dialogFrameElement.setAttribute(
+                "aria-labelledby",
+                "acd-dialog-title-element"
+            );
             dialogFrameElement.tabIndex = -1;
 
             dialogFrameElement.onclick = (e) => {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
-                e.cancelBubble = true;
-
-                return false;
-            }
+                if (!this.preventLightDismissal) {
+                    e.cancelBubble = true;
+                    return false;
+                }
+            };
 
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
@@ -100,7 +106,9 @@ export abstract class Dialog {
             xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";
             xButton.style.flex = "0 0 auto";
             xButton.title = "Close";
-            xButton.onclick = (e) => { this.close(); }
+            xButton.onclick = (e) => {
+                this.close();
+            };
 
             titleBarElement.append(titleElement, xButton);
 
