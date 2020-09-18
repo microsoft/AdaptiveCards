@@ -172,7 +172,7 @@ namespace AdaptiveCards
 
             // Create a list of known property names
             List<String> knownPropertyNames = new List<String>();
-            static IEnumerable<PropertyInfo> runtimeProperties = te.GetType().GetRuntimeProperties();
+            IEnumerable<PropertyInfo> runtimeProperties = te.GetType().GetRuntimeProperties();
             foreach (PropertyInfo runtimeProperty in runtimeProperties)
             {
                 // Check if the property has a JsonPropertyAttribute with the value set
