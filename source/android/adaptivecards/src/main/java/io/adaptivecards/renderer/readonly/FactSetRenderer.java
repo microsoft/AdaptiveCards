@@ -82,7 +82,15 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
+
+        if (factVectorSize == 0)
+        {
+            return null;
+        }
+
         long spacing = hostConfig.GetFactSet().getSpacing();
+
+        int validFacts = 0;
 
         for (int i = 0; i < factVectorSize; i++)
         {
@@ -100,15 +108,19 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
             DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
 
-            // Handle Title
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
-
-            // Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
+            if (titleWithFormattedDates.length() != 0 || valueWithFormattedDates.length() != 0)
+            {
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
+                tableLayout.addView(factRow);
+                validFacts++;
+           }
+        }
 
-            tableLayout.addView(factRow);
+        if (validFacts == 0) {
+            return null;
         }
 
         viewGroup.addView(tableLayout);
