@@ -124,6 +124,16 @@ public class BaseCardElement extends BaseElement {
     return CardElementType.swigToEnum(AdaptiveCardObjectModelJNI.BaseCardElement_GetElementType(swigCPtr, this));
   }
 
+  public static BaseCardElement DeserializeBasePropertiesFromString(ParseContext context, String jsonString) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeBasePropertiesFromString(ParseContext.getCPtr(context), context, jsonString);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
+  }
+
+  public static BaseCardElement DeserializeBaseProperties(ParseContext context, JsonValue json) {
+    long cPtr = AdaptiveCardObjectModelJNI.BaseCardElement_DeserializeBaseProperties(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json);
+    return (cPtr == 0) ? null : new BaseCardElement(cPtr, true);
+  }
+
   public static void ParseJsonObject(ParseContext context, JsonValue json, BaseElement element) {
     AdaptiveCardObjectModelJNI.BaseCardElement_ParseJsonObject(ParseContext.getCPtr(context), context, JsonValue.getCPtr(json), json, BaseElement.getCPtr(element), element);
   }

@@ -6,7 +6,6 @@
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
-	"inputNecessityIndicators": "requiredInputs",
 	"body": [
 		{
 			"type": "TextBlock",

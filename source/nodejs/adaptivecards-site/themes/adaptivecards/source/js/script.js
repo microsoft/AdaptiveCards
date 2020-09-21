@@ -364,7 +364,7 @@ $(function () {
 		var enableTemplating = localStorage.getItem("enable-templating") === "true";
 
 		$(".show-with-templating").css("display", "none");
-		$(".hide-with-templating").css("display", "block");
+		$(".hide-with-templating").css("display", "");
 
 		$(".adaptivecard").each(function () {
 
@@ -375,7 +375,7 @@ $(function () {
 
 			if (templateUrl && enableTemplating) {
 
-				$(".show-with-templating").css("display", "block");
+				$(".show-with-templating").css("display", "");
 				$(".hide-with-templating").css("display", "none");
 
 				$.getJSON(templateUrl, function (templateJson) {
