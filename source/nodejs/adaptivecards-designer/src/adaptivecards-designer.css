@@ -1057,6 +1057,12 @@ a.default-ac-anchor:visited:active {
     color: #0a0a0a;
 }
 
+.error-info {
+	display: flex;
+	justify-content: center;
+	color: red;
+}
+
 .acd-image-title-content {
     width: 60%;
     margin: 0 auto;

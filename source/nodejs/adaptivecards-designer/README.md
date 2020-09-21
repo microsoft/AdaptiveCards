@@ -261,3 +261,14 @@ designer.sampleData = {
 	phone: "123-123-1234"
 };
 ```
+
+## Hosting Pic2Card Service
+
+Pic2Card is a ML based service which converts GUI image into adaptive card payload JSON. 
+To setup the pic2card ML service follow the instructions given in the below link.
+[pic2card service](
+https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container
+)
+
+Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
+in `.env` file in the adaptivecards-designer root directory to utilize the service.
