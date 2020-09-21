@@ -273,6 +273,7 @@
 	},
 	"inputs": {
 		"label": {
+			"inputSpacing": "small",
 			"requiredInputs": {
 				"suffix": " *"
 			},
