@@ -28,12 +28,40 @@ HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 }
 
 HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInputElement,
+                                           _In_ IAdaptiveRenderContext* renderContext,
                                            _In_ IUIElement* uiInputElement,
                                            _In_ IBorder* validationBorder)
 {
     m_adaptiveInputElement = adaptiveInputElement;
     m_uiInputElement = uiInputElement;
     m_validationBorder = validationBorder;
+
+    // Find out what the initial validation configuration is, and enable focus lost validation if needed
+    ComPtr<IAdaptiveHostConfig> hostConfig;
+    RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
+
+    ComPtr<IAdaptiveInputsConfig> inputsConfig;
+    RETURN_IF_FAILED(hostConfig->get_Inputs(&inputsConfig));
+    RETURN_IF_FAILED(inputsConfig->get_InitialValidation(&m_initialValidation));
+
+    switch (m_initialValidation)
+    {
+    case InitialValidation_OnFocusLost:
+    {
+        RETURN_IF_FAILED(EnableFocusLostValidation());
+        break;
+    }
+    case InitialValidation_OnFocusLostWithInput:
+    {
+        RETURN_IF_FAILED(EnableFocusLostOnInput());
+        break;
+    }
+    case InitialValidation_OnSubmit:
+    default:
+    {
+        break;
+    }
+    }
 
     return S_OK;
 }
@@ -161,8 +189,27 @@ HRESULT InputValue::SetValidation(boolean isInputValid)
         {
             RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
         }
+    }
 
-        RETURN_IF_FAILED(SetAccessibilityProperties(isInputValid));
+    // Once this has been marked invalid once, we should validate on all value changess going forward
+    if (!isInputValid)
+    {
+        RETURN_IF_FAILED(EnableValueChangedValidation());
+    }
+
+    return S_OK;
+}
+
+HRESULT InputValue::EnableFocusLostValidation()
+{
+    if (!m_isFocusLostValidationEnabled)
+    {
+        EventRegistrationToken focusLostToken;
+        RETURN_IF_FAILED(m_uiInputElement->add_LostFocus(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                              /*args*/) -> HRESULT {
+                                                             return Validate(nullptr);
+                                                         }).Get(),
+                                                         &focusLostToken));
     }
 
     return S_OK;
@@ -174,6 +221,7 @@ HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputE
 }
 
 HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInput,
+                                              _In_ IAdaptiveRenderContext* renderContext,
                                               _In_ ITextBox* uiTextBoxElement,
                                               _In_ IBorder* validationBorder)
 {
@@ -183,7 +231,7 @@ HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adapti
         ComPtr<IUIElement> textBoxAsUIElement;
         RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
 
-        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
+        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(adaptiveInput, renderContext, textBoxAsUIElement.Get(), validationBorder));
 
         return S_OK;
     }
@@ -194,7 +242,36 @@ HRESULT TextInputBase::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     return m_textBoxElement->get_Text(serializedUserInput);
 }
 
+HRESULT TextInputBase::EnableFocusLostOnInput()
+{
+    EventRegistrationToken textChangedToken;
+    RETURN_IF_FAILED(m_textBoxElement->add_TextChanged(Callback<ITextChangedEventHandler>([this](IInspectable* /*sender*/, ITextChangedEventArgs *
+                                                                                                 /*args*/) -> HRESULT {
+                                                           return EnableFocusLostValidation();
+                                                       }).Get(),
+                                                       &textChangedToken));
+
+    return S_OK;
+}
+
+HRESULT TextInputBase::EnableValueChangedValidation()
+{
+    if (!m_isTextChangedValidationEnabled)
+    {
+        EventRegistrationToken textChangedToken;
+        RETURN_IF_FAILED(m_textBoxElement->add_TextChanged(Callback<ITextChangedEventHandler>([this](IInspectable* /*sender*/, ITextChangedEventArgs *
+                                                                                                     /*args*/) -> HRESULT {
+                                                               return Validate(nullptr);
+                                                           }).Get(),
+                                                           &textChangedToken));
+
+        m_isTextChangedValidationEnabled = true;
+    }
+    return S_OK;
+}
+
 HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                               _In_ IAdaptiveRenderContext* renderContext,
                                                _In_ ITextBox* uiTextBoxElement,
                                                _In_ IBorder* validationBorder)
 {
@@ -203,7 +280,7 @@ HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptive
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
 
-    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), renderContext, uiTextBoxElement, validationBorder));
 
     return S_OK;
 }
@@ -239,6 +316,7 @@ HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
 }
 
 HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adaptiveNumberInput,
+                                                 _In_ IAdaptiveRenderContext* renderContext,
                                                  _In_ ITextBox* uiTextBoxElement,
                                                  _In_ IBorder* validationBorder)
 {
@@ -246,7 +324,7 @@ HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adap
 
     Microsoft::WRL::ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
     RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
-    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), renderContext, uiTextBoxElement, validationBorder));
     return S_OK;
 }
 
@@ -300,6 +378,7 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
 }
 
 HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptiveDateInput,
+                                               _In_ IAdaptiveRenderContext* renderContext,
                                                _In_ ICalendarDatePicker* uiDatePickerElement,
                                                _In_ IBorder* validationBorder)
 {
@@ -312,7 +391,8 @@ HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptive
     ComPtr<IUIElement> datePickerAsUIElement;
     RETURN_IF_FAILED(m_datePickerElement.As(&datePickerAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(
+        InputValue::RuntimeClassInitialize(dateInputAsAdaptiveInput.Get(), renderContext, datePickerAsUIElement.Get(), validationBorder));
 
     return S_OK;
 }
@@ -344,7 +424,36 @@ HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
     return S_OK;
 }
 
+HRESULT DateInputValue::EnableFocusLostOnInput()
+{
+    EventRegistrationToken dateChangedToken;
+    RETURN_IF_FAILED(m_datePickerElement->add_DateChanged(
+        Callback<ITypedEventHandler<CalendarDatePicker*, CalendarDatePickerDateChangedEventArgs*>>([this](IInspectable*, ICalendarDatePickerDateChangedEventArgs*) -> HRESULT {
+            return EnableFocusLostValidation();
+        }).Get(),
+        &dateChangedToken));
+    return S_OK;
+}
+
+HRESULT DateInputValue::EnableValueChangedValidation()
+{
+    if (!m_isDateChangedValidationEnabled)
+    {
+        EventRegistrationToken dateChangedToken;
+        RETURN_IF_FAILED(m_datePickerElement->add_DateChanged(
+            Callback<ITypedEventHandler<CalendarDatePicker*, CalendarDatePickerDateChangedEventArgs*>>([this](IInspectable* /*sender*/, ICalendarDatePickerDateChangedEventArgs *
+                                                                                                              /*args*/) -> HRESULT {
+                return Validate(nullptr);
+            }).Get(),
+            &dateChangedToken));
+
+        m_isDateChangedValidationEnabled = true;
+    }
+    return S_OK;
+}
+
 HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptiveTimeInput,
+                                               _In_ IAdaptiveRenderContext* renderContext,
                                                _In_ ITimePicker* uiTimePickerElement,
                                                _In_ IBorder* validationBorder)
 {
@@ -357,7 +466,8 @@ HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptive
     ComPtr<IUIElement> timePickerAsUIElement;
     RETURN_IF_FAILED(m_timePickerElement.As(&timePickerAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(
+        InputValue::RuntimeClassInitialize(timeInputAsAdaptiveInput.Get(), renderContext, timePickerAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -438,7 +548,49 @@ HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
     return S_OK;
 }
 
+HRESULT TimeInputValue::EnableFocusLostOnInput()
+{
+    EventRegistrationToken dateChangedToken;
+    RETURN_IF_FAILED(m_timePickerElement->add_TimeChanged(
+        Callback<IEventHandler<TimePickerValueChangedEventArgs*>>([this](IInspectable* /*sender*/, ITimePickerValueChangedEventArgs *
+                                                                         /*args*/) -> HRESULT {
+            return EnableFocusLostValidation();
+        }).Get(),
+        &dateChangedToken));
+
+    return S_OK;
+}
+
+HRESULT TimeInputValue::EnableValueChangedValidation()
+{
+    if (!m_isTimeChangedValidationEnabled)
+    {
+        EventRegistrationToken dateChangedToken;
+        RETURN_IF_FAILED(m_timePickerElement->add_TimeChanged(
+            Callback<IEventHandler<TimePickerValueChangedEventArgs*>>([this](IInspectable* /*sender*/, ITimePickerValueChangedEventArgs *
+                                                                             /*args*/) -> HRESULT {
+                return Validate(nullptr);
+            }).Get(),
+            &dateChangedToken));
+
+        m_isTimeChangedValidationEnabled = true;
+    }
+    return S_OK;
+}
+
+HRESULT TimeInputValue::EnableFocusLostValidation()
+{
+    if (!m_isFocusLostValidationEnabled)
+    {
+        // If we're validating immediately on focus lost, also validate the time picker as soon a a selection is made
+        RETURN_IF_FAILED(InputValue::EnableFocusLostValidation());
+        RETURN_IF_FAILED(EnableValueChangedValidation());
+    }
+
+    return S_OK;
+}
 HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adaptiveToggleInput,
+                                                 _In_ IAdaptiveRenderContext* renderContext,
                                                  _In_ ICheckBox* uiCheckBoxElement,
                                                  _In_ IBorder* validationBorder)
 {
@@ -451,7 +603,8 @@ HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adap
     ComPtr<IUIElement> checkBoxAsUIElement;
     RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
 
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder));
+    RETURN_IF_FAILED(
+        InputValue::RuntimeClassInitialize(toggleInputAsAdaptiveInput.Get(), renderContext, checkBoxAsUIElement.Get(), validationBorder));
     return S_OK;
 }
 
@@ -477,9 +630,9 @@ HRESULT ToggleInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput
 
 HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
 {
-    // Don't use the base class IsValueValid to validate required for toggle. That method counts required as satisfied
-    // if any value is set, but for toggle required means the check box is checked. An unchecked value will still have
-    // a value (either false, or whatever's in valueOff).
+    // Don't use the base class IsValueValid to validate required for toggle. That method counts required as
+    // satisfied if any value is set, but for toggle required means the check box is checked. An unchecked value
+    // will still have a value (either false, or whatever's in valueOff).
     boolean isRequired;
     RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));
 
@@ -494,6 +647,55 @@ HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
 
     *isInputValid = meetsRequirement;
 
+    return S_OK;
+}
+
+HRESULT ToggleInputValue::EnableFocusLostOnInput()
+{
+    ComPtr<IButtonBase> checkBoxAsButtonBase;
+    RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsButtonBase));
+
+    EventRegistrationToken toggleChangedToken;
+    RETURN_IF_FAILED(checkBoxAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                          /*args*/) -> HRESULT {
+                                                         return EnableFocusLostValidation();
+                                                     }).Get(),
+                                                     &toggleChangedToken));
+
+    return S_OK;
+}
+
+HRESULT ToggleInputValue::EnableValueChangedValidation()
+{
+    if (!m_isToggleChangedValidationEnabled)
+    {
+        ComPtr<IButtonBase> checkBoxAsButtonBase;
+        RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsButtonBase));
+
+        EventRegistrationToken toggleChangedToken;
+        RETURN_IF_FAILED(checkBoxAsButtonBase->add_Click(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                              /*args*/) -> HRESULT {
+                                                             return Validate(nullptr);
+                                                         }).Get(),
+                                                         &toggleChangedToken));
+
+        m_isToggleChangedValidationEnabled = true;
+    }
+
+    return S_OK;
+}
+
+HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                    _In_ IAdaptiveRenderContext* renderContext,
+                                                    _In_ IUIElement* uiChoiceSetElement,
+                                                    _In_ IBorder* validationBorder)
+{
+    m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), renderContext, uiChoiceSetElement, validationBorder));
     return S_OK;
 }
 
@@ -515,21 +717,7 @@ std::string ChoiceSetInputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* ch
     return "";
 }
 
-HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
-                                                    _In_ IUIElement* uiChoiceSetElement,
-                                                    _In_ IBorder* validationBorder)
-{
-    m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
-
-    Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
-
-    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder));
-    return S_OK;
-}
-
-HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
-try
+HRESULT ChoiceSetInputValue::IsCompactChoiceSet(bool* isCompactChoiceSet)
 {
     ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
@@ -537,7 +725,18 @@ try
     boolean isMultiSelect;
     RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
+    *isCompactChoiceSet = (choiceSetStyle == ChoiceSetStyle_Compact) && !isMultiSelect;
+
+    return S_OK;
+}
+
+HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+try
+{
+    bool isCompactChoiceSet;
+    RETURN_IF_FAILED(IsCompactChoiceSet(&isCompactChoiceSet));
+
+    if (isCompactChoiceSet)
     {
         // Handle compact style
         ComPtr<ISelector> selector;
@@ -560,6 +759,9 @@ try
 
         UINT size;
         RETURN_IF_FAILED(panelChildren->get_Size(&size));
+
+        boolean isMultiSelect;
+        RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
         if (isMultiSelect)
         {
@@ -612,15 +814,147 @@ try
 }
 CATCH_RETURN;
 
+HRESULT ChoiceSetInputValue::EnableFocusLostValidation()
+{
+    if (!m_isFocusLostValidationEnabled)
+    {
+        bool isCompactChoiceSet;
+        RETURN_IF_FAILED(IsCompactChoiceSet(&isCompactChoiceSet));
+
+        if (isCompactChoiceSet)
+        {
+            // Compact style can use the base class implementation
+            RETURN_IF_FAILED(InputValue::EnableFocusLostValidation());
+        }
+        else
+        {
+            // For expanded style, put a focus lost handler on the last choice in the choice set
+            ComPtr<IPanel> panel;
+            RETURN_IF_FAILED(m_uiInputElement.As(&panel));
+
+            ComPtr<IVector<UIElement*>> panelChildren;
+            RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+
+            UINT size;
+            RETURN_IF_FAILED(panelChildren->get_Size(&size));
+
+            ComPtr<IUIElement> lastElement;
+            RETURN_IF_FAILED(panelChildren->GetAt(size - 1, &lastElement));
+
+            EventRegistrationToken focusLostToken;
+            RETURN_IF_FAILED(lastElement->add_LostFocus(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                             /*args*/) -> HRESULT {
+                                                            return Validate(nullptr);
+                                                        }).Get(),
+                                                        &focusLostToken));
+        }
+
+        m_isFocusLostValidationEnabled = true;
+    }
+    return S_OK;
+}
+
+// Helper function to set the click handlers on all elements of an expanded choice set
+HRESULT ChoiceSetInputValue::SetExpandedClickHandlers(IRoutedEventHandler* clickHandler)
+{
+    ComPtr<IPanel> panel;
+    RETURN_IF_FAILED(m_uiInputElement.As(&panel));
+
+    ComPtr<IVector<UIElement*>> panelChildren;
+    RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+
+    UINT size;
+    RETURN_IF_FAILED(panelChildren->get_Size(&size));
+
+    for (UINT i = 0; i < size; i++)
+    {
+        ComPtr<IUIElement> currentElement;
+        RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
+
+        ComPtr<IButtonBase> elementAsButtonBase;
+        RETURN_IF_FAILED(currentElement.As(&elementAsButtonBase));
+
+        EventRegistrationToken elementChangedToken;
+        RETURN_IF_FAILED(elementAsButtonBase->add_Click(clickHandler, &elementChangedToken));
+    }
+
+    return S_OK;
+}
+
+HRESULT ChoiceSetInputValue::EnableFocusLostOnInput()
+{
+    if (!m_isChoiceSetChangedValidationEnabled)
+    {
+        bool isCompactChoiceSet;
+        RETURN_IF_FAILED(IsCompactChoiceSet(&isCompactChoiceSet));
+
+        if (isCompactChoiceSet)
+        {
+            // Handle compact style
+            ComPtr<ISelector> selector;
+            RETURN_IF_FAILED(m_uiInputElement.As(&selector));
+
+            EventRegistrationToken toggleChangedToken;
+            RETURN_IF_FAILED(selector->add_SelectionChanged(Callback<ISelectionChangedEventHandler>([this](IInspectable* /*sender*/, ISelectionChangedEventArgs *
+                                                                                                           /*args*/) -> HRESULT {
+                                                                return EnableFocusLostValidation();
+                                                            }).Get(),
+                                                            &toggleChangedToken));
+        }
+        else
+        {
+            // For expanded style, put click handlers to enable validation on all the choices
+            SetExpandedClickHandlers(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                          /*args*/) -> HRESULT {
+                                         return EnableFocusLostValidation();
+                                     }).Get());
+        }
+        m_isChoiceSetChangedValidationEnabled = true;
+    }
+
+    return S_OK;
+}
+
+HRESULT ChoiceSetInputValue::EnableValueChangedValidation()
+{
+    if (!m_isChoiceSetChangedValidationEnabled)
+    {
+        bool isCompactChoiceSet;
+        RETURN_IF_FAILED(IsCompactChoiceSet(&isCompactChoiceSet));
+
+        if (isCompactChoiceSet)
+        {
+            // Handle compact style
+            ComPtr<ISelector> selector;
+            RETURN_IF_FAILED(m_uiInputElement.As(&selector));
+
+            EventRegistrationToken toggleChangedToken;
+            RETURN_IF_FAILED(selector->add_SelectionChanged(Callback<ISelectionChangedEventHandler>([this](IInspectable* /*sender*/, ISelectionChangedEventArgs *
+                                                                                                           /*args*/) -> HRESULT {
+                                                                return Validate(nullptr);
+                                                            }).Get(),
+                                                            &toggleChangedToken));
+        }
+        else
+        {
+            // For expanded style, put click handlers to validate on all the choices
+            SetExpandedClickHandlers(Callback<IRoutedEventHandler>([this](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                          /*args*/) -> HRESULT {
+                                         return Validate(nullptr);
+                                     }).Get());
+        }
+        m_isChoiceSetChangedValidationEnabled = true;
+    }
+
+    return S_OK;
+}
+
 HRESULT ChoiceSetInputValue::SetFocus()
 {
-    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
+    bool isCompactChoiceSet;
+    RETURN_IF_FAILED(IsCompactChoiceSet(&isCompactChoiceSet));
 
-    boolean isMultiSelect;
-    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
-
-    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
+    if (isCompactChoiceSet)
     {
         // Compact style can use the base class implementation
         RETURN_IF_FAILED(InputValue::SetFocus());

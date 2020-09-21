@@ -9,13 +9,23 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
+namespace
+{
+    Json::StreamWriterBuilder CreateJsonStreamWriter()
+    {
+        Json::StreamWriterBuilder builder;
+        builder["commentStyle"] = "None";
+        builder["indentation"] = "";
+
+        return builder;
+    }
+}
+
 namespace AdaptiveSharedNamespace
 {
     std::string ParseUtil::JsonToString(const Json::Value& json)
     {
-        static Json::StreamWriterBuilder builder;
-        builder["commentStyle"] = "None";
-        builder["indentation"] = "";
+        const thread_local Json::StreamWriterBuilder builder = ::CreateJsonStreamWriter();
         std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
 
         std::ostringstream outStream;

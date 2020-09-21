@@ -80,10 +80,10 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ImageSize, "imageSize"},
             {AdaptiveCardSchemaKey::ImageSizes, "imageSizes"},
             {AdaptiveCardSchemaKey::Images, "images"},
+            {AdaptiveCardSchemaKey::InitialValidation, "initialValidation"},
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
-            {AdaptiveCardSchemaKey::InputNecessityIndicators, "inputNecessityIndicators"},
             {AdaptiveCardSchemaKey::Inputs, "inputs"},
             {AdaptiveCardSchemaKey::InputSpacing, "inputSpacing"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
@@ -330,8 +330,8 @@ namespace AdaptiveSharedNamespace
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InputNecessityIndicators, InputNecessityIndicators::None, {
-            {InputNecessityIndicators::None, "None"},
-            {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
-            {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InitialValidation, InitialValidation::OnFocusLost, {
+            {InitialValidation::OnFocusLost, "OnFocusLost"},
+            {InitialValidation::OnFocusLostWithInput, "OnFocusLostWithInput"},
+            {InitialValidation::OnSubmit, "OnSubmit"}});
 }

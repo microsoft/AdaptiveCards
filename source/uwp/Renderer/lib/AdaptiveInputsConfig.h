@@ -22,9 +22,13 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Label(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig** inputLabels);
         IFACEMETHODIMP put_Label(_In_ ABI::AdaptiveNamespace::IAdaptiveLabelConfig* inputLabels);
 
+        IFACEMETHODIMP get_InitialValidation(_Outptr_ ABI::AdaptiveNamespace::InitialValidation* initialValidation);
+        IFACEMETHODIMP put_InitialValidation(_In_ ABI::AdaptiveNamespace::InitialValidation initialValidation);
+
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveLabelConfig> m_label;
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveErrorMessageConfig> m_errorMessage;
+        ABI::AdaptiveNamespace::InitialValidation m_initialValidation;
     };
     ActivatableClass(AdaptiveInputsConfig);
 }

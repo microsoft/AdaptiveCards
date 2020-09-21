@@ -135,7 +135,7 @@ export default {
       this.isLoading = true;
       AdaptiveCardApi.getAdaptiveCard(base64_image)
         .then(response => {
-          let card_json = response.data["card_json"];
+          let card_json = response.data["card_json"]["card"];
           this.cardJson = card_json;
           this.imageBoundary = response.data.image || null;
           // Add markdown rendering.

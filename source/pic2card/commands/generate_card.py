@@ -23,9 +23,7 @@ def main(image_path=None, card_format=None):
     card_json = PredictCard(object_detection).main(image=image,
                                                    card_format=card_format)
     print(json.dumps(card_json.get("card_json"), indent=2))
-    if card_format:
-        print(json.dumps(card_json.get('template_data_payload', ''),
-                         indent=2))
+    print(card_json.keys(), card_json["card_json"].keys())
 
 
 if __name__ == "__main__":

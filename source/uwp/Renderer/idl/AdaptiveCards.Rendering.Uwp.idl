@@ -392,11 +392,11 @@ AdaptiveNamespaceStart
 #ifdef ADAPTIVE_CARDS_WINDOWS
     [contract(InternalContract, 1)][internal]
 #endif
-    typedef[v1_enum] enum InputNecessityIndicators {
-        None = 0,
-        RequiredInputs,
-        OptionalInputs
-    } InputNecessityIndicators;
+    typedef[v1_enum] enum InitialValidation {
+        OnFocusLost = 0,
+        OnFocusLostWithInput,
+        OnSubmit
+    } InitialValidation;
 
     declare
     {
@@ -639,7 +639,6 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         HeightType Height;
         UInt32 MinHeight;
-        InputNecessityIndicators InputNecessityIndicators;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
@@ -1415,6 +1414,7 @@ AdaptiveNamespaceStart
 
         AdaptiveErrorMessageConfig ErrorMessage;
         AdaptiveLabelConfig Label;
+        InitialValidation InitialValidation;
     };
 
     [
