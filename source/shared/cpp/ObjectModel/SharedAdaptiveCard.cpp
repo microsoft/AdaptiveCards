@@ -14,8 +14,8 @@
 using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
-    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top), m_height(HeightType::Auto),
-    m_minHeight(0), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
+    m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top),
+    m_height(HeightType::Auto), m_minHeight(0), m_internalId{InternalId::Next()}
 {
 }
 
@@ -30,8 +30,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            unsigned int minHeight) :
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -49,9 +49,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
-    m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}, m_body(body),
-    m_actions(actions)
+    m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions)
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
 }
@@ -68,7 +67,7 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
     m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
-    m_minHeight(minHeight), m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}
 {
 }
 
@@ -85,9 +84,8 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
                            std::vector<std::shared_ptr<BaseActionElement>>& actions) :
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
-    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height), m_minHeight(minHeight),
-    m_inputNecessityIndicators(InputNecessityIndicators::None), m_internalId{InternalId::Next()}, m_body(body),
-    m_actions(actions)
+    m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions)
 {
 }
 
@@ -109,7 +107,9 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string
                                                                std::string rendererVersion,
                                                                ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile, const std::string& rendererVersion, ParseContext& context)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromFile(const std::string& jsonFile,
+                                                               const std::string& rendererVersion,
+                                                               ParseContext& context)
 #endif // __ANDROID__
 {
     std::ifstream jsonFileStream(jsonFile);
@@ -228,9 +228,6 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // Parse optional selectAction
     result->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
-    result->SetInputNecessityIndicators(ParseUtil::GetEnumValue<InputNecessityIndicators>(
-        json, AdaptiveCardSchemaKey::InputNecessityIndicators, InputNecessityIndicators::None, InputNecessityIndicatorsFromString));
-
     return std::make_shared<ParseResult>(result, context.warnings);
 }
 
@@ -250,7 +247,9 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::stri
                                                                  std::string rendererVersion,
                                                                  ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException)
 #else
-std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString, const std::string& rendererVersion, ParseContext& context)
+std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::string& jsonString,
+                                                                 const std::string& rendererVersion,
+                                                                 ParseContext& context)
 #endif // __ANDROID__
 {
     return AdaptiveCard::Deserialize(ParseUtil::GetJsonValueFromString(jsonString), rendererVersion, context);
@@ -305,12 +304,6 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
     if (height != HeightType::Auto)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height)] = HeightTypeToString(GetHeight());
-    }
-
-    if (m_inputNecessityIndicators != InputNecessityIndicators::None)
-    {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::InputNecessityIndicators)] =
-            InputNecessityIndicatorsToString(m_inputNecessityIndicators);
     }
 
     const std::string& bodyPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body);
@@ -480,16 +473,6 @@ unsigned int AdaptiveCard::GetMinHeight() const
 void AdaptiveCard::SetMinHeight(const unsigned int value)
 {
     m_minHeight = value;
-}
-
-InputNecessityIndicators AdaptiveCard::GetInputNecessityIndicators() const
-{
-    return m_inputNecessityIndicators;
-}
-
-void AdaptiveCard::SetInputNecessityIndicators(const InputNecessityIndicators value)
-{
-    m_inputNecessityIndicators = value;
 }
 
 std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()

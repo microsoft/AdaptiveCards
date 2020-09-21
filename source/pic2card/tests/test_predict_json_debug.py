@@ -27,7 +27,7 @@ class PredictJsonDebugTestAPI(BaseAPITest):
         self.assertEqual(len(self.output), 3)
         # Not fixing the length, as different models give different size,
         # one thing for sure is it shouldn't be empty.
-        self.assertTrue(len(self.output["card_json"]["body"]) > 0)
+        self.assertTrue(len(self.output["card_json"]["card"]["body"]) > 0)
         self.assertIsNone(self.output["error"],
                           msg="Key 'Error' is not 'null'")
 
@@ -37,8 +37,9 @@ class PredictJsonDebugTestAPI(BaseAPITest):
         response = get_response(self.client, api, self.headers, self.data)
         output = json.loads(response.data)
         self.assertEqual(bool(output), True)
-        self.assertEqual(len(output), 4)
-        self.assertEqual(len(output["card_v2_json"]), 2)
+        self.assertEqual(len(output), 3)
+        self.assertEqual(len(output["card_json"]), 2)
+        self.assertTrue(output["card_json"]["data"])
 
     def test_response_for_key_image(self):
         """ checks if the response has a certain key named 'image' """

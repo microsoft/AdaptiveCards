@@ -5,6 +5,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
+import io.adaptivecards.renderer.Util;
 
 public class CustomGreenActionParser extends ActionElementParser
 {
@@ -12,6 +13,8 @@ public class CustomGreenActionParser extends ActionElementParser
     public BaseActionElement Deserialize(ParseContext context, JsonValue value)
     {
         CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+        Util.deserializeBaseActionProperties(context, value, element);
+
         element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
         element.SetId("greenActionDeserialize");
         return element;
@@ -21,6 +24,8 @@ public class CustomGreenActionParser extends ActionElementParser
     public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
     {
         CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+        Util.deserializeBaseActionPropertiesFromString(context, jsonString, element);
+
         element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
         element.SetId("greenActionDeserialize");
         return element;

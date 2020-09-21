@@ -1,0 +1,1 @@
+{"actions":[{"title":"OK","type":"Action.Submit"}],"body":[{"id":"input1","label":"Default Input.Time label","type":"Input.Time"},{"errorMessage":"Required input","id":"input2","isRequired":true,"label":"Required Input.Time label","type":"Input.Time"}],"type":"AdaptiveCard","version":"1.0"}

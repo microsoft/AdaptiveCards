@@ -1,14 +1,10 @@
 package io.adaptivecards.objectmodel;
 
 import junit.framework.Assert;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class ToggleInputPropertiesTest
 {
-
     static {
         System.loadLibrary("adaptivecards-native-lib");
     }
@@ -211,5 +207,4 @@ public class ToggleInputPropertiesTest
     }
 
     private final String c_defaultInputToggle = "{\"id\":\"id\",\"title\":\"\",\"type\":\"Input.Toggle\"}\n";
-
 }
