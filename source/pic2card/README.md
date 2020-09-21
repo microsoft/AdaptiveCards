@@ -11,17 +11,27 @@ Pic2Card is a solution for converting adaptive cards GUI design image into adapt
 ## Architecture
 ![Prediction Architecture](./images/architecture.png)
 
+## Integrated with Adaptivecard designer
+![Working Screenshot](./images/working1.jpg)
 
-## Process flow for card prediction
-1. Using the service
+## Setup and Install pic2card 
 
-    ```shell
+
+### Setup Locally
+
+**Install the requirements**
+
+```shell
     # Setup dependency under a virtualenv
     $ virtualenv ~/env
     $ . ~/env/bin/activate
-    (env)$ pip install -r requirements.txt
-    (env)$ pip install -r requirements-frozen_graph.txt # tf specific only
+    (env)$ pip install -r requirements/requirements.txt
+    (env)$ pip install -r requirements/requirements-frozen_graph.txt # tf specific only
+```
 
+**Run the pic2card Servie**
+
+```shell
     # Start the service.
     (env)$ python -m app.main
 
@@ -30,43 +40,37 @@ Pic2Card is a solution for converting adaptive cards GUI design image into adapt
             --request POST \
             --data '{"image":"base64 of the image"}' \
             http://localhost:5050/predict_json
-    ```
-
-![Working Screenshot](./images/working1.jpg)
-
-![Working Screenshot](./images/working2.png)
-
-2. Using command
-
 ```
+
+**For Batch process**
+
+
+```shell
    python -m commands.generate_card  --image_path="path/to/image"
 ```
-3. Docker Image
+
+### Run the pic2card service in docker container
 
 You can build a docker image from the source code and play with it.
 
-Docker build supports two types of image generation,
-
-a. A single image which embed frozen model with it.
-
-b. Image which has only the service layer, the model will be consumed from the
-   tensorflow serving. Right now this part is experimental state only.
+By default we only need single container, which embed the model model as well as
+the pic2card application.
 
 ```bash
 
 # Build the image with frozen model.
-$ docker build --build-arg TARGET_API=frozen_graph \
-            --build-arg tfs_enable=\
-            -f docker/Dockerfile \
-            -t <username>/<container-name:tag> .
+$ docker build -f docker/Dockerfile -t <username>/<container-name:tag> .
 
 # Run the pic2card service with frozen graph model.
 $ docker run -it --name pic2card -p 5050:5050 <image:name:tag>
-
 ```
 
+### Use Tensorflow Serving to deploy pic2card
+
+NOTE: This is an experimental feature only.
+
 If you want to use the tensorflow serving to serve the model, then first build
-the tensorflow serving with our model loaded with it on an another separate
+the tensorflow serving with our model loaded with it in an another separate
 docker. tf_serving provide RESTful APIs to interact with tensorflow models, in
 standard way.
 
