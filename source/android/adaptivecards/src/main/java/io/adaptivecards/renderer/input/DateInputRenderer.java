@@ -81,7 +81,12 @@ public class DateInputRenderer extends TextInputRenderer
 
         DateInputHandler dateInputHandler = new DateInputHandler(dateInput, fragmentManager);
 
-        String dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
+        String dateInputValue = dateInput.GetValue();
+        String dateString = "";
+        if (dateInputValue != null && !dateInputValue.isEmpty())
+        {
+            dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
+        }
 
         TagContent tagContent = new TagContent(dateInput, dateInputHandler, separator, viewGroup);
         EditText editText = renderInternal(
