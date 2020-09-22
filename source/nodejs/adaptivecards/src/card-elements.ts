@@ -214,6 +214,10 @@ export abstract class CardElement extends CardObject {
         return sizeChanged;
     }
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext();
+    }
+
     protected createPlaceholderElement(): HTMLElement {
         let styleDefinition = this.getEffectiveStyleDefinition();
         let foregroundCssColor = Utils.stringToCssColor(styleDefinition.foregroundColors.default.subtle);
@@ -324,10 +328,6 @@ export abstract class CardElement extends CardObject {
 
     parse(source: any, context?: SerializationContext) {
         super.parse(source, context ? context : new SerializationContext());
-    }
-
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext());
     }
 
     asString(): string | undefined {
@@ -3722,6 +3722,10 @@ export abstract class Action extends CardObject {
 
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext();
+    }
+
     protected addCssClasses(element: HTMLElement) {
         // Do nothing in base implementation
     }
@@ -3770,10 +3774,6 @@ export abstract class Action extends CardObject {
 
     parse(source: any, context?: SerializationContext) {
         return super.parse(source, context ? context : new SerializationContext());
-    }
-
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext());
     }
 
     render(baseCssClass: string = "ac-pushButton") {
@@ -6434,6 +6434,10 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext(this.version);
+    }
+
     protected getItemsCollectionPropertyName(): string {
         return "body";
     }
@@ -6575,10 +6579,6 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
-    }
-
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext(this.version));
     }
 
     updateLayout(processChildren: boolean = true) {
