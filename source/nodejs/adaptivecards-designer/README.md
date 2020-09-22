@@ -267,6 +267,7 @@ designer.sampleData = {
 Pic2Card is a ML based service which converts GUI image into adaptive card payload JSON. 
 
 To setup the pic2card ML service follow the instructions given in the below link.
+
 [pic2card service](
 https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container
 )
