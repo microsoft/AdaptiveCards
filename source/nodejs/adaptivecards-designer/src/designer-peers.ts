@@ -2533,6 +2533,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         if (!this.cardElement.text || this.cardElement.text == "") {
             this.cardElement.text = "New TextBlock";
         }
+
+        this.cardElement.wrap = true;
     }
 }
 
