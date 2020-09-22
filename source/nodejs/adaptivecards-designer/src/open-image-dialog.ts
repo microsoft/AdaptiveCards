@@ -205,7 +205,7 @@ export class OpenImageDialog extends Dialog {
                     this.isTemplateOptionChecked
                 )
                 .then((res) => {
-                    if (res.error) {
+                    if (!res || res.error) {
                         this.onCardFailure(spinnerElement);
                     } else {
                         this._predictedCardJSON = res.card_json;
@@ -273,24 +273,33 @@ export class OpenImageDialog extends Dialog {
         sampleImageTemplate.appendChild(message);
 
         this.fetchManager.getSampleImages().then((res) => {
-            const imageTitle = document.createElement("div");
-            imageTitle.innerText = "Choose from our Sample Images";
-            imageTitle.style.marginLeft = "15px";
-            imageTitle.className = "acd-image-title";
-            sampleImageTemplate.style.flexDirection = "row";
-            sampleImageTemplate.removeChild(spinnerElement);
-            sampleImageTemplate.removeChild(message);
-            sampleImageTemplate.appendChild(imageTitle);
-            const imageContainer = document.createElement("div");
-            imageContainer.className = "acd-sample-list";
-            for (let template of res.templates) {
-                let sampleImage = new ImageItem(template);
-                sampleImage.onClick = (selectedImage: string) => {
-                    this.renderImage(selectedImage);
-                };
-                imageContainer.appendChild(sampleImage.render());
+            if (res) {
+                const imageTitle = document.createElement("div");
+                imageTitle.innerText = "Choose from our Sample Images";
+                imageTitle.style.marginLeft = "15px";
+                imageTitle.className = "acd-image-title";
+                sampleImageTemplate.style.flexDirection = "row";
+                sampleImageTemplate.removeChild(spinnerElement);
+                sampleImageTemplate.removeChild(message);
+                sampleImageTemplate.appendChild(imageTitle);
+                const imageContainer = document.createElement("div");
+                imageContainer.className = "acd-sample-list";
+                for (let template of res.templates) {
+                    let sampleImage = new ImageItem(template);
+                    sampleImage.onClick = (selectedImage: string) => {
+                        this.renderImage(selectedImage);
+                    };
+                    imageContainer.appendChild(sampleImage.render());
+                }
+                sampleImageTemplate.appendChild(imageContainer);
+            } else {
+                const imageTitle = document.createElement("div");
+                imageTitle.innerText = "Failed to reach pic2card service";
+                imageTitle.className = "acd-image-title error-info";
+                sampleImageTemplate.removeChild(message);
+                sampleImageTemplate.removeChild(spinnerElement);
+                sampleImageTemplate.appendChild(imageTitle);
             }
-            sampleImageTemplate.appendChild(imageContainer);
         });
         return sampleImageTemplate;
     }

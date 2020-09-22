@@ -1077,6 +1077,12 @@ a.default-ac-anchor:visited:active {
     background-color: #ffffff;
 }
 
+.error-info {
+	display: flex;
+	justify-content: center;
+	color: red;
+}
+
 .acd-spinner-host {
 	position: absolute;
 	width: 100%;
