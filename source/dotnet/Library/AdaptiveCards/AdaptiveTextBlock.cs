@@ -99,7 +99,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlText]
 #endif
-        public string Text { get; set; } = " ";
+        public string Text { get; set; } = "";
 
         /// <summary>
         ///     Horizontal alignment for element
