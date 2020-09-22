@@ -83,7 +83,7 @@ public class DateInputRenderer extends TextInputRenderer
 
         String dateInputValue = dateInput.GetValue();
         String dateString = "";
-        if (dateInputValue != null && !dateInputValue.isEmpty())
+        if (RendererUtil.isValidDate(dateInputValue) && !dateInputValue.isEmpty())
         {
             dateString = DateFormat.getDateInstance().format(RendererUtil.getDate(dateInput.GetValue()).getTime());
         }

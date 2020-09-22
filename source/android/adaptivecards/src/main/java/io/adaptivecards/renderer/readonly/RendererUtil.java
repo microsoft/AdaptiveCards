@@ -18,6 +18,11 @@ import io.adaptivecards.objectmodel.MarkDownParser;
 
 public class RendererUtil
 {
+    public static boolean isValidDate(String s)
+    {
+        long[] year = {0}, month = {0}, day = {0};
+        return DateTimePreparser.TryParseSimpleDate(s, year, month, day);
+    }
 
     public static Calendar getDate(String s)
     {
