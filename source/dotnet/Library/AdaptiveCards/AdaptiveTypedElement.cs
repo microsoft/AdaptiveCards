@@ -46,6 +46,10 @@ namespace AdaptiveCards
         public AdaptiveFallbackElement Fallback { get; set; }
 
         [JsonIgnore]
+#if !NETSTANDARD1_3
+        // don't serialize type with xml, because we use element name or attribute for type
+        [XmlIgnore]
+#endif
         public AdaptiveInternalID InternalID { get; set; }
 
         /// <summary>
