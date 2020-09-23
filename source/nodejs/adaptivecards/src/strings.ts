@@ -34,7 +34,7 @@ export class Strings {
     static readonly hints = {
         dontUseWeightedAndStrecthedColumnsInSameSet: () => "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
     }
-    static readonly fallback = {
-        title: () => "Title"
+    static readonly defaults = {
+        inlineActionTitle: () => "Title"
     }
 }
