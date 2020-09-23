@@ -745,7 +745,7 @@ export abstract class BaseTextBlock extends CardElement {
 
     constructor(text?: string) {
         super();
-        
+
         if (text) {
             this.text = text;
         }
@@ -885,7 +885,7 @@ export class TextBlock extends BaseTextBlock {
             let hostConfig = this.hostConfig;
 
             let element: HTMLElement;
-            
+
             if (this.forElementId) {
                 let labelElement = document.createElement("label");
                 labelElement.htmlFor = this.forElementId;
@@ -1552,7 +1552,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             }
 
             // If the source value isn't valid per this property definition,
-            // check its validity per the fallback property, if specified 
+            // check its validity per the fallback property, if specified
             if (!isValid && this.fallbackProperty) {
                 isValid = this.fallbackProperty.isValidValue(sourceValue, context);
             }
@@ -2730,6 +2730,7 @@ export class TextInput extends Input {
 
         if (this.inlineAction) {
             let button = document.createElement("button");
+            button
             button.className = this.hostConfig.makeCssClassName("ac-inlineActionButton");
             button.onclick = (e) => {
                 e.preventDefault();
@@ -2759,25 +2760,17 @@ export class TextInput extends Input {
                     button.classList.remove("iconOnly");
                     button.classList.add("textOnly");
 
-                    if (this.inlineAction) {
-                        button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
-                    }
-                    else {
-                        button.textContent = "Title";
-                    }
+                    button.textContent = this.inlineAction?.title ?? "Title";
                 }
 
                 icon.src = this.inlineAction.iconUrl;
+                icon.alt = this.inlineAction.title ?? "Title";
 
                 button.appendChild(icon);
-
-                if (this.inlineAction.title) {
-                    button.title = this.inlineAction.title;
-                }
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
+                button.textContent = this.inlineAction.title ?? "Title";
             }
 
             button.style.marginLeft = "8px";
@@ -3233,7 +3226,7 @@ export class ChoiceSetInput extends Input {
                 }
 
                 this.internalApplyAriaCurrent();
-                
+
                 return this._selectElement;
             }
         }
@@ -3893,7 +3886,7 @@ export abstract class Action extends CardObject {
 
     /**
      * Validates the inputs associated with this action.
-     * 
+     *
      * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
      */
     validateInputs(): Input[] {
