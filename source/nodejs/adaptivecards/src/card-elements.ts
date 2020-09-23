@@ -2730,7 +2730,6 @@ export class TextInput extends Input {
 
         if (this.inlineAction) {
             let button = document.createElement("button");
-            button
             button.className = this.hostConfig.makeCssClassName("ac-inlineActionButton");
             button.onclick = (e) => {
                 e.preventDefault();
