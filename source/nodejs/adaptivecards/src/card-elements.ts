@@ -2758,18 +2758,17 @@ export class TextInput extends Input {
                     button.removeChild(icon);
                     button.classList.remove("iconOnly");
                     button.classList.add("textOnly");
-
-                    button.textContent = this.inlineAction?.title ?? "Title";
+                    button.textContent = this.inlineAction && this.inlineAction.title ? this.inlineAction.title : Strings.fallback.title();
                 }
 
                 icon.src = this.inlineAction.iconUrl;
-                icon.alt = this.inlineAction.title ?? "Title";
+                icon.alt = this.inlineAction.title ? this.inlineAction.title : Strings.fallback.title();
 
                 button.appendChild(icon);
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title ?? "Title";
+                button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.fallback.title();
             }
 
             button.style.marginLeft = "8px";
