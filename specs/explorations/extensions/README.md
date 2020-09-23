@@ -96,9 +96,9 @@ What follows is a starting point to grok this problem.
 > Project board tracking this work is here: https://github.com/microsoft/AdaptiveCards/projects/25
 
 1. Extensions are backed by a **an extension manifest** which describes its name, supported platforms, how it changes the schema, etc (details below)
-1.  Hosts describe what extensions they support in a centralized repo of Host Configs
+1. Hosts describe what extensions they support in a centralized repo of Host Configs
 1. Extension manifests and Host Configs are used to generate new pages on adaptivecards.io that list available extensions and which extensions work in which hosts. A more advanced version of this: ![](compat-chart.png)
-1. Extensions should be in a set of wel-defined states, such as "standard" or "experiment" or "osbolete" (which could indicate a workaround)
+1. Extensions should be in a set of well-defined states, such as "standard" or "experiment" or "osbolete" (which could indicate a workaround)
 1. Designer support. If a Host supports an extension, the Designer should reflect that (where possible)
 1. Card-authors can explicitly require extensions using the `requires` and `fallback` mechanism
 
@@ -114,6 +114,7 @@ This manifest describes
 - links to those packages
 - how the schema is extended
 - how Hosts configure it
+- can we add automatic fallback support? E.g., an extension that adds support for a new element called `Input.RichText` could fallback to `Input.Text`
 - any other extension dependencies?
 
 ```json
@@ -216,6 +217,8 @@ The website would be updated to list extensions, and which platforms they work o
 
 Our Hosts/Partners page would also list which extensions work for a given Host.
 
+* `adaptivecards-richtextinput`: Provide a rich text editor for text, with automatic fallback to `Input.Text` if it doesn't exist
+* `adaptivecards-colorpicker` - with automatic fallback to `Input.ChoiceSet` with basic color choices
 * `adaptivecards-links`
 * `adaptivecards-fluentui`
 * `adaptivecards-fluid`
@@ -226,7 +229,6 @@ Our Hosts/Partners page would also list which extensions work for a given Host.
 * `adaptivecards-graphing`: Graph extensions can be natively supported on speicifc client but service-lvel fallback could work on other platforms
 * `adaptivecards-youtube` - built in fallback to an image with a selectAction
 * `adaptivecards-semanticelements` - explore a POC from a while back where elements can be `Data.X` which will lookup the template for that data type from the template service and automatically expand it
-* `adaptivecards-colorpicker` - with fallback to `Input.ChoiceSet`
 * `adaptivecards-fluenticons` including icon properties for ChoiceSet choices, Actions, etc
    
   
