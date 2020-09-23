@@ -776,9 +776,8 @@ namespace AdaptiveCards.Test
 
             var result = AdaptiveCard.FromJson(payload);
 
-            // Expect one warning for each unknown property (3)
             // and one for each bad pixel size (2)
-            Assert.AreEqual(5, result.Warnings.Count);
+            Assert.AreEqual(2, result.Warnings.Count);
 
             // Check the card properties
             var card = result.Card;
@@ -816,6 +815,62 @@ namespace AdaptiveCards.Test
             // One AdditionalProp
             Assert.AreEqual(1, image.AdditionalProperties.Count);
             Assert.AreEqual("cheetah", image.AdditionalProperties["test-image-prop"]);
+        }
+
+        [TestMethod]
+        public void AdditionalPropertiesTest()
+        {
+            // Test bad values in required properties do not end up in the additional properties
+            var payload =
+                @"{
+                    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+                    ""type"": ""AdaptiveCard"",
+                    ""version"": ""1.0"",
+                    ""body"": [
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": 1,
+                            ""wrap"": false
+                        },
+                        {
+                            ""type"": ""Image"",
+                            ""url"":,
+                            ""width"": ""50boguspx"",
+                            ""height"": ""50boguspx"",
+                        }
+                    ]
+                }";
+
+            var result = AdaptiveCard.FromJson(payload);
+            // and one for each bad pixel size (2)
+            Assert.AreEqual(2, result.Warnings.Count);
+
+            // Check the card properties
+            var card = result.Card;
+            Assert.AreEqual("AdaptiveCard", card.Type);
+            Assert.AreEqual(1, card.Version.Major);
+            Assert.AreEqual(0, card.Version.Minor);
+
+            // Check the properties on the first image
+            var body = result.Card.Body;
+            Assert.AreEqual(2, body.Count);
+
+            var firstElement = body[0];
+            Assert.AreEqual("TextBlock", firstElement.Type);
+
+            var textBlock = firstElement as AdaptiveTextBlock;
+
+            // One AdditionalProp
+            Assert.AreEqual(0, textBlock.AdditionalProperties.Count);
+
+            // Check the properties on the second image
+            var secondElement = body[1];
+            Assert.AreEqual("Image", secondElement.Type);
+
+            var image = secondElement as AdaptiveImage;
+
+            // One AdditionalProp
+            Assert.AreEqual(0, image.AdditionalProperties.Count);
         }
 
         [TestMethod]

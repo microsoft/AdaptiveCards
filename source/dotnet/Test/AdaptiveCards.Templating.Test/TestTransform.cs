@@ -12,8 +12,9 @@ namespace AdaptiveCards.Templating.Test
     public sealed class TestTemplate
     {
         [TestMethod]
-        public void TestBasic0()
+        public void TestPerf()
         {
+            // Test with very large data
             string jsonTemplate = @"{
   ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
   ""type"": ""AdaptiveCard"",

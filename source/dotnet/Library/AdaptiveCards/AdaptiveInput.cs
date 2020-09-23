@@ -15,7 +15,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Sets the input as required for triggering Submit actions
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

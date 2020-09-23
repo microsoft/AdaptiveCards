@@ -38,7 +38,7 @@ namespace AdaptiveCards
 #endif
 
         [JsonConverter(typeof(AdaptiveFallbackConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -55,7 +55,7 @@ namespace AdaptiveCards
         /// <summary>
         /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
         /// </summary>
-        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -65,7 +65,7 @@ namespace AdaptiveCards
         /// <summary>
         ///  A collection representing features and feature versions that this element is declared as requiring
         /// </summary>
-        [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif

@@ -108,7 +108,6 @@ namespace AdaptiveCards
                     ParseContext.PopElement();
                 }
 
-                HandleAdditionalProperties(result);
                 return result;
             }
             else // We're looking at an unknown element
@@ -161,47 +160,6 @@ namespace AdaptiveCards
             }
 
             return typeName;
-        }
-
-        private void HandleAdditionalProperties(AdaptiveTypedElement te)
-        {
-            // https://stackoverflow.com/questions/34995406/nullvaluehandling-ignore-influences-deserialization-into-extensiondata-despite
-
-            // The default behavior of JsonExtensionData is to include properties if the VALUE could not be set, including abstract properties or default values
-            // We don't want to deserialize any properties that exist on the type into AdditionalProperties, so this function removes them
-
-            // Create a list of known property names
-            List<String> knownPropertyNames = new List<String>();
-            IEnumerable<PropertyInfo> runtimeProperties = te.GetType().GetRuntimeProperties();
-            foreach (PropertyInfo runtimeProperty in runtimeProperties)
-            {
-                // Check if the property has a JsonPropertyAttribute with the value set
-                String jsonPropertyName = null;
-                foreach (var attribute in runtimeProperty.CustomAttributes)
-                {
-                    //if (attribute.AttributeType == typeof(Newtonsoft.Json.JsonPropertyAttribute) &&
-                    //    attribute.ConstructorArguments.Count == 1)
-                    //{
-                    //    jsonPropertyName = attribute.ConstructorArguments[0].Value as String;
-                    //    break;
-                    //}
-                }
-
-                // Add the json property name if present, otherwise use the runtime property name
-                knownPropertyNames.Add(jsonPropertyName != null ? jsonPropertyName : runtimeProperty.Name);
-            }
-
-            te.AdditionalProperties
-                .Select(prop => knownPropertyNames
-                    .SingleOrDefault(p => p.Equals(prop.Key, StringComparison.OrdinalIgnoreCase)))
-                .Where(p => p != null)
-                .ToList()
-                .ForEach(p => te.AdditionalProperties.Remove(p));
-
-            foreach (var prop in te.AdditionalProperties)
-            {
-                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Unknown property '{prop.Key}' on '{te.Type}'"));
-            }
         }
 
         public static T CreateElement<T>(string typeName = null)
