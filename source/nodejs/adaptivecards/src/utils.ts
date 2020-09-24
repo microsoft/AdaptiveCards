@@ -57,6 +57,27 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
     return defaultValue;
 }
 
+export function parseObject(value: any, defaultValue?: object): object | undefined {
+    if (typeof value === "object") {
+        return value;
+    }
+
+    if (typeof value === "string") {
+        try {
+            let parsedValue = JSON.parse(value);
+
+            if (typeof parsedValue === "object") {
+                return parsedValue;
+            }
+        }
+        catch {
+            // Swallow any error
+        }
+    }
+
+    return defaultValue;
+}
+
 export function getEnumValueByName(enumType: { [s: number]: string }, name: string) : number | undefined {
     for (let key in enumType) {
         let keyAsNumber = parseInt(key, 10);

@@ -2617,3 +2617,15 @@ export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlo
         this.cardElement.addInline(textRun);
     }
 }
+
+export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomComponent> {
+    static readonly nameProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "name", "Name", true);
+
+    populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
+        super.populatePropertySheet(propertySheet, defaultCategory);
+
+        propertySheet.add(
+            defaultCategory,
+            CustomComponentPeer.nameProperty);
+    }
+}

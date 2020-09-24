@@ -348,6 +348,28 @@ export class BoolProperty extends PropertyDefinition {
     }
 }
 
+export class ObjectProperty extends PropertyDefinition {
+    parseValue(sender: SerializableObject, value: any, context: BaseSerializationContext): object | undefined {
+        return Utils.parseObject(value, this.defaultValue);
+    }
+
+    toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
+        context.serializeValue(
+            target,
+            this.name,
+            value,
+            this.defaultValue);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: object,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
+}
+
 export class NumProperty extends PropertyDefinition {
     parseValue(sender: SerializableObject, value: any, context: BaseSerializationContext): number | undefined {
         return Utils.parseNumber(value, this.defaultValue);
@@ -783,7 +805,7 @@ export abstract class SerializableObject {
             this.onPropertyChanged(this, property);
         }
     }
-    
+
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SimpleSerializationContext();
     }

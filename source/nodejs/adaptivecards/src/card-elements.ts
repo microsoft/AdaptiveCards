@@ -9,9 +9,11 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, CustomProperty, PropertyDefinition } from "./serialization";
+    NumProperty, CustomProperty, PropertyDefinition, ObjectProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
+import { Template } from "./template-engine";
+import { Component } from "react";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -6432,6 +6434,142 @@ export abstract class ContainerWithActions extends Container {
     }
 }
 
+export class CustomComponent extends CardElement {
+    //#region Schema
+
+    static readonly nameProperty = new StringProperty(Versions.v1_3, "name", true);
+    static readonly propertiesProperty = new ObjectProperty(Versions.v1_3, "properties");
+
+    @property(CustomComponent.nameProperty)
+    name?: string;
+
+    @property(CustomComponent.propertiesProperty)
+    properties?: object;
+
+    //#endregion
+
+    private _hostElement?: HTMLElement;
+    private _view?: object;
+
+    private showSpinner() {
+        if (this._hostElement) {
+            this._hostElement.innerHTML = "";
+
+            let spinner = document.createElement("div");
+            spinner.className = "ac-spinner";
+            spinner.style.width = "16px";
+            spinner.style.height = "16px";
+
+            this._hostElement.appendChild(spinner);
+        }
+    }
+
+    private generateErrorView(message: string) {
+        this._view = {
+            type: "TextBlock",
+            text: message,
+            wrap: true
+        };
+
+        this.renderView();
+    }
+
+    private loadView() {
+        if (this.name) {
+            let request = new XMLHttpRequest();
+            request.onerror = () => {
+                this.generateErrorView("The component couldn't be loaded from " + this.name);
+            }
+            request.onload = () => {
+                if (request.responseText) {
+                    try {
+                        let responseJSON = JSON.parse(request.responseText);
+
+                        if (typeof responseJSON === "object") {
+                            this._view = responseJSON;
+                        }
+                    }
+                    catch {
+                        this.generateErrorView("Invalid component view template.");
+                    }
+                }
+        
+                this.renderView();
+            };
+
+            try {
+                request.open("GET", this.name, true);
+                request.send();
+            }
+            catch (e) {
+                this.generateErrorView("The component couldn't be loaded from " + this.name);
+            }
+        }
+        else {
+            this. generateErrorView("Component name missing");
+        }
+    }
+
+    private renderView() {
+        if (this._hostElement) {
+            if (this._view) {
+                this._hostElement.innerHTML = "";
+
+                let template = new Template(this._view);
+                let expandedTemplate = template.expand(
+                    {
+                        $root: this.properties
+                    }
+                );
+
+                let context = new SerializationContext();
+                let contentElement = context.parseElement(this, expandedTemplate, true);
+
+                if (contentElement) {
+                    contentElement.setParent(this);
+
+                    let renderedElement = contentElement?.render();
+
+                    if (renderedElement) {
+                        this._hostElement.appendChild(renderedElement);
+                    }
+                }
+            }
+            else {
+                this.showSpinner();
+            }
+        }
+    }
+
+    protected internalPropertyChanged(property: PropertyDefinition) {
+        super.internalPropertyChanged(property);
+
+        if (property === CustomComponent.nameProperty) {
+            this._view = undefined;
+
+            this.loadView();
+        }
+    }
+
+    protected internalParse(source: any, context: SerializationContext) {
+        super.internalParse(source, context);
+
+        this.loadView();
+    }
+
+    protected internalRender(): HTMLElement | undefined {
+        this._hostElement = document.createElement("div");
+
+        this.renderView();
+
+        return this._hostElement;
+    }
+
+    getJsonTypeName(): string {
+        return "Component";
+    }
+}
+
 export interface IMarkdownProcessingResult {
     didProcess: boolean;
     outputHtml?: any;
@@ -6766,6 +6904,7 @@ export class GlobalRegistry {
     static populateWithDefaultElements(registry: CardObjectRegistry<CardElement>) {
         registry.clear();
 
+        registry.register("Component", CustomComponent);
         registry.register("Container", Container);
         registry.register("TextBlock", TextBlock);
         registry.register("RichTextBlock", RichTextBlock, Versions.v1_2);
