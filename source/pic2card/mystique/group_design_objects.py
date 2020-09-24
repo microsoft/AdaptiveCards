@@ -3,7 +3,7 @@ from operator import itemgetter
 from typing import List, Dict, Callable, Tuple, Optional
 
 from mystique import config
-from mystique.extract_properties import ExtractProperties
+from mystique.extract_properties import CollectProperties
 
 
 class GroupObjects:
@@ -335,7 +335,7 @@ class ColumnsGrouping(GroupObjects):
         @param design_object2: design object
         @return: boolean value
         """
-        extract_properites = ExtractProperties()
+        extract_properites = CollectProperties()
         x_diff = self.max_min_difference(design_object1, design_object2,
                                          way="x")
         point1 = (design_object1.get("xmin"), design_object1.get("ymin"),
