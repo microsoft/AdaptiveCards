@@ -10,6 +10,7 @@
 | **isMultiSelect** | `boolean` | No | Allow multiple choices to be selected. | 1.0 |
 | **style** | `ChoiceInputStyle` | No |  | 1.0 |
 | **value** | `string` | No | The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values. | 1.0 |
+| **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made, style is compact and multi selection is false. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.2 |
 
 **Inherited properties**
