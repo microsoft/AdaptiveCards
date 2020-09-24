@@ -43,7 +43,7 @@
 
     [viewGroup addArrangedSubview:column];
     
-    configBleed(rootView, elem, column, acoConfig);
+    configBleed(rootView, elem, column, acoConfig, viewGroup);
         
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
     
@@ -86,7 +86,7 @@
                                       constant:columnElem->GetMinHeight()].active = YES;
     }
 
-    [column setClipsToBounds:TRUE];
+    [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     // instantiate and add tap gesture recognizer

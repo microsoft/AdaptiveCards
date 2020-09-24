@@ -82,8 +82,28 @@
 
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
-    _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+
+    CGFloat showCardPadding = [_config getHostConfig] -> GetSpacing().paddingSpacing;
+
+    _adcView.backgroundColor = UIColor.clearColor;
+
+    if (@available(iOS 11.0, *)) {
+        _adcView.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(showCardPadding, -showCardPadding, -showCardPadding, -showCardPadding);
+    } else {
+        _adcView.layoutMargins = UIEdgeInsetsMake(showCardPadding, -showCardPadding, -showCardPadding, -showCardPadding);
+    }
+
+    UIView *backgroundView = [[UIView alloc] init];
+    [adcView addSubview:backgroundView];
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    backgroundView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+    [adcView sendSubviewToBack:backgroundView];
+    [backgroundView.leadingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.leadingAnchor].active = YES;
+    [backgroundView.trailingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.trailingAnchor].active = YES;
+    [backgroundView.topAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.topAnchor].active = YES;
+    [backgroundView.bottomAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.bottomAnchor].active = YES;
     _adcView.hidden = YES;
+
     [superview addArrangedSubview:adcView];
     _superview = superview;
 }
