@@ -27,6 +27,7 @@
 		{
 			"type": "TextBlock",
 			"text": "FactSet with missing facts property is below",
+			"spacing": "None",
 			"wrap": true
 		},
 		{
@@ -35,6 +36,7 @@
 		{
 			"type": "TextBlock",
 			"text": "FactSet with 0 facts is below",
+			"spacing": "None",
 			"wrap": true
 		},
 		{
@@ -44,10 +46,12 @@
 		{
 			"type": "TextBlock",
 			"text": "FactSet with facts wihout Title, without Value, wihout both, and a random property is below",
+			"spacing": "None",
 			"wrap": true
 		},
 		{
 			"type": "FactSet",
+			"spacing": "None",
 			"facts": [
 			{
 				"value": "value"
