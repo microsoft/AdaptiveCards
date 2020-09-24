@@ -20,6 +20,10 @@
       "type": "string",
       "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
     },
+    "placeholder": {
+      "type": "string",
+      "description": "Description of the input desired. Displayed when no selection has been made, style is compact and multi selection is false."
+    },
     "wrap": {
       "type": "boolean",
       "description": "If `true`, allow text to wrap. Otherwise, text is clipped.",
