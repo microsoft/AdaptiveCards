@@ -54,9 +54,6 @@ namespace WpfVisualizer
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
-            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
-            timer.Tick += Timer_Tick;
-            timer.Start();
 
             foreach (var config in Directory.GetFiles("HostConfigs", "*.json"))
             {
@@ -100,15 +97,6 @@ namespace WpfVisualizer
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
-
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (_dirty)
-            {
-                _dirty = false;
-                RenderCard();
-            }
-        }
 
         public string CardPayload
         {
@@ -157,20 +145,7 @@ namespace WpfVisualizer
 
             try
             {
-                //Stopwatch stopWatch = new Stopwatch();
-                //stopWatch.Start();
-
                 AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(expandedPayload);
-
-                //stopWatch.Stop();
-                // Get the elapsed time as a TimeSpan value.
-                //TimeSpan ts = stopWatch.Elapsed;
-
-                // Format and display the TimeSpan value.
-                //string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}",
-                //    ts.Hours, ts.Minutes, ts.Seconds,
-                //    ts.Milliseconds / 10);
-                //Console.WriteLine("RunTime " + elapsedTime);
 
                 AdaptiveCard card = parseResult.Card;
 
@@ -203,14 +178,12 @@ namespace WpfVisualizer
                 cardGrid.Children.Clear();
                 cardGrid.Children.Add(renderedCard.FrameworkElement);
 
-                /*
                 // Report any warnings
                 var allWarnings = parseResult.Warnings.Union(renderedCard.Warnings);
                 foreach (var warning in allWarnings)
                 {
                     ShowWarning(warning.Message);
                 }
-                */
             }
             catch (AdaptiveRenderException ex)
             {
@@ -505,7 +478,6 @@ namespace WpfVisualizer
                 _dirty = true;
             }
         }
-
         private void loadTemplateDataButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialogForJson(out templateData);
@@ -514,6 +486,11 @@ namespace WpfVisualizer
                 templateData = null;
             }
             templateDataTextBox.Text = templateData;
+        }
+
+        private void renderCard_Click(object sender, RoutedEventArgs e)
+        {
+            RenderCard();
         }
     }
 }
