@@ -1910,7 +1910,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 }
 
 export class ContainerPeer extends BaseContainerPeer<Adaptive.Container> {
-    static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_1, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
     static readonly minHeightProperty = new NumberPropertyEditor(Adaptive.Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
     static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Adaptive.Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
     static readonly styleProperty = new ContainerStylePropertyEditor(Adaptive.Versions.v1_0, "style", "Style");
@@ -2579,6 +2579,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         if (!this.cardElement.text || this.cardElement.text == "") {
             this.cardElement.text = "New TextBlock";
         }
+
+        this.cardElement.wrap = true;
     }
 }
 

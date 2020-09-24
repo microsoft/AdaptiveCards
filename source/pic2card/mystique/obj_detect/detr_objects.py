@@ -44,7 +44,7 @@ class DetrOD(AbstractObjectDetection):
             "detection_classes": ss_.indices.detach().numpy(),
             "detection_scores": ss_.values.detach().numpy(),
             "detection_boxes": boxes.detach().numpy()
-        }, None
+        }
 
     def get_bboxes(self):
         pass

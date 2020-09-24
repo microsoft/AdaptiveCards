@@ -30,6 +30,7 @@
 		"start:nohosts": "webpack-dev-server --open-page noHosts.html",
 		"dts": "dts-generator --prefix adaptivecards-designer --project . --out dist/adaptivecards-designer.d.ts",
 		"lint": "eslint src/**/*.ts",
+		"iterate": "webpack --cache --mode=production --progress && npm run dts",
 		"release": "npm run build && webpack --mode=production && npm run dts"
 	},
 	"dependencies": {

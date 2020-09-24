@@ -141,9 +141,12 @@ class ExtractProperties:
         w, h = cropped_image.size
         cropped_image = cropped_image.resize((w * 10, h * 10),
                                              Image.ANTIALIAS)
-
-        return pytesseract.image_to_string(
-            cropped_image, lang="eng", config="--psm 6")
+        # Remove any mdfile false rendering issue.
+        text = pytesseract.image_to_string(
+            cropped_image,
+            lang="eng",
+            config="--psm 6").lstrip("#-_*~").strip()
+        return text
 
     def get_size_and_weight(self, image=None, coords=None):
         """
