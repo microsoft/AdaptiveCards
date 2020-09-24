@@ -1,17 +1,26 @@
 {
-    "type": "AdaptiveCard",
-    "version": "1.2",
-    "body": [
-        {
-            "type": "customInput",
-            "id": "id1",
-            "label": "A label"
-        }
-    ],
-    "actions": [
-        {
-            "type": "Action.Submit",
-            "title": "Submit"
-        }
-    ]
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "CSharpKeywordInput",
+			"id": "id1",
+			"label": "Please enter a csharp keyword",
+			"isRequired": true,
+			"errorMessage": "This has to be a csharp keyword!"
+		},
+		{
+			"type": "Input.Text",
+			"id": "id2",
+			"label": "Please enter some text",
+			"isRequired": true,
+			"errorMessage": "This input is required."
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
 }
