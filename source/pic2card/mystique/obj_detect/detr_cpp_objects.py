@@ -35,7 +35,6 @@ class DetrCppOD(AbstractObjectDetection):
     """
     def __init__(self, pt_path="./detr_trace.pt", threshold=0.8):
         self.model = detr.Detr(self.model_path)
-        self.model.load()
         self.threshold = threshold
 
     @property
@@ -67,7 +66,7 @@ class DetrCppOD(AbstractObjectDetection):
             "detection_classes": scores.argmax(-1),
             "detection_scores": scores.max(-1),
             "detection_boxes": boxes
-        }, None
+        }
 
     def get_bboxes(self):
         pass

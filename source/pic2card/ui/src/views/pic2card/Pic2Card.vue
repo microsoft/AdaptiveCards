@@ -46,11 +46,10 @@
               v-bind="{
                 blank: true,
                 blankColor: '#bbb',
-                width: 300,
-                height: 300
               }"
               :src="item | image_data_url"
-              class="p2c-thumbnail"
+              class="p2c-thumbnail fit-image"
+
             ></b-img-lazy>
           </div>
         </div>
@@ -156,5 +155,10 @@ export default {
 .image-item {
   padding: 5px;
   // margin: 5px;
+}
+
+.fit-image {
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>
