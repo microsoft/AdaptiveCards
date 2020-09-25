@@ -1083,6 +1083,10 @@ a.default-ac-anchor:visited:active {
 	color: red;
 }
 
+.sample-info-text {
+	margin-left: 15px;
+}
+
 .acd-spinner-host {
 	position: absolute;
 	width: 100%;

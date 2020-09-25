@@ -276,8 +276,7 @@ export class OpenImageDialog extends Dialog {
             if (res) {
                 const imageTitle = document.createElement("div");
                 imageTitle.innerText = "Choose from our Sample Images";
-                imageTitle.style.marginLeft = "15px";
-                imageTitle.className = "acd-image-title";
+                imageTitle.className = "acd-image-title sample-info-text";
                 sampleImageTemplate.style.flexDirection = "row";
                 sampleImageTemplate.removeChild(spinnerElement);
                 sampleImageTemplate.removeChild(message);
@@ -293,12 +292,12 @@ export class OpenImageDialog extends Dialog {
                 }
                 sampleImageTemplate.appendChild(imageContainer);
             } else {
-                const imageTitle = document.createElement("div");
-                imageTitle.innerText = "Failed to reach pic2card service";
-                imageTitle.className = "acd-image-title error-info";
+                const errorElement = document.createElement("div");
+                errorElement.innerText = "Failed to reach pic2card service";
+                errorElement.className = "acd-image-title error-info";
                 sampleImageTemplate.removeChild(message);
                 sampleImageTemplate.removeChild(spinnerElement);
-                sampleImageTemplate.appendChild(imageTitle);
+                sampleImageTemplate.appendChild(errorElement);
             }
         });
         return sampleImageTemplate;

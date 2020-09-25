@@ -264,7 +264,7 @@ designer.sampleData = {
 
 ## Hosting Pic2Card Service
 
-Pic2Card is a ML based service which converts GUI image into adaptive card payload JSON. 
+Pic2Card is a ML based service which converts a graphical image (such as a PNG or JPEG) into an Adaptive Card JSON payload. 
 
 To setup the pic2card ML service follow the instructions given in the below link.
 
