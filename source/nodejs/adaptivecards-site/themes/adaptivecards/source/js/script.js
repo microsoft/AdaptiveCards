@@ -94,12 +94,16 @@ $(function () {
 						"subtle": "#0063B1"
 					},
 					"attention": {
-						"default": "#ED0000",
-						"subtle": "#DDED0000"
+						"default": "#EC130E",
+						"subtle": "#DDEC130E"
 					},
 					"good": {
 						"default": "#028A02",
-						"subtle": "#DD027502"
+						"subtle": "#DD028A02"
+					},
+					"light": {
+						"default": "#646464",
+						"subtle": "#767676"
 					},
 					"warning": {
 						"default": "#B75C00",
@@ -115,25 +119,29 @@ $(function () {
 						"subtle": "#6f6f6f"
 					},
 					"accent": {
-						"default": "#2E89FC",
-						"subtle": "#882E89FC"
+						"default": "#1F6BF1",
+						"subtle": "#881F6BF1"
 					},
 					"attention": {
-						"default": "#ED0000",
-						"subtle": "#DDED0000"
+						"default": "#E31B13",
+						"subtle": "#DDE31B13"
 					},
 					"good": {
-						"default": "#028A02",
-						"subtle": "#DD027502"
+						"default": "#0D860A",
+						"subtle": "#DD0D860A"
 					},
 					"warning": {
-						"default": "#B75C00",
-						"subtle": "#DDB75C00"
+						"default": "#BD5400",
+						"subtle": "#DDBD5400"
+					},
+					"light": {
+						"default": "#737373",
+						"subtle": "#DD737373"
 					}
 				}
 			},
 			"accent": {
-				"backgroundColor": "#C7DEF9",
+				"backgroundColor": "#D7E7FA",
 				"foregroundColors": {
 					"default": {
 						"default": "#333333",
@@ -144,24 +152,24 @@ $(function () {
 						"subtle": "#66000000"
 					},
 					"light": {
-						"default": "#FFFFFF",
-						"subtle": "#33000000"
+						"default": "#646464",
+						"subtle": "#33646464"
 					},
 					"accent": {
-						"default": "#2E89FC",
-						"subtle": "#882E89FC"
+						"default": "#145FDD",
+						"subtle": "#88145FDD"
 					},
 					"attention": {
-						"default": "#cc3300",
-						"subtle": "#DDcc3300"
+						"default": "#C42C07",
+						"subtle": "#DDC42C07"
 					},
 					"good": {
-						"default": "#028A02",
-						"subtle": "#DD027502"
+						"default": "#0B7814",
+						"subtle": "#DD0B7814"
 					},
 					"warning": {
-						"default": "#e69500",
-						"subtle": "#DDe69500"
+						"default": "#935A10",
+						"subtle": "#DD935A10"
 					}
 				}
 			},
@@ -177,24 +185,24 @@ $(function () {
 						"subtle": "#66000000"
 					},
 					"light": {
-						"default": "#FFFFFF",
-						"subtle": "#33000000"
+						"default": "#6E6E6E",
+						"subtle": "#336E6E6E"
 					},
 					"accent": {
-						"default": "#2E89FC",
-						"subtle": "#882E89FC"
+						"default": "#2168E4",
+						"subtle": "#882168E4"
 					},
 					"attention": {
-						"default": "#cc3300",
-						"subtle": "#DDcc3300"
+						"default": "#CC3300",
+						"subtle": "#DDCC3300"
 					},
 					"good": {
-						"default": "#028A02",
-						"subtle": "#DD027502"
+						"default": "#0F8109",
+						"subtle": "#DD0F8109"
 					},
 					"warning": {
-						"default": "#e69500",
-						"subtle": "#DDe69500"
+						"default": "#9A630D",
+						"subtle": "#DD9A630D"
 					}
 				}
 			},
@@ -210,24 +218,24 @@ $(function () {
 						"subtle": "#66000000"
 					},
 					"light": {
-						"default": "#FFFFFF",
-						"subtle": "#33000000"
+						"default": "#5A5A5A",
+						"subtle": "#335A5A5A"
 					},
 					"accent": {
-						"default": "#2E89FC",
-						"subtle": "#882E89FC"
+						"default": "#0854C5",
+						"subtle": "#880854C5"
 					},
 					"attention": {
-						"default": "#cc3300",
-						"subtle": "#DDcc3300"
+						"default": "#A92E0E",
+						"subtle": "#DDA92E0E"
 					},
 					"good": {
-						"default": "#028A02",
-						"subtle": "#DD027502"
+						"default": "#256824",
+						"subtle": "#DD256824"
 					},
 					"warning": {
-						"default": "#e69500",
-						"subtle": "#DDe69500"
+						"default": "#775502",
+						"subtle": "#DD775502"
 					}
 				}
 			},
@@ -243,24 +251,24 @@ $(function () {
 						"subtle": "#66000000"
 					},
 					"light": {
-						"default": "#FFFFFF",
-						"subtle": "#33000000"
+						"default": "#646464",
+						"subtle": "#33646464"
 					},
 					"accent": {
-						"default": "#2E89FC",
-						"subtle": "#882E89FC"
+						"default": "#0F60DC",
+						"subtle": "#880F60DC"
 					},
 					"attention": {
-						"default": "#cc3300",
-						"subtle": "#DDcc3300"
+						"default": "#BF3505",
+						"subtle": "#DDBF3505"
 					},
 					"good": {
-						"default": "#028A02",
-						"subtle": "#DD027502"
+						"default": "#207725",
+						"subtle": "#DD207725"
 					},
 					"warning": {
-						"default": "#e69500",
-						"subtle": "#DDe69500"
+						"default": "#866107",
+						"subtle": "#DD866107"
 					}
 				}
 			}
