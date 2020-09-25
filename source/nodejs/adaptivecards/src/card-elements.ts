@@ -2244,6 +2244,7 @@ export class Media extends CardElement {
             let posterImageElement = document.createElement("img");
             posterImageElement.style.width = "100%";
             posterImageElement.style.height = "100%";
+            posterImageElement.setAttribute("role", "presentation");
 
             posterImageElement.onerror = (e: Event) => {
                 if (posterImageElement.parentNode) {
