@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 import * as monaco from "monaco-editor";
 import * as markdownit from "markdown-it";
+import * as Adaptive from "adaptivecards";
 import * as ACDesigner from "adaptivecards-designer";
-import * as ACTemplating from "adaptivecards-templating";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
@@ -11,7 +11,7 @@ import "./app.css";
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
 window.onload = function() {
-    ACTemplating.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<" + path + " is undefined>" };
+    Adaptive.GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<" + path + " is undefined>" };
 
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;

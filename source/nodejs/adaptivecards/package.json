@@ -63,5 +63,8 @@
 			"jsx",
 			"json"
 		]
+	},
+	"dependencies": {
+		"adaptive-expressions": "^4.9.2"
 	}
 }

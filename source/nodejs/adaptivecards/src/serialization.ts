@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { GlobalSettings, SizeAndUnit } from "./shared";
+import { GlobalSettings, PropertyBag, SizeAndUnit } from "./shared";
 import * as Utils from "./utils";
 import * as Enums from "./enums";
 import { Strings } from "./strings";
@@ -328,6 +328,28 @@ export class BoolProperty extends PropertyDefinition {
             this.name,
             value,
             this.defaultValue);
+    }
+}
+
+export class ObjectProperty extends PropertyDefinition {
+    parseValue(sender: SerializableObject, value: any, context: BaseSerializationContext): object | undefined {
+        return Utils.parseObject(value, this.defaultValue);
+    }
+
+    toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
+        context.serializeValue(
+            target,
+            this.name,
+            value,
+            this.defaultValue);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: object,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
 
@@ -758,8 +780,6 @@ export function property(property: PropertyDefinition) {
         }
     }
 }
-
-export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;

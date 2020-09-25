@@ -13,7 +13,35 @@ export class GlobalSettings {
     static allowPreProcessingPropertyValues: boolean = false;
     static setTabIndexAtCardRoot: boolean = true;
     static enableFallback: boolean = true;
+    /**
+     * Callback invoked when expression evaluation needs the value of a field in the source data object
+     * and that field is undefined or null. By default, expression evaluation will substitute an undefined
+     * field with its binding expression (e.g. `${field}`). This callback makes it possible to customize that
+     * behavior.
+     * 
+     * **Example**
+     * Given this data object:
+     * 
+     * ```json
+     * {
+     *     firstName: "David"
+     * }
+     * ```
+     * 
+     * The expression `${firstName} ${lastName}` will evaluate to "David ${lastName}" because the `lastName`
+     * field is undefined.
+     * 
+     * Now let's set the callback:
+     * ```typescript
+     * GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<undefined value>"; }
+     * ```
+     * 
+     * With that, the above expression will evaluate to "David &lt;undefined value&gt;"
+     */
+    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
 }
+
+export type PropertyBag = { [propertyName: string]: any };
 
 export const ContentTypes = {
     applicationJson: "application/json",

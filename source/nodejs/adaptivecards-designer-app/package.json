@@ -30,6 +30,6 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
-		"adaptivecards-templating": "^1.1.0"
+		"adaptivecards": "^2.1.0"
 	}
 }
