@@ -17,6 +17,7 @@
 |**spacing**|`object`| No|Controls how elements are to be laid out|1.0
 |**separator**|`object`| No|Controls how separators are displayed|1.0
 |**media**|`object`| No|Controls the display and behavior of `Media` elements|1.1
+|**inputs**|`object`| No|Controls display and behavior of Input types|1.3
 
 
 

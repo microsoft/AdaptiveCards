@@ -27,7 +27,7 @@ class TestUtil:
         image = image.convert("RGB")
         image_np = np.asarray(image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-        output_dict, _ = model_instance.od_model.get_objects(
+        output_dict = model_instance.od_model.get_objects(
                 image_np=image_np, image=image
         )
         return model_instance.collect_objects(output_dict=output_dict,

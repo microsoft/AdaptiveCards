@@ -129,8 +129,10 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 export abstract class BaseSerializationContext {
     private _validationEvents: IValidationEvent[] = [];
 
-    constructor(public targetVersion: Version = Versions.latest) {}
+    toJSONOriginalParam: any;
 
+    constructor(public targetVersion: Version = Versions.latest) {}
+    
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             if (!GlobalSettings.enableFullJsonRoundTrip) {
@@ -812,6 +814,10 @@ export abstract class SerializableObject {
 
     protected abstract getSchemaKey(): string;
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SimpleSerializationContext();
+    }
+
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
         let properties: PropertyDefinition[] = [];
@@ -941,7 +947,15 @@ export abstract class SerializableObject {
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
-        let effectiveContext = context ? context : new SimpleSerializationContext();
+        let effectiveContext: BaseSerializationContext;
+        
+        if (context && context instanceof BaseSerializationContext) {
+            effectiveContext = context;
+        }
+        else {
+            effectiveContext = this.getDefaultSerializationContext();
+            effectiveContext.toJSONOriginalParam = context;
+        }
 
         if (effectiveContext.shouldSerialize(this)) {
             let result: PropertyBag;

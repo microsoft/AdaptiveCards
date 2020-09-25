@@ -59,6 +59,7 @@ Please be aware of the following **breaking changes** in particular versions.
 || The `CardElement.validate()` and `Action.validate()` methods have been **REMOVED**, replaced with `CardObject.validateProperties()` and `CardObject.internalValidateProperties(context: ValidationContext)`. Custom elements and actions now must override `internalValidateProperties` and add validation failures as appropriate to the `context` object passed as a parameter using its `addFailure` method. Be sure to always call `super.internalValidateProperties(context)` in your override.|
 | **1.1** | Due to a security concern, the `processMarkdown` event handler has been **REMOVED**. Setting it will throw an exception that will halt your code. Please change your code to set the `onProcessMarkdown(text, result)` event handler instead (see example below.) |
 | **1.0** | The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below. |
+| **2.4.0** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 
 ## Install
 

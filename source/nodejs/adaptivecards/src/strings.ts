@@ -39,4 +39,7 @@ export class Strings {
         clckToRestartAutomaticRefresh: () => "Click to restart.",
         refreshThisCard: () => "Refresh this card"
     }
+    static readonly defaults = {
+        inlineActionTitle: () => "Inline Action"
+    }
 }
