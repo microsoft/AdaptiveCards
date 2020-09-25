@@ -2745,6 +2745,7 @@ export class TextInput extends Input {
 
                 let icon = document.createElement("img");
                 icon.style.height = "100%";
+                icon.setAttribute("role", "presentation");
 
                 // The below trick is necessary as a workaround in Chrome where the icon is initially displayed
                 // at its native size then resized to 100% of the button's height. This cfreates an unpleasant
@@ -2762,13 +2763,13 @@ export class TextInput extends Input {
                 }
 
                 icon.src = this.inlineAction.iconUrl;
-                icon.alt = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
 
                 button.appendChild(icon);
+                button.title = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title ? this.inlineAction.title : SStrings.defaults.inlineActionTitle();
+                button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
 
             button.style.marginLeft = "8px";
