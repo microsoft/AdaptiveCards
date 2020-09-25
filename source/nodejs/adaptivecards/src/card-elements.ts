@@ -745,7 +745,7 @@ export abstract class BaseTextBlock extends CardElement {
 
     constructor(text?: string) {
         super();
-        
+
         if (text) {
             this.text = text;
         }
@@ -885,7 +885,7 @@ export class TextBlock extends BaseTextBlock {
             let hostConfig = this.hostConfig;
 
             let element: HTMLElement;
-            
+
             if (this.forElementId) {
                 let labelElement = document.createElement("label");
                 labelElement.htmlFor = this.forElementId;
@@ -1552,7 +1552,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             }
 
             // If the source value isn't valid per this property definition,
-            // check its validity per the fallback property, if specified 
+            // check its validity per the fallback property, if specified
             if (!isValid && this.fallbackProperty) {
                 isValid = this.fallbackProperty.isValidValue(sourceValue, context);
             }
@@ -2746,6 +2746,7 @@ export class TextInput extends Input {
 
                 let icon = document.createElement("img");
                 icon.style.height = "100%";
+                icon.setAttribute("role", "presentation");
 
                 // The below trick is necessary as a workaround in Chrome where the icon is initially displayed
                 // at its native size then resized to 100% of the button's height. This cfreates an unpleasant
@@ -2759,26 +2760,17 @@ export class TextInput extends Input {
                     button.removeChild(icon);
                     button.classList.remove("iconOnly");
                     button.classList.add("textOnly");
-
-                    if (this.inlineAction) {
-                        button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
-                    }
-                    else {
-                        button.textContent = "Title";
-                    }
+                    button.textContent = this.inlineAction && this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
                 }
 
                 icon.src = this.inlineAction.iconUrl;
 
                 button.appendChild(icon);
-
-                if (this.inlineAction.title) {
-                    button.title = this.inlineAction.title;
-                }
+                button.title = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
+                button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
 
             button.style.marginLeft = "8px";
@@ -3234,7 +3226,7 @@ export class ChoiceSetInput extends Input {
                 }
 
                 this.internalApplyAriaCurrent();
-                
+
                 return this._selectElement;
             }
         }
@@ -3894,7 +3886,7 @@ export abstract class Action extends CardObject {
 
     /**
      * Validates the inputs associated with this action.
-     * 
+     *
      * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
      */
     validateInputs(): Input[] {
