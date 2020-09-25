@@ -6,19 +6,20 @@ using System.Linq;
 
 using AdaptiveCards.Rendering.Uwp;
 using Windows.Data.Json;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace XamlCardVisualizer.CustomElements
 {
-    public class CustomInput : IAdaptiveInputElement, IAdaptiveCardElement
+    public class CSharpKeywordInput : IAdaptiveInputElement, IAdaptiveCardElement
     {
         public string ErrorMessage { get; set; }
         public bool IsRequired { get; set; }
         public string Label { get; set; }
 
-        public static readonly string customInputType = "customInput";
+        public static readonly string customInputType = "CSharpKeywordInput";
 
         public JsonObject ToJson()
         {
@@ -50,9 +51,11 @@ namespace XamlCardVisualizer.CustomElements
     {
         public IAdaptiveCardElement FromJson(JsonObject inputJson, AdaptiveElementParserRegistration elementParsers, AdaptiveActionParserRegistration actionParsers, IList<AdaptiveWarning> warnings)
         {
-            CustomInput customInput = new CustomInput();
+            CSharpKeywordInput customInput = new CSharpKeywordInput();
             customInput.Id = inputJson.GetNamedString("id");
             customInput.Label = inputJson.GetNamedString("label");
+            customInput.IsRequired = inputJson.GetNamedBoolean("isRequired");
+            customInput.ErrorMessage = inputJson.GetNamedString("errorMessage");
 
             return customInput;
         }
@@ -64,54 +67,70 @@ namespace XamlCardVisualizer.CustomElements
         {
             TextBox textBox = new TextBox { Background = new SolidColorBrush(Windows.UI.Color.FromArgb(255, 0, 255, 0)), HorizontalAlignment = HorizontalAlignment.Right };
 
-            context.AddInputValue(new InputValue(element as CustomInput, textBox), renderArgs);
+            Border border = new Border{ BorderThickness = new Thickness(0), BorderBrush = new SolidColorBrush(Colors.Red), Child = textBox };
 
-            return textBox;
+            context.AddInputValue(new InputValue(element as CSharpKeywordInput, border), renderArgs);
+
+            return border;
         }
     }
 
     public class InputValue : IAdaptiveInputValue
     {
-        public InputValue(CustomInput element, TextBox textBox)
+        public InputValue(CSharpKeywordInput element, Border border)
         {
             InputElement = element;
-            VisualElement = textBox;
+            InputBorder = border;
         }
 
         public bool Validate()
         {
+            bool isValid = true;
+
             if (InputElement != null)
             {
                 string value = CurrentValue;
 
                 if (InputElement.IsRequired && String.IsNullOrWhiteSpace(value))
                 {
-                    return false;
+                    isValid = false;
                 }
 
                 if (!csharpKeywords.Contains(value))
                 {
-                    return false;
+                    isValid = false;
                 }
-
-                return true;
+            }
+            else
+            {
+                isValid = false;
             }
 
-            return false;
+            if (isValid)
+            {
+                ErrorMessage.Visibility = Visibility.Collapsed;
+                InputBorder.BorderThickness = new Thickness(0);
+            }
+            else
+            {
+                ErrorMessage.Visibility = Visibility.Visible;
+                InputBorder.BorderThickness = new Thickness(1);
+            }
+            return isValid;
         }
 
         public void SetFocus()
         {
-            VisualElement.Focus(FocusState.Keyboard);
+            (InputBorder.Child as TextBox).Focus(FocusState.Keyboard);
         }
 
-        public string CurrentValue { get { return VisualElement?.Text ?? ""; } }
+        public string CurrentValue { get { return (InputBorder.Child as TextBox)?.Text ?? ""; } }
 
         public UIElement ErrorMessage { get; set; }
 
         public IAdaptiveInputElement InputElement { get; set; }
 
-        public TextBox VisualElement;
+        public Border InputBorder;
 
         public readonly string[] csharpKeywords = {"abstract", "as", "base", "bool", "break", "byte", "case", "catch", "char", "checked", "class", "const", "continue", "decimal",
                 "default", "delegate", "do", "double", "else", "enum", "event", "explicit", "extern", "false", "finally", "fixed", "float", "for", "foreach", "goto", "if",
