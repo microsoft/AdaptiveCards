@@ -92,7 +92,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._rootElement.setAttribute("role", "treeitem");
         this._rootElement.onclick = () => { this.click; };
         this._rootElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+            if (e.key === KEY_ENTER || e.key === KEY_SPACE) {
                 this.setIsSelected(!this.isSelected, !this.isSelected);
                 this._rootElement.focus();
                 e.preventDefault();
@@ -129,7 +129,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         }
 
         this._expandCollapseElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+            if (e.key === KEY_ENTER || e.key === KEY_SPACE) {
                 this._isExpanded = !this._isExpanded;
 
                 this.updateLayout();

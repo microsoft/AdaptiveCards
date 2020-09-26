@@ -73,7 +73,7 @@ export abstract class Dialog {
 
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
-                switch (e.keyCode) {
+                switch (e.key) {
                     case Controls.KEY_ESCAPE:
                         this.close();
                         e.preventDefault();

@@ -27,7 +27,7 @@ export class CheckBox extends InputControl {
     }
 
     protected keyDown(e: KeyboardEvent) {
-        switch (e.keyCode) {
+        switch (e.key) {
             case Constants.KEY_ENTER:
                 this.isChecked = !this.isChecked;
                 break;

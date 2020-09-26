@@ -36,7 +36,7 @@ export class DropDownItem {
             this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {
-                if (e.keyCode === Constants.KEY_ENTER) {
+                if (e.key === Constants.KEY_ENTER) {
                     this.click();
                     e.cancelBubble = true;
                 }
@@ -98,7 +98,7 @@ export class DropDownPopupControl extends PopupControl {
 
         var selectedItemIndex = this._selectedIndex;
 
-        switch (e.keyCode) {
+        switch (e.key) {
             case Constants.KEY_TAB:
                 this.closePopup(true);
 

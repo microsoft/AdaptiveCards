@@ -120,7 +120,7 @@ export class Toolbox {
         this._expandCollapseButtonElement.appendChild(this._headerIconElement);
 
         this._expandCollapseButtonElement.onkeydown = (e) => {
-            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+            if (e.key === KEY_ENTER || e.key === KEY_SPACE) {
                 this.toggle();
 
                 e.preventDefault();

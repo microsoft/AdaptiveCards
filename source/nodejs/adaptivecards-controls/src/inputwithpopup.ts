@@ -15,7 +15,7 @@ export abstract class PopupControl {
     onClose: (popupControl: PopupControl, wasCancelled: boolean) => void;
 
     keyDown(e: KeyboardEvent) {
-        switch (e.keyCode) {
+        switch (e.key) {
             case Constants.KEY_ESCAPE:
                 this.closePopup(true);
 
@@ -179,7 +179,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     private _value: TValue;
 
     protected keyDown(e: KeyboardEvent) {
-        switch (e.keyCode) {
+        switch (e.key) {
             case Constants.KEY_ENTER:
                 this.popup();
                 break;

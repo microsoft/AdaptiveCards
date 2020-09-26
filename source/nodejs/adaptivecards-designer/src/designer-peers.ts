@@ -2458,7 +2458,7 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.className = "acd-textBlock-inplace-editor";
         this._renderedElement.value = this.cardElement.text;
         this._renderedElement.onkeydown = (e) => {
-            switch (e.keyCode) {
+            switch (e.key) {
                 case Controls.KEY_ESCAPE:
                    this.close(false);
 

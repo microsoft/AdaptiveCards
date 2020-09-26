@@ -530,7 +530,7 @@ export class CardDesignerSurface {
 
         this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
-                switch (e.keyCode) {
+                switch (e.key) {
                     case Controls.KEY_ESCAPE:
                         if (this.draggedPeer) {
                             this.endDrag(true);

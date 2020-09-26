@@ -40,7 +40,7 @@ export class PopupMenu extends PopupControl {
 
         var selectedItemIndex = this._selectedIndex;
 
-        switch (e.keyCode) {
+        switch (e.key) {
             case Constants.KEY_TAB:
                 this.closePopup(true);
 

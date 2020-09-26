@@ -31,7 +31,7 @@ export class DayCell {
         this._element.tabIndex = 0;
         this._element.onclick = (e) => { this.selected(); };
         this._element.onkeydown = (e) => {
-            if (e.keyCode == Constants.KEY_ENTER) {
+            if (e.key == Constants.KEY_ENTER) {
                 this.selected();
                 return false;
             }
@@ -246,7 +246,7 @@ export class Calendar extends InputControl {
             this.date = Utils.addMonths(this.date, -1);
         };
         button.onkeydown = (e) => {
-            if (e.keyCode == Constants.KEY_ENTER) {
+            if (e.key == Constants.KEY_ENTER) {
                 this.date = Utils.addMonths(this.date, -1);
                 return false;
             }
@@ -261,7 +261,7 @@ export class Calendar extends InputControl {
             this.date = Utils.addMonths(this.date, 1);
         };
         button.onkeydown = (e) => {
-            if (e.keyCode == Constants.KEY_ENTER) {
+            if (e.key == Constants.KEY_ENTER) {
                 this.date = Utils.addMonths(this.date, 1);
                 return false;
             }
