@@ -183,7 +183,8 @@
 						{
 							"type": "TextBlock",
 							"text": "Amsterdam Airport",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
@@ -217,7 +218,8 @@
 							"type": "TextBlock",
 							"text": "San Francisco Airport",
 							"isSubtle": true,
-							"horizontalAlignment": "right"
+							"horizontalAlignment": "right",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",

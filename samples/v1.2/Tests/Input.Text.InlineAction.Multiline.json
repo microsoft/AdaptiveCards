@@ -5,25 +5,22 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Text input with an inline action"
+			"text": "Multiline Text Inputs with inline actions"
 		},
 		{
 			"type": "Input.Text",
-			"id": "input1",
+			"id": "input3",
+			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.Submit",
 				"iconUrl": "https://adaptivecards.io/content/send.png",
-				"title": "Send"
+				"title": "Reply"
 			}
 		},
 		{
-			"type": "TextBlock",
-			"text": "Text input with an inline action with no icon",
-			"wrap": true
-		},
-		{
 			"type": "Input.Text",
-			"id": "input2",
+			"id": "input4",
+			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",
