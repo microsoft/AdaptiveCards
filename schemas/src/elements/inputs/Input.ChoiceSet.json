@@ -22,7 +22,7 @@
     },
     "placeholder": {
       "type": "string",
-      "description": "Description of the input desired. Displayed when no selection has been made, style is compact and multi selection is false."
+      "description": "Description of the input desired. Only visible when no selection has been made, the style is compact and isMultiSelect is false"
     },
     "wrap": {
       "type": "boolean",

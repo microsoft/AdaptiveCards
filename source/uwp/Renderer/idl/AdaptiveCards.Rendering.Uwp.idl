@@ -732,6 +732,7 @@ AdaptiveNamespaceStart
 
         String Value;
         Boolean IsMultiSelect;
+        String Placeholder;
         Boolean Wrap;
         ChoiceSetStyle ChoiceSetStyle;
         Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
