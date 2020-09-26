@@ -68,7 +68,7 @@ export abstract class DraggableElement {
 
     protected click(e: MouseEvent) {
         if (this.onClick) {
-            this.onDoubleClick(this);
+            this.onClick(this);
         }
     }
 

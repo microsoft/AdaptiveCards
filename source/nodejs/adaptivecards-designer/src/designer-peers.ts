@@ -996,6 +996,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    tryAdd(peer: DesignerPeer): boolean {
+        return false;
+    }
+
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
@@ -1485,6 +1489,26 @@ export class CardElementPeer extends DesignerPeer {
 
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    tryAdd(peer: DesignerPeer): boolean {
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+            if (peer.cardElement.parent) {
+                if (!peer.remove(true, false)) {
+                    return false;
+                }
+
+                peer.parent.removeChild(peer);
+            }
+
+            this.cardElement.addItem(peer.cardElement);
+            this.insertChild(peer, peer.cardElement.index);
+            this.changed(false);
+
+            return true;
         }
 
         return false;

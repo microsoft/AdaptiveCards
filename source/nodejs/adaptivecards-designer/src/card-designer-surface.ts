@@ -816,8 +816,6 @@ export class CardDesignerSurface {
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
-        var result = false;
-
         if (peer) {
             if (this._dropTarget) {
                 this._dropTarget.renderedElement.classList.remove("dragover");
@@ -829,11 +827,11 @@ export class CardDesignerSurface {
                 this._dropTarget = newDropTarget;
                 this._dropTarget.renderedElement.classList.add("dragover");
 
-                result = this._dropTarget.tryDrop(peer, pointerPosition);
+                return this._dropTarget.tryDrop(peer, pointerPosition);
             }
         }
 
-        return result;
+        return false;
     }
 
     isPointerOver(x: number, y: number) {
