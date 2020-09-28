@@ -3751,6 +3751,14 @@ export abstract class Action extends CardObject {
         return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
     }
 
+    protected raiseExecuteActionEvent() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+
+        raiseExecuteActionEvent(this);
+    }
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3838,11 +3846,11 @@ export abstract class Action extends CardObject {
     }
 
     execute() {
-        if (this.onExecute) {
-            this.onExecute(this);
+        if (this._actionCollection) {
+            this._actionCollection.actionExecuted(this);
         }
 
-        raiseExecuteActionEvent(this);
+        this.raiseExecuteActionEvent();
     }
 
     prepareForExecution(): boolean {
@@ -4369,6 +4377,13 @@ export class ShowCardAction extends Action {
         }
     }
 
+    protected raiseExecuteActionEvent() {
+        if (this.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
+            // Only raise the event in Popup mode.
+            super.raiseExecuteActionEvent();
+        }
+    }
+
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
@@ -4530,29 +4545,6 @@ class ActionCollection {
             raiseEvent);
     }
 
-    private actionClicked(actionButton: ActionButton) {
-        if (!(actionButton.action instanceof ShowCardAction)) {
-            for (let button of this.buttons) {
-                button.state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCard();
-
-            actionButton.action.execute();
-        }
-        else {
-            if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
-                actionButton.action.execute();
-            }
-            else if (actionButton.action === this._expandedAction) {
-                this.collapseExpandedAction();
-            }
-            else {
-                this.expandShowCardAction(actionButton.action, true);
-            }
-        }
-    }
-
     private getParentContainer(): Container | undefined {
         if (this._owner instanceof Container) {
             return this._owner;
@@ -4577,6 +4569,24 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    actionExecuted(action: Action) {
+        if (!(action instanceof ShowCardAction)) {
+            for (let button of this.buttons) {
+                button.state = ActionButtonState.Normal;
+            }
+
+            this.hideActionCard();
+        }
+        else {
+            if (action === this._expandedAction) {
+                this.collapseExpandedAction();
+            }
+            else {
+                this.expandShowCardAction(action, true);
+            }
+        }
     }
 
     parse(source: any, context: SerializationContext) {
@@ -4742,7 +4752,7 @@ class ActionCollection {
 
                     if (!actionButton) {
                         actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
-                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
+                        actionButton.onClick = (ab) => { ab.action.execute(); };
 
                         this.buttons.push(actionButton);
                     }
