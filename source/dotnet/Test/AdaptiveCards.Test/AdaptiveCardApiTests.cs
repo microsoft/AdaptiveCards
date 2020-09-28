@@ -776,7 +776,7 @@ namespace AdaptiveCards.Test
 
             var result = AdaptiveCard.FromJson(payload);
 
-            // and one for each bad pixel size (2)
+            // Expect one warning for each bad pixel size (2)
             Assert.AreEqual(2, result.Warnings.Count);
 
             // Check the card properties
