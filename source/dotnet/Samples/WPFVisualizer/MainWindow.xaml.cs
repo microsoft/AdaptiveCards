@@ -54,6 +54,9 @@ namespace WpfVisualizer
             _synth = new SpeechSynthesizer();
             _synth.SelectVoiceByHints(VoiceGender.Female, VoiceAge.Adult);
             _synth.SetOutputToDefaultAudioDevice();
+            var timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            timer.Tick += Timer_Tick;
+            timer.Start();
 
             foreach (var config in Directory.GetFiles("HostConfigs", "*.json"))
             {
@@ -97,6 +100,15 @@ namespace WpfVisualizer
         }
 
         public AdaptiveCardRenderer Renderer { get; set; }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (_dirty)
+            {
+                _dirty = false;
+                RenderCard();
+            }
+        }
 
         public string CardPayload
         {
@@ -486,11 +498,6 @@ namespace WpfVisualizer
                 templateData = null;
             }
             templateDataTextBox.Text = templateData;
-        }
-
-        private void renderCard_Click(object sender, RoutedEventArgs e)
-        {
-            RenderCard();
         }
     }
 }
