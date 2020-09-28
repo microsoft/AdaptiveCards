@@ -45,7 +45,7 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "FactSet with facts wihout Title, without Value, wihout both, and a random property is below",
+			"text": "FactSet with facts without Title, without Value, without both, and a random property is below",
 			"spacing": "None",
 			"wrap": true
 		},
