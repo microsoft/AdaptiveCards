@@ -4488,21 +4488,6 @@ class ActionCollection {
         this._owner.getRootElement().updateLayout();
     }
 
-    private hideActionCard() {
-        let previouslyExpandedAction = this._expandedAction;
-
-        this._expandedAction = undefined;
-        this._actionCard = undefined;
-
-        this.refreshContainer();
-
-        if (previouslyExpandedAction) {
-            this.layoutChanged();
-
-            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
-        }
-    }
-
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
@@ -4526,7 +4511,18 @@ class ActionCollection {
             button.state = ActionButtonState.Normal;
         }
 
-        this.hideActionCard();
+        let previouslyExpandedAction = this._expandedAction;
+
+        this._expandedAction = undefined;
+        this._actionCard = undefined;
+
+        this.refreshContainer();
+
+        if (previouslyExpandedAction) {
+            this.layoutChanged();
+
+            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
+        }
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
@@ -4573,11 +4569,7 @@ class ActionCollection {
 
     actionExecuted(action: Action) {
         if (!(action instanceof ShowCardAction)) {
-            for (let button of this.buttons) {
-                button.state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCard();
+            this.collapseExpandedAction();
         }
         else {
             if (action === this._expandedAction) {
