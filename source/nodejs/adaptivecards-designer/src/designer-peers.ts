@@ -2459,14 +2459,14 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.value = this.cardElement.text;
         this._renderedElement.onkeydown = (e) => {
             switch (e.key) {
-                case Controls.KEY_ESCAPE:
+                case Controls.Constants.keys.escape:
                    this.close(false);
 
                    e.preventDefault();
                    e.cancelBubble = true;
 
                    break;
-                case Controls.KEY_ENTER:
+                case Controls.Constants.keys.enter:
                     this.close(true);
 
                     e.preventDefault();

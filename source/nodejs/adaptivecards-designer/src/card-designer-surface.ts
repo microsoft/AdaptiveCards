@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Controls from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
@@ -531,7 +531,7 @@ export class CardDesignerSurface {
         this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
                 switch (e.key) {
-                    case Controls.KEY_ESCAPE:
+                    case Constants.keys.escape:
                         if (this.draggedPeer) {
                             this.endDrag(true);
                         }
@@ -540,7 +540,7 @@ export class CardDesignerSurface {
                         }
 
                         break;
-                    case Controls.KEY_DELETE:
+                    case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
                         }

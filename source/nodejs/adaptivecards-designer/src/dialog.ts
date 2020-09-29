@@ -1,4 +1,4 @@
-import * as Controls from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 
 export class DialogButton {
     onClick: (sender: DialogButton) => void;
@@ -74,7 +74,7 @@ export abstract class Dialog {
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
                 switch (e.key) {
-                    case Controls.KEY_ESCAPE:
+                    case Constants.keys.escape:
                         this.close();
                         e.preventDefault();
                         e.cancelBubble = true;

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Constants from "./constants";
+import { Constants } from "./constants";
 import * as Utils from "./utils";
 import { InputControl } from "./inputcontrol";
 import { v4 as uuidv4 } from "uuid";
@@ -16,7 +16,7 @@ export abstract class PopupControl {
 
     keyDown(e: KeyboardEvent) {
         switch (e.key) {
-            case Constants.KEY_ESCAPE:
+            case Constants.keys.escape:
                 this.closePopup(true);
 
                 break;
@@ -180,7 +180,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
 
     protected keyDown(e: KeyboardEvent) {
         switch (e.key) {
-            case Constants.KEY_ENTER:
+            case Constants.keys.enter:
                 this.popup();
                 break;
         }

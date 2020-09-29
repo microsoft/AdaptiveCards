@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { KEY_ENTER, KEY_SPACE } from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { IPoint } from "./miscellaneous";
 
 export const DRAG_THRESHOLD = 10;
@@ -123,7 +123,7 @@ export abstract class DraggableElement {
         let dragSourceElement = this.getDragSourceElement();
         dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
         dragSourceElement.onkeydown = (e: KeyboardEvent) => {
-            if(e.key === KEY_ENTER || e.key === KEY_SPACE) {
+            if(e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 e.preventDefault();
                 this.click(null);
             }
