@@ -123,11 +123,13 @@ export abstract class DraggableElement {
         let dragSourceElement = this.getDragSourceElement();
         dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
         dragSourceElement.onkeydown = (e: KeyboardEvent) => {
-            if(e.key === Constants.keys.enter || e.key === Constants.keys.space) {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 e.preventDefault();
+
                 if (this.onClick) {
                     this.click(null);
-                } else if (this.onDoubleClick) {
+                }
+                else if (this.onDoubleClick) {
                     this.doubleClick(null);
                 }
             }
