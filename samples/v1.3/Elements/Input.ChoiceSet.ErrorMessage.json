@@ -11,6 +11,7 @@
 			"label": "Required Input.ChoiceSet label (compact)",
 			"isRequired": true,
 			"errorMessage": "This is a required input",
+			"placeholder" : "Please make selection",
 			"choices": [
 				{
 					"title": "Option 1",

@@ -95,6 +95,7 @@ void ChoiceSetInput::SetWrap(bool value)
 {
     m_wrap = value;
 }
+
 std::string ChoiceSetInput::GetPlaceholder() const
 {
     return m_placeholder;
