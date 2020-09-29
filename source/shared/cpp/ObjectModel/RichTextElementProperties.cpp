@@ -66,7 +66,7 @@ void RichTextElementProperties::SetUnderline(const bool value)
     m_underline = value;
 }
 
-void RichTextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)
+void RichTextElementProperties::Deserialize(ParseContext& context, const Json::Value& json)
 {
     TextElementProperties::Deserialize(context, json);
     SetItalic(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Italic, false));

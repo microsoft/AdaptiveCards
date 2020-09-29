@@ -41,26 +41,6 @@ public class FactSetPropertiesTest
     public void FactsTest() throws Exception
     {
         {
-            final String factSetEmptyFacts = "{\"facts\":[],\"type\":\"FactSet\"}\n";
-            FactSet factSet = TestUtil.createMockFactSet();
-            Assert.assertEquals(factSetEmptyFacts, factSet.Serialize());
-
-            try
-            {
-                AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(factSetEmptyFacts), "1.0");
-                Assert.fail();
-            }
-            catch (IOException e)
-            {
-                Assert.assertEquals(true, e.getMessage().contains("Could not parse required key: facts. It was not found"));
-            }
-            catch (Exception e)
-            {
-                Assert.fail();
-            }
-        }
-
-        {
             final String factSetWithFact = "{\"facts\":[{\"title\":\"Title\",\"value\":\"Value\"}],\"type\":\"FactSet\"}\n";
             FactSet factSet = TestUtil.createMockFactSet(TestUtil.createMockFact("Title", "Value"));
             Assert.assertEquals(factSetWithFact, factSet.Serialize());

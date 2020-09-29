@@ -27,7 +27,7 @@ namespace AdaptiveSharedNamespace
         void SetUnderline (const bool value);
 
         Json::Value SerializeToJsonValue(Json::Value& root) const override;
-        void Deserialize(const ParseContext& context, const Json::Value& root) override;
+        void Deserialize(ParseContext& context, const Json::Value& root) override;
         void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties) override;
 
     private:

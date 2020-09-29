@@ -376,7 +376,7 @@ public class CardRendererRegistration
             }
         }
 
-        if (renderedElement != null)
+        if (renderedElement != null && renderedElementView != null)
         {
 
             View taggedView = findElementWithTagContent(mockLayout);

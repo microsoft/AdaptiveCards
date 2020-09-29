@@ -82,33 +82,42 @@ public class FactSetRenderer extends BaseCardElementRenderer
 
         FactVector factVector = factSet.GetFacts();
         long factVectorSize = factVector.size();
+
         long spacing = hostConfig.GetFactSet().getSpacing();
+
+        int validFacts = 0;
 
         for (int i = 0; i < factVectorSize; i++)
         {
             Fact fact = factVector.get(i);
-            TableRow factRow = new TableRow(context);
-
-            if (height == HeightType.Stretch )
-            {
-                factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1));
-            }
-            else
-            {
-                factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-            }
-
             DateTimeParser parser = new DateTimeParser(fact.GetLanguage());
 
-            // Handle Title
             String titleWithFormattedDates = parser.GenerateString(fact.GetTitleForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
-
-            // Handle Value
             String valueWithFormattedDates = parser.GenerateString(fact.GetValueForDateParsing());
-            factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
 
-            tableLayout.addView(factRow);
+            if (!titleWithFormattedDates.isEmpty() || !valueWithFormattedDates.isEmpty())
+            {
+                TableRow factRow = new TableRow(context);
+
+                if (height == HeightType.Stretch)
+                {
+                    factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.MATCH_PARENT, 1));
+                }
+                else
+                {
+                    factRow.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+                }
+
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(titleWithFormattedDates), hostConfig.GetFactSet().getTitle(), hostConfig, spacing, renderArgs.getContainerStyle()));
+                factRow.addView(createTextView(context, RendererUtil.handleSpecialText(valueWithFormattedDates), hostConfig.GetFactSet().getValue(), hostConfig, 0, renderArgs.getContainerStyle()));
+                tableLayout.addView(factRow);
+                validFacts++;
+           }
+        }
+
+        if (validFacts == 0)
+        {
+            return null;
         }
 
         viewGroup.addView(tableLayout);
