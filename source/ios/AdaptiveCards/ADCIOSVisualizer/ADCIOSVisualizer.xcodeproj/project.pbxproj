@@ -55,6 +55,9 @@
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6BB4690D251E90F700A5A9DC /* what-is-a-card.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 6BB4690A251E90F600A5A9DC /* what-is-a-card.PNG */; };
+		6BB4690E251E90F700A5A9DC /* a.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 6BB4690B251E90F700A5A9DC /* a.PNG */; };
+		6BB4690F251E90F700A5A9DC /* b.PNG in Resources */ = {isa = PBXBuildFile; fileRef = 6BB4690C251E90F700A5A9DC /* b.PNG */; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
@@ -153,6 +156,9 @@
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
+		6BB4690A251E90F600A5A9DC /* what-is-a-card.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "what-is-a-card.PNG"; sourceTree = "<group>"; };
+		6BB4690B251E90F700A5A9DC /* a.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = a.PNG; sourceTree = "<group>"; };
+		6BB4690C251E90F700A5A9DC /* b.PNG */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b.PNG; sourceTree = "<group>"; };
 		6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
@@ -311,6 +317,9 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				6BB4690C251E90F700A5A9DC /* b.PNG */,
+				6BB4690B251E90F700A5A9DC /* a.PNG */,
+				6BB4690A251E90F600A5A9DC /* what-is-a-card.PNG */,
 				6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */,
 				F4D33E841F04705800941E44 /* ACVTableViewController.h */,
 				F4D33E851F04705800941E44 /* ACVTableViewController.m */,
@@ -488,6 +497,7 @@
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,
 				6B268FE320CEF19400D99C1B /* (null) in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
+				6BB4690D251E90F700A5A9DC /* what-is-a-card.PNG in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
 				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
@@ -504,10 +514,12 @@
 				6B150A39230354F200046B3A /* Image.Spacing.json in Resources */,
 				6B150A24230353AB00046B3A /* TextBlock.Size.json in Resources */,
 				6B150A3B230354F200046B3A /* Column.Spacing.json in Resources */,
+				6BB4690E251E90F700A5A9DC /* a.PNG in Resources */,
 				6B150A38230354F200046B3A /* Image.Style.json in Resources */,
 				F423C0851EE1FB6100905679 /* Assets.xcassets in Resources */,
 				6B055764233EC53D000EE24A /* RichTextBlock.json in Resources */,
 				6B150A1023034F2800046B3A /* Input.ChoiceSet.json in Resources */,
+				6BB4690F251E90F700A5A9DC /* b.PNG in Resources */,
 				6B150A22230353AB00046B3A /* TextBlock.Markdown.json in Resources */,
 				6B150A0623033D6C00046B3A /* filebrowserHostConfig.json in Resources */,
 				6B150A3A230354F200046B3A /* ColumnSet.json in Resources */,
