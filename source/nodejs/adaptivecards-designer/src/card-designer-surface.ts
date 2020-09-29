@@ -219,7 +219,7 @@ export class CardDesignerSurface {
         }
     }
 
-    private setSelectedPeer(value: DesignerPeers.DesignerPeer) {
+    setSelectedPeer(value: DesignerPeers.DesignerPeer) {
         if (this._selectedPeer != value) {
             if (this._selectedPeer) {
                 this._selectedPeer.isSelected = false;
