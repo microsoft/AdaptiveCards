@@ -3,31 +3,31 @@
 /**
  * @deprecated Use Constants.keys.tab instead.
  */
-export const KEY_TAB = "Tab";
+export const KEY_TAB = 9;
 /**
  * @deprecated Use Constants.keys.enter instead.
  */
-export const KEY_ENTER = "Enter";
+export const KEY_ENTER = 13;
 /**
  * @deprecated Use Constants.keys.escape instead.
  */
-export const KEY_ESCAPE = "Escape";
+export const KEY_ESCAPE = 27;
 /**
  * @deprecated Use Constants.keys.space instead.
  */
-export const KEY_SPACE = " ";
+export const KEY_SPACE = 32;
 /**
  * @deprecated Use Constants.keys.up instead.
  */
-export const KEY_UP = "Up";
+export const KEY_UP = 38;
 /**
  * @deprecated Use Constants.keys.down instead.
  */
-export const KEY_DOWN = "Down";
+export const KEY_DOWN = 40;
 /**
  * @deprecated Use Constants.keys.delete instead.
  */
-export const KEY_DELETE = "Delete";
+export const KEY_DELETE = 46;
 
 export class Constants {
     static readonly keys = {
