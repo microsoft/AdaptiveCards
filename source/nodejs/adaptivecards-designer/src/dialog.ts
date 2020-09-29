@@ -28,6 +28,9 @@ export class DialogButton {
 export abstract class Dialog {
     private _overlayElement: HTMLElement;
     private _isOpen: boolean = false;
+    private _originalFocusedElement: HTMLElement;
+    private _firstFocusableElement: HTMLElement;
+    private _lastFocusableElement: HTMLElement;
 
     protected abstract renderContent(): HTMLElement;
 
@@ -48,6 +51,8 @@ export abstract class Dialog {
 
     open() {
         if (!this._isOpen) {
+            this._originalFocusedElement = document.activeElement as HTMLElement;
+
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
@@ -55,12 +60,11 @@ export abstract class Dialog {
                 this.close();
             }
 
-            let dialogFrameElement = document.createElement("div");
+            let dialogFrameElement = document.createElement("dialog");
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
-            dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-modal", "true");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
@@ -76,6 +80,19 @@ export abstract class Dialog {
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
                 switch (e.key) {
+                    case Constants.keys.tab:
+                        if (e.shiftKey && document.activeElement === this._firstFocusableElement) {
+                            // backwards tab on first element. set focus on last
+                            e.preventDefault();
+                            this._lastFocusableElement.focus();
+                        }
+                        else if (!e.shiftKey && document.activeElement === this._lastFocusableElement) {
+                            // forward tab on last element
+                            e.preventDefault();
+                            this._firstFocusableElement.focus();
+                        }
+                        break;
+
                     case Constants.keys.escape:
                         this.close();
                         e.preventDefault();
@@ -121,7 +138,12 @@ export abstract class Dialog {
             this._overlayElement.appendChild(dialogFrameElement);
 
             document.body.appendChild(this._overlayElement);
-            dialogFrameElement.focus();
+
+            let focusableElements = dialogFrameElement.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+            this._firstFocusableElement = focusableElements[0] as HTMLElement;
+            this._lastFocusableElement = focusableElements[focusableElements.length-1] as HTMLElement;
+
+            this._firstFocusableElement.focus();
 
             this._isOpen = true;
         }
@@ -136,6 +158,9 @@ export abstract class Dialog {
             if (this.onClose) {
                 this.onClose(this);
             }
+
+            this._originalFocusedElement.focus();
+            this._originalFocusedElement = null;
         }
     }
 }
