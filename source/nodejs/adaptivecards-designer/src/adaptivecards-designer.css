@@ -420,6 +420,10 @@
     content: "\E8C8";
 }
 
+.acd-icon-help::before {
+    content: "\E897";
+}
+
 .acd-icon-header-expanded::before {
     content: "\F166";
 }

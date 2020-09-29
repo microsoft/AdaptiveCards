@@ -1,4 +1,6 @@
-import * as Controls from "adaptivecards-controls";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+import { Constants } from "adaptivecards-controls";
 
 export class DialogButton {
     onClick: (sender: DialogButton) => void;
@@ -73,8 +75,8 @@ export abstract class Dialog {
 
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
-                switch (e.keyCode) {
-                    case Controls.KEY_ESCAPE:
+                switch (e.key) {
+                    case Constants.keys.escape:
                         this.close();
                         e.preventDefault();
                         e.cancelBubble = true;

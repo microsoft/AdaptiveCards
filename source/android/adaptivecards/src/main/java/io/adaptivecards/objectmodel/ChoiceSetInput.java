@@ -91,6 +91,14 @@ public class ChoiceSetInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.ChoiceSetInput_SetWrap(swigCPtr, this, value);
   }
 
+  public String GetPlaceholder() {
+    return AdaptiveCardObjectModelJNI.ChoiceSetInput_GetPlaceholder(swigCPtr, this);
+  }
+
+  public void SetPlaceholder(String value) {
+    AdaptiveCardObjectModelJNI.ChoiceSetInput_SetPlaceholder(swigCPtr, this, value);
+  }
+
   public static ChoiceSetInput dynamic_cast(BaseCardElement baseCardElement) {
     long cPtr = AdaptiveCardObjectModelJNI.ChoiceSetInput_dynamic_cast(BaseCardElement.getCPtr(baseCardElement), baseCardElement);
     return (cPtr == 0) ? null : new ChoiceSetInput(cPtr, true);
