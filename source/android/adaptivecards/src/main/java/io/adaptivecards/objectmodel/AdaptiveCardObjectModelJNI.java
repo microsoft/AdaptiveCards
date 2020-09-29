@@ -675,6 +675,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void ChoiceSetInput_SetValue(long jarg1, ChoiceSetInput jarg1_, String jarg2);
   public final static native boolean ChoiceSetInput_GetWrap(long jarg1, ChoiceSetInput jarg1_);
   public final static native void ChoiceSetInput_SetWrap(long jarg1, ChoiceSetInput jarg1_, boolean jarg2);
+  public final static native String ChoiceSetInput_GetPlaceholder(long jarg1, ChoiceSetInput jarg1_);
+  public final static native void ChoiceSetInput_SetPlaceholder(long jarg1, ChoiceSetInput jarg1_, String jarg2);
   public final static native long ChoiceSetInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_ChoiceSetInputParser__SWIG_0();
   public final static native long new_ChoiceSetInputParser__SWIG_1(long jarg1, ChoiceSetInputParser jarg1_);
