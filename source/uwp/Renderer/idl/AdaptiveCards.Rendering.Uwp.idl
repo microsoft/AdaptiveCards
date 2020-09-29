@@ -318,7 +318,8 @@ AdaptiveNamespaceStart
         PerformingFallback,
         CustomWarning,
         EmptyLabelInRequiredInput,
-        MissingValidationErrorMessage
+        MissingValidationErrorMessage,
+        RequiredPropertyMissing
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
