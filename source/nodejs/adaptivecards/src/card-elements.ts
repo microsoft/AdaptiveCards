@@ -2702,7 +2702,7 @@ export class TextInput extends Input {
         input.oninput = () => { this.valueChanged(); }
         input.onkeypress = (e: KeyboardEvent) => {
             // Ctrl+Enter pressed
-            if (e.keyCode == 10 && this.inlineAction) {
+            if (e.ctrlKey && e.code === "Enter" && this.inlineAction) {
                 this.inlineAction.execute();
             }
         }

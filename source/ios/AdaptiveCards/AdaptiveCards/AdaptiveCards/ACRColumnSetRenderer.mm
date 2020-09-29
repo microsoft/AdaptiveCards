@@ -105,6 +105,9 @@
             }
 
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+            if (separator && !curView) {
+                [columnSetView removeViewFromContentStackView:separator];
+            }
         } @catch (ACOFallbackException *e) {
 
             handleFallbackException(e, columnSetView, rootView, inputs, column, acoConfig);

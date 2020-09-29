@@ -17,6 +17,11 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
+            if (String.IsNullOrEmpty(textBlock.Text))
+            {
+                return null;
+            }
+
             var uiTextBlock = CreateControl(textBlock, context);
 
             uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
