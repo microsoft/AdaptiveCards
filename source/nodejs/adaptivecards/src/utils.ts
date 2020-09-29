@@ -79,6 +79,7 @@ export function renderSeparation(hostConfig: HostConfig, separationDefinition: S
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
         let separator = document.createElement("div");
         separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
+        separator.setAttribute("aria-hidden", "true");
 
         let color = separationDefinition.lineColor ? stringToCssColor(separationDefinition.lineColor) : "";
 

@@ -190,16 +190,10 @@
 											"type": "Action.Submit",
 											"title": "Check in",
 											"style": "positive"
-										}
-									],
-									"spacing": "medium"
-								},
-								{
-									"type": "ActionSet",
-									"actions": [
+										},
 										{
 											"type": "Action.Submit",
-											"title": "View in calendar"
+											"title": "View"
 										}
 									],
 									"spacing": "medium"
