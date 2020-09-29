@@ -55,7 +55,6 @@ export abstract class Dialog {
 
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "acd-dialog-overlay";
-            this._overlayElement.style.backgroundColor = "rgba(0, 0, 0, 0.4)";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
                 this.close();
