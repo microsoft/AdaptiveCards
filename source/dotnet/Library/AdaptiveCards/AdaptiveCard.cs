@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -112,7 +113,7 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
-        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(Order = -5, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
         [DefaultValue(null)]
         public AdaptiveBackgroundImage BackgroundImage { get; set; }
@@ -131,7 +132,7 @@ namespace AdaptiveCards
         ///    Explicit card minimum height in pixels
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -198,7 +199,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The content alignment for the element inside the container.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -239,7 +240,14 @@ namespace AdaptiveCards
                 parseResult.Card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                 {
                     ContractResolver = new WarningLoggingContractResolver(parseResult, new ParseContext()),
-                    Converters = { new StrictIntConverter() }
+                    Converters = { new StrictIntConverter() },
+                    Error = delegate(object sender, ErrorEventArgs args)
+                    {
+                        if (args.ErrorContext.Error.GetType() == typeof(JsonSerializationException))
+                        {
+                            args.ErrorContext.Handled = true;
+                        }
+                    }
                 });
             }
             catch (JsonException ex)
