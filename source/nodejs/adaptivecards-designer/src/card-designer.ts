@@ -199,7 +199,7 @@ export class CardDesigner extends Designer.DesignContext {
                         peerRegistration
                     )
 
-                    paletteItem.onClick = (sender) => {
+                    paletteItem.onDoubleClick = (sender) => {
                         const peer = paletteItem.createPeer(this, this.designerSurface);
                         if(this.designerSurface.rootPeer.tryAdd(peer)) {
                             this.designerSurface.setSelectedPeer(peer);

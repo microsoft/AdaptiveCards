@@ -125,7 +125,11 @@ export abstract class DraggableElement {
         dragSourceElement.onkeydown = (e: KeyboardEvent) => {
             if(e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 e.preventDefault();
-                this.click(null);
+                if (this.onClick) {
+                    this.click(null);
+                } else if (this.onDoubleClick) {
+                    this.doubleClick(null);
+                }
             }
         };
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
