@@ -22,6 +22,7 @@ import { Strings } from "./strings";
 import * as Shared from "./shared";
 import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
+import { HelpDialog } from "./help-dialog";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -590,6 +591,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
     private _togglePreviewButton: ToolbarButton;
+    private _helpButton: ToolbarButton;
     private _preventRecursiveSetTargetVersion = false;
 
     private prepareToolbar() {
@@ -722,6 +724,16 @@ export class CardDesigner extends Designer.DesignContext {
         this._togglePreviewButton.isVisible = Shared.GlobalSettings.enableDataBindingSupport;
 
         this.toolbar.addElement(this._togglePreviewButton);
+
+        this._helpButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.Help,
+            "Help",
+            "acd-icon-help",
+            (sender: ToolbarButton) => { this.showHelp(); });
+        this._helpButton.toolTip = "Display help.";
+        this._helpButton.separator = true;
+        this._helpButton.alignment = ToolbarElementAlignment.Right;
+        this.toolbar.addElement(this._helpButton);
 
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
@@ -1135,6 +1147,12 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
+    showHelp() {
+        let helpDialog = new HelpDialog();
+        helpDialog.title = "Help";
+        helpDialog.open();
+    }
+
     newCard() {
         let card = {
             type: "AdaptiveCard",
@@ -1287,5 +1305,6 @@ export module CardDesigner {
         static readonly NewCard = "__newCardButton";
         static readonly CopyJSON = "__copyJsonButton";
         static readonly TogglePreview = "__togglePreviewButton";
+        static readonly Help = "__helpButton";
     }
 }
