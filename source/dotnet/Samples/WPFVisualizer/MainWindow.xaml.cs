@@ -490,6 +490,7 @@ namespace WpfVisualizer
                 _dirty = true;
             }
         }
+
         private void loadTemplateDataButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialogForJson(out templateData);
