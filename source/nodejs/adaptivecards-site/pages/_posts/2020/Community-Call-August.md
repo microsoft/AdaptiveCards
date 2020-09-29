@@ -1,5 +1,5 @@
 ---
-title: 📣 Community Call - July, 2020 
+title: 📣 Community Call - August, 2020 
 subtitle: v1.3 is released, and a real-world look at automating business processes with Cards and Power Automate
 date: 2020-08-24
 featured_image: https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2020/08/A-screenshot-of-a-social-media-post-768x712.png
@@ -33,7 +33,7 @@ We've also streamlined the [Input schema](https://adaptivecards.io/explorer/Inpu
     "body": [
         {
             "type": "Input.Text",
-      "id": "name",
+      		"id": "name",
             "placeholder": "First, last",
             "label": "Please enter your name",
             "isRequired": true,

@@ -31,7 +31,7 @@ We've also streamlined the Input schema by adding a **label** property, which im
     "body": [
         {
             "type": "Input.Text",
-      "id": "name",
+      		"id": "name",
             "placeholder": "First, last",
             "label": "Please enter your name",
             "isRequired": true,

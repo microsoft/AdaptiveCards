@@ -1,7 +1,7 @@
 ---
-title: 📣 Community Call - July, 2020 
+title: 📣 Community Call - September, 2020 
 subtitle: Roadmap updates and an early look at Adaptive Components
-date: 2020-08-24
+date: 2020-09-11
 featured_image: https://developer.microsoft.com/en-us/microsoft-365/blogs/wp-content/uploads/2020/09/two-%E2%80%9CPersonas%E2%80%9D-next-to-Requested-by-and-Approver-showing-the-profile-picture-and-name..png
 github_username: matthidinger
 twitter: matthidinger
@@ -37,7 +37,7 @@ For example, in the card below there are two great use-cases for "components":
 1.  The File Chiclet, showing the file icon, title, URL and set of actions.
 2.  The two "Personas" next to **Requested by** and **Approver** showing the profile picture and name.
 
-![screenshot of a card with a file and user component](https://developer.microsoft.com/en-us/microsoft-365/blogs/wp-content/uploads/2020/09/two-"Personas"-next-to-Requested-by-and-Approver-showing-the-profile-picture-and-name..png)
+![screenshot of a card with a file and user component](https://developer.microsoft.com/en-us/microsoft-365/blogs/wp-content/uploads/2020/09/two-%E2%80%9CPersonas%E2%80%9D-next-to-Requested-by-and-Approver-showing-the-profile-picture-and-name..png)
 
 The way components are used within a Card is by a **Component.<NAME>** convention. For example, see the **Component.File** usage below. Notice only the data is provided to the component, so for files, you pass along the **title**, **fileType**, and the **objectUrl**.
 
@@ -46,10 +46,10 @@ The way components are used within a Card is by a **Component.<NAME>** conventio
 	"type": "AdaptiveCard",
 	"body": [
 		{
-		"type": "Component.File",
-		"title": "FY2020-Contoso.docx",
-		"fileType": "docx",
-		"objectUrl": "https://example.com/assets/AdaptiveCardsSpec.docx"
+			"type": "Component.File",
+			"title": "FY2020-Contoso.docx",
+			"fileType": "docx",
+			"objectUrl": "https://example.com/assets/AdaptiveCardsSpec.docx"
 		}
 	]
 }
