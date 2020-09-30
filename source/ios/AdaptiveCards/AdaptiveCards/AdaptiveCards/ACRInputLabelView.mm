@@ -134,13 +134,13 @@
                 self.hasVisibilityChanged = self.errorMessage.hidden == NO;
                 self.errorMessage.hidden = YES;
             }
-            self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
+            self.stack.arrangedSubviews[1].layer.borderWidth = 0;
             return YES;
         }
     }
-    self.stack.arrangedSubviews[1].layer.borderWidth = self.validationFailBorderWidth;
-    self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationFailBorderRadius;
-    self.stack.arrangedSubviews[1].layer.borderColor = self.validationFailBorderColor.CGColor;
+    self.stack.arrangedSubviews[1].layer.borderWidth = 1;
+    self.stack.arrangedSubviews[1].layer.cornerRadius = 6.0f;
+    self.stack.arrangedSubviews[1].layer.borderColor = UIColor.systemRedColor.CGColor;
     return NO;
 }
 
