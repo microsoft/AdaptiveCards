@@ -69,8 +69,8 @@ class BaseExtractProperties(AbstractBaseExtractProperties):
         img_data = pytesseract.image_to_data(
             cropped_image, lang="eng", config="--psm 6",
             output_type=Output.DICT)
-        text_list = ' '.join(img_data['text']).split()
-        extracted_text = ' '.join(text_list)
+        text_list = filter(None, img_data['text'])
+        extracted_text = ' '.join(text_list).lstrip("#-_*~").strip()
         return extracted_text, img_data
 
 
