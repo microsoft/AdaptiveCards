@@ -44,7 +44,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -54,7 +54,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     true to collect multiple lines of text(default is false)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -64,7 +64,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -74,7 +74,7 @@ namespace AdaptiveCards
         /// <summary>
         /// The Body elements for this card
         /// </summary>
-        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]

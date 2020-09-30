@@ -36,8 +36,9 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "Dec 4",
-									"horizontalAlignment": "center"
+									"text": "Sat, Aug 31, 2019",
+									"horizontalAlignment": "center",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
@@ -47,7 +48,7 @@
 								},
 								{
 									"type": "TextBlock",
-									"text": "7 - 40",
+									"text": "45 - 7",
 									"size": "extraLarge",
 									"horizontalAlignment": "center"
 								}
