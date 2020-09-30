@@ -1182,6 +1182,7 @@ export class TextRun extends BaseTextBlock {
                 }
 
                 if (this.selectAction.title) {
+                    anchor.setAttribute("aria-label", this.selectAction.title);
                     anchor.title = this.selectAction.title;
                 }
 
