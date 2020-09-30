@@ -40,7 +40,8 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
                                           img_data['width'][i],
                                           img_data['height'][i])
                 # h = text_size_processing(img_data['text'][i], h)
-
+                # Approximate character width
+                char_w = char_w/len(img_data['text'][i])
                 box_height.append(char_h)
                 box_width.append(char_w)
         # passing box_width for the get_weight method
