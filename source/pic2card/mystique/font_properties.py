@@ -3,7 +3,7 @@ Module for extracting the font features like size and weight
 can switch for different implementation to obtain font properties
 """
 
-from typing import Tuple, Dict
+from typing import Tuple, Dict, List
 import numpy as np
 import cv2
 from PIL import Image
@@ -17,19 +17,14 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
     from pytesseract image to data api
     """
 
-    def get_size(self, image: Image, coords: Tuple, img_data: Dict) -> str:
+    @staticmethod
+    def get_bbox_properties(img_data: Dict) -> Tuple[List, List]:
         """
-        Extract the size by taking an average of
-        ratio of height of each character to height
-        input image using pytesseract
-
-        @param image : input PIL image
-        @param coords: list of coordinated from which
-                       text and height should be extracted
-        @param img_data : input image data from pytesseract
-        @return: size
+        Static method to get list of font height and weight
+        from the pytesseract image data dictionary
+        @param : img_data
+        @return : box_height and box_width
         """
-        _, image_height = image.size
         box_height = []
         box_width = []
         n_boxes = len(img_data['level'])
@@ -44,8 +39,23 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
                 char_w = char_w/len(img_data['text'][i])
                 box_height.append(char_h)
                 box_width.append(char_w)
-        # passing box_width for the get_weight method
-        self.box_width = box_width
+
+        return box_height, box_width
+
+    def get_size(self, image: Image, coords: Tuple, img_data: Dict) -> str:
+        """
+        Extract the size by taking an average of
+        ratio of height of each character to height
+        input image using pytesseract
+
+        @param image : input PIL image
+        @param coords: list of coordinated from which
+                       text and height should be extracted
+        @param img_data : input image data from pytesseract
+        @return: size
+        """
+        _, image_height = image.size
+        box_height = self.get_bbox_properties(img_data)[0]
         font_size = default_host_configs.FONT_SIZE
         # Handling of unrecognized characters
         if not box_height:
@@ -69,7 +79,7 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
 
         return size
 
-    def get_weight(self, image: Image, coords: Tuple) -> str:
+    def get_weight(self, image: Image, coords: Tuple, img_data: Dict) -> str:
         """
         Extract the weight by taking an average of
         ratio of width of each character to image width from
@@ -83,7 +93,7 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
         """
         image_width, _ = image.size
         # using the box width list that has each character width of input text
-        box_width = self.box_width
+        box_width = self.get_bbox_properties(img_data)[1]
         font_weight = default_host_configs.FONT_WEIGHT_BBOX
         # Handling of unrecognized characters
         if not box_width:
@@ -108,7 +118,7 @@ class FontPropMorph(FontPropBoundingBox):
     using morphology operations.
     """
 
-    def get_weight(self, image: Image, coords: Tuple) -> str:
+    def get_weight(self, image: Image, coords: Tuple, img_data: None) -> str:
         """
         Extract the weight of the each words by
         skeletization applying morph operations on

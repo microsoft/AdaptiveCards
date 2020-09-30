@@ -218,7 +218,7 @@ class TextBoxProperty(BaseExtractProperties, FontColor):
             ),
             "data": data,
             "size": font_spec.get_size(image, coords, img_data=image_data),
-            "weight": font_spec.get_weight(image, coords),
+            "weight": font_spec.get_weight(image, coords, img_data=image_data),
             "color": self.get_colors(image, coords)
 
         }
