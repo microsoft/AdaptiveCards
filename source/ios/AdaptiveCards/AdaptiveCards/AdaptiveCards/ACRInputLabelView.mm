@@ -126,10 +126,12 @@
         NSError *error = nil;
         if (NO == [inputHandler validate:&error]) {
             if (self.hasErrorMessage) {
+                self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
             }
         } else {
             if (self.hasErrorMessage) {
+                self.hasVisibilityChanged = self.errorMessage.hidden == NO;
                 self.errorMessage.hidden = YES;
             }
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
@@ -210,5 +212,7 @@
 @synthesize hasValidationProperties;
 
 @synthesize id;
+
+@synthesize hasVisibilityChanged;
 
 @end

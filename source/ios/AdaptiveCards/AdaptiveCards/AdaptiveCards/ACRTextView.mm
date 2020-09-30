@@ -175,4 +175,6 @@
 
 @synthesize isRequired;
 
+@synthesize hasVisibilityChanged;
+
 @end
