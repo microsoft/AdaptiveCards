@@ -261,5 +261,6 @@ static NSString *pickerCell = @"pickerCell";
 }
 @synthesize isRequired;
 @synthesize hasValidationProperties;
+@synthesize hasVisibilityChanged;
 
 @end
