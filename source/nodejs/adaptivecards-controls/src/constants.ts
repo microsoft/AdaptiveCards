@@ -35,8 +35,8 @@ export class Constants {
         enter: "Enter",
         escape: "Escape",
         space: " ",
-        up: "Up",
-        down: "Down",
+        up: "ArrowUp",
+        down: "ArrowDown",
         delete: "Delete"
     } as const;
 }
