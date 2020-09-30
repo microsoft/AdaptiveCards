@@ -32,7 +32,7 @@ export class DropDownItem {
             this._element = document.createElement("span");
             this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
             this._element.innerText = this.value;
-            this._element.setAttribute("role", "option");
+            this._element.setAttribute("role", "menuitem");
             this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {
@@ -73,7 +73,7 @@ export class DropDownPopupControl extends PopupControl {
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";
-        element.setAttribute("role", "listbox");
+        element.setAttribute("role", "menu");
 
         var selectedIndex = this._owner.selectedIndex;
 
@@ -238,6 +238,8 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
         if (ariaLabelledByIds.length > 0) {
             this.rootElement.setAttribute("aria-labelledby", ariaLabelledByIds.join(" "));
         }
+
+        this.rootElement.setAttribute("role", "menu");
     }
 
     popup() {
