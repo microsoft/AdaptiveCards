@@ -30,11 +30,11 @@ export class Strings {
         elementAlreadyParented: () => "The element already belongs to another container.",
         actionAlreadyParented: () => "The action already belongs to another element.",
         elementTypeNotStandalone: (typeName: string) => `Elements of type ${typeName} cannot be used as standalone elements.`
-    } as const;
+    };
     static readonly hints = {
         dontUseWeightedAndStrecthedColumnsInSameSet: () => "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
-    } as const;
+    };
     static readonly defaults = {
         inlineActionTitle: () => "Inline Action"
-    } as const;
+    };
 }
