@@ -3,13 +3,6 @@ name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
 pr: none
 trigger: none
 
-schedules:
-- cron: "0 10 * * Mon-Fri"
-  displayName: 3:00 AM Pacific (UTC-8) Daily Build (M-F)
-  branches:
-   include:
-   - main
-
 pool:
   name: Hosted Ubuntu 1604
   demands: java
@@ -18,23 +11,13 @@ parameters:
 - name: prerelease_tag
   displayName: Prerelease Tag (leave empty for final releases)
   type: string
-  default: 'nightly'
+  default: ''
 
 variables:
   # Capture build parameter to use as environment variable
   prerelease_tag: ${{ parameters.prerelease_tag }}
 
 steps:
-# Automated publish to Sonatype is not yet configured, so skip Nexus credentials
-# - task: DownloadSecureFile@1
-#   name: gradleproperties
-#   displayName: 'Download secure file'
-#   inputs:
-#     secureFile: gradle.properties.4
-# - bash: |
-#    cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
-#   displayName: 'Bash Script'
-
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
 - bash: |
@@ -45,16 +28,34 @@ steps:
   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
-  displayName: 'gradlew adaptivecards:build'
+  displayName: build
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
+    publishJUnitResults: false
 
 - task: Gradle@2
-  displayName: 'gradlew publish'
+  displayName: 'publish'
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android
     tasks: 'adaptivecards:publish'
     publishJUnitResults: false
+
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(build.sourcesdirectory)'
+    Contents: |
+     **/io/adaptivecards/**/*.aar
+     **/io/adaptivecards/**/*.pom
+    TargetFolder: '$(build.artifactstagingdirectory)'
+    OverWrite: true
+  continueOnError: true
+  condition: succeededOrFailed()
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
