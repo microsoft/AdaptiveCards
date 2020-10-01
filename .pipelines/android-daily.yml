@@ -18,21 +18,18 @@ variables:
   prerelease.tag: nightly
 
 steps:
-# Automated publish to Sonatype is not yet configured, so don't need Nexus credentials
+# Automated publish to Sonatype is not yet configured, so skip Nexus credentials
 # - task: DownloadSecureFile@1
 #   name: gradleproperties
 #   displayName: 'Download secure file'
 #   inputs:
 #     secureFile: gradle.properties.4
-
-- bash: |
-   # Write your commands here
-   
-   # Use the environment variables input below to pass secret variables to this script
-   cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
-   
-   
-  displayName: 'Bash Script'
+# - bash: |
+#    # Write your commands here
+#   
+#    # Use the environment variables input below to pass secret variables to this script
+#    cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
+#   displayName: 'Bash Script'
 
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
