@@ -49,7 +49,7 @@ steps:
 
 - task: Gradle@2
   displayName: 'gradlew publish'
-  variables:
+  env:
     prerelease.tag: ${{ parameters.prerelease.tag }}
   inputs:
     gradleWrapperFile: source/android/gradlew
