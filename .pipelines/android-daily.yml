@@ -15,7 +15,7 @@ pool:
   demands: java
 
 parameters:
-  name: prerelease.tag
+- name: prerelease.tag
   type: string
   default: ''
 

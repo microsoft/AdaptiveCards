@@ -52,5 +52,7 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
+  variables:
+    prerelease.tag: ${{ parameters.prerelease.tag }}
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
