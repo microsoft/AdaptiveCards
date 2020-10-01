@@ -33,6 +33,7 @@
 - (IBAction)send:(UIButton *)sender
 {
     BOOL hasValidationPassed = YES;
+    BOOL hasViewChangedForAnyViews = NO;
     NSError *error = nil;
     NSMutableArray<ACRIBaseInputHandler> *gatheredInputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
 
@@ -49,6 +50,7 @@
                 [input setFocus:NO view:nil];
             }
             hasValidationPassed &= validationResult;
+            hasViewChangedForAnyViews |= input.hasVisibilityChanged;
         }
         parent = [_view getParent:parent];
     }
@@ -56,6 +58,8 @@
     if (hasValidationPassed) {
         [[_view card] setInputs:gatheredInputs];
         [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+    } else if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+        [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
     }
 }
 
