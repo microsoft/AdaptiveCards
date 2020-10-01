@@ -67,7 +67,7 @@
         trailingBlankSpace = [container addPaddingSpace];
     }
 
-    [container setClipsToBounds:TRUE];
+    [container setClipsToBounds:NO];
 
     if (containerElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:container

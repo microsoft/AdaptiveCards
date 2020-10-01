@@ -1039,7 +1039,8 @@
         },
         "regex": {
           "type": "string",
-          "description": "Regular expression indicating the required format of this text input."
+          "description": "Regular expression indicating the required format of this text input.",
+          "version": "1.3"
         },
         "style": {
           "$ref": "#/definitions/TextInputStyle",

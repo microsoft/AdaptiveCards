@@ -103,7 +103,11 @@
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(elem);
+    std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+
+    if (factSet->GetFacts().empty()) {
+        return nil;
+    }
 
     ACRContainerStyle style = [viewGroup style];
     NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -125,8 +129,9 @@
     [factSetWrapperView adjustHuggingForLastElement];
 
     NSMutableDictionary *textMap = [rootView getTextMap];
+    NSInteger nValidFacts = 0;
 
-    for (auto fact : fctSet->GetFacts()) {
+    for (auto fact : factSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         NSString *titleElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
         if (![textMap objectForKey:titleElemId]) {
@@ -154,7 +159,6 @@
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
-
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         NSString *valElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
         if (![textMap objectForKey:valElemId]) {
@@ -175,9 +179,16 @@
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         valueLab.isAccessibilityElement = YES;
 
-        [titleStack addArrangedSubview:titleLab];
-        [valueStack addArrangedSubview:valueLab];
-        [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+        if (title.length || value.length) {
+            [titleStack addArrangedSubview:titleLab];
+            [valueStack addArrangedSubview:valueLab];
+            [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
+            nValidFacts++;
+        }
+    }
+
+    if (!nValidFacts) {
+        return nil;
     }
 
     [viewGroup addArrangedSubview:factSetWrapperView];

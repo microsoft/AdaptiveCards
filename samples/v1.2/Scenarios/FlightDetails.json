@@ -13,7 +13,7 @@
 							"items": [
 								{
 									"type": "Image",
-									"horizontalAlignment": "Center",
+									"horizontalAlignment": "center",
 									"url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png",
 									"altText": "Departing airplane"
 								}
@@ -27,28 +27,28 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "ExtraLarge",
-									"weight": "Lighter",
-									"color": "Accent",
-									"text": "Flight to Paris",
+									"size": "extraLarge",
+									"weight": "lighter",
+									"color": "accent",
+									"text": "Flight to JFK",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
-									"spacing": "Small",
-									"text": "Delta Air Lines flight 8471",
+									"spacing": "small",
+									"text": "Continental Air Lines flight UA110",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
-									"spacing": "None",
-									"text": "Confirmation code: ABCDEF",
+									"spacing": "none",
+									"text": "Confirmation code: RXJ34P",
 									"wrap": true
 								},
 								{
 									"type": "TextBlock",
-									"spacing": "None",
-									"text": "10 hours 45 minutes",
+									"spacing": "none",
+									"text": "4 hours 15 minutes",
 									"wrap": true
 								}
 							],
@@ -74,16 +74,16 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"size": "ExtraLarge",
-													"weight": "Lighter",
-													"text": "BLR"
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "SFO"
 												}
 											],
 											"width": "auto"
 										},
 										{
 											"type": "Column",
-											"verticalContentAlignment": "Center",
+											"verticalContentAlignment": "center",
 											"items": [
 												{
 													"type": "Image",
@@ -96,8 +96,8 @@
 										},
 										{
 											"type": "Column",
-											"spacing": "Small",
-											"verticalContentAlignment": "Center",
+											"spacing": "small",
+											"verticalContentAlignment": "center",
 											"items": [
 												{
 													"type": "Image",
@@ -113,10 +113,10 @@
 											"items": [
 												{
 													"type": "TextBlock",
-													"horizontalAlignment": "Right",
-													"size": "ExtraLarge",
-													"weight": "Lighter",
-													"text": "CDG"
+													"horizontalAlignment": "right",
+													"size": "extraLarge",
+													"weight": "lighter",
+													"text": "JFK"
 												}
 											],
 											"width": "auto"
@@ -130,9 +130,25 @@
 											"type": "Column",
 											"items": [
 												{
-													"type": "TextBlock",
-													"size": "Medium",
-													"text": "1:55 AM"
+													"type": "RichTextBlock",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "8:15 PM\n"
+														},
+														{
+															"type": "TextRun",
+															"text": "Sat, Mar 4, 2017\n",
+															"isSubtle": true,
+															"wrap": true
+														},
+														{
+															"type": "TextRun",
+															"text": "San Francisco",
+															"isSubtle": true
+														}
+													]
 												}
 											],
 											"width": 1
@@ -141,76 +157,31 @@
 											"type": "Column",
 											"items": [
 												{
-													"type": "TextBlock",
-													"horizontalAlignment": "Right",
-													"size": "Medium",
-													"text": "8:10 AM"
+													"type": "RichTextBlock",
+													"horizontalAlignment": "right",
+													"inlines": [
+														{
+															"type": "TextRun",
+															"size": "medium",
+															"text": "3:30 AM\n"
+														},
+														{
+															"type": "TextRun",
+															"text": "Sat, Mar 4, 2017\n",
+															"isSubtle": true,
+															"wrap": true
+														},
+														{
+															"type": "TextRun",
+															"text": "New York",
+															"isSubtle": true
+														}
+													]
 												}
 											],
 											"width": 1
 										}
 									]
-								},
-								{
-									"type": "ColumnSet",
-									"spacing": "None",
-									"columns": [
-										{
-											"type": "Column",
-											"items": [
-												{
-													"type": "TextBlock",
-													"text": "November 12, 2017",
-													"isSubtle": true,
-													"wrap": true
-												}
-											],
-											"width": 1
-										},
-										{
-											"type": "Column",
-											"items": [
-												{
-													"type": "TextBlock",
-													"horizontalAlignment": "Right",
-													"text": "November 12, 2017",
-													"isSubtle": true,
-													"wrap": true
-												}
-											],
-											"width": 1
-										}
-									]
-								},
-								{
-									"type": "ColumnSet",
-									"spacing": "None",
-									"columns": [
-										{
-											"type": "Column",
-											"items": [
-												{
-													"type": "TextBlock",
-													"text": "Bengaluru",
-													"isSubtle": true
-												}
-											],
-											"width": 1
-										},
-										{
-											"type": "Column",
-											"items": [
-												{
-													"type": "TextBlock",
-													"horizontalAlignment": "Right",
-													"text": "Paris",
-													"isSubtle": true
-												}
-											],
-											"width": 1
-										}
-									],
-									"height": "stretch"
 								},
 								{
 									"type": "ActionSet",
@@ -223,10 +194,10 @@
 										},
 										{
 											"type": "Action.Submit",
-											"title": "View in calendar"
+											"title": "View"
 										}
 									],
-									"spacing": "Medium"
+									"spacing": "medium"
 								}
 							]
 						}

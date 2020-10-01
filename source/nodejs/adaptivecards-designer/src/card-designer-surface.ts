@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Controls from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
@@ -237,8 +237,6 @@ export class CardDesignerSurface {
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
                 }
-
-                this._designerSurface.focus();
             }
 
             this.updatePeerCommandsLayout();
@@ -532,8 +530,8 @@ export class CardDesignerSurface {
 
         this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
-                switch (e.keyCode) {
-                    case Controls.KEY_ESCAPE:
+                switch (e.key) {
+                    case Constants.keys.escape:
                         if (this.draggedPeer) {
                             this.endDrag(true);
                         }
@@ -542,7 +540,7 @@ export class CardDesignerSurface {
                         }
 
                         break;
-                    case Controls.KEY_DELETE:
+                    case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
                         }
@@ -818,8 +816,6 @@ export class CardDesignerSurface {
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
-        var result = false;
-
         if (peer) {
             if (this._dropTarget) {
                 this._dropTarget.renderedElement.classList.remove("dragover");
@@ -831,11 +827,11 @@ export class CardDesignerSurface {
                 this._dropTarget = newDropTarget;
                 this._dropTarget.renderedElement.classList.add("dragover");
 
-                result = this._dropTarget.tryDrop(peer, pointerPosition);
+                return this._dropTarget.tryDrop(peer, pointerPosition);
             }
         }
 
-        return result;
+        return false;
     }
 
     isPointerOver(x: number, y: number) {

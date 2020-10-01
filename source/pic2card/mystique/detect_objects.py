@@ -28,9 +28,8 @@ class ObjectDetection:
         Initialize the object detection using model loaded from forzen
         graph
         """
-        det_g, cat_i, tens_d = self._load_model_dump()
+        det_g, tens_d = self._load_model_dump()
         self.detection_graph = det_g
-        self.category_index = cat_i
         self.tensor_dict = tens_d
 
     @staticmethod
@@ -71,7 +70,7 @@ class ObjectDetection:
         """
         image, image_np = self._img_preprocess(image_path)
         width, height = image.size
-        result, _index = self.get_objects(image_np=image_np, image=image)
+        result = self.get_objects(image_np=image_np, image=image)
         classes = [id_to_label(i) for i in result['detection_classes']]
         scores = result['detection_scores'].tolist()
         boxes = result['detection_boxes'].tolist()
@@ -114,7 +113,7 @@ class ObjectDetection:
         output_dict["detection_boxes"] = bboxes
 
         # renormalize the the box cooridinates
-        return output_dict, self.category_index
+        return output_dict
 
     def run_inference_for_single_image(self, image: np.array):
         """
