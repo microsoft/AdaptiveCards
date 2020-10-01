@@ -25,9 +25,6 @@ steps:
 #   inputs:
 #     secureFile: gradle.properties.4
 # - bash: |
-#    # Write your commands here
-#   
-#    # Use the environment variables input below to pass secret variables to this script
 #    cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
 #   displayName: 'Bash Script'
 
