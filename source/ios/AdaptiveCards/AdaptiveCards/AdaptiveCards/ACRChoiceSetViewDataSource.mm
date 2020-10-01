@@ -84,30 +84,28 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 {
     UITableViewCell *cell = nil;
 
-    //if (_userSelections[[NSNumber numberWithInteger:indexPath.row]] == [NSNumber numberWithBool:YES]) {
+    if (_userSelections[[NSNumber numberWithInteger:indexPath.row]] == [NSNumber numberWithBool:YES]) {
         if (_isMultiChoicesAllowed) {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"checked-checkbox"];
+            cell = [tableView dequeueReusableCellWithIdentifier:checkedCheckboxReuseID];
         } else {
-            cell = [tableView dequeueReusableCellWithIdentifier:@"checked-checkbox"];
+            cell = [tableView dequeueReusableCellWithIdentifier:checkedRadioButtonReuseID];
         }
-        //cell.accessibilityTraits |= UIAccessibilityTraitSelected;
-//    } else {
-//        if (_isMultiChoicesAllowed) {
-//            cell = [tableView dequeueReusableCellWithIdentifier:@"checked-checkbox"];
-//        } else {
-//            cell = [tableView dequeueReusableCellWithIdentifier:@"checked-checkbox"];
-//        }
-//        //cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
-//    }
-//    
-    /*
+        cell.accessibilityTraits |= UIAccessibilityTraitSelected;
+    } else {
+        if (_isMultiChoicesAllowed) {
+            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedCheckboxReuseID];
+        } else {
+            cell = [tableView dequeueReusableCellWithIdentifier:uncheckedRadioButtonReuseID];
+        }
+        cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
+    }
+    
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-     */
     
     return cell;
 }
@@ -118,7 +116,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
     if ([_userSelections count] &&
         [_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] &&
         [[_userSelections objectForKey:[NSNumber numberWithInteger:indexPath.row]] boolValue] == YES) {
-        //_currentSelectedIndexPath = indexPath;
+        _currentSelectedIndexPath = indexPath;
     }
 }
 
