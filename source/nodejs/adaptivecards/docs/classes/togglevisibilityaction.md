@@ -55,6 +55,7 @@
 * [getAllInputs](togglevisibilityaction.md#getallinputs)
 * [getAriaRole](togglevisibilityaction.md#getariarole)
 * [getCustomProperty](togglevisibilityaction.md#getcustomproperty)
+* [getDefaultSerializationContext](togglevisibilityaction.md#protected-getdefaultserializationcontext)
 * [getHref](togglevisibilityaction.md#gethref)
 * [getJsonTypeName](togglevisibilityaction.md#getjsontypename)
 * [getReferencedInputs](togglevisibilityaction.md#getreferencedinputs)
@@ -75,6 +76,7 @@
 * [populateSchema](togglevisibilityaction.md#protected-populateschema)
 * [preProcessPropertyValue](togglevisibilityaction.md#preprocesspropertyvalue)
 * [prepareForExecution](togglevisibilityaction.md#prepareforexecution)
+* [raiseExecuteActionEvent](togglevisibilityaction.md#protected-raiseexecuteactionevent)
 * [remove](togglevisibilityaction.md#remove)
 * [removeTargetElement](togglevisibilityaction.md#removetargetelement)
 * [render](togglevisibilityaction.md#render)
@@ -508,6 +510,18 @@ Name | Type |
 
 ___
 
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [Action](action.md).[getDefaultSerializationContext](action.md#protected-getdefaultserializationcontext)*
+
+*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
+
+___
+
 ###  getHref
 
 ▸ **getHref**(): *string | undefined*
@@ -776,6 +790,16 @@ ___
 
 ___
 
+### `Protected` raiseExecuteActionEvent
+
+▸ **raiseExecuteActionEvent**(): *void*
+
+*Inherited from [Action](action.md).[raiseExecuteActionEvent](action.md#protected-raiseexecuteactionevent)*
+
+**Returns:** *void*
+
+___
+
 ###  remove
 
 ▸ **remove**(): *boolean*
@@ -804,7 +828,7 @@ ___
 
 ▸ **render**(`baseCssClass`: string): *void*
 
-*Inherited from [Action](action.md).[render](action.md#render)*
+*Overrides [Action](action.md).[render](action.md#render)*
 
 **Parameters:**
 
@@ -922,17 +946,15 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [Action](action.md).[toJSON](action.md#tojson)*
-
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [SerializationContext](serializationcontext.md) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 

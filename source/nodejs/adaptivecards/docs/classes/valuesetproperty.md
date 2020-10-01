@@ -27,6 +27,7 @@
 ### Methods
 
 * [getInternalName](valuesetproperty.md#getinternalname)
+* [isValidValue](valuesetproperty.md#isvalidvalue)
 * [parse](valuesetproperty.md#parse)
 * [toJSON](valuesetproperty.md#tojson)
 
@@ -113,6 +114,21 @@ ___
 *Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)*
 
 **Returns:** *string*
+
+___
+
+###  isValidValue
+
+▸ **isValidValue**(`value`: string, `context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | string |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *boolean*
 
 ___
 

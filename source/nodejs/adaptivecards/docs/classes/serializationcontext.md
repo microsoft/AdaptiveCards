@@ -19,6 +19,7 @@
 * [onParseAction](serializationcontext.md#optional-onparseaction)
 * [onParseElement](serializationcontext.md#optional-onparseelement)
 * [targetVersion](serializationcontext.md#targetversion)
+* [toJSONOriginalParam](serializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -78,6 +79,14 @@ ___
 • **targetVersion**: *[Version](version.md)*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)*
+
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
+
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)*
 
 ## Accessors
 

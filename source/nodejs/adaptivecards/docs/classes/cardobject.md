@@ -40,6 +40,7 @@
 ### Methods
 
 * [getCustomProperty](cardobject.md#getcustomproperty)
+* [getDefaultSerializationContext](cardobject.md#protected-getdefaultserializationcontext)
 * [getJsonTypeName](cardobject.md#abstract-getjsontypename)
 * [getRootObject](cardobject.md#getrootobject)
 * [getSchema](cardobject.md#getschema)
@@ -190,6 +191,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

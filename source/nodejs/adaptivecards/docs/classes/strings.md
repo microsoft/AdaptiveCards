@@ -10,10 +10,23 @@
 
 ### Object literals
 
+* [defaults](strings.md#static-defaults)
 * [errors](strings.md#static-errors)
 * [hints](strings.md#static-hints)
 
 ## Object literals
+
+### `Static` defaults
+
+### ▪ **defaults**: *object*
+
+###  inlineActionTitle
+
+▸ **inlineActionTitle**(): *string*
+
+**Returns:** *string*
+
+___
 
 ### `Static` errors
 

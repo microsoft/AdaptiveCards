@@ -26,6 +26,7 @@
 ### Methods
 
 * [getCustomProperty](choice.md#getcustomproperty)
+* [getDefaultSerializationContext](choice.md#protected-getdefaultserializationcontext)
 * [getSchema](choice.md#getschema)
 * [getSchemaKey](choice.md#protected-getschemakey)
 * [getValue](choice.md#protected-getvalue)
@@ -113,6 +114,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

@@ -61,6 +61,7 @@
 * [getAllInputs](action.md#getallinputs)
 * [getAriaRole](action.md#getariarole)
 * [getCustomProperty](action.md#getcustomproperty)
+* [getDefaultSerializationContext](action.md#protected-getdefaultserializationcontext)
 * [getHref](action.md#gethref)
 * [getJsonTypeName](action.md#abstract-getjsontypename)
 * [getReferencedInputs](action.md#getreferencedinputs)
@@ -81,6 +82,7 @@
 * [populateSchema](action.md#protected-populateschema)
 * [preProcessPropertyValue](action.md#preprocesspropertyvalue)
 * [prepareForExecution](action.md#prepareforexecution)
+* [raiseExecuteActionEvent](action.md#protected-raiseexecuteactionevent)
 * [remove](action.md#remove)
 * [render](action.md#render)
 * [resetDefaultValues](action.md#resetdefaultvalues)
@@ -397,6 +399,16 @@ Name | Type |
 
 ___
 
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
+
+___
+
 ###  getHref
 
 ▸ **getHref**(): *string | undefined*
@@ -649,6 +661,14 @@ ___
 
 ___
 
+### `Protected` raiseExecuteActionEvent
+
+▸ **raiseExecuteActionEvent**(): *void*
+
+**Returns:** *void*
+
+___
+
 ###  remove
 
 ▸ **remove**(): *boolean*
@@ -775,15 +795,15 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [SerializationContext](serializationcontext.md) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 

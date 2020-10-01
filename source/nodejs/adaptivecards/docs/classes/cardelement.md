@@ -84,6 +84,7 @@
 * [getAllInputs](cardelement.md#getallinputs)
 * [getCustomProperty](cardelement.md#getcustomproperty)
 * [getDefaultPadding](cardelement.md#protected-getdefaultpadding)
+* [getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)
 * [getEffectivePadding](cardelement.md#geteffectivepadding)
 * [getEffectiveStyle](cardelement.md#geteffectivestyle)
 * [getEffectiveStyleDefinition](cardelement.md#geteffectivestyledefinition)
@@ -597,6 +598,16 @@ ___
 ▸ **getDefaultPadding**(): *[PaddingDefinition](paddingdefinition.md)*
 
 **Returns:** *[PaddingDefinition](paddingdefinition.md)*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -1216,15 +1227,15 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [SerializationContext](serializationcontext.md) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 

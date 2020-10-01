@@ -31,6 +31,7 @@
 
 * [apply](backgroundimage.md#apply)
 * [getCustomProperty](backgroundimage.md#getcustomproperty)
+* [getDefaultSerializationContext](backgroundimage.md#protected-getdefaultserializationcontext)
 * [getSchema](backgroundimage.md#getschema)
 * [getSchemaKey](backgroundimage.md#protected-getschemakey)
 * [getValue](backgroundimage.md#protected-getvalue)
@@ -150,6 +151,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
