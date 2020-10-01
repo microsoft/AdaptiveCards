@@ -25,7 +25,8 @@ public enum WarningStatusCode {
   InvalidLanguage,
   InvalidValue,
   CustomWarning,
-  EmptyLabelInRequiredInput;
+  EmptyLabelInRequiredInput,
+  RequiredPropertyMissing;
 
   public final int swigValue() {
     return swigValue;

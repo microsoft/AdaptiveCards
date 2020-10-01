@@ -179,10 +179,11 @@ using namespace AdaptiveCards;
     auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
+        ACRSeparator *separator = nil;
         if (*firstelem != elem && curStretchableElem) {
-            ACRSeparator *separator = [ACRSeparator renderSeparation:elem
-                                                        forSuperview:view
-                                                      withHostConfig:[config getHostConfig]];
+            separator = [ACRSeparator renderSeparation:elem
+                                          forSuperview:view
+                                        withHostConfig:[config getHostConfig]];
             configSeparatorVisibility(separator, prevElem);
         }
 
@@ -200,7 +201,12 @@ using namespace AdaptiveCards;
             if ([acoElem meetsRequirements:featureReg] == NO) {
                 @throw [ACOFallbackException fallbackException];
             }
+
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
+
+            if (separator && !curStretchableElem) {
+                [(ACRContentStackView *)view removeViewFromContentStackView:separator];
+            }
 
             if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
                 // vertical stretch works in the following way:

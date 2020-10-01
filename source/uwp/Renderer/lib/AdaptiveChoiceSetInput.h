@@ -24,6 +24,8 @@ namespace AdaptiveNamespace
         HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ChoiceSetInput>& sharedChoiceSetInput);
 
         // IAdaptiveChoiceSetInput
+        IFACEMETHODIMP get_Placeholder(_Outptr_ HSTRING* placeholder);
+        IFACEMETHODIMP put_Placeholder(_In_ HSTRING placeholder);
 
         IFACEMETHODIMP get_Value(_Outptr_ HSTRING* value);
         IFACEMETHODIMP put_Value(_In_ HSTRING value);
@@ -160,6 +162,7 @@ namespace AdaptiveNamespace
         boolean m_isMultiSelect;
         ABI::AdaptiveNamespace::ChoiceSetStyle m_choiceSetStyle;
         Microsoft::WRL::Wrappers::HString m_value;
+        Microsoft::WRL::Wrappers::HString m_placeholder;
     };
 
     ActivatableClass(AdaptiveChoiceSetInput);
