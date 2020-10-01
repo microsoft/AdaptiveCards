@@ -9,6 +9,7 @@ pool:
 
 parameters:
   name: prerelease.tag
+  displayName: Prerelease Tag (leave empty for final releases)
   type: string
   default: ''
 
