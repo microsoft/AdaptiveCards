@@ -15,7 +15,7 @@ pool:
   demands: java
 
 parameters:
-- name: prerelease.tag
+- name: prerelease_tag
   displayName: Prerelease Tag (leave empty for final releases)
   type: string
   default: 'nightly'
@@ -50,7 +50,7 @@ steps:
 - task: Gradle@2
   displayName: 'gradlew publish'
   env:
-    prerelease.tag: ${{ parameters.prerelease.tag }}
+    prerelease_tag: ${{ parameters.prerelease_tag }}
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android

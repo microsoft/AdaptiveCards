@@ -8,7 +8,7 @@ pool:
   demands: java
 
 parameters:
-- name: prerelease.tag
+- name: prerelease_tag
   displayName: Prerelease Tag (leave empty for final releases)
   type: string
   default: ''
@@ -54,6 +54,6 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   env:
-    prerelease.tag: ${{ parameters.prerelease.tag }}
+    prerelease_tag: ${{ parameters.prerelease_tag }}
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
