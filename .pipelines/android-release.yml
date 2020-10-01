@@ -8,7 +8,7 @@ pool:
   demands: java
 
 parameters:
-  name: prerelease.tag
+- name: prerelease.tag
   displayName: Prerelease Tag (leave empty for final releases)
   type: string
   default: ''
