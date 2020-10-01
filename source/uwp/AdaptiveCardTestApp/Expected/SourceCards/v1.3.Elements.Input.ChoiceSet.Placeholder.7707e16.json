@@ -1,0 +1,36 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+			"type": "Input.ChoiceSet",
+			"id": "CompactSelectVal",
+			"label": "What color do you want? (compact)",
+			"style": "compact",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"placeholder": "Please choose",
+			"choices": [
+				{
+					"title": "Red",
+					"value": "1"
+				},
+				{
+					"title": "Green",
+					"value": "2"
+				},
+				{
+					"title": "Blue",
+					"value": "3"
+				}
+			]
+		}
+    ],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

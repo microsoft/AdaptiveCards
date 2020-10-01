@@ -406,7 +406,10 @@ namespace AdaptiveNamespace::XamlHelpers
             {
                 // perform this element's fallback
                 hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                if (renderedElement)
+                {
+                    RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                }
             }
 
             if (hr == E_PERFORM_FALLBACK)
@@ -1016,9 +1019,11 @@ namespace AdaptiveNamespace::XamlHelpers
             auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
 
             ComPtr<IAdaptiveInputValue> inputValue;
-            renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf());
-            RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
-
+            RETURN_IF_FAILED(renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf()));
+            if (inputValue)
+            {
+                RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
+            }
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
 
             // Add the rendered error message

@@ -240,7 +240,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         boolean hasEmptyDefault = value.isEmpty();
         if (hasEmptyDefault)
         {
-            titleList.addElement("");
+            titleList.addElement(choiceSetInput.GetPlaceholder());
             selection = (int)size;
         }
 
