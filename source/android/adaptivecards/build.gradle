@@ -74,8 +74,16 @@ afterEvaluate {
                 groupId = 'io.adaptivecards'
                 artifactId = 'adaptivecards-android'
 
-                // Get version from PackageES, or fallback to Azure Pipeline build number
-                version = System.getenv('XES_PACKAGEVERSIONNUMBER') ?: System.getenv('BUILD_BUILDNUMBER') ?: '0.0.0'
+                // Use pre-release identifier, if provided
+                def versionSuffix = ''
+                if(System.getenv('PRERELEASE_TAG')) {
+                    versionSuffix += "-${System.getenv('PRERELEASE_TAG')}"
+                    // Append pipeline build number to distinguish pre-releases
+                    if(System.getenv('BUILD_BUILDNUMBER')) {
+                        versionSuffix += ".${System.getenv('BUILD_BUILDNUMBER')}"
+                    }
+                }
+                version = "${acVersionMajor}.${acVersionMinor}.${acVersionPatch}${versionSuffix}"
 
                 pom projectInfo
             }
@@ -94,7 +102,7 @@ afterEvaluate {
             }
             // Save to local directory "artifact"
             maven {
-                name = 'localArtifact'
+                name = 'localDirectory'
                 url = "artifact"
             }
             // TODO: Add SonaType OSS repository to publish directly
