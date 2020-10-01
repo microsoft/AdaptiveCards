@@ -10,7 +10,8 @@
 		"watch": "webpack --watch",
 		"start": "webpack-dev-server --open",
 		"lint": "eslint src/*.ts",
-		"release": "npm run build"
+		"release": "npm run build",
+		"stats": "npx webpack-bundle-analyzer dist/stats.json"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",

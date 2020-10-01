@@ -29,7 +29,8 @@
 		"dts": "dts-generator --prefix adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "eslint src/*.ts",
 		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" \"npm:docs\" && concurrently \"npm:test\" \"npm:dts\"",
-		"docs": "npx typedoc"
+		"docs": "npx typedoc",
+		"stats": "npx webpack-bundle-analyzer dist/stats.json"
 	},
 	"repository": {
 		"type": "git",

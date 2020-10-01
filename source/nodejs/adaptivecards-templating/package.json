@@ -33,7 +33,8 @@
 		"dts": "dts-generator --prefix adaptivecards-templating --project . --out dist/adaptivecards-templating.d.ts",
 		"lint": "eslint src/*.ts",
 		"release": "npm run build && webpack --mode=production && npm run dts",
-		"docs": "npx typedoc"
+		"docs": "npx typedoc",
+		"stats": "npx webpack-bundle-analyzer dist/stats.json"
 	},
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",

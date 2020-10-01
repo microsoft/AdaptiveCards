@@ -37,6 +37,7 @@
 		"typescript": "^3.9.5",
 		"typings-for-css-modules-loader": "^1.7.0",
 		"webpack": "^4.38.0",
+		"webpack-bundle-analyzer": "^3.9.0",
 		"webpack-cli": "^3.3.6",
 		"webpack-dev-server": "^3.11.0"
 	},
