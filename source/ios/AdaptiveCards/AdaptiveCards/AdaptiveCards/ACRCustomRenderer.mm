@@ -46,7 +46,8 @@
         writer->write(blob, &sstream);
         delete writer;
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
 
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];

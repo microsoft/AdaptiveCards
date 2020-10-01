@@ -54,7 +54,8 @@ using namespace AdaptiveCards;
         std::stringstream sstream;
         writer->write(blob, &sstream);
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         delete writer;
         return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
     }
