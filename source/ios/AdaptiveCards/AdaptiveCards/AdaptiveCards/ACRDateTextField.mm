@@ -212,4 +212,6 @@ using namespace AdaptiveCards;
 
 @synthesize isRequired;
 
+@synthesize hasVisibilityChanged;
+
 @end
