@@ -7,6 +7,11 @@ pool:
   name: Hosted Ubuntu 1604
   demands: java
 
+parameters:
+  name: prerelease.tag
+  type: string
+  default: ''
+
 steps:
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.

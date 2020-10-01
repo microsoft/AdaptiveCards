@@ -14,8 +14,10 @@ pool:
   name: Hosted Ubuntu 1604
   demands: java
 
-variables:
-  prerelease.tag: nightly
+parameters:
+  name: prerelease.tag
+  type: string
+  default: ''
 
 steps:
 # Automated publish to Sonatype is not yet configured, so skip Nexus credentials
@@ -46,6 +48,8 @@ steps:
 
 - task: Gradle@2
   displayName: 'gradlew publish'
+  variables:
+    prerelease.tag: ${{ parameters.prerelease.tag }}
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android
