@@ -18,11 +18,12 @@ variables:
   prerelease.tag: nightly
 
 steps:
-- task: DownloadSecureFile@1
-  name: gradleproperties
-  displayName: 'Download secure file'
-  inputs:
-    secureFile: gradle.properties.4
+# Automated publish to Sonatype is not yet configured, so don't need Nexus credentials
+# - task: DownloadSecureFile@1
+#   name: gradleproperties
+#   displayName: 'Download secure file'
+#   inputs:
+#     secureFile: gradle.properties.4
 
 - bash: |
    # Write your commands here
