@@ -13,6 +13,10 @@ parameters:
   type: string
   default: ''
 
+variables:
+  # Capture build parameter to use as environment variable
+  prerelease_tag: ${{ parameters.prerelease_tag }}
+
 steps:
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
@@ -53,7 +57,5 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
-  env:
-    prerelease_tag: ${{ parameters.prerelease_tag }}
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'

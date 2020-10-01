@@ -20,6 +20,10 @@ parameters:
   type: string
   default: 'nightly'
 
+variables:
+  # Capture build parameter to use as environment variable
+  prerelease_tag: ${{ parameters.prerelease_tag }}
+
 steps:
 # Automated publish to Sonatype is not yet configured, so skip Nexus credentials
 # - task: DownloadSecureFile@1
@@ -49,8 +53,6 @@ steps:
 
 - task: Gradle@2
   displayName: 'gradlew publish'
-  env:
-    prerelease_tag: ${{ parameters.prerelease_tag }}
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android
