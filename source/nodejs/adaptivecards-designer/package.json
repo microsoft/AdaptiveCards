@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer",
-	"version": "1.2.0",
+	"version": "1.4.0",
 	"description": "Adaptive Card designer embeddable control",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -35,9 +35,9 @@
 	},
 	"dependencies": {
 		"adaptive-expressions": "^4.9.2",
-		"adaptivecards": "^2.2.0",
+		"adaptivecards": "^2.4.0",
 		"adaptivecards-controls": "^0.5.0",
-		"adaptivecards-templating": "^1.2.0",
+		"adaptivecards-templating": "^1.4.0",
 		"clipboard": "^2.0.1"
 	},
 	"peerDependencies": {

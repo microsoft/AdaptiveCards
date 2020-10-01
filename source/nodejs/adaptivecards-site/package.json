@@ -16,9 +16,9 @@
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "ac-typed-schema": "^0.7.0",
-    "adaptivecards": "^2.2.0",
-    "adaptivecards-designer": "^1.2.0",
-    "adaptivecards-templating": "^1.2.0",
+    "adaptivecards": "^2.4.0",
+    "adaptivecards-designer": "^1.4.0",
+    "adaptivecards-templating": "^1.4.0",
     "adaptivecards-visualizer": "^1.4.0",
     "change-case": "^3.0.1",
     "cheerio": "^1.0.0-rc.3",
