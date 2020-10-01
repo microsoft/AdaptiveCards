@@ -14,6 +14,9 @@ pool:
   name: Hosted Ubuntu 1604
   demands: java
 
+variables:
+  prerelease.tag: nightly
+
 steps:
 - task: DownloadSecureFile@1
   name: gradleproperties
@@ -30,14 +33,14 @@ steps:
    
   displayName: 'Bash Script'
 
+  # TODO: Remove when Android Gradle Plugin 4.1 is stable.
+  # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
 - bash: |
    #!/usr/bin/env bash
    
-   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed. Please remove.
-   
    unset ANDROID_NDK_HOME
    sudo ${ANDROID_HOME}/tools/bin/sdkmanager --verbose --install "ndk;21.0.6113669"
-  displayName: 'Get NDK (won''t be needed w/ Android Gradle Plugin 4.1+)'
+  displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
