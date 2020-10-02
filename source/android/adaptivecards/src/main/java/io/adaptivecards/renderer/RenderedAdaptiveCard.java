@@ -29,6 +29,8 @@ public class RenderedAdaptiveCard {
     private Map<Long, Long> parentCardForCard;
     private Map<String, String> prevalidatedInputs;
 
+    private long m_lastClickedAction;
+
     protected RenderedAdaptiveCard(AdaptiveCard adaptiveCard)
     {
         this.warnings = new Vector<>();
@@ -56,14 +58,13 @@ public class RenderedAdaptiveCard {
         return warnings;
     }
 
-    public void registerInputHandler(IInputHandler handler, InternalId cardId)
+    public void registerInputHandler(IInputHandler handler, long cardId)
     {
-        Long cardHash = cardId.Hash();
-        if (!inputsInCard.containsKey(cardHash))
+        if (!inputsInCard.containsKey(cardId))
         {
-            inputsInCard.put(cardHash, new Vector<IInputHandler>());
+            inputsInCard.put(cardId, new Vector<IInputHandler>());
         }
-        inputsInCard.get(cardHash).add(handler);
+        inputsInCard.get(cardId).add(handler);
 
         handlers.add(handler);
     }
@@ -73,22 +74,22 @@ public class RenderedAdaptiveCard {
         return prevalidatedInputs;
     }
 
-    public void setParentToCard(InternalId card, InternalId parentCard)
+    public void setParentToCard(long cardId, long parentCardId)
     {
-        parentCardForCard.put(card.Hash(), parentCard.Hash());
+        parentCardForCard.put(cardId, parentCardId);
     }
 
-    public void setCardForSubmitAction(InternalId actionId, InternalId parentCard)
+    public void setCardForSubmitAction(long actionId, long parentCardId)
     {
-        submitActionCard.put(actionId.Hash(), parentCard.Hash());
+        submitActionCard.put(actionId, parentCardId);
     }
 
-    private Vector<IInputHandler> getInputsToValidate(SubmitAction submitAction)
+    private Vector<IInputHandler> getInputsToValidate()
     {
-        Long cardId = submitActionCard.get(submitAction.GetInternalId().Hash());
+        Long cardId = submitActionCard.get(m_lastClickedAction);
         Vector<IInputHandler> inputHandlers = new Vector<>();
 
-        while ((cardId != null) && (cardId != new InternalId().Hash()))
+        while ((cardId != null) && (cardId != View.NO_ID))
         {
             Vector<IInputHandler> handlersInCard = inputsInCard.get(cardId);
 
@@ -103,13 +104,13 @@ public class RenderedAdaptiveCard {
         return inputHandlers;
     }
 
-    public boolean areInputsValid(SubmitAction submitAction)
+    public boolean areInputsValid()
     {
         boolean allInputsAreValid = true;
         boolean hasSetFocusToElement = false;
         Map<String, String> validatedInputs = new HashMap<>();
 
-        Vector<IInputHandler> inputsToValidate = getInputsToValidate(submitAction);
+        Vector<IInputHandler> inputsToValidate = getInputsToValidate();
 
         for(IInputHandler i : inputsToValidate)
         {
@@ -139,28 +140,25 @@ public class RenderedAdaptiveCard {
         return allInputsAreValid;
     }
 
-    public void setInputs(Map<String, String> inputs)
-    {
-        if (inputs == null || inputs.isEmpty())
-        {
-            return;
-        }
-        //Iterate over all handlers
-        for (IInputHandler handler: handlers)
-        {
-            if (inputs.containsKey(handler.getId()))
-            {
-                handler.setInput(inputs.get(handler.getId()));
-            }
-        }
-    }
-
     public AdaptiveCard getAdaptiveCard()
     {
         return adaptiveCard;
     }
 
-    public void setView(View view) {
+    public void setView(View view)
+    {
         this.view = view;
     }
+
+    protected void setLastClickedAction(View view)
+    {
+        m_lastClickedAction = Util.getViewId(view);
+    }
+
+    public void registerSubmitableAction(View renderedAction, RenderArgs renderArgs)
+    {
+        long actionId = Util.getViewId(renderedAction);
+        setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
+    }
+
 }

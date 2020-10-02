@@ -192,7 +192,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
         {
-            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+            long actionId = Util.getViewId(button);
+            renderedCard.setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
         }
 
         button.setText(baseActionElement.GetTitle());

@@ -329,11 +329,11 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
             else
             {
+                m_renderedAdaptiveCard.setLastClickedAction(v);
+
                 if (m_action.GetElementType() == ActionType.Submit)
                 {
-                    SubmitAction submitAction = Util.castTo(m_action, SubmitAction.class);
-
-                    if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
+                    if (!m_renderedAdaptiveCard.areInputsValid())
                     {
                         return;
                     }

@@ -102,7 +102,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    featureRegistration);
         }
 
-        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler, renderArgs);
 
         TagContent tagContent = new TagContent(columnSet);
         if (columnSet.GetHeight() == HeightType.Stretch)
