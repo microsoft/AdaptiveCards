@@ -201,4 +201,10 @@ public class RenderedAdaptiveCard {
         setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
     }
 
+    protected boolean isActionSubmitable(View action)
+    {
+        long actionId = action.getId();
+        return submitActionCard.containsKey(actionId);
+    }
+
 }

@@ -329,14 +329,17 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
             else
             {
-                m_renderedAdaptiveCard.setLastClickedAction(v);
-
                 if (m_action.GetElementType() == ActionType.Submit)
                 {
                     if (!m_renderedAdaptiveCard.areInputsValid())
                     {
                         return;
                     }
+                    m_renderedAdaptiveCard.setLastClickedAction(v);
+                }
+                else if (m_renderedAdaptiveCard.isActionSubmitable(v))
+                {
+                    m_renderedAdaptiveCard.setLastClickedAction(v);
                 }
 
                 m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
