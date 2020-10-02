@@ -100,13 +100,13 @@
         view = [rootView getImageView:key];
     }
 
-    ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
+    // ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
 
-    if (!view) {
-        [viewGroup addSubview:wrappingview];
-        return wrappingview;
-    }
-    wrappingview.desiredContentSize = intrinsicContentSize;
+    //if (!view) {
+    //    [viewGroup addSubview:wrappingview];
+    //    return wrappingview;
+    //}
+    // wrappingview.desiredContentSize = intrinsicContentSize;
 
     view.clipsToBounds = YES;
 
@@ -115,14 +115,17 @@
         view.backgroundColor = [ACOHostConfig convertHexColorCodeToUIColor:imgElem->GetBackgroundColor()];
     }
 
-    [wrappingview addSubview:view];
+    //[wrappingview addSubview:view];
 
-    [viewGroup addArrangedSubview:wrappingview];
+    //[viewGroup addArrangedSubview:wrappingview];
+    [viewGroup addArrangedSubview:view];
 
+    /*
     HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
     if (adaptiveAlignment == HorizontalAlignment::Left) {
         UILayoutGuide *leftGuide = [[UILayoutGuide alloc] init];
         leftGuide.identifier = @"img-left-guide";
+        [wrappingview addLayoutGuide:leftGuide];
         [wrappingview addLayoutGuide:leftGuide];
         [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingview.leadingAnchor].active = YES;
         [leftGuide.trailingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
@@ -150,6 +153,7 @@
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
+    */
 
     if (!isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
@@ -162,6 +166,7 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        /*
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
@@ -172,6 +177,7 @@
             [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingview.bottomAnchor].active = YES;
             [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
+        */
     }
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
@@ -182,16 +188,18 @@
                                                                   actionElement:selectAction
                                                                      hostConfig:acoConfig];
     view.translatesAutoresizingMaskIntoConstraints = NO;
-    wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
+    //wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
 
     view.isAccessibilityElement = YES;
 
-    configVisibility(wrappingview, elem);
+    //configVisibility(wrappingview, elem);
+    configVisibility(view, elem);
 
-    if (imgElem->GetImageStyle() == ImageStyle::Person) {
-        wrappingview.isPersonStyle = YES;
-    }
-    return wrappingview;
+    //if (imgElem->GetImageStyle() == ImageStyle::Person) {
+    //    wrappingview.isPersonStyle = YES;
+    //}
+    //return wrappingview;
+    return view;
 }
 
 - (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
@@ -253,8 +261,8 @@
                                             attribute:NSLayoutAttributeNotAnAttribute
                                            multiplier:1.0
                                              constant:cgsize.height] ];
-        constraints[0].priority = 1000;
-        constraints[1].priority = 1000;
+        constraints[0].priority = 245;
+        constraints[1].priority = 245;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
@@ -280,8 +288,8 @@
                                             attribute:NSLayoutAttributeHeight
                                            multiplier:widthToHeightRatio
                                              constant:0] ];
-        constraints[0].priority = 999;
-        constraints[1].priority = 1000;
+        constraints[0].priority = 245;
+        constraints[1].priority = 245;
 
         [NSLayoutConstraint activateConstraints:constraints];
 
