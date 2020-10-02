@@ -58,6 +58,21 @@ public class RenderedAdaptiveCard {
         return warnings;
     }
 
+    /**
+     * Registers an input handler with the card where it is located.
+     * @param handler Input handler to be registered
+     * @param renderArgs RenderArgs passed as parameter in the render method
+     */
+    public void registerInputHandler(IInputHandler handler, RenderArgs renderArgs)
+    {
+        registerInputHandler(handler, renderArgs.getContainerCardId());
+    }
+
+    /**
+     * Registers an input handler with the card where it is located.
+     * @param handler Input handler to be registered.
+     * @param cardId Card id where the input is located. This value can be retrieved from RenderArgs.getContainerCardId()
+     */
     public void registerInputHandler(IInputHandler handler, long cardId)
     {
         if (!inputsInCard.containsKey(cardId))
@@ -69,16 +84,32 @@ public class RenderedAdaptiveCard {
         handlers.add(handler);
     }
 
+    /**
+     * Retrieves the map of validated inputs. The map entries contain the input id as key and the retrieved value.
+     * @return A populated map of the retrieved inputs if the input validation succeeded, an empty map otherwise.
+     */
     public Map<String, String> getInputs()
     {
         return prevalidatedInputs;
     }
 
+    /**
+     * Sets a hierarchical relation between two cards. A card 'P' contains another card 'C' if 'C' is located
+     * in a ShowCard action in the 'actions' section of the card or in an ActionSet in card 'P'.
+     * @param cardId Card contained by parent card.
+     * @param parentCardId Card that contains the child card.
+     */
     public void setParentToCard(long cardId, long parentCardId)
     {
         parentCardForCard.put(cardId, parentCardId);
     }
 
+    /**
+     * Sets a hierarchical relation between an action and a card. A card 'C' contains an action 'A' if 'A' is located
+     * in the 'actions' section of the card or in an ActionSet in card 'C'.
+     * @param actionId Id for the action contained in the card.
+     * @param parentCardId Id for the container card
+     */
     public void setCardForSubmitAction(long actionId, long parentCardId)
     {
         submitActionCard.put(actionId, parentCardId);
@@ -104,6 +135,10 @@ public class RenderedAdaptiveCard {
         return inputHandlers;
     }
 
+    /**
+     * Checks if all inputs have valid values on them, validation depends on the input element type
+     * @return True if validation succeeds on all inputs, false otherwise
+     */
     public boolean areInputsValid()
     {
         boolean allInputsAreValid = true;
@@ -155,6 +190,11 @@ public class RenderedAdaptiveCard {
         m_lastClickedAction = Util.getViewId(view);
     }
 
+    /**
+     * Registers an action so input retrieval can be performed when the action is clicked
+     * @param renderedAction View where the action listener has been set
+     * @param renderArgs RenderArgs passed as a parameter from the render method
+     */
     public void registerSubmitableAction(View renderedAction, RenderArgs renderArgs)
     {
         long actionId = Util.getViewId(renderedAction);
