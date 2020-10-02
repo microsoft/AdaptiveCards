@@ -2,6 +2,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.Actions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -19,10 +20,10 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
-public class CustomGreenActionElement extends BaseActionElement
+public class CustomGreenAction extends BaseActionElement
 {
 
-    public CustomGreenActionElement(ActionType type) {
+    public CustomGreenAction(ActionType type) {
         super(type);
     }
 
@@ -36,10 +37,10 @@ public class CustomGreenActionElement extends BaseActionElement
         @Override
         public BaseActionElement Deserialize(ParseContext context, JsonValue value)
         {
-            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            CustomGreenAction element = new CustomGreenAction(ActionType.Custom);
             Util.deserializeBaseActionProperties(context, value, element);
 
-            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetElementTypeString(CustomGreenAction.CustomActionId);
             element.SetId("greenActionDeserialize");
             return element;
         }
@@ -47,10 +48,10 @@ public class CustomGreenActionElement extends BaseActionElement
         @Override
         public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
         {
-            CustomGreenActionElement element = new CustomGreenActionElement(ActionType.Custom);
+            CustomGreenAction element = new CustomGreenAction(ActionType.Custom);
             Util.deserializeBaseActionPropertiesFromString(context, jsonString, element);
 
-            element.SetElementTypeString(CustomGreenActionElement.CustomActionId);
+            element.SetElementTypeString(CustomGreenAction.CustomActionId);
             element.SetId("greenActionDeserialize");
             return element;
         }
@@ -75,9 +76,9 @@ public class CustomGreenActionElement extends BaseActionElement
         {
             Button greenActionButton = new Button(context);
 
-            CustomGreenActionElement customAction = (CustomGreenActionElement) baseActionElement.findImplObj();
+            CustomGreenAction customAction = (CustomGreenAction) baseActionElement.findImplObj();
 
-            greenActionButton.setBackgroundColor(m_activity.getResources().getColor(R.color.greenActionColor));
+            greenActionButton.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.greenActionColor), PorterDuff.Mode.SRC_ATOP);
             greenActionButton.setText(customAction.getMessage());
             greenActionButton.setAllCaps(false);
             greenActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));

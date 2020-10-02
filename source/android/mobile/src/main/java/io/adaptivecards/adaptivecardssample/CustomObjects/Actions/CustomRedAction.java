@@ -2,6 +2,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.Actions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,10 +23,10 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
-public class CustomRedActionElement extends BaseActionElement
+public class CustomRedAction extends BaseActionElement
 {
 
-    public CustomRedActionElement(ActionType type) {
+    public CustomRedAction(ActionType type) {
         super(type);
     }
 
@@ -43,15 +44,15 @@ public class CustomRedActionElement extends BaseActionElement
         }
     }
 
-    public class CustomRedActionParser extends ActionElementParser
+    public static class CustomRedActionParser extends ActionElementParser
     {
         @Override
         public BaseActionElement Deserialize(ParseContext context, JsonValue value)
         {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            CustomRedAction element = new CustomRedAction(ActionType.Custom);
             Util.deserializeBaseActionProperties(context, value, element);
 
-            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetElementTypeString(CustomRedAction.CustomActionId);
             element.SetId("backwardActionDeserialize");
             String val = value.getString();
             try {
@@ -67,10 +68,10 @@ public class CustomRedActionElement extends BaseActionElement
         @Override
         public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
         {
-            CustomRedActionElement element = new CustomRedActionElement(ActionType.Custom);
+            CustomRedAction element = new CustomRedAction(ActionType.Custom);
             Util.deserializeBaseActionPropertiesFromString(context, jsonString, element);
 
-            element.SetElementTypeString(CustomRedActionElement.CustomActionId);
+            element.SetElementTypeString(CustomRedAction.CustomActionId);
             element.SetId("backwardActionDeserialize");
             try {
                 JSONObject obj = new JSONObject(jsonString);
@@ -83,7 +84,7 @@ public class CustomRedActionElement extends BaseActionElement
         }
     }
 
-    public class CustomRedActionRenderer extends BaseActionElementRenderer
+    public static class CustomRedActionRenderer extends BaseActionElementRenderer
     {
         public CustomRedActionRenderer(Activity activity)
         {
@@ -103,9 +104,9 @@ public class CustomRedActionElement extends BaseActionElement
             Button backwardActionButton = new Button(context);
             renderedCard.registerSubmitableAction(backwardActionButton, renderArgs);
 
-            CustomRedActionElement customAction = (CustomRedActionElement) baseActionElement.findImplObj();
+            CustomRedAction customAction = (CustomRedAction) baseActionElement.findImplObj();
 
-            backwardActionButton.setBackgroundColor(m_activity.getResources().getColor(R.color.redActionColor));
+            backwardActionButton.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.redActionColor), PorterDuff.Mode.SRC_ATOP);
             backwardActionButton.setText(customAction.getBackwardString());
             backwardActionButton.setAllCaps(false);
             backwardActionButton.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, baseActionElement, cardActionHandler));
