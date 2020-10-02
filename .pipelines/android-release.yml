@@ -30,7 +30,7 @@ steps:
   inputs:
     gradleWrapperFile: source/android/gradlew
     workingDirectory: source/android
-    tasks: 'adaptivecards:publish'
+    tasks: 'adaptivecards:publishReleasePublicationToLocalDirectoryRepository'
     publishJUnitResults: false
 
 - task: CopyFiles@2
