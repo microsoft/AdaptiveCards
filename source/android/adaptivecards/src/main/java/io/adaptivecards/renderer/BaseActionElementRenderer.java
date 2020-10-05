@@ -319,6 +319,8 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         @Override
         public void onClick(View view)
         {
+            m_renderedAdaptiveCard.clearValidatedInputs();
+
             if (m_isInlineShowCardAction)
             {
                 handleInlineShowCardAction(view);

@@ -196,4 +196,8 @@ public class RenderedAdaptiveCard {
         return submitActionCard.containsKey(actionId);
     }
 
+    protected void clearValidatedInputs()
+    {
+        prevalidatedInputs.clear();
+    }
 }
