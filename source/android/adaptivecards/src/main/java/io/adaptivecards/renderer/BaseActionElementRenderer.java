@@ -317,29 +317,24 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         }
 
         @Override
-        public void onClick(View v)
+        public void onClick(View view)
         {
             if (m_isInlineShowCardAction)
             {
-                handleInlineShowCardAction(v);
+                handleInlineShowCardAction(view);
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
-                handleToggleVisibilityAction(v);
+                handleToggleVisibilityAction(view);
             }
             else
             {
-                if (m_action.GetElementType() == ActionType.Submit)
+                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
-                    if (!m_renderedAdaptiveCard.areInputsValid())
+                    if (!m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
                     {
                         return;
                     }
-                    m_renderedAdaptiveCard.setLastClickedAction(v);
-                }
-                else if (m_renderedAdaptiveCard.isActionSubmitable(v))
-                {
-                    m_renderedAdaptiveCard.setLastClickedAction(v);
                 }
 
                 m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);

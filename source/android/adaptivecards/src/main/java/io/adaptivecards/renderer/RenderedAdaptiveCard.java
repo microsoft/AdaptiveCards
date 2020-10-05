@@ -29,8 +29,6 @@ public class RenderedAdaptiveCard {
     private Map<Long, Long> parentCardForCard;
     private Map<String, String> prevalidatedInputs;
 
-    private long m_lastClickedAction;
-
     protected RenderedAdaptiveCard(AdaptiveCard adaptiveCard)
     {
         this.warnings = new Vector<>();
@@ -115,9 +113,9 @@ public class RenderedAdaptiveCard {
         submitActionCard.put(actionId, parentCardId);
     }
 
-    private Vector<IInputHandler> getInputsToValidate()
+    private Vector<IInputHandler> getInputsToValidate(long clickedActionId)
     {
-        Long cardId = submitActionCard.get(m_lastClickedAction);
+        Long cardId = submitActionCard.get(clickedActionId);
         Vector<IInputHandler> inputHandlers = new Vector<>();
 
         while ((cardId != null) && (cardId != View.NO_ID))
@@ -135,17 +133,13 @@ public class RenderedAdaptiveCard {
         return inputHandlers;
     }
 
-    /**
-     * Checks if all inputs have valid values on them, validation depends on the input element type
-     * @return True if validation succeeds on all inputs, false otherwise
-     */
-    public boolean areInputsValid()
+    protected boolean areInputsValid(long actionId)
     {
         boolean allInputsAreValid = true;
         boolean hasSetFocusToElement = false;
         Map<String, String> validatedInputs = new HashMap<>();
 
-        Vector<IInputHandler> inputsToValidate = getInputsToValidate();
+        Vector<IInputHandler> inputsToValidate = getInputsToValidate(actionId);
 
         for(IInputHandler i : inputsToValidate)
         {
@@ -183,11 +177,6 @@ public class RenderedAdaptiveCard {
     public void setView(View view)
     {
         this.view = view;
-    }
-
-    protected void setLastClickedAction(View view)
-    {
-        m_lastClickedAction = Util.getViewId(view);
     }
 
     /**

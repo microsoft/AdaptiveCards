@@ -644,19 +644,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         }
         else if (actionType == ActionType.Custom && actionElement.GetElementTypeString().equals(CustomRedAction.CustomActionId))
         {
-            if (renderedCard.areInputsValid())
-            {
-                Map<String, String> something = renderedCard.getInputs();
-                showToast("Custom red action: " + something.toString() , Toast.LENGTH_LONG);
-            }
+            Map<String, String> something = renderedCard.getInputs();
+            showToast("Custom red action: " + something.toString() , Toast.LENGTH_LONG);
         }
         else if (actionType == ActionType.Custom && actionElement.GetElementTypeString().equals(CustomBlueAction.CustomActionId))
         {
-            if (renderedCard.areInputsValid())
-            {
-                Map<String, String> something = renderedCard.getInputs();
-                showToast("Custom blue action: " + something.toString() , Toast.LENGTH_LONG);
-            }
+            Map<String, String> something = renderedCard.getInputs();
+            showToast("Custom blue action: " + something.toString() , Toast.LENGTH_LONG);
         }
         else
         {
