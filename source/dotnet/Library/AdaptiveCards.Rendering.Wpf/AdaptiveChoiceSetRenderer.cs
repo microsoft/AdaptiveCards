@@ -102,6 +102,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices, uiChoices.Children[0]);
             }
 
+            if (input.IsRequired && input.ErrorMessage == null)
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                    "Inputs with validation should include an ErrorMessage"));
+            }
+
             context.InputValues.Add(input.Id, inputValue);
 
             return uiGrid;

@@ -40,6 +40,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 datePicker.Style = context.GetStyle("Adaptive.Input.Date");
                 datePicker.DataContext = input;
 
+                if (input.IsRequired && input.ErrorMessage == null)
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                        "Inputs with validation should include an ErrorMessage"));
+                }
+
                 context.InputValues.Add(input.Id, new AdaptiveXceedDateInputValue(input, datePicker));
 
                 return datePicker;

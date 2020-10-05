@@ -28,6 +28,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
 
+                if ((input.IsRequired || input.Regex != null) && input.ErrorMessage == null)
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                        "Inputs with validation should include an ErrorMessage"));
+                }
+
                 context.InputValues.Add(input.Id, new AdaptiveXceedTextInputValue(input, textBox));
 
                 if (input.InlineAction != null)
