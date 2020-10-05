@@ -43,6 +43,25 @@ ID_TO_LABEL = {
     6: "rating"
 }
 
+# Extract properties method plug-ins
+# keys are detected object class
+# values are the module path for its respective methods
+PROPERTY_EXTRACTOR_FUNC = {
+    "textbox": "mystique.extract_properties.CollectProperties.textbox",
+    "checkbox": "mystique.extract_properties.CollectProperties.checkbox",
+    "radiobutton": "mystique.extract_properties.CollectProperties.radiobutton",
+    "image": "mystique.extract_properties.CollectProperties.image",
+    "actionset": "mystique.extract_properties.CollectProperties.actionset"
+}
+
+# Font size and weight property class registry
+FONT_SPEC_REGISTRY = {
+    "font_morph": "mystique.font_properties.FontPropMorph",
+    "font_bbox": "mystique.font_properties.FontPropBoundingBox"
+}
+# active font prop pipelne
+ACTIVE_FONTSPEC_NAME = "font_bbox"
+
 # image detection swtiching paramater
 # On True [ uses custom image pipeline for image objects]
 # On False [ uses RCNN model image obejcts ]
