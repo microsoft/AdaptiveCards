@@ -275,4 +275,4 @@ To setup the pic2card ML service follow the instructions given in the below link
 [pic2card service](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container)
 
 Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
-in `.env` file in the adaptivecards-designer root directory to utilize the service.
+in `.env` file in the adaptivecards-designer root directory and rebuild this project.
