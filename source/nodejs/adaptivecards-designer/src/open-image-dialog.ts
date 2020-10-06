@@ -12,7 +12,7 @@ export class FetchManager {
             headers: this.headers,
         };
         try {
-			const pic2cardService = Pic2Card.pic2cardService !== ''?Pic2Card.pic2cardService: process.env.PIC_TO_CARD_PREDICTION_API 
+            const pic2cardService = Pic2Card.pic2cardService !== ''?Pic2Card.pic2cardService: process.env.PIC_TO_CARD_PREDICTION_API 
             const sampleImages = await fetch(
                 pic2cardService + "/get_card_templates",
                 option
