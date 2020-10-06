@@ -1,5 +1,4 @@
 import * as Adaptive from "adaptivecards";
-import { Downloader } from "./downloader";
 
 export class CatalogueEntry {
     static createEmptyCardEntry(): CatalogueEntry {
@@ -43,7 +42,7 @@ export class CatalogueEntry {
         let sampleDataDownloadComplete = false;
 
         if (!this.cardPayloadDownloaded) {
-            let payloadDownloader = new Downloader(this.cardPayloadUrl);
+            let payloadDownloader = new Adaptive.Downloader(this.cardPayloadUrl);
             payloadDownloader.onSuccess = () => {
                 this._cardPayload = payloadDownloader.data;
                 this._cardPayloadDownloaded = true;
@@ -62,7 +61,7 @@ export class CatalogueEntry {
         }
 
         if (this.sampleDataUrl && !this.sampleDataDownloaded) {
-            let sampleDataDownloader = new Downloader(this.sampleDataUrl);
+            let sampleDataDownloader = new Adaptive.Downloader(this.sampleDataUrl);
             sampleDataDownloader.onSuccess = () => {
                 this._sampleData = sampleDataDownloader.data;
                 this._sampleDataDownloaded = true;
@@ -157,7 +156,7 @@ export class SampleCatalogue {
 
     download() {
         if (!this.isDownloaded) {
-            let downloader = new Downloader(this.url);
+            let downloader = new Adaptive.Downloader(this.url);
             downloader.onError = () => {
                 if (this._entries.length === 0) {
                     this._entries = [ CatalogueEntry.createEmptyCardEntry() ];

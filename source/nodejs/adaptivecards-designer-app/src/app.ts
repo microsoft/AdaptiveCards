@@ -7,6 +7,45 @@ import * as ACDesigner from "adaptivecards-designer";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 
+
+var componentSample = {
+    "type": "AdaptiveComponent",
+    "name": "schema.org/Thing",
+    "sampleData": {
+        "name": "Adaptive Cards",
+        "description": "A card-like render format",
+        "image": "https://adaptivecards.io/content/icon.png"
+    },
+    "schema": {
+        "properties": {
+            "name": {
+                "type": "string",
+                "displayName": "Name"
+            },
+            "description": {
+                "type": "string",
+                "displayName": "Description",
+                "editor:isMultiLine": "true"
+            },
+            "image": {
+                "type": "string",
+                "displayName": "Image"
+            }
+        }
+    },
+    "views": {
+        "default": {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "${name}"
+                }
+            ]
+        }
+    }
+};
+
 // Uncomment below if you plan to use an empty hostContainers array
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
@@ -304,4 +343,9 @@ window.onload = function() {
     // designer.lockDataStructure = true;
     designer.sampleData = sampleData;
     designer.bindingPreviewMode = ACDesigner.BindingPreviewMode.SampleData;
+
+    let adaptiveComponent = new Adaptive.AdaptiveComponent();
+    adaptiveComponent.parse(componentSample);
+
+
 }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 export class Downloader {
     private _data: string;
 
@@ -13,8 +16,8 @@ export class Downloader {
         }
     }
 
-    onError: (sender: Downloader) => void = null;
-    onSuccess: (sender: Downloader) => void = null;
+    onError?: (sender: Downloader) => void;
+    onSuccess?: (sender: Downloader) => void;
 
     constructor(readonly url: string) {}
 

@@ -13,6 +13,7 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
 import { Template } from "./template-engine";
+import { AdaptiveComponent, AdaptiveComponentManager } from "./components";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -6332,8 +6333,17 @@ export class CustomComponent extends CardElement {
 
     //#endregion
 
+    private _component?: AdaptiveComponent;
     private _hostElement?: HTMLElement;
     private _view?: object;
+
+    private generateErrorView(message: string): object {
+        return {
+            type: "TextBlock",
+            text: message,
+            wrap: true
+        };
+    }
 
     private showSpinner() {
         if (this._hostElement) {
@@ -6349,86 +6359,67 @@ export class CustomComponent extends CardElement {
     }
 
     private renderView() {
-        if (this._hostElement) {
-            if (this._view) {
-                this._hostElement.innerHTML = "";
+        if (this._hostElement && this.view) {
+            this._hostElement.innerHTML = "";
 
-                let template = new Template(this._view);
-                let expandedTemplate = template.expand(
-                    {
-                        $root: this.properties
-                    }
-                );
-
-                let context = new SerializationContext();
-                let contentElement = context.parseElement(this, expandedTemplate, true);
-
-                if (contentElement) {
-                    contentElement.setParent(this);
-
-                    let renderedElement = contentElement?.render();
-
-                    if (renderedElement) {
-                        this._hostElement.appendChild(renderedElement);
-                    }
+            let template = new Template(this.view);
+            let expandedTemplate = template.expand(
+                {
+                    $root: this.properties
                 }
-            }
-            else {
-                this.showSpinner();
+            );
+
+            let context = new SerializationContext();
+            let contentElement = context.parseElement(this, expandedTemplate, true);
+
+            if (contentElement) {
+                contentElement.setParent(this);
+
+                let renderedElement = contentElement?.render();
+
+                if (renderedElement) {
+                    this._hostElement.appendChild(renderedElement);
+                }
             }
         }
     }
 
-    private generateErrorView(message: string) {
-        this._view = {
-            type: "TextBlock",
-            text: message,
-            wrap: true
-        };
-
-        this.renderView();
-    }
-
-    private loadView() {
+    private loadComponent() {
         if (this.name) {
-            let request = new XMLHttpRequest();
-            request.onerror = () => {
-                this.generateErrorView("The component couldn't be loaded from " + this.name);
-            }
-            request.onload = () => {
-                if (request.responseText) {
-                    try {
-                        let responseJSON = JSON.parse(request.responseText);
+            AdaptiveComponentManager.onComponentLoaded.addHandler(
+                (component: AdaptiveComponent) => {
+                    this._component = component;
 
-                        if (typeof responseJSON === "object") {
-                            this._view = responseJSON;
-                        }
-                    }
-                    catch {
-                        this.generateErrorView("Invalid component view template.");
-                    }
+                    this.view = this._component.getView("default");
                 }
-        
-                this.renderView();
-            };
-
-            try {
-                request.open("GET", this.name, true);
-                request.send();
-            }
-            catch (e) {
-                this.generateErrorView("The component couldn't be loaded from " + this.name);
-            }
+            )
+            AdaptiveComponentManager.onComponentLoadError.addHandler(
+                (error: string) => {
+                    this.view = this.generateErrorView(`Component ${this.name} couldn't be loaded.`);
+                }
+            )
+            AdaptiveComponentManager.loadComponent(this.name);
         }
         else {
-            this. generateErrorView("Component name missing");
+            this.view = this.generateErrorView("Component name missing.");
         }
+    }
+
+    private get view(): object | undefined {
+        return this._view;
+    }
+
+    private set view(value: object | undefined) {
+        this._view = value;
+
+        this.renderView();
     }
 
     protected internalRender(): HTMLElement | undefined {
         this._hostElement = document.createElement("div");
 
-        this.loadView();
+        this.showSpinner();
+        this.loadComponent();
 
         return this._hostElement;
     }
