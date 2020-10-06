@@ -16,7 +16,7 @@ window.onload = function() {
     ACDesigner.GlobalSettings.showVersionPicker = true;
     ACDesigner.GlobalSettings.enableDataBindingSupport = true;
     ACDesigner.GlobalSettings.showDataStructureToolbox = false;
-    ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
+	ACDesigner.GlobalSettings.showSampleDataEditorToolbox = true;
 
     // Uncomment to configure default toolbox titles
     /*
@@ -27,6 +27,11 @@ window.onload = function() {
     ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom title";
     ACDesigner.Strings.toolboxes.toolPalette.title = "Custom title";
     */
+
+	// Uncomment to configure pic2card service
+	/*
+	ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>>";
+	*/
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
