@@ -1184,6 +1184,7 @@ export class TextRun extends BaseTextBlock {
                 }
 
                 if (this.selectAction.title) {
+                    anchor.setAttribute("aria-label", this.selectAction.title);
                     anchor.title = this.selectAction.title;
                 }
 
@@ -4668,7 +4669,7 @@ class ActionCollection {
             let buttonStrip = document.createElement("div");
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
-            buttonStrip.setAttribute("role", "group");
+            buttonStrip.setAttribute("role", "menubar");
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
@@ -4756,7 +4757,7 @@ class ActionCollection {
                     if (actionButton.action.renderedElement) {
                         actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
                         actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "listitem");
+                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";
