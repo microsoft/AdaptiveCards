@@ -12,10 +12,11 @@ from PIL import Image
 import numpy as np
 import requests
 
+from mystique import config
+from mystique.utils import get_property_method
 from mystique.arrange_card import CardArrange
 from mystique.image_extraction import ImageExtraction
 from mystique.card_template import DataBinding
-from mystique import config
 from mystique.extract_properties import CollectProperties
 
 
@@ -80,11 +81,15 @@ class PredictCard:
         @param design_objects: List of design objects collected from the model.
         @param pil_image: Input PIL image
         """
-        collect_properties = CollectProperties(pil_image)
+        # Creating an Extract Property class instance
+        collect_prop = CollectProperties()
         for design_object in design_objects:
-            property_object = getattr(collect_properties,
-                                      design_object.get("object"))
-            design_object.update(property_object(design_object.get("coords")))
+            # Invoking the methods from dict according to the design object
+            property_object = get_property_method(collect_prop,
+                                                  design_object.get("object"))
+            property_element = property_object(pil_image,
+                                               design_object.get("coords"))
+            design_object.update(property_element)
 
     def main(self, image=None, card_format=None):
         """
