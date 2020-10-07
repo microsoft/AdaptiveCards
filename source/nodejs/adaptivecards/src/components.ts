@@ -70,6 +70,8 @@ export class SchemaPropertiesProperty extends PropertyDefinition {
                     let schemaProperty = SchemaProperty.parse(property);
 
                     if (schemaProperty) {
+                        schemaProperty.name = key;
+
                         result.push(schemaProperty);
                     }
                 }
@@ -112,18 +114,6 @@ export class DictionaryProperty<T extends object> extends PropertyDefinition {
         return result;
     }
 
-    /*
-    toJSON(sender: SerializableObject, target: PropertyBag, value: SchemaProperty[], context: BaseSerializationContext) {
-        let serializedProperties: { [key: string]: any } = {};
-
-        for (let schemaProperty of value) {
-            serializedProperties[schemaProperty.name] = schemaProperty.toJSON(context);
-        }
-
-        context.serializeValue(target, this.name, serializedProperties);
-    }
-    */
-
     constructor(readonly targetVersion: Version, readonly name: string) {
         super(targetVersion, name);
     }
@@ -162,7 +152,7 @@ export class AdaptiveComponent extends SerializableObject {
     views: Dictionary<object>;
 
     @property(AdaptiveComponent.sampleDataProperty)
-    sampleDate: any;
+    sampleData: any;
 
     //#endregion
 
@@ -170,9 +160,9 @@ export class AdaptiveComponent extends SerializableObject {
         return "AdaptiveComponent";
     }
 
-    getView(name: string): object | undefined {
+    getView(name: string | undefined): object | undefined {
         if (this.views) {
-            if (this.views.hasOwnProperty(name)) {
+            if (name && this.views.hasOwnProperty(name)) {
                 return this.views[name];
             }
 
@@ -185,13 +175,6 @@ export class AdaptiveComponent extends SerializableObject {
 
         return undefined;
     }
-}
-
-enum ComponentLoadStatus {
-    NotLoaded,
-    Loading,
-    Loaded,
-    LoadError
 }
 
 export type MulticastEventHandlerCallback<TArgs> = (args: TArgs) => void;

@@ -2597,7 +2597,19 @@ export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlo
 }
 
 export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomComponent> {
-    static readonly nameProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "name", "Name", true);
+    static readonly nameProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "name", "Component name", true);
+
+    constructor(
+        parent: DesignerPeer,
+        designerSurface: CardDesignerSurface,
+        registration: DesignerPeerRegistrationBase,
+        cardElement: Adaptive.CustomComponent) {
+        super(parent, designerSurface, registration, cardElement);
+
+        cardElement.onComponentDefinitionChanged = (sender: Adaptive.CustomComponent) => {
+            this.changed(true);
+        }
+    }
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2605,5 +2617,49 @@ export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomCom
         propertySheet.add(
             defaultCategory,
             CustomComponentPeer.nameProperty);
+        
+        if (this.cardElement.componentDefinition) {
+            let allViews = Object.getOwnPropertyNames(this.cardElement.componentDefinition.views);
+
+            if (allViews.length > 0) {
+                let choices: IVersionedChoice[] = [];
+
+                for (let view of allViews) {
+                    choices.push(
+                        {
+                            targetVersion: Adaptive.Versions.v1_3,
+                            name: view,
+                            value: view
+                        }
+                    );
+                }
+
+                propertySheet.add(
+                    defaultCategory,
+                    new ChoicePropertyEditor(
+                        Adaptive.Versions.v1_3,
+                        "view",
+                        "View",
+                        choices,
+                        true));
+            }
+
+            if (this.cardElement.componentDefinition.schema) {
+                let schemaProperties: PropertySheetEntry[] = [];
+
+                for (let schemaProperty of this.cardElement.componentDefinition.schema.properties) {
+                    if (schemaProperty instanceof Adaptive.StringSchemaProperty) {
+                        schemaProperties.push(new StringPropertyEditor(Adaptive.Versions.v1_3, schemaProperty.name, schemaProperty.displayName, true, schemaProperty.isMultiline));
+                    }
+                }
+
+                let subPropertySheet = new PropertySheet(false);    
+                subPropertySheet.add(defaultCategory, ...schemaProperties);
+
+                propertySheet.add(
+                    defaultCategory,
+                    new SubPropertySheetEntry(Adaptive.Versions.v1_3, this.cardElement.properties, subPropertySheet));
+            }
+        }
     }
 }

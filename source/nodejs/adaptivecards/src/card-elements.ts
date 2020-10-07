@@ -6323,20 +6323,24 @@ export abstract class ContainerWithActions extends Container {
 export class CustomComponent extends CardElement {
     //#region Schema
 
+    static readonly viewProperty = new StringProperty(Versions.v1_3, "view", true);
     static readonly nameProperty = new StringProperty(Versions.v1_3, "name", true);
-    static readonly propertiesProperty = new ObjectProperty(Versions.v1_3, "properties");
+    static readonly propertiesProperty = new ObjectProperty(Versions.v1_3, "properties", {});
+
+    @property(CustomComponent.viewProperty)
+    view?: string;
 
     @property(CustomComponent.nameProperty)
     name?: string;
 
     @property(CustomComponent.propertiesProperty)
-    properties?: object;
+    properties: object = {};
 
     //#endregion
 
-    private _component?: AdaptiveComponent;
+    private _componentDefinition?: AdaptiveComponent;
     private _hostElement?: HTMLElement;
-    private _view?: object;
+    private _viewTemplate?: object;
 
     private generateErrorView(message: string): object {
         return {
@@ -6360,10 +6364,11 @@ export class CustomComponent extends CardElement {
     }
 
     private renderView() {
-        if (this._hostElement && this.view) {
+        if (this._hostElement && this.viewTemplate) {
             this._hostElement.innerHTML = "";
 
-            let template = new Template(this.view);
+            let template = new Template(this.viewTemplate);
+
             let expandedTemplate = template.expand(
                 {
                     $root: this.properties
@@ -6385,33 +6390,21 @@ export class CustomComponent extends CardElement {
         }
     }
 
-    private loadComponent() {
+    private loadComponentDefinition() {
         if (this.name) {
-            AdaptiveComponentManager.onComponentLoaded.addHandler(
-                (component: AdaptiveComponent) => {
-                    this._component = component;
-
-                    this.view = this._component.getView("default");
-                }
-            )
-            AdaptiveComponentManager.onComponentLoadError.addHandler(
-                (error: string) => {
-                    this.view = this.generateErrorView(`Component ${this.name} couldn't be loaded.`);
-                }
-            )
             AdaptiveComponentManager.loadComponent(this.name);
         }
         else {
-            this.view = this.generateErrorView("Component name missing.");
+            this.viewTemplate = this.generateErrorView("Component name missing.");
         }
     }
 
-    private get view(): object | undefined {
-        return this._view;
+    private get viewTemplate(): object | undefined {
+        return this._viewTemplate;
     }
 
-    private set view(value: object | undefined) {
-        this._view = value;
+    private set viewTemplate(value: object | undefined) {
+        this._viewTemplate = value;
 
         this.renderView();
     }
@@ -6420,13 +6413,50 @@ export class CustomComponent extends CardElement {
         this._hostElement = document.createElement("div");
 
         this.showSpinner();
-        this.loadComponent();
+        this.loadComponentDefinition();
 
         return this._hostElement;
     }
 
+    onComponentDefinitionChanged: (sender: CustomComponent) => void;
+
+    constructor() {
+        super();
+
+        AdaptiveComponentManager.onComponentLoaded.addHandler(
+            (componentDefinition: AdaptiveComponent) => {
+                this.componentDefinition = componentDefinition;
+
+                if (Object.getOwnPropertyNames(this.properties).length === 0 && componentDefinition.sampleData !== undefined) {
+                    this.properties = componentDefinition.sampleData;
+                }
+
+                this.viewTemplate = this.componentDefinition.getView(this.view);
+            }
+        )
+        AdaptiveComponentManager.onComponentLoadError.addHandler(
+            (error: string) => {
+                this.viewTemplate = this.generateErrorView(`Component ${this.name} couldn't be loaded.`);
+            }
+        )
+    }
+
     getJsonTypeName(): string {
         return "Component";
+    }
+
+    get componentDefinition(): AdaptiveComponent | undefined {
+        return this._componentDefinition;
+    }
+
+    set componentDefinition(value: AdaptiveComponent | undefined) {
+        if (this._componentDefinition !== value) {
+            this._componentDefinition = value;
+
+            if (this.onComponentDefinitionChanged) {
+                this.onComponentDefinitionChanged(this);
+            }
+        }
     }
 }
 
