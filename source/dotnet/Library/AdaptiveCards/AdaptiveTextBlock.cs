@@ -35,7 +35,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The size of the text
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -45,7 +45,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The weight of the text
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -55,7 +55,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The color of the text
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -65,7 +65,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Make the text less prominent
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -75,7 +75,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Make the text italic
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -85,7 +85,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Make the struck through
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -99,12 +99,12 @@ namespace AdaptiveCards
 #if !NETSTANDARD1_3
         [XmlText]
 #endif
-        public string Text { get; set; } = " ";
+        public string Text { get; set; } = "";
 
         /// <summary>
         ///     Horizontal alignment for element
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -114,7 +114,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Is it allowed for the text to wrap
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -124,7 +124,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -134,7 +134,7 @@ namespace AdaptiveCards
         /// <summary>
         ///   The maximum width of the textblock
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -144,7 +144,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The font types of the TextBlock
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

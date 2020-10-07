@@ -35,7 +35,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Specifies the horizontal size of each image in the set
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

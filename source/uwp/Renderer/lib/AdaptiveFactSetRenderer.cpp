@@ -64,9 +64,10 @@ namespace AdaptiveNamespace
 
         ComPtr<IVector<AdaptiveFact*>> facts;
         RETURN_IF_FAILED(adaptiveFactSet->get_Facts(&facts));
-        int currentFact = 0;
+        int currentFact = 0, validFacts = 0;
         XamlHelpers::IterateOverVector<AdaptiveFact, IAdaptiveFact>(
-            facts.Get(), [xamlGrid, gridStatics, factSetGridHeight, &currentFact, renderContext, renderArgs](IAdaptiveFact* fact) {
+            facts.Get(),
+            [xamlGrid, gridStatics, factSetGridHeight, &currentFact, &validFacts, renderContext, renderArgs](IAdaptiveFact* fact) {
                 ComPtr<IRowDefinition> factRow = XamlHelpers::CreateXamlClass<IRowDefinition>(
                     HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_RowDefinition));
                 RETURN_IF_FAILED(factRow->put_Height(factSetGridHeight));
@@ -111,43 +112,52 @@ namespace AdaptiveNamespace
                 RETURN_IF_FAILED(SetXamlInlinesWithTextConfig(
                     renderContext, renderArgs, valueTextConfig.Get(), language.Get(), factValue.Get(), valueTextBlock.Get()));
 
-                // Mark the column container with the current column
-                ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
-                RETURN_IF_FAILED(titleTextBlock.As(&titleTextBlockAsFrameWorkElement));
-                ComPtr<IFrameworkElement> valueTextBlockAsFrameWorkElement;
-                RETURN_IF_FAILED(valueTextBlock.As(&valueTextBlockAsFrameWorkElement));
+                if (factTitle.Get() != nullptr || factValue.Get() != nullptr)
+                {
+                    // Mark the column container with the current column
+                    ComPtr<IFrameworkElement> titleTextBlockAsFrameWorkElement;
+                    RETURN_IF_FAILED(titleTextBlock.As(&titleTextBlockAsFrameWorkElement));
+                    ComPtr<IFrameworkElement> valueTextBlockAsFrameWorkElement;
+                    RETURN_IF_FAILED(valueTextBlock.As(&valueTextBlockAsFrameWorkElement));
 
-                UINT32 spacing;
-                RETURN_IF_FAILED(factSetConfig->get_Spacing(&spacing));
-                // Add spacing from hostconfig to right margin of title.
-                titleTextBlockAsFrameWorkElement->put_Margin({0, 0, (double)spacing, 0});
+                    UINT32 spacing;
+                    RETURN_IF_FAILED(factSetConfig->get_Spacing(&spacing));
+                    // Add spacing from hostconfig to right margin of title.
+                    titleTextBlockAsFrameWorkElement->put_Margin({0, 0, (double)spacing, 0});
 
-                RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                             L"Adaptive.Fact.Title",
-                                                                             titleTextBlockAsFrameWorkElement.Get()));
-                RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
-                                                                             L"Adaptive.Fact.Value",
-                                                                             valueTextBlockAsFrameWorkElement.Get()));
+                    RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                 L"Adaptive.Fact.Title",
+                                                                                 titleTextBlockAsFrameWorkElement.Get()));
+                    RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext,
+                                                                                 L"Adaptive.Fact.Value",
+                                                                                 valueTextBlockAsFrameWorkElement.Get()));
 
-                RETURN_IF_FAILED(gridStatics->SetColumn(titleTextBlockAsFrameWorkElement.Get(), 0));
-                RETURN_IF_FAILED(gridStatics->SetRow(titleTextBlockAsFrameWorkElement.Get(), currentFact));
+                    RETURN_IF_FAILED(gridStatics->SetColumn(titleTextBlockAsFrameWorkElement.Get(), 0));
+                    RETURN_IF_FAILED(gridStatics->SetRow(titleTextBlockAsFrameWorkElement.Get(), currentFact));
 
-                RETURN_IF_FAILED(gridStatics->SetColumn(valueTextBlockAsFrameWorkElement.Get(), 1));
-                RETURN_IF_FAILED(gridStatics->SetRow(valueTextBlockAsFrameWorkElement.Get(), currentFact));
+                    RETURN_IF_FAILED(gridStatics->SetColumn(valueTextBlockAsFrameWorkElement.Get(), 1));
+                    RETURN_IF_FAILED(gridStatics->SetRow(valueTextBlockAsFrameWorkElement.Get(), currentFact));
 
-                // Finally add the column container to the grid, and increment the column count
-                ComPtr<IPanel> gridAsPanel;
-                RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
-                ComPtr<IUIElement> titleUIElement;
-                RETURN_IF_FAILED(titleTextBlockAsFrameWorkElement.As(&titleUIElement));
-                ComPtr<IUIElement> valueUIElement;
-                RETURN_IF_FAILED(valueTextBlockAsFrameWorkElement.As(&valueUIElement));
+                    // Finally add the column container to the grid, and increment the column count
+                    ComPtr<IPanel> gridAsPanel;
+                    RETURN_IF_FAILED(xamlGrid.As(&gridAsPanel));
+                    ComPtr<IUIElement> titleUIElement;
+                    RETURN_IF_FAILED(titleTextBlockAsFrameWorkElement.As(&titleUIElement));
+                    ComPtr<IUIElement> valueUIElement;
+                    RETURN_IF_FAILED(valueTextBlockAsFrameWorkElement.As(&valueUIElement));
 
-                XamlHelpers::AppendXamlElementToPanel(titleUIElement.Get(), gridAsPanel.Get());
-                XamlHelpers::AppendXamlElementToPanel(valueUIElement.Get(), gridAsPanel.Get());
-                ++currentFact;
+                    XamlHelpers::AppendXamlElementToPanel(titleUIElement.Get(), gridAsPanel.Get());
+                    XamlHelpers::AppendXamlElementToPanel(valueUIElement.Get(), gridAsPanel.Get());
+                    ++currentFact;
+                    ++validFacts;
+                }
                 return S_OK;
             });
+
+        if (validFacts == 0)
+        {
+            return S_OK;
+        }
 
         ComPtr<IFrameworkElement> factSetAsFrameworkElement;
         RETURN_IF_FAILED(xamlGrid.As(&factSetAsFrameworkElement));
