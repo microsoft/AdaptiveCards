@@ -1081,6 +1081,16 @@ a.default-ac-anchor:visited:active {
     background-color: #ffffff;
 }
 
+.error-info {
+	display: flex;
+	justify-content: center;
+	color: red;
+}
+
+.sample-info-text {
+	margin-left: 15px;
+}
+
 .acd-spinner-host {
 	position: absolute;
 	width: 100%;

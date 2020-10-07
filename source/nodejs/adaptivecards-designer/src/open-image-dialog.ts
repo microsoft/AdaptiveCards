@@ -1,5 +1,5 @@
 import { Dialog } from "./dialog";
-
+import { Pic2Card	 } from "./pic2card";
 export class FetchManager {
     private headers = {
         "Content-Type": "application/json",
@@ -12,8 +12,9 @@ export class FetchManager {
             headers: this.headers,
         };
         try {
+            const pic2cardService = Pic2Card.pic2cardService !== ''?Pic2Card.pic2cardService: process.env.PIC_TO_CARD_PREDICTION_API 
             const sampleImages = await fetch(
-                process.env.PIC_TO_CARD_PREDICTION_API + "/get_card_templates",
+                pic2cardService + "/get_card_templates",
                 option
             );
             return await sampleImages.json();
@@ -205,7 +206,7 @@ export class OpenImageDialog extends Dialog {
                     this.isTemplateOptionChecked
                 )
                 .then((res) => {
-                    if (res.error) {
+                    if (!res || res.error) {
                         this.onCardFailure(spinnerElement);
                     } else {
                         this._predictedCardJSON = res.card_json;
@@ -273,24 +274,32 @@ export class OpenImageDialog extends Dialog {
         sampleImageTemplate.appendChild(message);
 
         this.fetchManager.getSampleImages().then((res) => {
-            const imageTitle = document.createElement("div");
-            imageTitle.innerText = "Choose from our Sample Images";
-            imageTitle.style.marginLeft = "15px";
-            imageTitle.className = "acd-image-title";
-            sampleImageTemplate.style.flexDirection = "row";
-            sampleImageTemplate.removeChild(spinnerElement);
-            sampleImageTemplate.removeChild(message);
-            sampleImageTemplate.appendChild(imageTitle);
-            const imageContainer = document.createElement("div");
-            imageContainer.className = "acd-sample-list";
-            for (let template of res.templates) {
-                let sampleImage = new ImageItem(template);
-                sampleImage.onClick = (selectedImage: string) => {
-                    this.renderImage(selectedImage);
-                };
-                imageContainer.appendChild(sampleImage.render());
+            if (res) {
+                const imageTitle = document.createElement("div");
+                imageTitle.innerText = "Choose from our Sample Images";
+                imageTitle.className = "acd-image-title sample-info-text";
+                sampleImageTemplate.style.flexDirection = "row";
+                sampleImageTemplate.removeChild(spinnerElement);
+                sampleImageTemplate.removeChild(message);
+                sampleImageTemplate.appendChild(imageTitle);
+                const imageContainer = document.createElement("div");
+                imageContainer.className = "acd-sample-list";
+                for (let template of res.templates) {
+                    let sampleImage = new ImageItem(template);
+                    sampleImage.onClick = (selectedImage: string) => {
+                        this.renderImage(selectedImage);
+                    };
+                    imageContainer.appendChild(sampleImage.render());
+                }
+                sampleImageTemplate.appendChild(imageContainer);
+            } else {
+                const errorElement = document.createElement("div");
+                errorElement.innerText = "Failed to reach pic2card service";
+                errorElement.className = "acd-image-title error-info";
+                sampleImageTemplate.removeChild(message);
+                sampleImageTemplate.removeChild(spinnerElement);
+                sampleImageTemplate.appendChild(errorElement);
             }
-            sampleImageTemplate.appendChild(imageContainer);
         });
         return sampleImageTemplate;
     }

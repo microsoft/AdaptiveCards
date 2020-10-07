@@ -1,6 +1,6 @@
 # Adaptive Card Designer
 
-The Adaptive Card Designer provides a rich, interactive design-time experience for authoring [adaptive cards](https://adaptivecards.io). 
+The Adaptive Card Designer provides a rich, interactive design-time experience for authoring [adaptive cards](https://adaptivecards.io).
 
 Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/designer)
 
@@ -8,7 +8,7 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 
 ## What is this package?
 
-This package allows you to easily integrate the adaptive cards designer into your own experiences. 
+This package allows you to easily integrate the adaptive cards designer into your own experiences.
 
 ## Usage
 
@@ -16,16 +16,15 @@ There are two simple ways to consume the designer: CDN script reference or impor
 
 ### Option 1: CDN script references
 
-The simplest way to get started it to include 3 script tags in your page. 
+The simplest way to get started it to include 3 script tags in your page.
 
 1. **monaco-editor** - provides a rich JSON-editing experience
 2. **markdown-it** - [optional] automatic markdown support for the designer and cards
 
 To load the designer component you have 2 options:
 
-3. 
-   * **adaptivecards-designer** - the designer component, with default Microsoft hosts included (Teams, Outlook, Cortana, etc)
-   * **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
+3.  - **adaptivecards-designer** - the designer component, with default Microsoft hosts included (Teams, Outlook, Cortana, etc)
+    - **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
 
 ```html
 <!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
@@ -45,31 +44,34 @@ To load the designer component you have 2 options:
 -->
 
 <script type="text/javascript">
-	window.onload = function() {
-		let hostContainers = [];
+  window.onload = function () {
+    let hostContainers = [];
 
-		// Optional: add the default Microsoft Host Apps (see docs below)
-		// hostContainers = ACDesigner.defaultMicrosoftHosts;
-		 
-		let designer = new ACDesigner.CardDesigner(hostContainers);
+    // Optional: add the default Microsoft Host Apps (see docs below)
+    // hostContainers = ACDesigner.defaultMicrosoftHosts;
 
-		// The designer requires various CSS and image assets to work properly, 
-		// If you've loaded the script from a CDN it needs to know where these assets are located
-		// Use the same <VERSION> that you used above
-		designer.assetPath = "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
+    let designer = new ACDesigner.CardDesigner(hostContainers);
 
-		// Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
-		require.config({ paths: { 'vs': 'https://unpkg.com/monaco-editor@0.17.1/min/vs' } });
-		require(['vs/editor/editor.main'], function () {
-			designer.monacoModuleLoaded();
-		});
+    // The designer requires various CSS and image assets to work properly,
+    // If you've loaded the script from a CDN it needs to know where these assets are located
+    // Use the same <VERSION> that you used above
+    designer.assetPath =
+      "https://unpkg.com/adaptivecards-designer@<VERSION>/dist";
 
-		designer.attachTo(document.getElementById("designerRootHost"));
-	};
+    // Initialize monaco-editor for the JSON-editor pane. The simplest way to do this is use the code below
+    require.config({
+      paths: { vs: "https://unpkg.com/monaco-editor@0.17.1/min/vs" },
+    });
+    require(["vs/editor/editor.main"], function () {
+      designer.monacoModuleLoaded();
+    });
+
+    designer.attachTo(document.getElementById("designerRootHost"));
+  };
 </script>
 
 <body>
-   <div id="designerRootHost"></div>
+  <div id="designerRootHost"></div>
 </body>
 ```
 
@@ -87,7 +89,7 @@ You also need some development dependencies to bundle monaco, and copy some CSS+
 npm install copy-webpack-plugin monaco-editor-webpack-plugin css-loader style-loader
 ```
 
-Then in your app, use the following imports and API. The code below was authored in TypeScript, but can be easily modified to plain JS. 
+Then in your app, use the following imports and API. The code below was authored in TypeScript, but can be easily modified to plain JS.
 
 ```js
 import * as monaco from "monaco-editor";
@@ -100,30 +102,29 @@ import "adaptivecards-designer/dist/adaptivecards-designer.css";
 // Uncomment below if you choose to pass an empty hostContainers array
 //import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
 
-window.onload = function() {
-	ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
-		result.outputHtml = new markdownit().render(text);
-		result.didProcess = true;
-	}
+window.onload = function () {
+  ACDesigner.CardDesigner.onProcessMarkdown = (text, result) => {
+    result.outputHtml = new markdownit().render(text);
+    result.didProcess = true;
+  };
 
-	let hostContainers = [];
-	
-	// Optional: add the default Microsoft Host Apps (see docs below)
-	// hostContainers = ACDesigner.defaultMicrosoftHosts;
+  let hostContainers = [];
 
-	let designer = new ACDesigner.CardDesigner(hostContainers);
-	designer.attachTo(document.getElementById("designerRootHost"));
-	designer.monacoModuleLoaded(monaco);
+  // Optional: add the default Microsoft Host Apps (see docs below)
+  // hostContainers = ACDesigner.defaultMicrosoftHosts;
+
+  let designer = new ACDesigner.CardDesigner(hostContainers);
+  designer.attachTo(document.getElementById("designerRootHost"));
+  designer.monacoModuleLoaded(monaco);
 };
-
 ```
 
 #### Webpack.config.js
 
 The following plugins and configuration should be enough to boostrap the designer and dependencies.
 
-* **monaco-editor-webpack-plugin** - makes it easy to use monaco with webpack
-* **copy-webpack-plugin** [OPTIONAL] - If you use any of the default Host Configs, then the designer requires a few CSS and image assets be available. This plugin as described below copies them from the designer package into your output bundle
+- **monaco-editor-webpack-plugin** - makes it easy to use monaco with webpack
+- **copy-webpack-plugin** [OPTIONAL] - If you use any of the default Host Configs, then the designer requires a few CSS and image assets be available. This plugin as described below copies them from the designer package into your output bundle
 
 ```js
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
@@ -207,7 +208,10 @@ ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title"
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+/* To configure custom Pic2Card endpoint*/
+ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
+
+/* Modify the Element toolbox (BEFORE calling attachTo) */
 Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
 ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
@@ -241,7 +245,7 @@ designer.toolbar.insertElementAfter(myButton, Designer.CardDesigner.ToolbarComma
 designer.treeViewToolbox.collapse();
 designer.jsonEditorToolbox.collapse();
 
-/* Set the card payload in the designer: (AFTER calling attachTo */ 
+/* Set the card payload in the designer: (AFTER calling attachTo */
 designer.setCard(
 	{
 		type: "AdaptiveCard",
@@ -255,9 +259,20 @@ designer.setCard(
 	}
 );
 
-/* Set sample data (AFTER calling attachTo) */ 
+/* Set sample data (AFTER calling attachTo) */
 designer.sampleData = {
 	name: "John Doe",
 	phone: "123-123-1234"
 };
 ```
+
+## Hosting Pic2Card Service
+
+Pic2Card is a ML based service which converts a graphical image (such as a PNG or JPEG) into an Adaptive Card JSON payload.
+
+To setup the pic2card ML service follow the instructions given in the below link.
+
+[pic2card service](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container)
+
+Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
+in `.env` file in the adaptivecards-designer root directory and rebuild this project.
