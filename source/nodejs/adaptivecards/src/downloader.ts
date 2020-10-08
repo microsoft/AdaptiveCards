@@ -26,17 +26,25 @@ export class Downloader {
         request.onerror = () => {
             this.error();
         }
+        request.onabort = () => {
+            this.error();
+        }
         request.onload = () => {
-            this._data = request.responseText;
+            if (request.status === 200) {
+                this._data = request.responseText;
 
-            this.success();
+                this.success();
+            }
+            else {
+                this.error();
+            }
         };
 
         try {
             request.open("GET", this.url, true);
             request.send();
         }
-        catch (e) {
+        catch {
             this.error();
         }
     }

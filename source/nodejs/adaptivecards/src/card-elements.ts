@@ -6331,7 +6331,17 @@ export class CustomComponent extends CardElement {
     view?: string;
 
     @property(CustomComponent.nameProperty)
-    name?: string;
+    get name(): string | undefined {
+        return this.getValue(CustomComponent.nameProperty);
+    }
+
+    set name(value: string | undefined) {
+        if (this.name !== value) {
+            this.setValue(CustomComponent.nameProperty, value);
+
+            this.loadComponentDefinition();
+        }
+    }
 
     @property(CustomComponent.propertiesProperty)
     properties: object = {};
@@ -6341,6 +6351,14 @@ export class CustomComponent extends CardElement {
     private _componentDefinition?: AdaptiveComponent;
     private _hostElement?: HTMLElement;
     private _viewTemplate?: object;
+
+    private emptyHostElement() {
+        if (this._hostElement) {
+            while (this._hostElement.firstChild) {
+                this._hostElement.removeChild(this._hostElement.firstChild);
+            }
+        }
+    }
 
     private generateErrorView(message: string): object {
         return {
@@ -6352,7 +6370,7 @@ export class CustomComponent extends CardElement {
 
     private showSpinner() {
         if (this._hostElement) {
-            this._hostElement.innerHTML = "";
+            this.emptyHostElement();
 
             let spinner = document.createElement("div");
             spinner.className = "ac-spinner";
@@ -6365,7 +6383,7 @@ export class CustomComponent extends CardElement {
 
     private renderView() {
         if (this._hostElement && this.viewTemplate) {
-            this._hostElement.innerHTML = "";
+            this.emptyHostElement();
 
             let template = new Template(this.viewTemplate);
 
@@ -6381,7 +6399,7 @@ export class CustomComponent extends CardElement {
             if (contentElement) {
                 contentElement.setParent(this);
 
-                let renderedElement = contentElement?.render();
+                let renderedElement = contentElement.render();
 
                 if (renderedElement) {
                     this._hostElement.appendChild(renderedElement);
@@ -6392,7 +6410,18 @@ export class CustomComponent extends CardElement {
 
     private loadComponentDefinition() {
         if (this.name) {
-            AdaptiveComponentManager.loadComponent(this.name);
+            AdaptiveComponentManager.loadComponent(
+                this.name,
+                (componentDefinition: AdaptiveComponent) => {
+                    if (componentDefinition.name === this.name) {
+                        this.componentDefinition = componentDefinition;
+        
+                        this.viewTemplate = this.componentDefinition.getView(this.view);
+                    }
+                },
+                (error: string) => {
+                    this.viewTemplate = this.generateErrorView(error);
+                });
         }
         else {
             this.viewTemplate = this.generateErrorView("Component name missing.");
@@ -6420,27 +6449,6 @@ export class CustomComponent extends CardElement {
 
     onComponentDefinitionChanged: (sender: CustomComponent) => void;
 
-    constructor() {
-        super();
-
-        AdaptiveComponentManager.onComponentLoaded.addHandler(
-            (componentDefinition: AdaptiveComponent) => {
-                this.componentDefinition = componentDefinition;
-
-                if (Object.getOwnPropertyNames(this.properties).length === 0 && componentDefinition.sampleData !== undefined) {
-                    this.properties = componentDefinition.sampleData;
-                }
-
-                this.viewTemplate = this.componentDefinition.getView(this.view);
-            }
-        )
-        AdaptiveComponentManager.onComponentLoadError.addHandler(
-            (error: string) => {
-                this.viewTemplate = this.generateErrorView(`Component ${this.name} couldn't be loaded.`);
-            }
-        )
-    }
-
     getJsonTypeName(): string {
         return "Component";
     }
@@ -6452,6 +6460,19 @@ export class CustomComponent extends CardElement {
     set componentDefinition(value: AdaptiveComponent | undefined) {
         if (this._componentDefinition !== value) {
             this._componentDefinition = value;
+            this.name = undefined;
+
+            /* TODO: When should sample data be used?
+
+            if (Object.getOwnPropertyNames(this.properties).length === 0 && componentDefinition.sampleData !== undefined) {
+                this.properties = componentDefinition.sampleData;
+            }
+            */
+
+            if (this._componentDefinition) {
+                this.name = this._componentDefinition.name;
+                this.properties = this._componentDefinition.sampleData;
+            }
 
             if (this.onComponentDefinitionChanged) {
                 this.onComponentDefinitionChanged(this);

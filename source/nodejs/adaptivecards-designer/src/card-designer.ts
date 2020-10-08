@@ -7,6 +7,7 @@ import * as Constants from "./constants";
 import * as Designer from "./card-designer-surface";
 import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
+import { ComponentPickerDialog } from "./component-picker-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
 import { FullScreenHandler } from "./fullscreen-handler";

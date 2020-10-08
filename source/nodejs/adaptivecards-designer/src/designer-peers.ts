@@ -9,6 +9,7 @@ import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
 import { FieldPicker } from "./field-picker";
+import { ComponentPickerDialog } from "./component-picker-dialog";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -768,6 +769,12 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
     }
 }
 
+export interface ILayoutUpdateRequestOptions {
+    reRender: boolean,
+    updateLayout: boolean,
+    updatePropertySheet: boolean
+};
+
 export abstract class DesignerPeer extends DraggableElement {
     static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 
@@ -945,6 +952,7 @@ export abstract class DesignerPeer extends DraggableElement {
     onParentChanged: (sender: DesignerPeer) => void;
     onSelectedChanged: (sender: DesignerPeer) => void;
     onChanged: (sender: DesignerPeer, updatePropertySheet: boolean) => void;
+    onLayoutUpdateNeeded: (sender: DesignerPeer, options: ILayoutUpdateRequestOptions) => void;
     onPeerRemoved: (sender: DesignerPeer) => void;
     onPeerAdded: (sender: DesignerPeer, newPeer: DesignerPeer) => void;
 
@@ -973,6 +981,12 @@ export abstract class DesignerPeer extends DraggableElement {
     changed(updatePropertySheet: boolean) {
         if (this.onChanged) {
             this.onChanged(this, updatePropertySheet);
+        }
+    }
+
+    layoutUpdateNeeded(options: ILayoutUpdateRequestOptions = { reRender: true, updateLayout: true, updatePropertySheet: true }) {
+        if (this.onLayoutUpdateNeeded) {
+            this.onLayoutUpdateNeeded(this, options);
         }
     }
 
@@ -2599,6 +2613,32 @@ export class RichTextBlockPeer extends TypedCardElementPeer<Adaptive.RichTextBlo
 export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomComponent> {
     static readonly nameProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "name", "Component name", true);
 
+    protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
+        super.internalAddCommands(context, commands);
+
+        commands.push(
+            new PeerCommand(
+                {
+                    name: "Choose...",
+                    alwaysShowName: true,
+                    toolTip: "Select a component from the component library.",
+                    execute: (command: PeerCommand, clickedElement: HTMLElement) => {
+                        let dialog = new ComponentPickerDialog();
+                        dialog.title = "Pick a component";
+                        dialog.closeButton.caption = "Cancel";
+                        dialog.width = "70%";
+                        dialog.height = "80%";
+                        dialog.onClose = (d) => {
+                            if (dialog.selectedComponentName) {
+                                this.cardElement.name = dialog.selectedComponentName;
+                            }
+                        };
+                        dialog.open();
+                    }
+                })
+        );
+    }
+
     constructor(
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
@@ -2607,7 +2647,13 @@ export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomCom
         super(parent, designerSurface, registration, cardElement);
 
         cardElement.onComponentDefinitionChanged = (sender: Adaptive.CustomComponent) => {
-            this.changed(true);
+            this.layoutUpdateNeeded(
+                {
+                    reRender: false,
+                    updateLayout: true,
+                    updatePropertySheet: true
+                }
+            );
         }
     }
 
@@ -2647,18 +2693,36 @@ export class CustomComponentPeer extends TypedCardElementPeer<Adaptive.CustomCom
             if (this.cardElement.componentDefinition.schema) {
                 let schemaProperties: PropertySheetEntry[] = [];
 
-                for (let schemaProperty of this.cardElement.componentDefinition.schema.properties) {
-                    if (schemaProperty instanceof Adaptive.StringSchemaProperty) {
-                        schemaProperties.push(new StringPropertyEditor(Adaptive.Versions.v1_3, schemaProperty.name, schemaProperty.displayName, true, schemaProperty.isMultiline));
+                if (this.cardElement.componentDefinition.schema.properties) {
+                    for (let schemaProperty of this.cardElement.componentDefinition.schema.properties) {
+                        if (schemaProperty instanceof Adaptive.StringSchemaProperty) {
+                            schemaProperties.push(
+                                new StringPropertyEditor(
+                                    Adaptive.Versions.v1_3,
+                                    schemaProperty.name,
+                                    schemaProperty.displayName ? schemaProperty.displayName : schemaProperty.name,
+                                    true,
+                                    schemaProperty.isMultiline));
+                        }
+
+                        if (schemaProperty instanceof Adaptive.NumberSchemaProperty) {
+                            schemaProperties.push(
+                                new NumberPropertyEditor(
+                                    Adaptive.Versions.v1_3,
+                                    schemaProperty.name,
+                                    schemaProperty.displayName ? schemaProperty.displayName : schemaProperty.name));
+                        }
                     }
                 }
 
-                let subPropertySheet = new PropertySheet(false);    
-                subPropertySheet.add(defaultCategory, ...schemaProperties);
+                if (schemaProperties.length > 0) {
+                    let subPropertySheet = new PropertySheet(false);    
+                    subPropertySheet.add(defaultCategory, ...schemaProperties);
 
-                propertySheet.add(
-                    defaultCategory,
-                    new SubPropertySheetEntry(Adaptive.Versions.v1_3, this.cardElement.properties, subPropertySheet));
+                    propertySheet.add(
+                        defaultCategory,
+                        new SubPropertySheetEntry(Adaptive.Versions.v1_3, this.cardElement.properties, subPropertySheet));
+                }
             }
         }
     }

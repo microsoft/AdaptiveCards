@@ -256,6 +256,45 @@
     animation-timing-function: cubic-bezier(0.53, 0.21, 0.29, 0.67);
 }
 
+.acd-component-picker-list-container {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    justify-content: space-evenly;
+}
+
+.acd-component-picker-list-item-thumbnail {
+    overflow: hidden;
+    height: 100%;
+    min-height: 150px;
+    max-height: 400px;
+    width: 100%;
+    pointer-events: none;
+    border: 1.5px solid #EEEEEE;
+    display: flex;
+    justify-content: center;
+}
+
+.acd-component-picker-list-item {
+    width: 350px;
+    height: 100%;
+    padding: 10px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.acd-component-picker-list-item.selected {
+}
+
+.acd-component-picker-list-item:hover > .acd-component-picker-list-item-thmbnail {
+    box-shadow: 0 0 20px -5px #CCCCCC;
+    border: 1.5px solid #CCCCCC;
+}
+
 /*
     Icons
 */
