@@ -3,21 +3,13 @@ package io.adaptivecards.renderer.input;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
-import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import java.text.AttributedCharacterIterator;
-
 import io.adaptivecards.R;
-import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 
 @SuppressLint("AppCompatCustomView")
 public class ValidatedEditText extends EditText
@@ -103,8 +95,9 @@ public class ValidatedEditText extends EditText
         return drawableState;
     }
 
-    private static final int[] STATE_INPUT_INVALID = {R.attr.state_input_invalid};
     private boolean m_isInvalid = false;
     private boolean m_isUsingCustomInputs = false;
     private int m_errorColor = Color.TRANSPARENT;
+
+    private static final int[] STATE_INPUT_INVALID = {R.attr.state_input_invalid};
 }
