@@ -6471,7 +6471,10 @@ export class CustomComponent extends CardElement {
 
             if (this._componentDefinition) {
                 this.name = this._componentDefinition.name;
-                this.properties = this._componentDefinition.sampleData;
+
+                if (Object.getOwnPropertyNames(this.properties).length === 0 && this._componentDefinition.sampleData !== undefined) {
+                    this.properties = JSON.parse(JSON.stringify(this._componentDefinition.sampleData));
+                }
             }
 
             if (this.onComponentDefinitionChanged) {
