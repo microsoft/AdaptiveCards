@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.AdaptiveCard;
 import io.adaptivecards.objectmodel.AdaptiveCardObjectModel;
@@ -223,16 +225,14 @@ public class CardRendererRegistration
         return m_featureRegistration;
     }
 
-    public View render(
-            RenderedAdaptiveCard renderedCard,
-            Context context,
-            FragmentManager fragmentManager,
-            ViewGroup viewGroup,
-            Object tag,
-            BaseCardElementVector baseCardElementList,
-            ICardActionHandler cardActionHandler,
-            HostConfig hostConfig,
-            RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
+    public View renderElements(RenderedAdaptiveCard renderedCard,
+                       Context context,
+                       FragmentManager fragmentManager,
+                       ViewGroup viewGroup,
+                       BaseCardElementVector baseCardElementList,
+                       ICardActionHandler cardActionHandler,
+                       HostConfig hostConfig,
+                       RenderArgs renderArgs) throws AdaptiveFallbackException, Exception
     {
         long size;
         if (baseCardElementList == null || (size = baseCardElementList.size()) <= 0)
@@ -240,77 +240,15 @@ public class CardRendererRegistration
             return viewGroup;
         }
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setTag(tag);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        // Add this two for allowing children to bleed
-        layout.setClipChildren(false);
-        layout.setClipToPadding(false);
-
-        VerticalContentAlignment verticalContentAlignment = VerticalContentAlignment.Top;
-
-        if (tag instanceof BaseCardElement)
-        {
-            if(tag instanceof Column)
-            {
-                Column column = (Column)tag;
-                verticalContentAlignment = column.GetVerticalContentAlignment();
-            }
-            else if(tag instanceof Container)
-            {
-                Container container = (Container)tag;
-                verticalContentAlignment = container.GetVerticalContentAlignment();
-            }
-        }
-        else if(tag instanceof AdaptiveCard)
-        {
-            AdaptiveCard adaptiveCard = (AdaptiveCard)tag;
-            verticalContentAlignment = adaptiveCard.GetVerticalContentAlignment();
-        }
-
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 
         for (int i = 0; i < size; i++)
         {
             BaseCardElement cardElement = baseCardElementList.get(i);
-            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, layout, cardActionHandler, hostConfig, renderArgs, featureRegistration);
+            renderElementAndPerformFallback(renderedCard, context, fragmentManager, cardElement, viewGroup, cardActionHandler, hostConfig, renderArgs, featureRegistration);
         }
 
-        // This is made as the last operation so we can assure the contents were rendered properly
-        if (verticalContentAlignment != VerticalContentAlignment.Top)
-        {
-            LinearLayout verticalAlignmentLayout = new LinearLayout(context);
-            verticalAlignmentLayout.setOrientation(LinearLayout.HORIZONTAL);
-            verticalAlignmentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
-            if (verticalContentAlignment == VerticalContentAlignment.Center)
-            {
-                verticalAlignmentLayout.setGravity(Gravity.CENTER_VERTICAL);
-            }
-            else
-            {
-                verticalAlignmentLayout.setGravity(Gravity.BOTTOM);
-            }
-
-            verticalAlignmentLayout.addView(layout);
-
-            if (viewGroup != null)
-            {
-                viewGroup.addView(verticalAlignmentLayout);
-            }
-        }
-        else
-        {
-            if (viewGroup != null)
-            {
-                viewGroup.addView(layout);
-            }
-        }
-
-        return layout;
+        return viewGroup;
     }
 
     public void renderElementAndPerformFallback(
@@ -339,7 +277,15 @@ public class CardRendererRegistration
         // - mockLayout is a layout to contain the rendered element, as android renderers have to add
         //      the drawn views into the container view, it makes it easier to do not draw something unwanted
         //      into the final rendered card
-        LinearLayout mockLayout = new LinearLayout(context);
+        ViewGroup mockLayout = null;
+        if (Util.isOfType(cardElement, Column.class))
+        {
+            mockLayout = new FlexboxLayout(context);
+        }
+        else
+        {
+            mockLayout = new LinearLayout(context);
+        }
 
         try
         {
@@ -368,16 +314,7 @@ public class CardRendererRegistration
                         // Try to render the fallback element
                         try
                         {
-                            BaseCardElement fallbackCardElement = null;
-                            if (fallbackElement instanceof BaseCardElement)
-                            {
-                                fallbackCardElement = (BaseCardElement) fallbackElement;
-                            }
-                            else if ((fallbackCardElement = BaseCardElement.dynamic_cast(fallbackElement)) == null)
-                            {
-                                throw new InternalError("Unable to convert BaseElement to BaseCardElement object model.");
-                            }
-
+                            BaseCardElement fallbackCardElement = Util.castToBaseCardElement(fallbackElement);
                             IBaseCardElementRenderer fallbackRenderer = m_typeToRendererMap.get(fallbackElement.GetElementTypeString());
 
                             if (fallbackRenderer == null)
@@ -439,7 +376,7 @@ public class CardRendererRegistration
             }
         }
 
-        if (renderedElement != null)
+        if (renderedElement != null && renderedElementView != null)
         {
 
             View taggedView = findElementWithTagContent(mockLayout);

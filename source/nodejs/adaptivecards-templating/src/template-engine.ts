@@ -3,7 +3,7 @@
 import * as AEL from "adaptive-expressions";
 
 class EvaluationContext {
-    private static readonly _reservedFields = ["$data", "$root", "$index"];
+    private static readonly _reservedFields = ["$data", "$when", "$root", "$index"];
 
     private _stateStack: Array<{ $data: any, $index: any }> = [];
     private _$data: any;

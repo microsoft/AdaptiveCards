@@ -44,7 +44,7 @@ task sourceJar(type: Jar) {
 
 def projectInfo = {
     name = 'Android Adaptive Cards Library'
-    description 'Android Adaptive Cards Lib'
+    description = 'Android Adaptive Cards Lib'
     url = 'https://github.com/Microsoft/AdaptiveCards'
 
     scm {
@@ -56,6 +56,13 @@ def projectInfo = {
             name = 'MIT'
             url = 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
             distribution = 'repo'
+        }
+    }
+
+    developers {
+        developer {
+            id = "microsoft"
+            name = "adaptivecards"
         }
     }
 
@@ -74,8 +81,16 @@ afterEvaluate {
                 groupId = 'io.adaptivecards'
                 artifactId = 'adaptivecards-android'
 
-                // Get version from PackageES, or fallback to Azure Pipeline build number
-                version = System.getenv('XES_PACKAGEVERSIONNUMBER') ?: System.getenv('BUILD_BUILDNUMBER') ?: '0.0.0'
+                // Use pre-release identifier, if provided
+                def versionSuffix = ''
+                if(System.getenv('PRERELEASE_TAG')) {
+                    versionSuffix += "-${System.getenv('PRERELEASE_TAG')}"
+                    // Append pipeline build number to distinguish pre-releases
+                    if(System.getenv('BUILD_BUILDNUMBER')) {
+                        versionSuffix += ".${System.getenv('BUILD_BUILDNUMBER')}"
+                    }
+                }
+                version = "${acVersionMajor}.${acVersionMinor}.${acVersionPatch}${versionSuffix}"
 
                 pom projectInfo
             }
@@ -94,7 +109,7 @@ afterEvaluate {
             }
             // Save to local directory "artifact"
             maven {
-                name = 'localArtifact'
+                name = 'localDirectory'
                 url = "artifact"
             }
             // TODO: Add SonaType OSS repository to publish directly
@@ -108,5 +123,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
+    implementation 'com.google.android:flexbox:1.0.0'
     testImplementation 'junit:junit:4.12'
 }

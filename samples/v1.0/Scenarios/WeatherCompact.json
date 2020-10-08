@@ -6,13 +6,13 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Seattle, WA",
+			"text": "Redmond, WA",
 			"size": "large",
 			"isSubtle": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "September 18, 7:30 AM",
+			"text": "Mon, Nov 4, 2019 6:21 PM",
 			"spacing": "none"
 		},
 		{
@@ -36,7 +36,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "42",
+							"text": "46",
 							"size": "extraLarge",
 							"spacing": "none"
 						}
@@ -60,12 +60,12 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Hi 51",
+							"text": "Hi 50",
 							"horizontalAlignment": "left"
 						},
 						{
 							"type": "TextBlock",
-							"text": "Lo 40",
+							"text": "Lo 41",
 							"horizontalAlignment": "left",
 							"spacing": "none"
 						}
