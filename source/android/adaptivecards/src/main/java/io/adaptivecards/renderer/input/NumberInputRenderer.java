@@ -64,13 +64,13 @@ public class NumberInputRenderer extends TextInputRenderer
                 context,
                 viewGroup,
                 numberInput,
-                String.valueOf(numberInput.GetValue()),
+                numberInput.GetValue() != null ? String.valueOf(numberInput.GetValue()) : "",
                 String.valueOf(numberInput.GetPlaceholder()),
                 numberInputHandler,
                 hostConfig,
                 tagContent,
                 renderArgs,
-                ((numberInput.GetMin() != Integer.MIN_VALUE) || (numberInput.GetMax() != Integer.MAX_VALUE)));
+                ((numberInput.GetMin() != null) || (numberInput.GetMax() != null)));
 
         editText.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL | InputType.TYPE_NUMBER_FLAG_SIGNED);
 

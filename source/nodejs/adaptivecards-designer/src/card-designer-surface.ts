@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Controls from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
@@ -237,8 +237,6 @@ export class CardDesignerSurface {
                 for (let command of commands) {
                     this._peerCommandsHostElement.appendChild(command.render());
                 }
-
-                this._designerSurface.focus();
             }
 
             this.updatePeerCommandsLayout();
@@ -271,6 +269,43 @@ export class CardDesignerSurface {
         }
     }
 
+    private generateCardToRender(asPreview: boolean): Adaptive.AdaptiveCard {
+        let cardToRender: Adaptive.AdaptiveCard = this.card;
+
+        if (asPreview) {
+            let inputPayload = this.card.toJSON(this._serializationContext);
+
+            cardToRender = new Adaptive.AdaptiveCard();
+            cardToRender.hostConfig = this.card.hostConfig;
+
+            let outputPayload = inputPayload;
+
+            if (Shared.GlobalSettings.enableDataBindingSupport) {
+                try {
+                    let template = new ACData.Template(inputPayload);
+
+                    let evaluationContext: ACData.IEvaluationContext;
+
+                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
+                        evaluationContext = { $root: this.context.sampleData };
+                    }
+                    else {
+                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
+                    }
+
+                    outputPayload = template.expand(evaluationContext);
+                }
+                catch (e) {
+                    console.log("Template expansion error: " + e.message);
+                }
+            }
+
+            cardToRender.parse(outputPayload, this._serializationContext);
+        }
+
+        return cardToRender;
+    }
+
     private renderCard() {
         this._cardHost.innerHTML = "";
 
@@ -286,13 +321,9 @@ export class CardDesignerSurface {
             this.onCardValidated(allValidationEvents);
         }
 
-        let cardToRender: Adaptive.AdaptiveCard = this.card;
+        let cardToRender = this.generateCardToRender(this.isPreviewMode);
 
         if (this.isPreviewMode) {
-            let inputPayload = this.card.toJSON(this._serializationContext);
-
-            cardToRender = new Adaptive.AdaptiveCard();
-            cardToRender.hostConfig = this.card.hostConfig;
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
                 let message: string = "Action executed\n";
                 message += "    Title: " + action.title + "\n";
@@ -323,30 +354,6 @@ export class CardDesignerSurface {
 
                 alert(message);
             };
-
-            let outputPayload = inputPayload;
-
-            if (Shared.GlobalSettings.enableDataBindingSupport) {
-                try {
-                    let template = new ACData.Template(inputPayload);
-
-                    let evaluationContext: ACData.IEvaluationContext;
-
-                    if (this.context.bindingPreviewMode === BindingPreviewMode.SampleData) {
-                        evaluationContext = { $root: this.context.sampleData };
-                    }
-                    else {
-                        evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
-                    }
-
-                    outputPayload = template.expand(evaluationContext);
-                }
-                catch (e) {
-                    console.log("Template expansion error: " + e.message);
-                }
-            }
-
-            cardToRender.parse(outputPayload, this._serializationContext);
         }
 
         let renderedCard = cardToRender.render();
@@ -523,8 +530,8 @@ export class CardDesignerSurface {
 
         this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
-                switch (e.keyCode) {
-                    case Controls.KEY_ESCAPE:
+                switch (e.key) {
+                    case Constants.keys.escape:
                         if (this.draggedPeer) {
                             this.endDrag(true);
                         }
@@ -533,7 +540,7 @@ export class CardDesignerSurface {
                         }
 
                         break;
-                    case Controls.KEY_DELETE:
+                    case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
                         }
@@ -736,6 +743,10 @@ export class CardDesignerSurface {
         }
     }
 
+    getBoundCardPayloadAsObject(): object {
+        return this.generateCardToRender(true).toJSON(this._serializationContext);
+    }
+
     updateLayout(isFullRefresh: boolean = true) {
         if (!this.isPreviewMode) {
             for (var i = 0; i < this._allPeers.length; i++) {
@@ -805,8 +816,6 @@ export class CardDesignerSurface {
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
-        var result = false;
-
         if (peer) {
             if (this._dropTarget) {
                 this._dropTarget.renderedElement.classList.remove("dragover");
@@ -818,11 +827,11 @@ export class CardDesignerSurface {
                 this._dropTarget = newDropTarget;
                 this._dropTarget.renderedElement.classList.add("dragover");
 
-                result = this._dropTarget.tryDrop(peer, pointerPosition);
+                return this._dropTarget.tryDrop(peer, pointerPosition);
             }
         }
 
-        return result;
+        return false;
     }
 
     isPointerOver(x: number, y: number) {

@@ -1,21 +1,15 @@
 package io.adaptivecards.objectmodel;
 
-import android.util.Pair;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
 
-import java.sql.Time;
+import android.util.Pair;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
 import io.adaptivecards.renderer.input.TimeInputRenderer;
-import io.adaptivecards.renderer.readonly.RendererUtil;
-
-import static org.junit.Assert.*;
 
 public class TimeInputPropertiesTest
 {
@@ -206,7 +200,7 @@ public class TimeInputPropertiesTest
             Calendar calendar = new GregorianCalendar(0, 0, 0, formatTestCase.first, formatTestCase.second);
             String formattedValue = TimeInputRenderer.getTimeFormat().format(calendar.getTime());
 
-            Assert.assertEquals(formatTestResults[i], formattedValue);
+            Assert.assertTrue(formatTestResults[i].equalsIgnoreCase(formattedValue));
 
 
             Date value = TimeInputRenderer.getTimeFormat().parse(formatTestResults[i]);
@@ -233,7 +227,5 @@ public class TimeInputPropertiesTest
     }
 
     private final String c_defaultInputTime = "{\"id\":\"id\",\"type\":\"Input.Time\"}\n";
-
     private final String c_timeTestCases[] = {"07:15", "15:14", "17:30", "18:40", "19:53", "00:23", "7:46", "03:43", "02:22", "10:36", "13:52", "14:08", "19:10"};
-
 }

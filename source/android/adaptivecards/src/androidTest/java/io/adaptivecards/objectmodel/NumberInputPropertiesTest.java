@@ -1,14 +1,7 @@
 package io.adaptivecards.objectmodel;
 
-import android.util.Pair;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class NumberInputPropertiesTest
 {
@@ -87,7 +80,7 @@ public class NumberInputPropertiesTest
             public void set(Integer value, NumberInput element) { element.SetMax(value); }
         };
 
-        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, 2147483647);
+        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
         final String inputNumberMaxTemplate = "{\"id\":\"id\",\"max\":%d,\"type\":\"Input.Number\"}\n";
         TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_numericalMinValue);
@@ -105,7 +98,7 @@ public class NumberInputPropertiesTest
             public void set(Integer value, NumberInput element) { element.SetMin(value); }
         };
 
-        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, -2147483648);
+        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
         final String inputNumberMinTemplate = "{\"id\":\"id\",\"min\":%d,\"type\":\"Input.Number\"}\n";
         TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_numericalMaxValue);
@@ -141,7 +134,7 @@ public class NumberInputPropertiesTest
             public void set(Integer value, NumberInput element) { element.SetValue(value); }
         };
 
-        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, 0);
+        TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
         final String inputNumberValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Number\",\"value\":%d}\n";
         TestUtil.executeTests(c, inputNumberValueTemplate, TestUtil.c_numericalTestCases);

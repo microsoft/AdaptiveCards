@@ -7,7 +7,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
-| **targetElements** | `TargetElement[]` | No | The array of TargetElements | 1.2 |
+| **targetElements** | `TargetElement[]` | No | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
 
 **Inherited properties**
 
@@ -17,13 +17,12 @@
 | **iconUrl** | `uri` | No | Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+ | 1.1 |
 | **style** | `ActionStyle` | No | Controls the style of an Action, which influences how the action is displayed, spoken, etc. | 1.2 |
 | **fallback** | `Action`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
-| **inputs** | `string[]`, `ActionInputs` | No, default: `"None"` | None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action. | 1.3 |
 | **requires** | `Dictionary<string>` | No | A series of key/value pairs indicating features that the item requires with corresponding minimum version. When a feature is missing or of insufficient version, fallback is triggered. | 1.2 |
 
 
 ## targetElements
 
-The array of TargetElements
+The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information.
 
 * **Type**: `TargetElement[]`
 * **Required**: No
@@ -56,19 +55,6 @@ Describes what to do when an unknown element is encountered or the requires of t
   * `Action.Submit`
   * `Action.ToggleVisibility`
   * `"drop"`: Causes this element to be dropped immediately when unknown elements are encountered. The unknown element doesn't bubble up any higher.
-
-
-## inputs
-
-None, All, or an array of ids for inputs (or containers of inputs) that should be validated before allowing this action.
-
-* **Type**: `string[]`, `ActionInputs`
-* **Version** : 1.3
-* **Required**: No, default: `"None"`
-* **Allowed values**:
-  * `string`
-  * `"All"`: All inputs will be validated and submitted for this Action.
-  * `"None"`: None of the inputs will be validated or submitted for this Action.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
@@ -83,5 +69,3 @@ When the user invokes this action, for each object in `targetElements`...
 	1. If not found, issue warning and continue to next in loop
 1. If the `isVisible` property is NOT supplied, toggle the element's visibility
 1. Else, if the `isVisible` property is supplied, set the element's visibility to the value of `isVisible`.
-
-The action button should be greyed out if any of the inputs referenced in `inputs` do not meet the requirements specified by the card author.

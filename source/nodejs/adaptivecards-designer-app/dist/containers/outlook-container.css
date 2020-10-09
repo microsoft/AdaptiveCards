@@ -82,7 +82,7 @@ a.ac-anchor:visited:active {
     height: 31px;
     background-color: white;
     color: #0079db;
-    border: 1px solid #B2E0FF;
+    border: 1px solid #6290FF;
 }
 
 .ac-pushButton:hover {
@@ -167,6 +167,12 @@ a.ac-anchor:visited:active {
 .ac-input.ac-timeInput.ac-input-validation-failed,
 .ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
     border: 1px solid red !important;
+}
+
+.ac-input.ac-toggleInput.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-expanded.ac-input-validation-failed,
+.ac-input.ac-choiceSetInput-multiSelect.ac-input-validation-failed {
+    outline: 1px solid red;
 }
 
 .ac-input.ac-textInput {

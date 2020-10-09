@@ -43,7 +43,7 @@ static NSString *pickerCell = @"pickerCell";
         _rootView = rootView;
         _delegate = (NSObject<UITableViewDelegate> *)_dataSource;
         _showPickerView = NO;
-        _defaultString = @"";
+        _defaultString = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
@@ -261,5 +261,6 @@ static NSString *pickerCell = @"pickerCell";
 }
 @synthesize isRequired;
 @synthesize hasValidationProperties;
+@synthesize hasVisibilityChanged;
 
 @end

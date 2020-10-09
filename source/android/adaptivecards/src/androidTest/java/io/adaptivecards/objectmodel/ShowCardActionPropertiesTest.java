@@ -19,7 +19,6 @@ public class ShowCardActionPropertiesTest
     @Test
     public void cardTest() throws Exception
     {
-
         {
             final String showCardActionWithNoCard = "{\"type\":\"Action.ShowCard\"}";
 
@@ -81,7 +80,6 @@ public class ShowCardActionPropertiesTest
             OpenUrlAction openUrlAction = TestUtil.castToOpenUrlAction(showCardActionCard.GetActions().get(0));
             Assert.assertEquals("http://", openUrlAction.GetUrl());
         }
-
     }
 
     public static final String s_defaultShowCardJson = "{\"type\":\"Action.ShowCard\"}\n";

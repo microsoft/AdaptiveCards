@@ -1,16 +1,40 @@
 package io.adaptivecards.objectmodel;
 
 import junit.framework.Assert;
+import junit.framework.AssertionFailedError;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 
 public class TestUtil
 {
+    public static<T> T[] concat(Class<T> c, T[] ... arrays)
+    {
+        int totalArrayLength = 0;
+        for (T[] array : arrays)
+        {
+            totalArrayLength += array.length;
+        }
+
+        T[] concatenation = (T[]) Array.newInstance(c, totalArrayLength);
+        int acumLength = 0;
+        for (T[] array : arrays)
+        {
+            System.arraycopy(array, 0, concatenation, acumLength, array.length);
+            acumLength += array.length;
+        }
+
+        return concatenation;
+    }
+
     public interface Command<T extends BaseCardElement, E>
     {
         E get(T element);
@@ -28,11 +52,15 @@ public class TestUtil
 
             T cardElement = command.getMockObject();
             command.set(testCases[i], cardElement);
-            Assert.assertEquals(inputJson, cardElement.Serialize());
+            String outputJson = cardElement.Serialize();
+            Assert.assertEquals(inputJson, outputJson);
 
-            ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(inputJson), "1.0");
+            String fullCard = TestUtil.encloseElementJsonInCard(inputJson);
+            ParseResult result = AdaptiveCard.DeserializeFromString(fullCard, "1.0");
             T parsedInput = command.castTo(result.GetAdaptiveCard().GetBody().get(0));
-            Assert.assertEquals(testCases[i], command.get(parsedInput));
+            String serializedPostParse = parsedInput.Serialize();
+            E getResult = command.get(parsedInput);
+            Assert.assertEquals(testCases[i], getResult);
         }
     }
 
@@ -529,6 +557,68 @@ public class TestUtil
     public static ToggleVisibilityAction castToToggleVisibilityAction(BaseActionElement baseActionElement)
     {
         return Util.castTo(baseActionElement, ToggleVisibilityAction.class);
+    }
+
+    public static abstract class ValidationExecutor
+    {
+        public ValidationExecutor(BaseInputHandler inputHandler)
+        {
+            m_inputHandler = inputHandler;
+        }
+
+        public void BeforeTestPrep(Object i)
+        {
+            if (i instanceof Integer)
+            {
+                Integer a = (Integer)i;
+                m_inputHandler.setInput(String.valueOf(a.intValue()));
+            }
+            else if (i instanceof String)
+            {
+                m_inputHandler.setInput((String)i);
+            }
+        }
+
+        public abstract boolean ExecuteMethodToTest();
+
+        protected BaseInputHandler m_inputHandler;
+    }
+
+    public static class GeneralValidationExecutor extends ValidationExecutor
+    {
+        public GeneralValidationExecutor(BaseInputHandler inputHandler)
+        {
+            super(inputHandler);
+        }
+
+        @Override
+        public boolean ExecuteMethodToTest()
+        {
+            return m_inputHandler.isValid();
+        }
+    }
+
+    public static class SpecificsValidationExecutor extends ValidationExecutor
+    {
+        public SpecificsValidationExecutor(BaseInputHandler inputHandler)
+        {
+            super(inputHandler);
+        }
+
+        @Override
+        public boolean ExecuteMethodToTest()
+        {
+            return m_inputHandler.isValidOnSpecifics(m_inputHandler.getInput());
+        }
+    }
+
+    public static void runValidationTests(Object[] array, boolean expectedResult, ValidationExecutor validationExecutor)
+    {
+        for (Object value : array)
+        {
+            validationExecutor.BeforeTestPrep(value);
+            Assert.assertEquals(expectedResult, validationExecutor.ExecuteMethodToTest());
+        }
     }
 
     public static final String c_regularStringTestCases[] = {"Sample text",

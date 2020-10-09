@@ -52,7 +52,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(ContainerStyle::None == everythingBagel.GetStyle());
         Assert::AreEqual("1.0"s, everythingBagel.GetVersion());
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
-        Assert::IsTrue(everythingBagel.GetInputNecessityIndicators() == InputNecessityIndicators::RequiredInputs);
     }
 
     void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
@@ -258,9 +257,9 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Number_id"s, numberInput.GetId());
 
         Assert::IsTrue(numberInput.GetIsRequired());
-        Assert::AreEqual(10, numberInput.GetMax());
-        Assert::AreEqual(5, numberInput.GetMin());
-        Assert::AreEqual(7, numberInput.GetValue());
+        Assert::AreEqual(10, numberInput.GetMax().value());
+        Assert::AreEqual(5, numberInput.GetMin().value());
+        Assert::AreEqual(7, numberInput.GetValue().value());
         Assert::AreEqual("Input.Number_placeholder"s, numberInput.GetPlaceholder());
         Assert::IsTrue(numberInput.GetErrorMessage().empty());
         Assert::AreEqual("Input.Number_label"s, numberInput.GetLabel());

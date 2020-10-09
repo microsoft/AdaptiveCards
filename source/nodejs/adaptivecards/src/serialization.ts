@@ -106,8 +106,8 @@ export class Versions {
     static readonly v1_0 = new Version(1, 0);
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
-    static readonly v1_3 = new Version(1, 3, "1.3 (Preview)");
-    static readonly latest = Versions.v1_2;
+    static readonly v1_3 = new Version(1, 3);
+    static readonly latest = Versions.v1_3;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -128,6 +128,8 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 
 export abstract class BaseSerializationContext {
     private _validationEvents: IValidationEvent[] = [];
+
+    toJSONOriginalParam: any;
 
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
@@ -389,6 +391,18 @@ export interface IVersionedValue<TValue> {
 }
 
 export class ValueSetProperty extends PropertyDefinition {
+    isValidValue(value: string, context: BaseSerializationContext): boolean {
+        for (let versionedValue of this.values) {
+            if (value.toLowerCase() === versionedValue.value.toLowerCase()) {
+                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+
+                return targetVersion.compareTo(context.targetVersion) <= 0;
+            }
+        }
+
+        return false;
+    }
+
     parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string | undefined {
         let sourceValue = source[this.name];
 
@@ -757,6 +771,10 @@ export abstract class SerializableObject {
 
     protected abstract getSchemaKey(): string;
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SimpleSerializationContext();
+    }
+
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
         let properties: PropertyDefinition[] = [];
@@ -886,7 +904,15 @@ export abstract class SerializableObject {
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
-        let effectiveContext = context ? context : new SimpleSerializationContext();
+        let effectiveContext: BaseSerializationContext;
+        
+        if (context && context instanceof BaseSerializationContext) {
+            effectiveContext = context;
+        }
+        else {
+            effectiveContext = this.getDefaultSerializationContext();
+            effectiveContext.toJSONOriginalParam = context;
+        }
 
         if (this.shouldSerialize(effectiveContext)) {
             let result: PropertyBag;

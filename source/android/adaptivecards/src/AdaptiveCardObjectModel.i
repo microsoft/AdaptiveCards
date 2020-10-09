@@ -38,6 +38,60 @@ struct tm {
     int tm_isdst;
 };
 
+namespace std {
+  template<typename T> class optional {};
+}
+
+// std::optional<int>
+%typemap(jni) std::optional<int> "jobject"
+%typemap(jtype) std::optional<int> "Integer"
+%typemap(jstype) std::optional<int> "Integer"
+%typemap(in, noblock=1) std::optional<int> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (int)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<int> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int> "$javainput"
+%typemap(javaout) std::optional<int> {
+    return $jnicall;
+  }
+%template() std::optional<int>;
+
+%typemap(jni) std::optional<int>& "jobject"
+%typemap(jtype) std::optional<int>& "Integer"
+%typemap(jstype) std::optional<int>& "Integer"
+%typemap(in, noblock=1) std::optional<int>& {
+  std::optional<int> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "intValue", "()I");
+    jint val = (jint)JCALL2(CallIntMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<int>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<int>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Integer");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(I)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<int>& "$javainput"
+%typemap(javaout) std::optional<int>& {
+    return $jnicall;
+  }
+
 %include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
@@ -118,6 +172,12 @@ struct tm {
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
 %}
 
+
+%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
+%shared_ptr(AdaptiveCards::ElementParserRegistration)
+%shared_ptr(AdaptiveCards::ActionParserRegistration)
+%shared_ptr(AdaptiveCards::ParseContext)
+
 %shared_ptr(AdaptiveCards::BaseElement)
 %shared_ptr(AdaptiveCards::BaseActionElement)
 %shared_ptr(AdaptiveCards::BaseCardElement)
@@ -127,8 +187,6 @@ struct tm {
 %shared_ptr(AdaptiveCards::ActionElementParserWrapper)
 %shared_ptr(AdaptiveCards::BaseCardElementParserWrapper)
 %shared_ptr(AdaptiveCards::CollectionTypeElement)
-%shared_ptr(AdaptiveCards::ElementParserRegistration)
-%shared_ptr(AdaptiveCards::ActionParserRegistration)
 %shared_ptr(AdaptiveCards::FeatureRegistration)
 %shared_ptr(AdaptiveCards::BackgroundImage)
 %shared_ptr(AdaptiveCards::Container)
@@ -149,8 +207,6 @@ struct tm {
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
-%shared_ptr(AdaptiveCards::AdaptiveCardParseWarning)
-%shared_ptr(AdaptiveCards::ParseContext)
 %shared_ptr(AdaptiveCards::ParseResult)
 %shared_ptr(AdaptiveCards::RemoteResourceInformation)
 %shared_ptr(AdaptiveCards::AdaptiveCard)
@@ -788,15 +844,20 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/Enums.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveBase64Util.h"
 %include "../../../shared/cpp/ObjectModel/RemoteResourceInformation.h"
+
+
+%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
+%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
+%include "../../../shared/cpp/ObjectModel/ParseContext.h"
+
+
 %include "../../../shared/cpp/ObjectModel/BaseElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseCardElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseActionElement.h"
 %include "../../../shared/cpp/ObjectModel/BaseInputElement.h"
 %include "../../../shared/cpp/ObjectModel/BackgroundImage.h"
 %include "../../../shared/cpp/ObjectModel/CollectionTypeElement.h"
-%include "../../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.h"
-%include "../../../shared/cpp/ObjectModel/ActionParserRegistration.h"
-%include "../../../shared/cpp/ObjectModel/ElementParserRegistration.h"
 %include "../../../shared/cpp/ObjectModel/FeatureRegistration.h"
 %include "../../../shared/cpp/ObjectModel/SemanticVersion.h"
 %include "../../../shared/cpp/ObjectModel/Container.h"
@@ -814,7 +875,6 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
-%include "../../../shared/cpp/ObjectModel/ParseContext.h"
 %include "../../../shared/cpp/ObjectModel/ParseResult.h"
 %include "../../../shared/cpp/ObjectModel/SharedAdaptiveCard.h"
 %include "../../../shared/cpp/ObjectModel/AdaptiveCardParseException.h"

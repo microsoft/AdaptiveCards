@@ -107,6 +107,10 @@
         if (inputHandler.hasValidationProperties && errorMessage.empty()) {
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"The input has validation, but there is no associated error message, consider adding error message to the input"];
         }
+        
+        if (self.isRequired && (!self.label || !self.label.text.length)) {
+            [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
+        }
     }
     return self;
 }
@@ -122,19 +126,21 @@
         NSError *error = nil;
         if (NO == [inputHandler validate:&error]) {
             if (self.hasErrorMessage) {
+                self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
             }
         } else {
             if (self.hasErrorMessage) {
+                self.hasVisibilityChanged = self.errorMessage.hidden == NO;
                 self.errorMessage.hidden = YES;
             }
-            self.stack.arrangedSubviews[1].layer.borderWidth = 0;
+            self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
             return YES;
         }
     }
-    self.stack.arrangedSubviews[1].layer.borderWidth = 1;
-    self.stack.arrangedSubviews[1].layer.cornerRadius = 6.0f;
-    self.stack.arrangedSubviews[1].layer.borderColor = UIColor.systemRedColor.CGColor;
+    self.stack.arrangedSubviews[1].layer.borderWidth = self.validationFailBorderWidth;
+    self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationFailBorderRadius;
+    self.stack.arrangedSubviews[1].layer.borderColor = self.validationFailBorderColor.CGColor;
     return NO;
 }
 
@@ -145,9 +151,9 @@
         inputHandler = self.dataSource;
     }
     else {
-        id inputView = [self getInputView];
+        UIView *inputView = [self getInputView];
         if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
-            inputHandler = inputView;
+            inputHandler = (NSObject<ACRIBaseInputHandler> *)inputView;
         }
     }
     
@@ -164,7 +170,7 @@
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    id inputHandler = [self getInputHandler];
+    NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
@@ -175,7 +181,7 @@
 
 - (void)getInput:(NSMutableDictionary *)dictionary
 {
-    id<ACRIBaseInputHandler> inputHandler = [self getInputHandler];
+    NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
     if (inputHandler) {
         [inputHandler getInput:dictionary];
     }
@@ -197,12 +203,16 @@
             *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
         }
         return NO;
-    } else if (predicate) {
+    } else if (hasText && predicate) {
         return [predicate evaluateWithObject:text];
     }
     return YES;
 }
 
 @synthesize hasValidationProperties;
+
+@synthesize id;
+
+@synthesize hasVisibilityChanged;
 
 @end

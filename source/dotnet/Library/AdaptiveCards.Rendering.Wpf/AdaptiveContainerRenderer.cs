@@ -98,102 +98,113 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 // each element has a row
                 AdaptiveTypedElement rendereableElement = context.GetRendereableElement(cardElement);
-    
-                FrameworkElement uiElement = context.Render(rendereableElement);
-                if (uiElement != null)
+
+                // if there's an element that can be rendered, then render it, otherwise, skip
+                if (rendereableElement != null)
                 {
-                    TagContent tag = null;
-                    Grid separator = null;
-                    if (cardElement.Separator && uiContainer.Children.Count > 0)
+                    FrameworkElement uiElement = context.Render(rendereableElement);
+                    if (uiElement != null)
                     {
-                        separator = AddSeparator(context, cardElement, uiContainer);
-                    }
-                    else if (uiContainer.Children.Count > 0)
-                    {
-                        separator = AddSpacing(context, cardElement, uiContainer);
-                    }
-
-                    tag = new TagContent(separator, uiContainer);
-
-                    uiElement.Tag = tag;
-
-                    // Sets the minHeight property for Container and ColumnSet
-                    if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
-                    {
-                        AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
-                        uiElement.MinHeight = collectionElement.PixelMinHeight;
-                    }
-
-                    // If the rendered element is an input element, then add it to the inputs list
-                    if (rendereableElement is AdaptiveInput)
-                    {
-                        context.AddInputToCard(context.RenderArgs.ContainerCardId, rendereableElement.Id);
-                    }
-
-                    int rowDefinitionIndex = uiContainer.RowDefinitions.Count;
-                    RowDefinition rowDefinition = null;
-                    if (cardElement.Height != AdaptiveHeight.Stretch)
-                    {
-                        rowDefinition = new RowDefinition() { Height = GridLength.Auto };
-
-                        uiContainer.RowDefinitions.Add(rowDefinition);
-
-                        FrameworkElement enclosingElement = EncloseElementInPanel(context, rendereableElement, uiElement);
-
-                        Grid.SetRow(enclosingElement, rowDefinitionIndex);
-                        uiContainer.Children.Add(enclosingElement);
-
-                        // Row definition is stored in the tag for containers and elements that stretch
-                        // so when the elements are shown, the row can have it's original definition,
-                        // while when the element is hidden, the extra space is not reserved in the layout
-                        tag.RowDefinition = rowDefinition;
-                        tag.ViewIndex = rowDefinitionIndex;
-
-                        enclosingElement.Tag = tag;
-                        enclosingElement.Name = cardElement.Id;
-
-                        RendererUtil.SetVisibility(enclosingElement, cardElement.IsVisible, tag);
-                    }
-                    else
-                    {
-                        rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
-                        
-                        uiContainer.RowDefinitions.Add(rowDefinition);
-
-                        // Row definition is stored in the tag for containers and elements that stretch
-                        // so when the elements are shown, the row can have it's original definition,
-                        // while when the element is hidden, the extra space is not reserved in the layout
-                        tag.RowDefinition = rowDefinition;
-                        tag.ViewIndex = rowDefinitionIndex;
-
-                        if (cardElement.Type == "Container")
+                        TagContent tag = null;
+                        Grid separator = null;
+                        if (cardElement.Separator && uiContainer.Children.Count > 0)
                         {
-                            Grid.SetRow(uiElement, rowDefinitionIndex);
-                            uiContainer.Children.Add(uiElement);
-                            RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
+                            separator = AddSeparator(context, cardElement, uiContainer);
                         }
-                        else
+                        else if (uiContainer.Children.Count > 0)
                         {
-                            StackPanel panel = new StackPanel();
+                            separator = AddSpacing(context, cardElement, uiContainer);
+                        }
+
+                        tag = new TagContent(separator, uiContainer);
+
+                        uiElement.Tag = tag;
+
+                        // Sets the minHeight property for Container and ColumnSet
+                        if (cardElement.Type == "Container" || cardElement.Type == "ColumnSet")
+                        {
+                            AdaptiveCollectionElement collectionElement = (AdaptiveCollectionElement)cardElement;
+                            uiElement.MinHeight = collectionElement.PixelMinHeight;
+                        }
+
+                        // If the rendered element is an input element, then add it to the inputs list
+                        if (rendereableElement is AdaptiveInput)
+                        {
+                            context.AddInputToCard(context.RenderArgs.ContainerCardId, rendereableElement.Id);
+                        }
+
+                        int rowDefinitionIndex = uiContainer.RowDefinitions.Count;
+                        RowDefinition rowDefinition = null;
+                        if (cardElement.Height != AdaptiveHeight.Stretch)
+                        {
+                            rowDefinition = new RowDefinition() { Height = GridLength.Auto };
+
+                            uiContainer.RowDefinitions.Add(rowDefinition);
+
+                            FrameworkElement enclosingElement = EncloseElementInPanel(context, rendereableElement, uiElement);
+
+                            Grid.SetRow(enclosingElement, rowDefinitionIndex);
+                            uiContainer.Children.Add(enclosingElement);
+
+                            // Row definition is stored in the tag for containers and elements that stretch
+                            // so when the elements are shown, the row can have it's original definition,
+                            // while when the element is hidden, the extra space is not reserved in the layout
+                            tag.RowDefinition = rowDefinition;
+                            tag.ViewIndex = rowDefinitionIndex;
+
+                            enclosingElement.Tag = tag;
 
                             if (!String.IsNullOrEmpty(cardElement.Id))
                             {
-                                panel.Name = cardElement.Id;
+                                // All elements are added to the dictionary when rendered but elements
+                                // with labels or errorMessages have to be enclosed so that has to be added instead
+                                context.RenderedElementsWithId[cardElement.Id] = enclosingElement;
                             }
 
-                            if (rendereableElement is AdaptiveInput)
+                            RendererUtil.SetVisibility(enclosingElement, cardElement.IsVisible, tag);
+                        }
+                        else
+                        {
+                            rowDefinition = new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) };
+                            uiContainer.RowDefinitions.Add(rowDefinition);
+
+                            // Row definition is stored in the tag for containers and elements that stretch
+                            // so when the elements are shown, the row can have it's original definition,
+                            // while when the element is hidden, the extra space is not reserved in the layout
+                            tag.RowDefinition = rowDefinition;
+                            tag.ViewIndex = rowDefinitionIndex;
+
+                            if (cardElement.Type == "Container")
                             {
-                                panel.Children.Add(EncloseInputForVisualCue(context, rendereableElement as AdaptiveInput, uiElement));
+                                Grid.SetRow(uiElement, rowDefinitionIndex);
+                                uiContainer.Children.Add(uiElement);
+                                RendererUtil.SetVisibility(uiElement, cardElement.IsVisible, tag);
                             }
                             else
                             {
-                                panel.Children.Add(uiElement);
-                            }
-                            panel.Tag = tag;
+                                StackPanel panel = new StackPanel();
 
-                            Grid.SetRow(panel, rowDefinitionIndex);
-                            uiContainer.Children.Add(panel);
-                            RendererUtil.SetVisibility(panel, cardElement.IsVisible, tag);
+                                if (!String.IsNullOrEmpty(cardElement.Id))
+                                {
+                                    // All elements are added to the dictionary when rendered but elements
+                                    // with height stretch are enclosed in a panel that must be added instead
+                                    context.RenderedElementsWithId.Add(cardElement.Id, panel);
+                                }
+
+                                if (rendereableElement is AdaptiveInput)
+                                {
+                                    panel.Children.Add(EncloseInputForVisualCue(context, rendereableElement as AdaptiveInput, uiElement));
+                                }
+                                else
+                                {
+                                    panel.Children.Add(uiElement);
+                                }
+                                panel.Tag = tag;
+
+                                Grid.SetRow(panel, rowDefinitionIndex);
+                                uiContainer.Children.Add(panel);
+                                RendererUtil.SetVisibility(panel, cardElement.IsVisible, tag);
+                            }
                         }
                     }
                 }
@@ -388,7 +399,10 @@ namespace AdaptiveCards.Rendering.Wpf
                         TextBlock renderedErrorMessage = RenderErrorMessage(context, inputElement);
                         renderedErrorMessage.Tag = new TagContent(errorMessageSpacing, null);
 
-                        context.InputValues[inputElement.Id].ErrorMessage = renderedErrorMessage;
+                        if (context.Config.SupportsInteractivity)
+                        {
+                            context.InputValues[inputElement.Id].ErrorMessage = renderedErrorMessage;
+                        }
 
                         panel.Children.Add(renderedErrorMessage);
                         tag.ErrorMessage = renderedErrorMessage;

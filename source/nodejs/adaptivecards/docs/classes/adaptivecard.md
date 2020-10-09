@@ -540,7 +540,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -640,8 +641,9 @@ ___
                 version = Versions.latest;
 
                 context.logParseEvent(
+                    sender,
                     Enums.ValidationEvent.InvalidPropertyValue,
-                    "Invalid card version. Defaulting to latest version (" + version.toString() + ")");
+                    Strings.errors.invalidCardVersion(version.toString()));
             }
 
             return version;

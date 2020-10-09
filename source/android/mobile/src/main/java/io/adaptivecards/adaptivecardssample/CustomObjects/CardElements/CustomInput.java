@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.adaptivecardssample.CustomObjects.CardElements;
 
 import android.content.Context;
@@ -27,6 +29,13 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 import io.adaptivecards.renderer.inputhandler.IInputHandler;
 
+/**
+ * CustomInput is a class used to demonstrate and test the user experience for creating a custom
+ * input element. This class inherits from BaseInputElement and contains a BaseInputHandler class
+ * to test input retrieval, a BaseCardElementParser to test element parsing and a
+ * BaseCardElementRenderer to test element rendering and automatically rendered properties such as
+ * errorMessage, label or spacing
+ */
 public class CustomInput extends BaseInputElement
 {
     public CustomInput(CardElementType cardElementType)
@@ -34,6 +43,10 @@ public class CustomInput extends BaseInputElement
         super(cardElementType);
     }
 
+    /**
+     * The CustomInputHandler class extends from BaseInputHandler, extending this class is required
+     * for any input element as it defines how it retrieves the values
+     */
     public static class CustomInputHandler extends BaseInputHandler
     {
         public CustomInputHandler(BaseInputElement baseInputElement, EditText editText)
@@ -61,6 +74,11 @@ public class CustomInput extends BaseInputElement
         }
     }
 
+    /**
+     * CustomInputRenderer as the name might hint, renders the custom input. This class extends
+     * from BaseCardElementRenderer. It's important to set a tag to the rendered element so
+     * some properties as visibility work properly.
+    */
     public static class CustomInputRenderer extends BaseCardElementRenderer
     {
         @Override
@@ -86,20 +104,24 @@ public class CustomInput extends BaseInputElement
         }
     }
 
-
+    /**
+     * CustomInputParser as the name might hint, parses the custom input. This class extends
+     * from BaseCardElementParser. This example is really simple and only gets the Id and label
+     * for the input.
+     */
     public static class CustomInputParser extends BaseCardElementParser
     {
         @Override
         public BaseCardElement Deserialize(ParseContext context, JsonValue value)
         {
             CustomInput element = new CustomInput(CardElementType.Custom);
+            Util.deserializeBaseInputProperties(context, value, element);
+
             element.SetElementTypeString(customInputTypeString);
             String val = value.getString();
             try
             {
                 JSONObject obj = new JSONObject(val);
-                element.SetId(obj.getString("id"));
-                element.SetLabel(obj.getString("label"));
             }
             catch (JSONException e)
             {
@@ -112,12 +134,12 @@ public class CustomInput extends BaseInputElement
         public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
         {
             CustomInput element = new CustomInput(CardElementType.Custom);
+            Util.deserializeBaseInputPropertiesFromString(context, jsonString, element);
+
             element.SetElementTypeString(customInputTypeString);
             try
             {
                 JSONObject obj = new JSONObject(jsonString);
-                element.SetId(obj.getString("id"));
-                element.SetLabel(obj.getString("label"));
             }
             catch (JSONException e)
             {

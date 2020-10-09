@@ -85,7 +85,6 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
-        InputNecessityIndicators,
         Inputs,
         InputSpacing,
         IsMultiSelect,
@@ -401,6 +400,7 @@ namespace AdaptiveSharedNamespace
         InvalidValue,
         CustomWarning,
         EmptyLabelInRequiredInput,
+        RequiredPropertyMissing,
     };
     // No mapping to string needed
 
@@ -487,12 +487,4 @@ namespace AdaptiveSharedNamespace
         Drop,
         Content
     };
-
-    enum class InputNecessityIndicators
-    {
-        None,
-        RequiredInputs,
-        OptionalInputs
-    };
-    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

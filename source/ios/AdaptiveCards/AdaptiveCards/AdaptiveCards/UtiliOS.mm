@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRColumnSetView.h"
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
@@ -271,6 +272,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig)
 {
+    configBleed(rootView, elem, container, acoConfig, nil);
+}
+
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
+                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
+{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -282,49 +289,48 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
             // bleed specification requires that there should be at leat one parental object with
             // padding
             if (collection->GetCanBleed()) {
-                InternalId internalId = collection->GetParentalId();
-                ACRContentStackView *view =
-                    (ACRContentStackView *)[rootView getBleedTarget:internalId];
+                InternalId parentInternalId = collection->GetParentalId();
+                ACRContentStackView *parentView =
+                    (ACRContentStackView *)[rootView getBleedTarget:parentInternalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
                 ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
-                view = view ? view : rootView;
+                if (![parentView isKindOfClass:[ACRColumnSetView class]] || parentView != superview) {
+                    parentView = nil;
+                }
 
-                if (view) {
-                    // 1. create a background view (bv).
-                    // 2. bv is added to bleed target view (tv), which is also a parent view.
-                    // bv is then pinned to the tv according to the bleed direction
-                    // bv gets current container view's (cv) container style
-                    // and cv's container style is reset to transparent, such that
-                    // bv's container style will be diplayed.
-                    // container view's stack view (csv) holds content views, and bv dislpays
-                    // container style we transpose them, and get the final result
+                // 1. create a background view (bv).
+                // 2. bv is added to bleed target view (tv), which is also a parent view.
+                // bv is then pinned to the tv according to the bleed direction
+                // bv gets current container view's (cv) container style
+                // and cv's container style is reset to transparent, such that
+                // bv's container style will be diplayed.
+                // container view's stack view (csv) holds content views, and bv dislpays
+                // container style we transpose them, and get the final result
 
-                    UIView *backgroundView = [[UIView alloc] init];
-                    container.backgroundView = backgroundView;
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                UIView *backgroundView = [[UIView alloc] init];
+                container.backgroundView = backgroundView;
+                backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                    UIView *marginalView = view.backgroundView ? view.backgroundView : view;
-                    [marginalView addSubview:backgroundView];
-                    [marginalView sendSubviewToBack:backgroundView];
-                    backgroundView.backgroundColor = container.backgroundColor;
-                    container.backgroundColor = UIColor.clearColor;
+                [container addSubview:backgroundView];
+                [container sendSubviewToBack:backgroundView];
+                backgroundView.backgroundColor = container.backgroundColor;
+                container.backgroundColor = UIColor.clearColor;
 
-                    [container bleed:config->GetSpacing().paddingSpacing
-                            priority:1000
-                              target:backgroundView
-                           direction:direction
-                          parentView:marginalView];
+                [container bleed:config->GetSpacing().paddingSpacing
+                        priority:1000
+                          target:backgroundView
+                       direction:direction
+                      parentView:parentView];
 
-                    if ([container layer].borderWidth) {
-                        [backgroundView layer].borderWidth = [container layer].borderWidth;
-                        [container layer].borderWidth = 0;
-                    }
+                if ([container layer].borderWidth) {
+                    [backgroundView layer].borderWidth = [container layer].borderWidth;
+                    [container layer].borderWidth = 0;
+                }
 
-                    if ([container layer].borderColor) {
-                        [backgroundView layer].borderColor = [container layer].borderColor;
-                        [container layer].borderColor = 0;
-                    }
+                if ([container layer].borderColor) {
+                    [backgroundView layer].borderColor = [container layer].borderColor;
+                    [container layer].borderColor = 0;
                 }
             }
         }
@@ -630,8 +636,13 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
             @throw [ACOFallbackException fallbackException];
         }
         Json::Value blob = unknownAction->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        NSString *jsonString =
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];

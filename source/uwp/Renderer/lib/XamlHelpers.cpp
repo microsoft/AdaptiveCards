@@ -406,7 +406,10 @@ namespace AdaptiveNamespace::XamlHelpers
             {
                 // perform this element's fallback
                 hr = fallbackElementRenderer->Render(fallbackElement.Get(), renderContext, renderArgs, &fallbackControl);
-                RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                if (renderedElement)
+                {
+                    RETURN_IF_FAILED(fallbackElement.CopyTo(renderedElement));
+                }
             }
 
             if (hr == E_PERFORM_FALLBACK)
@@ -764,7 +767,7 @@ namespace AdaptiveNamespace::XamlHelpers
             RETURN_IF_FAILED(labelRun.As(&labelRunAsInline));
 
             RETURN_IF_FAILED(xamlInlines->Append(labelRunAsInline.Get()));
-           
+
             // Get the label config depending if the input is required
             ComPtr<IAdaptiveHostConfig> hostConfig;
             RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
@@ -800,9 +803,9 @@ namespace AdaptiveNamespace::XamlHelpers
         else if (isRequired)
         {
             // if there was no label but the input is required file a warning for the card author
-            RETURN_IF_FAILED(
-                renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
-                                          HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
+            RETURN_IF_FAILED(renderContext->AddWarning(
+                ABI::AdaptiveNamespace::WarningStatusCode::EmptyLabelInRequiredInput,
+                HStringReference(L"Input is required but there's no label for required hint rendering").Get()));
         }
 
         return S_OK;
@@ -1016,9 +1019,11 @@ namespace AdaptiveNamespace::XamlHelpers
             auto separator = XamlHelpers::CreateSeparator(renderContext, spacing, 0, ABI::Windows::UI::Color());
 
             ComPtr<IAdaptiveInputValue> inputValue;
-            renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf());
-            RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
-
+            RETURN_IF_FAILED(renderContext->GetInputValue(adaptiveInput, inputValue.GetAddressOf()));
+            if (inputValue)
+            {
+                RETURN_IF_FAILED(inputValue->put_ErrorMessage(errorMessageControl.Get()));
+            }
             XamlHelpers::AppendXamlElementToPanel(separator.Get(), stackPanelAsPanel.Get());
 
             // Add the rendered error message
@@ -1073,6 +1078,22 @@ namespace AdaptiveNamespace::XamlHelpers
         RETURN_IF_FAILED(adaptiveInput->get_IsRequired(&isRequired));
 
         boolean hasValidation = (hasTypeSpecificValidation || isRequired);
+
+        if (hasValidation)
+        {
+            // If we have validation, we should have an error message to display if it fails. If we don't, return a
+            // warning to encourage the card author to add one.
+
+            HString errorMessage;
+            RETURN_IF_FAILED(adaptiveInput->get_ErrorMessage(errorMessage.GetAddressOf()));
+
+            if (!errorMessage.IsValid())
+            {
+                RETURN_IF_FAILED(
+                    renderContext->AddWarning(ABI::AdaptiveNamespace::WarningStatusCode::MissingValidationErrorMessage,
+                                              HStringReference(L"Inputs with validation should include an errorMessage").Get()));
+            }
+        }
 
         ComPtr<IBorder> validationBorder;
         if (validationBorderOut && hasValidation)

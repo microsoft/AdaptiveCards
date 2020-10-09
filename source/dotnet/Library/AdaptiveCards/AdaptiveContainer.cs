@@ -23,7 +23,7 @@ namespace AdaptiveCards
         public override string Type { get; set; } = TypeName;
 
         [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
         [DefaultValue(null)]
         public AdaptiveBackgroundImage BackgroundImage { get; set; }
 

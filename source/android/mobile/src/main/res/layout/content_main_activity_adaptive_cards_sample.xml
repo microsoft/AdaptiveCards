@@ -29,67 +29,6 @@
         android:visibility="gone"
         android:text="Connected! Click to disconnect"/>
 
-
-    <LinearLayout
-        android:id="@+id/adaptiveCardPickerGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/load_card"/>
-
-        <EditText
-            android:id="@+id/fileEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:ellipsize="end"
-            android:focusable="false"
-            android:inputType="textUri"
-            android:text="" />
-
-        <Button
-            android:id="@+id/loadCardButton"
-            android:layout_width="60dp"
-            android:layout_weight = "0"
-            android:layout_height="wrap_content"
-            android:onClick="onClickFileBrowser"
-            android:text="..." />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/hostConfigPickerGroup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/load_config" />
-
-        <EditText
-            android:id="@+id/hostConfigFileEditText"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight = "1"
-            android:ellipsize="end"
-            android:focusable="false"
-            android:inputType="textUri"
-            android:text="" />
-
-        <Button
-            android:id="@+id/hostConfigLoadButton"
-            android:layout_width="60dp"
-            android:layout_weight = "0"
-            android:layout_height="wrap_content"
-            android:onClick="onClickFileBrowser"
-            android:text="..." />
-    </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -343,6 +282,20 @@
                                 android:visibility="gone" />
 
                             <Switch
+                                android:id="@+id/customTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Custom Typeface" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change config to customFontConfig.json"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
+
+                            <Switch
                                 android:id="@+id/httpResourceResolver"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -355,7 +308,8 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="15dp"
                                 android:text="Action.OpenUrl.IconUrl.json"
-                                android:visibility="gone" />-
+                                android:visibility="gone" />
+
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>
