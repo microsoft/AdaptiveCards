@@ -71,6 +71,8 @@ public class CustomBlueAction extends BaseActionElement
                                                                            hostConfig,
                                                                            renderArgs);
 
+            blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, cardActionHandler));
+
             blueAction.setAllCaps(false);
             blueAction.setBackgroundResource(R.drawable.custom_button_style);
 

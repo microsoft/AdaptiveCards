@@ -29,6 +29,8 @@ public class RenderedAdaptiveCard {
     private Map<Long, Long> parentCardForCard;
     private Map<String, String> prevalidatedInputs;
 
+    private boolean lastValidationResult = false;
+
     protected RenderedAdaptiveCard(AdaptiveCard adaptiveCard)
     {
         this.warnings = new Vector<>();
@@ -166,7 +168,12 @@ public class RenderedAdaptiveCard {
             prevalidatedInputs = validatedInputs;
         }
 
-        return allInputsAreValid;
+        return lastValidationResult = allInputsAreValid;
+    }
+
+    public boolean areInputsValid()
+    {
+        return lastValidationResult;
     }
 
     public AdaptiveCard getAdaptiveCard()
@@ -199,5 +206,6 @@ public class RenderedAdaptiveCard {
     protected void clearValidatedInputs()
     {
         prevalidatedInputs.clear();
+        lastValidationResult = false;
     }
 }
