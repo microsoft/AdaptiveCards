@@ -84,6 +84,7 @@
 @synthesize isRequired;
 @synthesize hasValidationProperties;
 @synthesize id;
+@synthesize hasVisibilityChanged;
 
 @end
 

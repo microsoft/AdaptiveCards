@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Remoting.Contexts;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -299,9 +298,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
-            if (frameworkElementOut == null)
+            // If a container failed to render any of the children elements perform fallback
+            if (frameworkElementOut == null && (element is AdaptiveCollectionElement))
             {
-                // Since no renderer exists for this element, add warning and render fallback (if available)
                 if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)

@@ -5,7 +5,6 @@ from typing import List, Dict, Union
 from mystique import default_host_configs
 from .design_objects_template import ObjectTemplate
 from .extract_properties import CollectProperties
-from .extract_properties import ExtractProperties
 from .group_design_objects import ChoicesetGrouping
 from .group_design_objects import ColumnsGrouping
 from .group_design_objects import ImageGrouping
@@ -49,10 +48,10 @@ class CardArrange:
                 design_object2.get("object", "")} & {"actionset",
                                                      "textbox"}) == 2:
             contains = (
-                    (box2[0] <= box1[0] <= box2[2])
-                    and (box2[1] <= box1[1] <= box2[3])
+                (box2[0] <= box1[0] <= box2[2])
+                and (box2[1] <= box1[1] <= box2[3])
             )
-            extract_properties = ExtractProperties()
+            extract_properties = CollectProperties()
             intersection = extract_properties.find_iou(box1, box2,
                                                        inter_object=True)
             if contains or intersection[0]:
@@ -70,7 +69,7 @@ class CardArrange:
         @param json_objects: list of detected objects.
         """
         points = []
-        extract_properties = ExtractProperties()
+        extract_properties = CollectProperties()
         for deisgn_object in json_objects["objects"]:
             points.append(deisgn_object.get("coords"))
         positions_to_delete = []
@@ -115,12 +114,12 @@ class CardArrange:
         @param image_sizes: list of image object sizes
         """
 
-        extract_properties = ExtractProperties()
+        extract_properties = CollectProperties()
         for ctr, im in enumerate(image_urls):
             coords = image_coords[ctr]
             coords = (coords[0], coords[1], coords[2], coords[3])
             object_json = dict().fromkeys(
-                    ["object", "xmin", "ymin", "xmax", "ymax"], "")
+                ["object", "xmin", "ymin", "xmax", "ymax"], "")
             object_json["object"] = "image"
             object_json[
                 "horizontal_alignment"] = extract_properties.get_alignment(

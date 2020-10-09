@@ -318,7 +318,8 @@ AdaptiveNamespaceStart
         PerformingFallback,
         CustomWarning,
         EmptyLabelInRequiredInput,
-        MissingValidationErrorMessage
+        MissingValidationErrorMessage,
+        RequiredPropertyMissing
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -732,6 +733,7 @@ AdaptiveNamespaceStart
 
         String Value;
         Boolean IsMultiSelect;
+        String Placeholder;
         Boolean Wrap;
         ChoiceSetStyle ChoiceSetStyle;
         Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };

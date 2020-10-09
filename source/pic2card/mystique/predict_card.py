@@ -12,10 +12,11 @@ from PIL import Image
 import numpy as np
 import requests
 
+from mystique import config
+from mystique.utils import get_property_method
 from mystique.arrange_card import CardArrange
 from mystique.image_extraction import ImageExtraction
 from mystique.card_template import DataBinding
-from mystique import config
 from mystique.extract_properties import CollectProperties
 
 
@@ -80,11 +81,15 @@ class PredictCard:
         @param design_objects: List of design objects collected from the model.
         @param pil_image: Input PIL image
         """
-        collect_properties = CollectProperties(pil_image)
+        # Creating an Extract Property class instance
+        collect_prop = CollectProperties()
         for design_object in design_objects:
-            property_object = getattr(collect_properties,
-                                      design_object.get("object"))
-            design_object.update(property_object(design_object.get("coords")))
+            # Invoking the methods from dict according to the design object
+            property_object = get_property_method(collect_prop,
+                                                  design_object.get("object"))
+            property_element = property_object(pil_image,
+                                               design_object.get("coords"))
+            design_object.update(property_element)
 
     def main(self, image=None, card_format=None):
         """
@@ -99,7 +104,7 @@ class PredictCard:
         image_np = np.asarray(image)
         image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
         # Extract the design objects from faster rcnn model
-        output_dict, _ = self.od_model.get_objects(
+        output_dict = self.od_model.get_objects(
             image_np=image_np, image=image
         )
         return self.generate_card(output_dict, image, image_np, card_format)
@@ -157,9 +162,10 @@ class PredictCard:
         # get design object properties
         self.get_object_properties(json_objects["objects"], image)
         # Get image coordinates from custom image pipeline
-        if config.USE_CUSTOM_IMAGE_PIPELINE:
-            self.get_image_objects(json_objects, detected_coords, card_arrange,
-                                   image_np, image)
+        # if config.USE_CUSTOM_IMAGE_PIPELINE:
+        #     self.get_image_objects(json_objects, detected_coords,
+        #     card_arrange, image_np, image)
+
         # Arrange the design elements
         return_dict = {}.fromkeys(["card_json"], "")
         card_json = {
@@ -175,11 +181,11 @@ class PredictCard:
         body = [x for _, x in sorted(zip(ymins, body),
                                      key=lambda x: x[0])]
         # if format==template - generate template data json
+        return_dict["card_json"] = {}.fromkeys(["data", "card"], {})
         if card_format == "template":
             databinding = DataBinding()
             data_payload, body = databinding.build_data_binding_payload(body)
-            return_dict["card_v2_json"] = {}.fromkeys(["data", "template"], {})
-            return_dict["card_v2_json"]["data"] = data_payload
+            return_dict["card_json"]["data"] = data_payload
         # Prepare the response with error code
         error = None
         if not body or not detected_coords:
@@ -191,10 +197,9 @@ class PredictCard:
             card_json["body"] = body
 
         if card_format != "template":
-            return_dict["card_json"] = card_json
+            return_dict["card_json"]["card"] = card_json
         else:
-            return_dict["card_v2_json"]["template"] = card_json
-            return_dict["card_json"] = None
+            return_dict["card_json"]["card"] = card_json
         return_dict["error"] = error
 
         return return_dict

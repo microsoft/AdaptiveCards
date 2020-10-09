@@ -37,7 +37,8 @@
 								{
 									"type": "TextBlock",
 									"text": "Sat, Aug 31, 2019",
-									"horizontalAlignment": "center"
+									"horizontalAlignment": "center",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
