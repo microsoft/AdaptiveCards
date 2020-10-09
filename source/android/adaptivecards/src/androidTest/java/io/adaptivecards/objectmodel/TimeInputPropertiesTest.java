@@ -200,7 +200,7 @@ public class TimeInputPropertiesTest
             Calendar calendar = new GregorianCalendar(0, 0, 0, formatTestCase.first, formatTestCase.second);
             String formattedValue = TimeInputRenderer.getTimeFormat().format(calendar.getTime());
 
-            Assert.assertEquals(formatTestResults[i], formattedValue);
+            Assert.assertTrue(formatTestResults[i].equalsIgnoreCase(formattedValue));
 
 
             Date value = TimeInputRenderer.getTimeFormat().parse(formatTestResults[i]);
