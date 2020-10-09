@@ -1,96 +1,179 @@
 {
-	"name": "vscode-adaptivecards",
-	"displayName": "Adaptive Card Viewer",
-	"description": "Adaptive Card Viewer for Visual Studio Code.",
-	"version": "1.0.7",
-	"publisher": "tomlm",
+	"name": "adaptivecardsstudiobeta",
+	"displayName": "Adaptive Card Studio (BETA)",
+	"description": "Adaptive Card Studio for Visual Studio Code. ( This is an early beta version )",
+	"version": "0.6.4",
+	"publisher": "madewithcardsio",
 	"engines": {
-		"vscode": "^1.9.0"
+		"vscode": "^1.36.0"
 	},
 	"categories": [
-		"Other"
+		"Other",
+		"Snippets"
 	],
 	"activationEvents": [
-		"onLanguage:json",
-		"onCommand:adaptivecardviewer.open",
-		"*"
+		"*",
+		"onView:cardOutline",
+		"onView:cardCMSOutline"
 	],
-	"main": "./out/src/extension",
+	"main": "./out/extension",
 	"contributes": {
-		"commands": [
-			{
-				"command": "adaptivecardviewer.open",
-				"title": "AdaptiveCard Viewer: View Card",
-				"icon": {
-					"light": "./media/preview-darkgray.svg",
-					"dark": "./media/preview-lightgray.svg"
+		"snippets": [{
+			"language": "json",
+			"path": "media/snippets.json"
+		}],
+		"viewsContainers": {
+			"activitybar": [{
+				"id": "cardLists",
+				"title": "Adaptive Cards",
+				"icon": "resources/adaptivecards.png"
+			}]
+		},
+		"views": {
+			"cardLists": [{
+					"id": "cardList",
+					"name": "Workspace Cards"
+				},
+				{
+					"id": "cardListCMS",
+					"name": "CMS Cards"
 				}
+			]
+		},
+		"commands": [{
+				"command": "cardList.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "cardListCMS.refresh",
+				"title": "Refresh",
+				"icon": {
+					"light": "resources/light/refresh.svg",
+					"dark": "resources/dark/refresh.svg"
+				}
+			},
+			{
+				"command": "cardList.showElement",
+				"title": "Show"
+			},
+			{
+				"command": "cardListCMS.showElement",
+				"title": "Show"
 			}
 		],
 		"menus": {
-			"editor/title": [
+			"view/title": [{
+					"command": "cardList.refresh",
+					"when": "view == cardList",
+					"group": "navigation"
+				},
 				{
-					"when": "resourceLangId == json",
-					"command": "adaptivecardviewer.open",
+					"command": "cardListCMS.refresh",
+					"when": "view == cardListCMS",
 					"group": "navigation"
 				}
 			]
 		},
-		"keybindings": [
-			{
-				"command": "adaptivecardviewer.open",
-				"key": "ctrl+shift+v a"
-			}
-		],
+		"keybindings": [{
+			"command": "adaptivecardviewer.open",
+			"key": "ctrl+shift+v a"
+		}],
 		"configuration": {
 			"type": "object",
-			"title": "Adaptive Card Viewer configuration",
+			"title": "Adaptive Cards Studio",
 			"properties": {
-				"adaptivecardviewer.enableautopreview": {
-					"type": "boolean",
-					"default": false,
-					"description": "Open the preview automatically"
+				"acstudio.defaultHostConfig": {
+					"type": "string",
+					"default": "microsoft-teams-dark",
+					"enum": [
+						"microsoft-teams-dark",
+						"microsoft-teams-light",
+						"webchat",
+						"outlook-desktop",
+						"cortana-skills",
+						"cortana-skills",
+						"windows-timeline",
+						"BotFramework",
+						"windows-notification"
+					],
+					"enumDescriptions": [
+						"MS Teams Host Config (Dark)",
+						"MS Teams Host Config (Light)",
+						"Bot Framework - WebChat",
+						"Outlook Actionable Messages",
+						"Cortana Skills (Dark)",
+						"Cortana SKills (Light)",
+						"Windows Timeline",
+						"Bot Framework - Other",
+						"Windows Notifications (Preview)"
+					]
+				},
+                "acstudio.cmsAccessToken": {
+					"type": "string",
+					"default": "",
+					"description": "(ALPHA) The Access Token used for CMS Cards"
+				},
+                "acstudio.cmsAccessUrl": {
+					"type": "string",
+					"default": "",
+					"description": "(ALPHA) The CMS Url"
+				},
+				"acstudio.cmsFolder": {
+					"type": "string",
+					"default": "",
+					"description": "(ALPHA) Where to store temporary files from the CMS, uses workspaces root if not set"
 				}
 			}
 		}
 	},
 	"scripts": {
-		"vscode:prepublish": "tsc -p ./",
-		"compile": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install"
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"test": "npm run compile && node ./node_modules/vscode/bin/test"
 	},
 	"devDependencies": {
-		"@types/mocha": "2.2.39",
-		"@types/node": "^7.0.5",
-		"typescript": "^2.2.1",
-		"vscode": "^1.0.4"
-	},
-	"dependencies": {
-		"microsoft-adaptivecards": "^0.5.4"
+		"@types/glob": "^7.1.1",
+		"@types/mocha": "^5.2.6",
+		"@types/node": "^10.12.21",
+		"tslint": "^5.12.1",
+		"typescript": "^3.3.1",
+		"vscode": "^1.1.37",
+		"vscode-test": "^1.0.0-next.0"
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/Microsoft/AdaptiveCards.git"
+		"url": "https://github.com/MadeWithCards/AdaptiveCardsStudio.git"
 	},
-	"license": "MIT",
+	"license": "GNU3",
 	"icon": "icon.png",
 	"galleryBanner": {
-		"color": "#93E4D5",
-		"theme": "light"
+		"color": "#3a96dd",
+		"theme": "dark"
 	},
 	"bugs": {
 		"url": "https://github.com/Microsoft/AdaptiveCards/issues"
 	},
-	"homepage": "https://adaptivecards.io",
+	"homepage": "http://www.madewithcards.io",
 	"keywords": [
 		"adaptivecards",
 		"adaptive",
 		"cards",
 		"viewer",
-		"preview"
+		"preview",
+		"author",
+		"edit"
 	],
-	"galleryBanner": {
-		"color":"#404040",
-		"theme":"dark"
+	"dependencies": {
+		"adaptivecards": "^1.2.6",
+		"adaptivecards-templating": "^1.0.0-rc.0",
+		"axios": "^0.19.2",
+		"glob": "^7.1.6",
+		"mocha": "^6.1.4"
 	}
 }
