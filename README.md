@@ -36,6 +36,8 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 |---|---|---|---|---|---|
 | ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/README.md) | [![react-native-build](https://github.com/microsoft/AdaptiveCards/workflows/react-native-build/badge.svg)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md)
 | Pic2Card | | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/pic2card) | [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/pic2card/README.md) | ![pic2card-build](https://github.com/Microsoft/AdaptiveCards/workflows/pic2card-build/badge.svg) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md)
+| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/DeeJayTC/adaptivecards-vue)| [Docs](https://github.com/DeeJayTC/adaptivecards-vue/blob/master/README.md) | OK | [Tim Cadenbach](https://github.com/DeeJayTC)
+
 
 
 ## Contribute
