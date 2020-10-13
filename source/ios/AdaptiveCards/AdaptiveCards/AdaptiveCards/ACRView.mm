@@ -363,12 +363,14 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             // add column fallbacks to async task queue
             [self processFallback:column];
             [self addTasksToConcurrentQueue:column->GetItems()];
+            break;
         }
 
         case CardElementType::ActionSet: {
             std::shared_ptr<ActionSet> actionSet = std::static_pointer_cast<ActionSet>(elem);
             auto actions = actionSet->GetActions();
             [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig];
+            break;
         }
     }
 }
