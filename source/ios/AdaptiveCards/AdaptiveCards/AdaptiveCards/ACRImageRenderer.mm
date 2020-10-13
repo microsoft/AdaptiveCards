@@ -173,7 +173,7 @@
             [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
             [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
             [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingview.bottomAnchor].active = YES;
-            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
     }
 
@@ -258,7 +258,7 @@
                                            multiplier:1.0
                                              constant:cgsize.height] ];
         constraints[0].priority = prioirty;
-        constraints[1].priority = prioirty;
+        constraints[1].priority = UILayoutPriorityDefaultHigh;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
