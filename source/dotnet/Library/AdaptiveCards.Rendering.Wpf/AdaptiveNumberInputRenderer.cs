@@ -11,7 +11,12 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveNumberInput input, AdaptiveRenderContext context)
         {
-            var textBox = new TextBox() { Text = input.Value.ToString() };
+            var textBox = new TextBox();
+
+            if (!Double.IsNaN(input.Value))
+            {
+                textBox.Text = input.Value.ToString();
+            }
             textBox.SetPlaceholder(input.Placeholder);
             textBox.Style = context.GetStyle($"Adaptive.Input.Text.Number");
             textBox.SetContext(input);
