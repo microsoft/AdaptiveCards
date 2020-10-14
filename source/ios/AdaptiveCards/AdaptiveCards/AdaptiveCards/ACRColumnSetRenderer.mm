@@ -88,7 +88,7 @@
     ACRSeparator *separator = nil;
 
     for (std::shared_ptr<Column> column : columns) {
-        if (*firstColumn != column) {
+        if (prevColumn) {
             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
             configSeparatorVisibility(separator, prevColumn);
         }

@@ -180,8 +180,8 @@ using namespace AdaptiveCards;
 
     for (const auto &elem : elems) {
         ACRSeparator *separator = nil;
-        if (*firstelem != elem && curStretchableElem) {
-            separator = [ACRSeparator renderSeparation:elem
+        if (prevElem && curStretchableElem) {
+            separator = [ACRSeparator renderSeparation:prevElem
                                           forSuperview:view
                                         withHostConfig:[config getHostConfig]];
             configSeparatorVisibility(separator, prevElem);
