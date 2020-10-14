@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Constants from "./constants";
+import { Constants } from "./constants";
 import { Collection } from "./collection";
 import { InputWithPopup, PopupControl } from "./inputwithpopup";
 
@@ -32,11 +32,11 @@ export class DropDownItem {
             this._element = document.createElement("span");
             this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
             this._element.innerText = this.value;
-            this._element.setAttribute("role", "option");
+            this._element.setAttribute("role", "menuitem");
             this._element.setAttribute("aria-selected", "false");
             this._element.onmouseup = (e) => { this.click(); };
             this._element.onkeydown = (e) => {
-                if (e.keyCode === Constants.KEY_ENTER) {
+                if (e.key === Constants.keys.enter) {
                     this.click();
                     e.cancelBubble = true;
                 }
@@ -73,7 +73,7 @@ export class DropDownPopupControl extends PopupControl {
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";
-        element.setAttribute("role", "listbox");
+        element.setAttribute("role", "menu");
 
         var selectedIndex = this._owner.selectedIndex;
 
@@ -98,12 +98,12 @@ export class DropDownPopupControl extends PopupControl {
 
         var selectedItemIndex = this._selectedIndex;
 
-        switch (e.keyCode) {
-            case Constants.KEY_TAB:
+        switch (e.key) {
+            case Constants.keys.tab:
                 this.closePopup(true);
 
                 break;
-            case Constants.KEY_ENTER:
+            case Constants.keys.enter:
                 if (this.selectedIndex >= 0) {
                     this._owner.selectedIndex = this.selectedIndex;
 
@@ -111,7 +111,7 @@ export class DropDownPopupControl extends PopupControl {
                 }
 
                 break;
-            case Constants.KEY_UP:
+            case Constants.keys.up:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
                 }
@@ -128,7 +128,7 @@ export class DropDownPopupControl extends PopupControl {
                 e.cancelBubble = true;
 
                 break;
-            case Constants.KEY_DOWN:
+            case Constants.keys.down:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
                 }
@@ -238,6 +238,8 @@ export class DropDown extends InputWithPopup<DropDownPopupControl, DropDownItem>
         if (ariaLabelledByIds.length > 0) {
             this.rootElement.setAttribute("aria-labelledby", ariaLabelledByIds.join(" "));
         }
+
+        this.rootElement.setAttribute("role", "menu");
     }
 
     popup() {

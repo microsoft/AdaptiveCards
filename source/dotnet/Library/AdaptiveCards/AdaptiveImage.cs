@@ -41,7 +41,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Size for the Image
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -51,7 +51,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -85,7 +85,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Horizontal alignment for element
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -96,7 +96,7 @@ namespace AdaptiveCards
         ///     A background color for the image specified as #AARRGGBB or #RRGGBB
         /// </summary>
         [JsonConverter(typeof(HashColorConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -106,7 +106,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -127,7 +127,7 @@ namespace AdaptiveCards
         ///    Explicit Image Width
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

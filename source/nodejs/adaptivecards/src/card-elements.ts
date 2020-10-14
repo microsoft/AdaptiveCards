@@ -1178,6 +1178,7 @@ export class TextRun extends BaseTextBlock {
                 }
 
                 if (this.selectAction.title) {
+                    anchor.setAttribute("aria-label", this.selectAction.title);
                     anchor.title = this.selectAction.title;
                 }
 
@@ -2698,7 +2699,7 @@ export class TextInput extends Input {
         input.oninput = () => { this.valueChanged(); }
         input.onkeypress = (e: KeyboardEvent) => {
             // Ctrl+Enter pressed
-            if (e.keyCode == 10 && this.inlineAction) {
+            if (e.ctrlKey && e.code === "Enter" && this.inlineAction) {
                 this.inlineAction.execute();
             }
         }
@@ -3743,6 +3744,18 @@ export abstract class Action extends CardObject {
         return result;
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
+    }
+
+    protected raiseExecuteActionEvent() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+
+        raiseExecuteActionEvent(this);
+    }
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3830,11 +3843,11 @@ export abstract class Action extends CardObject {
     }
 
     execute() {
-        if (this.onExecute) {
-            this.onExecute(this);
+        if (this._actionCollection) {
+            this._actionCollection.actionExecuted(this);
         }
 
-        raiseExecuteActionEvent(this);
+        this.raiseExecuteActionEvent();
     }
 
     prepareForExecution(): boolean {
@@ -4361,6 +4374,13 @@ export class ShowCardAction extends Action {
         }
     }
 
+    protected raiseExecuteActionEvent() {
+        if (this.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
+            // Only raise the event in Popup mode.
+            super.raiseExecuteActionEvent();
+        }
+    }
+
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
@@ -4465,21 +4485,6 @@ class ActionCollection {
         this._owner.getRootElement().updateLayout();
     }
 
-    private hideActionCard() {
-        let previouslyExpandedAction = this._expandedAction;
-
-        this._expandedAction = undefined;
-        this._actionCard = undefined;
-
-        this.refreshContainer();
-
-        if (previouslyExpandedAction) {
-            this.layoutChanged();
-
-            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
-        }
-    }
-
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
@@ -4503,7 +4508,18 @@ class ActionCollection {
             button.state = ActionButtonState.Normal;
         }
 
-        this.hideActionCard();
+        let previouslyExpandedAction = this._expandedAction;
+
+        this._expandedAction = undefined;
+        this._actionCard = undefined;
+
+        this.refreshContainer();
+
+        if (previouslyExpandedAction) {
+            this.layoutChanged();
+
+            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
+        }
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
@@ -4520,29 +4536,6 @@ class ActionCollection {
             action,
             !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()),
             raiseEvent);
-    }
-
-    private actionClicked(actionButton: ActionButton) {
-        if (!(actionButton.action instanceof ShowCardAction)) {
-            for (let button of this.buttons) {
-                button.state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCard();
-
-            actionButton.action.execute();
-        }
-        else {
-            if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
-                actionButton.action.execute();
-            }
-            else if (actionButton.action === this._expandedAction) {
-                this.collapseExpandedAction();
-            }
-            else {
-                this.expandShowCardAction(actionButton.action, true);
-            }
-        }
     }
 
     private getParentContainer(): Container | undefined {
@@ -4569,6 +4562,20 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    actionExecuted(action: Action) {
+        if (!(action instanceof ShowCardAction)) {
+            this.collapseExpandedAction();
+        }
+        else {
+            if (action === this._expandedAction) {
+                this.collapseExpandedAction();
+            }
+            else {
+                this.expandShowCardAction(action, true);
+            }
+        }
     }
 
     parse(source: any, context: SerializationContext) {
@@ -4656,7 +4663,7 @@ class ActionCollection {
             let buttonStrip = document.createElement("div");
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
-            buttonStrip.setAttribute("role", "group");
+            buttonStrip.setAttribute("role", "menubar");
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
@@ -4734,7 +4741,7 @@ class ActionCollection {
 
                     if (!actionButton) {
                         actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
-                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
+                        actionButton.onClick = (ab) => { ab.action.execute(); };
 
                         this.buttons.push(actionButton);
                     }
@@ -4744,7 +4751,7 @@ class ActionCollection {
                     if (actionButton.action.renderedElement) {
                         actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
                         actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "listitem");
+                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";
