@@ -132,15 +132,15 @@ export class AdaptiveAppletCard extends AdaptiveCard {
 }
 
 export class AdaptiveApplet {
-    private static _elementsRegistry = new CardObjectRegistry<CardElement>();
-    private static _actionsRegistry = new CardObjectRegistry<Action>();
+    static readonly elementsRegistry = new CardObjectRegistry<CardElement>();
+    static readonly actionsRegistry = new CardObjectRegistry<Action>();
 
     static initialize() {
-        GlobalRegistry.populateWithDefaultElements(AdaptiveApplet._elementsRegistry);
-        GlobalRegistry.populateWithDefaultActions(AdaptiveApplet._actionsRegistry);
+        GlobalRegistry.populateWithDefaultElements(AdaptiveApplet.elementsRegistry);
+        GlobalRegistry.populateWithDefaultActions(AdaptiveApplet.actionsRegistry);
 
-        AdaptiveApplet._actionsRegistry.unregister("Action.Submit");
-        AdaptiveApplet._actionsRegistry.register("Action.Execute", ExecuteAction, Versions.v1_2);
+        AdaptiveApplet.actionsRegistry.unregister("Action.Submit");
+        AdaptiveApplet.actionsRegistry.register("Action.Execute", ExecuteAction, Versions.v1_2);
     }
 
     private _card?: AdaptiveAppletCard;
@@ -349,8 +349,8 @@ export class AdaptiveApplet {
                 let card = new AdaptiveAppletCard();
 
                 let serializationContext = new SerializationContext();
-                serializationContext.setElementRegistry(AdaptiveApplet._elementsRegistry);
-                serializationContext.setActionRegistry(AdaptiveApplet._actionsRegistry);
+                serializationContext.setElementRegistry(AdaptiveApplet.elementsRegistry);
+                serializationContext.setActionRegistry(AdaptiveApplet.actionsRegistry);
 
                 card.parse(this._cardPayload, serializationContext);
 

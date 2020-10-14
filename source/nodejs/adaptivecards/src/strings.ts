@@ -31,6 +31,11 @@ export class Strings {
         actionAlreadyParented: () => "The action already belongs to another element.",
         elementTypeNotStandalone: (typeName: string) => `Elements of type ${typeName} cannot be used as standalone elements.`
     };
+    static readonly runtime = {
+        automaticRefreshPaused: () => "Automatic refresh paused.",
+        clckToRestartAutomaticRefresh: () => "Click to restart.",
+        refreshThisCard: () => "Refresh this card"
+    };
     static readonly hints = {
         dontUseWeightedAndStrecthedColumnsInSameSet: () => "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
     };
