@@ -17,8 +17,8 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "lib/adaptivecards-templating.js",
-	"types": "lib/adaptivecards-templating.d.ts",
+	"main": "dist/adaptivecards-templating.js",
+	"types": "dist/adaptivecards-templating.d.ts",
 	"files": [
 		"lib",
 		"dist",
@@ -36,6 +36,14 @@
 		"docs": "npx typedoc"
 	},
 	"devDependencies": {
+		"@babel/core": "^7.6.4",
+		"@babel/plugin-proposal-class-properties": "^7.5.5",
+		"@babel/plugin-proposal-decorators": "^7.6.0",
+		"@babel/plugin-transform-runtime": "^7.6.2",
+		"@babel/preset-env": "^7.6.3",
+		"@babel/preset-typescript": "^7.6.0",
+		"@babel/runtime": "^7.6.3",
+		"babel-loader": "^8.0.6",
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
 		"eslint": "^7.3.1",
@@ -49,6 +57,7 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
+		"core-js": "^3.3.2",
 		"adaptive-expressions": "^4.9.2"
 	}
 }
