@@ -3,6 +3,8 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.opengl.Visibility;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -246,6 +248,8 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
         final Spinner spinner = new Spinner(context);
+        spinner.getBackground().setColorFilter(Color.RED, PorterDuff.Mode.SRC_ATOP);
+        spinner.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         comboBoxInputHandler.setView(spinner);
 
         spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler));
