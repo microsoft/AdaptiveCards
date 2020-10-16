@@ -1,7 +1,7 @@
 ---
 title: 📣 Community Call - October, 2020 
-subtitle: Roadmap updates and an early look at Adaptive Components
-date: 2020-10-09
+subtitle: Deep dive into Adaptive Components
+date: 2020-10-08
 featured_image: https://developer.microsoft.com/en-us/microsoft-365/blogs/wp-content/uploads/2020/10/Picture3-1.png
 github_username: matthidinger
 twitter: matthidinger
@@ -93,4 +93,4 @@ Check out the previous month's call recording on our [Office Development YouTube
 -   [Issues and feature requests](https://github.com/Microsoft/AdaptiveCards/issues)
 -   [Technical questions](https://stackoverflow.com/questions/tagged/adaptive-cards)
 
-The Adaptive Cards developer community call is on the 2^nd^ Thursday of each month. We will provide you with the opportunity to learn about Adaptive Cards in general, how they could be a great tool in your applications and contribute to the evolution of the format and SDKs. Each month, we'll discuss new features we are bringing to the platform, our roadmap, and listen to your feedback and suggestions.
+The Adaptive Cards developer community call is on the 2nd Thursday of each month. We will provide you with the opportunity to learn about Adaptive Cards in general, how they could be a great tool in your applications and contribute to the evolution of the format and SDKs. Each month, we'll discuss new features we are bringing to the platform, our roadmap, and listen to your feedback and suggestions.
