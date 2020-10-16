@@ -63,7 +63,7 @@ Interested in trying it out? You're in luck! We have an early [prototype to play
 2.  Drag over a **Component** from Card Elements toolbox on the left.
 3.  On the designer surface, select the Component, and click **Choose...**
 4.  A dialog should open with a list of available components, this might take ~30 seconds or so due to the service starting up.
-5.  Click on the **com/stockQuote** component.
+5.  Click on the **iextrading.com/stockQuote** component.
 6.  Change the **Element Properties** and observe the component UI updating. E.g., Set **Change value** to **-2.69**
 7.  Play around with it by mix-and-matching different components that are currently available.
 
