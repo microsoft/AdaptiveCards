@@ -6,7 +6,8 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	Linking
+	Linking,
+	View
 } from 'react-native';
 import PropTypes from 'prop-types';
 
