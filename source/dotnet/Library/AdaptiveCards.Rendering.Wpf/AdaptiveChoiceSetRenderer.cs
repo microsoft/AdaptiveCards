@@ -102,9 +102,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices, uiChoices.Children[0]);
             }
 
-            if (input.IsRequired && input.ErrorMessage == null)
+            if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
             {
-                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
                     "Inputs with validation should include an ErrorMessage"));
             }
 

@@ -28,9 +28,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
 
-                if ((input.IsRequired || input.Regex != null) && input.ErrorMessage == null)
+                if ((input.IsRequired || input.Regex != null) && string.IsNullOrEmpty(input.ErrorMessage))
                 {
-                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
                         "Inputs with validation should include an ErrorMessage"));
                 }
 

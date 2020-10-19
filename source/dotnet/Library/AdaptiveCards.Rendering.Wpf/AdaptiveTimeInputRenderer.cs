@@ -17,9 +17,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             TimeSpan maxTime, minTime;
             if ((TimeSpan.TryParse(input.Max, out maxTime) || TimeSpan.TryParse(input.Min, out minTime) || input.IsRequired)
-                && input.ErrorMessage == null)
+                && string.IsNullOrEmpty(input.ErrorMessage))
             {
-                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
                     "Inputs with validation should include an ErrorMessage"));
             }
 

@@ -22,9 +22,9 @@ namespace AdaptiveCards.Rendering.Wpf
             textBox.SetContext(input);
 
             if ((!Double.IsNaN(input.Max) || !Double.IsNaN(input.Min) || input.IsRequired)
-                && input.ErrorMessage == null)
+                && string.IsNullOrEmpty(input.ErrorMessage))
             {
-                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
                     "Inputs with validation should include an ErrorMessage"));
             }
 

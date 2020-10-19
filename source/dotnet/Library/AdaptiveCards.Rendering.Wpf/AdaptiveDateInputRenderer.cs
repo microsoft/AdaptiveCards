@@ -17,9 +17,9 @@ namespace AdaptiveCards.Rendering.Wpf
 
             DateTime maxDate, minDate;
             if ((DateTime.TryParse(input.Max, out maxDate) || DateTime.TryParse(input.Min, out minDate) || input.IsRequired)
-                && input.ErrorMessage == null)
+                && string.IsNullOrEmpty(input.ErrorMessage))
             {
-                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoWarningForValidatedInput,
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
                     "Inputs with validation should include an ErrorMessage"));
             }
 
