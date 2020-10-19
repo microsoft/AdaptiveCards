@@ -10,10 +10,13 @@ using System.Reflection;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     This handles using type field to instantiate strongly typed object on deserialization
+    /// This handles using the type field to instantiate strongly typed objects on deserialization.
     /// </summary>
     public class AdaptiveTypedElementConverter : AdaptiveTypedBaseElementConverter, ILogWarnings
     {
+        /// <summary>
+        /// The list of warnings generated while converting.
+        /// </summary>
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         /// <summary>
@@ -48,6 +51,10 @@ namespace AdaptiveCards
             return types;
         });
 
+        /// <summary>
+        /// Registers a new element with the element converter.
+        /// </summary>
+        /// <param name="typeName">The <see cref="AdaptiveTypedElement.Type"/> of the element to register.</param>
         public static void RegisterTypedElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
         {
@@ -57,18 +64,25 @@ namespace AdaptiveCards
             TypedElementTypes.Value[typeName] = typeof(T);
         }
 
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return typeof(AdaptiveTypedElement).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
+        /// <inheritdoc />
         public override bool CanWrite => false;
+
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc />
         public override bool CanRead => true;
+
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jObject = JObject.Load(reader);
@@ -135,6 +149,9 @@ namespace AdaptiveCards
             }
         }
 
+        /// <summary>
+        /// Retrieves the type name of an AdaptiveCards object.
+        /// </summary>
         public static string GetElementTypeName(Type objectType, JObject jObject)
         {
             string typeName = jObject["type"]?.Value<string>() ?? jObject["@type"]?.Value<string>();
@@ -162,6 +179,9 @@ namespace AdaptiveCards
             return typeName;
         }
 
+        /// <summary>
+        /// Instantiates a new strongly-typed element of the given type.
+        /// </summary>
         public static T CreateElement<T>(string typeName = null)
             where T : AdaptiveTypedElement
         {
