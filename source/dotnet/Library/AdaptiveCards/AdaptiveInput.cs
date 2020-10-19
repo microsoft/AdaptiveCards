@@ -8,12 +8,12 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Input is used as part of a Form CardElement to collect information from a user
+    /// Represents any input element.
     /// </summary>
     public abstract class AdaptiveInput : AdaptiveElement
     {
         /// <summary>
-        /// Sets the input as required for triggering Submit actions
+        /// Sets the input as required for triggering Submit actions.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -23,7 +23,7 @@ namespace AdaptiveCards
         public bool IsRequired { get; set; }
 
         /// <summary>
-        /// Label to be shown next to input
+        /// Label to be shown next to input.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -33,7 +33,7 @@ namespace AdaptiveCards
         public string Label { get; set; }
 
         /// <summary>
-        /// Error message to be shown when validation fails
+        /// Error message to be shown when validation fails.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
