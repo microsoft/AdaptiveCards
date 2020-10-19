@@ -146,7 +146,7 @@ export class Toolbox {
         this._contentHost.style.overflow = "auto";
 
         this._renderedElement.appendChild(this._headerRootElement);
-		this._renderedElement.appendChild(this._contentHost);
+	    this._renderedElement.appendChild(this._contentHost);
 
         this.updateContent();
     }

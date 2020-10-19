@@ -790,7 +790,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this._inplaceEditor = null;
 
-			this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
+		    this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
         }
     }
 

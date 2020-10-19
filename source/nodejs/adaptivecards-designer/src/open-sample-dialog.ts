@@ -49,7 +49,7 @@ class CatalogueItem {
         displayNameElement.innerText = this.entry.displayName;
 
         element.appendChild(thumbnailHost);
-		element.appendChild(displayNameElement);
+	    element.appendChild(displayNameElement);
 
         this.entry.onDownloaded = (sender: CatalogueEntry) => {
             thumbnailHost.removeChild(spinner);

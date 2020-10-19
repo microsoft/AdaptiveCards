@@ -51,6 +51,6 @@ export class CardObjectRegistry<T extends SerializableObject> {
     }
 
     getItemAt(index: number): ITypeRegistration<T> {
-		return Object.keys(this._items).map(e => this._items[e])[index];
+	    return Object.keys(this._items).map(e => this._items[e])[index];
     }
 }
