@@ -8,7 +8,8 @@
     <style name="adaptiveInlineAction" format="reference" />
     <style name="adaptiveInlineActionImage" format="reference" />
 
-    <attr name="adaptiveUsingCustomInputs" format="boolean" />
+    <attr name="adaptiveUsingCustomTextInputs" format="boolean" />
+    <attr name="adaptiveUsingCustomChoiceSetInputs" format="boolean" />
     <declare-styleable name="adaptiveCustomInputState">
         <attr name="adaptive_state_input_invalid" format="boolean" />
     </declare-styleable>

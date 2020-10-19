@@ -3,10 +3,12 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,7 @@ import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetStyle;
@@ -34,6 +37,7 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedInputLayout;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedRadioGroup;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinner;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 import io.adaptivecards.renderer.inputhandler.CheckBoxSetInputHandler;
 import io.adaptivecards.renderer.inputhandler.ComboBoxInputHandler;
@@ -52,6 +56,21 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 {
     protected ChoiceSetInputRenderer()
     {
+    }
+
+    public boolean isUsingCustomInputs(Context context)
+    {
+        Resources.Theme theme = context.getTheme();
+        TypedValue isUsingCustomInputs = new TypedValue();
+
+        if (theme.resolveAttribute(R.attr.adaptiveUsingCustomChoiceSetInputs, isUsingCustomInputs, true))
+        {
+            return (isUsingCustomInputs.data != 0);
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static ChoiceSetInputRenderer getInstance()
@@ -244,14 +263,17 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             selection = (int) size;
         }
 
-        final Spinner spinner = new Spinner(context);
-        spinner.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        boolean usingCustomInputs = isUsingCustomInputs(context);
+        final Spinner spinner = new ValidatedSpinner(context, usingCustomInputs);
 
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
 
         boolean isRequired = choiceSetInput.GetIsRequired();
         ValidatedInputLayout inputLayout = null;
-        if (isRequired)
+
+        // if using custom inputs, we don't have to create the surrounding linear layout
+        boolean needsOuterLayout = (isRequired && !usingCustomInputs);
+        if (needsOuterLayout)
         {
             inputLayout = new ValidatedSpinnerLayout(context,
                                                      getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
@@ -343,7 +365,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
 
         spinner.setFocusable(true);
 
-        if (isRequired)
+        if (needsOuterLayout)
         {
             inputLayout.addView(spinner);
             return inputLayout;

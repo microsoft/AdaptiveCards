@@ -33,7 +33,8 @@
         <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
 
         <!-- Add custom input backgrounds -->
-        <item name="adaptiveUsingCustomInputs">false</item>
+        <item name="adaptiveUsingCustomTextInputs">false</item>
+        <item name="adaptiveUsingCustomChoiceSetInputs">true</item>
         <!-- <item name="android:editTextBackground">@drawable/layered_edit_text_styles</item> -->
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
