@@ -122,7 +122,7 @@ export abstract class Dialog {
             xButton.onclick = (e) => { this.close(); }
 
             titleBarElement.appendChild(titleElement);
-		    titleBarElement.appendChild(xButton);
+            titleBarElement.appendChild(xButton);
 
             let contentElement = this.renderContent();
             contentElement.style.flex = "1 1 auto";
