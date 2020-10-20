@@ -624,15 +624,10 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (
-                        dialog.selectedSample &&
-                        dialog.selectedSample.cardId !== "PIC_2_CARD"
-                    ) {
+                    if (dialog.selectedSample && dialog.selectedSample.cardId !== "PIC_2_CARD") {
                         dialog.selectedSample.onDownloaded = () => {
                             try {
-                                let cardPayload = JSON.parse(
-                                    dialog.selectedSample.cardPayload
-                                );
+                                let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
                                 this.setCardPayload(cardPayload, true);
                             } catch {
@@ -641,18 +636,12 @@ export class CardDesigner extends Designer.DesignContext {
 
                             if (dialog.selectedSample.sampleData) {
                                 try {
-                                    let sampleDataPayload = JSON.parse(
-                                        dialog.selectedSample.sampleData
-                                    );
+                                    let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
 
-                                    this.setSampleDataPayload(
-                                        sampleDataPayload
-                                    );
-                                    this.dataStructure = FieldDefinition.deriveFrom(
-                                        sampleDataPayload
-                                    );
+                                    this.setSampleDataPayload(sampleDataPayload);
+                                    this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
                                 } catch {
-                                    alert("The sample could not be loaded.");
+                                    alert("The sample could not be loaded.")
                                 }
                             }
                         };
@@ -749,15 +738,11 @@ export class CardDesigner extends Designer.DesignContext {
         this.toolbar.addElement(this._helpButton);
 
         this._fullScreenHandler = new FullScreenHandler();
-        this._fullScreenHandler.onFullScreenChanged = (
-            isFullScreen: boolean
-        ) => {
-            this._fullScreenButton.toolTip = isFullScreen
-                ? "Exit full screen"
-                : "Enter full screen";
+        this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
+            this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
 
             this.updateFullLayout();
-        };
+        }
     }
 
     private launchImagePopup() {
