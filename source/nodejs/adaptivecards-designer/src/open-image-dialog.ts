@@ -99,7 +99,7 @@ export class OpenImageDialog extends Dialog {
         const fileNote = document.createElement("div");
         fileNote.className = "acd-image-file-note";
         fileNote.innerHTML =
-            "By using the upload feature you agree to our <a href='../privacy' target='_blank'><span class='link'> image usage policy</spanl></a>";
+            "By using the upload feature you agree to our <a href='../privacy' target='_blank'><span class='link'> image usage policy</span></a>";
         type !== "file" &&
             this._buttonContainer.appendChild(this.renderCheckbox());
         this._buttonContainer.appendChild(
@@ -138,8 +138,8 @@ export class OpenImageDialog extends Dialog {
         const labelElement = <HTMLInputElement>document.createElement("LABEL");
         labelElement.className = "acd-label-element";
         labelElement.setAttribute("for", "template-option");
-        labelElement.innerText =
-            "Create Adaptive Card with <a href='https://aka.ms/ACTemplating'>template bindings</a> and sample data";
+        labelElement.innerHTML =
+            "Create Adaptive Card with <a href='https://aka.ms/ACTemplating' target='_blank'><span class='link'>template bindings</span></a> and sample data";
         return labelElement;
     }
 
@@ -310,7 +310,7 @@ export class OpenImageDialog extends Dialog {
         const poweredByContainer = document.createElement("div");
         poweredByContainer.className = "acd-poweredby-title";
         poweredByContainer.innerHTML =
-            "Powered By <a class='poweredby-link' href='https://www.imaginea.com/' target='_blank'><span class='link'>Imaginea</spanl></a>";
+            "Powered By <a class='poweredby-link' href='https://www.imaginea.com/' target='_blank'><span class='link'>Imaginea</span></a>";
         const container = document.createElement("div");
         container.className = "acd-sample-container";
 

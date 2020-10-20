@@ -41,7 +41,9 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
-    preventLightDismissal: boolean = false; // Flag for enabling preventDefault action
+    // flag to prevent dialog close on overlay element click, default it's set to false, for Pi2Card it will be set to true
+    preventLightDismissal: boolean = false;
+
     constructor() {
         this.closeButton = new DialogButton("Close");
         this.closeButton.onClick = (sender) => {
