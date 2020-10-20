@@ -35,9 +35,9 @@ export class CatalogueEntry {
 
     onDownloaded: (sender: CatalogueEntry) => void = null;
 
-    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string, id?:string) {
+    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string, cardId?:string) {
         this.sampleDataUrl = sampleDataUrl;
-        this._cardId = id;
+        this._cardId = cardId;
     }
 
     download() {
