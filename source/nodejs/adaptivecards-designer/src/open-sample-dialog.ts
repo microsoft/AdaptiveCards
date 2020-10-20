@@ -169,12 +169,7 @@ export class OpenSampleDialog extends Dialog {
             <div class="acd-image-upload-title">Create from Image </div>
             <div class="acd-image-description">Upload your own image and convert it magically to an Adaptive card</div><input class="acd-try-now-button" value="Try Now" type="button" /></div></div><div class="acd-open-sample-item-title">Create from Image</div>`;
         imageOption.addEventListener("click", () => {
-            this._selectedSample = new CatalogueEntry(
-                "Create From Image (Preview)",
-                "",
-                "",
-                pic2CardID
-            );
+            this._selectedSample = new CatalogueEntry("Create From Image (Preview)", "", "", pic2CardID);
             this.close();
         });
 
