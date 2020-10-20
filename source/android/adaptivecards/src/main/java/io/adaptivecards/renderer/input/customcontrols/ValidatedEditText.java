@@ -1,4 +1,4 @@
-package io.adaptivecards.renderer.input;
+package io.adaptivecards.renderer.input.customcontrols;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import io.adaptivecards.R;
 
 @SuppressLint("AppCompatCustomView")
-public class ValidatedEditText extends EditText
+public class ValidatedEditText extends EditText implements IValidatedInputView
 {
     public ValidatedEditText(Context context)
     {
@@ -37,7 +37,7 @@ public class ValidatedEditText extends EditText
         Resources.Theme theme = context.getTheme();
         TypedValue isUsingCustomInputs = new TypedValue();
 
-        if (theme.resolveAttribute(R.attr.usingCustomInputs, isUsingCustomInputs, true))
+        if (theme.resolveAttribute(R.attr.adaptiveUsingCustomInputs, isUsingCustomInputs, true))
         {
             m_isUsingCustomInputs = (isUsingCustomInputs.data != 0);
         }
@@ -99,5 +99,5 @@ public class ValidatedEditText extends EditText
     private boolean m_isUsingCustomInputs = false;
     private int m_errorColor = Color.TRANSPARENT;
 
-    private static final int[] STATE_INPUT_INVALID = {R.attr.state_input_invalid};
+    private static final int[] STATE_INPUT_INVALID = {R.attr.adaptive_state_input_invalid};
 }

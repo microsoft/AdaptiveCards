@@ -45,13 +45,13 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
+import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
