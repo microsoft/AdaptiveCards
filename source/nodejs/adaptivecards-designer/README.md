@@ -207,7 +207,7 @@ ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title"
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-/* To configure custom Pic2Card endpoint*/
+/* To configure custom Pic2Card endpoint */
 ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
 
 /* Modify the Element toolbox (BEFORE calling attachTo) */
@@ -258,7 +258,7 @@ designer.setCard(
 	}
 );
 
-/* Set sample data (AFTER calling attachTo) */
+/* Set sample data (AFTER calling attachTo) */ 
 designer.sampleData = {
 	name: "John Doe",
 	phone: "123-123-1234"

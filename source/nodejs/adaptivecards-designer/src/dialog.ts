@@ -41,12 +41,14 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
-    preventLightDismissal: boolean = false; // Flag for enabling preventDefault action
+    // flag to prevent dialog close on overlay element click, default it's set to false, for Pi2Card it will be set to true
+    preventLightDismissal: boolean = false;
+
     constructor() {
         this.closeButton = new DialogButton("Close");
         this.closeButton.onClick = (sender) => {
             this.close();
-        };
+        }
     }
 
     open() {
@@ -57,9 +59,7 @@ export abstract class Dialog {
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                if (!this.preventLightDismissal) {
-                    this.close();
-                }
+                if (!this.preventLightDismissal) { this.close(); }
             };
 
             let dialogFrameElement = document.createElement("dialog");
@@ -68,10 +68,7 @@ export abstract class Dialog {
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("aria-modal", "true");
-            dialogFrameElement.setAttribute(
-                "aria-labelledby",
-                "acd-dialog-title-element"
-            );
+            dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
 
             dialogFrameElement.onclick = (e) => {
@@ -81,7 +78,7 @@ export abstract class Dialog {
                     e.cancelBubble = true;
                     return false;
                 }
-            };
+            }
 
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
