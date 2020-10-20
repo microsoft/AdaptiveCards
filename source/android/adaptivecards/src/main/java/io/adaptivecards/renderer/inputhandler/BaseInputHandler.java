@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
+import io.adaptivecards.renderer.input.ValidatedEditText;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 
 public abstract class BaseInputHandler implements IInputHandler
@@ -89,9 +87,9 @@ public abstract class BaseInputHandler implements IInputHandler
             }
         }
 
-        if (m_view instanceof IValidatedInputView)
+        if (m_view instanceof ValidatedEditText)
         {
-            ((IValidatedInputView)m_view).setValidationResult(isValid);
+            ((ValidatedEditText)m_view).setValidationResult(isValid);
         }
     }
 

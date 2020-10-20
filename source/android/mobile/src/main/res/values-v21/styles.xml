@@ -31,10 +31,7 @@
         <item name="colorAccent">@color/colorPrimary</item>
         <item name="colorButtonNormal">@color/colorPrimary</item>
         <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
-
-        <!-- Add custom input backgrounds -->
-        <item name="adaptiveUsingCustomInputs">false</item>
-        <!-- <item name="android:editTextBackground">@drawable/layered_edit_text_styles</item> -->
+        <item name="editTextBackground">@drawable/border</item>
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
         <!-- Add your custom styles (samples defined above) for use by the AdaptiveCards SDK
@@ -54,7 +51,5 @@
         <item name="windowNoTitle">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-
-        <item name="editTextBackground">@drawable/layered_edit_text</item>
     </style>
 </resources>

@@ -7,9 +7,4 @@
     <attr name="adaptiveShowCardAction" format="reference" />
     <style name="adaptiveInlineAction" format="reference" />
     <style name="adaptiveInlineActionImage" format="reference" />
-
-    <attr name="adaptiveUsingCustomInputs" format="boolean" />
-    <declare-styleable name="adaptiveCustomInputState">
-        <attr name="adaptive_state_input_invalid" format="boolean" />
-    </declare-styleable>
 </resources>

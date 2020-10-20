@@ -145,6 +145,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
+
+
                     return createButtonWithTheme(context, buttonStyle.data);
                 }
                 else
