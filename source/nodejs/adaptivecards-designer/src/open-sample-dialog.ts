@@ -144,18 +144,19 @@ export class OpenSampleDialog extends Dialog {
         renderedElement.className = "acd-open-sample-item-container";
         renderedElement.setAttribute("role", "list");
         // Adding Pic2Card option
-		renderedElement.appendChild(this.renderImageOption());
-		
+        renderedElement.appendChild(this.renderImageOption());
+        
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);
             item.onClick = (sender: CatalogueItem) => {
                 this._selectedSample = sender.entry;
 
                 this.close();
-            };
+            }
 
             renderedElement.appendChild(item.render());
         }
+
         return renderedElement;
     }
 
@@ -184,9 +185,7 @@ export class OpenSampleDialog extends Dialog {
         this._renderedElement = document.createElement("div");
         this._renderedElement.style.overflow = "auto";
 
-        this.setContent(
-            this.renderMessage("Loading sample catalogue, please wait...", true)
-        );
+        this.setContent(this.renderMessage("Loading sample catalogue, please wait...", true));
 
         this.catalogue.onDownloaded = (sender: SampleCatalogue) => {
             if (sender.isDownloaded) {
