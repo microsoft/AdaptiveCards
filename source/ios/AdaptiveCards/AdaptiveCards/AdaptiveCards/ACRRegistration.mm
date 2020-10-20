@@ -7,6 +7,7 @@
 
 #import "ACRRegistration.h"
 #import "ACOBaseActionElement.h"
+#import "ACOHostConfigPrivate.h"
 #import "ACOParseContextPrivate.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionSetRenderer.h"
@@ -280,4 +281,141 @@ using namespace AdaptiveCards;
     return _featureRegistration;
 }
 @end
-;
+
+@interface ACRActionTargetBuildersList : NSObject
+
+@property ACRTargetCapability capability;
+
+- (instancetype)init:(ACRTargetCapability)capability;
+
+@end
+
+@implementation ACRActionTargetBuildersList {
+    NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
+    NSMutableDictionary<NSNumber *, ACRTargetBuilder *> *_overwrittenBuilders;
+}
+
+- (instancetype)init:(ACRTargetCapability)capability
+{
+    NSNumber *openUrl = [ACOBaseActionElement getKey:ACROpenUrl];
+    NSNumber *submit = [ACOBaseActionElement getKey:ACRSubmit];
+    NSNumber *showcard = [ACOBaseActionElement getKey:ACRShowCard];
+    NSNumber *toggle = [ACOBaseActionElement getKey:ACRToggleVisibility];
+    NSNumber *unknown = [ACOBaseActionElement getKey:ACRUnknownAction];
+
+    _overwrittenBuilders = [[NSMutableDictionary alloc] init];
+
+    // target capability lists supported events and corresponding target builders
+    switch (capability) {
+        case ACRAction:
+            _builders = @{
+                openUrl : [ACRAggregateTargetBuilder getInstance],
+                submit : [ACRAggregateTargetBuilder getInstance],
+                showcard : [ACRShowCardTargetBuilder getInstance],
+                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+            };
+            break;
+        case ACRSelectAction:
+            _builders = @{
+                openUrl : [ACRAggregateTargetBuilder getInstance],
+                submit : [ACRAggregateTargetBuilder getInstance],
+                toggle : [ACRToggleVisibilityTargetBuilder getInstance],
+                unknown : [ACRUnknownActionTargetBuilder getInstance]
+            };
+            break;
+        case ACRQuickReply:
+            _builders = @{
+                openUrl : [ACRAggregateTargetBuilder getInstance],
+                submit : [ACRAggregateTargetBuilder getInstance],
+                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+            };
+            break;
+    }
+
+    return self;
+}
+
+- (id<ACRITargetBuilder> _Nullable)getTargetBuilder:(ACRActionType)actionElementType
+{
+    NSNumber *key = [ACOBaseActionElement getKey:actionElementType];
+    if ([_overwrittenBuilders objectForKey:key]) {
+        return [_overwrittenBuilders objectForKey:key];
+    }
+    return [_builders objectForKey:key];
+}
+- (void)setTargetBuilder:(ACRTargetBuilder *_Nullable)targetBuilder actionElementType:(ACRActionType)actionElementType
+{
+    NSNumber *key = [ACOBaseActionElement getKey:actionElementType];
+    if (!targetBuilder) {
+        [_overwrittenBuilders removeObjectForKey:key];
+    } else {
+        [_overwrittenBuilders setObject:targetBuilder forKey:key];
+    }
+}
+
+@end
+
+@implementation
+    ACOTargetBuilderRegistration : NSObject {
+    ACRActionTargetBuildersList *_actionsTargetBuildersList;
+    ACRActionTargetBuildersList *_selectActionsTargetBuildersList;
+    ACRActionTargetBuildersList *_quickReplyTargetBuildersList;
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _actionsTargetBuildersList = [[ACRActionTargetBuildersList alloc] init:ACRAction];
+        _selectActionsTargetBuildersList = [[ACRActionTargetBuildersList alloc] init:ACRSelectAction];
+        _quickReplyTargetBuildersList = [[ACRActionTargetBuildersList alloc] init:ACRQuickReply];
+    }
+    return self;
+}
+
++ (ACOTargetBuilderRegistration *_Nonnull)getInstance
+{
+    static ACOTargetBuilderRegistration *singletonInstance = [[self alloc] init];
+    return singletonInstance;
+}
+
+- (ACRActionTargetBuildersList *_Nullable)getActionTargetBuildersList:(ACRTargetCapability)capability
+{
+    if (capability == ACRAction) {
+        return _actionsTargetBuildersList;
+    } else if (capability == ACRSelectAction) {
+        return _selectActionsTargetBuildersList;
+    } else if (capability == ACRQuickReply) {
+        return _quickReplyTargetBuildersList;
+    } else {
+        return nil;
+    }
+}
+
+- (id<ACRITargetBuilder> _Nullable)getTargetBuilder:(ACRActionType)actionElementType capability:(ACRTargetCapability)capability
+{
+    ACRActionTargetBuildersList *buildersList = [self getActionTargetBuildersList:capability];
+    if (!buildersList) {
+        return nil;
+    }
+
+    return [buildersList getTargetBuilder:actionElementType];
+}
+
+- (void)setTargetBuilder:(ACRTargetBuilder *_Nullable)targetBuilder actionElementType:(ACRActionType)actionElementType capability:(ACRTargetCapability)capability;
+{
+    // custom action must be registered through set custom action renderer method
+    // standard actions element enum value must be higher than ACRUnknownAction
+    if (actionElementType > ACRUnknownAction) {
+        return;
+    }
+
+    ACRActionTargetBuildersList *buildersList = [self getActionTargetBuildersList:capability];
+    if (!buildersList) {
+        return;
+    }
+
+    [buildersList setTargetBuilder:targetBuilder actionElementType:actionElementType];
+}
+
+@end

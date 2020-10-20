@@ -30,29 +30,12 @@
 //  in UtiliOS.h, buildTarget and buildTargetForButton
 
 #import "ACRTargetBuilderDirector.h"
+#import "ACOBaseActionElement.h"
 #import "ACRAggregateTarget.h"
 #import "ACRErrors.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "UtiliOS.h"
-
-// protocol all TargetBuild should implement
-@protocol ACRITargetBuilder
-
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director;
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
-           director:(ACRTargetBuilderDirector *)director
-          ForButton:(UIButton *)button;
-
-@end
-
-// provides singleton interface
-@interface ACRTargetBuilder : NSObject <ACRITargetBuilder>
-
-+ (ACRTargetBuilder *)getInstance;
-
-@end
 
 @implementation ACRTargetBuilder
 
@@ -83,10 +66,6 @@
 
 @end
 
-// build target for submit and openUrl actions
-@interface ACRAggregateTargetBuilder : ACRTargetBuilder
-@end
-
 @implementation ACRAggregateTargetBuilder
 
 + (ACRAggregateTargetBuilder *)getInstance
@@ -103,9 +82,6 @@
     return [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:director.rootView];
 }
 
-@end
-
-@interface ACRShowCardTargetBuilder : ACRTargetBuilder
 @end
 
 @implementation ACRShowCardTargetBuilder
@@ -137,9 +113,6 @@
     return nil;
 }
 
-@end
-
-@interface ACRToggleVisibilityTargetBuilder : ACRTargetBuilder
 @end
 
 @implementation ACRToggleVisibilityTargetBuilder
@@ -177,10 +150,6 @@
     return target;
 }
 
-@end
-
-// build target for unknown actions
-@interface ACRUnknownActionTargetBuilder : ACRTargetBuilder
 @end
 
 @implementation ACRUnknownActionTargetBuilder
@@ -223,38 +192,6 @@
     if (self) {
         self.rootView = rootView;
         self.adaptiveHostConfig = adaptiveHostConfig;
-        NSNumber *openUrl = [NSNumber numberWithInt:static_cast<int>(ActionType::OpenUrl)];
-        NSNumber *submit = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
-        NSNumber *showcard = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
-        NSNumber *toggle = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
-        NSNumber *unknown = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
-
-        // target capability lists supported events and corresponding target builders
-        switch (capability) {
-            case ACRAction:
-                _builders = @{
-                    openUrl : [ACRAggregateTargetBuilder getInstance],
-                    submit : [ACRAggregateTargetBuilder getInstance],
-                    showcard : [ACRShowCardTargetBuilder getInstance],
-                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-                };
-                break;
-            case ACRSelectAction:
-                _builders = @{
-                    openUrl : [ACRAggregateTargetBuilder getInstance],
-                    submit : [ACRAggregateTargetBuilder getInstance],
-                    toggle : [ACRToggleVisibilityTargetBuilder getInstance],
-                    unknown : [ACRUnknownActionTargetBuilder getInstance]
-                };
-                break;
-            case ACRQuickReply:
-                _builders = @{
-                    openUrl : [ACRAggregateTargetBuilder getInstance],
-                    submit : [ACRAggregateTargetBuilder getInstance],
-                    toggle : [ACRToggleVisibilityTargetBuilder getInstance]
-                };
-                break;
-        }
     }
     return self;
 }
@@ -291,7 +228,7 @@
 - (ACRTargetBuilder *)getBuilder:(std::shared_ptr<BaseActionElement> const &)action
 {
     NSNumber *key = [NSNumber numberWithInt:static_cast<int>(action->GetElementType())];
-    return _builders[key];
+     return _builders[key];
 }
 
 @end

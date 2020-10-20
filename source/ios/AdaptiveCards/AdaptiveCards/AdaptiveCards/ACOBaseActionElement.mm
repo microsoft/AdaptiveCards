@@ -54,7 +54,8 @@ using namespace AdaptiveCards;
         std::stringstream sstream;
         writer->write(blob, &sstream);
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
     }
     return nil;
@@ -101,6 +102,26 @@ using namespace AdaptiveCards;
         return _elem->MeetsRequirements(*sharedFReg.get());
     }
     return false;
+}
+
++ (NSNumber *)getKey:(ACRActionType)actionType
+{
+    NSNumber *key = nil;
+    switch (actionType) {
+        case ACRShowCard:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
+        case ACRSubmit:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
+        case ACROpenUrl:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::OpenUrl)];
+        case ACRToggleVisibility:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
+        case ACRUnknownAction:
+        default:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
+    }
+
+    return key;
 }
 
 @end
