@@ -282,6 +282,7 @@ using namespace AdaptiveCards;
 }
 @end
 
+
 @interface ACRActionTargetBuildersList : NSObject
 
 @property ACRTargetCapability capability;
@@ -356,7 +357,7 @@ using namespace AdaptiveCards;
 @end
 
 @implementation
-    ACOTargetBuilderRegistration : NSObject {
+    ACRTargetBuilderRegistration {
     ACRActionTargetBuildersList *_actionsTargetBuildersList;
     ACRActionTargetBuildersList *_selectActionsTargetBuildersList;
     ACRActionTargetBuildersList *_quickReplyTargetBuildersList;
@@ -373,9 +374,9 @@ using namespace AdaptiveCards;
     return self;
 }
 
-+ (ACOTargetBuilderRegistration *_Nonnull)getInstance
++ (ACRTargetBuilderRegistration *_Nonnull)getInstance
 {
-    static ACOTargetBuilderRegistration *singletonInstance = [[self alloc] init];
+    static ACRTargetBuilderRegistration *singletonInstance = [[self alloc] init];
     return singletonInstance;
 }
 

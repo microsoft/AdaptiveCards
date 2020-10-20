@@ -30,9 +30,10 @@
 //  in UtiliOS.h, buildTarget and buildTargetForButton
 
 #import "ACRTargetBuilderDirector.h"
-#import "ACOBaseActionElement.h"
+#import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRErrors.h"
+#import "ACRRegistration.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
 #import "UtiliOS.h"
@@ -45,13 +46,13 @@
     return singletonInstance;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
     return nil;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
           ForButton:(UIButton *)button
 {
@@ -74,12 +75,10 @@
     return singletonInstance;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
-    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
-
-    return [[ACRAggregateTarget alloc] initWithActionElement:acoElem rootView:director.rootView];
+    return [[ACRAggregateTarget alloc] initWithActionElement:action rootView:director.rootView];
 }
 
 @end
@@ -92,12 +91,12 @@
     return singletonInstance;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
           ForButton:(UIButton *)button
 {
     std::shared_ptr<ShowCardAction> showCardAction =
-        std::dynamic_pointer_cast<ShowCardAction>(action);
+        std::dynamic_pointer_cast<ShowCardAction>(action.element);
 
     if (director.rootView && director.adaptiveHostConfig) {
         NSObject *target =
@@ -123,11 +122,11 @@
     return singletonInstance;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
     std::shared_ptr<ToggleVisibilityAction> toggleVisibilityAction =
-        std::dynamic_pointer_cast<ToggleVisibilityAction>(action);
+        std::dynamic_pointer_cast<ToggleVisibilityAction>(action.element);
 
     if (toggleVisibilityAction && director.adaptiveHostConfig && director.rootView) {
         return [[ACRToggleVisibilityTarget alloc] initWithActionElement:toggleVisibilityAction
@@ -137,7 +136,7 @@
     return nil;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
           ForButton:(UIButton *)button
 {
@@ -160,10 +159,10 @@
     return singletonInstance;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
-    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action);
+    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action.element);
     if (unknownAction) {
         ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
         return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
@@ -174,9 +173,7 @@
 
 @end
 
-@implementation ACRTargetBuilderDirector {
-    NSDictionary<NSNumber *, ACRTargetBuilder *> *_builders;
-}
+@implementation ACRTargetBuilderDirector
 
 - (instancetype)init
 {
@@ -192,43 +189,37 @@
     if (self) {
         self.rootView = rootView;
         self.adaptiveHostConfig = adaptiveHostConfig;
+        _capability = capability;
     }
     return self;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
 {
-    if ([self checkAgainstMyCapability:action]) {
-        // check fail, stop and return
-        return nil;
-    }
+    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
+    ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
 
-    ACRTargetBuilder *builder = [self getBuilder:action];
-    return [builder build:action director:self];
+    if (builder) {
+        return [builder build:adaptiveAction director:self];
+    }
+    return nil;
 }
 
 - (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
           forButton:(UIButton *)button
 {
-    if (ACRRenderingStatus::ACROk == [self checkAgainstMyCapability:action]) {
-        ACRTargetBuilder *builder = [self getBuilder:action];
-        return [builder build:action director:self ForButton:button];
+    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
+    ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
+    if (builder) {
+        return [builder build:adaptiveAction director:self ForButton:button];
     }
+
     return nil;
 }
 
-- (ACRRenderingStatus)checkAgainstMyCapability:(std::shared_ptr<BaseActionElement> const &)action
+- (ACRTargetBuilder *)getBuilder:(ACOBaseActionElement *)action
 {
-    return ([_builders
-               objectForKey:[NSNumber numberWithInt:static_cast<int>(action->GetElementType())]])
-               ? ACRRenderingStatus::ACROk
-               : ACRRenderingStatus::ACRUnsupported;
-}
-
-- (ACRTargetBuilder *)getBuilder:(std::shared_ptr<BaseActionElement> const &)action
-{
-    NSNumber *key = [NSNumber numberWithInt:static_cast<int>(action->GetElementType())];
-     return _builders[key];
+    return [[ACRTargetBuilderRegistration getInstance] getTargetBuilder:action.type capability:self.capability];
 }
 
 @end

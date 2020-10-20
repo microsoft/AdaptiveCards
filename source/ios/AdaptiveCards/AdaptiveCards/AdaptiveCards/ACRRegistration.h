@@ -9,7 +9,7 @@
 
 #import "ACOBaseCardElement.h"
 #import "ACRBaseActionElementRenderer.h"
-#import "ACRTargetBuilderDirector.h"
+#import "ACRTargetBuilder.h"
 
 @interface ACRRegistration : NSObject
 
@@ -54,8 +54,8 @@
 - (nonnull NSString *)getFeatureVersion:(nullable NSString *)featureName;
 @end
 
-@interface ACOTargetBuilderRegistration: NSObject
-+ (ACOTargetBuilderRegistration *_Nonnull)getInstance;
+@interface ACRTargetBuilderRegistration: NSObject
++ (ACRTargetBuilderRegistration *_Nonnull)getInstance;
 - (ACRTargetBuilder *_Nullable)getTargetBuilder:(ACRActionType)actionElementType capability:(ACRTargetCapability)capability;
 - (void)setTargetBuilder:(ACRTargetBuilder*_Nullable)targetBuilder actionElementType:(ACRActionType)actionElementType capability:(ACRTargetCapability)capability;
 @end

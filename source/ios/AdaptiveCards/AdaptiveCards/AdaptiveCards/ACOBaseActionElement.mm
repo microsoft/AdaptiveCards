@@ -110,12 +110,16 @@ using namespace AdaptiveCards;
     switch (actionType) {
         case ACRShowCard:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
+            break;
         case ACRSubmit:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
+            break;
         case ACROpenUrl:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::OpenUrl)];
+            break;
         case ACRToggleVisibility:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
+            break;
         case ACRUnknownAction:
         default:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
