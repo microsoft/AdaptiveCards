@@ -207,7 +207,10 @@ ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title"
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+/* To configure custom Pic2Card endpoint*/
+ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
+
+/* Modify the Element toolbox (BEFORE calling attachTo) */
 Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
 ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
@@ -255,9 +258,20 @@ designer.setCard(
 	}
 );
 
-/* Set sample data (AFTER calling attachTo) */ 
+/* Set sample data (AFTER calling attachTo) */
 designer.sampleData = {
 	name: "John Doe",
 	phone: "123-123-1234"
 };
 ```
+
+## Hosting Pic2Card Service
+
+Pic2Card is a ML based service which converts a graphical image (such as a PNG or JPEG) into an Adaptive Card JSON payload.
+
+To setup the pic2card ML service follow the instructions given in the below link.
+
+[pic2card service](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container)
+
+Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
+in `.env` file in the adaptivecards-designer root directory and rebuild this project.

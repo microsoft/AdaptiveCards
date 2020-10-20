@@ -23,6 +23,7 @@ export class CatalogueEntry {
     private _cardPayloadDownloaded: boolean = false;
     private _sampleData: string;
     private _sampleDataDownloaded: boolean = false;
+    private _cardId: string;
 
     private downloadCompleted() {
         if (this._cardPayloadDownloaded && this._sampleDataDownloaded && this.onDownloaded) {
@@ -34,8 +35,9 @@ export class CatalogueEntry {
 
     onDownloaded: (sender: CatalogueEntry) => void = null;
 
-    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string) {
+    constructor(readonly displayName: string, readonly cardPayloadUrl: string, sampleDataUrl?: string, id?:string) {
         this.sampleDataUrl = sampleDataUrl;
+        this._cardId = id;
     }
 
     download() {
@@ -89,6 +91,11 @@ export class CatalogueEntry {
 
     get cardPayloadDownloaded(): boolean {
         return this._cardPayloadDownloaded;
+    }
+
+
+    get cardId(): string  {
+        return this._cardId;
     }
 
     get cardPayload(): string {
