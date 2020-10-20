@@ -5,16 +5,17 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
-import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 
 import io.adaptivecards.R;
 
 @SuppressLint("AppCompatCustomView")
-public class ValidatedEditText extends EditText implements IValidatedInputView
+public class ValidatedSpinner extends Spinner implements IValidatedInputView
 {
-    public ValidatedEditText(Context context)
+    public ValidatedSpinner(Context context)
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -22,10 +23,14 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
         verifyIfUsingCustomInputs(context);
     }
 
-    public ValidatedEditText(Context context, int errorColor)
+    public ValidatedSpinner(Context context, boolean usingCustomInputs)
     {
         this(context);
-        m_errorColor = errorColor;
+        m_isUsingCustomInputs = usingCustomInputs;
+        if (m_isUsingCustomInputs)
+        {
+            setBackground(ContextCompat.getDrawable(context, R.drawable.adaptive_choiceset_compact_background));
+        }
     }
 
     /**
@@ -58,19 +63,6 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
             // If using custom inputs, set the selector state for state_input_invalid as true
             setInputInvalid(!isValid);
         }
-        else
-        {
-            // If not using custom inputs, tint the whole input with attention color
-            if (isValid)
-            {
-                getBackground().setColorFilter(null);
-            }
-            else
-            {
-                getBackground().setColorFilter(m_errorColor, PorterDuff.Mode.SRC_ATOP);
-            }
-            invalidate();
-        }
     }
 
     /**
@@ -97,7 +89,7 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
 
     private boolean m_isInvalid = false;
     private boolean m_isUsingCustomInputs = false;
-    private int m_errorColor = Color.TRANSPARENT;
 
     private static final int[] STATE_INPUT_INVALID = {R.attr.adaptive_state_input_invalid};
+
 }
