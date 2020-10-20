@@ -9,6 +9,7 @@ import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
+import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
@@ -623,29 +624,41 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (
+                        dialog.selectedSample &&
+                        dialog.selectedSample.cardId !== "PIC_2_CARD"
+                    ) {
                         dialog.selectedSample.onDownloaded = () => {
                             try {
-                                let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
+                                let cardPayload = JSON.parse(
+                                    dialog.selectedSample.cardPayload
+                                );
 
                                 this.setCardPayload(cardPayload, true);
                             } catch {
-                                alert("The sample could not be loaded.")
+                                alert("The sample could not be loaded.");
                             }
 
                             if (dialog.selectedSample.sampleData) {
                                 try {
-                                    let sampleDataPayload = JSON.parse(dialog.selectedSample.sampleData);
+                                    let sampleDataPayload = JSON.parse(
+                                        dialog.selectedSample.sampleData
+                                    );
 
-                                    this.setSampleDataPayload(sampleDataPayload);
-                                    this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
-                                }
-                                catch {
-                                    alert("The sample could not be loaded.")
+                                    this.setSampleDataPayload(
+                                        sampleDataPayload
+                                    );
+                                    this.dataStructure = FieldDefinition.deriveFrom(
+                                        sampleDataPayload
+                                    );
+                                } catch {
+                                    alert("The sample could not be loaded.");
                                 }
                             }
                         };
                         dialog.selectedSample.download();
+                    } else if (dialog.selectedSample.cardId === "PIC_2_CARD") {
+                        this.launchImagePopup();
                     }
 
                     const newCardButton = this._newCardButton.renderedElement;
@@ -736,11 +749,31 @@ export class CardDesigner extends Designer.DesignContext {
         this.toolbar.addElement(this._helpButton);
 
         this._fullScreenHandler = new FullScreenHandler();
-        this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
-            this._fullScreenButton.toolTip = isFullScreen ? "Exit full screen" : "Enter full screen";
+        this._fullScreenHandler.onFullScreenChanged = (
+            isFullScreen: boolean
+        ) => {
+            this._fullScreenButton.toolTip = isFullScreen
+                ? "Exit full screen"
+                : "Enter full screen";
 
             this.updateFullLayout();
-        }
+        };
+    }
+
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Upload Card Structure ";
+        dialog.closeButton.caption = "Cancel";
+        dialog.preventLightDismissal = true;
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            const { card, data } = dialog.predictedCardJSON;
+            const addToUndoStack = true;
+            this.setCardPayload(card, addToUndoStack);
+            this.setSampleDataPayload(data);
+        };
     }
 
     private onResize() {
