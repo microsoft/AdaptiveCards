@@ -33,9 +33,11 @@
         <!--<item name="colorControlHighlight">@color/colorAccent</item>-->
 
         <!-- Add custom input backgrounds -->
-        <item name="adaptiveUsingCustomTextInputs">false</item>
+        <!--
+        <item name="adaptiveUsingCustomTextInputs">true</item>
         <item name="adaptiveUsingCustomChoiceSetInputs">true</item>
-        <!-- <item name="android:editTextBackground">@drawable/layered_edit_text_styles</item> -->
+        <item name="android:editTextBackground">@drawable/layered_edit_text_styles</item>
+        -->
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
         <!-- Add your custom styles (samples defined above) for use by the AdaptiveCards SDK
