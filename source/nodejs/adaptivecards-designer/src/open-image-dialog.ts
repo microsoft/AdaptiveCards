@@ -82,7 +82,7 @@ export class OpenImageDialog extends Dialog {
         const content = document.createElement("div");
         content.className = "acd-image-title-content";
         content.innerText =
-            "Design your cards and upload it as a png, or jpeg and see it magically convert to a functioning adaptive card";
+            "Design your card and upload it as a png or jpeg, and watch it magically convert to a functioning Adaptive Card";
         return content;
     }
 
@@ -139,7 +139,7 @@ export class OpenImageDialog extends Dialog {
         labelElement.className = "acd-label-element";
         labelElement.setAttribute("for", "template-option");
         labelElement.innerText =
-            "Create adaptive card along with sample template binding";
+            "Create Adaptive Card with <a href='https://aka.ms/ACTemplating'>template bindings</a> and sample data";
         return labelElement;
     }
 
@@ -195,8 +195,8 @@ export class OpenImageDialog extends Dialog {
         const uploadButton = document.createElement("INPUT");
         uploadButton.className = "acd-card-button";
         uploadButton.setAttribute("type", "BUTTON");
-        uploadButton.setAttribute("button-name", "Convert to Adaptive Cards");
-        uploadButton.setAttribute("value", "Convert to Adaptive Cards");
+        uploadButton.setAttribute("button-name", "Convert to Adaptive Card");
+        uploadButton.setAttribute("value", "Convert to Adaptive Card");
         uploadButton.onclick = () => {
             let spinnerElement = this.loadSpinner();
             this.setContent(spinnerElement);
