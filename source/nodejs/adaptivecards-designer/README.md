@@ -210,6 +210,9 @@ ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 /* To configure custom Pic2Card endpoint */
 ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
 
+/* To have a custom pic2card image usage policy provide new image policy url/path here*/
+ACDesigner.Pic2Card.privacyLink ="myPath/privacy";
+
 /* Modify the Element toolbox (BEFORE calling attachTo) */
 Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
 ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
