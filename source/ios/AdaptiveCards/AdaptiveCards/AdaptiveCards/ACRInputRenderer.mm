@@ -142,6 +142,9 @@
             inputview = txtview;
         }
         ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
+
+        inputview.isAccessibilityElement = YES;
+        inputview.accessibilityLabel = [inputLabelView.labelText string];
         inputview = inputLabelView;
     } else {
         if (renderAction) {
@@ -149,13 +152,17 @@
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             button = quickReplyView.button;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            [quickReplyView addTextField:txtInput];            
+            [quickReplyView addTextField:txtInput];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
+            quickReplyView.isAccessibilityElement = YES;
+            quickReplyView.accessibilityLabel = [inputLabelView.labelText string];
             inputview = inputLabelView;
 
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:textInputHandler];
+            txtInput.isAccessibilityElement = YES;
+            txtInput.accessibilityLabel = [inputLabelView.labelText string];
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;

@@ -62,6 +62,10 @@
     choiceSetView.dataSource = dataSource;
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView viewGroup:viewGroup dataSource:dataSource];
+
+    choiceSetView.isAccessibilityElement = YES;
+    choiceSetView.accessibilityLabel = [inputLabelView.labelText string];
+
     [inputs addObject:inputLabelView];
 
     if (elem->GetHeight() == HeightType::Stretch) {

@@ -87,6 +87,7 @@
         }
 
         self.label.attributedText = attributedLabel;
+        self.labelText = attributedLabel;
 
         std::string errorMessage = inputBlck->GetErrorMessage();
         if (!errorMessage.empty()) {
@@ -101,13 +102,15 @@
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        self.label.isAccessibilityElement = NO;
+        self.shouldGroupAccessibilityChildren = YES;
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
         inputHandler.isRequired = self.isRequired;
         inputHandler.hasValidationProperties |= inputHandler.isRequired;
         if (inputHandler.hasValidationProperties && errorMessage.empty()) {
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"The input has validation, but there is no associated error message, consider adding error message to the input"];
         }
-        
+
         if (self.isRequired && (!self.label || !self.label.text.length)) {
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
         }
@@ -149,14 +152,13 @@
     NSObject<ACRIBaseInputHandler> *inputHandler = nil;
     if (self.dataSource && [self.dataSource conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
         inputHandler = self.dataSource;
-    }
-    else {
+    } else {
         UIView *inputView = [self getInputView];
         if ([inputView conformsToProtocol:@protocol(ACRIBaseInputHandler)]) {
             inputHandler = (NSObject<ACRIBaseInputHandler> *)inputView;
         }
     }
-    
+
     return inputHandler;
 }
 
