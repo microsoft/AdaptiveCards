@@ -29,7 +29,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 {
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
+    } else {
+        view.hidden = NO;
     }
+
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
