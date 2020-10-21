@@ -8,11 +8,14 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Represents a single inline text entry.
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     public abstract class AdaptiveInline
     {
         /// <summary>
-        /// The type name of the inline
+        /// The type name of the inline.
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
 #if !NETSTANDARD1_3
@@ -21,9 +24,7 @@ namespace AdaptiveCards
 #endif
         public abstract string Type { get; set; }
 
-        /// <summary>
-        /// Additional properties not found on the default schema
-        /// </summary>
+        /// <inheritdoc />
         [JsonExtensionData]
 #if NETSTANDARD1_3
         public IDictionary<string, object> AdditionalProperties { get; set; } = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
@@ -31,6 +32,8 @@ namespace AdaptiveCards
         // Dictionary<> is not supported with XmlSerialization because Dictionary is not serializable, SerializableDictionary<> is
         [XmlElement]
         public SerializableDictionary<string, object> AdditionalProperties { get; set; } = new SerializableDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        /// <inheritdoc />
         public bool ShouldSerializeAdditionalProperties() => this.AdditionalProperties.Count > 0;
 #endif
     }
