@@ -100,7 +100,7 @@ export class OpenImageDialog extends Dialog {
         const fileNote = document.createElement("div");
         fileNote.className = "acd-image-file-note";
         fileNote.innerHTML =
-        `By using the upload feature you agree to our <a href=${privacyLink} target='_blank'><span class='link'> image usage policy</span></a>`;
+            `By using the upload feature you agree to our <a href=${privacyLink} target='_blank'><span class='link'> image usage policy</span></a>`;
         type !== "file" &&
             this._buttonContainer.appendChild(this.renderCheckbox());
         this._buttonContainer.appendChild(
