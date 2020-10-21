@@ -13,11 +13,7 @@
 #import "ACRViewPrivate.h"
 #import <UIKit/UIKit.h>
 
-@implementation ACRAggregateTarget {
-    ACOBaseActionElement *_actionElement;
-    __weak ACRView *_view;
-    __weak ACRColumnView *_currentShowcard;
-}
+@implementation ACRAggregateTarget
 
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 {

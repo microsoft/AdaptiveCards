@@ -12,7 +12,9 @@
 
 // AggregateTraget is used to relay the signal back to host
 @interface ACRAggregateTarget : NSObject <ACRSelectActionDelegate>
-
+@property ACOBaseActionElement *actionElement;
+@property (weak) ACRView *view;
+@property (weak) ACRColumnView *currentShowcard;
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 
 - (IBAction)send:(UIButton *)sender;

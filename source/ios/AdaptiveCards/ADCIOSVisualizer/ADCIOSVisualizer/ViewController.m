@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRButton.h"
 #import "AdaptiveFileBrowserSource.h"
@@ -125,6 +126,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance]
                                  cardElementType:ACRImage];
 
+        [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
