@@ -31,7 +31,12 @@ window.onload = function() {
 	// Uncomment to configure pic2card service
 	/*
 	ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>>";
-	*/
+    */
+
+    // To Configure path for pic2card image usage policy
+    /*
+    ACDesigner.Pic2Card.privacyLink ="../myPath/privacy";
+    */
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
 		result.outputHtml = new markdownit().render(text);
