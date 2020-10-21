@@ -3,7 +3,7 @@
 Currently Adaptive Cards has minimal localization support. This document covers areas where localization may be necessary. Currently this document does not cover detailed solutions to these scenarios, though those solutions will be added here as work progresses.
 
 ## Current Support - Date/Time strings
-Currently, there is only one scenario in which we support localization. Our TextBlocks and other string elements support displaying [Dates and Times](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features#datetime-formatting-and-localization). This allows the card author to specifiy a date in [RFC 3389](https://tools.ietf.org/html/rfc3339) format. We then display the time in the timezone of the host's device, and in the language specified by the card author. For example:
+Currently, there is only one scenario in which we support localization. Our TextBlocks, RichTextBlocks, and FactSets support displaying [Dates and Times](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/text-features#datetime-formatting-and-localization). This allows the card author to specify a date in [RFC 3389](https://tools.ietf.org/html/rfc3339) format. We then display the time in the timezone of the host's device, and in the language specified by the card author. For example:
 
 This card:
 ```json
