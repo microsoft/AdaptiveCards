@@ -23,7 +23,8 @@
                                     "type": "TextBlock",
                                     "text": "SHADES",
                                     "horizontalAlignment": "Center",
-                                    "weight": "Bolder"
+                                    "weight": "Bolder",
+									"wrap": true
                                 }
                             ]
                         },
@@ -36,19 +37,22 @@
                                 {
                                     "type": "TextBlock",
                                     "text": "{{DATE(${string(start_date)}, SHORT)}}",
-                                    "horizontalAlignment": "Center"
+                                    "horizontalAlignment": "Center",
+									"wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "Final",
                                     "spacing": "None",
-                                    "horizontalAlignment": "Center"
+                                    "horizontalAlignment": "Center",
+									"wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "${home_points} - ${away_points}",
                                     "size": "ExtraLarge",
-                                    "horizontalAlignment": "Center"
+                                    "horizontalAlignment": "Center",
+									"wrap": true
                                 }
                             ]
                         },
@@ -68,7 +72,8 @@
                                     "type": "TextBlock",
                                     "text": "SKINS",
                                     "horizontalAlignment": "Center",
-                                    "weight": "Bolder"
+                                    "weight": "Bolder",
+									"wrap": true
                                 }
                             ]
                         }

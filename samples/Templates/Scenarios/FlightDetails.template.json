@@ -76,7 +76,8 @@
 													"type": "TextBlock",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "${reservationFor.departureAirport.iataCode}"
+													"text": "${reservationFor.departureAirport.iataCode}",
+													"wrap": true
 												}
 											],
 											"width": "auto"
@@ -115,7 +116,8 @@
 													"horizontalAlignment": "right",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "${reservationFor.arrivalAirport.iataCode}"
+													"text": "${reservationFor.arrivalAirport.iataCode}",
+													"wrap": true
 												}
 											],
 											"width": "auto"
@@ -134,7 +136,8 @@
 														{
 															"type": "TextRun",
 															"size": "medium",
-															"text": "{{TIME(${string(reservationFor.departureTime)})}}\\n"
+															"text": "{{TIME(${string(reservationFor.departureTime)})}}\\n",
+															"wrap": true
 														},
 														{
 															"type": "TextRun",
@@ -145,7 +148,8 @@
 														{
 															"type": "TextRun",
 															"text": "${reservationFor.departureAirport.city}",
-															"isSubtle": true
+															"isSubtle": true,
+															"wrap": true
 														}
 													]
 												}
@@ -162,7 +166,8 @@
 														{
 															"type": "TextRun",
 															"size": "medium",
-															"text": "{{TIME(${string(reservationFor.arrivalTime)})}}\\n"
+															"text": "{{TIME(${string(reservationFor.arrivalTime)})}}\\n",
+															"wrap": true
 														},
 														{
 															"type": "TextRun",
@@ -173,7 +178,8 @@
 														{
 															"type": "TextRun",
 															"text": "${reservationFor.arrivalAirport.city}",
-															"isSubtle": true
+															"isSubtle": true,
+															"wrap": true
 														}
 													]
 												}

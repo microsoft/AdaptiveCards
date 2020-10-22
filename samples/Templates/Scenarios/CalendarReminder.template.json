@@ -8,24 +8,26 @@
             "type": "TextBlock",
             "text": "${summary}",
             "size": "Large",
-            "weight": "Bolder"
+            "weight": "Bolder",
+			"wrap": true
         },
         {
             "type": "TextBlock",
             "text": " ${location} ",
-            "isSubtle": true
+            "isSubtle": true,
+			"wrap": true
         },
         {
             "type": "TextBlock",
             "text": "${formatDateTime(start.dateTime, 'HH:mm')} - ${formatDateTime(end.dateTime, 'hh:mm')}",
             "isSubtle": true,
-            "spacing": "None"
+            "spacing": "None",
+			"wrap": true
         },
         {
             "type": "TextBlock",
-
-            "text": "Snooze for"
-
+            "text": "Snooze for",
+			"wrap": true
         },
         {
             "type": "Input.ChoiceSet",
@@ -44,7 +46,7 @@
         {
             "type": "Action.Submit",
             "title": "Snooze",
-            "data": 
+            "data":
             {
                 "x": "snooze"
             }
@@ -52,7 +54,7 @@
         {
             "type": "Action.Submit",
             "title": "I'll be late",
-            "data": 
+            "data":
             {
                 "x": "late"
             }

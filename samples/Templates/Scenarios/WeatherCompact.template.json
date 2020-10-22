@@ -8,12 +8,14 @@
             "type": "TextBlock",
             "text": "${name}, WA",
             "size": "Large",
-            "isSubtle": true
+            "isSubtle": true,
+			"wrap": true
         },
         {
             "type": "TextBlock",
             "text": "{{DATE(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
-            "spacing": "None"
+            "spacing": "None",
+			"wrap": true
         },
         {
             "type": "ColumnSet",
@@ -37,7 +39,8 @@
                             "type": "TextBlock",
                             "text": "${formatNumber((main.temp - 273) * 9 / 5 + 32, 0)}",
                             "size": "ExtraLarge",
-                            "spacing": "None"
+                            "spacing": "None",
+							"wrap": true
                         }
                     ]
                 },
@@ -49,7 +52,8 @@
                             "type": "TextBlock",
                             "text": "°F",
                             "weight": "Bolder",
-                            "spacing": "Small"
+                            "spacing": "Small",
+							"wrap": true
                         }
                     ]
                 },
@@ -60,13 +64,15 @@
                         {
                             "type": "TextBlock",
                             "text": "Hi ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)}",
-                            "horizontalAlignment": "Left"
+                            "horizontalAlignment": "Left",
+							"wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "Lo ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)}",
                             "horizontalAlignment": "Left",
-                            "spacing": "None"
+                            "spacing": "None",
+							"wrap": true
                         }
                     ]
                 }

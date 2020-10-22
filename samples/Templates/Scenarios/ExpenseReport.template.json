@@ -15,7 +15,8 @@
 									"type": "TextBlock",
 									"size": "Large",
 									"weight": "Bolder",
-									"text": "**EXPENSE APPROVAL**"
+									"text": "**EXPENSE APPROVAL**",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -79,7 +80,8 @@
 					"size": "Small",
 					"weight": "Bolder",
 					"color": "Accent",
-					"text": "[${code}](https://adaptivecards.io)"
+					"text": "[${code}](https://adaptivecards.io)",
+					"wrap": true
 				},
 				{
 					"type": "FactSet",
@@ -127,7 +129,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "DATE"
+									"text": "DATE",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -139,7 +142,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "CATEGORY"
+									"text": "CATEGORY",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -150,7 +154,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "AMOUNT"
+									"text": "AMOUNT",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -330,15 +335,18 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}"
+							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t"
+							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 0.00 \t",
+							"wrap": true
 						}
 					],
 					"width": "auto"
@@ -374,7 +382,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}"
+									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}",
+									"wrap": true
 								}
 							],
 							"width": "auto"

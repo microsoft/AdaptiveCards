@@ -27,23 +27,27 @@
 							"type": "TextBlock",
 							"text": "{{DATE(${formatEpoch(data[0].sunrise_ts, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}",
 							"weight": "Bolder",
-							"size": "Large"
+							"size": "Large",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber(data[0].app_min_temp / 5 * 9 + 32, 0)} / ${formatNumber(data[0].app_max_temp / 5 * 9 + 32, 0)}",
 							"size": "Medium",
-							"spacing": "None"
+							"spacing": "None",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "${formatNumber(data[0].precip * 100, 0)}% chance of rain",
-							"spacing": "None"
+							"spacing": "None",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "Winds ${data[0].wind_gust_spd} mph ${data[0].wind_cdir}",
-							"spacing": "None"
+							"spacing": "None",
+							"wrap": true
 						}
 					]
 				}
@@ -61,7 +65,8 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "Center",
-							"text": "${formatEpoch(sunrise_ts, 'dddd')}"
+							"text": "${formatEpoch(sunrise_ts, 'dddd')}",
+							"wrap": true
 						},
 						{
 							"type": "Image",
