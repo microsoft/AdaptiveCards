@@ -43,6 +43,9 @@
     std::shared_ptr<Media> mediaElem = std::dynamic_pointer_cast<Media>(elem);
 
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
+
+    // makes parts for building a key to UIImage, there are different interfaces for loading the images
+    // we list all the parts that are needed in building the key.
     NSString *urlString = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *numberString = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())] stringValue];
     NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig] -> GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
@@ -70,6 +73,7 @@
             contentholdingview = [[ACRContentHoldingUIView alloc] init];
             [contentholdingview addSubview:view];
         }
+        // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
         [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:mediaKey];
     } else {

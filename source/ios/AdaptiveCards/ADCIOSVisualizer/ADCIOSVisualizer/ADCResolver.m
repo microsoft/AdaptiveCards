@@ -14,7 +14,9 @@
 - (UIImageView *)resolveImageViewResource:(NSURL *)url
 {
     __block UIImageView *imageView = [[UIImageView alloc] init];
+    // check if custom scheme bundle exists
     if ([url.scheme isEqualToString:@"bundle"]) {
+        // if bundle scheme, load an image from sample's main bundle
         UIImage *image = [UIImage imageNamed:url.pathComponents.lastObject];
         imageView.image = image;
     } else {

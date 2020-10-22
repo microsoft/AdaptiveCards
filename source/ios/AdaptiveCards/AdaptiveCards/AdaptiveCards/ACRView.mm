@@ -215,6 +215,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                     UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                     if (view) {
+                        // check image already exists in the returned image view and register the image
                         [self registerImageFromUIImageView:view key:key];
                         [view addObserver:self
                                forKeyPath:@"image"
@@ -240,6 +241,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
                             [self registerImageFromUIImageView:view key:key];
                             [view addObserver:self
                                    forKeyPath:@"image"
@@ -269,6 +271,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
                             [self registerImageFromUIImageView:view key:key];
                             [contentholdingview addSubview:view];
                             contentholdingview.isMediaType = YES;
@@ -290,6 +293,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
                             [self registerImageFromUIImageView:view key:key];
                             [view addObserver:rootView
                                    forKeyPath:@"image"
@@ -570,6 +574,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
+// remove observer from UIImageView
 - (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key
 {
     if ([object isKindOfClass:[UIImageView class]]) {
@@ -581,6 +586,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)path onObject:(NSObject *)object
 {
+    // check that makes sure that there are subscribers, and the given observer is not one of the removed observers
     if (_numberOfSubscribers && ![_setOfRemovedObservers containsObject:object]) {
         _numberOfSubscribers--;
         [object removeObserver:self forKeyPath:path];
@@ -791,6 +797,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     return showcard;
 }
 
+// check if UIImageView already contains an UIImage, if so, add it the image map.
 - (void)registerImageFromUIImageView:(UIImageView *)imageView key:(NSString *)key
 {
     if (imageView.image) {

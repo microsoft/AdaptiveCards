@@ -45,6 +45,8 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
 
+    // makes parts for building a key to UIImage, there are different interfaces for loading the images
+    // we list all the parts that are needed in building the key.
     NSString *number = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())] stringValue];
     NSString *urlString = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     NSDictionary *pieces = @{
@@ -56,8 +58,10 @@
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     UIImage *img = imageViewMap[key];
 
+    // try get an UIImageView
     view = [rootView getImageView:key];
     if (!view && img) {
+        // if an UIImage is available, but UIImageView is missing, create one
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
         acrImageView.image = img;
         if (imgElem->GetImageStyle() == ImageStyle::Person) {
@@ -68,6 +72,7 @@
     }
 
     if (view && img) {
+        // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
         [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
     }
