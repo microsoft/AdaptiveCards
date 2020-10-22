@@ -18,15 +18,10 @@ public class StretchableInputLayout extends StretchableElementLayout
     private TextView m_label = null;
     private View m_inputView = null;
     private TextView m_errorMessage = null;
-//    private TextView m_errorLabel;
-    private boolean isValid = true;
 
     public StretchableInputLayout(Context context, boolean mustStretch)
     {
         super(context, mustStretch);
-
-        // Using setContentDescription on EditText is discouraged, so using hidden TextView instead
-//        m_errorLabel = new TextView(context);
     }
 
     public View getLabel()
@@ -49,9 +44,9 @@ public class StretchableInputLayout extends StretchableElementLayout
     {
         addView(input);
         m_inputView = input;
-//        if(m_inputView.getId() == View.NO_ID) {
-//            m_inputView.setId(View.generateViewId());
-//        }
+        if(m_inputView.getId() == View.NO_ID) {
+            m_inputView.setId(View.generateViewId());
+        }
         m_label.setLabelFor(m_inputView.getId());
     }
 
@@ -83,13 +78,4 @@ public class StretchableInputLayout extends StretchableElementLayout
             m_label.setContentDescription(m_label.getText() + " " + m_errorMessage.getText());
         }
     }
-
-//    private void updateAccessbleLabel() {
-//        m_accessibleLabel.removeAllViews();
-//        m_accessibleLabel.addView(m_label);
-//        m_accessibleLabel.addView(m_errorMessage);
-//    }
-
-
-
 }
