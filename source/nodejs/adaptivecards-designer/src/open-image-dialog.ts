@@ -1,6 +1,7 @@
 import { Dialog } from "./dialog";
 import { Pic2Card	 } from "./pic2card";
 export class FetchManager {
+    private pic2cardService = Pic2Card.pic2cardService !== '' ? Pic2Card.pic2cardService : process.env.PIC_TO_CARD_PREDICTION_API;
     private headers = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -12,9 +13,8 @@ export class FetchManager {
             headers: this.headers,
         };
         try {
-            const pic2cardService = Pic2Card.pic2cardService !== ''?Pic2Card.pic2cardService: process.env.PIC_TO_CARD_PREDICTION_API 
             const sampleImages = await fetch(
-                pic2cardService + "/get_card_templates",
+                this.pic2cardService + "/get_card_templates",
                 option
             );
             return await sampleImages.json();
@@ -36,7 +36,7 @@ export class FetchManager {
                 ? "/predict_json?format=template"
                 : "/predict_json";
             const picResponse = await fetch(
-                process.env.PIC_TO_CARD_PREDICTION_API + endPoint,
+                this.pic2cardService + endPoint,
                 options
             );
             return await picResponse.json();
