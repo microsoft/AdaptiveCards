@@ -35,6 +35,12 @@ import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 
 public final class Util {
 
+    /**
+     * Convert dp to px
+     * @param context
+     * @param dp The number of Android dips (display-independent pixels)
+     * @return The number of equivalent physical pixels
+     */
     public static int dpToPixels(Context context, long dp)
     {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
@@ -42,6 +48,12 @@ public final class Util {
         return returnVal;
     }
 
+    /**
+     * Convert px to dp
+     * @param context
+     * @param pixels The number of physical pixels
+     * @return The number of equivalent Android dips (display-independent pixels)
+     */
     public static double pixelsToDp(Context context, double pixels)
     {
         return pixels / dpToPixels(context, 1);
