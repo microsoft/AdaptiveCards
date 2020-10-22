@@ -43,6 +43,8 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (void)loadImageAccordingToResourceResolverIF:(std::shared_ptr<BaseCardElement> const &)elem
     key:(NSString *)key observerAction:(ObserverActionBlock)observerAction;
 
+- (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key;
+
 - (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;

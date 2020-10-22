@@ -229,25 +229,24 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             break;
         }
         case CardElementType::Image: {
-            ObserverActionBlock observerAction =
-                ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key,
-                  std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
-                  UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
-                  if (view) {
-                      [view addObserver:self
-                             forKeyPath:@"image"
-                                options:NSKeyValueObservingOptionNew
-                                context:elem.get()];
 
-                      // store the image view and image element for easy retrieval in
-                      // ACRView::observeValueForKeyPath
-                      [rootView setImageView:key view:view];
-                      [rootView setImageContext:key context:elem];
-                  }
+            ObserverActionBlock observerAction =
+                ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
+                    UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
+                    if (view) {
+                        // check image already exists in the returned image view and register the image
+                        [self registerImageFromUIImageView:view key:key];
+                        [view addObserver:self
+                               forKeyPath:@"image"
+                                  options:NSKeyValueObservingOptionNew
+                                  context:elem.get()];
+
+                        // store the image view and image element for easy retrieval in ACRView::observeValueForKeyPath
+                        [rootView setImageView:key view:view];
+                        [rootView setImageContext:key context:elem];
+                    }
                 };
-            [self loadImageAccordingToResourceResolverIF:elem
-                                                     key:nil
-                                          observerAction:observerAction];
+            [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
 
             break;
         }
@@ -263,6 +262,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                       std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                       UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                       if (view) {
+                      // check image already exists in the returned image view and register the image
+                          [self registerImageFromUIImageView:view key:key];
                           [view addObserver:self
                                  forKeyPath:@"image"
                                     options:NSKeyValueObservingOptionNew
@@ -297,6 +298,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                       ACRContentHoldingUIView *contentholdingview =
                           [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
                       if (view) {
+                          // check image already exists in the returned image view and register the image
+                          [self registerImageFromUIImageView:view key:key];
                           [contentholdingview addSubview:view];
                           contentholdingview.isMediaType = YES;
                           [view addObserver:self
@@ -321,6 +324,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                       std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                       UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                       if (view) {
+                          // check image already exists in the returned image view and register the image
+                          [self registerImageFromUIImageView:view key:key];
                           [view addObserver:rootView
                                  forKeyPath:@"image"
                                     options:NSKeyValueObservingOptionNew
@@ -414,6 +419,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             // add column fallbacks to async task queue
             [self processFallback:column];
             [self addTasksToConcurrentQueue:column->GetItems()];
+            break;
         }
     }
 }
@@ -621,13 +627,25 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)removeObserver:(NSObject *)observer
-            forKeyPath:(NSString *)path
-              onObject:(NSObject *)object {
-    _numberOfSubscribers--;
-    [object removeObserver:self forKeyPath:path];
-    [_setOfRemovedObservers addObject:object];
-    [self callDidLoadElementsIfNeeded];
+// remove observer from UIImageView
+- (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key
+{
+    if ([object isKindOfClass:[UIImageView class]]) {
+        if (_imageViewContextMap[key]) {
+            [self removeObserver:self forKeyPath:KeyPath onObject:object];
+        }
+    }
+}
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)path onObject:(NSObject *)object
+{
+    // check that makes sure that there are subscribers, and the given observer is not one of the removed observers
+    if (_numberOfSubscribers && ![_setOfRemovedObservers containsObject:object]) {
+        _numberOfSubscribers--;
+        [object removeObserver:self forKeyPath:path];
+        [_setOfRemovedObservers addObject:object];
+        [self callDidLoadElementsIfNeeded];
+    }
 }
 
 - (void)loadBackgroundImageAccordingToResourceResolverIF:
@@ -809,4 +827,11 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                                                                   message:message]];
 }
 
+// check if UIImageView already contains an UIImage, if so, add it the image map.
+- (void)registerImageFromUIImageView:(UIImageView *)imageView key:(NSString *)key
+{
+    if (imageView.image) {
+        self->_imageViewMap[key] = imageView.image;
+    }
+}
 @end
