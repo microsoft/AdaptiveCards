@@ -29,7 +29,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 {
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
+    } else {
+        view.hidden = NO;
     }
+
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
@@ -38,6 +41,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
+    if (!view) {
+        return;
+    }
+
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
     }
@@ -640,6 +647,7 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
         writer->write(blob, &sstream);
+        delete writer;
         NSString *jsonString =
             [[NSString alloc] initWithCString:sstream.str().c_str()
                                      encoding:NSUTF8StringEncoding];
@@ -742,4 +750,27 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
     auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
 
     return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
+}
+
+NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces)
+{
+    ACOResolverIFType resolverType = ACODefaultIF;
+    NSString *urlString = pieces[@"url"], *key = urlString;
+    NSURL *url = nil;
+
+    if (urlString) {
+        url = [NSURL URLWithString:urlString];
+        resolverType = [acoConfig getResolverIFType:[url scheme]];
+    }
+
+    if ([keyType isEqualToString:@"image"] || [keyType isEqualToString:@"media-poster"]) {
+        if (ACOImageViewIF == resolverType) {
+            key = pieces[@"number"];
+        }
+    } else if ([keyType isEqualToString:@"media-playicon-image"]) {
+        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-viewIF"] : pieces[@"playicon-url"];
+    } else if ([keyType isEqualToString:@"media-playicon-imageView"]) {
+        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
+    }
+    return key;
 }
