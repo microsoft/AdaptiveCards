@@ -15,7 +15,11 @@ What is announced when focus moves to a validated input?
 1. If an input has failed validation, announce the error message. **Else**, announce the input's label.
     - Failed validation: "Please enter a real email address."
     - No errors: "Email address input."
-- Confirm (for https://github.com/microsoft/AdaptiveCards/issues/4889): Regardless of announcement, do not expand any popups or modal views on focus. User must activate the input after focus to access any such popups (e.g. dropdown options).
+
+
+**Decision: Option 1. If error is present, accessible text is label + error message. Else, accessible text is label.**
+
+- Related decision: Regardless of announcement, do not expand any popups or modal views on focus. User must activate the input after focus to access any such popups (e.g. dropdown options). (https://github.com/microsoft/AdaptiveCards/issues/4889)
 
 ### On Submit
 
@@ -29,7 +33,12 @@ What happens when a user submits an invalid form (i.e. user activates an `Action
     - "Could not submit. Please fix error(s)."
 1. Do not announce anything. This option assumes focus immediately moves away. See below.
     - ""
-- Confirm (for https://github.com/microsoft/AdaptiveCards/issues/4880): No additional indication to user on repeated invalid submissions (e.g. no "flicker"). However, the submit error announcement, if any, will be repeated each time.
+
+**Decision: Option 4. No summary announcement on submit. If error present, simply move focus to first invalid input, which will announce its error message as specified previously.**
+
+- TODO: Check with accessibility experts if summary announcement would be desirable. If so, we likely need to implement localization, then revisit this decision.
+
+- Related decision: No additional indication to user on repeated invalid submissions (e.g. no "flicker"). However, the submit error announcement, if any, will be repeated each time. (https://github.com/microsoft/AdaptiveCards/issues/4880)
 
 ## Focus Accessibility
 
@@ -40,17 +49,22 @@ When a card is loaded, or when an `Action.ShowCard` is opened, what happens to t
 1. Move focus to the first Input in the card, if any.
 1. Do not explicitly change focus behavior.
 
+**Decision: Option 2. Do not force initial focus.**
+
 ### On Submit
 
 If an error is present, after making a summary error announcement (if any, see Error On Submit), what happens to the focus?
 
 1. Focus moves to the first invalid input. This input is announced as prescribed above.
 1. Focus stays, and no further announcements are made.
-- Confirm (for https://github.com/microsoft/AdaptiveCards/issues/4881): All invalid inputs, regardless of above choice, should show error-styling (error colored border/background)
+
+**Decision: Option 1. Move focus to first invalid input.**
+- Three "elements" to focus: Screen reader focus, user input/cursor focus, and "scroll" focus (if input is out of view, scroll to input). Ideally, all three should move to the first invalid input, barring platform limitations.
+
+- Still needs follow-up: All invalid inputs should show error-styling. TODO: research and spec out this styling for each platform (or make all platforms consistent).
 
 ## Driving issues
 
-* https://github.com/microsoft/AdaptiveCards/issues/4898
 * https://github.com/microsoft/AdaptiveCards/issues/4890
 * https://github.com/microsoft/AdaptiveCards/issues/4912
 
