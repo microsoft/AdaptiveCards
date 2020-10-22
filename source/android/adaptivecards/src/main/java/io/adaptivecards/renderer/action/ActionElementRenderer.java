@@ -14,6 +14,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
@@ -99,7 +100,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             else
             {
                 // Otherwise, the height of the image should be the height of the action's text
-                imageHeight = button.getTextSize();
+                imageHeight = Util.pixelsToDp(m_context, button.getTextSize());
             }
 
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();

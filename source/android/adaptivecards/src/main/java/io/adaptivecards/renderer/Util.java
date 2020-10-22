@@ -42,6 +42,11 @@ public final class Util {
         return returnVal;
     }
 
+    public static double pixelsToDp(Context context, double pixels)
+    {
+        return pixels / dpToPixels(context, 1);
+    }
+
     public static byte[] getBytes(CharVector charVector)
     {
         long vectorSize = charVector.size();
