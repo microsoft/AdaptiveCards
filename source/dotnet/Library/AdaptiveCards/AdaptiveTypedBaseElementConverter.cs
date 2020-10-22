@@ -5,13 +5,14 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// JsonConverters that deserialize to Adpative Elements and require
-    /// ParseContext must inherit this Class
-    /// ParseContext provides id generation, id collision detections, and other useful
-    /// services during deserialization
+    /// JsonConverters that deserialize to AdaptiveCards elements and use ParseContext must inherit this class.
+    /// ParseContext provides id generation, id collision detections, and other useful services during deserialization.
     /// </summary>
     public abstract class AdaptiveTypedBaseElementConverter : JsonConverter
     {
+        /// <summary>
+        /// The <see cref="ParseContext"/> to use while parsing in AdaptiveCards.
+        /// </summary>
         public ParseContext ParseContext { get; set; } = new ParseContext();
     }
 }
