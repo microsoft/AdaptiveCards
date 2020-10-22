@@ -41,6 +41,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
+    if (!view) {
+        return;
+    }
+
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
     }
