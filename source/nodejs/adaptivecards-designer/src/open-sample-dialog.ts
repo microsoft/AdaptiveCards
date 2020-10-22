@@ -4,6 +4,7 @@ import { SampleCatalogue, CatalogueEntry } from "./catalogue";
 import * as ACData from "adaptivecards-templating";
 import * as Adaptive from "adaptivecards";
 import { Dialog } from "./dialog";
+import { Pic2Card } from "./pic2card";
 
 class CatalogueItem {
     onClick: (sender: CatalogueItem) => void;
@@ -140,11 +141,15 @@ export class OpenSampleDialog extends Dialog {
     }
 
     private renderCatalogue(): HTMLElement {
+        const pic2cardService = Pic2Card.pic2cardService !== '' ? Pic2Card.pic2cardService : process.env.PIC_TO_CARD_PREDICTION_API;
         let renderedElement = document.createElement("div");
         renderedElement.className = "acd-open-sample-item-container";
         renderedElement.setAttribute("role", "list");
-        // Adding Pic2Card option
-        renderedElement.appendChild(this.renderImageOption());
+
+        // Check Pic2Card service configured or not
+        if(pic2cardService && pic2cardService !== '') {
+            renderedElement.appendChild(this.renderImageOption());
+        }
         
         for (let entry of this.catalogue.entries) {
             let item = new CatalogueItem(entry);

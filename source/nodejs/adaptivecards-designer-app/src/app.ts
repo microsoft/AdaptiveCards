@@ -35,7 +35,7 @@ window.onload = function() {
 
     // To Configure path for pic2card image usage policy
     /*
-    ACDesigner.Pic2Card.privacyLink ="../myPath/privacy";
+    ACDesigner.Pic2Card.privacyLink = "../myPath/privacy";
     */
 
 	ACDesigner.CardDesigner.onProcessMarkdown = (text: string, result: { didProcess: boolean, outputHtml: string }) => {
