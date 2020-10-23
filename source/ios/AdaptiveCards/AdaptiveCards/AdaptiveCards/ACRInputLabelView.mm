@@ -38,7 +38,7 @@
     [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor].active = YES;
 }
 
-- (instancetype)initInputLabelView:(ACRView *)rootView acoConfig:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
+- (instancetype)initInputLabelView:(ACRView *)rootView acoConfig:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView accessibilityItem:(UIView *)accessibilityItem viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
 {
     self = [self initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     if (self) {
@@ -97,13 +97,18 @@
             textElementProperties.SetTextWeight(pLabelConfig->weight);
             textElementProperties.SetTextColor(ForegroundColor::Attention);
             self.errorMessage.attributedText = initAttributedText(acoConfig, errorMessage, textElementProperties, viewGroup.style);
+            self.errorMessage.isAccessibilityElement = NO;
             self.hasErrorMessage = YES;
         }
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
-        self.label.isAccessibilityElement = NO;
-        self.shouldGroupAccessibilityChildren = YES;
+        self.label.isAccessibilityElement = YES;
+        self.isAccessibilityElement = NO;
+        self.inputAccessibilityItem = accessibilityItem;
+        self.inputAccessibilityItem.isAccessibilityElement = YES;
+        self.inputAccessibilityItem.accessibilityLabel = [self.labelText string];
+        //self.shouldGroupAccessibilityChildren = YES;
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
         inputHandler.isRequired = self.isRequired;
         inputHandler.hasValidationProperties |= inputHandler.isRequired;
@@ -131,11 +136,13 @@
             if (self.hasErrorMessage) {
                 self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
+                self.inputAccessibilityItem.accessibilityHint = self.errorMessage.text;
             }
         } else {
             if (self.hasErrorMessage) {
                 self.hasVisibilityChanged = self.errorMessage.hidden == NO;
                 self.errorMessage.hidden = YES;
+                self.inputAccessibilityItem.accessibilityHint = nil;
             }
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
             return YES;

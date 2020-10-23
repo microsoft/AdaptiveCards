@@ -46,10 +46,7 @@
     numInput.delegate = numberInputHandler;
     numInput.text = numberInputHandler.text;
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:numberInputHandler];
-
-    numInput.isAccessibilityElement = YES;
-    numInput.accessibilityLabel = [inputLabelView.labelText string];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput accessibilityItem:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];

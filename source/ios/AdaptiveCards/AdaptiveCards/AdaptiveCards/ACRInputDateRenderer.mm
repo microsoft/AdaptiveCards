@@ -37,11 +37,11 @@
     std::shared_ptr<BaseInputElement> dateInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *dateField = [[ACRDateTextField alloc] initWithTimeDateInput:dateInput dateStyle:NSDateFormatterShortStyle];
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:dateInput inputView:dateField viewGroup:viewGroup dataSource:nil];
-
-    dateField.isAccessibilityElement = YES;
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:dateInput inputView:dateField accessibilityItem:dateField.inputView viewGroup:viewGroup dataSource:nil];
+    dateField.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
     dateField.accessibilityLabel = [inputLabelView.labelText string];
-
+    inputLabelView.label.isAccessibilityElement = YES;
+    
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
         [inputContainer addArrangedSubview:inputLabelView];

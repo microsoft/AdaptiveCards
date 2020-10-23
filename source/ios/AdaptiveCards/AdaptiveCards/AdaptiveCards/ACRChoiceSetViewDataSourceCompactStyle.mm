@@ -107,7 +107,6 @@ static NSString *pickerCell = @"pickerCell";
             cell.textLabel.text = _defaultString;
         }
 
-        tableView.accessibilityHint = cell.textLabel.text;
         _textInCompactView = cell.textLabel.text;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
