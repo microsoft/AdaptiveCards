@@ -62,6 +62,6 @@ public class ComboBoxInputHandler extends BaseInputHandler
     public void setFocusToView()
     {
         m_view.requestFocus();
-        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }
