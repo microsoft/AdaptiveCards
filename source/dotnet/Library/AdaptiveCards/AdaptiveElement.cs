@@ -7,7 +7,9 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-
+    /// <summary>
+    /// Represents an element in Adaptive Cards.
+    /// </summary>
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
@@ -31,14 +33,14 @@ namespace AdaptiveCards
         public bool Separator { get; set; }
 
         /// <summary>
-        ///     SSML fragment for spoken interaction
+        /// SSML fragment for spoken interaction.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("CardElement.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
 
         /// <summary>
-        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Default"/>.
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Auto"/>.
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -47,6 +49,9 @@ namespace AdaptiveCards
 #endif
         public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
 
+        /// <summary>
+        /// Determines whether the height property should be serialized or not.
+        /// </summary>
         public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
 
         /// <summary>
