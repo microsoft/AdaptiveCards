@@ -28,6 +28,14 @@
 
 - (IBAction)send:(UIButton *)sender
 {
+    [self validateInput];
+    [self updateUI];
+    [self dispatchUserInput];
+    [self dispatchUserInput];
+}
+
+- (NSMutableArray *)validateInput
+{
     BOOL hasValidationPassed = YES;
     BOOL hasViewChangedForAnyViews = NO;
     NSError *error = nil;
@@ -50,11 +58,29 @@
         }
         parent = [_view getParent:parent];
     }
+    return gatheredInputs;
+}
 
-    if (hasValidationPassed) {
-        [[_view card] setInputs:gatheredInputs];
-        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
-    } else if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+//    if (hasValidationPassed) {
+//        [[_view card] setInputs:gatheredInputs];
+//        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+//    } else if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+//        [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
+//    }
+
+- (void)updateUI
+{
+}
+
+- (void)dispatchUserInput
+{
+    [[_view card] setInputs:gatheredInputs];
+    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+}
+
+- (void)notifyLayoutChage
+{
+    if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
         [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
     }
 }
