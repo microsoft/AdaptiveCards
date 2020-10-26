@@ -228,7 +228,7 @@ export class Template {
             }
         }
 
-        // If there is at least of expression start marker, let's attept to convert into an expression
+        // If there is at least one expression start marker, let's attempt to convert into an expression
         if (interpolatedString.indexOf("${") >= 0) {
             let parsedExpression = AEL.Expression.parse("`" + interpolatedString + "`", lookup);
 
