@@ -115,8 +115,6 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setFocusable(true);
-        rootLayout.setFocusableInTouchMode(true);
 
         // Add this two for allowing children to bleed
         rootLayout.setClipChildren(false);

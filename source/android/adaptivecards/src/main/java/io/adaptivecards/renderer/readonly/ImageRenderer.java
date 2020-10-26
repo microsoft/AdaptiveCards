@@ -325,6 +325,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
+        imageView.setContentDescription(image.GetAltText());
 
         int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
 
