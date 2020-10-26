@@ -141,10 +141,7 @@
             [txtview.layer setCornerRadius:5.0f];
             inputview = txtview;
         }
-        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
-
-        inputview.isAccessibilityElement = YES;
-        inputview.accessibilityLabel = [inputLabelView.labelText string];
+        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview accessibilityItem:inputview viewGroup:viewGroup dataSource:nil];
         inputview = inputLabelView;
     } else {
         if (renderAction) {
@@ -153,16 +150,12 @@
             button = quickReplyView.button;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
             [quickReplyView addTextField:txtInput];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
-            quickReplyView.isAccessibilityElement = YES;
-            quickReplyView.accessibilityLabel = [inputLabelView.labelText string];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
 
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:textInputHandler];
-            txtInput.isAccessibilityElement = YES;
-            txtInput.accessibilityLabel = [inputLabelView.labelText string];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;

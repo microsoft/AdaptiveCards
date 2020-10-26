@@ -38,7 +38,7 @@
     [self.layoutMarginsGuide.bottomAnchor constraintEqualToAnchor:contentView.bottomAnchor].active = YES;
 }
 
-- (instancetype)initInputLabelView:(ACRView *)rootView acoConfig:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
+- (instancetype)initInputLabelView:(ACRView *)rootView acoConfig:(ACOHostConfig *)acoConfig adptiveInputElement:(const std::shared_ptr<BaseInputElement> &)inputBlck inputView:(UIView *)inputView accessibilityItem:(UIView *)accessibilityItem viewGroup:(UIView<ACRIContentHoldingView> *)viewGroup dataSource:(NSObject<ACRIBaseInputHandler> *)dataSource
 {
     self = [self initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
     if (self) {
@@ -87,7 +87,6 @@
         }
 
         self.label.attributedText = attributedLabel;
-        self.labelText = attributedLabel;
 
         std::string errorMessage = inputBlck->GetErrorMessage();
         if (!errorMessage.empty()) {
@@ -97,13 +96,27 @@
             textElementProperties.SetTextWeight(pLabelConfig->weight);
             textElementProperties.SetTextColor(ForegroundColor::Attention);
             self.errorMessage.attributedText = initAttributedText(acoConfig, errorMessage, textElementProperties, viewGroup.style);
+            self.errorMessage.isAccessibilityElement = NO;
             self.hasErrorMessage = YES;
         }
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        
         self.label.isAccessibilityElement = NO;
-        self.shouldGroupAccessibilityChildren = YES;
+        self.isAccessibilityElement = NO;
+        inputView.accessibilityLabel = self.label.text;
+        self.inputAccessibilityItem = inputView;
+        
+        if (inputView != accessibilityItem) {
+            self.inputAccessibilityItem = accessibilityItem;
+            self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
+        }
+        
+        self.inputAccessibilityItem.isAccessibilityElement = YES;
+        self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+        
+        self.shouldGroupAccessibilityChildren = NO;
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
         inputHandler.isRequired = self.isRequired;
         inputHandler.hasValidationProperties |= inputHandler.isRequired;
@@ -131,11 +144,19 @@
             if (self.hasErrorMessage) {
                 self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
+                self.errorMessage.isAccessibilityElement = NO;
+                if(self.inputAccessibilityItem.accessibilityLabel) {
+                    self.labelText = self.inputAccessibilityItem.accessibilityLabel;
+                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.inputAccessibilityItem.accessibilityLabel, self.errorMessage.text];
+                } else {
+                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
+                }
             }
         } else {
             if (self.hasErrorMessage) {
                 self.hasVisibilityChanged = self.errorMessage.hidden == NO;
                 self.errorMessage.hidden = YES;
+                self.inputAccessibilityItem.accessibilityLabel = self.labelText;
             }
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
             return YES;
@@ -176,9 +197,9 @@
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
-    }
-
-    [inputHandler setFocus:shouldBecomeFirstResponder view:viewToFocus];
+    }  
+   
+    [inputHandler setFocus:shouldBecomeFirstResponder view:self.inputAccessibilityItem];
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
