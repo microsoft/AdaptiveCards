@@ -4,12 +4,12 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.content.ContextCompat;
-import android.widget.CheckBox;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.R;
 
-public class ValidatedCheckBox extends CheckBox implements IValidatedInputView
+public class ValidatedCheckBox extends AppCompatCheckBox implements IValidatedInputView
 {
 
     public ValidatedCheckBox(Context context)
