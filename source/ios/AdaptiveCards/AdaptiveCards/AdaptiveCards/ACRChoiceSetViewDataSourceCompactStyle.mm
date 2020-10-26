@@ -248,8 +248,8 @@ static NSString *pickerCell = @"pickerCell";
         _isValid = !(!_userSelectedTitle || [_userSelectedTitle isEqualToString:_defaultString]);
         return _isValid;
     }
-    _isValid = YES;
     // no need to validate
+    _isValid = YES;    
     return _isValid;
 }
 
