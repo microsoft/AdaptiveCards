@@ -460,6 +460,10 @@
             2293
           ]
         },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls the horizontal alignment of the ColumnSet."
+        },
         "fallback": {},
         "height": {},
         "separator": {},
@@ -899,6 +903,10 @@
         "value": {
           "type": "string",
           "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Only visible when no selection has been made, the `style` is `compact` and `isMultiSelect` is `false`"
         },
         "wrap": {
           "type": "boolean",
