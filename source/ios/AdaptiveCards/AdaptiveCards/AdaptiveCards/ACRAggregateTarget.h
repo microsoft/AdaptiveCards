@@ -23,7 +23,7 @@
 
 - (void)doIfValidationPassed:(ACOInputResults *)results button:(UIButton *)button;
 
-- (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button;
+- (void)doIfValidationFailed:(ACOInputResults *)results button:(UIButton *)button;
 
 - (void)doSelectAction;
 

@@ -20,13 +20,10 @@
     button.backgroundColor = UIColor.grayColor;
 }
 
-- (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button
+- (void)doIfValidationFailed:(ACOInputResults *)results button:(UIButton *)button
 {
-    if (result) {
-        if (result.hasViewChangedForAnyViews && [super.view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
-            [super.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
-        }
-    }
+    [super doIfValidationFailed:results button:button];
+    button.backgroundColor = UIColor.redColor;
 }
 
 @end
