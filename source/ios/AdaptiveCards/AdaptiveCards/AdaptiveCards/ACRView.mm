@@ -776,4 +776,11 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     return showcard;
 }
 
+- (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent
+{
+    ACOInputResults *result = [[ACOInputResults alloc] init:self parent:parent];
+    [result validateInput];
+    return result;
+}
+
 @end

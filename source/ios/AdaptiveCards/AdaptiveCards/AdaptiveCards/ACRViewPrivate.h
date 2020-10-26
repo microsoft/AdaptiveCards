@@ -7,6 +7,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACOInputResults.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRView.h"
 #import "ActionParserRegistration.h"
@@ -69,4 +70,6 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (void)popCurrentShowcard;
 
 - (ACRColumnView *)peekCurrentShowCard;
+
+- (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent;
 @end

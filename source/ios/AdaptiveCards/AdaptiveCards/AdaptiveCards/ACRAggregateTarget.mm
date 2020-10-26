@@ -7,6 +7,7 @@
 
 #import "ACRAggregateTarget.h"
 #import "ACOBaseActionElementPrivate.h"
+#import "ACOInputResults.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
@@ -28,60 +29,28 @@
 
 - (IBAction)send:(UIButton *)sender
 {
-    [self validateInput];
-    [self updateUI];
-    [self dispatchUserInput];
-    [self dispatchUserInput];
-}
-
-- (NSMutableArray *)validateInput
-{
-    BOOL hasValidationPassed = YES;
-    BOOL hasViewChangedForAnyViews = NO;
-    NSError *error = nil;
-    NSMutableArray<ACRIBaseInputHandler> *gatheredInputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
-
-    ACRColumnView *parent = _currentShowcard;
-
-    while (parent) {
-        NSMutableArray<ACRIBaseInputHandler> *inputs = parent.inputHandlers;
-        for (id<ACRIBaseInputHandler> input in inputs) {
-            BOOL validationResult = [input validate:&error];
-            [gatheredInputs addObject:input];
-            if (hasValidationPassed && !validationResult) {
-                [input setFocus:YES view:nil];
-            } else {
-                [input setFocus:NO view:nil];
-            }
-            hasValidationPassed &= validationResult;
-            hasViewChangedForAnyViews |= input.hasVisibilityChanged;
-        }
-        parent = [_view getParent:parent];
+    ACOInputResults *result = [_view dispatchAndValidateInput:_currentShowcard];
+    if (result.hasValidationPassed) {
+        [self doIfValidationPassed:result button:sender];
+    } else {
+        [self doIfValidationFailed:result button:sender];
     }
-    return gatheredInputs;
 }
 
-//    if (hasValidationPassed) {
-//        [[_view card] setInputs:gatheredInputs];
-//        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
-//    } else if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
-//        [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
-//    }
-
-- (void)updateUI
+- (void)doIfValidationPassed:(ACOInputResults *)results button:(UIButton *)button
 {
+    if (results) {
+        [[_view card] setInputs:results.gatheredInputs];
+        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+    }
 }
 
-- (void)dispatchUserInput
+- (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button
 {
-    [[_view card] setInputs:gatheredInputs];
-    [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
-}
-
-- (void)notifyLayoutChage
-{
-    if (hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
-        [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
+    if (result) {
+        if (result.hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+            [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
+        }
     }
 }
 

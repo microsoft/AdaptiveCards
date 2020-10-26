@@ -7,6 +7,7 @@
 
 #import "ACRIContentHoldingView.h"
 #import "ACRLongPressGestureRecognizerEventHandler.h"
+#import "ACOInputResults.h"
 #import "ACRView.h"
 #import <UIKit/UIKit.h>
 
@@ -15,9 +16,14 @@
 @property ACOBaseActionElement *actionElement;
 @property (weak) ACRView *view;
 @property (weak) ACRColumnView *currentShowcard;
+
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 
 - (IBAction)send:(UIButton *)sender;
+
+- (void)doIfValidationPassed:(ACOInputResults *)results button:(UIButton *)button;
+
+- (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button;
 
 - (void)doSelectAction;
 

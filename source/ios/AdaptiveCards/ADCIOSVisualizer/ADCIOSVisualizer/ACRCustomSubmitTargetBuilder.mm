@@ -13,9 +13,22 @@
 @end
 
 @implementation ACRCustomSubmitTarget
-- (IBAction)send:(UIButton *)sender
+
+- (void)doIfValidationPassed:(ACOInputResults *)results button:(UIButton *)button
 {
+    [super doIfValidationPassed:results button:button];
+    button.backgroundColor = UIColor.grayColor;
 }
+
+- (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button
+{
+    if (result) {
+        if (result.hasViewChangedForAnyViews && [super.view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+            [super.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
+        }
+    }
+}
+
 @end
 
 @implementation ACRCustomSubmitTargetBuilder

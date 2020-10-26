@@ -120,6 +120,8 @@
 		6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */; };
 		6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BD025ED254784670009B019 /* ACOInputResults.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD025EB254784660009B019 /* ACOInputResults.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD025EC254784670009B019 /* ACOInputResults.mm */; };
 		6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BD90D9024C64EBE00B040FB /* ACRInputLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */; };
 		6BE8DFD2249C45C9005EFE66 /* ACRToggleInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */; };
@@ -469,6 +471,8 @@
 		6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMediaRenderer.mm; sourceTree = "<group>"; };
 		6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
+		6BD025EB254784660009B019 /* ACOInputResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOInputResults.h; sourceTree = "<group>"; };
+		6BD025EC254784670009B019 /* ACOInputResults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOInputResults.mm; sourceTree = "<group>"; };
 		6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelViewPrivate.h; sourceTree = "<group>"; };
 		6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRInputLabelView.xib; sourceTree = "<group>"; };
 		6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRToggleInputView.xib; sourceTree = "<group>"; };
@@ -981,6 +985,8 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6BD025EB254784660009B019 /* ACOInputResults.h */,
+				6BD025EC254784670009B019 /* ACOInputResults.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
 				F495FC082022A18F0093D4DE /* ACRChoiceSetViewDataSource.mm */,
 				F495FC0D2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.h */,
@@ -1326,6 +1332,7 @@
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */,
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
+				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 			);
@@ -1552,6 +1559,7 @@
 				6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */,
+				6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,
 				F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */,
 				F4F44BA0204CED2400A2F24C /* ACRCustomRenderer.mm in Sources */,
