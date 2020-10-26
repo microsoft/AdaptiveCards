@@ -27,6 +27,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Locale;
@@ -159,10 +160,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
         // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        FlexboxLayout columnLayout = new FlexboxLayout(context);
+        SelectableFlexboxLayout columnLayout = new SelectableFlexboxLayout(context);
         columnLayout.setFlexDirection(FlexDirection.COLUMN);
-        columnLayout.setClipChildren(false);
-        columnLayout.setClipToPadding(false);
         columnLayout.setTag(new TagContent(column));
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
