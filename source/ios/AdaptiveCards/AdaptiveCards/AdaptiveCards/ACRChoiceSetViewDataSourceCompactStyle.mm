@@ -24,11 +24,14 @@ static NSString *pickerCell = @"pickerCell";
     NSMutableDictionary<NSString *, NSString *> *_titlesMap;
     NSString *_defaultString;
     NSString *_userSelectedTitle;
+    NSString *_inputLabel;
+    NSString *_errorLabel;
     NSInteger _userSelectedRow;
     BOOL _showPickerView;
     CGFloat _pickerViewHeight;
     NSString *_textInCompactView;
     CGFloat _compactViewHeight;
+    BOOL _isValid;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet
@@ -44,6 +47,7 @@ static NSString *pickerCell = @"pickerCell";
         _delegate = (NSObject<UITableViewDelegate> *)_dataSource;
         _showPickerView = NO;
         _defaultString = [NSString stringWithCString:choiceSet->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
+        _isValid = YES;
 
         NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
         [bundle loadNibNamed:@"ACRPickerView" owner:rootView options:nil];
@@ -54,6 +58,16 @@ static NSString *pickerCell = @"pickerCell";
                                                     encoding:NSUTF8StringEncoding];
         NSMutableArray *mutableArrayStrings = [[NSMutableArray alloc] init];
         NSInteger index = 0;
+        auto inputLabel = _choiceSetInput->GetLabel();
+        if (!inputLabel.empty()) {
+            _inputLabel = [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding];
+        }
+        
+        auto errorLabel = _choiceSetInput->GetErrorMessage();
+        if (!errorLabel.empty()) {
+            _errorLabel = [NSString stringWithCString:errorLabel.c_str() encoding:NSUTF8StringEncoding];
+        }
+        
         for (auto choice : _choiceSetInput->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
@@ -106,7 +120,7 @@ static NSString *pickerCell = @"pickerCell";
         } else {
             cell.textLabel.text = _defaultString;
         }
-
+        
         _textInCompactView = cell.textLabel.text;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -114,6 +128,16 @@ static NSString *pickerCell = @"pickerCell";
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         cell.backgroundColor = UIColor.clearColor;
+        // validate and set appropriate error message
+        if (_errorLabel) {
+            if (!_isValid) {
+                cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, _errorLabel];
+            } else {
+                cell.accessibilityLabel = _inputLabel;
+            }
+        } else {
+            cell.accessibilityLabel = _inputLabel;
+        }
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         UIPickerView *pickerView = nil;
@@ -125,11 +149,14 @@ static NSString *pickerCell = @"pickerCell";
         } else {
             pickerView = [cell viewWithTag:pickerViewId];
         }
+        cell.accessibilityLabel = nil;
         pickerView.dataSource = self;
         pickerView.delegate = self;
         pickerView.hidden = NO;
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
+    
+    cell.accessibilityTraits = UIAccessibilityTraitStaticText;
     return cell;
 }
 
@@ -185,7 +212,6 @@ static NSString *pickerCell = @"pickerCell";
                     }
                 }
                 completion:^(BOOL finished) {
-                    ;
                     [tableView reloadData];
                     pickerView.hidden = YES;
                 }];
@@ -219,11 +245,12 @@ static NSString *pickerCell = @"pickerCell";
 - (BOOL)validate:(NSError **)error
 {
     if (self.isRequired) {
-        BOOL result = !(!_userSelectedTitle || [_userSelectedTitle isEqualToString:_defaultString]);
-        return result;
+        _isValid = !(!_userSelectedTitle || [_userSelectedTitle isEqualToString:_defaultString]);
+        return _isValid;
     }
+    _isValid = YES;
     // no need to validate
-    return YES;
+    return _isValid;
 }
 
 - (void)getInput:(NSMutableDictionary *)dictionary
@@ -234,8 +261,8 @@ static NSString *pickerCell = @"pickerCell";
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UITableView *)tableView
 {
     if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, tableView);
         [tableView becomeFirstResponder];
-        [self tableView:tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
     } else {
         [tableView resignFirstResponder];
     }
@@ -260,6 +287,7 @@ static NSString *pickerCell = @"pickerCell";
 {
     return [_titles objectAtIndex:row];
 }
+
 @synthesize isRequired;
 @synthesize hasValidationProperties;
 @synthesize hasVisibilityChanged;

@@ -11,7 +11,7 @@
 @interface ACRInputLabelView : UIView <ACRIBaseInputHandler>
 @property (weak, nonatomic) IBOutlet UILabel *errorMessage;
 @property (weak, nonatomic) IBOutlet UILabel *label;
-@property NSAttributedString *labelText;
+@property NSString *labelText;
 @property (weak, nonatomic) UIView *inputAccessibilityItem;
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
 @property (strong, nonatomic) NSObject <ACRIBaseInputHandler> *dataSource;

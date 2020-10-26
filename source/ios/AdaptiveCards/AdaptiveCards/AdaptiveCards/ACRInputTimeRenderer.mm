@@ -37,8 +37,7 @@
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
 
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field accessibilityItem:field.inputView viewGroup:viewGroup dataSource:nil];
-    field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;
-    field.accessibilityLabel = [inputLabelView.labelText string];
+    field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;    
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {

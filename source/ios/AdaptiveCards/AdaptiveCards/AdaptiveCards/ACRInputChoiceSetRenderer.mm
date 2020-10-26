@@ -60,10 +60,10 @@
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-
+    
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView accessibilityItem:choiceSetView viewGroup:viewGroup dataSource:dataSource];
-    //inputLabelView.label.isAccessibilityElement = YES;
-    //inputLabelView.label.accessibilityTraits = UIAccessibilityTraitStaticText;
+    choiceSetView.isAccessibilityElement = NO;
+    choiceSetView.shouldGroupAccessibilityChildren = YES;
     [inputs addObject:inputLabelView];
 
     if (elem->GetHeight() == HeightType::Stretch) {
