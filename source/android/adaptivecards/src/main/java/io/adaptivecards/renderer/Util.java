@@ -54,6 +54,24 @@ public final class Util {
         return byteArray;
     }
 
+    /**
+     * Clear any existing focus by temporarily adding then removing focus to a given helper View.
+     * @param v The helper View that will temporarily grab and release focus.
+     */
+    public static void clearFocus(View v) {
+        boolean focusable = v.isFocusable();
+        boolean focusableInTouchMode = v.isFocusableInTouchMode();
+
+        v.setFocusable(true);
+        v.setFocusableInTouchMode(true);
+
+        v.requestFocusFromTouch();
+        v.clearFocus();
+
+        v.setFocusable(focusable);
+        v.setFocusableInTouchMode(focusableInTouchMode);
+    }
+
     public static void MoveChildrenViews(ViewGroup origin, ViewGroup destination)
     {
         final int childCount = origin.getChildCount();

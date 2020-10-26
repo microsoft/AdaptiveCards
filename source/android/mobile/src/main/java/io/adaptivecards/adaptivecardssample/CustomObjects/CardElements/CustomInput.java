@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -71,6 +72,7 @@ public class CustomInput extends BaseInputElement
         public void setFocusToView()
         {
             m_view.requestFocus();
+            m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }
 
