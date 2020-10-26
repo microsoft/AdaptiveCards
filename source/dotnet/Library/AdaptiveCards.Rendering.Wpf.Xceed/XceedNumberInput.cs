@@ -23,6 +23,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
 
+                if ((!Double.IsNaN(input.Max) || !Double.IsNaN(input.Min) || input.IsRequired) && string.IsNullOrEmpty(input.ErrorMessage))
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput, "Inputs with validation should include an ErrorMessage"));
+                }
+
                 context.InputValues.Add(input.Id, new AdaptiveXceedNumberInputValue(input, numberPicker));
 
                 return numberPicker;
