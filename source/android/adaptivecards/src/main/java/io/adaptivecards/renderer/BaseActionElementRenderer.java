@@ -264,7 +264,6 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
-                m_invisibleCard.requestFocus();
             }
             else
             {
@@ -332,6 +331,10 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                 if (m_action.GetElementType() == ActionType.Submit)
                 {
                     SubmitAction submitAction = Util.castTo(m_action, SubmitAction.class);
+
+                    // If an input is in focus before submit, and the same input is focused on error,
+                    // the input would not be scrolled into view. Instead, clearing focus first ensures scroll.
+                    Util.clearFocus(v);
 
                     if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
                     {
