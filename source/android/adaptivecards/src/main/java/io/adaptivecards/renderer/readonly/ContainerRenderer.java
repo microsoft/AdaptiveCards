@@ -140,6 +140,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
         layoutParams.gravity = gravity;
+
+        if (containerView instanceof LinearLayout)
+        {
+            ((LinearLayout)containerView).setGravity(gravity);
+        }
     }
 
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
