@@ -460,6 +460,10 @@
             2293
           ]
         },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls the horizontal alignment of the ColumnSet."
+        },
         "fallback": {},
         "height": {},
         "separator": {},
