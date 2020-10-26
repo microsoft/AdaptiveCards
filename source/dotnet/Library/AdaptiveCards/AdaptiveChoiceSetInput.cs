@@ -11,22 +11,26 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Element which collects choice from the user
+    /// Represents the Input.ChoiceSet element.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveChoiceSetInput.TypeName)]
 #endif
     public class AdaptiveChoiceSetInput : AdaptiveInput
     {
+        /// <summary>
+        /// The AdaptiveCard element that this class implements.
+        /// </summary>
         public const string TypeName = "Input.ChoiceSet";
 
+        /// <inheritdoc/>
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        ///      Comma separated string of selected Choice values
+        /// Comma separated string of selected Choice values.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -36,7 +40,7 @@ namespace AdaptiveCards
         public string Value { get; set; }
 
         /// <summary>
-        ///     Style for choice
+        /// The style to use when displaying this Input.ChoiceSet.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -46,7 +50,7 @@ namespace AdaptiveCards
         public AdaptiveChoiceInputStyle Style { get; set; }
 
         /// <summary>
-        ///     allow multiple choices to be selected (default false)
+        /// Determines whether multiple selections are allowed.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -56,13 +60,13 @@ namespace AdaptiveCards
         public bool IsMultiSelect { get; set; }
 
         /// <summary>
-        ///     the choice options
+        /// A collection of available choices.
         /// </summary>
         [JsonRequired]
         public List<AdaptiveChoice> Choices { get; set; } = new List<AdaptiveChoice>();
 
         /// <summary>
-        ///      when set true, text will wrap
+        /// Controls text wrapping behavior.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -71,6 +75,7 @@ namespace AdaptiveCards
         [DefaultValue(false)]
         public bool Wrap { get; set; }
 
+        /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
             var chosen = Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
