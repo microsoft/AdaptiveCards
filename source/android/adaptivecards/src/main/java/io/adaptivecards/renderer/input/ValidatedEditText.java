@@ -23,8 +23,7 @@ public class ValidatedEditText extends EditText
         m_errorColor = errorColor;
     }
 
-    public void setValidationResult(boolean isValid)
-    {
+    public void setValidationResult(boolean isValid) {
         if (isValid)
         {
             // Change border color to original color
