@@ -102,12 +102,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, container.GetBackgroundImage(), hostConfig, containerView);
-
-        if (container.GetSelectAction() != null)
-        {
-            containerView.setClickable(true);
-            containerView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
-        }
+        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler);
 
         viewGroup.addView(containerView);
         return containerView;
@@ -140,6 +135,11 @@ public class ContainerRenderer extends BaseCardElementRenderer
 
         LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
         layoutParams.gravity = gravity;
+
+        if (containerView instanceof LinearLayout)
+        {
+            ((LinearLayout)containerView).setGravity(gravity);
+        }
     }
 
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
@@ -228,6 +228,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
     {
         if (selectAction != null)
         {
+            view.setFocusable(true);
             view.setClickable(true);
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
         }

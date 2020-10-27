@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Spinner;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -66,6 +67,7 @@ public class ComboBoxInputHandler extends BaseInputHandler
     @Override
     public void setFocusToView()
     {
-        getSpinner().requestFocus();
+        m_view.requestFocus();
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }

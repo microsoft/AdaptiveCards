@@ -70,28 +70,10 @@ public abstract class BaseInputHandler implements IInputHandler
         // without labels or error messages will have no inputLayout
         if (m_inputLayout != null)
         {
-            // Get error message and show it or hide it depending on isValid
-            View errorMessage = m_inputLayout.getErrorMessage();
-
-            if (errorMessage != null)
+            if (m_view instanceof IValidatedInputView)
             {
-                BaseCardElementRenderer.setVisibility(!isValid, errorMessage);
-
-                if (m_view instanceof EditText)
-                {
-                    CharSequence inputHint = "";
-                    if (!isValid)
-                    {
-                        inputHint = ((TextView)errorMessage).getText();
-                    }
-                    ((EditText) m_view).setContentDescription(inputHint);
-                }
+                ((IValidatedInputView) m_view).setValidationResult(isValid);
             }
-        }
-
-        if (m_view instanceof IValidatedInputView)
-        {
-            ((IValidatedInputView)m_view).setValidationResult(isValid);
         }
     }
 
