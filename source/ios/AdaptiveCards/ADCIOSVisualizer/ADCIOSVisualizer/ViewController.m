@@ -462,6 +462,16 @@ const CGFloat kAdaptiveCardsWidth = 330;
     [self.scrView scrollRectToVisible:newFrame animated:YES];
 }
 
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
+{
+    NSString *actiontype = (NSString *)properties[@"actiontype"];
+    if ([actiontype isEqualToString:@"submit"]) {
+        [self.scrView setContentOffset:newFrame.origin animated:YES];
+    } else {
+    [self.scrView scrollRectToVisible:newFrame animated:YES];
+    }
+}
+
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
 {
     if (isVisible) {

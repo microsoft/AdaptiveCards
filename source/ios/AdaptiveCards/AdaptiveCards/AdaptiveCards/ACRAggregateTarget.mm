@@ -14,6 +14,10 @@
 #import "ACRViewPrivate.h"
 #import <UIKit/UIKit.h>
 
+NSString *const ACRAggregateTargetActionType = @"actiontype";
+NSString *const ACRAggregateTargetSubmitAction = @"submit";
+NSString *const ACRAggregateTargetFirstResponder = @"firstResponder";
+
 @implementation ACRAggregateTarget
 
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
@@ -27,10 +31,12 @@
     return self;
 }
 
+// main entry point to the event handler, override each methods whithin it for custom behaviors
 - (IBAction)send:(UIButton *)sender
 {
+    // dispatch and validate inputs
     ACOInputResults *result = [_view dispatchAndValidateInput:_currentShowcard];
-
+    // update UI with the inputs
     [self updateInputUI:result button:sender];
 
     if (result.hasValidationPassed) {
@@ -43,7 +49,9 @@
 - (void)doIfValidationPassed:(ACOInputResults *)results button:(UIButton *)button
 {
     if (results) {
+        // if a validation passes, gathered input is set in the adaptive card
         [[_view card] setInputs:results.gatheredInputs];
+        // dispatch the card to the host app
         [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
     }
 }
@@ -51,7 +59,21 @@
 - (void)doIfValidationFailed:(ACOInputResults *)result button:(UIButton *)button
 {
     if (result) {
-        if (result.hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+        // layout changed and notify subscribers
+
+        if ([self.view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:properties:)]) {
+            // focus is set to the first failed input,
+            UIView *viewToFocus = (UIView *)result.firstFailedInput;
+            // prepare params for notification
+            NSDictionary *prop = @{ACRAggregateTargetActionType : ACRAggregateTargetSubmitAction, ACRAggregateTargetFirstResponder : result.firstFailedInput};
+            // we want to pass this view to the host app, so the app can compute content offset for scrolling for the focus
+            if (viewToFocus) {
+                [self.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:viewToFocus.frame properties:prop];
+            } else {
+                [self.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull properties:prop];
+            }
+        } else if ([_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
+            // notify layout change
             [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
         }
     }

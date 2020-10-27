@@ -23,7 +23,17 @@
 
 - (void)doIfValidationFailed:(ACOInputResults *)results button:(UIButton *)button
 {
-    [super doIfValidationFailed:results button:button];
+    if (results) {
+        if ([self.view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:properties:)]) {
+            UIView *viewToFocus = (UIView *)results.firstFailedInput;
+            NSDictionary *prop = @{@"actiontype" : @"submit", @"firstResponder" : results.firstFailedInput};
+            if (viewToFocus) {
+                [self.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:viewToFocus.frame properties:prop];
+            } else {
+                [self.view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull properties:prop];
+            }
+        }
+    }
     button.backgroundColor = UIColor.redColor;
 }
 
