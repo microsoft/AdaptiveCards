@@ -11,9 +11,9 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRInputLabelViewPrivate.h"
 #import "ACRNumericTextField.h"
+#import "ACRTextInputHandler.h"
 #import "NumberInput.h"
 #import "UtiliOS.h"
-#import "ACRTextInputHandler.h"
 
 @implementation ACRInputNumberRenderer
 
@@ -40,13 +40,13 @@
     NSBundle *bundle = [NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"];
     ACRNumericTextField *numInput = [bundle loadNibNamed:@"ACRTextNumberField" owner:rootView options:nil][0];
     numInput.placeholder = [NSString stringWithCString:numInputBlck->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding];
-    
+
     ACRNumberInputHandler *numberInputHandler = [[ACRNumberInputHandler alloc] init:acoElem];
-    
+
     numInput.delegate = numberInputHandler;
     numInput.text = numberInputHandler.text;
-    
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput viewGroup:viewGroup dataSource:numberInputHandler];
+
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:numInputBlck inputView:numInput accessibilityItem:numInput viewGroup:viewGroup dataSource:numberInputHandler];
 
     if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *inputContainer = [[ACRColumnView alloc] init];
