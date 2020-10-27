@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.adaptivecards.renderer.input.customcontrols;
 
 import android.annotation.SuppressLint;
@@ -12,10 +15,18 @@ import android.widget.Spinner;
 
 import io.adaptivecards.R;
 
+/**
+ * ValidatedSpinner is an extension of Spinner that supports the usage of the adaptive_state_input_invalid
+ * boolean flag defined in attrs.xml for using a custom background drawable
+ */
 @SuppressLint("AppCompatCustomView")
 public class ValidatedSpinner extends Spinner implements IValidatedInputView
 {
-    public ValidatedSpinner(Context context)
+    /**
+     * Creates an instance of a ValidatedSpinner and verifies if custom drawables are being used.
+     * @param context Context necessary for UI object creation
+     */
+    private ValidatedSpinner(Context context)
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -23,6 +34,11 @@ public class ValidatedSpinner extends Spinner implements IValidatedInputView
         verifyIfUsingCustomInputs(context);
     }
 
+    /**
+     * Creates an instance of a ValidatedSpinner setting the background drawable adaptive_choiceset_compact_background.
+     * @param context Context necessary for UI object creation
+     * @param usingCustomInputs Flag signalizing if a custom drawable is being used
+     */
     public ValidatedSpinner(Context context, boolean usingCustomInputs)
     {
         this(context);
@@ -75,6 +91,12 @@ public class ValidatedSpinner extends Spinner implements IValidatedInputView
         refreshDrawableState();
     }
 
+    /**
+     * Updates the possible states to be available for this visual element by adding the
+     * adaptive_state_input_invalid state
+     * @param extraSpace
+     * @return An array that contains the original states and the new state added
+     */
     @Override
     protected int[] onCreateDrawableState(int extraSpace)
     {

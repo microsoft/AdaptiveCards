@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.adaptivecards.renderer.input.customcontrols;
 
 import android.content.Context;
@@ -9,10 +12,18 @@ import android.widget.RadioGroup;
 
 import io.adaptivecards.R;
 
+/**
+ * ValidatedRadioGroup is an extension of RadioGroup that supports the usage of the adaptive_state_input_invalid
+ * boolean flag defined in attrs.xml for using a custom background drawable
+ */
 public class ValidatedRadioGroup extends RadioGroup implements IValidatedInputView
 {
-
-    public ValidatedRadioGroup(Context context)
+    /**
+     * Creates an instance of a ValidatedRadioGroup setting the background drawable adaptive_choiceset_expanded_background.
+     * This constructor is necessary to have a constructor matching any of RadioGroup class constructors.
+     * @param context Context necessary for UI object creation
+     */
+    private ValidatedRadioGroup(Context context)
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -22,6 +33,11 @@ public class ValidatedRadioGroup extends RadioGroup implements IValidatedInputVi
         m_isInvalid = false;
     }
 
+    /**
+     * Creates an instance of ValidatedRadioGroup.
+     * @param context Context necessary for UI object creation
+     * @param errorColor Color used for tinting the border outline of the RadioGroup
+     */
     public ValidatedRadioGroup(Context context, int errorColor)
     {
         this(context);
@@ -54,6 +70,12 @@ public class ValidatedRadioGroup extends RadioGroup implements IValidatedInputVi
         refreshDrawableState();
     }
 
+    /**
+     * Updates the possible states to be available for this visual element by adding the
+     * adaptive_state_input_invalid state
+     * @param extraSpace
+     * @return An array that contains the original states and the new state added
+     */
     @Override
     protected int[] onCreateDrawableState(int extraSpace)
     {

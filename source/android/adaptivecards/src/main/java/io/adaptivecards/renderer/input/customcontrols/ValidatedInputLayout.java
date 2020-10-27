@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.adaptivecards.renderer.input.customcontrols;
 
 import android.content.Context;
@@ -8,9 +11,19 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.R;
 
+/**
+ * ValidatedSpinnerLayout is an extension of the LinearLayout control that is used to contain multiple
+ * visual elements. LinearLayouts are used to contain CheckBoxes for multichoice extended ChoiceSet
+ * elements and Spinners as they are a special case of input elements that already have a background drawable
+ */
 public class ValidatedInputLayout extends LinearLayout implements IValidatedInputView
 {
-    public ValidatedInputLayout(Context context)
+    /**
+     * Creates an instance of a ValidatedInputLayout. This constructor is necessary to have a
+     * constructor matching any of LinearLayout class constructors.
+     * @param context Context necessary for UI object creation
+     */
+    private ValidatedInputLayout(Context context)
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -18,6 +31,12 @@ public class ValidatedInputLayout extends LinearLayout implements IValidatedInpu
         m_isInvalid = false;
     }
 
+    /**
+     * Creates an instance of ValidatedInputLayout.
+     * @param context Context necessary for UI object creation
+     * @param drawableId Drawable numeric identifier, ie. R.drawable.some_drawable
+     * @param errorColor Color used for tinting the border outline of the Layout
+     */
     public ValidatedInputLayout(Context context, int drawableId, int errorColor)
     {
         this(context);
@@ -50,6 +69,12 @@ public class ValidatedInputLayout extends LinearLayout implements IValidatedInpu
         refreshDrawableState();
     }
 
+    /**
+     * Updates the possible states to be available for this visual element by adding the
+     * adaptive_state_input_invalid state
+     * @param extraSpace
+     * @return An array that contains the original states and the new state added
+     */
     @Override
     protected int[] onCreateDrawableState(int extraSpace)
     {

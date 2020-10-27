@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.adaptivecards.renderer.input.customcontrols;
 
 import android.annotation.SuppressLint;
@@ -11,10 +14,19 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.R;
 
+/**
+ * ValidatedEditText is an extension of EditText that supports the usage of the adaptive_state_input_invalid
+ * boolean flag defined in attrs.xml for using a custom background drawable or element color tinting.
+ */
 @SuppressLint("AppCompatCustomView")
 public class ValidatedEditText extends EditText implements IValidatedInputView
 {
-    public ValidatedEditText(Context context)
+    /**
+     * Creates an instance of a ValidatedEditText and verifies if custom drawables are being used.
+     * This constructor is necessary to have a constructor matching any of EditText class constructors.
+     * @param context Context necessary for UI object creation
+     */
+    private ValidatedEditText(Context context)
     {
         super(context);
         setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -22,6 +34,11 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
         verifyIfUsingCustomInputs(context);
     }
 
+    /**
+     * Creates an instance of ValidatedEditText.
+     * @param context Context necessary for UI object creation
+     * @param errorColor Color used for tinting the border outline of the EditText
+     */
     public ValidatedEditText(Context context, int errorColor)
     {
         this(context);
@@ -83,6 +100,12 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
         refreshDrawableState();
     }
 
+    /**
+     * Updates the possible states to be available for this visual element by adding the
+     * adaptive_state_input_invalid state
+     * @param extraSpace
+     * @return An array that contains the original states and the new state added
+     */
     @Override
     protected int[] onCreateDrawableState(int extraSpace)
     {
