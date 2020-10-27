@@ -12,6 +12,7 @@
 @implementation ACOInputResults {
     __weak ACRView *_view;
     __weak ACRColumnView *_currentShowcard;
+    NSHashTable *_set;
 }
 
 - (instancetype)init:(ACRView *)rootView parent:(ACRColumnView *)parent
@@ -21,6 +22,7 @@
         _view = rootView;
         _currentShowcard = parent;
         _gatheredInputs = [[NSMutableArray<ACRIBaseInputHandler> alloc] init];
+        _set = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
     }
     return self;
 }
@@ -39,15 +41,23 @@
             BOOL validationResult = [input validate:&error];
             [_gatheredInputs addObject:input];
             if (self.hasValidationPassed && !validationResult) {
-                [input setFocus:YES view:nil];
+                self.firstFailedInput = input;
             } else {
                 [input setFocus:NO view:nil];
+            }
+            if (validationResult) {
+                [_set addObject:input];
             }
             self.hasValidationPassed &= validationResult;
             self.hasViewChangedForAnyViews |= input.hasVisibilityChanged;
         }
         parent = [_view getParent:parent];
     }
+}
+
+- (BOOL)isInputValid:(id<ACRIBaseInputHandler>)input
+{
+    return [_set containsObject:input];
 }
 
 @end

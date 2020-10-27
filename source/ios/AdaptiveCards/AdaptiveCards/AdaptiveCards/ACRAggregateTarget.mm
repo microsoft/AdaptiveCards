@@ -30,6 +30,9 @@
 - (IBAction)send:(UIButton *)sender
 {
     ACOInputResults *result = [_view dispatchAndValidateInput:_currentShowcard];
+
+    [self updateInputUI:result button:sender];
+
     if (result.hasValidationPassed) {
         [self doIfValidationPassed:result button:sender];
     } else {
@@ -51,6 +54,13 @@
         if (result.hasViewChangedForAnyViews && [_view.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
             [_view.acrActionDelegate didChangeViewLayout:CGRectNull newFrame:CGRectNull];
         }
+    }
+}
+
+- (void)updateInputUI:(ACOInputResults *)result button:(UIButton *)button
+{
+    if (result && !result.hasValidationPassed) {
+        [result.firstFailedInput setFocus:YES view:nil];
     }
 }
 

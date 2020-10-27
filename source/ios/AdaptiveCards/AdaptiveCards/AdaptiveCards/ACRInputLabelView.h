@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorMessage;
 @property (weak, nonatomic) IBOutlet UILabel *label;
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
+@property (weak, nonatomic) UIView *inputView;
 @property (strong, nonatomic) NSObject <ACRIBaseInputHandler> *dataSource;
 @property BOOL isRequired;
 @property BOOL hasErrorMessage;

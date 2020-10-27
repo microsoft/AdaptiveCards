@@ -6,6 +6,7 @@
 
 #import "ACRCustomSubmitTargetBuilder.h"
 #import <AdaptiveCards/ACRAggregateTarget.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/ACRTargetBuilderDirector.h>
 #import <AdaptiveCards/ACRViewPrivate.h>
 
@@ -24,6 +25,26 @@
 {
     [super doIfValidationFailed:results button:button];
     button.backgroundColor = UIColor.redColor;
+}
+
+- (void)updateInputUI:(ACOInputResults *)result button:(UIButton *)button;
+{
+    [super updateInputUI:result button:button];
+
+    for (id<ACRIBaseInputHandler> input in result.gatheredInputs) {
+        ACRInputLabelView *inputLabelView = (ACRInputLabelView *)input;
+        if ([inputLabelView isKindOfClass:[ACRInputLabelView class]]) {
+            if (![result isInputValid:input]) {
+                inputLabelView.inputView.layer.borderWidth = 5.0f;
+                inputLabelView.inputView.layer.cornerRadius = 2.0f;
+                inputLabelView.inputView.layer.borderColor = UIColor.purpleColor.CGColor;
+            } else {
+                inputLabelView.inputView.layer.borderWidth = 0.0f;
+                inputLabelView.inputView.layer.cornerRadius = 0.0f;
+                inputLabelView.inputView.layer.borderColor = nil;
+            }
+        }
+    }
 }
 
 @end

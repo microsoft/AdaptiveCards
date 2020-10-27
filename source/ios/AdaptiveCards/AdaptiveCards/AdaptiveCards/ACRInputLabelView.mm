@@ -101,6 +101,7 @@
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        self.inputView = inputView;
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
         inputHandler.isRequired = self.isRequired;
         inputHandler.hasValidationProperties |= inputHandler.isRequired;

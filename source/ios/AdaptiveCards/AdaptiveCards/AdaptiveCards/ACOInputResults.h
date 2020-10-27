@@ -13,13 +13,13 @@
 
 @interface ACOInputResults : NSObject
 
-@property NSObject<ACRIBaseInputHandler> *firstFailedInput;
+@property (weak) id<ACRIBaseInputHandler> firstFailedInput;
 @property NSMutableArray<ACRIBaseInputHandler> *gatheredInputs;
 @property BOOL hasValidationPassed;
 @property BOOL hasViewChangedForAnyViews;
 
 - (instancetype)init:(ACRView *)rootView parent:(ACRColumnView *)parent;
 - (void)validateInput;
-//- (UIView *)getInputView:(NSObject<ACRIBaseInputHandler> *)input;
+- (BOOL)isInputValid:(id<ACRIBaseInputHandler>)input;
 
 @end
