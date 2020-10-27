@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -81,6 +82,7 @@ public class RadioGroupInputHandler extends BaseInputHandler
 
             radioButton.setFocusableInTouchMode(true);
             radioButton.requestFocus();
+            radioButton.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }
 
