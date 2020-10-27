@@ -290,6 +290,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
                                         editText);
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+
+                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        {
+                            renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
+                        }
+
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
                     else
@@ -310,6 +316,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
                         inlineButton.setText(title);
+
+                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        {
+                            renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
+                        }
+
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
                     textInputViewGroup.setGravity(Gravity.CENTER);
@@ -368,11 +380,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
         setVisibility(baseCardElement.GetIsVisible(), editText);
 
         BaseActionElement action = textInput.GetInlineAction();
-
-        if (Util.isOfType(action, SubmitAction.class))
-        {
-            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
-        }
 
         if (textInput.GetIsMultiline())
         {
