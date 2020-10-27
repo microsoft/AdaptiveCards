@@ -429,4 +429,13 @@ public final class Util {
         CopyInputProperties(baseInputElement, inputElement);
     }
 
+    public static long getViewId(View view)
+    {
+        if(view.getId() == View.NO_ID)
+        {
+            view.setId(View.generateViewId());
+        }
+        return view.getId();
+    }
+
 }

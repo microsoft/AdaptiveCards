@@ -204,7 +204,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
 
-        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);
 
         viewGroup.addView(columnLayout);
         return columnLayout;

@@ -316,27 +316,27 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         }
 
         @Override
-        public void onClick(View v)
+        public void onClick(View view)
         {
+            m_renderedAdaptiveCard.clearValidatedInputs();
+
             if (m_isInlineShowCardAction)
             {
-                handleInlineShowCardAction(v);
+                handleInlineShowCardAction(view);
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
-                handleToggleVisibilityAction(v);
+                handleToggleVisibilityAction(view);
             }
             else
             {
-                if (m_action.GetElementType() == ActionType.Submit)
+                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
-                    SubmitAction submitAction = Util.castTo(m_action, SubmitAction.class);
-
                     // If an input is in focus before submit, and the same input is focused on error,
                     // the input would not be scrolled into view. Instead, clearing focus first ensures scroll.
-                    Util.clearFocus(v);
+                    Util.clearFocus(view);
 
-                    if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
+                    if (!m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
                     {
                         return;
                     }
