@@ -53,6 +53,7 @@ using namespace AdaptiveCards;
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
         writer->write(blob, &sstream);
+        delete writer;
         NSString *jsonString =
             [[NSString alloc] initWithCString:sstream.str().c_str()
                                      encoding:NSUTF8StringEncoding];
