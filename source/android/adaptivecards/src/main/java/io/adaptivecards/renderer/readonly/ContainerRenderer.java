@@ -104,7 +104,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, container.GetBackgroundImage(), hostConfig, containerView);
-        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler);
+        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler, renderArgs);
 
         viewGroup.addView(containerView);
         return containerView;
