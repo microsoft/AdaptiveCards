@@ -70,10 +70,7 @@ public abstract class BaseInputHandler implements IInputHandler
         // without labels or error messages will have no inputLayout
         if (m_inputLayout != null)
         {
-            if (m_view instanceof IValidatedInputView)
-            {
-                ((IValidatedInputView) m_view).setValidationResult(isValid);
-            }
+            m_inputLayout.setValidationResult(isValid);
         }
     }
 
