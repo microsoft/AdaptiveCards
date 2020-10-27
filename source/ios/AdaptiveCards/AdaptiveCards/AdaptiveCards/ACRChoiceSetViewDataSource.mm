@@ -62,7 +62,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             }
             ++index;
         }
-        
+
         self.hasValidationProperties = self.isRequired;
     }
     return self;
@@ -99,14 +99,14 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
         cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
-    
+
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-    
+
     return cell;
 }
 
@@ -148,7 +148,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
-    
+
     [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
 
