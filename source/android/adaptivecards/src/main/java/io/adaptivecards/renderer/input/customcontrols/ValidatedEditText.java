@@ -122,5 +122,5 @@ public class ValidatedEditText extends EditText implements IValidatedInputView
     private boolean m_isUsingCustomInputs = false;
     private int m_errorColor = Color.TRANSPARENT;
 
-    private static final int[] STATE_INPUT_INVALID = {R.attr.adaptive_state_input_invalid};
+    private static final int[] STATE_INPUT_INVALID = {R.attr.state_error};
 }

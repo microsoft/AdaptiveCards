@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:adaptivecards="http://schemas.android.com/apk/res-auto">
-    <item adaptivecards:adaptive_state_input_invalid="true">
+    <item adaptivecards:state_error="true">
         <layer-list android:opacity="transparent">
             <item android:gravity="left" android:width="300dp" android:end="300dp">
                 <shape>

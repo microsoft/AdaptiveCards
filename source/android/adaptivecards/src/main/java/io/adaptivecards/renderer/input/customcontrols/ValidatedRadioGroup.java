@@ -91,5 +91,5 @@ public class ValidatedRadioGroup extends RadioGroup implements IValidatedInputVi
     private boolean m_isInvalid = false;
     private int m_errorColor = Color.TRANSPARENT;
 
-    private static final int[] STATE_INPUT_INVALID = {R.attr.adaptive_state_input_invalid};
+    private static final int[] STATE_INPUT_INVALID = {R.attr.state_error};
 }

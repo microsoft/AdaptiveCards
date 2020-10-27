@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?><selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:adaptivecards="http://schemas.android.com/apk/res-auto">
-    <item adaptivecards:adaptive_state_input_invalid="true">
+    <item adaptivecards:state_error="true">
         <shape xmlns:android="http://schemas.android.com/apk/res/android"
             android:shape="rectangle">
             <corners android:radius="20dip" />

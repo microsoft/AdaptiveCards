@@ -112,6 +112,6 @@ public class ValidatedSpinner extends Spinner implements IValidatedInputView
     private boolean m_isInvalid = false;
     private boolean m_isUsingCustomInputs = false;
 
-    private static final int[] STATE_INPUT_INVALID = {R.attr.adaptive_state_input_invalid};
+    private static final int[] STATE_INPUT_INVALID = {R.attr.state_error};
 
 }
