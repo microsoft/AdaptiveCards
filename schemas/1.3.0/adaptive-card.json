@@ -781,7 +781,7 @@
       ]
     },
     "TextRun": {
-      "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containting the text as a shorthand for the json object. These two representations are equivalent.",
+      "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containing the text as a shorthand for the json object. These two representations are equivalent.",
       "version": "1.2",
       "anyOf": [
         {
