@@ -14,6 +14,7 @@
 @property NSString *labelText;
 @property (weak, nonatomic) UIView *inputAccessibilityItem;
 @property (strong, nonatomic) IBOutlet UIStackView *stack;
+@property (weak, nonatomic) UIView *inputView;
 @property (strong, nonatomic) NSObject <ACRIBaseInputHandler> *dataSource;
 @property BOOL isRequired;
 @property BOOL hasErrorMessage;
