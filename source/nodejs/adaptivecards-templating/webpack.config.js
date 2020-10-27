@@ -23,7 +23,11 @@ module.exports = (env, argv) => {
 			contentBase: './dist'
 		},
 		externals: {
-			"adaptive-expressions": "adaptive-expressions"
+			"adaptive-expressions": {
+				commonjs2: "adaptive-expressions",
+				commonjs: "adaptive-expressions",
+				root: "AEL"
+			}
 		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]

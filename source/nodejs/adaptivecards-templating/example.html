@@ -7,8 +7,10 @@
 
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.js"></script>
     <script src="https://unpkg.com/adaptivecards/dist/adaptivecards.min.js"></script>
-
-    <script type="text/javascript" src="dist/adaptivecards-templating.js"></script>
+	<script type="text/javascript" src="node_modules/adaptive-expressions/lib/browser.js"></script>
+	
+	<script type="text/javascript" src="dist/adaptivecards-templating.js"></script>
+	
 
 	<style type="text/css">
 		#exampleDiv {
@@ -22,11 +24,11 @@
             // Define a template payload
 			var templatePayload = {
 				"type": "AdaptiveCard",
-				"version": "1.0",
+				"version": "1.2",
 				"body": [
                     {
                         "type": "TextBlock",
-                        "text": "Hello {name}!"
+                        "text": "Hello ${name}!"
 					}
 				]
             };
@@ -36,10 +38,11 @@
 
             // Create a data binding context, and set its $root property to the
             // data object to bind the template to
-            var context = new ACData.EvaluationContext();
-            context.$root = {
-                "name": "Adaptive Cards"
-            };
+            var context = {
+				$root : {
+                	"name": "Adaptive Cards"
+				}
+			};
 
             // "Expand" the template - this generates the final Adaptive Card,
             // ready to render

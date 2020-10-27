@@ -3,8 +3,11 @@
 
 <head>
 	<title>Adaptive Cards Designer (No Microsoft Hosts)</title>
+	<script src="https://unpkg.com/adaptivecards@latest/dist/adaptivecards.min.js"></script>
+	<script src="https://unpkg.com/adaptive-expressions@4.11.0-dev.20201027.ca35ce4/lib/browser.js"></script>
+	<script src="https://unpkg.com/adaptivecards-templating@latest/dist/adaptivecards-templating.min.js"></script>
+	
 	<script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
-	<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
 	<style type="text/css">
 		* {
@@ -46,5 +49,8 @@
 		<div id="designerRootHost"></div>
 	</div>
 </body>
+
+<!-- load monaco loader after designer is loaded so that it doesn't affect the designer code -->
+<script src="https://unpkg.com/monaco-editor@0.17.1/min/vs/loader.js"></script>
 
 </html>
