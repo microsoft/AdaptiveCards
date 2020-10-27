@@ -8,6 +8,7 @@
 #import "ViewController.h"
 #import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
+#import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
 #import "AdaptiveFileBrowserSource.h"
 #import "CustomActionNewType.h"
@@ -465,6 +466,19 @@ const CGFloat kAdaptiveCardsWidth = 330;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
     [self.scrView scrollRectToVisible:newFrame animated:YES];
+}
+
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
+{
+    NSString *actiontype = (NSString *)properties[ACRAggregateTargetActionType];
+    if ([actiontype isEqualToString:ACRAggregateTargetSubmitAction]) {
+        UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
+        if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
+            [self.scrView setContentOffset:focusedView.frame.origin animated:YES];
+        }
+    } else {
+        [self.scrView scrollRectToVisible:newFrame animated:YES];
+    }
 }
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible
