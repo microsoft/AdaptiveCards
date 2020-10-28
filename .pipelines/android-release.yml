@@ -4,7 +4,7 @@ pr: none
 trigger: none
 
 pool:
-  name: Hosted Ubuntu 1604
+  vmImage: vs2017-win2016
   demands: java
 
 parameters:
