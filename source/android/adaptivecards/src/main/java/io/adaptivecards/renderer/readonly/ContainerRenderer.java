@@ -158,7 +158,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         return containerView;
     }
 
-    public static void ApplyBleed(CollectionTypeElement collectionElement, LinearLayout collectionElementView, Context context, HostConfig hostConfig)
+    public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
@@ -193,7 +193,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
-    public static void ApplyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, LinearLayout collectionElementView, Context context, HostConfig hostConfig)
+    public static void ApplyPadding(ContainerStyle elementContainerStyle, ContainerStyle parentContainerStyle, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
     {
         if (elementContainerStyle != parentContainerStyle)
         {

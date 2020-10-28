@@ -11,6 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.AlignItems;
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexboxLayout;
+
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.ContainerStyle;
@@ -49,6 +53,102 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
+    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, ViewGroup linearLayout)
+    {
+        ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
+
+        int alignment = AlignItems.FLEX_START;
+        int gravity = Gravity.TOP;
+
+        switch (verticalContentAlignment)
+        {
+            case Center:
+                alignment = AlignItems.CENTER;
+                gravity = Gravity.CENTER_VERTICAL;
+                break;
+            case Bottom:
+                alignment = AlignItems.FLEX_END;
+                gravity = Gravity.BOTTOM;
+                break;
+            case Top:
+            default:
+                alignment = AlignItems.FLEX_START;
+                gravity = Gravity.TOP;
+                break;
+        }
+
+        if (linearLayout instanceof FlexboxLayout)
+        {
+            ((FlexboxLayout)linearLayout).setAlignItems(alignment);
+        }
+        else if (linearLayout instanceof LinearLayout)
+        {
+            ((LinearLayout)linearLayout).setGravity(gravity);
+        }
+    }
+
+    private boolean hasRatioWidth(Column column)
+    {
+        try
+        {
+            String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
+            Float.parseFloat(columnSize);
+            return true;
+        }
+        catch (NumberFormatException ex)
+        {
+            return false;
+        }
+    }
+
+    private ViewGroup setColumnWidth(RenderedAdaptiveCard renderedCard, Context context, Column column, ViewGroup columnLayout)
+    {
+
+        String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
+        long pixelWidth = column.GetPixelWidth();
+
+        if (pixelWidth != 0)
+        {
+            columnLayout.setLayoutParams(new FlexboxLayout.LayoutParams(Util.dpToPixels(context, pixelWidth), FlexboxLayout.LayoutParams.MATCH_PARENT));
+            return columnLayout;
+        }
+        else if (hasRatioWidth(column))
+        {
+            // Set ratio to column
+            float columnWeight = Float.parseFloat(columnSize);
+            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(0, FlexboxLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.setFlexGrow(columnWeight);
+            layoutParams.setFlexShrink(1);
+            columnLayout.setLayoutParams(layoutParams);
+            return columnLayout;
+        }
+        else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
+        {
+            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.setFlexGrow(1);
+            layoutParams.setFlexShrink(1);
+
+            columnLayout.setLayoutParams(layoutParams);
+
+            return columnLayout;
+        }
+        else
+        {
+            // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
+            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            layoutParams.setFlexGrow(0);
+            layoutParams.setFlexShrink(1);
+            columnLayout.setLayoutParams(layoutParams);
+
+            if (!columnSize.equals(g_columnSizeAuto))
+            {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INVALID_COLUMN_WIDTH_VALUE, "Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>)."));
+            }
+
+            return columnLayout;
+        }
+    }
+
     @Override
     public View render(
             RenderedAdaptiveCard renderedCard,
@@ -70,11 +170,11 @@ public class ColumnRenderer extends BaseCardElementRenderer
             throw new InternalError("Unable to convert BaseCardElement to FactSet object model.");
         }
 
-        LinearLayout.LayoutParams layoutParams;
+        FlexboxLayout.LayoutParams layoutParams;
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        LinearLayout returnedView = new LinearLayout(context);
-        returnedView.setOrientation(LinearLayout.VERTICAL);
+        FlexboxLayout returnedView = new FlexboxLayout(context);
+        returnedView.setFlexDirection(FlexDirection.COLUMN);
         returnedView.setTag(new TagContent(column, separator, viewGroup));
 
         // Add this two for allowing children to bleed
@@ -90,6 +190,9 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         verticalContentAlignmentLayout.setClipChildren(false);
         verticalContentAlignmentLayout.setClipToPadding(false);
+
+        ViewGroup itemsContainer = setColumnWidth(renderedCard, context, column, returnedView);
+        setVerticalContentAlignment(column.GetVerticalContentAlignment(), itemsContainer);
 
         VerticalContentAlignment contentAlignment = column.GetVerticalContentAlignment();
         switch (contentAlignment)
@@ -145,46 +248,6 @@ public class ColumnRenderer extends BaseCardElementRenderer
                     context.getResources().getDisplayMetrics().widthPixels,
                     backgroundImageProperties);
             loaderAsync.execute(backgroundImageProperties.GetUrl());
-        }
-
-        String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
-        long pixelWidth = column.GetPixelWidth();
-        if (pixelWidth != 0)
-        {
-            layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-            layoutParams.width = Util.dpToPixels(context, pixelWidth);
-            returnedView.setLayoutParams(layoutParams);
-        }
-        else
-        {
-            try
-            {
-                // I'm not sure what's going on here
-                float columnWeight = Float.parseFloat(columnSize);
-                layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                layoutParams.width = 0;
-                layoutParams.weight = columnWeight;
-                returnedView.setLayoutParams(layoutParams);
-            }
-            catch (NumberFormatException numFormatExcep)
-            {
-                if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
-                {
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1);
-                    returnedView.setLayoutParams(layoutParams);
-                }
-                else
-                {
-                    // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
-                    layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
-                    returnedView.setLayoutParams(layoutParams);
-
-                    if (!columnSize.equals(g_columnSizeAuto))
-                    {
-                        renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INVALID_COLUMN_WIDTH_VALUE, "Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>)."));
-                    }
-                }
-            }
         }
 
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), returnedView, context, hostConfig);
