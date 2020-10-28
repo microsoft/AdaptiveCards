@@ -4,6 +4,7 @@ pr: none
 trigger: none
 
 pool:
+  name: Azure Pipelines
   vmImage: vs2017-win2016
   demands: java
 
