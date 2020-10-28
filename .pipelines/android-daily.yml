@@ -47,14 +47,14 @@ steps:
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
 
 - task: Gradle@2
   displayName: 'gradlew publish'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:publish'
     publishJUnitResults: false
