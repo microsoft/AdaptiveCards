@@ -1,14 +1,11 @@
 package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
 
 /**
  * This class is only supposed to be used for inputs that have: label, validation, isRequired or stretch height
@@ -65,11 +62,12 @@ public class StretchableInputLayout extends StretchableElementLayout
     public void setValidationResult(boolean isValid)
     {
         BaseCardElementRenderer.setVisibility(!isValid, m_errorMessage);
-        if(m_inputView instanceof ValidatedEditText)
+        if (m_inputView instanceof IValidatedInputView)
         {
-            ((ValidatedEditText) m_inputView).setValidationResult(isValid);
+            ((IValidatedInputView) m_inputView).setValidationResult(isValid);
         }
-        if(isValid)
+
+        if (isValid)
         {
             m_label.setContentDescription(null);
         }

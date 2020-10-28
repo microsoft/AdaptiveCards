@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 
 public abstract class BaseInputHandler implements IInputHandler
