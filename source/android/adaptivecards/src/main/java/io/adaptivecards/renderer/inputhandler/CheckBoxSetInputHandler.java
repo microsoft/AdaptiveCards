@@ -2,10 +2,9 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
-import android.text.Layout;
 import android.text.TextUtils;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.CheckBox;
-import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
@@ -80,6 +79,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
         {
             m_checkBoxList.get(0).setFocusableInTouchMode(true);
             m_checkBoxList.get(0).requestFocus();
+            m_checkBoxList.get(0).sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }
 

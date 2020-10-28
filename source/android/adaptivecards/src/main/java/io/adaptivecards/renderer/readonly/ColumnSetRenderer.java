@@ -27,6 +27,7 @@ import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.ColumnVector;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 
@@ -68,12 +69,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
-        FlexboxLayout columnSetLayout = new FlexboxLayout(context);
-
-        // Add this two for allowing children to bleed
-        columnSetLayout.setClipChildren(false);
-        columnSetLayout.setClipToPadding(false);
-
+        SelectableFlexboxLayout columnSetLayout = new SelectableFlexboxLayout(context);
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
@@ -102,7 +98,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    featureRegistration);
         }
 
-        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler, renderArgs);
 
         TagContent tagContent = new TagContent(columnSet);
         if (columnSet.GetHeight() == HeightType.Stretch)
