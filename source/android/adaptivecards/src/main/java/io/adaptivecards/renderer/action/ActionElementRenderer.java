@@ -128,8 +128,6 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
-
-
                     return createButtonWithTheme(context, buttonStyle.data);
                 }
                 else
@@ -175,7 +173,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
         {
-            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+            long actionId = Util.getViewId(button);
+            renderedCard.setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
         }
 
         button.setText(baseActionElement.GetTitle());
