@@ -33,7 +33,7 @@
 				  },
 				  {
 					"title": "FoodOrder",
-					"value": "v1.0/Scenarios/FoodOrder.json"
+					"value": "v1.3/Scenarios/FoodOrderWithValidation.json"
 				  },
 				  {
 					"title": "ImageGallery",
@@ -41,11 +41,11 @@
 				  },
 				  {
 					"title": "InputForm",
-					"value": "v1.0/Scenarios/InputForm.json"
+					"value": "v1.3/Scenarios/InputFormWithValidation.json"
 				  },
 				  {
 					"title": "Inputs",
-					"value": "v1.0/Scenarios/Inputs.json"
+					"value": "v1.3/Scenarios/InputsWithValidation.json"
 				  },
 				  {
 					"title": "Restaurant",
