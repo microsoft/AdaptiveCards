@@ -27,7 +27,7 @@
                             "text": "Flight Status",
                             "horizontalAlignment": "Right",
                             "isSubtle": true,
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -36,7 +36,7 @@
                             "spacing": "None",
                             "size": "Large",
                             "color": "Attention",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 }
@@ -56,25 +56,25 @@
                             "text": "Passengers",
                             "isSubtle": true,
                             "weight": "Bolder",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "${underName.name}",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "Jeremy Goldberg",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "Evan Litvak",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 },
@@ -88,28 +88,28 @@
                             "horizontalAlignment": "Right",
                             "isSubtle": true,
                             "weight": "Bolder",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "14A",
                             "horizontalAlignment": "Right",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "14B",
                             "horizontalAlignment": "Right",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "14C",
                             "horizontalAlignment": "Right",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 }
@@ -129,13 +129,13 @@
                             "text": "Flight",
                             "isSubtle": true,
                             "weight": "Bolder",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "${reservationFor.flightNumber}",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 },
@@ -149,7 +149,7 @@
                             "isSubtle": true,
                             "horizontalAlignment": "Center",
                             "weight": "Bolder",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -158,7 +158,7 @@
                             "weight": "Bolder",
                             "horizontalAlignment": "Center",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 },
@@ -172,7 +172,7 @@
                             "isSubtle": true,
                             "horizontalAlignment": "Right",
                             "weight": "Bolder",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -181,7 +181,7 @@
                             "horizontalAlignment": "Right",
                             "weight": "Bolder",
                             "spacing": "Small",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 }
@@ -200,7 +200,7 @@
                             "type": "TextBlock",
                             "text": "${reservationFor.departureAirport.name}",
                             "isSubtle": true,
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -208,7 +208,7 @@
                             "size": "ExtraLarge",
                             "color": "Accent",
                             "spacing": "None",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 },
@@ -219,7 +219,7 @@
                         {
                             "type": "TextBlock",
                             "text": " ",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "Image",
@@ -237,7 +237,7 @@
                             "text": "${reservationFor.arrivalAirport.name}",
                             "isSubtle": true,
                             "horizontalAlignment": "Right",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -246,7 +246,7 @@
                             "size": "ExtraLarge",
                             "color": "Accent",
                             "spacing": "None",
-							"wrap": true
+                            "wrap": true
                         }
                     ]
                 }

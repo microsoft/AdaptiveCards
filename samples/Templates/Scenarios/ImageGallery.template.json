@@ -7,14 +7,14 @@
             "type": "TextBlock",
             "text": "Here are some cool photos",
             "size": "Large",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "Sorry some of them are repeats",
             "size": "Medium",
             "weight": "Lighter",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "ImageSet",

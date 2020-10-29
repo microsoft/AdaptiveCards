@@ -22,7 +22,7 @@
                 {
                     "type": "TextBlock",
                     "text": "{{DATE(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(latestUpdate, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
-					"wrap": true
+                    "wrap": true
                 }
             ]
         },
@@ -41,14 +41,14 @@
                                     "type": "TextBlock",
                                     "text": "${formatNumber(latestPrice, 2)} ",
                                     "size": "ExtraLarge",
-									"wrap": true
+                                    "wrap": true
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "${if(change >= 0, '▲', '▼')} ${formatNumber(change,2)} USD (${formatNumber(changePercent * 100, 2)}%)",
                                     "color": "${if(change >= 0, 'good', 'attention')}",
                                     "spacing": "None",
-									"wrap": true
+                                    "wrap": true
                                 }
                             ]
                         },

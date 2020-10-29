@@ -6,7 +6,7 @@
         {
             "type": "TextBlock",
             "text": "Fallback test:",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "Steve Holt!",
@@ -19,7 +19,7 @@
             "fallback": {
                 "type": "TextBlock",
                 "text": "${fallback.message}",
-				"wrap": true
+                "wrap": true
             }
         }
     ]

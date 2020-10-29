@@ -9,25 +9,25 @@
             "text": "${summary}",
             "size": "Large",
             "weight": "Bolder",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": " ${location} ",
             "isSubtle": true,
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "${formatDateTime(start.dateTime, 'HH:mm')} - ${formatDateTime(end.dateTime, 'hh:mm')}",
             "isSubtle": true,
             "spacing": "None",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "Snooze for",
-			"wrap": true
+            "wrap": true
         },
         {
             "type": "Input.ChoiceSet",

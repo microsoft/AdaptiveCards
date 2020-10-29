@@ -27,14 +27,14 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-											"text": "**Redmond**",
-											"wrap": true
+                                            "text": "**Redmond**",
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
                                             "text": "8a - 12:30p",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -69,13 +69,13 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "**Bellevue**",
-											"wrap": true
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
                                             "text": "12:30p - 3p",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -110,13 +110,13 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "**Seattle**",
-											"wrap": true
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
                                             "text": "8p",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -155,7 +155,7 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "2:00 PM",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -167,7 +167,7 @@
                             "spacing": "None",
                             "text": "1hr",
                             "isSubtle": true,
-							"wrap": true
+                            "wrap": true
                         }
                     ],
                     "width": "110px"
@@ -195,7 +195,7 @@
                         {
                             "type": "TextBlock",
                             "text": "**${Subject}**",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "ColumnSet",
@@ -217,7 +217,7 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "${Location.DisplayName}",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -266,7 +266,7 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "**Contoso Brand Guidelines** shared by **Susan Metters**",
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -326,7 +326,7 @@
                                             "type": "TextBlock",
                                             "text": "about 45 minutes",
                                             "isSubtle": true,
-											"wrap": true
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -349,14 +349,14 @@
                             "type": "TextBlock",
                             "spacing": "None",
                             "text": "8:00 PM",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "spacing": "None",
                             "text": "1hr",
                             "isSubtle": true,
-							"wrap": true
+                            "wrap": true
                         }
                     ],
                     "width": "110px"
@@ -384,7 +384,7 @@
                         {
                             "type": "TextBlock",
                             "text": "**Alaska Airlines AS1021 flight to Chicago**",
-							"wrap": true
+                            "wrap": true
                         },
                         {
                             "type": "ColumnSet",
