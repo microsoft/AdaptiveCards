@@ -14,7 +14,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         externalNativeBuild {
             cmake {
-                cppFlags "-std=c++17 -fexceptions -frtti -DNO_LOCALE_SUPPORT"
+                cppFlags "-std=c++17", "-fexceptions", "-frtti", "-DNO_LOCALE_SUPPORT"
                 arguments "-DANDROID_STL=c++_shared"
             }
         }
