@@ -6,7 +6,7 @@
             "size": "Medium",
             "weight": "Bolder",
 			"text": "${title}",
-			"wrap": "true"
+			"wrap": true
         },
         {
             "type": "ColumnSet",

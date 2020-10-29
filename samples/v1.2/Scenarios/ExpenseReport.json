@@ -15,7 +15,8 @@
 									"type": "TextBlock",
 									"size": "Large",
 									"weight": "Bolder",
-									"text": "**EXPENSE APPROVAL**"
+									"text": "**EXPENSE APPROVAL**",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -79,7 +80,8 @@
 					"size": "Small",
 					"weight": "Bolder",
 					"color": "Accent",
-					"text": "[ER-13052](https://adaptivecards.io)"
+					"text": "[ER-13052](https://adaptivecards.io)",
+					"wrap": true
 				},
 				{
 					"type": "FactSet",
@@ -127,7 +129,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "DATE"
+									"text": "DATE",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -139,7 +142,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "CATEGORY"
+									"text": "CATEGORY",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -150,7 +154,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "AMOUNT"
+									"text": "AMOUNT",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -575,15 +580,18 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$450.38"
+							"text": "$450.38",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 50.38 \t"
+							"text": "(-) 50.38 \t",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 0.00 \t",
+							"wrap": true
 						}
 					],
 					"width": "auto"
@@ -619,7 +627,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$ 400.00"
+									"text": "$ 400.00",
+									"wrap": true
 								}
 							],
 							"width": "auto"
