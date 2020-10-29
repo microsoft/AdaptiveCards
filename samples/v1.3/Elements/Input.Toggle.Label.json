@@ -10,7 +10,7 @@
 			"value": "false",
 			"valueOn": "true",
 			"valueOff": "false",
-			"label": "Please accept the terms and agreements"
+			"label": "Default Input.Toggle label"
 		},
 		{
 			"type": "Input.Toggle",
@@ -19,7 +19,7 @@
 			"value": "false",
 			"valueOn": "true",
 			"valueOff": "false",
-			"label": "Please accept the terms and agreements (isRequired: true)",
+			"label": "Required Input.Toggle label",
 			"isRequired": true,
 			"errorMessage": "Required input"
 		}

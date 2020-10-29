@@ -4,18 +4,6 @@
 	"version": "1.0",
 	"body": [
 		{
-			"type": "Container",
-			"verticalContentAlignment": "center",
-			"style": "warning",
-			"items": [
-				{
-					"type": "TextBlock",
-					"text": "**IMPORTANT:** This card is based on an older schema and doesn't make use of the label property for its Input elements. Because of this, it doesn't properly support accessibility. It's included here for historical purposes. Please see [Inputs With Validation](https://adaptivecards.io/samples/InputsWithValidation.html) for an updated version of this card.",
-					"wrap": true
-				}
-			]
-		},
-		{
 			"type": "TextBlock",
 			"size": "Medium",
 			"weight": "Bolder",

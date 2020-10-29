@@ -6,12 +6,12 @@
 		{
 			"type": "Input.Time",
 			"id": "input1",
-			"label": "What time do you want to meet?"
+			"label": "Default Input.Time label"
 		},
 		{
 			"type": "Input.Time",
 			"id": "input2",
-			"label": "What time do you want to meet? (isRequired: true)",
+			"label": "Required Input.Time label",
 			"isRequired": true,
 			"errorMessage": "Required input"
 		}
