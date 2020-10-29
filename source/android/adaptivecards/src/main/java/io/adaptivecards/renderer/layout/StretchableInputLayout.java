@@ -72,13 +72,16 @@ public class StretchableInputLayout extends StretchableElementLayout
             ((IValidatedInputView) m_inputView).setValidationResult(isValid);
         }
 
-        if (isValid)
+        if (m_label != null)
         {
-            m_label.setContentDescription(null);
-        }
-        else
-        {
-            m_label.setContentDescription(m_label.getText() + " " + m_errorMessage.getText());
+            if (isValid)
+            {
+                m_label.setContentDescription(null);
+            }
+            else
+            {
+                m_label.setContentDescription(m_label.getText() + " " + m_errorMessage.getText());
+            }
         }
     }
 }
