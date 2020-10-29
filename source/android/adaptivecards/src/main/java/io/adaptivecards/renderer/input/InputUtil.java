@@ -8,28 +8,19 @@ import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.widget.TextView;
 
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ErrorMessageConfig;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.InputLabelConfig;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
-import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
-import io.adaptivecards.renderer.layout.StretchableElementLayout;
-import io.adaptivecards.renderer.layout.StretchableInputLayout;
 import io.adaptivecards.renderer.readonly.RendererUtil;
 import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 import io.adaptivecards.renderer.readonly.TextBlockRenderer;
 
 public class InputUtil
 {
-    public static View RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
+    public static TextView RenderInputLabel(String label, boolean isRequired, Context context, HostConfig hostConfig, RenderArgs renderArgs)
     {
         SpannableStringBuilder paragraph = new SpannableStringBuilder();
         CharSequence text = RendererUtil.handleSpecialText(label);

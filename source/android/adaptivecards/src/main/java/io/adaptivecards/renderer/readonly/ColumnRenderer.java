@@ -3,6 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.flexbox.JustifyContent;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
@@ -27,6 +29,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Locale;
@@ -159,10 +162,8 @@ public class ColumnRenderer extends BaseCardElementRenderer
         // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        FlexboxLayout columnLayout = new FlexboxLayout(context);
+        SelectableFlexboxLayout columnLayout = new SelectableFlexboxLayout(context);
         columnLayout.setFlexDirection(FlexDirection.COLUMN);
-        columnLayout.setClipChildren(false);
-        columnLayout.setClipToPadding(false);
         columnLayout.setTag(new TagContent(column));
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
@@ -203,7 +204,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
 
-        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);
 
         viewGroup.addView(columnLayout);
         return columnLayout;

@@ -1,40 +1,44 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-  "extends": "Element",
-  "description": "ColumnSet divides a region into Columns, allowing elements to sit side-by-side.",
-  "properties": {
-    "columns": {
-      "type": "Column[]",
-      "description": "The array of `Columns` to divide the region into."
-    },
-    "selectAction": {
-      "type": "ISelectAction",
-      "description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
-      "version": "1.1"
-    },
-    "style": {
-      "type": "ContainerStyle?",
-      "description": "Style hint for `ColumnSet`.",
-      "version": "1.2"
-    },
-    "bleed": {
-      "type": "boolean",
-      "description": "Determines whether the element should bleed through its parent's padding.",
-      "version": "1.2",
-      "features": [
-        2109
-      ]
-    },
-    "minHeight": {
-      "type": "string",
-      "description": "Specifies the minimum height of the column set in pixels, like `\"80px\"`.",
-      "examples": [
-        "50px"
-      ],
-      "version": "1.2",
-      "features": [
-        2293
-      ]
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Element",
+	"description": "ColumnSet divides a region into Columns, allowing elements to sit side-by-side.",
+	"properties": {
+		"columns": {
+			"type": "Column[]",
+			"description": "The array of `Columns` to divide the region into."
+		},
+		"selectAction": {
+			"type": "ISelectAction",
+			"description": "An Action that will be invoked when the `ColumnSet` is tapped or selected. `Action.ShowCard` is not supported.",
+			"version": "1.1"
+		},
+		"style": {
+			"type": "ContainerStyle?",
+			"description": "Style hint for `ColumnSet`.",
+			"version": "1.2"
+		},
+		"bleed": {
+			"type": "boolean",
+			"description": "Determines whether the element should bleed through its parent's padding.",
+			"version": "1.2",
+			"features": [
+				2109
+			]
+		},
+		"minHeight": {
+			"type": "string",
+			"description": "Specifies the minimum height of the column set in pixels, like `\"80px\"`.",
+			"examples": [
+				"50px"
+			],
+			"version": "1.2",
+			"features": [
+				2293
+			]
+		},
+		"horizontalAlignment": {
+			"type": "HorizontalAlignment",
+			"description": "Controls the horizontal alignment of the ColumnSet."
+		}
+	}
 }
