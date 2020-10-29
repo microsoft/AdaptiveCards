@@ -41,7 +41,7 @@
 		"adaptive-expressions": "^4.9.2",
 		"eslint": "^7.3.1",
 		"rimraf": "^3.0.2",
-		"typedoc": "^0.17.0-3",
+		"typedoc": "0.19.2",
 		"typedoc-plugin-markdown": "^2.2.17",
 		"typescript": "^3.9.5",
 		"webpack": "^4.43.0",
