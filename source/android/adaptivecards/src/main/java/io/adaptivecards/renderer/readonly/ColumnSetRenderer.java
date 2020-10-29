@@ -8,6 +8,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayout;
+
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
@@ -76,8 +80,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
-        LinearLayout layout = new LinearLayout(context);
-
+        FlexboxLayout layout = new FlexboxLayout(context);
+        layout.setFlexWrap(FlexWrap.NOWRAP);
+        layout.setFlexDirection(FlexDirection.ROW);
 
         // Add this two for allowing children to bleed
         layout.setClipChildren(false);
