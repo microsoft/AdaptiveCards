@@ -29,9 +29,9 @@ static NSString *pickerCell = @"pickerCell";
     NSInteger _userSelectedRow;
     BOOL _showPickerView;
     CGFloat _pickerViewHeight;
-    NSString *_textInCompactView;
     CGFloat _compactViewHeight;
     BOOL _isValid;
+    NSString *_accessibilityString;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet
@@ -115,29 +115,20 @@ static NSString *pickerCell = @"pickerCell";
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:identifier];
         }
-        if ([_userSelectedTitle length] != 0) {
-            cell.textLabel.text = _userSelectedTitle;
-        } else {
-            cell.textLabel.text = _defaultString;
-        }
         
-        _textInCompactView = cell.textLabel.text;
+        NSString *titleString = ([_userSelectedTitle length] != 0) ? _userSelectedTitle : _defaultString;
+        
+        _accessibilityString = tableView.accessibilityLabel;
+        cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
+        cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, titleString];
+        
+        cell.textLabel.text = titleString;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
         cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
         cell.backgroundColor = UIColor.clearColor;
-        // validate and set appropriate error message
-        if (_errorLabel) {
-            if (!_isValid) {
-                cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, _errorLabel];
-            } else {
-                cell.accessibilityLabel = _inputLabel;
-            }
-        } else {
-            cell.accessibilityLabel = _inputLabel;
-        }
     } else {
         cell = [tableView dequeueReusableCellWithIdentifier:pickerCell];
         UIPickerView *pickerView = nil;
@@ -150,13 +141,13 @@ static NSString *pickerCell = @"pickerCell";
             pickerView = [cell viewWithTag:pickerViewId];
         }
         cell.accessibilityLabel = nil;
+        cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
         pickerView.dataSource = self;
         pickerView.delegate = self;
         pickerView.hidden = NO;
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
     
-    cell.accessibilityTraits = UIAccessibilityTraitStaticText;
     return cell;
 }
 
@@ -214,6 +205,7 @@ static NSString *pickerCell = @"pickerCell";
                 completion:^(BOOL finished) {
                     [tableView reloadData];
                     pickerView.hidden = YES;
+                    cell.accessibilityTraits |= UIAccessibilityTraitSelected;
                 }];
         } else {
             _showPickerView = YES;
