@@ -96,7 +96,6 @@
         childview.alignment = alignment;
     }
 
-    ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] init];
     // set width
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
 
@@ -129,7 +128,7 @@
             continue;
         }
 
-        [acoElem setElem:elem];
+        ACOBaseActionElement *acoElem = [[ACOBaseActionElement alloc] initWithBaseActionElement:elem];
 
         NSUInteger numElem = [[childview arrangedSubviews] count];
 
