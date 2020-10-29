@@ -38,10 +38,10 @@ steps:
 
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
-- script: |
-   setx ANDROID_NDK_HOME ""
-   "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
-  displayName: 'Get NDK (TODO: Remove this step)'
+# - script: |
+#    setx ANDROID_NDK_HOME ""
+#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
+#   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
