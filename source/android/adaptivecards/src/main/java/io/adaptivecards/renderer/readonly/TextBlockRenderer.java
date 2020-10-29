@@ -72,23 +72,13 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     {
         Typeface typeface = TextRendererUtil.getTextFormat(hostConfig, type, textWeight == TextWeight.Lighter);
 
-        // As of API 28, the create(Typeface, int, bool) method used below was added to the android API, the second parameter is the
-        // font weight, in prior versions we had to look up for an specific font family name
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        if (textWeight == TextWeight.Bolder)
         {
-            Typeface weightedTypeface = Typeface.create(typeface, (int) hostConfig.GetFontWeight(type, textWeight), false);
-            textView.setTypeface(weightedTypeface);
+            textView.setTypeface(typeface, Typeface.BOLD);
         }
         else
         {
-            if (textWeight == TextWeight.Bolder)
-            {
-                textView.setTypeface(typeface, Typeface.BOLD);
-            }
-            else
-            {
-                textView.setTypeface(typeface);
-            }
+            textView.setTypeface(typeface);
         }
 
     }
