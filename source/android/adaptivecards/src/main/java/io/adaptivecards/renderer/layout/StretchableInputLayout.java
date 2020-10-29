@@ -41,10 +41,15 @@ public class StretchableInputLayout extends StretchableElementLayout
     {
         addView(input);
         m_inputView = input;
-        if(m_inputView.getId() == View.NO_ID) {
+        if(m_inputView.getId() == View.NO_ID)
+        {
             m_inputView.setId(View.generateViewId());
         }
-        m_label.setLabelFor(m_inputView.getId());
+
+        if (m_label != null)
+        {
+            m_label.setLabelFor(m_inputView.getId());
+        }
     }
 
     public View getErrorMessage()
