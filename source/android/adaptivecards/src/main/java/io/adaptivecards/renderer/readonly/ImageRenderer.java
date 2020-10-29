@@ -22,7 +22,6 @@ import android.widget.LinearLayout;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
@@ -185,7 +184,6 @@ public class ImageRenderer extends BaseCardElementRenderer
         ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
         // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
-        int weight = (image.GetHeight() == HeightType.Stretch) ? 1 : 0;
         if(image.GetHeight() == HeightType.Stretch)
         {
             container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
@@ -214,7 +212,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         ConstraintSet constraints = new ConstraintSet();
 
         // ConstraintSet requires unique id
-        if(imageView.getId() == View.NO_ID) {
+        if(imageView.getId() == View.NO_ID)
+        {
             imageView.setId(View.generateViewId());
         }
         int id = imageView.getId();
@@ -326,6 +325,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
+        imageView.setContentDescription(image.GetAltText());
 
         int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
 
@@ -354,7 +354,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         TagContent tagContent = new TagContent(image, separator, viewGroup);
 
         // No container needed for image in ImageSet
-        if(isInImageSet)
+        if (isInImageSet)
         {
             sizeImageForImageSet(context, imageView, image, hostConfig);
             viewGroup.addView(imageView);
@@ -372,11 +372,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 
-        if (image.GetSelectAction() != null)
-        {
-            imageView.setClickable(true);
-            imageView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, image.GetSelectAction(), cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler, renderArgs);
 
         return imageView;
     }

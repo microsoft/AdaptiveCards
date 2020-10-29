@@ -27,6 +27,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
     BOOL _shouldWrap;
     std::shared_ptr<HostConfig> _config;
     CGSize _contentSize;
+    NSString *_accessibilityString;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)hostConfig;
@@ -62,7 +63,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             }
             ++index;
         }
-        
+
         self.hasValidationProperties = self.isRequired;
     }
     return self;
@@ -99,14 +100,19 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
         cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
-    
+
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
+    if (!_accessibilityString) {
+        _accessibilityString = tableView.accessibilityLabel;
+        tableView.accessibilityLabel = nil;
+    }
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-    
+    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
+
     return cell;
 }
 
@@ -148,7 +154,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
-    
+
     [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
 
@@ -230,7 +236,10 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+        [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    }        
 }
 
 - (NSString *)getTitlesOfChoices
@@ -258,5 +267,6 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 @synthesize isRequired;
 @synthesize hasValidationProperties;
+@synthesize hasVisibilityChanged;
 
 @end

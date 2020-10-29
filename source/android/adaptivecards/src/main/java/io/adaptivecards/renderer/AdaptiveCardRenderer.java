@@ -4,26 +4,20 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.objectmodel.AdaptiveCard;
-import io.adaptivecards.objectmodel.BackgroundImage;
-import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.BaseCardElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.InternalId;
-import io.adaptivecards.objectmodel.VerticalContentAlignment;
-import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.layout.StretchableElementLayout;
+import io.adaptivecards.renderer.readonly.ContainerRenderer;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
@@ -58,9 +52,44 @@ public class AdaptiveCardRenderer
             HostConfig hostConfig)
     {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
-        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, new InternalId());
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
         result.setView(cardView);
         return result;
+    }
+
+    private ViewGroup renderCardElements(RenderedAdaptiveCard renderedCard,
+                                         Context context,
+                                         FragmentManager fragmentManager,
+                                         AdaptiveCard adaptiveCard,
+                                         ICardActionHandler cardActionHandler,
+                                         HostConfig hostConfig,
+                                         ViewGroup cardLayout,
+                                         RenderArgs renderArgs)
+    {
+        LinearLayout layout = new LinearLayout(context);
+        layout.setTag(adaptiveCard);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
+        ContainerRenderer.setVerticalContentAlignment(layout, adaptiveCard.GetVerticalContentAlignment());
+
+        try
+        {
+            CardRendererRegistration.getInstance().renderElements(renderedCard, context, fragmentManager, cardLayout, adaptiveCard.GetBody(), cardActionHandler, hostConfig, renderArgs);
+        }
+        // Catches the exception as the method throws it for performing fallback with elements inside the card,
+        // no fallback should be performed here so we just catch the exception
+        catch (AdaptiveFallbackException e){}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return layout;
     }
 
     public View internalRender(RenderedAdaptiveCard renderedCard,
@@ -70,7 +99,7 @@ public class AdaptiveCardRenderer
                                ICardActionHandler cardActionHandler,
                                HostConfig hostConfig,
                                boolean isInlineShowCard,
-                               InternalId containerCardId)
+                               long containerCardId)
     {
         if (hostConfig == null)
         {
@@ -82,60 +111,32 @@ public class AdaptiveCardRenderer
             throw new IllegalArgumentException("renderedCard is null");
         }
 
+        // rootLayout is the layout that contains the rendered card (elements + actions) and the show cards
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setFocusable(true);
-        rootLayout.setFocusableInTouchMode(true);
 
         // Add this two for allowing children to bleed
         rootLayout.setClipChildren(false);
         rootLayout.setClipToPadding(false);
 
-        LinearLayout layout = new LinearLayout(context);
-        layout.setTag(adaptiveCard);
+        // cardLayout only contains the rendered card composed of elements and actions
+        long cardMinHeight = adaptiveCard.GetMinHeight();
+        LinearLayout cardLayout = new StretchableElementLayout(context, (adaptiveCard.GetHeight() == HeightType.Stretch) || (cardMinHeight != 0));
+        cardLayout.setTag(adaptiveCard);
 
         // Add this two for allowing children to bleed
-        layout.setClipChildren(false);
-        layout.setClipToPadding(false);
+        cardLayout.setClipChildren(false);
+        cardLayout.setClipToPadding(false);
 
-        boolean cardHasMinHeightSet = (adaptiveCard.GetMinHeight() != 0);
-        if ((adaptiveCard.GetHeight() == HeightType.Stretch) || cardHasMinHeightSet)
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
+        ContainerRenderer.setMinHeight(cardMinHeight, rootLayout, context);
+        ContainerRenderer.setVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
 
-        if (cardHasMinHeightSet)
-        {
-            rootLayout.setMinimumHeight(Util.dpToPixels(context, (int)adaptiveCard.GetMinHeight()));
-        }
-
-        VerticalContentAlignment contentAlignment = adaptiveCard.GetVerticalContentAlignment();
-        switch (contentAlignment)
-        {
-            case Center:
-                layout.setGravity(Gravity.CENTER_VERTICAL);
-                break;
-            case Bottom:
-                layout.setGravity(Gravity.BOTTOM);
-                break;
-            case Top:
-            default:
-                layout.setGravity(Gravity.TOP);
-                break;
-        }
-
-        layout.setOrientation(LinearLayout.VERTICAL);
+        cardLayout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-        layout.setPadding(padding, padding, padding, padding);
+        cardLayout.setPadding(padding, padding, padding, padding);
 
-        rootLayout.addView(layout);
-
-        BaseCardElementVector baseCardElementList = adaptiveCard.GetBody();
+        rootLayout.addView(cardLayout);
 
         ContainerStyle style = ContainerStyle.Default;
 
@@ -149,25 +150,17 @@ public class AdaptiveCardRenderer
             style = adaptiveCard.GetStyle();
         }
 
-        String color = hostConfig.GetBackgroundColor(style);
-
-        layout.setBackgroundColor(Color.parseColor(color));
-
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
-        renderArgs.setContainerCardId(adaptiveCard.GetInternalId());
-        renderedCard.setParentToCard(adaptiveCard.GetInternalId(), containerCardId);
-        try
-        {
-            CardRendererRegistration.getInstance().render(renderedCard, context, fragmentManager, layout, adaptiveCard, baseCardElementList, cardActionHandler, hostConfig, renderArgs);
-        }
-        // Catches the exception as the method throws it for performing fallback with elements inside the card,
-        // no fallback should be performed here so we just catch the exception
-        catch (AdaptiveFallbackException e){}
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
+        long cardId = Util.getViewId(rootLayout);
+        renderArgs.setContainerCardId(cardId);
+        renderedCard.setParentToCard(cardId, containerCardId);
+
+        // Render the body section of the Adaptive Card
+        String color = hostConfig.GetBackgroundColor(style);
+        cardLayout.setBackgroundColor(Color.parseColor(color));
+        cardLayout.addView(renderCardElements(renderedCard, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, cardLayout, renderArgs));
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -185,7 +178,7 @@ public class AdaptiveCardRenderer
                 {
                     try
                     {
-                        actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, layout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                        actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, cardLayout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,
                     // no fallback should be performed here so we just catch the exception
@@ -198,37 +191,12 @@ public class AdaptiveCardRenderer
             renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INTERACTIVITY_DISALLOWED, "Interactivity is not allowed. Actions not rendered."));
         }
 
-        BackgroundImage backgroundImageProperties = adaptiveCard.GetBackgroundImage();
-        if (backgroundImageProperties != null && !backgroundImageProperties.GetUrl().isEmpty())
-        {
-            BackgroundImageLoaderAsync loaderAsync = new BackgroundImageLoaderAsync(
-                    renderedCard,
-                    context,
-                    layout,
-                    hostConfig.GetImageBaseUrl(),
-                    context.getResources().getDisplayMetrics().widthPixels,
-                    backgroundImageProperties);
-
-            IOnlineImageLoader onlineImageLoader = CardRendererRegistration.getInstance().getOnlineImageLoader();
-            if (onlineImageLoader != null)
-            {
-                loaderAsync.registerCustomOnlineImageLoader(onlineImageLoader);
-            }
-
-            loaderAsync.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, backgroundImageProperties.GetUrl());
-        }
-
-        BaseActionElement selectAction = renderedCard.getAdaptiveCard().GetSelectAction();
-        if (selectAction != null)
-        {
-            rootLayout.setClickable(true);
-            rootLayout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard,selectAction, cardActionHandler));
-        }
+        ContainerRenderer.setBackgroundImage(renderedCard, context, adaptiveCard.GetBackgroundImage(), hostConfig, cardLayout);
+        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler, renderArgs);
 
         return rootLayout;
     }
 
     private static AdaptiveCardRenderer s_instance = null;
-    private IOnlineImageLoader m_onlineImageLoader = null;
     private HostConfig defaultHostConfig = new HostConfig();
 }

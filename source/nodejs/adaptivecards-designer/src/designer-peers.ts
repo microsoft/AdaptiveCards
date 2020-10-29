@@ -996,6 +996,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    tryAdd(peer: DesignerPeer): boolean {
+        return false;
+    }
+
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
@@ -1485,6 +1489,26 @@ export class CardElementPeer extends DesignerPeer {
 
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    tryAdd(peer: DesignerPeer): boolean {
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+            if (peer.cardElement.parent) {
+                if (!peer.remove(true, false)) {
+                    return false;
+                }
+
+                peer.parent.removeChild(peer);
+            }
+
+            this.cardElement.addItem(peer.cardElement);
+            this.insertChild(peer, peer.cardElement.index);
+            this.changed(false);
+
+            return true;
         }
 
         return false;
@@ -2434,15 +2458,15 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.className = "acd-textBlock-inplace-editor";
         this._renderedElement.value = this.cardElement.text;
         this._renderedElement.onkeydown = (e) => {
-            switch (e.keyCode) {
-                case Controls.KEY_ESCAPE:
+            switch (e.key) {
+                case Controls.Constants.keys.escape:
                    this.close(false);
 
                    e.preventDefault();
                    e.cancelBubble = true;
 
                    break;
-                case Controls.KEY_ENTER:
+                case Controls.Constants.keys.enter:
                     this.close(true);
 
                     e.preventDefault();
@@ -2533,6 +2557,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         if (!this.cardElement.text || this.cardElement.text == "") {
             this.cardElement.text = "New TextBlock";
         }
+
+        this.cardElement.wrap = true;
     }
 }
 

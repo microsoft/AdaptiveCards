@@ -400,6 +400,7 @@ namespace AdaptiveSharedNamespace
         InvalidValue,
         CustomWarning,
         EmptyLabelInRequiredInput,
+        RequiredPropertyMissing,
     };
     // No mapping to string needed
 

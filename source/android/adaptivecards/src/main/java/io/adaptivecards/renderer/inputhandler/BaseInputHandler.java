@@ -8,7 +8,9 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBoxLayout;
 import io.adaptivecards.renderer.layout.StretchableInputLayout;
 
 public abstract class BaseInputHandler implements IInputHandler
@@ -68,28 +70,7 @@ public abstract class BaseInputHandler implements IInputHandler
         // without labels or error messages will have no inputLayout
         if (m_inputLayout != null)
         {
-            // Get error message and show it or hide it depending on isValid
-            View errorMessage = m_inputLayout.getErrorMessage();
-
-            if (errorMessage != null)
-            {
-                BaseCardElementRenderer.setVisibility(!isValid, errorMessage);
-
-                if (m_view instanceof EditText)
-                {
-                    CharSequence inputHint = "";
-                    if (!isValid)
-                    {
-                        inputHint = ((TextView)errorMessage).getText();
-                    }
-                    ((EditText) m_view).setContentDescription(inputHint);
-                }
-            }
-        }
-
-        if (m_view instanceof ValidatedEditText)
-        {
-            ((ValidatedEditText)m_view).setValidationResult(isValid);
+            m_inputLayout.setValidationResult(isValid);
         }
     }
 
