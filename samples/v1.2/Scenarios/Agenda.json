@@ -28,12 +28,14 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Redmond**"
+											"text": "**Redmond**",
+											"wrap": true
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "8a - 12:30p"
+											"text": "8a - 12:30p",
+											"wrap": true
 										}
 									],
 									"width": "auto"
@@ -68,12 +70,14 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Bellevue**"
+											"text": "**Bellevue**",
+											"wrap": true
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "12:30p - 3p"
+											"text": "12:30p - 3p",
+											"wrap": true
 										}
 									],
 									"width": "auto"
@@ -108,12 +112,14 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Seattle**"
+											"text": "**Seattle**",
+											"wrap": true
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "8p"
+											"text": "8p",
+											"wrap": true
 										}
 									],
 									"width": "auto"
@@ -152,7 +158,8 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "2:00 PM"
+											"text": "2:00 PM",
+											"wrap": true
 										}
 									],
 									"width": "stretch"
@@ -163,7 +170,8 @@
 							"type": "TextBlock",
 							"spacing": "None",
 							"text": "1hr",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						}
 					],
 					"width": "110px"
@@ -191,7 +199,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "**Contoso Campaign Status Meeting**"
+							"text": "**Contoso Campaign Status Meeting**",
+							"wrap": true
 						},
 						{
 							"type": "ColumnSet",
