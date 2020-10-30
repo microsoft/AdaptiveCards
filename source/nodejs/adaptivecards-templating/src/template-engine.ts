@@ -230,7 +230,7 @@ export class Template {
 
         // If there is at least one expression start marker, let's attempt to convert into an expression
         if (interpolatedString.indexOf("${") >= 0) {
-            let parsedExpression = AEL.Expression.parse("`" + interpolatedString.replace(/\\/g, '\\\\').replace(/`/g, '\\`') + "`", lookup);
+            let parsedExpression = AEL.Expression.parse("`" + this.stringEscape(interpolatedString) + "`", lookup);
 
             if (parsedExpression.type === "concat") {
                 if (parsedExpression.children.length === 1 && !(parsedExpression.children[0] instanceof AEL.Constant)) {
@@ -266,6 +266,19 @@ export class Template {
 
     private _context: EvaluationContext;
     private _preparedPayload: any;
+
+    /**
+     * Escape a certain string with backslash
+     * @param input input string.
+     */
+    private static stringEscape(input: string) {
+        let result = input;
+        if (input != null) {
+            result = input.replace(/\\/g, '\\\\').replace(/`/g, '\\`');
+        }
+
+        return result;
+    }
 
     private expandSingleObject(node: object): any {
         let result = {};
