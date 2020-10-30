@@ -14,7 +14,8 @@
 							"type": "TextBlock",
 							"text": "Tell us about yourself",
 							"weight": "bolder",
-							"size": "medium"
+							"size": "medium",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
