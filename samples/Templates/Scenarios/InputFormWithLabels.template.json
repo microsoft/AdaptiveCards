@@ -13,9 +13,8 @@
                         {
                             "type": "TextBlock",
                             "text": "${title}",
-                            "weight": "Bolder",
-                            "size": "Medium",
-                            "wrap": true
+                            "weight": "bolder",
+                            "size": "medium"
                         },
                         {
                             "type": "TextBlock",
@@ -28,21 +27,19 @@
                             "text": "${disclaimer}",
                             "isSubtle": true,
                             "wrap": true,
-                            "size": "Small"
+                            "size": "small"
                         },
                         {
                             "type": "Container",
                             "$data": "${properties}",
                             "items": [
                                 {
-                                    "type": "TextBlock",
-                                    "text": "${title}",
-                                    "wrap": true
-                                },
-                                {
                                     "type": "Input.Text",
+                                    "label": "${label}",
                                     "id": "${if(title == 'Your Name', 'myName', if(title == 'Your email', 'myEmail', 'myTel'))}",
-                                    "placeholder": "${placeholder}"
+                                    "regex": "${validation}",
+                                    "errorMessage": "${error}",
+                                    "isRequired": true
                                 }
                             ]
                         }

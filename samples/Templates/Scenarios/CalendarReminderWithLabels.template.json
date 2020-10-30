@@ -8,30 +8,23 @@
             "type": "TextBlock",
             "text": "${summary}",
             "size": "Large",
-            "weight": "Bolder",
-            "wrap": true
+            "weight": "Bolder"
         },
         {
             "type": "TextBlock",
             "text": " ${location} ",
-            "isSubtle": true,
-            "wrap": true
+            "isSubtle": true
         },
         {
             "type": "TextBlock",
             "text": "${formatDateTime(start.dateTime, 'HH:mm')} - ${formatDateTime(end.dateTime, 'hh:mm')}",
             "isSubtle": true,
-            "spacing": "None",
-            "wrap": true
-        },
-        {
-            "type": "TextBlock",
-            "text": "Snooze for",
-            "wrap": true
-        },
+            "spacing": "None"
+        },        
         {
             "type": "Input.ChoiceSet",
             "id": "snooze",
+            "label": "Snooze for",
             "value": "${reminders.overrides[0].minutes}",
             "choices": [
                 {
@@ -46,7 +39,7 @@
         {
             "type": "Action.Submit",
             "title": "Snooze",
-            "data":
+            "data": 
             {
                 "x": "snooze"
             }
@@ -54,7 +47,7 @@
         {
             "type": "Action.Submit",
             "title": "I'll be late",
-            "data":
+            "data": 
             {
                 "x": "late"
             }

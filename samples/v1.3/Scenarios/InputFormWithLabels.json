@@ -31,35 +31,28 @@
 							"size": "small"
 						},
 						{
-							"type": "TextBlock",
-							"text": "Your name",
-							"wrap": true
-						},
-						{
 							"type": "Input.Text",
 							"id": "myName",
-							"placeholder": "Last, First"
-						},
-						{
-							"type": "TextBlock",
-							"text": "Your email",
-							"wrap": true
+							"label": "Your name (Last, First)",
+							"isRequired": true,
+							"regex": "^[A-Z](a-z)+ [A-Z](a-z)+( ([A-Z][a-z]+))*$",
+							"errorMessage": "Please enter your name in the specified format"
 						},
 						{
 							"type": "Input.Text",
 							"id": "myEmail",
-							"placeholder": "youremail@example.com",
+							"label": "Your email",
+							"regex": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$",
+							"isRequired": true,
+							"errorMessage": "Please enter a valid email address",
 							"style": "email"
-						},
-						{
-							"type": "TextBlock",
-							"text": "Phone Number",
-							"wrap": true
 						},
 						{
 							"type": "Input.Text",
 							"id": "myTel",
-							"placeholder": "xxx.xxx.xxxx",
+							"label": "Phone Number (xxx-xxx-xxxx)",
+							"regex": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
+							"errorMessage": "Invalid phone number. Use the specified format: 3 numbers, hyphen, 3 numbers, hyphen and 4 numbers",
 							"style": "tel"
 						}
 					]

@@ -3,10 +3,9 @@
     "body": [
         {
             "type": "TextBlock",
-            "size": "Medium",
-            "weight": "Bolder",
-            "text": "${title}",
-            "wrap": true
+            "size": "medium",
+            "weight": "bolder",
+            "text": "${title}"
         },
         {
             "type": "ColumnSet",
@@ -16,9 +15,9 @@
                     "items": [
                         {
                             "type": "Image",
-                            "style": "Person",
+                            "style": "person",
                             "url": "${creator.profileImage}",
-                            "size": "Small"
+                            "size": "small"
                         }
                     ],
                     "width": "auto"
@@ -28,13 +27,13 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "weight": "Bolder",
+                            "weight": "bolder",
                             "text": "${creator.name}",
                             "wrap": true
                         },
                         {
                             "type": "TextBlock",
-                            "spacing": "None",
+                            "spacing": "none",
                             "text": "Created {{DATE(${string(createdUtc)}, SHORT)}}",
                             "isSubtle": true,
                             "wrap": true
@@ -69,13 +68,14 @@
                 "body": [
                     {
                         "type": "Input.Date",
+                        "label": "Enter the due date",
                         "id": "dueDate"
                     },
                     {
                         "type": "Input.Text",
                         "id": "comment",
-                        "placeholder": "Add a comment",
-                        "isMultiline": true
+                        "isMultiline": true,
+                        "label": "Add a comment"
                     }
                 ],
                 "actions": [

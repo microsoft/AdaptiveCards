@@ -25,13 +25,9 @@
 			"wrap": true
 		},
 		{
-			"type": "TextBlock",
-			"text": "Snooze for",
-			"wrap": true
-		},
-		{
 			"type": "Input.ChoiceSet",
 			"id": "snooze",
+			"label": "Snooze for",
 			"style": "compact",
 			"value": "5",
 			"choices": [

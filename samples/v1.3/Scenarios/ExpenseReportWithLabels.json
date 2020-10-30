@@ -13,8 +13,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"size": "Large",
-									"weight": "Bolder",
+									"size": "large",
+									"weight": "bolder",
 									"text": "**EXPENSE APPROVAL**",
 									"wrap": true
 								}
@@ -76,16 +76,16 @@
 				},
 				{
 					"type": "TextBlock",
-					"spacing": "Small",
-					"size": "Small",
-					"weight": "Bolder",
-					"color": "Accent",
+					"spacing": "small",
+					"size": "small",
+					"weight": "bolder",
+					"color": "accent",
 					"text": "[ER-13052](https://adaptivecards.io)",
 					"wrap": true
 				},
 				{
 					"type": "FactSet",
-					"spacing": "Large",
+					"spacing": "large",
 					"facts": [
 						{
 							"title": "Submitted By",
@@ -93,15 +93,15 @@
 						},
 						{
 							"title": "Duration",
-							"value": "2019-06-19 - 2019-06-21"
+							"value": "2019/06/19 - 2019/06/25"
 						},
 						{
 							"title": "Submitted On",
-							"value": "2019-04-14"
+							"value": "2019/04/14"
 						},
 						{
 							"title": "Reimbursable Amount",
-							"value": "$ 400.00"
+							"value": "$ 404.30"
 						},
 						{
 							"title": "Awaiting approval from",
@@ -117,7 +117,7 @@
 		},
 		{
 			"type": "Container",
-			"spacing": "Large",
+			"spacing": "large",
 			"style": "emphasis",
 			"items": [
 				{
@@ -128,7 +128,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "DATE",
 									"wrap": true
 								}
@@ -137,11 +137,11 @@
 						},
 						{
 							"type": "Column",
-							"spacing": "Large",
+							"spacing": "large",
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "CATEGORY",
 									"wrap": true
 								}
@@ -153,7 +153,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
+									"weight": "bolder",
 									"text": "AMOUNT",
 									"wrap": true
 								}
@@ -173,7 +173,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "06-19",
+							"text": "06/19",
 							"wrap": true
 						}
 					],
@@ -181,7 +181,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -196,7 +196,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$300.00",
+							"text": "$ 300",
 							"wrap": true
 						}
 					],
@@ -204,16 +204,8 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Small",
-					"selectAction": {
-						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent1",
-							"chevronDown1",
-							"chevronUp1"
-						]
-					},
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -225,12 +217,20 @@
 						{
 							"type": "Image",
 							"id": "chevronUp1",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded",
-							"isVisible": false
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent1",
+							"chevronUp1",
+							"chevronDown1"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -251,7 +251,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Leg 2 on Tue, Jun 19th, 2019 at 7:15 PM.",
+							"text": "* Leg 2 on Tue,Jun 19th, 2019 at 7:15 PM.",
 							"isSubtle": true,
 							"wrap": true
 						},
@@ -261,7 +261,7 @@
 								{
 									"type": "Input.Text",
 									"id": "comment1",
-									"placeholder": "Add your comment here."
+									"label": "Add your comment here"
 								}
 							]
 						}
@@ -307,8 +307,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
-							"text": "06-19",
+							"horizontalAlignment": "center",
+							"text": "06/19",
 							"wrap": true
 						}
 					],
@@ -316,7 +316,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -331,7 +331,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$100.00",
+							"text": "$ 100",
 							"wrap": true
 						}
 					],
@@ -339,15 +339,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Small",
-					"selectAction": {
-						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent2",
-							"chevronDown2",
-							"chevronUp2"
-						]
-					},
+					"spacing": "small",
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
@@ -360,12 +352,20 @@
 						{
 							"type": "Image",
 							"id": "chevronUp2",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded",
-							"isVisible": false
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent2",
+							"chevronUp2",
+							"chevronDown2"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -390,7 +390,7 @@
 								{
 									"type": "Input.Text",
 									"id": "comment2",
-									"placeholder": "Add your comment here."
+									"label": "Add your comment here"
 								}
 							]
 						}
@@ -436,8 +436,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Center",
-							"text": "06-21",
+							"horizontalAlignment": "center",
+							"text": "06/25",
 							"wrap": true
 						}
 					],
@@ -445,7 +445,7 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Medium",
+					"spacing": "medium",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -460,7 +460,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$50.38",
+							"text": "$ 4.30",
 							"wrap": true
 						}
 					],
@@ -468,16 +468,8 @@
 				},
 				{
 					"type": "Column",
-					"spacing": "Small",
-					"selectAction": {
-						"type": "Action.ToggleVisibility",
-						"targetElements": [
-							"cardContent3",
-							"chevronDown3",
-							"chevronUp3"
-						]
-					},
-					"verticalContentAlignment": "Center",
+					"spacing": "small",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
@@ -489,12 +481,20 @@
 						{
 							"type": "Image",
 							"id": "chevronUp3",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded",
-							"isVisible": false
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent3",
+							"chevronUp3",
+							"chevronDown3"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -510,7 +510,7 @@
 						{
 							"type": "Input.Text",
 							"id": "comment3",
-							"placeholder": "Add your comment here."
+							"label": "Add your comment here"
 						}
 					]
 				},
@@ -548,7 +548,7 @@
 		},
 		{
 			"type": "ColumnSet",
-			"spacing": "Large",
+			"spacing": "large",
 			"separator": true,
 			"columns": [
 				{
@@ -556,19 +556,19 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Total Expense Amount \t",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Non-reimbursable Amount",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"horizontalAlignment": "Right",
+							"horizontalAlignment": "right",
 							"text": "Advance Amount",
 							"wrap": true
 						}
@@ -580,12 +580,12 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$450.38",
+							"text": "404.30",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 50.38 \t",
+							"text": "(-) 0.00 \t",
 							"wrap": true
 						},
 						{
@@ -614,7 +614,7 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"horizontalAlignment": "Right",
+									"horizontalAlignment": "right",
 									"text": "Amount to be Reimbursed",
 									"wrap": true
 								}
@@ -626,8 +626,8 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"weight": "Bolder",
-									"text": "$ 400.00",
+									"weight": "bolder",
+									"text": "$ 404.30",
 									"wrap": true
 								}
 							],
@@ -655,24 +655,24 @@
 							"hideHistory"
 						]
 					},
-					"verticalContentAlignment": "Center",
+					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "TextBlock",
 							"id": "showHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Show history",
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"id": "hideHistory",
-							"horizontalAlignment": "Right",
-							"color": "Accent",
+							"isVisible": false,
+							"horizontalAlignment": "right",
+							"color": "accent",
 							"text": "Hide history",
-							"wrap": true,
-							"isVisible": false
+							"wrap": true
 						}
 					],
 					"width": 1
@@ -689,13 +689,13 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "* Expense submitted by **Matt Hidinger** on Mon, Jul 15, 2019",
+							"text": "* Expense submitted by **Matt** on Wed, Apr 14th, 2019",
 							"isSubtle": true,
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Expense approved by **Thomas** on Mon, Jul 15, 2019",
+							"text": "* Expense approved by **Thomas** on Thu, Apr 15th, 2019",
 							"isSubtle": true,
 							"wrap": true
 						}
@@ -728,8 +728,10 @@
 									{
 										"type": "Input.Text",
 										"id": "RejectCommentID",
-										"placeholder": "Please specify an appropriate reason for rejection.",
-										"isMultiline": true
+										"label": "Please specify an appropriate reason for rejection",
+										"isRequired": true,
+										"isMultiline": true,
+										"errorMessage": "A reason for rejection is necessary"
 									}
 								],
 								"actions": [
