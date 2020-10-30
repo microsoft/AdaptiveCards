@@ -273,7 +273,7 @@ export class Template {
      */
     private static stringEscape(input: string) {
         let result = input;
-        if (input != null) {
+        if (input) {
             result = input.replace(/\\/g, '\\\\').replace(/`/g, '\\`');
         }
 
