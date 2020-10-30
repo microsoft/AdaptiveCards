@@ -34,15 +34,9 @@
                             "$data": "${properties}",
                             "items": [
                                 {
-                                    "type": "TextBlock",
-                                    "text": "${title}",
-                                    "wrap": true
-                                },
-                                {
                                     "type": "Input.Text",
                                     "label": "${label}",
                                     "id": "${if(title == 'Your Name', 'myName', if(title == 'Your email', 'myEmail', 'myTel'))}",
-                                    "placeholder": "${placeholder}",
                                     "regex": "${validation}",
                                     "errorMessage": "${error}",
                                     "isRequired": true
