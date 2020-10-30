@@ -204,51 +204,33 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown1",
 					"spacing": "small",
 					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent1",
-									"chevronUp1",
-									"chevronDown1"
-								]
-							},
+							"id": "chevronDown1",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Air travel expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp1",
-					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent1",
-									"chevronUp1",
-									"chevronDown1"
-								]
-							},
+							"id": "chevronUp1",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Air travel expense expanded"
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent1",
+							"chevronUp1",
+							"chevronDown1"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -357,51 +339,33 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown2",
 					"spacing": "small",
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent2",
-									"chevronUp2",
-									"chevronDown2"
-								]
-							},
+							"id": "chevronDown2",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Auto mobile expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp2",
-					"isVisible": false,
-					"spacing": "small",
-					"verticalContentAlignment": "center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent2",
-									"chevronUp2",
-									"chevronDown2"
-								]
-							},
+							"id": "chevronUp2",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Auto mobile expense expanded"
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent2",
+							"chevronUp2",
+							"chevronDown2"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -485,7 +449,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Air Travel Expense",
+							"text": "Excess Baggage Cost",
 							"wrap": true
 						}
 					],
@@ -504,51 +468,33 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown3",
 					"spacing": "small",
 					"verticalContentAlignment": "center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent3",
-									"chevronUp3",
-									"chevronDown3"
-								]
-							},
+							"id": "chevronDown3",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Air travel expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp3",
-					"isVisible": false,
-					"spacing": "small",
-					"verticalContentAlignment": "center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent3",
-									"chevronUp3",
-									"chevronDown3"
-								]
-							},
+							"id": "chevronUp3",
+							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Air travel expense expanded"
+							"altText": "Details expanded"
 						}
 					],
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent3",
+							"chevronUp3",
+							"chevronDown3"
+						]
+					},
 					"width": "auto"
 				}
 			]
@@ -697,61 +643,39 @@
 			"bleed": true
 		},
 		{
-			"type": "Container",
-			"items": [
+			"type": "ColumnSet",
+			"columns": [
 				{
-					"type": "ColumnSet",
-					"columns": [
+					"type": "Column",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent4",
+							"showHistory",
+							"hideHistory"
+						]
+					},
+					"verticalContentAlignment": "center",
+					"items": [
 						{
-							"type": "Column",
-							"id": "chevronDown4",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "show history",
-								"targetElements": [
-									"cardContent4",
-									"chevronUp4",
-									"chevronDown4"
-								]
-							},
-							"verticalContentAlignment": "center",
-							"items": [
-								{
-									"type": "TextBlock",
-									"horizontalAlignment": "right",
-									"color": "accent",
-									"text": "Show history",
-									"wrap": true
-								}
-							],
-							"width": 1
+							"type": "TextBlock",
+							"id": "showHistory",
+							"horizontalAlignment": "right",
+							"color": "accent",
+							"text": "Show history",
+							"wrap": true
 						},
 						{
-							"type": "Column",
-							"id": "chevronUp4",
+							"type": "TextBlock",
+							"id": "hideHistory",
 							"isVisible": false,
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "hide history",
-								"targetElements": [
-									"cardContent4",
-									"chevronUp4",
-									"chevronDown4"
-								]
-							},
-							"verticalContentAlignment": "center",
-							"items": [
-								{
-									"type": "TextBlock",
-									"horizontalAlignment": "right",
-									"color": "accent",
-									"text": "Hide history",
-									"wrap": true
-								}
-							],
-							"width": 1
+							"horizontalAlignment": "right",
+							"color": "accent",
+							"text": "Hide history",
+							"wrap": true
 						}
-					]
+					],
+					"width": 1
 				}
 			]
 		},
