@@ -15,7 +15,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
-		"adaptivecards": "^2.1.0",
+		"adaptivecards": "^2.5.0",
 		"adaptivecards-controls": "^0.4.0",
 		"adaptivecards-designer": "^1.1.0",
 		"eslint": "^7.3.1",
