@@ -28,7 +28,7 @@
 		"start": "webpack-dev-server --open",
 		"dts": "dts-generator --prefix adaptivecards --project . --out dist/adaptivecards.d.ts",
 		"lint": "eslint src/*.ts",
-		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" \"npm:docs\" && concurrently \"npm:test\" \"npm:dts\"",
+		"release": "npm run clean && concurrently \"npm:build\" \"webpack --mode=production\" && concurrently \"npm:test\" \"npm:dts\"",
 		"docs": "npx typedoc"
 	},
 	"repository": {
@@ -63,5 +63,9 @@
 			"jsx",
 			"json"
 		]
+	},
+	"dependencies": {
+		"dts": "^0.1.1",
+		"dts-generator": "^3.0.0"
 	}
 }
