@@ -11,7 +11,8 @@ schedules:
    - main
 
 pool:
-  name: Hosted Ubuntu 1604
+  name: Azure Pipelines
+  vmImage: vs2017-win2016
   demands: java
 
 parameters:
@@ -37,24 +38,22 @@ steps:
 
   # TODO: Remove when Android Gradle Plugin 4.1 is stable.
   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
-- bash: |
-   #!/usr/bin/env bash
-   
-   unset ANDROID_NDK_HOME
-   sudo ${ANDROID_HOME}/tools/bin/sdkmanager --verbose --install "ndk;21.0.6113669"
-  displayName: 'Get NDK (TODO: Remove this step)'
+# - script: |
+#    setx ANDROID_NDK_HOME ""
+#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
+#   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
 
 - task: Gradle@2
   displayName: 'gradlew publish'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:publish'
     publishJUnitResults: false

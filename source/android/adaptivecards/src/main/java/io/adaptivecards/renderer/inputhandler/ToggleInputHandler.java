@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.CheckBox;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
@@ -60,5 +61,6 @@ public class ToggleInputHandler extends BaseInputHandler
     {
         m_view.setFocusableInTouchMode(true);
         m_view.requestFocus();
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }

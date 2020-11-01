@@ -325,6 +325,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
+        imageView.setContentDescription(image.GetAltText());
 
         int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
 
@@ -371,7 +372,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 
-        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler, renderArgs);
 
         return imageView;
     }

@@ -8,6 +8,7 @@
 #import "ACRImageRenderer.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
+#import "ACRColumnView.h"
 #import "ACRContentHoldingUIView.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
@@ -45,16 +46,38 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
 
-    NSString *key = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
-    NSMutableDictionary *imageViewMap = [rootView getImageMap];
-    NSURL *url = [NSURL URLWithString:key];
+    // makes parts for building a key to UIImage, there are different interfaces for loading the images
+    // we list all the parts that are needed in building the key.
+    NSString *number = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())] stringValue];
+    NSString *urlString = [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:[NSString defaultCStringEncoding]];
+    NSDictionary *pieces = @{
+        @"number" : number,
+        @"url" : urlString
+    };
 
-    if (ACOImageViewIF == [acoConfig getResolverIFType:[url scheme]]) {
-        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())];
-        key = [number stringValue];
+    NSString *key = makeKeyForImage(acoConfig, @"image", pieces);
+    NSMutableDictionary *imageViewMap = [rootView getImageMap];
+    UIImage *img = imageViewMap[key];
+
+    // try get an UIImageView
+    view = [rootView getImageView:key];
+    if (!view && img) {
+        // if an UIImage is available, but UIImageView is missing, create one
+        ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+        acrImageView.image = img;
+        if (imgElem->GetImageStyle() == ImageStyle::Person) {
+            acrImageView.isPersonStyle = YES;
+            [acrImageView setNeedsLayout];
+        }
+        view = acrImageView;
     }
 
-    UIImage *img = imageViewMap[key];
+    if (view && img) {
+        // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
+        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
+        [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
+    }
+
     ImageSize size = ImageSize::None;
     CGSize intrinsicContentSize;
     if (!hasExplicitMeasurements) {
@@ -82,22 +105,6 @@
                 intrinsicContentSize.width = pixelHeight;
             }
         }
-    }
-
-
-    if (img) {
-        ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-        acrImageView.image = img;
-        if (imgElem->GetImageStyle() == ImageStyle::Person) {
-            acrImageView.isPersonStyle = YES;
-            [acrImageView setNeedsLayout];
-        }
-        view = acrImageView;
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
-    } else {
-        NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)imgElem.get()];
-        NSString *key = [number stringValue];
-        view = [rootView getImageView:key];
     }
 
     ACRContentHoldingUIView *wrappingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
@@ -146,7 +153,7 @@
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
@@ -157,11 +164,13 @@
         view.contentMode = UIViewContentModeScaleAspectFit;
     }
 
+    UILayoutPriority imagePriority = [ACRImageRenderer getImageUILayoutPriority:wrappingview];
+
     if (size != ImageSize::Stretch) {
-        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
@@ -238,6 +247,7 @@
     }
 
     if (size != ImageSize::Auto && size != ImageSize::Stretch) {
+        UILayoutPriority prioirty = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
         NSArray<NSLayoutConstraint *> *constraints =
             @[ [NSLayoutConstraint constraintWithItem:imageView
                                             attribute:NSLayoutAttributeWidth
@@ -253,8 +263,8 @@
                                             attribute:NSLayoutAttributeNotAnAttribute
                                            multiplier:1.0
                                              constant:cgsize.height] ];
-        constraints[0].priority = 1000;
-        constraints[1].priority = 1000;
+        constraints[0].priority = prioirty;
+        constraints[1].priority = UILayoutPriorityDefaultHigh;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
@@ -262,6 +272,15 @@
             ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = cgsize;
             [imageView.superview invalidateIntrinsicContentSize];
         }
+    }
+
+    if (size == AdaptiveCards::ImageSize::Auto) {
+        NSLayoutConstraint *imageHeightConstraint = [imageView.heightAnchor constraintLessThanOrEqualToConstant:image.size.height];
+        imageHeightConstraint.active = YES;
+        imageHeightConstraint.priority = UILayoutPriorityDefaultHigh;
+        NSLayoutConstraint *imageWidthConstraint = [imageView.widthAnchor constraintLessThanOrEqualToConstant:image.size.width];
+        imageWidthConstraint.active = YES;
+        imageWidthConstraint.priority = UILayoutPriorityDefaultHigh;
     }
 
     if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
@@ -280,8 +299,8 @@
                                             attribute:NSLayoutAttributeHeight
                                            multiplier:widthToHeightRatio
                                              constant:0] ];
-        constraints[0].priority = 999;
-        constraints[1].priority = 1000;
+        constraints[0].priority = UILayoutPriorityDefaultHigh;
+        constraints[1].priority = UILayoutPriorityDefaultHigh;
 
         [NSLayoutConstraint activateConstraints:constraints];
 
@@ -289,6 +308,11 @@
             ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
         }
     }
+}
+
++ (UILayoutPriority)getImageUILayoutPriority:(UIView *)wrappingview
+{
+    return (!wrappingview || [wrappingview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal] > ACRColumnWidthPriorityStretch) ? UILayoutPriorityDefaultHigh : ACRColumnWidthPriorityAuto;
 }
 
 @end

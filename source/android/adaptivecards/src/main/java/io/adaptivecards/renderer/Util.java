@@ -35,11 +35,28 @@ import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
 
 public final class Util {
 
+    /**
+     * Convert dp to px
+     * @param context
+     * @param dp The number of Android dips (display-independent pixels)
+     * @return The number of equivalent physical pixels
+     */
     public static int dpToPixels(Context context, long dp)
     {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
+    }
+
+    /**
+     * Convert px to dp
+     * @param context
+     * @param pixels The number of physical pixels
+     * @return The number of equivalent Android dips (display-independent pixels)
+     */
+    public static double pixelsToDp(Context context, double pixels)
+    {
+        return pixels / dpToPixels(context, 1);
     }
 
     public static byte[] getBytes(CharVector charVector)
@@ -52,6 +69,24 @@ public final class Util {
         }
 
         return byteArray;
+    }
+
+    /**
+     * Clear any existing focus by temporarily adding then removing focus to a given helper View.
+     * @param v The helper View that will temporarily grab and release focus.
+     */
+    public static void clearFocus(View v) {
+        boolean focusable = v.isFocusable();
+        boolean focusableInTouchMode = v.isFocusableInTouchMode();
+
+        v.setFocusable(true);
+        v.setFocusableInTouchMode(true);
+
+        v.requestFocusFromTouch();
+        v.clearFocus();
+
+        v.setFocusable(focusable);
+        v.setFocusableInTouchMode(focusableInTouchMode);
     }
 
     public static void MoveChildrenViews(ViewGroup origin, ViewGroup destination)
@@ -392,6 +427,15 @@ public final class Util {
     {
         BaseInputElement baseInputElement = BaseInputElement.DeserializeBasePropertiesFromString(context, jsonString);
         CopyInputProperties(baseInputElement, inputElement);
+    }
+
+    public static long getViewId(View view)
+    {
+        if(view.getId() == View.NO_ID)
+        {
+            view.setId(View.generateViewId());
+        }
+        return view.getId();
     }
 
 }
