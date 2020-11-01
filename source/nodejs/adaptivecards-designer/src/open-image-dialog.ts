@@ -155,11 +155,12 @@ export class OpenImageDialog extends Dialog {
         inputElement.setAttribute("type", "file");
         inputElement.setAttribute("button-name", "Browse File");
         inputElement.setAttribute("accept", "image/*");
+        inputElement.setAttribute("aria-label", "Browse File");
         inputElement.onchange = () => {
             if (this.checkFileSize(inputElement.files[0])) {
                 const reader = new FileReader();
                 reader.readAsDataURL(inputElement.files[0]);
-                reader.onload = () => this.renderImage(reader.result as string);
+                reader.onload = () => this.renderImage(reader.result as string, inputElement.files[0].name);
                 reader.onerror = (error) => console.log(error);
             } else {
                 this._inputTemplate.removeChild(this._buttonContainer);
@@ -228,8 +229,9 @@ export class OpenImageDialog extends Dialog {
         return spinnerHostElement;
     }
 
-    private renderImage(imageContent: string) {
+    private renderImage(imageContent: string, imageName: string) {
         this._imageElement.setAttribute("src", imageContent);
+        this._imageElement.setAttribute("alt", imageName);
         this._uploadedImage = imageContent;
         this._inputTemplate.removeChild(this._buttonContainer);
         this._inputTemplate.appendChild(this.renderUploadButton("action"));
@@ -261,6 +263,8 @@ export class OpenImageDialog extends Dialog {
 
     private renderSampleTemplate() {
         let sampleImageTemplate = document.createElement("div");
+        sampleImageTemplate.id = "acd-sample-images";
+        sampleImageTemplate.tabIndex = 0;
         sampleImageTemplate.className = "acd-sample-image-container";
         sampleImageTemplate.style.flexDirection = "column";
         let spinnerElement = document.createElement("div");
@@ -285,14 +289,17 @@ export class OpenImageDialog extends Dialog {
                 sampleImageTemplate.appendChild(imageTitle);
                 const imageContainer = document.createElement("div");
                 imageContainer.className = "acd-sample-list";
+                imageContainer.setAttribute("role", "list");
                 for (let template of res.templates) {
                     let sampleImage = new ImageItem(template);
-                    sampleImage.onClick = (selectedImage: string) => {
-                        this.renderImage(selectedImage);
+                    sampleImage.onClick = (selectedImage: string, imageName: string) => {
+                        this.renderImage(selectedImage, imageName);
                     };
                     imageContainer.appendChild(sampleImage.render());
                 }
                 sampleImageTemplate.appendChild(imageContainer);
+                let firstChild = imageContainer.firstElementChild as HTMLElement;
+                firstChild.focus();
             } else {
                 const errorElement = document.createElement("div");
                 errorElement.innerText = "Failed to reach pic2card service";
@@ -329,20 +336,33 @@ export class OpenImageDialog extends Dialog {
 }
 
 export class ImageItem {
+    private static _id = 0;
     constructor(readonly template: string) {}
-    onClick: (template: string) => void;
+    onClick: (template: string, sampleImageName: string) => void;
+    private static getSampleImageName(): string {
+        this._id++;
+        return `Sample Image ${this._id}`
+    }
     render(): HTMLElement {
+        const sampleImageName = ImageItem.getSampleImageName();
         const imagePlaceholder = <HTMLImageElement>(
             document.createElement("img")
         );
         imagePlaceholder.className = "acd-sample-image";
+        imagePlaceholder.tabIndex = 0;
+        imagePlaceholder.setAttribute("role", "listitem");
+        imagePlaceholder.setAttribute("alt", sampleImageName);
         imagePlaceholder.setAttribute(
             "src",
             "data:image/png;base64," + this.template
         );
         imagePlaceholder.onclick = (event) => {
-            this.onClick((event.target as HTMLImageElement).src);
+            this.onClick((event.target as HTMLImageElement).src, sampleImageName);
+            imagePlaceholder.setAttribute("alt", `${sampleImageName} selected`);
         };
+        imagePlaceholder.focus = () => {
+            imagePlaceholder.setAttribute("alt", sampleImageName);
+        }
         return imagePlaceholder;
     }
 }
