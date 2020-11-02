@@ -6,10 +6,10 @@
 //
 
 #import "ACRDateTextField.h"
+#import "ACRInputLabelView.h"
 #import "DateInput.h"
 #import "DateTimePreparser.h"
 #import "TimeInput.h"
-#import "ACRInputLabelView.h"
 
 using namespace AdaptiveCards;
 
@@ -187,7 +187,13 @@ using namespace AdaptiveCards;
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    self.accessibilityLabel = view.accessibilityLabel;
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+        [view becomeFirstResponder];
+    } else {
+        [view resignFirstResponder];
+    }
 }
 
 - (NSDate *)getCurrentDate

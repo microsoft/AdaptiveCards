@@ -1,14 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
-import android.graphics.PorterDuff;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.ValidatedEditText;
+import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
 
 /**
  * This class is only supposed to be used for inputs that have: label, validation, isRequired or stretch height
@@ -44,10 +44,15 @@ public class StretchableInputLayout extends StretchableElementLayout
     {
         addView(input);
         m_inputView = input;
-        if(m_inputView.getId() == View.NO_ID) {
+        if(m_inputView.getId() == View.NO_ID)
+        {
             m_inputView.setId(View.generateViewId());
         }
-        m_label.setLabelFor(m_inputView.getId());
+
+        if (m_label != null)
+        {
+            m_label.setLabelFor(m_inputView.getId());
+        }
     }
 
     public View getErrorMessage()
@@ -65,17 +70,21 @@ public class StretchableInputLayout extends StretchableElementLayout
     public void setValidationResult(boolean isValid)
     {
         BaseCardElementRenderer.setVisibility(!isValid, m_errorMessage);
-        if(m_inputView instanceof ValidatedEditText)
+        if (m_inputView instanceof IValidatedInputView)
         {
-            ((ValidatedEditText) m_inputView).setValidationResult(isValid);
+            ((IValidatedInputView) m_inputView).setValidationResult(isValid);
         }
-        if(isValid)
+
+        if (m_label != null)
         {
-            m_label.setContentDescription(null);
-        }
-        else
-        {
-            m_label.setContentDescription(m_label.getText() + " " + m_errorMessage.getText());
+            if (isValid)
+            {
+                m_label.setContentDescription(null);
+            }
+            else
+            {
+                m_label.setContentDescription(m_label.getText() + " " + m_errorMessage.getText());
+            }
         }
     }
 }

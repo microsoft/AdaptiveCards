@@ -101,7 +101,7 @@ public class CustomInput extends BaseInputElement
             viewGroup.addView(renderedInput);
 
             BaseInputElement inputElement = Util.castTo(baseCardElement, BaseInputElement.class);
-            renderedCard.registerInputHandler(new CustomInputHandler(inputElement, renderedInput), renderArgs.getContainerCardId());
+            renderedCard.registerInputHandler(new CustomInputHandler(inputElement, renderedInput), renderArgs);
             return renderedInput;
         }
     }

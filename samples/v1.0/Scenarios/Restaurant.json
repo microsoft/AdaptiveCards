@@ -12,20 +12,23 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Redmond, WA"
+							"text": "Redmond, WA",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "Malt & Vine",
 							"weight": "bolder",
 							"size": "extraLarge",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "4.5 stars (176 reviews) · mid-priced",
 							"isSubtle": true,
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",

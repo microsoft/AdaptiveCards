@@ -3,6 +3,7 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -13,6 +14,7 @@ import android.widget.LinearLayout;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.flexbox.JustifyContent;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
@@ -202,7 +204,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
 
-        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, column.GetSelectAction(), columnLayout, cardActionHandler, renderArgs);
 
         viewGroup.addView(columnLayout);
         return columnLayout;
