@@ -126,7 +126,7 @@ For the development of this feature the following conservative costs have been e
 | 5 | Bug Bash (AEL only) | 2 | Parse API, TryEvaluate API, Built-in functions  |
 | 6 | Bug Fixing | 10 | Bug Bash | Bug fixing |
 | 7 | Implementation of AdaptiveCards Templating library | 8 | Parse API, TryEvaluate API, Built-in functions | Unit tests | 
-| 8 | Bug Bash (AC Templating) | 2 | AC Templating lib  |
+| 8 | Bug Bash (AC Templating and Integration tests) | 2 | AC Templating lib  |
 | 9 | Bug Fixing | 5 | Bug Bash | Bug fixing |
 | 10 | Definition of swig interface for Android | 5 | AC Templating lib | Unit tests | 
 | 11 | Definition of C# interfaces for UWP | 5 | AC Templating lib | Unit tests |
@@ -153,6 +153,64 @@ The Adaptive Expressions library for C++ must be merged in a different repositor
 | P2 | Support for non utf-8 strings |
 | P2 | Support for custom functions |
 | P2 | Support for Locale and Culture variant conversions (i.e. decimal point as `,`) |
+
+# Checkpoints
+
+As can be seen from the feature cost estimation, the AdaptiveExpressions Library port is a big project, so we can set a list of checkpoints to verify the project is on track:
+1. Day 0: Have a small and functional prototype (with 1 arithmetic operation)
+2. +5 days (Day 5): Added exception throwing and error return capabilities to the prototype
+3. +16 days (Day 21): Added support for, at least, 1 operation of each of the main types (all of this checkpoints should be validated by an unit test)
+    1. +2 days (Day 7): Added support for 1 logical operation, i.e. AND, OR
+    2. +4 days (Day 11): Added support for 1 date operation, i.e. AddDays
+    3. +2 days (Day 13): Added support for 1 time operation, i.e. AddHours
+    4. +2 days (Day 15): Added support for 1 string operation, i.e. Concat
+    5. +6 days (Day 21): Added support for 1 array operation, i.e. sortBy
+4. +9 days (Day 30): Added support for external data access (not constants in expression)
+5. +? days (Day 40-75): Added support for all classified functions (time depends on how many people are assigned in this task, should be validated with unit tests)
+    1. +4 days: Finalize implementation of all arithmetic operations
+    2. +4 days: Finalize implementation of all logical operations
+    3. +6 days: Finalize implementation of all date operations
+    4. +6 days: Finalize implementation of all time operations
+    5. +5 days: Finalize implementation of all string operations
+    6. +5 days: Finalize implementation of all array operations
+    7. +10 days: Finalize implementation of all unclassified operations
+    8. +1 day: Verification of having a stable build for the AE Library (unit tests)
+6. +3 days (Day 79): Have a working CI build in the templating library repo 
+7. +8 days (Day 87): First version AC Templating library for C++
+    1. +2 days: Verify that AEL port is consumable
+    2. +2 days: Verification of having a stable build of the library (unit tests or sample app)
+8. +2 days (Day 89): Have a working CI build for the AC Templating library
+9. +5 days (Day 94): Addition of interfaces for C# and Java
+    1. +5 days: Add swig interfaces for Android
+        1. +3 days: Verification through unit tests
+    2. +5 days: Add idl interfaces for C#
+        1. +3 days: Verification through unit tests
+10. +2 days (Day 96): Verification for AC Templating library in mobile platforms
+11. +5 days (Day 101): Add documentation for the AC Templating library APIs
+    1. +1 day: Added documentation on the usage of Expand API
+    2. +1 day: Added samples on Android SDK documentation
+    3. +1 day: Added samples on UWP SDK documentation
+    4. +1 day: Added samples on iOS SDK documentation
+
+# Risks
+
+Different languages have distinct characteristics, some of these characteristics have been touched on earlier sections, but there are other issues that may arise and we don't know as of this time how are they going to be solved.
+
+## Know unknowns
+
+* `std::any` casting support for templated classes, i.e. `std::map<T>` or `std::vector<T>`
+* Date and Time data types to be used. Is `tm` struct good enough?
+* `<<` Operator behaviour when undefined (ToString replacement)
+* Json cpp libraries allowance to read unknown data objects
+* Lambda usage will make our implementations differ from the C# implementation
+
+## Unknown unknowns
+
+* Build pipelines on the Templating library repository
+* Release process for a native c++ library
+* Consumption of public Antlr runtime library and headers, or should we build our own and make them public. Probably the consumers won't know about the underlying antlr library
+* Possible use of reflection APIs in C#
+* Possible content of `Memory` objects 
 
 # Appendix
 
