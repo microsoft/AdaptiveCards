@@ -360,7 +360,7 @@ export class ImageItem {
             this.onClick((event.target as HTMLImageElement).src, sampleImageName);
             imagePlaceholder.setAttribute("alt", `${sampleImageName} selected`);
         };
-        imagePlaceholder.focus = () => {
+        imagePlaceholder.onfocus = () => {
             imagePlaceholder.setAttribute("alt", sampleImageName);
         }
         return imagePlaceholder;
