@@ -745,7 +745,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private launchImagePopup() {
         let dialog = new OpenImageDialog();
-        dialog.title = "Upload Card Structure ";
+        dialog.title = "Pic2card Dialog for Image Upload";
         dialog.closeButton.caption = "Cancel";
         dialog.preventLightDismissal = true;
         dialog.width = "80%";

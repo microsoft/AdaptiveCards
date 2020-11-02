@@ -290,13 +290,13 @@ export class OpenImageDialog extends Dialog {
                 const imageContainer = document.createElement("div");
                 imageContainer.className = "acd-sample-list";
                 imageContainer.setAttribute("role", "list");
-                for (let template of res.templates) {
-                    let sampleImage = new ImageItem(template);
+                res.templates.map((template, index) => {
+                    let sampleImage = new ImageItem(template, index+1);
                     sampleImage.onClick = (selectedImage: string, imageName: string) => {
                         this.renderImage(selectedImage, imageName);
                     };
                     imageContainer.appendChild(sampleImage.render());
-                }
+                });
                 sampleImageTemplate.appendChild(imageContainer);
                 let firstChild = imageContainer.firstElementChild as HTMLElement;
                 firstChild.focus();
@@ -336,15 +336,11 @@ export class OpenImageDialog extends Dialog {
 }
 
 export class ImageItem {
-    private static _id = 0;
-    constructor(readonly template: string) {}
+    constructor(readonly template: string, readonly itemIndex: number) {}
     onClick: (template: string, sampleImageName: string) => void;
-    private static getSampleImageName(): string {
-        this._id++;
-        return `Sample Image ${this._id}`
-    }
+
     render(): HTMLElement {
-        const sampleImageName = ImageItem.getSampleImageName();
+        const sampleImageName = `Sample Image ${this.itemIndex}`;
         const imagePlaceholder = <HTMLImageElement>(
             document.createElement("img")
         );
