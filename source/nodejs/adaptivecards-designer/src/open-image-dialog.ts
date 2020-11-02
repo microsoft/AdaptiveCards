@@ -200,6 +200,7 @@ export class OpenImageDialog extends Dialog {
         uploadButton.setAttribute("button-name", "Convert to Adaptive Card");
         uploadButton.setAttribute("value", "Convert to Adaptive Card");
         uploadButton.onclick = () => {
+            uploadButton.setAttribute("aria-pressed", "true");
             let spinnerElement = this.loadSpinner();
             this.setContent(spinnerElement);
             this.fetchManager
