@@ -215,6 +215,7 @@
 + (void)commonSetFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
     if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
         [view becomeFirstResponder];
     } else {
         [view resignFirstResponder];
