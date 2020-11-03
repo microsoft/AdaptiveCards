@@ -21,7 +21,7 @@ The simplest way to get started it to include 6 script tags in your page.
 1. **monaco-editor** - provides a rich JSON-editing experience
 2. **adaptivecards** - adaptive card library used by designer
 3. **adaptivecards-templating** - provides data binding support for designer
-4. **adaptive-expressions** - used by templating library to enable daya binding support
+4. **adaptive-expressions** - used by templating library to enable data binding support
 5. **markdown-it** - [optional] automatic markdown support for the designer and cards
 
 To load the designer component you have 2 options:
@@ -34,7 +34,7 @@ To load the designer component you have 2 options:
 <!-- REQUIRED: adaptivecards library for designer to work -->
 <script src="https://unpkg.com/adaptivecards@latest/dist/adaptivecards.min.js"></script>
 <!-- REQUIRED: adaptive-expressions is required by adaptivecards-templating library to enable data binding support in designer -->
-<script src="https://unpkg.com/adaptive-expressions@4.11.0-dev.20201027.ca35ce4/lib/browser.js"></script>
+<script src="https://unpkg.com/adaptive-expressions@rc/lib/browser.js"></script>
 <!-- REQUIRED: adaptivecards-templating library to enable data binding support in designer -->
 <script src="https://unpkg.com/adaptivecards-templating@latest/dist/adaptivecards-templating.min.js"></script>
 
