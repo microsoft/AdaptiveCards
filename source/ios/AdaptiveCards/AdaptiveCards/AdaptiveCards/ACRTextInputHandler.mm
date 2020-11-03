@@ -57,7 +57,16 @@
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    UIView *inputview = nil;
+    if ([view isKindOfClass:[UITextField class]]) {
+        inputview = ((UITextField *)view).inputView;
+    } else {
+        inputview = view;
+    }
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+    }
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:inputview];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
