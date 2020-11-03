@@ -158,6 +158,7 @@ public class RenderedAdaptiveCard {
             if (!allInputsAreValid && !hasSetFocusToElement)
             {
                 BaseInputHandler baseInputHandler = (BaseInputHandler) i;
+                Util.clearFocus(baseInputHandler.getView());
                 baseInputHandler.setFocusToView();
                 hasSetFocusToElement = true;
             }

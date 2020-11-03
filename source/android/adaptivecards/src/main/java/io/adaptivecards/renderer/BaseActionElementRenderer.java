@@ -334,7 +334,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                 {
                     // If an input is in focus before submit, and the same input is focused on error,
                     // the input would not be scrolled into view. Instead, clearing focus first ensures scroll.
-                    Util.clearFocus(view);
+//                    Util.clearFocus(view);
 
                     if (!m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
                     {

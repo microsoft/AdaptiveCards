@@ -25,6 +25,11 @@ public abstract class BaseInputHandler implements IInputHandler
         m_view = view;
     }
 
+    public View getView()
+    {
+        return m_view;
+    }
+
     public BaseInputElement getBaseInputElement()
     {
         return m_baseInputElement;
