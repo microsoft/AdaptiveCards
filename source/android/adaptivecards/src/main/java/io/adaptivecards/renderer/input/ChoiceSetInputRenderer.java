@@ -258,7 +258,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         boolean hasEmptyDefault = value.isEmpty();
         if (hasEmptyDefault)
         {
-            titleList.addElement(choiceSetInput.GetPlaceholder());
+            // Android has an undocumented behaviour where a spinner with an empty option selected
+            // will not receive accessibility focus, if we add an single space ' ' then the spinner
+            // can receive focus.
+            String placeholder = choiceSetInput.GetPlaceholder();
+            if (placeholder.isEmpty())
+            {
+                placeholder = " ";
+            }
+            titleList.addElement(placeholder);
+
             selection = (int) size;
         }
 
