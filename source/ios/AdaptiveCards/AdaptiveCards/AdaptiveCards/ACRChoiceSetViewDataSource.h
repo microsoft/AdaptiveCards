@@ -17,6 +17,8 @@ extern NSString *uncheckedCheckboxReuseID;
 extern NSString *checkedRadioButtonReuseID;
 extern NSString *uncheckedRadioButtonReuseID;
 
+@interface ACRChoiceSetCell : UITableViewCell
+@end
 @interface ACRChoiceSetViewDataSource : NSObject <UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
 @property NSString *id;
 @property BOOL isMultiChoicesAllowed;

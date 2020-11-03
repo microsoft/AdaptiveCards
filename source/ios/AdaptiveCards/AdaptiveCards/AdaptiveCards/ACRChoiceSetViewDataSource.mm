@@ -17,6 +17,35 @@ NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
+const CGFloat padding = 16.0f;
+
+@implementation ACRChoiceSetCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        UIImage *iconImage = nil;
+        if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else {
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        }
+        self.imageView.image = iconImage;
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.adjustsFontSizeToFitWidth = NO;
+        self.backgroundColor = UIColor.clearColor;
+    }
+    return self;
+}
+
+@end
+
 @implementation ACRChoiceSetViewDataSource {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
@@ -106,6 +135,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!_accessibilityString) {
         _accessibilityString = tableView.accessibilityLabel;
         tableView.accessibilityLabel = nil;
@@ -262,7 +292,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (float)getNonInputWidth:(UITableViewCell *)cell
 {
-    return cell.separatorInset.left + cell.indentationWidth + cell.accessoryView.frame.size.width + cell.imageView.image.size.width;
+    return padding * 3 + cell.imageView.image.size.width;
 }
 
 @synthesize isRequired;
