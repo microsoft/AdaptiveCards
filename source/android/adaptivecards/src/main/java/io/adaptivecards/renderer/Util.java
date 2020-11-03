@@ -72,8 +72,8 @@ public final class Util {
     }
 
     /**
-     * Clear any existing focus by temporarily adding then removing focus to a given helper View.
-     * @param v The helper View that will temporarily grab and release focus.
+     * Force focus when requestFocus is not sufficient.
+     * @param v The target View to focus
      */
     public static void forceFocus(View v) {
         boolean focusableInTouchMode = v.isFocusableInTouchMode();

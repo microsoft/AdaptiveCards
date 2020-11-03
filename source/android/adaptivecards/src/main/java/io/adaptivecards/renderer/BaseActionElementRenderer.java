@@ -332,9 +332,6 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             {
                 if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
-                    // If an input is in focus before submit, and the same input is focused on error,
-                    // the input would not be scrolled into view. Instead, clearing focus first ensures scroll.
-
                     if (!m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
                     {
                         return;
