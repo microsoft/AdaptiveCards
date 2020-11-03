@@ -75,17 +75,14 @@ public final class Util {
      * Clear any existing focus by temporarily adding then removing focus to a given helper View.
      * @param v The helper View that will temporarily grab and release focus.
      */
-    public static void clearFocus(View v) {
-        boolean focusable = v.isFocusable();
+    public static void forceFocus(View v) {
         boolean focusableInTouchMode = v.isFocusableInTouchMode();
 
         v.setFocusable(true);
         v.setFocusableInTouchMode(true);
 
         v.requestFocusFromTouch();
-        v.clearFocus();
 
-        v.setFocusable(focusable);
         v.setFocusableInTouchMode(focusableInTouchMode);
     }
 

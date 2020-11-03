@@ -10,6 +10,7 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
+import io.adaptivecards.renderer.Util;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -80,8 +81,7 @@ public class RadioGroupInputHandler extends BaseInputHandler
         {
             RadioButton radioButton = (RadioButton)(radioGroup.getChildAt(0));
 
-            radioButton.setFocusableInTouchMode(true);
-            radioButton.requestFocusFromTouch();
+            Util.forceFocus(radioButton);
             radioButton.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }
