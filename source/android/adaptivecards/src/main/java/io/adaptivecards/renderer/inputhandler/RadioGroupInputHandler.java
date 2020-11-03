@@ -81,7 +81,7 @@ public class RadioGroupInputHandler extends BaseInputHandler
             RadioButton radioButton = (RadioButton)(radioGroup.getChildAt(0));
 
             radioButton.setFocusableInTouchMode(true);
-            radioButton.requestFocus();
+            radioButton.requestFocusFromTouch();
             radioButton.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }

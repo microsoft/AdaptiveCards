@@ -60,7 +60,7 @@ public class ToggleInputHandler extends BaseInputHandler
     public void setFocusToView()
     {
         m_view.setFocusableInTouchMode(true);
-        m_view.requestFocus();
+        m_view.requestFocusFromTouch();
         m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }

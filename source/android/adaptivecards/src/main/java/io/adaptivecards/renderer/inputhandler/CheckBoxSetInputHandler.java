@@ -78,7 +78,7 @@ public class CheckBoxSetInputHandler extends BaseInputHandler
         if (m_checkBoxList.size() > 0)
         {
             m_checkBoxList.get(0).setFocusableInTouchMode(true);
-            m_checkBoxList.get(0).requestFocus();
+            m_checkBoxList.get(0).requestFocusFromTouch();
             m_checkBoxList.get(0).sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
         }
     }
