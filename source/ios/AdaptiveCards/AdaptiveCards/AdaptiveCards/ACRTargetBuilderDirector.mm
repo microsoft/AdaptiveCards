@@ -194,9 +194,8 @@
     return self;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
 
     if (builder) {
@@ -205,10 +204,9 @@
     return nil;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
           forButton:(UIButton *)button
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
     if (builder) {
         return [builder build:adaptiveAction director:self ForButton:button];

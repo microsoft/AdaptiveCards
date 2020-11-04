@@ -115,10 +115,11 @@
 
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
+                ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:baseAction];
                 if (baseAction) {
                     NSObject *target;
                     if (ACRRenderingStatus::ACROk ==
-                        buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction,
+                        buildTarget([rootView getSelectActionsTargetBuilderDirector], acoAction,
                                     &target)) {
                         NSRange selectActionRange = NSMakeRange(0, textRunContent.length - 1);
 
