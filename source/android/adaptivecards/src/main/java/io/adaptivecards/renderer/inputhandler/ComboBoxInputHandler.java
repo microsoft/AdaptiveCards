@@ -10,6 +10,7 @@ import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 
 import java.text.ParseException;
@@ -68,7 +69,7 @@ public class ComboBoxInputHandler extends BaseInputHandler
     @Override
     public void setFocusToView()
     {
-        m_view.requestFocus();
+        Util.forceFocus(m_view);
         m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }
