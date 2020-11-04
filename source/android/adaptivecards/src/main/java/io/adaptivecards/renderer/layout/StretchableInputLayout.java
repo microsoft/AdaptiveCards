@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
 import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 
@@ -55,14 +56,10 @@ public class StretchableInputLayout extends StretchableElementLayout
             m_inputView = input;
         }
 
-        if(m_inputView.getId() == View.NO_ID)
-        {
-            m_inputView.setId(View.generateViewId());
-        }
-
+        int viewId = (int)Util.getViewId(m_inputView);
         if (m_label != null)
         {
-            m_label.setLabelFor(m_inputView.getId());
+            m_label.setLabelFor(viewId);
         }
     }
 
