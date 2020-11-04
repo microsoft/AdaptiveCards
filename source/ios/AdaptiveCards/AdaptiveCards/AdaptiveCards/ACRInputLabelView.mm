@@ -103,20 +103,20 @@
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
 
-        self.inputView = inputView;        
+        self.inputView = inputView;
         self.label.isAccessibilityElement = NO;
         self.isAccessibilityElement = NO;
         inputView.accessibilityLabel = self.label.text;
         self.inputAccessibilityItem = inputView;
-        
+
         if (inputView != accessibilityItem) {
             self.inputAccessibilityItem = accessibilityItem;
             self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
         }
-        
+
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-        
+
         self.shouldGroupAccessibilityChildren = NO;
 
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
@@ -147,12 +147,7 @@
                 self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
                 self.errorMessage.isAccessibilityElement = NO;
-                if(self.inputAccessibilityItem.accessibilityLabel) {
-                    self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.inputAccessibilityItem.accessibilityLabel, self.errorMessage.text];
-                } else {
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
-                }
+                self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
             }
         } else {
             if (self.hasErrorMessage) {
@@ -199,8 +194,8 @@
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
-    }  
-   
+    }
+
     [inputHandler setFocus:shouldBecomeFirstResponder view:self.inputAccessibilityItem];
 }
 
@@ -214,7 +209,7 @@
 
 + (void)commonSetFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    if (shouldBecomeFirstResponder) {    
+    if (shouldBecomeFirstResponder) {
         [view becomeFirstResponder];
     } else {
         [view resignFirstResponder];

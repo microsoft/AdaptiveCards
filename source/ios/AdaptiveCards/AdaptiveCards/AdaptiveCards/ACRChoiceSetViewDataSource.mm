@@ -187,7 +187,6 @@ const CGFloat padding = 16.0f;
 
     [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
-
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -269,7 +268,7 @@ const CGFloat padding = 16.0f;
     if (shouldBecomeFirstResponder) {
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
         [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
-    }        
+    }
 }
 
 - (NSString *)getTitlesOfChoices

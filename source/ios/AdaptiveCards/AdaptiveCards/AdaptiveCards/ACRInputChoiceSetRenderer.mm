@@ -58,12 +58,7 @@
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    }
-
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellUnchecked" bundle:bundle] forCellReuseIdentifier:uncheckedCheckboxReuseID];
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellChecked" bundle:bundle] forCellReuseIdentifier:checkedCheckboxReuseID];
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactChecked" bundle:bundle] forCellReuseIdentifier:checkedRadioButtonReuseID];
-    [choiceSetView registerNib:[UINib nibWithNibName:@"ACRChoiceSetCellCompactUnchecked" bundle:bundle] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
+    } 
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;

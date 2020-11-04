@@ -57,16 +57,11 @@
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    UIView *inputview = nil;
-    if ([view isKindOfClass:[UITextField class]]) {
-        inputview = ((UITextField *)view).inputView;
-    } else {
-        inputview = view;
-    }
+    UIView *inputview = ([view isKindOfClass:[UITextField class]]) ? ((UITextField *)view).inputView : view;
     if (shouldBecomeFirstResponder) {
         UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+        [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:inputview];
     }
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:inputview];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -111,7 +106,7 @@
         auto value = numberInputBlock->GetValue();
         self.text = (value.has_value()) ? [NSString stringWithFormat:@"%d", value.value_or(0)] : nil;
         self.hasText = self.text != nil;
-        
+
         NSMutableCharacterSet *characterSets = [NSMutableCharacterSet characterSetWithCharactersInString:@"-."];
         [characterSets formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
         _notDigits = [characterSets invertedSet];
