@@ -52,9 +52,9 @@ public class StretchableInputLayout extends StretchableElementLayout
 
         // If input is a compact ChoiceSet, the spinners render inside of a LinearLayout,
         // the LinearLayout is the view styled to have a visual cue when validation fails
-        if (input instanceof ValidatedSpinnerLayout)
+        if (input instanceof ValidatedSpinnerLayout || (input instanceof ValidatedRadioGroup || input instanceof ValidatedCheckBoxLayout))
         {
-            ValidatedSpinnerLayout layout = (ValidatedSpinnerLayout)input;
+            LinearLayout layout = (LinearLayout) input;
             m_inputView = layout.getChildAt(0);
             m_viewWithVisualCues = input;
         }
@@ -62,7 +62,7 @@ public class StretchableInputLayout extends StretchableElementLayout
         // the view inside of the Layout has the visual cue. We have to verify that the expanded
         // ChoiceSet are not considered in this step as in that case they both use LinearLayout but
         // the visual cue is in the layout
-        else if (input instanceof LinearLayout && !(input instanceof ValidatedRadioGroup || input instanceof ValidatedCheckBoxLayout))
+        else if (input instanceof LinearLayout)
         {
             LinearLayout textInputWithActionLayout = (LinearLayout)input;
             m_inputView = textInputWithActionLayout.getChildAt(0);
