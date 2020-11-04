@@ -8,7 +8,9 @@ import android.view.View;
 import android.widget.TextView;
 
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.input.customcontrols.IValidatedInputView;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 
 /**
  * This class is only supposed to be used for inputs that have: label, validation, isRequired or stretch height
@@ -43,15 +45,21 @@ public class StretchableInputLayout extends StretchableElementLayout
     public void setInputView(View input)
     {
         addView(input);
-        m_inputView = input;
-        if(m_inputView.getId() == View.NO_ID)
+
+        if (input instanceof ValidatedSpinnerLayout)
         {
-            m_inputView.setId(View.generateViewId());
+            ValidatedSpinnerLayout layout = (ValidatedSpinnerLayout)input;
+            m_inputView = layout.getChildAt(0);
+        }
+        else
+        {
+            m_inputView = input;
         }
 
+        int viewId = (int)Util.getViewId(m_inputView);
         if (m_label != null)
         {
-            m_label.setLabelFor(m_inputView.getId());
+            m_label.setLabelFor(viewId);
         }
     }
 
