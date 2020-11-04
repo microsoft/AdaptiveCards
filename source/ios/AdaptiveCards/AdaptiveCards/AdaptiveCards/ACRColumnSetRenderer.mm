@@ -47,6 +47,7 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+
     [viewGroup addArrangedSubview:columnSetView];
 
     configBleed(rootView, elem, columnSetView, acoConfig);
