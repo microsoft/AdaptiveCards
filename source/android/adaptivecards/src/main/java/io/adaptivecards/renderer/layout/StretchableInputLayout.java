@@ -5,6 +5,7 @@ package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.renderer.BaseCardElementRenderer;
@@ -43,7 +44,17 @@ public class StretchableInputLayout extends StretchableElementLayout
     public void setInputView(View input)
     {
         addView(input);
-        m_inputView = input;
+
+        if (input instanceof LinearLayout)
+        {
+            LinearLayout textInputWithActionLayout = (LinearLayout)input;
+            m_inputView = textInputWithActionLayout.getChildAt(0);
+        }
+        else
+        {
+            m_inputView = input;
+        }
+
         if(m_inputView.getId() == View.NO_ID)
         {
             m_inputView.setId(View.generateViewId());
