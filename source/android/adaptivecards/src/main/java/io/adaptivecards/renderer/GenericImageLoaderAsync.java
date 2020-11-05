@@ -256,7 +256,9 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
         if (result.isSuccessful())
         {
             Bitmap image = result.getResult();
-            image.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+            if(image != null) {
+                image.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+            }
             onSuccessfulPostExecute(image);
         }
         else
