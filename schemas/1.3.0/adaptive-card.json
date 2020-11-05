@@ -460,6 +460,10 @@
             2293
           ]
         },
+        "horizontalAlignment": {
+          "$ref": "#/definitions/HorizontalAlignment",
+          "description": "Controls the horizontal alignment of the ColumnSet."
+        },
         "fallback": {},
         "height": {},
         "separator": {},
@@ -777,7 +781,7 @@
       ]
     },
     "TextRun": {
-      "description": "Defines a single run of formatted text",
+      "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containing the text as a shorthand for the json object. These two representations are equivalent.",
       "version": "1.2",
       "anyOf": [
         {
@@ -899,6 +903,10 @@
         "value": {
           "type": "string",
           "description": "The initial choice (or set of choices) that should be selected. For multi-select, specify a comma-separated string of values."
+        },
+        "placeholder": {
+          "type": "string",
+          "description": "Description of the input desired. Only visible when no selection has been made, the `style` is `compact` and `isMultiSelect` is `false`"
         },
         "wrap": {
           "type": "boolean",

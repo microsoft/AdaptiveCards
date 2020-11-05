@@ -6,6 +6,10 @@
 		{
 			"type": "TextBlock",
 			"text": "This card's action will open a URL"
+		},
+		{
+			"type": "Input.Number", 
+			"id": "id1"
 		}
 	],
 	"actions": [
@@ -18,20 +22,59 @@
 			"title": "Action.OpenUrl"
 		},
 		{
+			"type": "blueAction",
+			"title": "Custom Blue"
+		},
+		{
 			"type": "Action.ShowCard",
-			"title": "Action.ShowCard",
+			"title": "Action ",
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [
 					{
 						"type": "TextBlock",
 						"text": "What do you think?"
+					},
+					{
+						"type": "Input.Text",
+						"id": "id2"
 					}
 				],
 				"actions": [
 					{
 						"type": "Action.Submit",
 						"title": "Neat!"
+					},
+					{
+						"type": "redAction",
+						"backwardString": "tset timbuS"
+					}
+				]
+			}
+		},
+		{
+			"type": "Action.ShowCard",
+			"title": "Another Action ",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "What do you think?"
+					},
+					{
+						"type": "Input.Text",
+						"id": "id3"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Neat!"
+					},
+					{
+						"type": "blueAction",
+						"title": "Nested custom blue"
 					}
 				]
 			}

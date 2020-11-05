@@ -52,7 +52,7 @@ public class AdaptiveCardRenderer
             HostConfig hostConfig)
     {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
-        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, new InternalId());
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
         result.setView(cardView);
         return result;
     }
@@ -99,7 +99,7 @@ public class AdaptiveCardRenderer
                                ICardActionHandler cardActionHandler,
                                HostConfig hostConfig,
                                boolean isInlineShowCard,
-                               InternalId containerCardId)
+                               long containerCardId)
     {
         if (hostConfig == null)
         {
@@ -115,8 +115,6 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setFocusable(true);
-        rootLayout.setFocusableInTouchMode(true);
 
         // Add this two for allowing children to bleed
         rootLayout.setClipChildren(false);
@@ -154,8 +152,10 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
-        renderArgs.setContainerCardId(adaptiveCard.GetInternalId());
-        renderedCard.setParentToCard(adaptiveCard.GetInternalId(), containerCardId);
+
+        long cardId = Util.getViewId(rootLayout);
+        renderArgs.setContainerCardId(cardId);
+        renderedCard.setParentToCard(cardId, containerCardId);
 
         // Render the body section of the Adaptive Card
         String color = hostConfig.GetBackgroundColor(style);
@@ -192,7 +192,7 @@ public class AdaptiveCardRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, adaptiveCard.GetBackgroundImage(), hostConfig, cardLayout);
-        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler, renderArgs);
 
         return rootLayout;
     }
