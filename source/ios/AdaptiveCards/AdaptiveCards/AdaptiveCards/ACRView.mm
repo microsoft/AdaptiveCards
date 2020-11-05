@@ -426,10 +426,10 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 {
     RichTextElementProperties textProp = std::move(textProperties);
     /// dispatch to concurrent queue
-    dispatch_group_async(_async_tasks_group, _global_queue,
-                         ^{
+    //dispatch_group_async(_async_tasks_group, _global_queue,
+    //                     ^{
                              buildIntermediateResultForText(self, self->_hostConfig, textProp, elementId);
-                         });
+//});
 }
 
 - (void)enqueueIntermediateTextProcessingResult:(NSDictionary *)data

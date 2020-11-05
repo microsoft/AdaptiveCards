@@ -46,10 +46,6 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    self.userSelectedJSon =
-        [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
-                                  encoding:NSUTF8StringEncoding
-                                     error:nil];
     if (!self.IsCollapsed) {
         if (selectedRow != indexPath.row) {
             [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
@@ -67,7 +63,11 @@
                 [tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             }];
         self.IsCollapsed = YES;
-
+        self.userSelectedJSon =
+            [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
+                                      encoding:NSUTF8StringEncoding
+                                         error:nil];
+        [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
     } else {
         [UIView animateWithDuration:0.6
                          animations:^{

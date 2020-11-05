@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+#import "ACRChatWindow.h"
 #import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
 #import "AdaptiveCards/ACRAggregateTarget.h"
@@ -25,6 +26,7 @@ CGFloat kAdaptiveCardsWidth = 360;
     BOOL _enableCustomRenderer;
     ACOResourceResolvers *_resolvers;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
+    ACRChatWindow *_dataSource;
 }
 
 @end
@@ -127,6 +129,7 @@ CGFloat kAdaptiveCardsWidth = 360;
         [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
+        [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRQuickReply];
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
@@ -300,22 +303,22 @@ CGFloat kAdaptiveCardsWidth = 360;
     buttonLayout.distribution = UIStackViewDistributionEqualCentering;
     buttonLayout.spacing = 10;
 
-    _scrView = [[UIScrollView alloc] init];
-    _scrView.showsHorizontalScrollIndicator = NO;
+    self.chatWindow = [[UITableView alloc] init];
+    self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
+    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _dataSource = [[ACRChatWindow alloc] init];
+    _dataSource.adaptiveCardsDelegates = self;
+    self.chatWindow.dataSource = _dataSource;
 
-    [self.view addSubview:self.scrView];
+    [self.view addSubview:self.chatWindow];
 
-    UIScrollView *scrollview = self.scrView;
-    scrollview.showsVerticalScrollIndicator = YES;
-    _scrView.scrollEnabled = YES;
-    scrollview.translatesAutoresizingMaskIntoConstraints = NO;
-
+    UITableView *chatWindow = self.chatWindow;
     NSDictionary *viewMap =
-        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout, scrollview);
+        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout, chatWindow);
 
     NSArray<NSString *> *formats = [NSArray
-        arrayWithObjects:@"V:|-70-[_compositeFileBrowserView]-[buttonLayout]-[scrollview]-40@100-|",
-                         @"H:|-[scrollview]-|", nil];
+        arrayWithObjects:@"V:|-70-[_compositeFileBrowserView]-[buttonLayout]-[chatWindow]-40@100-|",
+                         @"H:|-[chatWindow]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
 
@@ -331,82 +334,8 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)update:(NSString *)jsonStr
 {
     self.editableStr = jsonStr;
-    ACRRenderResult *renderResult;
-    ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig
-                                                            resourceResolvers:_resolvers];
-    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-
-    if (!cardParseResult.isValid) {
-        cardParseResult = _errorCard;
-    }
-
-    ACRRegistration *registration = [ACRRegistration getInstance];
-
-    NSString *type = @"ProgressBar";
-    CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
-    [registration setCustomElementParser:progressBarParser key:type];
-
-    CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-    [registration setCustomElementRenderer:progressBarRenderer key:type];
-
-    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
-    NSString *type1 = @"NewStyle";
-    [registration setCustomActionElementParser:customParser key:type1];
-
-    CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
-    [registration setCustomActionRenderer:customActionRenderer key:type1];
-
-    _config = hostconfigParseResult.config;
-    renderResult = [ACRRenderer render:cardParseResult.card
-                                config:hostconfigParseResult.config
-                       widthConstraint:kAdaptiveCardsWidth
-                              delegate:self];
-
-    if (renderResult.succeeded) {
-        ACRView *ad = renderResult.view;
-        NSMutableString *joinedString = [[NSMutableString alloc] init];
-        for (ACOWarning *warning in ad.warnings) {
-            [joinedString appendString:warning.message];
-        }
-
-        if (ad.warnings.count) {
-            [self presentViewController:[self createAlertController:@"Warnings" message:joinedString] animated:YES completion:nil];
-        }
-        ad.mediaDelegate = self;
-        if (self.curView)
-            [self.curView removeFromSuperview];
-
-        self.curView = ad;
-
-        [_scrView addSubview:self.curView];
-        UIView *view = self.curView;
-        view.translatesAutoresizingMaskIntoConstraints = NO;
-
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeTop
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_scrView
-                                     attribute:NSLayoutAttributeTop
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeBottom
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_scrView
-                                     attribute:NSLayoutAttributeBottom
-                                    multiplier:1.0
-                                      constant:0]
-            .active = YES;
-        [NSLayoutConstraint constraintWithItem:view
-                                     attribute:NSLayoutAttributeCenterX
-                                     relatedBy:NSLayoutRelationEqual
-                                        toItem:_scrView
-                                     attribute:NSLayoutAttributeCenterX
-                                    multiplier:1.0
-                                      constant:3]
-            .active = YES;
-    }
+    [_dataSource insertCard:jsonStr];
+    [self.chatWindow reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -560,8 +489,26 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didLoadElements
 {
-    [self.curView setNeedsLayout];
-    NSLog(@"completed loading elements");
+    NSArray *arrayOfRowsToReload = @[ [NSIndexPath indexPathForRow:[self.chatWindow numberOfRowsInSection:0] - 1 inSection:0] ];
+    /*
+    [self.chatWindow
+        performBatchUpdates:^{
+        self.chatWindow.scrollEnabled = FALSE;
+     */
+            [self.chatWindow reloadRowsAtIndexPaths:arrayOfRowsToReload withRowAnimation:UITableViewRowAnimationNone];
+       /*
+        }
+        completion:^(BOOL finished) {
+            if (finished) {
+                [self.chatWindow
+                    scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.chatWindow numberOfRowsInSection:0] - 1
+                                                              inSection:0]
+                          atScrollPosition:UITableViewScrollPositionBottom
+                                  animated:YES];
+                self.chatWindow.scrollEnabled = TRUE;
+            }
+        }];
+        */
 }
 
 @end

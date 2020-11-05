@@ -26,5 +26,6 @@
 @property (strong, nonatomic) ACOAdaptiveCardParseResult *errorCard;
 @property ACRView *curView;
 @property UIScrollView *scrView;
+@property UITableView *chatWindow;
 
 @end
