@@ -9,7 +9,7 @@ This library implements a JSON-to-JSON templating/data-binding engine. While it 
 ### Node
 
 ```console
-npm install adaptivecards-templating --save
+npm install adaptive-expressions adaptivecards-templating --save
 ```
 
 ```js

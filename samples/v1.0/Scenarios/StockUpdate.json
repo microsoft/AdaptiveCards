@@ -22,7 +22,8 @@
                 },
                 {
                     "type": "TextBlock",
-                    "text": "Fri, May 3, 2019 1:00 PM"
+                    "text": "Fri, May 3, 2019 1:00 PM",
+					"wrap": true
                 }
 			]
 		},
@@ -40,13 +41,15 @@
 								{
 									"type": "TextBlock",
 									"text": "128.90",
-									"size": "extraLarge"
+									"size": "extraLarge",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "▲ 2.69 USD (2.13%)",
 									"color": "good",
-									"spacing": "none"
+									"spacing": "none",
+									"wrap": true
 								}
 							]
 						},

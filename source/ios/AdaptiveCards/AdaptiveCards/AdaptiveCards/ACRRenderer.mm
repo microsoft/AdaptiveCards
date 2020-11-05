@@ -79,12 +79,14 @@ using namespace AdaptiveCards;
     ACRColumnView *verticalView = containingView;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
+    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+
     if (selectAction) {
         // instantiate and add tap gesture recognizer
         [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
                                                                            rootView:rootView
                                                                       recipientView:verticalView
-                                                                      actionElement:selectAction
+                                                                      actionElement:acoSelectAction
                                                                          hostConfig:config];
     }
 
@@ -176,7 +178,6 @@ using namespace AdaptiveCards;
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
     auto firstelem = elems.begin();
-    auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
         ACRSeparator *separator = nil;
@@ -184,7 +185,7 @@ using namespace AdaptiveCards;
             separator = [ACRSeparator renderSeparation:elem
                                           forSuperview:view
                                         withHostConfig:[config getHostConfig]];
-            configSeparatorVisibility(separator, prevElem);
+            configSeparatorVisibility(separator, elem);
         }
 
         ACRBaseCardElementRenderer *renderer =
@@ -240,8 +241,6 @@ using namespace AdaptiveCards;
         } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
-
-        prevElem = elem;
     }
 
     return view;

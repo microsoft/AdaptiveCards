@@ -37,9 +37,9 @@ var customAssets = [
         dest: function (p) { return "payloads/" + path.basename(p); }
 	},
     {
-		// Legacy JSON schema URL, it'll stay at 1.1 as a point-in-history and we're
-		// deprecating that url path as it's not versioned
-        path: "../../../schemas/1.1.0/adaptive-card.json",
+		// Unversioned JSON schema URL, set to the 1.3 (current) version as versioned schema paths are not in use.
+		// May be deprecated in the future in favor of versioned schema paths.
+        path: "../../../schemas/1.3.0/adaptive-card.json",
         dest: function (p) { return "schemas/adaptive-card.json"; }
     },
     {

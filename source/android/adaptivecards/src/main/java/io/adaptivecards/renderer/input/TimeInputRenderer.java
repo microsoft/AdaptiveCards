@@ -82,7 +82,6 @@ public class TimeInputRenderer extends TextInputRenderer
                 renderArgs,
                 (!timeInput.GetMin().isEmpty()) || (!timeInput.GetMax().isEmpty()) /* hasSpecificValidation */);
         editText.setRawInputType(TYPE_NULL);
-        editText.setFocusable(false);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override

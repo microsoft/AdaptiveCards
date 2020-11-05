@@ -1,13 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Spinner;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ChoiceInput;
 import io.adaptivecards.objectmodel.ChoiceInputVector;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.input.customcontrols.ValidatedSpinnerLayout;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -21,6 +25,11 @@ public class ComboBoxInputHandler extends BaseInputHandler
 
     protected Spinner getSpinner()
     {
+        // For validation visual cues we draw the spinner inside a ValidatedSpinnerLayout so we query for this
+        if (m_view instanceof ValidatedSpinnerLayout)
+        {
+            return (Spinner)(((ValidatedSpinnerLayout)m_view).getChildAt(0));
+        }
         return (Spinner) m_view;
     }
 
@@ -60,7 +69,7 @@ public class ComboBoxInputHandler extends BaseInputHandler
     @Override
     public void setFocusToView()
     {
-        m_view.requestFocus();
-        m_view.performClick();
+        Util.forceFocus(m_view);
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }
