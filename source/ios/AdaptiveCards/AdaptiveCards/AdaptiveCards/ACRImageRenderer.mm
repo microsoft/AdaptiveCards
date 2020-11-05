@@ -90,6 +90,8 @@
             intrinsicContentSize = [acoConfig getImageSize:ImageSize::Small];
         } else if (size != ImageSize::Auto) {
             intrinsicContentSize = [acoConfig getImageSize:imgElem->GetImageSize()];
+        } else {
+            intrinsicContentSize = CGSizeMake(-1, -1);
         }
 
     } else {
@@ -113,6 +115,7 @@
         [viewGroup addSubview:wrappingview];
         return wrappingview;
     }
+    
     wrappingview.desiredContentSize = intrinsicContentSize;
 
     view.clipsToBounds = YES;
@@ -306,7 +309,7 @@
         [NSLayoutConstraint activateConstraints:constraints];
 
         if ([imageView.superview class] == [ACRContentHoldingUIView class]) {
-            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
+            [imageView.superview invalidateIntrinsicContentSize];            
         }
     }
 }
