@@ -790,7 +790,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this._inplaceEditor = null;
 
-            this._inplaceEditorOverlay.remove();
+            this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
         }
     }
 
@@ -1081,7 +1081,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
-        this.renderedElement.remove();
+        this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
             for (var i = 0; i < this.getChildCount(); i++) {
