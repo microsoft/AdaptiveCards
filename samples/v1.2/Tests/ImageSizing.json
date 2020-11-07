@@ -115,6 +115,7 @@
 				{
 					"type": "Column",
 					"width": "50px",
+					"height": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
