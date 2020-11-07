@@ -17,6 +17,7 @@ import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.flexbox.JustifyContent;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -30,6 +31,7 @@ import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
+import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 import java.util.Locale;
@@ -166,10 +168,15 @@ public class ColumnRenderer extends BaseCardElementRenderer
         columnLayout.setFlexDirection(FlexDirection.COLUMN);
         columnLayout.setTag(new TagContent(column));
 
+        // For some reason, flexbox has problems managing the height properties, so we have to create an extra linear layout
+        StretchableElementLayout itemsContainer = new StretchableElementLayout(context, column.GetHeight() == HeightType.Stretch);
+        columnLayout.addView(itemsContainer);
+
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
 
-        ViewGroup itemsContainer = setColumnWidth(renderedCard, context, column, columnLayout);
-        itemsContainer = setMinHeight(column.GetMinHeight(), (FlexboxLayout) itemsContainer, context);
+        setMinHeight(column.GetMinHeight(), (View)itemsContainer, context);
+
+        columnLayout = (SelectableFlexboxLayout) setColumnWidth(renderedCard, context, column, columnLayout);
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(column, containerStyle);
