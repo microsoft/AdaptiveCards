@@ -71,6 +71,8 @@
                                       reuseIdentifier:identifier];
     }
 
+    // cached adaptive card view doesn't exist
+    // make one
     if (indexPath.row >= numberOfCards) {
         numberOfCards += 1;
         NSString *jsonString = adaptiveCardsPayloads[indexPath.row];
@@ -82,6 +84,10 @@
                                                      config:hostconfigParseResult.config
                                             widthConstraint:adaptiveCardsWidth
                                                    delegate:self.adaptiveCardsDelegates];
+        // how do i map this view to row;
+        // i could hash jsonString with row
+        // hash, row number, view
+        // row number is key
         [adaptiveCardsViews addObject:renderResult.view];
     }
 
@@ -108,13 +114,5 @@
 {
     return UITableViewAutomaticDimension;
 }
-
-//
-//- (void)tableView:(UITableView *)tableView
-//commitEditingStyle:(UITableViewCellEditingStyle)editingStyle
-//forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//
-//}
 
 @end
