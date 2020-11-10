@@ -108,16 +108,21 @@ export class Media extends React.Component {
     render() {
         return (
             <InputContextConsumer>
-                {({ onParseError, addResourceInformation }) => {
+                {({ onParseError, addResourceInformation, authToken }) => {
                     this.addResourceInformation = addResourceInformation;
                     this.onParseError = onParseError;
-
+                    
                     return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
                         <View style={styles.container}>
                             {
                                 (this.sources && this.sources.length > 0) &&
                                 <Video
-                                    source={this.sources[this.state.currentSourceIndex]}
+                                    source={{...this.sources[this.state.currentSourceIndex],...{
+                                        headers: {
+                                            Authorization: authToken,
+                                        }
+                                    }
+                                    }}
                                     fullscreen={true}
                                     controls={true}
                                     id={this.payload.id ? this.payload.id : "video"}

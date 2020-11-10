@@ -1,0 +1,19 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "width:25px height:50px",
+			"weight": "bolder",
+			"size": "small"
+		},
+		{
+			"type": "Image",
+			"url": "http://thenewcode.com/assets/images/thumbnails/homer-simpson.svg",
+			"width": "25px",
+			"height": "50px"
+		}
+	]
+}

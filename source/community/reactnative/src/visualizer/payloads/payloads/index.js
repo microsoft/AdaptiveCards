@@ -248,6 +248,14 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
+    "title": "SVGImage.Explicit.Size.json",
+    "json": require('./SVGImage.Explicit.Size.json')
+  },
+  {
+    "title": "SVGImage.Size.json",
+    "json": require('./SVGImage.json')
+  },
+  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },

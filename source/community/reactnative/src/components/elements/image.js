@@ -9,6 +9,8 @@ import {
 	StyleSheet,
 	Image,
 } from 'react-native';
+import { SvgUri } from 'react-native-svg';
+import FastImage from 'react-native-fast-image'
 
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
@@ -249,6 +251,27 @@ export class Img extends React.Component {
 		});
 	}
 
+	getImageComponent = (imageUrl, imageStyle, authToken) => {
+		if (imageUrl && imageUrl.match('.svg')) { 
+		  return <SvgUri
+					width={imageStyle.width ? imageStyle.width : "100%"}
+					height={imageStyle.height ? imageStyle.height : "100%"}
+					style= {imageStyle}
+					uri={ imageUrl }
+				/>
+		} else {
+		return <FastImage
+					style={imageStyle}
+					source={{
+						uri: imageUrl,
+						headers: { Authorization: authToken },
+						priority: FastImage.priority.normal,
+					}}
+					resizeMode={FastImage.resizeMode.contain}
+    			/>
+		}
+	  };
+
 	render() {
 		this.parseHostConfig();
 
@@ -284,14 +307,14 @@ export class Img extends React.Component {
 		let imageUrl = Utils.getImageUrl(this.url);
 
 		let containerContent = (<InputContextConsumer>
-			{({ addResourceInformation }) => {
+			{({ addResourceInformation, authToken }) => {
 				this.addResourceInformation = addResourceInformation;
 				return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}
 					style={wrapperComputedStyle}
 					onPageLayout={this.onPageLayoutHandler}>
-
-					<Image style={imageComputedStyle}
-						source={{ uri: imageUrl }} />
+					{/* <Image style={imageComputedStyle}
+						source={{ uri: imageUrl }} /> */}
+					{this.getImageComponent(imageUrl, imageComputedStyle, authToken)}
 				</ElementWrapper>
 			}}
 		</InputContextConsumer>);

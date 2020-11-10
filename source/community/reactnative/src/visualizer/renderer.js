@@ -144,6 +144,7 @@ export default class Renderer extends React.Component {
                         onParseError={this.onParseError}
                         // containerStyle={{width:100, height: 100, flexGrow:1, backgroundColor: 'lightblue'}} //we can also set the style for the adaptive card
                         // contentHeight={500} //we can also set the height of the adaptive card
+                        Authorization="Auth_Token" //we can set the Authorization header of the adaptive card
                         ref="adaptiveCardRef" />
                 }
             </View>

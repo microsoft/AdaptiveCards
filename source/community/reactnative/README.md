@@ -24,6 +24,7 @@ import AdaptiveCard from 'adaptivecards-reactnative'
                     backgroundColor:'lightblue'
                }}
                contentHeight={500} 
+               Authorization="Auth_Token"
                ref="referenceVariable"/>
 ```
 
@@ -36,6 +37,7 @@ Prop | Type | Description | Required
 **onParseError** | `{Event Handler}` | Method to be executed on JSON parse errors | NO
 **containerStyle** | `{object}` | Style used to override the adaptive card container style | NO
 **contentHeight** | `{number}` | Value used to override the adaptive card height | NO
+**Authorization** | `{string}` | Value used as the Authorization header  | NO
 **ref** | `React.createRef()` |  Reference variable used to invoke the methods exposed by AdaptiveCards.(Example: In order to fetch the image & media URLs across the payload, one can use like this `this.refs.referenceVariable.getResourceInformation()`  | NO
 
 ## Extensibility

@@ -214,6 +214,8 @@ export default class AdaptiveCard extends React.Component {
 		const onParseError = this.onParseError;
 		const lang = this.payload.lang || 'en';
 		const { showErrors } = this.state;
+		//Authorization header passed in the adaptive card
+		const authToken = this.props.Authorization ? this.props.Authorization : ""
 
 		// version check
 		if (!this.isSupportedVersion()) {
@@ -223,7 +225,7 @@ export default class AdaptiveCard extends React.Component {
 			)
 		}
 		return (
-			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, showErrors, toggleVisibilityForElementWithID }}>
+			<InputContextProvider value={{ lang, addInputItem, inputArray, onExecuteAction, isTransparent, onParseError, addResourceInformation, showErrors, toggleVisibilityForElementWithID, authToken }}>
 				{
 					this.getAdaptiveCardContent()
 				}
