@@ -382,6 +382,14 @@ CGFloat kAdaptiveCardsWidth = 360;
         }
     } else if (action.type == ACRToggleVisibility) {
         NSLog(@"toggle visibility");
+    } else {
+        if (@available(iOS 11.0, *)) {
+            [self.chatWindow performBatchUpdates:^(void) {
+                [self.chatWindow reloadRowsAtIndexPaths:self.chatWindow.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];}
+                                      completion:nil];
+        } else {
+            [self.chatWindow reloadData];
+        }
     }
 }
 
@@ -394,7 +402,7 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
-    [self.scrView scrollRectToVisible:newFrame animated:YES];
+    //[self.chatWindow reloadData];
 }
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
@@ -403,10 +411,11 @@ CGFloat kAdaptiveCardsWidth = 360;
     if ([actiontype isEqualToString:ACRAggregateTargetSubmitAction]) {
         UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
         if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
-            [self.scrView setContentOffset:focusedView.frame.origin animated:YES];
+            [self.chatWindow setContentOffset:focusedView.frame.origin animated:YES];
+            [self.chatWindow reloadData];
         }
     } else {
-        [self.scrView scrollRectToVisible:newFrame animated:YES];
+        [self.chatWindow scrollRectToVisible:newFrame animated:YES];
     }
 }
 
@@ -426,7 +435,6 @@ CGFloat kAdaptiveCardsWidth = 360;
         } else {
             button.backgroundColor = [UIColor colorWithRed:0.11 green:0.68 blue:0.97 alpha:1.0];
         }
-        [self.scrView layoutIfNeeded];
     }
 }
 
@@ -490,25 +498,7 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)didLoadElements
 {
     NSArray *arrayOfRowsToReload = @[ [NSIndexPath indexPathForRow:[self.chatWindow numberOfRowsInSection:0] - 1 inSection:0] ];
-    /*
-    [self.chatWindow
-        performBatchUpdates:^{
-        self.chatWindow.scrollEnabled = FALSE;
-     */
-            [self.chatWindow reloadRowsAtIndexPaths:arrayOfRowsToReload withRowAnimation:UITableViewRowAnimationNone];
-       /*
-        }
-        completion:^(BOOL finished) {
-            if (finished) {
-                [self.chatWindow
-                    scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[self.chatWindow numberOfRowsInSection:0] - 1
-                                                              inSection:0]
-                          atScrollPosition:UITableViewScrollPositionBottom
-                                  animated:YES];
-                self.chatWindow.scrollEnabled = TRUE;
-            }
-        }];
-        */
+    [self.chatWindow reloadRowsAtIndexPaths:arrayOfRowsToReload withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end
