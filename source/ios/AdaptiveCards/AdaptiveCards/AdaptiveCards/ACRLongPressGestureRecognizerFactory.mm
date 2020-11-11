@@ -33,6 +33,11 @@ using namespace AdaptiveCards;
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
             recipientView.userInteractionEnabled = YES;
+            if (action.type == ACRSubmit || action.type == ACRToggleVisibility) {
+                recipientView.accessibilityTraits |= UIAccessibilityTraitButton;
+            } else if (action.type == ACROpenUrl) {
+                recipientView.accessibilityTraits |= UIAccessibilityTraitLink;
+            }
         }
     }
 }
