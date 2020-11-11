@@ -496,7 +496,7 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 }
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
@@ -504,7 +504,7 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action,
+                               ACOBaseActionElement *action,
                                NSObject **target)
 {
     *target = [director build:action];
