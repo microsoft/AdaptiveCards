@@ -18,7 +18,7 @@ static int kToggleVisibilityContext;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSMutableSet<UIView *> *_hiddenSubviews;
+    NSHashTable<UIView *> *_hiddenSubviews;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -49,7 +49,7 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         self.clipsToBounds = NO;
         [self config:attributes];
     }
@@ -67,7 +67,7 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 

@@ -240,7 +240,7 @@ export class CardDesigner extends Designer.DesignContext {
     private endDrag() {
         if (this._draggedPaletteItem) {
             this._draggedPaletteItem.endDrag();
-            this._draggedElement.remove();
+            this._draggedElement.parentNode.removeChild(this._draggedElement);
 
             this._draggedPaletteItem = null;
             this._draggedElement = null;
@@ -678,7 +678,7 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             };

@@ -1,7 +1,7 @@
 {
 	"name": "Adaptive Cards Templating Javascript SDK",
 	"inputFiles": "./src",
-	"mode": "library",
+	"mode": "file",
 	"out": "docs",
 	"exclude": [
 		"__tests__"

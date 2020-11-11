@@ -21,8 +21,9 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			library: "ACDesigner",
-			//libraryTarget: "umd",
-			//umdNamedDefine: true
+			libraryTarget: "umd",
+			globalObject: "this",
+			// umdNamedDefine: true
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
@@ -113,8 +114,23 @@ module.exports = (env, argv) => {
 				}
 			})
 		],
-		externals: [
+		externals: {
 			///^monaco-editor/ // <-- NOT WORKING for some reason
-		]
+			"adaptivecards": {
+				commonjs2: "adaptivecards",
+				commonjs: "adaptivecards",
+				root: "AdaptiveCards"
+			},
+			"adaptive-expressions": {
+				commonjs2: "adaptive-expressions",
+				commonjs: "adaptive-expressions",
+				root: "AEL"
+			},
+			"adaptivecards-templating": {
+				commonjs2: "adaptivecards-templating",
+				commonjs: "adaptivecards-templating",
+				root: "ACData"
+			}
+		}
 	}
 }
