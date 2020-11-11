@@ -92,16 +92,6 @@ var customAssets = [
         // site JS
         path: "themes/adaptivecards/source/js/*.js",
 		dest: function (p) { return "js/" + path.basename(p) }
-	},
-	{
-        // third-party markdown
-        path: "node_modules/markdown-it/dist/markdown-it.min.js",
-		dest: function (p) { return p; }
-	},
-	{
-        // adaptive-expressions
-        path: "node_modules/adaptive-expressions/lib/browser.js",
-		dest: function (p) { return p; }
 	}
 ];
 
