@@ -62,12 +62,13 @@ export abstract class Dialog {
                 if (!this.preventLightDismissal) { this.close(); }
             };
 
-            let dialogFrameElement = document.createElement("dialog");
+            let dialogFrameElement = document.createElement("div");
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
-            dialogFrameElement.setAttribute("aria-modal", "true");
+			dialogFrameElement.setAttribute("aria-modal", "true");
+			dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
 
