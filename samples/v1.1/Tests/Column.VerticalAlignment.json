@@ -20,7 +20,6 @@
 				{
 					"type": "Column",
 					"width": "stretch",
-					"height": "stretch",
 					"items": [
 						{
 							"type": "Image",
@@ -33,7 +32,6 @@
 				{
 					"type": "Column",
 					"width": "stretch",
-					"height": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
@@ -57,7 +55,6 @@
 				{
 					"type": "Column",
 					"width": "stretch",
-					"height": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
