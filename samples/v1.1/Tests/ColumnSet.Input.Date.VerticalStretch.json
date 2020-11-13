@@ -23,7 +23,6 @@
 					"width": 1,
 					"spacing": "large",
 					"separator": true,
-					"height": "stretch",
 					"items": [
 						{
 							"type": "TextBlock",
