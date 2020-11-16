@@ -4959,6 +4959,12 @@ export class ActionSet extends CardElement {
         }
     }
 
+    getActionById(id: string): Action | undefined {
+        let result: Action | undefined = this._actionCollection.getActionById(id);
+
+        return result ? result : super.getActionById(id);
+    }
+
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 

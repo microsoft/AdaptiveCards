@@ -149,7 +149,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) collectionElementView.getLayoutParams();
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) collectionElementView.getLayoutParams();
             int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
