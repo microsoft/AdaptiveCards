@@ -107,46 +107,40 @@ public class ColumnRenderer extends BaseCardElementRenderer
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         long pixelWidth = column.GetPixelWidth();
 
+        FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(0, FlexboxLayout.LayoutParams.MATCH_PARENT);
+
         if (pixelWidth != 0)
         {
-            columnLayout.setLayoutParams(new FlexboxLayout.LayoutParams(Util.dpToPixels(context, pixelWidth), FlexboxLayout.LayoutParams.MATCH_PARENT));
-            return columnLayout;
+            layoutParams.setFlexGrow(0);
+            layoutParams.setFlexShrink(0);
+            layoutParams.setWidth(Util.dpToPixels(context, pixelWidth));
         }
         else if (hasRatioWidth(column))
         {
             // Set ratio to column
             float columnWeight = Float.parseFloat(columnSize);
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(0, FlexboxLayout.LayoutParams.MATCH_PARENT);
             layoutParams.setFlexGrow(columnWeight);
             layoutParams.setFlexShrink(1);
-            columnLayout.setLayoutParams(layoutParams);
-            return columnLayout;
         }
         else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
         {
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.WRAP_CONTENT, FlexboxLayout.LayoutParams.MATCH_PARENT);
             layoutParams.setFlexGrow(1);
             layoutParams.setFlexShrink(1);
-
-            columnLayout.setLayoutParams(layoutParams);
-
-            return columnLayout;
         }
         else
         {
             // If the width is Auto or is not valid (not weight, pixel, empty or stretch)
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             layoutParams.setFlexGrow(0);
             layoutParams.setFlexShrink(1);
-            columnLayout.setLayoutParams(layoutParams);
+            layoutParams.setWidth(FlexboxLayout.LayoutParams.WRAP_CONTENT);
 
             if (!columnSize.equals(g_columnSizeAuto))
             {
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.INVALID_COLUMN_WIDTH_VALUE, "Column Width (" + column.GetWidth() + ") is not a valid weight ('auto', 'stretch', <integer>)."));
             }
-
-            return columnLayout;
         }
+        columnLayout.setLayoutParams(layoutParams);
+        return columnLayout;
     }
 
     @Override
