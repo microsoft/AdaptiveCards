@@ -16,6 +16,9 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.flexbox.JustifyContent;
 
+import io.adaptivecards.objectmodel.CollectionTypeElement;
+import io.adaptivecards.objectmodel.Container;
+import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
@@ -60,23 +63,23 @@ public class ColumnRenderer extends BaseCardElementRenderer
         switch (verticalContentAlignment)
         {
             case Center:
-                alignment = AlignItems.CENTER;
+                alignment = JustifyContent.CENTER;
                 gravity = Gravity.CENTER_VERTICAL;
                 break;
             case Bottom:
-                alignment = AlignItems.FLEX_END;
+                alignment = JustifyContent.FLEX_END;
                 gravity = Gravity.BOTTOM;
                 break;
             case Top:
             default:
-                alignment = AlignItems.FLEX_START;
+                alignment = JustifyContent.FLEX_START;
                 gravity = Gravity.TOP;
                 break;
         }
 
         if (linearLayout instanceof FlexboxLayout)
         {
-            ((FlexboxLayout)linearLayout).setAlignItems(alignment);
+            ((FlexboxLayout)linearLayout).setJustifyContent(alignment);
         }
         else if (linearLayout instanceof LinearLayout)
         {
