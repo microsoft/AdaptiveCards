@@ -113,9 +113,9 @@ using namespace AdaptiveCards;
 
         self.placeholder = placeHolderStr;
         self.allowsEditingTextAttributes = NO;
-        self.borderStyle = UITextBorderStyleRoundedRect;
-        self.backgroundColor = UIColor.groupTableViewBackgroundColor;
         self.delegate = self;
+        self.layer.borderColor = self.borderColor.CGColor;
+        self.layer.borderWidth = self.borderWidth;
 
         if (date) {
             picker.date = date;

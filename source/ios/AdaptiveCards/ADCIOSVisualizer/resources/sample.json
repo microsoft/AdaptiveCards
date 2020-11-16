@@ -46,8 +46,8 @@
 					"subtle": "#EE333333"
 				},
 				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
+					"default": "#173FFF",
+					"subtle": "#2E5BFF"
 				},
 				"good": {
 					"default": "#028A02",
@@ -62,7 +62,7 @@
 					"subtle": "#DDFF0000"
 				}
 			},
-			"backgroundColor": "#EAEAEA"
+			"backgroundColor": "#F5F5F5"
 		},
 		"emphasis": {
 			"foregroundColors": {
