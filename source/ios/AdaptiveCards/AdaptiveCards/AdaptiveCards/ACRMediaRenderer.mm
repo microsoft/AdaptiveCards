@@ -145,6 +145,14 @@
         UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:mediaTarget];
         [view addGestureRecognizer:recognizer];
         view.userInteractionEnabled = YES;
+
+        contentholdingview.isAccessibilityElement = NO;
+        view.isAccessibilityElement = YES;
+        view.accessibilityTraits = UIAccessibilityTraitStartsMediaSession | UIAccessibilityTraitButton;
+        NSString *stringForAccessibilityLabel = [NSString stringWithCString:mediaElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+        if (stringForAccessibilityLabel.length) {
+            view.accessibilityLabel = stringForAccessibilityLabel;
+        }
     }
 
     configVisibility(contentholdingview, elem);
