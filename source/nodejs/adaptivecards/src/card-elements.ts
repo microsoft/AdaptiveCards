@@ -3050,7 +3050,7 @@ export class ChoiceSetInput extends Input {
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
-    private _toggleInputs: HTMLInputElement[];
+    private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
 
     // Make sure `aria-current` is applied to the currently-selected item
@@ -3148,7 +3148,7 @@ export class ChoiceSetInput extends Input {
     }
 
     protected updateInputControlAriaLabelledBy() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if ((this.isMultiSelect || this.style === "expanded") && this._toggleInputs && this._labels) {
             let labelIds: string[] = this.getAllLabelIds();
 
             for (let i = 0; i < this._toggleInputs.length; i++) {
@@ -3238,7 +3238,7 @@ export class ChoiceSetInput extends Input {
     }
 
     focus() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if (this._toggleInputs && (this.isMultiSelect || this.style === "expanded")) {
             if (this._toggleInputs.length > 0) {
                 this._toggleInputs[0].focus();
             }
