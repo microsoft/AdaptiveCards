@@ -195,6 +195,10 @@
     wrappingview.translatesAutoresizingMaskIntoConstraints = NO;
 
     view.isAccessibilityElement = YES;
+    NSString *stringForAccessiblilityLabel = [NSString stringWithCString:imgElem->GetAltText().c_str() encoding:NSUTF8StringEncoding];
+    if (stringForAccessiblilityLabel.length) {
+        view.accessibilityLabel = stringForAccessiblilityLabel;
+    }
 
     configVisibility(wrappingview, elem);
 
