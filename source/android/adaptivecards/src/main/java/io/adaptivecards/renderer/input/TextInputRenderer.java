@@ -442,7 +442,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
             ImageButton button = (ImageButton) super.m_view;
             Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            float editTextHeight = Util.pixelsToDp(m_context, m_editText.getLineHeight()*m_editText.getLineSpacingMultiplier() + m_editText.getLineSpacingExtra());
+            float editTextHeight = m_editText.getLineHeight()*m_editText.getLineSpacingMultiplier()
+                + m_editText.getLineSpacingExtra()
+                + m_editText.getPaddingBottom()
+                + m_editText.getPaddingTop();
+            editTextHeight = Util.pixelsToDp(m_context, editTextHeight);
             button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap, m_context)));
         }
     }
