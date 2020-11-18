@@ -73,7 +73,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-        setMinHeight(columnSet.GetMinHeight(), columnSetLayout, context);
+        long minHeight = columnSet.GetMinHeight();
+        if (minHeight != 0)
+        {
+            columnSetLayout.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
+        }
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
