@@ -92,7 +92,8 @@
     [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+
     // instantiate and add tap gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView

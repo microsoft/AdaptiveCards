@@ -192,7 +192,7 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add long press gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView

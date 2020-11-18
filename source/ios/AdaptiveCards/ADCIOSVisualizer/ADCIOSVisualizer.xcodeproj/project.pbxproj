@@ -51,6 +51,7 @@
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
+		6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
@@ -149,6 +150,7 @@
 		6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomSubmitTargetBuilder.mm; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
+		6B70AB87256490CC0095D925 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.SelectAction.json; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6B980933215AE6EC0024B79B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6B980935215AE8780024B79B /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -234,6 +236,7 @@
 		6B150A0823034DAB00046B3A /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6B70AB87256490CC0095D925 /* Image.SelectAction.json */,
 				6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */,
 				6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */,
 				6B150A0D23034F2800046B3A /* ActivityUpdate.json */,
@@ -321,7 +324,6 @@
 				6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */,
 				6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */,
 				6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */,
-				6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */,
 				F4D33E841F04705800941E44 /* ACVTableViewController.h */,
 				F4D33E851F04705800941E44 /* ACVTableViewController.m */,
 				6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */,
@@ -494,6 +496,7 @@
 			files = (
 				6B150A36230354F200046B3A /* Image.Size.json in Resources */,
 				6B150A1123034F2800046B3A /* FoodOrder.json in Resources */,
+				6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */,
 				6B268FE520CEF89100D99C1B /* (null) in Resources */,
 				6B150A37230354F200046B3A /* ColumnSet.Spacing.json in Resources */,
 				6B1509FE22FC98AE00046B3A /* samples in Resources */,

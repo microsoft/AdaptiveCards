@@ -162,10 +162,8 @@
 - (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
-    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action.element);
-    if (unknownAction) {
-        ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
-        return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
+    if (action) {
+        return [[ACRAggregateTarget alloc] initWithActionElement:action rootView:director.rootView];
     }
 
     return nil;

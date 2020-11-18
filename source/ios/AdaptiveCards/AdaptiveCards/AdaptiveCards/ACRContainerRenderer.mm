@@ -92,7 +92,7 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView

@@ -79,9 +79,8 @@ using namespace AdaptiveCards;
     ACRColumnView *verticalView = containingView;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
-
     if (selectAction) {
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
         // instantiate and add tap gesture recognizer
         [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
                                                                            rootView:rootView
