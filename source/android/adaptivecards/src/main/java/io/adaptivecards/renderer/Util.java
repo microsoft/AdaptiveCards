@@ -3,6 +3,9 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -37,11 +40,11 @@ public final class Util {
 
     /**
      * Convert dp to px
-     * @param context
+     * @param context context
      * @param dp The number of Android dips (display-independent pixels)
      * @return The number of equivalent physical pixels
      */
-    public static int dpToPixels(Context context, long dp)
+    public static int dpToPixels(Context context, float dp)
     {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
@@ -50,11 +53,11 @@ public final class Util {
 
     /**
      * Convert px to dp
-     * @param context
+     * @param context Application context
      * @param pixels The number of physical pixels
      * @return The number of equivalent Android dips (display-independent pixels)
      */
-    public static double pixelsToDp(Context context, double pixels)
+    public static float pixelsToDp(Context context, float pixels)
     {
         return pixels / dpToPixels(context, 1);
     }
@@ -75,7 +78,8 @@ public final class Util {
      * Force focus when requestFocus is not sufficient.
      * @param v The target View to focus
      */
-    public static void forceFocus(View v) {
+    public static void forceFocus(View v)
+    {
         boolean focusableInTouchMode = v.isFocusableInTouchMode();
 
         v.setFocusable(true);
@@ -84,6 +88,23 @@ public final class Util {
         v.requestFocusFromTouch();
 
         v.setFocusableInTouchMode(focusableInTouchMode);
+    }
+
+    /**
+     * Generate new Bitmap scaled to given height from given Bitmap to the given height, maintaining
+     * aspect ratio. Note: This is computationally expensive.
+     * @param heightDp Desired height, in dips
+     * @param bitmap Bitmap to scale
+     * @param context Application context
+     */
+    public static Bitmap scaleBitmapToHeight(float heightDp, Bitmap bitmap, Context context)
+    {
+        Drawable d = new BitmapDrawable(null, bitmap);
+
+        float scaleRatio = heightDp / d.getIntrinsicHeight();
+        float widthDp = scaleRatio * d.getIntrinsicWidth();
+
+        return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(context, widthDp), Util.dpToPixels(context, heightDp), false);
     }
 
     public static void MoveChildrenViews(ViewGroup origin, ViewGroup destination)

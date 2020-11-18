@@ -282,12 +282,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
 
-                        InlineActionIconImageLoaderAsync imageLoader =
-                                new InlineActionIconImageLoaderAsync(
-                                        renderedCard,
-                                        inlineButton,
-                                        url,
-                                        editText);
+                        InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
+                            renderedCard,
+                            inlineButton,
+                            url,
+                            editText,
+                            context);
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
 
@@ -427,11 +427,13 @@ public class TextInputRenderer extends BaseCardElementRenderer
     private class InlineActionIconImageLoaderAsync extends InnerImageLoaderAsync
     {
         private EditText m_editText;
+        private Context m_context;
 
-        protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
+        protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText, Context context)
         {
             super(renderedCard, containerView, url, containerView.getResources().getDisplayMetrics().widthPixels);
             m_editText = editText;
+            m_context = context;
         }
 
         @Override
@@ -440,11 +442,8 @@ public class TextInputRenderer extends BaseCardElementRenderer
             ImageButton button = (ImageButton) super.m_view;
             Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            double editTextHeight = (m_editText.getLineHeight() + (int) m_editText.getLineSpacingExtra()) * 2.5;
-            double intrinsicWidth = drawableIcon.getIntrinsicHeight();
-            double scaleRatio = (editTextHeight )/ drawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * drawableIcon.getIntrinsicWidth();
-            button.setImageDrawable(new BitmapDrawable(null, Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)editTextHeight, false)));
+            float editTextHeight = (m_editText.getLineHeight() + (int) m_editText.getLineSpacingExtra()) * 2.5f;
+            button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap, m_context)));
         }
     }
 
