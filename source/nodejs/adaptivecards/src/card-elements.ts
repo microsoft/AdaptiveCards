@@ -3345,11 +3345,11 @@ export class NumberInput extends Input {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
 
-        if (this.min) {
+        if (this.min !== undefined) {
             this._numberInputElement.setAttribute("min", this.min.toString());
         }
 
-        if (this.max) {
+        if (this.max !== undefined) {
             this._numberInputElement.setAttribute("max", this.max.toString());
         }
 
@@ -3380,7 +3380,7 @@ export class NumberInput extends Input {
     }
 
     isValid(): boolean {
-        if (!this.value) {
+        if (this.value === undefined) {
             return !this.isRequired;
         }
 
@@ -4957,6 +4957,12 @@ export class ActionSet extends CardElement {
         else {
             return super.getActionAt(index);
         }
+    }
+
+    getActionById(id: string): Action | undefined {
+        let result: Action | undefined = this._actionCollection.getActionById(id);
+
+        return result ? result : super.getActionById(id);
     }
 
     internalValidateProperties(context: ValidationResults) {

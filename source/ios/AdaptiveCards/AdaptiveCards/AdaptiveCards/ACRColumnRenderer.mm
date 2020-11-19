@@ -99,6 +99,7 @@
                                                                   recipientView:column
                                                                   actionElement:acoSelectAction
                                                                      hostConfig:acoConfig];
+    column.shouldGroupAccessibilityChildren = YES;
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace
