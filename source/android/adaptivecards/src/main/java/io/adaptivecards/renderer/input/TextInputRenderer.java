@@ -286,8 +286,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             renderedCard,
                             inlineButton,
                             url,
-                            editText,
-                            context);
+                            editText);
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
 
@@ -427,21 +426,20 @@ public class TextInputRenderer extends BaseCardElementRenderer
     private class InlineActionIconImageLoaderAsync extends InnerImageLoaderAsync
     {
         private EditText m_editText;
-        private Context m_context;
 
-        protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText, Context context)
+        protected InlineActionIconImageLoaderAsync(RenderedAdaptiveCard renderedCard, View containerView, String url, EditText editText)
         {
             super(renderedCard, containerView, url, containerView.getResources().getDisplayMetrics().widthPixels);
             m_editText = editText;
-            m_context = context;
         }
 
         @Override
         protected void renderBitmap(Bitmap bitmap)
         {
             ImageButton button = (ImageButton) super.m_view;
-            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
+            // Image height should match single-line EditText height (even if the current EditText is multi-line).
+            // This is computed using line height, line spacing, and vertical padding.
             float editTextHeight = m_editText.getLineHeight()*m_editText.getLineSpacingMultiplier()
                 + m_editText.getLineSpacingExtra()
                 + m_editText.getPaddingBottom()
