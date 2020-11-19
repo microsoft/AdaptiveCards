@@ -446,8 +446,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                 + m_editText.getLineSpacingExtra()
                 + m_editText.getPaddingBottom()
                 + m_editText.getPaddingTop();
-            editTextHeight = Util.pixelsToDp(m_context, editTextHeight);
-            button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap, m_context)));
+            button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap)));
         }
     }
 

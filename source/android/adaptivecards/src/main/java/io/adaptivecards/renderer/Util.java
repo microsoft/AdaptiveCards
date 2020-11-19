@@ -40,7 +40,7 @@ public final class Util {
 
     /**
      * Convert dp to px
-     * @param context context
+     * @param context Application context
      * @param dp The number of Android dips (display-independent pixels)
      * @return The number of equivalent physical pixels
      */
@@ -49,17 +49,6 @@ public final class Util {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
-    }
-
-    /**
-     * Convert px to dp
-     * @param context Application context
-     * @param pixels The number of physical pixels
-     * @return The number of equivalent Android dips (display-independent pixels)
-     */
-    public static float pixelsToDp(Context context, float pixels)
-    {
-        return pixels / dpToPixels(context, 1);
     }
 
     public static byte[] getBytes(CharVector charVector)
@@ -93,18 +82,17 @@ public final class Util {
     /**
      * Generate new Bitmap scaled to given height from given Bitmap to the given height, maintaining
      * aspect ratio. Note: This is computationally expensive.
-     * @param heightDp Desired height, in dips
+     * @param height Desired height, in pixels
      * @param bitmap Bitmap to scale
-     * @param context Application context
      */
-    public static Bitmap scaleBitmapToHeight(float heightDp, Bitmap bitmap, Context context)
+    public static Bitmap scaleBitmapToHeight(float height, Bitmap bitmap)
     {
         Drawable d = new BitmapDrawable(null, bitmap);
 
-        float scaleRatio = heightDp / d.getIntrinsicHeight();
-        float widthDp = scaleRatio * d.getIntrinsicWidth();
+        float scaleRatio = height / d.getIntrinsicHeight();
+        float width = scaleRatio * d.getIntrinsicWidth();
 
-        return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(context, widthDp), Util.dpToPixels(context, heightDp), false);
+        return Bitmap.createScaledBitmap(bitmap, (int)width, (int)height, false);
     }
 
     public static void MoveChildrenViews(ViewGroup origin, ViewGroup destination)

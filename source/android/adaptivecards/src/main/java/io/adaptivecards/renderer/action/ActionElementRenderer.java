@@ -75,15 +75,15 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             if (m_iconPlacement == IconPlacement.AboveTitle)
             {
                 // If icon is above title, iconSize should be used as the height of the image
-                imageHeight = m_iconSize;
+                imageHeight = Util.dpToPixels(m_context, m_iconSize);
             }
             else
             {
                 // Otherwise, the height of the image should be the height of the action's text
-                imageHeight = Util.pixelsToDp(m_context, button.getTextSize());
+                imageHeight = button.getTextSize();
             }
 
-            return Util.scaleBitmapToHeight(imageHeight, bitmap, m_context);
+            return Util.scaleBitmapToHeight(imageHeight, bitmap);
         }
 
         @Override
