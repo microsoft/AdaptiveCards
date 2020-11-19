@@ -62,7 +62,7 @@ JPATH
    ;
 
 TEMPLATELITERAL
-   : '${' ~ ["]*? '}'
+   : '${' ( '\\"' | ~ ["] )* '}'
    ;
 
 TEMPLATEROOT
@@ -86,3 +86,4 @@ fragment HEX
 fragment SAFECODEPOINT
    : ~ ["\\\u0000-\u001F$]
    ;
+
