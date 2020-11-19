@@ -80,8 +80,8 @@ public final class Util {
     }
 
     /**
-     * Generate new Bitmap scaled to given height from given Bitmap to the given height, maintaining
-     * aspect ratio. Note: This is computationally expensive.
+     * Generate new Bitmap scaled to given height from given Bitmap, preserving aspect ratio.
+     * Note: This is computationally expensive.
      * @param height Desired height, in pixels
      * @param bitmap Bitmap to scale
      */
