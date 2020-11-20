@@ -10,8 +10,6 @@
 #import <UIKit/UIKit.h>
 
 @interface ACRTextField : UITextField <UITextFieldDelegate>
-@property IBInspectable UIColor *borderColor;
-@property IBInspectable CGFloat borderWidth;
 
 - (void)dismissNumPad;
 @end

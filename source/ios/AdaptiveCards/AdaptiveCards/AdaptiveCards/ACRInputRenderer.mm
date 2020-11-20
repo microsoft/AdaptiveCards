@@ -73,11 +73,8 @@
             break;
         }
     }
-    
-    UIColor *placeholderColor = UIColor.darkGrayColor;  
-    
-    txtInput.attributedPlaceholder = [[NSAttributedString alloc] initWithString:[NSString stringWithCString:inputBlock->GetPlaceholder().c_str() encoding:NSUTF8StringEncoding] attributes:@{NSForegroundColorAttributeName: placeholderColor}];
-                                              
+    txtInput.placeholder = [NSString stringWithCString:inputBlock->GetPlaceholder().c_str()
+                                              encoding:NSUTF8StringEncoding];
     txtInput.text = [NSString stringWithCString:inputBlock->GetValue().c_str() encoding:NSUTF8StringEncoding];
     txtInput.allowsEditingTextAttributes = YES;
     return txtInput;
@@ -158,9 +155,6 @@
 
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            txtInput.layer.borderColor = txtInput.borderColor.CGColor;
-            txtInput.layer.borderWidth = txtInput.borderWidth;
-            
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
         }
