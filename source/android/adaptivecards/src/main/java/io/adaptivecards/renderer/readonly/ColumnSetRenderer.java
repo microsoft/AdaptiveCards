@@ -80,7 +80,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         {
             Column column = columnVector.get(i);
 
-            if(columnSet.GetMinHeight() > column.GetMinHeight()) {
+            if(columnSet.GetMinHeight() > column.GetMinHeight())
+            {
                 column.SetMinHeight(columnSet.GetMinHeight());
             }
 
