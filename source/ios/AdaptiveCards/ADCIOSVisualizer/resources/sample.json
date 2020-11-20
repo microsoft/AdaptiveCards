@@ -46,8 +46,12 @@
 					"subtle": "#EE333333"
 				},
 				"accent": {
-					"default": "#173FFF",
-					"subtle": "#2E5BFF"
+					"default": "#0063B1",
+					"subtle": "#007AB0"
+				},
+				"attention": {
+					"default": "#EC130E",
+					"subtle": "#DDEC130E"
 				},
 				"good": {
 					"default": "#028A02",
@@ -56,13 +60,8 @@
 				"warning": {
 					"default": "#B75C00",
 					"subtle": "#DDB75C00"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
 				}
-			},
-			"backgroundColor": "#F5F5F5"
+			}
 		},
 		"emphasis": {
 			"foregroundColors": {
