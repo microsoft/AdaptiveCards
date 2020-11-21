@@ -58,19 +58,15 @@ TEMPLATEWHEN
    ;
 
 JPATH
-   : ('.' STRING | '[' INT ']')+ '}'
-   ;
-
-TEMPLATELITERAL
-   : '${' ( '\\"' | ~ ["] )* '}'
+   : ('.' STRING | '[' INT ']')+
    ;
 
 TEMPLATEROOT
-   : '${$root' JPATH
+   : '$root' JPATH
    ;
 
 STRING
-   : (ESC | SAFECODEPOINT)+
+   : (ESC | SAFECODEPOINT | TEMPLATEDATA | '$index' | TEMPLATEDATA | TEMPLATEROOT )+
    | '$'
    ;
 
@@ -85,5 +81,9 @@ fragment HEX
    ;
 fragment SAFECODEPOINT
    : ~ ["\\\u0000-\u001F$]
+   ;
+
+TEMPLATELITERAL
+   : '${' STRING  '}'
    ;
 

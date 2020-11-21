@@ -10897,6 +10897,7 @@ namespace AdaptiveCards.Templating.Test
             var parseResult = AdaptiveCard.FromJson(cardJson);
             Assert.IsTrue(true);
         }
+
         [TestMethod]
         public void TestBasic()
         {
@@ -10922,6 +10923,68 @@ namespace AdaptiveCards.Templating.Test
         ""firstName"": ""Andrew"",
         ""lastName"": ""Leader""
     }
+}";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = jsonData
+            };
+
+            string cardJson = transformer.Expand(context);
+
+            AssertJsonEqual(@"{
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Hello Andrew""
+        }
+    ]
+}", cardJson);
+        }
+
+        [TestMethod]
+        public void TestComplexAELParsing()
+        {
+            string jsonTemplate = @"{
+  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""spacing"": ""small"",
+      ""selectAction"": {
+        ""type"": ""Action.ToggleVisibility"",
+        ""title"": ""expand"",
+        ""targetElements"": ""${foreach(foreach(indicesAndValues(LineItems), x, concat('cardContent', x.index)), y, json(concat('{ \""elementId\"": \""', y, '\"", \""isVisible\"": true}')))}""
+      },
+      ""verticalContentAlignment"": ""center"",
+      ""items"": [
+        {
+          ""type"": ""Image"",
+          ""id"": ""chevronDown"",
+          ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhklEQVQ4T2NkoBAwUqifYXAYwMrAwLCQgYGhhIGB4RmRXpJiYGDoYWBgiId5oZix4krP/w4daSIMkWKsuPL0f4cOyMJe5DAgxhAUzSDXogciPkMwNGMzACSGzRCsmnEZgG4IA7Kf0QMZXzoAuwSkARZg2GKIUEIqhmrqxRW9hAwgmCyGgQEA0UY6FkSob0cAAAAASUVORK5CYII="",
+          ""width"": ""20px"",
+          ""altText"": ""Details collapsed""
+        }
+      ],
+      ""width"": ""auto""
+    }
+  ]
+}";
+
+            string jsonData = @"{
+  ""LineItems"": [
+    {
+      ""Name"": ""Leonardo DiCaprio""
+    },
+    {
+      ""Name"": ""Bradley Cooper""
+    }
+  ]
 }";
 
             AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
@@ -13348,6 +13411,19 @@ namespace AdaptiveCards.Templating.Test
 
             JToken token = JToken.Parse(jsonData);
             var (value, error) = new ValueExpression("${$index}").TryGetValue(token as JObject);
+            Assert.AreEqual("0", value);
+        }
+
+        [TestMethod]
+        public void TestRegex()
+        {
+            string jsonData = @"{
+            ""numberPropertyValue"": 20.0
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            
+            var (value, error) = new ValueExpression("${if(isMatch(numberPropertyValue, '[-+]?[0-9]*\\.?[0-9]+'), formatNumber(float(numberPropertyValue), 2), numberPropertyValue)}").TryGetValue(token as JObject);
             Assert.AreEqual("0", value);
         }
 
