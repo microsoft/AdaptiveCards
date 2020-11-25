@@ -49,38 +49,18 @@ public class ColumnRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, ViewGroup linearLayout)
+    private void setVerticalContentAlignment(VerticalContentAlignment verticalContentAlignment, LinearLayout columnLayout)
     {
-        ViewGroup.LayoutParams layoutParams = linearLayout.getLayoutParams();
-
-        int alignment = AlignItems.FLEX_START;
         int gravity = Gravity.TOP;
-
-        switch (verticalContentAlignment)
+        if(verticalContentAlignment == VerticalContentAlignment.Center)
         {
-            case Center:
-                alignment = JustifyContent.CENTER;
-                gravity = Gravity.CENTER_VERTICAL;
-                break;
-            case Bottom:
-                alignment = JustifyContent.FLEX_END;
-                gravity = Gravity.BOTTOM;
-                break;
-            case Top:
-            default:
-                alignment = JustifyContent.FLEX_START;
-                gravity = Gravity.TOP;
-                break;
+            gravity = Gravity.CENTER;
         }
-
-        if (linearLayout instanceof FlexboxLayout)
+        else if(verticalContentAlignment == VerticalContentAlignment.Bottom)
         {
-            ((FlexboxLayout)linearLayout).setJustifyContent(alignment);
+            gravity = Gravity.BOTTOM;
         }
-        else if (linearLayout instanceof LinearLayout)
-        {
-            ((LinearLayout)linearLayout).setGravity(gravity);
-        }
+        columnLayout.setGravity(gravity);
     }
 
     /**
@@ -160,14 +140,14 @@ public class ColumnRenderer extends BaseCardElementRenderer
         // TODO: Check compatibility with model on top
         View separator = setSpacingAndSeparator(context, viewGroup, column.GetSpacing(), column.GetSeparator(), hostConfig, false);
 
-        SelectableFlexboxLayout columnLayout = new SelectableFlexboxLayout(context);
-        columnLayout.setFlexDirection(FlexDirection.COLUMN);
+        LinearLayout columnLayout = new LinearLayout(context);
+        columnLayout.setOrientation(LinearLayout.VERTICAL);
         columnLayout.setTag(new TagContent(column));
 
         setVisibility(baseCardElement.GetIsVisible(), columnLayout);
 
-        ViewGroup itemsContainer = setColumnWidth(renderedCard, context, column, columnLayout);
-        itemsContainer = setMinHeight(column.GetMinHeight(), (FlexboxLayout) itemsContainer, context);
+        setColumnWidth(renderedCard, context, column, columnLayout);
+        setMinHeight(column.GetMinHeight(), columnLayout, context);
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(column, containerStyle);
@@ -181,7 +161,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
                 CardRendererRegistration.getInstance().renderElements(renderedCard,
                                                               context,
                                                               fragmentManager,
-                                                              itemsContainer,
+                                                              columnLayout,
                                                               column.GetItems(),
                                                               cardActionHandler,
                                                               hostConfig,
@@ -197,7 +177,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, column.GetBackgroundImage(), hostConfig, columnLayout);
 
-        setVerticalContentAlignment(column.GetVerticalContentAlignment(), itemsContainer);
+        setVerticalContentAlignment(column.GetVerticalContentAlignment(), columnLayout);
 
         ContainerRenderer.ApplyPadding(styleForThis, renderArgs.getContainerStyle(), columnLayout, context, hostConfig);
         ContainerRenderer.ApplyBleed(column, columnLayout, context, hostConfig);
