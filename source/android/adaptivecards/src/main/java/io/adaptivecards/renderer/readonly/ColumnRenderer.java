@@ -107,6 +107,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
         {
             layoutParams.setFlexGrow(1);
             layoutParams.setFlexShrink(1);
+            layoutParams.setFlexBasisPercent(0);
         }
         else
         {
