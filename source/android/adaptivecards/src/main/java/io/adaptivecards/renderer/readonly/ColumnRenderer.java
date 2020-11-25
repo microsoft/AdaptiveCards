@@ -3,7 +3,6 @@
 package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -16,26 +15,23 @@ import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.flexbox.JustifyContent;
 
-import io.adaptivecards.objectmodel.CollectionTypeElement;
-import io.adaptivecards.objectmodel.Container;
-import io.adaptivecards.objectmodel.ContainerBleedDirection;
+import java.util.Locale;
+
+import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.Column;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.AdaptiveWarning;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.Column;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
-
-import java.util.Locale;
 
 public class ColumnRenderer extends BaseCardElementRenderer
 {
@@ -87,17 +83,21 @@ public class ColumnRenderer extends BaseCardElementRenderer
         }
     }
 
-    private boolean hasRatioWidth(Column column)
+    /**
+     * If column width is given as a relative weight, get the weight
+     * @param column The Column element
+     * @return weight, or null if width is not relative
+     */
+    static Float getRelativeWidth(Column column)
     {
         try
         {
             String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
-            Float.parseFloat(columnSize);
-            return true;
+            return Float.parseFloat(columnSize);
         }
         catch (NumberFormatException ex)
         {
-            return false;
+            return null;
         }
     }
 
@@ -106,6 +106,7 @@ public class ColumnRenderer extends BaseCardElementRenderer
 
         String columnSize = column.GetWidth().toLowerCase(Locale.getDefault());
         long pixelWidth = column.GetPixelWidth();
+        Float relativeWidth = ColumnRenderer.getRelativeWidth(column);
 
         FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(0, FlexboxLayout.LayoutParams.MATCH_PARENT);
 
@@ -115,12 +116,12 @@ public class ColumnRenderer extends BaseCardElementRenderer
             layoutParams.setFlexShrink(0);
             layoutParams.setWidth(Util.dpToPixels(context, pixelWidth));
         }
-        else if (hasRatioWidth(column))
+        else if (relativeWidth != null)
         {
             // Set ratio to column
-            float columnWeight = Float.parseFloat(columnSize);
-            layoutParams.setFlexGrow(columnWeight);
+            layoutParams.setFlexGrow(1);
             layoutParams.setFlexShrink(1);
+            layoutParams.setFlexBasisPercent(relativeWidth);
         }
         else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
         {
