@@ -79,14 +79,8 @@ using namespace AdaptiveCards;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
-
     if (selectAction) {
-        NSObject<ACRSelectActionDelegate> *target = nil;
-        if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], acoSelectAction, &target)) {
-            verticalView.userInteractionEnabled = YES;
-            [verticalView addTarget:target];
-            verticalView.selectActionTarget = target;
-        }
+        [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {
