@@ -14,7 +14,6 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -82,12 +81,12 @@ using namespace AdaptiveCards;
     ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
 
     if (selectAction) {
-        // instantiate and add tap gesture recognizer
-        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
-                                                                           rootView:rootView
-                                                                      recipientView:verticalView
-                                                                      actionElement:acoSelectAction
-                                                                         hostConfig:config];
+        NSObject<ACRSelectActionDelegate> *target = nil;
+        if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], acoSelectAction, &target)) {
+            verticalView.userInteractionEnabled = YES;
+            [verticalView addTarget:target];
+            verticalView.selectActionTarget = target;
+        }
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {

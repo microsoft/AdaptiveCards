@@ -2,20 +2,25 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
+    "selectAction": {
+        "type": "Action.OpenUrl",
+        "title": "cool link",
+        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+    },
 	"body": [
 		{
 			"type": "TextBlock",
 			"text": "Click the cat!",
 			"weight": "bolder"
 		},
-		{
-			"type": "Image",
-			"url": "https://adaptivecards.io/content/cats/1.png",
-			"selectAction": {
-				"type": "Action.OpenUrl",
-				"title": "cool link",
-				"url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-			}
-		}
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "Image",
+                    "url": "https://adaptivecards.io/content/cats/1.png"
+                }
+            ]
+        }
 	]
 }
