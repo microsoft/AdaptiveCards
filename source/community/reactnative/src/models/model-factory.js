@@ -1,6 +1,8 @@
 import * as Models from './index'
+import {BaseModel} from './base-model'
 import { ElementType } from '../utils/enums'
 import * as Utils from '../utils/util'
+import { Registry } from '../components/registration/registry';
 import { HostConfigManager, HostCapabilities } from '../utils/host-config';
 
 export class ModelFactory {
@@ -70,7 +72,19 @@ export class ModelFactory {
             case ElementType.ActionSet:
                 return new Models.ActionSetModel(payload, parent);
             default:
-                return ModelFactory.checkForFallBack(payload, parent);
+                const Element = Registry.getManager().getComponentOfType(payload.type);
+                if (Element) {
+                    var baseModel = new BaseModel(payload,parent)
+                    for (let key in payload) { 
+                        if (payload.hasOwnProperty(key)) { 
+                            baseModel[key] = payload[key]; 
+                            console.log(key, baseModel[key]); 
+                        } 
+                    } 
+                    return baseModel;
+                } else {
+                    return ModelFactory.checkForFallBack(payload, parent);
+                }
         }
     }
     static createGroup(payload, parent) {
