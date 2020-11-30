@@ -38,7 +38,7 @@
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
-		"adaptive-expressions": "^4.9.2",
+		"adaptive-expressions": "^4.11.0",
 		"eslint": "^7.3.1",
 		"rimraf": "^3.0.2",
 		"typedoc": "0.19.2",
@@ -50,6 +50,6 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"peerDependencies": {
-		"adaptive-expressions": "^4.9.2"
+		"adaptive-expressions": "^4.11.0"
 	}
 }

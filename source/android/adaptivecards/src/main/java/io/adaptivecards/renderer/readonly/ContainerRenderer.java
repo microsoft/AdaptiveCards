@@ -75,7 +75,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
 
-        setVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
+        applyVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
@@ -110,38 +110,23 @@ public class ContainerRenderer extends BaseCardElementRenderer
         return containerView;
     }
 
-    public static void setMinHeight(long minHeight, View view, Context context)
-    {
-        if (minHeight != 0)
-        {
-            view.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
-        }
-    }
-
-    public static void setVerticalContentAlignment(ViewGroup containerView, VerticalContentAlignment verticalContentAlignment)
+    /**
+     * Vertically align content within the given container
+     * @param container Layout whose children need to be vertically aligned
+     * @param verticalContentAlignment Alignment attribute
+     */
+    public static void applyVerticalContentAlignment(LinearLayout container, VerticalContentAlignment verticalContentAlignment)
     {
         int gravity = Gravity.TOP;
-        switch (verticalContentAlignment)
+        if(verticalContentAlignment == VerticalContentAlignment.Center)
         {
-            case Center:
-                gravity = Gravity.CENTER_VERTICAL;
-                break;
-            case Bottom:
-                gravity = Gravity.BOTTOM;
-                break;
-            case Top:
-            default:
-                gravity = Gravity.TOP;
-                break;
+            gravity = Gravity.CENTER;
         }
-
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
-        layoutParams.gravity = gravity;
-
-        if (containerView instanceof LinearLayout)
+        else if(verticalContentAlignment == VerticalContentAlignment.Bottom)
         {
-            ((LinearLayout)containerView).setGravity(gravity);
+            gravity = Gravity.BOTTOM;
         }
+        container.setGravity(gravity);
     }
 
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
