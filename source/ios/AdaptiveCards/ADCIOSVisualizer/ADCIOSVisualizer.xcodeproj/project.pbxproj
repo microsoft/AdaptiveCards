@@ -45,6 +45,7 @@
 		6B150A40230354F200046B3A /* Image.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B150A35230354F200046B3A /* Image.json */; };
 		6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B22426A21FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */; };
+		6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */; };
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
@@ -55,6 +56,7 @@
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
 		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
@@ -143,6 +145,8 @@
 		6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionNewType.h; sourceTree = "<group>"; };
 		6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionNewType.mm; sourceTree = "<group>"; };
 		6B22426921FFA76D000ACDA1 /* ADCIOSVisualizerUITests.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ADCIOSVisualizerUITests.mm; sourceTree = "<group>"; };
+		6B250FC7253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRCustomSubmitTargetBuilder.h; sourceTree = "<group>"; };
+		6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomSubmitTargetBuilder.mm; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -152,13 +156,15 @@
 		6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomImageRenderer.mm; sourceTree = "<group>"; };
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
+		6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionSetRenderer.mm; sourceTree = "<group>"; };
+		6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionSetRenderer.h; sourceTree = "<group>"; };
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
-		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AdaptiveCards.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AdaptiveCards.app; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F423C0791EE1FB6100905679 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -311,21 +317,26 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				6B250FC7253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.h */,
+				6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */,
+				6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */,
+				6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */,
 				6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */,
 				F4D33E841F04705800941E44 /* ACVTableViewController.h */,
 				F4D33E851F04705800941E44 /* ACVTableViewController.m */,
+				6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */,
+				6B150A0122FCE4BA00046B3A /* AdaptiveFileBrowserSource.h */,
+				6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */,
 				F423C0811EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld */,
 				6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */,
 				6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */,
 				F423C0781EE1FB6100905679 /* AppDelegate.h */,
 				F423C0791EE1FB6100905679 /* AppDelegate.m */,
 				F423C0841EE1FB6100905679 /* Assets.xcassets */,
-				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
-				F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */,
 				6B22426421E92AF9000ACDA1 /* CustomActionNewType.h */,
 				6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */,
-				6B1509FF22FCE49600046B3A /* AdaptiveFileBrowserSource.mm */,
-				6B150A0122FCE4BA00046B3A /* AdaptiveFileBrowserSource.h */,
+				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
+				F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */,
 				6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */,
 				6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */,
 				F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */,
@@ -335,12 +346,12 @@
 				6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */,
 				6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */,
 				F423C0891EE1FB6100905679 /* Info.plist */,
-				6BA9091A23985CB5009421CA /* Adaptive1.0.png */,
 				F423C0861EE1FB6100905679 /* LaunchScreen.storyboard */,
 				F423C07E1EE1FB6100905679 /* Main.storyboard */,
 				F423C0751EE1FB6100905679 /* Supporting Files */,
 				F423C07B1EE1FB6100905679 /* ViewController.h */,
 				F423C07C1EE1FB6100905679 /* ViewController.m */,
+				6BA9091A23985CB5009421CA /* Adaptive1.0.png */,
 			);
 			path = ADCIOSVisualizer;
 			sourceTree = "<group>";
@@ -499,7 +510,6 @@
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
 				6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
-				6BA9091B23985CB5009421CA /* Adaptive1.0.png in Resources */,
 				6B150A1423034F2800046B3A /* Image.ImageBaseUrl.json in Resources */,
 				6B150A26230353AB00046B3A /* TextBlock.Wrap.json in Resources */,
 				6B150A39230354F200046B3A /* Image.Spacing.json in Resources */,
@@ -554,6 +564,7 @@
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
 				6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */,
 				6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */,
+				6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,
 				6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */,
@@ -561,6 +572,7 @@
 				6B150A0022FCE49600046B3A /* AdaptiveFileBrowserSource.mm in Sources */,
 				F423C0831EE1FB6100905679 /* ADCIOSVisualizer.xcdatamodeld in Sources */,
 				F423C0771EE1FB6100905679 /* main.m in Sources */,
+				6B250FC9253FB0CE007FFCFB /* ACRCustomSubmitTargetBuilder.mm in Sources */,
 				F4F44B75203FE73D00A2F24C /* CustomInputNumberRenderer.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -623,7 +635,7 @@
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -683,7 +695,7 @@
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
-				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;

@@ -15,99 +15,489 @@ using namespace ABI::Windows::Globalization::DateTimeFormatting;
 using namespace ABI::Windows::UI::Xaml;
 using namespace ABI::Windows::UI::Xaml::Controls;
 using namespace ABI::Windows::UI::Xaml::Controls::Primitives;
+using namespace ABI::Windows::UI::Xaml::Documents;
+using namespace ABI::Windows::UI::Xaml::Automation;
 using namespace AdaptiveNamespace;
 
-std::string InputValue::SerializeTextInput() const
+HRESULT ValidateIfNeeded(IAdaptiveInputValue* inputValue)
 {
-    ComPtr<ITextBox> textBox;
-    THROW_IF_FAILED(m_uiInputElement.As(&textBox));
+    HString currentValue;
+    RETURN_IF_FAILED(inputValue->get_CurrentValue(currentValue.GetAddressOf()));
 
-    HString text;
-    THROW_IF_FAILED(textBox->get_Text(text.GetAddressOf()));
-
-    std::string textString;
-    if (text.IsValid())
-    {
-        THROW_IF_FAILED(HStringToUTF8(text.Get(), textString));
-    }
-
-    return textString;
+    return inputValue->Validate(nullptr);
 }
 
-std::string InputValue::SerializeDateInput() const
+HRESULT InputValue::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInputElement,
+                                           _In_ IUIElement* uiInputElement,
+                                           _In_ IBorder* validationBorder)
 {
-    ComPtr<ICalendarDatePicker> datePicker;
-    THROW_IF_FAILED(m_uiInputElement.As(&datePicker));
+    m_adaptiveInputElement = adaptiveInputElement;
+    m_uiInputElement = uiInputElement;
+    m_validationBorder = validationBorder;
 
+    return S_OK;
+}
+
+HRESULT InputValue::Validate(_Out_ boolean* isInputValid)
+{
+    boolean isValid;
+    RETURN_IF_FAILED(IsValueValid(&isValid));
+
+    RETURN_IF_FAILED(SetValidation(isValid));
+
+    if (isInputValid)
+    {
+        *isInputValid = isValid;
+    }
+
+    return S_OK;
+}
+
+HRESULT InputValue::SetFocus()
+{
+    // Set focus on the input control
+    ComPtr<IControl> inputAsControl;
+    RETURN_IF_FAILED(m_uiInputElement.As(&inputAsControl));
+
+    boolean isFocused;
+    RETURN_IF_FAILED(inputAsControl->Focus(FocusState_Programmatic, &isFocused));
+
+    return S_OK;
+}
+
+HRESULT InputValue::SetAccessibilityProperties(boolean isInputValid)
+{
+    ComPtr<IAutomationPropertiesStatics5> automationPropertiesStatics;
+
+    RETURN_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                          &automationPropertiesStatics));
+
+    // This smart pointer is created as the variable inputUIElementParentContainer may contain the border instead of the
+    // actual element if validations are required. If these properties are set into the border then they are not mentioned.
+    ComPtr<IUIElement> uiInputElement(m_uiInputElement);
+
+    ComPtr<IDependencyObject> inputUIElementAsDependencyObject;
+    RETURN_IF_FAILED(uiInputElement.As(&inputUIElementAsDependencyObject));
+
+    ComPtr<IVector<DependencyObject*>> uiElementDescribers;
+    RETURN_IF_FAILED(automationPropertiesStatics->GetDescribedBy(inputUIElementAsDependencyObject.Get(),
+                                                                 uiElementDescribers.GetAddressOf()));
+
+    ComPtr<IUIElement> uiValidationError(m_validationError);
+    ComPtr<IDependencyObject> uiValidationErrorAsDependencyObject;
+    RETURN_IF_FAILED(uiValidationError.As(&uiValidationErrorAsDependencyObject));
+
+    UINT index{};
+    boolean found{};
+    RETURN_IF_FAILED(uiElementDescribers->IndexOf(uiValidationErrorAsDependencyObject.Get(), &index, &found));
+
+    // If the error message is visible then the input element must be described by it, otherwise we try to remove it from the list of describers
+    if (!isInputValid && !found)
+    {
+        RETURN_IF_FAILED(uiElementDescribers->Append(uiValidationErrorAsDependencyObject.Get()));
+    }
+    else if (isInputValid && found)
+    {
+        RETURN_IF_FAILED(uiElementDescribers->RemoveAt(index));
+    }
+
+    RETURN_IF_FAILED(automationPropertiesStatics->SetIsDataValidForForm(inputUIElementAsDependencyObject.Get(), isInputValid));
+
+    return S_OK;
+}
+
+HRESULT InputValue::get_ErrorMessage(_COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** uiErrorMessage)
+{
+    return m_validationError.CopyTo(uiErrorMessage);
+}
+
+HRESULT InputValue::put_ErrorMessage(_In_ IUIElement* uiErrorMessage)
+{
+    m_validationError = uiErrorMessage;
+    return S_OK;
+}
+
+HRESULT InputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    boolean isRequired;
+    RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));
+
+    bool isRequiredValid = true;
+    if (isRequired)
+    {
+        HString currentValue;
+        RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
+
+        isRequiredValid = currentValue.IsValid();
+    }
+
+    *isInputValid = isRequiredValid;
+    return S_OK;
+}
+
+HRESULT InputValue::SetValidation(boolean isInputValid)
+{
+    // Show or hide the border
+    if (m_validationBorder)
+    {
+        if (isInputValid)
+        {
+            RETURN_IF_FAILED(m_validationBorder->put_BorderThickness({0, 0, 0, 0}));
+        }
+        else
+        {
+            RETURN_IF_FAILED(m_validationBorder->put_BorderThickness({1, 1, 1, 1}));
+        }
+    }
+
+    // Show or hide the error message
+    if (m_validationError)
+    {
+        if (isInputValid)
+        {
+            RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Collapsed));
+        }
+        else
+        {
+            RETURN_IF_FAILED(m_validationError->put_Visibility(Visibility_Visible));
+        }
+
+        RETURN_IF_FAILED(SetAccessibilityProperties(isInputValid));
+    }
+
+    return S_OK;
+}
+
+HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputElement)
+{
+    return m_adaptiveInputElement.CopyTo(inputElement);
+}
+
+HRESULT TextInputBase::RuntimeClassInitialize(_In_ IAdaptiveInputElement* adaptiveInput,
+                                              _In_ ITextBox* uiTextBoxElement,
+                                              _In_ IBorder* validationBorder)
+{
+    {
+        m_textBoxElement = uiTextBoxElement;
+
+        ComPtr<IUIElement> textBoxAsUIElement;
+        RETURN_IF_FAILED(m_textBoxElement.As(&textBoxAsUIElement));
+
+        RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(adaptiveInput, textBoxAsUIElement.Get(), validationBorder));
+
+        return S_OK;
+    }
+}
+
+HRESULT TextInputBase::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+{
+    return m_textBoxElement->get_Text(serializedUserInput);
+}
+
+HRESULT TextInputValue::RuntimeClassInitialize(_In_ IAdaptiveTextInput* adaptiveTextInput,
+                                               _In_ ITextBox* uiTextBoxElement,
+                                               _In_ IBorder* validationBorder)
+{
+    m_adaptiveTextInput = adaptiveTextInput;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> textInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveTextInput.As(&textInputAsAdaptiveInput));
+
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(textInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+
+    return S_OK;
+}
+
+HRESULT TextInputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    // Call the base class to validate isRequired
+    boolean isBaseValid;
+    RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));
+
+    // Validate the regex if one exists
+    HString regex;
+    RETURN_IF_FAILED(m_adaptiveTextInput->get_Regex(regex.GetAddressOf()));
+
+    HString currentValue;
+    RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
+
+    boolean isRegexValid = true;
+    if (regex.IsValid() && currentValue.IsValid())
+    {
+        std::string stringPattern = HStringToUTF8(regex.Get());
+        std::regex pattern(stringPattern);
+
+        std::string currentValueStdString = HStringToUTF8(currentValue.Get());
+
+        std::smatch matches;
+        isRegexValid = std::regex_match(currentValueStdString, matches, pattern);
+    }
+
+    *isInputValid = isBaseValid && isRegexValid;
+
+    return S_OK;
+}
+
+HRESULT NumberInputValue::RuntimeClassInitialize(_In_ IAdaptiveNumberInput* adaptiveNumberInput,
+                                                 _In_ ITextBox* uiTextBoxElement,
+                                                 _In_ IBorder* validationBorder)
+{
+    m_adaptiveNumberInput = adaptiveNumberInput;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
+    RETURN_IF_FAILED(TextInputBase::RuntimeClassInitialize(numberInputAsAdaptiveInput.Get(), uiTextBoxElement, validationBorder));
+    return S_OK;
+}
+
+HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    // Call the base class to validate isRequired
+    boolean isValid;
+    RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
+
+    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
+    RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
+
+    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
+    RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
+
+    HString currentValue;
+    RETURN_IF_FAILED(get_CurrentValue(currentValue.GetAddressOf()));
+
+    // If there is a value, confirm that it's a number and within the min/max range
+    if (currentValue.IsValid())
+    {
+        try
+        {
+            const std::string currentValueStdString = HStringToUTF8(currentValue.Get());
+            int currentInt = std::stoi(currentValueStdString);
+
+            if (max.Get())
+            {
+                int maxInt;
+                RETURN_IF_FAILED(max->get_Value(&maxInt));
+                isValid &= (currentInt <= maxInt);
+            }
+
+            if (min.Get())
+            {
+                int minInt;
+                RETURN_IF_FAILED(min->get_Value(&minInt));
+                isValid &= (currentInt >= minInt);
+            }
+        }
+        catch (...)
+        {
+            // If stoi failed this isn't a valid number
+            isValid = false;
+        }
+    }
+
+    *isInputValid = isValid;
+
+    return S_OK;
+}
+
+HRESULT DateInputValue::RuntimeClassInitialize(_In_ IAdaptiveDateInput* adaptiveDateInput,
+                                               _In_ ICalendarDatePicker* uiDatePickerElement,
+                                               _In_ IBorder* validationBorder)
+{
+    m_adaptiveDateInput = adaptiveDateInput;
+    m_datePickerElement = uiDatePickerElement;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> dateInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveDateInput.As(&dateInputAsAdaptiveInput));
+
+    ComPtr<IUIElement> datePickerAsUIElement;
+    RETURN_IF_FAILED(m_datePickerElement.As(&datePickerAsUIElement));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(dateInputAsAdaptiveInput.Get(), datePickerAsUIElement.Get(), validationBorder));
+
+    return S_OK;
+}
+
+HRESULT DateInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+{
     ComPtr<IReference<DateTime>> dateRef;
-    THROW_IF_FAILED(datePicker->get_Date(&dateRef));
+    RETURN_IF_FAILED(m_datePickerElement->get_Date(&dateRef));
 
-    std::string value;
+    HString formattedDate;
     if (dateRef != nullptr)
     {
         DateTime date;
-        THROW_IF_FAILED(dateRef->get_Value(&date));
+        RETURN_IF_FAILED(dateRef->get_Value(&date));
 
         ComPtr<IDateTimeFormatterFactory> dateTimeFactory;
-        THROW_IF_FAILED(GetActivationFactory(
+        RETURN_IF_FAILED(GetActivationFactory(
             HStringReference(RuntimeClass_Windows_Globalization_DateTimeFormatting_DateTimeFormatter).Get(), &dateTimeFactory));
 
         ComPtr<IDateTimeFormatter> dateTimeFormatter;
-        THROW_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(
+        RETURN_IF_FAILED(dateTimeFactory->CreateDateTimeFormatter(
             HStringReference(L"{year.full}-{month.integer(2)}-{day.integer(2)}").Get(), &dateTimeFormatter));
 
-        HString formattedDate;
-        THROW_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
-
-        THROW_IF_FAILED(HStringToUTF8(formattedDate.Get(), value));
-        return value;
+        RETURN_IF_FAILED(dateTimeFormatter->Format(date, formattedDate.GetAddressOf()));
     }
-    return "";
+
+    RETURN_IF_FAILED(formattedDate.CopyTo(serializedUserInput));
+
+    return S_OK;
 }
 
-std::string InputValue::SerializeTimeInput() const
+HRESULT TimeInputValue::RuntimeClassInitialize(_In_ IAdaptiveTimeInput* adaptiveTimeInput,
+                                               _In_ ITimePicker* uiTimePickerElement,
+                                               _In_ IBorder* validationBorder)
 {
-    ComPtr<ITimePicker> timePicker;
-    THROW_IF_FAILED(m_uiInputElement.As(&timePicker));
+    m_adaptiveTimeInput = adaptiveTimeInput;
+    m_timePickerElement = uiTimePickerElement;
 
-    TimeSpan timeSpan;
-    THROW_IF_FAILED(timePicker->get_Time(&timeSpan));
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> timeInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveTimeInput.As(&timeInputAsAdaptiveInput));
 
-    UINT64 totalMinutes = timeSpan.Duration / 10000000 / 60;
-    UINT64 hours = totalMinutes / 60;
-    UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
+    ComPtr<IUIElement> timePickerAsUIElement;
+    RETURN_IF_FAILED(m_timePickerElement.As(&timePickerAsUIElement));
 
-    char buffer[6];
-    sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
-
-    return std::string(buffer);
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(timeInputAsAdaptiveInput.Get(), timePickerAsUIElement.Get(), validationBorder));
+    return S_OK;
 }
 
-std::string InputValue::SerializeToggleInput() const
+HRESULT TimeInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+{
+    ComPtr<ITimePicker3> timePicker3;
+    RETURN_IF_FAILED(m_timePickerElement.As(&timePicker3));
+
+    ComPtr<IReference<TimeSpan>> timeSpanReference;
+    RETURN_IF_FAILED(timePicker3->get_SelectedTime(&timeSpanReference));
+
+    char buffer[6] = {0};
+    if (timeSpanReference != nullptr)
+    {
+        TimeSpan timeSpan;
+        RETURN_IF_FAILED(timeSpanReference->get_Value(&timeSpan));
+
+        UINT64 totalMinutes = timeSpan.Duration / 10000000 / 60;
+        UINT64 hours = totalMinutes / 60;
+        UINT64 minutesPastTheHour = totalMinutes - (hours * 60);
+
+        sprintf_s(buffer, sizeof(buffer), "%02llu:%02llu", hours, minutesPastTheHour);
+    }
+
+    RETURN_IF_FAILED(UTF8ToHString(std::string(buffer), serializedUserInput));
+
+    return S_OK;
+}
+
+HRESULT TimeInputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    // Call the base class to validate isRequired
+    boolean isBaseValid;
+    RETURN_IF_FAILED(InputValue::IsValueValid(&isBaseValid));
+
+    // If time is set, validate max and min
+    boolean isMaxMinValid = true;
+
+    ComPtr<ITimePicker3> timePicker3;
+    RETURN_IF_FAILED(m_timePickerElement.As(&timePicker3));
+
+    ComPtr<IReference<TimeSpan>> timeSpanReference;
+    RETURN_IF_FAILED(timePicker3->get_SelectedTime(&timeSpanReference));
+
+    if (isBaseValid && (timeSpanReference != nullptr))
+    {
+        TimeSpan currentTime;
+        RETURN_IF_FAILED(timeSpanReference->get_Value(&currentTime));
+
+        HString minTimeString;
+        RETURN_IF_FAILED(m_adaptiveTimeInput->get_Min(minTimeString.GetAddressOf()));
+        if (minTimeString.IsValid())
+        {
+            std::string minTimeStdString = HStringToUTF8(minTimeString.Get());
+            unsigned int minHours, minMinutes;
+            if (DateTimePreparser::TryParseSimpleTime(minTimeStdString, minHours, minMinutes))
+            {
+                TimeSpan minTime{(INT64)(minHours * 60 + minMinutes) * 10000000 * 60};
+                isMaxMinValid &= currentTime.Duration >= minTime.Duration;
+            }
+        }
+
+        HString maxTimeString;
+        RETURN_IF_FAILED(m_adaptiveTimeInput->get_Max(maxTimeString.GetAddressOf()));
+        if (maxTimeString.IsValid())
+        {
+            std::string maxTimeStdString = HStringToUTF8(maxTimeString.Get());
+            unsigned int maxHours, maxMinutes;
+            if (DateTimePreparser::TryParseSimpleTime(maxTimeStdString, maxHours, maxMinutes))
+            {
+                TimeSpan maxTime{(INT64)(maxHours * 60 + maxMinutes) * 10000000 * 60};
+                isMaxMinValid &= currentTime.Duration <= maxTime.Duration;
+            }
+        }
+    }
+    *isInputValid = isBaseValid && isMaxMinValid;
+
+    return S_OK;
+}
+
+HRESULT ToggleInputValue::RuntimeClassInitialize(_In_ IAdaptiveToggleInput* adaptiveToggleInput,
+                                                 _In_ ICheckBox* uiCheckBoxElement,
+                                                 _In_ IBorder* validationBorder)
+{
+    m_adaptiveToggleInput = adaptiveToggleInput;
+    m_checkBoxElement = uiCheckBoxElement;
+
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> toggleInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveToggleInput.As(&toggleInputAsAdaptiveInput));
+
+    ComPtr<IUIElement> checkBoxAsUIElement;
+    RETURN_IF_FAILED(m_checkBoxElement.As(&checkBoxAsUIElement));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(toggleInputAsAdaptiveInput.Get(), checkBoxAsUIElement.Get(), validationBorder));
+    return S_OK;
+}
+
+HRESULT ToggleInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
 {
     boolean checkedValue = false;
-    XamlHelpers::GetToggleValue(m_uiInputElement.Get(), &checkedValue);
-
-    ComPtr<IAdaptiveToggleInput> toggleInput;
-    THROW_IF_FAILED(m_adaptiveInputElement.As(&toggleInput));
+    XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &checkedValue);
 
     HString value;
     if (checkedValue)
     {
-        THROW_IF_FAILED(toggleInput->get_ValueOn(value.GetAddressOf()));
+        RETURN_IF_FAILED(m_adaptiveToggleInput->get_ValueOn(value.GetAddressOf()));
     }
     else
     {
-        THROW_IF_FAILED(toggleInput->get_ValueOff(value.GetAddressOf()));
+        RETURN_IF_FAILED(m_adaptiveToggleInput->get_ValueOff(value.GetAddressOf()));
     }
 
-    std::string utf8Value;
-    THROW_IF_FAILED(HStringToUTF8(value.Get(), utf8Value));
+    RETURN_IF_FAILED(value.CopyTo(serializedUserInput));
 
-    return utf8Value;
+    return S_OK;
 }
 
-std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
+HRESULT ToggleInputValue::IsValueValid(_Out_ boolean* isInputValid)
+{
+    // Don't use the base class IsValueValid to validate required for toggle. That method counts required as satisfied
+    // if any value is set, but for toggle required means the check box is checked. An unchecked value will still have
+    // a value (either false, or whatever's in valueOff).
+    boolean isRequired;
+    RETURN_IF_FAILED(m_adaptiveInputElement->get_IsRequired(&isRequired));
+
+    boolean meetsRequirement = true;
+    if (isRequired)
+    {
+        boolean isToggleChecked = false;
+        XamlHelpers::GetToggleValue(m_checkBoxElement.Get(), &isToggleChecked);
+
+        meetsRequirement = isToggleChecked;
+    }
+
+    *isInputValid = meetsRequirement;
+
+    return S_OK;
+}
+
+std::string ChoiceSetInputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput, INT32 selectedIndex) const
 {
     if (selectedIndex != -1)
     {
@@ -125,40 +515,51 @@ std::string InputValue::GetChoiceValue(_In_ IAdaptiveChoiceSetInput* choiceInput
     return "";
 }
 
-std::string InputValue::SerializeChoiceSetInput() const
+HRESULT ChoiceSetInputValue::RuntimeClassInitialize(_In_ IAdaptiveChoiceSetInput* adaptiveChoiceSetInput,
+                                                    _In_ IUIElement* uiChoiceSetElement,
+                                                    _In_ IBorder* validationBorder)
 {
-    ComPtr<IAdaptiveChoiceSetInput> choiceInput;
-    THROW_IF_FAILED(m_adaptiveInputElement.As(&choiceInput));
+    m_adaptiveChoiceSetInput = adaptiveChoiceSetInput;
 
+    Microsoft::WRL::ComPtr<IAdaptiveInputElement> choiceSetInputAsAdaptiveInput;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput.As(&choiceSetInputAsAdaptiveInput));
+
+    RETURN_IF_FAILED(InputValue::RuntimeClassInitialize(choiceSetInputAsAdaptiveInput.Get(), uiChoiceSetElement, validationBorder));
+    return S_OK;
+}
+
+HRESULT ChoiceSetInputValue::get_CurrentValue(_Outptr_ HSTRING* serializedUserInput)
+try
+{
     ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
-    THROW_IF_FAILED(choiceInput->get_ChoiceSetStyle(&choiceSetStyle));
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
 
     boolean isMultiSelect;
-    THROW_IF_FAILED(choiceInput->get_IsMultiSelect(&isMultiSelect));
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
 
-    if (choiceSetStyle == ABI::AdaptiveNamespace::ChoiceSetStyle_Compact && !isMultiSelect)
+    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
     {
         // Handle compact style
         ComPtr<ISelector> selector;
-        THROW_IF_FAILED(m_uiInputElement.As(&selector));
+        RETURN_IF_FAILED(m_uiInputElement.As(&selector));
 
         INT32 selectedIndex;
-        THROW_IF_FAILED(selector->get_SelectedIndex(&selectedIndex));
+        RETURN_IF_FAILED(selector->get_SelectedIndex(&selectedIndex));
 
-        std::string choiceValue;
-        return GetChoiceValue(choiceInput.Get(), selectedIndex);
+        std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
+        RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
     }
     else
     {
         // For expanded style, get the panel children
         ComPtr<IPanel> panel;
-        THROW_IF_FAILED(m_uiInputElement.As(&panel));
+        RETURN_IF_FAILED(m_uiInputElement.As(&panel));
 
         ComPtr<IVector<UIElement*>> panelChildren;
-        THROW_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+        RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
 
         UINT size;
-        THROW_IF_FAILED(panelChildren->get_Size(&size));
+        RETURN_IF_FAILED(panelChildren->get_Size(&size));
 
         if (isMultiSelect)
         {
@@ -167,14 +568,14 @@ std::string InputValue::SerializeChoiceSetInput() const
             for (UINT i = 0; i < size; i++)
             {
                 ComPtr<IUIElement> currentElement;
-                THROW_IF_FAILED(panelChildren->GetAt(i, &currentElement));
+                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
 
                 boolean checkedValue = false;
                 XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
 
                 if (checkedValue)
                 {
-                    std::string choiceValue = GetChoiceValue(choiceInput.Get(), i);
+                    std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), i);
                     multiSelectValues += choiceValue + ",";
                 }
             }
@@ -183,7 +584,7 @@ std::string InputValue::SerializeChoiceSetInput() const
             {
                 multiSelectValues = multiSelectValues.substr(0, (multiSelectValues.size() - 1));
             }
-            return multiSelectValues;
+            RETURN_IF_FAILED(UTF8ToHString(multiSelectValues, serializedUserInput));
         }
         else
         {
@@ -192,7 +593,7 @@ std::string InputValue::SerializeChoiceSetInput() const
             for (UINT i = 0; i < size; i++)
             {
                 ComPtr<IUIElement> currentElement;
-                THROW_IF_FAILED(panelChildren->GetAt(i, &currentElement));
+                RETURN_IF_FAILED(panelChildren->GetAt(i, &currentElement));
 
                 boolean checkedValue = false;
                 XamlHelpers::GetToggleValue(currentElement.Get(), &checkedValue);
@@ -203,59 +604,45 @@ std::string InputValue::SerializeChoiceSetInput() const
                     break;
                 }
             }
-            return GetChoiceValue(choiceInput.Get(), selectedIndex);
+            std::string choiceValue = GetChoiceValue(m_adaptiveChoiceSetInput.Get(), selectedIndex);
+            RETURN_IF_FAILED(UTF8ToHString(choiceValue, serializedUserInput));
         }
     }
-}
-
-HRESULT InputValue::get_CurrentValue(_Outptr_ HSTRING* result)
-{
-    ComPtr<IAdaptiveCardElement> cardElement;
-    RETURN_IF_FAILED(m_adaptiveInputElement.As(&cardElement));
-
-    ABI::AdaptiveNamespace::ElementType elementType;
-    RETURN_IF_FAILED(cardElement->get_ElementType(&elementType));
-
-    std::string serializedInput;
-    switch (elementType)
-    {
-    case ElementType_TextInput:
-    case ElementType_NumberInput:
-    {
-        serializedInput = SerializeTextInput();
-        break;
-    }
-    case ElementType_DateInput:
-    {
-        serializedInput = SerializeDateInput();
-        break;
-    }
-    case ElementType_TimeInput:
-    {
-        serializedInput = SerializeTimeInput();
-        break;
-    }
-    case ElementType_ToggleInput:
-    {
-        serializedInput = SerializeToggleInput();
-        break;
-    }
-    case ElementType_ChoiceSetInput:
-    {
-        serializedInput = SerializeChoiceSetInput();
-        break;
-    }
-    default:
-        serializedInput = "";
-        break;
-    }
-
-    RETURN_IF_FAILED(UTF8ToHString(serializedInput, result));
-
     return S_OK;
 }
+CATCH_RETURN;
 
-HRESULT InputValue::get_InputElement(_COM_Outptr_ IAdaptiveInputElement** inputElement)
+HRESULT ChoiceSetInputValue::SetFocus()
 {
-    return m_adaptiveInputElement.CopyTo(inputElement);
+    ABI::AdaptiveNamespace::ChoiceSetStyle choiceSetStyle;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_ChoiceSetStyle(&choiceSetStyle));
+
+    boolean isMultiSelect;
+    RETURN_IF_FAILED(m_adaptiveChoiceSetInput->get_IsMultiSelect(&isMultiSelect));
+
+    if (choiceSetStyle == ChoiceSetStyle_Compact && !isMultiSelect)
+    {
+        // Compact style can use the base class implementation
+        RETURN_IF_FAILED(InputValue::SetFocus());
+    }
+    else
+    {
+        // For expanded style, put focus on the first choice in the choice set
+        ComPtr<IPanel> panel;
+        RETURN_IF_FAILED(m_uiInputElement.As(&panel));
+
+        ComPtr<IVector<UIElement*>> panelChildren;
+        RETURN_IF_FAILED(panel->get_Children(panelChildren.ReleaseAndGetAddressOf()));
+
+        ComPtr<IUIElement> firstChoice;
+        RETURN_IF_FAILED(panelChildren->GetAt(0, &firstChoice));
+
+        ComPtr<IControl> choiceAsControl;
+        RETURN_IF_FAILED(firstChoice.As(&choiceAsControl));
+
+        boolean isFocused;
+        RETURN_IF_FAILED(choiceAsControl->Focus(FocusState_Programmatic, &isFocused));
+    }
+
+    return S_OK;
 }

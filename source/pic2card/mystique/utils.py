@@ -1,5 +1,6 @@
 import time
 import io
+import re
 from typing import Optional, Dict
 import glob
 import xml.etree.ElementTree as Et
@@ -18,7 +19,7 @@ COLORS = [
     [0.000, 0.447, 0.888],
     [0.000, 0.447, 0.741], [0.850, 0.325, 0.098], [0.929, 0.694, 0.125],
     [0.494, 0.184, 0.556], [0.466, 0.674, 0.188], [0.301, 0.745, 0.933]
- ]
+]
 
 
 @contextmanager
@@ -86,8 +87,8 @@ def plot_results(pil_img: Image,
     `Image.open` to render the image.
     """
     label_map = label_map or config.ID_TO_LABEL
-    plt.figure(figsize=(16, 10))
     plt.imshow(pil_img)
+    plt.margins(0, 0)
     plt.axis('off')
     ax = plt.gca()
 
@@ -102,14 +103,15 @@ def plot_results(pil_img: Image,
                                                          COLORS * 100):
 
         ax.add_patch(plt.Rectangle((xmin, ymin), xmax - xmin, ymax - ymin,
-                                   fill=False, color=c, linewidth=3))
+                                   fill=False, color=c, linewidth=1))
         text = f'{label_map[cl_id]}: {score:0.2f}'
-        ax.text(xmin, ymin, text, fontsize=15,
+        ax.text(xmin, ymin, text, fontsize=8,
                 bbox=dict(facecolor='yellow', alpha=0.5))
 
     img_buf = io.BytesIO()
-    plt.savefig(img_buf, format="png")
+    plt.savefig(img_buf, format="png", bbox_inches='tight', pad_inches=0)
     img_buf.seek(0)
+    plt.close()
     return img_buf
 
 
@@ -123,3 +125,52 @@ def load_od_instance():
     module = import_module(module_path)
     od_obj = getattr(module, class_name)()
     return od_obj
+
+
+def get_property_method(prop_instance, design_object_name: str):
+    """
+    Loads the respective method for design object from class_path
+    providing plug in functionality.
+    @param prop_instance: input Collect properties instance
+    @param design_object_name: input name of the design object
+    @return: property_method
+    """
+    class_path = config.PROPERTY_EXTRACTOR_FUNC[design_object_name]
+    p_split = class_path.split(".")
+    module_path, class_name = ".".join(p_split[:-2]), p_split[-2]
+    method_name = p_split[-1]
+    if class_name == prop_instance.__class__.__name__:
+        property_method = getattr(prop_instance, method_name)
+        return property_method
+    else:
+        module = import_module(module_path)
+        prop_obj = getattr(module, class_name)()
+        property_method = getattr(prop_obj, method_name)
+        return property_method
+
+
+def load_instance_with_class_path(class_path: str):
+    """
+    Loads an instance of the class using the class path
+    @param class_path: input path of the class instantiated
+    @return: class_obj instance
+    """
+    p_split = class_path.split(".")
+    module_path, class_name = ".".join(p_split[:-1]), p_split[-1]
+    module = import_module(module_path)
+    class_obj = getattr(module, class_name)()
+    return class_obj
+
+
+def text_size_processing(text: str, height: int):
+    """
+    Reduces the extra pixels to normalize the height of text boxes
+    @param text: input extraced text from pytesseract
+    @param height: input height of the extracted text
+    @return: height int
+    """
+    extra_pixel_char = r"y|g|j|p|q"
+    match = re.search(extra_pixel_char, text)
+    if (match or text[0].isupper()):
+        height -= 2
+    return height

@@ -2,30 +2,23 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.action;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-
-import java.util.HashMap;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
-import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -33,19 +26,11 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.IsVisible;
-import io.adaptivecards.objectmodel.ShowCardAction;
-import io.adaptivecards.objectmodel.ToggleInput;
-import io.adaptivecards.objectmodel.ToggleVisibilityAction;
-import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
-import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -97,7 +82,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             else
             {
                 // Otherwise, the height of the image should be the height of the action's text
-                imageHeight = button.getTextSize();
+                imageHeight = Util.pixelsToDp(m_context, button.getTextSize());
             }
 
             double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
@@ -185,6 +170,13 @@ public class ActionElementRenderer extends BaseActionElementRenderer
 
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
+        SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
+        if (action != null)
+        {
+            long actionId = Util.getViewId(button);
+            renderedCard.setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
+        }
+
         button.setText(baseActionElement.GetTitle());
         ActionAlignment alignment = hostConfig.GetActions().getActionAlignment();
         ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
@@ -225,7 +217,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                     hostConfig.GetSpacing().getDefaultSpacing(),
                     context
             );
-            imageLoader.execute(baseActionElement.GetIconUrl());
+            imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, baseActionElement.GetIconUrl());
         }
 
         viewGroup.addView(button);
@@ -249,7 +241,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         Button button = renderButton(context, viewGroup, baseActionElement, hostConfig, renderedCard, renderArgs);
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
 
         return button;
     }

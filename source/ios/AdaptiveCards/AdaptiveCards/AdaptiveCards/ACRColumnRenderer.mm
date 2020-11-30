@@ -45,7 +45,7 @@
 
     [viewGroup addArrangedSubview:column];
 
-    configBleed(rootView, elem, column, acoConfig);
+    configBleed(rootView, elem, column, acoConfig, viewGroup);
 
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
@@ -89,15 +89,17 @@
             .active = YES;
     }
 
-    [column setClipsToBounds:TRUE];
+    [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
+    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
     // instantiate and add tap gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView
                                                                   recipientView:column
-                                                                  actionElement:selectAction
+                                                                  actionElement:acoSelectAction
                                                                      hostConfig:acoConfig];
+    column.shouldGroupAccessibilityChildren = YES;
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace

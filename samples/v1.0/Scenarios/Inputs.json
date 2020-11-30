@@ -8,61 +8,89 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "Input.Text elements",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Name",
+			"wrap": true
 		},
 		{
 			"type": "Input.Text",
-			"placeholder": "Name",
 			"style": "text",
-			"maxLength": 0,
 			"id": "SimpleVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Homepage",
+			"wrap": true
+		},
+		{
 			"type": "Input.Text",
-			"placeholder": "Homepage",
 			"style": "url",
-			"maxLength": 0,
 			"id": "UrlVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Email",
+			"wrap": true
+		},
+		{
 			"type": "Input.Text",
-			"placeholder": "Email",
 			"style": "email",
-			"maxLength": 0,
 			"id": "EmailVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Phone",
+			"wrap": true
+		},
+		{
 			"type": "Input.Text",
-			"placeholder": "Phone",
 			"style": "tel",
-			"maxLength": 0,
 			"id": "TelVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Comments",
+			"wrap": true
+		},
+		{
 			"type": "Input.Text",
-			"placeholder": "Comments",
 			"style": "text",
 			"isMultiline": true,
-			"maxLength": 0,
 			"id": "MultiLineVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Quantity",
+			"wrap": true
+		},
+		{
 			"type": "Input.Number",
-			"placeholder": "Quantity",
 			"min": -5,
 			"max": 5,
 			"value": 1,
 			"id": "NumVal"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Due Date",
+			"wrap": true
+		},
+		{
 			"type": "Input.Date",
-			"placeholder": "Due Date",
 			"id": "DateVal",
 			"value": "2017-09-20"
 		},
 		{
+			"type": "TextBlock",
+			"text": "Start time",
+			"wrap": true
+		},
+		{
 			"type": "Input.Time",
-			"placeholder": "Start time",
 			"id": "TimeVal",
 			"value": "16:59"
 		},
@@ -71,11 +99,13 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "Input.ChoiceSet",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "What color do you want? (compact)"
+			"text": "What color do you want? (compact)",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -99,7 +129,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "What color do you want? (expanded)"
+			"text": "What color do you want? (expanded)",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -123,7 +154,8 @@
 		},
 		{
 			"type": "TextBlock",
-			"text": "What colors do you want? (multiselect)"
+			"text": "What colors do you want? (multiselect)",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",
@@ -150,7 +182,8 @@
 			"size": "medium",
 			"weight": "bolder",
 			"text": "Input.Toggle",
-			"horizontalAlignment": "center"
+			"horizontalAlignment": "center",
+			"wrap": true
 		},
 		{
 			"type": "Input.Toggle",
@@ -182,10 +215,13 @@
 				"type": "AdaptiveCard",
 				"body": [
 					{
+						"type": "TextBlock",
+						"text": "Enter comment",
+						"wrap": true
+					},
+					{
 						"type": "Input.Text",
-						"placeholder": "enter comment",
 						"style": "text",
-						"maxLength": 0,
 						"id": "CommentVal"
 					}
 				],

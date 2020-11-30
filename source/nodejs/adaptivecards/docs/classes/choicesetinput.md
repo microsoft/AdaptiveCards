@@ -25,10 +25,13 @@
 * [choices](choicesetinput.md#choices)
 * [customCssSelector](choicesetinput.md#optional-customcssselector)
 * [defaultValue](choicesetinput.md#optional-defaultvalue)
+* [errorMessage](choicesetinput.md#optional-errormessage)
 * [height](choicesetinput.md#height)
 * [horizontalAlignment](choicesetinput.md#horizontalalignment)
 * [id](choicesetinput.md#optional-id)
 * [isMultiSelect](choicesetinput.md#ismultiselect)
+* [isRequired](choicesetinput.md#isrequired)
+* [label](choicesetinput.md#optional-label)
 * [maxVersion](choicesetinput.md#maxversion)
 * [onPreProcessPropertyValue](choicesetinput.md#optional-onpreprocesspropertyvalue)
 * [onValueChanged](choicesetinput.md#onvaluechanged)
@@ -38,11 +41,14 @@
 * [style](choicesetinput.md#optional-style)
 * [wrap](choicesetinput.md#wrap)
 * [choicesProperty](choicesetinput.md#static-choicesproperty)
+* [errorMessageProperty](choicesetinput.md#static-errormessageproperty)
 * [heightProperty](choicesetinput.md#static-heightproperty)
 * [horizontalAlignmentProperty](choicesetinput.md#static-horizontalalignmentproperty)
 * [idProperty](choicesetinput.md#static-idproperty)
 * [isMultiSelectProperty](choicesetinput.md#static-ismultiselectproperty)
+* [isRequiredProperty](choicesetinput.md#static-isrequiredproperty)
 * [isVisibleProperty](choicesetinput.md#static-isvisibleproperty)
+* [labelProperty](choicesetinput.md#static-labelproperty)
 * [langProperty](choicesetinput.md#static-langproperty)
 * [onRegisterCustomProperties](choicesetinput.md#static-optional-onregistercustomproperties)
 * [placeholderProperty](choicesetinput.md#static-placeholderproperty)
@@ -51,7 +57,6 @@
 * [spacingProperty](choicesetinput.md#static-spacingproperty)
 * [styleProperty](choicesetinput.md#static-styleproperty)
 * [typeNameProperty](choicesetinput.md#static-typenameproperty)
-* [validationProperty](choicesetinput.md#static-validationproperty)
 * [valueProperty](choicesetinput.md#static-valueproperty)
 * [wrapProperty](choicesetinput.md#static-wrapproperty)
 
@@ -77,7 +82,6 @@
 * [separatorElement](choicesetinput.md#separatorelement)
 * [separatorOrientation](choicesetinput.md#protected-separatororientation)
 * [useDefaultSizing](choicesetinput.md#protected-usedefaultsizing)
-* [validation](choicesetinput.md#validation)
 * [value](choicesetinput.md#value)
 
 ### Methods
@@ -86,10 +90,12 @@
 * [applyPadding](choicesetinput.md#protected-applypadding)
 * [asString](choicesetinput.md#asstring)
 * [createPlaceholderElement](choicesetinput.md#protected-createplaceholderelement)
+* [focus](choicesetinput.md#focus)
 * [getActionAt](choicesetinput.md#getactionat)
 * [getActionById](choicesetinput.md#getactionbyid)
 * [getActionCount](choicesetinput.md#getactioncount)
 * [getAllInputs](choicesetinput.md#getallinputs)
+* [getAllLabelIds](choicesetinput.md#protected-getalllabelids)
 * [getCustomProperty](choicesetinput.md#getcustomproperty)
 * [getDefaultPadding](choicesetinput.md#protected-getdefaultpadding)
 * [getEffectivePadding](choicesetinput.md#geteffectivepadding)
@@ -133,6 +139,7 @@
 * [isRightMostElement](choicesetinput.md#isrightmostelement)
 * [isSet](choicesetinput.md#isset)
 * [isTopElement](choicesetinput.md#istopelement)
+* [isValid](choicesetinput.md#isvalid)
 * [overrideInternalRender](choicesetinput.md#protected-overrideinternalrender)
 * [parse](choicesetinput.md#parse)
 * [populateSchema](choicesetinput.md#protected-populateschema)
@@ -152,6 +159,7 @@
 * [toJSON](choicesetinput.md#tojson)
 * [truncateOverflow](choicesetinput.md#protected-truncateoverflow)
 * [undoOverflowTruncation](choicesetinput.md#protected-undooverflowtruncation)
+* [updateInputControlAriaLabelledBy](choicesetinput.md#protected-updateinputcontrolarialabelledby)
 * [updateLayout](choicesetinput.md#updatelayout)
 * [validateProperties](choicesetinput.md#validateproperties)
 * [validateValue](choicesetinput.md#validatevalue)
@@ -205,6 +213,14 @@ ___
 
 ___
 
+### `Optional` errorMessage
+
+• **errorMessage**? : *undefined | string*
+
+*Inherited from [Input](input.md).[errorMessage](input.md#optional-errormessage)*
+
+___
+
 ###  height
 
 • **height**: *[CardElementHeight](../README.md#cardelementheight)*
@@ -234,6 +250,22 @@ ___
 ###  isMultiSelect
 
 • **isMultiSelect**: *boolean* = false
+
+___
+
+###  isRequired
+
+• **isRequired**: *boolean*
+
+*Inherited from [Input](input.md).[isRequired](input.md#isrequired)*
+
+___
+
+### `Optional` label
+
+• **label**? : *undefined | string*
+
+*Inherited from [Input](input.md).[label](input.md#optional-label)*
 
 ___
 
@@ -311,6 +343,14 @@ ___
 
 ___
 
+### `Static` errorMessageProperty
+
+▪ **errorMessageProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "errorMessage", true)
+
+*Inherited from [Input](input.md).[errorMessageProperty](input.md#static-errormessageproperty)*
+
+___
+
 ### `Static` heightProperty
 
 ▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
@@ -352,11 +392,27 @@ ___
 
 ___
 
+### `Static` isRequiredProperty
+
+▪ **isRequiredProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "isRequired", false)
+
+*Inherited from [Input](input.md).[isRequiredProperty](input.md#static-isrequiredproperty)*
+
+___
+
 ### `Static` isVisibleProperty
 
 ▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
 
 *Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
+
+___
+
+### `Static` labelProperty
+
+▪ **labelProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "label", true)
+
+*Inherited from [Input](input.md).[labelProperty](input.md#static-labelproperty)*
 
 ___
 
@@ -387,7 +443,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -439,17 +496,6 @@ ___
         })
 
 *Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
-
-___
-
-### `Static` validationProperty
-
-▪ **validationProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
-        Versions.v1_3,
-        "validation",
-        InputValidationOptions)
-
-*Inherited from [Input](input.md).[validationProperty](input.md#static-validationproperty)*
 
 ___
 
@@ -669,11 +715,11 @@ ___
 
 ### `Protected` renderedInputControlElement
 
-• **get renderedInputControlElement**(): *HTMLElement*
+• **get renderedInputControlElement**(): *HTMLElement | undefined*
 
 *Inherited from [Input](input.md).[renderedInputControlElement](input.md#protected-renderedinputcontrolelement)*
 
-**Returns:** *HTMLElement*
+**Returns:** *HTMLElement | undefined*
 
 ___
 
@@ -714,16 +760,6 @@ ___
 *Inherited from [CardElement](cardelement.md).[useDefaultSizing](cardelement.md#protected-usedefaultsizing)*
 
 **Returns:** *boolean*
-
-___
-
-###  validation
-
-• **get validation**(): *[InputValidationOptions](inputvalidationoptions.md)*
-
-*Inherited from [Input](input.md).[validation](input.md#validation)*
-
-**Returns:** *[InputValidationOptions](inputvalidationoptions.md)*
 
 ___
 
@@ -783,6 +819,16 @@ ___
 
 ___
 
+###  focus
+
+▸ **focus**(): *void*
+
+*Overrides [Input](input.md).[focus](input.md#focus)*
+
+**Returns:** *void*
+
+___
+
 ###  getActionAt
 
 ▸ **getActionAt**(`index`: number): *[Action](action.md) | undefined*
@@ -827,13 +873,29 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
 
 *Inherited from [Input](input.md).[getAllInputs](input.md#getallinputs)*
 
 *Overrides [CardElement](cardelement.md).[getAllInputs](cardelement.md#getallinputs)*
 
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
+
 **Returns:** *[Input](input.md)[]*
+
+___
+
+### `Protected` getAllLabelIds
+
+▸ **getAllLabelIds**(): *string[]*
+
+*Inherited from [Input](input.md).[getAllLabelIds](input.md#protected-getalllabelids)*
+
+**Returns:** *string[]*
 
 ___
 
@@ -1363,6 +1425,16 @@ Name | Type |
 
 ___
 
+###  isValid
+
+▸ **isValid**(): *boolean*
+
+*Inherited from [Input](input.md).[isValid](input.md#isvalid)*
+
+**Returns:** *boolean*
+
+___
+
 ### `Protected` overrideInternalRender
 
 ▸ **overrideInternalRender**(): *HTMLElement | undefined*
@@ -1398,9 +1470,7 @@ ___
 
 ▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-*Inherited from [Input](input.md).[populateSchema](input.md#protected-populateschema)*
-
-*Overrides [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
 
 **Parameters:**
 
@@ -1628,6 +1698,16 @@ ___
 ▸ **undoOverflowTruncation**(): *void*
 
 *Inherited from [CardElement](cardelement.md).[undoOverflowTruncation](cardelement.md#protected-undooverflowtruncation)*
+
+**Returns:** *void*
+
+___
+
+### `Protected` updateInputControlAriaLabelledBy
+
+▸ **updateInputControlAriaLabelledBy**(): *void*
+
+*Overrides [Input](input.md).[updateInputControlAriaLabelledBy](input.md#protected-updateinputcontrolarialabelledby)*
 
 **Returns:** *void*
 

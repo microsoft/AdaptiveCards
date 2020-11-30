@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
+#import "ACRColumnSetView.h"
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
@@ -28,7 +29,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 {
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
+    } else {
+        view.hidden = NO;
     }
+
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
@@ -37,6 +41,10 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
+    if (!view) {
+        return;
+    }
+
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
     }
@@ -271,6 +279,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig)
 {
+    configBleed(rootView, elem, container, acoConfig, nil);
+}
+
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
+                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
+{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -282,49 +296,48 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
             // bleed specification requires that there should be at leat one parental object with
             // padding
             if (collection->GetCanBleed()) {
-                InternalId internalId = collection->GetParentalId();
-                ACRContentStackView *view =
-                    (ACRContentStackView *)[rootView getBleedTarget:internalId];
+                InternalId parentInternalId = collection->GetParentalId();
+                ACRContentStackView *parentView =
+                    (ACRContentStackView *)[rootView getBleedTarget:parentInternalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
                 ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
-                view = view ? view : rootView;
+                if (![parentView isKindOfClass:[ACRColumnSetView class]] || parentView != superview) {
+                    parentView = nil;
+                }
 
-                if (view) {
-                    // 1. create a background view (bv).
-                    // 2. bv is added to bleed target view (tv), which is also a parent view.
-                    // bv is then pinned to the tv according to the bleed direction
-                    // bv gets current container view's (cv) container style
-                    // and cv's container style is reset to transparent, such that
-                    // bv's container style will be diplayed.
-                    // container view's stack view (csv) holds content views, and bv dislpays
-                    // container style we transpose them, and get the final result
+                // 1. create a background view (bv).
+                // 2. bv is added to bleed target view (tv), which is also a parent view.
+                // bv is then pinned to the tv according to the bleed direction
+                // bv gets current container view's (cv) container style
+                // and cv's container style is reset to transparent, such that
+                // bv's container style will be diplayed.
+                // container view's stack view (csv) holds content views, and bv dislpays
+                // container style we transpose them, and get the final result
 
-                    UIView *backgroundView = [[UIView alloc] init];
-                    container.backgroundView = backgroundView;
-                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                UIView *backgroundView = [[UIView alloc] init];
+                container.backgroundView = backgroundView;
+                backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                    UIView *marginalView = view.backgroundView ? view.backgroundView : view;
-                    [marginalView addSubview:backgroundView];
-                    [marginalView sendSubviewToBack:backgroundView];
-                    backgroundView.backgroundColor = container.backgroundColor;
-                    container.backgroundColor = UIColor.clearColor;
+                [container addSubview:backgroundView];
+                [container sendSubviewToBack:backgroundView];
+                backgroundView.backgroundColor = container.backgroundColor;
+                container.backgroundColor = UIColor.clearColor;
 
-                    [container bleed:config->GetSpacing().paddingSpacing
-                            priority:1000
-                              target:backgroundView
-                           direction:direction
-                          parentView:marginalView];
+                [container bleed:config->GetSpacing().paddingSpacing
+                        priority:1000
+                          target:backgroundView
+                       direction:direction
+                      parentView:parentView];
 
-                    if ([container layer].borderWidth) {
-                        [backgroundView layer].borderWidth = [container layer].borderWidth;
-                        [container layer].borderWidth = 0;
-                    }
+                if ([container layer].borderWidth) {
+                    [backgroundView layer].borderWidth = [container layer].borderWidth;
+                    [container layer].borderWidth = 0;
+                }
 
-                    if ([container layer].borderColor) {
-                        [backgroundView layer].borderColor = [container layer].borderColor;
-                        [container layer].borderColor = 0;
-                    }
+                if ([container layer].borderColor) {
+                    [backgroundView layer].borderColor = [container layer].borderColor;
+                    [container layer].borderColor = 0;
                 }
             }
         }
@@ -483,7 +496,7 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 }
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
@@ -491,11 +504,60 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action,
+                               ACOBaseActionElement *action,
                                NSObject **target)
 {
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
+}
+
+UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
+{
+    int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
+                                             textWeight:textProperties.GetTextWeight()];
+    // sanity check, 400 is the normal font;
+    if (fontweight <= 0 || fontweight > 900) {
+        fontweight = 400;
+    }
+    UIFont *font = nil;
+    fontweight -= 100;
+    fontweight /= 100;
+
+    if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
+        const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
+                                                    @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
+        const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
+        if (textProperties.GetFontType() == FontType::Monospace) {
+            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
+                                                                                                UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+        } else {
+            font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
+
+            if (textProperties.GetItalic()) {
+                font = [UIFont fontWithDescriptor:
+                                   getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
+                                             size:size];
+            }
+        }
+    } else {
+        // font weight as string since font weight as double doesn't work
+        // normailze fontweight for indexing
+        const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
+                                                    @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
+        UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
+                                                             @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
+                                                               UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
+
+        descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
+
+        font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
+    }
+    return font;
 }
 
 void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig, RichTextElementProperties const &textProperties, NSString *elementId)
@@ -534,50 +596,7 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
         NSDictionary *options = @{NSDocumentTypeDocumentAttribute : NSHTMLTextDocumentType};
         data = @{@"html" : htmlData, @"options" : options};
     } else {
-        int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()
-                                                 textWeight:textProperties.GetTextWeight()];
-        // sanity check, 400 is the normal font;
-        if (fontweight <= 0 || fontweight > 900) {
-            fontweight = 400;
-        }
-        UIFont *font = nil;
-        fontweight -= 100;
-        fontweight /= 100;
-
-        if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
-            const NSArray<NSNumber *> *fontweights = @[ @(UIFontWeightUltraLight), @(UIFontWeightThin), @(UIFontWeightLight), @(UIFontWeightRegular), @(UIFontWeightMedium),
-                                                        @(UIFontWeightSemibold), @(UIFontWeightBold), @(UIFontWeightHeavy), @(UIFontWeightBlack) ];
-            const CGFloat size = [hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()];
-            if (textProperties.GetFontType() == FontType::Monospace) {
-                const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                            @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-                UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:@{UIFontDescriptorFamilyAttribute : @"Courier New",
-                                                                                                    UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-                descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-                font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-            } else {
-                font = [UIFont systemFontOfSize:size weight:[fontweights[fontweight] floatValue]];
-
-                if (textProperties.GetItalic()) {
-                    font = [UIFont fontWithDescriptor:
-                                       getItalicFontDescriptor(font.fontDescriptor, textProperties.GetItalic())
-                                                 size:size];
-                }
-            }
-        } else {
-            // font weight as string since font weight as double doesn't work
-            // normailze fontweight for indexing
-            const NSArray<NSString *> *fontweights = @[ @"UltraLight", @"Thin", @"Light", @"Regular",
-                                                        @"Medium", @"Semibold", @"Bold", @"Heavy", @"Black" ];
-            UIFontDescriptor *descriptor = [UIFontDescriptor fontDescriptorWithFontAttributes:
-                                                                 @{UIFontDescriptorFamilyAttribute : [hostConfig getFontFamily:textProperties.GetFontType()],
-                                                                   UIFontDescriptorFaceAttribute : fontweights[fontweight]}];
-
-            descriptor = getItalicFontDescriptor(descriptor, textProperties.GetItalic());
-
-            font = [UIFont fontWithDescriptor:descriptor size:[hostConfig getTextBlockTextSize:textProperties.GetFontType() textSize:textProperties.GetTextSize()]];
-        }
+        UIFont *font = getFont(hostConfig, textProperties);
 
         NSDictionary *attributeDictionary = @{NSFontAttributeName : font};
         data = @{@"nonhtml" : parsedString, @"descriptor" : attributeDictionary};
@@ -624,8 +643,14 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
             @throw [ACOFallbackException fallbackException];
         }
         Json::Value blob = unknownAction->GetAdditionalProperties();
-        Json::FastWriter fastWriter;
-        NSString *jsonString = [[NSString alloc] initWithCString:fastWriter.write(blob).c_str() encoding:NSUTF8StringEncoding];
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        delete writer;
+        NSString *jsonString =
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
@@ -639,6 +664,26 @@ UIColor *getForegroundUIColorFromAdaptiveAttribute(std::shared_ptr<HostConfig> c
 {
     const std::string str = config->GetForegroundColor([ACOHostConfig getSharedContainerStyle:style], textColor, isSubtle);
     return [ACOHostConfig convertHexColorCodeToUIColor:str];
+}
+
+unsigned int getSpacing(Spacing spacing, std::shared_ptr<HostConfig> const &config)
+{
+    switch (spacing) {
+        case Spacing::ExtraLarge:
+            return config->GetSpacing().extraLargeSpacing;
+        case Spacing::Large:
+            return config->GetSpacing().largeSpacing;
+        case Spacing::Medium:
+            return config->GetSpacing().mediumSpacing;
+        case Spacing::Small:
+            return config->GetSpacing().smallSpacing;
+        case Spacing::Default:
+            return config->GetSpacing().defaultSpacing;
+        default:
+            break;
+    }
+
+    return 0;
 }
 
 void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundImage *backgroundImageProperties, UIView *superView, UIImageView *imageView)
@@ -697,4 +742,35 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
         [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
         [imageView.heightAnchor constraintEqualToConstant:complementaryHeight].active = YES;
     }
+}
+
+NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style)
+{
+    UIFont *font = getFont(acoConfig, textElementProperties);
+    auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
+
+    return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
+}
+
+NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces)
+{
+    ACOResolverIFType resolverType = ACODefaultIF;
+    NSString *urlString = pieces[@"url"], *key = urlString;
+    NSURL *url = nil;
+
+    if (urlString) {
+        url = [NSURL URLWithString:urlString];
+        resolverType = [acoConfig getResolverIFType:[url scheme]];
+    }
+
+    if ([keyType isEqualToString:@"image"] || [keyType isEqualToString:@"media-poster"]) {
+        if (ACOImageViewIF == resolverType) {
+            key = pieces[@"number"];
+        }
+    } else if ([keyType isEqualToString:@"media-playicon-image"]) {
+        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-viewIF"] : pieces[@"playicon-url"];
+    } else if ([keyType isEqualToString:@"media-playicon-imageView"]) {
+        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
+    }
+    return key;
 }

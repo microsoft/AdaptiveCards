@@ -15,7 +15,8 @@
 									"type": "TextBlock",
 									"size": "Large",
 									"weight": "Bolder",
-									"text": "**EXPENSE APPROVAL**"
+									"text": "**EXPENSE APPROVAL**",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -79,7 +80,8 @@
 					"size": "Small",
 					"weight": "Bolder",
 					"color": "Accent",
-					"text": "[ER-13052](https://adaptivecards.io)"
+					"text": "[ER-13052](https://adaptivecards.io)",
+					"wrap": true
 				},
 				{
 					"type": "FactSet",
@@ -91,15 +93,15 @@
 						},
 						{
 							"title": "Duration",
-							"value": "2019/06/19 - 2019/06/25"
+							"value": "2019-06-19 - 2019-06-21"
 						},
 						{
 							"title": "Submitted On",
-							"value": "2019/04/14"
+							"value": "2019-04-14"
 						},
 						{
 							"title": "Reimbursable Amount",
-							"value": "$ 404.30"
+							"value": "$ 400.00"
 						},
 						{
 							"title": "Awaiting approval from",
@@ -127,7 +129,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "DATE"
+									"text": "DATE",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -139,7 +142,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "CATEGORY"
+									"text": "CATEGORY",
+									"wrap": true
 								}
 							],
 							"width": "stretch"
@@ -150,7 +154,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "AMOUNT"
+									"text": "AMOUNT",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -168,7 +173,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "06/19",
+							"text": "06-19",
 							"wrap": true
 						}
 					],
@@ -191,7 +196,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 300",
+							"text": "$300.00",
 							"wrap": true
 						}
 					],
@@ -199,49 +204,31 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown1",
 					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent1",
+							"chevronDown1",
+							"chevronUp1"
+						]
+					},
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent1",
-									"chevronUp1",
-									"chevronDown1"
-								]
-							},
+							"id": "chevronDown1",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Air travel expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp1",
-					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent1",
-									"chevronUp1",
-									"chevronDown1"
-								]
-							},
+							"id": "chevronUp1",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Air travel expense expanded"
+							"altText": "Details expanded",
+							"isVisible": false
 						}
 					],
 					"width": "auto"
@@ -264,7 +251,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Leg 2 on Tue,Jun 19th, 2019 at 7:15 PM.",
+							"text": "* Leg 2 on Tue, Jun 19th, 2019 at 7:15 PM.",
 							"isSubtle": true,
 							"wrap": true
 						},
@@ -321,7 +308,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "Center",
-							"text": "06/19",
+							"text": "06-19",
 							"wrap": true
 						}
 					],
@@ -344,7 +331,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 100",
+							"text": "$100.00",
 							"wrap": true
 						}
 					],
@@ -352,49 +339,31 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown2",
 					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent2",
+							"chevronDown2",
+							"chevronUp2"
+						]
+					},
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent2",
-									"chevronUp2",
-									"chevronDown2"
-								]
-							},
+							"id": "chevronDown2",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Auto mobile expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp2",
-					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent2",
-									"chevronUp2",
-									"chevronDown2"
-								]
-							},
+							"id": "chevronUp2",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Auto mobile expense expanded"
+							"altText": "Details expanded",
+							"isVisible": false
 						}
 					],
 					"width": "auto"
@@ -468,7 +437,7 @@
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "Center",
-							"text": "06/25",
+							"text": "06-21",
 							"wrap": true
 						}
 					],
@@ -480,7 +449,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Air Travel Expense",
+							"text": "Excess Baggage Cost",
 							"wrap": true
 						}
 					],
@@ -491,7 +460,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$ 4.30",
+							"text": "$50.38",
 							"wrap": true
 						}
 					],
@@ -499,49 +468,31 @@
 				},
 				{
 					"type": "Column",
-					"id": "chevronDown3",
 					"spacing": "Small",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent3",
+							"chevronDown3",
+							"chevronUp3"
+						]
+					},
 					"verticalContentAlignment": "Center",
 					"items": [
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "collapse",
-								"targetElements": [
-									"cardContent3",
-									"chevronUp3",
-									"chevronDown3"
-								]
-							},
+							"id": "chevronDown3",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Air travel expense collapsed"
-						}
-					],
-					"width": "auto"
-				},
-				{
-					"type": "Column",
-					"id": "chevronUp3",
-					"isVisible": false,
-					"spacing": "Small",
-					"verticalContentAlignment": "Center",
-					"items": [
+							"altText": "Details collapsed"
+						},
 						{
 							"type": "Image",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "expand",
-								"targetElements": [
-									"cardContent3",
-									"chevronUp3",
-									"chevronDown3"
-								]
-							},
+							"id": "chevronUp3",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Air travel expense expanded"
+							"altText": "Details expanded",
+							"isVisible": false
 						}
 					],
 					"width": "auto"
@@ -629,15 +580,18 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "404.30"
+							"text": "$450.38",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 50.38 \t",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t"
+							"text": "(-) 0.00 \t",
+							"wrap": true
 						}
 					],
 					"width": "auto"
@@ -673,7 +627,8 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$ 404.30"
+									"text": "$ 400.00",
+									"wrap": true
 								}
 							],
 							"width": "auto"
@@ -688,61 +643,39 @@
 			"bleed": true
 		},
 		{
-			"type": "Container",
-			"items": [
+			"type": "ColumnSet",
+			"columns": [
 				{
-					"type": "ColumnSet",
-					"columns": [
+					"type": "Column",
+					"selectAction": {
+						"type": "Action.ToggleVisibility",
+						"targetElements": [
+							"cardContent4",
+							"showHistory",
+							"hideHistory"
+						]
+					},
+					"verticalContentAlignment": "Center",
+					"items": [
 						{
-							"type": "Column",
-							"id": "chevronDown4",
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "show history",
-								"targetElements": [
-									"cardContent4",
-									"chevronUp4",
-									"chevronDown4"
-								]
-							},
-							"verticalContentAlignment": "Center",
-							"items": [
-								{
-									"type": "TextBlock",
-									"horizontalAlignment": "Right",
-									"color": "Accent",
-									"text": "Show history",
-									"wrap": true
-								}
-							],
-							"width": 1
+							"type": "TextBlock",
+							"id": "showHistory",
+							"horizontalAlignment": "Right",
+							"color": "Accent",
+							"text": "Show history",
+							"wrap": true
 						},
 						{
-							"type": "Column",
-							"id": "chevronUp4",
-							"isVisible": false,
-							"selectAction": {
-								"type": "Action.ToggleVisibility",
-								"title": "hide history",
-								"targetElements": [
-									"cardContent4",
-									"chevronUp4",
-									"chevronDown4"
-								]
-							},
-							"verticalContentAlignment": "Center",
-							"items": [
-								{
-									"type": "TextBlock",
-									"horizontalAlignment": "Right",
-									"color": "Accent",
-									"text": "Hide history",
-									"wrap": true
-								}
-							],
-							"width": 1
+							"type": "TextBlock",
+							"id": "hideHistory",
+							"horizontalAlignment": "Right",
+							"color": "Accent",
+							"text": "Hide history",
+							"wrap": true,
+							"isVisible": false
 						}
-					]
+					],
+					"width": 1
 				}
 			]
 		},
@@ -756,13 +689,13 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "* Expense submitted by **Matt** on Wed, Apr 14th, 2019",
+							"text": "* Expense submitted by **Matt Hidinger** on Mon, Jul 15, 2019",
 							"isSubtle": true,
 							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "* Expense approved by **Thomas** on Thu, Apr 15th, 2019",
+							"text": "* Expense approved by **Thomas** on Mon, Jul 15, 2019",
 							"isSubtle": true,
 							"wrap": true
 						}

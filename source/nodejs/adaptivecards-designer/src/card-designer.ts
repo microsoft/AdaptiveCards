@@ -22,6 +22,7 @@ import { Strings } from "./strings";
 import * as Shared from "./shared";
 import { TreeView } from "./tree-view";
 import { SampleCatalogue } from "./catalogue";
+import { HelpDialog } from "./help-dialog";
 
 export class CardDesigner extends Designer.DesignContext {
     private static internalProcessMarkdown(text: string, result: Adaptive.IMarkdownProcessingResult) {
@@ -199,6 +200,14 @@ export class CardDesigner extends Designer.DesignContext {
                         peerRegistration
                     )
 
+                    paletteItem.onDoubleClick = (sender) => {
+                        const peer = paletteItem.createPeer(this, this.designerSurface);
+
+                        if (this.designerSurface.rootPeer.tryAdd(peer)) {
+                            peer.isSelected = true;
+                        };
+                    }
+
                     categorizedTypes[peerRegistration.category].push(paletteItem);
                 }
             }
@@ -230,7 +239,7 @@ export class CardDesigner extends Designer.DesignContext {
     private endDrag() {
         if (this._draggedPaletteItem) {
             this._draggedPaletteItem.endDrag();
-            this._draggedElement.remove();
+            this._draggedElement.parentNode.removeChild(this._draggedElement);
 
             this._draggedPaletteItem = null;
             this._draggedElement = null;
@@ -572,7 +581,7 @@ export class CardDesigner extends Designer.DesignContext {
         }
     }
 
-    private _targetVersion: Adaptive.Version = Adaptive.Versions.v1_2;
+    private _targetVersion: Adaptive.Version = Adaptive.Versions.v1_3;
     private _fullScreenHandler = new FullScreenHandler();
     private _fullScreenButton: ToolbarButton;
     private _hostContainerChoicePicker: ToolbarChoicePicker;
@@ -582,6 +591,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _newCardButton: ToolbarButton;
     private _copyJSONButton: ToolbarButton;
     private _togglePreviewButton: ToolbarButton;
+    private _helpButton: ToolbarButton;
     private _preventRecursiveSetTargetVersion = false;
 
     private prepareToolbar() {
@@ -666,7 +676,7 @@ export class CardDesigner extends Designer.DesignContext {
             }
 
             this._hostContainerChoicePicker.onChanged = (sender) => {
-                this.hostContainer = this._hostContainers[Number.parseInt(this._hostContainerChoicePicker.value)];
+                this.hostContainer = this._hostContainers[parseInt(this._hostContainerChoicePicker.value)];
 
                 this.activeHostContainerChanged();
             };
@@ -699,8 +709,9 @@ export class CardDesigner extends Designer.DesignContext {
 
         this._copyJSONButton = new ToolbarButton(
             CardDesigner.ToolbarCommands.CopyJSON,
-            "Copy card JSON",
+            "Copy card payload",
             "acd-icon-copy");
+        this._copyJSONButton.toolTip = "Copy the generated JSON payload of the card (template bound with data) to the clipboard. To copy only the template payload, use the Card Payload Editor.";
         this.toolbar.addElement(this._copyJSONButton);
 
         this._togglePreviewButton = new ToolbarButton(
@@ -713,6 +724,16 @@ export class CardDesigner extends Designer.DesignContext {
         this._togglePreviewButton.isVisible = Shared.GlobalSettings.enableDataBindingSupport;
 
         this.toolbar.addElement(this._togglePreviewButton);
+
+        this._helpButton = new ToolbarButton(
+            CardDesigner.ToolbarCommands.Help,
+            "Help",
+            "acd-icon-help",
+            (sender: ToolbarButton) => { this.showHelp(); });
+        this._helpButton.toolTip = "Display help.";
+        this._helpButton.separator = true;
+        this._helpButton.alignment = ToolbarElementAlignment.Right;
+        this.toolbar.addElement(this._helpButton);
 
         this._fullScreenHandler = new FullScreenHandler();
         this._fullScreenHandler.onFullScreenChanged = (isFullScreen: boolean) => {
@@ -852,6 +873,8 @@ export class CardDesigner extends Designer.DesignContext {
 
         // Setup card JSON editor
         this._cardEditorToolbox.content = document.createElement("div");
+        this._cardEditorToolbox.content.setAttribute("role", "region");
+        this._cardEditorToolbox.content.setAttribute("aria-label", "card payload editor");
         this._cardEditorToolbox.content.style.overflow = "hidden";
 
         this._cardEditor = monaco.editor.create(
@@ -875,6 +898,8 @@ export class CardDesigner extends Designer.DesignContext {
         if (this._sampleDataEditorToolbox) {
             // Setup sample data JSON editor
             this._sampleDataEditorToolbox.content = document.createElement("div");
+            this._sampleDataEditorToolbox.content.setAttribute("role", "region");
+            this._sampleDataEditorToolbox.content.setAttribute("aria-label", "sample data editor");
             this._sampleDataEditorToolbox.content.style.overflow = "hidden";
 
             this._sampleDataEditor = monaco.editor.create(
@@ -935,20 +960,20 @@ export class CardDesigner extends Designer.DesignContext {
         root.style.overflow = "hidden";
 
         root.innerHTML =
-            '<div id="toolbarHost"></div>' +
+            '<div id="toolbarHost" role="region" aria-label="toolbar"></div>' +
             '<div class="content" style="display: flex; flex: 1 1 auto; overflow-y: hidden;">' +
                 '<div id="leftCollapsedPaneTabHost" class="acd-verticalCollapsedTabContainer acd-dockedLeft" style="border-right: 1px solid #D2D2D2;"></div>' +
-                '<div id="toolPalettePanel" class="acd-toolPalette-pane"></div>' +
+                '<div id="toolPalettePanel" class="acd-toolPalette-pane" role="region" aria-label="card elements"></div>' +
                 '<div style="display: flex; flex-direction: column; flex: 1 1 100%; overflow: hidden;">' +
                     '<div style="display: flex; flex: 1 1 100%; overflow: hidden;">' +
-                        '<div id="cardArea" class="acd-designer-cardArea">' +
+                        '<div id="cardArea" class="acd-designer-cardArea" role="region" aria-label="card preview">' +
                             '<div style="flex: 1 1 100%; overflow: auto;">' +
                                 '<div id="designerHost" style="margin: 20px 40px 20px 20px;"></div>' +
                             '</div>' +
                             '<div id="errorPane" class="acd-error-pane acd-hidden"></div>' +
                         '</div>' +
-                        '<div id="treeViewPanel" class="acd-treeView-pane"></div>' +
-                       '<div id="propertySheetPanel" class="acd-propertySheet-pane"></div>' +
+                        '<div id="treeViewPanel" class="acd-treeView-pane" role="region" aria-label="card structure"></div>' +
+                       '<div id="propertySheetPanel" class="acd-propertySheet-pane" role="region" aria-label="element properties"></div>' +
                     '</div>' +
                     '<div id="jsonEditorPanel" class="acd-json-editor-pane"></div>' +
                     '<div id="bottomCollapsedPaneTabHost" class="acd-horizontalCollapsedTabContainer" style="border-top: 1px solid #D2D2D2;"></div>' +
@@ -969,10 +994,10 @@ export class CardDesigner extends Designer.DesignContext {
             new Clipboard(
                 this._copyJSONButton.renderedElement,
                 {
-                    text: (trigger) => {
-                        return JSON.stringify(this.getCard(), null, 4);
-                    }
-                });
+                    text: (trigger) => JSON.stringify(this.getBoundCard(), null, 4)
+                })
+                .on("error", () => this._copyJSONButton.renderedElement.focus())
+                .on("success", () => this._copyJSONButton.renderedElement.focus());
         }
 
         // Tool palette panel
@@ -1096,6 +1121,10 @@ export class CardDesigner extends Designer.DesignContext {
         return this._designerSurface ? this._designerSurface.getCardPayloadAsObject() : undefined;
     }
 
+    getBoundCard(): object {
+        return this._designerSurface ? this._designerSurface.getBoundCardPayloadAsObject() : undefined;
+    }
+
     undo() {
         if (this.canUndo) {
             this._undoStackIndex--;
@@ -1116,6 +1145,12 @@ export class CardDesigner extends Designer.DesignContext {
             this.setCardPayload(payload, false);
             this.updateToolbar();
         }
+    }
+
+    showHelp() {
+        let helpDialog = new HelpDialog();
+        helpDialog.title = "Help";
+        helpDialog.open();
     }
 
     newCard() {
@@ -1270,5 +1305,6 @@ export module CardDesigner {
         static readonly NewCard = "__newCardButton";
         static readonly CopyJSON = "__copyJsonButton";
         static readonly TogglePreview = "__togglePreviewButton";
+        static readonly Help = "__helpButton";
     }
 }

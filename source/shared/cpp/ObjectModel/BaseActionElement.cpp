@@ -111,3 +111,25 @@ void BaseActionElement::ParseJsonObject(AdaptiveSharedNamespace::ParseContext& c
 {
     baseElement = ParseUtil::GetActionFromJsonValue(context, json);
 }
+
+std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBasePropertiesFromString(ParseContext& context, const std::string& jsonString)
+{
+    return BaseActionElement::DeserializeBaseProperties(context, ParseUtil::GetJsonValueFromString(jsonString));
+}
+
+std::shared_ptr<BaseActionElement> BaseActionElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json)
+{
+    std::shared_ptr<BaseActionElement> baseActionElement = std::make_shared<BaseActionElement>();
+    DeserializeBaseProperties(context, json, baseActionElement);
+    return baseActionElement;
+}
+
+void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const Json::Value& json, std::shared_ptr<BaseActionElement>& element)
+{
+    ParseUtil::ThrowIfNotJsonObject(json);
+
+    element->DeserializeBase<BaseActionElement>(context, json);
+    element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
+    element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
+    element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+}

@@ -89,7 +89,7 @@ a.ac-anchor:visited:active {
     user-select: none;
     background-color: white;
     color: #00599E;
-    border: 1px solid #B2E0FF;
+    border: 1px solid #6290FF;
 }
 
 .ac-pushButton:hover {
@@ -172,18 +172,6 @@ a.ac-anchor:visited:active {
     align-items: center;
 }
 
-.ac-input-container.ac-input-required::after {
-    content: "*";
-    color: red;
-    left: 100%;
-    top: 0;
-    padding-left: 4px;
-}
-
-.ac-input.ac-input-validation-failed {
-    border: 1px solid red !important;
-}
-
 .ac-input-validation-error-message {
     font-size: 12px;
     color: red;
@@ -208,13 +196,13 @@ a.ac-anchor:visited:active {
 }
 
 .ac-input.ac-input-required {
-    background-image: linear-gradient(45deg, transparent, transparent 50%, red 50%, red 100%);
-    background-position: top right;
-    background-size: .5em .5em;
-    background-repeat: no-repeat;
 }
 
-.ac-input.ac-input-validation-failed {
+.ac-input.ac-textInput.ac-input-validation-failed,
+.ac-input.ac-numberInput.ac-input-validation-failed,
+.ac-input.ac-dateInput.ac-input-validation-failed,
+.ac-input.ac-timeInput.ac-input-validation-failed,
+.ac-input.ac-multichoiceInput.ac-choiceSetInput-compact.ac-input-validation-failed {
     border: 1px solid red !important;
 }
 

@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Adaptive Cards Javascript library for HTML Clients",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -43,7 +43,7 @@
 		"eslint": "^7.3.1",
 		"jest": "^26.1.0",
 		"rimraf": "^3.0.2",
-		"typedoc": "beta",
+		"typedoc": "0.19.2",
 		"typedoc-plugin-markdown": "^2.2.17",
 		"typescript": "^3.9.5",
 		"webpack": "^4.43.0",

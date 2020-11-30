@@ -47,6 +47,7 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+
     [viewGroup addArrangedSubview:columnSetView];
 
     configBleed(rootView, elem, columnSetView, acoConfig);
@@ -105,6 +106,9 @@
             }
 
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+            if (separator && !curView) {
+                [columnSetView removeViewFromContentStackView:separator];
+            }
         } @catch (ACOFallbackException *e) {
 
             handleFallbackException(e, columnSetView, rootView, inputs, column, acoConfig);
@@ -188,11 +192,12 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
+    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
     // instantiate and add long press gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView
                                                                   recipientView:columnSetView
-                                                                  actionElement:selectAction
+                                                                  actionElement:acoSelectAction
                                                                      hostConfig:acoConfig];
     configVisibility(columnSetView, elem);
 

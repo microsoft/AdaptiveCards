@@ -36,10 +36,9 @@
           v-bind="{
             blank: true,
             blankColor: '#bbb',
-            width: 350,
-            height: 350
           }"
           :src="imageBoundary | image_data_url"
+          class="fit-image"
           rounded
         ></b-img-lazy>
       </div>
@@ -136,7 +135,7 @@ export default {
       this.isLoading = true;
       AdaptiveCardApi.getAdaptiveCard(base64_image)
         .then(response => {
-          let card_json = response.data["card_json"];
+          let card_json = response.data["card_json"]["card"];
           this.cardJson = card_json;
           this.imageBoundary = response.data.image || null;
           // Add markdown rendering.
@@ -241,5 +240,9 @@ export default {
 }
 .modalBody {
   overflow: auto;
+}
+.fit-image {
+    max-width: 100%;
+    max-height: 100%;
 }
 </style>

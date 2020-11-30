@@ -214,7 +214,8 @@ ___
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities)
+        HostCapabilities,
+        new HostCapabilities())
 
 *Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
@@ -360,7 +361,13 @@ ___
 
 ###  getAllInputs
 
-▸ **getAllInputs**(): *[Input](input.md)[]*
+▸ **getAllInputs**(`processActions`: boolean): *[Input](input.md)[]*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`processActions` | boolean | true |
 
 **Returns:** *[Input](input.md)[]*
 
@@ -500,13 +507,7 @@ ___
 
 ### `Protected` internalGetReferencedInputs
 
-▸ **internalGetReferencedInputs**(`allInputs`: [Input](input.md)[]): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
-
-**Parameters:**
-
-Name | Type |
------- | ------ |
-`allInputs` | [Input](input.md)[] |
+▸ **internalGetReferencedInputs**(): *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
 **Returns:** *[Dictionary](../README.md#dictionary)‹[Input](input.md)›*
 
@@ -805,9 +806,13 @@ ___
 
 ###  validateInputs
 
-▸ **validateInputs**(): *[Input](input.md)‹›[]*
+▸ **validateInputs**(): *[Input](input.md)[]*
 
-**Returns:** *[Input](input.md)‹›[]*
+Validates the inputs associated with this action.
+
+**Returns:** *[Input](input.md)[]*
+
+A list of inputs that failed validation, or an empty array if no input failed validation.
 
 ___
 

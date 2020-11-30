@@ -18,7 +18,7 @@ static int kToggleVisibilityContext;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSMutableSet<UIView *> *_hiddenSubviews;
+    NSHashTable<UIView *> *_hiddenSubviews;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -49,7 +49,8 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
+        self.clipsToBounds = NO;
         [self config:attributes];
     }
     return self;
@@ -66,7 +67,7 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 
@@ -348,7 +349,8 @@ static int kToggleVisibilityContext;
     [self applyPaddingToTop:amount left:amount bottom:amount right:amount priority:priority location:location];
 }
 
-- (void)applyPaddingToTop:(CGFloat)top left:(CGFloat)left
+- (void)applyPaddingToTop:(CGFloat)top
+                     left:(CGFloat)left
                    bottom:(CGFloat)bottom
                     right:(CGFloat)right
                  priority:(unsigned int)priority
@@ -389,20 +391,32 @@ static int kToggleVisibilityContext;
     [self removeConstraints:_widthconstraint];
     [self removeConstraints:_heightconstraint];
 
-    UIView *leadingView = (direction & ACRBleedToLeadingEdge) ? parent : self;
-    UIView *trailingView = (direction & ACRBleedToTrailingEdge) ? parent : self;
-    UIView *topView = (direction & ACRBleedToTopEdge) ? parent : self;
-    UIView *bottomView = (direction & ACRBleedToBottomEdge) ? parent : self;
-
-    [target.leadingAnchor constraintEqualToAnchor:leadingView.leadingAnchor].active = YES;
-    [target.trailingAnchor constraintEqualToAnchor:trailingView.trailingAnchor].active = YES;
-    [target.topAnchor constraintEqualToAnchor:topView.topAnchor].active = YES;
-    [target.bottomAnchor constraintEqualToAnchor:bottomView.bottomAnchor].active = YES;
-
     // inverse the bit pattern that are set by ACRBleedDirection enums
     NSInteger bleedDirection = ~(~0 & direction);
 
     [self applyPadding:padding priority:1000 location:(ACRBleedDirection)bleedDirection];
+
+    CGFloat paddingInFloat = padding;
+    CGFloat top = (direction & ACRBleedToTopEdge) ? -paddingInFloat : 0;
+    CGFloat leading = (direction & ACRBleedToLeadingEdge) ? -paddingInFloat : 0;
+    CGFloat bottom = (direction & ACRBleedToBottomEdge) ? -paddingInFloat : 0;
+    CGFloat trailing = (direction & ACRBleedToTrailingEdge) ? -paddingInFloat : 0;
+
+    if (@available(iOS 11.0, *)) {
+        self.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(top, leading, bottom, trailing);
+    } else {
+        self.layoutMargins = UIEdgeInsetsMake(top, leading, bottom, trailing);
+    }
+
+    [target.topAnchor constraintEqualToAnchor:self.layoutMarginsGuide.topAnchor].active = YES;
+    [target.leadingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.leadingAnchor].active = YES;
+    [target.trailingAnchor constraintEqualToAnchor:self.layoutMarginsGuide.trailingAnchor].active = YES;
+
+    if (parent && (direction & ACRBleedToBottomEdge)) {
+        [target.bottomAnchor constraintEqualToAnchor:parent.bottomAnchor].active = YES;
+    } else {
+        [target.bottomAnchor constraintEqualToAnchor:self.layoutMarginsGuide.bottomAnchor].active = YES;
+    }
 }
 
 - (void)layoutSubviews

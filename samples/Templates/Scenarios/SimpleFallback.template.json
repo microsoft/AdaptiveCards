@@ -5,7 +5,8 @@
     "body": [
         {
             "type": "TextBlock",
-            "text": "Fallback test:"
+            "text": "Fallback test:",
+            "wrap": true
         },
         {
             "type": "Steve Holt!",
@@ -17,7 +18,8 @@
             "someProperty": "foo",
             "fallback": {
                 "type": "TextBlock",
-                "text": "${fallback.message}"
+                "text": "${fallback.message}",
+                "wrap": true
             }
         }
     ]

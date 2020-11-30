@@ -6,6 +6,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 
+#import "AdaptiveCards/ACOBaseActionElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
@@ -173,8 +174,10 @@
     XCTAssertTrue(cardParseResult && cardParseResult.isValid);
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
     NSString *hashkey = @"FeedbackText";
-    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
-    XCTAssertNotNil(acrTextView);
+    ACRInputLabelView *acrInputLabelView = (ACRInputLabelView *)[renderResult.view viewWithTag:hashkey.hash];
+
+    XCTAssertNotNil(acrInputLabelView);
+    ACRTextView *acrTextView = (ACRTextView *)acrInputLabelView.stack.arrangedSubviews[1];
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
@@ -188,7 +191,7 @@
     ACOAdaptiveCard *renderedCard = [renderResult.view card];
     NSData *json = [renderedCard inputs];
     NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableContainers error:nil];
-    XCTAssert([dictionary count] == 2);
+    XCTAssert([dictionary count] == 1);
 }
 
 // this test ensure that extending text render doesn't crash
@@ -230,15 +233,16 @@
     action->SetCard(innerCard);
     NSObject *target;
     UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
+    ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], acoAction, &target));
 
     // show card target not supported without button
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], acoAction, button, &target));
 
     XCTAssertNotNil(target);
 

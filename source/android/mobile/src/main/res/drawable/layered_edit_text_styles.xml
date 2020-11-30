@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:adaptivecards="http://schemas.android.com/apk/res-auto" >
+    <item adaptivecards:state_error="true" android:drawable="@drawable/layered_edit_text_invalid" />
+    <item android:drawable="@drawable/layered_edit_text" />
+</selector>

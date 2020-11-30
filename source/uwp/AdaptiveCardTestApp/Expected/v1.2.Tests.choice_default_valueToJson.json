@@ -1,0 +1,1 @@
+{"actions":[{"title":"Submit","type":"Action.Submit"}],"body":[{"text":"What color do you want? *(isMultiSelect:false, style:compact)*","type":"TextBlock"},{"choices":[{"title":"Red","value":"1"},{"title":"Green","value":"2"},{"title":"Blue","value":"3"}],"id":"myColor","style":"Compact","type":"Input.ChoiceSet"}],"type":"AdaptiveCard","version":"1.0"}

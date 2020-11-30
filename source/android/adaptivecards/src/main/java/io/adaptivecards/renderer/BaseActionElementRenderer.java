@@ -5,13 +5,9 @@ package io.adaptivecards.renderer;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
@@ -22,15 +18,13 @@ import java.util.Set;
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BaseActionElement;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.Container;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityAction;
 import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
 import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
-import io.adaptivecards.objectmodel.WarningStatusCode;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
@@ -90,7 +84,8 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
                                      ViewGroup viewGroup,
                                      BaseActionElement baseActionElement,
                                      ICardActionHandler cardActionHandler,
-                                     HostConfig hostConfig)
+                                     HostConfig hostConfig,
+                                     RenderArgs renderArgs)
         {
             this(renderedCard, baseActionElement, cardActionHandler);
 
@@ -99,7 +94,7 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             // As SelectAction doesn't support ShowCard actions, then this line won't be executed
             if (m_isInlineShowCardAction)
             {
-                renderHiddenCard(context, fragmentManager, viewGroup, hostConfig);
+                renderHiddenCard(context, fragmentManager, viewGroup, hostConfig, renderArgs);
             }
         }
 
@@ -169,26 +164,19 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
         }
 
-        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig)
+        private void renderHiddenCard(Context context, FragmentManager fragmentManager, ViewGroup viewGroup, HostConfig hostConfig, RenderArgs renderArgs)
         {
-            ShowCardAction showCardAction = null;
-            if (m_action instanceof ShowCardAction)
-            {
-                showCardAction = (ShowCardAction) m_action;
-            }
-            else if ((showCardAction = ShowCardAction.dynamic_cast(m_action)) == null)
-            {
-                throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
-            }
+            ShowCardAction showCardAction = Util.castTo(m_action, ShowCardAction.class);
 
-            m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(), m_cardActionHandler, hostConfig, true);
+            m_invisibleCard = AdaptiveCardRenderer.getInstance().internalRender(m_renderedAdaptiveCard, context, fragmentManager, showCardAction.GetCard(),
+                                                                                m_cardActionHandler, hostConfig, true, renderArgs.getContainerCardId());
             m_invisibleCard.setVisibility(View.GONE);
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParams.setMargins(0, Util.dpToPixels(context, hostConfig.GetActions().getShowCard().getInlineTopMargin()), 0, 0);
             m_invisibleCard.setLayoutParams(layoutParams);
 
             ViewGroup parent = (ViewGroup) viewGroup.getParent();
-            if(parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
+            if (parent instanceof HorizontalScrollView) // Required when the actions are set in horizontal
             {
                 parent = (ViewGroup) parent.getParent().getParent();
             }
@@ -247,6 +235,17 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
 
             v.setSelected(m_invisibleCard.getVisibility() != View.VISIBLE);
+            // Reset all other buttons
+            ViewGroup parentContainer = (ViewGroup)v.getParent();
+            for (int i = 0; i < parentContainer.getChildCount(); ++i)
+            {
+                View actionInActionSet = parentContainer.getChildAt(i);
+                if (v != actionInActionSet)
+                {
+                    actionInActionSet.setSelected(false);
+                }
+            }
+
             for (int i = 0; i < m_hiddenCardsLayout.getChildCount(); ++i)
             {
                 View child = m_hiddenCardsLayout.getChildAt(i);
@@ -265,7 +264,6 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
-                m_invisibleCard.requestFocus();
             }
             else
             {
@@ -318,17 +316,28 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         }
 
         @Override
-        public void onClick(View v) {
+        public void onClick(View view)
+        {
+            m_renderedAdaptiveCard.clearValidatedInputs();
+
             if (m_isInlineShowCardAction)
             {
-                handleInlineShowCardAction(v);
+                handleInlineShowCardAction(view);
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
-                handleToggleVisibilityAction(v);
+                handleToggleVisibilityAction(view);
             }
             else
             {
+                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
+                {
+                    if (!m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
+                    {
+                        return;
+                    }
+                }
+
                 m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
             }
         }
