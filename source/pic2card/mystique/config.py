@@ -60,7 +60,7 @@ FONT_SPEC_REGISTRY = {
     "font_bbox": "mystique.font_properties.FontPropBoundingBox"
 }
 # active font prop pipelne
-ACTIVE_FONTSPEC_NAME = "font_bbox"
+ACTIVE_FONTSPEC_NAME = "font_morph"
 
 # image detection swtiching paramater
 # On True [ uses custom image pipeline for image objects]
@@ -131,8 +131,8 @@ CONTAINER_GROUPING = {
         "choiceset_y_min_difference": 0.60,
         "choiceset_ymax_ymin_difference": 0.151
 }
-# FLAG SWITCH FOR NEW LAYOUT STRUCTURING BY DEFAULT - FALSE
-NEW_LAYOUT_STRUCTURE = False
+# FLAG SWITCH FOR NEW LAYOUT STRUCTURING BY DEFAULT - TRUE
+NEW_LAYOUT_STRUCTURE = True
 
 # COLUMN-SET ALIGNMENT PREFERENCE ORDER
 PREFERENCE_ORDER = ["Left", "Center", "Right"]

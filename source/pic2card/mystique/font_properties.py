@@ -6,9 +6,48 @@ can switch for different implementation to obtain font properties
 from typing import Tuple, Dict, List
 import numpy as np
 import cv2
+import statistics
 from PIL import Image
 from mystique import default_host_configs
 from mystique.extract_properties_abstract import AbstractFontSizeAndWeight
+
+
+def classify_font_weights(design_objects):
+    """
+    Calculates thresholds using normal distribution from font
+    weights of each design_objects to classify and
+    returns font weight label accordingly.
+    @param design_objects: input design objects dictionary
+    @return: design_objects dictionary with weight labelled
+    """
+    dynamic_thresh = []
+    for item in design_objects:
+        if item['object'] == 'textbox':
+            # For debugging purposes
+            # print(f"{item['data']}, weight is {item['weight']}")
+            dynamic_thresh.append(item['weight'][item['uuid']])
+
+    std = statistics.stdev(dynamic_thresh)
+    mean = np.mean(dynamic_thresh)
+    # Setting threshold limits based on difference between mean and
+    # std deviation for collected font weights
+    bold_limit = round(mean + std, 2)
+    light_limit = round(mean - std, 2)
+
+    # if only one element or negative limits is identified in the given picture
+    if bold_limit == light_limit or light_limit <= 0:
+        bold_limit = default_host_configs.FONT_WEIGHT_MORPH['bolder']
+        light_limit = default_host_configs.FONT_WEIGHT_MORPH['lighter']
+
+    for item in design_objects:
+        if item['object'] == 'textbox':
+            if item['weight'][item['uuid']] < light_limit:
+                item['weight'] = "Lighter"
+            elif item['weight'][item['uuid']] >= bold_limit:
+                item['weight'] = "Bolder"
+            else:
+                item['weight'] = "Default"
+    return design_objects
 
 
 class FontPropBoundingBox(AbstractFontSizeAndWeight):
@@ -94,22 +133,14 @@ class FontPropBoundingBox(AbstractFontSizeAndWeight):
         image_width, _ = image.size
         # using the box width list that has each character width of input text
         box_width = self.get_bbox_properties(img_data)[1]
-        font_weight = default_host_configs.FONT_WEIGHT_BBOX
         # Handling of unrecognized characters
         if not box_width:
-            weights_ratio = font_weight['default']
+            weights_ratio = default_host_configs.FONT_WEIGHT_BBOX['default']
         else:
             weights = int(np.mean(box_width))
             weights_ratio = round((weights/image_width), 4)
 
-        if font_weight['lighter'] > weights_ratio:
-            weight = "Lighter"
-        elif font_weight['bolder'] < weights_ratio:
-            weight = "Bolder"
-        else:
-            weight = "Default"
-
-        return weight
+        return {img_data['uuid']: weights_ratio}
 
 
 class FontPropMorph(FontPropBoundingBox):
@@ -158,14 +189,4 @@ class FontPropMorph(FontPropBoundingBox):
         area_of_skel = np.sum(skel)/255
         # width of line = area of the line / length of the line
         thickness = round(area_of_img/area_of_skel, 2)
-
-        font_weight = default_host_configs.FONT_WEIGHT_MORPH
-
-        if font_weight['lighter'] >= thickness:
-            weight = "Lighter"
-        elif font_weight['bolder'] <= thickness:
-            weight = "Bolder"
-        else:
-            weight = "Default"
-
-        return weight
+        return {img_data['uuid']: thickness}
