@@ -282,12 +282,11 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
 
-                        InlineActionIconImageLoaderAsync imageLoader =
-                                new InlineActionIconImageLoaderAsync(
-                                        renderedCard,
-                                        inlineButton,
-                                        url,
-                                        editText);
+                        InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
+                            renderedCard,
+                            inlineButton,
+                            url,
+                            editText);
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
 
@@ -438,13 +437,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
         protected void renderBitmap(Bitmap bitmap)
         {
             ImageButton button = (ImageButton) super.m_view;
-            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            double editTextHeight = (m_editText.getLineHeight() + (int) m_editText.getLineSpacingExtra()) * 2.5;
-            double intrinsicWidth = drawableIcon.getIntrinsicHeight();
-            double scaleRatio = (editTextHeight )/ drawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * drawableIcon.getIntrinsicWidth();
-            button.setImageDrawable(new BitmapDrawable(null, Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)editTextHeight, false)));
+            // Image height should match single-line EditText height (even if the current EditText is multi-line).
+            // This is computed using line height, line spacing, and vertical padding.
+            float editTextHeight = m_editText.getLineHeight()*m_editText.getLineSpacingMultiplier()
+                + m_editText.getLineSpacingExtra()
+                + m_editText.getPaddingBottom()
+                + m_editText.getPaddingTop();
+            button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap)));
         }
     }
 
