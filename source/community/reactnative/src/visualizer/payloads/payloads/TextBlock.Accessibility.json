@@ -1,0 +1,25 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "TextBlock",
+            "text": "This is some text",
+            "altText": "This is TextBlock large",
+			"size": "large"
+		},
+		{
+			"type": "TextBlock",
+            "text": "It doesn't wrap by default",
+            "altText": "This is TextBlock bolder",
+			"weight": "bolder"
+		},
+		{
+			"type": "TextBlock",
+			"text": "You can even draw attention to certain text with color",
+			"wrap": true,
+			"color": "attention"
+		}
+	]
+}

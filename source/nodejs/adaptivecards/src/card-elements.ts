@@ -3050,8 +3050,24 @@ export class ChoiceSetInput extends Input {
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
-    private _toggleInputs: HTMLInputElement[];
+    private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+
+    // Make sure `aria-current` is applied to the currently-selected item
+    private internalApplyAriaCurrent(): void {
+        const options = this._selectElement.options;
+
+        if (options) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    options[i].setAttribute("aria-current", "true");
+                }
+                else {
+                    options[i].removeAttribute("aria-current");
+                }
+            }
+        }
+    }
 
     private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
@@ -3132,7 +3148,7 @@ export class ChoiceSetInput extends Input {
     }
 
     protected updateInputControlAriaLabelledBy() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if ((this.isMultiSelect || this.style === "expanded") && this._toggleInputs && this._labels) {
             let labelIds: string[] = this.getAllLabelIds();
 
             for (let i = 0; i < this._toggleInputs.length; i++) {
@@ -3153,22 +3169,6 @@ export class ChoiceSetInput extends Input {
         }
         else {
             super.updateInputControlAriaLabelledBy();
-        }
-    }
-
-    // Make sure `aria-current` is applied to the currently-selected item
-    protected internalApplyAriaCurrent(): void {
-        const options = this._selectElement.options;
-
-        if (options) {
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].selected) {
-                    options[i].setAttribute("aria-current", "true");
-                }
-                else {
-                    options[i].removeAttribute("aria-current");
-                }
-            }
         }
     }
 
@@ -3238,7 +3238,7 @@ export class ChoiceSetInput extends Input {
     }
 
     focus() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if (this._toggleInputs && (this.isMultiSelect || this.style === "expanded")) {
             if (this._toggleInputs.length > 0) {
                 this._toggleInputs[0].focus();
             }
