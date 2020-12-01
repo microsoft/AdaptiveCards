@@ -10,10 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import com.google.android.flexbox.AlignItems;
-import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexboxLayout;
-import com.google.android.flexbox.JustifyContent;
 
 import java.util.Locale;
 
@@ -30,7 +27,6 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class ColumnRenderer extends BaseCardElementRenderer
@@ -99,9 +95,9 @@ public class ColumnRenderer extends BaseCardElementRenderer
         else if (relativeWidth != null)
         {
             // Set ratio to column
-            layoutParams.setFlexGrow(1);
+            layoutParams.setFlexGrow(relativeWidth);
             layoutParams.setFlexShrink(1);
-            layoutParams.setFlexBasisPercent(relativeWidth);
+            layoutParams.setFlexBasisPercent(0);
         }
         else if (TextUtils.isEmpty(columnSize) || columnSize.equals(g_columnSizeStretch))
         {

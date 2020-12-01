@@ -73,7 +73,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-        normalizeWeights(columnVector);
+        // TODO: Consistent column-width across platforms, which may need normalized weights:
+        // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
