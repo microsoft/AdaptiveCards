@@ -11,11 +11,12 @@
     "start": "hexo server"
   },
   "hexo": {
-    "version": "4.2.1"
+    "version": "5.2.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
     "ac-typed-schema": "^0.6.0",
+    "adaptive-expressions": "rc",
     "adaptivecards": "^2.1.0",
     "adaptivecards-designer": "^1.1.0",
     "adaptivecards-templating": "^1.1.0",
@@ -23,7 +24,7 @@
     "change-case": "^3.0.1",
     "cheerio": "^1.0.0-rc.3",
     "glob": "^7.1.6",
-    "hexo": "^4.2.1",
+    "hexo": "^5.2.0",
     "hexo-all-minifier": "^0.5.3",
     "hexo-browsersync": "^0.3.0",
     "hexo-cli": "^3.1.0",
