@@ -332,6 +332,10 @@ export default payloads = [
     "json": require('./TextBlock.Wrap.json')
   },
   {
+    "title": "TextBlock.Accessibility.json",
+    "json": require('./TextBlock.Accessibility.json')
+  },
+  {
     "title": "TypeIsRequired.json",
     "json": require('./TypeIsRequired.json')
   },

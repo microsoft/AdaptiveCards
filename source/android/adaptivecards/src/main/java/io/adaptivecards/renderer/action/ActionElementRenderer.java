@@ -70,25 +70,20 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         public Bitmap styleBitmap(Bitmap bitmap)
         {
             Button button = (Button) super.m_view;
+            float imageHeight;
 
-            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
-
-            double imageHeight;
             if (m_iconPlacement == IconPlacement.AboveTitle)
             {
                 // If icon is above title, iconSize should be used as the height of the image
-                imageHeight = m_iconSize;
+                imageHeight = Util.dpToPixels(m_context, m_iconSize);
             }
             else
             {
                 // Otherwise, the height of the image should be the height of the action's text
-                imageHeight = Util.pixelsToDp(m_context, button.getTextSize());
+                imageHeight = button.getTextSize();
             }
 
-            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
-
-            return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, (int)imageWidth), Util.dpToPixels(m_context, (int)imageHeight), false);
+            return Util.scaleBitmapToHeight(imageHeight, bitmap);
         }
 
         @Override
