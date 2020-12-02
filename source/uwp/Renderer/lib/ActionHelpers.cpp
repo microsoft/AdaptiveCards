@@ -251,8 +251,7 @@ namespace AdaptiveNamespace::ActionHelpers
             RETURN_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
                                                  actionSentiment.Get(),
                                                  actionSentimentStyle.GetAddressOf()));
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(
-                renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
+            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
         }
         return S_OK;
     }
@@ -348,7 +347,7 @@ namespace AdaptiveNamespace::ActionHelpers
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-        
+
         // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
         ComPtr<IButtonBase> buttonBase;
         RETURN_IF_FAILED(button.As(&buttonBase));
@@ -562,7 +561,7 @@ namespace AdaptiveNamespace::ActionHelpers
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
             Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                       /*args*/) -> HRESULT {
+                                                                                                /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
 
@@ -677,21 +676,44 @@ namespace AdaptiveNamespace::ActionHelpers
 
         if (action != nullptr)
         {
-            // If we have an action, use the title for the AutomationProperties.Name
+            // If we have an action, use the title for the AutomationProperties.Name and tooltip
             HString title;
             THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
 
-            ComPtr<IDependencyObject> buttonAsDependencyObject;
-            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+            if (title.IsValid())
+            {
+                // Set the automation properties name
+                ComPtr<IDependencyObject> buttonAsDependencyObject;
+                THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
 
-            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-            THROW_IF_FAILED(
-                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                     &automationPropertiesStatics));
+                ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+                THROW_IF_FAILED(
+                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                         &automationPropertiesStatics));
 
-            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+                THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
 
-            WireButtonClickToAction(button.Get(), action, renderContext);
+                WireButtonClickToAction(button.Get(), action, renderContext);
+
+                // Also use the title as the tooltip
+                ComPtr<IToolTip> toolTip =
+                    XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
+                ComPtr<IContentControl> toolTipAsContentControl;
+                THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
+
+                // Create a text box with the action title.
+                ComPtr<ITextBlock> titleTextBlock =
+                    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
+                THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
+                THROW_IF_FAILED(toolTipAsContentControl->put_Content(titleTextBlock.Get()));
+
+                // Set the tooltip
+                ComPtr<IToolTipServiceStatics> toolTipService;
+                THROW_IF_FAILED(
+                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(), &toolTipService));
+
+                THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
+            }
         }
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
