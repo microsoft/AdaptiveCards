@@ -1,13 +1,14 @@
 """Module for arranging the design elements for the Card json"""
 
-from typing import List, Dict, Union
+from typing import List, Dict
 
 from mystique import default_host_configs
-from .design_objects_template import ObjectTemplate
-from .extract_properties import CollectProperties
-from .group_design_objects import ChoicesetGrouping
-from .group_design_objects import ColumnsGrouping
-from .group_design_objects import ImageGrouping
+from mystique.ac_export.adaptive_card_templates import (
+    AdaptiveCardTemplate)
+from mystique.extract_properties import CollectProperties, ContainerProperties
+from .objects_group import ChoicesetGrouping
+from .objects_group import RowColumnGrouping
+from .objects_group import ImageGrouping
 
 
 class CardArrange:
@@ -22,84 +23,7 @@ class CardArrange:
     """
     column_coords = [[]] * 4
     column_coords_min = [[]] * 4
-
-    def remove_actionset_textbox_overlapping(self, design_object1: Dict,
-                                             design_object2: Dict,
-                                             box1: List[float],
-                                             box2: List[float],
-                                             position1: int,
-                                             position2: int) -> Union[int,
-                                                                      None]:
-        """
-        If the passed 2 design objects are actionset and textbox, then
-        returns the position to remove the textboxes detected inside the
-        actionset objects.
-        @param design_object1: design object 1
-        @param design_object2: design object 1
-        @param box2: design object 1's coordinates
-        @param box1: design object 1's coordinates
-        @param position1: design object 1's position
-        @param position2: design object 2's position
-        @return: Returns the position if overlaps else returns None
-        """
-        # TODO: This workaround will be removed once the model is able to
-        #       differentiate the text-boxes and action-sets efficiently.
-        if len({design_object1.get("object", ""),
-                design_object2.get("object", "")} & {"actionset",
-                                                     "textbox"}) == 2:
-            contains = (
-                (box2[0] <= box1[0] <= box2[2])
-                and (box2[1] <= box1[1] <= box2[3])
-            )
-            extract_properties = CollectProperties()
-            intersection = extract_properties.find_iou(box1, box2,
-                                                       inter_object=True)
-            if contains or intersection[0]:
-                if design_object1.get("object") == "textbox":
-                    return position1
-                else:
-                    return position2
-            else:
-                return None
-
-    def remove_noise_objects(self, json_objects: Dict):
-        """
-        Removes all noisy objects by eliminating all smaller and intersecting
-                objects within / with the bigger objects.
-        @param json_objects: list of detected objects.
-        """
-        points = []
-        extract_properties = CollectProperties()
-        for deisgn_object in json_objects["objects"]:
-            points.append(deisgn_object.get("coords"))
-        positions_to_delete = []
-        for ctr, point in enumerate(points):
-            box1 = point
-            for ctr1 in range(ctr + 1, len(points)):
-                box2 = points[ctr1]
-                # check if there's a textbox vs actionset overlap
-                # remove the textbox
-                position = self.remove_actionset_textbox_overlapping(
-                        json_objects["objects"][ctr],
-                        json_objects["objects"][ctr1],
-                        box1, box2, ctr, ctr1)
-                if position:
-                    positions_to_delete.append(position)
-                else:
-                    iou = extract_properties.find_iou(box1, box2)
-                    if iou[0]:
-                        box1_area = iou[1]
-                        box2_area = iou[2]
-                        if (box1_area > box2_area
-                                and ctr1 not in positions_to_delete):
-                            positions_to_delete.append(ctr1)
-                        elif ctr not in positions_to_delete:
-                            positions_to_delete.append(ctr)
-        points = [p for ctr, p in enumerate(
-                points) if ctr not in positions_to_delete]
-        json_objects["objects"] = [deisgn_object for deisgn_object in
-                                   json_objects["objects"] if
-                                   deisgn_object.get("coords") in points]
+    object_template = AdaptiveCardTemplate()
 
     def append_image_objects(self, image_urls=None, image_coords=None,
                              pil_image=None, json_object=None,
@@ -167,9 +91,9 @@ class CardArrange:
         @param body: list of design elements
         @param ymins: list of ymin of design elements
         """
-        object_template = ObjectTemplate(design_object)
-        template_object = getattr(object_template, design_object.get("object"))
-        body.append(template_object())
+        template_object = getattr(self.object_template,
+                                  design_object.get("object"))
+        body.append(template_object(design_object))
         if ymins is not None:
             ymins.append(design_object.get("ymin"))
 
@@ -184,7 +108,7 @@ class CardArrange:
         mapping [ inside a columnset or not ]
         @param colummn_set: Columnset object
         """
-        choiceset_grouping = ChoicesetGrouping(self)
+        choiceset_grouping = ChoicesetGrouping(card_arrange=self)
         # image_objects_columns = []
         self.column_coords[0] = []
         self.column_coords[1] = []
@@ -230,7 +154,7 @@ class CardArrange:
                     all_columns_value[2].append(design_object.get("xmax"))
                     all_columns_value[3].append(design_object.get("ymax"))
 
-            image_grouping = ImageGrouping(self)
+            image_grouping = ImageGrouping(card_arrange=self)
             if len(image_objects_columns) > 0:
                 (image_objects_columns,
                  imageset_coords) = image_grouping.group_image_objects(
@@ -306,7 +230,7 @@ class CardArrange:
         @param group: list of object in a particular group
         @param image: input PIL image for column width extraction
         """
-        collect_properties = CollectProperties()
+        container_properties = ContainerProperties()
         colummn_set = {
                 "type": "ColumnSet",
                 "columns": []
@@ -343,9 +267,9 @@ class CardArrange:
             self.column_coords[0] = sorted(self.column_coords[0])
             # collect column and columnset alignment property and column's width
             # property
-            collect_properties.column(colummn_set["columns"])
-            collect_properties.columnset(colummn_set, self.column_coords,
-                                         self.column_coords_min, image)
+            container_properties.column(colummn_set["columns"])
+            container_properties.columnset(colummn_set, self.column_coords,
+                                           self.column_coords_min, image)
             # add the columnset to the card json body
             body.append(colummn_set)
             ymins.append(group[0].get("ymin", ""))
@@ -356,15 +280,15 @@ class CardArrange:
         @param objects: list of all design objects
         @return: card body and ymins of deisgn elements
         """
-        image_grouping = ImageGrouping(self)
-        columns_grouping = ColumnsGrouping(self)
-        choiceset_grouping = ChoicesetGrouping(self)
+        image_grouping = ImageGrouping(card_arrange=self)
+        columns_grouping = RowColumnGrouping(card_arrange=self)
+        choiceset_grouping = ChoicesetGrouping(card_arrange=self)
         body = []
         ymins = []
         # group all objects into columnset or individual objects
         groups = columns_grouping.object_grouping(
                 objects,
-                columns_grouping.columns_condition
+                columns_grouping.row_condition
         )
         radio_buttons_dict = {"normal": []}
 
@@ -387,7 +311,7 @@ class CardArrange:
                 # group the columnset objects into different columns
                 columns = columns_grouping.object_grouping(
                         group,
-                        columns_grouping.columns_row_condition
+                        columns_grouping.column_condition
                 )
                 self.arrange_columns(columns, radio_buttons_dict, body, ymins,
                                      group, image)

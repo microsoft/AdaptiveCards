@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
@@ -94,12 +93,9 @@
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
 
-    // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:column
-                                                                  actionElement:acoSelectAction
-                                                                     hostConfig:acoConfig];
+    [column configureForSelectAction:acoSelectAction rootView:rootView];
+
+    column.shouldGroupAccessibilityChildren = YES;
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace

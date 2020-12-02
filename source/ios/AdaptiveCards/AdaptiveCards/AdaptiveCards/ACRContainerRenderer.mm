@@ -9,7 +9,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "ACRViewPrivate.h"
 #import "Container.h"
@@ -93,12 +92,7 @@
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
-    // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:container
-                                                                  actionElement:acoSelectAction
-                                                                     hostConfig:acoConfig];
+    [container configureForSelectAction:acoSelectAction rootView:rootView];
 
     configVisibility(container, elem);
 
