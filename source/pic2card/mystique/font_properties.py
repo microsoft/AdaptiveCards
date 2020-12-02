@@ -27,15 +27,15 @@ def classify_font_weights(design_objects):
             # print(f"{item['data']}, weight is {item['weight']}")
             dynamic_thresh.append(item['weight'][item['uuid']])
 
-    std = statistics.stdev(dynamic_thresh)
-    mean = np.mean(dynamic_thresh)
-    # Setting threshold limits based on difference between mean and
-    # std deviation for collected font weights
-    bold_limit = round(mean + std, 2)
-    light_limit = round(mean - std, 2)
+    if len(set(dynamic_thresh)) > 1:
+        std = statistics.pstdev(dynamic_thresh)
+        mean = np.mean(dynamic_thresh)
+        # Setting threshold limits based on
+        # difference between mean and std deviation
+        bold_limit = round(mean + std, 2)
+        light_limit = round(mean - std, 2)
 
-    # if only one element or negative limits is identified in the given picture
-    if bold_limit == light_limit or light_limit <= 0:
+    else:
         bold_limit = default_host_configs.FONT_WEIGHT_MORPH['bolder']
         light_limit = default_host_configs.FONT_WEIGHT_MORPH['lighter']
 
