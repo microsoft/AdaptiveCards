@@ -16,6 +16,7 @@ from mystique.card_layout.arrange_card import CardArrange
 from mystique.ac_export.card_template_data import DataBinding
 from mystique.extract_properties import CollectProperties
 from mystique.image_extraction import ImageExtraction
+from mystique.font_properties import classify_font_weights
 from mystique.utils import get_property_method
 from mystique.card_layout import row_column_group
 from mystique.card_layout import bbox_utils
@@ -88,12 +89,14 @@ class PredictCard:
         # Creating an Extract Property class instance
         collect_prop = CollectProperties()
         for design_object in design_objects:
+            collect_prop.uuid = design_object.get("uuid")
             # Invoking the methods from dict according to the design object
             property_object = get_property_method(collect_prop,
                                                   design_object.get("object"))
             property_element = property_object(pil_image,
                                                design_object.get("coords"))
             design_object.update(property_element)
+        design_objects = classify_font_weights(design_objects)
         # If any Queue object is passed , put the return value inside the
         # queue in-order to retrieve the value after the process finishes.
         if queue:
