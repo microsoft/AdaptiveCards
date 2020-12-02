@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRSeparator.h"
 #import "ACRView.h"
@@ -193,12 +192,7 @@
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
-    // instantiate and add long press gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:columnSetView
-                                                                  actionElement:acoSelectAction
-                                                                     hostConfig:acoConfig];
+    [columnSetView configureForSelectAction:acoSelectAction rootView:rootView];
     configVisibility(columnSetView, elem);
 
     [columnSetView hideIfSubviewsAreAllHidden];
