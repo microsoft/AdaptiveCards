@@ -57,6 +57,76 @@ using namespace AdaptiveCards;
         [subview.layer setMasksToBounds:YES];
     }
 
+    // basic premise
+    // the height of this view is same as its content
+    // there are two cases,
+    // 1. the width of this view is wider than its content
+    // 2. the width of this view is same as its content
+    // horizontal alignemnt only applies when #1
+    // subview width determination
+    // explicitly set
+    // when auto and stretch
+    // height is not contraint for images
+    // we always want to respect the aspect ratio
+    // therefore, it's possible to determne width
+    // however, the height is implicitly constraint,
+    // we don't want the width of the image to exceed
+    // the superview of this content view
+    // the width of that is determined by the compression resistance,
+    // hugging priority and the intrinsic content size of the image
+    // that value should be determined by the time layoutSubviews is called.
+    // when image view is stretch, it fills the screen irespect of the aspect ratio or
+    // it can fill the screen untill one or the other dimension is constraint
+    // when image view is auto, stretch the image to take up as much of space as possible, but
+    // it won't grow bigger than its intrinsic content size
+    // and it will respect the aspect ration
+    // column width auto and image view size auto
+    // image
+    // column width will be as big as image view width
+    // column width auto and image view size stretch,
+    // column width auto will try to honor its subviews intrinsic content size, so get the default value
+    // column width stretch, lower value of everything --> decrease CRHP of its subviews
+    // Image should be contraint by the width, in other words, Image must fill the width, then the height of image should be set by its aspect ratio
+    // in column view, we have a filler view that fill the space
+    // CRHP is the priortity given for maintaining its tendency for keeping intrinsic content size, with other layout contraints, it's either keepig the contraints or the CRHP,
+    // it's binary and whoever has the higher value wins
+    // stretch, should have lower hugging priority than stretch
+    // with number width, first determine the column with the smallest intrinsic content size
+    // when column width auto and auto, there should be one empty view
+    // if there is at least one stretch view, we can use it to fill the space,
+    // when auto, and auto, if they are all going to fill the space, there is no issues,
+    // however, when columns are not going to fill the space, the empty space has to be filled by
+    // the empty view
+    // *-----*
+    // |     |
+    // |     |
+    // |     |
+    // *-----*
+    //
+    // *--------*
+    // |        | y should be center y of wrapping view
+    // |        |
+    // *--------*
+    CGSize superviewSize = self.frame.size;
+
+    UIView *subview = self.subviews[0];
+    CGSize subviewSize = subview.frame.size;
+
+    NSLog(@"superview size: w = %f, h = %f", superviewSize.width, superviewSize.height);
+    NSLog(@"before subview size: w = %f, h = %f", subviewSize.width, subviewSize.height);
+
+    //center alignment
+//    subview.frame = CGRectMake(superviewSize.width / 2 - subviewSize.height / 2, 0, subviewSize.height, subviewSize.height);
+//    subviewSize = subview.frame.size;
+
+    // right alignment
+    //subview.frame = CGRectMake(superviewSize.width - subviewSize.height, 0, subviewSize.height, subviewSize.height);
+//    subview.frame = CGRectMake(subview.frame.origin.x , 0, subviewSize.height, subviewSize.height);
+//    subviewSize = subview.frame.size;
+//    NSLog(@"after subview size: x = %f, y = %f, w = %f, h = %f", subview.frame.origin.x, subview.frame.origin.y, subviewSize.width, subviewSize.height);
+// oh!
+    // Intrinsic Content size is adding constraints of 750
+    // so remove them all before adding any of mine.
     if (_isMediaType) {
         if (!_hidePlayIcon) {
             NSMutableArray<CALayer *> *shapes = [[NSMutableArray alloc] init];

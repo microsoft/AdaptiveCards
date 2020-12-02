@@ -11,7 +11,7 @@
 
 typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
     ACRColumnWidthPriorityStretch = 249,
-    ACRColumnWidthPriorityStretchAuto = 251,
+    ACRColumnWidthPriorityStretchAuto = 250,
     ACRColumnWidthPriorityAuto,
 };
 
