@@ -29,14 +29,14 @@ export default class MarkdownFormatter extends React.PureComponent {
 		{
 			type: 'numbered',
 			styles: [],
-			pattern: ['^\\d+\.\\s+(.*)'],
+			pattern: ['^\\d+.\\s+(.*)'],
 			patternType: 'custom',
 			groups: 1,
 		},
 		{
 			type: 'numbered',
 			styles: [],
-			pattern: ['[\\r,\\n]\\d+\.\\s+(.*)'],
+			pattern: ['[\\r,\\n]\\d+.\\s+(.*)'],
 			patternType: 'custom',
 			groups: 1,
 		},
