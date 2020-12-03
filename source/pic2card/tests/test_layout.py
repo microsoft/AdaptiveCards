@@ -1,19 +1,10 @@
-import os
-from typing import Dict, List
-
 from multiprocessing import Queue
 import unittest
 from unittest.mock import patch
-from PIL import Image
-import numpy as np
-import cv2
 
 from tests.test_variables import (debug_string_test, test_img_obj1,
                                   test_img_obj2, test_cset_obj1,
                                   test_cset_obj2)
-from mystique.utils import load_od_instance
-from mystique.predict_card import PredictCard
-from mystique.card_layout.arrange_card import CardArrange
 from mystique.extract_properties import CollectProperties
 from mystique.ac_export.adaptive_card_export import (
     AdaptiveCardExport)
@@ -24,68 +15,7 @@ from mystique.card_layout import row_column_group
 from mystique.card_layout.ds_helper import DsHelper
 from mystique.card_layout import bbox_utils
 
-curr_dir = os.path.dirname(__file__)
-
-
-class TestUtil:
-
-    def collect_json_objects(self, image: Image,
-                             model_instance: PredictCard) -> Dict:
-        """
-        Returns the dict of design objects collected from the prediction
-        @param image: input PIL image
-        @param model_instance: model instance object
-        @return: dict of design objects
-        """
-        image = image.convert("RGB")
-        image_np = np.asarray(image)
-        image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
-        output_dict = model_instance.od_model.get_objects(
-            image_np=image_np, image=image
-        )
-        return model_instance.collect_objects(output_dict=output_dict,
-                                              pil_image=image)
-
-    def collect_image_sizes(self, json_objects: Dict, image: Image) -> List:
-        """
-        Returns the list of extracted image object sizes of the input image
-        @param json_objects: dict of design objects
-        @param image: input PIL image
-        @return: list of image object sizes
-        """
-        collect_properties = CollectProperties(image)
-        image_objects = [image_object for image_object in
-                         json_objects["objects"]
-                         if image_object["object"] == "image"]
-        for design_object in image_objects:
-            property_object = getattr(collect_properties,
-                                      design_object.get("object"))
-            property_element = property_object(image,
-                                               design_object.get("coords"))
-            design_object.update(property_element)
-        return [design_object.get("size", "") for design_object in
-                image_objects]
-
-
-class BaseSetUpClass(unittest.TestCase):
-    """
-    Base setup class for the tests, contains json objects collected
-    for a test image
-    """
-
-    def setUp(self):
-        self.image_path = os.path.join(
-            curr_dir, "../tests/test_images/test01.png")
-        self.test_util = TestUtil()
-        self.model_instance = load_od_instance()
-        self.model_instance = PredictCard(self.model_instance)
-
-        self.image = Image.open(self.image_path)
-        self.json_objects, _ = self.test_util.collect_json_objects(
-            self.image, self.model_instance)
-        self.test_coord1 = self.json_objects['objects'][0].get("coords", [])
-        self.test_coord2 = self.json_objects['objects'][1].get("coords", [])
-        self.card_arrange = CardArrange()
+from .base_test_class import BaseSetUpClass
 
 
 class TestIOU(BaseSetUpClass):
@@ -108,6 +38,7 @@ class TestIOU(BaseSetUpClass):
                                                              self.image)
         self.assertEqual(extracted_sizes, ["Small", "Small"])
 
+    @patch('mystique.config.NEW_LAYOUT_STRUCTURE', False)
     def test_build_card_json(self):
         """
         Tests the length of the card json and the

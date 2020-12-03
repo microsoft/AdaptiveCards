@@ -2,14 +2,11 @@
 
 import base64
 import io
-import json
-import os
 import uuid
 from typing import Dict, List, Tuple
 
 import cv2
 import numpy as np
-import requests
 from PIL import Image
 from mystique import config
 from mystique.card_layout.arrange_card import CardArrange
@@ -17,7 +14,7 @@ from mystique.ac_export.card_template_data import DataBinding
 from mystique.extract_properties import CollectProperties
 from mystique.image_extraction import ImageExtraction
 from mystique.font_properties import classify_font_weights
-from mystique.utils import get_property_method
+from mystique.utils import get_property_method, send_json_payload
 from mystique.card_layout import row_column_group
 from mystique.card_layout import bbox_utils
 from mystique.ac_export import adaptive_card_export
@@ -122,18 +119,23 @@ class PredictCard:
 
     def tf_serving_main(self, bs64_img: str, tf_server: str, model_name: str,
                         card_format: str = None) -> Dict:
-        tf_uri = os.path.join(tf_server,
-                              f"v1/models/{model_name}:predict")
+        """
+        Do model inference using TF-Serve service.
+        """
+
+        api_path = "v1/models/{model_name}:predict"
         payloads = {
             "signature_name": "serving_default",
             "instances": [
                 {"b64": bs64_img}
             ]
         }
-
         # Hit the tf-serving and get the prediction
-        response = requests.post(tf_uri, json=payloads)
-        pred_res = json.loads(response.content)["predictions"][0]
+        response = send_json_payload(api_path,
+                                     body=payloads,
+                                     host_port=tf_server)
+
+        pred_res = response["predictions"][0]
 
         filtered_res = {}
         for key_col in ["detection_boxes", "detection_scores",
