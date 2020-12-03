@@ -8,6 +8,8 @@
 #include "ACRContentStackView.h"
 #include "ACOHostConfigPrivate.h"
 #import "ACRShowCardTarget.h"
+#import "ACRViewPrivate.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 
@@ -481,6 +483,27 @@ static int kToggleVisibilityContext;
         }
     }
     return currentBest;
+}
+
+- (void)configureForSelectAction:(ACOBaseActionElement *)action rootView:(ACRView *)rootView
+{
+    if (action != nullptr) {
+        NSObject<ACRSelectActionDelegate> *target = nil;
+        if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target)) {
+            [self addTarget:target];
+            self.selectActionTarget = target;
+            self.userInteractionEnabled = YES;
+        }
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesBegan:touches withEvent:event];
+    }
 }
 
 - (void)dealloc

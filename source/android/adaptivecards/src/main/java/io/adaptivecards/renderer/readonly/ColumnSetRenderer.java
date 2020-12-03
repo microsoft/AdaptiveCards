@@ -73,11 +73,8 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-        long minHeight = columnSet.GetMinHeight();
-        if (minHeight != 0)
-        {
-            columnSetLayout.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
-        }
+        // TODO: Consistent column-width across platforms, which may need normalized weights:
+        // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
@@ -85,6 +82,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
+
+            if(columnSet.GetMinHeight() > column.GetMinHeight())
+            {
+                column.SetMinHeight(columnSet.GetMinHeight());
+            }
 
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
@@ -129,6 +131,30 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
 
         return columnSetLayout;
+    }
+
+    /**
+     * Normalize width of columns such that all relative weights, if any, sum to 1.
+     * @param columns Columns to normalize
+     */
+    private static void normalizeWeights(ColumnVector columns) {
+        float totalWeight = 0;
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null)
+            {
+                totalWeight += relativeWidth;
+            }
+        }
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null && totalWeight > 0)
+            {
+                c.SetWidth(String.valueOf(relativeWidth / totalWeight));
+            }
+        }
     }
 
     private static ColumnSetRenderer s_instance = null;

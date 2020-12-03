@@ -259,6 +259,8 @@ class TextBoxProperty(BaseExtractProperties, FontColor):
         @return: property object
         """
         data, image_data = self.get_text(image, coords)
+        # Adding uuid to image_data dict
+        image_data.update(uuid=self.uuid)
         font_spec = load_instance_with_class_path(
             config.FONT_SPEC_REGISTRY[config.ACTIVE_FONTSPEC_NAME])
         return {
