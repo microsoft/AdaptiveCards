@@ -121,7 +121,7 @@ export default class Renderer extends React.Component {
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
 
         //Register Custom Actions
-        Registry.getManager().registerComponent('CustomAction', CustomActionRenderer);
+        Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
         let { isJSONVisible } = this.state;
 
         //We will update the payload with method bindPayloadWithData, if isDataBinding is true.

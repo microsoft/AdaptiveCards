@@ -76,7 +76,7 @@
             ]
         },
         {
-            "type": "CustomAction",
+            "type": "Action.Custom",
             "title": "Custom Action",
             "url": "https://msn.com"
         }
