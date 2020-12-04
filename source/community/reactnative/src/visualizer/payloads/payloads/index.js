@@ -172,6 +172,10 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
+    "title": "CustomActions.Rendering.json",
+    "json": require('./CustomActions.Rendering.json')
+  },
+  {
     "title": "CustomElement.Rendering.json",
     "json": require('./CustomElement.Rendering.json')
   },
