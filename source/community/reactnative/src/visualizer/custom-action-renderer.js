@@ -16,7 +16,6 @@ import {
     InputContext,
     InputContextConsumer
 } from '../utils/context';
-import ElementWrapper from '../components/elements/element-wrapper';
 import * as Constants from '../utils/constants';
 
 export class CustomActionRenderer extends React.Component {
@@ -60,14 +59,14 @@ export class CustomActionRenderer extends React.Component {
                 {({ onExecuteAction }) => {
                     this.onExecuteAction = onExecuteAction;
 
-                    return <ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
+                    return <View style={styles.textContainer}>
                         <ButtonComponent
                             style={{ flexGrow: 1 }}
                             onPress={() => this.onActionButtonTapped(payload.url)}>
                             {this.buttonContent(payload.title)}
                         </ButtonComponent>
                         <Text>{payload.rating}</Text>
-                    </ElementWrapper>
+                    </View>
                 }}
             </InputContextConsumer>);
     }
