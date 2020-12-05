@@ -153,6 +153,7 @@ using namespace AdaptiveCards;
 {
     [self endEditing:YES];
     self.text = [_decodeFormatter stringFromDate:[self getCurrentDate]];
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
 }
 
 - (IBAction)update:(UIDatePicker *)picker
