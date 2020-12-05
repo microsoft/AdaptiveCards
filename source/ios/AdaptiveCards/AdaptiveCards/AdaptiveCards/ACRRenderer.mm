@@ -78,8 +78,8 @@ using namespace AdaptiveCards;
     ACRColumnView *verticalView = containingView;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
     if (selectAction) {
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
         [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 

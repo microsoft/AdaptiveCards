@@ -191,7 +191,7 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     [columnSetView configureForSelectAction:acoSelectAction rootView:rootView];
     configVisibility(columnSetView, elem);
 

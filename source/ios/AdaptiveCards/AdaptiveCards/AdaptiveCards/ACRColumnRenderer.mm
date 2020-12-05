@@ -91,7 +91,8 @@
     [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+
     [column configureForSelectAction:acoSelectAction rootView:rootView];
 
     column.shouldGroupAccessibilityChildren = YES;

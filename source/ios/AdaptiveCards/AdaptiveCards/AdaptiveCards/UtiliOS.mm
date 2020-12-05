@@ -511,6 +511,12 @@ ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
 }
 
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
+{
+    recipientView.userInteractionEnabled = YES;
+    recipientView.accessibilityTraits |= action.accessibilityTraits;
+}
+
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
 {
     int fontweight = [hostConfig getTextBlockFontWeight:textProperties.GetFontType()

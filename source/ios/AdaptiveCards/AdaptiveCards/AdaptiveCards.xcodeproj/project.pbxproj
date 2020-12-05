@@ -740,6 +740,25 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		6B70ABA425797B720095D925 /* InputRenderers */ = {
+			isa = PBXGroup;
+			children = (
+				6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */,
+				6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */,
+				F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */,
+				F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */,
+				F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */,
+				F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */,
+				F43A94121F1EED6D0001920B /* ACRInputRenderer.h */,
+				F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */,
+				F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */,
+				F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */,
+				F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */,
+				F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */,
+			);
+			name = InputRenderers;
+			sourceTree = "<group>";
+		};
 		6BB2120621000024009EA1BA /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -985,6 +1004,7 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6B70ABA425797B720095D925 /* InputRenderers */,
 				6BD025EB254784660009B019 /* ACOInputResults.h */,
 				6BD025EC254784670009B019 /* ACOInputResults.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
@@ -994,23 +1014,11 @@
 				F42979481F323BA700E89914 /* ACRDateTextField.h */,
 				F429794C1F32684900E89914 /* ACRDateTextField.mm */,
 				F42979361F31438900E89914 /* ACRIBaseInputHandler.h */,
-				6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */,
-				6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */,
-				F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */,
-				F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */,
 				6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */,
 				6B27CD6524BD52D600C0F90F /* ACRInputLabelView.mm */,
 				6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */,
-				F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */,
-				F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */,
-				F43A94121F1EED6D0001920B /* ACRInputRenderer.h */,
-				F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */,
 				F431103D1F357487001AAE30 /* ACRInputTableView.h */,
 				F431103E1F357487001AAE30 /* ACRInputTableView.mm */,
-				F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */,
-				F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */,
-				F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */,
-				F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */,
 				F42979451F322C9000E89914 /* ACRNumericTextField.h */,
 				F42979441F322C9000E89914 /* ACRNumericTextField.mm */,
 				6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */,
