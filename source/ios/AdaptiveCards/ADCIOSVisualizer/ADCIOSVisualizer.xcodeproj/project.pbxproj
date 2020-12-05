@@ -52,6 +52,7 @@
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
+		6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */; };
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
@@ -584,6 +585,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */,
 				F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
