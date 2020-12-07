@@ -77,7 +77,6 @@ public enum AdaptiveCardSchemaKey {
   IconSize,
   IconUrl,
   Id,
-  IgnoreInputValidation,
   Image,
   ImageBaseUrl,
   ImageSet,

@@ -491,7 +491,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.Submit"s, submitAction->GetTitle());
             //Logger::WriteMessage("Submit Data: '"s.append(submitAction->GetDataJson()).append("'").c_str());
             Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
-            Assert::IsTrue(submitAction->GetAssociatedInputs() == AssociatedInputs::None);
+            Assert::IsTrue(submitAction->GetAssociatedInputs() == AssociatedInputs::Auto);
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());
