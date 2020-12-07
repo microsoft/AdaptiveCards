@@ -33,7 +33,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
         }
 
-        m_ignoreInputValidation = sharedSubmitAction->GetIgnoreInputValidation();
+        m_associatedInputs = static_cast<ABI::AdaptiveNamespace::AssociatedInputs> (sharedSubmitAction->GetAssociatedInputs());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
@@ -54,15 +54,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::get_IgnoreInputValidation(boolean* ignoreInputValidation)
+    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
     {
-        *ignoreInputValidation = m_ignoreInputValidation;
+        *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::put_IgnoreInputValidation(boolean ignoreInputValidation)
+    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs)
     {
-        m_ignoreInputValidation = ignoreInputValidation;
+        m_associatedInputs = associatedInputs;
         return S_OK;
     }
 
@@ -80,7 +80,7 @@ namespace AdaptiveNamespace
             submitAction->SetDataJson(std::move(jsonAsString));
         }
 
-        submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
+        submitAction->SetAssociatedInputs(static_cast<AdaptiveSharedNamespace::AssociatedInputs> (m_associatedInputs));
 
         sharedModel = std::move(submitAction);
         return S_OK;

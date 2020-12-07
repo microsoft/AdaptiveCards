@@ -1,0 +1,25 @@
+{
+  "type": "AdaptiveCard",
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "version": "1.3",
+  "body": [
+    {
+      "type": "Input.Text",
+      "id": "name",
+      "label": "Please enter your name:",
+      "isRequired": true,
+      "errorMessage": "Name is required"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "Cancel",
+      "associatedInputs": "none"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    }
+  ]
+}

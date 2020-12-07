@@ -251,13 +251,6 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
-        // get the inputElements in Json form.
-        ComPtr<IAdaptiveInputs> gatheredInputs;
-        RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-
-        ComPtr<IAdaptiveActionEventArgs> eventArgs;
-        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
-
         ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
         RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
 
@@ -285,6 +278,9 @@ namespace AdaptiveNamespace
             }
             else
             {
+                ComPtr<IAdaptiveActionEventArgs> eventArgs;
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
+
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
@@ -294,8 +290,23 @@ namespace AdaptiveNamespace
             ComPtr<IAdaptiveSubmitAction> submitAction;
             RETURN_IF_FAILED(localActionElement.As(&submitAction));
 
+            ABI::AdaptiveNamespace::AssociatedInputs associatedInputs;
+            submitAction->get_AssociatedInputs(&associatedInputs);
+
+            ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
-            RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
+            if (associatedInputs == ABI::AdaptiveNamespace::AssociatedInputs::None)
+            {
+                // Create an empty inputs object
+                THROW_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
+                inputsAreValid = true;
+            }
+            else
+            {
+                // get the inputElements in Json form.
+                RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
+                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
+            }
 
             if (!inputsAreValid)
             {
@@ -303,6 +314,8 @@ namespace AdaptiveNamespace
             }
             else
             {
+                ComPtr<IAdaptiveActionEventArgs> eventArgs;
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
@@ -310,6 +323,8 @@ namespace AdaptiveNamespace
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Custom:
         default:
         {
+            ComPtr<IAdaptiveActionEventArgs> eventArgs;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
         }

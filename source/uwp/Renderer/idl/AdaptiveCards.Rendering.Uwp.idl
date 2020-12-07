@@ -389,6 +389,15 @@ AdaptiveNamespaceStart
         All = Left | Right | Up | Down
     } BleedDirection;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum AssociatedInputs {
+        Auto = 0,
+        None,
+    } AssociatedInputs;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -1519,7 +1528,7 @@ AdaptiveNamespaceStart
         AdaptiveSubmitAction();
 
         Windows.Data.Json.JsonValue DataJson;
-        Boolean IgnoreInputValidation;
+        AssociatedInputs AssociatedInputs;
     };
 
     [
