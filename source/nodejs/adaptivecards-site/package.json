@@ -11,7 +11,7 @@
     "start": "hexo server"
   },
   "hexo": {
-    "version": "4.2.1"
+    "version": "5.2.0"
   },
   "devDependencies": {
     "@fortawesome/fontawesome-free": "^5.11.2",
