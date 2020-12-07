@@ -6,6 +6,11 @@
 		"data": {
 			"type": "string|object",
 			"description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
+		},
+		"associatedInputs": {
+			"type": "AssociatedInputs",
+			"description": "Controls which inputs are associated with the submit action.",
+			"version": "1.3"
 		}
 	}
 }

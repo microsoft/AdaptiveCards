@@ -12,7 +12,7 @@
 | **minHeight** | `string` | No | Specifies the minimum height of the column set in pixels, like `"80px"`. | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal alignment of the ColumnSet. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
