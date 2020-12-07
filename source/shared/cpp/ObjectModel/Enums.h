@@ -76,7 +76,6 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
-        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,

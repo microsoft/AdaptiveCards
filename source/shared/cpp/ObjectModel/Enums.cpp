@@ -74,7 +74,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
             {AdaptiveCardSchemaKey::IconUrl, "iconUrl"},
             {AdaptiveCardSchemaKey::Id, "id"},
-            {AdaptiveCardSchemaKey::IgnoreInputValidation, "ignoreInputValidation"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},

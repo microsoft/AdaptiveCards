@@ -23,10 +23,6 @@ namespace AdaptiveSharedNamespace
         void SetDataJson(const Json::Value& value);
         void SetDataJson(const std::string value);
 
-        virtual bool GetIgnoreInputValidation() const;
-        virtual void SetIgnoreInputValidation(const bool value);
-        #pragma deprecated(GetIgnoreInputValidation, SetIgnoreInputValidation)
-
         virtual AssociatedInputs GetAssociatedInputs() const;
         virtual void SetAssociatedInputs(const AssociatedInputs value);
 
@@ -36,7 +32,6 @@ namespace AdaptiveSharedNamespace
         void PopulateKnownPropertiesSet();
 
         Json::Value m_dataJson;
-        bool m_ignoreInputValidation;
         AssociatedInputs m_associatedInputs;
     };
 
