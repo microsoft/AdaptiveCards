@@ -33,7 +33,7 @@ Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
-| **2.5** | The non-standard `ignoreInputValidation` property has been **REMOVED**. Use the new `associatedInputs` instead. |
+| **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
 | **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 | **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |
 || The `isNullOrEmpty(value: string): boolean` function has been **REMOVED**. Use `if (!stringValue)` instead. |
