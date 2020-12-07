@@ -3924,26 +3924,6 @@ export abstract class Action extends CardObject {
     }
 }
 
-export class AssociatedInputsProperty extends CustomProperty<string | undefined> {
-    constructor(readonly targetVersion: Version, readonly name: string) {
-        super(
-            targetVersion,
-            name,
-            (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
-                let value = source[property.name];
-
-                if (value !== undefined && typeof value === "string") {
-                    return value === "none" ? "none" : "auto";
-                }
-                
-                return undefined;
-            },
-            (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
-                context.serializeValue(target, property.name, value);
-            });
-    }
-}
-
 export class SubmitAction extends Action {
     //#region Schema
 
