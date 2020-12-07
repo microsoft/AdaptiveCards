@@ -20,6 +20,7 @@ namespace AdaptiveSharedNamespace
         AllowCustomStyle,
         AllowInlinePlayback,
         AltText,
+        AssociatedInputs,
         Attention,
         BackgroundColor,
         BackgroundImage,
@@ -316,6 +317,13 @@ namespace AdaptiveSharedNamespace
         Stretch,
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
+
+    enum class AssociatedInputs
+    {
+        Auto = 0,
+        None
+    };
+    DECLARE_ADAPTIVECARD_ENUM(AssociatedInputs);
 
     enum class ChoiceSetStyle
     {

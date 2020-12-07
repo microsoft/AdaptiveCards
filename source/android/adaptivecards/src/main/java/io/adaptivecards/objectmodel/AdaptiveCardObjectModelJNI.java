@@ -305,6 +305,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getActionAlignmentEnum();
   public final static native String ActionAlignmentToString(int jarg1);
   public final static native int ActionAlignmentFromString(String jarg1);
+  public final static native long getAssociatedInputsEnum();
+  public final static native String AssociatedInputsToString(int jarg1);
+  public final static native int AssociatedInputsFromString(String jarg1);
   public final static native long getChoiceSetStyleEnum();
   public final static native String ChoiceSetStyleToString(int jarg1);
   public final static native int ChoiceSetStyleFromString(String jarg1);
@@ -816,6 +819,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void SubmitAction_SetDataJson__SWIG_1(long jarg1, SubmitAction jarg1_, String jarg2);
   public final static native boolean SubmitAction_GetIgnoreInputValidation(long jarg1, SubmitAction jarg1_);
   public final static native void SubmitAction_SetIgnoreInputValidation(long jarg1, SubmitAction jarg1_, boolean jarg2);
+  public final static native int SubmitAction_GetAssociatedInputs(long jarg1, SubmitAction jarg1_);
+  public final static native void SubmitAction_SetAssociatedInputs(long jarg1, SubmitAction jarg1_, int jarg2);
   public final static native long SubmitAction_SerializeToJsonValue(long jarg1, SubmitAction jarg1_);
   public final static native long SubmitAction_dynamic_cast(long jarg1, BaseActionElement jarg1_);
   public final static native long new_SubmitActionParser__SWIG_0();

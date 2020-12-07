@@ -21,6 +21,7 @@ public enum AdaptiveCardSchemaKey {
   AllowCustomStyle,
   AllowInlinePlayback,
   AltText,
+  AssociatedInputs,
   Attention,
   BackgroundColor,
   BackgroundImage,

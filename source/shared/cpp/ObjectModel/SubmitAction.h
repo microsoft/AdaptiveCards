@@ -25,6 +25,10 @@ namespace AdaptiveSharedNamespace
 
         virtual bool GetIgnoreInputValidation() const;
         virtual void SetIgnoreInputValidation(const bool value);
+        #pragma deprecated(GetIgnoreInputValidation, SetIgnoreInputValidation)
+
+        virtual AssociatedInputs GetAssociatedInputs() const;
+        virtual void SetAssociatedInputs(const AssociatedInputs value);
 
         Json::Value SerializeToJsonValue() const override;
 
@@ -33,6 +37,7 @@ namespace AdaptiveSharedNamespace
 
         Json::Value m_dataJson;
         bool m_ignoreInputValidation;
+        AssociatedInputs m_associatedInputs;
     };
 
     class SubmitActionParser : public ActionElementParser

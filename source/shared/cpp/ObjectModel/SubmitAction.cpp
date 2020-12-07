@@ -6,7 +6,8 @@
 
 using namespace AdaptiveSharedNamespace;
 
-SubmitAction::SubmitAction() : BaseActionElement(ActionType::Submit), m_ignoreInputValidation(false)
+SubmitAction::SubmitAction() :
+    BaseActionElement(ActionType::Submit), m_ignoreInputValidation(false), m_associatedInputs(AssociatedInputs::Auto)
 {
     PopulateKnownPropertiesSet();
 }
@@ -41,6 +42,16 @@ void SubmitAction::SetIgnoreInputValidation(const bool value)
     m_ignoreInputValidation = value;
 }
 
+AssociatedInputs SubmitAction::GetAssociatedInputs() const
+{
+    return m_associatedInputs;
+}
+
+void SubmitAction::SetAssociatedInputs(const AssociatedInputs value)
+{
+    m_associatedInputs = value;
+}
+
 Json::Value SubmitAction::SerializeToJsonValue() const
 {
     Json::Value root = BaseActionElement::SerializeToJsonValue();
@@ -55,6 +66,11 @@ Json::Value SubmitAction::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IgnoreInputValidation)] = m_ignoreInputValidation;
     }
 
+    if (m_associatedInputs != AssociatedInputs::Auto)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs)] = AssociatedInputsToString(m_associatedInputs);
+    }
+
     return root;
 }
 
@@ -64,6 +80,7 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::Deserialize(ParseContext&
 
     submitAction->SetDataJson(ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::Data));
     submitAction->SetIgnoreInputValidation(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::IgnoreInputValidation, false));
+    submitAction->SetAssociatedInputs(ParseUtil::GetEnumValue<AssociatedInputs>(json, AdaptiveCardSchemaKey::AssociatedInputs, AssociatedInputs::Auto, AssociatedInputsFromString));
 
     return submitAction;
 }
@@ -76,5 +93,6 @@ std::shared_ptr<BaseActionElement> SubmitActionParser::DeserializeFromString(Par
 void SubmitAction::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Data),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::AssociatedInputs),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IgnoreInputValidation)});
 }
