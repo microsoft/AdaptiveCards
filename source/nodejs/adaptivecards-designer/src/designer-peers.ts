@@ -9,6 +9,7 @@ import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
 import { Rect, IPoint } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
 import { FieldPicker } from "./field-picker";
+import { SubmitAction, ValueSetProperty } from "adaptivecards";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -1318,16 +1319,23 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
+    static readonly associatedInputsProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_3,
+        "associatedInputs",
+        "Associated inputs",
+        [
+            { targetVersion: Adaptive.Versions.v1_3, name: "Automatic", value: "auto" },
+            { targetVersion: Adaptive.Versions.v1_3, name: "None", value: "none" }
+        ]);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
         propertySheet.add(
             defaultCategory,
-            SubmitActionPeer.ignoreInputValidationProperty,
-            SubmitActionPeer.dataProperty);
+            SubmitActionPeer.dataProperty,
+            SubmitActionPeer.associatedInputsProperty);
     }
 }
 
