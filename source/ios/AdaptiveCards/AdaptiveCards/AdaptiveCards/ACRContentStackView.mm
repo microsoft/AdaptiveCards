@@ -491,8 +491,8 @@ static int kToggleVisibilityContext;
         NSObject<ACRSelectActionDelegate> *target = nil;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target)) {
             [self addTarget:target];
-            self.selectActionTarget = target;
-            self.userInteractionEnabled = YES;
+            self.selectActionTarget = target;            
+            setAccessibilityTrait(self, action);
         }
     }
 }

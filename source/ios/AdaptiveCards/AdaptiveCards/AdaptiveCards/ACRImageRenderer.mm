@@ -184,7 +184,7 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:selectAction];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
     [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
                                                                        rootView:rootView
@@ -199,7 +199,7 @@
     if (stringForAccessiblilityLabel.length) {
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }
-
+    
     configVisibility(wrappingview, elem);
 
     if (imgElem->GetImageStyle() == ImageStyle::Person) {

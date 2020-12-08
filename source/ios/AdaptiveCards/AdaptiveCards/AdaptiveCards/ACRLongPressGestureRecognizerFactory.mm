@@ -32,7 +32,7 @@ using namespace AdaptiveCards;
         if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target) && viewGroup) {
             UILongPressGestureRecognizer *recognizer = [ACRLongPressGestureRecognizerFactory getGestureRecognizer:viewGroup target:target];
             [recipientView addGestureRecognizer:recognizer];
-            recipientView.userInteractionEnabled = YES;
+            setAccessibilityTrait(recipientView, action);
         }
     }
 }
