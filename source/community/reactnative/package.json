@@ -52,7 +52,7 @@
     "antlr4ts": "^0.5.0-alpha.3",
     "assert": "^2.0.0",
     "react-native-video": "^4.4.2",
-    "react-native-windows": "^1.0.0"
+    "react-native-windows": "0.57.1"
   },
   "jest": {
     "preset": "react-native"
