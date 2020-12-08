@@ -3,8 +3,8 @@
 	"classType": "Enum",
 	"values": [
 		{
-			"value": "All",
-			"description": "All inputs will be validated and submitted for this Action."
+			"value": "Auto",
+			"description": "Inputs on the current card and any parent cards will be validated and submitted for this Action."
 		},
 		{
 			"value": "None",
