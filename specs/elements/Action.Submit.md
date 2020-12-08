@@ -6,7 +6,7 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.Submit"` | Yes | Must be `"Action.Submit"`. | 1.0 |
 | **data** | `string`, `object` | No | Initial data that input fields will be combined with. These are essentially ‘hidden’ properties. | 1.0 |
-| **associatedInputs** | `AssociatedInputs` | No | Controls which inputs are associated with the submit action. | 1.3 |
+| **associatedInputs** | `AssociatedInputs` | No, default: `"auto"` | Controls which inputs are associated with the submit action. | 1.3 |
 
 ### Inherited properties
 
@@ -25,7 +25,7 @@ Controls which inputs are associated with the submit action.
 
 * **Type**: `AssociatedInputs`
 * **Version** : 1.3
-* **Required**: No
+* **Required**: No, default: `"auto"`
 * **Allowed values**:
   * `"Auto"`: Inputs on the current card and any parent cards will be validated and submitted for this Action.
   * `"None"`: None of the inputs will be validated or submitted for this Action.

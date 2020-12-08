@@ -83,6 +83,7 @@
         "associatedInputs": {
           "$ref": "#/definitions/AssociatedInputs",
           "description": "Controls which inputs are associated with the submit action.",
+          "default": "auto",
           "version": "1.3"
         },
         "title": {},
