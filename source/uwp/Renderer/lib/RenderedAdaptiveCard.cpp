@@ -265,7 +265,7 @@ namespace AdaptiveNamespace
         {
             ComPtr<IAdaptiveActionsConfig> actionConfig;
             RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
-
+            
             ComPtr<IAdaptiveShowCardActionConfig> showCardConfig;
             RETURN_IF_FAILED(actionConfig->get_ShowCard(&showCardConfig));
 
@@ -291,14 +291,14 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(localActionElement.As(&submitAction));
 
             ABI::AdaptiveNamespace::AssociatedInputs associatedInputs;
-            submitAction->get_AssociatedInputs(&associatedInputs);
+            RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
 
             ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
             if (associatedInputs == ABI::AdaptiveNamespace::AssociatedInputs::None)
             {
                 // Create an empty inputs object
-                THROW_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
+                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
                 inputsAreValid = true;
             }
             else

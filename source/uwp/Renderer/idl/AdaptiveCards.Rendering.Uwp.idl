@@ -358,7 +358,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum IsVisible {
         IsVisibleToggle = 0,
@@ -368,7 +369,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum FallbackType {
         None = 0,
@@ -378,7 +380,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1), flags]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum BleedDirection {
         None = 0x0000,
@@ -391,7 +394,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum AssociatedInputs {
         Auto = 0,
