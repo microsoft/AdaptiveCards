@@ -3983,7 +3983,7 @@ export class SubmitAction extends Action {
                 let input = inputs[key];
 
                 if (input.id) {
-                    this._processedData[input.id] = input.value;
+                    this._processedData[input.id] = typeof input.value === "string" ? input.value : input.value.toString();
                 }
             }
         }
