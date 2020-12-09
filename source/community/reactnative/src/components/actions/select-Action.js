@@ -45,22 +45,13 @@ export class SelectAction extends React.Component {
 				this.toggleVisibilityForElementWithID(this.props.selectActionData.targetElements);
 				break;
 			default:
-				this.onCustomActionCalled();
+				//As per the AC schema, ShowCard action type is not supported by selectAction.
+				if(this.payload.type != Constants.ActionShowCard) {
+					//Invoked for the custom action type. 
+					this.onExecuteAction(this.payload);
+				}
 				break;
 		}
-	}
-
-	/**
-	 * @description Invoked for the custom action type
-	 */
-	onCustomActionCalled() {
-		let actionObject = {};
-		for (let key in this.payload) {
-			if (this.payload.hasOwnProperty(key)) {
-				actionObject[key] = this.payload[key];
-			}
-		}
-		this.onExecuteAction(actionObject);
 	}
 
 	render() {
