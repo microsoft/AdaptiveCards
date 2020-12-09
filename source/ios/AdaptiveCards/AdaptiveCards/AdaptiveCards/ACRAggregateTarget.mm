@@ -44,6 +44,7 @@ NSString *const ACRAggregateTargetFirstResponder = @"firstResponder";
     if (!_doValidation) {
         [[_view card] setInputs:@[]];
         [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+        return;
     }
     // dispatch and validate inputs
     ACOInputResults *result = [_view dispatchAndValidateInput:_currentShowcard];
