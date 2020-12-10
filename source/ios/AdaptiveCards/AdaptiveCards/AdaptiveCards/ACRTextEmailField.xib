@@ -9,7 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="No placeholder" textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" id="NJK-AP-VLM" customClass="ACRTextEmailField">
+        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder=" " textAlignment="natural" clearsOnBeginEditing="YES" minimumFontSize="17" id="NJK-AP-VLM" customClass="ACRTextEmailField">
             <rect key="frame" x="0.0" y="0.0" width="97" height="34"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <fontDescription key="fontDescription" type="system" pointSize="14"/>
