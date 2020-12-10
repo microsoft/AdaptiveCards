@@ -11,7 +11,7 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
@@ -25,6 +25,7 @@
     <Antlr4 Remove="tool\**" />
     <Compile Remove="tool\**" />
     <EmbeddedResource Remove="tool\**" />
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
     <None Remove="tool\**" />
   </ItemGroup>
 
