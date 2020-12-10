@@ -80,6 +80,12 @@
           ],
           "description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
         },
+        "associatedInputs": {
+          "$ref": "#/definitions/AssociatedInputs",
+          "description": "Controls which inputs are associated with the submit action.",
+          "default": "auto",
+          "version": "1.3"
+        },
         "title": {},
         "iconUrl": {},
         "style": {},
@@ -1369,19 +1375,6 @@
         }
       ]
     },
-    "ActionInputs": {
-      "anyOf": [
-        {
-          "enum": [
-            "All",
-            "None"
-          ]
-        },
-        {
-          "pattern": "^([a|A][l|L][l|L])|([n|N][o|O][n|N][e|E])$"
-        }
-      ]
-    },
     "ActionStyle": {
       "description": "Controls the style of an Action, which influences how the action is displayed, spoken, etc.",
       "features": [
@@ -1398,6 +1391,19 @@
         },
         {
           "pattern": "^([d|D][e|E][f|F][a|A][u|U][l|L][t|T])|([p|P][o|O][s|S][i|I][t|T][i|I][v|V][e|E])|([d|D][e|E][s|S][t|T][r|R][u|U][c|C][t|T][i|I][v|V][e|E])$"
+        }
+      ]
+    },
+    "AssociatedInputs": {
+      "anyOf": [
+        {
+          "enum": [
+            "Auto",
+            "None"
+          ]
+        },
+        {
+          "pattern": "^([a|A][u|U][t|T][o|O])|([n|N][o|O][n|N][e|E])$"
         }
       ]
     },
