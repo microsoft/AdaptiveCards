@@ -62,12 +62,12 @@ static NSString *pickerCell = @"pickerCell";
         if (!inputLabel.empty()) {
             _inputLabel = [NSString stringWithCString:inputLabel.c_str() encoding:NSUTF8StringEncoding];
         }
-        
+
         auto errorLabel = _choiceSetInput->GetErrorMessage();
         if (!errorLabel.empty()) {
             _errorLabel = [NSString stringWithCString:errorLabel.c_str() encoding:NSUTF8StringEncoding];
         }
-        
+
         for (auto choice : _choiceSetInput->GetChoices()) {
             NSString *title = [NSString stringWithCString:choice->GetTitle().c_str() encoding:NSUTF8StringEncoding];
             NSString *value = [NSString stringWithCString:choice->GetValue().c_str() encoding:NSUTF8StringEncoding];
@@ -96,7 +96,7 @@ static NSString *pickerCell = @"pickerCell";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _choiceSetInput->GetChoices().size() > 0 ? 2 : 0;
+    return _showPickerView ? 2 : 1;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -107,6 +107,7 @@ static NSString *pickerCell = @"pickerCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = nil;
+    tableView.accessibilityLabel = nil;
 
     if (indexPath.row == 0) {
         static NSString *identifier = @"cellForCompactMode";
@@ -115,13 +116,14 @@ static NSString *pickerCell = @"pickerCell";
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                           reuseIdentifier:identifier];
         }
-        
+
         NSString *titleString = ([_userSelectedTitle length] != 0) ? _userSelectedTitle : _defaultString;
-        
-        _accessibilityString = tableView.accessibilityLabel;
+
         cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-        cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, titleString];
-        
+        if (_inputLabel) {
+            cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, titleString];
+        }
+
         cell.textLabel.text = titleString;
         cell.textLabel.numberOfLines = 0;
         cell.textLabel.adjustsFontSizeToFitWidth = NO;
@@ -144,10 +146,9 @@ static NSString *pickerCell = @"pickerCell";
         cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
         pickerView.dataSource = self;
         pickerView.delegate = self;
-        pickerView.hidden = NO;
         [pickerView selectRow:_userSelectedRow inComponent:0 animated:NO];
     }
-    
+
     return cell;
 }
 
@@ -174,7 +175,7 @@ static NSString *pickerCell = @"pickerCell";
         _compactViewHeight = labelStringSize.height;
         return _compactViewHeight + padding;
     } else {
-        return _showPickerView ? _pickerViewHeight : 0.0f;
+        return _pickerViewHeight;
     }
 }
 
@@ -193,41 +194,36 @@ static NSString *pickerCell = @"pickerCell";
             [UIView animateWithDuration:0.25
                 animations:^{
                     pickerView.alpha = 1.0f;
+                    [tableView reloadData];
                     [tableView invalidateIntrinsicContentSize];
-                    [tableView setNeedsLayout];
-                    [tableView.superview layoutIfNeeded];
+                    [tableView layoutIfNeeded];
+                }
+                completion:^(BOOL finished) {
                     if ([self.rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
                         CGFloat newHeight = [self tableView:tableView heightForRowAtIndexPath:indexPath];
                         CGRect newFrame = CGRectMake(0, 0, 0, newHeight);
                         [self.rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:newFrame];
                     }
-                }
-                completion:^(BOOL finished) {
-                    [tableView reloadData];
-                    pickerView.hidden = YES;
-                    cell.accessibilityTraits |= UIAccessibilityTraitSelected;
+                    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, tableView);
                 }];
         } else {
             _showPickerView = YES;
             pickerView.alpha = 0.0f;
-            [tableView beginUpdates];
-            [tableView endUpdates];
             [UIView animateWithDuration:0.25
                 animations:^{
+                    [tableView reloadData];
                     [tableView invalidateIntrinsicContentSize];
-                    [tableView setNeedsLayout];
-                    [tableView.superview layoutIfNeeded];
+                    [tableView layoutIfNeeded];
+                }
+                completion:^(BOOL finished) {
                     if ([self.rootView.acrActionDelegate respondsToSelector:@selector(didChangeViewLayout:newFrame:)]) {
                         CGFloat newHeight = oldFrame.size.height;
                         newHeight += [self tableView:tableView heightForRowAtIndexPath:[NSIndexPath indexPathForRow:1 inSection:0]];
                         CGRect newFrame = oldFrame;
                         newFrame.size.height = newHeight;
                         [self.rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:newFrame];
+                        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, pickerView);
                     }
-                }
-                completion:^(BOOL finished) {
-                    [tableView reloadData];
-                    pickerView.hidden = NO;
                 }];
         }
     }
@@ -241,7 +237,7 @@ static NSString *pickerCell = @"pickerCell";
         return _isValid;
     }
     // no need to validate
-    _isValid = YES;    
+    _isValid = YES;
     return _isValid;
 }
 
@@ -265,6 +261,23 @@ static NSString *pickerCell = @"pickerCell";
     _userSelectedRow = row;
 }
 
+- (UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
+{
+    UILabel *label = (UILabel *)view;
+    if (!label) {
+        label = [[UILabel alloc] init];
+    }
+
+    label.text = [_titles objectAtIndex:row];
+    label.textAlignment = NSTextAlignmentCenter;
+    label.lineBreakMode = NSLineBreakByWordWrapping;
+    label.numberOfLines = 0;
+    if (_inputLabel) {
+        label.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _inputLabel, label.text];
+    }
+    return label;
+}
+
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
 {
     return _choiceSetInput->GetChoices().size();
@@ -273,11 +286,6 @@ static NSString *pickerCell = @"pickerCell";
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
 {
     return 1;
-}
-
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return [_titles objectAtIndex:row];
 }
 
 @synthesize isRequired;
