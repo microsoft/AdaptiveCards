@@ -7,7 +7,7 @@
 | **type** | `"Action.OpenUrl"` | Yes | Must be `"Action.OpenUrl"`. | 1.0 |
 | **url** | `uri` | Yes | The URL to open. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

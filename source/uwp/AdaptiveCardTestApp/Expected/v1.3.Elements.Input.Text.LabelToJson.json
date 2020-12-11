@@ -1,0 +1,1 @@
+{"actions":[{"title":"Submit","type":"Action.Submit"}],"body":[{"id":"input1","label":"Default Input.Text label","style":"text","type":"Input.Text"},{"errorMessage":"Required input","id":"input2","isRequired":true,"label":"Required Input.Text label","style":"text","type":"Input.Text"}],"type":"AdaptiveCard","version":"1.0"}

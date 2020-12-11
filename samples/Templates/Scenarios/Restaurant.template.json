@@ -13,54 +13,37 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "${address.addressLocality}, ${address.addressRegion}"
+                            "text": "${address.addressLocality}, ${address.addressRegion}",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "${name}",
-                            "weight": "Bolder",
-                            "size": "ExtraLarge",
-                            "spacing": "None"
+                            "weight": "bolder",
+                            "size": "extraLarge",
+                            "spacing": "none",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "$when": "${aggregateRating.ratingValue <= 1}",
-                            "text": "${aggregateRating.ratingValue} ★☆☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "text": "${aggregateRating.ratingValue} star (${aggregateRating.reviewCount} reviews) · ${priceRange}",
                             "isSubtle": true,
-                            "spacing": "None"
+                            "spacing": "none",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
-                            "$when": "${aggregateRating.ratingValue <= 2}",
-                            "text": "${aggregateRating.ratingValue} ★★☆☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
+                            "$when": "${aggregateRating.ratingValue >= 2}",
+                            "text": "${aggregateRating.ratingValue} stars (${aggregateRating.reviewCount} reviews) · ${priceRange}",
                             "isSubtle": true,
-                            "spacing": "None"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "$when": "${aggregateRating.ratingValue <= 3}",
-                            "text": "${aggregateRating.ratingValue} ★★★☆☆ (${aggregateRating.reviewCount}) · ${priceRange}",
-                            "isSubtle": true,
-                            "spacing": "None"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "$when": "${aggregateRating.ratingValue <= 4}",
-                            "text": "${aggregateRating.ratingValue} ★★★★☆ (${aggregateRating.reviewCount}) · ${priceRange}",
-                            "isSubtle": true,
-                            "spacing": "None"
-                        },
-                        {
-                            "type": "TextBlock",
-                            "$when": "${aggregateRating.ratingValue <= 5}",
-                            "text": "${aggregateRating.ratingValue} ★★★★★ (${aggregateRating.reviewCount}) · ${priceRange}",
-                            "isSubtle": true,
-                            "spacing": "None"
+                            "spacing": "none",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "text": "**${review[0].author}** said \"${review[0].description}\"",
-                            "size": "Small",
+                            "size": "small",
                             "wrap": true,
                             "maxLines": 3
                         }

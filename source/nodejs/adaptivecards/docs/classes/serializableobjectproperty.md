@@ -17,6 +17,7 @@
 ### Properties
 
 * [defaultValue](serializableobjectproperty.md#optional-defaultvalue)
+* [isSerializationEnabled](serializableobjectproperty.md#isserializationenabled)
 * [name](serializableobjectproperty.md#name)
 * [objectType](serializableobjectproperty.md#objecttype)
 * [onGetInitialValue](serializableobjectproperty.md#optional-ongetinitialvalue)
@@ -33,7 +34,7 @@
 
 ###  constructor
 
-\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype)): *[SerializableObjectProperty](serializableobjectproperty.md)*
+\+ **new SerializableObjectProperty**(`targetVersion`: [Version](version.md), `name`: string, `objectType`: [SerializableObjectType](../README.md#serializableobjecttype), `defaultValue?`: [SerializableObject](serializableobject.md)): *[SerializableObjectProperty](serializableobjectproperty.md)*
 
 *Overrides [PropertyDefinition](propertydefinition.md).[constructor](propertydefinition.md#constructor)*
 
@@ -44,6 +45,7 @@ Name | Type |
 `targetVersion` | [Version](version.md) |
 `name` | string |
 `objectType` | [SerializableObjectType](../README.md#serializableobjecttype) |
+`defaultValue?` | [SerializableObject](serializableobject.md) |
 
 **Returns:** *[SerializableObjectProperty](serializableobjectproperty.md)*
 
@@ -54,6 +56,14 @@ Name | Type |
 • **defaultValue**? : *any*
 
 *Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+
+___
+
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
 
 ___
 

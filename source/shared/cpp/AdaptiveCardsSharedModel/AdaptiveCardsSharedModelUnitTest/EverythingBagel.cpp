@@ -52,7 +52,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(ContainerStyle::None == everythingBagel.GetStyle());
         Assert::AreEqual("1.0"s, everythingBagel.GetVersion());
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
-        Assert::IsTrue(everythingBagel.GetInputNecessityIndicators() == InputNecessityIndicators::RequiredInputs);
     }
 
     void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
@@ -173,7 +172,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Container_Action.Submit"s, action->GetTitle());
             auto dataString = action->GetDataJson();
             Assert::AreEqual("\"Container_data\"\n"s, dataString);
-            Assert::IsFalse(action->GetIgnoreInputValidation());
+            Assert::IsTrue(action->GetAssociatedInputs() == AssociatedInputs::Auto);
         }
 
         auto items = container.GetItems();
@@ -242,11 +241,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(textInput.GetErrorMessage().empty());
         Assert::AreEqual("([A-Z])\\w+"s, textInput.GetRegex());
 
+        Assert::AreEqual("Input.Text_label"s, textInput.GetLabel());
+
         auto inlineAction = std::static_pointer_cast<SubmitAction>(textInput.GetInlineAction());
         Assert::IsTrue((bool)inlineAction);
         Assert::AreEqual("Input.Text_Action.Submit"s, inlineAction->GetTitle());
         Assert::AreEqual("https://adaptivecards.io/content/cats/1.png"s, inlineAction->GetIconUrl());
-        Assert::IsFalse(inlineAction->GetIgnoreInputValidation());
+        Assert::IsTrue(inlineAction->GetAssociatedInputs() == AssociatedInputs::Auto);
     }
 
     void ValidateInputNumber(const NumberInput &numberInput)
@@ -256,11 +257,12 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Number_id"s, numberInput.GetId());
 
         Assert::IsTrue(numberInput.GetIsRequired());
-        Assert::AreEqual(10, numberInput.GetMax());
-        Assert::AreEqual(5, numberInput.GetMin());
-        Assert::AreEqual(7, numberInput.GetValue());
+        Assert::AreEqual(10, numberInput.GetMax().value());
+        Assert::AreEqual(5, numberInput.GetMin().value());
+        Assert::AreEqual(7, numberInput.GetValue().value());
         Assert::AreEqual("Input.Number_placeholder"s, numberInput.GetPlaceholder());
         Assert::IsTrue(numberInput.GetErrorMessage().empty());
+        Assert::AreEqual("Input.Number_label"s, numberInput.GetLabel());
     }
 
     void ValidateInputDate(const DateInput &dateInput)
@@ -275,6 +277,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
+		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -288,6 +291,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("13:00"s, timeInput.GetValue());
         Assert::IsTrue(timeInput.GetIsRequired());
         Assert::AreEqual("Input.Time.ErrorMessage"s, timeInput.GetErrorMessage());
+        Assert::AreEqual("Input.Time_label"s, timeInput.GetLabel());
     }
 
     void ValidateInputToggle(const ToggleInput &toggleInput)
@@ -302,6 +306,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Toggle_off"s, toggleInput.GetValueOff());
         Assert::IsFalse(toggleInput.GetIsRequired());
         Assert::IsTrue(toggleInput.GetErrorMessage().empty());
+        Assert::AreEqual("Input.Toggle_label"s, toggleInput.GetLabel());
     }
 
     void ValidateTextBlockInInput(const TextBlock &textBlock)
@@ -337,6 +342,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             expectedTitle.append("_title");
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
+
+		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)
@@ -375,7 +382,7 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         auto submitAction = actions.at(0);
         Assert::AreEqual("ActionSet.Action.Submit_id", submitAction->GetId().c_str());
-        Assert::IsTrue(std::static_pointer_cast<SubmitAction>(submitAction)->GetIgnoreInputValidation());
+        Assert::IsTrue(std::static_pointer_cast<SubmitAction>(submitAction)->GetAssociatedInputs() == AssociatedInputs::None);
 
         auto openUrlAction = actions.at(1);
         Assert::AreEqual("ActionSet.Action.OpenUrl_id", openUrlAction->GetId().c_str());
@@ -415,7 +422,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         auto selectAction = inlineTextElement->GetSelectAction();
         Assert::IsTrue(selectAction != nullptr);
         Assert::IsTrue(ActionType::Submit == selectAction->GetElementType());
-        Assert::IsFalse(std::static_pointer_cast<SubmitAction>(selectAction)->GetIgnoreInputValidation());
+        Assert::IsTrue(std::static_pointer_cast<SubmitAction>(selectAction)->GetAssociatedInputs() == AssociatedInputs::Auto);
 
         Assert::IsTrue(InlineElementType::TextRun == inlines[1]->GetInlineType());
         Assert::AreEqual("TextRun"s, inlines[1]->GetInlineTypeString());
@@ -484,7 +491,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("Action.Submit"s, submitAction->GetTitle());
             //Logger::WriteMessage("Submit Data: '"s.append(submitAction->GetDataJson()).append("'").c_str());
             Assert::AreEqual("{\"submitValue\":true}\n"s, submitAction->GetDataJson());
-            Assert::IsFalse(submitAction->GetIgnoreInputValidation());
+            Assert::IsTrue(submitAction->GetAssociatedInputs() == AssociatedInputs::Auto);
 
             auto additionalProps = submitAction->GetAdditionalProperties();
             Assert::IsTrue(additionalProps.empty());

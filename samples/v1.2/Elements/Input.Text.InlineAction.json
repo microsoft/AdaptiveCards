@@ -12,8 +12,8 @@
 			"id": "input1",
 			"inlineAction": {
 				"type": "Action.Submit",
-				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
-				"title": "Reply"
+				"iconUrl": "https://adaptivecards.io/content/send.png",
+				"title": "Send"
 			}
 		},
 		{
@@ -24,30 +24,6 @@
 		{
 			"type": "Input.Text",
 			"id": "input2",
-			"inlineAction": {
-				"type": "Action.OpenUrl",
-				"title": "Reply",
-				"url": "https://adaptivecards.io"
-			}
-		},
-		{
-			"type": "TextBlock",
-			"text": "Multiline Text Inputs with inline actions"
-		},
-		{
-			"type": "Input.Text",
-			"id": "input3",
-			"isMultiline": true,
-			"inlineAction": {
-				"type": "Action.Submit",
-				"iconUrl": "https://adaptivecards.io/content/cats/1.png",
-				"title": "Reply"
-			}
-		},
-		{
-			"type": "Input.Text",
-			"id": "input4",
-			"isMultiline": true,
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",

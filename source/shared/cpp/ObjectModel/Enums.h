@@ -20,6 +20,7 @@ namespace AdaptiveSharedNamespace
         AllowCustomStyle,
         AllowInlinePlayback,
         AltText,
+        AssociatedInputs,
         Attention,
         BackgroundColor,
         BackgroundImage,
@@ -75,7 +76,6 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
-        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,
@@ -85,7 +85,8 @@ namespace AdaptiveSharedNamespace
         InlineAction,
         Inlines,
         InlineTopMargin,
-        InputNecessityIndicators,
+        Inputs,
+        InputSpacing,
         IsMultiSelect,
         IsMultiline,
         IsRequired,
@@ -94,6 +95,7 @@ namespace AdaptiveSharedNamespace
         IsVisible,
         Italic,
         Items,
+        Label,
         Language,
         Large,
         Left,
@@ -115,6 +117,7 @@ namespace AdaptiveSharedNamespace
         MinHeight,
         Monospace,
         NumberInput,
+        OptionalInputs,
         Padding,
         Placeholder,
         PlayButton,
@@ -123,6 +126,7 @@ namespace AdaptiveSharedNamespace
         Repeat,
         RepeatHorizontally,
         RepeatVertically,
+        RequiredInputs,
         Requires,
         RichTextBlock,
         Right,
@@ -141,6 +145,7 @@ namespace AdaptiveSharedNamespace
         Strikethrough,
         Style,
         Subtle,
+        Suffix,
         SupportsInteractivity,
         TargetElements,
         Text,
@@ -312,6 +317,13 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
 
+    enum class AssociatedInputs
+    {
+        Auto = 0,
+        None
+    };
+    DECLARE_ADAPTIVECARD_ENUM(AssociatedInputs);
+
     enum class ChoiceSetStyle
     {
         Compact = 0,
@@ -394,6 +406,8 @@ namespace AdaptiveSharedNamespace
         InvalidLanguage,
         InvalidValue,
         CustomWarning,
+        EmptyLabelInRequiredInput,
+        RequiredPropertyMissing,
     };
     // No mapping to string needed
 
@@ -480,12 +494,4 @@ namespace AdaptiveSharedNamespace
         Drop,
         Content
     };
-
-    enum class InputNecessityIndicators
-    {
-        None,
-        RequiredInputs,
-        OptionalInputs
-    };
-    DECLARE_ADAPTIVECARD_ENUM(InputNecessityIndicators);
 }

@@ -18,6 +18,7 @@
 #import "ACRUIImageView.h"
 #import "ACRUILabel.h"
 #import "ACRViewPrivate.h"
+#import "ActionSet.h"
 #import "AdaptiveBase64Util.h"
 #import "BackgroundImage.h"
 #import "Column.h"
@@ -59,6 +60,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     ACRTargetBuilderDirector *_actionsTargetBuilderDirector;
     ACRTargetBuilderDirector *_selectActionsTargetBuilderDirector;
     ACRTargetBuilderDirector *_quickReplyTargetBuilderDirector;
+    NSMapTable<ACRColumnView *, ACRColumnView *> *_inputHandlerLookupTable;
+    NSMutableArray<ACRColumnView *> *_showcards;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -78,6 +81,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _imageViewContextMap = [[NSMutableDictionary alloc] init];
         _setOfRemovedObservers = [[NSMutableSet alloc] init];
         _paddingMap = [[NSMutableDictionary alloc] init];
+        _inputHandlerLookupTable = [[NSMapTable alloc] initWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableWeakMemory capacity:5];
+        _showcards = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -121,13 +126,16 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (UIView *)render
 {
-    NSMutableArray *inputs = [[NSMutableArray alloc] init];
-
     if (self.frame.size.width) {
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
-    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:inputs context:self containingView:self hostconfig:_hostConfig];
+    [self pushCurrentShowcard:self];
+    [self setParent:nil child:self];
+
+    UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:self.inputHandlers context:self containingView:self hostconfig:_hostConfig];
+
+    [self popCurrentShowcard];
 
     ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
 
@@ -208,6 +216,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                     UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                     if (view) {
+                        // check image already exists in the returned image view and register the image
+                        [self registerImageFromUIImageView:view key:key];
                         [view addObserver:self
                                forKeyPath:@"image"
                                   options:NSKeyValueObservingOptionNew
@@ -232,6 +242,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
+                            [self registerImageFromUIImageView:view key:key];
                             [view addObserver:self
                                    forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
@@ -260,6 +272,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         ACRContentHoldingUIView *contentholdingview = [[ACRContentHoldingUIView alloc] initWithFrame:view.frame];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
+                            [self registerImageFromUIImageView:view key:key];
                             [contentholdingview addSubview:view];
                             contentholdingview.isMediaType = YES;
                             [view addObserver:self
@@ -280,6 +294,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
                         if (view) {
+                            // check image already exists in the returned image view and register the image
+                            [self registerImageFromUIImageView:view key:key];
                             [view addObserver:rootView
                                    forKeyPath:@"image"
                                       options:NSKeyValueObservingOptionNew
@@ -355,6 +371,14 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             // add column fallbacks to async task queue
             [self processFallback:column];
             [self addTasksToConcurrentQueue:column->GetItems()];
+            break;
+        }
+
+        case CardElementType::ActionSet: {
+            std::shared_ptr<ActionSet> actionSet = std::static_pointer_cast<ActionSet>(elem);
+            auto actions = actionSet->GetActions();
+            [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig];
+            break;
         }
     }
 }
@@ -559,12 +583,25 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
+// remove observer from UIImageView
+- (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key
+{
+    if ([object isKindOfClass:[UIImageView class]]) {
+        if (_imageViewContextMap[key]) {
+            [self removeObserver:self forKeyPath:KeyPath onObject:object];
+        }
+    }
+}
+
 - (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)path onObject:(NSObject *)object
 {
-    _numberOfSubscribers--;
-    [object removeObserver:self forKeyPath:path];
-    [_setOfRemovedObservers addObject:object];
-    [self callDidLoadElementsIfNeeded];
+    // check that makes sure that there are subscribers, and the given observer is not one of the removed observers
+    if (_numberOfSubscribers && ![_setOfRemovedObservers containsObject:object]) {
+        _numberOfSubscribers--;
+        [object removeObserver:self forKeyPath:path];
+        [_setOfRemovedObservers addObject:object];
+        [self callDidLoadElementsIfNeeded];
+    }
 }
 
 - (void)loadBackgroundImageAccordingToResourceResolverIF:(std::shared_ptr<BackgroundImage> const &)backgroundImage key:(NSString *)key observerAction:(ObserverActionBlock)observerAction
@@ -734,6 +771,54 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message
 {
     [((NSMutableArray *)_warnings) addObject:[[ACOWarning alloc] initWith:statusCode message:message]];
+}
+
+- (ACRColumnView *)getParent:(ACRColumnView *)child
+{
+    return [_inputHandlerLookupTable objectForKey:child];
+}
+
+- (void)setParent:(ACRColumnView *)parent child:(ACRColumnView *)child
+{
+    [_inputHandlerLookupTable setObject:parent forKey:child];
+}
+
+- (void)pushCurrentShowcard:(ACRColumnView *)showcard;
+{
+    if (showcard) {
+        [_showcards addObject:showcard];
+    }
+}
+
+- (void)popCurrentShowcard
+{
+    if ([_showcards count]) {
+        [_showcards removeLastObject];
+    }
+}
+
+- (ACRColumnView *)peekCurrentShowCard
+{
+    ACRColumnView *showcard = nil;
+    if ([_showcards count]) {
+        showcard = _showcards.lastObject;
+    }
+    return showcard;
+}
+
+- (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent
+{
+    ACOInputResults *result = [[ACOInputResults alloc] init:self parent:parent];
+    [result validateInput];
+    return result;
+}
+
+// check if UIImageView already contains an UIImage, if so, add it the image map.
+- (void)registerImageFromUIImageView:(UIImageView *)imageView key:(NSString *)key
+{
+    if (imageView.image) {
+        self->_imageViewMap[key] = imageView.image;
+    }
 }
 
 @end

@@ -15,7 +15,7 @@
 | **style** | `ImageStyle` | No | Controls how this `Image` is displayed. | 1.0 |
 | **width** | `string` | No | The desired on-screen width of the image, ending in 'px'. E.g., 50px. This overrides the `size` property. | 1.1 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

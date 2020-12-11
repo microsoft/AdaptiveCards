@@ -167,9 +167,14 @@ void TextElementProperties::SetLanguage(const std::string& value)
     m_language = value;
 }
 
-void TextElementProperties::Deserialize(const ParseContext& context, const Json::Value& json)
+void TextElementProperties::Deserialize(ParseContext& context, const Json::Value& json)
 {
-    SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, true));
+    SetText(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Text, false));
+    if (GetText().empty())
+    {
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
+                                                                                  "required property, \"text\", is either empty or missing"));
+    }
     SetTextSize(ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, TextSize::Default, TextSizeFromString));
     SetTextColor(ParseUtil::GetEnumValue<ForegroundColor>(json, AdaptiveCardSchemaKey::Color, ForegroundColor::Default, ForegroundColorFromString));
     SetTextWeight(ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::TextWeight, TextWeight::Default, TextWeightFromString));

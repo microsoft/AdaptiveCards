@@ -16,18 +16,28 @@ There are two simple ways to consume the designer: CDN script reference or impor
 
 ### Option 1: CDN script references
 
-The simplest way to get started it to include 3 script tags in your page. 
+The simplest way to get started it to include 6 script tags in your page. 
 
 1. **monaco-editor** - provides a rich JSON-editing experience
-2. **markdown-it** - [optional] automatic markdown support for the designer and cards
+2. **adaptivecards** - adaptive card library used by designer
+3. **adaptivecards-templating** - provides data binding support for designer
+4. **adaptive-expressions** - used by templating library to enable data binding support
+5. **markdown-it** - [optional] automatic markdown support for the designer and cards
 
 To load the designer component you have 2 options:
 
-3. 
+6. 
    * **adaptivecards-designer** - the designer component, with default Microsoft hosts included (Teams, Outlook, Cortana, etc)
    * **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
 
 ```html
+<!-- REQUIRED: adaptivecards library for designer to work -->
+<script src="https://unpkg.com/adaptivecards@latest/dist/adaptivecards.min.js"></script>
+<!-- REQUIRED: adaptive-expressions is required by adaptivecards-templating library to enable data binding support in designer -->
+<script src="https://unpkg.com/adaptive-expressions@rc/lib/browser.js"></script>
+<!-- REQUIRED: adaptivecards-templating library to enable data binding support in designer -->
+<script src="https://unpkg.com/adaptivecards-templating@latest/dist/adaptivecards-templating.min.js"></script>
+
 <!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
@@ -78,7 +88,7 @@ To load the designer component you have 2 options:
 If you already use webpack and want to to bundle the designer, you need a few packages. **adaptivecards-designer**, **monaco-editor** for the JSON editor, and **markdown-it** for markdown handling. You can use another markdown processor if you choose.
 
 ```console
-npm install adaptivecards-designer monaco-editor markdown-it
+npm install adaptivecards-designer adaptivecards adaptive-expressions adaptivecards-templating monaco-editor markdown-it
 ```
 
 You also need some development dependencies to bundle monaco, and copy some CSS+image files into your output.

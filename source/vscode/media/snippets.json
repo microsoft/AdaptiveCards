@@ -1,0 +1,123 @@
+{"AC Text Block (min)": {
+	"scope": "json",
+	"prefix": "ac-txt",
+	"body": [
+	  "{",
+	  "    \"type\": \"TextBlock\",",
+	  "    \"text\": \"$0\"",
+	  "},"
+	],
+	"description": "Text Block (full)"
+  },"AC Text Block (all options)": {
+	"prefix": "ac-txtfull",
+	"scope": "json",
+	"body": [
+	  "{",
+	  "    \"type\": \"TextBlock\",",
+	  "    \"text\": \"$0\",",
+	  "    \"fontType\": \"Default\",",
+	  "    \"size\": \"Medium\",",
+	  "    \"weight\": \"Lighter\",",
+	  "    \"color\": \"Light\",",
+	  "    \"separator\": true,",
+	  "    \"wrap\": true,",
+	  "    \"height\": \"stretch\",",
+	  "    \"horizontalAlignment\": \"Center\",",
+	  "    \"spacing\": \"ExtraLarge\"",
+	  "},"
+	],
+	"description": "Text Block (all options)"
+  },"AC Column Set (3 col)": {
+	"prefix": "ac-col3",
+	"scope": "json",
+	"body": [
+	  " {",
+	  "    \"type\": \"ColumnSet\",",
+	  "    \"columns\": [",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": [$0]",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": []",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": []",
+	  "        }",
+	  "    ]",
+	  "},"
+	],
+	"description": "Column Set (3 col)"
+  },"AC Column Set (2 col)": {
+	"prefix": "ac-col2",
+	"scope": "json",
+	"body": [
+	  " {",
+	  "    \"type\": \"ColumnSet\",",
+	  "    \"columns\": [",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": [$0]",
+	  "        },",
+	  "        {",
+	  "            \"type\": \"Column\",",
+	  "            \"width\": \"stretch\",",
+	  "            \"items\": []",
+	  "        }",
+	  "    ]",
+	  "}"
+	],
+	"description": "Column Set (2 col)"
+  },
+	"AC Fact Set": {
+	"prefix": "ac-fctset",
+	"scope": "json",
+	"body": [
+	  "{",
+	  "\"type\": \"FactSet\",",
+	  "   \"facts\": [",
+	  "     {",
+	  "      \"title\": \"Fact 1\",",
+	  "      \"value\": \"Value 1\"",
+	  "     },",
+	  "     {",
+	  "      \"title\": \"Fact 2\",",
+	  "      \"value\": \"Value 2\"",
+	  "     }",
+	  " ]",
+	  "}"
+	],
+	"description": "Fact Set"
+  },
+	"AC Container": {
+		"prefix": "ac-ctr",
+		"scope": "json",
+		"body": [
+		  "{",
+		  "   \"type\": \"Container\",",
+		  "   \"items\": [",
+		  "   ]",
+		  "},"
+		],
+		"description": "Adaptive Cards Container"
+	  },
+	  "AC Image": {
+		"prefix": "ac-img",
+		"scope": "json",
+		"body": [
+		  "{",
+		  "  \"type\": \"Image\",",
+		  "  \"url\": \"https://imageurl\",",
+		  "  \"altText\": \"alttext\"",
+		  "},",
+		  ""
+		],
+		"description": "Adaptive Cards Image"
+	  }
+}

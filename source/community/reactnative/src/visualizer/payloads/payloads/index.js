@@ -172,6 +172,10 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
+    "title": "CustomActions.Rendering.json",
+    "json": require('./CustomActions.Rendering.json')
+  },
+  {
     "title": "CustomElement.Rendering.json",
     "json": require('./CustomElement.Rendering.json')
   },
@@ -330,6 +334,10 @@ export default payloads = [
   {
     "title": "TextBlock.Wrap.json",
     "json": require('./TextBlock.Wrap.json')
+  },
+  {
+    "title": "TextBlock.Accessibility.json",
+    "json": require('./TextBlock.Accessibility.json')
   },
   {
     "title": "TypeIsRequired.json",

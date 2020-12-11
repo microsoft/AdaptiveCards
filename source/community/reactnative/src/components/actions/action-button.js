@@ -156,9 +156,11 @@ export class ActionButton extends React.Component {
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
-		
+
 		if (this.sentiment == Enums.Sentiment.Positive) {
 			computedStyles.push(this.styleConfig.defaultPositiveButtonBackgroundColor);
+		} else if (this.sentiment == Enums.Sentiment.Destructive) {
+			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
 		return computedStyles;
@@ -171,9 +173,6 @@ export class ActionButton extends React.Component {
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
 		this.styleConfig.buttonTitle];
-		if (this.sentiment == Enums.Sentiment.Destructive) {
-			computedStyles.push(this.styleConfig.defaultDestructiveButtonForegroundColor);
-		}
 		return computedStyles;
 	}
 

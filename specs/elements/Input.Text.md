@@ -9,15 +9,18 @@
 | **isMultiline** | `boolean` | No | If `true`, allow multiple lines of input. | 1.0 |
 | **maxLength** | `number` | No | Hint of maximum length characters to collect (may be ignored by some clients). | 1.0 |
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no text has been input. | 1.0 |
+| **regex** | `string` | No | Regular expression indicating the required format of this text input. | 1.3 |
 | **style** | `TextInputStyle` | No | Style hint for text input. | 1.0 |
 | **inlineAction** | `ISelectAction` | No | The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action). | 1.2 |
 | **value** | `string` | No | The initial value for this field. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
+| **errorMessage** | `string` | No | Error message to display when entered input is invalid | 1.3 |
+| **isRequired** | `boolean` | No | Whether or not this input is required | 1.3 |
+| **label** | `string` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
@@ -50,19 +53,6 @@ The inline action for the input. Typically displayed to the right of the input. 
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`
-
-
-## label
-
-Label for this input
-
-* **Type**: `string`, `TextBlock`, `RichTextBlock`
-* **Version** : 1.3
-* **Required**: No
-* **Allowed values**:
-  * `string`
-  * `TextBlock`
-  * `RichTextBlock`
 
 
 ## fallback
@@ -122,7 +112,17 @@ Controls the amount of spacing between this element and the preceding element.
 ## Rendering
 
 ### Labels
-The `label` property should be rendered above the input box. Clicking/tapping on the rendered label should put focus in the input box.
+The `label` property should be rendered above the input box if present. Clicking/tapping on the rendered label should put focus in the input box. 
+
+The `color`, `isSubtle`, `size`, and `weight` properties provided in the host config under `"inputs":"label":"requiredInputs"` for inputs with `"isRequired":true`, and under `"inputs":"label":"optionalInputs"` for inputs with `"isRequired":false` should be respected. The spacing between the label and the input should be set to the value of `inputSpacing` specified in those same locations in host config.
 
 ### Accessibility
 The `label` property should be set as the accessibility text when present. If the `label` property is not present, the `placeholder` property should be used instead if present.
+
+### Input Validation
+
+ If the input has `"isRequired":true` the label of the input should be marked with the `"inputs":"label":"requiredInputs":"suffix"` value from the host config, or with a * by default. If a required input does not have a label, the suffix should not be used and a warning should be returned.
+ 
+ The `regex`, `isRequired`, and `maxLength` properties should be validated for this input type. If possible, `maxLength` should be enforced by providing a control that does not allow the user to enter more than the maximum number of characters. For the other properties (and for `maxLength` if not enforced by the control), the validation should take place when the user activates a submit action on the card.
+
+ If the input does not pass validation, it should be outlined in the host's `attention` color, and the `errorMessage` should be displayed below the input in the host's `attention` color. If an error message is not present and a property validated by input validation is set, a warning should be returned.

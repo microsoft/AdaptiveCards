@@ -4,12 +4,15 @@ package io.adaptivecards.renderer.readonly;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +27,7 @@ import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
@@ -55,22 +59,42 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         return s_instance;
     }
 
-    static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
+    public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
         textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
-    static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
+    public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
     {
         textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
     }
 
-    void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
+    public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
     {
-        textView.setTypeface(TextRendererUtil.getTextFormat(hostConfig, type), m_textWeightMap.get(textWeight));
+        Typeface typeface = TextRendererUtil.getTextFormat(hostConfig, type, textWeight == TextWeight.Lighter);
+
+        // As of API 28, the create(Typeface, int, bool) method used below was added to the android API, the second parameter is the
+        // font weight, in prior versions we had to look up for an specific font family name
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+        {
+            Typeface weightedTypeface = Typeface.create(typeface, (int) hostConfig.GetFontWeight(type, textWeight), false);
+            textView.setTypeface(weightedTypeface);
+        }
+        else
+        {
+            if (textWeight == TextWeight.Bolder)
+            {
+                textView.setTypeface(typeface, Typeface.BOLD);
+            }
+            else
+            {
+                textView.setTypeface(typeface);
+            }
+        }
+
     }
 
-    static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
+    public static void setTextColor(TextView textView, ForegroundColor foregroundColor, HostConfig hostConfig, boolean isSubtle, ContainerStyle containerStyle)
     {
         textView.setTextColor(getColor(TextRendererUtil.getTextColor(foregroundColor, hostConfig, isSubtle, containerStyle)));
     }
@@ -146,17 +170,9 @@ public class TextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        TextBlock textBlock = null;
-        if (baseCardElement instanceof TextBlock)
-        {
-            textBlock = (TextBlock) baseCardElement;
-        }
-        else if ((textBlock = TextBlock.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-        }
+        TextBlock textBlock = Util.castTo(baseCardElement, TextBlock.class);
 
         if (textBlock.GetText().isEmpty())
         {
@@ -164,11 +180,9 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         }
 
         TextView textView = new TextView(context);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        View separator = setSpacingAndSeparator(context, viewGroup, textBlock.GetSpacing(), textBlock.GetSeparator(), hostConfig, true);
-
-        textView.setTag(new TagContent(textBlock, separator, viewGroup));
-        setVisibility(baseCardElement.GetIsVisible(), textView);
+        textView.setTag(new TagContent(textBlock));
 
         DateTimeParser parser = new DateTimeParser(textBlock.GetLanguage());
         String textWithFormattedDates = parser.GenerateString(textBlock.GetTextForDateParsing());
@@ -187,15 +201,6 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
-
-        if( textBlock.GetHeight() == HeightType.Stretch )
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())

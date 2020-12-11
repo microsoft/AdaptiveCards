@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.CheckBox;
 
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.ToggleInput;
+import io.adaptivecards.renderer.Util;
 
 import java.text.ParseException;
 import java.util.Map;
@@ -36,5 +38,29 @@ public class ToggleInputHandler extends BaseInputHandler
         ToggleInput toggleInput = (ToggleInput) m_baseInputElement;
         CheckBox checkBox = getCheckBox();
         checkBox.setChecked(value.equals(toggleInput.GetValueOn()));
+    }
+
+    @Override
+    public boolean isValid()
+    {
+        boolean isValid = true;
+
+        // Due to toggle not working as all other inputs where isRequired can be satisfied
+        // with checking on empty values, we check on the state of the checkBox
+        if (m_baseInputElement.GetIsRequired())
+        {
+            isValid = getCheckBox().isChecked();
+        }
+
+        showValidationErrors(isValid);
+
+        return isValid;
+    }
+
+    @Override
+    public void setFocusToView()
+    {
+        Util.forceFocus(m_view);
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }
