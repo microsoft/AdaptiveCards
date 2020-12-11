@@ -10,7 +10,7 @@
         <tags>adaptivecards;adaptive-cards</tags>
         <projectUrl>https://adaptivecards.io</projectUrl>
         <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
-        <license type="expression">MIT</license>
+        <license type="file">EULA-Windows.txt</license>
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     </metadata>
     <files>
@@ -37,6 +37,7 @@
         <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pri" target="runtimes\win10-arm64\native"/>
         <file src="..\ARM64\$Configuration$\AdaptiveCardRenderer\AdaptiveCards.Rendering.Uwp.pdb" target="runtimes\win10-arm64\native"/>
 
+        <file src="EULA-Windows.txt" target="\"/>
         <file src="AdaptiveCards.Rendering.Uwp.targets" target="build\uap10.0"/>
         <file src="AdaptiveCards.Rendering.Uwp.native.targets" target="build\native\AdaptiveCards.Rendering.Uwp.targets"/>
     </files>
