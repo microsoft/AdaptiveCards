@@ -11,7 +11,7 @@
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no time has been selected. | 1.0 |
 | **value** | `string` | No | The initial value for this field expressed in HH:MM. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

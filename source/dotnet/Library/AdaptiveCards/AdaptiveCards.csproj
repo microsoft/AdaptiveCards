@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
@@ -18,6 +18,10 @@
     <DocumentationFile>$(MSBuildProjectDirectory)/docs/AdaptiveCards.xml</DocumentationFile>
     <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output -->
   <!--<PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
