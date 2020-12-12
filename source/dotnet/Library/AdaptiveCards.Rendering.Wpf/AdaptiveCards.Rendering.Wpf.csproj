@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     <GenerateAssemblyInfo Condition="$(Tfs_PackageVersionNumber) != ''">false</GenerateAssemblyInfo>
@@ -19,6 +19,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.MarkedNet" Version="1.0.13" />
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
