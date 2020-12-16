@@ -509,7 +509,7 @@
 
 .acd-toolbox-header {
     height: 32px;
-    cursor: default;
+    cursor: pointer;
     flex: 0 0 auto;
 }
 
@@ -775,7 +775,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: default;
+    cursor: pointer;
     user-select: none;
     background-color: transparent;
 }
@@ -888,7 +888,7 @@ a.default-ac-anchor:visited:active {
     text-overflow: ellipsis;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     font-weight: 600;
