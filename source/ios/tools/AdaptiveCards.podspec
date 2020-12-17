@@ -2,11 +2,11 @@
 Pod::Spec.new do |spec|
   spec.name             = 'AdaptiveCards'
 
-  spec.version          = '1.0.3'
+  spec.version          = '2.4.1'
   
-  spec.license          = { :type => 'Adaptive Cards Binary EULA', :file => 'EULA-Non-Windows.txt' } 
+  spec.license          = { :type => 'Custom', :file => 'EULA-Non-Windows.txt' }
   
-  spec.homepage         = 'https://adaptivecards.io'
+  spec.homepage         = 'https://github.com/microsoft/AdaptiveCards'
   
   spec.authors          = { 'AdaptiveCards' => 'Joseph.Woo@microsoft.com' }
   
