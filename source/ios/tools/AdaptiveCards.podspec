@@ -4,7 +4,7 @@ Pod::Spec.new do |spec|
 
   spec.version          = '2.4.1'
   
-  spec.license          = { :type => 'Custom', :file => 'EULA-Non-Windows.txt' }
+  spec.license          = { :type => 'Custom', :file => 'LICENSE' }
   
   spec.homepage         = 'https://adaptivecards.io'
   
