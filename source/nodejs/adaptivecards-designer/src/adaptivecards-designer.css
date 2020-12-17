@@ -905,12 +905,12 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-pushButton:hover, .acd-dialog-button:hover {
-    background-color: #DDDDDD;
+    /* background-color: #DDDDDD; */
     border: 1px solid #BBBBBB;
 }
 
 .default-ac-pushButton:active, .acd-dialog-button:active {
-    background-color: #CCCCCC;
+    /* background-color: #CCCCCC; */
     border: 1px solid #BBBBBB;
 }
 
@@ -1060,12 +1060,13 @@ a.default-ac-anchor:visited:active {
 
 .acd-image-file-container {
     width: 394px;
-    height: 394px;
+    min-height: 394px;
     margin-top: 30px;
     display: flex;
     align-self: center;
     border: dashed 1px #cdcdcd;
     background-color: #ffffff;
+    overflow: auto;
 }
 
 .error-info {
@@ -1094,6 +1095,17 @@ a.default-ac-anchor:visited:active {
 	left:50%;
 }
 
+.acd-conversion-text {
+    position: absolute;
+    width: 258px;
+    height: 28px;
+    top: 56%;
+    left: 42%;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+}
+
 .acd-upload-control {
     display: flex;
     flex: 1 1 auto;
@@ -1110,6 +1122,7 @@ a.default-ac-anchor:visited:active {
 
 .acd-image-placeholder {
     max-width: 270px;
+    max-height: 280px;
 }
 
 .acd-file-type {
@@ -1140,12 +1153,12 @@ a.default-ac-anchor:visited:active {
     margin-top: 7px;
 }
 
-.acd-file-type:hover::before {
-    border-color: black;
+.acd-card-button:focus {
+    outline: #f6bba1 auto 1px;
 }
 
-.acd-file-type:focus {
-    outline: none;
+.acd-file-type:hover::before {
+    border-color: black;
 }
 
 .acd-image-file-note {
@@ -1237,10 +1250,6 @@ a.default-ac-anchor:visited:active {
 .acd-label-element .link {
     color: #0367c1;
     cursor: pointer;
-}
-
-a.poweredby-link {
-    text-decoration: none;
 }
 
 .acd-image-container {
