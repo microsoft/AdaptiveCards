@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
   
   spec.license          = { :type => 'Custom', :file => 'EULA-Non-Windows.txt' }
   
-  spec.homepage         = 'https://github.com/microsoft/AdaptiveCards'
+  spec.homepage         = 'https://adaptivecards.io'
   
   spec.authors          = { 'AdaptiveCards' => 'Joseph.Woo@microsoft.com' }
   
