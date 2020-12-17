@@ -33,10 +33,10 @@
 						{
 							"type": "Input.Text",
 							"id": "myName",
-							"label": "Your name (Last, First)",
+							"label": "Your name (Last First)",
 							"isRequired": true,
-							"regex": "^[A-Z](a-z)+ [A-Z](a-z)+( ([A-Z][a-z]+))*$",
-							"errorMessage": "Please enter your name in the specified format"
+							"regex": "^[A-Z][a-zA-Z]+\\s[A-Z][a-zA-Z]+$",
+							"errorMessage": "Please enter your name in the specified format; Both names should start with an upper case letter. Does not support special characters.)"
 						},
 						{
 							"type": "Input.Text",
