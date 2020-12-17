@@ -48,6 +48,7 @@
 		6B2242AF22334452000ACDA1 /* TextRun.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242AA22334451000ACDA1 /* TextRun.cpp */; };
 		6B2242B022334452000ACDA1 /* Inline.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B2242AB22334451000ACDA1 /* Inline.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B2242B422334492000ACDA1 /* Inline.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6B2242B322334492000ACDA1 /* Inline.cpp */; };
+		6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B268FE720CF19E200D99C1B /* RemoteResourceInformation.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6B27CD6324BD343C00C0F90F /* ACRInputTableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */; };
 		6B27CD6624BD52D600C0F90F /* ACRInputLabelView.h in Headers */ = {isa = PBXBuildFile; fileRef = 6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -119,6 +120,8 @@
 		6BCE4B252108FA7D00021A62 /* ACRMediaRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */; };
 		6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */; };
 		6BCE4B292108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BD025ED254784670009B019 /* ACOInputResults.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD025EB254784660009B019 /* ACOInputResults.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD025EC254784670009B019 /* ACOInputResults.mm */; };
 		6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BD90D9024C64EBE00B040FB /* ACRInputLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */; };
 		6BE8DFD2249C45C9005EFE66 /* ACRToggleInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */; };
@@ -399,6 +402,7 @@
 		6B2242AA22334451000ACDA1 /* TextRun.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextRun.cpp; path = ../../../../shared/cpp/ObjectModel/TextRun.cpp; sourceTree = "<group>"; };
 		6B2242AB22334451000ACDA1 /* Inline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Inline.h; path = ../../../../shared/cpp/ObjectModel/Inline.h; sourceTree = "<group>"; };
 		6B2242B322334492000ACDA1 /* Inline.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Inline.cpp; path = ../../../../shared/cpp/ObjectModel/Inline.cpp; sourceTree = "<group>"; };
+		6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRTargetBuilder.h; sourceTree = "<group>"; };
 		6B268FE620CF19E100D99C1B /* RemoteResourceInformation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteResourceInformation.h; path = ../../../../shared/cpp/ObjectModel/RemoteResourceInformation.h; sourceTree = "<group>"; };
 		6B27CD6224BD343C00C0F90F /* ACRInputTableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRInputTableView.xib; sourceTree = "<group>"; };
 		6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelView.h; sourceTree = "<group>"; };
@@ -467,6 +471,8 @@
 		6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRMediaRenderer.mm; sourceTree = "<group>"; };
 		6BCE4B262108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRLongPressGestureRecognizerFactory.mm; sourceTree = "<group>"; };
 		6BCE4B282108FBD800021A62 /* ACRLongPressGestureRecognizerFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRLongPressGestureRecognizerFactory.h; sourceTree = "<group>"; };
+		6BD025EB254784660009B019 /* ACOInputResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOInputResults.h; sourceTree = "<group>"; };
+		6BD025EC254784670009B019 /* ACOInputResults.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOInputResults.mm; sourceTree = "<group>"; };
 		6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRInputLabelViewPrivate.h; sourceTree = "<group>"; };
 		6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ACRInputLabelView.xib; sourceTree = "<group>"; };
 		6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRToggleInputView.xib; sourceTree = "<group>"; };
@@ -734,6 +740,25 @@
 			path = Images;
 			sourceTree = "<group>";
 		};
+		6B70ABA425797B720095D925 /* InputRenderers */ = {
+			isa = PBXGroup;
+			children = (
+				6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */,
+				6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */,
+				F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */,
+				F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */,
+				F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */,
+				F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */,
+				F43A94121F1EED6D0001920B /* ACRInputRenderer.h */,
+				F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */,
+				F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */,
+				F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */,
+				F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */,
+				F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */,
+			);
+			name = InputRenderers;
+			sourceTree = "<group>";
+		};
 		6BB2120621000024009EA1BA /* Media */ = {
 			isa = PBXGroup;
 			children = (
@@ -821,8 +846,6 @@
 				F4CAE7851F75B25C00545555 /* ACRRendererPrivate.h */,
 				F49683501F6CA24600DF0D3A /* ACRRenderResult.h */,
 				F49683511F6CA24600DF0D3A /* ACRRenderResult.mm */,
-				6B696CD823202B1A00E1D607 /* ACRTargetBuilderDirector.h */,
-				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
 				F4960C022051FE8000780566 /* ACRView.h */,
 				F4960C032051FE8100780566 /* ACRView.mm */,
 				F4D06948205B27E9003645E4 /* ACRViewController.h */,
@@ -981,6 +1004,9 @@
 		F42979321F30074900E89914 /* Inputs */ = {
 			isa = PBXGroup;
 			children = (
+				6B70ABA425797B720095D925 /* InputRenderers */,
+				6BD025EB254784660009B019 /* ACOInputResults.h */,
+				6BD025EC254784670009B019 /* ACOInputResults.mm */,
 				F495FC092022A18F0093D4DE /* ACRChoiceSetViewDataSource.h */,
 				F495FC082022A18F0093D4DE /* ACRChoiceSetViewDataSource.mm */,
 				F495FC0D2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.h */,
@@ -988,23 +1014,11 @@
 				F42979481F323BA700E89914 /* ACRDateTextField.h */,
 				F429794C1F32684900E89914 /* ACRDateTextField.mm */,
 				F42979361F31438900E89914 /* ACRIBaseInputHandler.h */,
-				6B6840F61F25EC2D008A933F /* ACRInputChoiceSetRenderer.h */,
-				6B6840F71F25EC2D008A933F /* ACRInputChoiceSetRenderer.mm */,
-				F4C1F5D31F2187900018CB78 /* ACRInputDateRenderer.h */,
-				F4C1F5D41F2187900018CB78 /* ACRInputDateRenderer.mm */,
 				6B27CD6424BD52D500C0F90F /* ACRInputLabelView.h */,
 				6B27CD6524BD52D600C0F90F /* ACRInputLabelView.mm */,
 				6BD90D8D24C37D5900B040FB /* ACRInputLabelViewPrivate.h */,
-				F4C1F5DB1F218F920018CB78 /* ACRInputNumberRenderer.h */,
-				F4C1F5DC1F218F920018CB78 /* ACRInputNumberRenderer.mm */,
-				F43A94121F1EED6D0001920B /* ACRInputRenderer.h */,
-				F43A94131F1EED6D0001920B /* ACRInputRenderer.mm */,
 				F431103D1F357487001AAE30 /* ACRInputTableView.h */,
 				F431103E1F357487001AAE30 /* ACRInputTableView.mm */,
-				F4C1F5D71F218ABC0018CB78 /* ACRInputTimeRenderer.h */,
-				F4C1F5D81F218ABC0018CB78 /* ACRInputTimeRenderer.mm */,
-				F43A94161F20502D0001920B /* ACRInputToggleRenderer.h */,
-				F43A94171F20502D0001920B /* ACRInputToggleRenderer.mm */,
 				F42979451F322C9000E89914 /* ACRNumericTextField.h */,
 				F42979441F322C9000E89914 /* ACRNumericTextField.mm */,
 				6BF4307D219129600068E432 /* ACRQuickReplyMultilineView.h */,
@@ -1028,6 +1042,9 @@
 		F42979331F30079D00E89914 /* Actions */ = {
 			isa = PBXGroup;
 			children = (
+				6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */,
+				6B696CD823202B1A00E1D607 /* ACRTargetBuilderDirector.h */,
+				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
 				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B22425B21E80647000ACDA1 /* ACOParseContext.h */,
 				6B22425C21E80647000ACDA1 /* ACOParseContext.mm */,
@@ -1323,6 +1340,8 @@
 				F423C0C61EE1FBAA00905679 /* ACFramework.h in Headers */,
 				6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */,
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
+				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
+				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1481,7 +1500,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\t\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_BCSYMBOLMAP_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos\"\n\nDEVICE_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework.dSYM\"\n\nSIMULATOR_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework.dSYM\"\n\n# Take build target\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\nOUTPUT_DIR=\"${PROJECT_DIR}/output\"\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n######################\n# Make an universal binary\n######################\nmkdir -p $OUTPUT_DIR\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\ncp -r \"${DEVICE_DSYM_PATH}\" \"$OUTPUT_DIR\"\n\nlipo -create -output \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${DEVICE_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${SIMULATOR_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" || exit 1\n\n######################\n# On Release, copy the result to release directory\n######################\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\nUUIDs=$(dwarfdump --uuid \"${DEVICE_DSYM_PATH}\" | cut -d ' ' -f2)\n\nfor file in `find \"${DEVICE_BCSYMBOLMAP_PATH}\" -name \"*.bcsymbolmap\" -type f`; do\n    fileName=$(basename \"$file\" \".bcsymbolmap\")\n    for UUID in $UUIDs; do\n     if [[ \"$UUID\" = \"$fileName\" ]]; then\n     dsymutil --symbol-map \"$fileName\" \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM\"\n     cp -R \"$file\" $OUTPUT_DIR\n     fi\n    done\ndone\n\ncd ${OUTPUT_DIR}\nzip -r AdaptiveCards.framework.zip \"${FRAMEWORK_NAME}.framework\" \"${FRAMEWORK_NAME}.framework.dSYM\"\n\ncp AdaptiveCards.framework.zip ../\ncd ..\nrm -rf ${OUTPUT_DIR}\n";
+			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\t\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_BCSYMBOLMAP_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos\"\n\nDEVICE_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework.dSYM\"\n\nSIMULATOR_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework.dSYM\"\n\n# Take build target\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator EXCLUDED_ARCHS=\"arm64\" 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\nOUTPUT_DIR=\"${PROJECT_DIR}/output\"\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n######################\n# Make an universal binary\n######################\nmkdir -p $OUTPUT_DIR\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\ncp -r \"${DEVICE_DSYM_PATH}\" \"$OUTPUT_DIR\"\n\nlipo -create -output \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${DEVICE_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${SIMULATOR_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" || exit 1\n\n######################\n# On Release, copy the result to release directory\n######################\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\nUUIDs=$(dwarfdump --uuid \"${DEVICE_DSYM_PATH}\" | cut -d ' ' -f2)\n\nfor file in `find \"${DEVICE_BCSYMBOLMAP_PATH}\" -name \"*.bcsymbolmap\" -type f`; do\n    fileName=$(basename \"$file\" \".bcsymbolmap\")\n    for UUID in $UUIDs; do\n     if [[ \"$UUID\" = \"$fileName\" ]]; then\n     dsymutil --symbol-map \"$fileName\" \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM\"\n     cp -R \"$file\" $OUTPUT_DIR\n     fi\n    done\ndone\n\ncd ${OUTPUT_DIR}\ncp ../../../../EULA-Non-Windows.txt .\nzip -r AdaptiveCards.framework.zip \"${FRAMEWORK_NAME}.framework\" \"${FRAMEWORK_NAME}.framework.dSYM\" EULA-Non-Windows.txt \n\ncp AdaptiveCards.framework.zip ../\ncd ..\nrm -rf ${OUTPUT_DIR}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1548,6 +1567,7 @@
 				6B94F2DE24C7997D00E2B310 /* ACRTextInputHandler.mm in Sources */,
 				F448730B1EE2261F00FCAFAE /* Fact.cpp in Sources */,
 				6BCE4B272108FA9300021A62 /* ACRLongPressGestureRecognizerFactory.mm in Sources */,
+				6BD025EE254784670009B019 /* ACOInputResults.mm in Sources */,
 				F495FC0E2022AC920093D4DE /* ACRChoiceSetViewDataSourceCompactStyle.mm in Sources */,
 				F4F44B7D20478C5C00A2F24C /* DateTimePreparser.cpp in Sources */,
 				F4F44BA0204CED2400A2F24C /* ACRCustomRenderer.mm in Sources */,

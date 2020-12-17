@@ -17,6 +17,7 @@ import java.util.Set;
 
 import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
+import io.adaptivecards.objectmodel.AssociatedInputs;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
@@ -264,7 +265,6 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             if (m_invisibleCard.getVisibility() == View.VISIBLE)
             {
                 mainCardView.setPadding(padding, padding, padding, 0);
-                m_invisibleCard.requestFocus();
             }
             else
             {
@@ -317,23 +317,33 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
         }
 
         @Override
-        public void onClick(View v)
+        public void onClick(View view)
         {
+            m_renderedAdaptiveCard.clearValidatedInputs();
+
             if (m_isInlineShowCardAction)
             {
-                handleInlineShowCardAction(v);
+                handleInlineShowCardAction(view);
             }
             else if (m_action.GetElementType() == ActionType.ToggleVisibility)
             {
-                handleToggleVisibilityAction(v);
+                handleToggleVisibilityAction(view);
             }
             else
             {
-                if (m_action.GetElementType() == ActionType.Submit)
+                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
-                    SubmitAction submitAction = Util.castTo(m_action, SubmitAction.class);
-
-                    if (!m_renderedAdaptiveCard.areInputsValid(submitAction))
+                    // Don't gather inputs or perform validation when AssociatedInputs is None
+                    boolean gatherInputs = true;
+                    try
+                    {
+                        gatherInputs = Util.castTo(m_action, SubmitAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                    }
+                    catch (ClassCastException e)
+                    {
+                        // Custom action with Submit type will continue to gather inputs
+                    }
+                    if (gatherInputs && !m_renderedAdaptiveCard.areInputsValid(Util.getViewId(view)))
                     {
                         return;
                     }

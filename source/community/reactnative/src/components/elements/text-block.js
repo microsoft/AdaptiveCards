@@ -31,6 +31,7 @@ export class TextBlock extends React.Component {
 			<ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
 				<Label
 					text={payload.text}
+					altText={payload.altText}
 					size={payload.size}
 					weight={payload.weight}
 					color={payload.color}

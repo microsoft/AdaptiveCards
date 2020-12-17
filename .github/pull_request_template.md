@@ -12,6 +12,9 @@ This information lives with the code and will help future readers (***including 
 
 At the very least please describe the issue you are addressing, and what your fix entails. 
 
+## Sample Card
+If appropriate, please include a link to a card in one of the samples directories that can be used to validate this change. This can be an existing card or a card added with this PR.
+
 ## How Verified
 How you verified the fix, including one or all of the following: 
 1. New unit tests that were added if any. If none were added please add a quick line explaining why not.
