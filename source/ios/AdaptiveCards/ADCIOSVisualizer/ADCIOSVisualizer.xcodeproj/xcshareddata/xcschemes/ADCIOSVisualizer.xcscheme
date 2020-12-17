@@ -47,21 +47,6 @@
                ReferencedContainer = "container:ADCIOSVisualizer.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "F423C0981EE1FB6100905679"
-               BuildableName = "ADCIOSVisualizerUITests.xctest"
-               BlueprintName = "ADCIOSVisualizerUITests"
-               ReferencedContainer = "container:ADCIOSVisualizer.xcodeproj">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "ADCIOSVisualizerUITests">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

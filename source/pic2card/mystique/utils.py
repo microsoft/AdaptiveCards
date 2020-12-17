@@ -1,6 +1,9 @@
 import time
 import io
 import re
+import json
+import http.client
+import urllib
 from typing import Optional, Dict
 import glob
 import xml.etree.ElementTree as Et
@@ -174,3 +177,23 @@ def text_size_processing(text: str, height: int):
     if (match or text[0].isupper()):
         height -= 2
     return height
+
+
+def send_json_payload(path: str, body: Dict, host_port: str,
+                      method: str = "POST",
+                      url_params: Optional[Dict] = None) -> Dict:
+    """
+    Send Json payload via http post method.
+
+    @param path: API path, eg; /predict_json
+    @param body: Request payload
+    @param host_port: Host and port of the api server eg; localhost:5050
+    @param method: Http request method.
+    """
+    headers = {"Content-Type": "application/json"}
+    if url_params:
+        path += "?" + urllib.parse.urlencode(url_params)
+    conn = http.client.HTTPConnection(host_port)
+    conn.request(method, path, json.dumps(body), headers)
+    response = json.loads(conn.getresponse().read())
+    return response

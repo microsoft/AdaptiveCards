@@ -6,6 +6,7 @@
 //
 
 #import "ACRIContentHoldingView.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
@@ -17,7 +18,7 @@
 @property UILayoutConstraintAxis axis;
 @property UIStackViewDistribution distribution;
 @property UIStackViewAlignment alignment;
-
+@property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
 @property BOOL isActionSet;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;

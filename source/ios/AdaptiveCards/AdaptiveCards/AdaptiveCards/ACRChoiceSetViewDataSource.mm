@@ -135,6 +135,7 @@ const CGFloat padding = 16.0f;
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
+    cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (!_accessibilityString) {
         _accessibilityString = tableView.accessibilityLabel;

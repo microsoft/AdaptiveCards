@@ -64,6 +64,8 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
                                ACOBaseActionElement *action, NSObject **target);
 
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
+
 void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
 
 void TextRunToRichTextElementProperties(const std::shared_ptr<TextRun> &textRun, RichTextElementProperties &textProp);

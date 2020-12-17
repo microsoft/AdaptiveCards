@@ -223,11 +223,11 @@
         } else {
             [button setTitle:title forState:UIControlStateNormal];
         }
-        ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
-        [acoAction setElem:action];
+
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:action];
 
         NSObject *target;
-        if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], acoAction, button, &target)) {
+        if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], acoSelectAction, button, &target)) {
             if (action->GetElementType() == ActionType::Submit) {
                 quickReplyView.target = (ACRAggregateTarget *)target;
             }

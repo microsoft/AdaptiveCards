@@ -239,6 +239,17 @@ export class Template {
                     // of that single expression
                     return parsedExpression.children[0];
                 }
+                else if (parsedExpression.children.length === 2) {
+                    let firstChild = parsedExpression.children[0];
+
+                    if (firstChild instanceof AEL.Constant && firstChild.value === "" && !(parsedExpression.children[1] instanceof AEL.Constant)) {
+                        // The concat contains 2 children, and the first one is an empty string constant and the second isn't a constant.
+                        // From version 4.10.3, AEL always inserts an empty string constant in all concat expression. Thus the original
+                        // string was a single expression in this case as well. When evaluated, we want it to produce the type
+                        // of that single expression.
+                        return parsedExpression.children[1];
+                    }
+                }
 
                 // Otherwise, we want the expression to produce a string
                 return parsedExpression;
