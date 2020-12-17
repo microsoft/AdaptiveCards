@@ -200,7 +200,7 @@ export class OpenImageDialog extends Dialog {
         uploadButton.setAttribute("button-name", "Convert to Adaptive Card");
         uploadButton.setAttribute("value", "Convert to Adaptive Card");
         uploadButton.onclick = () => {
-            uploadButton.setAttribute("aria-pressed", "true");
+            uploadButton.setAttribute("aria-label", "Conversion to Adaptive card button pressed. Adaptive Card conversion in Progress");
             let spinnerElement = this.loadSpinner();
             this.setContent(spinnerElement);
             this.fetchManager
@@ -226,7 +226,11 @@ export class OpenImageDialog extends Dialog {
         spinnerHostElement.className = "acd-spinner-host";
         let spinnerElement = document.createElement("div");
         spinnerElement.className = "acd-spinner acd-image-spinner";
+        let spinnerText = document.createElement("div");
+        spinnerText.className = "acd-conversion-text";
+        spinnerText.innerText = "Adaptive Card conversion in progress";
         spinnerHostElement.appendChild(spinnerElement);
+        spinnerHostElement.appendChild(spinnerText);
         return spinnerHostElement;
     }
 
@@ -359,6 +363,12 @@ export class ImageItem {
         };
         imagePlaceholder.onfocus = () => {
             imagePlaceholder.setAttribute("alt", sampleImageName);
+        }
+        imagePlaceholder.onkeydown = (event) => {
+            if (event.keyCode === 13) {
+                this.onClick((event.target as HTMLImageElement).src, sampleImageName);
+                imagePlaceholder.setAttribute("alt", `${sampleImageName} selected`);
+            }
         }
         return imagePlaceholder;
     }
