@@ -34,7 +34,7 @@ To load the designer component you have 2 options:
 <!-- REQUIRED: adaptivecards library for designer to work -->
 <script src="https://unpkg.com/adaptivecards@latest/dist/adaptivecards.min.js"></script>
 <!-- REQUIRED: adaptive-expressions is required by adaptivecards-templating library to enable data binding support in designer -->
-<script src="https://unpkg.com/adaptive-expressions@rc/lib/browser.js"></script>
+<script src="https://unpkg.com/adaptive-expressions@4/lib/browser.js"></script>
 <!-- REQUIRED: adaptivecards-templating library to enable data binding support in designer -->
 <script src="https://unpkg.com/adaptivecards-templating@latest/dist/adaptivecards-templating.min.js"></script>
 
