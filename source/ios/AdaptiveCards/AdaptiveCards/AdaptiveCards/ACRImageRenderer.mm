@@ -61,6 +61,7 @@
 
     // try get an UIImageView
     view = [rootView getImageView:key];
+    CGSize intrinsicContentSize = CGSizeZero;
     if (!view && img) {
         // if an UIImage is available, but UIImageView is missing, create one
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
@@ -70,6 +71,7 @@
             [acrImageView setNeedsLayout];
         }
         view = acrImageView;
+        intrinsicContentSize = img.size;
     }
 
     if (view && img) {
@@ -79,7 +81,6 @@
     }
 
     ImageSize size = ImageSize::None;
-    CGSize intrinsicContentSize = CGSizeZero;
     if (!hasExplicitMeasurements) {
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
