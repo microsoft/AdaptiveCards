@@ -27,6 +27,9 @@ void configSeparatorVisibility(ACRSeparator *view,
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig);
 
+void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
+                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview);
+
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
                            UIView *containerView, ACRView *rootView);
 
@@ -55,11 +58,13 @@ void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target);
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action, NSObject **target);
+                               ACOBaseActionElement *action, NSObject **target);
+
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
 
 void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
 
@@ -82,3 +87,5 @@ void configVerticalAlignmentConstraintsForBackgroundImageView(const BackgroundIm
 void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool isComplimentaryAxisHorizontal);
 
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
+
+NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);

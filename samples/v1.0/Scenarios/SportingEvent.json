@@ -24,7 +24,8 @@
 									"type": "TextBlock",
 									"text": "SHADES",
 									"horizontalAlignment": "center",
-									"weight": "bolder"
+									"weight": "bolder",
+									"wrap": true
 								}
 							]
 						},
@@ -37,19 +38,22 @@
 								{
 									"type": "TextBlock",
 									"text": "Sat, Aug 31, 2019",
-									"horizontalAlignment": "center"
+									"horizontalAlignment": "center",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "Final",
 									"spacing": "none",
-									"horizontalAlignment": "center"
+									"horizontalAlignment": "center",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
 									"text": "45 - 7",
 									"size": "extraLarge",
-									"horizontalAlignment": "center"
+									"horizontalAlignment": "center",
+									"wrap": true
 								}
 							]
 						},
@@ -70,7 +74,8 @@
 									"type": "TextBlock",
 									"text": "SKINS",
 									"horizontalAlignment": "center",
-									"weight": "bolder"
+									"weight": "bolder",
+									"wrap": true
 								}
 							]
 						}

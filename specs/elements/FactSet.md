@@ -7,7 +7,7 @@
 | **type** | `"FactSet"` | Yes | Must be `"FactSet"`. | 1.0 |
 | **facts** | `Fact[]` | Yes | The array of `Fact`'s. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

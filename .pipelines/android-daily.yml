@@ -1,4 +1,4 @@
-name: $(Year:yyyy).$(Month).$(DayOfMonth)-$(rev:r)
+name: $(Year:yy).$(Month).$(DayOfMonth).$(rev:r)
 
 pr: none
 trigger: none
@@ -11,47 +11,49 @@ schedules:
    - main
 
 pool:
-  name: Hosted Ubuntu 1604
+  name: Azure Pipelines
+  vmImage: vs2017-win2016
   demands: java
 
-#Your build pipeline references an undefined variable named ‘gradleprop.secureFilePath’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+parameters:
+- name: prerelease_tag
+  displayName: Prerelease Tag (leave empty for final releases)
+  type: string
+  default: 'nightly'
+
+variables:
+  # Capture build parameter to use as environment variable
+  prerelease_tag: ${{ parameters.prerelease_tag }}
 
 steps:
-- task: DownloadSecureFile@1
-  name: gradleproperties
-  displayName: 'Download secure file'
-  inputs:
-    secureFile: gradle.properties.4
+# Automated publish to Sonatype is not yet configured, so skip Nexus credentials
+# - task: DownloadSecureFile@1
+#   name: gradleproperties
+#   displayName: 'Download secure file'
+#   inputs:
+#     secureFile: gradle.properties.4
+# - bash: |
+#    cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
+#   displayName: 'Bash Script'
 
-- bash: |
-   # Write your commands here
-   
-   # Use the environment variables input below to pass secret variables to this script
-   cp -f $(gradleproperties.secureFilePath)  ./source/android/adaptivecards/gradle.properties
-   
-   
-  displayName: 'Bash Script'
-
-- bash: |
-   #!/usr/bin/env bash
-   
-   # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed. Please remove.
-   
-   unset ANDROID_NDK_HOME
-   sudo ${ANDROID_HOME}/tools/bin/sdkmanager --verbose --install "ndk;21.0.6113669"
-  displayName: 'Get NDK (won''t be needed w/ Android Gradle Plugin 4.1+)'
+  # TODO: Remove when Android Gradle Plugin 4.1 is stable.
+  # Starting from AGP 4.1+, the required NDK version will be retrieved automatically, so this script will not be needed.
+# - script: |
+#    setx ANDROID_NDK_HOME ""
+#    "%ANDROID_HOME%\tools\bin\sdkmanager.bat" --verbose "ndk;21.0.6113669"
+#   displayName: 'Get NDK (TODO: Remove this step)'
 
 - task: Gradle@2
   displayName: 'gradlew adaptivecards:build'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:build'
 
 - task: Gradle@2
   displayName: 'gradlew publish'
   inputs:
-    gradleWrapperFile: source/android/gradlew
+    gradleWrapperFile: source/android/gradlew.bat
     workingDirectory: source/android
     tasks: 'adaptivecards:publish'
     publishJUnitResults: false

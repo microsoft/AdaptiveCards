@@ -12,24 +12,27 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Redmond, WA"
+							"text": "Redmond, WA",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "Malt & Vine",
 							"weight": "bolder",
 							"size": "extraLarge",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "4.5 ★★★★★ (176) · $$",
+							"text": "4.5 stars (176 reviews) · mid-priced",
 							"isSubtle": true,
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "**Blaire S. ** said \"Great concept and a wide selection of beers both on tap and bottled! Smaller wine selection than I wanted, but the variety of beers certainly made up for that. Although I didn't order anything, my boyfriend got a beer and he loved it. Their prices are fair too. \n\nThe concept is really awesome. It's a bar/store that you can bring outside food into. The place was pretty packed tonight. I wish we had stayed for more than one drink. I would have loved to sample everything!\"",
+							"text": "**Blaire S.** said \"Great concept and a wide selection of beers both on tap and bottled! Smaller wine selection than I wanted, but the variety of beers certainly made up for that. Although I didn't order anything, my boyfriend got a beer and he loved it. Their prices are fair too. \n\nThe concept is really awesome. It's a bar/store that you can bring outside food into. The place was pretty packed tonight. I wish we had stayed for more than one drink. I would have loved to sample everything!\"",
 							"size": "small",
 							"wrap": true,
 							"maxLines": 3

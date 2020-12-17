@@ -7,21 +7,28 @@ using System.Collections.Generic;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// JSON converter that will ignore enum values that can't be parsed correctly.
+    /// </summary>
     public class IgnoreNullEnumConverter<TEnum> : StringEnumConverter, ILogWarnings
     {
+        /// <inheritdoc />
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         // TODO: temporary warning code for invalid value. Remove when common set of error codes created and integrated.
         private enum WarningStatusCode { UnknownElementType = 0 };
 
+        /// <inheritdoc />
         public IgnoreNullEnumConverter()
         {
         }
 
+        /// <inheritdoc />
         public IgnoreNullEnumConverter(bool camelCase) : base(camelCase)
         {
         }
 
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             try
@@ -38,6 +45,7 @@ namespace AdaptiveCards
             }
         }
 
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             base.WriteJson(writer, value, serializer);

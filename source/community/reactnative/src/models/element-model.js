@@ -16,6 +16,7 @@ export class TextBlockModel extends BaseModel {
         this.weight = payload.weight;
         this.wrap = payload.wrap || false;
         this.fontStyle = payload.fontStyle;
+        this.altText = payload.altText;
     }
 }
 

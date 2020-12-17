@@ -7,7 +7,7 @@ export class BaseActionModel extends BaseModel{
         super(payload, parent);
         this.title = payload.title;
         this.iconUrl = payload.iconUrl;
-        this.sentiment = payload.sentiment;
+        this.sentiment = payload.style;
         this.ignoreInputValidation = payload.ignoreInputValidation;
     }
 }

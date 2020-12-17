@@ -56,8 +56,6 @@ public class ActionSetRenderer extends BaseCardElementRenderer
         rootLayout.setTag(new TagContent(actionSet));
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
-        rootLayout.setFocusable(true);
-        rootLayout.setFocusableInTouchMode(true);
 
         // This layout will contain the rendered actions
         LinearLayout actionsLayout = new LinearLayout(context);

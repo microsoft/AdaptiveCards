@@ -20,6 +20,7 @@ namespace AdaptiveSharedNamespace
         AllowCustomStyle,
         AllowInlinePlayback,
         AltText,
+        AssociatedInputs,
         Attention,
         BackgroundColor,
         BackgroundImage,
@@ -75,7 +76,6 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
-        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,
@@ -317,6 +317,13 @@ namespace AdaptiveSharedNamespace
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
 
+    enum class AssociatedInputs
+    {
+        Auto = 0,
+        None
+    };
+    DECLARE_ADAPTIVECARD_ENUM(AssociatedInputs);
+
     enum class ChoiceSetStyle
     {
         Compact = 0,
@@ -400,6 +407,7 @@ namespace AdaptiveSharedNamespace
         InvalidValue,
         CustomWarning,
         EmptyLabelInRequiredInput,
+        RequiredPropertyMissing,
     };
     // No mapping to string needed
 

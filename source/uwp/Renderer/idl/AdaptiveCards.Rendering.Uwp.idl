@@ -318,7 +318,8 @@ AdaptiveNamespaceStart
         PerformingFallback,
         CustomWarning,
         EmptyLabelInRequiredInput,
-        MissingValidationErrorMessage
+        MissingValidationErrorMessage,
+        RequiredPropertyMissing
     } WarningStatusCode;
 
     [version(NTDDI_WIN10_RS1)]
@@ -357,7 +358,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum IsVisible {
         IsVisibleToggle = 0,
@@ -367,7 +369,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1)]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum FallbackType {
         None = 0,
@@ -377,7 +380,8 @@ AdaptiveNamespaceStart
 
     [version(NTDDI_WIN10_RS1), flags]
 #ifdef ADAPTIVE_CARDS_WINDOWS
-    [contract(InternalContract, 1)][internal]
+    [contract(InternalContract, 1)]
+    [internal]
 #endif
     typedef[v1_enum] enum BleedDirection {
         None = 0x0000,
@@ -387,6 +391,16 @@ AdaptiveNamespaceStart
         Down = 0x1000,
         All = Left | Right | Up | Down
     } BleedDirection;
+
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)]
+    [internal]
+#endif
+    typedef[v1_enum] enum AssociatedInputs {
+        Auto = 0,
+        None,
+    } AssociatedInputs;
 
     declare
     {
@@ -732,6 +746,7 @@ AdaptiveNamespaceStart
 
         String Value;
         Boolean IsMultiSelect;
+        String Placeholder;
         Boolean Wrap;
         ChoiceSetStyle ChoiceSetStyle;
         Windows.Foundation.Collections.IVector<AdaptiveChoiceInput> Choices { get; };
@@ -1517,7 +1532,7 @@ AdaptiveNamespaceStart
         AdaptiveSubmitAction();
 
         Windows.Data.Json.JsonValue DataJson;
-        Boolean IgnoreInputValidation;
+        AssociatedInputs AssociatedInputs;
     };
 
     [

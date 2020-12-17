@@ -790,7 +790,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this._inplaceEditor = null;
 
-            this._inplaceEditorOverlay.remove();
+            this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
         }
     }
 
@@ -996,6 +996,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    tryAdd(peer: DesignerPeer): boolean {
+        return false;
+    }
+
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
@@ -1077,7 +1081,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
-        this.renderedElement.remove();
+        this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
             for (var i = 0; i < this.getChildCount(); i++) {
@@ -1314,16 +1318,23 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
+    static readonly associatedInputsProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_3,
+        "associatedInputs",
+        "Associated inputs",
+        [
+            { targetVersion: Adaptive.Versions.v1_3, name: "Automatic", value: "auto" },
+            { targetVersion: Adaptive.Versions.v1_3, name: "None", value: "none" }
+        ]);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
         propertySheet.add(
             defaultCategory,
-            SubmitActionPeer.ignoreInputValidationProperty,
-            SubmitActionPeer.dataProperty);
+            SubmitActionPeer.dataProperty,
+            SubmitActionPeer.associatedInputsProperty);
     }
 }
 
@@ -1485,6 +1496,26 @@ export class CardElementPeer extends DesignerPeer {
 
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    tryAdd(peer: DesignerPeer): boolean {
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+            if (peer.cardElement.parent) {
+                if (!peer.remove(true, false)) {
+                    return false;
+                }
+
+                peer.parent.removeChild(peer);
+            }
+
+            this.cardElement.addItem(peer.cardElement);
+            this.insertChild(peer, peer.cardElement.index);
+            this.changed(false);
+
+            return true;
         }
 
         return false;
@@ -2434,15 +2465,15 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.className = "acd-textBlock-inplace-editor";
         this._renderedElement.value = this.cardElement.text;
         this._renderedElement.onkeydown = (e) => {
-            switch (e.keyCode) {
-                case Controls.KEY_ESCAPE:
+            switch (e.key) {
+                case Controls.Constants.keys.escape:
                    this.close(false);
 
                    e.preventDefault();
                    e.cancelBubble = true;
 
                    break;
-                case Controls.KEY_ENTER:
+                case Controls.Constants.keys.enter:
                     this.close(true);
 
                     e.preventDefault();
@@ -2533,6 +2564,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         if (!this.cardElement.text || this.cardElement.text == "") {
             this.cardElement.text = "New TextBlock";
         }
+
+        this.cardElement.wrap = true;
     }
 }
 

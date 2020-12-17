@@ -11,7 +11,7 @@
     <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
@@ -25,6 +25,7 @@
     <Antlr4 Remove="tool\**" />
     <Compile Remove="tool\**" />
     <EmbeddedResource Remove="tool\**" />
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
     <None Remove="tool\**" />
   </ItemGroup>
 
@@ -48,7 +49,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0-beta3.final">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

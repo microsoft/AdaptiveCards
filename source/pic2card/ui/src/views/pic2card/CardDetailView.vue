@@ -162,7 +162,7 @@ export default {
       AdaptiveCardApi.getAdaptiveCard(base64_image)
         .then(response => {
           // console.log(response.data)
-          let card_json = response.data["card_json"];
+          let card_json = response.data["card_json"]["card"];
           // this.cardJson = JSON.stringify(card_json, null, 2)
           this.cardJson = card_json;
           this.imageBoundary = response.data.image || null;

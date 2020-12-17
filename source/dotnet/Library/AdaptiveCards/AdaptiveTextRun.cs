@@ -7,109 +7,102 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Represents a TextRun.
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextRun.TypeName)]
 #endif
     public class AdaptiveTextRun : AdaptiveInline, IAdaptiveTextElement
     {
+        /// <inheritdoc />
         public const string TypeName = "TextRun";
 
+        /// <inheritdoc />
         public override string Type { get; set; } = TypeName;
 
+        /// <summary>
+        /// Initializes an empty <see cref="AdaptiveTextRun"/>.
+        /// </summary>
         public AdaptiveTextRun()
         {
-
         }
 
+        /// <summary>
+        /// Initializes an <see cref="AdaptiveTextRun"/> with the given text.
+        /// </summary>
+        /// <param name="text">The initial text for this TextRun.</param>
         public AdaptiveTextRun(string text)
         {
             Text = text;
         }
 
-        /// <summary>
-        ///     The size of the text
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextSize), "normal")]
         public AdaptiveTextSize Size { get; set; }
 
-        /// <summary>
-        ///     The weight of the text
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextWeight), "normal")]
         public AdaptiveTextWeight Weight { get; set; }
 
-        /// <summary>
-        ///     The color of the text
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextColor), "default")]
         public AdaptiveTextColor Color { get; set; }
 
-        /// <summary>
-        ///     Make the text less prominent
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool IsSubtle { get; set; }
 
-        /// <summary>
-        ///     Make the text italic
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Italic { get; set; }
 
-        /// <summary>
-        ///     Make the struck through
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Strikethrough { get; set; }
 
-        /// <summary>
-        ///     Make the text highlighted
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Highlight { get; set; }
 
-        /// <summary>
-        ///     The text to display
-        /// </summary>
+        /// <inheritdoc />
         [JsonRequired]
 #if !NETSTANDARD1_3
         [XmlText]
 #endif
         public string Text { get; set; } = " ";
 
-        /// <summary>
-        ///     The font style of the text
-        /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        /// <inheritdoc />
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -127,9 +120,9 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
-        ///     Make the text be underlined
+        /// Display this text underlined.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

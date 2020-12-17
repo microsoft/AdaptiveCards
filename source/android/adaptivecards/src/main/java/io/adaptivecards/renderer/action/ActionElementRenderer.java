@@ -2,14 +2,10 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.action;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -19,14 +15,10 @@ import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
-
-import java.util.HashMap;
 
 import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ActionAlignment;
-import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
@@ -34,20 +26,11 @@ import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
-import io.adaptivecards.objectmodel.IsVisible;
-import io.adaptivecards.objectmodel.ShowCardAction;
 import io.adaptivecards.objectmodel.SubmitAction;
-import io.adaptivecards.objectmodel.ToggleInput;
-import io.adaptivecards.objectmodel.ToggleVisibilityAction;
-import io.adaptivecards.objectmodel.ToggleVisibilityTarget;
-import io.adaptivecards.objectmodel.ToggleVisibilityTargetVector;
-import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
-import io.adaptivecards.renderer.IBaseActionElementRenderer;
 import io.adaptivecards.renderer.InnerImageLoaderAsync;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
@@ -87,14 +70,12 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         public Bitmap styleBitmap(Bitmap bitmap)
         {
             Button button = (Button) super.m_view;
+            float imageHeight;
 
-            Drawable originalDrawableIcon = new BitmapDrawable(null, bitmap);
-
-            double imageHeight;
             if (m_iconPlacement == IconPlacement.AboveTitle)
             {
                 // If icon is above title, iconSize should be used as the height of the image
-                imageHeight = m_iconSize;
+                imageHeight = Util.dpToPixels(m_context, m_iconSize);
             }
             else
             {
@@ -102,10 +83,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
                 imageHeight = button.getTextSize();
             }
 
-            double scaleRatio = imageHeight / originalDrawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * originalDrawableIcon.getIntrinsicWidth();
-
-            return Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, (int)imageWidth), Util.dpToPixels(m_context, (int)imageHeight), false);
+            return Util.scaleBitmapToHeight(imageHeight, bitmap);
         }
 
         @Override
@@ -145,8 +123,6 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             {
                 if(theme.resolveAttribute(R.attr.adaptiveActionPositive, buttonStyle, true))
                 {
-
-
                     return createButtonWithTheme(context, buttonStyle.data);
                 }
                 else
@@ -192,7 +168,8 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
         {
-            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
+            long actionId = Util.getViewId(button);
+            renderedCard.setCardForSubmitAction(actionId, renderArgs.getContainerCardId());
         }
 
         button.setText(baseActionElement.GetTitle());

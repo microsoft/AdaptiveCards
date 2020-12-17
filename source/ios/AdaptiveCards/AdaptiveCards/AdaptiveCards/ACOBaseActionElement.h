@@ -37,6 +37,8 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
 
++ (NSNumber *)getKey:(ACRActionType)actionType;
+
 @end
 
 @protocol ACOIBaseActionElementParser

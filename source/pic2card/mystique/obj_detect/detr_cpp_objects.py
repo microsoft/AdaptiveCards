@@ -66,7 +66,7 @@ class DetrCppOD(AbstractObjectDetection):
             "detection_classes": scores.argmax(-1),
             "detection_scores": scores.max(-1),
             "detection_boxes": boxes
-        }, None
+        }
 
     def get_bboxes(self):
         pass

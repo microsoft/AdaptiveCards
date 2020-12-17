@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRSeparator.h"
 #import "ACRView.h"
@@ -47,6 +46,7 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+
     [viewGroup addArrangedSubview:columnSetView];
 
     configBleed(rootView, elem, columnSetView, acoConfig);
@@ -105,6 +105,9 @@
             }
 
             curView = (ACRColumnView *)[columnRenderer render:columnSetView rootView:rootView inputs:inputs baseCardElement:acoColumn hostConfig:acoConfig];
+            if (separator && !curView) {
+                [columnSetView removeViewFromContentStackView:separator];
+            }
         } @catch (ACOFallbackException *e) {
 
             handleFallbackException(e, columnSetView, rootView, inputs, column, acoConfig);
@@ -188,12 +191,8 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
-    // instantiate and add long press gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:columnSetView
-                                                                  actionElement:selectAction
-                                                                     hostConfig:acoConfig];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+    [columnSetView configureForSelectAction:acoSelectAction rootView:rootView];
     configVisibility(columnSetView, elem);
 
     [columnSetView hideIfSubviewsAreAllHidden];
