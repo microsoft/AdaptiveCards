@@ -120,6 +120,7 @@ export abstract class Dialog {
             titleElement.style.flex = "1 1 auto";
             titleElement.setAttribute("role", "heading");
             titleElement.setAttribute("aria-level","1");
+            titleElement.tabIndex = -1;
 
             let xButton = document.createElement("button");
             xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";

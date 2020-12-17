@@ -652,6 +652,12 @@ export class CardDesigner extends Designer.DesignContext {
                         }
                     } else if (dialog.selectedSample && dialog.selectedSample.cardId === "PIC_2_CARD") {
                         this.launchImagePopup();
+                    } else {
+                        const newCardButton = this._newCardButton.renderedElement;
+
+                        if (newCardButton) {
+                            newCardButton.focus();
+                        }
                     }
                 };
                 dialog.open();
@@ -752,16 +758,24 @@ export class CardDesigner extends Designer.DesignContext {
         dialog.height = "80%";
         dialog.open();
         dialog.onClose = (d) => {
-            const { card, data } = dialog.predictedCardJSON;
-            const addToUndoStack = true;
-            const newCardButton = this._newCardButton.renderedElement;
+            if(dialog.predictedCardJSON) {
+                const { card, data } = dialog.predictedCardJSON;
+                const addToUndoStack = true;
+                const newCardButton = this._newCardButton.renderedElement;
 
-            if (newCardButton) {
-                newCardButton.focus();
+                if (newCardButton) {
+                    newCardButton.focus();
+                }
+
+                this.setCardPayload(card, addToUndoStack);
+                this.setSampleDataPayload(data);
+            } else {
+                const newCardButton = this._newCardButton.renderedElement;
+
+                if (newCardButton) {
+                    newCardButton.focus();
+                }
             }
-
-            this.setCardPayload(card, addToUndoStack);
-            this.setSampleDataPayload(data);
         };
     }
 
