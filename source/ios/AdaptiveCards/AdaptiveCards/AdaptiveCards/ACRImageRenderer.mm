@@ -79,7 +79,7 @@
     }
 
     ImageSize size = ImageSize::None;
-    CGSize intrinsicContentSize;
+    CGSize intrinsicContentSize = CGSizeZero;
     if (!hasExplicitMeasurements) {
         size = imgElem->GetImageSize();
         if (size == ImageSize::None) {
@@ -153,7 +153,7 @@
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
