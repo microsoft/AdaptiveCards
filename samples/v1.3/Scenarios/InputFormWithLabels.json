@@ -42,7 +42,7 @@
 							"type": "Input.Text",
 							"id": "myEmail",
 							"label": "Your email",
-							"regex": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$",
+							"regex": "[^@ \\t\\r\\n]+@[^@ \\t\\r\\n]+\\.[^@ \\t\\r\\n]+",
 							"isRequired": true,
 							"errorMessage": "Please enter a valid email address",
 							"style": "email"
