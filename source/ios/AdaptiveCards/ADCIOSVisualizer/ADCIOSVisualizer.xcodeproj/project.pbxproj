@@ -167,7 +167,7 @@
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
-		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AdaptiveCards.app; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		F423C0791EE1FB6100905679 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -311,7 +311,7 @@
 		F423C0731EE1FB6100905679 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				F423C0721EE1FB6100905679 /* AdaptiveCards.app */,
+				F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */,
 				F423C08E1EE1FB6100905679 /* ADCIOSVisualizerTests.xctest */,
 				F423C0991EE1FB6100905679 /* ADCIOSVisualizerUITests.xctest */,
 			);
@@ -403,7 +403,7 @@
 			);
 			name = ADCIOSVisualizer;
 			productName = ADCIOSVisualizer;
-			productReference = F423C0721EE1FB6100905679 /* AdaptiveCards.app */;
+			productReference = F423C0721EE1FB6100905679 /* ADCIOSVisualizer.app */;
 			productType = "com.apple.product-type.application";
 		};
 		F423C08D1EE1FB6100905679 /* ADCIOSVisualizerTests */ = {
@@ -768,7 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEVELOPMENT_TEAM = UBF8T346G9;
