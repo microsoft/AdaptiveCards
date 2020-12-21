@@ -200,7 +200,7 @@
     if (stringForAccessiblilityLabel.length) {
         view.accessibilityLabel = stringForAccessiblilityLabel;
     }
-    
+
     configVisibility(wrappingview, elem);
 
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
