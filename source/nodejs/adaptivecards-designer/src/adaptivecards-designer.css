@@ -1207,6 +1207,10 @@ a.default-ac-anchor:visited:active {
     z-index: 1;
 }
 
+.acd-custom-checkbox-foucs {
+    border: 2px solid #f6bba1;
+}
+
 .acd-custom-checkbox::after {
     position: absolute;
     content: "";
