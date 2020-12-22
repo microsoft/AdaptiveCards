@@ -125,9 +125,22 @@ export class OpenImageDialog extends Dialog {
             ) as HTMLInputElement;
             this.isTemplateOptionChecked = checkbox.checked ? true : false;
         };
+        inputElement.onfocus = () => {
+            const customCheckbox = document.getElementById(
+                "acd-custom-checkbox-item"
+            ) as HTMLInputElement;
+            customCheckbox.className = "acd-custom-checkbox acd-custom-checkbox-foucs"
+        };
+        inputElement.addEventListener("focusout", () => {
+            const customCheckbox = document.getElementById(
+                "acd-custom-checkbox-item"
+            ) as HTMLInputElement;
+            customCheckbox.className = "acd-custom-checkbox"
+        });
         const customCheckboxElement = <HTMLInputElement>(
             document.createElement("SPAN")
         );
+        customCheckboxElement.id = "acd-custom-checkbox-item";
         customCheckboxElement.className = "acd-custom-checkbox";
         checkboxContainer.appendChild(inputElement);
         checkboxContainer.appendChild(customCheckboxElement);
