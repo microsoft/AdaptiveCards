@@ -2,9 +2,9 @@ from multiprocessing import Queue
 import unittest
 from unittest.mock import patch
 
-from tests.test_variables import (debug_string_test, test_img_obj1,
-                                  test_img_obj2, test_cset_obj1,
-                                  test_cset_obj2)
+from tests.variables import (debug_string_test, test_img_obj1,
+                             test_img_obj2, test_cset_obj1,
+                             test_cset_obj2)
 from mystique.extract_properties import CollectProperties
 from mystique.ac_export.adaptive_card_export import (
     AdaptiveCardExport)
@@ -15,7 +15,7 @@ from mystique.card_layout import row_column_group
 from mystique.card_layout.ds_helper import DsHelper
 from mystique.card_layout import bbox_utils
 
-from .base_test_class import BaseSetUpClass
+from tests.base_test_class import BaseSetUpClass
 
 
 class TestIOU(BaseSetUpClass):
