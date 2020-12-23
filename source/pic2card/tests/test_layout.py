@@ -112,14 +112,14 @@ class TestColumnsGrouping(BaseSetUpClass):
     def test_horizontal_inclusive(self):
         """ Tests for the horizontal inclusion of two design objects """
         horiz_inc = self.groupobj._check_intersection_over_range(
-			self.test_coord1,
+            self.test_coord1,
             self.test_coord2, 'x')
         self.assertFalse(horiz_inc)
 
     def test_vertical_inclusive(self):
         """ Tests for the vertical inclusion of two design objects """
         vert_inc = self.groupobj._check_intersection_over_range(
-			self.test_coord1,
+            self.test_coord1,
             self.test_coord2, 'y')
         self.assertFalse(vert_inc)
 
