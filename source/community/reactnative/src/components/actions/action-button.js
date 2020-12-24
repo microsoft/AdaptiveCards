@@ -114,7 +114,8 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
-		let actionObject = { "type": this.payload.type, "data": mergedObject };
+		const title = this.payload.title
+		let actionObject = { "type": this.payload.type,"title":Utils.isNullOrEmpty(title) ? "" : title, "data": mergedObject };
 		this.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
 	}
 
