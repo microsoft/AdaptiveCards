@@ -2,9 +2,9 @@ from multiprocessing import Queue
 import unittest
 from unittest.mock import patch
 
-from tests.test_variables import (debug_string_test, test_img_obj1,
-                                  test_img_obj2, test_cset_obj1,
-                                  test_cset_obj2)
+from tests.variables import (debug_string_test, test_img_obj1,
+                             test_img_obj2, test_cset_obj1,
+                             test_cset_obj2)
 from mystique.extract_properties import CollectProperties
 from mystique.ac_export.adaptive_card_export import (
     AdaptiveCardExport)
@@ -15,7 +15,7 @@ from mystique.card_layout import row_column_group
 from mystique.card_layout.ds_helper import DsHelper
 from mystique.card_layout import bbox_utils
 
-from .base_test_class import BaseSetUpClass
+from tests.base_test_class import BaseSetUpClass
 
 
 class TestIOU(BaseSetUpClass):
@@ -111,14 +111,16 @@ class TestColumnsGrouping(BaseSetUpClass):
 
     def test_horizontal_inclusive(self):
         """ Tests for the horizontal inclusion of two design objects """
-        horiz_inc = self.groupobj.horizontal_inclusive(self.test_coord1,
-                                                       self.test_coord2)
+        horiz_inc = self.groupobj._check_intersection_over_range(
+            self.test_coord1,
+            self.test_coord2, 'x')
         self.assertFalse(horiz_inc)
 
     def test_vertical_inclusive(self):
         """ Tests for the vertical inclusion of two design objects """
-        vert_inc = self.groupobj.vertical_inclusive(self.test_coord1,
-                                                    self.test_coord2)
+        vert_inc = self.groupobj._check_intersection_over_range(
+            self.test_coord1,
+            self.test_coord2, 'y')
         self.assertFalse(vert_inc)
 
     def test_columns_condition(self):
