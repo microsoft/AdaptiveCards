@@ -1134,11 +1134,20 @@ a.default-ac-anchor:visited:active {
     visibility: hidden;
 }
 
+.acd-file-type:focus::before {
+    margin-top: 1px;
+    border: 2px solid #0a0a0a;
+}
+
+.acd-file-type:focus {
+    outline: none;
+}
+
 .acd-file-type::before,
 .acd-card-button {
     content: attr(button-name);
     display: inline-block;
-    width: 238px;
+    width: 232px;
     height: 32px;
     background-color: #286ec0;
     font-family: Helvetica;
@@ -1150,11 +1159,14 @@ a.default-ac-anchor:visited:active {
     outline: none;
     text-align: center;
     line-height: 30px;
+}
+
+.acd-card-button {
     margin-top: 7px;
 }
 
 .acd-card-button:focus {
-    outline: #f6bba1 auto 1px;
+    outline: #0a0a0a auto 1px;
 }
 
 .acd-file-type:hover::before {
@@ -1208,7 +1220,7 @@ a.default-ac-anchor:visited:active {
 }
 
 .acd-custom-checkbox-foucs {
-    border: 2px solid #f6bba1;
+    border: 2px solid #0a0a0a;
 }
 
 .acd-custom-checkbox::after {
