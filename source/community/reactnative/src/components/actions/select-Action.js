@@ -32,8 +32,8 @@ export class SelectAction extends React.Component {
 	onClickHandle() {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
-				let actionObject = { "type": Constants.ActionSubmit, "data": this.props.selectActionData.data };
-				this.onExecuteAction(actionObject);
+				const { type, title = "", data } = this.payload;
+				this.onExecuteAction({type, title, data});
 				break;
 			case Constants.ActionOpenUrl:
 				if (!Utils.isNullOrEmpty(this.props.selectActionData.url)) {
