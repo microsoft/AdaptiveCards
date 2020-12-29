@@ -84,6 +84,8 @@ export class Input extends React.Component {
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
 									autoCorrect={false}
+									accessible={true}
+									accessibilityLabel={this.payload.altText}
 									placeholder={placeholder}
 									multiline={isMultiline}
 									maxLength={maxLength}
@@ -107,10 +109,10 @@ export class Input extends React.Component {
 		);
 	}
 
-    /**
-     * @description Return the input styles applicable based on the given payload
+	/**
+	 * @description Return the input styles applicable based on the given payload
 	 * @returns {Array} - Computed styles based on the config 
-     */
+	 */
 	getComputedStyles = (showErrors) => {
 		const { isMultiline } = this;
 
@@ -125,9 +127,9 @@ export class Input extends React.Component {
 		return inputComputedStyles;
 	}
 
-    /**
-     * @description Parse hostConfig specific to this element
-     */
+	/**
+	 * @description Parse hostConfig specific to this element
+	 */
 	parseHostConfig = () => {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
@@ -139,17 +141,17 @@ export class Input extends React.Component {
 		this.inlineAction = this.payload.inlineAction;
 	}
 
-    /**
-     * @description Invoked on every change in Input field
-     * @param {string} text
-     */
+	/**
+	 * @description Invoked on every change in Input field
+	 * @param {string} text
+	 */
 	textValueChanged = (text) => {
 		this.setState({ text });
 	}
 
 	/**
-     * @description Invoked when json payload contains inlineAction prop
-     */
+	 * @description Invoked when json payload contains inlineAction prop
+	 */
 	inlineActionComponent = () => {
 		return (
 			<InputContextConsumer>
@@ -206,6 +208,8 @@ export class Input extends React.Component {
 							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 							autoCapitalize={Constants.NoneString}
 							autoCorrect={false}
+							accessible={true}
+							accessibilityLabel={payload.altText}
 							placeholder={placeholder}
 							placeholderTextColor='#3a3a3a'
 							multiline={isMultiline}
@@ -262,7 +266,7 @@ export class Input extends React.Component {
 	}
 
 	/**
- 	 * @description Invoked on tapping the inline-action image component
+	   * @description Invoked on tapping the inline-action image component
 	 * @param {string} onExecuteAction - the action handler
 	 * @param {string} action - parameter to determine the origin of the action('onSubmit' OR 'inline-action')
 	 */
