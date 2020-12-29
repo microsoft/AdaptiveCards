@@ -36,6 +36,7 @@ export class ActionButton extends React.Component {
 
 		this.payload = props.json;
 		this.title = Constants.EmptyString;
+		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.iconUrl = Constants.EmptyString;
 		this.inputArray = undefined;
@@ -71,6 +72,8 @@ export class ActionButton extends React.Component {
 
 				return <ButtonComponent
 					style={{ flexGrow: 1 }}
+					accessible={true}
+					accessibilityLabel={this.altText}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
@@ -79,8 +82,8 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-     * @description Invoked for the any action button selected
-     */
+	 * @description Invoked for the any action button selected
+	 */
 	onActionButtonTapped = () => {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
@@ -100,9 +103,9 @@ export class ActionButton extends React.Component {
 		}
 	}
 
-    /**
-     * @description Invoked for the action type Constants.ActionSubmit
-     */
+	/**
+	 * @description Invoked for the action type Constants.ActionSubmit
+	 */
 	onSubmitActionCalled() {
 		let mergedObject = {};
 		for (const key in this.inputArray) {
@@ -119,8 +122,8 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-     * @description Invoked for the action type Constants.ActionToggleVisibility
-     */
+	 * @description Invoked for the action type Constants.ActionToggleVisibility
+	 */
 	onToggleActionCalled() {
 		this.toggleVisibilityForElementWithID(this.payload.targetElements);
 	}
@@ -137,6 +140,7 @@ export class ActionButton extends React.Component {
 
 	parseHostConfig() {
 		this.title = this.payload.title;
+		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
 		let imageUrl = this.payload.iconUrl
 		this.iconUrl = Utils.getImageUrl(imageUrl)
@@ -149,10 +153,10 @@ export class ActionButton extends React.Component {
 		);
 	}
 
-    /**
-     * @description Return the button styles applicable
+	/**
+	 * @description Return the button styles applicable
 	 * @returns {Array} computedStyles - Styles based on the config
-     */
+	 */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
