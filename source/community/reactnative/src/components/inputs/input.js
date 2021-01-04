@@ -134,7 +134,10 @@ export class Input extends React.Component {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
 		this.isMultiline = this.payload.isMultiline === undefined ? false : this.payload.isMultiline;
-		this.maxLength = this.payload.maxLength > 0 ? this.payload.maxlength : undefined;
+		//if this.payload.maxLength is undefined or null, then maximumLength value will be null. So it will automatically handled the undefined and null cases also...
+		const maximumLength = Utils.convertStringToNumber(this.payload.maxLength);
+		//We will pass the style as array, since it can be updated in the container wrapper if required.
+		this.maxLength = typeof maximumLength === "number" ? maximumLength : undefined;
 		this.placeholder = this.payload.placeholder;
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
