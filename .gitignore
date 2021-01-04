@@ -260,16 +260,7 @@ paket-files/
 # Generated javascript
 **/dist/*.js
 **/dist/*.js.map
-**/dist/*.d.ts 
-
-# SourceDepot Integration
-dirs*
-sources*
-build*
-**/objfre/*
-**/objchk/*
-makefile.inc
-product.pbxproj
+**/dist/*.d.ts
 
 # Mac
 **/.DS_Store
@@ -292,5 +283,5 @@ cscope.po.out
 # Teamwork.com VS extension
 twp.json
 
-# Android 
+# Android
 **/.cxx/*

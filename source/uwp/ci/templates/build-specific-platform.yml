@@ -1,0 +1,52 @@
+parameters:
+  configuration: 'Release'
+  platform: ''
+
+steps:
+- checkout: self
+  clean: true 
+  fetchDepth: 1
+- task: NuGetToolInstaller@0
+  name: NuGetToolInstaller1
+  displayName: Use NuGet 5.x
+  inputs:
+    versionSpec: 5.x
+- task: NuGetRestore@1
+  name: NuGetCommand2
+  displayName: NuGet restore source/uwp/AdaptiveCards.sln
+  inputs:
+    solution: source/uwp/AdaptiveCards.sln
+    verbosity: '-'
+- task: VSBuild@1
+  name: VSBuild3
+  displayName: Build solution source/uwp/AdaptiveCards.sln
+  inputs:
+    solution: source/uwp/AdaptiveCards.sln
+    vsVersion: 16.0
+    msbuildArgs: /p:AppxBundlePlatforms="${{ parameters.platform }}" /p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\AppxPackages\\" /p:AppxBundle=Always /p:UapAppxPackageBuildMode=StoreUpload
+    platform: ${{ parameters.platform }}
+    configuration: Release
+    maximumCpuCount: true
+    createLogFile: true
+    logFileVerbosity: detailed
+- task: CopyFiles@2
+  displayName: Copy binaries for NuGet (x86)
+  condition: and(succeeded(), eq('${{ parameters.platform }}', 'x86'), ne(variables['Build.Reason'], 'PullRequest'))
+  inputs:
+    SourceFolder: $(Build.SourcesDirectory)/source/uwp/Release/AdaptiveCardRenderer/
+    Contents: AdaptiveCards.Rendering.Uwp.*
+    TargetFolder: $(Build.ArtifactStagingDirectory)/artifacts
+    OverWrite: true
+- task: CopyFiles@2
+  displayName: Copy binaries for NuGet (ARM | x64)
+  condition: and(succeeded(), not(eq('${{ parameters.platform }}', 'x86')), ne(variables['Build.Reason'], 'PullRequest'))
+  inputs:
+    SourceFolder: $(Build.SourcesDirectory)/source/uwp/${{ parameters.platform }}/Release/AdaptiveCardRenderer/
+    Contents: AdaptiveCards.Rendering.Uwp.*
+    TargetFolder: $(Build.ArtifactStagingDirectory)/artifacts
+    OverWrite: true
+- publish: $(Build.ArtifactStagingDirectory)/artifacts
+  displayName: Publish Pipeline Artifact (binaries)
+  artifact: drop-${{ parameters.platform }}-release
+- task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
+  displayName: Component Detection

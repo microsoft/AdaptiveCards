@@ -1,0 +1,87 @@
+trigger:
+  branches:
+    include:
+    - main
+    - feature/*
+    - release/2*
+  batch: True
+
+name: $(date:yyMM).$(date:dd)$(rev:rrr)
+
+resources:
+  repositories:
+  - repository: self
+    type: git
+    ref: main
+
+stages:
+- stage: Build_x86
+  displayName: Build x86
+  dependsOn: []
+  condition: succeeded()
+  jobs:
+  - job: Phase_1
+    displayName: Build
+    timeoutInMinutes: 100
+    cancelTimeoutInMinutes: 1
+    pool:
+      name: Package ES Standard Build
+    steps:
+    - template: ./templates/build-specific-platform.yml
+      parameters:
+        platform: x86
+- stage: Build_x64
+  displayName: Build x64
+  dependsOn: []
+  condition: succeeded()
+  jobs:
+  - job: Phase_1
+    displayName: Build
+    timeoutInMinutes: 100
+    cancelTimeoutInMinutes: 1
+    pool:
+      name: Package ES Standard Build
+    steps:
+    - template: ./templates/build-specific-platform.yml
+      parameters:
+        platform: x64
+- stage: Build_ARM
+  displayName: Build ARM
+  dependsOn: []
+  condition: or(variables['buildAllArches'], and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), startsWith(variables['Build.Branch'], 'release/2')))
+  jobs:
+  - job: Build_Bits
+    displayName: Build
+    timeoutInMinutes: 100
+    cancelTimeoutInMinutes: 1
+    pool:
+      name: Package ES Standard Build
+    steps:
+    - template: ./templates/build-specific-platform.yml
+      parameters:
+        platform: ARM
+- stage: Build_ARM64
+  displayName: Build ARM64
+  dependsOn: []
+  condition: or(variables['buildAllArches'], and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), startsWith(variables['Build.Branch'], 'release/2')))
+  jobs:
+  - job: Build_Bits
+    displayName: Build
+    timeoutInMinutes: 100
+    cancelTimeoutInMinutes: 1
+    pool:
+      name: Package ES Standard Build
+    steps:
+    - template: ./templates/build-specific-platform.yml
+      parameters:
+        platform: ARM64
+- stage: Package
+  dependsOn: [ Build_x86, Build_x64, Build_ARM, Build_ARM64 ]
+  condition: and(succeeded(), or(variables['buildAllArches'], and(ne(variables['Build.Reason'], 'PullRequest'), startsWith(variables['Build.Branch'], 'release/2'))))
+  displayName: Bundle Nuget Package
+  pool:
+    name: Package ES Standard Build
+  jobs:
+  - job: PackageJob
+    steps:
+    - template: ./templates/bundle-uwp-nuget-package.yml
