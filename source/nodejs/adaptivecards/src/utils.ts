@@ -10,6 +10,14 @@ export function isMobileOS(): boolean {
     return !!userAgent.match(/Android/i) || !!userAgent.match(/iPad/i) || !!userAgent.match(/iPhone/i);
 }
 
+export function removeAllChildren(element: HTMLElement) {
+    if (element) {
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+    }
+}
+
 /**
  * Generate a UUID prepended with "__ac-"
  */
@@ -43,6 +51,27 @@ export function parseBool(value: any, defaultValue?: boolean): boolean | undefin
                 return false;
             default:
                 return defaultValue;
+        }
+    }
+
+    return defaultValue;
+}
+
+export function parseObject(value: any, defaultValue?: object): object | undefined {
+    if (typeof value === "object") {
+        return value;
+    }
+
+    if (typeof value === "string") {
+        try {
+            let parsedValue = JSON.parse(value);
+
+            if (typeof parsedValue === "object") {
+                return parsedValue;
+            }
+        }
+        catch {
+            // Swallow any error
         }
     }
 

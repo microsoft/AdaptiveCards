@@ -33,6 +33,7 @@ Please be aware of the following **breaking changes** in particular versions.
 
 | In version | Change description |
 |---|---|
+| **vNext** | A new `protected CardElement.internalUpdateLayout(processChildren: boolean = true)` has been introduced. It is called internally by `CardElement.updateLayout()`. In previous versions, descendent classes could override `updateLayout()` to implement custom layout logic; with this change, descendent classes should override `internalUpdateLayout()` instead. Descendent classes that continue to override `updateLayout` will cause degraded rendering performance. |
 | **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
 | **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 | **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |

@@ -61,6 +61,14 @@ export abstract class CardObject extends SerializableObject {
 
     private _shouldFallback: boolean = false;
 
+    protected abstract internalPropertyChanged(property: PropertyDefinition): void;
+
+    protected propertyChanged(property: PropertyDefinition) {
+        this.internalPropertyChanged(property);
+
+        super.propertyChanged(property);
+    }
+
     protected _parent?: CardObject;
     protected _renderedElement?: HTMLElement;
 
@@ -134,6 +142,38 @@ export abstract class CardObject extends SerializableObject {
         this.internalValidateProperties(result);
 
         return result;
+    }
+
+    getIsUpdating(): boolean {
+        let result = super.getIsUpdating();
+
+        if (!result && this.parent) {
+            result = this.parent.getIsUpdating();
+        }
+
+        return result;
+    }
+
+    beginUpdate() {
+        let rootObject = this.getRootObject();
+        
+        if (rootObject !== this) {
+            rootObject.beginUpdate();
+        }
+        else {
+            super.beginUpdate();
+        }
+    }
+
+    endUpdate() {
+        let rootObject = this.getRootObject();
+        
+        if (rootObject !== this) {
+            rootObject.endUpdate();
+        }
+        else {
+            super.endUpdate();
+        }
     }
 
     get parent(): CardObject | undefined {
