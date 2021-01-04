@@ -106,7 +106,6 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.ImageSet, DesignerPeers.ImageSetPeer, DesignerPeerCategory.Containers, "acd-icon-imageSet");
         this.registerPeer(Adaptive.FactSet, DesignerPeers.FactSetPeer, DesignerPeerCategory.Containers, "acd-icon-factSet");
 
-        this.registerPeer(Adaptive.CustomComponent, DesignerPeers.CustomComponentPeer, DesignerPeerCategory.Elements, "acd-icon-container");
         this.registerPeer(Adaptive.TextBlock, DesignerPeers.TextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-textBlock");
         this.registerPeer(Adaptive.RichTextBlock, DesignerPeers.RichTextBlockPeer, DesignerPeerCategory.Elements, "acd-icon-richTextBlock");
         this.registerPeer(Adaptive.Image, DesignerPeers.ImagePeer, DesignerPeerCategory.Elements, "acd-icon-image");
@@ -601,7 +600,7 @@ export class CardDesignerSurface {
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
-                let expression = Adaptive.parseInterpolatedString(value);
+                let expression = Adaptive.Template.parseInterpolatedString(value);
 
                 if (typeof expression === "string") {
                     return expression;
@@ -616,7 +615,7 @@ export class CardDesignerSurface {
                         evaluationContext = { $root: this.context.dataStructure.dataType.generateSampleData() };
                     }
 
-                    let evaluationResult = Adaptive.tryEvaluateExpression(expression, evaluationContext, true);
+                    let evaluationResult = Adaptive.Template.tryEvaluateExpression(expression, evaluationContext, true);
 
                     return typeof evaluationResult.value === "string" ? evaluationResult.value : value;
                 }

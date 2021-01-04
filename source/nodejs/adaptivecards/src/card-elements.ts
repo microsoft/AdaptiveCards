@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
-import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
+import { PropertyBag, PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
     Dictionary, StringWithSubstitutions, ContentTypes, IInput, IResourceInformation } from "./shared";
 import * as Utils from "./utils";
 import { HostConfig, defaultHostConfig, BaseTextDefinition, FontTypeDefinition, ColorSetDefinition, TextColorDefinition, ContainerStyleDefinition } from "./host-config";
@@ -9,10 +9,9 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, ObjectProperty } from "./serialization";
+    NumProperty, CustomProperty, PropertyDefinition, ObjectProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
-import { Template } from "./template-engine";
 
 export type CardElementHeight = "auto" | "stretch";
 

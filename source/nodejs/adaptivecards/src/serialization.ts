@@ -6,7 +6,7 @@ import * as Enums from "./enums";
 import { PropertyBag } from "./shared";
 import { Strings } from "./strings";
 import * as AEL from "adaptive-expressions";
-import { tryEvaluateExpression, parseInterpolatedString } from "./template-engine";
+import { Template } from "./template-engine";
 
 export interface IValidationEvent {
     source?: SerializableObject,
@@ -265,7 +265,7 @@ export class PropertyDefinition {
         let value = source[this.name];
 
         if (typeof value === "string") {
-            value = parseInterpolatedString(value);
+            value = Template.parseInterpolatedString(value);
         }
 
         if (!(value instanceof AEL.Expression)) {
@@ -852,7 +852,7 @@ export abstract class SerializableObject {
         let value = this._propertyBag.hasOwnProperty(property.getInternalName()) ? this._propertyBag[property.getInternalName()] : property.defaultValue;
 
         if (value instanceof AEL.Expression) {
-            let evaluationResults = tryEvaluateExpression(
+            let evaluationResult = Template.tryEvaluateExpression(
                 value,
                 {
                     $root: {
@@ -861,11 +861,11 @@ export abstract class SerializableObject {
                 },
                 true);
 
-            if (!evaluationResults.error) {
-                value = property.parseValue(this, value, new SimpleSerializationContext());
+            if (!evaluationResult.error) {
+                value = property.parseValue(this, evaluationResult.value, new SimpleSerializationContext());
             }
             else {
-                value = evaluationResults.error;
+                value = evaluationResult.error;
             }
         }
 
