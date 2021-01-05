@@ -30,7 +30,7 @@ This tables describes the various packages we offer, the support type, latest pa
 
 | **Platform** | **Package** | **Latest Patch Version** | **Patch Release Date** | **Support Level** | **End of Support** |
 |  --- | --- | --- | --- | --- | --- |
-| 2.x | .NET | AdaptiveCards | 2.3.0 | 2020.10.29 | Current |
+| .NET | AdaptiveCards | 2.3.0 | 2020.10.29 | Current |
 
 
 ### Rendering
@@ -72,7 +72,7 @@ This tables describes the various packages we offer, the support type, latest pa
 
 ### Community SDKs and Tools
 
-The following SDKs are not developed or maintained by Microsoft. They are developed and serviced by the Adaptive Cards community, and are not officially supported. In most cases tehy are in active developments and bugs will be addressed where possible.
+The following SDKs are not developed or maintained by Microsoft. They are developed and serviced by the Adaptive Cards community, and are not officially supported. In most cases they are in active developments and bugs will be addressed where possible.
 
 | **SDK** | **Maintainer** | **Support Level** |
 | --- | --- | --- |
@@ -92,10 +92,10 @@ Current and Maintenance releases receive critical fixes throughout their lifecyc
 
 ## End of support
 
-End of support refers to the date when Microsoft no longer provides fixes, updates, or online technical assistance. End of support may also be referred to as &#39;end of life&#39; or abbreviated &#39;EOL&#39;. This is the time to make sure you have the latest available update installed.
+End of support refers to the date when Microsoft no longer provides fixes, updates, or online technical assistance. End of support may also be referred to as "end of life" or abbreviated "EOL". This is the time to make sure you have the latest available update installed.
 
 Updates are cumulative, with each update built upon all of the updates that preceded it. A device needs to install the latest update to remain supported. Updates may include new features, fixes (security and/or non-security), or a combination of both. Not all features in an update will work on all devices. Update availability may vary, for example by country, region, network connectivity, or hardware capabilities (including, for example, free disk space).
 
 ## Out of support versions
 
-None at this time.
+Versions `1.x` of the **Renderer** and **Serialization** libraries are no longer supported. Please upgrade to the `2.x` releases.
