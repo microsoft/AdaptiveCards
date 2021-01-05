@@ -154,7 +154,7 @@
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
@@ -253,7 +253,7 @@
     }
 
     if (size != ImageSize::Auto && size != ImageSize::Stretch) {
-        UILayoutPriority prioirty = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
+        UILayoutPriority priority = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
         NSArray<NSLayoutConstraint *> *constraints =
             @[ [NSLayoutConstraint constraintWithItem:imageView
                                             attribute:NSLayoutAttributeWidth
@@ -269,8 +269,8 @@
                                             attribute:NSLayoutAttributeNotAnAttribute
                                            multiplier:1.0
                                              constant:cgsize.height] ];
-        constraints[0].priority = prioirty;
-        constraints[1].priority = UILayoutPriorityDefaultHigh;
+        constraints[0].priority = priority;
+        constraints[1].priority = priority;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
@@ -280,13 +280,14 @@
         }
     }
 
-    if (size == AdaptiveCards::ImageSize::Auto) {
-        NSLayoutConstraint *imageHeightConstraint = [imageView.heightAnchor constraintLessThanOrEqualToConstant:image.size.height];
+    UILayoutPriority huggingPrioirty = [imageView.superview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal];
+    if (size == AdaptiveCards::ImageSize::Auto && huggingPrioirty == ACRColumnWidthPriorityAuto) {
+        NSLayoutConstraint *imageHeightConstraint = [imageView.heightAnchor constraintEqualToConstant:image.size.height];
         imageHeightConstraint.active = YES;
-        imageHeightConstraint.priority = UILayoutPriorityDefaultHigh;
-        NSLayoutConstraint *imageWidthConstraint = [imageView.widthAnchor constraintLessThanOrEqualToConstant:image.size.width];
+        imageHeightConstraint.priority = UILayoutPriorityDefaultHigh + 1;
+        NSLayoutConstraint *imageWidthConstraint = [imageView.widthAnchor constraintEqualToConstant:image.size.width];
         imageWidthConstraint.active = YES;
-        imageWidthConstraint.priority = UILayoutPriorityDefaultHigh;
+        imageWidthConstraint.priority = UILayoutPriorityDefaultHigh + 1;
     }
 
     if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
@@ -305,8 +306,9 @@
                                             attribute:NSLayoutAttributeHeight
                                            multiplier:widthToHeightRatio
                                              constant:0] ];
-        constraints[0].priority = UILayoutPriorityDefaultHigh;
-        constraints[1].priority = UILayoutPriorityDefaultHigh;
+        
+        constraints[0].priority = UILayoutPriorityDefaultHigh + 2;
+        constraints[1].priority = UILayoutPriorityDefaultHigh + 2;
 
         [NSLayoutConstraint activateConstraints:constraints];
 
