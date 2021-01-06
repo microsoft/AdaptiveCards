@@ -4,16 +4,19 @@
         "disclaimer": "Don't worry, we'll never share or sell your information.",
         "properties": [
             {
+		"id": "myName",
                 "label": "Your name (Last, First)",
                 "validation": "^[A-Z](a-z)+ [A-Z](a-z)+( ([A-Z][a-z]+))*$",
                 "error": "Please enter your name in the specified format"
             },
             {
+		"id": "myEmail",
                 "label": "Your email",
                 "validation": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$",
                 "error": "Please enter a valid email address"
             },
             {
+		"id": "myTel",
                 "label": "Phone Number (xxx-xxx-xxxx)",
                 "validation": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
 			    "error": "Invalid phone number. Use the specified format: 3 numbers, hyphen, 3 numbers, hyphen and 4 numbers"
