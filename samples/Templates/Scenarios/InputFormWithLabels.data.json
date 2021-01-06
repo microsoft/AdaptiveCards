@@ -19,7 +19,7 @@
                 "id": "myTel",
                 "label": "Phone Number (xxx-xxx-xxxx)",
                 "validation": "^[0-9]{3}-[0-9]{3}-[0-9]{4}$",
-			    "error": "Invalid phone number. Use the specified format: 3 numbers, hyphen, 3 numbers, hyphen and 4 numbers"
+                "error": "Invalid phone number. Use the specified format: 3 numbers, hyphen, 3 numbers, hyphen and 4 numbers"
             }
         ],
         "thumbnailUrl": "https://upload.wikimedia.org/wikipedia/commons/b/b2/Diver_Silhouette%2C_Great_Barrier_Reef.jpg"
