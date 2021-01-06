@@ -41,6 +41,8 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
+    // flag to prevent dialog close on overlay element click, default it's set to false, for Pi2Card it will be set to true
+    preventLightDismissal: boolean = false;
 
     constructor() {
         this.closeButton = new DialogButton("Close");
@@ -57,24 +59,26 @@ export abstract class Dialog {
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                this.close();
-            }
+                if (!this.preventLightDismissal) { this.close(); }
+            };
 
-            let dialogFrameElement = document.createElement("dialog");
+            let dialogFrameElement = document.createElement("div");
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
             dialogFrameElement.setAttribute("aria-modal", "true");
+            dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
 
             dialogFrameElement.onclick = (e) => {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
-                e.cancelBubble = true;
-
-                return false;
+                if (!this.preventLightDismissal) {
+                    e.cancelBubble = true;
+                    return false;
+                }
             }
 
             // keyboard navigation support
@@ -114,6 +118,9 @@ export abstract class Dialog {
             titleElement.id = "acd-dialog-title-element";
             titleElement.innerText = this.title;
             titleElement.style.flex = "1 1 auto";
+            titleElement.setAttribute("role", "heading");
+            titleElement.setAttribute("aria-level","1");
+            titleElement.tabIndex = -1;
 
             let xButton = document.createElement("button");
             xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";
@@ -159,8 +166,8 @@ export abstract class Dialog {
             if (this.onClose) {
                 this.onClose(this);
             }
-
-            this._originalFocusedElement.focus();
+            // Removing the focus action on close, it has been handled via onClose method of Dialog consume place.
+            // this._originalFocusedElement.focus();
             this._originalFocusedElement = null;
         }
     }
