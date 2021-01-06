@@ -44,17 +44,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AdaptiveExpressions" Version="4.9.3" />
-    <PackageReference Include="Antlr4" Version="4.6.6">
+    <PackageReference Include="AdaptiveExpressions" Version="4.9.*" />
+    <PackageReference Include="Antlr4" Version="4.6.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.0">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.3.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="Vsxmd" Version="1.4.5">
+    <PackageReference Include="Newtonsoft.Json" Version="[11.0.2, 12.0.3]" NoWarn="NU1605" />
+    <PackageReference Include="Vsxmd" Version="1.4.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
