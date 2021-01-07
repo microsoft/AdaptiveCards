@@ -7,7 +7,7 @@
             "type": "Container",
             "selectAction": {
                 "type": "Action.OpenUrl",
-                "url": "http://www.microsoft.com"
+                "url": "https://www.microsoft.com"
             },
             "spacing": "extraLarge",
             "items": [
@@ -30,7 +30,7 @@
                                 {
                                     "type": "Image",
                                     "spacing": "none",
-                                    "url": "http://messagecardplayground.azurewebsites.net/assets/Conflict.png"
+                                    "url": "https://messagecardplayground.azurewebsites.net/assets/Conflict.png"
                                 }
                             ]
                         },
@@ -38,7 +38,7 @@
                             "size": "auto",
                             "spacing": "small",
                             "backgroundImage": {
-                                "url": "http://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
+                                "url": "https://messagecardplayground.azurewebsites.net/assets/SmallVerticalLineGray.png",
                                 "mode": "repeatVertically",
                                 "horizontalAlignment": "center"
                             },
@@ -46,7 +46,7 @@
                                 {
                                     "type": "Image",
                                     "horizontalAlignment": "center",
-                                    "url": "http://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
+                                    "url": "https://messagecardplayground.azurewebsites.net/assets/CircleGreen_coffee.png"
                                 }
                             ]
                         },
@@ -67,7 +67,7 @@
                                             "items": [
                                                 {
                                                     "type": "Image",
-                                                    "url": "http://messagecardplayground.azurewebsites.net/assets/location_gray.png"
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/location_gray.png"
                                                 }
                                             ]
                                         },
@@ -87,16 +87,16 @@
                                     "type": "ImageSet",
                                     "images": [
                                         {
-                                            "url": "http://messagecardplayground.azurewebsites.net/assets/person_w1.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_w1.png"
                                         },
                                         {
-                                            "url": "http://messagecardplayground.azurewebsites.net/assets/person_m1.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_m1.png"
                                         },
                                         {
-                                            "url": "http://messagecardplayground.azurewebsites.net/assets/person_w2.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_w2.png"
                                         },
                                         {
-                                            "url": "http://messagecardplayground.azurewebsites.net/assets/person_m2.png"
+                                            "url": "https://messagecardplayground.azurewebsites.net/assets/person_m2.png"
                                         }
                                     ]
                                 },
@@ -108,7 +108,7 @@
                                             "items": [
                                                 {
                                                     "type": "Image",
-                                                    "url": "http://messagecardplayground.azurewebsites.net/assets/power_point.png"
+                                                    "url": "https://messagecardplayground.azurewebsites.net/assets/power_point.png"
                                                 }
                                             ]
                                         },

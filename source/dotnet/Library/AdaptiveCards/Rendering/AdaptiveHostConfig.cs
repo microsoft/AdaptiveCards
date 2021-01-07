@@ -27,15 +27,15 @@ namespace AdaptiveCards.Rendering
         public FactSetConfig FactSet { get; set; } = new FactSetConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontFamily", false)]
+        [Obsolete("AdaptiveHostConfig.FontFamily has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontFamily", false)]
         public string FontFamily { get; set; }
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontSizes", false)]
+        [Obsolete("AdaptiveHostConfig.FontSizes has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontSizes", false)]
         public FontSizesConfig FontSizes { get; set; } = new FontSizesConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
-        [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontStyles.Default.FontWeights", false)]
+        [Obsolete("AdaptiveHostConfig.FontWeights has been deprecated.  Use AdaptiveHostConfig.FontTypes.Default.FontWeights", false)]
         public FontWeightsConfig FontWeights { get; set; } = new FontWeightsConfig();
 
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]

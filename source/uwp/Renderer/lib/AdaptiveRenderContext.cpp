@@ -26,7 +26,8 @@ namespace AdaptiveNamespace
                                                           _In_ IAdaptiveCardResourceResolvers* resourceResolvers,
                                                           _In_ IResourceDictionary* overrideDictionary,
                                                           _In_ IResourceDictionary* defaultActionSentimentStyles,
-                                                          _In_ RenderedAdaptiveCard* renderResult) noexcept try
+                                                          _In_ RenderedAdaptiveCard* renderResult) noexcept
+    try
     {
         m_hostConfig = hostConfig;
         m_featureRegistration = featureRegistration;

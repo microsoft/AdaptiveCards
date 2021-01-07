@@ -121,6 +121,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
     [_resolvers setResourceResolver:resolver scheme:@"https"];
+    [_resolvers setResourceResolver:resolver scheme:@"data"];
     _enableCustomRenderer = NO;
     self.curView = nil;
 
@@ -386,10 +387,13 @@ const CGFloat kAdaptiveCardsWidth = 330;
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            if (newType.alertController) {
-                [self presentViewController:newType.alertController animated:YES completion:nil];
-            }
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"successfully rendered new button type" message:newType.alertMessage preferredStyle:UIAlertControllerStyleAlert];
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+            newType.alertController = alertController;
+            [self presentViewController:alertController animated:YES completion:nil];
         }
+    } else if (action.type == ACRToggleVisibility) {
+        NSLog(@"toggle visibility");
     }
 }
 

@@ -2,7 +2,7 @@
 //  ACRIContentHoldingView
 //  ACRIContentHoldingView.h
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ACOBaseCardElement.h"
@@ -15,14 +15,15 @@
                    hostConfig:(ACOHostConfig *)config
                     superview:(UIView<ACRIContentHoldingView> *)superview;
 - (void)addArrangedSubview:(UIView *)view;
+- (void)insertArrangedSubview:(UIView *)view atIndex:(NSUInteger)insertionIndex;
 - (void)removeLastViewFromArrangedSubview;
-- (UILayoutConstraintAxis)getAxis;
 - (void)addTarget:(NSObject *)target;
 - (void)adjustHuggingForLastElement;
 - (ACRContainerStyle)style;
 - (void)setStyle:(ACRContainerStyle)stye;
 - (void)hideAllShowCards;
 - (NSUInteger)subviewsCounts;
+- (NSUInteger)arrangedSubviewsCounts;
 - (UIView *)getLastSubview;
 
 @end

@@ -17,10 +17,13 @@
 	</style>
 
 	<script type="text/javascript">
-		window.onload = function() {
-            ACDesigner.GlobalSettings.previewFeaturesEnabled = false;
+		window.onload = function () {
+			ACDesigner.GlobalSettings.enableDataBindingSupport = false;
+			ACDesigner.GlobalSettings.showDataStructureTooklbox = false;
+			ACDesigner.GlobalSettings.showSampleDataEditorToolbox = false;
+			ACDesigner.GlobalSettings.showVersionPicker = false;
 
-            if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
+			if (!ACDesigner.SettingsManager.isLocalStorageAvailable) {
 				console.log("Local storage is not available.");
 			}
 
@@ -29,17 +32,8 @@
 			// This is not required. When no list is passed (empty array or null), the designer
 			// uses a default built-in host container, and the host container picker in the
 			// toolbar is hidden.
-			let hostContainers = [];
-
-			hostContainers.push(new ACDesigner.WebChatContainer("Bot Framework WebChat", "containers/webchat-container.css"));
-			hostContainers.push(new ACDesigner.CortanaContainer("Cortana Skills", "containers/cortana-container.css"));
-			hostContainers.push(new ACDesigner.OutlookContainer("Outlook Actionable Messages", "containers/outlook-container.css"));
-			hostContainers.push(new ACDesigner.TimelineContainer("Windows Timeline", "containers/timeline-container.css"));
-			hostContainers.push(new ACDesigner.DarkTeamsContainer("Microsoft Teams - Dark", "containers/teams-container-dark.css"));
-			hostContainers.push(new ACDesigner.LightTeamsContainer("Microsoft Teams - Light", "containers/teams-container-light.css"));
-			hostContainers.push(new ACDesigner.BotFrameworkContainer("Bot Framework Other Channels (Image render)", "containers/bf-image-container.css"));
-			hostContainers.push(new ACDesigner.ToastContainer("Windows Notifications (Preview)", "containers/toast-container.css"));
-
+			let hostContainers = ACDesigner.defaultMicrosoftHosts;
+			
 			let designer = new ACDesigner.CardDesigner(hostContainers);
 
 			// Change where the designer looks for assets like CSS and container images
@@ -58,9 +52,9 @@
 
 			// NOTE: Adding toolbar elements must be done BEFORE the designer is attached
 
-			
+
 			/* Here's how to collapse certain panes by default:
-			
+
 			designer.treeViewPane.collapse();
 			designer.jsonEditorPane.collapse();
 			*/
@@ -82,7 +76,7 @@
 			*/
 
 			// NOTE: Collapsing panes/setting the card payload must be done AFTER the designer is attached
-			// Initialize monaco-editor for the JSON-editor pane. 
+			// Initialize monaco-editor for the JSON-editor pane.
 
 			require.config({
 				paths: {

@@ -1,4 +1,78 @@
+<!-- This is the blog post layout -->
+<% var post = page %>
+
 <style>
-   img { max-width: 95%; height: auto; }
+	.main-container {
+		padding: 0 !important;
+		background: #f1f1f1 !important;
+	}
+
+	.uhf-container {
+		width: 100% !important;
+		max-width: 100% !important;
+	}
+
+	.footer-holder {
+		border-top: none !important;
+	}
 </style>
-<%- partial('_partial/article', {post: page, index: false}) %>
+
+
+
+<div class="blog w3-content" style="max-width: 960px">
+
+	<div class="w3-row blog-post-wrapper">
+		<div class="w3-hide-small w3-hide-medium" style="margin-top: 32px">&nbsp;</div>
+
+		<div class=" w3-container w3-white w3-padding-16 w3-medium" style="margin-bottom: 32px;">
+
+			<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_vertical_style w3-hide-medium w3-hide-small"
+				style="left:80px; top:250px;" data-a2a-icon-color="transparent,#3c3c3c">
+				<a class="a2a_button_facebook"></a>
+				<a class="a2a_button_twitter"></a>
+				<a class="a2a_button_linkedin"></a>
+			</div>
+			<div class="w3-center">
+				<h2 class="w3-xlarge"><%- post.title %></h2>
+				<p class="w3-large"><%- post.subtitle %></p>
+
+				<div><img src="<%- post.author.avatar %>" class="w3-circle" style="width: 80px"
+						alt="Profile image of <%- post.author.name %>" /></div>
+				<p class="w3-large" style="margin-bottom: 0"><%- post.author.name %></p>
+				<datetime class="article-date" style="margin: 0"><%= post.date.format("MMM D, YYYY") %>
+				</datetime> ·
+				<span class="reading-time"><%- readingTime(post.content, 'min read') %></span>
+			</div>
+
+			<div class="w3-padding-32 blog-content">
+				<%- post.content %>
+			</div>
+
+			<div class="w3-row-padding w3-border-top w3-padding">
+				<div class="w3-col w3-margin-top" style="width: 120px"><img src="<%- post.author.avatar %>"
+						class="w3-circle" alt="Profile image of <%- post.author.name %>" /></div>
+				<div class="w3-rest">
+					<h3><a href="<%- post.author.webpage %>" class="w3-large article-author"
+							style="font-weight: 500"><%- post.author.name %></a></h3>
+					<p style="margin: 8px 0"><%- post.author.bio %></p>
+					<%- partial("_partial/follow-buttons", post.author, {cache: false }) %>
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+</div>
+
+<!-- Mobile a2a share icons -->
+<div class="a2a_kit a2a_kit_size_32 a2a_floating_style a2a_default_style w3-hide-large" style="bottom:0px; right:0px;"
+	data-a2a-icon-color="white,#3c3c3c">
+	<a class="a2a_button_facebook"></a>
+	<a class="a2a_button_twitter"></a>
+	<a class="a2a_button_linkedin"></a>
+</div>
+
+</div>

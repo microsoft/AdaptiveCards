@@ -1,252 +1,740 @@
 @font-face {
-	font-family: "docons";
-	src: url("../content/fonts/docons.woff") format('woff');
+  font-family: "docons";
+  src: url("../content/fonts/docons.woff") format("woff");
 }
 
 html {
-	overflow: auto;
+  overflow: auto;
 }
 
 body {
-	font-size: 14px;
-	font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue, Helvetica, sans-serif;
-	min-height: 100px;
+  font-size: 14px;
+  font-family: segoe-ui_normal, Segoe UI, Segoe, Segoe WP, Helvetica Neue,
+    Helvetica, sans-serif;
+  min-height: 100px;
 }
 
-body>#headerAreaHolder {
-	-webkit-box-ordinal-group: 3 !important;
-	-webkit-order: 0 !important;
-	-ms-flex-order: 0 !important;
-	order: 0 !important;
+body > #headerAreaHolder {
+  -webkit-box-ordinal-group: 3 !important;
+  -webkit-order: 0 !important;
+  -ms-flex-order: 0 !important;
+  order: 0 !important;
 }
 
+@media print, screen and (min-width: 768px) {
+  .breadcrumbs {
+    background: none !important;
+    border-bottom: none !important;
+  }
+}
+
+.ac-blue {
+  color: #fff !important;
+  background-color: #0050c5 !important;
+}
+
+.breadcrumbs {
+  background: #fafafa;
+  margin: 0;
+  padding: 6px 0;
+  border-bottom: 1px solid #e3e3e3;
+  font-size: 1em !important;
+}
+
+.breadcrumbs li {
+  display: inline-block;
+}
+
+#feedback-button:hover {
+  text-decoration: none !important;
+}
+
+.cat-logo-button-cont {
+  border-bottom: 0 !important;
+  border-top: 0 !important;
+}
+
+.c-uhfh.c-sgl-stck .global-head-cont,
+.c-uhfh.c-sgl-stck > div:first-child {
+  border-bottom: 0 !important;
+}
 
 @media only screen and (max-width: 601px) {
-	code {
-		max-height: 400px !important;
-		font-size: .8rem;
-	}
+  code {
+    max-height: 400px !important;
+    font-size: 0.8rem;
+  }
 
-	table.w3-responsive code {
-		font-size: .75rem;
-	}
+  table.w3-responsive code {
+    font-size: 0.75rem;
+  }
 
-	/* neat trick to reverse order of divs
+  /* neat trick to reverse order of divs
     http://jsfiddle.net/m37cxb9g/223/
     */
-	.reverse-order-mobile {
-		transform: scaleY(-1);
-	}
+  .reverse-order-mobile {
+    transform: scaleY(-1);
+  }
 
-	.reverse-order-mobile>div {
-		transform: scaleY(-1);
-	}
+  .reverse-order-mobile > div {
+    transform: scaleY(-1);
+  }
+
+  .uhf-container {
+    margin: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
 }
 
-
 @media only screen and (max-width: 991px) {
-	.videobanner {
-		display: none;
-	}
+  .videobanner {
+    display: none;
+  }
 
-	code {
-		max-height: 400px !important;
-		font-size: .8rem;
-	}
+  code {
+    max-height: 400px !important;
+    font-size: 0.8rem;
+  }
 
-	#menu-nav {
-		display: block;
-	}
+  #menu-nav {
+    display: block;
+  }
 }
 
 h1 {
-	font-size: 28px;
+  font-size: 28px;
 }
 
 h2 {
-	font-size: 24px;
+  font-size: 24px;
 }
 
 h3 {
-	font-size: 22px;
+  font-size: 22px;
 }
 
 h4 {
-	font-size: 16px;
+  font-size: 16px;
 }
 
 h5 {
-	font-size: 14px;
+  font-size: 14px;
 }
 
 h6 {
-	font-size: 12px;
+  font-size: 12px;
 }
 
 .cardImage {
-	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.16), 0px 2px 10px 0px rgba(0, 0, 0, 0.12);
-	margin: 20px;
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.16),
+    0px 2px 10px 0px rgba(0, 0, 0, 0.12);
+  margin: 20px;
 }
 
 .content {
-	margin-left: 88px;
-	max-width: 1000px;
-}
-
-.videobanner {
-	width: calc(100% + 20vw);
-	margin-left: -10vw;
-	background-color: #0078D7;
+  margin-left: 88px;
+  max-width: 1000px;
 }
 
 .cardEditor {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	height: 100%;
-	min-height: 0;
-	margin: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+  margin: 10px;
 }
 
 .adaptivecard {
-	display: none;
-	border: solid 1px lightgray;
-	margin-top: 10px;
-	margin-bottom: 5px;
-	min-width: 360px;
+  display: none;
+  border: solid 1px lightgray;
+  margin-right: 1px;
+  /* margin-top: 10px;
+  margin-bottom: 5px; */
+  /* min-width: 360px; */
+}
+
+@media screen and (min-width: 992px) {
+  .code-and-card code {
+    /* code element isn't wrapping right with long URLs, so substract the width of adaptive card and sidebar */
+    max-width: calc(100vw - 700px) !important;
+  }
+
+  .code-and-card .code-snippet {
+    padding-right: 0;
+  }
+
+  .code-and-card .adaptivecard,
+  .code-and-card .card {
+    width: 360px;
+    /* min-width: 360px; */
+  }
+}
+
+@media screen and (min-width: 601px) and (max-width: 991px) {
+  .code-and-card code {
+    max-width: calc(100vw - 464px);
+  }
+
+  .code-and-card .code-snippet {
+    padding-right: 0;
+  }
+
+  .code-and-card .adaptivecard {
+    max-width: 364px;
+    min-width: 364px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .code-and-card code {
+    max-width: calc(100vw - 51px);
+  }
+
+  .adaptivecard {
+    max-width: calc(100vw - 50px);
+  }
+}
+
+.codeHeader {
+  box-sizing: content-box;
+  background-color: hsla(0, 0%, 95%, 1);
+  background-color: #f2f2f2;
+  color: hsla(0, 0%, 0%, 1);
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8rem;
+  border: 1px solid hsla(0, 0%, 89%, 1);
+  border: 1px solid #e3e3e3;
+  border-bottom: 0;
+  margin-top: 16px;
+  min-height: 30px;
+}
+
+.codeHeader > .language {
+  padding: 2px 16px;
+  flex-grow: 1;
+}
+
+.codeHeader > .action {
+  padding: 2px 10px;
+  background-color: transparent;
+  border: 0 solid hsla(0, 0%, 89%, 1);
+  border: 0 solid #e3e3e3;
+  border-left-width: 1px;
+  color: hsla(0, 0%, 0%, 1);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  line-height: normal;
 }
 
 .code-snippet {
-	max-width: 96vw;
-	overflow-x: auto;
+  /* max-width: 96vw; */
+  overflow-x: auto;
 }
 
-.code-snippet>pre {
-	font-size: 12px;
-	overflow-wrap: break-word;
-	padding: 0;
-	width: 100%;
+.code-snippet > pre {
+  background-color: #fdfdfd;
+  margin-top: 0;
+  font-size: 12px;
+  overflow-wrap: break-word;
+  padding: 0;
+  width: 100%;
 }
 
 code {
-	background-color: #eeeeee;
-	word-break: normal !important;
-	word-wrap: normal !important;
-	white-space: pre-wrap !important;
+  word-break: normal !important;
+  word-wrap: normal !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: break-word;
 }
 
 .explorer code {
-	max-height: 400px;
+  max-height: 400px;
 }
 
 .sample-browser code {
-	max-height: 800px;
+  max-height: calc(100vh - 400px);
+}
+
+code.code-short {
+  max-height: 200px !important;
 }
 
 .sidebar {
-	position: fixed;
-	top: 118px;
-	/* This will get dynamically changed by sticky-sidebar.js */
-	bottom: 0;
-	overflow: auto;
+  position: fixed;
+  top: 118px;
+  /* This will get dynamically changed by sticky-sidebar.js */
+  bottom: 0;
+  overflow: auto;
 }
 
 /* Weird conflicts were happening with the docs CSS when it was named toc */
 
-.toc>ul a,
-.toc>ul span {
-	color: #222;
-	display: block;
-	font-size: .875rem;
-	line-height: 1.3;
-	margin-left: 1.8rem;
-	margin-right: 1rem;
-	padding-bottom: 6px;
-	padding-top: 4px;
-	word-wrap: break-word;
+.toc > ul a,
+.toc > ul span {
+  color: #222;
+  display: block;
+  font-size: 0.875rem;
+  line-height: 1.3;
+  margin-left: 1.8rem;
+  margin-right: 1rem;
+  padding-bottom: 6px;
+  padding-top: 4px;
+  word-wrap: break-word;
 }
 
 ul.action-list {
-	padding-left: 0;
+  padding-left: 0;
 }
 
 .toc-todo ul {
-	padding-left: 0;
+  padding-left: 0;
 }
 
 .toc-todo ul.toc-tree {
-	margin-left: -30px;
-	margin-top: 0;
+  margin-left: -30px;
+  margin-top: 0;
 }
 
 .samples-sidebar-list {
-	margin-top: 0;
+  margin-top: 0;
 }
 
 .toc-todo ul ul {
-	margin: 0;
+  margin: 0;
 }
 
-.toc-todo>div>ul>li {
-	padding-left: 30px;
+.toc-todo > div > ul > li {
+  padding-left: 30px;
 }
 
 /* For samples, since there's no heirarchy, don't indent the left as much */
 .toc-todo .samples-sidebar-list li {
-	padding-left: 12px;
+  padding-left: 12px;
 }
 
 .toc-todo li {
-	padding-left: 30px;
-	padding-top: 3px;
-	padding-bottom: 3px;
-	margin: 0;
-	display: block;
+  padding-left: 30px;
+  padding-top: 3px;
+  padding-bottom: 3px;
+  margin: 0;
+  display: block;
 }
 
 /* Cards with a speak tag have <s> tags sometimes */
 s {
-	text-decoration: none;
+  text-decoration: none;
 }
 
 .toc-todo .selectedHolder {
-	background-color: #0050c5;
+  background-color: #0050c5;
 }
 
-.toc-todo .selectedHolder>a,
-.toc-todo .selectedHolder>a:hover {
-	color: #fff;
+.toc-todo .selectedHolder > a,
+.toc-todo .selectedHolder > a:hover {
+  color: #fff;
 }
 
 .toc-todo li a {
-	color: black;
+  color: black;
 }
 
 .toc-todo a:active,
 .toc-todo a:hover {
-	color: #0078d7;
+  color: #0078d7;
 }
 
-.toc-todo>ul {
-	display: block;
-	margin-left: 0;
-	padding-left: 0;
+.toc-todo > ul {
+  display: block;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 ul,
 menu,
 dir {
-	display: block;
-	list-style-type: disc;
-	-webkit-margin-before: 1em;
-	-webkit-margin-after: 1em;
-	-webkit-margin-start: 0px;
-	-webkit-margin-end: 0px;
-	-webkit-padding-start: 40px;
+  display: block;
+  list-style-type: disc;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+  -webkit-padding-start: 40px;
 }
 
 /* docs css removes list padding. we want it back */
-.ac-textBlock>ol,
-.ac-textBlock>ul {
-	padding-left: 40px;
+.ac-textBlock > ol,
+.ac-textBlock > ul {
+  padding-left: 40px;
+}
+
+@media print, screen and (min-width: 601px) {
+	.blog .blog-post-wrapper {
+		padding: 0 100px;
+		background: white;
+		margin-top: 32px
+	}
+}
+
+@media print, screen and (max-width: 601px) {
+	.blog .blog-post-wrapper {
+		margin-top: 0px;
+	}
+}
+
+.blog img {
+  max-width: 95%;
+  height: auto;
+}
+
+.blog .coverImage {
+  height: 172px;
+  border: solid 1px rgba(0, 0, 0, 0.15);
+  background-position: 50% 50%;
+  background-size: cover;
+  background-color: #f0f0f0;
+  display: block;
+}
+
+.blog h1,
+.blog h2 {
+  margin-top: 20px;
+}
+
+.blog .blog-content {
+	font-size: 16px;
+	line-height: 160%;
+}
+
+.blog .article-title:link,
+.blog .article-title:visited {
+  color: #000;
+  font-size: 21px;
+  display: block;
+  font-weight: 600;
+  margin: 12px 0;
+  text-overflow: ellipsis;
+}
+
+.blog a:hover {
+  text-decoration: none;
+}
+
+.blog .article-subtitle:link,
+.blog .article-subtitle:visited {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 17px;
+  line-height: 22px;
+  margin-top: 7px;
+  display: block;
+}
+
+.blog a:hover {
+  text-decoration: none;
+}
+
+.blog .article-author {
+  display: block;
+  font-size: 14px;
+  margin-bottom: -2px;
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.54) !important;
+}
+
+.blog .article-date {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+}
+
+.blog .reading-time {
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 13px;
+}
+
+.blog pre {
+  background-color: #fafafa;
+  padding: 0;
+  margin: 12px -16px;
+  border: none;
+}
+
+.blog pre > code {
+  padding-left: 16px;
+  font-size: 1.1em;
+}
+
+.hljs {
+  background: #fafafa;
+}
+
+.homepage h1 {
+  line-height: 48px;
+  font-weight: 800;
+}
+
+.homepage h2 {
+  font-size: 28px;
+  font-weight: bolder;
+  line-height: 36px;
+}
+
+.homepage h3 {
+  font-size: 20px;
+  font-weight: lighter;
+  line-height: 30px;
+}
+
+.homepage h4 {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: bolder;
+  margin-bottom: 1px;
+}
+
+.homepage h5 {
+  font-size: 16px;
+  line-height: 24px;
+  color: #555;
+  margin-top: 2px;
+}
+
+.homepage h6,
+.footer-holder h6 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-weight: bold;
+  color: #696969;
+}
+
+.homepage .divider {
+  border-bottom: solid 1px #ddd;
+  margin-top: 64px;
+  margin-bottom: 64px;
+}
+
+@media screen and (min-width: 601px) {
+  .center-large {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 601px) {
+  .homepage .divider {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+@media screen and (max-width: 859px) {
+  .homepage .divider {
+    margin-left: calc(-16px);
+    margin-right: calc(-16px);
+  }
+
+  .homepage .section-video {
+    min-width: 350px;
+  }
+}
+
+@media print, screen and (min-width: 860px) {
+  .homepage .divider {
+    margin-left: calc(-24px);
+    margin-right: calc(-24px);
+  }
+
+  .homepage .section-video video {
+    min-width: 450px;
+  }
+}
+
+@media print, screen and (min-width: 1084px) {
+  .homepage .divider {
+    margin-left: calc(-5vw);
+    margin-right: calc(-5vw);
+  }
+
+  .homepage .section-video video {
+    min-width: 550px;
+  }
+}
+
+@media print, screen and (min-width: 1795px) {
+  .uhf-container:not(.has-padding) {
+    margin-right: auto;
+    margin-left: auto;
+    max-width: 1600px;
+    width: 1600px;
+  }
+}
+
+.homepage .author {
+  font-weight: bolder;
+  margin-bottom: -3px;
+  margin-top: 6px;
+}
+
+.homepage .title {
+  color: #696969;
+  margin-top: 0;
+}
+
+.homepage .mainSection {
+  /*background-color: #0078D7;*/
+}
+
+.homepage .w3-modal {
+  background-color: #2d2d2deb;
+}
+
+.homepage i.fab {
+  width: 15px;
+}
+
+.homepage i.fas,
+.homepage i.far {
+  width: 20px;
+}
+
+.fa,
+.fas {
+  font-weight: 900 !important;
+}
+
+.fab {
+  font-weight: normal !important;
+}
+
+.ac-blue {
+  color: #fff !important;
+  background-color: #0b78d0 !important;
+}
+
+.homepage a:link,
+.homepage a:visited {
+  color: #0b78d0;
+  font-size: 15px;
+  line-height: 29px;
+  font-weight: 600;
+}
+
+.homepage a:hover {
+  color: blue;
+  text-decoration: none;
+}
+
+/* .fa-chevron-right {
+  font-size: 11px;
+  font-weight: lighter;
+  font-family: "Font Awesome 5 Free";
+} */
+
+.footer-holder {
+  background-color: #f2f2f2 !important;
+}
+
+.footer-holder h6 {
+  color: #696969 !important;
+}
+
+.ac-footer {
+  font-size: 0.9em;
+}
+
+.ac-footer .brand {
+  font-weight: bold;
+  color: #696969;
+  white-space: nowrap;
+}
+
+.ac-footer a:link,
+.ac-footer a:visited {
+  color: #5a5a5a;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.ac-footer a:hover {
+  color: #6b6b6b;
+  text-decoration: none;
+}
+
+.ac-footer .post-subtitle {
+  margin-top: 0;
+  color: #696969;
+}
+
+.ac-footer .build-date {
+  color: #696969;
+}
+
+#uhf-footer {
+  margin-top: 0; /* The UFH footer adds a bunch of margin we don't need */
+  font-size: 1em;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 30px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 21px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 30px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }

@@ -39,7 +39,7 @@ namespace AdaptiveSharedNamespace
         void SetWrap(bool value);
 
     private:
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
 
         bool m_wrap;
         bool m_isMultiSelect;

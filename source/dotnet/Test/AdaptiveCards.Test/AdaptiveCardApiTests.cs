@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 namespace AdaptiveCards.Test
 {
@@ -94,7 +94,20 @@ namespace AdaptiveCards.Test
     }
   ]
 }";
-            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json));
+            // By default we should be throwing an exception when no version present.
+            Assert.ThrowsException<AdaptiveSerializationException>(() => AdaptiveCard.FromJson(json),
+                                                                   "Having no version tag should cause an exception to be thrown.");
+
+            // Or we can supply a replacement version to use
+            AdaptiveCard.OnDeserializingMissingVersion = () => new AdaptiveSchemaVersion(0, 5);
+            var card = AdaptiveCard.FromJson(json);
+            Assert.AreEqual(new AdaptiveSchemaVersion(0, 5), card.Card.Version);
+
+            // But make sure that if the callback throws an exception that it is allowed through
+            AdaptiveCard.OnDeserializingMissingVersion = () => throw new Exception();
+            Assert.ThrowsException<Exception>(() => AdaptiveCard.FromJson(json),
+                                              "An exception thrown from an OnDeserializingMissingVersion handler should be allowed to propagate out.");
+            AdaptiveCard.OnDeserializingMissingVersion = null;
         }
 
         [TestMethod]
@@ -1231,6 +1244,157 @@ namespace AdaptiveCards.Test
 
 
             StringAssert.Contains(ex.Message, "Property 'type' must be 'TextRun'");
+        }
+
+        void RenderCardTask(string payload)
+        {
+            AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(payload);
+            if (parseResult.Warnings.Count != 0)
+            {
+                throw new Exception("parse failed");
+            }
+        }
+
+        [TestMethod]
+        public void TestConcurrentParsing()
+        {
+            // card with invalid inline type
+            var adaptiveCard =
+@"{
+    ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+    ""type"": ""AdaptiveCard"",
+    ""version"": ""1.0"",
+    ""body"": [
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Publish Adaptive Card schema"",
+            ""weight"": ""bolder"",
+            ""size"": ""medium""
+        },
+        {
+            ""type"": ""ColumnSet"",
+            ""columns"": [
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""auto"",
+                    ""items"": [
+                        {
+                            ""type"": ""Image"",
+                            ""url"": ""https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"",
+                            ""size"": ""small"",
+                            ""style"": ""person""
+                        }
+                    ]
+                },
+                {
+                    ""type"": ""Column"",
+                    ""width"": ""stretch"",
+                    ""items"": [
+                        {
+                            ""type"": ""TextBlock"",
+                            ""text"": ""Matt Hidinger"",
+                            ""weight"": ""bolder"",
+                            ""wrap"": true
+                        },
+                        {
+                            ""type"": ""TextBlock"",
+                            ""spacing"": ""none"",
+                            ""text"": ""Created {{DATE(2017-02-14T06:08:39Z, SHORT)}}"",
+                            ""isSubtle"": true,
+                            ""wrap"": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            ""type"": ""TextBlock"",
+            ""text"": ""Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation."",
+            ""wrap"": true
+        },
+        {
+            ""type"": ""FactSet"",
+            ""facts"": [
+                {
+                    ""title"": ""Board:"",
+                    ""value"": ""Adaptive Card""
+                },
+                {
+                    ""title"": ""List:"",
+                    ""value"": ""Backlog""
+                },
+                {
+                    ""title"": ""Assigned to:"",
+                    ""value"": ""Matt Hidinger""
+                },
+                {
+                    ""title"": ""Due date:"",
+                    ""value"": ""Not set""
+                }
+            ]
+        }
+    ],
+    ""actions"": [
+        {
+            ""type"": ""Action.ShowCard"",
+            ""title"": ""Set due date"",
+            ""card"": {
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Input.Date"",
+                        ""id"": ""dueDate""
+                    }
+                ],
+                ""actions"": [
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""OK""
+                    }
+                ]
+            }
+        },
+        {
+            ""type"": ""Action.ShowCard"",
+            ""title"": ""Comment"",
+            ""card"": {
+                ""type"": ""AdaptiveCard"",
+                ""body"": [
+                    {
+                        ""type"": ""Input.Text"",
+                        ""id"": ""comment"",
+                        ""isMultiline"": true,
+                        ""placeholder"": ""Enter your comment""
+                    }
+                ],
+                ""actions"": [
+                    {
+                        ""type"": ""Action.Submit"",
+                        ""title"": ""OK""
+                    }
+                ]
+            }
+        }
+    ]
+}";
+            List<Task> tasks = new List<Task>();
+            for (var i = 0; i < 10; i++)
+            {
+                var payload = adaptiveCard;
+                var task = Task.Run(() => { RenderCardTask(payload); });
+                tasks.Add(task);
+            }
+
+            try
+            {
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch
+            {
+                // it's perfectly fine card. if there is exception, it is due to concurreny
+                // as it's the only variable.
+                Assert.Fail("Unexpected failure parsing a valid AdaptiveCard");
+            }
         }
     }
 }

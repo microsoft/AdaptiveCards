@@ -9,6 +9,7 @@ export const FlexWrap = 'wrap';
 export const FlexStart = 'flex-start';
 export const SpaceBetween = 'space-between';
 export const AlignStretch = 'stretch';
+export const Cover = 'cover';
 export const Auto = 'auto';
 export const Repeat = 'repeat';
 export const Absolute = "absolute";
@@ -41,6 +42,7 @@ export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
 export const BlackColor = 'black';
+export const buttonDefaultColor = "#1D9BF6";
 
 export const TrueString = "true";
 export const FalseString = "false";
@@ -51,3 +53,6 @@ export const Emphasis = 'emphasis';
 export const NumberInput = 'Input.Number';
 
 export const ErrorMessage = "Required";
+
+export const TypeColumnSet = "ColumnSet";
+export const TypeAdaptiveCard = "AdaptiveCard";

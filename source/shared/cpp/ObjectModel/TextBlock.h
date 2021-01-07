@@ -61,7 +61,7 @@ namespace AdaptiveSharedNamespace
         unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
         std::shared_ptr<TextElementProperties> m_textElementProperties;
-        void PopulateKnownPropertiesSet() override;
+        void PopulateKnownPropertiesSet();
     };
 
     class TextBlockParser : public BaseCardElementParser

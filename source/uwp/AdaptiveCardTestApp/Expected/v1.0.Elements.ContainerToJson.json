@@ -1,1 +1,1 @@
-{"actions":[],"body":[{"items":[{"text":"This is some text","type":"TextBlock"},{"type":"Image","url":"http://adaptivecards.io/content/cats/1.png"}],"type":"Container"}],"type":"AdaptiveCard","version":"1.0"}
+{"actions":[],"body":[{"items":[{"text":"This is some text","type":"TextBlock"},{"type":"Image","url":"https://adaptivecards.io/content/cats/1.png"}],"type":"Container"}],"type":"AdaptiveCard","version":"1.0"}

@@ -19,7 +19,7 @@ namespace AdaptiveSharedNamespace
         TextElementProperties(TextElementProperties&&) = default;
         TextElementProperties& operator=(const TextElementProperties&) = default;
         TextElementProperties& operator=(TextElementProperties&&) = default;
-        ~TextElementProperties() = default;
+        virtual ~TextElementProperties() = default;
 
         virtual Json::Value SerializeToJsonValue(Json::Value& root) const;
 
@@ -49,6 +49,8 @@ namespace AdaptiveSharedNamespace
         virtual void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
 
     private:
+        static std::string _ProcessHTMLEntities(const std::string& input);
+
         std::string m_text;
         TextSize m_textSize;
         TextWeight m_textWeight;
