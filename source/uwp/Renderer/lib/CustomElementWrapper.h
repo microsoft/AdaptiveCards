@@ -10,18 +10,15 @@ namespace AdaptiveNamespace
     class CustomElementWrapper : public AdaptiveSharedNamespace::BaseCardElement
     {
     public:
-        CustomElementWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement) :
-            BaseCardElement(AdaptiveSharedNamespace::CardElementType::Custom), m_cardElement(cardElement)
-        {
-        }
+        CustomElementWrapper(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* cardElement);
 
         bool GetSeparator() const override;
-        void SetSeparator(const bool value) override;
+        void SetSeparator(bool value) override;
 
         Spacing GetSpacing() const override;
-        void SetSpacing(const Spacing value) override;
+        void SetSpacing(Spacing value) override;
 
-        std::string GetId() const override;
+        void SetId(std::string&& value) override;
         void SetId(const std::string& value) override;
 
         virtual Json::Value SerializeToJsonValue() const override;
@@ -31,6 +28,9 @@ namespace AdaptiveNamespace
         HRESULT GetWrappedElement(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** cardElement);
 
     private:
+        std::string GetCardElementId() const;
+        void SetCardElementId(const std::string& value);
+
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCardElement> m_cardElement;
     };
 }

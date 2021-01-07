@@ -10,7 +10,7 @@
         <tags>adaptivecards;adaptive-cards</tags>
         <projectUrl>https://adaptivecards.io</projectUrl>
         <iconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</iconUrl>
-        <licenseUrl>https://raw.githubusercontent.com/Microsoft/AdaptiveCards/master/LICENSE</licenseUrl>
+        <license type="expression">MIT</license>
         <copyright>© Microsoft Corporation. All rights reserved.</copyright>
     </metadata>
     <files>

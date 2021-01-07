@@ -1,7 +1,7 @@
 export default payloads = [
   {
-    "title": "TextBlock.Markdown.json",
-    "json": require('./TextBlock.Markdown.json')
+    "title": "Accessibility.json",
+    "json": require('./Accessibility.json')
   },
   {
     "title": "Action.NoBody.json",
@@ -172,6 +172,10 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
+    "title": "CustomActions.Rendering.json",
+    "json": require('./CustomActions.Rendering.json')
+  },
+  {
     "title": "CustomElement.Rendering.json",
     "json": require('./CustomElement.Rendering.json')
   },
@@ -310,6 +314,10 @@ export default payloads = [
   {
     "title": "TextBlock.json",
     "json": require('./TextBlock.json')
+  },
+  {
+    "title": "TextBlock.Markdown.json",
+    "json": require('./TextBlock.Markdown.json')
   },
   {
     "title": "TextBlock.MaxLines.json",

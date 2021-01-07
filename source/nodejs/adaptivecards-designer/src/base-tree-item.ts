@@ -1,4 +1,6 @@
 import { DraggableElement } from "./draggable-element";
+import { Constants } from "adaptivecards-controls";
+import { v4 as uuidv4 } from "uuid";
 
 export abstract class BaseTreeItem extends DraggableElement {
     private static collapsedIconClass = "acd-icon-chevronRight";
@@ -21,6 +23,8 @@ export abstract class BaseTreeItem extends DraggableElement {
             else {
                 this._treeItemElement.classList.remove("selected");
             }
+
+            this._rootElement.setAttribute("aria-selected", this._isSelected.toString());
 
             this.selectedChanged(scrollIntoView);
         }
@@ -64,8 +68,37 @@ export abstract class BaseTreeItem extends DraggableElement {
         }
     }
 
+    private getExpandCollapseAriaText() : string {
+        return (this._isExpanded ? "collapse" : "expand") + " " + this.getLabelText() + " element";
+    }
+
     protected internalRender(): HTMLElement {
-        this._rootElement = document.createElement("div");
+        const hasChildren = (this.getChildCount() > 0);
+
+        const labelId = uuidv4();
+
+        this._rootElement = document.createElement("li");
+        this._rootElement.style.paddingLeft = "0";
+        this._rootElement.style.listStyleType = "none";
+        this._rootElement.setAttribute("aria-labelledby", labelId);
+        this._rootElement.setAttribute("aria-level", this._level.toString());
+        this._rootElement.setAttribute("aria-selected", this._isSelected.toString());
+        this._rootElement.tabIndex = 0;
+
+        if (hasChildren) {
+            this._rootElement.setAttribute("aria-expanded", this._isExpanded.toString());
+        }
+
+        this._rootElement.setAttribute("role", "treeitem");
+        this._rootElement.onclick = () => { this.click; };
+        this._rootElement.onkeydown = (e: KeyboardEvent) => {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
+                this.setIsSelected(!this.isSelected, !this.isSelected);
+                this._rootElement.focus();
+                e.preventDefault();
+                e.cancelBubble = true;
+            }
+        }
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
@@ -73,10 +106,19 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._treeItemElement.style.alignItems = "center";
         this._treeItemElement.style.paddingLeft = this.getIndentationLevelIncrement() * (1 + this.level) + "px";
 
+        if (hasChildren) {
+            this._treeItemElement.setAttribute("role", "treeitem");
+        }
+        this._treeItemElement.setAttribute("aria-labelledby", labelId);
+
         this._expandCollapseElement = document.createElement("div");
         this._expandCollapseElement.classList.add("acd-tree-item-expandCollapseButton");
         this._expandCollapseElement.style.flex = "0 0 auto";
-        this._expandCollapseElement.style.visibility = this.getChildCount() > 0 ? "visible" : "hidden";
+        this._expandCollapseElement.style.visibility = hasChildren ? "visible" : "hidden";
+        this._expandCollapseElement.tabIndex = 0;
+        this._expandCollapseElement.setAttribute("role", "button");
+        this._expandCollapseElement.setAttribute("aria-label", this.getExpandCollapseAriaText());
+
         this._expandCollapseElement.onclick = (e: MouseEvent) => {
             this._isExpanded = !this._isExpanded;
 
@@ -84,6 +126,18 @@ export abstract class BaseTreeItem extends DraggableElement {
 
             e.cancelBubble = true;
             e.preventDefault();
+        }
+
+        this._expandCollapseElement.onkeydown = (e: KeyboardEvent) => {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
+                this._isExpanded = !this._isExpanded;
+
+                this.updateLayout();
+                this._expandCollapseElement.focus();
+
+                e.preventDefault();
+                e.cancelBubble = true;
+            }
         }
 
         this._treeItemElement.appendChild(this._expandCollapseElement);
@@ -107,6 +161,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         let labelSpan = document.createElement("span");
         labelSpan.classList.add("acd-tree-item-typeName");
         labelSpan.innerText = this.getLabelText();
+        labelSpan.id = labelId;
 
         textElement.appendChild(labelSpan);
 
@@ -124,15 +179,23 @@ export abstract class BaseTreeItem extends DraggableElement {
 
         this._rootElement.appendChild(this._treeItemElement);
 
-        this._childContainerElement = document.createElement("div");
+        if (hasChildren) {
+            this._childContainerElement = document.createElement("ul");
+            this._childContainerElement.style.paddingLeft = "0";
+            this._childContainerElement.style.listStyleType = "none";
+            this._childContainerElement.setAttribute("role", "group");
 
-        for (let i = 0; i < this.getChildCount(); i++) {
-            let renderedChildItem = this.getChildAt(i).render();
+            for (let i = 0; i < this.getChildCount(); i++) {
+                let renderedChildItem = this.getChildAt(i).render();
 
-            this._childContainerElement.appendChild(renderedChildItem);
+                renderedChildItem.setAttribute("aria-posinset", (i+1).toString());
+                renderedChildItem.setAttribute("aria-setsize", this.getChildCount().toString());
+
+                this._childContainerElement.appendChild(renderedChildItem);
+            }
+
+            this._rootElement.appendChild(this._childContainerElement);
         }
-
-        this._rootElement.appendChild(this._childContainerElement);
 
         this.updateLayout();
 
@@ -151,15 +214,19 @@ export abstract class BaseTreeItem extends DraggableElement {
     abstract getChildAt(index: number): BaseTreeItem;
 
     updateLayout() {
-        if (this._isExpanded) {
-            this._childContainerElement.classList.remove("acd-hidden");
-            this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
-            this._expandCollapseElement.classList.add(BaseTreeItem.expandedIconClass);
-        }
-        else {
-            this._childContainerElement.classList.add("acd-hidden");
-            this._expandCollapseElement.classList.add(BaseTreeItem.collapsedIconClass);
-            this._expandCollapseElement.classList.remove(BaseTreeItem.expandedIconClass);
+        if (this.getChildCount() > 0) {
+            this._rootElement.setAttribute("aria-expanded", this._isExpanded.toString());
+            this._expandCollapseElement.setAttribute("aria-label", this.getExpandCollapseAriaText());
+            if (this._isExpanded) {
+                this._childContainerElement?.classList.remove("acd-hidden");
+                this._expandCollapseElement.classList.remove(BaseTreeItem.collapsedIconClass);
+                this._expandCollapseElement.classList.add(BaseTreeItem.expandedIconClass);
+            }
+            else {
+                this._childContainerElement?.classList.add("acd-hidden");
+                this._expandCollapseElement.classList.add(BaseTreeItem.collapsedIconClass);
+                this._expandCollapseElement.classList.remove(BaseTreeItem.expandedIconClass);
+            }
         }
     }
 

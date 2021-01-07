@@ -4,6 +4,12 @@
     <attr name="adaptiveActionDestructive" format="reference" />
     <attr name="adaptiveInlineAction" format="reference" />
     <attr name="adaptiveInlineActionImage" format="reference" />
+    <attr name="adaptiveShowCardAction" format="reference" />
     <style name="adaptiveInlineAction" format="reference" />
     <style name="adaptiveInlineActionImage" format="reference" />
+    <attr name="adaptiveUsingCustomTextInputs" format="boolean" />
+    <attr name="adaptiveUsingCustomChoiceSetInputs" format="boolean" />
+    <declare-styleable name="adaptiveCustomInputState">
+        <attr name="state_error" format="boolean" />
+    </declare-styleable>
 </resources>

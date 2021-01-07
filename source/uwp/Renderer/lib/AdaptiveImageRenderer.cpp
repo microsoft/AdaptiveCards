@@ -425,8 +425,8 @@ namespace AdaptiveNamespace
                 ComPtr<XamlBuilder> strongThis(this);
                 THROW_IF_FAILED(getResourceStreamOperation->put_Completed(
                     Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationCompletedHandler<IRandomAccessStream*>>>(
-                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible](
-                            IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
+                        [strongThis, this, bitmapSource, strongImageControl, bitmapImage, stretch, isAutoSize, parentElement, imageContainer, isVisible]
+                            (IAsyncOperation<IRandomAccessStream*>* operation, AsyncStatus status) -> HRESULT {
                             if (status == AsyncStatus::Completed)
                             {
                                 // Get the random access stream
@@ -439,18 +439,31 @@ namespace AdaptiveNamespace
                                     return S_OK;
                                 }
 
-                                RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
-
+                                // Set the image source
                                 ComPtr<IImageSource> imageSource;
                                 RETURN_IF_FAILED(bitmapSource.As(&imageSource));
 
                                 SetImageSource(strongImageControl.Get(), imageSource.Get(), stretch);
 
-                                // Here should be the auto resizing, at this time we already have the image and everything set
-                                if (isAutoSize)
-                                {
-                                    SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                                }
+                                ComPtr<IAsyncAction> setSourceAction;
+                                RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
+
+                                auto callbackSource = Callback<IAsyncActionCompletedHandler>(
+                                    [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
+                                        (IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
+                                        if (status == AsyncStatus::Completed)
+                                        {
+                                            // Here should be the auto resizing, at this time we already have the image and everything set
+                                            if (isAutoSize)
+                                            {
+                                                SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                            }
+                                        }
+
+                                        return S_OK;
+                                    });
+
+                                RETURN_IF_FAILED(setSourceAction->put_Completed(callbackSource.Get()));
 
                                 return S_OK;
                             }
@@ -514,20 +527,33 @@ namespace AdaptiveNamespace
             ComPtr<XamlBuilder> strongThis(this);
             THROW_IF_FAILED(bufferWriteOperation->put_Completed(
                 Callback<Implements<RuntimeClassFlags<WinRtClassicComMix>, IAsyncOperationWithProgressCompletedHandler<UINT32, UINT32>>>(
-                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible](
-                        IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
+                    [strongThis, this, bitmapSource, randomAccessStream, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
+                        (IAsyncOperationWithProgress<UINT32, UINT32>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
                         randomAccessStream->Seek(0);
-                        RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
 
                         ComPtr<IImageSource> imageSource;
                         RETURN_IF_FAILED(bitmapSource.As(&imageSource));
 
                         SetImageSource(strongImageControl.Get(), imageSource.Get());
 
-                        if (isAutoSize)
-                        {
-                            SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
-                        }
+                        ComPtr<IAsyncAction> setSourceAction;
+                        RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
+
+                        auto callbackSource = Callback<IAsyncActionCompletedHandler>(
+                            [strongThis, this, strongImageControl, isAutoSize, parentElement, imageContainer, isVisible]
+                                (IAsyncAction* /*action*/, AsyncStatus status) -> HRESULT {
+                                if (status == AsyncStatus::Completed)
+                                {
+                                    if (isAutoSize)
+                                    {
+                                        SetAutoSize(strongImageControl.Get(), parentElement, imageContainer, isVisible, false /* imageFiresOpenEvent */);
+                                    }
+                                }
+
+                                return S_OK;
+                            });
+
+                        RETURN_IF_FAILED(setSourceAction->put_Completed(callbackSource.Get()));
 
                         return S_OK;
                     })
@@ -549,6 +575,7 @@ namespace AdaptiveNamespace
 
             ComPtr<IImageSource> bitmapImageSource;
             THROW_IF_FAILED(bitmapImage.As(&bitmapImageSource));
+
             SetImageSource(uiElement, bitmapImageSource.Get(), stretch);
 
             if (isAutoSize)
@@ -613,12 +640,15 @@ namespace AdaptiveNamespace
                                 [strongThis, this, bitmapSource, randomAccessStream, strongImageControl](
                                     IAsyncOperationWithProgress<UINT64, UINT64>* /*operation*/, AsyncStatus /*status*/) -> HRESULT {
                                     randomAccessStream->Seek(0);
-                                    RETURN_IF_FAILED(bitmapSource->SetSource(randomAccessStream.Get()));
 
                                     ComPtr<IImageSource> imageSource;
                                     RETURN_IF_FAILED(bitmapSource.As(&imageSource));
 
                                     SetImageSource(strongImageControl.Get(), imageSource.Get());
+
+                                    ComPtr<IAsyncAction> setSourceAction;
+                                    RETURN_IF_FAILED(bitmapSource->SetSourceAsync(randomAccessStream.Get(), &setSourceAction));
+
                                     return S_OK;
                                 })
                                 .Get());

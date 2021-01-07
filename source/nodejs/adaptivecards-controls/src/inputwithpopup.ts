@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Constants from "./constants";
+import { Constants } from "./constants";
 import * as Utils from "./utils";
 import { InputControl } from "./inputcontrol";
+import { v4 as uuidv4 } from "uuid";
 
 export abstract class PopupControl {
     private _isOpen: boolean = false;
@@ -14,8 +15,8 @@ export abstract class PopupControl {
     onClose: (popupControl: PopupControl, wasCancelled: boolean) => void;
 
     keyDown(e: KeyboardEvent) {
-        switch (e.keyCode) {
-            case Constants.KEY_ESCAPE:
+        switch (e.key) {
+            case Constants.keys.escape:
                 this.closePopup(true);
 
                 break;
@@ -26,6 +27,8 @@ export abstract class PopupControl {
         let element = document.createElement("div");
         element.tabIndex = 0;
         element.className = "ms-ctrl ms-ctrl-popup-container";
+        element.setAttribute("role", "dialog");
+        element.setAttribute("aria-modal", "true");
         element.onkeydown = (e) => {
             this.keyDown(e);
 
@@ -63,6 +66,13 @@ export abstract class PopupControl {
                 "ms-ctrl-slideRightToLeft",
                 "ms-ctrl-slideTopToBottom",
                 "ms-ctrl-slideRightToLeft");
+
+            window.addEventListener("resize", (e) => { this.closePopup(true); });
+
+            const rootElementLabel = rootElement.getAttribute("aria-label");
+            if (rootElementLabel) {
+                this._popupElement.setAttribute("aria-label", rootElementLabel);
+            }
 
             this._overlayElement.appendChild(this._popupElement);
 
@@ -169,8 +179,8 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     private _value: TValue;
 
     protected keyDown(e: KeyboardEvent) {
-        switch (e.keyCode) {
-            case Constants.KEY_ENTER:
+        switch (e.key) {
+            case Constants.keys.enter:
                 this.popup();
                 break;
         }
@@ -237,6 +247,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
 
         this._labelElement = document.createElement("span");
         this._labelElement.className = "ms-ctrl ms-dropdown-label";
+        this._labelElement.id = uuidv4(); // generate unique id for our label element
 
         this._dropDownButtonElement = document.createElement("i");
         this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();
@@ -248,7 +259,6 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     }
 
     popup() {
-        this._popupControl = this.createPopupControl();
         this._popupControl = this.createPopupControl();
         this._popupControl.onClose = (sender, wasCancelled) => {
             this.closePopup(wasCancelled);
@@ -263,6 +273,15 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         if (this.popupControl) {
             this.popupControl.closePopup(wasCancelled);
         }
+    }
+
+    get labelId(): string {
+        if (this._labelElement) {
+
+            return this._labelElement.id;
+        }
+
+        return undefined;
     }
 
     get isOpen(): boolean {

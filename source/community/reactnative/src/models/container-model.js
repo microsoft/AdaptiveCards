@@ -13,6 +13,7 @@ class BaseContainerModel extends BaseModel {
         this.style = payload.style;
         this.bleed = payload.bleed;
         this.minHeight = payload.minHeight;
+        this.altText = payload.altText;
     }
 }
 

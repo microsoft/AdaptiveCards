@@ -35,6 +35,20 @@ namespace AdaptiveNamespace
         ComPtr<IAdaptiveTextBlock> adaptiveTextBlock;
         RETURN_IF_FAILED(cardElement.As(&adaptiveTextBlock));
 
+        ComPtr<IAdaptiveTextElement> textBlockAsTextElement;
+        RETURN_IF_FAILED(adaptiveTextBlock.As(&textBlockAsTextElement));
+        HString text;
+        RETURN_IF_FAILED(textBlockAsTextElement->get_Text(text.ReleaseAndGetAddressOf()));
+
+        // If the text is null, return immediately without constructing a text block
+        if (text.Get() == nullptr)
+        {
+            *textBlockControl = nullptr;
+            renderContext->AddError(ABI::AdaptiveNamespace::ErrorStatusCode::RequiredPropertyMissing,
+                                      HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
+            return S_OK;
+        }
+
         ComPtr<ITextBlock> xamlTextBlock =
             XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
 

@@ -15,3 +15,13 @@ item {
     name: 'actionset'
 }
 
+item {
+    id: 5
+    name: 'image'
+}
+
+item {
+    id: 6
+    name: 'rating'
+}
+

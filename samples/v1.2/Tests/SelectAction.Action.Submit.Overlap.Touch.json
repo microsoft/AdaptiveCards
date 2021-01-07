@@ -1,0 +1,65 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"speak": "Calendar",
+	"selectAction": {
+		"type": "Action.OpenUrl",
+		"url": "https://msn.com"
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This whole card has an Action.OpenUrl select action, and has an ActionSet that has an Action.Submit. Both actions should work",
+			"wrap": true
+		},
+		{
+			"type": "Container",
+			"items": [
+				{
+					"type": "ColumnSet",
+					"columns": [
+						{
+							"type": "Column",
+							"width": "stretch",
+							"items": [
+								{
+									"type": "TextBlock",
+									"size": "large",
+									"text": "Test meeting",
+									"wrap": true,
+									"maxLines": 2,
+									"spacing": "medium"
+								},
+								{
+									"type": "TextBlock",
+									"isSubtle": true,
+									"text": "Today,  9:30 PM - 10:00 PM",
+									"spacing": "none"
+								}
+							]
+						},
+						{
+							"type": "Column",
+							"width": "125px",
+							"items": [
+								{
+									"type": "ActionSet",
+									"actions": [
+										{
+											"type": "Action.Submit",
+											"title": "Submit action",
+											"data": {
+												"info": "My submit action data"
+											}
+										}
+									]
+								}
+							],
+							"spacing": "none"
+						}
+					]
+				}
+			]
+		}
+	]
+}

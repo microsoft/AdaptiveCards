@@ -1,9 +1,21 @@
 {
+	"spacing": {
+		"small": 3,
+		"default": 8,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 10
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#EEEEEE"
+	},
 	"supportsInteractivity": true,
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
 	"fontTypes": {
 		"default": {
-			"fontFamily": "San Francisco",
+			"fontFamily": "'Segoe UI', 'sans-serif', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -18,7 +30,7 @@
 			}
 		},
 		"monospace": {
-			"fontFamily": "Courier New",
+			"fontFamily": "'Courier New', Courier, monospace",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,
@@ -33,179 +45,202 @@
 			}
 		}
 	},
+	"containerStyles": {
+		"default": {
+			"backgroundColor": "#FFFFFF",
+			"foregroundColors": {
+				"default": {
+					"default": "#000000",
+					"subtle": "#6f6f6f"
+				},
+				"accent": {
+					"default": "#0063B1",
+					"subtle": "#007AB0"
+				},
+				"attention": {
+					"default": "#EC130E",
+					"subtle": "#DDEC130E"
+				},
+				"good": {
+					"default": "#0B7814",
+					"subtle": "#DD028A02"
+				},
+				"light": {
+					"default": "#646464",
+					"subtle": "#767676"
+				},
+				"warning": {
+					"default": "#B75C00",
+					"subtle": "#DDB75C00"
+				}
+			}
+		},
+		"emphasis": {
+			"backgroundColor": "#EFEFEF",
+			"foregroundColors": {
+				"default": {
+					"default": "#000000",
+					"subtle": "#6f6f6f"
+				},
+				"accent": {
+					"default": "#4A54F0",
+					"subtle": "#881F6BF1"
+				},
+				"attention": {
+					"default": "#C42C07",
+					"subtle": "#DDE31B13"
+				},
+				"good": {
+					"default": "#0B7814",
+					"subtle": "#DD0D860A"
+				},
+				"warning": {
+					"default": "#935A10",
+					"subtle": "#DDBD5400"
+				},
+				"light": {
+					"default": "#575757",
+					"subtle": "#DD737373"
+				}
+			}
+		},
+		"accent": {
+			"backgroundColor": "#D7E7FA",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#66000000"
+				},
+				"light": {
+					"default": "#646464",
+					"subtle": "#33646464"
+				},
+				"accent": {
+					"default": "#145FDD",
+					"subtle": "#88145FDD"
+				},
+				"attention": {
+					"default": "#C42C07",
+					"subtle": "#DDC42C07"
+				},
+				"good": {
+					"default": "#0B7814",
+					"subtle": "#DD0B7814"
+				},
+				"warning": {
+					"default": "#935A10",
+					"subtle": "#DD935A10"
+				}
+			}
+		},
+		"good": {
+			"backgroundColor": "#CCFFCC",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#66000000"
+				},
+				"light": {
+					"default": "#6E6E6E",
+					"subtle": "#336E6E6E"
+				},
+				"accent": {
+					"default": "#2168E4",
+					"subtle": "#882168E4"
+				},
+				"attention": {
+					"default": "#CC3300",
+					"subtle": "#DDCC3300"
+				},
+				"good": {
+					"default": "#0F8109",
+					"subtle": "#DD0F8109"
+				},
+				"warning": {
+					"default": "#9A630D",
+					"subtle": "#DD9A630D"
+				}
+			}
+		},
+		"attention": {
+			"backgroundColor": "#FFC5B2",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#66000000"
+				},
+				"light": {
+					"default": "#5A5A5A",
+					"subtle": "#335A5A5A"
+				},
+				"accent": {
+					"default": "#0854C5",
+					"subtle": "#880854C5"
+				},
+				"attention": {
+					"default": "#A92E0E",
+					"subtle": "#DDA92E0E"
+				},
+				"good": {
+					"default": "#256824",
+					"subtle": "#DD256824"
+				},
+				"warning": {
+					"default": "#775502",
+					"subtle": "#DD775502"
+				}
+			}
+		},
+		"warning": {
+			"backgroundColor": "#FFE2B2",
+			"foregroundColors": {
+				"default": {
+					"default": "#333333",
+					"subtle": "#EE333333"
+				},
+				"dark": {
+					"default": "#000000",
+					"subtle": "#66000000"
+				},
+				"light": {
+					"default": "#646464",
+					"subtle": "#33646464"
+				},
+				"accent": {
+					"default": "#0F60DC",
+					"subtle": "#880F60DC"
+				},
+				"attention": {
+					"default": "#BF3505",
+					"subtle": "#DDBF3505"
+				},
+				"good": {
+					"default": "#207725",
+					"subtle": "#DD207725"
+				},
+				"warning": {
+					"default": "#866107",
+					"subtle": "#DD866107"
+				}
+			}
+		}
+	},
 	"imageSizes": {
 		"small": 40,
 		"medium": 80,
 		"large": 160
-	},
-	"containerStyles": {
-		"default": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#EAEAEA"
-		},
-		"emphasis": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#08000000",
-			"borderColor": "#FF000000",
-			"borderThickness": 1
-		},
-		"good": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#DD54A254"
-		},
-		"warning": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#DDC3AB23"
-		},
-		"attention": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#DDFF0000",
-			"borderColor": "#FF000000",
-			"borderThickness": 2
-		},
-		"accent": {
-			"foregroundColors": {
-				"default": {
-					"default": "#333333",
-					"subtle": "#EE333333"
-				},
-				"accent": {
-					"default": "#2E89FC",
-					"subtle": "#882E89FC"
-				},
-				"good": {
-					"default": "#54A254",
-					"subtle": "#DD54A254"
-				},
-				"warning": {
-					"default": "#C3AB23",
-					"subtle": "#DDC3AB23"
-				},
-				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
-				}
-			},
-			"backgroundColor": "#882E89FC",
-			"borderThickness": 1
-		}
-	},
-	"spacing": {
-		"small": 3,
-		"default": 8,
-		"medium": 20,
-		"large": 30,
-		"extraLarge": 40,
-		"padding": 10
-	},
-	"separator": {
-		"lineThickness": 1,
-		"lineColor": "#FF000000"
 	},
 	"actions": {
 		"maxActions": 5,
@@ -224,8 +259,8 @@
 		"allowCustomStyle": true
 	},
 	"imageSet": {
-		"imageSize": "Medium",
-		"maxImageHeight": 999
+		"imageSize": "medium",
+		"maxImageHeight": 100
 	},
 	"factSet": {
 		"title": {

@@ -20,6 +20,7 @@ import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
 import * as Constants from './constants';
+import { CustomActionRenderer } from './custom-action-renderer';
 
 export default class Renderer extends React.Component {
 
@@ -68,45 +69,46 @@ export default class Renderer extends React.Component {
 
         // Create a data binding context, and set its $root property to the
         // data object to bind the template to
-        var context = new ACData.EvaluationContext();
-        context.$root = {
-            "name": "Matt",
-            "photo": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
-            "manager": {
-                "name": "Thomas",
-                "title": "PM Lead"
-            },
-            "message": "{\"type\":\"Deployment\",\"buildId\":\"9542982\",\"releaseId\":\"129\",\"buildNumber\":\"20180504.3\",\"releaseName\":\"Release-104\",\"repoProvider\":\"GitHub\"}",
-            "peers": [
-                {
-                    "name": "Lei",
-                    "title": "Sr Program Manager"
+        var context = {
+            $root: {
+                "name": "Matt",
+                "photo": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                "manager": {
+                    "name": "Thomas",
+                    "title": "PM Lead"
                 },
-                {
-                    "name": "Andrew",
-                    "title": "Program Manager II"
+                "message": "{\"type\":\"Deployment\",\"buildId\":\"9542982\",\"releaseId\":\"129\",\"buildNumber\":\"20180504.3\",\"releaseName\":\"Release-104\",\"repoProvider\":\"GitHub\"}",
+                "peers": [
+                    {
+                        "name": "Lei",
+                        "title": "Sr Program Manager"
+                    },
+                    {
+                        "name": "Andrew",
+                        "title": "Program Manager II"
+                    },
+                    {
+                        "name": "Mary Anne",
+                        "title": "Program Manager"
+                    }
+                ],
+                "stockName": "Microsoft Corp (NASDAQ: MSFT)",
+                "stockValue": "75.30",
+                "title": "Publish Adaptive Card Schema",
+                "description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+                "creator": {
+                    "name": "Matt Hidinger",
+                    "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
                 },
-                {
-                    "name": "Mary Anne",
-                    "title": "Program Manager"
-                }
-            ],
-            "stockName": "Microsoft Corp (NASDAQ: MSFT)",
-            "stockValue": "75.30",
-            "title": "Publish Adaptive Card Schema",
-            "description": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
-            "creator": {
-                "name": "Matt Hidinger",
-                "profileImage": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg"
-            },
-            "createdUtc": "2017-02-14T06:08:39Z",
-            "viewUrl": "https://adaptivecards.io",
-            "properties": [
-                { "key": "Board", "value": "Adaptive Cards" },
-                { "key": "List", "value": "Backlog" },
-                { "key": "Assigned to", "value": "Matt Hidinger" },
-                { "key": "Due date", "value": "Not set" }
-            ]
+                "createdUtc": "2017-02-14T06:08:39Z",
+                "viewUrl": "https://adaptivecards.io",
+                "properties": [
+                    { "key": "Board", "value": "Adaptive Cards" },
+                    { "key": "List", "value": "Backlog" },
+                    { "key": "Assigned to", "value": "Matt Hidinger" },
+                    { "key": "Due date", "value": "Not set" }
+                ]
+            }
         }
 
         // "Expand" the template - this generates the final payload for the Adaptive Card,
@@ -115,7 +117,11 @@ export default class Renderer extends React.Component {
     }
 
     render() {
+        //Register Custom Components
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
+
+        //Register Custom Actions
+        Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
         let { isJSONVisible } = this.state;
 
         //We will update the payload with method bindPayloadWithData, if isDataBinding is true.
@@ -159,7 +165,7 @@ export default class Renderer extends React.Component {
                 'Rendered Submit',
                 JSON.stringify(actionObject.data),
                 [
-                    { text: "Okay", onPress: () => console.log('OK Pressed') },
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
                 ],
                 { cancelable: false }
             )

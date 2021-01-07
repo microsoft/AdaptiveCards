@@ -13,7 +13,7 @@
                     "items": [
                         {
                             "type": "Image",
-                            "url": "{photo}",
+                            "url": "${creator.profileImage}",
                             "altText": "Profile picture",
                             "size": "Small",
                             "style": "Person"
@@ -26,7 +26,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "Hi {name}!",
+                            "text": "Hi ${name}!",
                             "size": "Medium"
                         },
                         {
@@ -40,7 +40,7 @@
         },
         {
             "type": "TextBlock",
-            "text": "Your manager is: **{manager.name}**"
+            "text": "Your manager is: **${manager.name}**"
         },
         {
             "type": "TextBlock",
@@ -50,9 +50,9 @@
             "type": "FactSet",
             "facts": [
                 {
-                    "$data": "{peers}",
-                    "title": "{name}",
-                    "value": "{title}"
+                    "$data": "${peers}",
+                    "title": "${name}",
+                    "value": "${title}"
                 }
             ]
         },

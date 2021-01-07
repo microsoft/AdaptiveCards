@@ -8,34 +8,40 @@
 			"type": "TextBlock",
 			"text": "Passengers",
 			"weight": "bolder",
-			"isSubtle": false
+			"isSubtle": false,
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Sarah Hum",
-			"separator": true
+			"separator": true,
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Jeremy Goldberg",
-			"spacing": "none"
+			"spacing": "none",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Evan Litvak",
-			"spacing": "none"
+			"spacing": "none",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "2 Stops",
 			"weight": "bolder",
-			"spacing": "medium"
+			"spacing": "medium",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Fri, October 10 8:30 AM",
+			"text": "Tue, May 30, 2017 12:25 PM",
 			"weight": "bolder",
-			"spacing": "none"
+			"spacing": "none",
+			"wrap": true
 		},
 		{
 			"type": "ColumnSet",
@@ -48,14 +54,16 @@
 						{
 							"type": "TextBlock",
 							"text": "San Francisco",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"size": "extraLarge",
 							"color": "accent",
 							"text": "SFO",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				},
@@ -65,7 +73,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "&nbsp;"
+							"text": "&nbsp;",
+							"wrap": true
 						},
 						{
 							"type": "Image",
@@ -84,7 +93,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "right",
 							"text": "Amsterdam",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
@@ -92,7 +102,8 @@
 							"size": "extraLarge",
 							"color": "accent",
 							"text": "AMS",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				}
@@ -102,13 +113,15 @@
 			"type": "TextBlock",
 			"text": "Non-Stop",
 			"weight": "bolder",
-			"spacing": "medium"
+			"spacing": "medium",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Fri, October 18 9:50 PM",
+			"text": "Fri, Jun 2, 2017 1:55 PM",
 			"weight": "bolder",
-			"spacing": "none"
+			"spacing": "none",
+			"wrap": true
 		},
 		{
 			"type": "ColumnSet",
@@ -121,14 +134,16 @@
 						{
 							"type": "TextBlock",
 							"text": "Amsterdam",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"size": "extraLarge",
 							"color": "accent",
 							"text": "AMS",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				},
@@ -138,7 +153,8 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "&nbsp;"
+							"text": "&nbsp;",
+							"wrap": true
 						},
 						{
 							"type": "Image",
@@ -157,7 +173,8 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "right",
 							"text": "San Francisco",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
@@ -165,7 +182,8 @@
 							"size": "extraLarge",
 							"color": "accent",
 							"text": "SFO",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				}
@@ -183,7 +201,8 @@
 							"type": "TextBlock",
 							"text": "Total",
 							"size": "medium",
-							"isSubtle": true
+							"isSubtle": true,
+							"wrap": true
 						}
 					]
 				},
@@ -196,7 +215,8 @@
 							"horizontalAlignment": "right",
 							"text": "$4,032.54",
 							"size": "medium",
-							"weight": "bolder"
+							"weight": "bolder",
+							"wrap": true
 						}
 					]
 				}

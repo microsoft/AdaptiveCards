@@ -21,7 +21,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		properties = sortProperties(properties);
 
 		if (includeVersion && defined(elementVersion) && elementVersion != "1.0") {
-			md += "#### Introduced in version " + elementVersion + "\n\n";
+			md += "**Introduced in version " + elementVersion + "**\n\n";
 		}
 
 		var formattedProperties = [];
@@ -104,7 +104,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		}
 
 		if (inheritedFormattedProperties.length > 0) {
-			md += "\n**Inherited properties**\n\n";
+			md += "\n### Inherited properties\n\n";
 			md += createTable(inheritedFormattedProperties);
 			md += "\n";
 		}
@@ -118,7 +118,7 @@ function createTable(formattedProperties: any[]) {
 	/*
 		table([
 		['Branch', 'Commit'],
-		['master', '0123456789abcdef'],
+		['main', '0123456789abcdef'],
 		['staging', 'fedcba9876543210']
 		])
 	*/
@@ -180,7 +180,7 @@ export function createEnumSummary(enumType: SchemaEnum) {
 	/*
 		table([
 		['Branch', 'Commit'],
-		['master', '0123456789abcdef'],
+		['main', '0123456789abcdef'],
 		['staging', 'fedcba9876543210']
 		])
 	*/

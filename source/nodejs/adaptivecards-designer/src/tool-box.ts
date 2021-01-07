@@ -1,4 +1,5 @@
 import { SettingsManager } from "./settings-manager";
+import { Constants } from "adaptivecards-controls";
 
 export interface IToolboxCommand {
     title: string;
@@ -108,17 +109,23 @@ export class Toolbox {
 
         this._expandCollapseButtonElement = document.createElement("span");
         this._expandCollapseButtonElement.className = "acd-toolbox-header-commandButton";
-        this._expandCollapseButtonElement.title = "Hide";
+        this._expandCollapseButtonElement.title = "Hide " + this.title;
+        this._expandCollapseButtonElement.tabIndex = 0;
+        this._expandCollapseButtonElement.setAttribute("role", "button");
+        this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
 
         this._headerIconElement = document.createElement("span")
         this._headerIconElement.classList.add("acd-icon", "acd-icon-header-expanded");
 
         this._expandCollapseButtonElement.appendChild(this._headerIconElement);
 
-        this._expandCollapseButtonElement.onmousedown = (e) => {
-            e.preventDefault();
+        this._expandCollapseButtonElement.onkeydown = (e) => {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
+                this.toggle();
 
-            return true;
+                e.preventDefault();
+                this._expandCollapseButtonElement.focus();
+            }
         }
 
         this._expandCollapseButtonElement.onclick = (e) => {
@@ -138,7 +145,8 @@ export class Toolbox {
         this._contentHost = document.createElement("div");
         this._contentHost.style.overflow = "auto";
 
-        this._renderedElement.append(this._headerRootElement, this._contentHost);
+        this._renderedElement.appendChild(this._headerRootElement);
+        this._renderedElement.appendChild(this._contentHost);
 
         this.updateContent();
     }
@@ -154,7 +162,8 @@ export class Toolbox {
                 this._collapsedTabContainer.appendChild(this._headerRootElement);
             }
 
-            this._expandCollapseButtonElement.title = "Show";
+            this._expandCollapseButtonElement.title = "Show " + this.title;
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", "false");
 
             this._isExpanded = false;
 
@@ -173,7 +182,8 @@ export class Toolbox {
                 this._renderedElement.insertBefore(this._headerRootElement, this._renderedElement.firstChild);
             }
 
-            this._expandCollapseButtonElement.title = "Hide";
+            this._expandCollapseButtonElement.title = "Hide " + this.title;
+            this._expandCollapseButtonElement.setAttribute("aria-expanded", "true");
 
             this._isExpanded = true;
 

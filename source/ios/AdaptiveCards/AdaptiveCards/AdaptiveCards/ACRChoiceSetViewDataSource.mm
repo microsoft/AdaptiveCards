@@ -6,6 +6,7 @@
 //
 
 #import "ACRChoiceSetViewDataSource.h"
+#import "ACRInputLabelView.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -55,6 +56,7 @@ const CGFloat padding = 16.0f;
     BOOL _shouldWrap;
     std::shared_ptr<HostConfig> _config;
     CGSize _contentSize;
+    NSString *_accessibilityString;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)hostConfig;
@@ -90,6 +92,8 @@ const CGFloat padding = 16.0f;
             }
             ++index;
         }
+
+        self.hasValidationProperties = self.isRequired;
     }
     return self;
 }
@@ -129,10 +133,16 @@ const CGFloat padding = 16.0f;
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
+    cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
     cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (!_accessibilityString) {
+        _accessibilityString = tableView.accessibilityLabel;
+        tableView.accessibilityLabel = nil;
+    }
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
+    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
 
     return cell;
 }
@@ -176,7 +186,7 @@ const CGFloat padding = 16.0f;
         }
     }
 
-    [tableView reloadRowsAtIndexPaths:indexPathsToUpdate withRowAnimation:UITableViewRowAnimationNone];
+    [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
 }
 
@@ -199,28 +209,38 @@ const CGFloat padding = 16.0f;
     } else {
         textString = cell.textLabel.text;
     }
-    
-    if (_contentSize.width == 0 && tableView.contentSize.width && tableView.frame.size.height)
-    {
+
+    if (_contentSize.width == 0 && tableView.contentSize.width && tableView.frame.size.height) {
         _contentSize = tableView.contentSize;
         [tableView invalidateIntrinsicContentSize];
     }
-    
+
     CGSize labelStringSize =
         [textString boundingRectWithSize:CGSizeMake(tableView.contentSize.width - [self getNonInputWidth:cell], CGFLOAT_MAX)
                                  options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                               attributes:@{NSFontAttributeName : cell.textLabel.font}
                                  context:nil]
             .size;
-    
+
     [tableView layoutIfNeeded];
-    
-    return labelStringSize.height + padding;
+
+    return labelStringSize.height + _spacing;
 }
 
 - (BOOL)validate:(NSError **)error
 {
-    // no need to validate
+    if (self.isRequired) {
+        if (_isMultiChoicesAllowed) {
+            for (id key in _userSelections) {
+                if ([_userSelections[key] boolValue]) {
+                    return YES;
+                }
+            }
+            return NO;
+        }
+        return _userSelections.count > 0 ? YES : NO;
+    }
+
     return YES;
 }
 
@@ -242,6 +262,14 @@ const CGFloat padding = 16.0f;
         }
     }
     dictionary[self.id] = [values componentsJoinedByString:@","];
+}
+
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
+{
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+        [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    }
 }
 
 - (NSString *)getTitlesOfChoices
@@ -266,5 +294,9 @@ const CGFloat padding = 16.0f;
 {
     return padding * 3 + cell.imageView.image.size.width;
 }
+
+@synthesize isRequired;
+@synthesize hasValidationProperties;
+@synthesize hasVisibilityChanged;
 
 @end

@@ -20,9 +20,10 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 
 | SDK Version | Can parse from schema versions | Can serialize to schema versions |
 | --- | --- | --- |
-| `2.x` | `1.0`, `1.1`, `1.2` | `1.0`, `1.1`, `1.2` |
-| `1.2` | `1.0`, `1.1`, `1.2` | `1.2` |
-| `1.1` | `1.0`, `1.1` | `1.1` | 
+| `2.4` | `1.0` ... `1.3` | `1.0` ... `1.3` |
+| `2.0`...`2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
+| `1.2` | `1.0` ... `1.2` | `1.2` |
+| `1.1` | `1.0` ... `1.1` | `1.1` | 
 | `1.0` | `1.0` | `1.0` |
 
 
@@ -38,7 +39,7 @@ Please be aware of the following **breaking changes** in particular versions.
 || The following global setting statics have been moved from the AdaptiveCard class to the new GlobalSettings class: `useAdvancedTextBlockTruncation`, `useAdvancedCardBottomTruncation`, `useMarkdownInRadioButtonAndCheckbox`, `allowMarkForTextHighlighting`, `alwaysBleedSeparators`, `enableFullJsonRoundTrip`, `useBuiltInInputValidation`, `displayInputValidationErrors` |
 || `CardElement.getForbiddenElementTypes()` has been **REMOVED** |
 || The signature of **CardElement.getForbiddenActionTypes()** has changed to `getForbiddenActionTypes(): CardObjectType<Action>[]` with **CardObjectType** defined as `type CardObjectType<T extends CardObject> = { new(): T }` |
-|| The `AdaptiveCard.onParseError` event has been **REMOVED**. Parse errors are now collected into the `SerializationContext.errors` property. ||
+|| The `AdaptiveCard.onParseError` event has been **REMOVED**. Parse errors can now be accessed via `SerializationContext.getEventCount()` and `SerializationContext.getEventAt()`. ||
 || The `AdaptiveCard.onParseElement` and `AdaptiveCard.onParseAction` events (both static and instance versions) have been **REMOVED**. Use `SerializationContext.onParseElement` and `SerializationContext.onParseAction` instead. |
 || The `createActionInstance` and `createElementInstance` global functions have been **REMOVED** and replaced with the `parseAction` and `parseElement` methods of the `SerializationContext` class. |
 || A new base class, `SerializableObject`, has been introduced. It implements core serialization and deserialization behaviors and pretty much all objects handled by the library (including `Action` and `CardElement` extend it. |
@@ -53,12 +54,13 @@ Please be aware of the following **breaking changes** in particular versions.
 || The global `getStringValue`, `getNumberValue`, `getBoolValue` and `getEnumValue` functions have been renamed into `parseString`, `parseNumber`, `parseBool` and `parseEnum`. |
 || The global `parseHostConfigEnum` function is no longer exported. |
 || The `ValidationError` enum has been renamed into `ValidationEvent`. |
-|| The `IValidationError` interface has been renamed into `IValidationLogEntry`. It has a new required `phase` field of type `ValidationPhase` and its `error` field has been renamed into `event`. |
+|| The `IValidationError` interface has been renamed into `IValidationEvent`. It has a new required `phase` field of type `ValidationPhase` and its `error` field has been renamed into `event`. |
 | **1.2** | The default `value` of an Input.Time **no longer accepts seconds**. 08:25:32 will now be treated as an invalid value and ignored; it should be replaced with 08:25. This behavior is consistent with other Adaptive Card renderers.|
 || The `ICardObject` interface has been **REMOVED**, replaced with the `CardObject` class that both `CardElement` and `Action` extend. This change should have little to no impact on any application.|
 || The `CardElement.validate()` and `Action.validate()` methods have been **REMOVED**, replaced with `CardObject.validateProperties()` and `CardObject.internalValidateProperties(context: ValidationContext)`. Custom elements and actions now must override `internalValidateProperties` and add validation failures as appropriate to the `context` object passed as a parameter using its `addFailure` method. Be sure to always call `super.internalValidateProperties(context)` in your override.|
 | **1.1** | Due to a security concern, the `processMarkdown` event handler has been **REMOVED**. Setting it will throw an exception that will halt your code. Please change your code to set the `onProcessMarkdown(text, result)` event handler instead (see example below.) |
 | **1.0** | The standalone `renderCard()` helper function was removed as it was redundant with the class methods. Please use `adaptiveCard.render()` as described below. |
+| **2.4.0** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 
 ## Install
 

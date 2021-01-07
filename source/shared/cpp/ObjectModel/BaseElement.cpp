@@ -35,12 +35,14 @@ namespace AdaptiveSharedNamespace
 
     std::string BaseElement::Serialize() const { return ParseUtil::JsonToString(SerializeToJsonValue()); }
 
-    std::string BaseElement::GetId() const { return m_id; }
+    const std::string& BaseElement::GetId() const { return m_id; }
 
+    void BaseElement::SetId(std::string&& value) { m_id = std::move(value); }
     void BaseElement::SetId(const std::string& value) { m_id = value; }
 
-    std::string BaseElement::GetElementTypeString() const { return m_typeString; }
+    const std::string& BaseElement::GetElementTypeString() const { return m_typeString; }
 
+    void BaseElement::SetElementTypeString(std::string&& value) { m_typeString = std::move(value); }
     void BaseElement::SetElementTypeString(const std::string& value) { m_typeString = value; }
 
     void BaseElement::PopulateKnownPropertiesSet()
@@ -51,14 +53,15 @@ namespace AdaptiveSharedNamespace
                                   AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)});
     }
 
-    Json::Value BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
+    const Json::Value& BaseElement::GetAdditionalProperties() const { return m_additionalProperties; }
 
-    void BaseElement::SetAdditionalProperties(Json::Value const& value) { m_additionalProperties = value; }
+    void BaseElement::SetAdditionalProperties(Json::Value&& value) { m_additionalProperties = std::move(value); }
+    void BaseElement::SetAdditionalProperties(const Json::Value& value) { m_additionalProperties = value; }
 
     // Given a map of what our host provides, determine if this element's requirements are satisfied.
     bool BaseElement::MeetsRequirements(const AdaptiveSharedNamespace::FeatureRegistration& featureRegistration) const
     {
-        for (const auto& requirement : *m_requires)
+        for (const auto& requirement : m_requires)
         {
             // special case for adaptive cards version
             const auto& requirementName = requirement.first;
@@ -84,14 +87,19 @@ namespace AdaptiveSharedNamespace
         return true;
     }
 
-    std::shared_ptr<std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>> BaseElement::GetRequirements() const
+    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements()
+    {
+        return m_requires;
+    }
+
+    const std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& BaseElement::GetRequirements() const
     {
         return m_requires;
     }
 
     Json::Value BaseElement::SerializeToJsonValue() const
     {
-        Json::Value root = GetAdditionalProperties();
+        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the return value to a value, rather than reference, type
 
         // Important -- we're explicitly getting the type as a string here because that's where we store the type that
         // was specified by the card author.
@@ -113,10 +121,10 @@ namespace AdaptiveSharedNamespace
         }
 
         // Handle requires
-        if (!m_requires->empty())
+        if (!m_requires.empty())
         {
             Json::Value jsonRequires{};
-            for (const auto& requirement : *m_requires)
+            for (const auto& requirement : m_requires)
             {
                 jsonRequires[requirement.first] = static_cast<std::string>(requirement.second);
             }
@@ -147,19 +155,19 @@ namespace AdaptiveSharedNamespace
                     if (memberValue == "*")
                     {
                         // * means any version.
-                        m_requires->emplace(memberName, "0");
+                        m_requires.emplace(memberName, "0");
                     }
                     else
                     {
                         try
                         {
                             SemanticVersion memberVersion(memberValue);
-                            m_requires->emplace(memberName, memberVersion);
+                            m_requires.emplace(memberName, memberVersion);
                         }
                         catch (const AdaptiveCardParseException&)
                         {
                             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                                             "Invalid version in requires value: '" + memberValue + "'");
+                                "Invalid version in requires value: '" + memberValue + "'");
                         }
                     }
                 }

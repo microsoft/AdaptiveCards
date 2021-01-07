@@ -45,23 +45,23 @@ namespace AdaptiveNamespace
             return S_OK;
         }
 
-        template<typename T> HRESULT SetTextElementProperties(std::shared_ptr<T> sharedCardElement)
+        template<typename T> HRESULT CopyTextElementProperties(T& sharedCardElement)
         {
-            sharedCardElement->SetIsSubtle(m_subtle);
-            sharedCardElement->SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
-            sharedCardElement->SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
-            sharedCardElement->SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
-            sharedCardElement->SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
+            sharedCardElement.SetIsSubtle(m_subtle);
+            sharedCardElement.SetFontType(static_cast<AdaptiveSharedNamespace::FontType>(m_fontType));
+            sharedCardElement.SetTextSize(static_cast<AdaptiveSharedNamespace::TextSize>(m_textSize));
+            sharedCardElement.SetTextWeight(static_cast<AdaptiveSharedNamespace::TextWeight>(m_textWeight));
+            sharedCardElement.SetTextColor(static_cast<AdaptiveSharedNamespace::ForegroundColor>(m_foregroundColor));
 
             std::string text;
             RETURN_IF_FAILED(HStringToUTF8(m_text.Get(), text));
-            sharedCardElement->SetText(text);
+            sharedCardElement.SetText(text);
 
             if (!(WindowsIsStringEmpty(m_language.Get())))
             {
                 std::string language;
                 RETURN_IF_FAILED(HStringToUTF8(m_language.Get(), language));
-                sharedCardElement->SetLanguage(language);
+                sharedCardElement.SetLanguage(language);
             }
             return S_OK;
         }

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as Constants from "./constants";
+import { Constants } from "./constants";
 import { Collection } from "./collection";
 import { PopupControl } from "./inputwithpopup";
 import { DropDownItem } from "./dropdown";
@@ -17,6 +17,7 @@ export class PopupMenu extends PopupControl {
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
         element.className = "ms-ctrl ms-popup";
+        element.setAttribute("role", "listbox");
 
         for (var i = 0; i < this._items.length; i++) {
             var renderedItem = this._items.get(i).render();
@@ -39,13 +40,13 @@ export class PopupMenu extends PopupControl {
 
         var selectedItemIndex = this._selectedIndex;
 
-        switch (e.keyCode) {
-            case Constants.KEY_TAB:
+        switch (e.key) {
+            case Constants.keys.tab:
                 this.closePopup(true);
 
                 break;
             /*
-            case Constants.KEY_ENTER:
+            case Constants.keys.enter:
                 if (this.selectedIndex >= 0) {
                     this.selectedIndex = this.selectedIndex;
 
@@ -54,7 +55,7 @@ export class PopupMenu extends PopupControl {
 
                 break;
             */
-            case Constants.KEY_UP:
+            case Constants.keys.up:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
                 }
@@ -71,7 +72,7 @@ export class PopupMenu extends PopupControl {
                 e.cancelBubble = true;
 
                 break;
-            case Constants.KEY_DOWN:
+            case Constants.keys.down:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
                 }

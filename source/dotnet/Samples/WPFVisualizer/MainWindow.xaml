@@ -44,14 +44,14 @@
             <Button Name="loadTemplateDataButton" Click="loadTemplateDataButton_Click" Content="Load Template Data" Margin="4" Padding="4"/>
             <Button Name="viewImage" Click="viewImage_Click" Content="View as Image" Margin="4" Padding="4"/>
             <Button Name="speak" Click="speak_Click" Content="Speak" Margin="4" Padding="4"/>
-            <CheckBox Name ="xceedCheckbox" Margin="4,5,4,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked" VerticalAlignment="Center"></CheckBox>
-            <TextBlock Margin="0,4,-1,4" HorizontalAlignment="Center" VerticalAlignment="Center">Use Xceed Renderers</TextBlock>
+            <CheckBox Name ="xceedCheckbox" Margin="4,5,4,4" Unchecked="XceedCheckBox_Unchecked" Checked="XceedCheckBox_Checked" AutomationProperties.LabeledBy="{Binding ElementName=xceedLabel}" VerticalAlignment="Center"></CheckBox>
+            <TextBlock Name="xceedLabel" Margin="0,4,-1,4" HorizontalAlignment="Center" VerticalAlignment="Center">Use Xceed Renderers</TextBlock>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.ColumnSpan="5" HorizontalAlignment="Right">
-            <Label HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="4">HostConfig:</Label>
-            <Button Name="loadConfig" Content="Load" Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right" Padding="4"/>
+            <Label Name="hostConfigLabel"  HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Padding="4">Select a HostConfig:</Label>
+            <ComboBox Name="hostConfigs" IsEditable="False" Width="149" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right" Padding="6,9,5,3" Margin="0,4" AutomationProperties.LabeledBy="{Binding ElementName=hostConfigLabel}"/>
+            <Button Name="loadConfig" Content="Load HostConfig" Margin="4" Click="loadConfig_Click" HorizontalAlignment="Right" Padding="4"/>
             <Button Name="saveConfig" Content="Save" Margin="4" Click="saveConfig_Click" HorizontalAlignment="Right" Padding="4"/>
-            <ComboBox Name="hostConfigs" IsEditable="False" Width="149" SelectionChanged="hostConfigs_Selected" HorizontalAlignment="Right" Padding="6,9,5,3" Margin="0,4"/>
             <Button Name="toggleOptions" Content="Edit" Margin="4" Click="toggleOptions_Click" HorizontalAlignment="Right" Padding="4"/>
         </StackPanel>
 

@@ -29,7 +29,11 @@ namespace AdaptiveNamespace::XamlHelpers
     }
 
     HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                           const std::wstring& resourceName,
+                                           HSTRING resourceName,
+                                           _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
+
+    HRESULT SetStyleFromResourceDictionary(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                           const wchar_t* resourceName,
                                            _In_ ABI::Windows::UI::Xaml::IFrameworkElement* frameworkElement) noexcept;
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement> CreateSeparator(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
@@ -40,7 +44,7 @@ namespace AdaptiveNamespace::XamlHelpers
 
     template<typename T>
     HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
-                                                   const std::wstring& resourceName,
+                                                   HSTRING resourceName,
                                                    _COM_Outptr_result_maybenull_ T** style) noexcept
     {
         if (resourceDictionary == nullptr)
@@ -56,7 +60,7 @@ namespace AdaptiveNamespace::XamlHelpers
             THROW_IF_FAILED(GetActivationFactory(HStringReference(RuntimeClass_Windows_Foundation_PropertyValue).Get(),
                                                  &propertyValueStatics));
             ComPtr<IInspectable> resourceKey;
-            THROW_IF_FAILED(propertyValueStatics->CreateString(HStringReference(resourceName.c_str()).Get(),
+            THROW_IF_FAILED(propertyValueStatics->CreateString(resourceName,
                                                                resourceKey.GetAddressOf()));
 
             // Search for the named resource
@@ -81,6 +85,14 @@ namespace AdaptiveNamespace::XamlHelpers
         {
         }
         return E_FAIL;
+    }
+
+    template<typename T>
+    HRESULT TryGetResourceFromResourceDictionaries(_In_ ABI::Windows::UI::Xaml::IResourceDictionary* resourceDictionary,
+                                                   const wchar_t* resourceName,
+                                                   _COM_Outptr_result_maybenull_ T** style) noexcept
+    {
+        return TryGetResourceFromResourceDictionaries<T>(resourceDictionary, HStringReference(resourceName).Get(), style);
     }
 
     HRESULT SetSeparatorVisibility(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* parentPanel);
@@ -303,6 +315,50 @@ namespace AdaptiveNamespace::XamlHelpers
         panel->SetVerticalContentAlignment(verticalContentAlignment);
     }
 
+    HRESULT RenderInputLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                             _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                             _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** labelControl);
+
+    HRESULT RenderInputErrorMessage(ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                                    ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                    ABI::Windows::UI::Xaml::IUIElement** errorMessageControl);
+
+    HRESULT CreateValidationBorder(ABI::Windows::UI::Xaml::IUIElement* childElement,
+                                   ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   ABI::Windows::UI::Xaml::Controls::IBorder** elementWithBorder);
+
+    HRESULT HandleLabelAndErrorMessage(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInput,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                       _Out_ ABI::Windows::UI::Xaml::IUIElement** inputLayout);
+
+    HRESULT HandleInputLayoutAndValidation(ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInput,
+                                           ABI::Windows::UI::Xaml::IUIElement* inputUIElement,
+                                           boolean hasTypeSpecificValidation,
+                                           ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                           ABI::Windows::UI::Xaml::IUIElement** inputLayout,
+                                           ABI::Windows::UI::Xaml::Controls::IBorder** validationBorderOut);
+
+    template<typename TXamlControl>
+    HRESULT SetXamlHeaderFromLabel(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* adaptiveInputElement,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
+                                   _In_ TXamlControl* xamlControl)
+    {
+        ComPtr<IUIElement> labelControl;
+        RETURN_IF_FAILED(RenderInputLabel(adaptiveInputElement, renderContext, renderArgs, &labelControl));
+
+        if (labelControl != nullptr)
+        {
+            ComPtr<IInspectable> labelControlAsInspectable;
+            RETURN_IF_FAILED(labelControl.As(&labelControlAsInspectable));
+            RETURN_IF_FAILED(xamlControl->put_Header(labelControlAsInspectable.Get()));
+        }
+
+        return S_OK;
+    }
+
     HRESULT AddHandledTappedEvent(_In_ ABI::Windows::UI::Xaml::IUIElement* uiElement);
 
     void ApplyBackgroundToRoot(_In_ ABI::Windows::UI::Xaml::Controls::IPanel* rootPanel,
@@ -320,7 +376,8 @@ namespace AdaptiveNamespace::XamlHelpers
     HRESULT RenderFallback(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* currentElement,
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
                            _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs,
-                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result);
+                           _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result,
+                           _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** renderedElement);
 
     void GetSeparationConfigForElement(_In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* element,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveHostConfig* hostConfig,
@@ -328,10 +385,6 @@ namespace AdaptiveNamespace::XamlHelpers
                                        _Out_ UINT* separatorThickness,
                                        _Out_ ABI::Windows::UI::Color* separatorColor,
                                        _Out_ bool* needsSeparator);
-
-    void AddInputValueToContext(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
-                                _In_ ABI::AdaptiveNamespace::IAdaptiveCardElement* adaptiveCardElement,
-                                _In_ ABI::Windows::UI::Xaml::IUIElement* inputUiElement);
 
     inline HRESULT WarnFallbackString(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext, const std::string& warning)
     {

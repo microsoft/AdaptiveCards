@@ -57,6 +57,7 @@ export class PropertySheetCategory {
     static readonly StyleCategory = "Style";
     static readonly SelectionAction = "Selection action";
     static readonly InlineAction = "Inline action";
+    static readonly Validation = "Validation";
 
     private _entries: PropertySheetEntry[] = [];
 
@@ -770,6 +771,8 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 export abstract class DesignerPeer extends DraggableElement {
     static readonly idProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "id", "Id");
 
+    static onPopulatePropertySheet?: (sender: DesignerPeer, propertySheet: PropertySheet) => void;
+
     private _parent: DesignerPeer;
     private _cardObject: Adaptive.CardObject;
     private _children: Array<DesignerPeer> = [];
@@ -787,7 +790,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this._inplaceEditor = null;
 
-            this._inplaceEditorOverlay.remove();
+            this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
         }
     }
 
@@ -993,6 +996,10 @@ export abstract class DesignerPeer extends DraggableElement {
         return false;
     }
 
+    tryAdd(peer: DesignerPeer): boolean {
+        return false;
+    }
+
     insertChild(peer: DesignerPeer, index: number = -1) {
         if (index == -1) {
             this._children.push(peer);
@@ -1074,7 +1081,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
-        this.renderedElement.remove();
+        this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
             for (var i = 0; i < this.getChildCount(); i++) {
@@ -1094,6 +1101,10 @@ export abstract class DesignerPeer extends DraggableElement {
         let propertySheet = new PropertySheet();
 
         this.populatePropertySheet(propertySheet);
+
+        if (DesignerPeer.onPopulatePropertySheet) {
+            DesignerPeer.onPopulatePropertySheet(this, propertySheet);
+        }
 
         propertySheet.render(
             card,
@@ -1259,7 +1270,7 @@ export abstract class TypedActionPeer<TAction extends Adaptive.Action> extends A
 }
 
 export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly methodProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_0,
         "method",
@@ -1285,11 +1296,9 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
-        if (Adaptive.GlobalSettings.useBuiltInInputValidation) {
-            propertySheet.add(
-                PropertySheetCategory.DefaultCategory,
-                HttpActionPeer.ignoreInputValidationProperty);
-        }
+        propertySheet.add(
+            PropertySheetCategory.DefaultCategory,
+            HttpActionPeer.ignoreInputValidationProperty);
 
         propertySheet.add(
             defaultCategory,
@@ -1309,7 +1318,7 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.vNext, "ignoreInputValidation", "Ignore input validation");
+    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
@@ -1480,6 +1489,26 @@ export class CardElementPeer extends DesignerPeer {
 
                 return true;
             }
+        }
+
+        return false;
+    }
+
+    tryAdd(peer: DesignerPeer): boolean {
+        if (this.cardElement instanceof Adaptive.Container && peer instanceof CardElementPeer) {
+            if (peer.cardElement.parent) {
+                if (!peer.remove(true, false)) {
+                    return false;
+                }
+
+                peer.parent.removeChild(peer);
+            }
+
+            this.cardElement.addItem(peer.cardElement);
+            this.insertChild(peer, peer.cardElement.index);
+            this.changed(false);
+
+            return true;
         }
 
         return false;
@@ -1855,7 +1884,7 @@ export class ColumnSetPeer extends TypedCardElementPeer<Adaptive.ColumnSet> {
 }
 
 export class ContainerPeer extends TypedCardElementPeer<Adaptive.Container> {
-    static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_0, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly selectActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_1, "selectAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
     static readonly minHeightProperty = new NumberPropertyEditor(Adaptive.Versions.v1_2, "minPixelHeight", "Minimum height in pixels");
     static readonly verticalContentAlignmentProperty = new EnumPropertyEditor(Adaptive.Versions.v1_1, "verticalContentAlignment", "Vertical content alignment", Adaptive.VerticalAlignment);
     static readonly styleProperty = new ContainerStylePropertyEditor(Adaptive.Versions.v1_0, "style", "Style");
@@ -1969,7 +1998,7 @@ export class ActionSetPeer extends TypedCardElementPeer<Adaptive.AdaptiveCard> {
 }
 
 export class ImageSetPeer extends TypedCardElementPeer<Adaptive.ImageSet> {
-    static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.Size);
+    static readonly ImageSizeProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "imageSize", "Image size", Adaptive.ImageSize);
 
     protected internalAddCommands(context: DesignContext, commands: Array<PeerCommand>) {
         super.internalAddCommands(context, commands);
@@ -2189,21 +2218,29 @@ export class FactSetPeer extends TypedCardElementPeer<Adaptive.FactSet> {
 }
 
 export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCardElementPeer<TInput> {
-    static readonly validationProperty = new CompoundPropertyEditor(
-        Adaptive.Versions.vNext,
-        "validation",
-        [
-            new EnumPropertyEditor(Adaptive.Versions.vNext, "necessity", "Necessity", Adaptive.InputValidationNecessity),
-            new StringPropertyEditor(Adaptive.Versions.vNext, "errorMessage", "Error message")
-        ]
-    );
+    static readonly labelProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "label",
+        "Label");
+
+    static readonly isRequiredProperty = new BooleanPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "isRequired",
+        "Required");
+
+    static readonly errorMessageProperty = new StringPropertyEditor(
+        Adaptive.Versions.v1_3,
+        "errorMessage",
+        "Error message");
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.add(defaultCategory, InputPeer.labelProperty);
         propertySheet.add(
-            "Validation",
-            InputPeer.validationProperty);
+            PropertySheetCategory.Validation,
+            InputPeer.isRequiredProperty,
+            InputPeer.errorMessageProperty);
 
         propertySheet.remove(
             CardElementPeer.horizontalAlignmentProperty,
@@ -2218,6 +2255,8 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
     static readonly styleProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "style", "Style", Adaptive.InputTextStyle);
     static readonly maxLengthProperty = new NumberPropertyEditor(Adaptive.Versions.v1_0, "maxLength", "Maximum length");
     static readonly inlineActionProperty = new ActionPropertyEditor(Adaptive.Versions.v1_2, "inlineAction", "Action type", [ Adaptive.ShowCardAction.JsonTypeName ], true);
+    static readonly regexProperty = new StringPropertyEditor(Adaptive.Versions.v1_3, "regex", "Pattern");
+
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
@@ -2255,6 +2294,10 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             defaultCategory,
             TextInputPeer.maxLengthProperty,
             TextInputPeer.defaultValueProperty);
+
+        propertySheet.add(
+            PropertySheetCategory.Validation,
+            TextInputPeer.regexProperty);
     }
 
     initializeCardElement() {
@@ -2415,15 +2458,15 @@ class TextBlockPeerInplaceEditor extends CardElementPeerInplaceEditor<Adaptive.T
         this._renderedElement.className = "acd-textBlock-inplace-editor";
         this._renderedElement.value = this.cardElement.text;
         this._renderedElement.onkeydown = (e) => {
-            switch (e.keyCode) {
-                case Controls.KEY_ESCAPE:
+            switch (e.key) {
+                case Controls.Constants.keys.escape:
                    this.close(false);
 
                    e.preventDefault();
                    e.cancelBubble = true;
 
                    break;
-                case Controls.KEY_ENTER:
+                case Controls.Constants.keys.enter:
                     this.close(true);
 
                     e.preventDefault();
@@ -2514,6 +2557,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
         if (!this.cardElement.text || this.cardElement.text == "") {
             this.cardElement.text = "New TextBlock";
         }
+
+        this.cardElement.wrap = true;
     }
 }
 

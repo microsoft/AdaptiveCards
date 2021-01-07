@@ -1,6 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { DropDown, DropDownItem } from "adaptivecards-controls";
+import { v4 as uuidv4 } from "uuid";
 
 export enum ToolbarElementAlignment {
     Left,
@@ -76,6 +77,8 @@ export class ToolbarButton extends ToolbarElement {
             this.renderedElement.classList.remove("acd-toolbar-button-toggled");
         }
 
+        this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
+
         if (this.iconClass) {
             this.renderedElement.classList.add(this.iconClass);
         }
@@ -93,6 +96,7 @@ export class ToolbarButton extends ToolbarElement {
 
     protected internalRender(): HTMLElement {
         let element = document.createElement("button");
+        element.type = "button";
 
         element.onclick = (e) => {
             if (this.allowToggle) {
@@ -199,6 +203,7 @@ export interface IChoicePickerItem {
 
 export class ToolbarChoicePicker extends ToolbarElement {
     private _dropDown: DropDown;
+    private _labelledById: string; // id to use for our label element
 
     protected internalRender(): HTMLElement {
         this._dropDown = new DropDown();
@@ -222,6 +227,12 @@ export class ToolbarChoicePicker extends ToolbarElement {
             pickerElement.style.width = this.width + "px";
         }
 
+        // update label ids so we can generate correct aria
+        if (this.label && !this._labelledById) {
+            this._labelledById = uuidv4();
+            this._dropDown.parentLabelId = this._labelledById;
+        }
+
         this._dropDown.attach(pickerElement);
 
         let pickerContainerElement = document.createElement("div");
@@ -233,6 +244,7 @@ export class ToolbarChoicePicker extends ToolbarElement {
             let labelElement = document.createElement("span");
             labelElement.className = "acd-toolbar-label";
             labelElement.innerText = this.label;
+            labelElement.id = this._labelledById;
 
             pickerContainerElement.appendChild(labelElement);
         }

@@ -2,7 +2,7 @@
 //  ACFramework.h
 //  ACFramework
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -18,11 +18,13 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/ACOHostConfigParseResult.h>
 #import <AdaptiveCards/ACOIResourceResolver.h>
+#import <AdaptiveCards/ACOInputResults.h>
 #import <AdaptiveCards/ACOMediaEvent.h>
 #import <AdaptiveCards/ACORemoteResourceInformation.h>
 #import <AdaptiveCards/ACOResourceResolvers.h>
 #import <AdaptiveCards/ACRActionDelegate.h>
 #import <AdaptiveCards/ACRActionOpenURLRenderer.h>
+#import <AdaptiveCards/ACRActionSetRenderer.h>
 #import <AdaptiveCards/ACRActionShowCardRenderer.h>
 #import <AdaptiveCards/ACRActionSubmitRenderer.h>
 #import <AdaptiveCards/ACRBaseActionElementRenderer.h>
@@ -42,6 +44,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRImageSetRenderer.h>
 #import <AdaptiveCards/ACRInputChoiceSetRenderer.h>
 #import <AdaptiveCards/ACRInputDateRenderer.h>
+#import <AdaptiveCards/ACRInputLabelView.h>
 #import <AdaptiveCards/ACRInputNumberRenderer.h>
 #import <AdaptiveCards/ACRInputRenderer.h>
 #import <AdaptiveCards/ACRInputTimeRenderer.h>
@@ -54,5 +57,7 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACRRenderer.h>
 #import <AdaptiveCards/ACRRichTextBlockRenderer.h>
 #import <AdaptiveCards/ACRTextBlockRenderer.h>
+#import <AdaptiveCards/ACRTextInputHandler.h>
 #import <AdaptiveCards/ACRTextView.h>
+#import <AdaptiveCards/ACRToggleInputView.h>
 #import <AdaptiveCards/ACRView.h>
