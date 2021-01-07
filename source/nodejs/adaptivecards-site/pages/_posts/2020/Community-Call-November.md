@@ -37,4 +37,4 @@ This entire pipeline is part of our backend [pic2card](https://github.com/micros
 
 Try the service, and Let's know your feedback on [github issues](https://github.com/microsoft/AdaptiveCards/issues).
 
-@Team Imaginea [Imaginea websit](https://www.imaginea.com/)
+@Team [Imaginea](https://www.imaginea.com/)
