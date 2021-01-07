@@ -21,16 +21,17 @@
 * [maxVersion](backgroundimage.md#maxversion)
 * [url](backgroundimage.md#optional-url)
 * [verticalAlignment](backgroundimage.md#verticalalignment)
-* [fillModeProperty](backgroundimage.md#static-fillmodeproperty)
-* [horizontalAlignmentProperty](backgroundimage.md#static-horizontalalignmentproperty)
+* [fillModeProperty](backgroundimage.md#static-readonly-fillmodeproperty)
+* [horizontalAlignmentProperty](backgroundimage.md#static-readonly-horizontalalignmentproperty)
 * [onRegisterCustomProperties](backgroundimage.md#static-optional-onregistercustomproperties)
-* [urlProperty](backgroundimage.md#static-urlproperty)
-* [verticalAlignmentProperty](backgroundimage.md#static-verticalalignmentproperty)
+* [urlProperty](backgroundimage.md#static-readonly-urlproperty)
+* [verticalAlignmentProperty](backgroundimage.md#static-readonly-verticalalignmentproperty)
 
 ### Methods
 
 * [apply](backgroundimage.md#apply)
 * [getCustomProperty](backgroundimage.md#getcustomproperty)
+* [getDefaultSerializationContext](backgroundimage.md#protected-getdefaultserializationcontext)
 * [getSchema](backgroundimage.md#getschema)
 * [getSchemaKey](backgroundimage.md#protected-getschemakey)
 * [getValue](backgroundimage.md#protected-getvalue)
@@ -53,7 +54,7 @@
 
 \+ **new BackgroundImage**(): *[BackgroundImage](backgroundimage.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[constructor](hostcapabilities.md#constructor)*
 
 **Returns:** *[BackgroundImage](backgroundimage.md)*
 
@@ -75,7 +76,7 @@ ___
 
 • **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
-*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[maxVersion](hostcapabilities.md#maxversion)*
 
 ___
 
@@ -91,13 +92,13 @@ ___
 
 ___
 
-### `Static` fillModeProperty
+### `Static` `Readonly` fillModeProperty
 
 ▪ **fillModeProperty**: *[EnumProperty](enumproperty.md)‹[FillMode](../enums/fillmode.md)›* = new EnumProperty(Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover)
 
 ___
 
-### `Static` horizontalAlignmentProperty
+### `Static` `Readonly` horizontalAlignmentProperty
 
 ▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left)
 
@@ -107,17 +108,17 @@ ___
 
 ▪ **onRegisterCustomProperties**? : *undefined | function*
 
-*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[onRegisterCustomProperties](hostcapabilities.md#static-optional-onregistercustomproperties)*
 
 ___
 
-### `Static` urlProperty
+### `Static` `Readonly` urlProperty
 
 ▪ **urlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "url")
 
 ___
 
-### `Static` verticalAlignmentProperty
+### `Static` `Readonly` verticalAlignmentProperty
 
 ▪ **verticalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›* = new EnumProperty(Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
 
@@ -141,7 +142,7 @@ ___
 
 ▸ **getCustomProperty**(`name`: string): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getCustomProperty](hostcapabilities.md#getcustomproperty)*
 
 **Parameters:**
 
@@ -153,11 +154,21 @@ Name | Type |
 
 ___
 
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [HostCapabilities](hostcapabilities.md).[getDefaultSerializationContext](hostcapabilities.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
+
+___
+
 ###  getSchema
 
 ▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getSchema](hostcapabilities.md#getschema)*
 
 **Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
 
@@ -177,7 +188,7 @@ ___
 
 ▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getValue](hostcapabilities.md#protected-getvalue)*
 
 **Parameters:**
 
@@ -193,7 +204,7 @@ ___
 
 ▸ **hasAllDefaultValues**(): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasAllDefaultValues](hostcapabilities.md#hasalldefaultvalues)*
 
 **Returns:** *boolean*
 
@@ -203,7 +214,7 @@ ___
 
 ▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasDefaultValue](hostcapabilities.md#hasdefaultvalue)*
 
 **Parameters:**
 
@@ -261,7 +272,7 @@ ___
 
 ▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[parse](hostcapabilities.md#parse)*
 
 **Parameters:**
 
@@ -278,7 +289,7 @@ ___
 
 ▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[populateSchema](hostcapabilities.md#protected-populateschema)*
 
 **Parameters:**
 
@@ -294,7 +305,7 @@ ___
 
 ▸ **resetDefaultValues**(): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[resetDefaultValues](hostcapabilities.md#resetdefaultvalues)*
 
 **Returns:** *void*
 
@@ -304,7 +315,7 @@ ___
 
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setCustomProperty](hostcapabilities.md#setcustomproperty)*
 
 **Parameters:**
 
@@ -321,7 +332,7 @@ ___
 
 ▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setValue](hostcapabilities.md#protected-setvalue)*
 
 **Parameters:**
 
@@ -338,7 +349,7 @@ ___
 
 ▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[shouldSerialize](hostcapabilities.md#protected-shouldserialize)*
 
 **Parameters:**
 
@@ -354,7 +365,7 @@ ___
 
 ▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[toJSON](hostcapabilities.md#tojson)*
 
 **Parameters:**
 

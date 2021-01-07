@@ -35,14 +35,14 @@
 * [onPreProcessPropertyValue](action.md#optional-onpreprocesspropertyvalue)
 * [style](action.md#style)
 * [title](action.md#optional-title)
-* [iconUrlProperty](action.md#static-iconurlproperty)
-* [idProperty](action.md#static-idproperty)
-* [ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)
+* [iconUrlProperty](action.md#static-readonly-iconurlproperty)
+* [idProperty](action.md#static-readonly-idproperty)
+* [ignoreInputValidationProperty](action.md#static-readonly-ignoreinputvalidationproperty)
 * [onRegisterCustomProperties](action.md#static-optional-onregistercustomproperties)
-* [requiresProperty](action.md#static-requiresproperty)
-* [styleProperty](action.md#static-styleproperty)
-* [titleProperty](action.md#static-titleproperty)
-* [typeNameProperty](action.md#static-typenameproperty)
+* [requiresProperty](action.md#static-readonly-requiresproperty)
+* [styleProperty](action.md#static-readonly-styleproperty)
+* [titleProperty](action.md#static-readonly-titleproperty)
+* [typeNameProperty](action.md#static-readonly-typenameproperty)
 
 ### Accessors
 
@@ -61,6 +61,7 @@
 * [getAllInputs](action.md#getallinputs)
 * [getAriaRole](action.md#getariarole)
 * [getCustomProperty](action.md#getcustomproperty)
+* [getDefaultSerializationContext](action.md#protected-getdefaultserializationcontext)
 * [getHref](action.md#gethref)
 * [getJsonTypeName](action.md#abstract-getjsontypename)
 * [getReferencedInputs](action.md#getreferencedinputs)
@@ -81,6 +82,7 @@
 * [populateSchema](action.md#protected-populateschema)
 * [preProcessPropertyValue](action.md#preprocesspropertyvalue)
 * [prepareForExecution](action.md#prepareforexecution)
+* [raiseExecuteActionEvent](action.md#protected-raiseexecuteactionevent)
 * [remove](action.md#remove)
 * [render](action.md#render)
 * [resetDefaultValues](action.md#resetdefaultvalues)
@@ -101,7 +103,7 @@
 
 \+ **new Action**(): *[Action](action.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[constructor](hostcapabilities.md#constructor)*
 
 **Returns:** *[Action](action.md)*
 
@@ -141,7 +143,7 @@ ___
 
 • **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
-*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[maxVersion](hostcapabilities.md#maxversion)*
 
 ___
 
@@ -181,21 +183,21 @@ ___
 
 ___
 
-### `Static` iconUrlProperty
+### `Static` `Readonly` iconUrlProperty
 
 ▪ **iconUrlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "iconUrl")
 
 ___
 
-### `Static` idProperty
+### `Static` `Readonly` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
 
 ___
 
-### `Static` ignoreInputValidationProperty
+### `Static` `Readonly` ignoreInputValidationProperty
 
 ▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false)
 
@@ -205,11 +207,11 @@ ___
 
 ▪ **onRegisterCustomProperties**? : *undefined | function*
 
-*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[onRegisterCustomProperties](hostcapabilities.md#static-optional-onregistercustomproperties)*
 
 ___
 
-### `Static` requiresProperty
+### `Static` `Readonly` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
@@ -217,11 +219,11 @@ ___
         HostCapabilities,
         new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
 
 ___
 
-### `Static` styleProperty
+### `Static` `Readonly` styleProperty
 
 ▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_2,
@@ -235,13 +237,13 @@ ___
 
 ___
 
-### `Static` titleProperty
+### `Static` `Readonly` titleProperty
 
 ▪ **titleProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "title")
 
 ___
 
-### `Static` typeNameProperty
+### `Static` `Readonly` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -253,7 +255,7 @@ ___
             return (<CardObject>sender).getJsonTypeName()
         })
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
 
 ## Accessors
 
@@ -315,11 +317,11 @@ ___
 
 ###  requires
 
-• **get requires**(): *HostCapabilities*
+• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
 
 *Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
 
-**Returns:** *HostCapabilities*
+**Returns:** *[HostCapabilities](hostcapabilities.md)*
 
 ## Methods
 
@@ -385,7 +387,7 @@ ___
 
 ▸ **getCustomProperty**(`name`: string): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getCustomProperty](hostcapabilities.md#getcustomproperty)*
 
 **Parameters:**
 
@@ -394,6 +396,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Overrides [HostCapabilities](hostcapabilities.md).[getDefaultSerializationContext](hostcapabilities.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -445,7 +457,7 @@ ___
 
 ▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getSchema](hostcapabilities.md#getschema)*
 
 **Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
 
@@ -467,7 +479,7 @@ ___
 
 ▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getValue](hostcapabilities.md#protected-getvalue)*
 
 **Parameters:**
 
@@ -483,7 +495,7 @@ ___
 
 ▸ **hasAllDefaultValues**(): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasAllDefaultValues](hostcapabilities.md#hasalldefaultvalues)*
 
 **Returns:** *boolean*
 
@@ -493,7 +505,7 @@ ___
 
 ▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasDefaultValue](hostcapabilities.md#hasdefaultvalue)*
 
 **Parameters:**
 
@@ -595,7 +607,7 @@ ___
 
 ▸ **parse**(`source`: any, `context?`: [SerializationContext](serializationcontext.md)): *void*
 
-*Overrides [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+*Overrides [HostCapabilities](hostcapabilities.md).[parse](hostcapabilities.md#parse)*
 
 **Parameters:**
 
@@ -612,7 +624,7 @@ ___
 
 ▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[populateSchema](hostcapabilities.md#protected-populateschema)*
 
 **Parameters:**
 
@@ -649,6 +661,14 @@ ___
 
 ___
 
+### `Protected` raiseExecuteActionEvent
+
+▸ **raiseExecuteActionEvent**(): *void*
+
+**Returns:** *void*
+
+___
+
 ###  remove
 
 ▸ **remove**(): *boolean*
@@ -675,7 +695,7 @@ ___
 
 ▸ **resetDefaultValues**(): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[resetDefaultValues](hostcapabilities.md#resetdefaultvalues)*
 
 **Returns:** *void*
 
@@ -685,7 +705,7 @@ ___
 
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setCustomProperty](hostcapabilities.md#setcustomproperty)*
 
 **Parameters:**
 
@@ -734,7 +754,7 @@ ___
 
 ▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setValue](hostcapabilities.md#protected-setvalue)*
 
 **Parameters:**
 
@@ -761,7 +781,7 @@ ___
 
 ▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
 
-*Overrides [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+*Overrides [HostCapabilities](hostcapabilities.md).[shouldSerialize](hostcapabilities.md#protected-shouldserialize)*
 
 **Parameters:**
 
@@ -775,15 +795,15 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[toJSON](hostcapabilities.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [SerializationContext](serializationcontext.md) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 
@@ -791,14 +811,14 @@ ___
 
 ###  updateActionButtonCssStyle
 
-▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: ActionButtonState): *void*
+▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: [ActionButtonState](../enums/actionbuttonstate.md)): *void*
 
 **Parameters:**
 
 Name | Type | Default |
 ------ | ------ | ------ |
 `actionButtonElement` | HTMLElement | - |
-`buttonState` | ActionButtonState | ActionButtonState.Normal |
+`buttonState` | [ActionButtonState](../enums/actionbuttonstate.md) | ActionButtonState.Normal |
 
 **Returns:** *void*
 

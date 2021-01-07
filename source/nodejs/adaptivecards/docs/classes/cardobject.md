@@ -25,10 +25,10 @@
 * [id](cardobject.md#optional-id)
 * [maxVersion](cardobject.md#maxversion)
 * [onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)
-* [idProperty](cardobject.md#static-idproperty)
+* [idProperty](cardobject.md#static-readonly-idproperty)
 * [onRegisterCustomProperties](cardobject.md#static-optional-onregistercustomproperties)
-* [requiresProperty](cardobject.md#static-requiresproperty)
-* [typeNameProperty](cardobject.md#static-typenameproperty)
+* [requiresProperty](cardobject.md#static-readonly-requiresproperty)
+* [typeNameProperty](cardobject.md#static-readonly-typenameproperty)
 
 ### Accessors
 
@@ -40,6 +40,7 @@
 ### Methods
 
 * [getCustomProperty](cardobject.md#getcustomproperty)
+* [getDefaultSerializationContext](cardobject.md#protected-getdefaultserializationcontext)
 * [getJsonTypeName](cardobject.md#abstract-getjsontypename)
 * [getRootObject](cardobject.md#getrootobject)
 * [getSchema](cardobject.md#getschema)
@@ -69,7 +70,7 @@
 
 \+ **new CardObject**(): *[CardObject](cardobject.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[constructor](serializableobject.md#constructor)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[constructor](hostcapabilities.md#constructor)*
 
 **Returns:** *[CardObject](cardobject.md)*
 
@@ -97,7 +98,7 @@ ___
 
 • **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
-*Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[maxVersion](hostcapabilities.md#maxversion)*
 
 ___
 
@@ -107,7 +108,7 @@ ___
 
 ___
 
-### `Static` idProperty
+### `Static` `Readonly` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
@@ -117,11 +118,11 @@ ___
 
 ▪ **onRegisterCustomProperties**? : *undefined | function*
 
-*Inherited from [SerializableObject](serializableobject.md).[onRegisterCustomProperties](serializableobject.md#static-optional-onregistercustomproperties)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[onRegisterCustomProperties](hostcapabilities.md#static-optional-onregistercustomproperties)*
 
 ___
 
-### `Static` requiresProperty
+### `Static` `Readonly` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
@@ -131,7 +132,7 @@ ___
 
 ___
 
-### `Static` typeNameProperty
+### `Static` `Readonly` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -171,9 +172,9 @@ ___
 
 ###  requires
 
-• **get requires**(): *HostCapabilities*
+• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
 
-**Returns:** *HostCapabilities*
+**Returns:** *[HostCapabilities](hostcapabilities.md)*
 
 ## Methods
 
@@ -181,7 +182,7 @@ ___
 
 ▸ **getCustomProperty**(`name`: string): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getCustomProperty](serializableobject.md#getcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getCustomProperty](hostcapabilities.md#getcustomproperty)*
 
 **Parameters:**
 
@@ -190,6 +191,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [HostCapabilities](hostcapabilities.md).[getDefaultSerializationContext](hostcapabilities.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -213,7 +224,7 @@ ___
 
 ▸ **getSchema**(): *[SerializableObjectSchema](serializableobjectschema.md)*
 
-*Inherited from [SerializableObject](serializableobject.md).[getSchema](serializableobject.md#getschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getSchema](hostcapabilities.md#getschema)*
 
 **Returns:** *[SerializableObjectSchema](serializableobjectschema.md)*
 
@@ -233,7 +244,7 @@ ___
 
 ▸ **getValue**(`property`: [PropertyDefinition](propertydefinition.md)): *any*
 
-*Inherited from [SerializableObject](serializableobject.md).[getValue](serializableobject.md#protected-getvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[getValue](hostcapabilities.md#protected-getvalue)*
 
 **Parameters:**
 
@@ -249,7 +260,7 @@ ___
 
 ▸ **hasAllDefaultValues**(): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasAllDefaultValues](serializableobject.md#hasalldefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasAllDefaultValues](hostcapabilities.md#hasalldefaultvalues)*
 
 **Returns:** *boolean*
 
@@ -259,7 +270,7 @@ ___
 
 ▸ **hasDefaultValue**(`property`: [PropertyDefinition](propertydefinition.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[hasDefaultValue](serializableobject.md#hasdefaultvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[hasDefaultValue](hostcapabilities.md#hasdefaultvalue)*
 
 **Parameters:**
 
@@ -323,7 +334,7 @@ ___
 
 ▸ **parse**(`source`: [PropertyBag](../README.md#propertybag), `context?`: [BaseSerializationContext](baseserializationcontext.md)): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[parse](serializableobject.md#parse)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[parse](hostcapabilities.md#parse)*
 
 **Parameters:**
 
@@ -340,7 +351,7 @@ ___
 
 ▸ **populateSchema**(`schema`: [SerializableObjectSchema](serializableobjectschema.md)): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[populateSchema](serializableobject.md#protected-populateschema)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[populateSchema](hostcapabilities.md#protected-populateschema)*
 
 **Parameters:**
 
@@ -371,7 +382,7 @@ ___
 
 ▸ **resetDefaultValues**(): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[resetDefaultValues](serializableobject.md#resetdefaultvalues)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[resetDefaultValues](hostcapabilities.md#resetdefaultvalues)*
 
 **Returns:** *void*
 
@@ -381,7 +392,7 @@ ___
 
 ▸ **setCustomProperty**(`name`: string, `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setCustomProperty](serializableobject.md#setcustomproperty)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setCustomProperty](hostcapabilities.md#setcustomproperty)*
 
 **Parameters:**
 
@@ -426,7 +437,7 @@ ___
 
 ▸ **setValue**(`property`: [PropertyDefinition](propertydefinition.md), `value`: any): *void*
 
-*Inherited from [SerializableObject](serializableobject.md).[setValue](serializableobject.md#protected-setvalue)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[setValue](hostcapabilities.md#protected-setvalue)*
 
 **Parameters:**
 
@@ -451,7 +462,7 @@ ___
 
 ▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[shouldSerialize](hostcapabilities.md#protected-shouldserialize)*
 
 **Parameters:**
 
@@ -467,7 +478,7 @@ ___
 
 ▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [HostCapabilities](hostcapabilities.md).[toJSON](hostcapabilities.md#tojson)*
 
 **Parameters:**
 

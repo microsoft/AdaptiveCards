@@ -10,24 +10,24 @@
 
 ### Properties
 
-* [Default](actionstyle.md#static-default)
-* [Destructive](actionstyle.md#static-destructive)
-* [Positive](actionstyle.md#static-positive)
+* [Default](actionstyle.md#static-readonly-default)
+* [Destructive](actionstyle.md#static-readonly-destructive)
+* [Positive](actionstyle.md#static-readonly-positive)
 
 ## Properties
 
-### `Static` Default
+### `Static` `Readonly` Default
 
 ▪ **Default**: *"default"* = "default"
 
 ___
 
-### `Static` Destructive
+### `Static` `Readonly` Destructive
 
 ▪ **Destructive**: *"destructive"* = "destructive"
 
 ___
 
-### `Static` Positive
+### `Static` `Readonly` Positive
 
 ▪ **Positive**: *"positive"* = "positive"
