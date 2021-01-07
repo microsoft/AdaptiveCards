@@ -25,8 +25,9 @@ Pic2Card converts the image to Adaptivecards card schema. The card generated wil
 ## Pipeline
 
 We haven’t discussed anything much about its internals till now, here it's. We have the state of art ML and other heuristic processing involved to recreate the card from the image. The entire pipeline is shown below. The two main parts are,
-The Machine Learning model identifies each element’s bounding boxes that we need to be extracted for the card.
-The pipeline, which does all the layout setting, property extraction, etc., is based on the ML model output.
+
+- The Machine Learning model identifies each element’s bounding boxes that we need to be extracted for the card.
+- The pipeline, which does all the layout setting, property extraction, etc., is based on the ML model output.
 
 ![pic2card-pipeline](Pic2Card/pic2card_pipeline.png)
 
