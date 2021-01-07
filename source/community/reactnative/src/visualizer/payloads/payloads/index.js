@@ -252,6 +252,10 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
+    "title": "Image.Tintable.json",
+    "json": require('./Image.Tintable.json')
+  },
+  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },

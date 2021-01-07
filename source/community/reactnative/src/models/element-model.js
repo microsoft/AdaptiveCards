@@ -26,6 +26,7 @@ export class ImageModel extends BaseModel {
     constructor(payload, parent) {
         super(payload, parent);
         this.url = payload.url;
+        this.tint = payload.tint
         this.altText = payload.altText;
         this.horizontalAlignment = payload.horizontalAlignment;
         this.size = payload.size;

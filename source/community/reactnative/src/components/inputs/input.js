@@ -233,12 +233,12 @@ export class Input extends React.Component {
 							value={this.props.value}
 						/>
 						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
-							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
+							{Utils.isNullOrEmpty(inlineAction.url) ?
 								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
 								<Image
 									style={styles.inlineActionImage}
 									source=
-									{{ uri: inlineAction.iconUrl }} />
+									{{ uri: inlineAction.url }} />
 							}
 						</TouchableOpacity>
 					</ElementWrapper>

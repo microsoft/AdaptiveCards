@@ -281,6 +281,16 @@ export class Img extends React.Component {
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
 
+		if (this.payload.tint !== undefined) {
+			let colorEnum = Utils.parseHostConfigEnum(
+					Enums.TextColor, 
+					this.payload.tint, 
+					null
+				);
+			let tintColor = this.hostConfig.getTextColor(colorEnum);
+			imageComputedStyle.push({tintColor: tintColor.default})
+		}
+
 		let imageUrl = Utils.getImageUrl(this.url);
 
 		let containerContent = (<InputContextConsumer>

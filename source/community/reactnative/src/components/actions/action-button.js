@@ -38,7 +38,7 @@ export class ActionButton extends React.Component {
 		this.title = Constants.EmptyString;
 		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
-		this.iconUrl = Constants.EmptyString;
+		this.url = Constants.EmptyString;
 		this.inputArray = undefined;
 		this.onExecuteAction = undefined;
 		this.addResourceInformation = undefined;
@@ -50,8 +50,8 @@ export class ActionButton extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!Utils.isNullOrEmpty(this.payload.iconUrl)) {
-			this.addResourceInformation(this.payload.iconUrl, "");
+		if (!Utils.isNullOrEmpty(this.payload.url)) {
+			this.addResourceInformation(this.payload.url, "");
 		}
 	}
 
@@ -143,8 +143,8 @@ export class ActionButton extends React.Component {
 		this.title = this.payload.title;
 		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
-		let imageUrl = this.payload.iconUrl
-		this.iconUrl = Utils.getImageUrl(imageUrl)
+		let imageUrl = this.payload.url
+		this.url = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
 		this.sentiment = this.payload.sentiment;
 		this.sentiment = Utils.parseHostConfigEnum(
@@ -186,9 +186,9 @@ export class ActionButton extends React.Component {
 			<View
 				style={this.getButtonStyles()}>
 				{
-					!Utils.isNullOrEmpty(this.iconUrl) ?
+					!Utils.isNullOrEmpty(this.url) ?
 						<Image resizeMode="center"
-							source={{ uri: this.iconUrl }}
+							source={{ uri: this.url }}
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}

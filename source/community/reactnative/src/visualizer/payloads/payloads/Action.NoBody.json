@@ -44,7 +44,7 @@
           "id": "input1",
           "inlineAction": {
               "type": "Action.Submit",
-              "iconUrl": "http://adaptivecards.io/content/cats/1.png",
+              "url": "http://adaptivecards.io/content/cats/1.png",
               "title": "Reply"
           }
       },
@@ -72,7 +72,7 @@
           "isMultiline": true,
           "inlineAction": {
               "type": "Action.Submit",
-              "iconUrl": "http://adaptivecards.io/content/cats/1.png",
+              "url": "http://adaptivecards.io/content/cats/1.png",
               "title": "Reply"
           }
       },

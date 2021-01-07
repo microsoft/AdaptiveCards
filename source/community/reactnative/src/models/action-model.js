@@ -6,7 +6,8 @@ export class BaseActionModel extends BaseModel{
     constructor(payload, parent) {
         super(payload, parent);
         this.title = payload.title;
-        this.iconUrl = payload.iconUrl;
+        this.url = payload.url;
+        this.tintable = payload.tintable;
         this.sentiment = payload.style;
         this.ignoreInputValidation = payload.ignoreInputValidation;
         this.altText = payload.altText;
