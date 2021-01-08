@@ -6,6 +6,22 @@
 
 * **ICardElement**
 
+  ↳ [IInput](iinput.md)
+
+  ↳ [ITextBlock](itextblock.md)
+
+  ↳ [IContainer](icontainer.md)
+
+  ↳ [IColumn](icolumn.md)
+
+  ↳ [IColumnSet](icolumnset.md)
+
+  ↳ [IFactSet](ifactset.md)
+
+  ↳ [IImage](iimage.md)
+
+  ↳ [IImageSet](iimageset.md)
+
   ↳ [IAdaptiveCard](iadaptivecard.md)
 
 ## Indexable

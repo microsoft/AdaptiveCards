@@ -6,11 +6,7 @@
 		"large": 30,
 		"extraLarge": 40,
 		"padding": 10
-	},
-	"separator": {
-		"lineThickness": 1,
-		"lineColor": "#EEEEEE"
-	},
+	},	
 	"supportsInteractivity": true,
 	"imageBaseUrl": "https://pbs.twimg.com/profile_images/3647943215/",
 	"fontTypes": {

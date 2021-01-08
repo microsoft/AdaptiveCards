@@ -102,6 +102,9 @@
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        self.validationSuccessBorderColor = inputView.layer.borderColor;
+        self.validationSuccessBorderRadius = inputView.layer.cornerRadius;
+        self.validationSuccessBorderWidth = inputView.layer.borderWidth;
 
         self.inputView = inputView;
         self.label.isAccessibilityElement = NO;
@@ -155,10 +158,15 @@
                 self.errorMessage.hidden = YES;
                 self.inputAccessibilityItem.accessibilityLabel = self.labelText;
             }
+
+            self.stack.arrangedSubviews[1].layer.borderColor = self.validationSuccessBorderColor;
+            self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationSuccessBorderRadius;
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
+
             return YES;
         }
     }
+
     self.stack.arrangedSubviews[1].layer.borderWidth = self.validationFailBorderWidth;
     self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationFailBorderRadius;
     self.stack.arrangedSubviews[1].layer.borderColor = self.validationFailBorderColor.CGColor;
