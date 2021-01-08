@@ -71,6 +71,8 @@
 
     if (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Center || (columnElem->GetVerticalContentAlignment() == VerticalContentAlignment::Top && _fillAlignment)) {
         trailingBlankSpace = [column addPaddingSpace];
+    } else {
+        [column addPaddingSpace];
     }
 
     if (leadingBlankSpace || trailingBlankSpace) {

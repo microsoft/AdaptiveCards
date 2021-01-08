@@ -154,7 +154,7 @@
         [view.centerXAnchor constraintEqualToAnchor:wrappingview.centerXAnchor].active = YES;
     }
 
-    [wrappingview.heightAnchor constraintGreaterThanOrEqualToAnchor:view.heightAnchor].active = YES;
+    [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
     [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
@@ -268,9 +268,26 @@
                                                toItem:nil
                                             attribute:NSLayoutAttributeNotAnAttribute
                                            multiplier:1.0
-                                             constant:cgsize.height] ];
+                                             constant:cgsize.height],
+              [NSLayoutConstraint constraintWithItem:imageView
+                                           attribute:NSLayoutAttributeHeight
+                                           relatedBy:NSLayoutRelationEqual
+                                              toItem:imageView
+                                           attribute:NSLayoutAttributeWidth
+                                          multiplier:cgsize.height / cgsize.width
+                                            constant:0],
+              [NSLayoutConstraint constraintWithItem:imageView
+                                           attribute:NSLayoutAttributeWidth
+                                           relatedBy:NSLayoutRelationEqual
+                                              toItem:imageView
+                                           attribute:NSLayoutAttributeHeight
+                                          multiplier:cgsize.width / cgsize.height
+                                            constant:0]
+            ];
         constraints[0].priority = priority;
         constraints[1].priority = priority;
+        constraints[2].priority = priority;
+        constraints[3].priority = priority;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
@@ -279,15 +296,19 @@
             [imageView.superview invalidateIntrinsicContentSize];
         }
     }
-
+       
     UILayoutPriority huggingPrioirty = [imageView.superview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal];
+    if (size == AdaptiveCards::ImageSize::Auto && huggingPrioirty == ACRColumnWidthPriorityAuto) {
+        
+    }
+    /*
     if (size == AdaptiveCards::ImageSize::Auto && huggingPrioirty == ACRColumnWidthPriorityAuto) {
         NSLayoutConstraint *imageHeightConstraint = [imageView.heightAnchor constraintEqualToConstant:image.size.height];
         imageHeightConstraint.active = YES;
-        imageHeightConstraint.priority = UILayoutPriorityDefaultHigh + 1;
+        imageHeightConstraint.priority = huggingPrioirty;
         NSLayoutConstraint *imageWidthConstraint = [imageView.widthAnchor constraintEqualToConstant:image.size.width];
         imageWidthConstraint.active = YES;
-        imageWidthConstraint.priority = UILayoutPriorityDefaultHigh + 1;
+        imageWidthConstraint.priority = huggingPrioirty;
     }
 
     if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
@@ -307,8 +328,8 @@
                                            multiplier:widthToHeightRatio
                                              constant:0] ];
         
-        constraints[0].priority = UILayoutPriorityDefaultHigh + 2;
-        constraints[1].priority = UILayoutPriorityDefaultHigh + 2;
+        constraints[0].priority = huggingPrioirty;
+        constraints[1].priority = huggingPrioirty;
 
         [NSLayoutConstraint activateConstraints:constraints];
 
@@ -316,6 +337,7 @@
             ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
         }
     }
+     */
 }
 
 + (UILayoutPriority)getImageUILayoutPriority:(UIView *)wrappingview
