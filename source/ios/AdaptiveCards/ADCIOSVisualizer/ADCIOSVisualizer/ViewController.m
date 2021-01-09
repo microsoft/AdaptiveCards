@@ -20,7 +20,7 @@
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
-const CGFloat kAdaptiveCardsWidth = 400;
+const CGFloat kAdaptiveCardsWidth = 360;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;

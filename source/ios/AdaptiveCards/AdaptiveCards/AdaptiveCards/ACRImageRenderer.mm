@@ -155,7 +155,11 @@
     }
 
     [wrappingview.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-    [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
+    if (size == ImageSize::Stretch) {
+        [wrappingview.widthAnchor constraintEqualToAnchor:view.widthAnchor].active = YES;
+    } else {
+        [wrappingview.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
+    }
 
     [view.topAnchor constraintEqualToAnchor:wrappingview.topAnchor].active = YES;
 
@@ -166,12 +170,12 @@
     }
 
     UILayoutPriority imagePriority = [ACRImageRenderer getImageUILayoutPriority:wrappingview];
-
     if (size != ImageSize::Stretch) {
         [view setContentHuggingPriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [view setContentHuggingPriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
-        [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+        [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
+        /*
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
             blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
@@ -182,8 +186,8 @@
             [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingview.bottomAnchor].active = YES;
             [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
+         */
     }
-
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
     // instantiate and add tap gesture recognizer
@@ -218,6 +222,7 @@
     BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
     CGSize cgsize = [acoConfig getImageSize:imageElem->GetImageSize()];
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
+    
 
     if (image) {
         if (image.size.width > 0) {
@@ -251,8 +256,11 @@
             size = [acoConfig getHostConfig] -> GetImage().imageSize;
         }
     }
+    
+    if (size == ImageSize::Auto || size == ImageSize::Stretch) {
+        cgsize = image.size;
+    }
 
-    if (size != ImageSize::Auto && size != ImageSize::Stretch) {
         UILayoutPriority priority = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
         NSArray<NSLayoutConstraint *> *constraints =
             @[ [NSLayoutConstraint constraintWithItem:imageView
@@ -286,63 +294,21 @@
             ];
         constraints[0].priority = priority;
         constraints[1].priority = priority;
-        constraints[2].priority = priority;
-        constraints[3].priority = priority;
+        constraints[2].priority = priority + 2;
+        constraints[3].priority = priority + 2;
 
         [NSLayoutConstraint activateConstraints:constraints];
         UIView *superview = imageView.superview;
         if ([superview isKindOfClass:[ACRContentHoldingUIView class]]) {
             ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = cgsize;
             [imageView.superview invalidateIntrinsicContentSize];
-        }
-    }
-       
-    UILayoutPriority huggingPrioirty = [imageView.superview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal];
-    if (size == AdaptiveCards::ImageSize::Auto && huggingPrioirty == ACRColumnWidthPriorityAuto) {
-        
-    }
-    /*
-    if (size == AdaptiveCards::ImageSize::Auto && huggingPrioirty == ACRColumnWidthPriorityAuto) {
-        NSLayoutConstraint *imageHeightConstraint = [imageView.heightAnchor constraintEqualToConstant:image.size.height];
-        imageHeightConstraint.active = YES;
-        imageHeightConstraint.priority = huggingPrioirty;
-        NSLayoutConstraint *imageWidthConstraint = [imageView.widthAnchor constraintEqualToConstant:image.size.width];
-        imageWidthConstraint.active = YES;
-        imageWidthConstraint.priority = huggingPrioirty;
-    }
-
-    if (heightToWidthRatio && widthToHeightRatio && (size == ImageSize::Auto || size == ImageSize::Stretch)) {
-        NSArray<NSLayoutConstraint *> *constraints =
-            @[ [NSLayoutConstraint constraintWithItem:imageView
-                                            attribute:NSLayoutAttributeHeight
-                                            relatedBy:NSLayoutRelationEqual
-                                               toItem:imageView
-                                            attribute:NSLayoutAttributeWidth
-                                           multiplier:heightToWidthRatio
-                                             constant:0],
-               [NSLayoutConstraint constraintWithItem:imageView
-                                            attribute:NSLayoutAttributeWidth
-                                            relatedBy:NSLayoutRelationEqual
-                                               toItem:imageView
-                                            attribute:NSLayoutAttributeHeight
-                                           multiplier:widthToHeightRatio
-                                             constant:0] ];
-        
-        constraints[0].priority = huggingPrioirty;
-        constraints[1].priority = huggingPrioirty;
-
-        [NSLayoutConstraint activateConstraints:constraints];
-
-        if ([imageView.superview class] == [ACRContentHoldingUIView class]) {
-            ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = imageView.image.size;
-        }
-    }
-     */
+        }    
 }
 
 + (UILayoutPriority)getImageUILayoutPriority:(UIView *)wrappingview
 {
-    return (!wrappingview || [wrappingview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal] > ACRColumnWidthPriorityStretch) ? UILayoutPriorityDefaultHigh : ACRColumnWidthPriorityAuto;
+    UILayoutPriority priority = [wrappingview contentHuggingPriorityForAxis:UILayoutConstraintAxisHorizontal];
+    return (!wrappingview || priority > ACRColumnWidthPriorityStretch) ? priority + 500  : priority;
 }
 
 @end
