@@ -6,6 +6,7 @@ import { Strings } from "./strings";
 import { SubmitAction, SerializationContext, CardElement, AdaptiveCard, Action, GlobalRegistry, Input } from "./card-elements";
 import { StringProperty, Versions, property, PropertyDefinition, PropertyBag, SerializableObject, Version, SerializableObjectProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
+import { HostConfig } from "./host-config";
 
 function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
@@ -348,6 +349,10 @@ export class AdaptiveApplet {
             try {
                 let card = new AdaptiveAppletCard();
 
+                if (this.hostConfig) {
+                    card.hostConfig = this.hostConfig;
+                }
+
                 let serializationContext = new SerializationContext();
                 serializationContext.setElementRegistry(AdaptiveApplet.elementsRegistry);
                 serializationContext.setActionRegistry(AdaptiveApplet.actionsRegistry);
@@ -648,7 +653,8 @@ export class AdaptiveApplet {
     readonly renderedElement: HTMLElement;
 
     userId?: string;
-    channelAdapter: ChannelAdapter | undefined = undefined;
+    hostConfig?: HostConfig;
+    channelAdapter?: ChannelAdapter;
 
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
     onCardChanged?: (sender: AdaptiveApplet) => void;
