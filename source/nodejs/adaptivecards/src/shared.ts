@@ -5,7 +5,8 @@ import * as Enums from "./enums";
 export type Refresh = {
     mode: Enums.RefreshMode;
     timeBetweenAutomaticRefreshes: number;
-    maximumConsecutiveRefreshes: number;
+    maximumConsecutiveAutomaticRefreshes: number;
+    allowManualRefreshesAfterAutomaticRefreshes: boolean;
 }
 
 export type AppletsSettings = {
@@ -41,7 +42,8 @@ export class GlobalSettings {
         refresh: {
             mode: Enums.RefreshMode.Manual,
             timeBetweenAutomaticRefreshes: 3000, // 3 seconds
-            maximumConsecutiveRefreshes: 3
+            maximumConsecutiveAutomaticRefreshes: 3,
+            allowManualRefreshesAfterAutomaticRefreshes: true
         }
     }
 }

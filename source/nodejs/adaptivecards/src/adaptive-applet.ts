@@ -384,7 +384,7 @@ export class AdaptiveApplet {
                         }
 
                         if (this._card.refresh) {
-                            if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic && consecutiveRefreshes < GlobalSettings.applets.refresh.maximumConsecutiveRefreshes) {
+                            if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic && consecutiveRefreshes < GlobalSettings.applets.refresh.maximumConsecutiveAutomaticRefreshes) {
                                 if (GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes <= 0) {
                                     logEvent(Enums.LogLevel.Info, "Triggering automatic card refresh number " + (consecutiveRefreshes + 1));
 
@@ -409,13 +409,17 @@ export class AdaptiveApplet {
                             }
                             else if (GlobalSettings.applets.refresh.mode !== Enums.RefreshMode.Disabled) {
                                 if (consecutiveRefreshes > 0) {
-                                    logEvent(Enums.LogLevel.Warning, "Stopping automatic refreshes after " + consecutiveRefreshes + " consecutive refreshes. Showing a manual refresh button instead.");
+                                    logEvent(Enums.LogLevel.Warning, "Stopping automatic refreshes after " + consecutiveRefreshes + " consecutive refreshes.");
                                 }
                                 else {
-                                    logEvent(Enums.LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled. Showing manual refresh button instead.");
+                                    logEvent(Enums.LogLevel.Warning, "The card has a refresh section, but automatic refreshes are disabled.");
                                 }
 
-                                this.displayRefreshButton(this._card.refresh.action);
+                                if (GlobalSettings.applets.refresh.allowManualRefreshesAfterAutomaticRefreshes || GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Manual) {
+                                    logEvent(Enums.LogLevel.Info, "Showing manual refresh button.");
+
+                                    this.displayRefreshButton(this._card.refresh.action);
+                                }
                             }
                         }
                     }
