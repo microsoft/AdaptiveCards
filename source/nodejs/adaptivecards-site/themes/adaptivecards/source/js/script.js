@@ -316,15 +316,25 @@ $(function () {
 		}
 	}
 
-	$("#closeVideo").click(function () {
+    function closeVideo(e) {
+        e.preventDefault();
 		$("#overviewVideo")[0].pause();
 		$('#videoModal').css("display", "none");
-	});
+    }
+
+	$("#closeVideo").on({
+        click: closeVideo,
+        keydown: function(e) {
+            if (e.key === "Enter") {
+                closeVideo(e);
+            }
+        }
+    });
 
 	$("#watchVideo").click(function () {
 		$("#overviewVideo")[0].play();
+		$("#overviewVideo").focus();
 		$('#videoModal').css("display", "block");
-
 	});
 
 	$(document).keyup(function (e) {
