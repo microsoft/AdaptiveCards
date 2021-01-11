@@ -600,7 +600,7 @@ export class AdaptiveApplet {
 
                             request.attemptNumber++;
 
-                            await new Promise(
+                            await new Promise<void>(
                                 (resolve, reject) => {
                                     window.setTimeout(
                                         () => { resolve(); },
