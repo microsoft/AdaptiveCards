@@ -575,6 +575,7 @@ namespace AdaptiveCards.Templating
             if (HasDataContext())
             {
                 DataContext currentDataContext = GetCurrentDataContext();
+                var tempstring = node.Symbol.InputStream.GetText(new Interval(node.Symbol.StartIndex, node.Symbol.StopIndex));
                 string templateString = node.GetText();
                 return new AdaptiveCardsTemplateResult(Expand(templateString, currentDataContext.AELMemory, isExpanded));
             }

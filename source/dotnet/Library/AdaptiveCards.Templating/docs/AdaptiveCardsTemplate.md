@@ -7,31 +7,26 @@
   - [#ctor(jsonTemplate)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardTemplate.#ctor(System.Object)')
   - [Expand(context,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-AdaptiveCards-Templating-EvaluationContext,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(AdaptiveCards.Templating.EvaluationContext,System.Func{System.String,System.Object})')
   - [Expand(rootData,nullSubstitutionOption)](#M-AdaptiveCards-Templating-AdaptiveCardTemplate-Expand-System-Object,System-Func{System-String,System-Object}- 'AdaptiveCards.Templating.AdaptiveCardTemplate.Expand(System.Object,System.Func{System.String,System.Object})')
-- [AdaptiveCardsTemplateParserBaseVisitor\`1](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1')
-  - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext)')
-  - [VisitJson(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitJson(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext)')
-  - [VisitJsonPair(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitJsonPair(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext)')
-  - [VisitObj(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitObj(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitPair(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitPair(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext)')
-  - [VisitTemplateData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext)')
-  - [VisitTemplateRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext)')
-  - [VisitTemplateRootData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateRootData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateWhen(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext)')
-  - [VisitTemplatedString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplatedString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext)')
-  - [VisitValue(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValue(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext)')
-  - [VisitValueArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext)')
-  - [VisitValueFalse(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueFalse(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext)')
-  - [VisitValueNull(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNull(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext)')
-  - [VisitValueNumber(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNumber(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext)')
-  - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueObject(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext)')
-  - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
-  - [VisitValueTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
-  - [VisitValueTrue(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTrue(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext)')
+- [AdaptiveCardsTemplateParserBaseVisitor\`1](#T-AdaptiveCardsTemplateParserBaseVisitor`1 'AdaptiveCardsTemplateParserBaseVisitor`1')
+  - [VisitArray(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
+  - [VisitJson(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitJson(AdaptiveCardsTemplateParser.JsonContext)')
+  - [VisitJsonPair(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitJsonPair(AdaptiveCardsTemplateParser.JsonPairContext)')
+  - [VisitObj(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
+  - [VisitTemplateData(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
+  - [VisitTemplateRootData(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
+  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
+  - [VisitTemplateWhen(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
+  - [VisitTemplatedString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitTemplatedString(AdaptiveCardsTemplateParser.TemplatedStringContext)')
+  - [VisitValueArray(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueArray(AdaptiveCardsTemplateParser.ValueArrayContext)')
+  - [VisitValueFalse(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueFalse(AdaptiveCardsTemplateParser.ValueFalseContext)')
+  - [VisitValueNull(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNull(AdaptiveCardsTemplateParser.ValueNullContext)')
+  - [VisitValueNumber(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueNumber(AdaptiveCardsTemplateParser.ValueNumberContext)')
+  - [VisitValueObject(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
+  - [VisitValueString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueString(AdaptiveCardsTemplateParser.ValueStringContext)')
+  - [VisitValueTemplateExpression(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
+  - [VisitValueTemplateString(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
+  - [VisitValueTemplateStringWithRoot(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
+  - [VisitValueTrue(context)](#M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext- 'AdaptiveCardsTemplateParserBaseVisitor`1.VisitValueTrue(AdaptiveCardsTemplateParser.ValueTrueContext)')
 - [AdaptiveCardsTemplateResult](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult')
   - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.#ctor')
   - [#ctor(capturedString)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.#ctor(System.String)')
@@ -54,17 +49,17 @@
   - [PushDataContext(stringToParse,rootDataContext)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-System-String,Newtonsoft-Json-Linq-JToken- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(System.String,Newtonsoft.Json.Linq.JToken)')
   - [PushDataContext(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushDataContext-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-DataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushDataContext(AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.DataContext)')
   - [PushTemplatedDataContext(jpath)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-PushTemplatedDataContext-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.PushTemplatedDataContext(System.String)')
-  - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext)')
+  - [VisitArray(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
   - [VisitChildren(node)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-  - [VisitObj(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitObj(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitTemplateData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateRootData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateRootData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateWhen(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext)')
+  - [VisitObj(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
+  - [VisitTemplateData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
+  - [VisitTemplateRootData(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
+  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
+  - [VisitTemplateWhen(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
   - [VisitTerminal(node)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTerminal-Antlr4-Runtime-Tree-ITerminalNode- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitTerminal(Antlr4.Runtime.Tree.ITerminalNode)')
-  - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueObject(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
+  - [VisitValueObject(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
+  - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
+  - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
 - [AdaptiveTemplateException](#T-AdaptiveCards-Templating-AdaptiveTemplateException 'AdaptiveCards.Templating.AdaptiveTemplateException')
   - [#ctor()](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor')
   - [#ctor(message)](#M-AdaptiveCards-Templating-AdaptiveTemplateException-#ctor-System-String- 'AdaptiveCards.Templating.AdaptiveTemplateException.#ctor(System.String)')
@@ -82,31 +77,26 @@
   - [EvaluatedToFalse](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToFalse 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToFalse')
   - [EvaluatedToTrue](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-EvaluatedToTrue 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.EvaluatedToTrue')
   - [NotEvaluated](#F-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-EvaluationResult-NotEvaluated 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.EvaluationResult.NotEvaluated')
-- [IAdaptiveCardsTemplateParserVisitor\`1](#T-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1')
-  - [VisitArray(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext)')
-  - [VisitJson(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitJson(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext)')
-  - [VisitJsonPair(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitJsonPair(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext)')
-  - [VisitObj(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitObj(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext)')
-  - [VisitPair(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitPair(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext)')
-  - [VisitTemplateData(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext)')
-  - [VisitTemplateExpression(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext)')
-  - [VisitTemplateRoot(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext)')
-  - [VisitTemplateRootData(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateRootData(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext)')
-  - [VisitTemplateString(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext)')
-  - [VisitTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
-  - [VisitTemplateWhen(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateWhen(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext)')
-  - [VisitTemplatedString(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitTemplatedString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext)')
-  - [VisitValue(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValue(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext)')
-  - [VisitValueArray(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueArray(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext)')
-  - [VisitValueFalse(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueFalse(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext)')
-  - [VisitValueNull(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueNull(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext)')
-  - [VisitValueNumber(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueNumber(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext)')
-  - [VisitValueObject(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueObject(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext)')
-  - [VisitValueString(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext)')
-  - [VisitValueTemplateExpression(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateExpression(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
-  - [VisitValueTemplateString(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateString(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
-  - [VisitValueTemplateStringWithRoot(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
-  - [VisitValueTrue(context)](#M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext- 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1.VisitValueTrue(AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext)')
+- [IAdaptiveCardsTemplateParserVisitor\`1](#T-IAdaptiveCardsTemplateParserVisitor`1 'IAdaptiveCardsTemplateParserVisitor`1')
+  - [VisitArray(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitArray(AdaptiveCardsTemplateParser.ArrayContext)')
+  - [VisitJson(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitJson(AdaptiveCardsTemplateParser.JsonContext)')
+  - [VisitJsonPair(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitJsonPair(AdaptiveCardsTemplateParser.JsonPairContext)')
+  - [VisitObj(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitObj(AdaptiveCardsTemplateParser.ObjContext)')
+  - [VisitTemplateData(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateData(AdaptiveCardsTemplateParser.TemplateDataContext)')
+  - [VisitTemplateRootData(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateRootData(AdaptiveCardsTemplateParser.TemplateRootDataContext)')
+  - [VisitTemplateStringWithRoot(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateStringWithRoot(AdaptiveCardsTemplateParser.TemplateStringWithRootContext)')
+  - [VisitTemplateWhen(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplateWhen(AdaptiveCardsTemplateParser.TemplateWhenContext)')
+  - [VisitTemplatedString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitTemplatedString(AdaptiveCardsTemplateParser.TemplatedStringContext)')
+  - [VisitValueArray(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueArray(AdaptiveCardsTemplateParser.ValueArrayContext)')
+  - [VisitValueFalse(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueFalse(AdaptiveCardsTemplateParser.ValueFalseContext)')
+  - [VisitValueNull(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueNull(AdaptiveCardsTemplateParser.ValueNullContext)')
+  - [VisitValueNumber(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueNumber(AdaptiveCardsTemplateParser.ValueNumberContext)')
+  - [VisitValueObject(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueObject(AdaptiveCardsTemplateParser.ValueObjectContext)')
+  - [VisitValueString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueString(AdaptiveCardsTemplateParser.ValueStringContext)')
+  - [VisitValueTemplateExpression(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateExpression(AdaptiveCardsTemplateParser.ValueTemplateExpressionContext)')
+  - [VisitValueTemplateString(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateString(AdaptiveCardsTemplateParser.ValueTemplateStringContext)')
+  - [VisitValueTemplateStringWithRoot(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTemplateStringWithRoot(AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext)')
+  - [VisitValueTrue(context)](#M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext- 'IAdaptiveCardsTemplateParserVisitor`1.VisitValueTrue(AdaptiveCardsTemplateParser.ValueTrueContext)')
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardTemplate'></a>
 ## AdaptiveCardTemplate `type`
@@ -244,16 +234,16 @@ Default behavior is leaving templated string unchanged
 
 - [AdaptiveCards.Templating.EvaluationContext](#T-AdaptiveCards-Templating-EvaluationContext 'AdaptiveCards.Templating.EvaluationContext')
 
-<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1'></a>
+<a name='T-AdaptiveCardsTemplateParserBaseVisitor`1'></a>
 ## AdaptiveCardsTemplateParserBaseVisitor\`1 `type`
 
 ##### Namespace
 
-AdaptiveCards.Templating
+
 
 ##### Summary
 
-This class provides an empty implementation of [IAdaptiveCardsTemplateParserVisitor\`1](#T-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1 'AdaptiveCards.Templating.IAdaptiveCardsTemplateParserVisitor`1'),
+This class provides an empty implementation of [IAdaptiveCardsTemplateParserVisitor\`1](#T-IAdaptiveCardsTemplateParserVisitor`1 'IAdaptiveCardsTemplateParserVisitor`1'),
 which can be extended to create a visitor which only needs to handle a subset
 of the available methods.
 
@@ -263,12 +253,12 @@ of the available methods.
 | ---- | ----------- |
 | Result | The return type of the visit operation. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
 ### VisitArray(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [array](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-array 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.array').
+Visit a parse tree produced by [array](#M-AdaptiveCardsTemplateParser-array 'AdaptiveCardsTemplateParser.array').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -277,14 +267,14 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext-'></a>
 ### VisitJson(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [json](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-json 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.json').
+Visit a parse tree produced by [json](#M-AdaptiveCardsTemplateParser-json 'AdaptiveCardsTemplateParser.json').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -293,15 +283,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
 ### VisitJsonPair(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `jsonPair`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -310,14 +300,14 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
 ### VisitObj(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [obj](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-obj 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.obj').
+Visit a parse tree produced by [obj](#M-AdaptiveCardsTemplateParser-obj 'AdaptiveCardsTemplateParser.obj').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -326,31 +316,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext-'></a>
-### VisitPair(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
 ### VisitTemplateData(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateData`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -359,47 +333,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext-'></a>
-### VisitTemplateExpression(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateExpression](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateExpression').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext-'></a>
-### VisitTemplateRoot(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateRoot](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateRoot').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
 ### VisitTemplateRootData(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateRootData`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -408,31 +350,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext-'></a>
-### VisitTemplateString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateString](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateString 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateString').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
 ### VisitTemplateStringWithRoot(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateStringWithRoot`
-labeled alternative in [templateRoot](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateRoot').
+labeled alternative in [templateRoot](#M-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCardsTemplateParser.templateRoot').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -441,15 +367,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
 ### VisitTemplateWhen(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateWhen`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -458,15 +384,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
 ### VisitTemplatedString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templatedString`
-labeled alternative in [templateString](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateString 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateString').
+labeled alternative in [templateString](#M-AdaptiveCardsTemplateParser-templateString 'AdaptiveCardsTemplateParser.templateString').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -475,31 +401,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext-'></a>
-### VisitValue(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
-
-The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
-on `context`.
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
 ### VisitValueArray(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueArray`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -508,15 +418,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
 ### VisitValueFalse(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueFalse`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -525,15 +435,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
 ### VisitValueNull(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueNull`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -542,15 +452,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
 ### VisitValueNumber(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueNumber`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -559,15 +469,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
 ### VisitValueObject(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueObject`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -576,15 +486,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
 ### VisitValueString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueString`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -593,15 +503,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
 ### VisitValueTemplateExpression(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateExpression`
-labeled alternative in [templateExpression](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateExpression').
+labeled alternative in [templateExpression](#M-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCardsTemplateParser.templateExpression').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -610,15 +520,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
 ### VisitValueTemplateString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateString`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -627,15 +537,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
 ### VisitValueTemplateStringWithRoot(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateStringWithRoot`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -644,15 +554,15 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
+<a name='M-AdaptiveCardsTemplateParserBaseVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
 ### VisitValueTrue(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTrue`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 The default implementation returns the result of calling [VisitChildren](#M-Antlr4-Runtime-Tree-AbstractParseTreeVisitor`1-VisitChildren-Antlr4-Runtime-Tree-IRuleNode- 'Antlr4.Runtime.Tree.AbstractParseTreeVisitor`1.VisitChildren(Antlr4.Runtime.Tree.IRuleNode)')
 on `context`.
@@ -661,7 +571,7 @@ on `context`.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |
 
 <a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateResult'></a>
 ## AdaptiveCardsTemplateResult `type`
@@ -942,7 +852,7 @@ Given a `jpath`, create a new [DataContext](#T-AdaptiveCards-Templating-Adaptive
 | ---- | ---- | ----------- |
 | jpath | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | a json selection path |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
 ### VisitArray(context) `method`
 
 ##### Summary
@@ -957,7 +867,7 @@ AdaptiveCardsTemplateResult
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext') |  |
+| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') |  |
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitChildren-Antlr4-Runtime-Tree-IRuleNode-'></a>
 ### VisitChildren(node) `method`
@@ -976,7 +886,7 @@ Visits each children in IRuleNode
 | ---- | ---- | ----------- |
 | node | [Antlr4.Runtime.Tree.IRuleNode](#T-Antlr4-Runtime-Tree-IRuleNode 'Antlr4.Runtime.Tree.IRuleNode') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
 ### VisitObj(context) `method`
 
 ##### Summary
@@ -991,14 +901,14 @@ Visitor method for `obj` grammar rule `AdaptiveCardsTemplateParser.g4`
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext') |  |
+| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
 ### VisitTemplateData(context) `method`
 
 ##### Summary
 
-antlr runtime wil call this method when parse tree's context is [TemplateDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext')
+antlr runtime wil call this method when parse tree's context is [TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext')
 
 It is used in parsing a pair that has $data as key
 
@@ -1012,9 +922,9 @@ It creates new data context, and set it as current memory scope
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext') |  |
+| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
 ### VisitTemplateRootData(context) `method`
 
 ##### Summary
@@ -1029,9 +939,9 @@ Visitor method for `templateRootData` grammar rule in `AdaptiveCardsTemplatePars
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext') |  |
+| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
 ### VisitTemplateStringWithRoot(context) `method`
 
 ##### Summary
@@ -1046,9 +956,9 @@ Visitor method for `templateRoot` grammar in `AdaptiveCardsTemplateParser.g4`
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext') |  |
+| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
 ### VisitTemplateWhen(context) `method`
 
 ##### Summary
@@ -1063,7 +973,7 @@ return the parsed result of $when from pair context
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext') |  |
+| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') |  |
 
 <a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitTerminal-Antlr4-Runtime-Tree-ITerminalNode-'></a>
 ### VisitTerminal(node) `method`
@@ -1084,7 +994,7 @@ collects token as string and expand template if needed
 | ---- | ---- | ----------- |
 | node | [Antlr4.Runtime.Tree.ITerminalNode](#T-Antlr4-Runtime-Tree-ITerminalNode 'Antlr4.Runtime.Tree.ITerminalNode') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
 ### VisitValueObject(context) `method`
 
 ##### Summary
@@ -1099,9 +1009,9 @@ Visitor method for `valueObject` grammar rule `AdaptiveCardsTemplateParser.g4`
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext') |  |
+| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') |  |
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
 ### VisitValueTemplateExpression(context) `method`
 
 ##### Summary
@@ -1116,13 +1026,13 @@ AdaptiveCardsTemplateResult
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') |  |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') |  |
 
 ##### Remarks
 
 parsed string has a form of "$when" : ${}
 
-<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
 ### VisitValueTemplateString(context) `method`
 
 ##### Summary
@@ -1137,7 +1047,7 @@ Visitor method for `valueTemplateString` grammar rule `AdaptiveCardsTemplatePars
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext') |  |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') |  |
 
 <a name='T-AdaptiveCards-Templating-AdaptiveTemplateException'></a>
 ## AdaptiveTemplateException `type`
@@ -1354,17 +1264,17 @@ Expression evaluated true
 
 Expression has not been evaluated
 
-<a name='T-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1'></a>
+<a name='T-IAdaptiveCardsTemplateParserVisitor`1'></a>
 ## IAdaptiveCardsTemplateParserVisitor\`1 `type`
 
 ##### Namespace
 
-AdaptiveCards.Templating
+
 
 ##### Summary
 
 This interface defines a complete generic visitor for a parse tree produced
-by [AdaptiveCardsTemplateParser](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser').
+by [AdaptiveCardsTemplateParser](#T-AdaptiveCardsTemplateParser 'AdaptiveCardsTemplateParser').
 
 ##### Generic Types
 
@@ -1372,330 +1282,265 @@ by [AdaptiveCardsTemplateParser](#T-AdaptiveCards-Templating-AdaptiveCardsTempla
 | ---- | ----------- |
 | Result | The return type of the visit operation. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitArray-AdaptiveCardsTemplateParser-ArrayContext-'></a>
 ### VisitArray(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [array](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-array 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.array').
+Visit a parse tree produced by [array](#M-AdaptiveCardsTemplateParser-array 'AdaptiveCardsTemplateParser.array').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ArrayContext](#T-AdaptiveCardsTemplateParser-ArrayContext 'AdaptiveCardsTemplateParser.ArrayContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitJson-AdaptiveCardsTemplateParser-JsonContext-'></a>
 ### VisitJson(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [json](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-json 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.json').
+Visit a parse tree produced by [json](#M-AdaptiveCardsTemplateParser-json 'AdaptiveCardsTemplateParser.json').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.JsonContext](#T-AdaptiveCardsTemplateParser-JsonContext 'AdaptiveCardsTemplateParser.JsonContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitJsonPair-AdaptiveCardsTemplateParser-JsonPairContext-'></a>
 ### VisitJsonPair(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `jsonPair`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.JsonPairContext](#T-AdaptiveCardsTemplateParser-JsonPairContext 'AdaptiveCardsTemplateParser.JsonPairContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitObj-AdaptiveCardsTemplateParser-ObjContext-'></a>
 ### VisitObj(context) `method`
 
 ##### Summary
 
-Visit a parse tree produced by [obj](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-obj 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.obj').
+Visit a parse tree produced by [obj](#M-AdaptiveCardsTemplateParser-obj 'AdaptiveCardsTemplateParser.obj').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ObjContext](#T-AdaptiveCardsTemplateParser-ObjContext 'AdaptiveCardsTemplateParser.ObjContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitPair-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext-'></a>
-### VisitPair(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-PairContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.PairContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateData-AdaptiveCardsTemplateParser-TemplateDataContext-'></a>
 ### VisitTemplateData(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateData`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateDataContext](#T-AdaptiveCardsTemplateParser-TemplateDataContext 'AdaptiveCardsTemplateParser.TemplateDataContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext-'></a>
-### VisitTemplateExpression(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateExpression](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateExpression').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateExpressionContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateExpressionContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext-'></a>
-### VisitTemplateRoot(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateRoot](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateRoot').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateRootData-AdaptiveCardsTemplateParser-TemplateRootDataContext-'></a>
 ### VisitTemplateRootData(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateRootData`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateRootDataContext](#T-AdaptiveCardsTemplateParser-TemplateRootDataContext 'AdaptiveCardsTemplateParser.TemplateRootDataContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext-'></a>
-### VisitTemplateString(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [templateString](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateString 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateString').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateStringWithRoot-AdaptiveCardsTemplateParser-TemplateStringWithRootContext-'></a>
 ### VisitTemplateStringWithRoot(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateStringWithRoot`
-labeled alternative in [templateRoot](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateRoot').
+labeled alternative in [templateRoot](#M-AdaptiveCardsTemplateParser-templateRoot 'AdaptiveCardsTemplateParser.templateRoot').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-TemplateStringWithRootContext 'AdaptiveCardsTemplateParser.TemplateStringWithRootContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplateWhen-AdaptiveCardsTemplateParser-TemplateWhenContext-'></a>
 ### VisitTemplateWhen(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templateWhen`
-labeled alternative in [pair](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-pair 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.pair').
+labeled alternative in [pair](#M-AdaptiveCardsTemplateParser-pair 'AdaptiveCardsTemplateParser.pair').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplateWhenContext](#T-AdaptiveCardsTemplateParser-TemplateWhenContext 'AdaptiveCardsTemplateParser.TemplateWhenContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitTemplatedString-AdaptiveCardsTemplateParser-TemplatedStringContext-'></a>
 ### VisitTemplatedString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `templatedString`
-labeled alternative in [templateString](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateString 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateString').
+labeled alternative in [templateString](#M-AdaptiveCardsTemplateParser-templateString 'AdaptiveCardsTemplateParser.templateString').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.TemplatedStringContext](#T-AdaptiveCardsTemplateParser-TemplatedStringContext 'AdaptiveCardsTemplateParser.TemplatedStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext-'></a>
-### VisitValue(context) `method`
-
-##### Summary
-
-Visit a parse tree produced by [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
-
-##### Parameters
-
-| Name | Type | Description |
-| ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueContext') | The parse tree. |
-
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueArray-AdaptiveCardsTemplateParser-ValueArrayContext-'></a>
 ### VisitValueArray(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueArray`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueArrayContext](#T-AdaptiveCardsTemplateParser-ValueArrayContext 'AdaptiveCardsTemplateParser.ValueArrayContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueFalse-AdaptiveCardsTemplateParser-ValueFalseContext-'></a>
 ### VisitValueFalse(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueFalse`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueFalseContext](#T-AdaptiveCardsTemplateParser-ValueFalseContext 'AdaptiveCardsTemplateParser.ValueFalseContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNull-AdaptiveCardsTemplateParser-ValueNullContext-'></a>
 ### VisitValueNull(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueNull`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueNullContext](#T-AdaptiveCardsTemplateParser-ValueNullContext 'AdaptiveCardsTemplateParser.ValueNullContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueNumber-AdaptiveCardsTemplateParser-ValueNumberContext-'></a>
 ### VisitValueNumber(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueNumber`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueNumberContext](#T-AdaptiveCardsTemplateParser-ValueNumberContext 'AdaptiveCardsTemplateParser.ValueNumberContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueObject-AdaptiveCardsTemplateParser-ValueObjectContext-'></a>
 ### VisitValueObject(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueObject`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueObjectContext](#T-AdaptiveCardsTemplateParser-ValueObjectContext 'AdaptiveCardsTemplateParser.ValueObjectContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueString-AdaptiveCardsTemplateParser-ValueStringContext-'></a>
 ### VisitValueString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueString`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueStringContext](#T-AdaptiveCardsTemplateParser-ValueStringContext 'AdaptiveCardsTemplateParser.ValueStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateExpression-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext-'></a>
 ### VisitValueTemplateExpression(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateExpression`
-labeled alternative in [templateExpression](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.templateExpression').
+labeled alternative in [templateExpression](#M-AdaptiveCardsTemplateParser-templateExpression 'AdaptiveCardsTemplateParser.templateExpression').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateExpressionContext](#T-AdaptiveCardsTemplateParser-ValueTemplateExpressionContext 'AdaptiveCardsTemplateParser.ValueTemplateExpressionContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateString-AdaptiveCardsTemplateParser-ValueTemplateStringContext-'></a>
 ### VisitValueTemplateString(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateString`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateStringContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringContext 'AdaptiveCardsTemplateParser.ValueTemplateStringContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTemplateStringWithRoot-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext-'></a>
 ### VisitValueTemplateStringWithRoot(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTemplateStringWithRoot`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext](#T-AdaptiveCardsTemplateParser-ValueTemplateStringWithRootContext 'AdaptiveCardsTemplateParser.ValueTemplateStringWithRootContext') | The parse tree. |
 
-<a name='M-AdaptiveCards-Templating-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
+<a name='M-IAdaptiveCardsTemplateParserVisitor`1-VisitValueTrue-AdaptiveCardsTemplateParser-ValueTrueContext-'></a>
 ### VisitValueTrue(context) `method`
 
 ##### Summary
 
 Visit a parse tree produced by the `valueTrue`
-labeled alternative in [value](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-value 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.value').
+labeled alternative in [value](#M-AdaptiveCardsTemplateParser-value 'AdaptiveCardsTemplateParser.value').
 
 ##### Parameters
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| context | [AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCards.Templating.AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |
+| context | [AdaptiveCardsTemplateParser.ValueTrueContext](#T-AdaptiveCardsTemplateParser-ValueTrueContext 'AdaptiveCardsTemplateParser.ValueTrueContext') | The parse tree. |

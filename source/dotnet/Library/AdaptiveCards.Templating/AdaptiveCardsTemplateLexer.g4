@@ -62,7 +62,7 @@ JPATH
    ;
 
 TEMPLATEROOT
-   : '$root' JPATH
+   : '$root' JPATH ?
    ;
 
 STRING
@@ -71,7 +71,7 @@ STRING
    ;
 
 fragment ESC
-   : '\\' (["\\/bfnrt] | UNICODE)
+   : '\' (["\/bfnrt] | UNICODE)
    ;
 fragment UNICODE
    : 'u' HEX HEX HEX HEX
@@ -80,7 +80,7 @@ fragment HEX
    : [0-9a-fA-F]
    ;
 fragment SAFECODEPOINT
-   : ~ ["\\\u0000-\u001F$]
+   : ~ ["\u0000-\u001F$]
    ;
 
 TEMPLATELITERAL

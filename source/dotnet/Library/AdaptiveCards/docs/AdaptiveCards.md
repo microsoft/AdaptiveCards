@@ -637,6 +637,7 @@
   - [EmptyLabelInRequiredInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-EmptyLabelInRequiredInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.EmptyLabelInRequiredInput')
   - [InvalidLanguage](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-InvalidLanguage 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.InvalidLanguage')
   - [MaxActionsExceeded](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-MaxActionsExceeded 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.MaxActionsExceeded')
+  - [NoErrorMessageForValidatedInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput')
   - [UnsupportedSchemaVersion](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.UnsupportedSchemaVersion')
 
 <a name='T-AdaptiveCards-Rendering-ActionsConfig'></a>
@@ -6414,6 +6415,13 @@ The supplied language was not valid.
 ##### Summary
 
 The maximum number of [AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction')s was exceeded.
+
+<a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput'></a>
+### NoErrorMessageForValidatedInput `constants`
+
+##### Summary
+
+An input has validation properties set, but no error message to display to users
 
 <a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion'></a>
 ### UnsupportedSchemaVersion `constants`

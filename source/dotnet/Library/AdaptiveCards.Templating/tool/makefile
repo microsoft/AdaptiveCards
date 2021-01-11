@@ -1,6 +1,6 @@
 sources = $(wildcard *.java)
 classes = $(wildcard *.class)
-JAR=/usr/local/lib/antlr-4.7.1-complete.jar
+JAR=/usr/local/lib/antlr-4.8-complete.jar
 JAVA=/usr/bin/java
 LEXER=../AdaptiveCardsTemplateLexer.g4
 PARSER=../AdaptiveCardsTemplateParser.g4
