@@ -16,18 +16,28 @@ There are two simple ways to consume the designer: CDN script reference or impor
 
 ### Option 1: CDN script references
 
-The simplest way to get started it to include 3 script tags in your page. 
+The simplest way to get started it to include 6 script tags in your page. 
 
 1. **monaco-editor** - provides a rich JSON-editing experience
-2. **markdown-it** - [optional] automatic markdown support for the designer and cards
+2. **adaptivecards** - adaptive card library used by designer
+3. **adaptivecards-templating** - provides data binding support for designer
+4. **adaptive-expressions** - used by templating library to enable data binding support
+5. **markdown-it** - [optional] automatic markdown support for the designer and cards
 
 To load the designer component you have 2 options:
 
-3. 
+6. 
    * **adaptivecards-designer** - the designer component, with default Microsoft hosts included (Teams, Outlook, Cortana, etc)
    * **adaptivecards-designer-standalone** - the standalone designer component, without any standard Host Config containers
 
 ```html
+<!-- REQUIRED: adaptivecards library for designer to work -->
+<script src="https://unpkg.com/adaptivecards@latest/dist/adaptivecards.min.js"></script>
+<!-- REQUIRED: adaptive-expressions is required by adaptivecards-templating library to enable data binding support in designer -->
+<script src="https://unpkg.com/adaptive-expressions@4/lib/browser.js"></script>
+<!-- REQUIRED: adaptivecards-templating library to enable data binding support in designer -->
+<script src="https://unpkg.com/adaptivecards-templating@latest/dist/adaptivecards-templating.min.js"></script>
+
 <!-- OPTIONAL: markdown-it isn't required but enables out-of-the-box markdown support -->
 <script src="https://unpkg.com/markdown-it@8.4.0/dist/markdown-it.min.js"></script>
 
@@ -78,7 +88,7 @@ To load the designer component you have 2 options:
 If you already use webpack and want to to bundle the designer, you need a few packages. **adaptivecards-designer**, **monaco-editor** for the JSON editor, and **markdown-it** for markdown handling. You can use another markdown processor if you choose.
 
 ```console
-npm install adaptivecards-designer monaco-editor markdown-it
+npm install adaptivecards-designer adaptivecards adaptive-expressions adaptivecards-templating monaco-editor markdown-it
 ```
 
 You also need some development dependencies to bundle monaco, and copy some CSS+image files into your output.
@@ -207,7 +217,13 @@ ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title"
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+/* To configure custom Pic2Card endpoint */
+ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
+
+/* To have a custom pic2card image usage policy provide new image policy url/path here*/
+ACDesigner.Pic2Card.privacyLink = "myPath/privacy";
+
+/* Modify the Element toolbox (BEFORE calling attachTo) */
 Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
 ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
@@ -261,3 +277,14 @@ designer.sampleData = {
 	phone: "123-123-1234"
 };
 ```
+
+## Hosting Pic2Card Service
+
+Pic2Card is a ML based service which converts a graphical image (such as a PNG or JPEG) into an Adaptive Card JSON payload.
+
+To setup the pic2card ML service follow the instructions given in the below link.
+
+[pic2card service](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container)
+
+Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
+in `.env` file in the adaptivecards-designer root directory and rebuild this project.

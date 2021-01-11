@@ -6,10 +6,10 @@
 //
 
 #import "ACRDateTextField.h"
+#import "ACRInputLabelView.h"
 #import "DateInput.h"
 #import "DateTimePreparser.h"
 #import "TimeInput.h"
-#import "ACRInputLabelView.h"
 
 using namespace AdaptiveCards;
 
@@ -41,7 +41,15 @@ using namespace AdaptiveCards;
         _encodeFormatter = [[NSDateFormatter alloc] init];
         [self configDateFormatter:_encodeFormatter formatterStyle:dateStyle];
 
-        UIDatePicker *picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        UIDatePicker *picker = nil;
+        if (@available(iOS 14.0, *)) {
+            picker = [[UIDatePicker alloc] init];
+            picker.preferredDatePickerStyle = UIDatePickerStyleInline;
+        } else {
+            // Fallback on earlier versions
+            picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];
+        }
+
         picker.locale = [NSLocale currentLocale];
 
         self.id = [NSString stringWithCString:elem->GetId().c_str()
@@ -145,6 +153,7 @@ using namespace AdaptiveCards;
 {
     [self endEditing:YES];
     self.text = [_decodeFormatter stringFromDate:[self getCurrentDate]];
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
 }
 
 - (IBAction)update:(UIDatePicker *)picker
@@ -187,7 +196,13 @@ using namespace AdaptiveCards;
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    self.accessibilityLabel = view.accessibilityLabel;
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, self);
+        [view becomeFirstResponder];
+    } else {
+        [view resignFirstResponder];
+    }
 }
 
 - (NSDate *)getCurrentDate

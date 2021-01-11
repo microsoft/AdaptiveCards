@@ -8,7 +8,7 @@
 
   ↳ **AdaptiveCard**
 
-  ↳ [AdaptiveAppletCard](adaptiveappletcard.md)
+  ↳ [InlineAdaptiveCard](inlineadaptivecard.md)
 
 ## Index
 
@@ -43,16 +43,16 @@
 * [speak](adaptivecard.md#optional-speak)
 * [version](adaptivecard.md#version)
 * [verticalContentAlignment](adaptivecard.md#verticalcontentalignment)
-* [$schemaProperty](adaptivecard.md#static-protected-schemaproperty)
-* [backgroundImageProperty](adaptivecard.md#static-backgroundimageproperty)
-* [bleedProperty](adaptivecard.md#static-bleedproperty)
-* [fallbackTextProperty](adaptivecard.md#static-fallbacktextproperty)
-* [heightProperty](adaptivecard.md#static-heightproperty)
-* [horizontalAlignmentProperty](adaptivecard.md#static-horizontalalignmentproperty)
-* [idProperty](adaptivecard.md#static-idproperty)
-* [isVisibleProperty](adaptivecard.md#static-isvisibleproperty)
-* [langProperty](adaptivecard.md#static-langproperty)
-* [minHeightProperty](adaptivecard.md#static-minheightproperty)
+* [$schemaProperty](adaptivecard.md#static-protected-readonly-schemaproperty)
+* [backgroundImageProperty](adaptivecard.md#static-readonly-backgroundimageproperty)
+* [bleedProperty](adaptivecard.md#static-readonly-bleedproperty)
+* [fallbackTextProperty](adaptivecard.md#static-readonly-fallbacktextproperty)
+* [heightProperty](adaptivecard.md#static-readonly-heightproperty)
+* [horizontalAlignmentProperty](adaptivecard.md#static-readonly-horizontalalignmentproperty)
+* [idProperty](adaptivecard.md#static-readonly-idproperty)
+* [isVisibleProperty](adaptivecard.md#static-readonly-isvisibleproperty)
+* [langProperty](adaptivecard.md#static-readonly-langproperty)
+* [minHeightProperty](adaptivecard.md#static-readonly-minheightproperty)
 * [onAnchorClicked](adaptivecard.md#static-optional-onanchorclicked)
 * [onElementVisibilityChanged](adaptivecard.md#static-optional-onelementvisibilitychanged)
 * [onExecuteAction](adaptivecard.md#static-optional-onexecuteaction)
@@ -61,17 +61,17 @@
 * [onInputValueChanged](adaptivecard.md#static-optional-oninputvaluechanged)
 * [onProcessMarkdown](adaptivecard.md#static-optional-onprocessmarkdown)
 * [onRegisterCustomProperties](adaptivecard.md#static-optional-onregistercustomproperties)
-* [requiresProperty](adaptivecard.md#static-requiresproperty)
-* [rtlProperty](adaptivecard.md#static-rtlproperty)
-* [schemaUrl](adaptivecard.md#static-schemaurl)
-* [selectActionProperty](adaptivecard.md#static-selectactionproperty)
-* [separatorProperty](adaptivecard.md#static-separatorproperty)
-* [spacingProperty](adaptivecard.md#static-spacingproperty)
-* [speakProperty](adaptivecard.md#static-speakproperty)
-* [styleProperty](adaptivecard.md#static-styleproperty)
-* [typeNameProperty](adaptivecard.md#static-typenameproperty)
-* [versionProperty](adaptivecard.md#static-versionproperty)
-* [verticalContentAlignmentProperty](adaptivecard.md#static-verticalcontentalignmentproperty)
+* [requiresProperty](adaptivecard.md#static-readonly-requiresproperty)
+* [rtlProperty](adaptivecard.md#static-readonly-rtlproperty)
+* [schemaUrl](adaptivecard.md#static-readonly-schemaurl)
+* [selectActionProperty](adaptivecard.md#static-readonly-selectactionproperty)
+* [separatorProperty](adaptivecard.md#static-readonly-separatorproperty)
+* [spacingProperty](adaptivecard.md#static-readonly-spacingproperty)
+* [speakProperty](adaptivecard.md#static-readonly-speakproperty)
+* [styleProperty](adaptivecard.md#static-readonly-styleproperty)
+* [typeNameProperty](adaptivecard.md#static-readonly-typenameproperty)
+* [versionProperty](adaptivecard.md#static-readonly-versionproperty)
+* [verticalContentAlignmentProperty](adaptivecard.md#static-readonly-verticalcontentalignmentproperty)
 
 ### Accessors
 
@@ -122,6 +122,7 @@
 * [getBleed](adaptivecard.md#protected-getbleed)
 * [getCustomProperty](adaptivecard.md#getcustomproperty)
 * [getDefaultPadding](adaptivecard.md#protected-getdefaultpadding)
+* [getDefaultSerializationContext](adaptivecard.md#protected-getdefaultserializationcontext)
 * [getEffectivePadding](adaptivecard.md#geteffectivepadding)
 * [getEffectiveStyle](adaptivecard.md#geteffectivestyle)
 * [getEffectiveStyleDefinition](adaptivecard.md#geteffectivestyledefinition)
@@ -389,7 +390,7 @@ ___
 
 ___
 
-### `Static` `Protected` $schemaProperty
+### `Static` `Protected` `Readonly` $schemaProperty
 
 ▪ **$schemaProperty**: *[CustomProperty](customproperty.md)‹string›* = new CustomProperty<string>(
         Versions.v1_0,
@@ -403,32 +404,32 @@ ___
 
 ___
 
-### `Static` backgroundImageProperty
+### `Static` `Readonly` backgroundImageProperty
 
 ▪ **backgroundImageProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_0,
         "backgroundImage",
         BackgroundImage)
 
-*Inherited from [Container](container.md).[backgroundImageProperty](container.md#static-backgroundimageproperty)*
+*Inherited from [Container](container.md).[backgroundImageProperty](container.md#static-readonly-backgroundimageproperty)*
 
 ___
 
-### `Static` bleedProperty
+### `Static` `Readonly` bleedProperty
 
 ▪ **bleedProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "bleed", false)
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[bleedProperty](stylablecardelementcontainer.md#static-bleedproperty)*
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[bleedProperty](stylablecardelementcontainer.md#static-readonly-bleedproperty)*
 
 ___
 
-### `Static` fallbackTextProperty
+### `Static` `Readonly` fallbackTextProperty
 
 ▪ **fallbackTextProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "fallbackText")
 
 ___
 
-### `Static` heightProperty
+### `Static` `Readonly` heightProperty
 
 ▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_1,
@@ -439,11 +440,11 @@ ___
         ],
         "auto")
 
-*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-heightproperty)*
+*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-readonly-heightproperty)*
 
 ___
 
-### `Static` horizontalAlignmentProperty
+### `Static` `Readonly` horizontalAlignmentProperty
 
 ▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(
         Versions.v1_0,
@@ -451,39 +452,39 @@ ___
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left)
 
-*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-horizontalalignmentproperty)*
+*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)*
 
 ___
 
-### `Static` idProperty
+### `Static` `Readonly` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
 
 ___
 
-### `Static` isVisibleProperty
+### `Static` `Readonly` isVisibleProperty
 
 ▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
 
-*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
+*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)*
 
 ___
 
-### `Static` langProperty
+### `Static` `Readonly` langProperty
 
 ▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
 
-*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-langproperty)*
+*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-readonly-langproperty)*
 
 ___
 
-### `Static` minHeightProperty
+### `Static` `Readonly` minHeightProperty
 
 ▪ **minHeightProperty**: *[PixelSizeProperty](pixelsizeproperty.md)‹›* = new PixelSizeProperty(Versions.v1_2, "minHeight")
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minHeightProperty](stylablecardelementcontainer.md#static-minheightproperty)*
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[minHeightProperty](stylablecardelementcontainer.md#static-readonly-minheightproperty)*
 
 ___
 
@@ -537,7 +538,7 @@ ___
 
 ___
 
-### `Static` requiresProperty
+### `Static` `Readonly` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
@@ -546,41 +547,41 @@ ___
         false,
         new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
 
 ___
 
-### `Static` rtlProperty
+### `Static` `Readonly` rtlProperty
 
 ▪ **rtlProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "rtl")
 
-*Inherited from [Container](container.md).[rtlProperty](container.md#static-rtlproperty)*
+*Inherited from [Container](container.md).[rtlProperty](container.md#static-readonly-rtlproperty)*
 
 ___
 
-### `Static` schemaUrl
+### `Static` `Readonly` schemaUrl
 
 ▪ **schemaUrl**: *"http://adaptivecards.io/schemas/adaptive-card.json"* = "http://adaptivecards.io/schemas/adaptive-card.json"
 
 ___
 
-### `Static` selectActionProperty
+### `Static` `Readonly` selectActionProperty
 
 ▪ **selectActionProperty**: *[ActionProperty](actionproperty.md)‹›* = new ActionProperty(Versions.v1_1, "selectAction", [ "Action.ShowCard" ])
 
-*Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-selectactionproperty)*
+*Inherited from [CardElementContainer](cardelementcontainer.md).[selectActionProperty](cardelementcontainer.md#static-readonly-selectactionproperty)*
 
 ___
 
-### `Static` separatorProperty
+### `Static` `Readonly` separatorProperty
 
 ▪ **separatorProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "separator", false)
 
-*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-separatorproperty)*
+*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-readonly-separatorproperty)*
 
 ___
 
-### `Static` spacingProperty
+### `Static` `Readonly` spacingProperty
 
 ▪ **spacingProperty**: *[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›* = new EnumProperty(
         Versions.v1_0,
@@ -588,17 +589,17 @@ ___
         Enums.Spacing,
         Enums.Spacing.Default)
 
-*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-spacingproperty)*
+*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-readonly-spacingproperty)*
 
 ___
 
-### `Static` speakProperty
+### `Static` `Readonly` speakProperty
 
 ▪ **speakProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "speak")
 
 ___
 
-### `Static` styleProperty
+### `Static` `Readonly` styleProperty
 
 ▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_0,
@@ -612,11 +613,11 @@ ___
             { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
         ])
 
-*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[styleProperty](stylablecardelementcontainer.md#static-styleproperty)*
+*Inherited from [StylableCardElementContainer](stylablecardelementcontainer.md).[styleProperty](stylablecardelementcontainer.md#static-readonly-styleproperty)*
 
 ___
 
-### `Static` typeNameProperty
+### `Static` `Readonly` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -628,11 +629,11 @@ ___
             return (<CardObject>sender).getJsonTypeName()
         })
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
 
 ___
 
-### `Static` versionProperty
+### `Static` `Readonly` versionProperty
 
 ▪ **versionProperty**: *[CustomProperty](customproperty.md)‹undefined | [Version](version.md)‹››* = new CustomProperty<Version | undefined>(
         Versions.v1_0,
@@ -660,11 +661,11 @@ ___
 
 ___
 
-### `Static` verticalContentAlignmentProperty
+### `Static` `Readonly` verticalContentAlignmentProperty
 
 ▪ **verticalContentAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›* = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
 
-*Inherited from [Container](container.md).[verticalContentAlignmentProperty](container.md#static-verticalcontentalignmentproperty)*
+*Inherited from [Container](container.md).[verticalContentAlignmentProperty](container.md#static-readonly-verticalcontentalignmentproperty)*
 
 ## Accessors
 
@@ -958,11 +959,11 @@ ___
 
 ###  requires
 
-• **get requires**(): *HostCapabilities*
+• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
 
 *Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
 
-**Returns:** *HostCapabilities*
+**Returns:** *[HostCapabilities](hostcapabilities.md)*
 
 ___
 
@@ -1277,6 +1278,16 @@ ___
 *Overrides [StylableCardElementContainer](stylablecardelementcontainer.md).[getDefaultPadding](stylablecardelementcontainer.md#protected-getdefaultpadding)*
 
 **Returns:** *[PaddingDefinition](paddingdefinition.md)*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Overrides [CardElement](cardelement.md).[getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -2170,15 +2181,15 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Overrides [CardElement](cardelement.md).[toJSON](cardelement.md#tojson)*
+*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [SerializationContext](serializationcontext.md) |
+`context?` | [BaseSerializationContext](baseserializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 

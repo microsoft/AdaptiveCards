@@ -556,7 +556,7 @@ export class CardDesignerSurface {
             let clientRect = this._designerSurface.getBoundingClientRect();
 
             if (this.draggedPeer) {
-                if (!this._designerSurface.hasPointerCapture(e.pointerId)) {
+                if (this._designerSurface.hasPointerCapture && !this._designerSurface.hasPointerCapture(e.pointerId)) {
                     this._designerSurface.setPointerCapture(e.pointerId);
                 }
 
@@ -802,7 +802,7 @@ export class CardDesignerSurface {
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
-            this._dragVisual.remove();
+            this._dragVisual?.parentNode.removeChild(this._dragVisual);
             this._dragVisual = undefined;
 
             this.setDraggedPeer(null);

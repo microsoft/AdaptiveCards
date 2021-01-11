@@ -7,6 +7,7 @@
 ### Enumerations
 
 * [ActionAlignment](enums/actionalignment.md)
+* [ActionButtonState](enums/actionbuttonstate.md)
 * [ActionIconPlacement](enums/actioniconplacement.md)
 * [ActivityInvocationTrigger](enums/activityinvocationtrigger.md)
 * [ActivityStatus](enums/activitystatus.md)
@@ -27,13 +28,17 @@
 * [TextColor](enums/textcolor.md)
 * [TextSize](enums/textsize.md)
 * [TextWeight](enums/textweight.md)
+* [TypeErrorType](enums/typeerrortype.md)
 * [ValidationEvent](enums/validationevent.md)
 * [ValidationPhase](enums/validationphase.md)
 * [VerticalAlignment](enums/verticalalignment.md)
 
 ### Classes
 
+* [AbstractTextFormatter](classes/abstracttextformatter.md)
 * [Action](classes/action.md)
+* [ActionButton](classes/actionbutton.md)
+* [ActionCollection](classes/actioncollection.md)
 * [ActionProperty](classes/actionproperty.md)
 * [ActionSet](classes/actionset.md)
 * [ActionStyle](classes/actionstyle.md)
@@ -47,6 +52,7 @@
 * [BaseTextBlock](classes/basetextblock.md)
 * [BaseTextDefinition](classes/basetextdefinition.md)
 * [BoolProperty](classes/boolproperty.md)
+* [BuiltInContainerStyleDefinition](classes/builtincontainerstyledefinition.md)
 * [CardElement](classes/cardelement.md)
 * [CardElementContainer](classes/cardelementcontainer.md)
 * [CardObject](classes/cardobject.md)
@@ -64,6 +70,7 @@
 * [ContainerStyleSet](classes/containerstyleset.md)
 * [ContainerWithActions](classes/containerwithactions.md)
 * [CustomProperty](classes/customproperty.md)
+* [DateFormatter](classes/dateformatter.md)
 * [DateInput](classes/dateinput.md)
 * [EnumProperty](classes/enumproperty.md)
 * [ExecuteAction](classes/executeaction.md)
@@ -76,13 +83,16 @@
 * [FontTypeSet](classes/fonttypeset.md)
 * [GlobalRegistry](classes/globalregistry.md)
 * [GlobalSettings](classes/globalsettings.md)
+* [HostCapabilities](classes/hostcapabilities.md)
 * [HostConfig](classes/hostconfig.md)
 * [HttpAction](classes/httpaction.md)
 * [HttpChannelAdapter](classes/httpchanneladapter.md)
 * [HttpHeader](classes/httpheader.md)
 * [Image](classes/image.md)
+* [ImageDimensionProperty](classes/imagedimensionproperty.md)
 * [ImageSet](classes/imageset.md)
 * [ImageSetConfig](classes/imagesetconfig.md)
+* [InlineAdaptiveCard](classes/inlineadaptivecard.md)
 * [Input](classes/input.md)
 * [InputConfig](classes/inputconfig.md)
 * [InputLabelConfig](classes/inputlabelconfig.md)
@@ -106,10 +116,12 @@
 * [SerializationContext](classes/serializationcontext.md)
 * [ShowCardAction](classes/showcardaction.md)
 * [ShowCardActionConfig](classes/showcardactionconfig.md)
+* [SimpleSerializationContext](classes/simpleserializationcontext.md)
 * [SizeAndUnit](classes/sizeandunit.md)
 * [SpacingDefinition](classes/spacingdefinition.md)
 * [StringArrayProperty](classes/stringarrayproperty.md)
 * [StringProperty](classes/stringproperty.md)
+* [StringWithSubstitutionProperty](classes/stringwithsubstitutionproperty.md)
 * [StringWithSubstitutions](classes/stringwithsubstitutions.md)
 * [Strings](classes/strings.md)
 * [StylableCardElementContainer](classes/stylablecardelementcontainer.md)
@@ -118,6 +130,7 @@
 * [TextColorDefinition](classes/textcolordefinition.md)
 * [TextInput](classes/textinput.md)
 * [TextRun](classes/textrun.md)
+* [TimeFormatter](classes/timeformatter.md)
 * [TimeInput](classes/timeinput.md)
 * [TimeProperty](classes/timeproperty.md)
 * [ToggleInput](classes/toggleinput.md)
@@ -132,17 +145,38 @@
 
 * [ActivityRequest](interfaces/activityrequest.md)
 * [ActivityResponse](interfaces/activityresponse.md)
+* [IAction](interfaces/iaction.md)
 * [IAdaptiveCard](interfaces/iadaptivecard.md)
+* [IBackgroundImage](interfaces/ibackgroundimage.md)
 * [ICardElement](interfaces/icardelement.md)
+* [IChoice](interfaces/ichoice.md)
+* [IChoiceSetInput](interfaces/ichoicesetinput.md)
+* [IColumn](interfaces/icolumn.md)
+* [IColumnSet](interfaces/icolumnset.md)
+* [IContainer](interfaces/icontainer.md)
+* [IDateInput](interfaces/idateinput.md)
+* [IFact](interfaces/ifact.md)
+* [IFactSet](interfaces/ifactset.md)
 * [IFontSizeDefinitions](interfaces/ifontsizedefinitions.md)
 * [IFontWeightDefinitions](interfaces/ifontweightdefinitions.md)
+* [IImage](interfaces/iimage.md)
+* [IImageSet](interfaces/iimageset.md)
 * [IInput](interfaces/iinput.md)
 * [ILineHeightDefinitions](interfaces/ilineheightdefinitions.md)
 * [IMarkdownProcessingResult](interfaces/imarkdownprocessingresult.md)
+* [INumberInput](interfaces/inumberinput.md)
+* [IOpenUrlAction](interfaces/iopenurlaction.md)
 * [IResourceInformation](interfaces/iresourceinformation.md)
 * [ISeparationDefinition](interfaces/iseparationdefinition.md)
+* [IShowCardAction](interfaces/ishowcardaction.md)
+* [ISubmitAction](interfaces/isubmitaction.md)
+* [ITextBlock](interfaces/itextblock.md)
+* [ITextInput](interfaces/itextinput.md)
+* [ITimeInput](interfaces/itimeinput.md)
+* [IToggleInput](interfaces/itoggleinput.md)
 * [ITypeRegistration](interfaces/ityperegistration.md)
 * [IValidationEvent](interfaces/ivalidationevent.md)
+* [IVersion](interfaces/iversion.md)
 * [IVersionedValue](interfaces/iversionedvalue.md)
 * [InvokeActivity](interfaces/invokeactivity.md)
 
@@ -162,10 +196,14 @@
 ### Variables
 
 * [defaultHostConfig](README.md#const-defaulthostconfig)
+* [emoji_message](README.md#const-emoji_message)
 
 ### Functions
 
 * [appendChild](README.md#appendchild)
+* [findBreakableIndices](README.md#findbreakableindices)
+* [findNextCharacter](README.md#findnextcharacter)
+* [formatText](README.md#formattext)
 * [generateUniqueId](README.md#generateuniqueid)
 * [getEnumValueByName](README.md#getenumvaluebyname)
 * [getFitStatus](README.md#getfitstatus)
@@ -173,9 +211,16 @@
 * [isVersionLessOrEqual](README.md#isversionlessorequal)
 * [parseBool](README.md#parsebool)
 * [parseEnum](README.md#parseenum)
+* [parseHostConfigEnum](README.md#parsehostconfigenum)
 * [parseNumber](README.md#parsenumber)
 * [parseString](README.md#parsestring)
 * [property](README.md#property)
+* [raiseAnchorClickedEvent](README.md#raiseanchorclickedevent)
+* [raiseElementVisibilityChangedEvent](README.md#raiseelementvisibilitychangedevent)
+* [raiseExecuteActionEvent](README.md#raiseexecuteactionevent)
+* [raiseImageLoadedEvent](README.md#raiseimageloadedevent)
+* [raiseInlineCardExpandedEvent](README.md#raiseinlinecardexpandedevent)
+* [raiseInputValueChangedEvent](README.md#raiseinputvaluechangedevent)
 * [renderSeparation](README.md#renderseparation)
 * [stringToCssColor](README.md#stringtocsscolor)
 * [truncate](README.md#truncate)
@@ -183,6 +228,7 @@
 ### Object literals
 
 * [ContentTypes](README.md#const-contenttypes)
+* [simple_test_card](README.md#const-simple_test_card)
 
 ## Type aliases
 
@@ -607,6 +653,12 @@ ___
         }
     })
 
+___
+
+### `Const` emoji_message
+
+• **emoji_message**: *"Mix 🗣 emoji inside 🙌 text"* = "Mix 🗣 emoji inside 🙌 text"
+
 ## Functions
 
 ###  appendChild
@@ -621,6 +673,50 @@ Name | Type |
 `child` | Node &#124; undefined |
 
 **Returns:** *void*
+
+___
+
+###  findBreakableIndices
+
+▸ **findBreakableIndices**(`html`: string): *number[]*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`html` | string |
+
+**Returns:** *number[]*
+
+___
+
+###  findNextCharacter
+
+▸ **findNextCharacter**(`html`: string, `currIdx`: number): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`html` | string |
+`currIdx` | number |
+
+**Returns:** *number*
+
+___
+
+###  formatText
+
+▸ **formatText**(`lang`: string | undefined, `text`: string | undefined): *string | undefined*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`lang` | string &#124; undefined |
+`text` | string &#124; undefined |
+
+**Returns:** *string | undefined*
 
 ___
 
@@ -718,6 +814,22 @@ Name | Type |
 
 ___
 
+###  parseHostConfigEnum
+
+▸ **parseHostConfigEnum**(`targetEnum`: object, `value`: string | number, `defaultValue`: number): *number*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`targetEnum` | object |
+`value` | string &#124; number |
+`defaultValue` | number |
+
+**Returns:** *number*
+
+___
+
 ###  parseNumber
 
 ▸ **parseNumber**(`obj`: any, `defaultValue?`: undefined | number): *number | undefined*
@@ -759,6 +871,93 @@ Name | Type |
 `property` | [PropertyDefinition](classes/propertydefinition.md) |
 
 **Returns:** *(Anonymous function)*
+
+___
+
+###  raiseAnchorClickedEvent
+
+▸ **raiseAnchorClickedEvent**(`element`: [CardElement](classes/cardelement.md), `anchor`: HTMLAnchorElement): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`element` | [CardElement](classes/cardelement.md) |
+`anchor` | HTMLAnchorElement |
+
+**Returns:** *boolean*
+
+___
+
+###  raiseElementVisibilityChangedEvent
+
+▸ **raiseElementVisibilityChangedEvent**(`element`: [CardElement](classes/cardelement.md), `shouldUpdateLayout`: boolean): *void*
+
+**Parameters:**
+
+Name | Type | Default |
+------ | ------ | ------ |
+`element` | [CardElement](classes/cardelement.md) | - |
+`shouldUpdateLayout` | boolean | true |
+
+**Returns:** *void*
+
+___
+
+###  raiseExecuteActionEvent
+
+▸ **raiseExecuteActionEvent**(`action`: [Action](classes/action.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`action` | [Action](classes/action.md) |
+
+**Returns:** *void*
+
+___
+
+###  raiseImageLoadedEvent
+
+▸ **raiseImageLoadedEvent**(`image`: [Image](classes/image.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`image` | [Image](classes/image.md) |
+
+**Returns:** *void*
+
+___
+
+###  raiseInlineCardExpandedEvent
+
+▸ **raiseInlineCardExpandedEvent**(`action`: [ShowCardAction](classes/showcardaction.md), `isExpanded`: boolean): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`action` | [ShowCardAction](classes/showcardaction.md) |
+`isExpanded` | boolean |
+
+**Returns:** *void*
+
+___
+
+###  raiseInputValueChangedEvent
+
+▸ **raiseInputValueChangedEvent**(`input`: [Input](classes/input.md)): *void*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`input` | [Input](classes/input.md) |
+
+**Returns:** *void*
 
 ___
 
@@ -819,3 +1018,28 @@ Name | Type |
 ###  applicationXWwwFormUrlencoded
 
 • **applicationXWwwFormUrlencoded**: *string* = "application/x-www-form-urlencoded"
+
+___
+
+### `Const` simple_test_card
+
+### ▪ **simple_test_card**: *object*
+
+###  $schema
+
+• **$schema**: *string* = "http://adaptivecards.io/schemas/adaptive-card.json"
+
+###  body
+
+• **body**: *object[]* = [{
+        "type": "TextBlock",
+        "text": emoji_message
+    }]
+
+###  type
+
+• **type**: *string* = "AdaptiveCard"
+
+###  version
+
+• **version**: *string* = "1.0"

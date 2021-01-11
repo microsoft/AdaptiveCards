@@ -109,11 +109,13 @@ export class BackgroundImage extends React.Component {
         imageContainerStyle.push(styles.imageContainer)
         switch (this.backgroundImageModeEnumValue) {
             case Enums.BackgroundImageMode.Repeat:
-                imageContainerStyle.push({alignItems: Constants.FlexStart, justifyContent: Constants.FlexStart});
+                imageContainerStyle.push({ alignItems: Constants.FlexStart, justifyContent: Constants.FlexStart });
                 backgroundImage.push(
                     <Image
                         key="image-repeat"
                         resizeMethod={Constants.Resize}
+                        accessible={true}
+                        accessibilityLabel={this.backgroundImage.altText}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: Constants.FullWidth, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
@@ -126,6 +128,8 @@ export class BackgroundImage extends React.Component {
                     <Image
                         key="image-repeat-horizontal"
                         resizeMethod={Constants.Resize}
+                        accessible={true}
+                        accessibilityLabel={this.backgroundImage.altText}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         /**
@@ -142,6 +146,8 @@ export class BackgroundImage extends React.Component {
                     <Image
                         key="image-repeat-vertical"
                         resizeMethod={Constants.Resize}
+                        accessible={true}
+                        accessibilityLabel={this.backgroundImage.altText}
                         source={{ uri: this.backgroundImage.url }}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: this.state.backgroundImageWidth / 3, height: Constants.FullWidth, resizeMode: Constants.Repeat }}
@@ -155,6 +161,8 @@ export class BackgroundImage extends React.Component {
                     <Image
                         key="image-stretch"
                         source={{ uri: this.backgroundImage.url }}
+                        accessible={true}
+                        accessibilityLabel={this.backgroundImage.altText}
                         onError={() => { this.onError(onParseError) }}
                         style={{ width: Constants.FullWidth, height: Constants.FullWidth, resizeMode: Constants.AlignStretch }}
                     />

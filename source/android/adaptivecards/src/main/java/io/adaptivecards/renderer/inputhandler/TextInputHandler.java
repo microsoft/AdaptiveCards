@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.inputhandler;
 
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 
 import java.util.regex.Pattern;
@@ -65,6 +66,7 @@ public class TextInputHandler extends BaseInputHandler
 
     public void setFocusToView()
     {
-        m_view.requestFocus();
+        Util.forceFocus(m_view);
+        m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }

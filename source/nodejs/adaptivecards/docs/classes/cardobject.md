@@ -25,10 +25,10 @@
 * [id](cardobject.md#optional-id)
 * [maxVersion](cardobject.md#maxversion)
 * [onPreProcessPropertyValue](cardobject.md#optional-onpreprocesspropertyvalue)
-* [idProperty](cardobject.md#static-idproperty)
+* [idProperty](cardobject.md#static-readonly-idproperty)
 * [onRegisterCustomProperties](cardobject.md#static-optional-onregistercustomproperties)
-* [requiresProperty](cardobject.md#static-requiresproperty)
-* [typeNameProperty](cardobject.md#static-typenameproperty)
+* [requiresProperty](cardobject.md#static-readonly-requiresproperty)
+* [typeNameProperty](cardobject.md#static-readonly-typenameproperty)
 
 ### Accessors
 
@@ -40,6 +40,7 @@
 ### Methods
 
 * [getCustomProperty](cardobject.md#getcustomproperty)
+* [getDefaultSerializationContext](cardobject.md#protected-getdefaultserializationcontext)
 * [getJsonTypeName](cardobject.md#abstract-getjsontypename)
 * [getRootObject](cardobject.md#getrootobject)
 * [getSchema](cardobject.md#getschema)
@@ -107,7 +108,7 @@ ___
 
 ___
 
-### `Static` idProperty
+### `Static` `Readonly` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
@@ -121,7 +122,7 @@ ___
 
 ___
 
-### `Static` requiresProperty
+### `Static` `Readonly` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
@@ -132,7 +133,7 @@ ___
 
 ___
 
-### `Static` typeNameProperty
+### `Static` `Readonly` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -172,9 +173,9 @@ ___
 
 ###  requires
 
-• **get requires**(): *HostCapabilities*
+• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
 
-**Returns:** *HostCapabilities*
+**Returns:** *[HostCapabilities](hostcapabilities.md)*
 
 ## Methods
 
@@ -191,6 +192,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

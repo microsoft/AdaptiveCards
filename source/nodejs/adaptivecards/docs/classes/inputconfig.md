@@ -14,8 +14,8 @@
 
 ### Properties
 
-* [errorMessage](inputconfig.md#errormessage)
-* [label](inputconfig.md#label)
+* [errorMessage](inputconfig.md#readonly-errormessage)
+* [label](inputconfig.md#readonly-label)
 
 ## Constructors
 
@@ -33,12 +33,12 @@ Name | Type |
 
 ## Properties
 
-###  errorMessage
+### `Readonly` errorMessage
 
 • **errorMessage**: *[BaseTextDefinition](basetextdefinition.md)* = new BaseTextDefinition({ color: Enums.TextColor.Attention })
 
 ___
 
-###  label
+### `Readonly` label
 
 • **label**: *[InputLabelConfig](inputlabelconfig.md)* = new InputLabelConfig()

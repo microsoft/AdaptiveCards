@@ -11,12 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.BackgroundImage;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.CollectionTypeElement;
 import io.adaptivecards.objectmodel.ContainerBleedDirection;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.objectmodel.VerticalContentAlignment;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BackgroundImageLoaderAsync;
@@ -73,7 +75,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         containerView.setClipChildren(false);
         containerView.setClipToPadding(false);
 
-        setVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
+        applyVerticalContentAlignment(containerView, container.GetVerticalContentAlignment());
 
         ContainerStyle containerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
@@ -102,44 +104,29 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, container.GetBackgroundImage(), hostConfig, containerView);
-
-        if (container.GetSelectAction() != null)
-        {
-            containerView.setClickable(true);
-            containerView.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, container.GetSelectAction(), cardActionHandler));
-        }
+        setSelectAction(renderedCard, container.GetSelectAction(), containerView, cardActionHandler, renderArgs);
 
         viewGroup.addView(containerView);
         return containerView;
     }
 
-    public static void setMinHeight(long minHeight, View view, Context context)
-    {
-        if (minHeight != 0)
-        {
-            view.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
-        }
-    }
-
-    public static void setVerticalContentAlignment(ViewGroup containerView, VerticalContentAlignment verticalContentAlignment)
+    /**
+     * Vertically align content within the given container
+     * @param container Layout whose children need to be vertically aligned
+     * @param verticalContentAlignment Alignment attribute
+     */
+    public static void applyVerticalContentAlignment(LinearLayout container, VerticalContentAlignment verticalContentAlignment)
     {
         int gravity = Gravity.TOP;
-        switch (verticalContentAlignment)
+        if(verticalContentAlignment == VerticalContentAlignment.Center)
         {
-            case Center:
-                gravity = Gravity.CENTER_VERTICAL;
-                break;
-            case Bottom:
-                gravity = Gravity.BOTTOM;
-                break;
-            case Top:
-            default:
-                gravity = Gravity.TOP;
-                break;
+            gravity = Gravity.CENTER;
         }
-
-        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) containerView.getLayoutParams();
-        layoutParams.gravity = gravity;
+        else if(verticalContentAlignment == VerticalContentAlignment.Bottom)
+        {
+            gravity = Gravity.BOTTOM;
+        }
+        container.setGravity(gravity);
     }
 
     public static void ApplyBleed(CollectionTypeElement collectionElement, ViewGroup collectionElementView, Context context, HostConfig hostConfig)
@@ -147,7 +134,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         if (collectionElement.GetBleed() && collectionElement.GetCanBleed())
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
-            LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) collectionElementView.getLayoutParams();
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) collectionElementView.getLayoutParams();
             int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
@@ -224,11 +211,17 @@ public class ContainerRenderer extends BaseCardElementRenderer
         }
     }
 
-    public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler)
+    public static void setSelectAction(RenderedAdaptiveCard renderedCard, BaseActionElement selectAction, View view, ICardActionHandler cardActionHandler, RenderArgs renderArgs)
     {
         if (selectAction != null)
         {
+            view.setFocusable(true);
             view.setClickable(true);
+            if (Util.isOfType(selectAction, SubmitAction.class) || selectAction.GetElementType() == ActionType.Custom)
+            {
+                renderedCard.registerSubmitableAction(view, renderArgs);
+            }
+
             view.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, selectAction, cardActionHandler));
         }
     }

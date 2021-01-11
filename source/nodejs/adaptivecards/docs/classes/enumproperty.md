@@ -20,13 +20,13 @@
 
 ### Properties
 
-* [defaultValue](enumproperty.md#optional-defaultvalue)
-* [enumType](enumproperty.md#enumtype)
+* [defaultValue](enumproperty.md#optional-readonly-defaultvalue)
+* [enumType](enumproperty.md#readonly-enumtype)
 * [isSerializationEnabled](enumproperty.md#isserializationenabled)
-* [name](enumproperty.md#name)
-* [onGetInitialValue](enumproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](enumproperty.md#sequentialnumber)
-* [targetVersion](enumproperty.md#targetversion)
+* [name](enumproperty.md#readonly-name)
+* [onGetInitialValue](enumproperty.md#optional-readonly-ongetinitialvalue)
+* [sequentialNumber](enumproperty.md#readonly-sequentialnumber)
+* [targetVersion](enumproperty.md#readonly-targetversion)
 
 ### Accessors
 
@@ -61,15 +61,15 @@ Name | Type |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *undefined | number*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
-###  enumType
+### `Readonly` enumType
 
 • **enumType**: *TEnum*
 
@@ -83,35 +83,35 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ## Accessors
 

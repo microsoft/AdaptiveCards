@@ -6,6 +6,8 @@
 
 * **BaseSerializationContext**
 
+  ↳ [SimpleSerializationContext](simpleserializationcontext.md)
+
   ↳ [SerializationContext](serializationcontext.md)
 
 ## Index
@@ -17,6 +19,7 @@
 ### Properties
 
 * [targetVersion](baseserializationcontext.md#targetversion)
+* [toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -53,6 +56,12 @@ Name | Type | Default |
 ###  targetVersion
 
 • **targetVersion**: *[Version](version.md)*
+
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
 
 ## Accessors
 
