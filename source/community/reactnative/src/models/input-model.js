@@ -8,6 +8,7 @@ export class BaseInputModel extends BaseModel{
         this.value = payload.value;
         this.inlineAction = payload.inlineAction;
         this.validation = payload.validation;
+        this.altText = payload.altText;
     }
 }
 
