@@ -424,8 +424,8 @@ export class AdaptiveApplet {
     }
 
     private internalExecuteAction(action: Action, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number) {
-        if (this.channelAdapter) {
-            if (action instanceof ExecuteAction) {
+        if (action instanceof ExecuteAction) {
+            if (this.channelAdapter) {
                 let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
 
                 if (request) {
@@ -433,11 +433,12 @@ export class AdaptiveApplet {
                 }
             }
             else {
-                throw new Error("internalExecuteAction: Unsupported action type.");
+                throw new Error("internalExecuteAction: No channel adapter set.");
             }
         }
-        else {
-            throw new Error("internalExecuteAction: No channel adapter set.");
+
+        if (this.onExecuteAction) {
+            this.onExecuteAction(this, action);
         }
     }
 
@@ -656,6 +657,7 @@ export class AdaptiveApplet {
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
     onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
     onRenderRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
+    onExecuteAction?: (sender: AdaptiveApplet, action: Action) => void;
 
     constructor() {
         this.renderedElement = document.createElement("div");
