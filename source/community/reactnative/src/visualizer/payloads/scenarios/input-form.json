@@ -20,6 +20,7 @@
       {
         "type": "Input.Text",
         "placeholder": "Name",
+        "altText": "Please enter your full name",
         "style": "text",
         "maxLength": 0,
         "id": "SimpleVal",
@@ -153,6 +154,7 @@
       {
         "type": "Input.ChoiceSet",
         "id": "MultiSelectVal",
+        "altText": "Please select multiple values",
         "isMultiSelect": true,
         "value": "1,2",
         "validation": {
@@ -184,6 +186,7 @@
       {
         "type": "Input.Toggle",
         "title": "I accept the terms and conditions (True/False)",
+        "altText":"Please accept terms and conditions to proceed",
         "valueOn": "true",
         "valueOff": "false",
         "value": "true",
@@ -209,6 +212,7 @@
       {
         "type": "Action.Submit",
         "title": "Submit",
+        "altText": "submit form",
         "ignoreInputValidation": false,
         "data": {
           "id": "1234567890"
@@ -217,6 +221,7 @@
       {
         "type": "Action.ShowCard",
         "title": "Show Card",
+        "altText": "This will show a separate card",
         "card": {
           "type": "AdaptiveCard",
           "body": [
@@ -231,6 +236,7 @@
           "actions": [
             {
               "type": "Action.Submit",
+              "altText": "show card submit",
               "title": "OK"
             }
           ]

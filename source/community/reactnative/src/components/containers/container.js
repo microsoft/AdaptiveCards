@@ -33,10 +33,10 @@ export class Container extends React.Component {
 		this.selectionActionData = props.json.selectAction;
 	}
 
-    /**
-     * @description Parse the given payload and render the card accordingly
+	/**
+	 * @description Parse the given payload and render the card accordingly
 	 * @returns {object} Return the child elements of the container
-     */
+	 */
 	parsePayload = () => {
 		let children = [];
 		if (!this.payload) {
@@ -64,8 +64,8 @@ export class Container extends React.Component {
 		const showValidationText = this.props.isError && this.context.showErrors;
 
 		var containerContent = (
-			<ContainerWrapper json={this.payload} style={containerStyle} containerStyle={this.props.containerStyle}>
-				{this.payload.spacing && this.payload.separator && this.getSpacingElement()}
+			<ContainerWrapper json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
+				{payload.spacing && payload.separator && this.getSpacingElement()}
 				{this.parsePayload()}
 				{showValidationText && this.getValidationText()}
 			</ContainerWrapper>
