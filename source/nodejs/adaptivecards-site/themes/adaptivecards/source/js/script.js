@@ -332,9 +332,9 @@ $(function () {
     });
 
 	$("#watchVideo").click(function () {
-		$("#overviewVideo")[0].play();
-		$("#overviewVideo").focus();
 		$('#videoModal').css("display", "block");
+		$("#overviewVideo")[0].play();
+        $("#overviewVideo").focus();
 	});
 
 	$(document).keyup(function (e) {
