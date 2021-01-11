@@ -114,7 +114,9 @@
                         "placeholder": "Enter your comment",
                         "inlineAction": {
                             "type": "Action.Submit",
-                            "url": "https://img.icons8.com/color/48/000000/send.png",
+                            "icon": {
+                             "url": "https://img.icons8.com/color/48/000000/send.png"
+                            },
                             "title": "Reply"
                         }
                     }
