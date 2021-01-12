@@ -1,7 +1,7 @@
 export default payloads = [
   {
-    "title": "TextBlock.Markdown.json",
-    "json": require('./TextBlock.Markdown.json')
+    "title": "Accessibility.json",
+    "json": require('./Accessibility.json')
   },
   {
     "title": "Action.NoBody.json",
@@ -252,6 +252,10 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
+    "title": "Image.Tintable.json",
+    "json": require('./Image.Tintable.json')
+  },
+  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },
@@ -316,6 +320,10 @@ export default payloads = [
     "json": require('./TextBlock.json')
   },
   {
+    "title": "TextBlock.Markdown.json",
+    "json": require('./TextBlock.Markdown.json')
+  },
+  {
     "title": "TextBlock.MaxLines.json",
     "json": require('./TextBlock.MaxLines.json')
   },
@@ -334,10 +342,6 @@ export default payloads = [
   {
     "title": "TextBlock.Wrap.json",
     "json": require('./TextBlock.Wrap.json')
-  },
-  {
-    "title": "TextBlock.Accessibility.json",
-    "json": require('./TextBlock.Accessibility.json')
   },
   {
     "title": "TypeIsRequired.json",

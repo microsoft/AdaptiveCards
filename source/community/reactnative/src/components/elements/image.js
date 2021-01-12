@@ -45,9 +45,9 @@ export class Img extends React.Component {
 		this.addResourceInformation(this.payload.url, "");
 	}
 
-    /**
-     * @description Parse hostconfig specific to this element
-     */
+	/**
+	 * @description Parse hostconfig specific to this element
+	 */
 	parseHostConfig() {
 
 		this.altText = this.payload.altText || Constants.EmptyString;
@@ -72,9 +72,9 @@ export class Img extends React.Component {
 		this.backgroundColor = Utils.hexToRGB(this.payload.backgroundColor) || Constants.TransparentString;
 	}
 
-    /**
-     * @description This function determines the style of the image. Default value is "Default"
-     */
+	/**
+	 * @description This function determines the style of the image. Default value is "Default"
+	 */
 	isPersonStyle() {
 		let styleValue = Utils.parseHostConfigEnum(
 			Enums.ImageStyle,
@@ -82,9 +82,9 @@ export class Img extends React.Component {
 			Enums.ImageStyle.Default);
 		return parseInt(styleValue, 10) === 0 ? false : true;
 	}
-    /**
-     * @description The function is used for determining the horizontal image Alignment
-     */
+	/**
+	 * @description The function is used for determining the horizontal image Alignment
+	 */
 	getImageAlignment() {
 		let imageAlignmentStyle = [];
 
@@ -102,27 +102,27 @@ export class Img extends React.Component {
 		return imageAlignmentStyle;
 	}
 
-    /**
+	/**
 	 * @description
-     * This function is to the create styling for the size of the image based  on the size property 
-     * from the payload. If the payload consists of explicit width and height property, 
-     * give highest priority.  
-     * 
-     */
+	 * This function is to the create styling for the size of the image based  on the size property 
+	 * from the payload. If the payload consists of explicit width and height property, 
+	 * give highest priority.  
+	 * 
+	 */
 	applySize() {
 		let sizeStyle = [];
 		let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
 
 		const { width, height } = this.payload;
 
-        /**
-         * Scenario 1 : Either height or width has string value (Ex: '80px'),
-         *               use the integer portion.
-         * Scenario 2 : If the height or width has string value (Ex: 'stretch'),
-         *              ignore and use the size property to determine dimensions.
-         * Scenario 3 : If either width or height is missing, apply the given value to the 
-         *              other property.
-         */
+		/**
+		 * Scenario 1 : Either height or width has string value (Ex: '80px'),
+		 *               use the integer portion.
+		 * Scenario 2 : If the height or width has string value (Ex: 'stretch'),
+		 *              ignore and use the size property to determine dimensions.
+		 * Scenario 3 : If either width or height is missing, apply the given value to the 
+		 *              other property.
+		 */
 		if (Utils.isaNumber(width) || Utils.isaNumber(height)) {
 
 			this.width = Utils.getSize(width) || this.state.imageWidth;
@@ -262,14 +262,14 @@ export class Img extends React.Component {
 		wrapperComputedStyle.push({ backgroundColor: 'transparent' });
 
 		if (this.payload.fromImageSet == true) {
-			wrapperComputedStyle.push({ margin: this.spacing});
+			wrapperComputedStyle.push({ margin: this.spacing });
 		}
 
-        /**
-         * If the payload size is "auto" or "stretch" and 
-         * if the payload does not contain explicit width and height, computing the border radius 
-         * from the state variable "imageWidth" which is determined using Image.getSize()
-         */
+		/**
+		 * If the payload size is "auto" or "stretch" and 
+		 * if the payload does not contain explicit width and height, computing the border radius 
+		 * from the state variable "imageWidth" which is determined using Image.getSize()
+		 */
 		if ((this.payload.size === Constants.Auto ||
 			this.payload.size === Constants.AlignStretch) &&
 			!(this.payload.width || this.payload.height)) {
@@ -279,6 +279,16 @@ export class Img extends React.Component {
 		else {
 			this.isPersonStyle() ?
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
+		}
+
+		if (this.payload.tint !== undefined) {
+			let colorEnum = Utils.parseHostConfigEnum(
+					Enums.TextColor, 
+					this.payload.tint, 
+					null
+				);
+			let tintColor = this.hostConfig.getTextColor(colorEnum);
+			imageComputedStyle.push({tintColor: tintColor.default})
 		}
 
 		let imageUrl = Utils.getImageUrl(this.url);
@@ -291,6 +301,8 @@ export class Img extends React.Component {
 					onPageLayout={this.onPageLayoutHandler}>
 
 					<Image style={imageComputedStyle}
+						accessible={true}
+						accessibilityLabel={this.payload.altText}
 						source={{ uri: imageUrl }} />
 				</ElementWrapper>
 			}}

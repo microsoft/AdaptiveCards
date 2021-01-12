@@ -32,8 +32,8 @@ export class SelectAction extends React.Component {
 	onClickHandle() {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
-				let actionObject = { "type": Constants.ActionSubmit, "data": this.props.selectActionData.data };
-				this.onExecuteAction(actionObject);
+				const { type, title = "", data } = this.payload;
+				this.onExecuteAction({type, title, data});
 				break;
 			case Constants.ActionOpenUrl:
 				if (!Utils.isNullOrEmpty(this.props.selectActionData.url)) {
@@ -46,7 +46,7 @@ export class SelectAction extends React.Component {
 				break;
 			default:
 				//As per the AC schema, ShowCard action type is not supported by selectAction.
-				if(this.payload.type != Constants.ActionShowCard) {
+				if (this.payload.type != Constants.ActionShowCard) {
 					//Invoked for the custom action type. 
 					this.onExecuteAction(this.payload);
 				}
@@ -65,7 +65,11 @@ export class SelectAction extends React.Component {
 				this.onExecuteAction = onExecuteAction;
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
-				return <ButtonComponent onPress={() => { this.onClickHandle() }} style={this.props.style}>
+				return <ButtonComponent
+					onPress={() => { this.onClickHandle() }}
+					accessible={true}
+					accessibilityLabel={this.payload.altText}
+					style={this.props.style}>
 					<React.Fragment>{this.props.children}</React.Fragment>
 				</ButtonComponent>
 			}}

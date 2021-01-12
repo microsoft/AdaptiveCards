@@ -36,8 +36,9 @@ export class ActionButton extends React.Component {
 
 		this.payload = props.json;
 		this.title = Constants.EmptyString;
+		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
-		this.iconUrl = Constants.EmptyString;
+		this.url = Constants.EmptyString;
 		this.inputArray = undefined;
 		this.onExecuteAction = undefined;
 		this.addResourceInformation = undefined;
@@ -49,8 +50,8 @@ export class ActionButton extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!Utils.isNullOrEmpty(this.payload.iconUrl)) {
-			this.addResourceInformation(this.payload.iconUrl, "");
+		if (!Utils.isNullOrEmpty(this.payload.url)) {
+			this.addResourceInformation(this.payload.url, "");
 		}
 	}
 
@@ -71,6 +72,8 @@ export class ActionButton extends React.Component {
 
 				return <ButtonComponent
 					style={{ flexGrow: 1 }}
+					accessible={true}
+					accessibilityLabel={this.altText}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
@@ -79,8 +82,8 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-     * @description Invoked for the any action button selected
-     */
+	 * @description Invoked for the any action button selected
+	 */
 	onActionButtonTapped = () => {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
@@ -100,9 +103,9 @@ export class ActionButton extends React.Component {
 		}
 	}
 
-    /**
-     * @description Invoked for the action type Constants.ActionSubmit
-     */
+	/**
+	 * @description Invoked for the action type Constants.ActionSubmit
+	 */
 	onSubmitActionCalled() {
 		let mergedObject = {};
 		for (const key in this.inputArray) {
@@ -114,13 +117,14 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
-		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
+		const { type, title = "", ignoreInputValidation } = this.payload;
+		let actionObject = { "type": type,"title": title, "data": mergedObject };
+		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 
 	/**
-     * @description Invoked for the action type Constants.ActionToggleVisibility
-     */
+	 * @description Invoked for the action type Constants.ActionToggleVisibility
+	 */
 	onToggleActionCalled() {
 		this.toggleVisibilityForElementWithID(this.payload.targetElements);
 	}
@@ -137,9 +141,10 @@ export class ActionButton extends React.Component {
 
 	parseHostConfig() {
 		this.title = this.payload.title;
+		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
-		let imageUrl = this.payload.iconUrl
-		this.iconUrl = Utils.getImageUrl(imageUrl)
+		let imageUrl = this.payload.url
+		this.url = Utils.getImageUrl(imageUrl)
 		this.data = this.payload.data;
 		this.sentiment = this.payload.sentiment;
 		this.sentiment = Utils.parseHostConfigEnum(
@@ -149,10 +154,10 @@ export class ActionButton extends React.Component {
 		);
 	}
 
-    /**
-     * @description Return the button styles applicable
+	/**
+	 * @description Return the button styles applicable
 	 * @returns {Array} computedStyles - Styles based on the config
-     */
+	 */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
@@ -181,9 +186,9 @@ export class ActionButton extends React.Component {
 			<View
 				style={this.getButtonStyles()}>
 				{
-					!Utils.isNullOrEmpty(this.iconUrl) ?
+					!Utils.isNullOrEmpty(this.url) ?
 						<Image resizeMode="center"
-							source={{ uri: this.iconUrl }}
+							source={{ uri: this.url }}
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}

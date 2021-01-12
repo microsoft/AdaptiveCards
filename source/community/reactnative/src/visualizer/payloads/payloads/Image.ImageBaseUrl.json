@@ -13,7 +13,9 @@
 		{
 			"type": "Action.ShowCard",
 			"title": "Open Card",
-			"iconUrl": "Assets/button.png",
+			"icon": {
+				"url": "Assets/button.png"
+			},
 			"card": {
 				"type": "AdaptiveCard",
 				"body": [
@@ -27,7 +29,9 @@
 				"actions": [
 					{
 						"type": "Action.Submit",
-						"iconUrl": "Assets/button.png",
+						"icon": {
+							"url": "Assets/button.png"
+						},
 						"title": "OK"
 					}
 				]
