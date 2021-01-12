@@ -2216,6 +2216,7 @@ export class Media extends CardElement {
                 this.renderedElement.appendChild(mediaPlayerElement);
 
                 mediaPlayerElement.play();
+                mediaPlayerElement.focus();
             }
         }
         else {
