@@ -341,6 +341,36 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
+    // restrict keyboard tab focus to video modal if it's playing
+    const focusableElements = $("#videoModal").find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+    const firstVideoFocusable = focusableElements.first();
+    const lastVideoFocusable = focusableElements.last();
+
+    $("#videoModal").keydown(function (e) {
+        switch (e.key) {
+        case "Tab":
+            if (e.shiftKey && firstVideoFocusable.is(document.activeElement)) {
+                // backwards tab on first element. set focus on last
+                e.preventDefault();
+                lastVideoFocusable.focus();
+            }
+            else if (!e.shiftKey && lastVideoFocusable.is(document.activeElement)) {
+                // forward tab on last element
+                e.preventDefault();
+                firstVideoFocusable.focus();
+            }
+            break;
+
+        case "Escape":
+            this.close();
+            e.preventDefault();
+            e.cancelBubble = true;
+            break;
+        }
+
+        return !e.cancelBubble;
+    });
+
 	// Loop videos
 	$("video").each(function () {
 		var $video = $(this);
