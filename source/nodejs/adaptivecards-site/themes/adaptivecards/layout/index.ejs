@@ -3,11 +3,11 @@
 	<div id="videoModal" class="w3-modal w3-card-4">
 		<div class="w3-modal-content w3-animate-zoom">
 
-			<video id="overviewVideo" controls="" width="100" style="width: 100%" poster="<%- url_for('content/poster-video.png') %>">
+			<video id="overviewVideo" tabIndex="0" controls="" width="100" style="width: 100%" poster="<%- url_for('content/poster-video.png') %>">
 				<source src="https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
 					type="video/mp4" />
 			</video>
-			<span id="closeVideo" class="w3-button w3-xlarge w3-transparent w3-display-topright"
+			<span id="closeVideo" tabIndex="0" class="w3-button w3-xlarge w3-transparent w3-display-topright"
 				title="Close video">×</span>
 		</div>
 	</div>
