@@ -131,8 +131,6 @@ CONTAINER_GROUPING = {
         "choiceset_y_min_difference": 0.60,
         "choiceset_ymax_ymin_difference": 0.151
 }
-# FLAG SWITCH FOR NEW LAYOUT STRUCTURING BY DEFAULT - TRUE
-NEW_LAYOUT_STRUCTURE = True
 
 # COLUMN-SET ALIGNMENT PREFERENCE ORDER
 PREFERENCE_ORDER = ["Left", "Center", "Right"]
