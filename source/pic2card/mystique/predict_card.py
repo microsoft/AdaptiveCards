@@ -3,16 +3,14 @@
 import base64
 import io
 import uuid
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import cv2
 import numpy as np
 from PIL import Image
 from mystique import config
-from mystique.card_layout.arrange_card import CardArrange
 from mystique.ac_export.card_template_data import DataBinding
 from mystique.extract_properties import CollectProperties
-from mystique.image_extraction import ImageExtraction
 from mystique.font_properties import classify_font_weights
 from mystique.utils import get_property_method, send_json_payload
 from mystique.card_layout import row_column_group
@@ -171,16 +169,6 @@ class PredictCard:
         # Remove overlapping rcnn objects
         bbox_utils.remove_noise_objects(json_objects)
 
-        # The property extraction happens sequentially only if the
-        # NEW_LAYOUT_STRUCTURE is not enabled
-        if not config.NEW_LAYOUT_STRUCTURE:
-            # get design object properties
-            self.get_object_properties(json_objects["objects"], image)
-        # Get image coordinates from custom image pipeline
-        # if config.USE_CUSTOM_IMAGE_PIPELINE:
-        #     self.get_image_objects(json_objects, detected_coords,
-        #     card_arrange, image_np, image)
-
         # Arrange the design elements
         return_dict = {}.fromkeys(["card_json"], "")
         card_json = {
@@ -190,21 +178,10 @@ class PredictCard:
             "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
         }
 
-        # If the NEW_LAYOUT_STRUCTURE is enabled in the config
-        # performs the card arranging as recursive hierarchical layout
-        # structuring and property extraction in parallel and finally
-        # merges both to export it to card json body
-        if config.NEW_LAYOUT_STRUCTURE:
-            card_layout = row_column_group.generate_card_layout(json_objects,
-                                                                image, self)
-            body = adaptive_card_export.export_to_card(card_layout, image)
-        else:
-            card_arrange = CardArrange()
-            body, ymins = card_arrange.build_card_json(
-                objects=json_objects.get("objects", []), image=image)
-            # Sort the elements vertically
-            body = [x for _, x in sorted(zip(ymins, body),
-                                         key=lambda x: x[0])]
+        card_layout = row_column_group.generate_card_layout(json_objects,
+                                                            image, self)
+        body = adaptive_card_export.export_to_card(card_layout, image)
+
         # if format==template - generate template data json
         return_dict["card_json"] = {}.fromkeys(["data", "card"], {})
         if card_format == "template":
@@ -228,42 +205,3 @@ class PredictCard:
         return_dict["error"] = error
 
         return return_dict
-
-    def get_image_objects(self, json_objects: List[Dict],
-                          detected_coords: List[Tuple],
-                          card_arrange: CardArrange, image_np: np.array,
-                          image: Image):
-        """
-        Collects the image objects using the custom image pipeline
-        @param json_objects: list of design objects from the rcnn model
-        @param detected_coords: list of coordinates of the design objects
-        @param card_arrange: CardArrange object
-        @param image_np: opencv input image
-        @param image: PIL input image
-        """
-        # delete image from the rcnn model detected objects and coordinates
-        positions_to_remove = [ctr for ctr, design_object in enumerate(
-            json_objects.get("objects", []))
-                               if design_object.get("object") == "image"]
-        json_objects["objects"] = [
-            design_object for ctr, design_object in enumerate(
-                json_objects.get("objects")) if ctr not in positions_to_remove
-        ]
-        detected_coords = [coords for ctr, coords in enumerate(
-            detected_coords) if ctr not in positions_to_remove]
-
-        image_extraction = ImageExtraction()
-        image_points = image_extraction.detect_image(
-            image=image_np,
-            detected_coords=detected_coords,
-            pil_image=image
-        )
-        image_urls, image_sizes = image_extraction.image_crop_get_url(
-            coords=image_points,
-            image=image)
-        # Append the image objects to the deisgn objects list
-        card_arrange.append_image_objects(image_urls=image_urls,
-                                          image_sizes=image_sizes,
-                                          image_coords=image_points,
-                                          pil_image=image,
-                                          json_object=json_objects)
