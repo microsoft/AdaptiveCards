@@ -2,6 +2,11 @@
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.3",
+	"backgroundImage": {
+		"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
+		"mode": "stretch",
+		"altText": "Cloudy background image"
+},
 	"body": [
 		{
 			"type": "TextBlock",
@@ -20,6 +25,13 @@
 			"text": "You can even draw attention to certain text with color",
 			"wrap": true,
 			"color": "attention"
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"size": "medium",
+			"altText": "Cat",
+			"horizontalAlignment": "center"
 		}
 	]
 }

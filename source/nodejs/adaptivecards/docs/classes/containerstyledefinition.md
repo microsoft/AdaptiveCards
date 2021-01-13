@@ -6,6 +6,8 @@
 
 * **ContainerStyleDefinition**
 
+  ↳ [BuiltInContainerStyleDefinition](builtincontainerstyledefinition.md)
+
 ## Index
 
 ### Constructors
@@ -15,7 +17,7 @@
 ### Properties
 
 * [backgroundColor](containerstyledefinition.md#optional-backgroundcolor)
-* [foregroundColors](containerstyledefinition.md#foregroundcolors)
+* [foregroundColors](containerstyledefinition.md#readonly-foregroundcolors)
 * [highlightBackgroundColor](containerstyledefinition.md#optional-highlightbackgroundcolor)
 * [highlightForegroundColor](containerstyledefinition.md#optional-highlightforegroundcolor)
 
@@ -49,7 +51,7 @@ Name | Type |
 
 ___
 
-###  foregroundColors
+### `Readonly` foregroundColors
 
 • **foregroundColors**: *[ColorSetDefinition](colorsetdefinition.md)* = new ColorSetDefinition(
         {
