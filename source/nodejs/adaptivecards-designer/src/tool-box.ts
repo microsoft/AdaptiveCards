@@ -126,6 +126,13 @@ export class Toolbox {
                 e.preventDefault();
                 this._expandCollapseButtonElement.focus();
             }
+
+            if (e.key === Constants.keys.escape) {
+                this.collapse();
+
+                e.preventDefault();
+                this._expandCollapseButtonElement.focus();
+            }
         }
 
         this._expandCollapseButtonElement.onclick = (e) => {
