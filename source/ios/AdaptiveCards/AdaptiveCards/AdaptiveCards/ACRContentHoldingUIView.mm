@@ -20,6 +20,7 @@ using namespace AdaptiveCards;
 - (CGSize)intrinsicContentSize
 {
     return self.desiredContentSize;
+    //return self.subviews[0].frame.size;
 }
 
 - (void)layoutSubviews

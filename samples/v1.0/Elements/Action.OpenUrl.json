@@ -1,18 +1,99 @@
 {
-	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	"type": "AdaptiveCard",
-	"version": "1.0",
-	"body": [
-		{
-			"type": "TextBlock",
-			"text": "This card's action will open a URL"
-		}
-	],
-	"actions": [
-		{
-			"type": "Action.OpenUrl",
-			"title": "Action.OpenUrl",
-			"url": "https://adaptivecards.io"
-		}
-	]
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "50px",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Width: 10px",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "width": "10px"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Size: Large",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "size": "Large"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Height: Stretch",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "height": "stretch"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Size: Stretch",
+                            "wrap": true
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "size": "Stretch"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Size: Small"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "size": "Small"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Size: Large"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "size": "Large"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "(default)"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Size: Stretch"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/id/133/300/200",
+                            "size": "Stretch"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }

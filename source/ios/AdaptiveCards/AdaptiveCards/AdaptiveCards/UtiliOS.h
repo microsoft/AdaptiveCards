@@ -89,3 +89,7 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
+
+ACRImageSize getImageSize(ImageSize adaptiveImageSize);
+
+CGSize getAspectRatio(CGSize size);
