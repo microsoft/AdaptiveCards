@@ -2,6 +2,7 @@
 title: 🎉  Pic2Card Service Now available on AdaptiveCards Designer
 subtitle: Generate AdaptiveCards by Uploading Card Image
 date: 2020-11-01
+feature_image: ![what-is-pic2card](Community-Call-November/whatispic2card.png)
 github_username: haridas, Vasanth-S
 twitter: haridas_n, vasanth1603
 
