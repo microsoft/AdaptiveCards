@@ -21,6 +21,7 @@ import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
 import * as Constants from './constants';
 import { CustomActionRenderer } from './custom-action-renderer';
+import { CustomTextBlockRenderer } from './custom-text-block';
 
 export default class Renderer extends React.Component {
 
@@ -38,8 +39,8 @@ export default class Renderer extends React.Component {
 
     customHostConfig = {
         hostCapabilities: {
-            adaptiveCards:'1.2',
-            acTest:'1.3'
+            adaptiveCards: '1.2',
+            acTest: '1.3'
         },
         fontFamily: "Helvetica",
         supportsInteractivity: true,
@@ -119,6 +120,9 @@ export default class Renderer extends React.Component {
     render() {
         //Register Custom Components
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
+
+        //Register Custom Text Block Components
+        Registry.getManager().registerComponent('CustomTextBlock', CustomTextBlockRenderer);
 
         //Register Custom Actions
         Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
