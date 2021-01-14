@@ -26,11 +26,19 @@ export class ContainerWrapper extends React.PureComponent {
     render() {
         const receivedStyles = this.props.style;
         const computedStyles = this.getComputedStyles();
+
         return (
-            <View style={[computedStyles, receivedStyles]}>
-                {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
-            </View>
-        )
+            Utils.isNullOrEmpty(this.payload.altText) ?
+                <View style={[computedStyles, receivedStyles]}>
+                    {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
+                </View> :
+                <View
+                    accessible={true}
+                    accessibilityLabel={this.payload.altText}
+                    style={[computedStyles, receivedStyles]}>
+                    {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
+                </View>
+        );
     }
 
     /**

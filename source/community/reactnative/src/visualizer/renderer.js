@@ -165,7 +165,7 @@ export default class Renderer extends React.Component {
                 'Rendered Submit',
                 JSON.stringify(actionObject.data),
                 [
-                    { text: "Okay", onPress: () => console.log('OK Pressed') },
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
                 ],
                 { cancelable: false }
             )
