@@ -75,6 +75,16 @@ namespace AdaptiveCards
         [DefaultValue(false)]
         public bool Wrap { get; set; }
 
+        /// <summary>
+        /// Text to display as a placeholder.
+        /// </summary>
+        [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(null)]
+        public string Placeholder { get; set; }
+
         /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
