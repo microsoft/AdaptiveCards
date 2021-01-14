@@ -6,8 +6,13 @@
 //
 
 #import "ACRContentHoldingUIView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACREnums.h"
+#import "ACRUIImageView.h"
 #import "ACRUILabel.h"
 #import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
 
 const NSInteger eACRUILabelTag = 0x1234;
 const NSInteger eACRUIFactSetTag = 0x1235;
@@ -20,7 +25,6 @@ using namespace AdaptiveCards;
 - (CGSize)intrinsicContentSize
 {
     return self.desiredContentSize;
-    //return self.subviews[0].frame.size;
 }
 
 - (void)layoutSubviews
@@ -32,6 +36,9 @@ using namespace AdaptiveCards;
         [subview.layer setCornerRadius:radius];
         [subview.layer setMasksToBounds:YES];
     }
+
+    CGFloat width = self.frame.size.width;
+    CGFloat height = self.frame.size.height;
 
     if (_isMediaType) {
         if (!_hidePlayIcon) {
@@ -103,6 +110,37 @@ using namespace AdaptiveCards;
 
             for (CALayer *layer in shapes) {
                 [layer removeFromSuperlayer];
+            }
+        }
+        // The content view is UIImageView
+    } else {
+        CGSize frameSize = self.frame.size;
+        if (frameSize.width < self.desiredContentSize.width) {
+            if (self.adaptiveImageSize == ACRImageSizeLarge || self.adaptiveImageSize == ACRImageSizeMedium || self.adaptiveImageSize == ACRImageSizeSmall || self.adaptiveImageSize == ACRImageSizeAuto || self.adaptiveImageSize == ACRImageSizeStretch) {
+                CGSize ratios = getAspectRatio(self.desiredContentSize);
+                height = width * ratios.height;
+                width = frameSize.width;
+                ((ACRUIImageView *)self.subviews[0]).desiredSize = self.desiredContentSize;
+                self.desiredContentSize = self.frame.size;
+                NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
+                hc.priority = 999;
+                hc.active = YES;
+            }
+
+        } else if (self.adaptiveImageSize == ACRImageSizeStretch and frameSize.width != self.desiredContentSize.width) {
+            ACRUIImageView *imageView = (ACRUIImageView *)self.subviews[0];
+            if (imageView.image) {
+                CGSize ratios = getAspectRatio(imageView.image.size);
+                height = width * ratios.height;
+                width = frameSize.width;
+                imageView.desiredSize = self.desiredContentSize;
+                self.desiredContentSize = self.frame.size;
+                NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
+                hc.priority = 999;
+                hc.active = YES;
+                NSLayoutConstraint *hc2 = [self.subviews[0].heightAnchor constraintEqualToConstant:height];
+                hc2.priority = 999;
+                hc2.active = YES;
             }
         }
     }

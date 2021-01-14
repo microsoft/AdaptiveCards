@@ -164,30 +164,47 @@ using namespace AdaptiveCards;
     return _config->GetFontWeight(type, weight);
 }
 
-- (CGSize)getImageSize:(ImageSize)imageSize
+- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize width:(CGFloat)width height:(CGFloat)height
 {
-    float sz;
+    float sz = 0.0f;
     switch (imageSize) {
-        case ImageSize::Large: {
+        case ACRImageSizeLarge:
             sz = _config->GetImageSizes().largeSize;
             break;
-        }
-        case ImageSize::Medium: {
+
+        case ACRImageSizeMedium:
             sz = _config->GetImageSizes().mediumSize;
             break;
-        }
 
-        case ImageSize::Small: {
+        case ACRImageSizeStretch:
+        case ACRImageSizeSmall:
             sz = _config->GetImageSizes().smallSize;
             break;
-        }
 
-        default: {
-            sz = _config->GetImageSizes().largeSize;
-        }
+        case ACRImageSizeExplicit:
+            BOOL isAspectRatioNeeded = !(width && height);
+            CGSize imageSizeAsCGSize = CGSizeZero;
+            if (width) {
+                intrinsicContentSize.width = width;
+                if (isAspectRatioNeeded) {
+                    intrinsicContentSize.height = width;
+                }
+            }
+
+            if (height) {
+                intrinsicContentSize.height = height;
+                if (isAspectRatioNeeded) {
+                    intrinsicContentSize.width = height;
+                }
+            }
+            break;
+        case ACRImageSizeNone:
+        case ACRImageSizeAuto:
+        defalt:
+            return CGSizeZero;
     }
-    CGSize cgSize = CGSizeMake(sz, sz);
-    return cgSize;
+
+    return CGSizeMake(sz, sz);
 }
 
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment

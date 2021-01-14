@@ -6,6 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ACREnums.h"
 
 const extern NSInteger eACRUILabelTag;
 const extern NSInteger eACRUIFactSetTag;
@@ -17,5 +18,6 @@ const extern NSInteger eACRUIImageTag;
 @property BOOL isPersonStyle;
 @property BOOL hidePlayIcon;
 @property BOOL isMediaType;
+@property ACRImageSize adaptiveImageSize;
 
 @end

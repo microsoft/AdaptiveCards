@@ -781,31 +781,13 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
     return key;
 }
 
-ACRImageSize getImageSize(ImageSize adaptiveImageSize) {
-    switch (adaptiveImageSize) {
-        case ImageSize::None:
-            return ACRImageSizeNone;
-        case ImageSize::Auto:
-            return ACRImageSizeNone;
-        case AdaptiveCards::ImageSize::Stretch:
-            return ACRImageSizeStretch;
-        case AdaptiveCards::ImageSize::Small:
-            return ACRImageSizeSmall;
-        case AdaptiveCards::ImageSize::Medium:
-            return ACRImageSizeMedium;
-        case AdaptiveCards::ImageSize::Large:
-            return ACRImageSizeLarge;
-        default:
-            return ACRImageSizeAuto;
-    }
-}
-
-CGSize getAspectRatio(CGSize size) {
+CGSize getAspectRatio(CGSize size)
+{
     CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
     if (size.width > 0) {
         heightToWidthRatio = size.height / size.width;
     }
-    
+
     if (size.height > 0) {
         widthToHeightRatio = size.width / size.height;
     }

@@ -6,6 +6,7 @@
 //
 #import "ACOBaseActionElement.h"
 #import "ACOBaseCardElement.h"
+#import "ACREnums.h"
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
@@ -39,7 +40,7 @@ using namespace AdaptiveCards;
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
 
-- (CGSize)getImageSize:(ImageSize)imageSize;
+- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize;
 
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
                                withSuperview:(UIView *)superview

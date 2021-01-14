@@ -90,6 +90,4 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
 
-ACRImageSize getImageSize(ImageSize adaptiveImageSize);
-
 CGSize getAspectRatio(CGSize size);
