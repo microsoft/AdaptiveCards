@@ -168,7 +168,17 @@
 
 - (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
-    ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
+    ACRContentHoldingUIView *superview = nil;
+    ACRImageProperties *imageProps = nil;
+    if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
+        superview = (ACRContentHoldingUIView *)imageView.superview;
+        imageProps = superview.imageProperties;
+    }
+
+    if (!imageProps) {
+        imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
+    }
+
     [imageProps updateContentSize:image.size];
     CGSize cgsize = imageProps.contentSize;
 

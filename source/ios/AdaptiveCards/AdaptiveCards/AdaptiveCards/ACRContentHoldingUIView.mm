@@ -20,7 +20,6 @@ const NSInteger eACRUIImageTag = 0x1236;
 using namespace AdaptiveCards;
 
 @implementation ACRContentHoldingUIView {
-    ACRImageProperties *_imageProperties;
     UIImageView *_imageView;
 }
 
@@ -33,7 +32,7 @@ using namespace AdaptiveCards;
     CGRect frame = CGRectMake(0, 0, imageProperties.contentSize.width, imageProperties.contentSize.height);
     self = [super initWithFrame:frame];
     if (self) {
-        _imageProperties = imageProperties;
+        self.imageProperties = imageProperties;
         _imageView = imageView;
     }
 
@@ -42,7 +41,7 @@ using namespace AdaptiveCards;
 
 - (CGSize)intrinsicContentSize
 {
-    return _imageProperties ? _imageProperties.contentSize : [super intrinsicContentSize];
+    return self.imageProperties ? self.imageProperties.contentSize : [super intrinsicContentSize];
 }
 
 - (void)layoutSubviews
@@ -133,23 +132,23 @@ using namespace AdaptiveCards;
         // The content view is UIImageView
     } else {
         CGSize frameSize = self.frame.size;
-        if (frameSize.width < _imageProperties.contentSize.width) {
-            if (_imageProperties.acrImageSize == ACRImageSizeLarge || _imageProperties.acrImageSize == ACRImageSizeMedium || _imageProperties.acrImageSize == ACRImageSizeSmall || _imageProperties.acrImageSize == ACRImageSizeAuto || _imageProperties.acrImageSize == ACRImageSizeStretch) {
-                CGSize ratios = getAspectRatio(_imageProperties.contentSize);
+        if (frameSize.width < self.imageProperties.contentSize.width) {
+            if (self.imageProperties.acrImageSize == ACRImageSizeLarge || self.imageProperties.acrImageSize == ACRImageSizeMedium || self.imageProperties.acrImageSize == ACRImageSizeSmall || self.imageProperties.acrImageSize == ACRImageSizeAuto || self.imageProperties.acrImageSize == ACRImageSizeStretch) {
+                CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
                 height = width * ratios.height;
                 width = frameSize.width;
-                _imageProperties.contentSize = self.frame.size;
+                self.imageProperties.contentSize = self.frame.size;
                 NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
                 hc.priority = 999;
                 hc.active = YES;
             }
 
-        } else if (_imageProperties.acrImageSize == ACRImageSizeStretch and frameSize.width != _imageProperties.contentSize.width) {
+        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch and frameSize.width != self.imageProperties.contentSize.width) {
             if (_imageView.image) {
                 CGSize ratios = getAspectRatio(_imageView.image.size);
                 height = width * ratios.height;
                 width = frameSize.width;
-                _imageProperties.contentSize = self.frame.size;
+                self.imageProperties.contentSize = self.frame.size;
                 NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
                 hc.priority = 999;
                 hc.active = YES;
@@ -163,8 +162,8 @@ using namespace AdaptiveCards;
 
 - (void)update:(ACRImageProperties *)imageProperties
 {
-    if (imageProperties && _imageProperties) {
-        _imageProperties.contentSize = imageProperties.contentSize;
+    if (imageProperties) {
+        self.imageProperties = imageProperties;
         [self invalidateIntrinsicContentSize];
     }
 }

@@ -53,27 +53,41 @@
 - (void)updateContentSize:(CGSize)size
 {
     CGSize ratios = getAspectRatio(size);
+
     CGFloat heightToWidthRatio = ratios.height;
     CGFloat widthToHeightRatio = ratios.width;
-
     CGSize newSize = self.contentSize;
+
+    CGFloat (^newHeight)(CGFloat) = ^(CGFloat width){
+        return width * heightToWidthRatio;
+    };
+    
+    CGFloat (^newWidth)(CGFloat) = ^(CGFloat height){
+        return height * widthToHeightRatio;
+    };
+
     if (self.hasExplicitDimensions) {
         if (self.pixelWidth) {
             newSize.width = self.pixelWidth;
-            if (self.isAspectRatioNeeded) {
-                newSize.height = self.contentSize.width * heightToWidthRatio;
+            if (!self.pixelHeight) {
+                newSize.height = newHeight(self.pixelWidth);
             }
         }
+
         if (self.pixelHeight) {
             newSize.height = self.pixelHeight;
-            if (self.isAspectRatioNeeded) {
-                newSize.width = self.pixelHeight * widthToHeightRatio;
+            if (!self.pixelWidth) {
+                newSize.width = newWidth(self.pixelHeight);
             }
         }
         self.contentSize = newSize;
     } else if (self.acrImageSize == ACRImageSizeAuto || self.acrImageSize == ACRImageSizeStretch) {
         self.contentSize = size;
+    } else if (self.acrImageSize == ACRImageSizeSmall || self.acrImageSize == ACRImageSizeMedium ||
+               self.acrImageSize == ACRImageSizeLarge) {
+        newSize = self.contentSize;
+        newSize.height = newHeight(self.contentSize.width);
+        self.contentSize = newSize;
     }
-
 }
 @end
