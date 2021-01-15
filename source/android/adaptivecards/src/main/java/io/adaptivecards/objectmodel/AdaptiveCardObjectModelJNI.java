@@ -710,12 +710,12 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long NumberInput_SerializeToJsonValue(long jarg1, NumberInput jarg1_);
   public final static native String NumberInput_GetPlaceholder(long jarg1, NumberInput jarg1_);
   public final static native void NumberInput_SetPlaceholder(long jarg1, NumberInput jarg1_, String jarg2);
-  public final static native Integer NumberInput_GetValue(long jarg1, NumberInput jarg1_);
-  public final static native void NumberInput_SetValue(long jarg1, NumberInput jarg1_, Integer jarg2);
-  public final static native Integer NumberInput_GetMax(long jarg1, NumberInput jarg1_);
-  public final static native void NumberInput_SetMax(long jarg1, NumberInput jarg1_, Integer jarg2);
-  public final static native Integer NumberInput_GetMin(long jarg1, NumberInput jarg1_);
-  public final static native void NumberInput_SetMin(long jarg1, NumberInput jarg1_, Integer jarg2);
+  public final static native long NumberInput_GetValue(long jarg1, NumberInput jarg1_);
+  public final static native void NumberInput_SetValue(long jarg1, NumberInput jarg1_, long jarg2);
+  public final static native long NumberInput_GetMax(long jarg1, NumberInput jarg1_);
+  public final static native void NumberInput_SetMax(long jarg1, NumberInput jarg1_, long jarg2);
+  public final static native long NumberInput_GetMin(long jarg1, NumberInput jarg1_);
+  public final static native void NumberInput_SetMin(long jarg1, NumberInput jarg1_, long jarg2);
   public final static native long NumberInput_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_NumberInputParser__SWIG_0();
   public final static native long new_NumberInputParser__SWIG_1(long jarg1, NumberInputParser jarg1_);

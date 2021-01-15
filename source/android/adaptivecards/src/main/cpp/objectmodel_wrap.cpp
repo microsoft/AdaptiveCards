@@ -1718,7 +1718,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
   jobject swigjobj = (jobject) NULL ;
   jlong jcontext = 0 ;
   jlong jvalue = 0 ;
-  
+
   if (!swig_override[0]) {
     SWIG_JavaThrowException(JNIEnvWrapper(this).getJNIEnv(), SWIG_JavaDirectorPureVirtual, "Attempted to invoke pure virtual method AdaptiveCards::ActionElementParser::Deserialize.");
     return c_result;
@@ -1726,15 +1726,15 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jcontext = 0;
-    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
-    *(Json::Value **)&jvalue = (Json::Value *) &value; 
+    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0);
+    *(Json::Value **)&jvalue = (Json::Value *) &value;
     jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[0], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
     }
-    
-    
+
+
     std::shared_ptr< AdaptiveCards::BaseActionElement > * tmp = NULL;
     *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&tmp = *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult;
     if (!tmp) {
@@ -1742,7 +1742,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
       return NULL;
     }
     c_result = *tmp;
-    
+
   } else {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::ActionElementParser::Deserialize ");
   }
@@ -1758,7 +1758,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
   jobject swigjobj = (jobject) NULL ;
   jlong jcontext = 0 ;
   jstring jvalue = 0 ;
-  
+
   if (!swig_override[1]) {
     SWIG_JavaThrowException(JNIEnvWrapper(this).getJNIEnv(), SWIG_JavaDirectorPureVirtual, "Attempted to invoke pure virtual method AdaptiveCards::ActionElementParser::DeserializeFromString.");
     return c_result;
@@ -1766,16 +1766,16 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jcontext = 0;
-    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
+    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0);
     jvalue = jenv->NewStringUTF((&value)->c_str());
-    Swig::LocalRefGuard value_refguard(jenv, jvalue); 
+    Swig::LocalRefGuard value_refguard(jenv, jvalue);
     jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[1], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
     }
-    
-    
+
+
     std::shared_ptr< AdaptiveCards::BaseActionElement > * tmp = NULL;
     *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&tmp = *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult;
     if (!tmp) {
@@ -1783,7 +1783,7 @@ std::shared_ptr< AdaptiveCards::BaseActionElement > SwigDirector_ActionElementPa
       return NULL;
     }
     c_result = *tmp;
-    
+
   } else {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::ActionElementParser::DeserializeFromString ");
   }
@@ -1798,15 +1798,15 @@ void SwigDirector_ActionElementParser::swig_connect_director(JNIEnv *jenv, jobje
     jmethodID base_methid;
   } methods[] = {
     {
-      "Deserialize", "(Lio/adaptivecards/objectmodel/ParseContext;Lio/adaptivecards/objectmodel/JsonValue;)Lio/adaptivecards/objectmodel/BaseActionElement;", NULL 
+      "Deserialize", "(Lio/adaptivecards/objectmodel/ParseContext;Lio/adaptivecards/objectmodel/JsonValue;)Lio/adaptivecards/objectmodel/BaseActionElement;", NULL
     },
     {
-      "DeserializeFromString", "(Lio/adaptivecards/objectmodel/ParseContext;Ljava/lang/String;)Lio/adaptivecards/objectmodel/BaseActionElement;", NULL 
+      "DeserializeFromString", "(Lio/adaptivecards/objectmodel/ParseContext;Ljava/lang/String;)Lio/adaptivecards/objectmodel/BaseActionElement;", NULL
     }
   };
-  
+
   static jclass baseclass = 0 ;
-  
+
   if (swig_set_self(jenv, jself, swig_mem_own, weak_global)) {
     if (!baseclass) {
       baseclass = jenv->FindClass("io/adaptivecards/objectmodel/ActionElementParser");
@@ -1836,7 +1836,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
   jobject swigjobj = (jobject) NULL ;
   jlong jcontext = 0 ;
   jlong jvalue = 0 ;
-  
+
   if (!swig_override[0]) {
     SWIG_JavaThrowException(JNIEnvWrapper(this).getJNIEnv(), SWIG_JavaDirectorPureVirtual, "Attempted to invoke pure virtual method AdaptiveCards::BaseCardElementParser::Deserialize.");
     return c_result;
@@ -1844,15 +1844,15 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jcontext = 0;
-    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
-    *(Json::Value **)&jvalue = (Json::Value *) &value; 
+    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0);
+    *(Json::Value **)&jvalue = (Json::Value *) &value;
     jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[2], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
     }
-    
-    
+
+
     std::shared_ptr< AdaptiveCards::BaseCardElement > * tmp = NULL;
     *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&tmp = *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult;
     if (!tmp) {
@@ -1860,7 +1860,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
       return NULL;
     }
     c_result = *tmp;
-    
+
   } else {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseCardElementParser::Deserialize ");
   }
@@ -1876,7 +1876,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
   jobject swigjobj = (jobject) NULL ;
   jlong jcontext = 0 ;
   jstring jvalue = 0 ;
-  
+
   if (!swig_override[1]) {
     SWIG_JavaThrowException(JNIEnvWrapper(this).getJNIEnv(), SWIG_JavaDirectorPureVirtual, "Attempted to invoke pure virtual method AdaptiveCards::BaseCardElementParser::DeserializeFromString.");
     return c_result;
@@ -1884,16 +1884,16 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
   swigjobj = swig_get_self(jenv);
   if (swigjobj && jenv->IsSameObject(swigjobj, NULL) == JNI_FALSE) {
     jcontext = 0;
-    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0); 
+    *((std::shared_ptr<  AdaptiveCards::ParseContext > **)&jcontext) = new std::shared_ptr<  AdaptiveCards::ParseContext > (&context SWIG_NO_NULL_DELETER_0);
     jvalue = jenv->NewStringUTF((&value)->c_str());
-    Swig::LocalRefGuard value_refguard(jenv, jvalue); 
+    Swig::LocalRefGuard value_refguard(jenv, jvalue);
     jresult = (jlong) jenv->CallStaticLongMethod(Swig::jclass_AdaptiveCardObjectModelJNI, Swig::director_method_ids[3], swigjobj, jcontext, jvalue);
     jthrowable swigerror = jenv->ExceptionOccurred();
     if (swigerror) {
       Swig::DirectorException::raise(jenv, swigerror);
     }
-    
-    
+
+
     std::shared_ptr< AdaptiveCards::BaseCardElement > * tmp = NULL;
     *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&tmp = *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult;
     if (!tmp) {
@@ -1901,7 +1901,7 @@ std::shared_ptr< AdaptiveCards::BaseCardElement > SwigDirector_BaseCardElementPa
       return NULL;
     }
     c_result = *tmp;
-    
+
   } else {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null upcall object in AdaptiveCards::BaseCardElementParser::DeserializeFromString ");
   }
@@ -1916,15 +1916,15 @@ void SwigDirector_BaseCardElementParser::swig_connect_director(JNIEnv *jenv, job
     jmethodID base_methid;
   } methods[] = {
     {
-      "Deserialize", "(Lio/adaptivecards/objectmodel/ParseContext;Lio/adaptivecards/objectmodel/JsonValue;)Lio/adaptivecards/objectmodel/BaseCardElement;", NULL 
+      "Deserialize", "(Lio/adaptivecards/objectmodel/ParseContext;Lio/adaptivecards/objectmodel/JsonValue;)Lio/adaptivecards/objectmodel/BaseCardElement;", NULL
     },
     {
-      "DeserializeFromString", "(Lio/adaptivecards/objectmodel/ParseContext;Ljava/lang/String;)Lio/adaptivecards/objectmodel/BaseCardElement;", NULL 
+      "DeserializeFromString", "(Lio/adaptivecards/objectmodel/ParseContext;Ljava/lang/String;)Lio/adaptivecards/objectmodel/BaseCardElement;", NULL
     }
   };
-  
+
   static jclass baseclass = 0 ;
-  
+
   if (swig_set_self(jenv, jself, swig_mem_own, weak_global)) {
     if (!baseclass) {
       baseclass = jenv->FindClass("io/adaptivecards/objectmodel/BaseCardElementParser");
@@ -7685,11 +7685,11 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_getAssociatedInputsEnum(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::AssociatedInputs > *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::AssociatedInputs > *) &AdaptiveCards::EnumHelpers::getAssociatedInputsEnum();
-  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::AssociatedInputs > **)&jresult = result; 
+  *(AdaptiveCards::EnumHelpers::EnumMapping< AdaptiveCards::AssociatedInputs > **)&jresult = result;
   return jresult;
 }
 
@@ -7698,12 +7698,12 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   jstring jresult = 0 ;
   AdaptiveCards::AssociatedInputs arg1 ;
   std::string *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  arg1 = (AdaptiveCards::AssociatedInputs)jarg1; 
+  arg1 = (AdaptiveCards::AssociatedInputs)jarg1;
   result = (std::string *) &AdaptiveCards::AssociatedInputsToString(arg1);
-  jresult = jenv->NewStringUTF(result->c_str()); 
+  jresult = jenv->NewStringUTF(result->c_str());
   return jresult;
 }
 
@@ -7712,20 +7712,20 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   jint jresult = 0 ;
   std::string *arg1 = 0 ;
   AdaptiveCards::AssociatedInputs result;
-  
+
   (void)jenv;
   (void)jcls;
   if(!jarg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0); 
+  const char *arg1_pstr = (const char *)jenv->GetStringUTFChars(jarg1, 0);
   if (!arg1_pstr) return 0;
   std::string arg1_str(arg1_pstr);
   arg1 = &arg1_str;
-  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr); 
+  jenv->ReleaseStringUTFChars(jarg1, arg1_pstr);
   result = (AdaptiveCards::AssociatedInputs)AdaptiveCards::AssociatedInputsFromString((std::string const &)*arg1);
-  jresult = (jint)result; 
+  jresult = (jint)result;
   return jresult;
 }
 
@@ -8363,23 +8363,23 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::WarningStatusCode arg1 ;
   std::string *arg2 = 0 ;
   AdaptiveCards::AdaptiveCardParseWarning *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  arg1 = (AdaptiveCards::WarningStatusCode)jarg1; 
+  arg1 = (AdaptiveCards::WarningStatusCode)jarg1;
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = (AdaptiveCards::AdaptiveCardParseWarning *)new AdaptiveCards::AdaptiveCardParseWarning(arg1,(std::string const &)*arg2);
-  
+
   *(std::shared_ptr<  AdaptiveCards::AdaptiveCardParseWarning > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::AdaptiveCardParseWarning >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8389,15 +8389,15 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::AdaptiveCardParseWarning *arg1 = (AdaptiveCards::AdaptiveCardParseWarning *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning const > *smartarg1 = 0 ;
   AdaptiveCards::WarningStatusCode result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCardParseWarning > **)&jarg1;
-  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0);
   result = (AdaptiveCards::WarningStatusCode)((AdaptiveCards::AdaptiveCardParseWarning const *)arg1)->GetStatusCode();
-  jresult = (jint)result; 
+  jresult = (jint)result;
   return jresult;
 }
 
@@ -8407,15 +8407,15 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   AdaptiveCards::AdaptiveCardParseWarning *arg1 = (AdaptiveCards::AdaptiveCardParseWarning *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning const > *smartarg1 = 0 ;
   std::string *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCardParseWarning > **)&jarg1;
-  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0);
   result = (std::string *) &((AdaptiveCards::AdaptiveCardParseWarning const *)arg1)->GetReason();
-  jresult = jenv->NewStringUTF(result->c_str()); 
+  jresult = jenv->NewStringUTF(result->c_str());
   return jresult;
 }
 
@@ -8423,12 +8423,12 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1AdaptiveCardParseWarning(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::AdaptiveCardParseWarning *arg1 = (AdaptiveCards::AdaptiveCardParseWarning *) 0 ;
   std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::AdaptiveCardParseWarning > **)&jarg1;
-  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::AdaptiveCardParseWarning *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8440,28 +8440,28 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   Json::Value *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg3 = *(Json::Value **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = (arg1)->Deserialize(*arg2,(Json::Value const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -8473,31 +8473,31 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0);
   if (!arg3_pstr) return 0;
   std::string arg3_str(arg3_pstr);
   arg3 = &arg3_str;
-  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr);
   result = (arg1)->DeserializeFromString(*arg2,(std::string const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -8505,13 +8505,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionElementParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionElementParser *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::ActionElementParser *)new SwigDirector_ActionElementParser(jenv);
-  
+
   *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ActionElementParser >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8519,12 +8519,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ActionElementParser *arg1 = (AdaptiveCards::ActionElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionElementParser *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8556,16 +8556,16 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::shared_ptr< AdaptiveCards::ActionElementParser > arg1 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > *argp1 ;
   AdaptiveCards::ActionElementParserWrapper *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   argp1 = *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jarg1;
-  if (argp1) arg1 = *argp1; 
+  if (argp1) arg1 = *argp1;
   result = (AdaptiveCards::ActionElementParserWrapper *)new AdaptiveCards::ActionElementParserWrapper(arg1);
-  
+
   *(std::shared_ptr<  AdaptiveCards::ActionElementParserWrapper > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ActionElementParserWrapper >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8573,12 +8573,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionElementParserWrapper(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ActionElementParserWrapper *arg1 = (AdaptiveCards::ActionElementParserWrapper *) 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParserWrapper > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8590,28 +8590,28 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   Json::Value *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParserWrapper > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg3 = *(Json::Value **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = (arg1)->Deserialize(*arg2,(Json::Value const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -8623,31 +8623,31 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParserWrapper > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0);
   if (!arg3_pstr) return 0;
   std::string arg3_str(arg3_pstr);
   arg3 = &arg3_str;
-  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr);
   result = (arg1)->DeserializeFromString(*arg2,(std::string const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -8657,15 +8657,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ActionElementParserWrapper *arg1 = (AdaptiveCards::ActionElementParserWrapper *) 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParserWrapper const > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ActionElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
   result = ((AdaptiveCards::ActionElementParserWrapper const *)arg1)->GetActualParser();
-  *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(result) : 0;
   return jresult;
 }
 
@@ -8673,13 +8673,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ActionParserRegistration(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ActionParserRegistration *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::ActionParserRegistration *)new AdaptiveCards::ActionParserRegistration();
-  
+
   *(std::shared_ptr<  AdaptiveCards::ActionParserRegistration > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ActionParserRegistration >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8690,25 +8690,25 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::shared_ptr< AdaptiveCards::ActionElementParser > arg3 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > *argp3 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   argp3 = *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jarg3;
-  if (argp3) arg3 = *argp3; 
+  if (argp3) arg3 = *argp3;
   (arg1)->AddParser((std::string const &)*arg2,arg3);
 }
 
@@ -8717,22 +8717,22 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   (arg1)->RemoveParser((std::string const &)*arg2);
 }
 
@@ -8743,24 +8743,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration const > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionElementParser > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ActionParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = ((AdaptiveCards::ActionParserRegistration const *)arg1)->GetParser((std::string const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::ActionElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::ActionElementParser >(result) : 0;
   return jresult;
 }
 
@@ -8768,12 +8768,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ActionParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ActionParserRegistration *arg1 = (AdaptiveCards::ActionParserRegistration *) 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ActionParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ActionParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8785,28 +8785,28 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   Json::Value *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg3 = *(Json::Value **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = (arg1)->Deserialize(*arg2,(Json::Value const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -8818,31 +8818,31 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0);
   if (!arg3_pstr) return 0;
   std::string arg3_str(arg3_pstr);
   arg3 = &arg3_str;
-  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr);
   result = (arg1)->DeserializeFromString(*arg2,(std::string const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -8850,13 +8850,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseCardElementParser(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseCardElementParser *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::BaseCardElementParser *)new SwigDirector_BaseCardElementParser(jenv);
-  
+
   *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::BaseCardElementParser >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8864,12 +8864,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElementParser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::BaseCardElementParser *arg1 = (AdaptiveCards::BaseCardElementParser *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParser > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::BaseCardElementParser *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8901,16 +8901,16 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > arg1 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > *argp1 ;
   AdaptiveCards::BaseCardElementParserWrapper *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   argp1 = *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jarg1;
-  if (argp1) arg1 = *argp1; 
+  if (argp1) arg1 = *argp1;
   result = (AdaptiveCards::BaseCardElementParserWrapper *)new AdaptiveCards::BaseCardElementParserWrapper(arg1);
-  
+
   *(std::shared_ptr<  AdaptiveCards::BaseCardElementParserWrapper > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::BaseCardElementParserWrapper >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -8918,12 +8918,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1BaseCardElementParserWrapper(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::BaseCardElementParserWrapper *arg1 = (AdaptiveCards::BaseCardElementParserWrapper *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParserWrapper > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -8935,28 +8935,28 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   Json::Value *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParserWrapper > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg3 = *(Json::Value **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = (arg1)->Deserialize(*arg2,(Json::Value const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -8968,31 +8968,31 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParserWrapper > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::BaseCardElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0); 
+  const char *arg3_pstr = (const char *)jenv->GetStringUTFChars(jarg3, 0);
   if (!arg3_pstr) return 0;
   std::string arg3_str(arg3_pstr);
   arg3 = &arg3_str;
-  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr); 
+  jenv->ReleaseStringUTFChars(jarg3, arg3_pstr);
   result = (arg1)->DeserializeFromString(*arg2,(std::string const &)*arg3);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -9002,15 +9002,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::BaseCardElementParserWrapper *arg1 = (AdaptiveCards::BaseCardElementParserWrapper *) 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParserWrapper const > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::BaseCardElementParserWrapper > **)&jarg1;
-  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::BaseCardElementParserWrapper *)(smartarg1 ? smartarg1->get() : 0);
   result = ((AdaptiveCards::BaseCardElementParserWrapper const *)arg1)->GetActualParser();
-  *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(result) : 0;
   return jresult;
 }
 
@@ -9018,13 +9018,13 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ElementParserRegistration(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ElementParserRegistration *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::ElementParserRegistration *)new AdaptiveCards::ElementParserRegistration();
-  
+
   *(std::shared_ptr<  AdaptiveCards::ElementParserRegistration > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ElementParserRegistration >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -9035,25 +9035,25 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > arg3 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > *argp3 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ElementParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   argp3 = *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jarg3;
-  if (argp3) arg3 = *argp3; 
+  if (argp3) arg3 = *argp3;
   (arg1)->AddParser((std::string const &)*arg2,arg3);
 }
 
@@ -9062,22 +9062,22 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ElementParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   (arg1)->RemoveParser((std::string const &)*arg2);
 }
 
@@ -9088,24 +9088,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration const > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElementParser > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ElementParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = ((AdaptiveCards::ElementParserRegistration const *)arg1)->GetParser((std::string const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElementParser > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElementParser >(result) : 0;
   return jresult;
 }
 
@@ -9113,12 +9113,12 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ElementParserRegistration(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ElementParserRegistration *arg1 = (AdaptiveCards::ElementParserRegistration *) 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ElementParserRegistration > **)&jarg1;
-  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ElementParserRegistration *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -9126,13 +9126,13 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1ParseContext_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::ParseContext *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::ParseContext *)new AdaptiveCards::ParseContext();
-  
+
   *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ParseContext >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -9144,19 +9144,19 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *argp1 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *argp2 ;
   AdaptiveCards::ParseContext *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
   argp1 = *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jarg1;
-  if (argp1) arg1 = *argp1; 
+  if (argp1) arg1 = *argp1;
   argp2 = *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jarg2;
-  if (argp2) arg2 = *argp2; 
+  if (argp2) arg2 = *argp2;
   result = (AdaptiveCards::ParseContext *)new AdaptiveCards::ParseContext(arg1,arg2);
-  
+
   *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::ParseContext >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -9166,15 +9166,15 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > tempnull2 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jarg2 : &tempnull2; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jarg2 : &tempnull2;
   if (arg1) (arg1)->elementParserRegistration = *arg2;
 }
 
@@ -9184,15 +9184,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ElementParserRegistration > *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (std::shared_ptr< AdaptiveCards::ElementParserRegistration > *) & ((arg1)->elementParserRegistration);
-  *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ElementParserRegistration >(*result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::ElementParserRegistration > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ElementParserRegistration >(*result) : 0;
   return jresult;
 }
 
@@ -9202,15 +9202,15 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > tempnull2 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jarg2 : &tempnull2; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = jarg2 ? *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jarg2 : &tempnull2;
   if (arg1) (arg1)->actionParserRegistration = *arg2;
 }
 
@@ -9220,15 +9220,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
   std::shared_ptr< AdaptiveCards::ActionParserRegistration > *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (std::shared_ptr< AdaptiveCards::ActionParserRegistration > *) & ((arg1)->actionParserRegistration);
-  *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ActionParserRegistration >(*result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::ActionParserRegistration > **)&jresult = *result ? new std::shared_ptr< AdaptiveCards::ActionParserRegistration >(*result) : 0;
   return jresult;
 }
 
@@ -9237,15 +9237,15 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *arg2 = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg2; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jarg2;
   if (arg1) (arg1)->warnings = *arg2;
 }
 
@@ -9255,15 +9255,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
   std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > *)& ((arg1)->warnings);
-  *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jresult = result; 
+  *(std::vector< std::shared_ptr< AdaptiveCards::AdaptiveCardParseWarning > > **)&jresult = result;
   return jresult;
 }
 
@@ -9274,29 +9274,29 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::InternalId *arg3 = 0 ;
   bool arg4 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   arg3 = *(AdaptiveCards::InternalId **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::InternalId const & reference is null");
     return ;
-  } 
-  arg4 = jarg4 ? true : false; 
+  }
+  arg4 = jarg4 ? true : false;
   (arg1)->PushElement((std::string const &)*arg2,(AdaptiveCards::InternalId const &)*arg3,arg4);
 }
 
@@ -9306,28 +9306,28 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   std::string *arg2 = 0 ;
   AdaptiveCards::InternalId *arg3 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg3_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   arg3 = *(AdaptiveCards::InternalId **)&jarg3;
   if (!arg3) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::InternalId const & reference is null");
     return ;
-  } 
+  }
   (arg1)->PushElement((std::string const &)*arg2,(AdaptiveCards::InternalId const &)*arg3);
 }
 
@@ -9335,13 +9335,13 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1PopElement(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   (arg1)->PopElement();
 }
 
@@ -9351,15 +9351,15 @@ SWIGEXPORT jboolean JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObject
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
   bool result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (bool)((AdaptiveCards::ParseContext const *)arg1)->GetCanFallbackToAncestor();
-  jresult = (jboolean)result; 
+  jresult = (jboolean)result;
   return jresult;
 }
 
@@ -9368,14 +9368,14 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   bool arg2 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = jarg2 ? true : false; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = jarg2 ? true : false;
   (arg1)->SetCanFallbackToAncestor(arg2);
 }
 
@@ -9384,22 +9384,22 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   (arg1)->SetLanguage((std::string const &)*arg2);
 }
 
@@ -9409,15 +9409,15 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
   std::string *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (std::string *) &((AdaptiveCards::ParseContext const *)arg1)->GetLanguage();
-  jresult = jenv->NewStringUTF(result->c_str()); 
+  jresult = jenv->NewStringUTF(result->c_str());
   return jresult;
 }
 
@@ -9427,15 +9427,15 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
   AdaptiveCards::ContainerStyle result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (AdaptiveCards::ContainerStyle)((AdaptiveCards::ParseContext const *)arg1)->GetParentalContainerStyle();
-  jresult = (jint)result; 
+  jresult = (jint)result;
   return jresult;
 }
 
@@ -9444,14 +9444,14 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   AdaptiveCards::ContainerStyle arg2 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::ContainerStyle)jarg2; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (AdaptiveCards::ContainerStyle)jarg2;
   (arg1)->SetParentalContainerStyle(arg2);
 }
 
@@ -9461,15 +9461,15 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
   AdaptiveCards::InternalId result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = ((AdaptiveCards::ParseContext const *)arg1)->PaddingParentInternalId();
-  *(AdaptiveCards::InternalId **)&jresult = new AdaptiveCards::InternalId((const AdaptiveCards::InternalId &)result); 
+  *(AdaptiveCards::InternalId **)&jresult = new AdaptiveCards::InternalId((const AdaptiveCards::InternalId &)result);
   return jresult;
 }
 
@@ -9478,20 +9478,20 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   AdaptiveCards::CollectionTypeElement *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::CollectionTypeElement *)((*(std::shared_ptr< const AdaptiveCards::CollectionTypeElement > **)&jarg2) ? (*(std::shared_ptr< const AdaptiveCards::CollectionTypeElement > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::CollectionTypeElement const & reference is null");
     return ;
-  } 
+  }
   (arg1)->SaveContextForCollectionTypeElement((AdaptiveCards::CollectionTypeElement const &)*arg2);
 }
 
@@ -9500,20 +9500,20 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   AdaptiveCards::CollectionTypeElement *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+
   arg2 = (AdaptiveCards::CollectionTypeElement *)((*(std::shared_ptr< const AdaptiveCards::CollectionTypeElement > **)&jarg2) ? (*(std::shared_ptr< const AdaptiveCards::CollectionTypeElement > **)&jarg2)->get() : 0);
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::CollectionTypeElement const & reference is null");
     return ;
-  } 
+  }
   (arg1)->RestoreContextForCollectionTypeElement((AdaptiveCards::CollectionTypeElement const &)*arg2);
 }
 
@@ -9523,15 +9523,15 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext const > *smartarg1 = 0 ;
   AdaptiveCards::ContainerBleedDirection result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   result = (AdaptiveCards::ContainerBleedDirection)((AdaptiveCards::ParseContext const *)arg1)->GetBleedDirection();
-  jresult = (jint)result; 
+  jresult = (jint)result;
   return jresult;
 }
 
@@ -9540,14 +9540,14 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   AdaptiveCards::ContainerBleedDirection arg2 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::ContainerBleedDirection)jarg2; 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
+  arg2 = (AdaptiveCards::ContainerBleedDirection)jarg2;
   (arg1)->PushBleedDirection(arg2);
 }
 
@@ -9555,13 +9555,13 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_ParseContext_1PopBleedDirection(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   (arg1)->PopBleedDirection();
 }
 
@@ -9569,12 +9569,12 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_delete_1ParseContext(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   AdaptiveCards::ParseContext *arg1 = (AdaptiveCards::ParseContext *) 0 ;
   std::shared_ptr< AdaptiveCards::ParseContext > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1;
-  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ParseContext *)(smartarg1 ? smartarg1->get() : 0);
   (void)arg1; delete smartarg1;
 }
 
@@ -10583,27 +10583,27 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = AdaptiveCards::BaseCardElement::DeserializeBasePropertiesFromString(*arg1,(std::string const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -10613,24 +10613,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseCardElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = AdaptiveCards::BaseCardElement::DeserializeBaseProperties(*arg1,(Json::Value const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseCardElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseCardElement >(result) : 0;
   return jresult;
 }
 
@@ -11128,27 +11128,27 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = AdaptiveCards::BaseActionElement::DeserializeBasePropertiesFromString(*arg1,(std::string const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -11158,24 +11158,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseActionElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = AdaptiveCards::BaseActionElement::DeserializeBaseProperties(*arg1,(Json::Value const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseActionElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseActionElement >(result) : 0;
   return jresult;
 }
 
@@ -11280,13 +11280,13 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_new_1BaseInputElement_1_1SWIG_10(JNIEnv *jenv, jclass jcls) {
   jlong jresult = 0 ;
   AdaptiveCards::BaseInputElement *result = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   result = (AdaptiveCards::BaseInputElement *)new AdaptiveCards::BaseInputElement();
-  
+
   *(std::shared_ptr<  AdaptiveCards::BaseInputElement > **)&jresult = result ? new std::shared_ptr<  AdaptiveCards::BaseInputElement >(result SWIG_NO_NULL_DELETER_1) : 0;
-  
+
   return jresult;
 }
 
@@ -11450,27 +11450,27 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return 0;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return 0;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   result = AdaptiveCards::BaseInputElement::DeserializeBasePropertiesFromString(*arg1,(std::string const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseInputElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseInputElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseInputElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseInputElement >(result) : 0;
   return jresult;
 }
 
@@ -11480,24 +11480,24 @@ SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMod
   AdaptiveCards::ParseContext *arg1 = 0 ;
   Json::Value *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::BaseInputElement > result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
   (void)jarg2_;
-  
+
   arg1 = (AdaptiveCards::ParseContext *)((*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1) ? (*(std::shared_ptr<  AdaptiveCards::ParseContext > **)&jarg1)->get() : 0);
   if (!arg1) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "AdaptiveCards::ParseContext & reference is null");
     return 0;
-  } 
+  }
   arg2 = *(Json::Value **)&jarg2;
   if (!arg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "Json::Value const & reference is null");
     return 0;
-  } 
+  }
   result = AdaptiveCards::BaseInputElement::DeserializeBaseProperties(*arg1,(Json::Value const &)*arg2);
-  *(std::shared_ptr< AdaptiveCards::BaseInputElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseInputElement >(result) : 0; 
+  *(std::shared_ptr< AdaptiveCards::BaseInputElement > **)&jresult = result ? new std::shared_ptr< AdaptiveCards::BaseInputElement >(result) : 0;
   return jresult;
 }
 
@@ -14843,15 +14843,15 @@ SWIGEXPORT jstring JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput const > *smartarg1 = 0 ;
   std::string result;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::ChoiceSetInput > **)&jarg1;
-  arg1 = (AdaptiveCards::ChoiceSetInput *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ChoiceSetInput *)(smartarg1 ? smartarg1->get() : 0);
   result = ((AdaptiveCards::ChoiceSetInput const *)arg1)->GetPlaceholder();
-  jresult = jenv->NewStringUTF((&result)->c_str()); 
+  jresult = jenv->NewStringUTF((&result)->c_str());
   return jresult;
 }
 
@@ -14860,22 +14860,22 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   AdaptiveCards::ChoiceSetInput *arg1 = (AdaptiveCards::ChoiceSetInput *) 0 ;
   std::string *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::ChoiceSetInput > *smartarg1 = 0 ;
-  
+
   (void)jenv;
   (void)jcls;
   (void)jarg1_;
-  
+
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::ChoiceSetInput > **)&jarg1;
-  arg1 = (AdaptiveCards::ChoiceSetInput *)(smartarg1 ? smartarg1->get() : 0); 
+  arg1 = (AdaptiveCards::ChoiceSetInput *)(smartarg1 ? smartarg1->get() : 0);
   if(!jarg2) {
     SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "null string");
     return ;
   }
-  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0); 
+  const char *arg2_pstr = (const char *)jenv->GetStringUTFChars(jarg2, 0);
   if (!arg2_pstr) return ;
   std::string arg2_str(arg2_pstr);
   arg2 = &arg2_str;
-  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr); 
+  jenv->ReleaseStringUTFChars(jarg2, arg2_pstr);
   (arg1)->SetPlaceholder((std::string const &)*arg2);
 }
 
@@ -15516,11 +15516,11 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
-SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jobject jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  SwigValueWrapper< std::optional< double > > result;
   
   (void)jenv;
   (void)jcls;
@@ -15529,17 +15529,14 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetValue();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
-  jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
-  jresult = obj;
+  *(std::optional< double > **)&jresult = new std::optional< double >((const std::optional< double > &)result);
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15548,24 +15545,20 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
-  if (jarg2) {
-    jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
-    if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+  arg2 = *(std::optional< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< double > const & reference is null");
+    return ;
   }
-  arg2 = &optVal;
-  (arg1)->SetValue((std::optional< int > const &)*arg2);
+  (arg1)->SetValue((std::optional< double > const &)*arg2);
 }
 
 
-SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jobject jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  SwigValueWrapper< std::optional< double > > result;
   
   (void)jenv;
   (void)jcls;
@@ -15574,17 +15567,14 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetMax();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
-  jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
-  jresult = obj;
+  *(std::optional< double > **)&jresult = new std::optional< double >((const std::optional< double > &)result);
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15593,24 +15583,20 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
-  if (jarg2) {
-    jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
-    if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+  arg2 = *(std::optional< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< double > const & reference is null");
+    return ;
   }
-  arg2 = &optVal;
-  (arg1)->SetMax((std::optional< int > const &)*arg2);
+  (arg1)->SetMax((std::optional< double > const &)*arg2);
 }
 
 
-SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
-  jobject jresult = 0 ;
+SWIGEXPORT jlong JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1GetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  SwigValueWrapper< std::optional< double > > result;
   
   (void)jenv;
   (void)jcls;
@@ -15619,17 +15605,14 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetMin();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
-  jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
-  jresult = obj;
+  *(std::optional< double > **)&jresult = new std::optional< double >((const std::optional< double > &)result);
   return jresult;
 }
 
 
-SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15638,16 +15621,12 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
-  if (jarg2) {
-    jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
-    if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+  arg2 = *(std::optional< double > **)&jarg2;
+  if (!arg2) {
+    SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, "std::optional< double > const & reference is null");
+    return ;
   }
-  arg2 = &optVal;
-  (arg1)->SetMin((std::optional< int > const &)*arg2);
+  (arg1)->SetMin((std::optional< double > const &)*arg2);
 }
 
 
@@ -17763,7 +17742,7 @@ SWIGEXPORT jint JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::SubmitAction > **)&jarg1;
   arg1 = (AdaptiveCards::SubmitAction *)(smartarg1 ? smartarg1->get() : 0); 
   result = (AdaptiveCards::AssociatedInputs)((AdaptiveCards::SubmitAction const *)arg1)->GetAssociatedInputs();
-  jresult = (jint)result; 
+  jresult = (jint)result;
   return jresult;
 }
 
@@ -17779,7 +17758,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::SubmitAction > **)&jarg1;
   arg1 = (AdaptiveCards::SubmitAction *)(smartarg1 ? smartarg1->get() : 0); 
-  arg2 = (AdaptiveCards::AssociatedInputs)jarg2; 
+  arg2 = (AdaptiveCards::AssociatedInputs)jarg2;
   (arg1)->SetAssociatedInputs(arg2);
 }
 
@@ -29042,19 +29021,19 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
     const char *signature;
   } methods[25] = {
     {
-      "SwigDirector_ActionElementParser_Deserialize", "(Lio/adaptivecards/objectmodel/ActionElementParser;JJ)J" 
+      "SwigDirector_ActionElementParser_Deserialize", "(Lio/adaptivecards/objectmodel/ActionElementParser;JJ)J"
     },
     {
-      "SwigDirector_ActionElementParser_DeserializeFromString", "(Lio/adaptivecards/objectmodel/ActionElementParser;JLjava/lang/String;)J" 
+      "SwigDirector_ActionElementParser_DeserializeFromString", "(Lio/adaptivecards/objectmodel/ActionElementParser;JLjava/lang/String;)J"
     },
     {
-      "SwigDirector_BaseCardElementParser_Deserialize", "(Lio/adaptivecards/objectmodel/BaseCardElementParser;JJ)J" 
+      "SwigDirector_BaseCardElementParser_Deserialize", "(Lio/adaptivecards/objectmodel/BaseCardElementParser;JJ)J"
     },
     {
-      "SwigDirector_BaseCardElementParser_DeserializeFromString", "(Lio/adaptivecards/objectmodel/BaseCardElementParser;JLjava/lang/String;)J" 
+      "SwigDirector_BaseCardElementParser_DeserializeFromString", "(Lio/adaptivecards/objectmodel/BaseCardElementParser;JLjava/lang/String;)J"
     },
     {
-      "SwigDirector_BaseElement_SetId__SWIG_0", "(Lio/adaptivecards/objectmodel/BaseElement;J)V" 
+      "SwigDirector_BaseElement_SetId__SWIG_0", "(Lio/adaptivecards/objectmodel/BaseElement;J)V"
     },
     {
       "SwigDirector_BaseElement_SetId__SWIG_1", "(Lio/adaptivecards/objectmodel/BaseElement;Ljava/lang/String;)V" 
@@ -29114,7 +29093,7 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
       "SwigDirector_BaseActionElement_SetTitle__SWIG_0", "(Lio/adaptivecards/objectmodel/BaseActionElement;J)V" 
     },
     {
-      "SwigDirector_BaseActionElement_SetTitle__SWIG_1", "(Lio/adaptivecards/objectmodel/BaseActionElement;Ljava/lang/String;)V" 
+      "SwigDirector_BaseActionElement_SetTitle__SWIG_1", "(Lio/adaptivecards/objectmodel/BaseActionElement;Ljava/lang/String;)V"
     }
   };
   Swig::jclass_AdaptiveCardObjectModelJNI = (jclass) jenv->NewGlobalRef(jcls);

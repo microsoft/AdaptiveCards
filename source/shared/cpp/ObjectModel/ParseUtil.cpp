@@ -250,28 +250,7 @@ namespace AdaptiveSharedNamespace
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
     {
-        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
-        auto propertyValue = json.get(propertyName, Json::Value());
-        if (propertyValue.empty())
-        {
-            if (isRequired)
-            {
-                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                                 "Property is required but was found empty: " + propertyName);
-            }
-            else
-            {
-                return defaultValue;
-            }
-        }
-
-        if (!propertyValue.isInt())
-        {
-            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                             "Value for property " + propertyName + " was invalid. Expected type int.");
-        }
-
-        return propertyValue.asInt();
+        return GetInt(json, key, defaultValue, isRequired);
     }
 
     std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
@@ -301,6 +280,35 @@ namespace AdaptiveSharedNamespace
         }
 
         return propertyValue.asInt();
+    }
+
+    std::optional<double> ParseUtil::GetOptionalDouble(const Json::Value& json,
+                                                       AdaptiveCardSchemaKey key,
+                                                       std::optional<double> defaultValue,
+                                                       bool isRequired /*=false*/)
+    {
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        if (!propertyValue.isDouble())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Value for property " + propertyName + " was invalid. Expected type double.");
+        }
+
+        return propertyValue.asDouble();
     }
 
     void ParseUtil::ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr)
