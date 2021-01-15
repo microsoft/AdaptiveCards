@@ -9,7 +9,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input1",
+			"id": "defaultInputId",
 			"placeholder": "enter comment",
 			"maxLength": 500
 		},
@@ -19,7 +19,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input2",
+			"id": "multilineInputId",
 			"placeholder": "enter comment",
 			"maxLength": 500,
 			"isMultiline": true
@@ -30,7 +30,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input3",
+			"id": "prefilledInputId",
 			"placeholder": "enter comment",
 			"maxLength": 500,
 			"isMultiline": true,

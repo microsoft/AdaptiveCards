@@ -15,7 +15,7 @@
 ### Properties
 
 * [fontFamily](fonttypedefinition.md#optional-fontfamily)
-* [monospace](fonttypedefinition.md#static-monospace)
+* [monospace](fonttypedefinition.md#static-readonly-monospace)
 
 ### Methods
 
@@ -48,7 +48,7 @@ Name | Type |
 
 ___
 
-### `Static` monospace
+### `Static` `Readonly` monospace
 
 ▪ **monospace**: *[FontTypeDefinition](fonttypedefinition.md)‹›* = new FontTypeDefinition("'Courier New', Courier, monospace")
 

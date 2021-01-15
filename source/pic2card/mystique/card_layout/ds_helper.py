@@ -11,7 +11,7 @@ class DsHelper:
     Base class for layout ds utilities and template handling.
     - handles all utility functions needed for the layout generation
     """
-    CONTAINERS = ['columnset', 'column', 'imageset', 'choiceset']
+    CONTAINERS = ['columnset', 'imageset', 'column', 'choiceset']
     MERGING_CONTAINERS_LIST = ['imageset', 'choiceset']
 
     def __init__(self):
@@ -114,7 +114,9 @@ class DsHelper:
         """
         element_structure_object = getattr(self.ds_template,
                                            element_type)
-        card_layout.append(element_structure_object(element))
+        element_structre = element_structure_object(element)
+        if element_structre not in card_layout:
+            card_layout.append(element_structure_object(element))
 
     def build_container_coordinates(self, coordinates: List) -> Tuple:
         """
@@ -307,7 +309,7 @@ class ContainerTemplate:
         items, _ = containers_group_object.collect_items_for_container(
             card_layout, 5)
         return containers_group_object.add_merged_items(
-            items, card_layout, "imageset", image_grouping, condition, 0)
+            items, card_layout, "imageset", image_grouping, condition)
 
     def choiceset(self, card_layout: List[Dict],
                   containers_group_object) -> List[Dict]:
@@ -324,7 +326,7 @@ class ContainerTemplate:
         items, _ = containers_group_object.collect_items_for_container(
             card_layout, 2)
         return containers_group_object.add_merged_items(
-            items, card_layout, "choiceset", choice_grouping, condition, 1)
+            items, card_layout, "choiceset", choice_grouping, condition)
 
 
 class ContainerDetailTemplate:

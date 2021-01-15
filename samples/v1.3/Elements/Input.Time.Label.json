@@ -5,12 +5,12 @@
 	"body": [
 		{
 			"type": "Input.Time",
-			"id": "input1",
+			"id": "timeLabelId",
 			"label": "Default Input.Time label"
 		},
 		{
 			"type": "Input.Time",
-			"id": "input2",
+			"id": "requiredTimeLabelId",
 			"label": "Required Input.Time label",
 			"isRequired": true,
 			"errorMessage": "Required input"
