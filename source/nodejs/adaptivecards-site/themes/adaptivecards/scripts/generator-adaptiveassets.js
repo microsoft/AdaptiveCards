@@ -92,11 +92,6 @@ var customAssets = [
         // site JS
         path: "themes/adaptivecards/source/js/*.js",
 		dest: function (p) { return "js/" + path.basename(p) }
-	},
-	{
-        // third-party scripts and CSS
-        path: "node_modules/markdown-it/dist/markdown-it.min.js",
-		dest: function (p) { return p; }
 	}
 ];
 
@@ -126,7 +121,7 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 				let originalDestPath = destPath;
 				let hash = md5(fs.readFileSync(sourcePath)).substring(0, 6);
 				let hashedFilename = path.basename(destPath, path.extname(destPath)) + "." + hash + path.extname(destPath);
-				
+
 				destPath = path.dirname(destPath) + "/" + hashedFilename;
 				hashedAssets.push({
 					originalPath: originalDestPath,
@@ -144,7 +139,7 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 
         g.forEach(function (item) { allAssets.push(item); });
 	});
-	
+
 	hexo.locals.set("hashedAssets", () => hashedAssets);
 
     return allAssets;

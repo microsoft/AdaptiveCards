@@ -24,7 +24,7 @@
     padding: 4px 10px 5px 10px;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     background-color: #004980;
     color: white;
     -webkit-user-select: none;

@@ -509,7 +509,7 @@
 
 .acd-toolbox-header {
     height: 32px;
-    cursor: default;
+    cursor: pointer;
     flex: 0 0 auto;
 }
 
@@ -775,7 +775,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: default;
+    cursor: pointer;
     user-select: none;
     background-color: transparent;
 }
@@ -888,7 +888,7 @@ a.default-ac-anchor:visited:active {
     text-overflow: ellipsis;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     font-weight: 600;
@@ -905,12 +905,12 @@ a.default-ac-anchor:visited:active {
 }
 
 .default-ac-pushButton:hover, .acd-dialog-button:hover {
-    background-color: #DDDDDD;
+    /* background-color: #DDDDDD; */
     border: 1px solid #BBBBBB;
 }
 
 .default-ac-pushButton:active, .acd-dialog-button:active {
-    background-color: #CCCCCC;
+    /* background-color: #CCCCCC; */
     border: 1px solid #BBBBBB;
 }
 
@@ -984,4 +984,368 @@ a.default-ac-anchor:visited:active {
 .default-ac-textBlock.default-ac-selectable:hover {
     color: #2D7BB7 !important;
     cursor: pointer;
+}
+
+/* PIC2CARD css changes*/
+.acd-pic2card-container {
+    display: flex;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    margin: 10px;
+    position: relative;
+    flex-direction: column;
+}
+
+.acd-poweredby-title {
+    font-family: Helvetica;
+    font-size: 13px;
+    color: #0a0a0a;
+    margin-top: 7px;
+    margin-right: 9px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.acd-poweredby-title .link {
+    margin-left: 3px;
+    color: #0367c1;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.acd-poweredby-title .link:hover {
+    color: blue;
+}
+
+.acd-sample-list {
+    overflow: auto;
+    height: calc(100% - 40px);
+}
+
+.acd-sample-image-container {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.acd-image-upload-container {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    border-right: solid 1px #dddbdb;
+}
+
+.acd-image-title {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 20px;
+    font-family: Helvetica;
+    font-size: 16px;
+    color: #0a0a0a;
+}
+
+.acd-image-title-content {
+    width: 60%;
+    margin: 0 auto;
+    margin-top: 10px;
+    font-family: Helvetica;
+    font-size: 12px;
+    opacity: 0.61;
+    color: #0a0a0a;
+}
+
+.acd-image-file-container {
+    width: 394px;
+    min-height: 394px;
+    margin-top: 30px;
+    display: flex;
+    align-self: center;
+    border: dashed 1px #cdcdcd;
+    background-color: #ffffff;
+    overflow: auto;
+}
+
+.error-info {
+	display: flex;
+	justify-content: center;
+	color: red;
+}
+
+.sample-info-text {
+	margin-left: 15px;
+}
+
+.acd-spinner-host {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: black;
+	opacity:.4;
+}
+
+.acd-image-spinner {
+	position: absolute;
+	width: 28px;
+	height: 28px;
+	top:50%;
+	left:50%;
+}
+
+.acd-conversion-text {
+    position: absolute;
+    width: 258px;
+    height: 28px;
+    top: 56%;
+    left: 42%;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+}
+
+.acd-upload-control {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.acd-upload-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acd-image-placeholder {
+    max-width: 270px;
+    max-height: 280px;
+}
+
+.acd-file-type {
+    height: 40px;
+    color: white;
+}
+
+.acd-file-type::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+.acd-file-type:focus::before {
+    margin-top: 1px;
+    border: 2px solid #0a0a0a;
+}
+
+.acd-file-type:focus {
+    outline: none;
+}
+
+.acd-file-type::before,
+.acd-card-button {
+    content: attr(button-name);
+    display: inline-block;
+    width: 232px;
+    height: 32px;
+    background-color: #286ec0;
+    font-family: Helvetica;
+    font-size: 14px;
+    color: #ffffff;
+    border: 1px solid #286ec0;
+    border-radius: 2px;
+    cursor: pointer;
+    outline: none;
+    text-align: center;
+    line-height: 30px;
+}
+
+.acd-card-button {
+    margin-top: 7px;
+}
+
+.acd-card-button:focus {
+    outline: #0a0a0a auto 1px;
+}
+
+.acd-file-type:hover::before {
+    border-color: black;
+}
+
+.acd-image-file-note {
+    font-family: Helvetica;
+    font-size: 11px;
+    color: #0a0a0a;
+    margin-top: 7px;
+}
+
+.acd-image-file-note .link {
+    color: #0367c1;
+    cursor: pointer;
+}
+
+.acd-image-upload {
+    width: 400px;
+    height: 300px;
+    border: dashed 1px #c9cbcc;
+    background-color: rgba(235, 237, 240, 0.32);
+    justify-content: space-evenly;
+}
+
+.acd-checkbox-container {
+    align-items: center;
+    display: flex;
+    font-family: Helvetica;
+    font-size: 11px;
+    margin-top: 7px;
+    font-weight: bold;
+    color: #0a0a0a;
+}
+
+.acd-checkbox-element {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.acd-custom-checkbox {
+    height: 14px;
+    width: 14px;
+    background-color: transparent;
+    border-radius: 2px;
+    border: 1px solid#286ec0;
+    z-index: 1;
+}
+
+.acd-custom-checkbox-foucs {
+    border: 2px solid #0a0a0a;
+}
+
+.acd-custom-checkbox::after {
+    position: absolute;
+    content: "";
+    left: 12px;
+    top: 12px;
+    height: 0;
+    width: 0;
+    border-radius: 5px;
+    border: solid #009bff;
+    border-width: 0 3px 3px 0;
+    transform: rotate(0deg) scale(0);
+    opacity: 1;
+}
+
+.acd-checkbox-element:checked ~ .acd-custom-checkbox {
+    border-radius: 2px;
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+    border: 1px solid #286ec0;
+    background-color: #286ec0;
+}
+
+.acd-checkbox-element:checked ~ .acd-custom-checkbox::after {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+    top: 0px;
+    left: 4px;
+    width: 2px;
+    height: 9px;
+    border: solid white;
+    border-radius: 0;
+    background-color: transparent;
+    border-width: 0 2px 2px 0;
+}
+
+.acd-label-element {
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.acd-label-element .link {
+    color: #0367c1;
+    cursor: pointer;
+}
+
+.acd-image-container {
+    width: 400px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.acd-sample-container {
+    display: flex;
+    height: calc(100% - 21px);
+}
+
+.acd-image-upload:hover {
+    box-shadow: 0 0 20px -5px #cccccc;
+    border: 1.5px dashed #cccccc;
+}
+
+.acd-image-container:hover > .acd-open-sample-item-title {
+    font-weight: bold;
+}
+
+.acd-sample-image {
+    max-width: 40%;
+    margin: 12px;
+    cursor: pointer;
+}
+
+.acd-image-text-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.acd-image-new-title {
+    background-color: #4195fe;
+    color: #ffffff;
+    padding: 3px 10px;
+    font-weight: bold;
+    font-family: Helvetica;
+    font-size: 14px;
+}
+
+.acd-image-upload-title {
+    font-family: Helvetica;
+    font-size: 18px;
+    font-weight: bold;
+    color: #161717;
+    margin-top: 10px;
+}
+
+.acd-image-description {
+    opacity: 0.72;
+    font-family: Helvetica;
+    font-size: 14px;
+    text-align: center;
+    color: #161717;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.acd-try-now-button {
+    width: 138px;
+    height: 31px;
+    border-radius: 2px;
+    background-color: #4195fe;
+    border: 1px solid #4195f3;
+    font-family: Helvetica;
+    font-size: 12px;
+    font-weight: bold;
+    color: #ffffff;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.acd-error-text {
+    font-size: 13px;
+    margin-top: 10px;
+    color: red;
+    font-family: Helvetica;
 }

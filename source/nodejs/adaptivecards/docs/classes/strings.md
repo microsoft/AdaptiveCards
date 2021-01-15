@@ -10,12 +10,25 @@
 
 ### Object literals
 
-* [errors](strings.md#static-errors)
-* [hints](strings.md#static-hints)
+* [defaults](strings.md#static-readonly-defaults)
+* [errors](strings.md#static-readonly-errors)
+* [hints](strings.md#static-readonly-hints)
 
 ## Object literals
 
-### `Static` errors
+### `Static` `Readonly` defaults
+
+### ▪ **defaults**: *object*
+
+###  inlineActionTitle
+
+▸ **inlineActionTitle**(): *string*
+
+**Returns:** *string*
+
+___
+
+### `Static` `Readonly` errors
 
 ### ▪ **errors**: *object*
 
@@ -304,7 +317,7 @@ Name | Type |
 
 ___
 
-### `Static` hints
+### `Static` `Readonly` hints
 
 ### ▪ **hints**: *object*
 

@@ -15,8 +15,8 @@
 ### Properties
 
 * [inputSpacing](inputlabelconfig.md#inputspacing)
-* [optionalInputs](inputlabelconfig.md#optionalinputs)
-* [requiredInputs](inputlabelconfig.md#requiredinputs)
+* [optionalInputs](inputlabelconfig.md#readonly-optionalinputs)
+* [requiredInputs](inputlabelconfig.md#readonly-requiredinputs)
 
 ## Constructors
 
@@ -40,12 +40,12 @@ Name | Type |
 
 ___
 
-###  optionalInputs
+### `Readonly` optionalInputs
 
 • **optionalInputs**: *[BaseTextDefinition](basetextdefinition.md)* = new BaseTextDefinition()
 
 ___
 
-###  requiredInputs
+### `Readonly` requiredInputs
 
 • **requiredInputs**: *[RequiredInputLabelTextDefinition](requiredinputlabeltextdefinition.md)* = new RequiredInputLabelTextDefinition()

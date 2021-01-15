@@ -150,6 +150,7 @@
 
 <% } else { %>
 
+	<% /* Any local assets here must also be included in generator-adaptiveassets.js */ %>
 	<%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
 	<%- hashed_asset("node_modules/highlightjs/highlight.pack.min.js") %>
 	<%- hashed_asset("node_modules/adaptive-expressions/lib/browser.js") %>
