@@ -86,10 +86,7 @@
 {
     UIView *blankTrailingSpace = [[UIView alloc] init];
     blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
-//    NSLayoutConstraint *height = [blankTrailingSpace.heightAnchor constraintEqualToConstant:20.0f];
-//    height.priority = UILayoutPriorityDefaultLow - 20;
-//    height.active = YES;
-    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 20 forAxis:UILayoutConstraintAxisVertical];
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
     [self addArrangedSubview:blankTrailingSpace];
     return blankTrailingSpace;
 }

@@ -4,38 +4,20 @@
     "version": "1.3",
     "body": [
         {
-            "type": "Container",
-            "style": "emphasis",
-            "backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
-            "minHeight": "400px",
-            "items": [
+            "type": "ColumnSet",
+            "columns":[
                 {
-                    "type": "Container",
-                    "minHeight": "380px"
-                },
-                {
-                    "type": "ColumnSet",
-                    "columns": [
+                    "type": "Column",
+                    "verticalContentAlignment": "center",
+                    "items": [
                         {
-                            "type": "Column",
-                            "width": "180px",
-                            "items": [
-                                {
-                                    "type": "Container",
-                                    "style": "accent",
-                                    "items":[
-                                        {
-                                            "type" : "TextBlock",
-                                            "text" : "Hello World"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "type": "Column"
+                            "type": "Image",
+                            "url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+                            "width": "10000px",
+                            "height": "2px"
                         }
-                    ]
+                    ],
+                    "width": "stretch"
                 }
             ]
         }

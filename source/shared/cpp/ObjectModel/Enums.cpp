@@ -201,7 +201,7 @@ namespace AdaptiveSharedNamespace
             {ActionType::Custom, "Custom"},
             {ActionType::UnknownAction, "UnknownAction"}});
 
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Stretch, {
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(HeightType, HeightType::Auto, {
             {HeightType::Auto, "Auto"},
             {HeightType::Stretch, "Stretch"}});
 

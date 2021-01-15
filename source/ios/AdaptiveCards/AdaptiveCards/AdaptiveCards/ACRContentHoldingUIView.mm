@@ -165,6 +165,7 @@ using namespace AdaptiveCards;
 {
     if (imageProperties && _imageProperties) {
         _imageProperties.contentSize = imageProperties.contentSize;
+        [self invalidateIntrinsicContentSize];
     }
 }
 

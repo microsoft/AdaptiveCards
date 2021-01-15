@@ -115,10 +115,8 @@
     }
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
-
-    NSInteger pixelWidth = imgElem->GetPixelWidth(), pixelHeight = imgElem->GetPixelHeight();
-    BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
-    if (!isAspectRatioNeeded) {
+ 
+    if (!imageProps.isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
     } else {
         view.contentMode = UIViewContentModeScaleAspectFit;
@@ -130,18 +128,18 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
-        /*
+        
         if (imgElem->GetHeight() == HeightType::Stretch) {
-            UIView *blankTrailingSpace = [[UIView alloc] init];
-            blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
-            [wrappingView addSubview:blankTrailingSpace];
-            [blankTrailingSpace.topAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
-            [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
-            [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
-            [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingView.bottomAnchor].active = YES;
-            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            [(ACRColumnView *)viewGroup addPaddingSpace];
+//            UIView *blankTrailingSpace = [[UIView alloc] init];
+//            blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+//            [wrappingView addSubview:blankTrailingSpace];
+//            [blankTrailingSpace.topAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+//            [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+//            [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+//            [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingView.bottomAnchor].active = YES;
+//            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
- */
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
@@ -173,10 +171,6 @@
     ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
     [imageProps updateContentSize:image.size];
     CGSize cgsize = imageProps.contentSize;
-
-    if (imageProps.acrImageSize == ACRImageSizeAuto || imageProps.acrImageSize == ACRImageSizeStretch) {
-        imageProps.contentSize = image.size;
-    }
 
     UILayoutPriority priority = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
     NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
@@ -231,7 +225,6 @@
         ACRContentHoldingUIView *superview = (ACRContentHoldingUIView *)imageView.superview;
         imageProps.contentSize = cgsize;
         [superview update:imageProps];
-        [superview invalidateIntrinsicContentSize];
     }
 }
 

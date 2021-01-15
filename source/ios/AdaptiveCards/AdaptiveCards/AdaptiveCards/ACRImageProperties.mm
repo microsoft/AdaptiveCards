@@ -71,6 +71,9 @@
             }
         }
         self.contentSize = newSize;
+    } else if (self.acrImageSize == ACRImageSizeAuto || self.acrImageSize == ACRImageSizeStretch) {
+        self.contentSize = size;
     }
+
 }
 @end
