@@ -36,3 +36,9 @@ typedef NS_ENUM(NSUInteger, ACRImageSize) {
     ACRImageSizeMedium,
     ACRImageSizeLarge
 };
+
+typedef NS_ENUM(NSUInteger, ACRHorizontalAlignment) {
+    ACRLeft = 0,
+    ACRCenter,
+    ACRRight
+};

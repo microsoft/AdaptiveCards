@@ -126,6 +126,8 @@
 		6BD90D9024C64EBE00B040FB /* ACRInputLabelView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BD90D8F24C64EBE00B040FB /* ACRInputLabelView.xib */; };
 		6BE8DFD2249C45C9005EFE66 /* ACRToggleInputView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */; };
 		6BE8DFD4249C4C1B005EFE66 /* ACRToggleInputView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */; };
+		6BE945C225B10BA9005CDA14 /* ACRImageProperties.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BE945C125B10BA8005CDA14 /* ACRImageProperties.mm */; };
+		6BE945C725B10BC9005CDA14 /* ACRImageProperties.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BE945C625B10BC9005CDA14 /* ACRImageProperties.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BEBF59E24BE63A300BE5A79 /* ACRChoiceSetCellCompactChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BEBF59D24BE63A200BE5A79 /* ACRChoiceSetCellCompactChecked.xib */; };
 		6BEBF5A024BE672000BE5A79 /* ACRChoiceSetCellCompactUnchecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BEBF59F24BE672000BE5A79 /* ACRChoiceSetCellCompactUnchecked.xib */; };
 		6BEBF5A224BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6BEBF5A124BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib */; };
@@ -478,6 +480,8 @@
 		6BE8DFD1249C45C9005EFE66 /* ACRToggleInputView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRToggleInputView.xib; sourceTree = "<group>"; };
 		6BE8DFD3249C4C1B005EFE66 /* ACRToggleInputView.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRToggleInputView.mm; sourceTree = "<group>"; };
 		6BE8DFD5249C5126005EFE66 /* ACRToggleInputView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACRToggleInputView.h; sourceTree = "<group>"; };
+		6BE945C125B10BA8005CDA14 /* ACRImageProperties.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageProperties.mm; sourceTree = "<group>"; };
+		6BE945C625B10BC9005CDA14 /* ACRImageProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRImageProperties.h; sourceTree = "<group>"; };
 		6BEBF59D24BE63A200BE5A79 /* ACRChoiceSetCellCompactChecked.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRChoiceSetCellCompactChecked.xib; sourceTree = "<group>"; };
 		6BEBF59F24BE672000BE5A79 /* ACRChoiceSetCellCompactUnchecked.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRChoiceSetCellCompactUnchecked.xib; sourceTree = "<group>"; };
 		6BEBF5A124BE677A00BE5A79 /* ACRChoiceSetCellChecked.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRChoiceSetCellChecked.xib; sourceTree = "<group>"; };
@@ -1095,6 +1099,8 @@
 				F43A940E1F1D60E30001920B /* ACRFactSetRenderer.h */,
 				F43A940F1F1D60E30001920B /* ACRFactSetRenderer.mm */,
 				F42741061EF8624F00399FBB /* ACRIBaseCardElementRenderer.h */,
+				6BE945C625B10BC9005CDA14 /* ACRImageProperties.h */,
+				6BE945C125B10BA8005CDA14 /* ACRImageProperties.mm */,
 				F42741101EF873A600399FBB /* ACRImageRenderer.h */,
 				F42741111EF873A600399FBB /* ACRImageRenderer.mm */,
 				F401A8791F0DCBC8006D7AF2 /* ACRImageSetRenderer.h */,
@@ -1342,6 +1348,7 @@
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
 				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
+				6BE945C725B10BC9005CDA14 /* ACRImageProperties.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1544,6 +1551,7 @@
 				6B616C4021CB1878003E29CE /* ACRToggleVisibilityTarget.mm in Sources */,
 				CA1218C821C4509400152EA8 /* ToggleVisibilityTarget.cpp in Sources */,
 				F429793B1F31458800E89914 /* ACRActionSubmitRenderer.mm in Sources */,
+				6BE945C225B10BA9005CDA14 /* ACRImageProperties.mm in Sources */,
 				F4D33EA51F06F41B00941E44 /* ACRSeparator.mm in Sources */,
 				F427411D1EF8A25200399FBB /* ACRRegistration.mm in Sources */,
 				F4C1F5FE1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm in Sources */,

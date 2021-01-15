@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ACREnums.h"
+#import "ACRImageProperties.h"
 
 const extern NSInteger eACRUILabelTag;
 const extern NSInteger eACRUIFactSetTag;
@@ -14,10 +14,11 @@ const extern NSInteger eACRUIImageTag;
 
 @interface ACRContentHoldingUIView : UIView
 
-@property CGSize desiredContentSize;
 @property BOOL isPersonStyle;
 @property BOOL hidePlayIcon;
 @property BOOL isMediaType;
-@property ACRImageSize adaptiveImageSize;
+
+- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView;
+- (void)update:(ACRImageProperties *)imageProperties;
 
 @end

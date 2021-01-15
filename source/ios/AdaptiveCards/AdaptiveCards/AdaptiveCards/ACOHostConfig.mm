@@ -182,25 +182,27 @@ using namespace AdaptiveCards;
             break;
 
         case ACRImageSizeExplicit:
+        {
             BOOL isAspectRatioNeeded = !(width && height);
             CGSize imageSizeAsCGSize = CGSizeZero;
             if (width) {
-                intrinsicContentSize.width = width;
+                imageSizeAsCGSize.width = width;
                 if (isAspectRatioNeeded) {
-                    intrinsicContentSize.height = width;
+                    imageSizeAsCGSize.height = width;
                 }
             }
 
             if (height) {
-                intrinsicContentSize.height = height;
+                imageSizeAsCGSize.height = height;
                 if (isAspectRatioNeeded) {
-                    intrinsicContentSize.width = height;
+                    imageSizeAsCGSize.width = height;
                 }
             }
-            break;
+            return imageSizeAsCGSize;
+        }
         case ACRImageSizeNone:
         case ACRImageSizeAuto:
-        defalt:
+        default:
             return CGSizeZero;
     }
 

@@ -10,6 +10,7 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIView.h"
+#import "ACRImageProperties.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
 #import "ACRView.h"
@@ -54,13 +55,11 @@
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     UIImage *img = imageViewMap[key];
 
-    ACRUIImageView *view;
+    ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
     // try get an UIImageView
-    view = [rootView getImageView:key];
-
-    CGSize cgsize = [acoConfig getImageSize:imgElem->GetImageSize()];
-    CGSize intrinsicContentSize = CGSizeZero;
+    UIImageView *view = [rootView getImageView:key];
     if (!view && img) {
+        CGSize cgsize = imageProps.contentSize;
         // if an UIImage is available, but UIImageView is missing, create one
         ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
         acrImageView.image = img;
@@ -69,7 +68,6 @@
             [acrImageView setNeedsLayout];
         }
         view = acrImageView;
-        intrinsicContentSize = img.size;
     }
 
     if (view && img) {
@@ -78,7 +76,7 @@
         [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
     }
 
-    ACRContentHoldingUIView *wrappingView = [ACRImageRenderer createWrapperView:acoElem adaptiveHostConfig:acoConfig];
+    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] initWithImageProperties:imageProps imageView:view];
 
     if (!view || !wrappingView) {
         [viewGroup addSubview:wrappingView];
@@ -96,40 +94,21 @@
 
     [viewGroup addArrangedSubview:wrappingView];
 
-    /*
-    HorizontalAlignment adaptiveAlignment = imgElem->GetHorizontalAlignment();
-    if (adaptiveAlignment == HorizontalAlignment::Left || adaptiveAlignment == HorizontalAlignment::Center) {
-        UILayoutGuide *leftGuide = [[UILayoutGuide alloc] init];
-        leftGuide.identifier = @"img-left-guide";
-        //[wrappingView addLayoutGuide:leftGuide];
-        [viewGroup addLayoutGuide:leftGuide];
-        [leftGuide.leadingAnchor constraintEqualToAnchor:wrappingView.leadingAnchor].active = YES;
-        [leftGuide.trailingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
-        [leftGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-        [view.leadingAnchor constraintEqualToAnchor:wrappingView.leadingAnchor].active = YES;
+    switch (imageProps.acrHorizontalAlignment) {
+        case ACRCenter:
+            [view.centerXAnchor constraintEqualToAnchor:wrappingView.centerXAnchor].active = YES;
+            break;
+        case ACRRight:
+            [view.trailingAnchor constraintEqualToAnchor:wrappingView.trailingAnchor].active = YES;
+            break;
+        case ACRLeft:
+        default:
+            break;
     }
 
-    if (adaptiveAlignment == HorizontalAlignment::Right) {
-        UILayoutGuide *rightGuide = [[UILayoutGuide alloc] init];
-        rightGuide.identifier = @"img-right-guide";
-        [wrappingView addLayoutGuide:rightGuide];
-        NSLayoutConstraint *constraint = [rightGuide.leadingAnchor constraintEqualToAnchor:view.trailingAnchor];
-        constraint.priority = 998;
-        constraint.active = YES;
-        [rightGuide.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
-        [rightGuide.trailingAnchor constraintEqualToAnchor:wrappingView.trailingAnchor].active = YES;
-        [view.trailingAnchor constraintEqualToAnchor:wrappingView.trailingAnchor].active = YES;
-    }*/
+    [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
 
-    //    if (adaptiveAlignment == HorizontalAlignment::Center) {
-    //        [view.centerXAnchor constraintEqualToAnchor:wrappingView.centerXAnchor].active = YES;
-    //    }
-
-    NSLayoutConstraint *heightAnchor = [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor];
-    heightAnchor.active = YES;
-
-
-    if (wrappingView.adaptiveImageSize == ACRImageSizeStretch) {
+    if (imageProps.acrImageSize == ACRImageSizeStretch) {
         [wrappingView.widthAnchor constraintEqualToAnchor:view.widthAnchor].active = YES;
     } else {
         [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
@@ -146,13 +125,11 @@
     }
 
     UILayoutPriority imagePriority = [ACRImageRenderer getImageUILayoutPriority:wrappingView];
-    if (wrappingView.adaptiveImageSize != ACRImageSizeStretch) {
+    if (imageProps.acrImageSize != ACRImageSizeStretch) {
         [view setContentHuggingPriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
-        //heightAnchor.priority = imagePriority + 2;
-        //[wrappingView setContentCompressionResistancePriority:760 forAxis:UILayoutConstraintAxisVertical];
         /*
         if (imgElem->GetHeight() == HeightType::Stretch) {
             UIView *blankTrailingSpace = [[UIView alloc] init];
@@ -164,7 +141,7 @@
             [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingView.bottomAnchor].active = YES;
             [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         }
-         */
+ */
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
     ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
@@ -191,126 +168,19 @@
     return wrappingView;
 }
 
-+ ACRImageSize getACRImageSize:(ACOBaseCardElement *)acoElem
-{
-    std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    NSInteger pixelWidth = adaptiveImage->GetPixelWidth(), pixelHeight = adaptiveImage->GetPixelHeight();
-    BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
-
-    if (hasExplicitMeasurements) {
-        return ACRImageSizeExplicit;
-    }
-
-    switch (adaptiveImageSize) {
-        case ImageSize::None:
-            return ACRImageSizeNone;
-        case ImageSize::Auto:
-            return ACRImageSizeAuto;
-        case AdaptiveCards::ImageSize::Stretch:
-            return ACRImageSizeStretch;
-        case AdaptiveCards::ImageSize::Small:
-            return ACRImageSizeSmall;
-        case AdaptiveCards::ImageSize::Medium:
-            return ACRImageSizeMedium;
-        case AdaptiveCards::ImageSize::Large:
-            return ACRImageSizeLarge;
-        default:
-            return ACRImageSizeAuto;
-    }
-}
-
-+ (ACRContentHoldingUIView *)createWrapperView:(ACOBaseCardElement *)acoElem adaptiveHostConfig:(ACOHostConfig *)acoConfig;
-{
-    std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<Image> imgElem = std::dynamic_pointer_cast<Image>(elem);
-    NSInteger pixelWidth = imgElem->GetPixelWidth(), pixelHeight = imgElem->GetPixelHeight();
-    BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
-
-    // Configure frame for wrapping view from AdaptiveImage size
-    CGSize intrinsicContentSize = CGSizeZero;
-    ACRImageSize adaptiveImageSize = [ACRImageRenderer getACRImageSize:acoElem];
-    if (!hasExplicitMeasurements) {
-        intrinsicContentSize = [acoConfig getImageSizeAsCGSize:adaptiveImageSize];
-    } else {
-        BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
-        adaptiveImageSize = ACRImageSizeExplicit;
-
-        if (pixelWidth) {
-            intrinsicContentSize.width = pixelWidth;
-            if (isAspectRatioNeeded) {
-                intrinsicContentSize.height = pixelWidth;
-            }
-        }
-
-        if (pixelHeight) {
-            intrinsicContentSize.height = pixelHeight;
-            if (isAspectRatioNeeded) {
-                intrinsicContentSize.width = pixelHeight;
-            }
-        }
-    }
-
-    ACRContentHoldingUIView *wrapperView = [[ACRContentHoldingUIView alloc] initWithFrame:CGRectMake(0, 0, intrinsicContentSize.width, intrinsicContentSize.height)];
-    if (wrapperView) {
-        wrapperView.desiredContentSize = intrinsicContentSize;
-        wrapperView.adaptiveImageSize = adaptiveImageSize;
-    }
-
-    return wrapperView;
-}
-
 - (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
-    std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<Image> imageElem = std::dynamic_pointer_cast<Image>(elem);
-    NSInteger pixelWidth = imageElem->GetPixelWidth(), pixelHeight = imageElem->GetPixelHeight();
-    BOOL hasExplicitMeasurements = (pixelWidth || pixelHeight);
-    BOOL isAspectRatioNeeded = !(pixelWidth && pixelHeight);
-    CGSize cgsize = [acoConfig getImageSize:imageElem->GetImageSize()];
-    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
+    ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
+    [imageProps updateContentSize:image.size];
+    CGSize cgsize = imageProps.contentSize;
 
-    if (image) {
-        if (image.size.width > 0) {
-            heightToWidthRatio = image.size.height / image.size.width;
-        }
-
-        if (image.size.height > 0) {
-            widthToHeightRatio = image.size.width / image.size.height;
-        }
-    }
-
-    if (hasExplicitMeasurements) {
-        if (pixelWidth) {
-            cgsize.width = pixelWidth;
-            if (isAspectRatioNeeded) {
-                cgsize.height = pixelWidth * heightToWidthRatio;
-            }
-        }
-        if (pixelHeight) {
-            cgsize.height = pixelHeight;
-            if (isAspectRatioNeeded) {
-                cgsize.width = pixelHeight * widthToHeightRatio;
-            }
-        }
-    }
-
-    ImageSize size = ImageSize::None;
-    if (!hasExplicitMeasurements) {
-        size = imageElem->GetImageSize();
-        if (size == ImageSize::None) {
-            size = [acoConfig getHostConfig] -> GetImage().imageSize;
-        }
-    }
-
-    if (size == ImageSize::Auto || size == ImageSize::Stretch) {
-        cgsize = image.size;
+    if (imageProps.acrImageSize == ACRImageSizeAuto || imageProps.acrImageSize == ACRImageSizeStretch) {
+        imageProps.contentSize = image.size;
     }
 
     UILayoutPriority priority = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
     NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
     [constraints addObjectsFromArray:
-
                      @[
                          [NSLayoutConstraint constraintWithItem:imageView
                                                       attribute:NSLayoutAttributeWidth
@@ -329,7 +199,7 @@
                      ]];
     constraints[0].priority = priority;
     constraints[1].priority = priority;
-    if (ImageSize::Auto == size) {
+    if (imageProps.acrImageSize == ACRImageSizeAuto) {
         [constraints addObjectsFromArray:@[
             [NSLayoutConstraint constraintWithItem:imageView
                                          attribute:NSLayoutAttributeHeight
@@ -346,7 +216,7 @@
                                         multiplier:cgsize.width / cgsize.height
                                           constant:0]
         ]];
-        if (ImageSize::Stretch == size) {
+        if (imageProps.acrImageSize == ACRImageSizeStretch) {
             constraints[1].priority = priority + 1;
             constraints[2].priority = priority;
             constraints[3].priority = priority;
@@ -355,12 +225,12 @@
             constraints[3].priority = priority + 2;
         }
     }
-
-
     [NSLayoutConstraint activateConstraints:constraints];
-    UIView *superview = imageView.superview;
-    if ([superview isKindOfClass:[ACRContentHoldingUIView class]]) {
-        ((ACRContentHoldingUIView *)imageView.superview).desiredContentSize = cgsize;
+
+    if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
+        ACRContentHoldingUIView *superview = (ACRContentHoldingUIView *)imageView.superview;
+        imageProps.contentSize = cgsize;
+        [superview update:imageProps];
         [superview invalidateIntrinsicContentSize];
     }
 }

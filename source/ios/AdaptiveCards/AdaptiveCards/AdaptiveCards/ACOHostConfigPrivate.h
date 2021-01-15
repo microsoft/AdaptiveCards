@@ -40,7 +40,7 @@ using namespace AdaptiveCards;
 
 + (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
 
-- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize;
+- (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize width:(CGFloat)width height:(CGFloat)height;
 
 + (NSArray *)getConstraintsForImageAlignment:(HorizontalAlignment)alignment
                                withSuperview:(UIView *)superview

@@ -91,3 +91,7 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
 
 CGSize getAspectRatio(CGSize size);
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);

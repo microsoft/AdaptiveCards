@@ -794,3 +794,40 @@ CGSize getAspectRatio(CGSize size)
     return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
 }
 
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
+{
+    if (hasExplicitDimensions) {
+        return ACRImageSizeExplicit;
+    }
+
+    switch (adaptiveImageSize) {
+        case ImageSize::None:
+            return ACRImageSizeNone;
+        case ImageSize::Auto:
+            return ACRImageSizeAuto;
+        case ImageSize::Stretch:
+            return ACRImageSizeStretch;
+        case ImageSize::Small:
+            return ACRImageSizeSmall;
+        case ImageSize::Medium:
+            return ACRImageSizeMedium;
+        case ImageSize::Large:
+            return ACRImageSizeLarge;
+        default:
+            return ACRImageSizeAuto;
+    }
+}
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment)
+{
+    switch (horizontalAlignment) {
+        case HorizontalAlignment::Left:
+            return ACRLeft;
+        case HorizontalAlignment::Center:
+            return ACRCenter;
+        case HorizontalAlignment::Right:
+            return ACRRight;
+        default:
+            return ACRLeft;
+    }
+}

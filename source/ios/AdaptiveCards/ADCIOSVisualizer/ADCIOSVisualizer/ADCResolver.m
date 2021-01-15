@@ -7,14 +7,13 @@
 //
 
 #import "ADCResolver.h"
-#import <AdaptiveCards/ACRUIImageView.h>
 
 @implementation ADCResolver
 
 
 - (UIImageView *)resolveImageViewResource:(NSURL *)url
 {
-    __block ACRUIImageView *imageView = [[ACRUIImageView alloc] init];
+    __block UIImageView *imageView = [[UIImageView alloc] init];
     // check if custom scheme bundle exists
     if ([url.scheme isEqualToString:@"bundle"]) {
         // if bundle scheme, load an image from sample's main bundle

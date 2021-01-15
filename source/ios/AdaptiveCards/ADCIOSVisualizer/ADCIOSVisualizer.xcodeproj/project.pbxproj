@@ -56,7 +56,6 @@
 		6B980936215AE8780024B79B /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980935215AE8780024B79B /* AdaptiveCards.framework */; };
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
-		6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
 		6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
@@ -155,8 +154,6 @@
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6B980933215AE6EC0024B79B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		6B980935215AE8780024B79B /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomImageRenderer.h; sourceTree = "<group>"; };
-		6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomImageRenderer.mm; sourceTree = "<group>"; };
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
 		6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionSetRenderer.mm; sourceTree = "<group>"; };
@@ -340,8 +337,6 @@
 				6B22426521E92AF9000ACDA1 /* CustomActionNewType.mm */,
 				F4F255731F9946B200A80D39 /* CustomActionOpenURLRenderer.h */,
 				F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */,
-				6B9BDF6E20E18E5B00F13155 /* CustomImageRenderer.h */,
-				6B9BDF6F20E18E5B00F13155 /* CustomImageRenderer.mm */,
 				F4F44B74203FE73D00A2F24C /* CustomInputNumberRenderer.h */,
 				F4F44B73203FE73D00A2F24C /* CustomInputNumberRenderer.mm */,
 				F4F44BA8204CF98900A2F24C /* CustomProgressBarRenderer.h */,
@@ -567,7 +562,6 @@
 				F4F44BAA204CF98900A2F24C /* CustomProgressBarRenderer.mm in Sources */,
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
 				6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */,
-				6B9BDF7020E18E5B00F13155 /* CustomImageRenderer.mm in Sources */,
 				6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,

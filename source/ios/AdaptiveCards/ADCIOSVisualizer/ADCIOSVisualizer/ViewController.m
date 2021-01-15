@@ -14,7 +14,6 @@
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomActionSetRenderer.h"
-#import "CustomImageRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
@@ -125,8 +124,6 @@ const CGFloat kAdaptiveCardsWidth = 360;
                                  cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
                                  cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance]
-                                 cardElementType:ACRImage];
         [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];

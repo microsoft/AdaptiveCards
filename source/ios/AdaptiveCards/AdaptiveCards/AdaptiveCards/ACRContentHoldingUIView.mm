@@ -9,7 +9,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACREnums.h"
-#import "ACRUIImageView.h"
 #import "ACRUILabel.h"
 #import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
@@ -20,11 +19,30 @@ const NSInteger eACRUIImageTag = 0x1236;
 
 using namespace AdaptiveCards;
 
-@implementation ACRContentHoldingUIView
+@implementation ACRContentHoldingUIView {
+    ACRImageProperties *_imageProperties;
+    UIImageView *_imageView;
+}
+
+- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView
+{
+    if (!imageProperties) {
+        imageProperties = [[ACRImageProperties alloc] init];
+    }
+
+    CGRect frame = CGRectMake(0, 0, imageProperties.contentSize.width, imageProperties.contentSize.height);
+    self = [super initWithFrame:frame];
+    if (self) {
+        _imageProperties = imageProperties;
+        _imageView = imageView;
+    }
+
+    return self;
+}
 
 - (CGSize)intrinsicContentSize
 {
-    return self.desiredContentSize;
+    return _imageProperties ? _imageProperties.contentSize : [super intrinsicContentSize];
 }
 
 - (void)layoutSubviews
@@ -115,34 +133,38 @@ using namespace AdaptiveCards;
         // The content view is UIImageView
     } else {
         CGSize frameSize = self.frame.size;
-        if (frameSize.width < self.desiredContentSize.width) {
-            if (self.adaptiveImageSize == ACRImageSizeLarge || self.adaptiveImageSize == ACRImageSizeMedium || self.adaptiveImageSize == ACRImageSizeSmall || self.adaptiveImageSize == ACRImageSizeAuto || self.adaptiveImageSize == ACRImageSizeStretch) {
-                CGSize ratios = getAspectRatio(self.desiredContentSize);
+        if (frameSize.width < _imageProperties.contentSize.width) {
+            if (_imageProperties.acrImageSize == ACRImageSizeLarge || _imageProperties.acrImageSize == ACRImageSizeMedium || _imageProperties.acrImageSize == ACRImageSizeSmall || _imageProperties.acrImageSize == ACRImageSizeAuto || _imageProperties.acrImageSize == ACRImageSizeStretch) {
+                CGSize ratios = getAspectRatio(_imageProperties.contentSize);
                 height = width * ratios.height;
                 width = frameSize.width;
-                ((ACRUIImageView *)self.subviews[0]).desiredSize = self.desiredContentSize;
-                self.desiredContentSize = self.frame.size;
+                _imageProperties.contentSize = self.frame.size;
                 NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
                 hc.priority = 999;
                 hc.active = YES;
             }
 
-        } else if (self.adaptiveImageSize == ACRImageSizeStretch and frameSize.width != self.desiredContentSize.width) {
-            ACRUIImageView *imageView = (ACRUIImageView *)self.subviews[0];
-            if (imageView.image) {
-                CGSize ratios = getAspectRatio(imageView.image.size);
+        } else if (_imageProperties.acrImageSize == ACRImageSizeStretch and frameSize.width != _imageProperties.contentSize.width) {
+            if (_imageView.image) {
+                CGSize ratios = getAspectRatio(_imageView.image.size);
                 height = width * ratios.height;
                 width = frameSize.width;
-                imageView.desiredSize = self.desiredContentSize;
-                self.desiredContentSize = self.frame.size;
+                _imageProperties.contentSize = self.frame.size;
                 NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
                 hc.priority = 999;
                 hc.active = YES;
-                NSLayoutConstraint *hc2 = [self.subviews[0].heightAnchor constraintEqualToConstant:height];
+                NSLayoutConstraint *hc2 = [_imageView.heightAnchor constraintEqualToConstant:height];
                 hc2.priority = 999;
                 hc2.active = YES;
             }
         }
+    }
+}
+
+- (void)update:(ACRImageProperties *)imageProperties
+{
+    if (imageProperties && _imageProperties) {
+        _imageProperties.contentSize = imageProperties.contentSize;
     }
 }
 
