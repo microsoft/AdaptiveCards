@@ -40,7 +40,6 @@
         -->
         <item name="android:buttonStyle">@style/Widget.AppCompat.Button.Colored</item>
 
-        <!-- Add your custom styles (samples defined above) for use by the AdaptiveCards SDK
 
         <item name="adaptiveActionDestructive">@style/adaptiveActionDestructive</item>
         <item name="adaptiveActionPositive">@style/adaptiveActionPositive</item>
@@ -48,7 +47,6 @@
         <item name="adaptiveInlineActionImage">@style/adaptiveInlineActionImage</item>
         <item name="adaptiveShowCardAction">@style/adaptiveShowCardAction</item>
 
-        -->
 
     </style>
 
