@@ -115,7 +115,7 @@
     }
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
- 
+
     if (!imageProps.isAspectRatioNeeded) {
         view.contentMode = UIViewContentModeScaleToFill;
     } else {
@@ -128,17 +128,11 @@
         [view setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:imagePriority forAxis:UILayoutConstraintAxisVertical];
-        
+
         if (imgElem->GetHeight() == HeightType::Stretch) {
-            [(ACRColumnView *)viewGroup addPaddingSpace];
-//            UIView *blankTrailingSpace = [[UIView alloc] init];
-//            blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
-//            [wrappingView addSubview:blankTrailingSpace];
-//            [blankTrailingSpace.topAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
-//            [blankTrailingSpace.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
-//            [blankTrailingSpace.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
-//            [blankTrailingSpace.bottomAnchor constraintEqualToAnchor:wrappingView.bottomAnchor].active = YES;
-//            [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisVertical];
+            if ([viewGroup isKindOfClass:[ACRColumnView class]]) {
+                [(ACRColumnView *)viewGroup addPaddingSpace];
+            }
         }
     }
     std::shared_ptr<BaseActionElement> selectAction = imgElem->GetSelectAction();
@@ -203,6 +197,7 @@
                      ]];
     constraints[0].priority = priority;
     constraints[1].priority = priority;
+
     if (imageProps.acrImageSize == ACRImageSizeAuto) {
         [constraints addObjectsFromArray:@[
             [NSLayoutConstraint constraintWithItem:imageView
@@ -220,14 +215,9 @@
                                         multiplier:cgsize.width / cgsize.height
                                           constant:0]
         ]];
-        if (imageProps.acrImageSize == ACRImageSizeStretch) {
-            constraints[1].priority = priority + 1;
-            constraints[2].priority = priority;
-            constraints[3].priority = priority;
-        } else {
-            constraints[2].priority = priority + 2;
-            constraints[3].priority = priority + 2;
-        }
+
+        constraints[2].priority = priority + 2;
+        constraints[3].priority = priority + 2;
     }
     [NSLayoutConstraint activateConstraints:constraints];
 

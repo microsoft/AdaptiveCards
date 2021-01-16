@@ -35,7 +35,7 @@
             self.pixelWidth = imgElem->GetPixelWidth();
             self.pixelHeight = imgElem->GetPixelHeight();
             self.hasExplicitDimensions = (self.pixelWidth || self.pixelHeight);
-            self.isAspectRatioNeeded = !(self.pixelWidth && self.pixelHeight);
+            self.isAspectRatioNeeded = self.hasExplicitDimensions && !(self.pixelWidth && self.pixelHeight);
 
             ACRImageSize acrImageSize = getACRImageSize(imgElem->GetImageSize(), self.hasExplicitDimensions);
             if (acrImageSize == ACRImageSizeNone) {
@@ -58,11 +58,11 @@
     CGFloat widthToHeightRatio = ratios.width;
     CGSize newSize = self.contentSize;
 
-    CGFloat (^newHeight)(CGFloat) = ^(CGFloat width){
+    CGFloat (^newHeight)(CGFloat) = ^(CGFloat width) {
         return width * heightToWidthRatio;
     };
-    
-    CGFloat (^newWidth)(CGFloat) = ^(CGFloat height){
+
+    CGFloat (^newWidth)(CGFloat) = ^(CGFloat height) {
         return height * widthToHeightRatio;
     };
 
