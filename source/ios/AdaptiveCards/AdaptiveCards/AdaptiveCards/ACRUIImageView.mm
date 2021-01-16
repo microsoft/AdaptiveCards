@@ -7,7 +7,6 @@
 
 #import "ACRUIImageView.h"
 #import "ACRContentHoldingUIView.h"
-#import "UtiliOS.h"
 
 @implementation ACRUIImageView
 
