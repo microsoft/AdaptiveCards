@@ -8,7 +8,7 @@
 | **data** | `string`, `object` | No | Initial data that input fields will be combined with. These are essentially ‘hidden’ properties. | 1.0 |
 | **associatedInputs** | `AssociatedInputs` | No, default: `"auto"` | Controls which inputs are associated with the submit action. | 1.3 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
