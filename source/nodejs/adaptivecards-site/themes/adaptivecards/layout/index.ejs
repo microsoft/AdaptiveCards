@@ -53,23 +53,31 @@
 			</div>
 
 			<div class="w3-row">
-
 				<div class="w3-col s6 l12">
 					<h6>Releases</h6>
 					<% for(var link of config.home.releases) { %>
-						<div><a href="<%- link.href %>"
-							aria-label="<%- link.title %>"><i class="<%- link.fa %>"></i><%- link.title %></a> <span
-							class="w3-tag w3-round w3-tiny <%- link.tag_class %>"><%- link.tag %></span></div>
+						<div>
+                            <a href="<%- link.href %>" aria-label="<%- link.title %>">
+                                <i class="<%- link.fa %>" aria-hidden="true"></i>
+                                <%- link.title %>
+                            </a>
+                            <span class="w3-tag w3-round w3-tiny <%- link.tag_class %>"><%- link.tag %></span>
+                        </div>
 					<% } %>
 				</div>
-
-				<div class="w3-col s6 l12">
-					<h6>GitHub</h6>
-					<a class="github-button" href="https://github.com/Microsoft/AdaptiveCards" data-show-count="true"
-						aria-label="Star Microsoft/AdaptiveCards on GitHub">Star</a>
-				</div>
-
 			</div>
+
+            <div class="w3-row">
+                <div class="w3-col s6 l12">
+                    <h6>Github</h6>
+                    <div>
+                        <a href="https://github.com/microsoft/AdaptiveCards/" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i>
+                            AdaptiveCards
+                        </a>
+                    </div>
+                </div>
+            </div>
 		</div>
 	</div>
 
