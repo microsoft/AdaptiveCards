@@ -7,7 +7,7 @@
 | **type** | `"Action.ShowCard"` | Yes | Must be `"Action.ShowCard"`. | 1.0 |
 | **card** | `AdaptiveCard` | No | The Adaptive Card to show. Inputs in ShowCards will not be submitted if the submit button is located on a parent card. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

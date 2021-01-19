@@ -8,7 +8,7 @@
 | **images** | `Image[]` | Yes | The array of `Image` elements to show. | 1.0 |
 | **imageSize** | `ImageSize` | No, default: `"medium"` | Controls the approximate size of each image. The physical dimensions will vary per host. Auto and stretch are not supported for ImageSet. The size will default to medium if those values are set. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
