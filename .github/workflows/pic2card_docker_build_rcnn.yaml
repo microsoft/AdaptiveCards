@@ -21,7 +21,10 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Build image
-        run: docker build . --file docker/Dockerfile --tag $IMAGE_NAME
+        run: |
+            docker build . --build-arg=COMMIT_SHA=$GITHUB_SHA \
+                --build-arg=BRANCH_NAME=$GITHUB_REF \
+                --file docker/Dockerfile --tag $IMAGE_NAME
 
       - name: Log into GitHub Container Registry
       # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`

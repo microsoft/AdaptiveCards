@@ -16,17 +16,19 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
         {
+            return RenderHelper(new Grid(), new ComboBox(), new StackPanel(), input, context);
+        }
+
+        public static FrameworkElement RenderHelper(Grid uiGrid, ComboBox uiComboBox, StackPanel uiChoices, AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
+        {
             var chosen = input.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 
-            var uiGrid = new Grid();
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
-            var uiComboBox = new ComboBox();
             uiComboBox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBox");
             uiComboBox.DataContext = input;
 
-            var uiChoices = new StackPanel();
             uiChoices.DataContext = input;
             uiChoices.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput");
 
