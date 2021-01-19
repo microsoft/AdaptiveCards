@@ -16,7 +16,7 @@
 | **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
