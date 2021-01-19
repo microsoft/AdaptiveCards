@@ -18,9 +18,9 @@
 
 * [maxVersion](httpheader.md#maxversion)
 * [name](httpheader.md#name)
-* [nameProperty](httpheader.md#static-nameproperty)
+* [nameProperty](httpheader.md#static-readonly-nameproperty)
 * [onRegisterCustomProperties](httpheader.md#static-optional-onregistercustomproperties)
-* [valueProperty](httpheader.md#static-valueproperty)
+* [valueProperty](httpheader.md#static-readonly-valueproperty)
 
 ### Accessors
 
@@ -29,6 +29,7 @@
 ### Methods
 
 * [getCustomProperty](httpheader.md#getcustomproperty)
+* [getDefaultSerializationContext](httpheader.md#protected-getdefaultserializationcontext)
 * [getReferencedInputs](httpheader.md#getreferencedinputs)
 * [getSchema](httpheader.md#getschema)
 * [getSchemaKey](httpheader.md#protected-getschemakey)
@@ -67,7 +68,7 @@ Name | Type | Default |
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -79,7 +80,7 @@ ___
 
 ___
 
-### `Static` nameProperty
+### `Static` `Readonly` nameProperty
 
 ▪ **nameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "name")
 
@@ -93,9 +94,9 @@ ___
 
 ___
 
-### `Static` valueProperty
+### `Static` `Readonly` valueProperty
 
-▪ **valueProperty**: *StringWithSubstitutionProperty‹›* = new StringWithSubstitutionProperty(Versions.v1_0, "value")
+▪ **valueProperty**: *[StringWithSubstitutionProperty](stringwithsubstitutionproperty.md)‹›* = new StringWithSubstitutionProperty(Versions.v1_0, "value")
 
 ## Accessors
 
@@ -130,6 +131,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

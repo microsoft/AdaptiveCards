@@ -6,6 +6,8 @@
 
 * **BaseSerializationContext**
 
+  ↳ [SimpleSerializationContext](simpleserializationcontext.md)
+
   ↳ [SerializationContext](serializationcontext.md)
 
 ## Index
@@ -17,6 +19,7 @@
 ### Properties
 
 * [targetVersion](baseserializationcontext.md#targetversion)
+* [toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -53,6 +56,12 @@ Name | Type | Default |
 
 • **targetVersion**: *[Version](version.md)*
 
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
+
 ## Accessors
 
 ###  eventCount
@@ -87,16 +96,16 @@ ___
 
 ###  logEvent
 
-▸ **logEvent**(`phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
+▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
 `phase` | [ValidationPhase](../enums/validationphase.md) |
 `event` | [ValidationEvent](../enums/validationevent.md) |
 `message` | string |
-`source?` | [SerializableObject](serializableobject.md) |
 
 **Returns:** *void*
 
@@ -104,15 +113,15 @@ ___
 
 ###  logParseEvent
 
-▸ **logParseEvent**(`event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
+▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
 `event` | [ValidationEvent](../enums/validationevent.md) |
 `message` | string |
-`source?` | [SerializableObject](serializableobject.md) |
 
 **Returns:** *void*
 

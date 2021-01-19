@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using System.Net.Http.Headers;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -16,7 +18,15 @@ namespace AdaptiveCards.Rendering.Wpf
             uiToggle.SetState(input.Value == (input.ValueOn ?? "true"));
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
             uiToggle.SetContext(input);
-            context.InputBindings.Add(input.Id, () => uiToggle.GetState() == true ? input.ValueOn ?? "true" : input.ValueOff ?? "false");
+
+            if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
+                    "Inputs with validation should include an ErrorMessage"));
+            }
+
+            context.InputValues.Add(input.Id, new AdaptiveToggleInputValue(input, uiToggle));
+
             return uiToggle;
         }
     }

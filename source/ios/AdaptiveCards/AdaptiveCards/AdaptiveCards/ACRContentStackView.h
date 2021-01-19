@@ -6,6 +6,7 @@
 //
 
 #import "ACRIContentHoldingView.h"
+#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
@@ -17,7 +18,7 @@
 @property UILayoutConstraintAxis axis;
 @property UIStackViewDistribution distribution;
 @property UIStackViewAlignment alignment;
-
+@property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
 @property BOOL isActionSet;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
@@ -54,7 +55,7 @@
 
 - (void)hideIfSubviewsAreAllHidden;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nonnull)parent;
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
 @end

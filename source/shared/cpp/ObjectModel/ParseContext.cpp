@@ -325,5 +325,5 @@ namespace AdaptiveSharedNamespace
 
     void ParseContext::SetLanguage(const std::string& value) { m_language = value; }
 
-    std::string ParseContext::GetLanguage() const { return m_language; }
+    const std::string& ParseContext::GetLanguage() const { return m_language; }
 }

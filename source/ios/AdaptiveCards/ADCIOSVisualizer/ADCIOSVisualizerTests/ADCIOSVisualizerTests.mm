@@ -2,17 +2,21 @@
 //  ADCIOSVisualizerTests.m
 //  ADCIOSVisualizerTests
 //
-//  Created by jwoo on 6/2/17.
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#import "AdaptiveCards/ACOAdaptiveCardPrivate.h"
+#import "AdaptiveCards/ACOBaseActionElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
+#import "AdaptiveCards/OpenUrlAction.h"
 #import "AdaptiveCards/ShowCardAction.h"
+#import "AdaptiveCards/SubmitAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "CustomActionNewType.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -69,6 +73,61 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [super tearDown];
+}
+
+- (void)testACOBaseActionConversionFromAdaptiveElement
+{
+    ACOBaseActionElement *acoBaseActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:nil];
+    XCTAssertNil(acoBaseActionElement);
+
+    // Test that the accessibility trait for OpenUrl Action is correctly configured
+    std::shared_ptr<OpenUrlAction> openUrlAdaptiveAction = std::make_shared<OpenUrlAction>();
+    ACOBaseActionElement *acoOpenUrlActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:openUrlAdaptiveAction];
+    XCTAssertNotNil(acoOpenUrlActionElement);
+    XCTAssertTrue(acoOpenUrlActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertFalse(acoOpenUrlActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // Test that the accessibility trait for Submit Action is correctly configured
+    std::shared_ptr<SubmitAction> submitAdaptiveAction = std::make_shared<SubmitAction>();
+    ACOBaseActionElement *acoSubmitActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:submitAdaptiveAction];
+    XCTAssertNotNil(acoSubmitActionElement);
+    XCTAssertFalse(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertTrue(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // Test that the accessibility trait for Custom Action is correctly configured
+    // Image.SelectAction in the iOS test payload contains custom select action json
+    NSString *payloadForCustomAction = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Image.SelectAction" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payloadForCustomAction];
+    XCTAssertTrue(cardParseResult.isValid);
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [cardParseResult.card card];
+    std::shared_ptr<Image> adaptiveImage = std::dynamic_pointer_cast<Image>(adaptiveCard->GetBody()[1]);
+    XCTAssertTrue(adaptiveImage != nullptr);
+    auto adaptiveCustomSelectAction = adaptiveImage->GetSelectAction();
+
+    // register a parser for the custom action json payload
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+    NSString *keyForNewTyype = @"NewStyle";
+    [registration setCustomActionElementParser:customParser key:keyForNewTyype];
+
+    // get the iOS custom action from the adaptive element
+    ACOBaseActionElement *acoCustomActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:adaptiveCustomSelectAction];
+    XCTAssertNotNil(acoCustomActionElement);
+
+    // test if the correct accessibility traits are set
+    XCTAssertFalse(acoCustomActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertTrue(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // render a card for an additonal testing
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card
+                                                 config:nil
+                                        widthConstraint:300
+                                               delegate:nil];
+    XCTAssertTrue(renderResult.succeeded);
+    NSObject<ACRSelectActionDelegate> *target;
+
+    // Finally ensure that a target can be built with the custom action by the select action target builder.
+    XCTAssertTrue(ACRRenderingStatus::ACROk == buildTarget([renderResult.view getSelectActionsTargetBuilderDirector], acoCustomActionElement, &target));
 }
 
 - (void)testRemoteResouceInformation
@@ -173,8 +232,10 @@
     XCTAssertTrue(cardParseResult && cardParseResult.isValid);
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
     NSString *hashkey = @"FeedbackText";
-    ACRTextView *acrTextView = (ACRTextView *)[renderResult.view viewWithTag:hashkey.hash];
-    XCTAssertNotNil(acrTextView);
+    ACRInputLabelView *acrInputLabelView = (ACRInputLabelView *)[renderResult.view viewWithTag:hashkey.hash];
+
+    XCTAssertNotNil(acrInputLabelView);
+    ACRTextView *acrTextView = (ACRTextView *)acrInputLabelView.stack.arrangedSubviews[1];
     XCTAssertTrue([acrTextView.text length] == 0);
 }
 
@@ -188,7 +249,7 @@
     ACOAdaptiveCard *renderedCard = [renderResult.view card];
     NSData *json = [renderedCard inputs];
     NSMutableDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:json options:NSJSONReadingMutableContainers error:nil];
-    XCTAssert([dictionary count] == 2);
+    XCTAssert([dictionary count] == 1);
 }
 
 // this test ensure that extending text render doesn't crash
@@ -230,15 +291,16 @@
     action->SetCard(innerCard);
     NSObject *target;
     UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
+    ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], acoAction, &target));
 
     // show card target not supported without button
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], acoAction, button, &target));
 
     XCTAssertNotNil(target);
 
@@ -583,6 +645,12 @@
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::OpenUrl) == ACROpenUrl);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::ToggleVisibility) == ACRToggleVisibility);
     XCTAssertTrue(static_cast<int>(AdaptiveCards::ActionType::UnknownAction) == ACRUnknownAction);
+}
+
+- (void)testACRInputToggleViewCustomRendering
+{
+    ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 100.0f)];
+    XCTAssertNotNil(toggleView);
 }
 
 @end

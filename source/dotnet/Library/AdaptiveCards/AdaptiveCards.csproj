@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
@@ -18,6 +18,10 @@
     <DocumentationFile>$(MSBuildProjectDirectory)/docs/AdaptiveCards.xml</DocumentationFile>
     <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
   <!--HACKY check to see if UWP SDK is installed, if so, generate a uap10.0 output -->
   <!--<PropertyGroup Condition="$(PATH.Contains('Windows Kits\10'))">
@@ -37,12 +41,12 @@
   </PropertyGroup>
 
   <ItemGroup Condition="$(TargetFramework) == 'uap10.0'">
-    <PackageReference Include="System.Reflection" Version="4.3.0" />
-    <PackageReference Include="System.Collections" Version="4.3.0" />
-    <PackageReference Include="System.Linq" Version="4.3.0" />
-    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.0" />
-    <PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+    <PackageReference Include="System.Reflection" Version="4.3.*" />
+    <PackageReference Include="System.Collections" Version="4.3.*" />
+    <PackageReference Include="System.Linq" Version="4.3.*" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.*" />
+    <PackageReference Include="System.Dynamic.Runtime" Version="4.3.*" />
+    <PackageReference Include="System.Runtime.Extensions" Version="4.3.*" />
   </ItemGroup>
 
   <PropertyGroup Condition="$(Configuration) == 'Debug'">
@@ -51,10 +55,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="Microsoft.CSharp" Version="4.5.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="Vsxmd" Version="1.4.5">
+    <PackageReference Include="Newtonsoft.Json" Version="[11.0.2, 12.0.3]" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.*" />
+    <PackageReference Include="System.Net.Http" Version="4.3.*" />
+    <PackageReference Include="Vsxmd" Version="1.4.*">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

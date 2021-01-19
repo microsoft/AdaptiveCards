@@ -16,13 +16,14 @@
 
 ### Properties
 
-* [defaultValue](timeproperty.md#optional-defaultvalue)
-* [name](timeproperty.md#name)
-* [onGetInitialValue](timeproperty.md#optional-ongetinitialvalue)
-* [onParse](timeproperty.md#onparse)
-* [onToJSON](timeproperty.md#ontojson)
-* [sequentialNumber](timeproperty.md#sequentialnumber)
-* [targetVersion](timeproperty.md#targetversion)
+* [defaultValue](timeproperty.md#optional-readonly-defaultvalue)
+* [isSerializationEnabled](timeproperty.md#isserializationenabled)
+* [name](timeproperty.md#readonly-name)
+* [onGetInitialValue](timeproperty.md#optional-readonly-ongetinitialvalue)
+* [onParse](timeproperty.md#readonly-onparse)
+* [onToJSON](timeproperty.md#readonly-ontojson)
+* [sequentialNumber](timeproperty.md#readonly-sequentialnumber)
+* [targetVersion](timeproperty.md#readonly-targetversion)
 
 ### Methods
 
@@ -49,39 +50,47 @@ Name | Type |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *T*
 
-*Inherited from [CustomProperty](customproperty.md).[defaultValue](customproperty.md#optional-defaultvalue)*
+*Inherited from [CustomProperty](customproperty.md).[defaultValue](customproperty.md#optional-readonly-defaultvalue)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
-###  name
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
+
+___
+
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [CustomProperty](customproperty.md).[name](customproperty.md#name)*
+*Overrides [CustomProperty](customproperty.md).[name](customproperty.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Inherited from [CustomProperty](customproperty.md).[onGetInitialValue](customproperty.md#optional-ongetinitialvalue)*
+*Inherited from [CustomProperty](customproperty.md).[onGetInitialValue](customproperty.md#optional-readonly-ongetinitialvalue)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  onParse
+### `Readonly` onParse
 
 • **onParse**: *function*
 
-*Inherited from [CustomProperty](customproperty.md).[onParse](customproperty.md#onparse)*
+*Inherited from [CustomProperty](customproperty.md).[onParse](customproperty.md#readonly-onparse)*
 
 #### Type declaration:
 
@@ -98,11 +107,11 @@ Name | Type |
 
 ___
 
-###  onToJSON
+### `Readonly` onToJSON
 
 • **onToJSON**: *function*
 
-*Inherited from [CustomProperty](customproperty.md).[onToJSON](customproperty.md#ontojson)*
+*Inherited from [CustomProperty](customproperty.md).[onToJSON](customproperty.md#readonly-ontojson)*
 
 #### Type declaration:
 
@@ -120,19 +129,19 @@ Name | Type |
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [CustomProperty](customproperty.md).[targetVersion](customproperty.md#targetversion)*
+*Overrides [CustomProperty](customproperty.md).[targetVersion](customproperty.md#readonly-targetversion)*
 
 ## Methods
 

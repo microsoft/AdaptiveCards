@@ -17,6 +17,7 @@
 						},
 						{
 							"type": "Media",
+							"altText": "Adaptive Card Overview",
 							"poster": "http://adaptivecards.io/content/cats/1.png",
 							"sources": [
 								{

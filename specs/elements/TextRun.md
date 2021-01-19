@@ -2,12 +2,12 @@
 
 # TextRun
 
-#### Introduced in version 1.2
+**Introduced in version 1.2**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"TextRun"` | Yes | Must be `"TextRun"`. | 1.2 |
-| **text** | `string` | Yes | Text to display | 1.2 |
+| **text** | `string` | Yes | Text to display. Markdown is not supported. | 1.2 |
 | **color** | `Colors` | No | Controls the color of the text. | 1.2 |
 | **fontType** | `FontType` | No | The type of font to use | 1.2 |
 | **highlight** | `boolean` | No | If `true`, displays the text highlighted. | 1.2 |
@@ -16,6 +16,7 @@
 | **selectAction** | `ISelectAction` | No | Action to invoke when this text run is clicked. Visually changes the text run into a hyperlink. `Action.ShowCard` is not supported. | 1.2 |
 | **size** | `FontSize` | No | Controls size of text. | 1.2 |
 | **strikethrough** | `boolean` | No | If `true`, displays the text with strikethrough. | 1.2 |
+| **underline** | `boolean` | No | If `true`, displays the text with an underline. | 1.3 |
 | **weight** | `FontWeight` | No | Controls the weight of the text. | 1.2 |
 
 

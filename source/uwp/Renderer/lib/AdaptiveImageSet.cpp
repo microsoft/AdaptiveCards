@@ -68,13 +68,13 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::ImageSet> imageSet = std::make_shared<AdaptiveSharedNamespace::ImageSet>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseCardElement>(imageSet)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*imageSet));
 
         imageSet->SetImageSize(static_cast<AdaptiveSharedNamespace::ImageSize>(m_imageSize));
 
         RETURN_IF_FAILED(GenerateSharedImages(m_images.Get(), imageSet->GetImages()));
 
-        sharedModel = imageSet;
+        sharedModel = std::move(imageSet);
         return S_OK;
     }
     CATCH_RETURN;

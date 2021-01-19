@@ -116,7 +116,7 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::TextInput> textInput = std::make_shared<AdaptiveSharedNamespace::TextInput>();
 
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseInputElement>(textInput)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*textInput));
 
         textInput->SetMaxLength(m_maxLength);
         textInput->SetIsMultiline(m_isMultiline);
@@ -130,10 +130,10 @@ namespace AdaptiveNamespace
         {
             std::shared_ptr<BaseActionElement> sharedAction;
             RETURN_IF_FAILED(GenerateSharedAction(m_inlineAction.Get(), sharedAction));
-            textInput->SetInlineAction(sharedAction);
+            textInput->SetInlineAction(std::move(sharedAction));
         }
 
-        sharedModel = textInput;
+        sharedModel = std::move(textInput);
 
         return S_OK;
     }

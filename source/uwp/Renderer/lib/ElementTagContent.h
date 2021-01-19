@@ -24,8 +24,10 @@ namespace AdaptiveNamespace
     class ElementTagContent
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>, IElementTagContent>
     {
+        AdaptiveRuntimeStringClass("ElementTagContent");
+
     public:
-        ElementTagContent() : m_expectedVisibility (true), m_isStretchable(false) {}
+        ElementTagContent() : m_expectedVisibility(true), m_isStretchable(false) {}
 
         HRESULT RuntimeClassInitialize();
 

@@ -3,20 +3,15 @@ import sys
 import os
 import io
 import base64
-import json
 import logging
 from urllib.parse import parse_qs, urlparse
 
-import numpy as np
-import cv2
-import requests
 from PIL import Image
 from flask import request
 from flask_restplus import Resource
 from flask import current_app
 
 from mystique.predict_card import PredictCard
-from mystique.debug import Debug
 from mystique import config
 from .utils import get_templates
 
@@ -25,10 +20,35 @@ logger = logging.getLogger("mysitque")
 
 cur_dir = os.path.dirname(__file__)
 input_image_collection = os.path.join(cur_dir, "input_image_collection")
-model_path = os.path.join(os.path.dirname(__file__),
+model_path = os.path.join(cur_dir,
                           "../model/frozen_inference_graph.pb")
-label_path = os.path.join(os.path.dirname(__file__),
+label_path = os.path.join(cur_dir,
                           "../mystique/training/object-detection.pbtxt")
+
+
+class GetVersion(Resource):
+    """Version API"""
+
+    def get(self):
+        """
+        Return the current deployed git_hash of this project.
+
+        The commit has will be available in env "COMMIT_SHA" or from a file
+        "<project_root>/git_commit.md5"
+        """
+        git_sha = os.environ.get("COMMIT_SHA")
+        branch_name = os.environ.get("BRANCH_NAME")
+        sha_file = os.path.join(cur_dir, "../git_commit.md5")
+        branch_name_file = os.path.join(cur_dir, "../git_branch_name.txt")
+        if not git_sha and os.path.exists(sha_file):
+            git_sha = open(sha_file).read().strip()
+            branch_name = open(branch_name_file).read().strip()
+
+        response = {
+            "git_sha": git_sha,
+            "branch": branch_name
+        }
+        return response
 
 
 class PredictJson(Resource):
@@ -63,8 +83,8 @@ class PredictJson(Resource):
                 # Upload smaller image.
                 response = {
                     "error": {
-                        "msg": f"Upload images of size <="
-                        " {config.IMG_MAX_UPLOAD_SIZE/(1024*1024)} MB.",
+                        "msg": "Upload images of size <="
+                        f" {config.IMG_MAX_UPLOAD_SIZE/(1024*1024)} MB.",
                         "code": 1002
                     }
                 }
@@ -118,6 +138,7 @@ class GetCardTemplates(Resource):
         templates = get_templates()
         return templates
 
+
 class DebugEndpoint(PredictJson):
 
     """
@@ -135,11 +156,10 @@ class DebugEndpoint(PredictJson):
 
         Make use of the frozen graph for inferencing.
         """
+        from mystique.debug import Debug
 
         imgdata = base64.b64decode(bs64_img)
         image = Image.open(io.BytesIO(imgdata))
         debug = Debug(current_app.od_model)
-        images = debug.main(image=image, card_format=card_format)
+        images = debug.main(pil_image=image, card_format=card_format)
         return images
-
-

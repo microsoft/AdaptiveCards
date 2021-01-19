@@ -14,11 +14,11 @@
 * [allowPreProcessingPropertyValues](globalsettings.md#static-allowpreprocessingpropertyvalues)
 * [alwaysBleedSeparators](globalsettings.md#static-alwaysbleedseparators)
 * [displayInputValidationErrors](globalsettings.md#static-displayinputvalidationerrors)
+* [enableFallback](globalsettings.md#static-enablefallback)
 * [enableFullJsonRoundTrip](globalsettings.md#static-enablefulljsonroundtrip)
 * [setTabIndexAtCardRoot](globalsettings.md#static-settabindexatcardroot)
 * [useAdvancedCardBottomTruncation](globalsettings.md#static-useadvancedcardbottomtruncation)
 * [useAdvancedTextBlockTruncation](globalsettings.md#static-useadvancedtextblocktruncation)
-* [useBuiltInInputValidation](globalsettings.md#static-usebuiltininputvalidation)
 * [useMarkdownInRadioButtonAndCheckbox](globalsettings.md#static-usemarkdowninradiobuttonandcheckbox)
 
 ## Properties
@@ -47,6 +47,12 @@ ___
 
 ___
 
+### `Static` enableFallback
+
+▪ **enableFallback**: *boolean* = true
+
+___
+
 ### `Static` enableFullJsonRoundTrip
 
 ▪ **enableFullJsonRoundTrip**: *boolean* = false
@@ -68,12 +74,6 @@ ___
 ### `Static` useAdvancedTextBlockTruncation
 
 ▪ **useAdvancedTextBlockTruncation**: *boolean* = true
-
-___
-
-### `Static` useBuiltInInputValidation
-
-▪ **useBuiltInInputValidation**: *boolean* = true
 
 ___
 

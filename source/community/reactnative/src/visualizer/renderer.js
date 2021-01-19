@@ -20,6 +20,7 @@ import { RatingRenderer } from './rating-renderer';
 import { Registry } from '../components/registration/registry';
 import * as Utils from '../utils/util';
 import * as Constants from './constants';
+import { CustomActionRenderer } from './custom-action-renderer';
 
 export default class Renderer extends React.Component {
 
@@ -116,7 +117,11 @@ export default class Renderer extends React.Component {
     }
 
     render() {
+        //Register Custom Components
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
+
+        //Register Custom Actions
+        Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
         let { isJSONVisible } = this.state;
 
         //We will update the payload with method bindPayloadWithData, if isDataBinding is true.
@@ -160,7 +165,7 @@ export default class Renderer extends React.Component {
                 'Rendered Submit',
                 JSON.stringify(actionObject.data),
                 [
-                    { text: "Okay", onPress: () => console.log('OK Pressed') },
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
                 ],
                 { cancelable: false }
             )

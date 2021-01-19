@@ -3,6 +3,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ConcatPlugin = require('webpack-concat-plugin');
+const Dotenv = require('dotenv-webpack');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -20,8 +21,9 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			library: "ACDesigner",
-			//libraryTarget: "umd",
-			//umdNamedDefine: true
+			libraryTarget: "umd",
+			globalObject: "this",
+			// umdNamedDefine: true
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
@@ -47,12 +49,13 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
+			new Dotenv(),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer (No Microsoft Hosts)",
 				template: "./noHosts.html",
 				filename: "noHosts.html",
-				chunks: [ "adaptivecards-designer-standalone" ]
-			 }),
+				chunks: ["adaptivecards-designer-standalone"]
+			}),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Designer",
 				template: "./index.html",
@@ -81,16 +84,16 @@ module.exports = (env, argv) => {
 				injectType: 'none',
 				filesToConcat: ['./node_modules/adaptivecards-controls/dist/adaptivecards-controls.css', './src/adaptivecards-designer.css']
 			}),
-			new CopyWebpackPlugin([{
-				from: 'src/containers/default/adaptivecards-defaulthost.css',
-				to: '.'
-			}]),
-			new CopyWebpackPlugin([{
-				from: 'src/adaptivecards-designer.css',
-				to: '.',
-				flatten: true
-			}]),
-			new CopyWebpackPlugin([
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'src/containers/default/adaptivecards-defaulthost.css',
+					to: '.'
+				},
+				{
+					from: 'src/adaptivecards-designer.css',
+					to: '.',
+					flatten: true
+				},
 				{
 					from: 'src/containers/**/*.css',
 					to: 'containers/',
@@ -105,11 +108,29 @@ module.exports = (env, argv) => {
 					from: 'src/containers/**/*.jpg',
 					to: 'containers/',
 					flatten: true
+				}],
+				options: {
+					concurrency: 8
 				}
-			])
+			})
 		],
-		externals: [
+		externals: {
 			///^monaco-editor/ // <-- NOT WORKING for some reason
-		]
+			"adaptivecards": {
+				commonjs2: "adaptivecards",
+				commonjs: "adaptivecards",
+				root: "AdaptiveCards"
+			},
+			"adaptive-expressions": {
+				commonjs2: "adaptive-expressions",
+				commonjs: "adaptive-expressions",
+				root: "AEL"
+			},
+			"adaptivecards-templating": {
+				commonjs2: "adaptivecards-templating",
+				commonjs: "adaptivecards-templating",
+				root: "ACData"
+			}
+		}
 	}
 }

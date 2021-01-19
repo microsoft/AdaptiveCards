@@ -2,14 +2,14 @@
 
 # ActionSet
 
-#### Introduced in version 1.2
+**Introduced in version 1.2**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"ActionSet"` | Yes | Must be `"ActionSet"`. | 1.2 |
-| **actions** | `Action[]` | Yes | The array of `Image` elements to show. | 1.2 |
+| **actions** | `Action[]` | Yes | The array of `Action` elements to show. | 1.2 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -24,7 +24,7 @@
 
 ## actions
 
-The array of `Image` elements to show.
+The array of `Action` elements to show.
 
 * **Type**: `Action[]`
 * **Required**: Yes

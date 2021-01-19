@@ -5,7 +5,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"TextBlock"` | Yes | Must be `"TextBlock"`. | 1.0 |
-| **text** | `string` | Yes | Text to display | 1.0 |
+| **text** | `string` | Yes | Text to display. A subset of markdown is supported (https://aka.ms/ACTextFeatures) | 1.0 |
 | **color** | `Colors` | No | Controls the color of `TextBlock` elements. | 1.0 |
 | **fontType** | `FontType` | No | Type of font to use for rendering | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal text alignment. | 1.0 |
@@ -15,7 +15,7 @@
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

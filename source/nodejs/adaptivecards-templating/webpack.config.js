@@ -22,6 +22,13 @@ module.exports = (env, argv) => {
 		devServer: {
 			contentBase: './dist'
 		},
+		externals: {
+			"adaptive-expressions": {
+				commonjs2: "adaptive-expressions",
+				commonjs: "adaptive-expressions",
+				root: "AEL"
+			}
+		},
 		resolve: {
 			extensions: [".ts", ".tsx", ".js"]
 		},

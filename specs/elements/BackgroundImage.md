@@ -2,11 +2,11 @@
 
 # BackgroundImage
 
-#### Introduced in version 1.2
+**Introduced in version 1.2**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
-| **url** | `uri` | Yes | The URL (or data url) of the image. | 1.2 |
+| **url** | `uri` | Yes | The URL (or data url) of the image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **fillMode** | `ImageFillMode` | No | Describes how the image should fill the area. | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Describes how the image should be aligned if it must be cropped or if using repeat fill mode. | 1.2 |
 | **verticalAlignment** | `VerticalAlignment` | No | Describes how the image should be aligned if it must be cropped or if using repeat fill mode. | 1.2 |

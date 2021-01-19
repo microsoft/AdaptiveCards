@@ -5,7 +5,7 @@
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **items** | `Element[]` | No | The card elements to render inside the `Column`. | 1.0 |
-| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. | 1.2 |
+| **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |
 | **fallback** | `Column`, `FallbackOption` | No | Describes what to do when an unknown item is encountered or the requires of this or any children can't be met. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column in pixels, like `"80px"`. | 1.2 |
@@ -16,7 +16,7 @@
 | **verticalContentAlignment** | `VerticalContentAlignment` | No, default: `"top"` | Defines how the content should be aligned vertically within the column. | 1.1 |
 | **width** | `string`, `number` | No | `"auto"`, `"stretch"`, a number representing relative width of the column in the column group, or in version 1.1 and higher, a specific pixel width, like `"50px"`. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -51,7 +51,7 @@ The card elements to render inside the `Column`.
 
 ## backgroundImage
 
-Specifies the background image.
+Specifies the background image. Acceptable formats are PNG, JPEG, and GIF
 
 * **Type**: `BackgroundImage`, `uri`
 * **Version** : 1.2

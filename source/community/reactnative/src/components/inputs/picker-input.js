@@ -11,7 +11,6 @@ import {
 	TextInput,
 	DatePickerIOS,
 	Modal,
-	Text,
 	Button,
 	ViewPropTypes
 } from 'react-native';
@@ -94,7 +93,11 @@ export class PickerInput extends React.Component {
 						<InputLabel label={label}/>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
-							<View pointerEvents='none' style={this.getComputedStyles(showErrors)}>
+							<View
+								accessible={true}
+								accessibilityLabel={this.payload.altText || this.props.value || placeholder}
+								pointerEvents='none'
+								style={this.getComputedStyles(showErrors)}>
 								<TextInput
 									style={[this.props.style, this.styleConfig.defaultFontConfig]}
 									autoCapitalize={Constants.NoneString}

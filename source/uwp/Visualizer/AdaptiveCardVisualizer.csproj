@@ -25,6 +25,7 @@
     <PlatformTarget>$(Platform)</PlatformTarget>
     <RuntimeIdentifiers>win10-arm;win10-arm-aot;win10-x86;win10-x86-aot;win10-x64;win10-x64-aot</RuntimeIdentifiers>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+    <PackageCertificateThumbprint>A45A39892F1062E19B078373980D0A0BC9C5C72F</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <DebugSymbols>true</DebugSymbols>
@@ -43,6 +44,7 @@
     </Compile>
     <Compile Include="Converters\ErrorViewModelConverters.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
+    <Compile Include="CustomElements\CustomInput.cs" />
     <Compile Include="DocumentView.xaml.cs">
       <DependentUpon>DocumentView.xaml</DependentUpon>
     </Compile>
@@ -75,7 +77,16 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="..\..\..\samples\**\Scenarios\*.json">
+    <Content Include="..\..\..\samples\v1.0\Scenarios\*.json">
+      <Link>Samples\%(Filename).json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.1\Scenarios\*.json">
+      <Link>Samples\%(Filename).json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.2\Scenarios\*.json">
+      <Link>Samples\%(Filename).json</Link>
+    </Content>
+    <Content Include="..\..\..\samples\v1.3\Scenarios\*.json">
       <Link>Samples\%(Filename).json</Link>
     </Content>
     <Content Include="..\..\..\schemas\**\adaptive-card.json">
@@ -156,7 +167,7 @@
       <Version>6.2.8</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp.UI.Controls">
-      <Version>1.5.1</Version>
+      <Version>6.1.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json.Schema">
       <Version>3.0.11</Version>

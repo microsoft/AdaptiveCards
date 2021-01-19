@@ -11,7 +11,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACRRendererPrivate.h"
-#import "ACRView.h"
+#import "ACRViewPrivate.h"
 #import "BaseActionElement.h"
 #import <UIKit/UIKit.h>
 
@@ -47,12 +47,6 @@
 
 - (void)createShowCard:(NSMutableArray *)inputs superview:(UIView<ACRIContentHoldingView> *)superview
 {
-    [inputs setArray:[NSMutableArray arrayWithArray:[[_rootView card] getInputs]]];
-
-    if (!inputs) {
-        inputs = [[NSMutableArray alloc] init];
-    }
-
     // configure padding using LayoutGuid
     unsigned int padding = [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
 
@@ -62,13 +56,18 @@
     ACRColumnView *adcView = [[ACRColumnView alloc] initWithFrame:_rootView.frame
                                                        attributes:attributes];
 
+    ACRColumnView *parentRenderedCard = [_rootView peekCurrentShowCard];
+
+    [_rootView pushCurrentShowcard:adcView];
+
+    [_rootView setParent:parentRenderedCard child:adcView];
+
     [ACRRenderer renderWithAdaptiveCards:_adaptiveCard
-                                  inputs:inputs
+                                  inputs:adcView.inputHandlers
                                  context:_rootView
                           containingView:adcView
                               hostconfig:_config];
-
-    [[_rootView card] setInputs:inputs];
+    [_rootView popCurrentShowcard];
 
     ContainerStyle containerStyle = ([_config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? _adaptiveCard->GetStyle() : [_config getHostConfig] -> GetActions().showCard.style;
 
@@ -80,17 +79,40 @@
 
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
-    _adcView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+
+    CGFloat showCardPadding = [_config getHostConfig] -> GetSpacing().paddingSpacing;
+
+    _adcView.backgroundColor = UIColor.clearColor;
+
+    if (@available(iOS 11.0, *)) {
+        _adcView.directionalLayoutMargins = NSDirectionalEdgeInsetsMake(showCardPadding, -showCardPadding, -showCardPadding, -showCardPadding);
+    } else {
+        _adcView.layoutMargins = UIEdgeInsetsMake(showCardPadding, -showCardPadding, -showCardPadding, -showCardPadding);
+    }
+
+    UIView *backgroundView = [[UIView alloc] init];
+    [adcView addSubview:backgroundView];
+    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+    backgroundView.backgroundColor = [_config getBackgroundColorForContainerStyle:style];
+    [adcView sendSubviewToBack:backgroundView];
+    [backgroundView.leadingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.leadingAnchor].active = YES;
+    [backgroundView.trailingAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.trailingAnchor].active = YES;
+    [backgroundView.topAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.topAnchor].active = YES;
+    [backgroundView.bottomAnchor constraintEqualToAnchor:adcView.layoutMarginsGuide.bottomAnchor].active = YES;
     _adcView.hidden = YES;
+
     [superview addArrangedSubview:adcView];
     _superview = superview;
 }
 
 - (IBAction)toggleVisibilityOfShowCard
 {
+
+    BOOL isSelected = _button.selected;
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
+    _button.selected = !isSelected;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];
@@ -102,7 +124,6 @@
         CGRect oldFrame = showCardFrame;
         oldFrame.size.height = 0;
         showCardFrame.size.height += [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
-        ;
         [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
     }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];
@@ -116,6 +137,7 @@
 - (void)hideShowCard
 {
     _adcView.hidden = YES;
+    _button.selected = NO;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
         [_rootView.acrActionDelegate didChangeVisibility:_button isVisible:(!_adcView.hidden)];

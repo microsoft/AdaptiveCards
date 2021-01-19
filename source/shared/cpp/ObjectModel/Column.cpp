@@ -68,7 +68,7 @@ Json::Value Column::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Width)] = m_width;
     }
 
-    std::string propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
+    const std::string& propertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Items);
     root[propertyName] = Json::Value(Json::arrayValue);
     for (const auto& cardElement : m_items)
     {
@@ -109,7 +109,7 @@ std::shared_ptr<BaseCardElement> ColumnParser::Deserialize(ParseContext& context
 {
     auto column = CollectionTypeElement::Deserialize<Column>(context, value);
 
-    auto fallbackElement = column->GetFallbackContent();
+    const auto& fallbackElement = column->GetFallbackContent();
     if (fallbackElement)
     {
         if (CardElementTypeFromString(fallbackElement->GetElementTypeString()) != CardElementType::Column)

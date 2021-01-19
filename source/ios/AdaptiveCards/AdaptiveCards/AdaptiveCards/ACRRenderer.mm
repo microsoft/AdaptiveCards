@@ -14,7 +14,6 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -80,12 +79,8 @@ using namespace AdaptiveCards;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
-        // instantiate and add tap gesture recognizer
-        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
-                                                                           rootView:rootView
-                                                                      recipientView:verticalView
-                                                                      actionElement:selectAction
-                                                                         hostConfig:config];
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+        [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {
@@ -176,14 +171,14 @@ using namespace AdaptiveCards;
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
     auto firstelem = elems.begin();
-    auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
-        if (*firstelem != elem) {
-            ACRSeparator *separator = [ACRSeparator renderSeparation:elem
-                                                        forSuperview:view
-                                                      withHostConfig:[config getHostConfig]];
-            configSeparatorVisibility(separator, prevElem);
+        ACRSeparator *separator = nil;
+        if (*firstelem != elem && curStretchableElem) {
+            separator = [ACRSeparator renderSeparation:elem
+                                          forSuperview:view
+                                        withHostConfig:[config getHostConfig]];
+            configSeparatorVisibility(separator, elem);
         }
 
         ACRBaseCardElementRenderer *renderer =
@@ -200,9 +195,14 @@ using namespace AdaptiveCards;
             if ([acoElem meetsRequirements:featureReg] == NO) {
                 @throw [ACOFallbackException fallbackException];
             }
+
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
 
-            if (elem->GetHeight() == HeightType::Stretch) {
+            if (separator && !curStretchableElem) {
+                [(ACRContentStackView *)view removeViewFromContentStackView:separator];
+            }
+
+            if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
                 // vertical stretch works in the following way:
                 // an ui element that will be stretched will be contained in a new superview.
                 // additional trailing view is added to the superview at the bottom
@@ -234,8 +234,6 @@ using namespace AdaptiveCards;
         } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
-
-        prevElem = elem;
     }
 
     return view;

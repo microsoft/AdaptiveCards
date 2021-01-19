@@ -43,7 +43,7 @@ namespace AdaptiveCards
         /// <summary>
         ///     Style that can be specified for actions
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

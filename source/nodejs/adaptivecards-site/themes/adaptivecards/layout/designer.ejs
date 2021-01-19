@@ -1,7 +1,10 @@
 <%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.css") %>
+<%- hashed_asset("node_modules/adaptivecards/dist/adaptivecards.min.js") %>
+<%- hashed_asset("node_modules/adaptive-expressions/lib/browser.js") %>
+<%- hashed_asset("node_modules/adaptivecards-templating/dist/adaptivecards-templating.min.js") %>
 <%- hashed_asset("node_modules/markdown-it/dist/markdown-it.min.js") %>
-<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
 <%- hashed_asset("node_modules/adaptivecards-designer/dist/adaptivecards-designer.min.js") %>
+<%- hashed_asset('node_modules/monaco-editor/min/vs/loader.js') %>
 
 <style type="text/css">
 	.content {
@@ -185,31 +188,7 @@
 			} else {
 				designer.setCard({
 					"type": "AdaptiveCard",
-					"body": [
-						{
-							"type": "Container",
-							"items": [
-								{
-									"type": "TextBlock",
-									"text": "This example uses [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/)",
-									"size": "Medium",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "Click the **Preview mode** toolbar button to see the card bound to the **Sample Data** in the lower-right. Sample Data helps design your card by simulating the real data.",
-									"wrap": true
-								},
-								{
-									"type": "TextBlock",
-									"text": "When you're ready to populate it with real data, use the Adaptive Card [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk).",
-									"wrap": true
-								}
-							],
-							"style": "good",
-							"bleed": true
-						},
-						{
+					"body": [{
 							"type": "TextBlock",
 							"size": "Medium",
 							"weight": "Bolder",

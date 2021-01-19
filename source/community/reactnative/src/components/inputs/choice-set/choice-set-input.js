@@ -63,9 +63,9 @@ export class ChoiceSetInput extends React.Component {
 		}
 	}
 
-    /**
-     * @description Parse hostConfig specific to this element
-     */
+	/**
+	 * @description Parse hostConfig specific to this element
+	 */
 	parseHostConfig() {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
@@ -96,10 +96,10 @@ export class ChoiceSetInput extends React.Component {
 		return isError;
 	}
 
-    /**
-     * @description Fetches the value from the selected picker option
-     * @param {string} value 
-     */
+	/**
+	 * @description Fetches the value from the selected picker option
+	 * @param {string} value 
+	 */
 	getPickerSelectedValue = (value, addInputItem) => {
 		if (Utils.isNullOrEmpty(value))
 			return Constants.EmptyString
@@ -108,19 +108,19 @@ export class ChoiceSetInput extends React.Component {
 		return choiceName ? choiceName.title : Constants.EmptyString;
 	}
 
-    /**
-     * @description Fetches the initial value for the picker component
-     */
+	/**
+	 * @description Fetches the initial value for the picker component
+	 */
 	getPickerInitialValue = (addInputItem) => {
 		addInputItem(this.id, { value: this.state.selectedPickerValue, errorState: this.state.isError })
 		return this.state.selectedPickerValue
 	}
 
-    /**
-     * @description Fetches the index of the selected radio button choice
-     * @param {string} value 
-     * @param {array} choiceArray
-     */
+	/**
+	 * @description Fetches the index of the selected radio button choice
+	 * @param {string} value 
+	 * @param {array} choiceArray
+	 */
 	getRadioButtonIndex = (value, choiceArray, addInputItem) => {
 		if (Utils.isNullOrEmpty(value)) {
 			addInputItem(this.id, { value: Constants.EmptyString, errorState: this.state.isError });
@@ -136,10 +136,10 @@ export class ChoiceSetInput extends React.Component {
 		return -1;
 	}
 
-    /**
-     * @description Selects the checkBoxes for the initial set of values from json
-     * @param {string} value 
-     */
+	/**
+	 * @description Selects the checkBoxes for the initial set of values from json
+	 * @param {string} value 
+	 */
 	setInitialCheckedValues = (value, addInputItem) => {
 		var array = this.getCheckedIndexes(value);
 		if (array.length > 0) {
@@ -150,10 +150,10 @@ export class ChoiceSetInput extends React.Component {
 		return []
 	}
 
-    /**
-     * @description Fetches the indexes of selected checkbox options
-     * @param {string} value 
-     */
+	/**
+	 * @description Fetches the indexes of selected checkbox options
+	 * @param {string} value 
+	 */
 	getCheckedIndexes = (value) => {
 		if (Utils.isNullOrEmpty(value)) {
 			return []
@@ -162,9 +162,9 @@ export class ChoiceSetInput extends React.Component {
 		return array
 	}
 
-    /**
-     * @description Renders Picker component as per the json
-     */
+	/**
+	 * @description Renders Picker component as per the json
+	 */
 	renderPickerComponent(addInputItem) {
 		return (
 			<View style={styles.containerView}>
@@ -211,9 +211,9 @@ export class ChoiceSetInput extends React.Component {
 		)
 	}
 
-    /**
-     * @description Renders CheckBoxes component as per the json
-     */
+	/**
+	 * @description Renders CheckBoxes component as per the json
+	 */
 	renderCheckBoxComponent(addInputItem) {
 		return (
 			<View style={styles.container}>
@@ -238,9 +238,9 @@ export class ChoiceSetInput extends React.Component {
 			</View>)
 	}
 
-    /**
-     * @description Renders Radio Button component as per the json
-     */
+	/**
+	 * @description Renders Radio Button component as per the json
+	 */
 	renderRadioButtonComponent(addInputItem) {
 		return (
 			<View>
@@ -303,7 +303,10 @@ export class ChoiceSetInput extends React.Component {
 				{({ addInputItem, showErrors }) => (
 					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
 						<InputLabel label={label} />
-						<View style={this.getComputedStyles(showErrors)}>
+						<View
+							accessible={true}
+							accessibilityLabel={this.payload.altText}
+							style={this.getComputedStyles(showErrors)}>
 							{!isMultiSelect ?
 								((style == CompactStyle || style == undefined) ?
 									this.renderPickerComponent(addInputItem) :

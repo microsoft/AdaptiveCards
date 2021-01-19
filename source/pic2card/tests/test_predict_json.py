@@ -9,14 +9,6 @@ from tests.utils import get_response
 class PredictJsonTestAPI(BaseAPITest):
     """ tests for predict_json api """
 
-    @classmethod
-    def setUpClass(cls):
-        super(PredictJsonTestAPI, cls).setUpClass()
-        cls.api = "/predict_json"
-        cls.response = get_response(cls.client, cls.api, cls.headers,
-                                    cls.data)
-        cls.output = json.loads(cls.response.data)
-
     def test_status_code(self):
         """ checks if the response has a success status code 200 """
         self.assertEqual(self.response.status_code, 200)
@@ -25,7 +17,7 @@ class PredictJsonTestAPI(BaseAPITest):
         """ checks if the response is not empty or None """
         self.assertEqual(bool(self.output), True)
         self.assertEqual(len(self.output), 2)
-        self.assertEqual(len(self.output["card_json"]["body"]), 13)
+        self.assertTrue(len(self.output["card_json"]["card"]["body"]) > 0)
         self.assertIsNone(self.output["error"],
                           msg="Key 'Error' is not 'null'")
 
@@ -35,8 +27,8 @@ class PredictJsonTestAPI(BaseAPITest):
         response = get_response(self.client, api, self.headers, self.data)
         output = json.loads(response.data)
         self.assertEqual(bool(output), True)
-        self.assertEqual(len(output), 3)
-        self.assertEqual(len(output["card_v2_json"]), 2)
+        self.assertEqual(len(output), 2)
+        self.assertEqual(len(output["card_json"]), 2)
 
     def test_exception_raised(self):
         """ checks if Exception is raised properly """
@@ -78,4 +70,3 @@ class PredictJsonTestAPI(BaseAPITest):
 
 if __name__ == "__main__":
     unittest.main()
-

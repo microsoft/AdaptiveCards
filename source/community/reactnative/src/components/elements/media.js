@@ -113,7 +113,10 @@ export class Media extends React.Component {
                     this.onParseError = onParseError;
 
                     return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}>
-                        <View style={styles.container}>
+                        <View
+                            accessible={true}
+                            accessibilityLabel={this.payload.altText || Constants.EmptyString}
+                            style={styles.container}>
                             {
                                 (this.sources && this.sources.length > 0) &&
                                 <Video

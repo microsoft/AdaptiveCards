@@ -33,7 +33,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(StringToJsonValue(sharedSubmitAction->GetDataJson(), &m_dataJson));
         }
 
-        m_ignoreInputValidation = sharedSubmitAction->GetIgnoreInputValidation();
+        m_associatedInputs = static_cast<ABI::AdaptiveNamespace::AssociatedInputs> (sharedSubmitAction->GetAssociatedInputs());
 
         InitializeBaseElement(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(sharedSubmitAction));
         return S_OK;
@@ -54,15 +54,15 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::get_IgnoreInputValidation(boolean* ignoreInputValidation)
+    HRESULT AdaptiveSubmitAction::get_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
     {
-        *ignoreInputValidation = m_ignoreInputValidation;
+        *associatedInputs = m_associatedInputs;
         return S_OK;
     }
 
-    HRESULT AdaptiveSubmitAction::put_IgnoreInputValidation(boolean ignoreInputValidation)
+    HRESULT AdaptiveSubmitAction::put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs)
     {
-        m_ignoreInputValidation = ignoreInputValidation;
+        m_associatedInputs = associatedInputs;
         return S_OK;
     }
 
@@ -71,18 +71,18 @@ namespace AdaptiveNamespace
     {
         std::shared_ptr<AdaptiveSharedNamespace::SubmitAction> submitAction =
             std::make_shared<AdaptiveSharedNamespace::SubmitAction>();
-        RETURN_IF_FAILED(SetSharedElementProperties(std::static_pointer_cast<AdaptiveSharedNamespace::BaseActionElement>(submitAction)));
+        RETURN_IF_FAILED(CopySharedElementProperties(*submitAction));
 
         std::string jsonAsString;
         if (m_dataJson != nullptr)
         {
             RETURN_IF_FAILED(JsonValueToString(m_dataJson.Get(), jsonAsString));
-            submitAction->SetDataJson(jsonAsString);
+            submitAction->SetDataJson(std::move(jsonAsString));
         }
 
-        submitAction->SetIgnoreInputValidation(m_ignoreInputValidation);
+        submitAction->SetAssociatedInputs(static_cast<AdaptiveSharedNamespace::AssociatedInputs> (m_associatedInputs));
 
-        sharedModel = submitAction;
+        sharedModel = std::move(submitAction);
         return S_OK;
     }
     CATCH_RETURN;

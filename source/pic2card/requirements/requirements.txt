@@ -1,0 +1,12 @@
+# DL library dependencies are kept eparate due to its size.
+#--use-feature=2020-resolver
+flask==1.1.1
+flask_restplus==0.13.0
+flask-cors==3.0.9
+Werkzeug==0.16.1
+Pillow==7.1.2
+opencv-python==3.4.9.33
+pytesseract==0.3.4
+gunicorn==20.0.4
+pandas==1.0.4
+matplotlib==3.2.1

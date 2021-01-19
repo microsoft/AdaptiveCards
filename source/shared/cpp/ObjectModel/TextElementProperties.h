@@ -43,9 +43,9 @@ namespace AdaptiveSharedNamespace
         void SetIsSubtle(const bool value);
 
         void SetLanguage(const std::string& value);
-        std::string GetLanguage() const;
+        const std::string& GetLanguage() const;
 
-        virtual void Deserialize(const ParseContext& context, const Json::Value& root);
+        virtual void Deserialize(ParseContext& context, const Json::Value& root);
         virtual void PopulateKnownPropertiesSet(std::unordered_set<std::string>& knownProperties);
 
     private:

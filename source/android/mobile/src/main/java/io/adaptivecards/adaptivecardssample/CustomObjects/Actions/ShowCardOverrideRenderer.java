@@ -2,6 +2,7 @@ package io.adaptivecards.adaptivecardssample.CustomObjects.Actions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.v4.app.FragmentManager;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,12 +34,10 @@ public class ShowCardOverrideRenderer extends BaseActionElementRenderer
                          RenderArgs renderArgs)
     {
         Button button = new Button(context);
-
-        button.setBackgroundColor(m_activity.getResources().getColor(R.color.yellowActionColor));
+        button.getBackground().setColorFilter(m_activity.getResources().getColor(R.color.yellowActionColor), PorterDuff.Mode.SRC_ATOP);
         button.setText(baseActionElement.GetTitle() +"(ShowCard)");
-
-        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig));
-
+        button.setAllCaps(false);
+        button.setOnClickListener(new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs));
         viewGroup.addView(button);
         return button;
     }

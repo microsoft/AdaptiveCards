@@ -15,6 +15,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Actions, "actions"},
             {AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation"},
             {AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard"},
+            {AdaptiveCardSchemaKey::AssociatedInputs, "associatedInputs"},
             {AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle"},
             {AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback"},
             {AdaptiveCardSchemaKey::AltText, "altText"},
@@ -73,7 +74,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
             {AdaptiveCardSchemaKey::IconUrl, "iconUrl"},
             {AdaptiveCardSchemaKey::Id, "id"},
-            {AdaptiveCardSchemaKey::IgnoreInputValidation, "ignoreInputValidation"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
@@ -83,7 +83,8 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::InlineAction, "inlineAction"},
             {AdaptiveCardSchemaKey::Inlines, "inlines"},
             {AdaptiveCardSchemaKey::InlineTopMargin, "inlineTopMargin"},
-            {AdaptiveCardSchemaKey::InputNecessityIndicators, "inputNecessityIndicators"},
+            {AdaptiveCardSchemaKey::Inputs, "inputs"},
+            {AdaptiveCardSchemaKey::InputSpacing, "inputSpacing"},
             {AdaptiveCardSchemaKey::IsMultiSelect, "isMultiSelect"},
             {AdaptiveCardSchemaKey::IsMultiline, "isMultiline"},
             {AdaptiveCardSchemaKey::IsRequired, "isRequired"},
@@ -92,6 +93,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
+			{AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
@@ -113,6 +115,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::MinHeight, "minHeight"},
             {AdaptiveCardSchemaKey::Monospace, "monospace"},
             {AdaptiveCardSchemaKey::NumberInput, "numberInput"},
+            {AdaptiveCardSchemaKey::OptionalInputs, "optionalInputs"},
             {AdaptiveCardSchemaKey::Padding, "padding"},
             {AdaptiveCardSchemaKey::Placeholder, "placeholder"},
             {AdaptiveCardSchemaKey::PlayButton, "playButton"},
@@ -121,6 +124,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Repeat, "repeat"},
             {AdaptiveCardSchemaKey::RepeatHorizontally, "repeatHorizontally"},
             {AdaptiveCardSchemaKey::RepeatVertically, "repeatVertically"},
+            {AdaptiveCardSchemaKey::RequiredInputs, "requiredInputs"},
             {AdaptiveCardSchemaKey::Requires, "requires"},
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
@@ -139,6 +143,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Strikethrough, "strikethrough"},
             {AdaptiveCardSchemaKey::Style, "style"},
             {AdaptiveCardSchemaKey::Subtle, "subtle"},
+            {AdaptiveCardSchemaKey::Suffix, "suffix"},
             {AdaptiveCardSchemaKey::SupportsInteractivity, "supportsInteractivity"},
             {AdaptiveCardSchemaKey::TargetElements, "targetElements"},
             {AdaptiveCardSchemaKey::Text, "text"},
@@ -288,6 +293,10 @@ namespace AdaptiveSharedNamespace
             {ActionMode::Inline, "Inline"},
             {ActionMode::Popup, "Popup"}});
 
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(AssociatedInputs, AssociatedInputs::Auto, {
+        {AssociatedInputs::Auto, "Auto"},
+        {AssociatedInputs::None, "None"}});
+
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ChoiceSetStyle, ChoiceSetStyle::Compact, {
             {ChoiceSetStyle::Compact, "Compact"},
             {ChoiceSetStyle::Expanded, "Expanded"}});
@@ -323,9 +332,4 @@ namespace AdaptiveSharedNamespace
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InlineElementType, InlineElementType::TextRun, {
             {InlineElementType::TextRun, "TextRun"}});
-
-    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(InputNecessityIndicators, InputNecessityIndicators::None, {
-            {InputNecessityIndicators::None, "None"},
-            {InputNecessityIndicators::RequiredInputs, "RequiredInputs"},
-            {InputNecessityIndicators::OptionalInputs, "OptionalInputs"}});
 }

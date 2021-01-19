@@ -9,13 +9,23 @@
 #include "Container.h"
 #include "ShowCardAction.h"
 
+namespace
+{
+    Json::StreamWriterBuilder CreateJsonStreamWriter()
+    {
+        Json::StreamWriterBuilder builder;
+        builder["commentStyle"] = "None";
+        builder["indentation"] = "";
+
+        return builder;
+    }
+}
+
 namespace AdaptiveSharedNamespace
 {
     std::string ParseUtil::JsonToString(const Json::Value& json)
     {
-        static Json::StreamWriterBuilder builder;
-        builder["commentStyle"] = "None";
-        builder["indentation"] = "";
+        const thread_local Json::StreamWriterBuilder builder = ::CreateJsonStreamWriter();
         std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
 
         std::ostringstream outStream;
@@ -34,11 +44,16 @@ namespace AdaptiveSharedNamespace
 
     std::string ParseUtil::GetTypeAsString(const Json::Value& json)
     {
-        std::string typeKey = "type";
+        const char typeKey[] = "type";
+
         if (!json.isMember(typeKey))
         {
-            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
-                                             "The JSON element is missing the following value: " + typeKey);
+            std::stringstream ss;
+
+            ss << "The JSON element is missing the following value: ";
+            ss << typeKey;
+
+            throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing, ss.str());
         }
 
         return json.get(typeKey, Json::Value()).asString();
@@ -58,7 +73,7 @@ namespace AdaptiveSharedNamespace
 
     std::string ParseUtil::TryGetString(const Json::Value& json, AdaptiveCardSchemaKey key)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty() || !propertyValue.isString())
         {
@@ -72,7 +87,7 @@ namespace AdaptiveSharedNamespace
 
     std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -110,7 +125,7 @@ namespace AdaptiveSharedNamespace
 
     std::string ParseUtil::GetJsonString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -130,7 +145,7 @@ namespace AdaptiveSharedNamespace
 
     std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -157,7 +172,8 @@ namespace AdaptiveSharedNamespace
         if (propertyValue.empty())
         {
             // handle "backgroundImageUrl": <string>
-            const std::string& backgroundImageUrlPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
+            const std::string& backgroundImageUrlPropertyName =
+                AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
             propertyValue = json.get(backgroundImageUrlPropertyName, Json::Value());
         }
 
@@ -182,7 +198,7 @@ namespace AdaptiveSharedNamespace
 
     bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -208,7 +224,7 @@ namespace AdaptiveSharedNamespace
 
     unsigned int ParseUtil::GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -234,7 +250,36 @@ namespace AdaptiveSharedNamespace
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        if (!propertyValue.isInt())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Value for property " + propertyName + " was invalid. Expected type int.");
+        }
+
+        return propertyValue.asInt();
+    }
+
+    std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
+                                                 AdaptiveCardSchemaKey key,
+                                                 std::optional<int> defaultValue,
+                                                 bool isRequired /*=false*/)
+    {
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
         {
@@ -260,9 +305,9 @@ namespace AdaptiveSharedNamespace
 
     void ParseUtil::ExpectTypeString(const Json::Value& json, const std::string& expectedTypeStr)
     {
-        std::string actualType = GetTypeAsString(json);
-        const bool isTypeCorrect = expectedTypeStr.compare(actualType) == 0;
-        if (!isTypeCorrect)
+        const std::string actualType = GetTypeAsString(json);
+
+        if (expectedTypeStr != actualType)
         {
             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
                                              "The JSON element did not have the correct type. Expected: " + expectedTypeStr +
@@ -328,7 +373,7 @@ namespace AdaptiveSharedNamespace
 
     Json::Value ParseUtil::GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto elementArray = json.get(propertyName, Json::Value());
 
         if (!elementArray.isNull() && !elementArray.isArray())
@@ -353,10 +398,7 @@ namespace AdaptiveSharedNamespace
 
         Json::Value jsonValue;
 
-        const bool ok = reader->parse(
-            jsonString.data(),
-            jsonString.data() + jsonString.size(),
-            &jsonValue, nullptr);
+        const bool ok = reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &jsonValue, nullptr);
 
         if (!ok)
         {
@@ -368,7 +410,7 @@ namespace AdaptiveSharedNamespace
 
     Json::Value ParseUtil::ExtractJsonValue(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        std::string propertyName = AdaptiveCardSchemaKeyToString(key);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (isRequired && propertyValue.empty())
         {
@@ -449,6 +491,47 @@ namespace AdaptiveSharedNamespace
         if (!selectAction.empty())
         {
             return ParseUtil::GetActionFromJsonValue(context, selectAction);
+        }
+
+        return nullptr;
+    }
+
+    std::shared_ptr<BaseCardElement> ParseUtil::GetLabelFromJsonValue(ParseContext& context, const Json::Value& json)
+    {
+        if (json.empty() || !json.isObject())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue, "Expected a Json object to extract Label element");
+        }
+
+        // Get the element's type
+        std::string typeString = ToLowercase(GetTypeAsString(json));
+
+        if ((typeString != ToLowercase(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::TextBlock))) &&
+            (typeString != ToLowercase(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::RichTextBlock))))
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Element type is not a string, TextBlock or RichTextBlock");
+        }
+
+        auto parser = context.elementParserRegistration->GetParser(typeString);
+
+        // Parse it if it's allowed by the current parsers
+        if (parser != nullptr)
+        {
+            // Use the parser that maps to the type
+            return parser->Deserialize(context, json);
+        }
+
+        return nullptr;
+    }
+
+    std::shared_ptr<BaseCardElement> ParseUtil::GetLabel(ParseContext& context, const Json::Value& json, AdaptiveCardSchemaKey key)
+    {
+        auto label = ParseUtil::ExtractJsonValue(json, key);
+
+        if (!label.empty())
+        {
+            return ParseUtil::GetLabelFromJsonValue(context, label);
         }
 
         return nullptr;

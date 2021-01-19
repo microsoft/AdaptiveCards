@@ -27,7 +27,15 @@ namespace AdaptiveCards.Rendering.Wpf
                 textBox.Watermark = input.Placeholder;
                 textBox.Style = context.GetStyle($"Adaptive.Input.Text.{input.Style}");
                 textBox.DataContext = input;
-                context.InputBindings.Add(input.Id, () => textBox.Text);
+
+                if ((input.IsRequired || input.Regex != null) && string.IsNullOrEmpty(input.ErrorMessage))
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
+                        "Inputs with validation should include an ErrorMessage"));
+                }
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedTextInputValue(input, textBox));
+
                 if (input.InlineAction != null)
                 {
                     if (context.Config.Actions.ShowCard.ActionMode == ShowCardActionMode.Inline &&
@@ -49,6 +57,9 @@ namespace AdaptiveCards.Rendering.Wpf
             {
                 var textBlock = AdaptiveTypedElementConverter.CreateElement<AdaptiveTextBlock>();
                 textBlock.Text = XamlUtilities.GetFallbackText(input) ?? input.Placeholder;
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedTextInputValue(input, null));
+
                 return context.Render(textBlock);
             }
         }

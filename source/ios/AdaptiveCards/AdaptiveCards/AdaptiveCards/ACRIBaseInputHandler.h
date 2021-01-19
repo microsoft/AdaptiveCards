@@ -7,11 +7,17 @@
 
 #import "ACRErrors.h"
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @protocol ACRIBaseInputHandler
 
-- (BOOL)validate:(NSError **)error;
+@property BOOL isRequired;
+@property BOOL hasValidationProperties;
+@property BOOL hasVisibilityChanged;
+@property NSString * _Nonnull id;
 
-- (void)getInput:(NSMutableDictionary *)dictionary;
+- (BOOL)validate:(NSError * _Nullable * _Nullable)error;
+- (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView * _Nullable)view;
+- (void)getInput:(NSMutableDictionary *_Nonnull)dictionary;
 
 @end

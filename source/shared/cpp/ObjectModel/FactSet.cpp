@@ -27,7 +27,7 @@ Json::Value FactSet::SerializeToJsonValue() const
 {
     Json::Value root = BaseCardElement::SerializeToJsonValue();
 
-    std::string factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
+    const std::string& factsPropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Facts);
     root[factsPropertyName] = Json::Value(Json::arrayValue);
     for (const auto& fact : GetFacts())
     {
@@ -45,7 +45,14 @@ std::shared_ptr<BaseCardElement> FactSetParser::Deserialize(ParseContext& contex
 
     // Parse Facts
     auto facts =
-        ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, true);
+        ParseUtil::GetElementCollectionOfSingleType<Fact>(context, value, AdaptiveCardSchemaKey::Facts, Fact::Deserialize, false);
+
+    if (facts.empty())
+    { 
+        context.warnings.emplace_back(std::make_shared<AdaptiveCardParseWarning>(WarningStatusCode::RequiredPropertyMissing,
+                                                                                  "required property, \"fact\", is missing"));
+    }
+
     factSet->m_facts = std::move(facts);
 
     return factSet;

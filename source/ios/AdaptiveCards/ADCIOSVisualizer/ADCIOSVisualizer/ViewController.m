@@ -2,15 +2,18 @@
 //  ViewController.m
 //  ViewController
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
 #import "ViewController.h"
+#import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
+#import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
 #import "AdaptiveFileBrowserSource.h"
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
+#import "CustomActionSetRenderer.h"
 #import "CustomImageRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
@@ -51,11 +54,28 @@ const CGFloat kAdaptiveCardsWidth = 330;
     if (!self.editView) {
         CGRect desiredDimension = filebrowserView.frame;
         self.editView = [[UITextView alloc] initWithFrame:desiredDimension textContainer:nil];
+
         [self.view addSubview:self.editView];
         self.editView.directionalLockEnabled = NO;
         self.editView.showsHorizontalScrollIndicator = YES;
+        self.editView.keyboardType = UIKeyboardTypeAlphabet;
+
+        CGRect frame = CGRectMake(0, 0, self.editView.frame.size.width, 30);
+        UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
+        UIBarButtonItem *flexSpace =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                          target:nil
+                                                          action:nil];
+        UIBarButtonItem *doneButton =
+            [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                          target:self
+                                                          action:@selector(dismissKeyboard)];
+        [toolBar setItems:@[ doneButton, flexSpace ] animated:NO];
+        [toolBar sizeToFit];
+        self.editView.inputAccessoryView = toolBar;
     }
     self.editView.hidden = NO;
+    self.editView.delegate = self;
 
     NSMutableAttributedString *content =
         [[NSMutableAttributedString alloc] initWithString:self.editableStr];
@@ -65,9 +85,30 @@ const CGFloat kAdaptiveCardsWidth = 330;
     [content addAttributes:@{NSParagraphStyleAttributeName : para} range:NSMakeRange(0, 1)];
     self.editView.attributedText = content;
     UIFontDescriptor *dec = self.editView.font.fontDescriptor;
-    self.editView.font = [UIFont fontWithDescriptor:dec size:8];
+    self.editView.font = [UIFont fontWithDescriptor:dec size:15];
     self.editView.layer.borderWidth = 0.8;
     filebrowserView.hidden = YES;
+}
+
+- (BOOL)textViewShouldEndEditing:(UITextView *)textView
+{
+    [textView resignFirstResponder];
+    return YES;
+}
+
+- (void)dismissKeyboard
+{
+    [self.editView resignFirstResponder];
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    [textView becomeFirstResponder];
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    [textView resignFirstResponder];
 }
 
 - (IBAction)toggleCustomRenderer:(id)sender
@@ -86,7 +127,9 @@ const CGFloat kAdaptiveCardsWidth = 330;
                                  cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance]
                                  cardElementType:ACRImage];
+        [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
 
+        [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
         _enableCustomRendererButton.backgroundColor = UIColor.redColor;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
@@ -95,6 +138,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
+        [registration setBaseCardElementRenderer:nil cardElementType:ACRActionSet];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255
                                                                       green:122.0 / 255
@@ -116,12 +160,22 @@ const CGFloat kAdaptiveCardsWidth = 330;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
+                         @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
+                         @"\"1.2\", \"body\": [ {"
+                         @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
+                         @"\"weight\": \"Bolder\", \"color\": "
+                         @"\"Attention\", \"horizontalAlignment\": \"Center\""
+                         @"} ] }";
+    _errorCard = [ACOAdaptiveCard fromJson:errorMSG];
     [self registerForKeyboardNotifications];
     _resolvers = [[ACOResourceResolvers alloc] init];
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
     [_resolvers setResourceResolver:resolver scheme:@"https"];
     [_resolvers setResourceResolver:resolver scheme:@"data"];
+    // register a custom scheme bundle with resolver
+    [_resolvers setResourceResolver:resolver scheme:@"bundle"];
     _enableCustomRenderer = NO;
     self.curView = nil;
 
@@ -209,7 +263,9 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
     // custon renderer button
     self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.enableCustomRendererButton setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+    [self.enableCustomRendererButton
+        setContentCompressionResistancePriority:UILayoutPriorityDefaultLow
+                                        forAxis:UILayoutConstraintAxisHorizontal];
     [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer"
                                      forState:UIControlStateNormal];
     [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0 / 255
@@ -244,7 +300,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
     buttonLayout.distribution = UIStackViewDistributionEqualCentering;
     buttonLayout.spacing = 10;
 
-
     _scrView = [[UIScrollView alloc] init];
     _scrView.showsHorizontalScrollIndicator = NO;
 
@@ -266,8 +321,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
 
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     [featureReg addFeature:@"acTest" featureVersion:@"1.0"];
-
-    [self update:self.ACVTabVC.userSelectedJSon];
 }
 
 - (void)didReceiveMemoryWarning
@@ -282,33 +335,43 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:self.hostconfig
                                                             resourceResolvers:_resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonStr];
-    if (cardParseResult.isValid) {
-        ACRRegistration *registration = [ACRRegistration getInstance];
 
-        NSString *type = @"ProgressBar";
-        CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
-        [registration setCustomElementParser:progressBarParser key:type];
-
-        CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
-        [registration setCustomElementRenderer:progressBarRenderer key:type];
-
-        CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
-        NSString *type1 = @"NewStyle";
-        [registration setCustomActionElementParser:customParser key:type1];
-
-        CustomActionNewTypeRenderer *customActionRenderer =
-            [CustomActionNewTypeRenderer getInstance];
-        [registration setCustomActionRenderer:customActionRenderer key:type1];
-
-        _config = hostconfigParseResult.config;
-        renderResult = [ACRRenderer render:cardParseResult.card
-                                    config:hostconfigParseResult.config
-                           widthConstraint:kAdaptiveCardsWidth
-                                  delegate:self];
+    if (!cardParseResult.isValid) {
+        cardParseResult = _errorCard;
     }
+
+    ACRRegistration *registration = [ACRRegistration getInstance];
+
+    NSString *type = @"ProgressBar";
+    CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+    [registration setCustomElementParser:progressBarParser key:type];
+
+    CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
+    [registration setCustomElementRenderer:progressBarRenderer key:type];
+
+    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+    NSString *type1 = @"NewStyle";
+    [registration setCustomActionElementParser:customParser key:type1];
+
+    CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+    [registration setCustomActionRenderer:customActionRenderer key:type1];
+
+    _config = hostconfigParseResult.config;
+    renderResult = [ACRRenderer render:cardParseResult.card
+                                config:hostconfigParseResult.config
+                       widthConstraint:kAdaptiveCardsWidth
+                              delegate:self];
 
     if (renderResult.succeeded) {
         ACRView *ad = renderResult.view;
+        NSMutableString *joinedString = [[NSMutableString alloc] init];
+        for (ACOWarning *warning in ad.warnings) {
+            [joinedString appendString:warning.message];
+        }
+
+        if (ad.warnings.count) {
+            [self presentViewController:[self createAlertController:@"Warnings" message:joinedString] animated:YES completion:nil];
+        }
         ad.mediaDelegate = self;
         if (self.curView)
             [self.curView removeFromSuperview];
@@ -373,33 +436,49 @@ const CGFloat kAdaptiveCardsWidth = 330;
         [self presentViewController:svc animated:YES completion:nil];
     } else if (action.type == ACRSubmit) {
         NSData *userInputsAsJson = [card inputs];
-        NSString *str = [[NSString alloc] initWithData:userInputsAsJson
+        NSString *actionDataField = [action data];
+
+        NSData *actionData = [actionDataField dataUsingEncoding:NSUTF8StringEncoding];
+        NSMutableData *combinedData = [actionData mutableCopy];
+        [combinedData appendData:userInputsAsJson];
+        NSString *str = [[NSString alloc] initWithData:combinedData
                                               encoding:NSUTF8StringEncoding];
-        if (!_userResponseLabel) {
-            _userResponseLabel = [[UILabel alloc] init];
-            _userResponseLabel.numberOfLines = 0;
-            _userResponseLabel.backgroundColor = UIColor.groupTableViewBackgroundColor;
-            _userResponseLabel.accessibilityIdentifier = @"ACRUserResponse";
-            [(UIStackView *)self.curView addArrangedSubview:_userResponseLabel];
-        }
-        _userResponseLabel.text = str;
-        NSLog(@"user response fetched: %@ with %@", str, [action data]);
+        [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
+
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"successfully rendered new button type" message:newType.alertMessage preferredStyle:UIAlertControllerStyleAlert];
-            [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
-            newType.alertController = alertController;
-            [self presentViewController:alertController animated:YES completion:nil];
+            newType.alertController = [self createAlertController:@"successfully rendered new button type" message:newType.alertMessage];
+            [self presentViewController:newType.alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
         NSLog(@"toggle visibility");
     }
 }
 
+- (UIAlertController *)createAlertController:(NSString *)title message:(NSString *)message
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
+    return alertController;
+}
+
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
     [self.scrView scrollRectToVisible:newFrame animated:YES];
+}
+
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
+{
+    NSString *actiontype = (NSString *)properties[ACRAggregateTargetActionType];
+    if ([actiontype isEqualToString:ACRAggregateTargetSubmitAction]) {
+        UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
+        if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
+            [self.scrView setContentOffset:focusedView.frame.origin animated:YES];
+        }
+    } else {
+        [self.scrView scrollRectToVisible:newFrame animated:YES];
+    }
 }
 
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible

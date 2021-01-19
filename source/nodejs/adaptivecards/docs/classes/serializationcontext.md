@@ -19,6 +19,7 @@
 * [onParseAction](serializationcontext.md#optional-onparseaction)
 * [onParseElement](serializationcontext.md#optional-onparseelement)
 * [targetVersion](serializationcontext.md#targetversion)
+* [toJSONOriginalParam](serializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -78,6 +79,14 @@ ___
 • **targetVersion**: *[Version](version.md)*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[targetVersion](baseserializationcontext.md#targetversion)*
+
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
+
+*Inherited from [BaseSerializationContext](baseserializationcontext.md).[toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)*
 
 ## Accessors
 
@@ -150,7 +159,7 @@ ___
 
 ###  logEvent
 
-▸ **logEvent**(`phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
+▸ **logEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `phase`: [ValidationPhase](../enums/validationphase.md), `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[logEvent](baseserializationcontext.md#logevent)*
 
@@ -158,10 +167,10 @@ ___
 
 Name | Type |
 ------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
 `phase` | [ValidationPhase](../enums/validationphase.md) |
 `event` | [ValidationEvent](../enums/validationevent.md) |
 `message` | string |
-`source?` | [SerializableObject](serializableobject.md) |
 
 **Returns:** *void*
 
@@ -169,7 +178,7 @@ ___
 
 ###  logParseEvent
 
-▸ **logParseEvent**(`event`: [ValidationEvent](../enums/validationevent.md), `message`: string, `source?`: [SerializableObject](serializableobject.md)): *void*
+▸ **logParseEvent**(`source`: [SerializableObject](serializableobject.md) | undefined, `event`: [ValidationEvent](../enums/validationevent.md), `message`: string): *void*
 
 *Inherited from [BaseSerializationContext](baseserializationcontext.md).[logParseEvent](baseserializationcontext.md#logparseevent)*
 
@@ -177,9 +186,9 @@ ___
 
 Name | Type |
 ------ | ------ |
+`source` | [SerializableObject](serializableobject.md) &#124; undefined |
 `event` | [ValidationEvent](../enums/validationevent.md) |
 `message` | string |
-`source?` | [SerializableObject](serializableobject.md) |
 
 **Returns:** *void*
 
@@ -204,7 +213,7 @@ ___
 
 ###  parseCardObject
 
-▸ **parseCardObject**<**T**>(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `forbiddenTypeNames`: string[], `allowFallback`: boolean, `createInstanceCallback`: function, `logParseEvent`: function): *T | undefined*
+▸ **parseCardObject**‹**T**›(`parent`: [CardElement](cardelement.md) | undefined, `source`: any, `forbiddenTypeNames`: string[], `allowFallback`: boolean, `createInstanceCallback`: function, `logParseEvent`: function): *T | undefined*
 
 **Type parameters:**
 
@@ -232,14 +241,14 @@ Name | Type |
 
 ▪ **logParseEvent**: *function*
 
-▸ (`typeName`: string, `errorType`: TypeErrorType): *void*
+▸ (`typeName`: string, `errorType`: [TypeErrorType](../enums/typeerrortype.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `typeName` | string |
-`errorType` | TypeErrorType |
+`errorType` | [TypeErrorType](../enums/typeerrortype.md) |
 
 **Returns:** *T | undefined*
 

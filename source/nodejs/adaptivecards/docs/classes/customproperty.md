@@ -1,6 +1,6 @@
 [Adaptive Cards Javascript SDK](../README.md) › [CustomProperty](customproperty.md)
 
-# Class: CustomProperty <**T**>
+# Class: CustomProperty ‹**T**›
 
 ## Type parameters
 
@@ -22,13 +22,14 @@
 
 ### Properties
 
-* [defaultValue](customproperty.md#optional-defaultvalue)
-* [name](customproperty.md#name)
-* [onGetInitialValue](customproperty.md#optional-ongetinitialvalue)
-* [onParse](customproperty.md#onparse)
-* [onToJSON](customproperty.md#ontojson)
-* [sequentialNumber](customproperty.md#sequentialnumber)
-* [targetVersion](customproperty.md#targetversion)
+* [defaultValue](customproperty.md#optional-readonly-defaultvalue)
+* [isSerializationEnabled](customproperty.md#isserializationenabled)
+* [name](customproperty.md#readonly-name)
+* [onGetInitialValue](customproperty.md#optional-readonly-ongetinitialvalue)
+* [onParse](customproperty.md#readonly-onparse)
+* [onToJSON](customproperty.md#readonly-ontojson)
+* [sequentialNumber](customproperty.md#readonly-sequentialnumber)
+* [targetVersion](customproperty.md#readonly-targetversion)
 
 ### Methods
 
@@ -85,31 +86,39 @@ Name | Type |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *T*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
-###  name
+###  isSerializationEnabled
+
+• **isSerializationEnabled**: *boolean* = true
+
+*Inherited from [PropertyDefinition](propertydefinition.md).[isSerializationEnabled](propertydefinition.md#isserializationenabled)*
+
+___
+
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  onParse
+### `Readonly` onParse
 
 • **onParse**: *function*
 
@@ -128,7 +137,7 @@ Name | Type |
 
 ___
 
-###  onToJSON
+### `Readonly` onToJSON
 
 • **onToJSON**: *function*
 
@@ -148,19 +157,19 @@ Name | Type |
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ## Methods
 

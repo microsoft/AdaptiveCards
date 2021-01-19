@@ -5,11 +5,10 @@ from logging.handlers import RotatingFileHandler
 from flask import Flask
 from flask_cors import CORS
 from flask_restplus import Api
-from . import resources as res
 
+from mystique.utils import load_od_instance
+from . import resources as res
 from mystique import config
-from mystique.initial_setups import set_graph_and_tensors
-from mystique.detect_objects import ObjectDetection
 
 logger = logging.getLogger("mysitque")
 logger.setLevel(logging.DEBUG)
@@ -44,16 +43,11 @@ if config.ENABLE_TF_SERVING:
     api.add_resource(res.TfPredictJson, '/tf_predict_json',
                      methods=['POST'])
 else:
-    # Load the model into flask cache
-    from mystique.initial_setups import set_graph_and_tensors
-    from mystique.detect_objects import ObjectDetection
-    app.od_model = ObjectDetection(*set_graph_and_tensors())
     api.add_resource(res.PredictJson, '/predict_json', methods=['POST'])
 
-#Debugging Endpoint which returns the set of images from different models
-app.od_model = ObjectDetection(*set_graph_and_tensors(tensors =
-                                ["detection_boxes", "detection_scores",
-                                "detection_classes", "detection_masks"]))
+# Load the models and cache it for request handling.
+app.od_model = load_od_instance()
 
 # Include more debug points along with /predict_json api.
 api.add_resource(res.DebugEndpoint, "/predict_json_debug", methods=["POST"])
+api.add_resource(res.GetVersion, "/version", methods=["GET"])

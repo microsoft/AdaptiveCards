@@ -41,6 +41,11 @@
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<TextBlock> txtBlck = std::dynamic_pointer_cast<TextBlock>(elem);
+
+    if (txtBlck->GetText().empty()) {
+        return nil;
+    }
+
     ACRUILabel *lab = [[ACRUILabel alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
     lab.backgroundColor = [UIColor clearColor];
 
@@ -104,7 +109,9 @@
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
-        lab.isAccessibilityElement = YES;
+        if ([content.string stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet].length == 0) {
+            lab.accessibilityElementsHidden = YES;
+        }
     }
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;

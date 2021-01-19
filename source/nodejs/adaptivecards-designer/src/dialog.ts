@@ -1,4 +1,6 @@
-import * as Controls from "adaptivecards-controls";
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+import { Constants } from "adaptivecards-controls";
 
 export class DialogButton {
     onClick: (sender: DialogButton) => void;
@@ -26,6 +28,9 @@ export class DialogButton {
 export abstract class Dialog {
     private _overlayElement: HTMLElement;
     private _isOpen: boolean = false;
+    private _originalFocusedElement: HTMLElement;
+    private _firstFocusableElement: HTMLElement;
+    private _lastFocusableElement: HTMLElement;
 
     protected abstract renderContent(): HTMLElement;
 
@@ -36,6 +41,8 @@ export abstract class Dialog {
     title: string;
     width: string;
     height: string;
+    // flag to prevent dialog close on overlay element click, default it's set to false, for Pi2Card it will be set to true
+    preventLightDismissal: boolean = false;
 
     constructor() {
         this.closeButton = new DialogButton("Close");
@@ -46,35 +53,51 @@ export abstract class Dialog {
 
     open() {
         if (!this._isOpen) {
+            this._originalFocusedElement = document.activeElement as HTMLElement;
+
             this._overlayElement = document.createElement("div");
             this._overlayElement.className = "acd-dialog-overlay";
             this._overlayElement.onclick = (e) => {
                 // clicks on the overlay window should dismiss the dialog
-                this.close();
-            }
+                if (!this.preventLightDismissal) { this.close(); }
+            };
 
             let dialogFrameElement = document.createElement("div");
             dialogFrameElement.className = "acd-dialog-frame";
             dialogFrameElement.style.width = this.width;
             dialogFrameElement.style.height = this.height;
             dialogFrameElement.style.justifyContent = "space-between";
-            dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-modal", "true");
+            dialogFrameElement.setAttribute("role", "dialog");
             dialogFrameElement.setAttribute("aria-labelledby", "acd-dialog-title-element");
             dialogFrameElement.tabIndex = -1;
 
             dialogFrameElement.onclick = (e) => {
                 // disable click bubbling from the frame element -- otherwise it'll get to the overlay, closing the
                 // dialog unexpectedly
-                e.cancelBubble = true;
-
-                return false;
+                if (!this.preventLightDismissal) {
+                    e.cancelBubble = true;
+                    return false;
+                }
             }
 
             // keyboard navigation support
             dialogFrameElement.onkeydown = (e) => {
-                switch (e.keyCode) {
-                    case Controls.KEY_ESCAPE:
+                switch (e.key) {
+                    case Constants.keys.tab:
+                        if (e.shiftKey && document.activeElement === this._firstFocusableElement) {
+                            // backwards tab on first element. set focus on last
+                            e.preventDefault();
+                            this._lastFocusableElement.focus();
+                        }
+                        else if (!e.shiftKey && document.activeElement === this._lastFocusableElement) {
+                            // forward tab on last element
+                            e.preventDefault();
+                            this._firstFocusableElement.focus();
+                        }
+                        break;
+
+                    case Constants.keys.escape:
                         this.close();
                         e.preventDefault();
                         e.cancelBubble = true;
@@ -95,6 +118,9 @@ export abstract class Dialog {
             titleElement.id = "acd-dialog-title-element";
             titleElement.innerText = this.title;
             titleElement.style.flex = "1 1 auto";
+            titleElement.setAttribute("role", "heading");
+            titleElement.setAttribute("aria-level","1");
+            titleElement.tabIndex = -1;
 
             let xButton = document.createElement("button");
             xButton.className = "acd-icon acd-dialog-titleBar-button acd-icon-remove";
@@ -102,7 +128,8 @@ export abstract class Dialog {
             xButton.title = "Close";
             xButton.onclick = (e) => { this.close(); }
 
-            titleBarElement.append(titleElement, xButton);
+            titleBarElement.appendChild(titleElement);
+            titleBarElement.appendChild(xButton);
 
             let contentElement = this.renderContent();
             contentElement.style.flex = "1 1 auto";
@@ -119,7 +146,12 @@ export abstract class Dialog {
             this._overlayElement.appendChild(dialogFrameElement);
 
             document.body.appendChild(this._overlayElement);
-            dialogFrameElement.focus();
+
+            let focusableElements = dialogFrameElement.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+            this._firstFocusableElement = focusableElements[0] as HTMLElement;
+            this._lastFocusableElement = focusableElements[focusableElements.length-1] as HTMLElement;
+
+            this._firstFocusableElement.focus();
 
             this._isOpen = true;
         }
@@ -134,6 +166,9 @@ export abstract class Dialog {
             if (this.onClose) {
                 this.onClose(this);
             }
+            // Removing the focus action on close, it has been handled via onClose method of Dialog consume place.
+            // this._originalFocusedElement.focus();
+            this._originalFocusedElement = null;
         }
     }
 }

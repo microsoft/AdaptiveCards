@@ -6,9 +6,9 @@
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"ImageSet"` | Yes | Must be `"ImageSet"`. | 1.0 |
 | **images** | `Image[]` | Yes | The array of `Image` elements to show. | 1.0 |
-| **imageSize** | `ImageSize` | No | Controls the approximate size of each image. The physical dimensions will vary per host. | 1.0 |
+| **imageSize** | `ImageSize` | No, default: `"medium"` | Controls the approximate size of each image. The physical dimensions will vary per host. Auto and stretch are not supported for ImageSet. The size will default to medium if those values are set. | 1.0 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -33,10 +33,10 @@ The array of `Image` elements to show.
 
 ## imageSize
 
-Controls the approximate size of each image. The physical dimensions will vary per host.
+Controls the approximate size of each image. The physical dimensions will vary per host. Auto and stretch are not supported for ImageSet. The size will default to medium if those values are set.
 
 * **Type**: `ImageSize`
-* **Required**: No
+* **Required**: No, default: `"medium"`
 * **Allowed values**:
   * `"auto"`: Image will scale down to fit if needed, but will not scale up to fill the area.
   * `"stretch"`: Image with both scale down and up to fit as needed.
