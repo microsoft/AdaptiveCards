@@ -1,5 +1,5 @@
 /**
- * TextBlock Element.
+ * Custom TextBlock Element.
  * 
  * Refer https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/card-schema#schema-textblock
  */

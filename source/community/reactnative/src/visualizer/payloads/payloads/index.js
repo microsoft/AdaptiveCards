@@ -184,6 +184,10 @@ export default payloads = [
     "json": require('./CustomTextBlock.Rendering.json')
   },
   {
+    "title": "Custom.ActionButton.Rendering.json",
+    "json": require('./CustomActionButton.Rendering.json')
+  },
+  {
     "title": "CustomParsingTestUsingProgressBar.json",
     "json": require('./CustomParsingTestUsingProgressBar.json')
   },

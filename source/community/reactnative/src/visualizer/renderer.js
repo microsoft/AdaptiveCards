@@ -22,6 +22,7 @@ import * as Utils from '../utils/util';
 import * as Constants from './constants';
 import { CustomActionRenderer } from './custom-action-renderer';
 import { CustomTextBlockRenderer } from './custom-text-block';
+import { CustomActionButtonRenderer } from './custom-action-button';
 
 export default class Renderer extends React.Component {
 
@@ -124,6 +125,9 @@ export default class Renderer extends React.Component {
         //Register Custom Text Block Components
         Registry.getManager().registerComponent('CustomTextBlock', CustomTextBlockRenderer);
 
+//Register Custom Action Button Components
+Registry.getManager().registerComponent('CustomActionButton', CustomActionButtonRenderer);
+
         //Register Custom Actions
         Registry.getManager().registerComponent('Action.Custom', CustomActionRenderer);
         let { isJSONVisible } = this.state;
@@ -173,7 +177,7 @@ export default class Renderer extends React.Component {
                 ],
                 { cancelable: false }
             )
-        } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url)) {
+        } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url) || actionObject.type === "CustomActionButton") {
             Linking.canOpenURL(actionObject.url).then(supported => {
                 if (supported) {
                     Linking.openURL(actionObject.url).catch(() => {
