@@ -1,25 +1,32 @@
 {
-    "type": "AdaptiveCard",
-    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "version": "1.3",
-    "body": [
-        {
-            "type": "ColumnSet",
-            "columns":[
-                {
-                    "type": "Column",
-                    "verticalContentAlignment": "center",
-                    "items": [
-                        {
-                            "type": "Image",
-                            "url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
-                            "width": "10000px",
-                            "height": "2px"
-                        }
-                    ],
-                    "width": "stretch"
-                }
-            ]
-        }
-    ]
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This card's action will show another card"
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.ShowCard",
+			"title": "Action.ShowCard",
+			"card": {
+				"type": "AdaptiveCard",
+				"body": [
+					{
+						"type": "TextBlock",
+						"text": "What do you think?"
+					}
+				],
+				"actions": [
+					{
+						"type": "Action.Submit",
+						"title": "Neat!"
+					}
+				]
+			}
+		}
+	]
 }

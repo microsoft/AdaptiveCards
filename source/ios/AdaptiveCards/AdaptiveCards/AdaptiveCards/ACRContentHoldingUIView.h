@@ -7,6 +7,7 @@
 
 #import <UIKit/UIKit.h>
 #import "ACRImageProperties.h"
+#import "ACRContentStackView.h"
 
 const extern NSInteger eACRUILabelTag;
 const extern NSInteger eACRUIFactSetTag;
@@ -19,7 +20,7 @@ const extern NSInteger eACRUIImageTag;
 @property BOOL hidePlayIcon;
 @property BOOL isMediaType;
 
-- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView;
+- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView viewGroup:(ACRContentStackView *)viewGroup;
 - (void)update:(ACRImageProperties *)imageProperties;
 
 @end

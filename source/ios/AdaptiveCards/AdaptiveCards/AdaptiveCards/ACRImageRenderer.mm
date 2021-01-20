@@ -55,28 +55,17 @@
     NSMutableDictionary *imageViewMap = [rootView getImageMap];
     UIImage *img = imageViewMap[key];
 
-    ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
+    ACRImageProperties *imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig image:img];
     // try get an UIImageView
     UIImageView *view = [rootView getImageView:key];
     if (!view && img) {
         CGSize cgsize = imageProps.contentSize;
         // if an UIImage is available, but UIImageView is missing, create one
-        ACRUIImageView *acrImageView = [[ACRUIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
-        acrImageView.image = img;
-        if (imgElem->GetImageStyle() == ImageStyle::Person) {
-            acrImageView.isPersonStyle = YES;
-            [acrImageView setNeedsLayout];
-        }
-        view = acrImageView;
+        view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, cgsize.width, cgsize.height)];
+        view.image = img;
     }
 
-    if (view && img) {
-        // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
-        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
-    }
-
-    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] initWithImageProperties:imageProps imageView:view];
+    ACRContentHoldingUIView *wrappingView = [[ACRContentHoldingUIView alloc] initWithImageProperties:imageProps imageView:view viewGroup:(ACRContentStackView *)viewGroup];
 
     if (!view || !wrappingView) {
         [viewGroup addSubview:wrappingView];
@@ -89,8 +78,6 @@
     if (!backgroundColor.empty()) {
         view.backgroundColor = [ACOHostConfig convertHexColorCodeToUIColor:imgElem->GetBackgroundColor()];
     }
-
-    [wrappingView addSubview:view];
 
     [viewGroup addArrangedSubview:wrappingView];
 
@@ -157,6 +144,13 @@
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingView.isPersonStyle = YES;
     }
+
+    if (view && view.image) {
+        // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
+        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
+        [self configUpdateForUIImageView:acoElem config:acoConfig image:view.image imageView:view];
+    }
+
     return wrappingView;
 }
 
@@ -167,17 +161,18 @@
     if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
         superview = (ACRContentHoldingUIView *)imageView.superview;
         imageProps = superview.imageProperties;
+        [imageProps updateContentSize:image.size];
     }
 
     if (!imageProps) {
-        imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig];
+        imageProps = [[ACRImageProperties alloc] init:acoElem config:acoConfig image:image];
     }
 
-    [imageProps updateContentSize:image.size];
     CGSize cgsize = imageProps.contentSize;
 
     UILayoutPriority priority = [ACRImageRenderer getImageUILayoutPriority:imageView.superview];
     NSMutableArray<NSLayoutConstraint *> *constraints = [[NSMutableArray alloc] init];
+
     [constraints addObjectsFromArray:
                      @[
                          [NSLayoutConstraint constraintWithItem:imageView
@@ -195,6 +190,7 @@
                                                      multiplier:1.0
                                                        constant:cgsize.height]
                      ]];
+
     constraints[0].priority = priority;
     constraints[1].priority = priority;
 
@@ -219,11 +215,10 @@
         constraints[2].priority = priority + 2;
         constraints[3].priority = priority + 2;
     }
+
     [NSLayoutConstraint activateConstraints:constraints];
 
-    if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
-        ACRContentHoldingUIView *superview = (ACRContentHoldingUIView *)imageView.superview;
-        imageProps.contentSize = cgsize;
+    if (superview) {
         [superview update:imageProps];
     }
 }

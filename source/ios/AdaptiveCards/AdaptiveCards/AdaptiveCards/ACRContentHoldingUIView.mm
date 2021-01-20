@@ -20,10 +20,11 @@ const NSInteger eACRUIImageTag = 0x1236;
 using namespace AdaptiveCards;
 
 @implementation ACRContentHoldingUIView {
-    UIImageView *_imageView;
+    __weak UIImageView *_imageView;
+    __weak ACRContentStackView *_viewGroup;
 }
 
-- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView
+- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView viewGroup:(ACRContentStackView *)viewGroup
 {
     if (!imageProperties) {
         imageProperties = [[ACRImageProperties alloc] init];
@@ -34,6 +35,8 @@ using namespace AdaptiveCards;
     if (self) {
         self.imageProperties = imageProperties;
         _imageView = imageView;
+        _viewGroup = viewGroup;
+        [self addSubview:imageView];
     }
 
     return self;
@@ -53,9 +56,6 @@ using namespace AdaptiveCards;
         [subview.layer setCornerRadius:radius];
         [subview.layer setMasksToBounds:YES];
     }
-
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
 
     if (_isMediaType) {
         if (!_hidePlayIcon) {
@@ -132,32 +132,53 @@ using namespace AdaptiveCards;
         // The content view is UIImageView
     } else {
         CGSize frameSize = self.frame.size;
-        if (frameSize.width < self.imageProperties.contentSize.width) {
-            if (self.imageProperties.acrImageSize == ACRImageSizeLarge || self.imageProperties.acrImageSize == ACRImageSizeMedium || self.imageProperties.acrImageSize == ACRImageSizeSmall || self.imageProperties.acrImageSize == ACRImageSizeAuto || self.imageProperties.acrImageSize == ACRImageSizeStretch) {
-                CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
-                height = width * ratios.height;
-                width = frameSize.width;
-                self.imageProperties.contentSize = self.frame.size;
-                NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
-                hc.priority = 999;
-                hc.active = YES;
+        if (frameSize.width < self.imageProperties.contentSize.width && _imageView.image) {
+            if (self.imageProperties.acrImageSize != ACRImageSizeExplicit) {
+                [self updateIntrinsicContentSizeOfSelfAndViewGroup];
+                // set new height anchor to the height of new intrinsic contentsize
+                NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+                heightAnchor.priority = 999;
+                heightAnchor.active = YES;
+                // notify UIKit that the intrinsic contensize is updated
+                [_viewGroup invalidateIntrinsicContentSize];
             }
 
-        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch and frameSize.width != self.imageProperties.contentSize.width) {
+        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch && frameSize.width != self.imageProperties.contentSize.width && _imageView.image) {
             if (_imageView.image) {
-                CGSize ratios = getAspectRatio(_imageView.image.size);
-                height = width * ratios.height;
-                width = frameSize.width;
-                self.imageProperties.contentSize = self.frame.size;
-                NSLayoutConstraint *hc = [self.heightAnchor constraintEqualToConstant:height];
-                hc.priority = 999;
-                hc.active = YES;
-                NSLayoutConstraint *hc2 = [_imageView.heightAnchor constraintEqualToConstant:height];
-                hc2.priority = 999;
-                hc2.active = YES;
+                [self updateIntrinsicContentSizeOfSelfAndViewGroup];
+
+                // set new height anchor to the height of new intrinsic contentsize
+                NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+                heightAnchor.priority = 999;
+                heightAnchor.active = YES;
+
+                // set new height anchor to the height of new intrinsic contentsize
+                NSLayoutConstraint *imageViewHeightAnchor = [_imageView.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+                imageViewHeightAnchor.priority = 999;
+                imageViewHeightAnchor.active = YES;
+                // notify UIKit that the intrinsic contensize is updated
+                [_viewGroup invalidateIntrinsicContentSize];
             }
         }
     }
+}
+
+// update the intrinsic content size when the width become available
+- (void)updateIntrinsicContentSizeOfSelfAndViewGroup
+{
+    CGFloat width = self.frame.size.width;
+    CGFloat height = 1.0f;
+
+    CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
+    height = width * ratios.height;
+
+    // adjust intrinsic contentsize of superview
+    // substract the previous intrinsic content size from the view group
+    [_viewGroup decreaseIntrinsicContentSize:self];
+    // update it to the new value
+    self.imageProperties.contentSize = CGSizeMake(width, height);
+    // increase the view group's intrinsic content size by the new ICS
+    [_viewGroup increaseIntrinsicContentSize:self];
 }
 
 - (void)update:(ACRImageProperties *)imageProperties

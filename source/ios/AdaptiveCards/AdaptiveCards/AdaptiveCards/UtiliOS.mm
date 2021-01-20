@@ -62,8 +62,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
     }
 
     std::string imageUrl = backgroundImage->GetUrl();
-    NSString *key = [NSString stringWithCString:imageUrl.c_str()
-                                       encoding:[NSString defaultCStringEncoding]];
+    NSString *key = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())] stringValue];
     if ([key length]) {
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
@@ -94,9 +93,9 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView insertSubview:imgView atIndex:0];
 
-            if (img) {
+            if (imgView.image) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
+                applyBackgroundImageConstraints(backgroundImage.get(), imgView, imgView.image);
             }
         }
     }
@@ -104,7 +103,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
-{    
+{
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {

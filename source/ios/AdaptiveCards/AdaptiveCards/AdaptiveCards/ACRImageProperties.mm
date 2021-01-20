@@ -17,10 +17,10 @@
 
 - (instancetype)init
 {
-    return [self init:nil config:nil];
+    return [self init:nil config:nil image:nil];
 }
 
-- (instancetype)init:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig
+- (instancetype)init:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image
 {
     self = [super init];
     if (self) {
@@ -44,6 +44,9 @@
 
             self.acrImageSize = acrImageSize;
             self.contentSize = [acoConfig getImageSizeAsCGSize:acrImageSize width:self.pixelWidth height:self.pixelHeight];
+            if (image) {
+                [self updateContentSize:image.size];
+            }
             self.acrHorizontalAlignment = getACRHorizontalAlignment(imgElem->GetHorizontalAlignment());
         }
     }
@@ -90,4 +93,5 @@
         self.contentSize = newSize;
     }
 }
+
 @end

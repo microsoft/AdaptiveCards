@@ -21,7 +21,8 @@
 @property CGFloat pixelWidth;
 @property CGFloat pixelHeight;
 
-- (instancetype)init:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig;
+- (instancetype)init:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image;
+
 - (void)updateContentSize:(CGSize)size;
 
 @end

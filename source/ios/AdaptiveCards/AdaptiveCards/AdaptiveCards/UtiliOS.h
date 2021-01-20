@@ -5,6 +5,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
