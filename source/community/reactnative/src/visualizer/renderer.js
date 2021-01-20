@@ -129,7 +129,7 @@ export default class Renderer extends React.Component {
         //Register Custom Action Button Components
         Registry.getManager().registerComponent('CustomActionButton', CustomActionButtonRenderer);
 
-        //Register Custom Action Button Components
+        //Register Custom Image Components
         Registry.getManager().registerComponent('CustomImage', CustomImageRenderer);
 
         //Register Custom Actions
