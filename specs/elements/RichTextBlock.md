@@ -2,7 +2,7 @@
 
 # RichTextBlock
 
-**Introduced in version 1.2**
+#### Introduced in version 1.2
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -10,7 +10,7 @@
 | **inlines** | `Inline[]` | Yes | The array of inlines. | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal text alignment. | 1.2 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

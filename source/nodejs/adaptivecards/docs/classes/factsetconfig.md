@@ -15,8 +15,8 @@
 ### Properties
 
 * [spacing](factsetconfig.md#spacing)
-* [title](factsetconfig.md#title)
-* [value](factsetconfig.md#value)
+* [title](factsetconfig.md#readonly-title)
+* [value](factsetconfig.md#readonly-value)
 
 ## Constructors
 
@@ -40,12 +40,12 @@ Name | Type |
 
 ___
 
-###  title
+### `Readonly` title
 
 • **title**: *[FactTitleDefinition](facttitledefinition.md)* = new FactTitleDefinition()
 
 ___
 
-###  value
+### `Readonly` value
 
 • **value**: *[FactTextDefinition](facttextdefinition.md)* = new FactTextDefinition()

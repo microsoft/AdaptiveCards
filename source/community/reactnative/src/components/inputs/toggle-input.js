@@ -32,6 +32,7 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
+		this.altText = props.json.altText;
 
 		this.isValidationRequired = !!props.json.validation &&
 			(Enums.ValidationNecessity.Required == props.json.validation.necessity ||
@@ -77,7 +78,10 @@ export class ToggleInput extends React.Component {
 						}
 						return (
 							<View>
-								<View style={this.getComputedStyles(showErrors)}>
+								<View
+									accessible={true}
+									accessibilityLabel={this.altText}
+									style={this.getComputedStyles(showErrors)}>
 									<Label text={this.title} wrap={this.wrapText} style={styles.title} />
 									<Switch
 										style={styles.switch}

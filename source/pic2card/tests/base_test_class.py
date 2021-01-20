@@ -1,6 +1,7 @@
 import os
 import unittest
 import time
+import json
 from typing import Dict, List
 import numpy as np
 import cv2
@@ -12,12 +13,13 @@ from tests.utils import (
     payload_empty_dict_data,
     payload_data_some_string,
     generate_base64,
+    get_response,
+    api_dict
 )
 
 from app.api import app
 from mystique.predict_card import PredictCard
 from mystique.extract_properties import CollectProperties
-from mystique.card_layout.arrange_card import CardArrange
 from mystique.utils import load_od_instance
 
 curr_dir = os.path.dirname(__file__)
@@ -35,10 +37,17 @@ class BaseAPITest(unittest.TestCase):
         cls.empty_data = payload_empty_dict_data
         cls.wrong_data = payload_data_some_string
         cls.headers = headers
-
-    def setUp(self):
-        """ To know the time taken for each unittest """
-        self._started_at = time.time()
+        cls._started_at = time.time()
+        # api - add test class name in api_dict for new classes
+        cls.api = api_dict[cls.__name__]
+        # response
+        if cls.__name__ != "GetCardTemplatesTestAPI":
+            cls.response = get_response(cls.client, cls.api, cls.headers,
+                                        cls.data)
+        else:
+            cls.response = cls.client.get(cls.api)
+        # output
+        cls.output = json.loads(cls.response.data)
 
     def tearDown(self):
         """ To get the elapsed time for each test """
@@ -104,4 +113,9 @@ class BaseSetUpClass(unittest.TestCase):
             self.image, self.model_instance)
         self.test_coord1 = self.json_objects['objects'][0].get("coords", [])
         self.test_coord2 = self.json_objects['objects'][1].get("coords", [])
-        self.card_arrange = CardArrange()
+        self._started_at = time.time()
+
+    def tearDown(self):
+        """ To get the elapsed time for each test """
+        elapsed = time.time() - self._started_at
+        print('{} ({}s)'.format(self.id(), round(elapsed, 2)))
