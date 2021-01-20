@@ -184,6 +184,10 @@ export default payloads = [
     "json": require('./CustomTextBlock.Rendering.json')
   },
   {
+    "title": "Custom.Image.Rendering.json",
+    "json": require('./CustomImage.Rendering.json')
+  },
+  {
     "title": "Custom.ActionButton.Rendering.json",
     "json": require('./CustomActionButton.Rendering.json')
   },
