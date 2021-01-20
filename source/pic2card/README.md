@@ -11,8 +11,6 @@ Pic2Card is a solution for converting adaptive cards GUI design image into adapt
 ## Architecture
 ![Prediction Architecture](./images/architecture.png)
 
-## Integrated with Adaptivecard designer
-![Working Screenshot](./images/working1.jpg)
 
 ## Setup and Install pic2card 
 
