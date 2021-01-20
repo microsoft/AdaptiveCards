@@ -19,6 +19,7 @@ import { Label } from '../elements';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
+import InputLabel from "./input-label";
 
 export class ToggleInput extends React.Component {
 
@@ -32,6 +33,7 @@ export class ToggleInput extends React.Component {
 		this.valueOff = props.json.valueOff || Constants.FalseString;
 		this.value = props.json.value || this.valueOff;
 		this.id = props.json.id || Constants.ToggleValueOn
+		this.label = props.json.label;
 		this.altText = props.json.altText;
 
 		this.isValidationRequired = !!props.json.validation &&
@@ -78,6 +80,7 @@ export class ToggleInput extends React.Component {
 						}
 						return (
 							<View>
+								<InputLabel label={this.label}/>
 								<View
 									accessible={true}
 									accessibilityLabel={this.altText}

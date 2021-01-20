@@ -56,3 +56,8 @@ export const ErrorMessage = "Required";
 
 export const TypeColumnSet = "ColumnSet";
 export const TypeAdaptiveCard = "AdaptiveCard";
+export const TypeTextBlock = "TextBlock";
+export const TypeRichTextBlock = "RichTextBlock";
+
+export const TypeString = "string";
+export const TypeObject = "object"

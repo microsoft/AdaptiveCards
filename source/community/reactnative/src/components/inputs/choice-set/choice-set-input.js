@@ -23,6 +23,7 @@ import * as Constants from '../../../utils/constants';
 import * as Enums from '../../../utils/enums';
 import { StyleManager } from '../../../styles/style-config';
 import { HostConfigManager } from '../../../utils/host-config';
+import InputLabel from "../input-label";
 
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";
@@ -41,6 +42,7 @@ export class ChoiceSetInput extends React.Component {
 		this.value = props.json.value;
 		this.choices = [];
 		this.payload = props.json;
+		this.label = Constants.EmptyString;
 
 		this.isValidationRequired = !!this.payload.validation &&
 			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
@@ -71,6 +73,7 @@ export class ChoiceSetInput extends React.Component {
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
 		this.wrapText = this.payload.wrap || false
+		this.label = this.payload.label;
 	}
 
 	validate = () => {
@@ -283,9 +286,10 @@ export class ChoiceSetInput extends React.Component {
 
 		this.parseHostConfig();
 
-		let {
+		const {
 			isMultiSelect,
 			style,
+			label
 		} = this
 
 		onPress = () => {
@@ -298,6 +302,7 @@ export class ChoiceSetInput extends React.Component {
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
 					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel label={label} />
 						<View
 							accessible={true}
 							accessibilityLabel={this.payload.altText}
@@ -319,7 +324,7 @@ export class ChoiceSetInput extends React.Component {
 	 * @param showErrors show errors based on this flag.
 	 */
 	getComputedStyles = (showErrors) => {
-		let computedStyles = [];
+		let computedStyles = [styles.choiceSetView];
 		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
 			computedStyles.push(this.styleConfig.borderAttention);
 			computedStyles.push({ borderWidth: 1 });
@@ -331,6 +336,10 @@ export class ChoiceSetInput extends React.Component {
 const styles = StyleSheet.create({
 	containerView: {
 		alignSelf: Constants.AlignStretch,
+		marginVertical: 3,
+	},
+	choiceSetView: {
+		marginTop: 3
 	},
 	pickerContainer: {
 		backgroundColor: Constants.EmphasisColor,
