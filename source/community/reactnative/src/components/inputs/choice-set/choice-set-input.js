@@ -43,13 +43,7 @@ export class ChoiceSetInput extends React.Component {
 		this.choices = [];
 		this.payload = props.json;
 		this.label = Constants.EmptyString;
-
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
-		this.validationRequiredWithVisualCue = (!this.payload.validation ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.isRequired = this.payload.isRequired || false;
 
 		this.state = {
 			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ?
@@ -59,7 +53,7 @@ export class ChoiceSetInput extends React.Component {
 			activeIndex: undefined,
 			checked: undefined,
 			checkedValues: undefined,
-			isError: this.isValidationRequired ? this.validate() : false
+			isError: this.isRequired ? this.validate() : false
 		}
 	}
 
@@ -267,7 +261,7 @@ export class ChoiceSetInput extends React.Component {
 								checkedArray.push(item.value)
 							}
 							let newValue = checkedArray.sort().join()
-							let isError = this.isValidationRequired ? checkedArray.length < 1 : false;
+							let isError = this.isRequired ? checkedArray.length < 1 : false;
 							this.setState({ checkedValues: newValue, isError: isError })
 							addInputItem(this.id, { value: newValue, errorState: isError });
 						}
@@ -300,13 +294,13 @@ export class ChoiceSetInput extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem, showErrors }) => (
+				{({ addInputItem }) => (
 					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel label={label} />
+						<InputLabel isRequired={this.isRequired} label={label} />
 						<View
 							accessible={true}
 							accessibilityLabel={this.payload.altText}
-							style={this.getComputedStyles(showErrors)}>
+							style={styles.choiceSetView}>
 							{!isMultiSelect ?
 								((style == CompactStyle || style == undefined) ?
 									this.renderPickerComponent(addInputItem) :
@@ -317,19 +311,6 @@ export class ChoiceSetInput extends React.Component {
 					</ElementWrapper>)}
 			</InputContextConsumer>
 		);
-	}
-
-	/**
-	 * @description get styles for showing validation errors
-	 * @param showErrors show errors based on this flag.
-	 */
-	getComputedStyles = (showErrors) => {
-		let computedStyles = [styles.choiceSetView];
-		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
-			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({ borderWidth: 1 });
-		}
-		return computedStyles;
 	}
 }
 

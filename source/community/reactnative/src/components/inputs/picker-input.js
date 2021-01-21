@@ -38,15 +38,10 @@ export class PickerInput extends React.Component {
 		this.label = Constants.EmptyString;
 		this.parseHostConfig();
 
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
-		this.validationRequiredWithVisualCue = (!this.payload.validation ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.isRequired = this.payload.isRequired || false;
 
 		this.state = {
-			isError: this.isValidationRequired && !this.props.value
+			isError: this.isRequired && !this.props.value
 		}
 	}
 
@@ -61,7 +56,7 @@ export class PickerInput extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		this.setState({ isError: this.isValidationRequired && !newProps.value })
+		this.setState({ isError: this.isRequired && !newProps.value })
 	}
 
 	render() {
@@ -90,7 +85,7 @@ export class PickerInput extends React.Component {
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
 					<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel label={label}/>
+						<InputLabel isRequired={this.isRequired} label={label} />
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View
@@ -146,7 +141,7 @@ export class PickerInput extends React.Component {
 	 */
 	getComputedStyles = (showErrors) => {
 		let computedStyles = [];
-		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
+		if (this.state.isError && showErrors && this.isRequired) {
 			computedStyles.push(this.styleConfig.borderAttention);
 			computedStyles.push({ borderWidth: 1 });
 		}
@@ -160,7 +155,7 @@ const styles = StyleSheet.create({
 		marginTop: 3,
 	},
 	elementWrapper: {
-		marginVertical : 3
+		marginVertical: 3
 	},
 	overlay: {
 		flex: 1,

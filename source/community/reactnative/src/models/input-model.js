@@ -7,9 +7,10 @@ export class BaseInputModel extends BaseModel {
         this.placeholder = payload.placeholder;
         this.value = payload.value;
         this.inlineAction = payload.inlineAction;
-        this.validation = payload.validation;
         this.label = payload.label;
         this.altText = payload.altText;
+        this.errorMessage = payload.errorMessage;
+        this.isRequired = payload.isRequired;
     }
 }
 
@@ -21,6 +22,7 @@ export class TextInputModel extends BaseInputModel {
         this.isMultiline = payload.isMultiline || false;
         this.maxLength = payload.maxLength;
         this.style = payload.style;
+        this.regex = payload.regex;
     }
 
 }
@@ -64,7 +66,7 @@ export class ToggleInputModel extends BaseInputModel {
         this.title = payload.title;
         this.valueOff = payload.valueOff;
         this.valueOn = payload.valueOn;
-        this.value = payload.value === payload.valueOn;
+        this.value = payload.value;
         this.wrap = payload.wrap;
     }
 }
