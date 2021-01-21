@@ -181,7 +181,7 @@ export default class Renderer extends React.Component {
                 ],
                 { cancelable: false }
             )
-        } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url) || actionObject.type === "CustomActionButton") {
+        } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url)) {
             Linking.canOpenURL(actionObject.url).then(supported => {
                 if (supported) {
                     Linking.openURL(actionObject.url).catch(() => {
@@ -205,7 +205,7 @@ export default class Renderer extends React.Component {
     alertAction = (actionObject) => {
         Alert.alert(
             'Action',
-            JSON.stringify(actionObject),
+            JSON.stringify(actionObject.data) + "\ntype: " + actionObject.type,
             [
                 { text: "Okay", onPress: () => console.log('OK Pressed') },
             ],

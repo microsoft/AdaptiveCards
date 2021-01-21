@@ -15,7 +15,10 @@
                     "type": "CustomActionButton",
                     "title": "View",
                     "url": "https://msn.com",
-                    "style": "positive"
+                    "style": "positive",
+                    "data":{
+                        "value":"someValue"
+                    }
                 },
                 {
                     "type": "Action.ShowCard",

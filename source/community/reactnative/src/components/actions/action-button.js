@@ -99,11 +99,8 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
-				//As per the AC schema, ShowCard action type is not supported by selectAction.
-				if (this.payload.type != Constants.ActionShowCard) {
-					//Invoked for the custom action type. 
-					this.onExecuteAction(this.payload);
-				}
+				//Invoked for the custom action type.
+				this.onExecuteAction(this.payload);
 				break;
 		}
 	}
