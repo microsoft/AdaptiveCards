@@ -9,6 +9,7 @@ import * as DesignerPeers from "./designer-peers";
 import { OpenSampleDialog } from "./open-sample-dialog";
 import { HostContainer } from "./containers/host-container";
 import { adaptiveCardSchema } from "./adaptive-card-schema";
+import { OpenImageDialog } from "./open-image-dialog";
 import { FullScreenHandler } from "./fullscreen-handler";
 import { Toolbar, ToolbarButton, ToolbarChoicePicker, ToolbarElementAlignment } from "./toolbar";
 import { IPoint, Utils, defaultHostConfig } from "./miscellaneous";
@@ -623,14 +624,15 @@ export class CardDesigner extends Designer.DesignContext {
                 dialog.width = "80%";
                 dialog.height = "80%";
                 dialog.onClose = (d) => {
-                    if (dialog.selectedSample) {
+                    if (dialog.selectedSample && dialog.selectedSample.cardId !== "PIC_2_CARD") {
+                        const newCardButton = this._newCardButton.renderedElement;
                         dialog.selectedSample.onDownloaded = () => {
                             try {
                                 let cardPayload = JSON.parse(dialog.selectedSample.cardPayload);
 
                                 this.setCardPayload(cardPayload, true);
                             } catch {
-                                alert("The sample could not be loaded.")
+                                alert("The sample could not be loaded.");
                             }
 
                             if (dialog.selectedSample.sampleData) {
@@ -639,19 +641,23 @@ export class CardDesigner extends Designer.DesignContext {
 
                                     this.setSampleDataPayload(sampleDataPayload);
                                     this.dataStructure = FieldDefinition.deriveFrom(sampleDataPayload);
-                                }
-                                catch {
+                                } catch {
                                     alert("The sample could not be loaded.")
                                 }
                             }
                         };
                         dialog.selectedSample.download();
-                    }
+                        if (newCardButton) {
+                            newCardButton.focus();
+                        }
+                    } else if (dialog.selectedSample && dialog.selectedSample.cardId === "PIC_2_CARD") {
+                        this.launchImagePopup();
+                    } else {
+                        const newCardButton = this._newCardButton.renderedElement;
 
-                    const newCardButton = this._newCardButton.renderedElement;
-
-                    if (newCardButton) {
-                        newCardButton.focus();
+                        if (newCardButton) {
+                            newCardButton.focus();
+                        }
                     }
                 };
                 dialog.open();
@@ -741,6 +747,36 @@ export class CardDesigner extends Designer.DesignContext {
 
             this.updateFullLayout();
         }
+    }
+
+    private launchImagePopup() {
+        let dialog = new OpenImageDialog();
+        dialog.title = "Pic2card Dialog for Image Upload";
+        dialog.closeButton.caption = "Cancel";
+        dialog.preventLightDismissal = true;
+        dialog.width = "80%";
+        dialog.height = "80%";
+        dialog.open();
+        dialog.onClose = (d) => {
+            if(dialog.predictedCardJSON) {
+                const { card, data } = dialog.predictedCardJSON;
+                const addToUndoStack = true;
+                const newCardButton = this._newCardButton.renderedElement;
+
+                if (newCardButton) {
+                    newCardButton.focus();
+                }
+
+                this.setCardPayload(card, addToUndoStack);
+                this.setSampleDataPayload(data);
+            } else {
+                const newCardButton = this._newCardButton.renderedElement;
+
+                if (newCardButton) {
+                    newCardButton.focus();
+                }
+            }
+        };
     }
 
     private onResize() {

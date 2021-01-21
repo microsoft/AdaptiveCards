@@ -28,6 +28,9 @@
   - [TypeName](#F-AdaptiveCards-AdaptiveActionSet-TypeName 'AdaptiveCards.AdaptiveActionSet.TypeName')
   - [Actions](#P-AdaptiveCards-AdaptiveActionSet-Actions 'AdaptiveCards.AdaptiveActionSet.Actions')
   - [Type](#P-AdaptiveCards-AdaptiveActionSet-Type 'AdaptiveCards.AdaptiveActionSet.Type')
+- [AdaptiveAssociatedInputs](#T-AdaptiveCards-AdaptiveAssociatedInputs 'AdaptiveCards.AdaptiveAssociatedInputs')
+  - [Auto](#F-AdaptiveCards-AdaptiveAssociatedInputs-Auto 'AdaptiveCards.AdaptiveAssociatedInputs.Auto')
+  - [None](#F-AdaptiveCards-AdaptiveAssociatedInputs-None 'AdaptiveCards.AdaptiveAssociatedInputs.None')
 - [AdaptiveBackgroundImage](#T-AdaptiveCards-AdaptiveBackgroundImage 'AdaptiveCards.AdaptiveBackgroundImage')
   - [#ctor()](#M-AdaptiveCards-AdaptiveBackgroundImage-#ctor 'AdaptiveCards.AdaptiveBackgroundImage.#ctor')
   - [#ctor(url)](#M-AdaptiveCards-AdaptiveBackgroundImage-#ctor-System-String- 'AdaptiveCards.AdaptiveBackgroundImage.#ctor(System.String)')
@@ -387,6 +390,7 @@
   - [Small](#F-AdaptiveCards-AdaptiveSpacing-Small 'AdaptiveCards.AdaptiveSpacing.Small')
 - [AdaptiveSubmitAction](#T-AdaptiveCards-AdaptiveSubmitAction 'AdaptiveCards.AdaptiveSubmitAction')
   - [TypeName](#F-AdaptiveCards-AdaptiveSubmitAction-TypeName 'AdaptiveCards.AdaptiveSubmitAction.TypeName')
+  - [AssociatedInputs](#P-AdaptiveCards-AdaptiveSubmitAction-AssociatedInputs 'AdaptiveCards.AdaptiveSubmitAction.AssociatedInputs')
   - [Data](#P-AdaptiveCards-AdaptiveSubmitAction-Data 'AdaptiveCards.AdaptiveSubmitAction.Data')
   - [DataJson](#P-AdaptiveCards-AdaptiveSubmitAction-DataJson 'AdaptiveCards.AdaptiveSubmitAction.DataJson')
   - [Type](#P-AdaptiveCards-AdaptiveSubmitAction-Type 'AdaptiveCards.AdaptiveSubmitAction.Type')
@@ -637,6 +641,7 @@
   - [EmptyLabelInRequiredInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-EmptyLabelInRequiredInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.EmptyLabelInRequiredInput')
   - [InvalidLanguage](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-InvalidLanguage 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.InvalidLanguage')
   - [MaxActionsExceeded](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-MaxActionsExceeded 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.MaxActionsExceeded')
+  - [NoErrorMessageForValidatedInput](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput')
   - [UnsupportedSchemaVersion](#F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion 'AdaptiveCards.AdaptiveWarning.WarningStatusCode.UnsupportedSchemaVersion')
 
 <a name='T-AdaptiveCards-Rendering-ActionsConfig'></a>
@@ -863,6 +868,31 @@ The actions contained within this ActionSet.
 ##### Summary
 
 The JSON property name that this class implements.
+
+<a name='T-AdaptiveCards-AdaptiveAssociatedInputs'></a>
+## AdaptiveAssociatedInputs `type`
+
+##### Namespace
+
+AdaptiveCards
+
+##### Summary
+
+Controls which inputs are associated with a given submit action
+
+<a name='F-AdaptiveCards-AdaptiveAssociatedInputs-Auto'></a>
+### Auto `constants`
+
+##### Summary
+
+Gathers and validates inputs from the current card and any parent cards
+
+<a name='F-AdaptiveCards-AdaptiveAssociatedInputs-None'></a>
+### None `constants`
+
+##### Summary
+
+Does not gather or validate any inputs on submit
 
 <a name='T-AdaptiveCards-AdaptiveBackgroundImage'></a>
 ## AdaptiveBackgroundImage `type`
@@ -4222,6 +4252,13 @@ Submit action gathers up input fields, merges with optional data field and gener
 
 *Inherit from parent.*
 
+<a name='P-AdaptiveCards-AdaptiveSubmitAction-AssociatedInputs'></a>
+### AssociatedInputs `property`
+
+##### Summary
+
+Controls which inputs are associated with the submit action
+
 <a name='P-AdaptiveCards-AdaptiveSubmitAction-Data'></a>
 ### Data `property`
 
@@ -6414,6 +6451,13 @@ The supplied language was not valid.
 ##### Summary
 
 The maximum number of [AdaptiveAction](#T-AdaptiveCards-AdaptiveAction 'AdaptiveCards.AdaptiveAction')s was exceeded.
+
+<a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-NoErrorMessageForValidatedInput'></a>
+### NoErrorMessageForValidatedInput `constants`
+
+##### Summary
+
+An input has validation properties set, but no error message to display to users
 
 <a name='F-AdaptiveCards-AdaptiveWarning-WarningStatusCode-UnsupportedSchemaVersion'></a>
 ### UnsupportedSchemaVersion `constants`

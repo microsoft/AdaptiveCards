@@ -2216,6 +2216,7 @@ export class Media extends CardElement {
                 this.renderedElement.appendChild(mediaPlayerElement);
 
                 mediaPlayerElement.play();
+                mediaPlayerElement.focus();
             }
         }
         else {
@@ -3700,8 +3701,6 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
-    // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
@@ -3735,7 +3734,7 @@ export abstract class Action extends CardObject {
     protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
-        if (!this.ignoreInputValidation && referencedInputs) {
+        if (referencedInputs) {
             for (let key of Object.keys(referencedInputs)) {
                 let input = referencedInputs[key];
 
@@ -3917,10 +3916,6 @@ export abstract class Action extends CardObject {
         }
     }
 
-    get ignoreInputValidation(): boolean {
-        return true;
-    }
-
     get hostConfig(): HostConfig {
         return this.parent ? this.parent.hostConfig : defaultHostConfig;
     }
@@ -3934,12 +3929,27 @@ export class SubmitAction extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
+    static readonly associatedInputsProperty = new CustomProperty(
+        Versions.v1_3,
+        "associatedInputs",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let value = source[property.name];
+
+            if (value !== undefined && typeof value === "string") {
+                return value === "none" ? "none" : "auto";
+            }
+            
+            return undefined;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
+            context.serializeValue(target, property.name, value);
+        });
 
     @property(SubmitAction.dataProperty)
     private _originalData?: PropertyBag;
 
-    @property(Action.ignoreInputValidationProperty)
-    private _ignoreInputValidation: boolean = false;
+    @property(SubmitAction.associatedInputsProperty)
+    associatedInputs?: "auto" | "none";
 
     //#endregion
 
@@ -3952,18 +3962,21 @@ export class SubmitAction extends Action {
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
         let result: Dictionary<Input> = {};
-        let current: CardElement | undefined = this.parent;
-        let inputs: Input[] = [];
 
-        while (current) {
-            inputs = inputs.concat(current.getAllInputs(false));
+        if (this.associatedInputs !== "none") {
+            let current: CardElement | undefined = this.parent;
+            let inputs: Input[] = [];
 
-            current = current.parent;
-        }
+            while (current) {
+                inputs = inputs.concat(current.getAllInputs(false));
 
-        for (let input of inputs) {
-            if (input.id) {
-                result[input.id] = input;
+                current = current.parent;
+            }
+
+            for (let input of inputs) {
+                if (input.id) {
+                    result[input.id] = input;
+                }
             }
         }
 
@@ -3993,14 +4006,6 @@ export class SubmitAction extends Action {
 
     getJsonTypeName(): string {
         return SubmitAction.JsonTypeName;
-    }
-
-    get ignoreInputValidation(): boolean {
-        return this._ignoreInputValidation;
-    }
-
-    set ignoreInputValidation(value: boolean) {
-        this._ignoreInputValidation = value;
     }
 
     get data(): object | undefined {
@@ -4229,12 +4234,7 @@ export class HttpAction extends Action {
     static readonly bodyProperty = new StringWithSubstitutionProperty(Versions.v1_0, "body");
     static readonly methodProperty = new StringProperty(Versions.v1_0, "method");
     static readonly headersProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "headers", HttpHeader);
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(Action.ignoreInputValidationProperty);
-    }
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(HttpAction.urlProperty)
     private _url: StringWithSubstitutions;
@@ -4248,7 +4248,7 @@ export class HttpAction extends Action {
     @property(HttpAction.headersProperty)
     headers: HttpHeader[];
 
-    @property(Action.ignoreInputValidationProperty)
+    @property(HttpAction.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
 
     //#endregion

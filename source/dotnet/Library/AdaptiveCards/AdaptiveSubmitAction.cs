@@ -36,6 +36,16 @@ namespace AdaptiveCards
         public object Data { get; set; }
 
         /// <summary>
+        ///     Controls which inputs are associated with the submit action
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlAttribute]
+#endif
+        [DefaultValue(typeof(AdaptiveAssociatedInputs), "auto")]
+        public AdaptiveAssociatedInputs AssociatedInputs { get; set; }
+
+        /// <summary>
         /// Get or set the data as a JSON string.
         /// </summary>
         [JsonIgnore]

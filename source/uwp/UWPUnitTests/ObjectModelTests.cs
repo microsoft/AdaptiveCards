@@ -780,14 +780,15 @@ namespace UWPUnitTests
                 IconUrl = "http://www.stuff.com/icon.jpg",
                 Id = "OpenUrlId",
                 Style = "Destructive",
-                Title = "Title"
+                Title = "Title",
+                AssociatedInputs = AssociatedInputs.None
             };
 
             ValidateBaseActionProperties(submitAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
             Assert.AreEqual(dataJson, submitAction.DataJson);
 
             var jsonString = submitAction.ToJson().ToString();
-            Assert.AreEqual("{\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
+            Assert.AreEqual("{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
         }
 
         [TestMethod]

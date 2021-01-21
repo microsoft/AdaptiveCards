@@ -1,17 +1,9 @@
 import unittest
-import json
 from tests.base_test_class import BaseAPITest
 
 
 class GetCardTemplatesTestAPI(BaseAPITest):
     """tests for get_card_templates"""
-
-    @classmethod
-    def setUpClass(cls):
-        super(GetCardTemplatesTestAPI, cls).setUpClass()
-        cls.api = "/get_card_templates"
-        cls.response = cls.client.get(cls.api)
-        cls.output = json.loads(cls.response.data)
 
     def test_status_code(self):
         """ checks if the response has a success status code 200 """
