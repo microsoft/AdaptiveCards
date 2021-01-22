@@ -4,6 +4,19 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
+// To work around TypeScript complaining about documentMode not being declared
+// on type Document
+declare global {
+    interface Document {
+        documentMode?: any;
+    }
+}
+
+export function isInternetExplorer(): boolean {
+    // The documentMode property only exists in IE
+    return window.document.documentMode !== undefined;
+}
+
 export function isMobileOS(): boolean {
     let userAgent = window.navigator.userAgent;
 
