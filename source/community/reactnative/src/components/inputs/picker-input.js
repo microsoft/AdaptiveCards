@@ -21,6 +21,7 @@ import * as Constants from '../../utils/constants';
 import * as Enums from '../../utils/enums';
 import { StyleManager } from '../../styles/style-config';
 import { HostConfigManager } from '../../utils/host-config';
+import InputLabel from "./input-label";
 
 export class PickerInput extends React.Component {
 
@@ -34,6 +35,7 @@ export class PickerInput extends React.Component {
 		this.placeHolder = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.modalButtonText = Constants.DoneString;
+		this.label = Constants.EmptyString;
 		this.parseHostConfig();
 
 		this.isValidationRequired = !!this.payload.validation &&
@@ -55,6 +57,7 @@ export class PickerInput extends React.Component {
 		this.id = this.payload.id;
 		this.type = this.payload.type;
 		this.placeholder = this.payload.placeholder;
+		this.label = this.payload.label;
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -70,7 +73,8 @@ export class PickerInput extends React.Component {
 			id,
 			type,
 			placeholder,
-			modalButtonText
+			modalButtonText,
+			label
 		} = this;
 
 		if (!id || !type) {
@@ -85,7 +89,8 @@ export class PickerInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem, showErrors }) => (
-					<ElementWrapper json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
+					<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel label={label}/>
 						<TouchableOpacity style={styles.inputWrapper} onPress={this.props.showPicker}>
 							{/* added extra view to fix touch event in ios . */}
 							<View
@@ -152,7 +157,10 @@ export class PickerInput extends React.Component {
 const styles = StyleSheet.create({
 	inputWrapper: {
 		width: Constants.FullWidth,
-		marginTop: 15,
+		marginTop: 3,
+	},
+	elementWrapper: {
+		marginVertical : 3
 	},
 	overlay: {
 		flex: 1,
