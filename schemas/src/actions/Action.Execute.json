@@ -1,0 +1,17 @@
+{
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Action, ISelectAction",
+	"description": "Gathers input fields, merges with optional data field, and sends an event to the client. Clients process the event by sending an Invoke activity of type adaptiveCard/action to the target Bot. The inputs that are gathered are those on the current card, and in the case of a show card those on any parent cards. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details.",
+    "version": "1.4",
+	"properties": {
+		"data": {
+			"type": "string|object",
+			"description": "Initial data that input fields will be combined with. These are essentially ‘hidden’ properties."
+		},
+		"associatedInputs": {
+			"type": "AssociatedInputs",
+			"description": "Controls which inputs are associated with the action.",
+			"default": "auto"
+		}
+	}
+}

@@ -4,12 +4,26 @@
 	"properties": {
 		"version": {
 			"type": "string",
-		"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+			"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
 			"examples": [
 			"1.0",
 			"1.1",
 			"1.2"
 			]
+		},
+		"refresh": {
+			"description": "Defines how the card can be refreshed by making a request to the target Bot.",
+			"properties": {
+				"action": {
+					"type": "Action",
+					"description": "The action to be executed to refresh the card. Clients can run this refresh action automatically or can provide an affordance for users to trigger it manually."
+				},
+				"userIds": {
+					"type": "string[]",
+					"description": "A list of user Ids informing the client for which users should the refresh action should be run automatically. Some clients will not run the refresh action automatically unless this property is specified. Some clients may ignore this property and always run the refresh action automatically.",
+				}
+			},
+			"version": "1.4"
 		},
 		"body": {
 			"type": "Element[]",
