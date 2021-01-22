@@ -50,6 +50,7 @@ The inline action for the input. Typically displayed to the right of the input. 
 * **Version** : 1.2
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`
