@@ -97,6 +97,7 @@ An Action that will be invoked when the `Column` is tapped or selected. `Action.
 * **Version** : 1.1
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`
