@@ -132,7 +132,7 @@ typedef void (^validator)(ACRImageProperties *, TestParam);
         adaptiveImage->SetPixelHeight(testParam.pixelHeight);
         adaptiveImage->SetHorizontalAlignment(testParam.horizontalAlignment);
         ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveImage];
-        ACRImageProperties *imageProperty = [[ACRImageProperties alloc] init:acoElem config:_defaultHostConfig];
+        ACRImageProperties *imageProperty = [[ACRImageProperties alloc] init:acoElem config:_defaultHostConfig image:nil];
         validators[i](imageProperty, testParam);
         i++;
     }
@@ -160,7 +160,7 @@ typedef void (^validator)(ACRImageProperties *, TestParam);
     adaptiveImage->SetUrl("https://bing.com");
     adaptiveImage->SetImageSize(ImageSize::Small);
     ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveImage];
-    NSArray *imagePropsBuiltWithNilArguments = @[ [[ACRImageProperties alloc] init:nil config:_defaultHostConfig], [[ACRImageProperties alloc] init:acoElem config:nil], [[ACRImageProperties alloc] init:nil config:nil] ];
+    NSArray *imagePropsBuiltWithNilArguments = @[ [[ACRImageProperties alloc] init:nil config:_defaultHostConfig image:nil], [[ACRImageProperties alloc] init:acoElem config:nil image:nil], [[ACRImageProperties alloc] init:nil config:nil image:nil] ];
     // CGSizeZero not available in x86
     CGSize zeroSize = CGSizeMake(0.0f, 0.0f);
     [imagePropsBuiltWithNilArguments enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
