@@ -130,9 +130,9 @@ using namespace AdaptiveCards;
             }
         }
         // The content view is UIImageView
-    } else {
+    } else if (_imageView.image) {
         CGSize frameSize = self.frame.size;
-        if (frameSize.width < self.imageProperties.contentSize.width && _imageView.image) {
+        if (frameSize.width < self.imageProperties.contentSize.width) {
             if (self.imageProperties.acrImageSize != ACRImageSizeExplicit) {
                 [self updateIntrinsicContentSizeOfSelfAndViewGroup];
                 // set new height anchor to the height of new intrinsic contentsize
@@ -143,22 +143,20 @@ using namespace AdaptiveCards;
                 [_viewGroup invalidateIntrinsicContentSize];
             }
 
-        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch && frameSize.width != self.imageProperties.contentSize.width && _imageView.image) {
-            if (_imageView.image) {
-                [self updateIntrinsicContentSizeOfSelfAndViewGroup];
+        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch && frameSize.width != self.imageProperties.contentSize.width) {
+            [self updateIntrinsicContentSizeOfSelfAndViewGroup];
 
-                // set new height anchor to the height of new intrinsic contentsize
-                NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
-                heightAnchor.priority = 999;
-                heightAnchor.active = YES;
+            // set new height anchor to the height of new intrinsic contentsize
+            NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+            heightAnchor.priority = 999;
+            heightAnchor.active = YES;
 
-                // set new height anchor to the height of new intrinsic contentsize
-                NSLayoutConstraint *imageViewHeightAnchor = [_imageView.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
-                imageViewHeightAnchor.priority = 999;
-                imageViewHeightAnchor.active = YES;
-                // notify UIKit that the intrinsic contensize is updated
-                [_viewGroup invalidateIntrinsicContentSize];
-            }
+            // set new height anchor to the height of new intrinsic contentsize
+            NSLayoutConstraint *imageViewHeightAnchor = [_imageView.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+            imageViewHeightAnchor.priority = 999;
+            imageViewHeightAnchor.active = YES;
+            // notify UIKit that the intrinsic contensize is updated
+            [_viewGroup invalidateIntrinsicContentSize];
         }
     }
 }
