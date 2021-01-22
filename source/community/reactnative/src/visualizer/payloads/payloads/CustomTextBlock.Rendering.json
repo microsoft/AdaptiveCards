@@ -10,7 +10,7 @@
             "size": "medium"
         },
         {
-            "type": "CustomTextBlock",
+            "type": "TextBlock",
             "text": "Text Block with custom style",
             "weight": "bolder",
             "size": "medium",

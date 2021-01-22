@@ -10,18 +10,19 @@ export class ModelFactory {
         if (!payload) {
             return undefined;
         }
-        if(payload.requires) {
+        if (payload.requires) {
             let requirements = new HostCapabilities(payload.requires)
             let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
-            if(requirements.satisfied(hostCapabilities)) {
-                return this.getElement(payload, parent)
+            if (requirements.satisfied(hostCapabilities)) {
+                const elementPayload = this.getElement(payload, parent);
+                return this.addCustomPropertyInModel(elementPayload, payload)
             } else {
                 return ModelFactory.checkForFallBack(payload, parent);
             }
         } else {
-            return this.getElement(payload, parent)
+            const elementPayload = this.getElement(payload, parent);
+            return this.addCustomPropertyInModel(elementPayload, payload)
         }
-        
     }
 
     static getElement(payload, parent) {
@@ -75,18 +76,23 @@ export class ModelFactory {
                 //Handling registered custom components
                 const Element = Registry.getManager().getComponentOfType(payload.type);
                 if (Element) {
-                    var baseModel = new BaseModel(payload,parent)
-                    for (let key in payload) { 
-                        if (payload.hasOwnProperty(key)) { 
-                            baseModel[key] = payload[key]; 
-                        } 
-                    } 
-                    return baseModel;
+                    const elementPayload = new BaseModel(payload, parent);
+                    return this.addCustomPropertyInModel(elementPayload, payload)
                 } else {
                     return ModelFactory.checkForFallBack(payload, parent);
                 }
         }
     }
+
+    static addCustomPropertyInModel(elementModel, payload) {
+        for (let key in payload) {
+            if (!elementModel.hasOwnProperty(key)) {
+                elementModel[key] = payload[key];
+            }
+        }
+        return elementModel
+    }
+
     static createGroup(payload, parent) {
         let modelGroup = [];
         if (payload && payload.length > 0) {
@@ -100,16 +106,16 @@ export class ModelFactory {
         return modelGroup;
     }
 
-    static checkForFallBack (payload, parent) {
-        if (!Utils.isNullOrEmpty(payload.fallback)){
-            if (payload.fallback !== "drop"){
+    static checkForFallBack(payload, parent) {
+        if (!Utils.isNullOrEmpty(payload.fallback)) {
+            if (payload.fallback !== "drop") {
                 return ModelFactory.createElement(payload.fallback, parent);
             }
-            else{
+            else {
                 return undefined;
-            }  
+            }
         } else {
             return undefined;
-        }  
+        }
     }
 }

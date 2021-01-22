@@ -124,7 +124,7 @@ export default class Renderer extends React.Component {
         Registry.getManager().registerComponent('RatingBlock', RatingRenderer);
 
         //Register Custom Text Block Components
-        Registry.getManager().registerComponent('CustomTextBlock', CustomTextBlockRenderer);
+        // Registry.getManager().registerComponent('TextBlock', CustomTextBlockRenderer);
 
         //Register Custom Action Button Components
         Registry.getManager().registerComponent('CustomActionButton', CustomActionButtonRenderer);
