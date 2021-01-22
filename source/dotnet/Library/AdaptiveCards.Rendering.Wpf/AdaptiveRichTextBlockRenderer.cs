@@ -2,17 +2,12 @@
 // Licensed under the MIT License.
 using System;
 using System.Globalization;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Data;
-using System.Windows.Markup;
 using System.Windows.Media;
-using Microsoft.MarkedNet;
-using System.IO;
-using System.Xml;
-using System.Drawing.Text;
+using System.Windows.Automation;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
@@ -44,6 +39,11 @@ namespace AdaptiveCards.Rendering.Wpf
                 };
 
                 textRunSpan = selectActionLink as Span;
+
+                if (textRun.SelectAction.Title != null)
+                {
+                    AutomationProperties.SetName(textRunSpan, textRun.SelectAction.Title);
+                }
             }
             else
             {
