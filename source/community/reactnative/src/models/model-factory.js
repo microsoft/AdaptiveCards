@@ -14,14 +14,14 @@ export class ModelFactory {
             let requirements = new HostCapabilities(payload.requires)
             let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
             if (requirements.satisfied(hostCapabilities)) {
-                const elementPayload = this.getElement(payload, parent);
-                return this.addCustomPropertyInModel(elementPayload, payload)
+                const elementModel = this.getElement(payload, parent);
+                return this.addCustomPropertyInModel(elementModel, payload)
             } else {
                 return ModelFactory.checkForFallBack(payload, parent);
             }
         } else {
-            const elementPayload = this.getElement(payload, parent);
-            return this.addCustomPropertyInModel(elementPayload, payload)
+            const elementModel = this.getElement(payload, parent);
+            return this.addCustomPropertyInModel(elementModel, payload)
         }
     }
 
@@ -76,8 +76,8 @@ export class ModelFactory {
                 //Handling registered custom components
                 const Element = Registry.getManager().getComponentOfType(payload.type);
                 if (Element) {
-                    const elementPayload = new BaseModel(payload, parent);
-                    return this.addCustomPropertyInModel(elementPayload, payload)
+                    const elementModel = new BaseModel(payload, parent);
+                    return this.addCustomPropertyInModel(elementModel, payload)
                 } else {
                     return ModelFactory.checkForFallBack(payload, parent);
                 }
