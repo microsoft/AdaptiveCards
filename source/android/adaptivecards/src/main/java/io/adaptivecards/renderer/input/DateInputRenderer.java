@@ -84,7 +84,7 @@ public class DateInputRenderer extends TextInputRenderer
                 ((!dateInput.GetMin().isEmpty()) || (!dateInput.GetMax().isEmpty())));
 
         editText.setSingleLine();
-        editText.setInputType(TYPE_NULL);
+        editText.setRawInputType(TYPE_NULL);
         editText.setOnClickListener(new View.OnClickListener()
         {
             @Override
