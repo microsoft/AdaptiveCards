@@ -5,35 +5,31 @@
  */
 
 import React from 'react';
-import {
-    StyleSheet
-} from 'react-native';
-import ElementWrapper from '../components/elements/element-wrapper';
 import { TextBlock } from '../components/elements/text-block';
-import * as Constants from '../utils/constants';
 
 export class CustomTextBlockRenderer extends React.Component {
 
     render() {
         let payload = this.props.json;
-
         if (payload.isVisible === false) {
             return null;
         }
 
+        let textStyle = {};
+        switch (payload.subType) {
+            case 'subTypeGreen':
+                textStyle = { color: "green" };
+                break;
+            case 'subTypeRed':
+                textStyle = { color: "red" };
+                break;
+            case 'subTypeBlue':
+                textStyle = { color: "blue" };
+                break;
+        }
         return (
-            <ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
-                <TextBlock json={payload} style={{ color: "green" }} />
-            </ElementWrapper>
+            <TextBlock json={payload} style={textStyle} />
         );
     }
 }
-
-const styles = StyleSheet.create({
-    textContainer: {
-        width: Constants.FullWidth,
-        alignItems: Constants.CenterString,
-        backgroundColor: 'transparent',
-    }
-});
 
