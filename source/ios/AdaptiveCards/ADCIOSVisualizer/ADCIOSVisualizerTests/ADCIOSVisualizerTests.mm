@@ -655,4 +655,27 @@
     XCTAssertNotNil(toggleView);
 }
 
+- (void)testBackGroundImageNullCheck
+{
+    renderBackgroundImage(nil, nil, nil);
+    XCTAssertTrue(YES);
+
+    auto backgroundImage = BackgroundImage();
+    renderBackgroundImage(&backgroundImage, nil, nil);
+    XCTAssertTrue(YES);
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+    renderBackgroundImage(&backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    UIImage *image = [UIImage imageNamed:@"Adaptive1.0.png"];
+    renderBackgroundImage(&backgroundImage, imageView, image);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(&backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(&backgroundImage, nil, image);
+    XCTAssertTrue(YES);
+}
 @end

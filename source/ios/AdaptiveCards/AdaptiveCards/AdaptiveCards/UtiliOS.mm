@@ -104,6 +104,10 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
+    if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
+        return;
+    }
+
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
