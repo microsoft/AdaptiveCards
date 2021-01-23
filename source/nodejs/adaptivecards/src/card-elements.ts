@@ -1015,8 +1015,20 @@ export class TextBlock extends BaseTextBlock {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines && this.maxLines > 0) {
-                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
+
+                    if (Utils.isInternetExplorer() || !GlobalSettings.useWebkitLineClamp) {
+                        element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
+                    }
+                    else {
+                        // While non standard, --webkit-line-clamp works in every browser (except IE)
+                        // and is a great solution to support the maxLines feature with ellipsis
+                        // truncation. With --webkit-line-clamp there is need to use explicit line heights
+                        element.style.removeProperty("line-height");
+                        element.style.display = "-webkit-box";
+                        element.style.webkitBoxOrient = "vertical";
+                        element.style.webkitLineClamp = this.maxLines.toString();
+                    }
                 }
             }
             else {
@@ -3995,7 +4007,7 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.id) {
+                if (input.id && input.isSet()) {
                     this._processedData[input.id] = typeof input.value === "string" ? input.value : input.value.toString();
                 }
             }
