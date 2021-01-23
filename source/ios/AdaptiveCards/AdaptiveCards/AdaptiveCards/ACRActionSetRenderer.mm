@@ -174,7 +174,10 @@
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
 
-    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor multiplier:1.0].active = YES;
+    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
+    if (ActionsOrientation::Vertical == adaptiveActionConfig.actionsOrientation) {
+        [containingView.widthAnchor constraintEqualToAnchor:childview.widthAnchor].active = YES;
+    }
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     containingView.stretch = adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch;

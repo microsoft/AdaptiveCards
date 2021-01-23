@@ -99,6 +99,8 @@
     ACRButton *button = [bundle loadNibNamed:nibNameButton owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
+    button.titleLabel.numberOfLines = 0;
+    button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     button.isAccessibilityElement = YES;
     button.accessibilityLabel = title;
 
@@ -113,6 +115,7 @@
     NSDictionary *imageViewMap = [rootView getImageMap];
     NSString *key = [NSString stringWithCString:action->GetIconUrl().c_str() encoding:[NSString defaultCStringEncoding]];
     UIImage *img = imageViewMap[key];
+    UIEdgeInsets insets = button.contentEdgeInsets;
 
     if (img) {
         UIImageView *iconView = [[ACRUIImageView alloc] init];
@@ -139,8 +142,10 @@
     } else {
         // button's intrinsic content size is determined by title size and content edge
         // add corner radius to content size by adding it to content edge inset
-        [button setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding + button.layer.cornerRadius, config.buttonPadding, config.buttonPadding + button.layer.cornerRadius)];
+        [button setContentEdgeInsets:UIEdgeInsetsMake(insets.top, insets.left + button.layer.cornerRadius, insets.bottom, insets.right + button.layer.cornerRadius)];
     }
+    
+    [button.heightAnchor constraintGreaterThanOrEqualToAnchor:button.titleLabel.heightAnchor constant:insets.top + insets.bottom].active = YES;
 
     return button;
 }
