@@ -62,8 +62,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
     }
 
     std::string imageUrl = backgroundImage->GetUrl();
-    NSString *key = [NSString stringWithCString:imageUrl.c_str()
-                                       encoding:[NSString defaultCStringEncoding]];
+    NSString *key = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())] stringValue];
     if ([key length]) {
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
@@ -94,9 +93,9 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView insertSubview:imgView atIndex:0];
 
-            if (img) {
+            if (imgView.image) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
+                applyBackgroundImageConstraints(backgroundImage.get(), imgView, imgView.image);
             }
         }
     }
@@ -779,4 +778,55 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
         key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
     }
     return key;
+}
+
+CGSize getAspectRatio(CGSize size)
+{
+    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
+    if (size.width > 0) {
+        heightToWidthRatio = size.height / size.width;
+    }
+
+    if (size.height > 0) {
+        widthToHeightRatio = size.width / size.height;
+    }
+    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
+}
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
+{
+    if (hasExplicitDimensions) {
+        return ACRImageSizeExplicit;
+    }
+
+    switch (adaptiveImageSize) {
+        case ImageSize::None:
+            return ACRImageSizeNone;
+        case ImageSize::Auto:
+            return ACRImageSizeAuto;
+        case ImageSize::Stretch:
+            return ACRImageSizeStretch;
+        case ImageSize::Small:
+            return ACRImageSizeSmall;
+        case ImageSize::Medium:
+            return ACRImageSizeMedium;
+        case ImageSize::Large:
+            return ACRImageSizeLarge;
+        default:
+            return ACRImageSizeAuto;
+    }
+}
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment)
+{
+    switch (horizontalAlignment) {
+        case HorizontalAlignment::Left:
+            return ACRLeft;
+        case HorizontalAlignment::Center:
+            return ACRCenter;
+        case HorizontalAlignment::Right:
+            return ACRRight;
+        default:
+            return ACRLeft;
+    }
 }

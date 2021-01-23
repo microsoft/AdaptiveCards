@@ -6,8 +6,12 @@
 //
 
 #import "ACRContentHoldingUIView.h"
+#import "ACOBaseCardElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACREnums.h"
 #import "ACRUILabel.h"
 #import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
 
 const NSInteger eACRUILabelTag = 0x1234;
 const NSInteger eACRUIFactSetTag = 0x1235;
@@ -15,11 +19,32 @@ const NSInteger eACRUIImageTag = 0x1236;
 
 using namespace AdaptiveCards;
 
-@implementation ACRContentHoldingUIView
+@implementation ACRContentHoldingUIView {
+    __weak UIImageView *_imageView;
+    __weak ACRContentStackView *_viewGroup;
+}
+
+- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView viewGroup:(ACRContentStackView *)viewGroup
+{
+    if (!imageProperties) {
+        imageProperties = [[ACRImageProperties alloc] init];
+    }
+
+    CGRect frame = CGRectMake(0, 0, imageProperties.contentSize.width, imageProperties.contentSize.height);
+    self = [super initWithFrame:frame];
+    if (self) {
+        self.imageProperties = imageProperties;
+        _imageView = imageView;
+        _viewGroup = viewGroup;
+        [self addSubview:imageView];
+    }
+
+    return self;
+}
 
 - (CGSize)intrinsicContentSize
 {
-    return self.desiredContentSize;
+    return self.imageProperties ? self.imageProperties.contentSize : [super intrinsicContentSize];
 }
 
 - (void)layoutSubviews
@@ -104,6 +129,61 @@ using namespace AdaptiveCards;
                 [layer removeFromSuperlayer];
             }
         }
+        // The content view is UIImageView
+    } else if (_imageView.image) {
+        CGSize frameSize = self.frame.size;
+        if (frameSize.width < self.imageProperties.contentSize.width) {
+            if (self.imageProperties.acrImageSize != ACRImageSizeExplicit) {
+                [self updateIntrinsicContentSizeOfSelfAndViewGroup];
+                // set new height anchor to the height of new intrinsic contentsize
+                NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+                heightAnchor.priority = 999;
+                heightAnchor.active = YES;
+                // notify UIKit that the intrinsic contensize is updated
+                [_viewGroup invalidateIntrinsicContentSize];
+            }
+
+        } else if (self.imageProperties.acrImageSize == ACRImageSizeStretch && frameSize.width != self.imageProperties.contentSize.width) {
+            [self updateIntrinsicContentSizeOfSelfAndViewGroup];
+
+            // set new height anchor to the height of new intrinsic contentsize
+            NSLayoutConstraint *heightAnchor = [self.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+            heightAnchor.priority = 999;
+            heightAnchor.active = YES;
+
+            // set new height anchor to the height of new intrinsic contentsize
+            NSLayoutConstraint *imageViewHeightAnchor = [_imageView.heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
+            imageViewHeightAnchor.priority = 999;
+            imageViewHeightAnchor.active = YES;
+            // notify UIKit that the intrinsic contensize is updated
+            [_viewGroup invalidateIntrinsicContentSize];
+        }
+    }
+}
+
+// update the intrinsic content size when the width become available
+- (void)updateIntrinsicContentSizeOfSelfAndViewGroup
+{
+    CGFloat width = self.frame.size.width;
+    CGFloat height = 1.0f;
+
+    CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
+    height = width * ratios.height;
+
+    // adjust intrinsic contentsize of superview
+    // substract the previous intrinsic content size from the view group
+    [_viewGroup decreaseIntrinsicContentSize:self];
+    // update it to the new value
+    self.imageProperties.contentSize = CGSizeMake(width, height);
+    // increase the view group's intrinsic content size by the new ICS
+    [_viewGroup increaseIntrinsicContentSize:self];
+}
+
+- (void)update:(ACRImageProperties *)imageProperties
+{
+    if (imageProperties) {
+        self.imageProperties = imageProperties;
+        [self invalidateIntrinsicContentSize];
     }
 }
 

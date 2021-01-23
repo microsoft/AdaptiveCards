@@ -14,13 +14,12 @@
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
 #import "CustomActionSetRenderer.h"
-#import "CustomImageRenderer.h"
 #import "CustomInputNumberRenderer.h"
 #import "CustomProgressBarRenderer.h"
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
-const CGFloat kAdaptiveCardsWidth = 330;
+const CGFloat kAdaptiveCardsWidth = 360;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
@@ -125,8 +124,6 @@ const CGFloat kAdaptiveCardsWidth = 330;
                                  cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
                                  cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:[CustomImageRenderer getInstance]
-                                 cardElementType:ACRImage];
         [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
