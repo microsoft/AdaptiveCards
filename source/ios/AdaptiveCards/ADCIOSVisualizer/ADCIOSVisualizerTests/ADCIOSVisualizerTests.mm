@@ -7,8 +7,10 @@
 
 #import "AdaptiveCards/ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCards/ACOBaseActionElementPrivate.h"
+#import "AdaptiveCards/ACOBaseCardElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
 #import "AdaptiveCards/OpenUrlAction.h"
