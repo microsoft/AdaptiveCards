@@ -1,43 +1,76 @@
 import React from "react";
+import {
+	StyleSheet,
+	Text,
+	View
+} from 'react-native';
 import { Label } from '../elements';
 import { Registry } from '../registration/registry';
 import { StyleManager } from '../../styles/style-config';
+import { HostConfigManager } from '../../utils/host-config';
 import * as Constants from '../../utils/constants';
-import * as Utils from '../../utils/util';
+import { isNullOrEmpty } from '../../utils/util';
+import { TextColor, ContainerStyle } from '../../utils/enums';
 
 export default class InputLabel extends React.Component {
 
 	styleConfig = StyleManager.getManager().styles;
+	hostConfig = HostConfigManager.getHostConfig();
 
 	constructor(props) {
 		super(props);
 		this.label = props.label || Constants.EmptyString;
 		this.wrap = props.wrap || false;
 		this.style = props.style || {};
+		this.isRequired = props.isRequired || false;
 	}
 
 	render() {
 		const { label, wrap, style } = this;
-		if (label == Constants.EmptyString) return null;
-		else {
+		let inputLabel = null;
+		if (label != Constants.EmptyString) {
 			if (typeof label == Constants.TypeString) {
-				return (
+				inputLabel = (
 					<Label
 						text={label}
 						style={[this.styleConfig.defaultFontConfig, style]}
 						wrap={wrap} />
 				);
 			} else if (typeof label == Constants.TypeObject && this.isValidLabelType(label.type)) {
-				let children = [];
-				if (!Utils.isNullOrEmpty(label)) {
-					children = Registry.getManager().parseRegistryComponents([label], this.context.onParseError);
+				let element = [];
+				if (!isNullOrEmpty(label)) {
+					element = Registry.getManager().parseRegistryComponents([label], this.context.onParseError);
 				}
-				return children.map((ChildElement, index) => React.cloneElement(ChildElement));
-			} else return null;
+				if (element.length > 0) inputLabel = React.cloneElement(element[0]);
+			}
 		}
+		if (inputLabel) {
+			return (
+				<View style={styles.container}>
+					<View>{inputLabel}</View>
+					{this.isRequired && this.getRedAsterisk()}
+				</View>
+			);
+		} else return inputLabel;
 	}
 
 	isValidLabelType = type => {
-		return !Utils.isNullOrEmpty(type) && (type == Constants.TypeTextBlock || type == Constants.TypeRichTextBlock);
+		return !isNullOrEmpty(type) && (type == Constants.TypeTextBlock || type == Constants.TypeRichTextBlock);
+	}
+
+	getRedAsterisk = () => {
+		const colorDefinition = this.hostConfig.getTextColorForStyle(TextColor.Attention, ContainerStyle.Default);
+		return (<Text style={[styles.redAsterisk, { color: colorDefinition.default }]}>*</Text>);
 	}
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flexDirection: Constants.FlexRow,
+		marginLeft: 5
+	},
+	redAsterisk: {
+		marginLeft: 2,
+		alignSelf: Constants.CenterString
+	}
+});

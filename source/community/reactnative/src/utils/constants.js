@@ -14,6 +14,8 @@ export const Auto = 'auto';
 export const Repeat = 'repeat';
 export const Absolute = "absolute";
 export const Resize = "resize";
+export const ReturnDone = 'done';
+export const ReturnDefault = 'default'
 
 export const NoneString = "none";
 export const DoneString = 'Done';
@@ -61,3 +63,4 @@ export const TypeRichTextBlock = "RichTextBlock";
 
 export const TypeString = "string";
 export const TypeObject = "object"
+export const InlineAction = "inline-action";
