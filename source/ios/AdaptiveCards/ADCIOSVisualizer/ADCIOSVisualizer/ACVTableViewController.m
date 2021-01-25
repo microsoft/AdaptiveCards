@@ -9,6 +9,7 @@
 
 @implementation ACVTableViewController {
     NSArray<NSString *> *pathsToFiles;
+    CGFloat selectedRow;
 }
 
 - (void)viewDidLoad
@@ -16,6 +17,8 @@
     [super viewDidLoad];
 
     NSBundle *main = [NSBundle mainBundle];
+    
+    selectedRow = -1;
 
     [_delegate source:self
            userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
@@ -47,8 +50,11 @@
         [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
                                   encoding:NSUTF8StringEncoding
                                      error:nil];
-    [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
     if (!self.IsCollapsed) {
+        if (selectedRow != indexPath.row) {
+            [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
+        }
+        selectedRow = indexPath.row;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         CGFloat height = cell.frame.size.height;
         self.tableHeight.active = NO;
