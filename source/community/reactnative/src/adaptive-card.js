@@ -199,7 +199,7 @@ export default class AdaptiveCard extends React.Component {
 		// checks if selectAction option is available for adaptive card
 		if (!Utils.isNullOrEmpty(this.payload.selectAction)) {
 			adaptiveCardContent = (
-				<SelectAction style={styles.container} selectActionData={this.payload.selectAction}>
+				<SelectAction selectActionData={this.payload.selectAction}>
 					{adaptiveCardContent}
 				</SelectAction>
 			);
