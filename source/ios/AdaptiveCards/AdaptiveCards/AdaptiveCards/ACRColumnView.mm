@@ -85,7 +85,8 @@
 - (UIView *)addPaddingSpace
 {
     UIView *blankTrailingSpace = [[UIView alloc] init];
-    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
     [self addArrangedSubview:blankTrailingSpace];
     return blankTrailingSpace;
 }

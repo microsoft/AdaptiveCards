@@ -177,3 +177,227 @@ Rendering presents another avenue by which inconsistencies can sneak into Adapti
 * [3364](https://github.com/microsoft/AdaptiveCards/issues/3364) - [JavaScript] actionAligment doesn't default to stretch
 * [3365](https://github.com/microsoft/AdaptiveCards/issues/3365) - [.NET WPF] testVarientHostConfig returns an error
 
+## Mobile Inconsistecies
+
+### Abstract
+
+This design spec categorized inconsistency bugs by their broader underlining causes. Mobile refers to Android and iOS. iOS and Android has a common JSON parser component that is also shared by UWP. If the problem is appears in the mobile platform, it may also appear in UWP.
+
+#### Inconsistency Categories
+
+1. [Gap in the Design](#gap-in-the-design)
+ * Design does not cover all possible scenarios
+5. [Gap in the User Knowledge](#gap-in-the-user-knowledge)
+ * Users misunderstood features
+ * Users general unfamiliarity to platforms
+7. [Differences in Parsing](#differences-in-parsing)
+ * Handling of invalid values are different across platforms
+ * JS renderer, for example, is more lenient toward invalid values whereas UWP will not produce a card when it sees an invalid values in the card
+6. [Differences in Platforms](#difference-in-platforms)
+ * Platform A doesn't support feature x
+ * It's not feasible to support the feature due to performances
+8. [Differences in handling invalid values in Rendering](#differences-in-handling-invalid-values-in-rendering)
+ * Shared models would not render an element if the element contains bad values
+ * JS renderers renders portion of the element if it's possible
+1. [Bug or Implementation Issue](#bug)
+ * Renderers do not implement features as specified by the spec
+1. Native Styling
+ * Desktop (JS) provides well accepted and understood way of customizing UI components
+ * Android / iOS generally lack customization
+ * This state may be reflection of different philosophy, Internet (JS) vs fractured wall gardens of Android and iOS. 
+2. Markdown
+ * Desktop (JS) and mobile (Android / iOS) use different markdown engines; and they behave differently
+
+### Results
+ 
+
+|[Gap in The Design](#gap-in-the-design)|[Gap in the User Knowledge](#gap-in-user-knowledge)|
+|:-------------------------------------:| ------------------------------------------------- | 
+|    4                                  |                                                   |                                       
+|                                       |                                                   |
+
+#### Gap In the Design
+We haven't specified behaviors for user scenarios.
+
+* https://github.com/microsoft/AdaptiveCards/issues/4483
+ The spec has not specified what happens when buttons overflow the avaiable width. In iOS, Button is streched as much as its content width, then horizontal scroll is enabled. Android wraps contents inside the button. 
+
+![iOS](https://user-images.githubusercontent.com/4774656/83798129-c384d880-a671-11ea-9402-51f5f4bdfa20.png "iOS") ![Android](https://user-images.githubusercontent.com/4774656/83798099-b536bc80-a671-11ea-83f8-a4b7b3935866.png "Android")
+
+
+* https://github.com/microsoft/AdaptiveCards/issues/3885
+
+ Compact Style Input.ChoiceSet with multi select disabled does not support place holder text in our original spec, but as other input supports placeholder text, it's logical for the Input.ChoiceSet to have the placeholder text.
+"Select an Option" is the placeholder text in the example below.
+
+
+![JS](https://user-images.githubusercontent.com/60354515/77798800-93c9bb00-7099-11ea-92ea-29c37ef3800e.PNG "JS") ![iOS](https://user-images.githubusercontent.com/60354515/77798810-99270580-7099-11ea-8539-b192a10a7d48.png "iOS")
+
+* https://github.com/microsoft/AdaptiveCards/issues/4531
+
+ SelectActions in TextRun of RichTextBlock have different styles for iOS and JS renderers.  The spec hasn't specified the sytle for the selectAction. 
+![JS](https://user-images.githubusercontent.com/8917620/89295530-c9e9fd80-d67e-11ea-9f72-b44bb20f8d9c.png) ![iOS](https://user-images.githubusercontent.com/8917620/89295553-cf474800-d67e-11ea-85d2-fac8b5070502.png)
+
+* https://github.com/microsoft/AdaptiveCards/issues/3362
+
+ This is the simmilar issue to 4531, the difference is 3362 raises an issue of the lack of the style that indicates the SelectAction whereas in 4531, raised an issue of incosistent styles. This shows that the importance of the process where we take time to re-spec and address the shortcoming in the spec.
+
+#### Differences in Parsing
+
+ There are several differences in parsing between renderers.
+
+*Fixed*
+
+* https://github.com/microsoft/AdaptiveCards/issues/4043 
+
+  Different renders render images with "auto" size in ImageSet differently
+
+* https://github.com/microsoft/AdaptiveCards/issues/3702
+  Given a TextBlock with "text" that has zero length string such as "", some renderers render a TextBlock with the empty text while others doesn't render the TextBlock
+
+*Open Issues*
+
+* https://github.com/microsoft/AdaptiveCards/issues/3949
+
+ Mobile won't parse a card if titles are missing in FactSet while JS will parse & render a card with empty title.
+
+* https://github.com/microsoft/AdaptiveCards/issues/4478
+
+ Mobile won't parse a card if TextBlock doesn't have text in it.
+
+#### Solution
+- AdaptiveCards parsers will stop parsing only when continuing the parsing is not possible.
+
+ - Malformed payload (e.g. invalid json, not an adaptivecard, etc.)
+
+  In such case, the parsers shall raise a parse error to host app
+
+- bad or incorrect values for given AdaptiveCards properties shall raise parse warnings to host app, and continue parsing 
+
+-  Host app can choose whether to attempt rendering or not, despite parse warnings
+
+#### Application
+- Trying the solution to the fixed issues
+
+ [#4043](https://github.com/microsoft/AdaptiveCards/issues/4043), parsers should parse successfully since the payload was valid althouth the size property had invalid and unsupported value that was "auto"
+
+ [#3702](https://github.com/microsoft/AdaptiveCards/issues/3702), parsers should parse successfully since the payload was valid. TextBlock's text was missing, and parsers should produce warnings.
+
+- Interpolation
+
+ [#3949](https://github.com/microsoft/AdaptiveCards/issues/3949), parser should parse, and produce warning if the title is required property 
+
+ [#4478](https://github.com/microsoft/AdaptiveCards/issues/4478), parser should parse, and should produce warning since text is required property
+
+#### Differences in handling invalid values in Rendering
+Renders handle an invalid or out of spec values for an AdaptiveCards property diverges. This inconsistency often associated with differences in parsing. 
+
+*Fixed Issues*
+
+* https://github.com/microsoft/AdaptiveCards/issues/4043 
+
+  Different renders render images with "auto" size in ImageSet differently
+
+*  https://github.com/microsoft/AdaptiveCards/issues/3702
+
+ JS renderer drops TextBlock with zero length text. iOS & Android render the TextBlock
+
+*Open Issues*
+
+* https://github.com/microsoft/AdaptiveCards/issues/3949
+
+ Mobile won't parse a card if titles are missing in FactSet while JS will parse & render a card with empty title.
+
+* https://github.com/microsoft/AdaptiveCards/issues/4478
+
+ Mobile won't parse a card if TextBlock doesn't have text in it.
+
+#### Solution
+With our decision made for closing the inconistency in parsing, renderesr will see invalid values for a AdaptiveCards property. 
+It's essential that renderers have unified ways of handling the invalid values.
+If the payload contained the invalid values, the prased card will have warnings according to our decision made for closing parsing gap.
+
+If host app chose not to render, we stop here
+
+If host app chooses to continue, we make a "best-effort" render, as described below
+
+ `Render Error` - cannot render element, will skip
+ 
+ `Render Warning` - bad value, but will try to render element uisng default values
+
+* No renderer found for given `type` 
+ - trigger `AdaptiveCards` fallback
+ - This is the only trigger for the fallback
+ - If fallback defined, raise `Render Warning`, attempt to render fallback
+ - If no fallback, raise `Render Error`
+
+* Required property
+ - Property is not given, is null, is empty, or has invalid value
+ - Raise `Render Error`, skip element
+
+* Optional property (all such properties should have a default)
+ - Property is not given or is null
+  - No error, use the default value, render element
+
+ - Property has invalid value (e.g. invalid enum, invalid URI, etc.)
+  - `Raise Render Warning`, use default value, render element
+
+ - Property is empty (e.g. "", [])
+  - enums, handle this like an invalid value
+  - For other types, handle this like not given/null
+
+#### Application
+- Trying the solution to the fixed issues
+
+ [#4043](https://github.com/microsoft/AdaptiveCards/issues/4043), ImageSet element has invalid enum "auto", renders shall raise `Render Warning`, and render the ImageSet with default value for the size
+
+ [#3702](https://github.com/microsoft/AdaptiveCards/issues/3702), TextBlock has the empty value for the required property, "text", render should raise `Render Error` and skip the element
+
+- Interpolation
+
+ [#3949](https://github.com/microsoft/AdaptiveCards/issues/3949), must decide if titles or values are required or optional properties
+
+ [#4478](https://github.com/microsoft/AdaptiveCards/issues/4478), A TextBlock doesn't have required property text, render should raise `Render Error` and skip the element
+
+#### Gap in the User Knowledge
+Users were not familiar with AdaptiveCards and its schema
+* https://github.com/microsoft/AdaptiveCards/issues/4483
+
+ Users were not aware of the existance of the "wrap" property in the TextBlock. When the text was clipped, they were surprised.
+
+ If a text wrap property is set true as default value, people does not need to learn about the existence of the wrap property. 
+* https://github.com/microsoft/AdaptiveCards/issues/3855
+
+ Users set "auto" for both columns. One column has text in it. The other column has the button. With auto and auto, the text's long width end up taking all the width. We can improve our implementation such that a column won't get pushed out. However, as it can be shown in the issue, even with the improved implementation, the card will end up looking bad. The right values for the columns should have been stretch for the text and auto for the button, such that the column with the text will shrank and the column with the button maintain its width. 
+
+* Possible solution to narrow the gap in the user knowledge is that we do our do diligence and provide the most sensible default values. Text Wrap property makes the perfect sense as the default value since users rarely want the texts in their cards are clipped. For the issue 3855, we could provide "stretch" as a width for stretch for the column, and all else "auto".
+
+* Users want to customize the buttons' look. They were able to customize background and radius of buttons in the desktop (JS), but users were not able to achieve the look they want using what we offered.
+
+* AdaptiveCards schema allows Buttons to have icons such as chevrons. Users claimed that iOS / Android can't have chevron.
+
+* UI interaction model are different in platforms and have their own peculiarities. The behavior described in the slide is standard behavior of iOS as provided by UIKit. Customers want to be able to change the background color of the picker view. 
+
+* iOS & Android support  only subset of the Markdowns while JS renderers supports the Markdown fully 
+
+ Handling of new lines are different from platform to platforms.
+	
+#### Solution
+There are varying degree of support for native styling. Android, for example, doesn't support native styling. iOS's native styling support is not as extensive as CSS in JS. We can better document the process, but also supporting the styles as shareable extensions can reduce the pressure on our team as we can provide a solution as a form of extension and share it.
+	
+
+#### Differences in Platform
+Platform has various degree of what works and what doesn't work.
+
+https://github.com/microsoft/AdaptiveCards/issues/4015
+	• Font weight is not supported on Android. Font weight was not formally supported via an API in the old platform
+
+
+#### Bug
+It's a bug on our end. We didn't implement features to our design specifications. In the picture below, When date is selected, the date picker view doesn't close on its own.  
+
+
+https://github.com/microsoft/AdaptiveCards/issues/4687
+	• Background Image is squashed.
+https://github.com/microsoft/AdaptiveCards/issues/4484
+	• Not all inputs honor placeholder text.

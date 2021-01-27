@@ -5,6 +5,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -89,3 +90,9 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
+
+CGSize getAspectRatio(CGSize size);
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
