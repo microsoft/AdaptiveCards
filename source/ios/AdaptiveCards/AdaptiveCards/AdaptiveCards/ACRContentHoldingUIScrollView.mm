@@ -55,7 +55,7 @@
 
     // if contentWidth is bigger than superview's frame width and content size contraints have been never set
     // then execute if statements
-    if (self.frame.size.width < self.contentWidth && !_isContentSizeConstraintSet) {
+    if ((self.contentview.axis == UILayoutConstraintAxisHorizontal) && self.frame.size.width < self.contentWidth && !_isContentSizeConstraintSet) {
         _isContentSizeConstraintSet = YES;
         // de-activate constraints
         if (self.widthConstraintForStretch) {
