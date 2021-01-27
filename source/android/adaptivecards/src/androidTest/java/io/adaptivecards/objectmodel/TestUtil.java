@@ -567,6 +567,10 @@ public class TestUtil
                 Integer a = (Integer)i;
                 m_inputHandler.setInput(String.valueOf(a.intValue()));
             }
+            else if (i instanceof Double)
+            {
+                m_inputHandler.setInput(i.toString());
+            }
             else if (i instanceof String)
             {
                 m_inputHandler.setInput((String)i);

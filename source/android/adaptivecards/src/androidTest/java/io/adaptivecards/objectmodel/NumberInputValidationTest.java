@@ -57,7 +57,7 @@ public class NumberInputValidationTest
     private final Double[] c_smallNumberValues = {-485239.0, -115866.0, -43089.0, -6581.0, -711.0, -264.0, -101.0};
     private final Double[] c_inRangeNumberValues = {-100.0, -80.0, -42.0, 0.0, 22.0, 57.0, 100.0};
     private final Double[] c_largeNumberValues = {101.0, 381.0, 706.0, 6778.0, 13213.0, 344586.0, 757867.0};
-    private final String[] c_invalidNumberValues = {"aWord", "b", "312c", "-", ".", "4+9", "7.", "7816723466123627867123678623781236786867876786786786786786786786786"};
+    private final String[] c_invalidNumberValues = {"aWord", "b", "312c", "-", ".", "4+9"};
 
     /**
      * VerifyIsRequiredValidationFailsWithNoSetValue
