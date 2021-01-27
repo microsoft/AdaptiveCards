@@ -1,0 +1,25 @@
+[
+    {
+        "displayName": "Social update",
+        "cardPayloadUrl": "samples/Default.json"
+    },
+    {
+        "displayName": "Flight update",
+        "cardPayloadUrl": "samples/FlightUpdate.json",
+        "dataSampleUrl": "samples/FlightUpdate.data.json"
+    },
+    {
+        "displayName": "Restaurant",
+        "cardPayloadUrl": "samples/Restaurant.json",
+        "dataSampleUrl": "samples/Restaurant.data.json"
+    },
+    {
+        "displayName": "Stock update",
+        "cardPayloadUrl": "samples/StockUpdate.json",
+        "dataSampleUrl": "samples/StockUpdate.data.json"
+	},
+	{
+		"displayName": "News Result",
+        "cardPayloadUrl": "samples/NewsResult.json"
+	}
+]
