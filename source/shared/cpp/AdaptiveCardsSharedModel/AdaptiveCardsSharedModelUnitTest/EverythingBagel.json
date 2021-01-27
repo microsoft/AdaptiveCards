@@ -200,10 +200,10 @@
 					"type": "Input.Number",
 					"id": "Input.Number_id",
 					"label": "Input.Number_label",
-					"max": 10,
-					"min": 5,
+					"max": 9.5,
+					"min": 3.5,
 					"placeholder": "Input.Number_placeholder",
-					"value": 7,
+					"value": 4.5,
 					"isRequired": true
 				},
 				{

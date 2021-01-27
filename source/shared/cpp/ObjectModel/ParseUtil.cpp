@@ -250,7 +250,28 @@ namespace AdaptiveSharedNamespace
 
     int ParseUtil::GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired)
     {
-        return GetInt(json, key, defaultValue, isRequired);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return defaultValue;
+            }
+        }
+
+        if (!propertyValue.isInt())
+        {
+            throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
+                                             "Value for property " + propertyName + " was invalid. Expected type int.");
+        }
+
+        return propertyValue.asInt();
     }
 
     std::optional<int> ParseUtil::GetOptionalInt(const Json::Value& json,
