@@ -241,7 +241,7 @@
 	"actions": {
 		"maxActions": 5,
 		"spacing": "Default",
-		"buttonSpacing": 10,
+		"buttonSpacing": 15,
 		"showCard": {
 			"actionMode": "Popup",
 			"inlineTopMargin": 16,

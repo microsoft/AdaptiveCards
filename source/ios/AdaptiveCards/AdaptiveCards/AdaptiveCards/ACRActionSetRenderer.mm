@@ -102,6 +102,7 @@
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
     childview.spacing = spacing;
+    containingView.spacing = spacing;
     childview.translatesAutoresizingMaskIntoConstraints = NO;
 
     if (elems.empty()) {

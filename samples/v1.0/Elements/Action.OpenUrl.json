@@ -11,7 +11,7 @@
 	"actions": [
 		{
 			"type": "Action.OpenUrl",
-			"title": "long text test, long text test, long text test, long text test, long text test, long text test,long text test",
+			"title": "Action.OpenUrl",
 			"url": "https://adaptivecards.io"
 		}
 	]
