@@ -1,15 +1,9 @@
 package io.adaptivecards.objectmodel;
 
 import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
-
-import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
-import java.sql.Time;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Stream;
 
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.inputhandler.BaseInputHandler;
@@ -628,8 +622,7 @@ public class TestUtil
 
     public static final String c_dateStringTestCases[] = {"{{DATE(2017-02-14T06:08:39Z,LONG)}}"};
 
-    public static final Integer[] c_numericalMaxValue = {Integer.MAX_VALUE};
-    public static final Integer[] c_numericalMinValue = {Integer.MIN_VALUE};
-    public static final Integer[] c_numericalTestCases = {-100, -25, -10, -5, -1, 1, 5, 10, 25, 50};
+    public static final Double[] c_doubleTestCases = {-100.0, -25.0, -10.0, -5.0, -2.5, -1.0, -0.25,
+                                                      0.0, 1.0, 5.0, 10.0, 25.0, 50.0};
 
 }

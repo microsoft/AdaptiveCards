@@ -63,28 +63,28 @@ public class NumberInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.NumberInput_SetPlaceholder(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_std__optionalT_double_t GetValue() {
-    return new SWIGTYPE_p_std__optionalT_double_t(AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this), true);
+  public Double GetValue() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this);
+}
+
+  public void SetValue(Double value) {
+    AdaptiveCardObjectModelJNI.NumberInput_SetValue(swigCPtr, this, value);
   }
 
-  public void SetValue(SWIGTYPE_p_std__optionalT_double_t value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetValue(swigCPtr, this, SWIGTYPE_p_std__optionalT_double_t.getCPtr(value));
+  public Double GetMax() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this);
+}
+
+  public void SetMax(Double value) {
+    AdaptiveCardObjectModelJNI.NumberInput_SetMax(swigCPtr, this, value);
   }
 
-  public SWIGTYPE_p_std__optionalT_double_t GetMax() {
-    return new SWIGTYPE_p_std__optionalT_double_t(AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this), true);
-  }
+  public Double GetMin() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this);
+}
 
-  public void SetMax(SWIGTYPE_p_std__optionalT_double_t value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetMax(swigCPtr, this, SWIGTYPE_p_std__optionalT_double_t.getCPtr(value));
-  }
-
-  public SWIGTYPE_p_std__optionalT_double_t GetMin() {
-    return new SWIGTYPE_p_std__optionalT_double_t(AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this), true);
-  }
-
-  public void SetMin(SWIGTYPE_p_std__optionalT_double_t value) {
-    AdaptiveCardObjectModelJNI.NumberInput_SetMin(swigCPtr, this, SWIGTYPE_p_std__optionalT_double_t.getCPtr(value));
+  public void SetMin(Double value) {
+    AdaptiveCardObjectModelJNI.NumberInput_SetMin(swigCPtr, this, value);
   }
 
   public static NumberInput dynamic_cast(BaseCardElement baseCardElement) {

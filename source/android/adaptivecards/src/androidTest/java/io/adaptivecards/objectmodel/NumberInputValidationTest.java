@@ -17,12 +17,12 @@ public class NumberInputValidationTest
         System.loadLibrary("adaptivecards-native-lib");
     }
 
-    private NumberInput createNumberInputWithValidationProperties(Integer min, Integer max)
+    private NumberInput createNumberInputWithValidationProperties(Double min, Double max)
     {
         return createNumberInputWithValidationProperties(min, max, false);
     }
 
-    private NumberInput createNumberInputWithValidationProperties(Integer min, Integer max, boolean isRequired)
+    private NumberInput createNumberInputWithValidationProperties(Double min, Double max, boolean isRequired)
     {
         NumberInput numberInput = TestUtil.createMockNumberInput();
         numberInput.SetMin(min);
@@ -54,9 +54,9 @@ public class NumberInputValidationTest
         return numberInputHandler;
     }
 
-    private final Integer[] c_smallNumberValues = {-485239, -115866, -43089, -6581, -711, -264, -101};
-    private final Integer[] c_inRangeNumberValues = {-100, -80, -42, 0, 22, 57, 100};
-    private final Integer[] c_largeNumberValues = {101, 381, 706, 6778, 13213, 344586, 757867};
+    private final Double[] c_smallNumberValues = {-485239.0, -115866.0, -43089.0, -6581.0, -711.0, -264.0, -101.0};
+    private final Double[] c_inRangeNumberValues = {-100.0, -80.0, -42.0, 0.0, 22.0, 57.0, 100.0};
+    private final Double[] c_largeNumberValues = {101.0, 381.0, 706.0, 6778.0, 13213.0, 344586.0, 757867.0};
     private final String[] c_invalidNumberValues = {"aWord", "b", "312c", "-", ".", "4+9", "7.", "7816723466123627867123678623781236786867876786786786786786786786786"};
 
     /**
@@ -83,7 +83,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_smallNumberValues, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
     }
 
     /**
@@ -124,7 +124,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createCustomInputHandlerWithoutSpecificValidation(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_smallNumberValues, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
     }
 
     /**
@@ -180,7 +180,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.SpecificsValidationExecutor minValidationExecutor = new TestUtil.SpecificsValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_inRangeNumberValues, c_largeNumberValues), true, minValidationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_inRangeNumberValues, c_largeNumberValues), true, minValidationExecutor);
     }
 
     /**
@@ -236,7 +236,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
     }
 
     /**
@@ -291,7 +291,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_inRangeNumberValues, c_largeNumberValues), true, validationExecutor);
     }
 
     /**
@@ -334,7 +334,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.SpecificsValidationExecutor maxValidationExecutor = new TestUtil.SpecificsValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues), true, maxValidationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_smallNumberValues, c_inRangeNumberValues), true, maxValidationExecutor);
     }
 
     /**
@@ -390,7 +390,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_smallNumberValues, c_inRangeNumberValues), true, validationExecutor);
     }
 
     /**
@@ -446,7 +446,7 @@ public class NumberInputValidationTest
         NumberInputHandler numberInputHandler = createInputHandler(numberInput);
 
         TestUtil.GeneralValidationExecutor validationExecutor = new TestUtil.GeneralValidationExecutor(numberInputHandler);
-        TestUtil.runValidationTests(TestUtil.concat(Integer.class, c_smallNumberValues, c_inRangeNumberValues), true, validationExecutor);
+        TestUtil.runValidationTests(TestUtil.concat(Double.class, c_smallNumberValues, c_inRangeNumberValues), true, validationExecutor);
     }
 
     /**
