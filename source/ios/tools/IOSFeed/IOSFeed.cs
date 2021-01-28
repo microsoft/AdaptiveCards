@@ -15,7 +15,7 @@ namespace AdaptiveCards.Tools.IOSFeed
         public const string ConnectionStringPath = "source/ios/tools/IOSFeed/ConnectString.txt";
         public const string ContainerId = "adaptivecardsiosblobs";
         public const string FrameworkPath = "source/ios/AdaptiveCards/AdaptiveCards";
-        public const string FrameworkName = "AdaptiveCards.framework.zip";
+        public const string FrameworkName = "AdaptiveCards.xcframework";
         public const string PodspecPath = "./source/ios/tools/";
         public const string TargetPodspecPath = "./source/ios/";
         public const string PodspecName = "AdaptiveCards.podspec";
