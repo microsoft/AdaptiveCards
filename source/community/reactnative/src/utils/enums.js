@@ -136,12 +136,6 @@ export const Height = Object.freeze({
 	Stretch: 1
 });
 
-export const ValidationNecessity = {
-	Optional: 'Optional',
-	Required: 'Required',
-	RequiredWithVisualCue: 'RequiredWithVisualCue'
-}
-
 export const Sentiment = Object.freeze({
 	Default: 0,
 	Positive: 1,
