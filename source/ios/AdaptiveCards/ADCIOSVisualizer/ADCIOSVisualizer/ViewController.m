@@ -19,7 +19,7 @@
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
-const CGFloat kAdaptiveCardsWidth = 360;
+CGFloat kAdaptiveCardsWidth = 360;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
@@ -157,6 +157,9 @@ const CGFloat kAdaptiveCardsWidth = 360;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    kAdaptiveCardsWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;
+    
     NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
                          @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
                          @"\"1.2\", \"body\": [ {"
