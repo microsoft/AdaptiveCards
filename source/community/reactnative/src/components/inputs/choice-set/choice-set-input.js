@@ -23,6 +23,7 @@ import * as Constants from '../../../utils/constants';
 import * as Enums from '../../../utils/enums';
 import { StyleManager } from '../../../styles/style-config';
 import { HostConfigManager } from '../../../utils/host-config';
+import InputLabel from "../input-label";
 
 const DropDownImage = './assets/dropdown.png';
 const CompactStyle = "compact";
@@ -41,13 +42,8 @@ export class ChoiceSetInput extends React.Component {
 		this.value = props.json.value;
 		this.choices = [];
 		this.payload = props.json;
-
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
-		this.validationRequiredWithVisualCue = (!this.payload.validation ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.label = Constants.EmptyString;
+		this.isRequired = this.payload.isRequired || false;
 
 		this.state = {
 			selectedPickerValue: Utils.isNullOrEmpty(props.json.value) ?
@@ -57,7 +53,7 @@ export class ChoiceSetInput extends React.Component {
 			activeIndex: undefined,
 			checked: undefined,
 			checkedValues: undefined,
-			isError: this.isValidationRequired ? this.validate() : false
+			isError: this.isRequired ? this.validate() : false
 		}
 	}
 
@@ -71,6 +67,7 @@ export class ChoiceSetInput extends React.Component {
 		this.style = this.payload.style;
 		this.choices = this.payload.choices;
 		this.wrapText = this.payload.wrap || false
+		this.label = this.payload.label;
 	}
 
 	validate = () => {
@@ -264,7 +261,7 @@ export class ChoiceSetInput extends React.Component {
 								checkedArray.push(item.value)
 							}
 							let newValue = checkedArray.sort().join()
-							let isError = this.isValidationRequired ? checkedArray.length < 1 : false;
+							let isError = this.isRequired ? checkedArray.length < 1 : false;
 							this.setState({ checkedValues: newValue, isError: isError })
 							addInputItem(this.id, { value: newValue, errorState: isError });
 						}
@@ -283,9 +280,10 @@ export class ChoiceSetInput extends React.Component {
 
 		this.parseHostConfig();
 
-		let {
+		const {
 			isMultiSelect,
 			style,
+			label
 		} = this
 
 		onPress = () => {
@@ -296,12 +294,13 @@ export class ChoiceSetInput extends React.Component {
 
 		return (
 			<InputContextConsumer>
-				{({ addInputItem, showErrors }) => (
+				{({ addInputItem }) => (
 					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel isRequired={this.isRequired} label={label} />
 						<View
 							accessible={true}
 							accessibilityLabel={this.payload.altText}
-							style={this.getComputedStyles(showErrors)}>
+							style={styles.choiceSetView}>
 							{!isMultiSelect ?
 								((style == CompactStyle || style == undefined) ?
 									this.renderPickerComponent(addInputItem) :
@@ -313,24 +312,15 @@ export class ChoiceSetInput extends React.Component {
 			</InputContextConsumer>
 		);
 	}
-
-	/**
-	 * @description get styles for showing validation errors
-	 * @param showErrors show errors based on this flag.
-	 */
-	getComputedStyles = (showErrors) => {
-		let computedStyles = [];
-		if (this.state.isError && (showErrors || this.validationRequiredWithVisualCue)) {
-			computedStyles.push(this.styleConfig.borderAttention);
-			computedStyles.push({ borderWidth: 1 });
-		}
-		return computedStyles;
-	}
 }
 
 const styles = StyleSheet.create({
 	containerView: {
 		alignSelf: Constants.AlignStretch,
+		marginVertical: 3,
+	},
+	choiceSetView: {
+		marginTop: 3
 	},
 	pickerContainer: {
 		backgroundColor: Constants.EmphasisColor,
