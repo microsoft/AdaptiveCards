@@ -20,7 +20,7 @@ exports[`renders correctly 1`] = `
             "backgroundColor": "transparent",
           },
           Object {
-            "backgroundColor": "#EAEAEA",
+            "backgroundColor": "transparent",
           },
           Object {
             "borderColor": undefined,
@@ -64,15 +64,18 @@ exports[`renders correctly 1`] = `
             style={
               Array [
                 Object {
-                  "width": "100%",
-                },
-                Object {
                   "color": "#333333",
                   "fontFamily": "Helvetica",
                   "fontSize": 14,
                   "fontWeight": "400",
                   "textAlign": "left",
                 },
+                Array [
+                  Object {
+                    "width": "100%",
+                  },
+                  undefined,
+                ],
               ]
             }
           >
