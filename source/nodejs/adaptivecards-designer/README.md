@@ -10,6 +10,12 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
 
+> ## Important breaking change in version 1.4 and later
+> 
+> Before version 1.4, the `adaptivecards-designer` package embedded the `adaptivecards`, `adaptivecards-templating` and `adaptive-expressions` packages. This model didn't allow an application to use, say, a more recent version of `adaptive-expressions` library with the designer, and bug fixes in `adaptive-expressions` would always have to be accompanied with a new release of the `adaptivecards-designer` package.
+>
+> Since version 1.4, `adaptivecards-designer` doesn't embed any of those packages anymore, and it is the responsibility of the consuming application to explicitly load these packages.
+
 ## Usage
 
 There are two simple ways to consume the designer: CDN script reference or importing the module and using webpack.
