@@ -10,11 +10,11 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
 
-> ## Important breaking change in version 1.5 and later
+> ## IMPORTANT: Breaking change in version 2.0 and later
 > 
-> Before version 1.5, the `adaptivecards-designer` package embedded the `adaptivecards`, `adaptivecards-templating` and `adaptive-expressions` packages. This model didn't allow an application to use, say, a more recent version of `adaptive-expressions` library with the designer, and bug fixes in `adaptive-expressions` would always have to be accompanied with a new release of the `adaptivecards-designer` package.
+> Before version 2.0, the `adaptivecards-designer` package embedded the `adaptivecards`, `adaptivecards-templating` and `adaptive-expressions` packages. This model didn't allow an application to use, say, a more recent version of `adaptive-expressions` with the designer, and bug fixes in `adaptive-expressions` would always have to be accompanied with a new release of the `adaptivecards-designer` package.
 >
-> From version 1.5 on, `adaptivecards-designer` doesn't embed any of those packages anymore, and it is the responsibility of the consuming application to explicitly load these packages.
+> From version 2.0 on, `adaptivecards-designer` doesn't embed any of those packages anymore, and it is the responsibility of the consuming application to explicitly load these packages.
 
 ## Usage
 
