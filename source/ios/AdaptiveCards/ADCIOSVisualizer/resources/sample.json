@@ -241,14 +241,14 @@
 	"actions": {
 		"maxActions": 5,
 		"spacing": "Default",
-		"buttonSpacing": 10,
+		"buttonSpacing": 15,
 		"showCard": {
 			"actionMode": "Popup",
 			"inlineTopMargin": 16,
 			"style": "Emphasis"
 		},
 		"preExpandSingleShowCardAction": false,
-		"actionsOrientation": "Horizontal",
+		"actionsOrientation": "Vertical",
 		"actionAlignment": "Stretch"
 	},
 	"adaptiveCard": {

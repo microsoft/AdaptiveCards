@@ -39,7 +39,7 @@ export default class ElementWrapper extends React.Component {
 
 	render() {
 		const computedStyles = this.getComputedStyles();
-		const showValidationText = this.props.isError && this.context.showErrors;
+		const showValidationText = this.props.isError && this.context.showErrors && Utils.isNullOrEmpty(this.props.json.inlineAction);
 		const { isFirst } = this.props; //isFirst represent, it is first element
 		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
@@ -84,12 +84,9 @@ export default class ElementWrapper extends React.Component {
 	getValidationText = () => {
 		const payload = this.props.json;
 		const validationTextStyles = [this.styleConfig.fontFamilyName, this.styleConfig.defaultDestructiveButtonForegroundColor];
-		const errorMessage = (payload.validation && payload.validation.errorMessage) ?
-			payload.validation.errorMessage : Constants.ErrorMessage;
-
 		return (
 			<Text style={validationTextStyles}>
-				{errorMessage}
+				{payload.errorMessage || Constants.ErrorMessage}
 			</Text>
 		)
 	}

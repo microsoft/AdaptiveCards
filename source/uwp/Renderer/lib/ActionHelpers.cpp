@@ -693,8 +693,6 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
 
-                WireButtonClickToAction(button.Get(), action, renderContext);
-
                 // Also use the title as the tooltip
                 ComPtr<IToolTip> toolTip =
                     XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
@@ -714,6 +712,8 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
             }
+
+            WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
