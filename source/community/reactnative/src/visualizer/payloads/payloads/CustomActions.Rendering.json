@@ -78,7 +78,10 @@
         {
             "type": "Action.Custom",
             "title": "Custom Action",
-            "url": "https://msn.com"
+            "url": "https://msn.com",
+            "data":{
+                "value":"someValue"
+            }
         }
     ]
 }

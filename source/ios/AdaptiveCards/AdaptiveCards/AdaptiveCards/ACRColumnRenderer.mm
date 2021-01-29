@@ -77,6 +77,10 @@
         column.hasStretchableView = YES;
     }
 
+    if (!column.hasStretchableView) {
+        [column addPaddingSpace];
+    }
+
     if (columnElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:column
                                      attribute:NSLayoutAttributeHeight
