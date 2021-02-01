@@ -4,9 +4,10 @@ import { ChannelAdapter } from "./channel-adapter";
 import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 import { Strings } from "./strings";
 import { SubmitAction, SerializationContext, CardElement, AdaptiveCard, Action, GlobalRegistry, Input } from "./card-elements";
-import { StringProperty, Versions, property, PropertyDefinition, PropertyBag, SerializableObject, Version, SerializableObjectProperty } from "./serialization";
+import { Versions, property, PropertyDefinition, PropertyBag, SerializableObject, Version, SerializableObjectProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { HostConfig } from "./host-config";
+import { ExecuteAction } from "./execute-action";
 
 function clearElementChildren(element: HTMLElement) {
     while (element.firstChild) {
@@ -32,21 +33,6 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
                     break;
             }
         }
-    }
-}
-
-export class ExecuteAction extends SubmitAction {
-    //#region Schema
-
-    static readonly verbProperty = new StringProperty(Versions.v1_2, "verb");
-
-    @property(ExecuteAction.verbProperty)
-    verb: string;
-
-    //#endregion
-
-    getJsonTypeName(): string {
-        return "Action.Execute";
     }
 }
 
@@ -267,7 +253,8 @@ export class AdaptiveApplet {
                     }
                 },
                 attemptNumber: 0,
-                consecutiveRefreshes: consecutiveRefreshes
+                consecutiveRefreshes: consecutiveRefreshes,
+                action: action
             };
 
             let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
@@ -466,9 +453,21 @@ export class AdaptiveApplet {
             throw new Error("internalSendActivityRequestAsync: channelAdapter is not set.")
         }
 
-        let overlay = this.createProgressOverlay(request.activity.value.trigger);
+        let overlay = this.createProgressOverlay(request);
 
-        this.renderedElement.appendChild(overlay);
+        if (overlay !== undefined) {
+            this.renderedElement.appendChild(overlay);
+        }
+
+        const removeOverlay = () => {
+            if (this.onRemoveProgressOverlay) {
+                this.onRemoveProgressOverlay(this, request);
+            }
+            
+            if (overlay !== undefined) {
+                this.renderedElement.removeChild(overlay);
+            }
+        }
 
         let done = false;
 
@@ -488,7 +487,7 @@ export class AdaptiveApplet {
             catch (error) {
                 logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
 
-                this.renderedElement.removeChild(overlay);
+                removeOverlay();
 
                 done = true;
             }
@@ -496,7 +495,7 @@ export class AdaptiveApplet {
             if (response) {
                 switch (response.status) {
                     case ActivityStatus.Success:
-                        this.renderedElement.removeChild(overlay);
+                        removeOverlay();
 
                         try {
                             response.content = JSON.parse(response.content);
@@ -621,7 +620,7 @@ export class AdaptiveApplet {
                         else {
                             logEvent(Enums.LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
 
-                            this.renderedElement.removeChild(overlay);
+                            removeOverlay();
 
                             done = true;
                         }
@@ -632,14 +631,13 @@ export class AdaptiveApplet {
         }
     }
 
-    private createProgressOverlay(trigger: ActivityInvocationTrigger): HTMLElement {
+    private createProgressOverlay(request: ActivityRequest): HTMLElement | undefined {
         let overlay: HTMLElement | undefined = undefined;
 
         if (this.onCreateProgressOverlay) {
-            overlay = this.onCreateProgressOverlay(this, trigger);
+            overlay = this.onCreateProgressOverlay(this, request);
         }
-
-        if (!overlay) {
+        else {
             overlay = document.createElement("div");
             overlay.className = "aaf-progress-overlay";
 
@@ -665,7 +663,8 @@ export class AdaptiveApplet {
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
     onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: ActivityResponse) => void;
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
-    onCreateProgressOverlay?: (sender: AdaptiveApplet, actionExecutionTrigger: ActivityInvocationTrigger) => HTMLElement | undefined;
+    onCreateProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => HTMLElement | undefined;
+    onRemoveProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => void;
     onRenderRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
     onExecuteAction?: (sender: AdaptiveApplet, action: Action) => void;
 

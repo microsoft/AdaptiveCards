@@ -9,6 +9,7 @@ export * from "./host-config";
 export * from "./shared";
 export * from "./utils";
 export * from "./strings";
+export * from "./execute-action";
 export * from "./channel-adapter";
 export * from "./http-channel-adapter";
 export * from "./invoke-activity";

@@ -1,3 +1,5 @@
+import { ExecuteAction } from "./execute-action";
+
 export interface InvokeActivity {
     type: "invoke",
     name: "adaptiveCard/action",
@@ -34,6 +36,7 @@ export enum ActivityInvocationTrigger {
 
 export interface ActivityRequest {
     readonly activity: InvokeActivity,
+    readonly action: ExecuteAction,
     attemptNumber: number,
     consecutiveRefreshes: number
 }
