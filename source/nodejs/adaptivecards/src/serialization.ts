@@ -806,6 +806,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
+    static defaultMaxVersion: Version = Versions.v1_3;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -928,7 +929,7 @@ export abstract class SerializableObject {
         return true;
     }
 
-    maxVersion: Version = Versions.v1_3;
+    maxVersion: Version = SerializableObject.defaultMaxVersion;
 
     constructor() {
         let s = this.getSchema();

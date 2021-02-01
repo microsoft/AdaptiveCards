@@ -14,11 +14,7 @@ Pod::Spec.new do |spec|
   
   spec.source           = { :http => 'https://adaptivecardsblob.blob.core.windows.net/adaptivecardsiosblobs/AdaptiveCards.framework.zip' }
 
-  spec.pod_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-
-  spec.user_target_xcconfig = { 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
- 
-  spec.vendored_frameworks = 'AdaptiveCards.framework'
+  spec.vendored_frameworks = 'AdaptiveCards.xcframework'
   
   spec.platform         = :ios, '10'
 end

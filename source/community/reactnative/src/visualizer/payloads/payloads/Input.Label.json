@@ -1,0 +1,165 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+      {
+        "type": "TextBlock",
+        "size": "medium",
+        "weight": "bolder",
+        "text": "Input with Label",
+        "horizontalAlignment": "center"
+      },
+      {
+        "type": "Input.Text",
+        "style": "text",
+        "label": "Name",
+        "id": "SimpleVal",
+        "errorMessage": "Required",
+        "isRequired": true
+      },
+      {
+        "type": "Input.Number",
+        "id": "Phone",
+        "label": {
+          "type": "TextBlock",
+          "spacing": "none",
+          "color" : "warning",
+          "text": "Phone - **TextBlock**",
+          "wrap": true
+        },
+        "errorMessage": "Required",
+        "isRequired": true,
+        "inlineAction": {
+          "type": "Action.Submit",
+          "title": "Reply"
+        }
+      },
+      {
+        "type": "Input.Date",
+        "id": "DateVal",
+        "label": {
+          "type": "RichTextBlock",
+          "wrap": true,
+          "maxLines": 5,
+          "paragraphs": [
+              {
+                  "inlines": [
+                      {
+                          "type": "TextRun",
+                          "text": "Due Date",
+                          "color": "good",
+                          "selectAction": {
+                              "type": "Action.Submit",
+                              "title": "cool link"
+                          }
+                      },
+                      {
+                          "type": "TextRun",
+                          "text": " - **RichTextBlock**",
+                          "color": "good",
+                          "selectAction": {
+                              "type": "Action.Submit",
+                              "title": "cool link"
+                          }
+                      }
+                  ]
+              }
+          ]
+        },
+        "maxLength": 0
+      },
+      {
+        "type": "Input.Time",
+        "label": "Start time",
+        "id": "TimeVal",
+        "value": "16:59"
+      },
+      {
+        "type": "Input.ChoiceSet",
+        "id": "SingleSelectVal",
+        "style": "expanded",
+        "value" : "incorrect value",
+        "label": "What color do you want? (expanded)",
+        "choices": [
+          {
+            "title": "Red",
+            "value": "1"
+          },
+          {
+            "title": "Green",
+            "value": "2"
+          },
+          {
+            "title": "Blue",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "Input.ChoiceSet",
+        "id": "MultiSelectVal",
+        "isMultiSelect": true,
+        "value": "1,2",
+        "label": {
+          "type": "TextBlock",
+          "text": "What colors do you want? (multi select)"
+        },
+        "choices": [
+          {
+            "title": "Red",
+            "value": "1"
+          },
+          {
+            "title": "Green",
+            "value": "2"
+          },
+          {
+            "title": "Blue",
+            "value": "3"
+          }
+        ]
+      },
+      {
+        "type": "Input.Toggle",
+        "label": "If you agree please enable",
+        "title": "Red cars are better than other cars",
+        "valueOn": "RedCars",
+        "valueOff": "NotRedCars",
+        "id": "ColorPreference",
+        "errorMessage": "Required",
+        "isRequired": true
+      }
+    ],
+    "actions": [
+      {
+        "type": "Action.Submit",
+        "title": "Submit",
+        "ignoreInputValidation": false,
+        "data": {
+          "id": "1234567890"
+        }
+      },
+      {
+        "type": "Action.ShowCard",
+        "title": "Show Card",
+        "card": {
+          "type": "AdaptiveCard",
+          "body": [
+            {
+              "type": "Input.Text",
+              "placeholder": "enter comment",
+              "style": "text",
+              "id": "CommentVal"
+            }
+          ],
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "OK"
+            }
+          ]
+        }
+      }
+    ]
+  }
