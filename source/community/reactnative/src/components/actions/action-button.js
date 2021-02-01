@@ -99,6 +99,8 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
+				//Invoked for the custom action type.
+				this.onExecuteAction(this.payload);
 				break;
 		}
 	}
@@ -118,7 +120,7 @@ export class ActionButton extends React.Component {
 				mergedObject["actionData"] = this.data;
 		}
 		const { type, title = "", ignoreInputValidation } = this.payload;
-		let actionObject = { "type": type,"title": title, "data": mergedObject };
+		let actionObject = { "type": type, "title": title, "data": mergedObject };
 		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 
@@ -168,6 +170,7 @@ export class ActionButton extends React.Component {
 			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
+		computedStyles.push(this.props.style)
 		return computedStyles;
 	}
 
@@ -177,7 +180,7 @@ export class ActionButton extends React.Component {
 	*/
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
-		this.styleConfig.buttonTitle];
+		this.styleConfig.buttonTitle, this.props.titleStyle];
 		return computedStyles;
 	}
 
