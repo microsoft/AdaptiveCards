@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-designer-app",
-	"version": "0.5.0",
+	"version": "0.5.1",
 	"description": "Adaptive Card designer app",
 	"author": "AdaptiveCards",
 	"license": "MIT",
@@ -16,8 +16,8 @@
 		"@typescript-eslint/eslint-plugin": "^3.4.0",
 		"@typescript-eslint/parser": "^3.4.0",
 		"adaptivecards": "^2.7.0",
-		"adaptivecards-controls": "^0.5.0",
-		"adaptivecards-designer": "^1.2.0",
+		"adaptivecards-controls": "^0.6.0",
+		"adaptivecards-designer": "^1.2.1",
 		"eslint": "^7.3.1",
 		"file-loader": "^6.0.0",
 		"markdown-it": "^8.4.0",
