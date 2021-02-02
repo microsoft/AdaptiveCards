@@ -157,6 +157,11 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.compositeFileBrowserView.hidden = NO;
 }
 
+- (IBAction)deleteAllRows:(id)sender
+{
+    [(ACRChatWindow *)self.chatWindow.dataSource deleteAllRows:self.chatWindow];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -263,6 +268,23 @@ CGFloat kAdaptiveCardsWidth = 360;
                          action:@selector(applyText:)
                forControlEvents:UIControlEventTouchUpInside];
     [buttonLayout addArrangedSubview:self.applyButton];
+    
+    self.deleteAllRowsButton = [UIButton buttonWithType:UIButtonTypeSystem];
+    [self.deleteAllRowsButton setTitle:@"Delete All Cards" forState:UIControlStateNormal];
+    [self.deleteAllRowsButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1]
+                           forState:UIControlStateSelected];
+    [self.deleteAllRowsButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    
+    self.deleteAllRowsButton.backgroundColor = [UIColor colorWithRed:0 / 255
+                                                       green:122.0 / 255
+                                                        blue:1
+                                                       alpha:1];
+    self.deleteAllRowsButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+    
+    [self.deleteAllRowsButton addTarget:self
+                         action:@selector(deleteAllRows:)
+               forControlEvents:UIControlEventTouchUpInside];
+    [buttonLayout addArrangedSubview:self.deleteAllRowsButton];
 
     // custon renderer button
     self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
@@ -293,6 +315,7 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.applyButton.layer.cornerRadius = 10;
     self.tryButton.layer.cornerRadius = 10;
     self.enableCustomRendererButton.layer.cornerRadius = 10;
+    self.deleteAllRowsButton.layer.cornerRadius = 10;
 
     [self.view addSubview:buttonLayout];
     buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
@@ -305,8 +328,8 @@ CGFloat kAdaptiveCardsWidth = 360;
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
-    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _dataSource = [[ACRChatWindow alloc] init];
+    self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    _dataSource = [[ACRChatWindow alloc] init:kAdaptiveCardsWidth];
     _dataSource.adaptiveCardsDelegates = self;
     self.chatWindow.dataSource = _dataSource;
 
@@ -334,8 +357,16 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)update:(NSString *)jsonStr
 {
     self.editableStr = jsonStr;
+    [self.chatWindow beginUpdates];
     [_dataSource insertCard:jsonStr];
-    [self.chatWindow reloadData];
+    NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
+    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    [self.chatWindow insertRowsAtIndexPaths:@[pathToLastRow] withRowAnimation:UITableViewRowAnimationAutomatic];
+//    [self.chatWindow reloadData];
+    [self.chatWindow endUpdates];
+    NSInteger lastRowIndex1 = [self.chatWindow numberOfRowsInSection:0] - 1;
+    NSIndexPath *pathToLastRow1 = [NSIndexPath indexPathForRow:lastRowIndex1 inSection:0];
+    [self.chatWindow scrollToRowAtIndexPath:pathToLastRow1 atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -497,8 +528,6 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didLoadElements
 {
-    NSArray *arrayOfRowsToReload = @[ [NSIndexPath indexPathForRow:[self.chatWindow numberOfRowsInSection:0] - 1 inSection:0] ];
-    [self.chatWindow reloadRowsAtIndexPaths:arrayOfRowsToReload withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

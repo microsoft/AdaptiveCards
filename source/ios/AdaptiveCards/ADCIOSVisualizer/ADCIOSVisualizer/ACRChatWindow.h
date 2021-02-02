@@ -12,6 +12,8 @@
 
 @property NSObject<ACRActionDelegate> *adaptiveCardsDelegates;
 
+- (instancetype)init:(CGFloat)width;
 - (void)insertCard:(NSString *)card;
+- (void)deleteAllRows:(UITableView *)tableView;
 
 @end

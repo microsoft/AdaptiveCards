@@ -38,7 +38,7 @@
 - (void)configureWidthOfView:(UIView *)view
 {
     // if auto, maintain content size whenever possible
-    if (!self.columnWidth || [self.columnWidth isEqualToString:@"auto"]) {
+    if ([self.columnWidth isEqualToString:@"auto"]) {
 
         NSInteger priority = ACRColumnWidthPriorityAuto;
         if (self.isLastColumn) {

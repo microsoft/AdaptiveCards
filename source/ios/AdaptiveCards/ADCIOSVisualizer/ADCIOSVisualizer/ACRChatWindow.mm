@@ -21,9 +21,14 @@
 
 - (instancetype)init
 {
+    return [self init:330];
+}
+
+- (instancetype)init:(CGFloat)width
+{
     self = [super init];
     if (self) {
-        adaptiveCardsWidth = 330;
+        adaptiveCardsWidth = width;
         adaptiveCardsPayloads = [[NSMutableArray alloc] init];
         adaptiveCardsViews = [[NSMutableArray alloc] init];
         NSBundle *main = [NSBundle mainBundle];
@@ -38,13 +43,14 @@
         // register a custom scheme bundle with resolver
         [resolvers setResourceResolver:resolver scheme:@"bundle"];
     }
-
     return self;
 }
 
 - (void)insertCard:(NSString *)card
 {
     [adaptiveCardsPayloads addObject:card];
+    [self renderCards:card];
+    numberOfCards += 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -73,23 +79,11 @@
 
     // cached adaptive card view doesn't exist
     // make one
-    if (indexPath.row >= numberOfCards) {
-        numberOfCards += 1;
-        NSString *jsonString = adaptiveCardsPayloads[indexPath.row];
-        ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfig
-                                                                resourceResolvers:resolvers];
-        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonString];
-
-        ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card
-                                                     config:hostconfigParseResult.config
-                                            widthConstraint:adaptiveCardsWidth
-                                                   delegate:self.adaptiveCardsDelegates];
-        // how do i map this view to row;
-        // i could hash jsonString with row
-        // hash, row number, view
-        // row number is key
-        [adaptiveCardsViews addObject:renderResult.view];
-    }
+    NSLog(@"index path row = %d", indexPath.row);
+    
+//    if (indexPath.row >= numberOfCards) {
+//        numberOfCards += 1;
+//    }
 
     UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
     [cell.contentView addSubview:adaptiveCardView];
@@ -113,6 +107,32 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return UITableViewAutomaticDimension;
+}
+
+- (void)deleteAllRows:(UITableView *)tableView
+{
+    [adaptiveCardsPayloads removeAllObjects];
+    [adaptiveCardsViews removeAllObjects];
+    numberOfCards = 0;
+    [tableView reloadData];
+}
+
+- (void)renderCards:(NSString *)card
+{
+    NSString *jsonString = card;
+    ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfig
+                                                            resourceResolvers:resolvers];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonString];
+
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card
+                                                 config:hostconfigParseResult.config
+                                        widthConstraint:adaptiveCardsWidth
+                                               delegate:self.adaptiveCardsDelegates];
+    // how do i map this view to row;
+    // i could hash jsonString with row
+    // hash, row number, view
+    // row number is key
+    [adaptiveCardsViews addObject:renderResult.view];
 }
 
 @end
