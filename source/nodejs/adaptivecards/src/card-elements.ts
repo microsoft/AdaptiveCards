@@ -2480,7 +2480,7 @@ export abstract class Input extends CardElement implements IInput {
         this._outerContainerElement = document.createElement("div");
         this._outerContainerElement.style.display = "flex";
         this._outerContainerElement.style.flexDirection = "column";
-
+        
         let renderedInputControlId = Utils.generateUniqueId();
 
         if (this.label) {
