@@ -12,6 +12,7 @@
 	],
 	"author": "Matt Hidinger",
 	"license": "Apache-2.0",
+	"private": true,
 	"dependencies": {
 		"fs": "0.0.1-security",
 		"glob": "^7.1.2",
