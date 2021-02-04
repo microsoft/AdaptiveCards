@@ -14,16 +14,19 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
 
-                IntegerUpDown numberPicker = new IntegerUpDown();
+                DoubleUpDown numberPicker = new DoubleUpDown();
 
                 if (!Double.IsNaN(input.Value))
-                    numberPicker.Value = Convert.ToInt32(input.Value);
+                    numberPicker.Value = input.Value;
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
 
-                if ((!Double.IsNaN(input.Max) || !Double.IsNaN(input.Min) || input.IsRequired) && string.IsNullOrEmpty(input.ErrorMessage))
+                numberPicker.Maximum = input.Max;
+                numberPicker.Minimum = input.Min;
+
+                if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
                 {
                     context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput, "Inputs with validation should include an ErrorMessage"));
                 }
