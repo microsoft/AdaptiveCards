@@ -10,6 +10,8 @@
 
 @interface ACRChatWindow : NSObject <UITableViewDataSource, UITableViewDelegate>
 
+extern NSString *identifier;
+
 @property NSObject<ACRActionDelegate> *adaptiveCardsDelegates;
 
 - (instancetype)init:(CGFloat)width;

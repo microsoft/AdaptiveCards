@@ -15,7 +15,7 @@
             <color key="backgroundColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
             <fontDescription key="fontDescription" type="system" pointSize="15"/>
             <color key="tintColor" name="systemBlueColor" catalog="System" colorSpace="catalog"/>
-            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+            <inset key="contentEdgeInsets" minX="5" minY="8" maxX="5" maxY="8"/>
             <state key="normal">
                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             </state>
@@ -36,7 +36,7 @@
                 <userDefinedRuntimeAttribute type="boolean" keyPath="positiveUseDefault" value="YES"/>
                 <userDefinedRuntimeAttribute type="boolean" keyPath="destructiveUseDefault" value="NO"/>
             </userDefinedRuntimeAttributes>
-            <point key="canvasLocation" x="-196" y="-88"/>
+            <point key="canvasLocation" x="-196.80000000000001" y="-88.15592203898052"/>
         </button>
     </objects>
 </document>

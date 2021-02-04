@@ -17,6 +17,7 @@
     CGFloat adaptiveCardsWidth;
     NSString *hostConfig;
     ACOResourceResolvers *resolvers;
+    ACOAdaptiveCardParseResult *errorCard;
 }
 
 - (instancetype)init
@@ -42,6 +43,15 @@
         [resolvers setResourceResolver:resolver scheme:@"data"];
         // register a custom scheme bundle with resolver
         [resolvers setResourceResolver:resolver scheme:@"bundle"];
+        
+        NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
+        @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
+        @"\"1.2\", \"body\": [ {"
+        @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
+        @"\"weight\": \"Bolder\", \"color\": "
+        @"\"Attention\", \"horizontalAlignment\": \"Center\""
+        @"} ] }";
+        errorCard = [ACOAdaptiveCard fromJson:errorMSG];
     }
     return self;
 }
@@ -67,30 +77,24 @@
 {
     UITableViewCell *cell = nil;
 
-    static NSString *identifier = @"AdaptiveCardsCell";
+    UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
+    NSString *identifier = @"Hello"; //[NSString stringWithFormat:@"%p", adaptiveCardView];
 
-    cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-    if (cell && cell.contentView.subviews.count) {
-        [cell.contentView.subviews[0] removeFromSuperview];
+    //cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    if (cell) {
+        return cell;
     } else {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
                                       reuseIdentifier:identifier];
+        [cell.contentView addSubview:adaptiveCardView];
     }
 
-    // cached adaptive card view doesn't exist
-    // make one
-    NSLog(@"index path row = %d", indexPath.row);
+    //[adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor].active = YES;
+    //[adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
+    [cell.contentView.topAnchor constraintEqualToAnchor:adaptiveCardView.topAnchor].active = YES;
+    [cell.contentView.bottomAnchor constraintEqualToAnchor:adaptiveCardView.bottomAnchor].active = YES;
+    [cell.contentView.widthAnchor constraintEqualToAnchor:adaptiveCardView.widthAnchor].active = YES;
     
-//    if (indexPath.row >= numberOfCards) {
-//        numberOfCards += 1;
-//    }
-
-    UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
-    [cell.contentView addSubview:adaptiveCardView];
-    [adaptiveCardView.topAnchor constraintEqualToAnchor:cell.contentView.topAnchor constant:0].active = YES;
-    [adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor constant:0].active = YES;
-    [cell.contentView.bottomAnchor constraintGreaterThanOrEqualToAnchor:adaptiveCardView.bottomAnchor constant:0]
-        .active = YES;
     return cell;
 }
 
@@ -123,15 +127,21 @@
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfig
                                                             resourceResolvers:resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonString];
+    
+    ACRRenderResult *renderResult = nil;
 
-    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card
-                                                 config:hostconfigParseResult.config
-                                        widthConstraint:adaptiveCardsWidth
-                                               delegate:self.adaptiveCardsDelegates];
-    // how do i map this view to row;
-    // i could hash jsonString with row
-    // hash, row number, view
-    // row number is key
+    if (cardParseResult.isValid) {
+        renderResult = [ACRRenderer render:cardParseResult.card
+                                    config:hostconfigParseResult.config
+                           widthConstraint:adaptiveCardsWidth
+                                  delegate:self.adaptiveCardsDelegates];
+    } else {
+        renderResult = [ACRRenderer render:errorCard.card
+                                    config:hostconfigParseResult.config
+                           widthConstraint:adaptiveCardsWidth
+                                  delegate:self.adaptiveCardsDelegates];
+    }
+    
     [adaptiveCardsViews addObject:renderResult.view];
 }
 

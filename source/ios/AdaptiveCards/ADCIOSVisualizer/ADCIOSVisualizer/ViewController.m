@@ -24,7 +24,6 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
-    ACOResourceResolvers *_resolvers;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
 }
@@ -165,27 +164,27 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     kAdaptiveCardsWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;
-    
-    NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
-                         @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
-                         @"\"1.2\", \"body\": [ {"
-                         @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
-                         @"\"weight\": \"Bolder\", \"color\": "
-                         @"\"Attention\", \"horizontalAlignment\": \"Center\""
-                         @"} ] }";
-    _errorCard = [ACOAdaptiveCard fromJson:errorMSG];
     [self registerForKeyboardNotifications];
-    _resolvers = [[ACOResourceResolvers alloc] init];
-    ADCResolver *resolver = [[ADCResolver alloc] init];
-    [_resolvers setResourceResolver:resolver scheme:@"http"];
-    [_resolvers setResourceResolver:resolver scheme:@"https"];
-    [_resolvers setResourceResolver:resolver scheme:@"data"];
-    // register a custom scheme bundle with resolver
-    [_resolvers setResourceResolver:resolver scheme:@"bundle"];
+  
     _enableCustomRenderer = NO;
     self.curView = nil;
+    
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    NSString *type = @"ProgressBar";
+    CACProgressBar *progressBarParser = [[CACProgressBar alloc] init];
+    [registration setCustomElementParser:progressBarParser key:type];
+    
+    CustomProgressBarRenderer *progressBarRenderer = [[CustomProgressBarRenderer alloc] init];
+    [registration setCustomElementRenderer:progressBarRenderer key:type];
+    
+    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+    NSString *type1 = @"NewStyle";
+    [registration setCustomActionElementParser:customParser key:type1];
+    
+    CustomActionNewTypeRenderer *customActionRenderer = [CustomActionNewTypeRenderer getInstance];
+    [registration setCustomActionRenderer:customActionRenderer key:type1];
 
     self.ACVTabVC = [[ACVTableViewController alloc] init];
     [self addChildViewController:self.ACVTabVC];
@@ -228,103 +227,8 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.ACVTabVC.tableHeight.active = YES;
     ACVTabView.hidden = YES;
 
-    UIStackView *buttonLayout = [[UIStackView alloc] init];
-    self.buttonLayout = buttonLayout;
-
-    // try button
-    buttonLayout.axis = UILayoutConstraintAxisVertical;
-    self.tryButton = [UIButton buttonWithType:UIButtonTypeSystem];
-
-    [self.tryButton setTitle:@"Try Yourself" forState:UIControlStateNormal];
-    [self.tryButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1]
-                         forState:UIControlStateSelected];
-    self.tryButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-
-    [self.tryButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    [self.tryButton addTarget:self
-                       action:@selector(editText:)
-             forControlEvents:UIControlEventTouchUpInside];
-    [buttonLayout addArrangedSubview:self.tryButton];
-    self.tryButton.backgroundColor = [UIColor colorWithRed:0 / 255
-                                                     green:122.0 / 255
-                                                      blue:1
-                                                     alpha:1];
-    self.tryButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-
-    // apply button
-    self.applyButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.applyButton setTitle:@"Apply" forState:UIControlStateNormal];
-    [self.applyButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1]
-                           forState:UIControlStateSelected];
-    [self.applyButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-
-    self.applyButton.backgroundColor = [UIColor colorWithRed:0 / 255
-                                                       green:122.0 / 255
-                                                        blue:1
-                                                       alpha:1];
-    self.applyButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-
-    [self.applyButton addTarget:self
-                         action:@selector(applyText:)
-               forControlEvents:UIControlEventTouchUpInside];
-    [buttonLayout addArrangedSubview:self.applyButton];
-    
-    self.deleteAllRowsButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.deleteAllRowsButton setTitle:@"Delete All Cards" forState:UIControlStateNormal];
-    [self.deleteAllRowsButton setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1]
-                           forState:UIControlStateSelected];
-    [self.deleteAllRowsButton setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
-    
-    self.deleteAllRowsButton.backgroundColor = [UIColor colorWithRed:0 / 255
-                                                       green:122.0 / 255
-                                                        blue:1
-                                                       alpha:1];
-    self.deleteAllRowsButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-    
-    [self.deleteAllRowsButton addTarget:self
-                         action:@selector(deleteAllRows:)
-               forControlEvents:UIControlEventTouchUpInside];
-    [buttonLayout addArrangedSubview:self.deleteAllRowsButton];
-
-    // custon renderer button
-    self.enableCustomRendererButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.enableCustomRendererButton
-        setContentCompressionResistancePriority:UILayoutPriorityDefaultLow
-                                        forAxis:UILayoutConstraintAxisHorizontal];
-    [self.enableCustomRendererButton setTitle:@"Enable Custom Renderer"
-                                     forState:UIControlStateNormal];
-    [self.enableCustomRendererButton setTitleColor:[UIColor colorWithRed:0 / 255
-                                                                   green:122.0 / 255
-                                                                    blue:1
-                                                                   alpha:1]
-                                          forState:UIControlStateSelected];
-    [self.enableCustomRendererButton setTitleColor:UIColor.whiteColor
-                                          forState:UIControlStateNormal];
-    self.enableCustomRendererButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-
-    self.enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255
-                                                                      green:122.0 / 255
-                                                                       blue:1
-                                                                      alpha:1];
-    self.enableCustomRendererButton.contentEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-
-    [self.enableCustomRendererButton addTarget:self
-                                        action:@selector(toggleCustomRenderer:)
-                              forControlEvents:UIControlEventTouchUpInside];
-    [buttonLayout addArrangedSubview:self.enableCustomRendererButton];
-    self.applyButton.layer.cornerRadius = 10;
-    self.tryButton.layer.cornerRadius = 10;
-    self.enableCustomRendererButton.layer.cornerRadius = 10;
-    self.deleteAllRowsButton.layer.cornerRadius = 10;
-
-    [self.view addSubview:buttonLayout];
-    buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
-    [buttonLayout.widthAnchor constraintEqualToConstant:kAdaptiveCardsWidth].active = YES;
-    [buttonLayout.centerXAnchor constraintEqualToAnchor:fileBrowserView.centerXAnchor].active = YES;
-
-    buttonLayout.alignment = UIStackViewAlignmentFill;
-    buttonLayout.distribution = UIStackViewDistributionEqualCentering;
-    buttonLayout.spacing = 10;
+    NSArray<UIStackView *> *buttons = [self buildButtonsLayout:fileBrowserView.centerXAnchor];
+    UIStackView *buttonLayout0 = buttons[0], *buttonLayout1 = buttons[1];
 
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
@@ -337,10 +241,10 @@ CGFloat kAdaptiveCardsWidth = 360;
 
     UITableView *chatWindow = self.chatWindow;
     NSDictionary *viewMap =
-        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout, chatWindow);
+        NSDictionaryOfVariableBindings(_compositeFileBrowserView, buttonLayout0, buttonLayout1, chatWindow);
 
     NSArray<NSString *> *formats = [NSArray
-        arrayWithObjects:@"V:|-70-[_compositeFileBrowserView]-[buttonLayout]-[chatWindow]-40@100-|",
+        arrayWithObjects:@"V:|-40-[_compositeFileBrowserView]-[buttonLayout0]-[buttonLayout1]-[chatWindow]-40@100-|",
                          @"H:|-[chatWindow]-|", nil];
 
     [ViewController applyConstraints:formats variables:viewMap];
@@ -361,8 +265,7 @@ CGFloat kAdaptiveCardsWidth = 360;
     [_dataSource insertCard:jsonStr];
     NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
     NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-    [self.chatWindow insertRowsAtIndexPaths:@[pathToLastRow] withRowAnimation:UITableViewRowAnimationAutomatic];
-//    [self.chatWindow reloadData];
+    [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self.chatWindow endUpdates];
     NSInteger lastRowIndex1 = [self.chatWindow numberOfRowsInSection:0] - 1;
     NSIndexPath *pathToLastRow1 = [NSIndexPath indexPathForRow:lastRowIndex1 inSection:0];
@@ -412,15 +315,9 @@ CGFloat kAdaptiveCardsWidth = 360;
             [self presentViewController:newType.alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
-        NSLog(@"toggle visibility");
-    } else {
-        if (@available(iOS 11.0, *)) {
-            [self.chatWindow performBatchUpdates:^(void) {
-                [self.chatWindow reloadRowsAtIndexPaths:self.chatWindow.indexPathsForVisibleRows withRowAnimation:UITableViewRowAnimationNone];}
-                                      completion:nil];
-        } else {
-            [self.chatWindow reloadData];
-        }
+        [self reloadRowsAtChatWindows];
+    } else if (action.type == ACRShowCard) {
+        [self reloadRowsAtChatWindows];
     }
 }
 
@@ -433,7 +330,7 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
-    //[self.chatWindow reloadData];
+    [self reloadRowsAtChatWindows];
 }
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
@@ -443,10 +340,10 @@ CGFloat kAdaptiveCardsWidth = 360;
         UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
         if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
             [self.chatWindow setContentOffset:focusedView.frame.origin animated:YES];
-            [self.chatWindow reloadData];
+            [self reloadRowsAtChatWindows];
         }
-    } else {
-        [self.chatWindow scrollRectToVisible:newFrame animated:YES];
+    } else {        
+        [self reloadRowsAtChatWindows];
     }
 }
 
@@ -528,6 +425,82 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didLoadElements
 {
+    [self reloadRowsAtChatWindows];
 }
 
+- (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor
+{
+    NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
+                                        [self configureButtons:centerXAnchor
+                                                  distribution:UIStackViewDistributionFill] ];
+
+    // try button
+    self.tryButton = [self buildButton:@"Edit" selector:@selector(editText:)];
+    [layout[0] addArrangedSubview:self.tryButton];
+
+    // apply button
+    self.applyButton = [self buildButton:@"Apply" selector:@selector(applyText:)];
+    [layout[0] addArrangedSubview:self.applyButton];
+
+    // delete button
+    self.deleteAllRowsButton = [self buildButton:@"Delete All Cards" selector:@selector(deleteAllRows:)];
+    [layout[1] addArrangedSubview:self.deleteAllRowsButton];
+
+    // custon renderer button
+    self.enableCustomRendererButton = [self buildButton:@"Enable Custom Renderer" selector:@selector(toggleCustomRenderer:)];
+    [layout[1] addArrangedSubview:self.enableCustomRendererButton];
+
+    return layout;
+}
+
+- (UIButton *)buildButton:(NSString *)title selector:(SEL)selector
+{
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+
+    [button setTitle:title forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor colorWithRed:0 / 255 green:122.0 / 255 blue:1 alpha:1]
+                 forState:UIControlStateSelected];
+    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+
+    [button setTitleColor:UIColor.whiteColor forState:UIControlStateNormal];
+    [button addTarget:self
+                  action:selector
+        forControlEvents:UIControlEventTouchUpInside];
+    button.backgroundColor = [UIColor colorWithRed:0 / 255
+                                             green:122.0 / 255
+                                              blue:1
+                                             alpha:1];
+    button.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
+    button.layer.cornerRadius = 10;
+    return button;
+}
+
+- (UIStackView *)configureButtons:(NSLayoutAnchor *)centerXAnchor distribution:(UIStackViewDistribution)distribution
+{
+    UIStackView *buttonLayout = [[UIStackView alloc] init];
+    buttonLayout.axis = UILayoutConstraintAxisHorizontal;
+    buttonLayout.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:buttonLayout];
+
+    [buttonLayout.widthAnchor constraintEqualToConstant:kAdaptiveCardsWidth].active = YES;
+    [buttonLayout.centerXAnchor constraintEqualToAnchor:centerXAnchor].active = YES;
+
+    buttonLayout.alignment = UIStackViewAlignmentCenter;
+    buttonLayout.distribution = distribution;
+    buttonLayout.spacing = 10;
+    return buttonLayout;
+}
+
+- (void)reloadRowsAtChatWindows
+{
+    if (@available(iOS 11.0, *)) {
+        [self.chatWindow
+            performBatchUpdates:^(void) {
+                [self.chatWindow reloadRowsAtIndexPaths:self.chatWindow.indexPathsForSelectedRows withRowAnimation:UITableViewRowAnimationNone];
+            }
+                     completion:nil];
+    } else {
+        [self.chatWindow reloadData];
+    }
+}
 @end

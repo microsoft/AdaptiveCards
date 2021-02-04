@@ -24,7 +24,7 @@
 @property (strong, nonatomic) NSString *hostconfig;
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
-@property (strong, nonatomic) ACOAdaptiveCardParseResult *errorCard;
+
 @property ACRView *curView;
 @property UIScrollView *scrView;
 @property UITableView *chatWindow;
