@@ -1,19 +1,12 @@
-import { GlobalSettings } from "./shared";
 import * as Enums from "./enums";
+import * as Utils from "./utils";
+import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
 import { Strings } from "./strings";
-import { SubmitAction, SerializationContext, CardElement, AdaptiveCard, Action, GlobalRegistry, Input } from "./card-elements";
-import { Versions, property, PropertyDefinition, PropertyBag, SerializableObject, Version, SerializableObjectProperty } from "./serialization";
-import { CardObjectRegistry } from "./registry";
+import { SubmitAction, ExecuteAction, SerializationContext, CardElement, AdaptiveCard, Action, Input } from "./card-elements";
+import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
-import { ExecuteAction } from "./execute-action";
-
-function clearElementChildren(element: HTMLElement) {
-    while (element.firstChild) {
-        element.removeChild(element.firstChild);
-    }
-}
 
 function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]) {
     if (GlobalSettings.applets.logEnabled) {
@@ -36,101 +29,8 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
     }
 }
 
-export class RefreshActionProperty extends PropertyDefinition {
-    parse(sender: RefreshDefinition, source: PropertyBag, context: SerializationContext): ExecuteAction | undefined {
-        let action = context.parseAction(
-            sender.parent,
-            source[this.name],
-            [],
-            false);
-
-        if (action && action instanceof ExecuteAction) {
-            return action;
-        }
-        else {
-            context.logParseEvent(
-                sender,
-                Enums.ValidationEvent.ActionTypeNotAllowed,
-                "The \"refresh\" property must have its \"action\" field defined set to an Action.Execute object");
-
-            return undefined;
-        }
-    }
-
-    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
-        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
-    }
-
-    constructor(readonly targetVersion: Version, readonly name: string) {
-        super(targetVersion, name, undefined);
-    }
-}
-
-export class RefreshDefinition extends SerializableObject {
-    //#region Schema
-
-    static readonly actionProperty = new RefreshActionProperty(Versions.v1_0, "action");
-
-    @property(RefreshDefinition.actionProperty)
-    get action(): ExecuteAction {
-        return this.getValue(RefreshDefinition.actionProperty);
-    }
-
-    set action(value: ExecuteAction) {
-        this.setValue(RefreshDefinition.actionProperty, value);
-
-        if (value) {
-            value.setParent(this.parent);
-        }
-    }
-
-    protected getSchemaKey(): string {
-        return "RefreshDefinition";
-    }
-
-    //#endregion
-
-    parent: CardElement;
-}
-
-export class AdaptiveAppletCard extends AdaptiveCard {
-    //#region Schema
-
-    static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_0, "refresh", RefreshDefinition, true);
-
-    @property(AdaptiveAppletCard.refreshProperty)
-    get refresh(): RefreshDefinition | undefined {
-        return this.getValue(AdaptiveAppletCard.refreshProperty);
-    }
-
-    set refresh(value: RefreshDefinition | undefined) {
-        this.setValue(AdaptiveAppletCard.refreshProperty, value);
-
-        if (value) {
-            value.parent = this;
-        }
-    }
-
-    protected getSchemaKey(): string {
-        return "AdaptiveAppletCard";
-    }
-
-    //#endregion
-}
-
 export class AdaptiveApplet {
-    static readonly elementsRegistry = new CardObjectRegistry<CardElement>();
-    static readonly actionsRegistry = new CardObjectRegistry<Action>();
-
-    static initialize() {
-        GlobalRegistry.populateWithDefaultElements(AdaptiveApplet.elementsRegistry);
-        GlobalRegistry.populateWithDefaultActions(AdaptiveApplet.actionsRegistry);
-
-        AdaptiveApplet.actionsRegistry.unregister("Action.Submit");
-        AdaptiveApplet.actionsRegistry.register("Action.Execute", ExecuteAction, Versions.v1_2);
-    }
-
-    private _card?: AdaptiveAppletCard;
+    private _card?: AdaptiveCard;
     private _cardPayload: any;
     private _allowAutomaticCardUpdate: boolean = false;
     private _refreshButtonHostElement: HTMLElement;
@@ -138,7 +38,7 @@ export class AdaptiveApplet {
 
     private displayCard(card: AdaptiveCard) {
         if (card.renderedElement) {
-            clearElementChildren(this._cardHostElement);
+            Utils.clearElementChildren(this._cardHostElement);
 
             this._refreshButtonHostElement.style.display = "none";
 
@@ -216,7 +116,7 @@ export class AdaptiveApplet {
             card.parse(cardPayload, new SerializationContext(Versions.v1_2));
             card.onExecuteAction = (action: Action) => {
                 if (action.id === "refreshCard") {
-                    clearElementChildren(this._refreshButtonHostElement);
+                    Utils.clearElementChildren(this._refreshButtonHostElement);
                     
                     this.internalExecuteAction(refreshAction, ActivityInvocationTrigger.Automatic, 0);
                 }
@@ -226,7 +126,7 @@ export class AdaptiveApplet {
         }
 
         if (renderedRefreshButton) {
-            clearElementChildren(this._refreshButtonHostElement);
+            Utils.clearElementChildren(this._refreshButtonHostElement);
 
             this._refreshButtonHostElement.appendChild(renderedRefreshButton);
 
@@ -327,6 +227,10 @@ export class AdaptiveApplet {
         this._allowAutomaticCardUpdate = false;
     }
 
+    private createSerializationContext(): SerializationContext {
+        return this.onCreateSerializationContext ? this.onCreateSerializationContext(this) : new SerializationContext();
+    }
+
     private internalSetCard(payload: any, consecutiveRefreshes: number) {
         if (typeof payload === "object" && payload["type"] === "AdaptiveCard") {
             this._cardPayload = payload;
@@ -334,15 +238,13 @@ export class AdaptiveApplet {
 
         if (this._cardPayload) {
             try {
-                let card = new AdaptiveAppletCard();
+                let card = new AdaptiveCard();
 
                 if (this.hostConfig) {
                     card.hostConfig = this.hostConfig;
                 }
 
-                let serializationContext = new SerializationContext();
-                serializationContext.setElementRegistry(AdaptiveApplet.elementsRegistry);
-                serializationContext.setActionRegistry(AdaptiveApplet.actionsRegistry);
+                let serializationContext = this.createSerializationContext();
 
                 card.parse(this._cardPayload, serializationContext);
 
@@ -663,6 +565,7 @@ export class AdaptiveApplet {
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
     onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: ActivityResponse) => void;
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
+    onCreateSerializationContext?: (sender: AdaptiveApplet) => SerializationContext;
     onCreateProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => HTMLElement | undefined;
     onRemoveProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => void;
     onRenderRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
@@ -695,9 +598,7 @@ export class AdaptiveApplet {
         this.internalSetCard(payload, 0);
     }
 
-    get card(): AdaptiveAppletCard | undefined {
+    get card(): AdaptiveCard | undefined {
         return this._card;
     }
 }
-
-AdaptiveApplet.initialize();

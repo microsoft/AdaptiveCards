@@ -1,4 +1,4 @@
-import { ExecuteAction } from "./execute-action";
+import { ExecuteAction } from "./card-elements";
 
 export interface InvokeActivity {
     type: "invoke",

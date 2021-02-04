@@ -107,7 +107,8 @@ export class Versions {
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
-    static readonly latest = Versions.v1_3;
+    static readonly v1_4 = new Version(1, 4);
+    static readonly latest = Versions.v1_4;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {

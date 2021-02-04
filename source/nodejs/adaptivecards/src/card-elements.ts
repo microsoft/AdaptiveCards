@@ -3933,7 +3933,7 @@ export abstract class Action extends CardObject {
     }
 }
 
-export class SubmitAction extends Action {
+export abstract class SubmitActionBase extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
@@ -3953,17 +3953,13 @@ export class SubmitAction extends Action {
             context.serializeValue(target, property.name, value);
         });
 
-    @property(SubmitAction.dataProperty)
+    @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
-    @property(SubmitAction.associatedInputsProperty)
+    @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
 
     //#endregion
-
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
@@ -4012,10 +4008,6 @@ export class SubmitAction extends Action {
         this._isPrepared = true;
     }
 
-    getJsonTypeName(): string {
-        return SubmitAction.JsonTypeName;
-    }
-
     get data(): object | undefined {
         return this._isPrepared ? this._processedData : this._originalData;
     }
@@ -4023,6 +4015,35 @@ export class SubmitAction extends Action {
     set data(value: object | undefined) {
         this._originalData = value;
         this._isPrepared = false;
+    }
+}
+
+export class SubmitAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
+
+    getJsonTypeName(): string {
+        return SubmitAction.JsonTypeName;
+    }
+}
+
+export class ExecuteAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
+
+    //#region Schema
+
+    static readonly verbProperty = new StringProperty(Versions.v1_4, "verb");
+
+    @property(ExecuteAction.verbProperty)
+    verb: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return ExecuteAction.JsonTypeName;
     }
 }
 
@@ -6333,6 +6354,69 @@ export interface IMarkdownProcessingResult {
     outputHtml?: any;
 }
 
+export class RefreshActionProperty extends PropertyDefinition {
+    parse(sender: RefreshDefinition, source: PropertyBag, context: SerializationContext): ExecuteAction | undefined {
+        let action = context.parseAction(
+            sender.parent,
+            source[this.name],
+            [],
+            false);
+
+        if (action !== undefined) {
+            if (action instanceof ExecuteAction) {
+                return action;
+            }
+
+            context.logParseEvent(
+                sender,
+                Enums.ValidationEvent.ActionTypeNotAllowed,
+                Strings.errors.actionTypeNotAllowed(action.getJsonTypeName()));
+        }
+
+        context.logParseEvent(
+            sender,
+            Enums.ValidationEvent.ActionTypeNotAllowed,
+            Strings.errors.propertyMustBeSet("action"));
+
+        return undefined;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+    }
+
+    constructor(readonly targetVersion: Version, readonly name: string) {
+        super(targetVersion, name, undefined);
+    }
+}
+
+export class RefreshDefinition extends SerializableObject {
+    //#region Schema
+
+    static readonly actionProperty = new RefreshActionProperty(Versions.v1_4, "action");
+
+    @property(RefreshDefinition.actionProperty)
+    get action(): ExecuteAction {
+        return this.getValue(RefreshDefinition.actionProperty);
+    }
+
+    set action(value: ExecuteAction) {
+        this.setValue(RefreshDefinition.actionProperty, value);
+
+        if (value) {
+            value.setParent(this.parent);
+        }
+    }
+
+    protected getSchemaKey(): string {
+        return "RefreshDefinition";
+    }
+
+    //#endregion
+
+    parent: CardElement;
+}
+
 // @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     static readonly schemaUrl = "http://adaptivecards.io/schemas/adaptive-card.json";
@@ -6374,6 +6458,7 @@ export class AdaptiveCard extends ContainerWithActions {
         Versions.v1_0);
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
+    static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
 
     @property(AdaptiveCard.versionProperty)
     version: Version;
@@ -6383,6 +6468,19 @@ export class AdaptiveCard extends ContainerWithActions {
 
     @property(AdaptiveCard.speakProperty)
     speak?: string;
+
+    @property(AdaptiveCard.refreshProperty)
+    get refresh(): RefreshDefinition | undefined {
+        return this.getValue(AdaptiveCard.refreshProperty);
+    }
+
+    set refresh(value: RefreshDefinition | undefined) {
+        this.setValue(AdaptiveCard.refreshProperty, value);
+
+        if (value) {
+            value.parent = this;
+        }
+    }
 
     //#endregion
 
@@ -6683,6 +6781,7 @@ export class GlobalRegistry {
         registry.register(SubmitAction.JsonTypeName, SubmitAction);
         registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
         registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+        registry.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
     }
 
     static readonly elements = new CardObjectRegistry<CardElement>();

@@ -1,15 +1,3 @@
-/*
-    autoRefresh: {
-        userIds: [ "john@contoso.com", "jane@contoso.com" ],
-        displayCurrentCardWhileRefreshing: false,
-        action: {
-            type: "Action.Execute",
-            verb: "succeedReturnCard",
-            title: "Auto-refresh"
-        },
-    },
-*/
-
 export const sampleCard = {
     type: "AdaptiveCard",
     body: [
@@ -98,7 +86,7 @@ export const sampleCard = {
         }
     ],
     $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-    version: "1.0"
+    version: "1.4"
 };
 
 export const sampleRefreshCard = {
