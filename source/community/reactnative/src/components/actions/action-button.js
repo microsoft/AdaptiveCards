@@ -55,14 +55,18 @@ export class ActionButton extends React.Component {
 		}
 	}
 
+	getActionAlignment() {
+		if (HostConfigManager.getHostConfig().actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+			return { flexGrow: 0 }
+		} else return { flexGrow: 1 }
+	}
+
 	render() {
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
 		this.parseHostConfig();
-
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
-
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
 				this.inputArray = inputArray;
@@ -71,7 +75,7 @@ export class ActionButton extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
-					style={{ flexGrow: 1 }}
+					style={this.getActionAlignment()}
 					accessible={true}
 					accessibilityLabel={this.altText}
 					onPress={this.onActionButtonTapped}>
