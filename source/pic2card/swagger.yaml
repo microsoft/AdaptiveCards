@@ -1,0 +1,131 @@
+openapi: 3.0.1
+info:
+  title: Pic2Card
+  description: Pic2Card generates Adaptivecards from Image.
+  version: "1.0"
+servers:
+- url: /
+tags:
+- name: Jobs
+paths:
+  /get_card_templates:
+    get:
+      tags:
+      - Jobs
+      summary: Get list of sample iamges in base64 format
+      description: Returns List of template images in base64 format. This can be used
+        to quickly test the pic2card apis.
+      operationId: get_get_card_templates
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  templates:
+                    type: array
+                    items:
+                      type: string
+  /predict_json:
+    post:
+      tags:
+      - Jobs
+      summary: predicts the adaptive card json for the posted image
+      description: 'Returns adaptive card json'
+      operationId: post_predict_json
+      parameters:
+      - name: format
+        in: query
+        description: Return the Adaptivecard Template and Data format.
+        schema:
+          type: string
+      requestBody:
+        description: Base64 Image payload in Json format.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagePayload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  card_json:
+                    type: object
+                  error:
+                    type: object
+      x-codegen-request-body-name: body
+      
+  /predict_json_debug:
+    post:
+      tags:
+      - Jobs
+      summary: predicts the adaptive card json for the posted image.
+      description: 'Returns the predicted card json and input iamge with bounding boxes drawn'
+      operationId: post_debug_endpoint
+      parameters:
+      - name: format
+        in: query
+        description: Return the Adaptivecard Template and Data format.
+        schema:
+          type: string
+      requestBody:
+        description: Base64 Image payload in Json format.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImagePayload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  card_json:
+                    type: object
+                  error:
+                    type: object
+                  image:
+                    type: string
+  /version:
+    get:
+      tags:
+      - Jobs
+      summary: Return the current deployed git_hash of this project
+      description: Commit hash gets injected into docker image at build time.
+      operationId: get_get_version
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  git_sha:
+                    type: string
+                  branch:
+                    type: string
+components:
+  schemas:
+    ImagePayload:
+      type: object
+      properties:
+        image:
+          type: string
+  responses:
+    MaskError:
+      description: When any error occurs on mask
+      content: {}
+    ParseError:
+      description: When a mask can't be parsed
+      content: {}
