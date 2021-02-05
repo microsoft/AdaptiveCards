@@ -133,7 +133,6 @@ using namespace AdaptiveCards;
                 [layer removeFromSuperlayer];
             }
         }
-        // The content view is UIImageView
     } else if (isImageSet) {
         BOOL bUpdate = NO;
         if (self.imageProperties.acrImageSize != ACRImageSizeExplicit && !heightConstraint) {

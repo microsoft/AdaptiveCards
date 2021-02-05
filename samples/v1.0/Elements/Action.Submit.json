@@ -21,7 +21,7 @@
 	"actions": [
 		{
 			"type": "Action.Submit",
-			"title": "Action.Submit Present a form and submit it back to the originator Present a form and submit it back to the originator Present a form and submit it back to the originator",
+			"title": "Action.Submit",
 			"data": {
 				"x": 13
 			}

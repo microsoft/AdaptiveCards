@@ -564,10 +564,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     // handle background image for adaptive card that uses resource resolver
                     UIImageView *imageView = (UIImageView *)object;
                     auto backgroundImage = [_adaptiveCard card] -> GetBackgroundImage();
-                    renderBackgroundImage(backgroundImage.get(), imageView, image);
+
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
+
+                    renderBackgroundImage(backgroundImage.get(), imageView, image);
                 }
             }
         }

@@ -163,7 +163,7 @@
     if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
         superview = (ACRContentHoldingUIView *)imageView.superview;
         imageProps = superview.imageProperties;
-        [imageProps updateContentSize:image.size];        
+        [imageProps updateContentSize:image.size];
     }
 
     if (!imageProps) {
@@ -195,28 +195,27 @@
 
     constraints[0].priority = priority;
     constraints[1].priority = priority;
-    
-    {
-        [constraints addObjectsFromArray:@[
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeHeight
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:imageView
-                                         attribute:NSLayoutAttributeWidth
-                                        multiplier:cgsize.height / cgsize.width
-                                          constant:0],
-            [NSLayoutConstraint constraintWithItem:imageView
-                                         attribute:NSLayoutAttributeWidth
-                                         relatedBy:NSLayoutRelationEqual
-                                            toItem:imageView
-                                         attribute:NSLayoutAttributeHeight
-                                        multiplier:cgsize.width / cgsize.height
-                                          constant:0]
-        ]];
 
-        constraints[2].priority = priority + 2;
-        constraints[3].priority = priority + 2;
-    }
+
+    [constraints addObjectsFromArray:@[
+        [NSLayoutConstraint constraintWithItem:imageView
+                                     attribute:NSLayoutAttributeHeight
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:imageView
+                                     attribute:NSLayoutAttributeWidth
+                                    multiplier:cgsize.height / cgsize.width
+                                      constant:0],
+        [NSLayoutConstraint constraintWithItem:imageView
+                                     attribute:NSLayoutAttributeWidth
+                                     relatedBy:NSLayoutRelationEqual
+                                        toItem:imageView
+                                     attribute:NSLayoutAttributeHeight
+                                    multiplier:cgsize.width / cgsize.height
+                                      constant:0]
+    ]];
+
+    constraints[2].priority = priority + 2;
+    constraints[3].priority = priority + 2;
     [NSLayoutConstraint activateConstraints:constraints];
 
     if (superview) {

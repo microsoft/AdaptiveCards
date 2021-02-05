@@ -43,14 +43,14 @@
         [resolvers setResourceResolver:resolver scheme:@"data"];
         // register a custom scheme bundle with resolver
         [resolvers setResourceResolver:resolver scheme:@"bundle"];
-        
+
         NSString *errorMSG = @"{\"type\": \"AdaptiveCard\", \"$schema\": "
-        @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
-        @"\"1.2\", \"body\": [ {"
-        @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
-        @"\"weight\": \"Bolder\", \"color\": "
-        @"\"Attention\", \"horizontalAlignment\": \"Center\""
-        @"} ] }";
+                             @"\"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": "
+                             @"\"1.2\", \"body\": [ {"
+                             @"\"type\": \"TextBlock\", \"text\": \"Rendering Failed\","
+                             @"\"weight\": \"Bolder\", \"color\": "
+                             @"\"Attention\", \"horizontalAlignment\": \"Center\""
+                             @"} ] }";
         errorCard = [ACOAdaptiveCard fromJson:errorMSG];
     }
     return self;
@@ -78,9 +78,9 @@
     UITableViewCell *cell = nil;
 
     UIView *adaptiveCardView = adaptiveCardsViews[indexPath.row];
-    NSString *identifier = @"Hello"; //[NSString stringWithFormat:@"%p", adaptiveCardView];
+    NSString *identifier = [NSString stringWithFormat:@"%p", adaptiveCardView];
 
-    //cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell) {
         return cell;
     } else {
@@ -93,7 +93,7 @@
     [adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
     [cell.contentView.heightAnchor constraintEqualToAnchor:adaptiveCardView.heightAnchor].active = YES;
     [cell.contentView.widthAnchor constraintEqualToAnchor:adaptiveCardView.widthAnchor].active = YES;
-    
+
     return cell;
 }
 
@@ -126,7 +126,7 @@
     ACOHostConfigParseResult *hostconfigParseResult = [ACOHostConfig fromJson:hostConfig
                                                             resourceResolvers:resolvers];
     ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:jsonString];
-    
+
     ACRRenderResult *renderResult = nil;
 
     if (cardParseResult.isValid) {
@@ -140,7 +140,7 @@
                            widthConstraint:adaptiveCardsWidth
                                   delegate:self.adaptiveCardsDelegates];
     }
-    
+
     [adaptiveCardsViews addObject:renderResult.view];
 }
 
