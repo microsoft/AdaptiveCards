@@ -834,3 +834,9 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
             return ACRLeft;
     }
 }
+
+void printSize(NSString *msg, CGSize size)
+{
+    NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
+}
+

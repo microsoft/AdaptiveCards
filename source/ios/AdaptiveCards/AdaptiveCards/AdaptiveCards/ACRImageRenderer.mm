@@ -163,7 +163,7 @@
     if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
         superview = (ACRContentHoldingUIView *)imageView.superview;
         imageProps = superview.imageProperties;
-        [imageProps updateContentSize:image.size];
+        [imageProps updateContentSize:image.size];        
     }
 
     if (!imageProps) {
@@ -196,7 +196,7 @@
     constraints[0].priority = priority;
     constraints[1].priority = priority;
     
-    if (imageProps.acrImageSize != ACRImageSizeStretch) {
+    {
         [constraints addObjectsFromArray:@[
             [NSLayoutConstraint constraintWithItem:imageView
                                          attribute:NSLayoutAttributeHeight

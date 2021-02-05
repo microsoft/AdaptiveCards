@@ -89,10 +89,9 @@
         [cell.contentView addSubview:adaptiveCardView];
     }
 
-    //[adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor].active = YES;
-    //[adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
-    [cell.contentView.topAnchor constraintEqualToAnchor:adaptiveCardView.topAnchor].active = YES;
-    [cell.contentView.bottomAnchor constraintEqualToAnchor:adaptiveCardView.bottomAnchor].active = YES;
+    [adaptiveCardView.centerXAnchor constraintEqualToAnchor:cell.contentView.centerXAnchor].active = YES;
+    [adaptiveCardView.centerYAnchor constraintEqualToAnchor:cell.contentView.centerYAnchor].active = YES;
+    [cell.contentView.heightAnchor constraintEqualToAnchor:adaptiveCardView.heightAnchor].active = YES;
     [cell.contentView.widthAnchor constraintEqualToAnchor:adaptiveCardView.widthAnchor].active = YES;
     
     return cell;
