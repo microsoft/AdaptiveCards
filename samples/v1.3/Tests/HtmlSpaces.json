@@ -1,0 +1,23 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "TextBlock with 4 \"space\" characters    1"
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock with 4 \"&-nbsp;\" characters&nbsp;&nbsp;&nbsp;&nbsp;1"
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock with 4 \"&-ensp;\" characters&ensp;&ensp;&ensp;&ensp;1"
+		},
+		{
+			"type": "TextBlock",
+			"text": "TextBlock with 4 \"&-emsp;\" characters&emsp;&emsp;&emsp;&emsp;1"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

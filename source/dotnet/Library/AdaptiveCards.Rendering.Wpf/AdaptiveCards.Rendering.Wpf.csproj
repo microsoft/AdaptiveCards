@@ -32,7 +32,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AdaptiveCards\AdaptiveCards.csproj" />
-    <ProjectReference Include="..\Microsoft.MarkedNet\Microsoft.MarkedNet.csproj" />
   </ItemGroup>
 
   <ItemGroup>

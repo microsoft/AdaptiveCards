@@ -139,10 +139,20 @@ a.ac-anchor:visited:active {
     border: 1px solid #0078D7;
 }
 
-.ac-pushButton.expanded {
-    background-color: #004980;
-    color: white;
-    border: 1px solid #0078D7;
+@media not (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: #004980;
+        color: white;
+        border: 1px solid #0078D7;
+    }
+}
+
+@media (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .ac-pushButton.expandable:after {
