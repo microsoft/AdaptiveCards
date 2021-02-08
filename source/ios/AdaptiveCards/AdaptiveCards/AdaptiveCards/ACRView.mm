@@ -144,8 +144,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
     renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
 
-    [self callDidLoadElementsIfNeeded];
-
     return newView;
 }
 
@@ -166,50 +164,50 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     switch (elem->GetElementType()) {
-        case CardElementType::TextBlock: {
-            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-            RichTextElementProperties textProp;
-            TextBlockToRichTextElementProperties(textBlockElement, textProp);
-
-            /// tag a base card element with unique key
-            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
-            NSString *key = [number stringValue];
-            [self processTextConcurrently:textProp elementId:key];
-            break;
-        }
-        case CardElementType::RichTextBlock: {
-            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
-            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
-                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-                if (textRun) {
-                    RichTextElementProperties textProp;
-                    TextRunToRichTextElementProperties(textRun, textProp);
-                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-                    NSString *key = [number stringValue];
-                    [self processTextConcurrently:textProp elementId:key];
-                }
-            }
-            break;
-        }
-        case CardElementType::FactSet: {
-            [self tagBaseCardElement:elem];
-            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
-            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-            key = [key stringByAppendingString:@"*"];
-            int rowFactId = 0;
-            for (auto fact : factSet->GetFacts()) {
-
-                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
-                [self processTextConcurrently:titleTextProp
-                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-
-
-                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
-                [self processTextConcurrently:valueTextProp
-                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-            }
-            break;
-        }
+//        case CardElementType::TextBlock: {
+//            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
+//            RichTextElementProperties textProp;
+//            TextBlockToRichTextElementProperties(textBlockElement, textProp);
+//
+//            /// tag a base card element with unique key
+//            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
+//            NSString *key = [number stringValue];
+//            [self processTextConcurrently:textProp elementId:key];
+//            break;
+//        }
+//        case CardElementType::RichTextBlock: {
+//            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
+//            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
+//                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+//                if (textRun) {
+//                    RichTextElementProperties textProp;
+//                    TextRunToRichTextElementProperties(textRun, textProp);
+//                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+//                    NSString *key = [number stringValue];
+//                    [self processTextConcurrently:textProp elementId:key];
+//                }
+//            }
+//            break;
+//        }
+//        case CardElementType::FactSet: {
+//            [self tagBaseCardElement:elem];
+//            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+//            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+//            key = [key stringByAppendingString:@"*"];
+//            int rowFactId = 0;
+//            for (auto fact : factSet->GetFacts()) {
+//
+//                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+//                [self processTextConcurrently:titleTextProp
+//                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+//
+//
+//                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+//                [self processTextConcurrently:valueTextProp
+//                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+//            }
+//            break;
+//        }
         case CardElementType::Image: {
 
             ObserverActionBlock observerAction =
@@ -818,6 +816,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     if (imageView.image) {
         self->_imageViewMap[key] = imageView.image;
     }
+}
+
+- (void)drawRect:(CGRect)rect
+{
+    [super drawRect:rect];
+    [self callDidLoadElementsIfNeeded];
 }
 
 @end
