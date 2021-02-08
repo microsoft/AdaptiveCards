@@ -19,12 +19,14 @@
 @property (strong, nonatomic) UIButton *tryButton;
 @property (strong, nonatomic) UIButton *applyButton;
 @property (strong, nonatomic) UIButton *enableCustomRendererButton;
+@property (strong, nonatomic) UIButton *deleteAllRowsButton;
 @property (strong, nonatomic) NSString *editableStr;
 @property (strong, nonatomic) NSString *hostconfig;
 @property (strong, nonatomic) ACOHostConfig *config;
 @property (strong, nonatomic) UILabel *userResponseLabel;
-@property (strong, nonatomic) ACOAdaptiveCardParseResult *errorCard;
+
 @property ACRView *curView;
 @property UIScrollView *scrView;
+@property UITableView *chatWindow;
 
 @end
