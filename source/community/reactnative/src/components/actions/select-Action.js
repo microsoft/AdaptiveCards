@@ -69,6 +69,7 @@ export class SelectAction extends React.Component {
 					onPress={() => { this.onClickHandle() }}
 					accessible={true}
 					accessibilityLabel={this.payload.altText}
+					accessibilityRole={Constants.Button}
 					style={this.props.style}>
 					<React.Fragment>{this.props.children}</React.Fragment>
 				</ButtonComponent>

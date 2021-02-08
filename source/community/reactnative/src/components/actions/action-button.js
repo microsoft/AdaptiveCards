@@ -78,6 +78,7 @@ export class ActionButton extends React.Component {
 					style={this.getActionAlignment()}
 					accessible={true}
 					accessibilityLabel={this.altText}
+					accessibilityRole={Constants.Button}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
