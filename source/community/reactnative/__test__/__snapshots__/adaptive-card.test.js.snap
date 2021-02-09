@@ -88,11 +88,13 @@ exports[`renders correctly 1`] = `
               Array [
                 Object {
                   "flexWrap": "wrap",
-                  "justifyContent": "center",
                   "paddingTop": 10,
                 },
                 Object {
                   "flexDirection": "row",
+                },
+                Object {
+                  "justifyContent": "flex-start",
                 },
               ]
             }
