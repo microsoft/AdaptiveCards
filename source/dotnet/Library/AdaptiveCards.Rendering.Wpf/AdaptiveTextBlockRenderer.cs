@@ -80,8 +80,12 @@ namespace AdaptiveCards.Rendering.Wpf
             marked.Options.Sanitize = true;
 
             string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
-            // uiTextBlock.Text = textBlock.Text;
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
+
+            text = marked.Parse(text);
+            text = RendererUtilities.HandleHtmlSpaces(text);
+            
+            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{text}</TextBlock>";
+
             StringReader stringReader = new StringReader(xaml);
 
             XmlReader xmlReader = XmlReader.Create(stringReader);

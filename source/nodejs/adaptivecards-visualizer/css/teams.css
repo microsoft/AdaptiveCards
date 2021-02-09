@@ -95,9 +95,19 @@ a.ac-anchor:visited:active {
     color: white;
 }
 
-.ac-pushButton.expanded {
-    background-color: #4F5399;
-    color: white;
+@media not (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: #4F5399;
+        color: white;
+    }
+}
+
+@media (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .ac-input-container {

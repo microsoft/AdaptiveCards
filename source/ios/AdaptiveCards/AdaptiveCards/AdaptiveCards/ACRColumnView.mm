@@ -62,6 +62,7 @@
     if (view.isHidden) {
         return;
     }
+    [super increaseIntrinsicContentSize:view];
     CGSize size = [view intrinsicContentSize];
     if (size.width >= 0 and size.height >= 0) {
         self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
@@ -71,7 +72,7 @@
 - (void)decreaseIntrinsicContentSize:(UIView *)view
 {
     CGFloat maxWidthExcludingTheView = [self getMaxWidthOfSubviewsAfterExcluding:view];
-    CGSize size = [view intrinsicContentSize];
+    CGSize size = [self getIntrinsicContentSizeInArragedSubviews:view];
     // there are three possible cases
     // 1. possibleMaxWidthExcludingTheView is equal to the height of the view
     // 2. possibleMaxWidthExcludingTheView is bigger than the the height of the view
