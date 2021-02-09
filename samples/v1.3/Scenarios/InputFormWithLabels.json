@@ -35,14 +35,14 @@
 							"id": "myName",
 							"label": "Your name (Last, First)",
 							"isRequired": true,
-							"regex": "^[A-Z](a-z)+ [A-Z](a-z)+( ([A-Z][a-z]+))*$",
+							"regex": "^[A-Z][a-z]+, [A-Z][a-z]+$",
 							"errorMessage": "Please enter your name in the specified format"
 						},
 						{
 							"type": "Input.Text",
 							"id": "myEmail",
 							"label": "Your email",
-							"regex": "^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,4}$",
+							"regex": "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+[.][A-Za-z0-9-]{2,4}$",
 							"isRequired": true,
 							"errorMessage": "Please enter a valid email address",
 							"style": "email"
