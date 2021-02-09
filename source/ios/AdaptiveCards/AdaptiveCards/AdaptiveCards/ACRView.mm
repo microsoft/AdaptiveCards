@@ -549,11 +549,10 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 ACRRegistration *reg = [ACRRegistration getInstance];
                 ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *renderer = (ACRBaseCardElementRenderer<ACRIKVONotificationHandler> *)[reg getRenderer:[NSNumber numberWithInt:static_cast<int>(baseCardElement.type)]];
                 if (renderer && [[renderer class] conformsToProtocol:@protocol(ACRIKVONotificationHandler)]) {
-                    // remove observer early in case background image must be changed to handle mode = repeat
-                    [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
                     NSMutableDictionary *imageViewMap = [self getImageMap];
                     imageViewMap[key] = image;
+                    [self removeObserver:self forKeyPath:path onObject:object];
                     [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {

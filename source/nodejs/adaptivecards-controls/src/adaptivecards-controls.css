@@ -137,9 +137,11 @@
     border: 1px solid #0078D7;
 }
 
-.ms-ctrl-dropdown:focus {
-    border: 1px solid #0078D7;
-    outline: 0;
+@media not (forced-colors: active) {
+    .ms-ctrl-dropdown:focus {
+        border: 1px solid #0078D7;
+        outline: 0;
+    }
 }
 
 .ms-dropdown-label {
@@ -182,9 +184,11 @@
     background-color: #EEEEEE;
 }
 
-.ms-ctrl-dropdown-item:focus {
-    outline: 0;
-    background-color: #CCCCCC;
+@media not (forced-colors: active) {
+    .ms-ctrl-dropdown-item:focus {
+        outline: 0;
+        background-color: #CCCCCC;
+    }
 }
 
 .ms-ctrl-popup-container {

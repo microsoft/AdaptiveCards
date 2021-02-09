@@ -22,6 +22,13 @@ namespace AdaptiveCards.Rendering
         private static readonly Regex _regexBinding = new Regex(@"(?<property>\{\{\w+?\}\})+?",
             RegexOptions.ExplicitCapture);
 
+        public static string HandleHtmlSpaces(string text)
+        {
+            return text.Replace("&amp;nbsp;", "&#x00A0;")
+                .Replace("&amp;ensp;", "&#x2002;")
+                .Replace("&amp;emsp;", "&#x2003;");
+        }
+
         /// <summary>
         ///     This funct will return modified text replacing {{DATE|TIME()}} style functions as the formatted text
         /// </summary>
