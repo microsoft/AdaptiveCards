@@ -3948,7 +3948,7 @@ export class SubmitAction extends Action {
             let value = source[property.name];
 
             if (value !== undefined && typeof value === "string") {
-                return value === "none" ? "none" : "auto";
+                return value.toLowerCase() === "none" ? "none" : "auto";
             }
             
             return undefined;
