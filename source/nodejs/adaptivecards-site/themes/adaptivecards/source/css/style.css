@@ -617,11 +617,11 @@ dir {
   font-size: 15px;
   line-height: 29px;
   font-weight: 600;
+  text-decoration: underline;
 }
 
 .homepage a:hover {
   color: blue;
-  text-decoration: none;
 }
 
 /* .fa-chevron-right {
@@ -654,11 +654,11 @@ dir {
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
+  text-decoration: underline;
 }
 
 .ac-footer a:hover {
   color: #6b6b6b;
-  text-decoration: none;
 }
 
 .ac-footer .post-subtitle {
@@ -678,4 +678,9 @@ dir {
 input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
+}
+
+.ac-link-with-chevron
+{
+  text-decoration: none!important;
 }
