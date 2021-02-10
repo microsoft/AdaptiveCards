@@ -74,8 +74,7 @@
             [contentholdingview addSubview:view];
         }
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
-        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:mediaKey];
+        [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:img imageView:view];
     } else {
         contentholdingview = (ACRContentHoldingUIView *)[rootView getImageView:mediaKey];
         if (contentholdingview) {
@@ -89,7 +88,7 @@
         view.backgroundColor = UIColor.blackColor;
         contentholdingview = [[ACRContentHoldingUIView alloc] init];
         [contentholdingview addSubview:view];
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:nil imageView:view];
+        [self configUpdateForUIImageView:nil acoElem:acoElem config:acoConfig image:nil imageView:view];
     }
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -160,7 +159,7 @@
     return view;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     ACRContentHoldingUIView *contentholdingview = (ACRContentHoldingUIView *)imageView.superview;
     CGFloat heightToWidthRatio = 0.0f;
@@ -206,6 +205,7 @@
                                   constant:0]
         .active = YES;
     [contentholdingview setNeedsLayout];
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
 
 @end

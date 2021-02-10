@@ -34,7 +34,7 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
                            UIView *containerView, ACRView *rootView);
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView* rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *img);
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,

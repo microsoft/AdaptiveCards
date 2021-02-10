@@ -127,7 +127,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (UIView *)render
 {
     if (self.frame.size.width) {
-        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
+//        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
     [self pushCurrentShowcard:self];
@@ -164,50 +164,50 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     switch (elem->GetElementType()) {
-//        case CardElementType::TextBlock: {
-//            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-//            RichTextElementProperties textProp;
-//            TextBlockToRichTextElementProperties(textBlockElement, textProp);
-//
-//            /// tag a base card element with unique key
-//            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
-//            NSString *key = [number stringValue];
-//            [self processTextConcurrently:textProp elementId:key];
-//            break;
-//        }
-//        case CardElementType::RichTextBlock: {
-//            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
-//            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
-//                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-//                if (textRun) {
-//                    RichTextElementProperties textProp;
-//                    TextRunToRichTextElementProperties(textRun, textProp);
-//                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-//                    NSString *key = [number stringValue];
-//                    [self processTextConcurrently:textProp elementId:key];
-//                }
-//            }
-//            break;
-//        }
-//        case CardElementType::FactSet: {
-//            [self tagBaseCardElement:elem];
-//            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
-//            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-//            key = [key stringByAppendingString:@"*"];
-//            int rowFactId = 0;
-//            for (auto fact : factSet->GetFacts()) {
-//
-//                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
-//                [self processTextConcurrently:titleTextProp
-//                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-//
-//
-//                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
-//                [self processTextConcurrently:valueTextProp
-//                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-//            }
-//            break;
-//        }
+            //        case CardElementType::TextBlock: {
+            //            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
+            //            RichTextElementProperties textProp;
+            //            TextBlockToRichTextElementProperties(textBlockElement, textProp);
+            //
+            //            /// tag a base card element with unique key
+            //            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
+            //            NSString *key = [number stringValue];
+            //            [self processTextConcurrently:textProp elementId:key];
+            //            break;
+            //        }
+            //        case CardElementType::RichTextBlock: {
+            //            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
+            //            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
+            //                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+            //                if (textRun) {
+            //                    RichTextElementProperties textProp;
+            //                    TextRunToRichTextElementProperties(textRun, textProp);
+            //                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+            //                    NSString *key = [number stringValue];
+            //                    [self processTextConcurrently:textProp elementId:key];
+            //                }
+            //            }
+            //            break;
+            //        }
+            //        case CardElementType::FactSet: {
+            //            [self tagBaseCardElement:elem];
+            //            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+            //            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+            //            key = [key stringByAppendingString:@"*"];
+            //            int rowFactId = 0;
+            //            for (auto fact : factSet->GetFacts()) {
+            //
+            //                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+            //                [self processTextConcurrently:titleTextProp
+            //                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+            //
+            //
+            //                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+            //                [self processTextConcurrently:valueTextProp
+            //                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+            //            }
+            //            break;
+            //        }
         case CardElementType::Image: {
 
             ObserverActionBlock observerAction =
@@ -550,8 +550,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     observerRemoved = true;
                     NSMutableDictionary *imageViewMap = [self getImageMap];
                     imageViewMap[key] = image;
-                    [self removeObserver:self forKeyPath:path onObject:object];
-                    [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
+                    [renderer configUpdateForUIImageView:self acoElem:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
                 id view = _imageViewContextMap[key];
@@ -566,8 +565,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-
-                    renderBackgroundImage(backgroundImage.get(), imageView, image);
+                    renderBackgroundImage(self, backgroundImage.get(), imageView, image);
                 }
             }
         }

@@ -57,7 +57,7 @@ void configSeparatorVisibility(ACRSeparator *view,
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
                            UIView *containerView, ACRView *rootView)
 {
-    if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
+    if (rootView == nil || backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
 
@@ -96,15 +96,16 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             if (imgView.image) {
                 // apply now if image is ready, otherwise wait until it is loaded
                 applyBackgroundImageConstraints(backgroundImage.get(), imgView, imgView.image);
+                [rootView removeObserver:rootView forKeyPath:@"image" onObject:imgView];
             }
         }
     }
 }
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
-    if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
+    if (rootView == nil || backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
         return;
     }
 
@@ -112,9 +113,11 @@ void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UII
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
+        [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
         imageView.image = nil;
     }
     applyBackgroundImageConstraints(backgroundImageProperties, imageView, image);
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,

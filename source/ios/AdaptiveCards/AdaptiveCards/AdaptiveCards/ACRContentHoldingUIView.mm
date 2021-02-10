@@ -53,7 +53,10 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
+    printSize(@"CHUV before", self.frame.size);
+    printSize(@"CHUV imageview before", self.subviews[0].frame.size);
     [super layoutSubviews];
+
     if (_isPersonStyle) {
         UIView *subview = self.subviews[0];
         CGFloat radius = subview.bounds.size.width / 2.0;
@@ -133,27 +136,31 @@ using namespace AdaptiveCards;
                 [layer removeFromSuperlayer];
             }
         }
-    } else if (isImageSet) {
-        BOOL bUpdate = NO;
-        if (self.imageProperties.acrImageSize != ACRImageSizeExplicit && !heightConstraint) {
-            [self setHeightConstraint];
-            bUpdate = YES;
-        }
-
-        if (self.imageProperties.acrImageSize == ACRImageSizeStretch) {
-            bUpdate = !(heightConstraint && imageViewHeightConstraint);
-
-            if (!heightConstraint) {
+    } else {
+        printSize(@"CHUV after", self.frame.size);
+        printSize(@"CHUV imageview after", self.subviews[0].frame.size);
+        if (isImageSet || _imageView.image) {
+            BOOL bUpdate = NO;
+            if (self.imageProperties.acrImageSize != ACRImageSizeExplicit && !heightConstraint) {
                 [self setHeightConstraint];
+                bUpdate = YES;
             }
 
-            if (!imageViewHeightConstraint) {
-                [self setImageViewHeightConstraint];
-            }
-        }
+            if (self.imageProperties.acrImageSize == ACRImageSizeStretch) {
+                bUpdate = !(heightConstraint && imageViewHeightConstraint);
 
-        if (bUpdate) {
-            [_viewGroup invalidateIntrinsicContentSize];
+                if (!heightConstraint) {
+                    [self setHeightConstraint];
+                }
+
+//                if (!imageViewHeightConstraint) {
+//                    [self setImageViewHeightConstraint];
+//                }
+            }
+
+            if (bUpdate) {
+                [_viewGroup invalidateIntrinsicContentSize];
+            }
         }
     }
 }

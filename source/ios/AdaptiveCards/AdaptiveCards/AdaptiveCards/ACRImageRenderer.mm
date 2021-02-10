@@ -13,10 +13,9 @@
 #import "ACRImageProperties.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
-#import "ACRView.h"
+#import "ACRViewPrivate.h"
 #import "Enums.h"
 #import "Image.h"
-#import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
 
@@ -150,14 +149,15 @@
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:view.image imageView:view];
+        [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
     }
 
     return wrappingView;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
+    printSize(@"IR CUF", imageView.image.size);
     ACRContentHoldingUIView *superview = nil;
     ACRImageProperties *imageProps = nil;
     if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {
@@ -221,6 +221,8 @@
     if (superview) {
         [superview update:imageProps];
     }
+
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
 
 + (UILayoutPriority)getImageUILayoutPriority:(UIView *)wrappingView
