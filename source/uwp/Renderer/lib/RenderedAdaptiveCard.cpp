@@ -324,7 +324,12 @@ namespace AdaptiveNamespace
         default:
         {
             ComPtr<IAdaptiveActionEventArgs> eventArgs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
+
+            // Create an empty inputs object
+            ComPtr<IAdaptiveInputs> inputs;
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
+
+            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, inputs.Get()));
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
         }

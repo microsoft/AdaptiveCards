@@ -316,20 +316,60 @@ $(function () {
 		}
 	}
 
-	$("#closeVideo").click(function () {
+    function closeVideo(e) {
+        e.preventDefault();
 		$("#overviewVideo")[0].pause();
 		$('#videoModal').css("display", "none");
-	});
+    }
+
+	$("#closeVideo").on({
+        click: closeVideo,
+        keydown: function(e) {
+            if (e.key === "Enter") {
+                closeVideo(e);
+            }
+        }
+    });
 
 	$("#watchVideo").click(function () {
-		$("#overviewVideo")[0].play();
 		$('#videoModal').css("display", "block");
-
+		$("#overviewVideo")[0].play();
+        $("#overviewVideo").focus();
 	});
 
 	$(document).keyup(function (e) {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
+
+    // restrict keyboard tab focus to video modal if it's playing
+    const focusableElements = $("#videoModal").find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+    const firstVideoFocusable = focusableElements.first();
+    const lastVideoFocusable = focusableElements.last();
+
+    $("#videoModal").keydown(function (e) {
+        switch (e.key) {
+        case "Tab":
+            if (e.shiftKey && firstVideoFocusable.is(document.activeElement)) {
+                // backwards tab on first element. set focus on last
+                e.preventDefault();
+                lastVideoFocusable.focus();
+            }
+            else if (!e.shiftKey && lastVideoFocusable.is(document.activeElement)) {
+                // forward tab on last element
+                e.preventDefault();
+                firstVideoFocusable.focus();
+            }
+            break;
+
+        case "Escape":
+            this.close();
+            e.preventDefault();
+            e.cancelBubble = true;
+            break;
+        }
+
+        return !e.cancelBubble;
+    });
 
 	// Loop videos
 	$("video").each(function () {

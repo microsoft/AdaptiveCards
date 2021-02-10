@@ -602,10 +602,10 @@ export class CardDesigner extends Designer.DesignContext {
             this._versionChoicePicker.alignment = ToolbarElementAlignment.Right;
             this._versionChoicePicker.separator = true;
 
-            for (let i = 0; i < Shared.SupportedTargetVersions.length; i++) {
+            for (let i = 0; i < Shared.GlobalSettings.supportedTargetVersions.length; i++) {
                 this._versionChoicePicker.choices.push(
                     {
-                        name: Shared.SupportedTargetVersions[i].label,
+                        name: Shared.GlobalSettings.supportedTargetVersions[i].label,
                         value: i.toString()
                     });
             }
@@ -1020,9 +1020,9 @@ export class CardDesigner extends Designer.DesignContext {
         this.toolbar.attachTo(document.getElementById("toolbarHost"));
 
         if (this._versionChoicePicker) {
-            this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this.targetVersion);
+            this._versionChoicePicker.selectedIndex = Shared.GlobalSettings.supportedTargetVersions.indexOf(this.targetVersion);
             this._versionChoicePicker.onChanged = (sender: ToolbarChoicePicker) => {
-                this.targetVersion = Shared.SupportedTargetVersions[parseInt(this._versionChoicePicker.value)];
+                this.targetVersion = Shared.GlobalSettings.supportedTargetVersions[parseInt(this._versionChoicePicker.value)];
             }
         }
 
@@ -1220,7 +1220,7 @@ export class CardDesigner extends Designer.DesignContext {
                 this.targetVersionChanged();
 
                 if (this._versionChoicePicker) {
-                    this._versionChoicePicker.selectedIndex = Shared.SupportedTargetVersions.indexOf(this._targetVersion);
+                    this._versionChoicePicker.selectedIndex = Shared.GlobalSettings.supportedTargetVersions.indexOf(this._targetVersion);
                 }
             }
             finally {

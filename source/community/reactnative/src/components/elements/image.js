@@ -280,6 +280,7 @@ export class Img extends React.Component {
 			this.isPersonStyle() ?
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
+		imageComputedStyle.push(this.props.style)
 
 		let imageUrl = Utils.getImageUrl(this.url);
 

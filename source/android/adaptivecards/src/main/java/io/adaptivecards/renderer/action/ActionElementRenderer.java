@@ -91,15 +91,21 @@ public class ActionElementRenderer extends BaseActionElementRenderer
             Button button = (Button) super.m_view;
             Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
+            // Preserve any existing icons that may have been added by the host
+            // Per Android docs, this array's order is: start, top, end, bottom
+            Drawable[] drawables = button.getCompoundDrawablesRelative();
+
             if (m_iconPlacement == IconPlacement.AboveTitle)
             {
-                button.setCompoundDrawablesWithIntrinsicBounds(null, drawableIcon, null, null);
+                drawables[1] = drawableIcon;
             }
             else
             {
-                button.setCompoundDrawablesRelativeWithIntrinsicBounds(drawableIcon, null, null, null);
+                drawables[0] = drawableIcon;
                 button.setCompoundDrawablePadding(Util.dpToPixels(m_context, (int) m_padding));
             }
+
+            button.setCompoundDrawablesRelativeWithIntrinsicBounds(drawables[0], drawables[1], drawables[2], drawables[3]);
         }
     }
 

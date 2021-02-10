@@ -9,7 +9,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input1",
+			"id": "iconInlineActionId",
 			"inlineAction": {
 				"type": "Action.Submit",
 				"iconUrl": "https://adaptivecards.io/content/send.png",
@@ -23,7 +23,7 @@
 		},
 		{
 			"type": "Input.Text",
-			"id": "input2",
+			"id": "textInlineActionId",
 			"inlineAction": {
 				"type": "Action.OpenUrl",
 				"title": "Reply",

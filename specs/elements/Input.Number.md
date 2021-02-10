@@ -11,7 +11,7 @@
 | **placeholder** | `string` | No | Description of the input desired. Displayed when no selection has been made. | 1.0 |
 | **value** | `number` | No | Initial value for this field. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

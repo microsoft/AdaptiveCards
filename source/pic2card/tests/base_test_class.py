@@ -20,7 +20,6 @@ from tests.utils import (
 from app.api import app
 from mystique.predict_card import PredictCard
 from mystique.extract_properties import CollectProperties
-from mystique.card_layout.arrange_card import CardArrange
 from mystique.utils import load_od_instance
 
 curr_dir = os.path.dirname(__file__)
@@ -114,7 +113,6 @@ class BaseSetUpClass(unittest.TestCase):
             self.image, self.model_instance)
         self.test_coord1 = self.json_objects['objects'][0].get("coords", [])
         self.test_coord2 = self.json_objects['objects'][1].get("coords", [])
-        self.card_arrange = CardArrange()
         self._started_at = time.time()
 
     def tearDown(self):

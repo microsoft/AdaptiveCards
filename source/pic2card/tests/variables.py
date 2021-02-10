@@ -1,12 +1,15 @@
-debug_string_test = [
-    'item(1)\n', 'item(1)\n', 'item(1)\n', 'item(1)\n', 'item(1)\n',
-    'item(1)\n', 'row\n', '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n',
-    '\t\titem(1)\n', 'row\n', '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n',
-    '\t\titem(5)\n', '\tcolumn\n', '\t\titem(1)\n', 'item(1)\n', 'item(1)\n',
-    'item(1)\n', 'item(1)\n', 'row\n', '\tcolumn\n', '\t\titem(1)\n',
-    '\tcolumn\n', '\t\titem(5)\n', '\tcolumn\n', '\t\titem(1)\n', 'row\n',
-    '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n', '\t\titem(1)\n'
-]
+"""Test vairables"""
+debug_string_test = ['item(1)\n', 'item(1)\n', 'item(1)\n', 'item(1)\n',
+                     'item(1)\n', 'item(1)\n', 'row\n', '\tcolumn\n',
+                     '\t\titem(1)\n', '\tcolumn\n', '\t\titem(1)\n', 'row\n',
+                     '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n',
+                     '\t\titem(5)\n', '\tcolumn\n', '\t\titem(1)\n',
+                     'item(1)\n', 'item(1)\n', 'row\n', '\tcolumn\n',
+                     '\t\titem(1)\n', '\tcolumn\n', '\t\titem(1)\n', 'row\n',
+                     '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n',
+                     '\t\titem(5)\n', '\tcolumn\n', '\t\titem(1)\n',
+                     'row\n', '\tcolumn\n', '\t\titem(1)\n', '\tcolumn\n',
+                     '\t\titem(1)\n']
 # image - training images 5.png
 test_img_obj1 = [259.61538419127464, 93.91641104221344,
                  363.92310082912445, 198.15856432914734]

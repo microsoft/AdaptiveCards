@@ -7,8 +7,10 @@
 
 #import "AdaptiveCards/ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCards/ACOBaseActionElementPrivate.h"
+#import "AdaptiveCards/ACOBaseCardElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
 #import "AdaptiveCards/OpenUrlAction.h"
@@ -653,4 +655,27 @@
     XCTAssertNotNil(toggleView);
 }
 
+- (void)testBackGroundImageNullCheck
+{
+    renderBackgroundImage(nil, nil, nil);
+    XCTAssertTrue(YES);
+
+    auto backgroundImage = BackgroundImage();
+    renderBackgroundImage(&backgroundImage, nil, nil);
+    XCTAssertTrue(YES);
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+    renderBackgroundImage(&backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    UIImage *image = [UIImage imageNamed:@"Adaptive1.0.png"];
+    renderBackgroundImage(&backgroundImage, imageView, image);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(&backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(&backgroundImage, nil, image);
+    XCTAssertTrue(YES);
+}
 @end
