@@ -679,3 +679,7 @@ input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
 }
+
+.action-bar .action-item-text{
+  text-decoration: underline;
+}
