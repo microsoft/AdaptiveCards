@@ -3771,6 +3771,8 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    accessibleTitle?: string;
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3797,7 +3799,10 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.title) {
+        if (this.accessibleTitle) {
+            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+        }
+        else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
         }
 
