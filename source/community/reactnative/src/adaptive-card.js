@@ -168,15 +168,16 @@ export default class AdaptiveCard extends React.Component {
 	getAdaptiveCardContent() {
 		let containerStyles = [styles.container]
 		//If containerStyle is passed by the user from adaptive card via props, we will override this style
-		this.props.containerStyle && containerStyles.push( this.props.containerStyle )
+		this.props.containerStyle && containerStyles.push(this.props.containerStyle)
 
 		//if this.state.cardModel.minHeight is undefined or null, then minheight value will be null. So it will automatically handled the undefined and null cases also...
 		const minHeight = Utils.convertStringToNumber(this.state.cardModel.minHeight);
 		//We will pass the style as array, since it can be updated in the container wrapper if required.
-		typeof minHeight === "number" && containerStyles.push({ minHeight});
+		typeof minHeight === "number" && containerStyles.push({ minHeight });
 
 		//If contentHeight is passed by the user from adaptive card via props, we will set this as height
 		this.props.contentHeight && containerStyles.push({ height: this.props.contentHeight })
+
 		var adaptiveCardContent =
 			(
 				<KeyboardAvoidingView behavior={Platform.OS === 'ios'
@@ -184,6 +185,7 @@ export default class AdaptiveCard extends React.Component {
 					: undefined}>
 					<ContainerWrapper style={containerStyles} json={this.state.cardModel}>
 						<ScrollView
+							contentContainerStyle={this.props.contentContainerStyle}
 							showsHorizontalScrollIndicator={true}
 							showsVerticalScrollIndicator={true}
 							alwaysBounceVertical={false}
@@ -294,7 +296,8 @@ AdaptiveCard.propTypes = {
 	onExecuteAction: PropTypes.func,
 	onParseError: PropTypes.func,
 	contentHeight: PropTypes.number,
-	containerStyle: PropTypes.object
+	containerStyle: PropTypes.object,
+	contentContainerStyle: PropTypes.object
 };
 
 const styles = StyleSheet.create({
