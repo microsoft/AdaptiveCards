@@ -4765,9 +4765,11 @@ class ActionCollection {
                     actionButton.render();
 
                     if (actionButton.action.renderedElement) {
-                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        if (allowedActions.length > 1) {
+                            actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                            actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+                            actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        }
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";
