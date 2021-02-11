@@ -64,3 +64,5 @@ export const TypeRichTextBlock = "RichTextBlock";
 export const TypeString = "string";
 export const TypeObject = "object"
 export const InlineAction = "inline-action";
+
+export const Button = "button";
