@@ -15,13 +15,16 @@
 3.	Markdown collapses multiple consecutive spaces within a string into a single one
 4.	Inconsistent handling of new line chars between RichTextBlock and TextBlock in the same renderer.
 5.  These inconsistencies are due to the differences in the Markdown we are using.
+6. There is also differences in whitespace character handling per platforms
 
 ## Options
 1. Stay the current course 
 2. Change JS's Markdown
 3. Update SharedModel's Markdown
 
-## MarkDown WhiteSpace Handling
+## Markdown WhiteSpace Handling
+With option 3, we can solve the most of the issues; however, we have to investigate that the markdwon processed output produce consistent results across the platform which is tracked by [#5380](https://github.com/microsoft/AdaptiveCards/issues/5380)
+
 ### Blocks and Inlines
 1. Markdown sees the document consisted of `Block` and `inline` according to [CommonMark Spec](https://spec.commonmark.org/0.29/#blocks-and-inlines).
     -   Blocks are structural elements like paragraphs, block quotations, lists, headings, rules, and code blocks and may contain *inline* content, blocks are further divded into container blocks and leaf blocks
