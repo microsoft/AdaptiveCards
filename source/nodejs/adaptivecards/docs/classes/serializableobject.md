@@ -6,6 +6,8 @@
 
 * **SerializableObject**
 
+  ↳ [HostCapabilities](hostcapabilities.md)
+
   ↳ [CardObject](cardobject.md)
 
   ↳ [Fact](fact.md)
@@ -32,6 +34,7 @@
 ### Methods
 
 * [getCustomProperty](serializableobject.md#getcustomproperty)
+* [getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)
 * [getSchema](serializableobject.md#getschema)
 * [getSchemaKey](serializableobject.md#protected-abstract-getschemakey)
 * [getValue](serializableobject.md#protected-getvalue)
@@ -80,6 +83,14 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

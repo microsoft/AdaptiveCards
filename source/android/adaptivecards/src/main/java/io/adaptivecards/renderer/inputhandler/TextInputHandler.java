@@ -66,7 +66,7 @@ public class TextInputHandler extends BaseInputHandler
 
     public void setFocusToView()
     {
-        m_view.requestFocus();
+        Util.forceFocus(m_view);
         m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
     }
 }

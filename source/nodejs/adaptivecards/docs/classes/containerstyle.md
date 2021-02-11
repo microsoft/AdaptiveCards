@@ -10,45 +10,45 @@
 
 ### Properties
 
-* [Accent](containerstyle.md#static-accent)
-* [Attention](containerstyle.md#static-attention)
-* [Default](containerstyle.md#static-default)
-* [Emphasis](containerstyle.md#static-emphasis)
-* [Good](containerstyle.md#static-good)
-* [Warning](containerstyle.md#static-warning)
+* [Accent](containerstyle.md#static-readonly-accent)
+* [Attention](containerstyle.md#static-readonly-attention)
+* [Default](containerstyle.md#static-readonly-default)
+* [Emphasis](containerstyle.md#static-readonly-emphasis)
+* [Good](containerstyle.md#static-readonly-good)
+* [Warning](containerstyle.md#static-readonly-warning)
 
 ## Properties
 
-### `Static` Accent
+### `Static` `Readonly` Accent
 
 ▪ **Accent**: *"accent"* = "accent"
 
 ___
 
-### `Static` Attention
+### `Static` `Readonly` Attention
 
 ▪ **Attention**: *"attention"* = "attention"
 
 ___
 
-### `Static` Default
+### `Static` `Readonly` Default
 
 ▪ **Default**: *"default"* = "default"
 
 ___
 
-### `Static` Emphasis
+### `Static` `Readonly` Emphasis
 
 ▪ **Emphasis**: *"emphasis"* = "emphasis"
 
 ___
 
-### `Static` Good
+### `Static` `Readonly` Good
 
 ▪ **Good**: *"good"* = "good"
 
 ___
 
-### `Static` Warning
+### `Static` `Readonly` Warning
 
 ▪ **Warning**: *"warning"* = "warning"

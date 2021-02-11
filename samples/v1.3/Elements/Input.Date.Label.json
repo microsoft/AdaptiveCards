@@ -5,12 +5,12 @@
 	"body": [
 		{
 			"type": "Input.Date",
-			"id": "input1",
+			"id": "dateLabelId",
 			"label": "Default Input.Date label"
 		},
 		{
 			"type": "Input.Date",
-			"id": "input2",
+			"id": "requiredDateLabelId",
 			"label": "Required Input.Date label",
 			"isRequired": true,
 			"errorMessage": "Required input"

@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
   "extends": "Inline",
-  "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containting the text as a shorthand for the json object. These two representations are equivalent.",
+  "description": "Defines a single run of formatted text. A TextRun with no properties set can be represented in the json as string containing the text as a shorthand for the json object. These two representations are equivalent.",
   "version": "1.2",
   "properties": {
     "text": {

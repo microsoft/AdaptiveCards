@@ -12,18 +12,25 @@
 #import "ACRIBaseInputHandler.h"
 #import "ACRViewController.h"
 #import "ACRViewPrivate.h"
+#import "SubmitAction.h"
 #import <UIKit/UIKit.h>
 
 NSString *const ACRAggregateTargetActionType = @"actiontype";
 NSString *const ACRAggregateTargetSubmitAction = @"submit";
 NSString *const ACRAggregateTargetFirstResponder = @"firstResponder";
 
-@implementation ACRAggregateTarget
+@implementation ACRAggregateTarget {
+    BOOL _doValidation;
+}
 
 - (instancetype)initWithActionElement:(ACOBaseActionElement *)actionElement rootView:(ACRView *)rootView;
 {
     self = [super init];
     if (self) {
+        if (actionElement.type == ACRSubmit) {
+            auto adaptiveSubmitAction = std::dynamic_pointer_cast<SubmitAction>(actionElement.element);
+            _doValidation = adaptiveSubmitAction->GetAssociatedInputs() == AssociatedInputs::Auto;
+        }
         _actionElement = actionElement;
         _view = rootView;
         _currentShowcard = [rootView peekCurrentShowCard];
@@ -34,6 +41,11 @@ NSString *const ACRAggregateTargetFirstResponder = @"firstResponder";
 // main entry point to the event handler, override each methods whithin it for custom behaviors
 - (IBAction)send:(UIButton *)sender
 {
+    if (!_doValidation) {
+        [[_view card] setInputs:@[]];
+        [_view.acrActionDelegate didFetchUserResponses:[_view card] action:_actionElement];
+        return;
+    }
     // dispatch and validate inputs
     ACOInputResults *result = [_view dispatchAndValidateInput:_currentShowcard];
     // update UI with the inputs

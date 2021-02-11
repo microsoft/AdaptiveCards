@@ -62,8 +62,7 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
     }
 
     std::string imageUrl = backgroundImage->GetUrl();
-    NSString *key = [NSString stringWithCString:imageUrl.c_str()
-                                       encoding:[NSString defaultCStringEncoding]];
+    NSString *key = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())] stringValue];
     if ([key length]) {
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
@@ -94,9 +93,9 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView insertSubview:imgView atIndex:0];
 
-            if (img) {
+            if (imgView.image) {
                 // apply now if image is ready, otherwise wait until it is loaded
-                applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
+                applyBackgroundImageConstraints(backgroundImage.get(), imgView, imgView.image);
             }
         }
     }
@@ -105,6 +104,10 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
 void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
+    if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
+        return;
+    }
+
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
@@ -496,7 +499,7 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 }
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
@@ -504,11 +507,17 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action,
+                               ACOBaseActionElement *action,
                                NSObject **target)
 {
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
+}
+
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
+{
+    recipientView.userInteractionEnabled = YES;
+    recipientView.accessibilityTraits |= action.accessibilityTraits;
 }
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
@@ -774,3 +783,60 @@ NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDiction
     }
     return key;
 }
+
+CGSize getAspectRatio(CGSize size)
+{
+    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
+    if (size.width > 0) {
+        heightToWidthRatio = size.height / size.width;
+    }
+
+    if (size.height > 0) {
+        widthToHeightRatio = size.width / size.height;
+    }
+    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
+}
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
+{
+    if (hasExplicitDimensions) {
+        return ACRImageSizeExplicit;
+    }
+
+    switch (adaptiveImageSize) {
+        case ImageSize::None:
+            return ACRImageSizeNone;
+        case ImageSize::Auto:
+            return ACRImageSizeAuto;
+        case ImageSize::Stretch:
+            return ACRImageSizeStretch;
+        case ImageSize::Small:
+            return ACRImageSizeSmall;
+        case ImageSize::Medium:
+            return ACRImageSizeMedium;
+        case ImageSize::Large:
+            return ACRImageSizeLarge;
+        default:
+            return ACRImageSizeAuto;
+    }
+}
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment)
+{
+    switch (horizontalAlignment) {
+        case HorizontalAlignment::Left:
+            return ACRLeft;
+        case HorizontalAlignment::Center:
+            return ACRCenter;
+        case HorizontalAlignment::Right:
+            return ACRRight;
+        default:
+            return ACRLeft;
+    }
+}
+
+void printSize(NSString *msg, CGSize size)
+{
+    NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
+}
+

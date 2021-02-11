@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "Column.h"
 #import "SharedAdaptiveCard.h"
@@ -78,6 +77,10 @@
         column.hasStretchableView = YES;
     }
 
+    if (!column.hasStretchableView) {
+        [column addPaddingSpace];
+    }
+
     if (columnElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:column
                                      attribute:NSLayoutAttributeHeight
@@ -92,12 +95,11 @@
     [column setClipsToBounds:NO];
 
     std::shared_ptr<BaseActionElement> selectAction = columnElem->GetSelectAction();
-    // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:column
-                                                                  actionElement:selectAction
-                                                                     hostConfig:acoConfig];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+
+    [column configureForSelectAction:acoSelectAction rootView:rootView];
+
+    column.shouldGroupAccessibilityChildren = YES;
 
     if (leadingBlankSpace != nil && trailingBlankSpace != nil) {
         [NSLayoutConstraint constraintWithItem:leadingBlankSpace

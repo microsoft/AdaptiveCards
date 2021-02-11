@@ -9,6 +9,8 @@
 #import "BaseActionElement.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
+#import "UnknownAction.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -29,6 +31,33 @@ using namespace AdaptiveCards;
         [self setElem:element];
     }
     return self;
+}
+
++ (instancetype)getACOActionElementFromAdaptiveElement:(std::shared_ptr<BaseActionElement> const &)element
+{
+    ACOBaseActionElement *actionElement = nil;
+
+    if (!element) {
+        return nil;
+    }
+
+    AdaptiveCards::ActionType type = element->GetElementType();
+    if (element->GetElementType() == AdaptiveCards::ActionType::UnknownAction) {
+        std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(element);
+        // we get back a deserialized action object by calling a custom parser registered via host
+        actionElement = deserializeUnknownActionToCustomAction(unknownAction);
+    } else {
+        actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:element];
+    }
+
+    if (type == ActionType::OpenUrl) {
+        actionElement.accessibilityTraits |= UIAccessibilityTraitLink;
+    } else if (type == ActionType::UnknownAction) {
+        actionElement.accessibilityTraits |= actionElement.accessibilityTraits;
+    } else {
+        actionElement.accessibilityTraits |= UIAccessibilityTraitButton;
+    }
+    return actionElement;
 }
 
 - (std::shared_ptr<BaseActionElement>)element

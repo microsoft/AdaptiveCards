@@ -11,5 +11,5 @@
 @property (strong, nonatomic) IBOutlet UIStackView *contentview;
 @property (weak, nonatomic) IBOutlet UILabel *title;
 @property (weak, nonatomic) IBOutlet UISwitch *toggle;
-
+@property IBInspectable UIColor *switchOffStateColor;
 @end

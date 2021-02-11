@@ -24,8 +24,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_DataJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonValue* data);
 
-        IFACEMETHODIMP get_IgnoreInputValidation(_Out_ boolean* ignoreInputValidation);
-        IFACEMETHODIMP put_IgnoreInputValidation(boolean ignoreInputValidation);
+        IFACEMETHODIMP get_AssociatedInputs(_Out_ ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs);
+        IFACEMETHODIMP put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs);
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
@@ -90,7 +90,7 @@ namespace AdaptiveNamespace
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonValue> m_dataJson;
-        boolean m_ignoreInputValidation;
+        ABI::AdaptiveNamespace::AssociatedInputs m_associatedInputs;
     };
 
     ActivatableClass(AdaptiveSubmitAction);

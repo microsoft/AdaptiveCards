@@ -5,6 +5,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -58,11 +59,13 @@ void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        std::shared_ptr<BaseActionElement> const &action,
+                                        ACOBaseActionElement *action,
                                         UIButton *button, NSObject **target);
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               std::shared_ptr<BaseActionElement> const &action, NSObject **target);
+                               ACOBaseActionElement *action, NSObject **target);
+
+void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action);
 
 void TextBlockToRichTextElementProperties(const std::shared_ptr<TextBlock> &textBlock, RichTextElementProperties &textProp);
 
@@ -87,3 +90,11 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
+
+CGSize getAspectRatio(CGSize size);
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+void printSize(NSString *msg, CGSize size);

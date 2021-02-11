@@ -53,8 +53,8 @@ def projectInfo = {
 
     licenses {
         license {
-            name = 'MIT'
-            url = 'https://github.com/Microsoft/AdaptiveCards/blob/main/LICENSE'
+            name = 'Adaptive Cards Binary EULA'
+            url = 'https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Non-Windows.txt'
             distribution = 'repo'
         }
     }

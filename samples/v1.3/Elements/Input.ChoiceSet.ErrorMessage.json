@@ -5,7 +5,7 @@
 	"body": [
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input1",
+			"id": "requiredCompactId",
 			"style": "compact",
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (compact)",
@@ -25,7 +25,7 @@
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input2",
+			"id": "requiredExpandedId",
 			"style": "expanded",
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (expanded)",
@@ -44,7 +44,7 @@
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "input3",
+			"id": "requiredMultiselectId",
 			"style": "expanded",
 			"isMultiSelect": true,
 			"label": "Required Input.ChoiceSet label (expanded, multiselect)",

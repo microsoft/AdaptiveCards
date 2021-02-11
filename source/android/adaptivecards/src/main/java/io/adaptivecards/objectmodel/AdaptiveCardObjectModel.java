@@ -193,6 +193,18 @@ public class AdaptiveCardObjectModel implements AdaptiveCardObjectModelConstants
     return ActionAlignment.swigToEnum(AdaptiveCardObjectModelJNI.ActionAlignmentFromString(t));
   }
 
+  public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AssociatedInputs_t getAssociatedInputsEnum() {
+    return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__AssociatedInputs_t(AdaptiveCardObjectModelJNI.getAssociatedInputsEnum(), false);
+  }
+
+  public static String AssociatedInputsToString(AssociatedInputs t) {
+    return AdaptiveCardObjectModelJNI.AssociatedInputsToString(t.swigValue());
+  }
+
+  public static AssociatedInputs AssociatedInputsFromString(String t) {
+    return AssociatedInputs.swigToEnum(AdaptiveCardObjectModelJNI.AssociatedInputsFromString(t));
+  }
+
   public static SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ChoiceSetStyle_t getChoiceSetStyleEnum() {
     return new SWIGTYPE_p_AdaptiveCards__EnumHelpers__EnumMappingT_AdaptiveCards__ChoiceSetStyle_t(AdaptiveCardObjectModelJNI.getChoiceSetStyleEnum(), false);
   }

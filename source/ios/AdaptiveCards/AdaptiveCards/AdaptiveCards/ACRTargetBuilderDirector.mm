@@ -162,10 +162,8 @@
 - (NSObject *)build:(ACOBaseActionElement *)action
            director:(ACRTargetBuilderDirector *)director
 {
-    std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(action.element);
-    if (unknownAction) {
-        ACOBaseActionElement *customAction = deserializeUnknownActionToCustomAction(unknownAction);
-        return [[ACRAggregateTarget alloc] initWithActionElement:customAction rootView:director.rootView];
+    if (action) {
+        return [[ACRAggregateTarget alloc] initWithActionElement:action rootView:director.rootView];
     }
 
     return nil;
@@ -194,9 +192,8 @@
     return self;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
 
     if (builder) {
@@ -205,10 +202,9 @@
     return nil;
 }
 
-- (NSObject *)build:(std::shared_ptr<BaseActionElement> const &)action
+- (NSObject *)build:(ACOBaseActionElement *)adaptiveAction
           forButton:(UIButton *)button
 {
-    ACOBaseActionElement *adaptiveAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
     ACRTargetBuilder *builder = [self getBuilder:adaptiveAction];
     if (builder) {
         return [builder build:adaptiveAction director:self ForButton:button];

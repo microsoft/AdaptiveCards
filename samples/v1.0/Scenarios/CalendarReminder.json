@@ -8,22 +8,26 @@
 			"type": "TextBlock",
 			"text": "Adaptive Card design session",
 			"size": "large",
-			"weight": "bolder"
+			"weight": "bolder",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Conf Room 112/3377 (10)",
-			"isSubtle": true
+			"isSubtle": true,
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "12:30 PM - 1:30 PM",
 			"isSubtle": true,
-			"spacing": "none"
+			"spacing": "none",
+			"wrap": true
 		},
 		{
 			"type": "TextBlock",
-			"text": "Snooze for"
+			"text": "Snooze for",
+			"wrap": true
 		},
 		{
 			"type": "Input.ChoiceSet",

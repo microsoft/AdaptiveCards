@@ -14,7 +14,6 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -80,12 +79,8 @@ using namespace AdaptiveCards;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
-        // instantiate and add tap gesture recognizer
-        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
-                                                                           rootView:rootView
-                                                                      recipientView:verticalView
-                                                                      actionElement:selectAction
-                                                                         hostConfig:config];
+        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+        [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {

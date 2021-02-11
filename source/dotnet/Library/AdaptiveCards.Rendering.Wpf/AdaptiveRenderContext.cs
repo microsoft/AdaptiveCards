@@ -82,9 +82,14 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else if (args.Action is AdaptiveSubmitAction)
             {
-                if (!ValidateInputs(args.Action as AdaptiveSubmitAction))
+                var submitAction = (args.Action as AdaptiveSubmitAction);
+
+                if (submitAction.AssociatedInputs == AdaptiveAssociatedInputs.Auto)
                 {
-                    return;
+                    if (!ValidateInputs(submitAction))
+                    {
+                        return;
+                    }
                 }
             }
 

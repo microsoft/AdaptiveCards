@@ -3,6 +3,9 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -37,26 +40,15 @@ public final class Util {
 
     /**
      * Convert dp to px
-     * @param context
+     * @param context Application context
      * @param dp The number of Android dips (display-independent pixels)
      * @return The number of equivalent physical pixels
      */
-    public static int dpToPixels(Context context, long dp)
+    public static int dpToPixels(Context context, float dp)
     {
         DisplayMetrics metrics = context.getResources().getDisplayMetrics();
         int returnVal = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
         return returnVal;
-    }
-
-    /**
-     * Convert px to dp
-     * @param context
-     * @param pixels The number of physical pixels
-     * @return The number of equivalent Android dips (display-independent pixels)
-     */
-    public static double pixelsToDp(Context context, double pixels)
-    {
-        return pixels / dpToPixels(context, 1);
     }
 
     public static byte[] getBytes(CharVector charVector)
@@ -72,21 +64,35 @@ public final class Util {
     }
 
     /**
-     * Clear any existing focus by temporarily adding then removing focus to a given helper View.
-     * @param v The helper View that will temporarily grab and release focus.
+     * Force focus when requestFocus is not sufficient.
+     * @param v The target View to focus
      */
-    public static void clearFocus(View v) {
-        boolean focusable = v.isFocusable();
+    public static void forceFocus(View v)
+    {
         boolean focusableInTouchMode = v.isFocusableInTouchMode();
 
         v.setFocusable(true);
         v.setFocusableInTouchMode(true);
 
         v.requestFocusFromTouch();
-        v.clearFocus();
 
-        v.setFocusable(focusable);
         v.setFocusableInTouchMode(focusableInTouchMode);
+    }
+
+    /**
+     * Generate new Bitmap scaled to given height from given Bitmap, preserving aspect ratio.
+     * Note: This is computationally expensive.
+     * @param height Desired height, in pixels
+     * @param bitmap Bitmap to scale
+     */
+    public static Bitmap scaleBitmapToHeight(float height, Bitmap bitmap)
+    {
+        Drawable d = new BitmapDrawable(null, bitmap);
+
+        float scaleRatio = height / d.getIntrinsicHeight();
+        float width = scaleRatio * d.getIntrinsicWidth();
+
+        return Bitmap.createScaledBitmap(bitmap, (int)width, (int)height, false);
     }
 
     public static void MoveChildrenViews(ViewGroup origin, ViewGroup destination)

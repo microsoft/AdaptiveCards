@@ -5,7 +5,8 @@
             "type": "TextBlock",
             "size": "Medium",
             "weight": "Bolder",
-            "text": "${title}"
+            "text": "${title}",
+            "wrap": true
         },
         {
             "type": "ColumnSet",

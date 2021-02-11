@@ -26,11 +26,12 @@ export class TextBlock extends React.Component {
 		if (payload.isVisible === false) {
 			return null;
 		}
-
+		
 		return (
 			<ElementWrapper json={payload} style={styles.textContainer} isFirst={this.props.isFirst}>
 				<Label
 					text={payload.text}
+					altText={payload.altText}
 					size={payload.size}
 					weight={payload.weight}
 					color={payload.color}
@@ -39,7 +40,7 @@ export class TextBlock extends React.Component {
 					wrap={payload.wrap}
 					align={payload.horizontalAlignment}
 					maxLines={payload.maxLines}
-					style={styles.text}
+					style={[styles.text, this.props.style]}
 					containerStyle={this.props.containerStyle} />
 			</ElementWrapper>
 		);

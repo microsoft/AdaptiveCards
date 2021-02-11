@@ -76,7 +76,8 @@
 													"type": "TextBlock",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "SFO"
+													"text": "SFO",
+													"wrap": true
 												}
 											],
 											"width": "auto"
@@ -116,7 +117,8 @@
 													"horizontalAlignment": "right",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "JFK"
+													"text": "JFK",
+													"wrap": true
 												}
 											],
 											"width": "auto"

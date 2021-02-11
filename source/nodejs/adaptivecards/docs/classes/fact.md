@@ -20,12 +20,13 @@
 * [name](fact.md#optional-name)
 * [value](fact.md#optional-value)
 * [onRegisterCustomProperties](fact.md#static-optional-onregistercustomproperties)
-* [titleProperty](fact.md#static-titleproperty)
-* [valueProperty](fact.md#static-valueproperty)
+* [titleProperty](fact.md#static-readonly-titleproperty)
+* [valueProperty](fact.md#static-readonly-valueproperty)
 
 ### Methods
 
 * [getCustomProperty](fact.md#getcustomproperty)
+* [getDefaultSerializationContext](fact.md#protected-getdefaultserializationcontext)
 * [getSchema](fact.md#getschema)
 * [getSchemaKey](fact.md#protected-getschemakey)
 * [getValue](fact.md#protected-getvalue)
@@ -88,13 +89,13 @@ ___
 
 ___
 
-### `Static` titleProperty
+### `Static` `Readonly` titleProperty
 
 ▪ **titleProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "title")
 
 ___
 
-### `Static` valueProperty
+### `Static` `Readonly` valueProperty
 
 ▪ **valueProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "value")
 
@@ -113,6 +114,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

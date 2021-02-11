@@ -15,6 +15,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Actions, "actions"},
             {AdaptiveCardSchemaKey::ActionsOrientation, "actionsOrientation"},
             {AdaptiveCardSchemaKey::AdaptiveCard, "adaptiveCard"},
+            {AdaptiveCardSchemaKey::AssociatedInputs, "associatedInputs"},
             {AdaptiveCardSchemaKey::AllowCustomStyle, "allowCustomStyle"},
             {AdaptiveCardSchemaKey::AllowInlinePlayback, "allowInlinePlayback"},
             {AdaptiveCardSchemaKey::AltText, "altText"},
@@ -73,7 +74,6 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IconSize, "iconSize"},
             {AdaptiveCardSchemaKey::IconUrl, "iconUrl"},
             {AdaptiveCardSchemaKey::Id, "id"},
-            {AdaptiveCardSchemaKey::IgnoreInputValidation, "ignoreInputValidation"},
             {AdaptiveCardSchemaKey::Image, "image"},
             {AdaptiveCardSchemaKey::ImageBaseUrl, "imageBaseUrl"},
             {AdaptiveCardSchemaKey::ImageSet, "imageSet"},
@@ -292,6 +292,10 @@ namespace AdaptiveSharedNamespace
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ActionMode, ActionMode::Inline, {
             {ActionMode::Inline, "Inline"},
             {ActionMode::Popup, "Popup"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(AssociatedInputs, AssociatedInputs::Auto, {
+        {AssociatedInputs::Auto, "Auto"},
+        {AssociatedInputs::None, "None"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(ChoiceSetStyle, ChoiceSetStyle::Compact, {
             {ChoiceSetStyle::Compact, "Compact"},

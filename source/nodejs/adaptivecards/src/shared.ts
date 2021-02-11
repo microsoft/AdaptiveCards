@@ -13,6 +13,7 @@ export class GlobalSettings {
     static allowPreProcessingPropertyValues: boolean = false;
     static setTabIndexAtCardRoot: boolean = true;
     static enableFallback: boolean = true;
+    static useWebkitLineClamp: boolean = true;
 }
 
 export const ContentTypes = {

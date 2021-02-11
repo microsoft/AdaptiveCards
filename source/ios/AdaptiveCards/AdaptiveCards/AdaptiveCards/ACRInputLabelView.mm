@@ -102,21 +102,24 @@
         self.errorMessage.hidden = YES;
 
         [self.stack insertArrangedSubview:inputView atIndex:1];
+        self.validationSuccessBorderColor = inputView.layer.borderColor;
+        self.validationSuccessBorderRadius = inputView.layer.cornerRadius;
+        self.validationSuccessBorderWidth = inputView.layer.borderWidth;
 
-        self.inputView = inputView;        
+        self.inputView = inputView;
         self.label.isAccessibilityElement = NO;
         self.isAccessibilityElement = NO;
         inputView.accessibilityLabel = self.label.text;
         self.inputAccessibilityItem = inputView;
-        
+
         if (inputView != accessibilityItem) {
             self.inputAccessibilityItem = accessibilityItem;
             self.inputAccessibilityItem.accessibilityLabel = inputView.accessibilityLabel;
         }
-        
+
         self.inputAccessibilityItem.isAccessibilityElement = YES;
         self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-        
+
         self.shouldGroupAccessibilityChildren = NO;
 
         NSObject<ACRIBaseInputHandler> *inputHandler = [self getInputHandler];
@@ -147,12 +150,7 @@
                 self.hasVisibilityChanged = self.errorMessage.hidden == YES;
                 self.errorMessage.hidden = NO;
                 self.errorMessage.isAccessibilityElement = NO;
-                if(self.inputAccessibilityItem.accessibilityLabel) {
-                    self.labelText = self.inputAccessibilityItem.accessibilityLabel;
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.inputAccessibilityItem.accessibilityLabel, self.errorMessage.text];
-                } else {
-                    self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
-                }
+                self.inputAccessibilityItem.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", self.labelText, self.errorMessage.text];
             }
         } else {
             if (self.hasErrorMessage) {
@@ -160,10 +158,15 @@
                 self.errorMessage.hidden = YES;
                 self.inputAccessibilityItem.accessibilityLabel = self.labelText;
             }
+
+            self.stack.arrangedSubviews[1].layer.borderColor = self.validationSuccessBorderColor;
+            self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationSuccessBorderRadius;
             self.stack.arrangedSubviews[1].layer.borderWidth = self.validationSuccessBorderWidth;
+
             return YES;
         }
     }
+
     self.stack.arrangedSubviews[1].layer.borderWidth = self.validationFailBorderWidth;
     self.stack.arrangedSubviews[1].layer.cornerRadius = self.validationFailBorderRadius;
     self.stack.arrangedSubviews[1].layer.borderColor = self.validationFailBorderColor.CGColor;
@@ -199,8 +202,8 @@
     UIView *viewToFocus = [self getInputView];
     if (!inputHandler || !viewToFocus) {
         return;
-    }  
-   
+    }
+
     [inputHandler setFocus:shouldBecomeFirstResponder view:self.inputAccessibilityItem];
 }
 
