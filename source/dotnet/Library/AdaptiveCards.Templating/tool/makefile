@@ -5,6 +5,17 @@ JAVA=/usr/bin/java
 LEXER=../AdaptiveCardsTemplateLexer.g4
 PARSER=../AdaptiveCardsTemplateParser.g4
 
+csharpparser: $(PARSER)
+	@cp $(PARSER) .
+	$(JAVA) -jar $(JAR) -Dlanguage=CSharp AdaptiveCardsTemplateParser.g4 -no-listener -Werror
+
+csharplexer: $(LEXER)  
+	@cp $(LEXER) .
+	$(JAVA) -jar $(JAR) -Dlanguage=CSharp AdaptiveCardsTemplateLexer.g4 -Werror
+
+csharp: csharplexer csharpparser
+	@cp *.cs ../
+
 all: classes
 
 lexer: $(LEXER)  
@@ -19,6 +30,6 @@ classes: lexer parser
 	javac AdaptiveCardsTemplate*.java
 
 clean:
-	@rm -rf *.java *.tokens *.interp *.class  *.g4
+	@rm -rf *.java *.tokens *.interp *.class  *.g4  *.cs
 
 all: $(classes)
