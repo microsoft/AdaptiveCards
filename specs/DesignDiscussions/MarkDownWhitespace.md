@@ -5,6 +5,7 @@
 1. [#4914](https://github.com/microsoft/AdaptiveCards/issues/4914),
    **Closed [#3531](https://github.com/microsoft/AdaptiveCards/issues/3531)**, 
    [#3016](https://github.com/microsoft/AdaptiveCards/issues/3016)
+   [#2842](https://github.com/microsoft/AdaptiveCards/issues/2842)
 
 ## Current State
 1.	Leading and trailing whitespace characters
@@ -18,7 +19,7 @@
 ## Options
 1. Stay the current course 
 2. Change JS's Markdown
-3. Update sharedModel's Markdown
+3. Update SharedModel's Markdown
 
 ## MarkDown WhiteSpace Handling
 ### Blocks and Inlines
@@ -30,10 +31,11 @@
 ### Scoping
 Updating markdowns in shared models will update the handling whitespace characters for  
 1. Blocks
-    - **leaf blocks**: **paragraphs**, **container blocks** **lists**
+    - **leaf blocks**: **paragraphs**, **container blocks**: **lists**
 2. Inline
     - links, **empahsized text**
 ### Rules
+The rules below should be respected whenever applicable to the elements mentioned in the Scoping section. Rules section will be expanded to include for inlines and lists in the future update. 
 - A **line ending** is a newline (U+000A), a carriage return (U+000D) not followed by a newline, or a carriage return and a following newline.
 - **blankline**, a line containing no characters, or a line containing only spaces (U+0020) or tabs (U+0009),
 - **whitespace character**, a space (U+0020), tab (U+0009), newline (U+000A), line tabulation (U+000B), form feed (U+000C), or carriage return (U+000D).
@@ -47,8 +49,23 @@ Updating markdowns in shared models will update the handling whitespace characte
    5. the first line may be indented at most three spaces, or an indented code block will be triggered <-- we may have to skip this rule
    6. Final spaces are stripped before inline parsing, so a paragraph that ends with two or more spaces will not end with a hard line break:
 
-### Work
+### Implementation 
+#### Option 1
 1. Antlr Integration
 2. Antlr Lexer
     * writing lexer rules 
 3. Update Parser Rules
+#### Option 2
+1. Make core changes to Shared models to gain the behavior we want 
+
+## Conculsion
+We chose implementation option 2 to control the risk associated with the unknowns.  
+
+1. Bring consisteny between Android and JS by removing android code that pulls newlines from rich text blocks. It also fiexes [#4914](https://github.com/microsoft/AdaptiveCards/issues/4914).
+
+2. [Update shared model markdown processor to handle markdown whitespace](https://github.com/microsoft/AdaptiveCards/issues/5380)
+   - Make sure alll platforms are handling the whitespace characters that come out of the markdown parser properly.
+    
+3. [Document the new whitespace handling](https://github.com/microsoft/AdaptiveCards/issues/5381)
+    
+4. Remove markdown process from rich text blocks. No separate task, but should be part of the task 1.
