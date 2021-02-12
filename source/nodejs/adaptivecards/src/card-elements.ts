@@ -4837,8 +4837,10 @@ class ActionCollection {
                 allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? overflowActions.push(action) : plainActions.push(action));
 
                 // given plainActions.length > maxActions, exceeding actions are forced moved to overflow
-                const overflowPrimaryActions = plainActions.splice(hostConfig.actions.maxActions);
-                overflowActions.push(...overflowPrimaryActions);
+                if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
+                    const overflowPrimaryActions = plainActions.splice(hostConfig.actions.maxActions);
+                    overflowActions.push(...overflowPrimaryActions);
+                }
 
                 const hasOverflow = overflowActions.length > 0;
 
@@ -4897,7 +4899,10 @@ class ActionCollection {
 
                         this._renderedActionCount++;
 
-                        if (hostConfig.actions.buttonSpacing > 0) {
+                        if (!GlobalSettings.allowMoreThanMaxActionsInOverflowMenu &&
+                            (this._renderedActionCount >= hostConfig.actions.maxActions || i == numActionsToRender - 1)) {
+                            break;
+                        } else if (hostConfig.actions.buttonSpacing > 0) {
                             let spacer = document.createElement("div");
 
                             if (orientation === Enums.Orientation.Horizontal) {
