@@ -7,14 +7,14 @@ PARSER=../AdaptiveCardsTemplateParser.g4
 
 csharpparser: $(PARSER)
 	@cp $(PARSER) .
-	$(JAVA) -jar $(JAR) -Dlanguage=CSharp AdaptiveCardsTemplateParser.g4 -no-listener -Werror
+	$(JAVA) -jar $(JAR) -Dlanguage=CSharp AdaptiveCardsTemplateParser.g4 -visitor -no-listener -Werror
 
 csharplexer: $(LEXER)  
 	@cp $(LEXER) .
 	$(JAVA) -jar $(JAR) -Dlanguage=CSharp AdaptiveCardsTemplateLexer.g4 -Werror
 
 csharp: csharplexer csharpparser
-	@cp *.cs ../
+	@cp *.cs *.tokens *.interp ../
 
 all: classes
 

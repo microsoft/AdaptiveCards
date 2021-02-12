@@ -97,6 +97,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_json; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitJson(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -138,6 +143,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_obj; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitObj(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -212,6 +222,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetRuleContext<TemplateExpressionContext>(0);
 		}
 		public TemplateWhenContext(PairContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplateWhen(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class JsonPairContext : PairContext {
 		public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
@@ -225,6 +240,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetToken(AdaptiveCardsTemplateParser.STRING, i);
 		}
 		public JsonPairContext(PairContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitJsonPair(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class TemplateDataContext : PairContext {
 		public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
@@ -235,6 +255,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetRuleContext<ValueContext>(0);
 		}
 		public TemplateDataContext(PairContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplateData(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class TemplateRootDataContext : PairContext {
 		public ITerminalNode[] StringDeclOpen() { return GetTokens(AdaptiveCardsTemplateParser.StringDeclOpen); }
@@ -251,6 +276,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetRuleContext<TemplateRootContext>(0);
 		}
 		public TemplateRootDataContext(PairContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplateRootData(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -351,6 +381,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		{
 		}
 		public override int RuleIndex { get { return RULE_array; } }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitArray(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -421,10 +456,20 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetRuleContext<ObjContext>(0);
 		}
 		public ValueObjectContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueObject(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueNullContext : ValueContext {
 		public ITerminalNode NULL() { return GetToken(AdaptiveCardsTemplateParser.NULL, 0); }
 		public ValueNullContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueNull(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueTemplateStringContext : ValueContext {
 		public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
@@ -436,18 +481,38 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		}
 		public ITerminalNode CLOSE() { return GetToken(AdaptiveCardsTemplateParser.CLOSE, 0); }
 		public ValueTemplateStringContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTemplateString(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueNumberContext : ValueContext {
 		public ITerminalNode NUMBER() { return GetToken(AdaptiveCardsTemplateParser.NUMBER, 0); }
 		public ValueNumberContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueNumber(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueTrueContext : ValueContext {
 		public ITerminalNode TRUE() { return GetToken(AdaptiveCardsTemplateParser.TRUE, 0); }
 		public ValueTrueContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTrue(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueFalseContext : ValueContext {
 		public ITerminalNode FALSE() { return GetToken(AdaptiveCardsTemplateParser.FALSE, 0); }
 		public ValueFalseContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueFalse(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueStringContext : ValueContext {
 		public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
@@ -457,6 +522,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetToken(AdaptiveCardsTemplateParser.STRING, i);
 		}
 		public ValueStringContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueString(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueTemplateStringWithRootContext : ValueContext {
 		public ITerminalNode StringDeclOpen() { return GetToken(AdaptiveCardsTemplateParser.StringDeclOpen, 0); }
@@ -465,12 +535,22 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		}
 		public ITerminalNode CLOSE() { return GetToken(AdaptiveCardsTemplateParser.CLOSE, 0); }
 		public ValueTemplateStringWithRootContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTemplateStringWithRoot(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 	public partial class ValueArrayContext : ValueContext {
 		public ArrayContext array() {
 			return GetRuleContext<ArrayContext>(0);
 		}
 		public ValueArrayContext(ValueContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueArray(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -608,6 +688,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 			return GetToken(AdaptiveCardsTemplateParser.STRING, i);
 		}
 		public TemplatedStringContext(TemplateStringContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplatedString(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -679,6 +764,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	public partial class TemplateStringWithRootContext : TemplateRootContext {
 		public ITerminalNode TEMPLATEROOT() { return GetToken(AdaptiveCardsTemplateParser.TEMPLATEROOT, 0); }
 		public TemplateStringWithRootContext(TemplateRootContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitTemplateStringWithRoot(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
@@ -720,6 +810,11 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		public ITerminalNode TEMPLATELITERAL() { return GetToken(AdaptiveCardsTemplateParser.TEMPLATELITERAL, 0); }
 		public ITerminalNode CLOSE() { return GetToken(AdaptiveCardsTemplateParser.CLOSE, 0); }
 		public ValueTemplateExpressionContext(TemplateExpressionContext context) { CopyFrom(context); }
+		public override TResult Accept<TResult>(IParseTreeVisitor<TResult> visitor) {
+			IAdaptiveCardsTemplateParserVisitor<TResult> typedVisitor = visitor as IAdaptiveCardsTemplateParserVisitor<TResult>;
+			if (typedVisitor != null) return typedVisitor.VisitValueTemplateExpression(this);
+			else return visitor.VisitChildren(this);
+		}
 	}
 
 	[RuleVersion(0)]
