@@ -22,9 +22,9 @@
 
 @interface ACRNumberInputHandler : ACRTextInputHandler
 
-@property NSNumber *min;
+@property double min;
 @property bool hasMin;
-@property NSNumber *max;
+@property double max;
 @property bool hasMax;
 
 @end

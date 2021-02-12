@@ -115,11 +115,11 @@
 
         auto minVal = numberInputBlock->GetMin();
         self.hasMin = minVal.has_value();
-        self.min = [NSNumber numberWithDouble:minVal.value_or(0)];
+        self.min = minVal.value_or(0);
 
         auto maxVal = numberInputBlock->GetMax();
         self.hasMax = maxVal.has_value();
-        self.max = [NSNumber numberWithDouble:maxVal.value_or(0)];
+        self.max = maxVal.value_or(0);
         self.hasValidationProperties = self.isRequired || self.hasMin || self.hasMax;
     }
     return self;
@@ -133,7 +133,7 @@
         if ([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
             return NO;
         }
-        NSNumber *val = [NSNumber numberWithDouble:[self.text doubleValue]];
+        double val = [self.text doubleValue];
         if (self.hasMin && val < self.min) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMin userInfo:nil];
