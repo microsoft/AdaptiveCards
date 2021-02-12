@@ -22,7 +22,7 @@ class UnknownElementRenderer: BaseCardElementRendererProtocol {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.red.cgColor
-        view.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 20).isActive = true
         return view
     }
 }

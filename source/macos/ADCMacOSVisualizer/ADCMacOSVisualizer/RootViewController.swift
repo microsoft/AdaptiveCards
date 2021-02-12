@@ -4,6 +4,7 @@ import Cocoa
 class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     @IBOutlet var tableView: NSTableView!
     @IBOutlet var stackView: NSStackView!
+    @IBOutlet var textView: NSTextView!
     
     var items: [String] = []
     
@@ -13,7 +14,8 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         let filesManager = FileManager.default
         guard let sample = main.resourcePath?.appending("/samples") else { return }
         do {
-            items = try filesManager.contentsOfDirectory(atPath: sample)
+            let samples = try filesManager.contentsOfDirectory(atPath: sample)
+            items = samples.sorted()
         } catch {
             print(error)
         }
@@ -47,6 +49,10 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         }
     }
 
+    @IBAction private func handleRenderAction(_ sender: Any) {
+        renderCard(with: textView.string)
+    }
+    
     // MARK: TableView Datasource
     func numberOfRows(in tableView: NSTableView) -> Int {
         return items.count
@@ -67,6 +73,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         do {
             let contents = try String(contentsOfFile: filepath)
             renderCard(with: contents)
+            textView.string = contents
         } catch {
             print(error)
         }

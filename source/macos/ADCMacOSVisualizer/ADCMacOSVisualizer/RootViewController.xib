@@ -10,17 +10,18 @@
             <connections>
                 <outlet property="stackView" destination="wOe-bU-DLU" id="iv6-xI-dpF"/>
                 <outlet property="tableView" destination="1Yf-2r-IAw" id="tbq-e0-pfm"/>
+                <outlet property="textView" destination="Ww0-OY-Znl" id="WJp-CD-jq4"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="742" height="462"/>
+        <customView misplaced="YES" id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="1044" height="487"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n44-FB-6mh">
-                    <rect key="frame" x="0.0" y="-25" width="320" height="487"/>
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="487"/>
                     <clipView key="contentView" id="Lqa-TK-Naj">
                         <rect key="frame" x="1" y="0.0" width="318" height="486"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -104,15 +105,60 @@
                         <constraint firstAttribute="width" constant="350" id="kJn-4U-cPM"/>
                     </constraints>
                 </stackView>
+                <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m2h-No-qKR">
+                    <rect key="frame" x="694" y="61" width="350" height="401"/>
+                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="AR6-HK-mCL">
+                        <rect key="frame" x="0.0" y="0.0" width="350" height="401"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Ww0-OY-Znl">
+                                <rect key="frame" x="0.0" y="0.0" width="350" height="401"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <size key="minSize" width="350" height="401"/>
+                                <size key="maxSize" width="350" height="10000000"/>
+                                <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                            </textView>
+                        </subviews>
+                    </clipView>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="350" id="8Gw-6I-paK"/>
+                    </constraints>
+                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Jfd-9Y-FWz">
+                        <rect key="frame" x="-100" y="-100" width="240" height="16"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                    <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="CYT-4i-Rnq">
+                        <rect key="frame" x="334" y="0.0" width="16" height="401"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </scroller>
+                </scrollView>
+                <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="DZe-UF-Cz8">
+                    <rect key="frame" x="827" y="13" width="84" height="32"/>
+                    <buttonCell key="cell" type="push" title="Render" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4FA-yZ-Lh4">
+                        <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                        <font key="font" metaFont="system"/>
+                    </buttonCell>
+                    <connections>
+                        <action selector="handleRenderAction:" target="-2" id="OJB-HB-Iqa"/>
+                    </connections>
+                </button>
             </subviews>
             <constraints>
                 <constraint firstItem="wOe-bU-DLU" firstAttribute="leading" secondItem="n44-FB-6mh" secondAttribute="trailing" constant="12" id="02Q-UH-NfJ"/>
+                <constraint firstItem="m2h-No-qKR" firstAttribute="leading" secondItem="wOe-bU-DLU" secondAttribute="trailing" constant="12" id="5xi-J0-5zX"/>
+                <constraint firstItem="DZe-UF-Cz8" firstAttribute="top" secondItem="m2h-No-qKR" secondAttribute="bottom" constant="20" symbolic="YES" id="OM8-cZ-M8I"/>
+                <constraint firstItem="DZe-UF-Cz8" firstAttribute="centerX" secondItem="Ww0-OY-Znl" secondAttribute="centerX" id="TqI-3C-V4w"/>
                 <constraint firstItem="n44-FB-6mh" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Xbb-s5-G7B"/>
+                <constraint firstAttribute="bottom" secondItem="m2h-No-qKR" secondAttribute="bottom" constant="61" id="aEs-d6-pmh"/>
+                <constraint firstAttribute="trailing" secondItem="m2h-No-qKR" secondAttribute="trailing" id="ahI-hT-Drd"/>
                 <constraint firstItem="wOe-bU-DLU" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="bWG-P8-fPP"/>
                 <constraint firstItem="n44-FB-6mh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="srJ-Vf-3DH"/>
+                <constraint firstItem="m2h-No-qKR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="szG-Sd-8i0"/>
                 <constraint firstItem="n44-FB-6mh" firstAttribute="bottom" secondItem="Hz6-mo-xeY" secondAttribute="bottom" id="z1a-zm-2kl"/>
             </constraints>
-            <point key="canvasLocation" x="1104" y="199.5"/>
+            <point key="canvasLocation" x="729" y="50.5"/>
         </customView>
     </objects>
 </document>

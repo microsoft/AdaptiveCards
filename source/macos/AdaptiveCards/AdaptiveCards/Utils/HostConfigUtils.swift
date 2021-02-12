@@ -38,7 +38,7 @@ class FontUtils {
             resolvedFontFamily = textProperties.getFontType() == .monospace ? "Courier New" : nil
         }
         
-        guard let fontFamily = resolvedFontFamily else {
+        guard let fontFamily = resolvedFontFamily, !fontFamily.isEmpty else {
             // Custom Font family not needed
             return getSystemFont(for: hostConfig, with: textProperties, fontWeight: fontWeight)
         }
