@@ -12,6 +12,7 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
+import { DropDownItem, PopupMenu, ControlsCSS } from "./controls";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -3663,7 +3664,7 @@ class ActionButton {
         this._parentContainerStyle = parentContainerStyle;
     }
 
-    onClick?: (actionButton: ActionButton) => void;
+    onClick?: (actionButton: ActionButton, event?: MouseEvent) => void;
 
     render() {
         this.action.render();
@@ -3673,16 +3674,16 @@ class ActionButton {
                 e.preventDefault();
                 e.cancelBubble = true;
 
-                this.click();
+                this.click(e);
             };
 
             this.updateCssStyle();
         }
     }
 
-    click() {
+    click(event?: MouseEvent) {
         if (this.onClick !== undefined) {
-            this.onClick(this);
+            this.onClick(this, event);
         }
     }
 
@@ -3713,6 +3714,14 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
+    static readonly modeProperty = new ValueSetProperty(
+        Versions.v1_5,
+        "mode",
+        [
+            { value: Enums.ActionMode.Primary },
+            { value: Enums.ActionMode.Secondary }
+        ],
+        Enums.ActionMode.Primary);
 
     @property(Action.titleProperty)
     title?: string;
@@ -3722,6 +3731,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.styleProperty)
     style: string = Enums.ActionStyle.Default;
+
+    @property(Action.modeProperty)
+    mode?: string = Enums.ActionMode.Primary;
 
     //#endregion
 
@@ -3950,7 +3962,7 @@ export class SubmitAction extends Action {
             if (value !== undefined && typeof value === "string") {
                 return value === "none" ? "none" : "auto";
             }
-            
+
             return undefined;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
@@ -4443,6 +4455,65 @@ export class ShowCardAction extends Action {
     }
 }
 
+export class OverflowAction extends Action {
+    static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
+    private contextMenu: PopupMenu;
+    private readonly styleNodeId = "ac-ctrlContextMenu";
+
+    constructor(
+        private actions: Action[]
+	) {
+        super();
+		this.title = Strings.defaults.overflowButtonText();
+    }
+
+    getActions(): readonly Action[] {
+        return this.actions;
+    }
+
+    getJsonTypeName(): string {
+        return ShowCardAction.JsonTypeName;
+    }
+
+    execute() {
+        const shouldDisplayPopupMenu = raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
+        if (shouldDisplayPopupMenu && this.renderedElement) {
+            if (!this.contextMenu) {
+                this.contextMenu = new PopupMenu();
+                this.contextMenu.onClose = () => {
+                    this.removeCssForContextMenu();
+                }
+                this.actions.forEach((action, id) => {
+                    const menuItem = new DropDownItem(id.toString(), action.title ?? "");
+                    menuItem.onClick = () => {
+                        action.execute();
+                        this.contextMenu.closePopup(false);
+                    };
+                    this.contextMenu.items.add(menuItem);
+                });
+            }
+
+            this.setupCssForContextMenu();
+            this.contextMenu.popup(this.renderedElement);
+        }
+	}
+
+    private setupCssForContextMenu() {
+        const node = document.head.querySelector(`style#${this.styleNodeId}`);
+        if (!node) {
+            const style = document.createElement("style");
+            style.id = this.styleNodeId;
+            style.textContent = ControlsCSS.toString();
+            document.head.appendChild(style);
+        }
+    }
+
+    private removeCssForContextMenu() {
+        const node = document.head.querySelector(`style#${this.styleNodeId}`);
+        node?.remove();
+    }
+}
+
 class ActionCollection {
     private _owner: CardElement;
     private _actionCardContainer: HTMLDivElement;
@@ -4573,8 +4644,9 @@ class ActionCollection {
         return undefined;
     }
 
-    items: Action[] = [];
-    buttons: ActionButton[] = [];
+    private items: Action[] = [];
+    private buttons: ActionButton[] = [];
+    private overflowAction: OverflowAction | undefined;
 
     constructor(owner: CardElement) {
         this._owner = owner;
@@ -4614,6 +4686,14 @@ class ActionCollection {
 
     toJSON(target: PropertyBag, propertyName: string, context: SerializationContext): any {
         context.serializeArray(target, propertyName, this.items);
+    }
+
+    getActionAt(id: number): Action | undefined {
+        return this.items[id];
+    }
+
+    getActionCount(): number {
+        return this.items.length;
     }
 
     getActionById(id: string): Action | undefined {
@@ -4752,14 +4832,51 @@ class ActionCollection {
 
                 const allowedActions = this.items.filter(this.isActionAllowed.bind(this));
 
-                for (let i = 0; i < allowedActions.length; i++) {
-                    let actionButton = this.findActionButton(allowedActions[i]);
+                const plainActions: Action[] = [];
+                const overflowActions: Action[] = [];
+                allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? overflowActions.push(action) : plainActions.push(action));
 
-                    if (!actionButton) {
-                        actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
-                        actionButton.onClick = (ab) => { ab.action.execute(); };
+                // given plainActions.length > maxActions, exceeding actions are forced moved to overflow
+                const overflowPrimaryActions = plainActions.splice(hostConfig.actions.maxActions);
+                overflowActions.push(...overflowPrimaryActions);
 
-                        this.buttons.push(actionButton);
+                const hasOverflow = overflowActions.length > 0;
+
+                let shouldRenderOverflowActionButton = true;
+                if (hasOverflow) {
+                    if (!this.overflowAction) {
+                        this.overflowAction = new OverflowAction(overflowActions);
+                        this.overflowAction.setParent(this._owner);
+                    }
+                    let isRootAction = false;
+                    const card = this.overflowAction.parent?.getRootElement() as AdaptiveCard;
+                    if (card && card.getActionCount() === this.items.length) {
+                        isRootAction = true;
+                        for (let i = 0; i < card.getActionCount(); ++i) {
+                            isRootAction = isRootAction && (card.getActionAt(i) === this.items[i]);
+                        }
+                    }
+                    shouldRenderOverflowActionButton = raiseRenderOverflowActionsEvent(this.overflowAction, isRootAction);
+                }
+
+                const numActionsToRender = plainActions.length + (hasOverflow && shouldRenderOverflowActionButton ? 1 : 0);
+
+                for (let i = 0; i < numActionsToRender; i++) {
+                    const getActionButton = (action: Action) => {
+                        let btn = this.findActionButton(action);
+                        if (!btn) {
+                            btn = new ActionButton(action, parentContainerStyle);
+                            btn.onClick = (ab) => { ab.action.execute(); };
+                            this.buttons.push(btn);
+                        }
+                        return btn;
+                    };
+
+                    let actionButton: ActionButton | undefined;
+                    if (hasOverflow && shouldRenderOverflowActionButton && i == numActionsToRender - 1) {
+                        actionButton = getActionButton(this.overflowAction!);
+                    } else {
+                        actionButton = getActionButton(plainActions[i]);
                     }
 
                     actionButton.render();
@@ -4780,10 +4897,7 @@ class ActionCollection {
 
                         this._renderedActionCount++;
 
-                        if (this._renderedActionCount >= hostConfig.actions.maxActions || i == this.items.length - 1) {
-                            break;
-                        }
-                        else if (hostConfig.actions.buttonSpacing > 0) {
+                        if (hostConfig.actions.buttonSpacing > 0) {
                             let spacer = document.createElement("div");
 
                             if (orientation === Enums.Orientation.Horizontal) {
@@ -4945,7 +5059,7 @@ export class ActionSet extends CardElement {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.items.length == 1) {
+            if (this._actionCollection.getActionCount() == 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -4959,12 +5073,12 @@ export class ActionSet extends CardElement {
     }
 
     getActionCount(): number {
-        return this._actionCollection.items.length;
+        return this._actionCollection.getActionCount();
     }
 
     getActionAt(index: number): Action | undefined {
         if (index >= 0 && index < this.getActionCount()) {
-            return this._actionCollection.items[index];
+            return this._actionCollection.getActionAt(index);
         }
         else {
             return super.getActionAt(index);
@@ -5166,7 +5280,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
+        return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6191,6 +6305,26 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
     }
 }
 
+/**
+ * @returns return true to continue with default context menu; return false to skip SDK default context menu
+ */
+function raiseDisplayOverflowActionMenuEvent(action: OverflowAction, target?: HTMLElement): boolean {
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
+    let onDisplayOverflowActionMenuHandler = (card && card.onDisplayOverflowActionMenu) ? card.onDisplayOverflowActionMenu : AdaptiveCard.onDisplayOverflowActionMenu;
+
+    return onDisplayOverflowActionMenuHandler !== undefined ? onDisplayOverflowActionMenuHandler(action.getActions(), target) : true;
+}
+
+/**
+ * @returns return true to continue with default action button; return false to skip SDK default action button
+ */
+function raiseRenderOverflowActionsEvent(action: OverflowAction, isAtRootLevelActions: boolean): boolean {
+    let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
+    let onRenderOverflowActionsHandler = (card && card.onRenderOverflowActions) ? card.onRenderOverflowActions : AdaptiveCard.onRenderOverflowActions;
+
+    return onRenderOverflowActionsHandler !== undefined ? onRenderOverflowActionsHandler(action.getActions(), isAtRootLevelActions) : true;
+}
+
 export abstract class ContainerWithActions extends Container {
     private _actionCollection: ActionCollection;
 
@@ -6263,12 +6397,12 @@ export abstract class ContainerWithActions extends Container {
     }
 
     getActionCount(): number {
-        return this._actionCollection.items.length;
+        return this._actionCollection.getActionCount();
     }
 
     getActionAt(index: number): Action | undefined {
         if (index >= 0 && index < this.getActionCount()) {
-            return this._actionCollection.items[index];
+            return this._actionCollection.getActionAt(index);
         }
         else {
             return super.getActionAt(index);
@@ -6290,7 +6424,7 @@ export abstract class ContainerWithActions extends Container {
     }
 
     isLastElement(element: CardElement): boolean {
-        return super.isLastElement(element) && this._actionCollection.items.length == 0;
+        return super.isLastElement(element) && this._actionCollection.getActionCount() == 0;
     }
 
     addAction(action: Action) {
@@ -6322,7 +6456,7 @@ export abstract class ContainerWithActions extends Container {
             return super.isBleedingAtBottom();
         }
         else {
-            if (this._actionCollection.items.length == 1) {
+            if (this._actionCollection.getActionCount() == 1) {
                 return this._actionCollection.expandedAction !== undefined && !this.hostConfig.actions.preExpandSingleShowCardAction;
             }
             else {
@@ -6401,6 +6535,8 @@ export class AdaptiveCard extends ContainerWithActions {
     static onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     static onInputValueChanged?: (input: Input) => void;
     static onProcessMarkdown?: (text: string, result: IMarkdownProcessingResult) => void;
+    static onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
+    static onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
     static get processMarkdown(): (text: string) => string {
         throw new Error(Strings.errors.processMarkdownEventRemoved());
@@ -6526,6 +6662,8 @@ export class AdaptiveCard extends ContainerWithActions {
     onImageLoaded?: (image: Image) => void;
     onInlineCardExpanded?: (action: ShowCardAction, isExpanded: boolean) => void;
     onInputValueChanged?: (input: Input) => void;
+    onDisplayOverflowActionMenu?: (actions: readonly Action[], target?: HTMLElement) => boolean;
+    onRenderOverflowActions?: (actions: readonly Action[], isRootLevelActions: boolean) => boolean;
 
     designMode: boolean = false;
 

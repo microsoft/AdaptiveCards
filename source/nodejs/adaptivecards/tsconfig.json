@@ -9,5 +9,8 @@
 		"noFallthroughCasesInSwitch": true,
 		"experimentalDecorators": true
 	},
-	"files": ["./src/adaptivecards.ts"]
+	"files": [
+		"./src/adaptivecards.ts",
+		"./src/@types/css.d.ts"
+	]
 }
