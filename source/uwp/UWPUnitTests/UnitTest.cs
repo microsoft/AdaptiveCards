@@ -113,71 +113,57 @@ namespace UWPUnitTests
 
         async public Task TestCard(FileViewModel hostConfigFile, FileViewModel cardFile)
         {
-            uint reruns = 0;
-            TestResultViewModel result = null;
-            bool retryImage = true;
-            bool testPass = false;
+            var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
 
-            while (retryImage)
+            if (renderResult.Tree != null)
             {
-                var renderResult = await UWPTestLibrary.RenderTestHelpers.RenderCard(cardFile, hostConfigFile);
+                UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
 
-                if (renderResult.Tree != null)
-                {
-                    UWPTestLibrary.ImageWaiter imageWaiter = new ImageWaiter(renderResult.Tree);
+                StackPanel stackPanel = new StackPanel();
+                stackPanel.Children.Add(renderResult.Tree);
 
-                    StackPanel stackPanel = new StackPanel();
-                    stackPanel.Children.Add(renderResult.Tree);
+                Border border = new Border();
+                border.Width = renderResult.CardWidth;
+                border.Child = stackPanel;
 
-                    Border border = new Border();
-                    border.Width = renderResult.CardWidth;
-                    border.Child = stackPanel;
+                ScrollViewer scrollViewer = new ScrollViewer();
+                scrollViewer.Content = border;
 
-                    ScrollViewer scrollViewer = new ScrollViewer();
-                    scrollViewer.Content = border;
+                (Window.Current.Content as Frame).Content = scrollViewer;
 
-                    (Window.Current.Content as Frame).Content = scrollViewer;
+                await imageWaiter.WaitOnAllImagesAsync();
 
-                    await imageWaiter.WaitOnAllImagesAsync();
-
-                }
-
-                StorageFile imageResultFile = null;
-                StorageFile jsonResultFile = null;
-                if (renderResult.Error == null)
-                {
-                    imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
-                    jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
-
-                    await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, renderResult.Tree);
-                }
-
-                await Task.Delay(10);
-
-                result = await TestResultViewModel.CreateAsync(
-                    cardFile: cardFile,
-                    hostConfigFile: hostConfigFile,
-                    renderedTestResult: renderResult,
-                    actualImageFile: imageResultFile,
-                    actualJsonFile: jsonResultFile,
-                    expectedFolder: _expectedFolder,
-                    sourceHostConfigsFolder: _sourceHostConfigsFolder,
-                    sourceCardsFolder: _sourceCardsFolder);
-
-                testPass = result.Status.IsPassingStatus() && result.Status.OriginalMatched;
-
-                if(!testPass)
-                {
-                    // Retry if we failed on image matching for an unchanged card to allow for
-                    // occasional differences in image rendering
-                    retryImage = result.Status.OriginalMatched && !result.Status.ImageMatched && (reruns < 3);
-                    reruns++;
-                }
-                else
-                {
-                    retryImage = false;
-                }
             }
+
+            StorageFile imageResultFile = null;
+            StorageFile jsonResultFile = null;
+            if (renderResult.Error == null)
+            {
+                imageResultFile = await _tempResultsFolder.CreateFileAsync("Result.png", CreationCollisionOption.GenerateUniqueName);
+                jsonResultFile = await _tempResultsFolder.CreateFileAsync("Result.json", CreationCollisionOption.GenerateUniqueName);
+
+                await UWPTestLibrary.RenderTestHelpers.ResultsToFile(imageResultFile, jsonResultFile, renderResult.RoundTrippedJSON, renderResult.Tree);
+            }
+
+            await Task.Delay(10);
+
+            TestResultViewModel result = await TestResultViewModel.CreateAsync(
+                cardFile: cardFile,
+                hostConfigFile: hostConfigFile,
+                renderedTestResult: renderResult,
+                actualImageFile: imageResultFile,
+                actualJsonFile: jsonResultFile,
+                expectedFolder: _expectedFolder,
+                sourceHostConfigsFolder: _sourceHostConfigsFolder,
+                sourceCardsFolder: _sourceCardsFolder);
+
+            // For the unit test, only check that the renderer succeeded (or not) as expected, and that the round tripped json is unchanged.
+            // Image comparison for the time being is not quite stable enough to run as a unit test.
+            // Allow new cards to pass as long as they don't have an error
+            bool testPass =
+                result.Status.MatchedViaError ||
+                result.Status.JsonRoundTripMatched ||
+                (result.Status.NewCard && (result.Status.Error == null));
 
             if (!testPass)
             {

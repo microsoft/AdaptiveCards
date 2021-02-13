@@ -11,10 +11,13 @@ import {
 } from 'react-native';
 
 import { HostConfigManager } from '../../utils/host-config';
+import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
 import { PickerInput } from '../inputs';
 
 export class TimeInput extends React.Component {
+
+	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -124,6 +127,7 @@ export class TimeInput extends React.Component {
 		return (
 			<PickerInput
 				json={this.payload}
+				style={this.styleConfig.inputTime}
 				value={this.state.value}
 				format={"HH:mm"}
 				showPicker={this.showTimePicker}

@@ -32,4 +32,6 @@ extern NSString *uncheckedRadioButtonReuseID;
 
 - (NSString *)getTitlesOfChoices;
 
+- (float)getNonInputWidth:(UITableViewCell *)cell;
+
 @end

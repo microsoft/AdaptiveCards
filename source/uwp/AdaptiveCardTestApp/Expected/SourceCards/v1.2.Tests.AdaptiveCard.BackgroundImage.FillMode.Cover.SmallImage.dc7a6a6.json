@@ -1,0 +1,105 @@
+{
+	"$schema" : "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type" : "AdaptiveCard",
+	"version" : "1.0",
+	"body" :
+		[ 
+			{
+				"type" : "Container",
+				"items" : [
+					{
+						"type" : "TextBlock",
+						"text" : "Every elements below this has to be convered by a purple background image",
+						"wrap" : true
+					}, 
+					{
+						"type" : "Container",
+						"backgroundImage" : 
+						{
+							"url" : "http://104.211.228.145:3000/images/assets/icons/Background.png"
+						},
+						"items" : [
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							},
+							{
+								"type" : "TextBlock", 
+								"text" : "New TextBlock"
+							}, 
+							{
+								"type" : "FactSet",
+								"facts" : [
+								  {
+									  "title" : "Fact 1", 
+									  "value" : "Value 1"
+								  },
+								  {
+									  "title" : "Fact 2", 
+									  "value" : "Value 2"
+								  }
+								]
+							}
+						]
+					}
+		  ],
+		  "height" : "stretch"
+		} 
+	]
+}

@@ -24,16 +24,32 @@ namespace UWPUnitTests
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
 
             // Need to move the test to the UI Thread
+            Exception dispatcherException = null;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
-                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
+                try
+                {
+                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
 
-                Assert.IsNotNull(renderer.ActionRenderers.Get("Action.OpenUrl"));
-                Assert.IsNotNull(renderer.ActionRenderers.Get("Action.ShowCard"));
-                Assert.IsNotNull(renderer.ActionRenderers.Get("Action.Submit"));
-                Assert.IsNotNull(renderer.ActionRenderers.Get("Action.ToggleVisibility"));
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("Action.OpenUrl"));
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("Action.ShowCard"));
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("Action.Submit"));
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("Action.ToggleVisibility"));
+                }
+                catch (Exception e)
+                {
+                    // If we throw an exception from inside the dispatcher the test infrastructure loses its
+                    // connection with the tests. Hold onto this and throw it from the main test thread so
+                    // it is reported properly as a test failure.
+                    dispatcherException = e;
+                }
             });
 
+            if (dispatcherException != null)
+            {
+                // Rethrow any exceptions that may have happened within the dispatcher
+                throw dispatcherException;
+            }
         }
 
         class TestCustomAction : IAdaptiveActionElement
@@ -95,59 +111,78 @@ namespace UWPUnitTests
         {
             var dispatcher = CoreApplication.MainView.CoreWindow.Dispatcher;
 
-            // Need to move the test to the UI Thread
+            AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
+            List<AdaptiveWarning> warnings = new List<AdaptiveWarning>();
+
+            actionParserRegistration.Set("TestCustomAction", new TestActionParser());
+
+            String testCard =
+                "{" +
+                "   \"type\":\"AdaptiveCard\"," +
+                "   \"version\":\"1.0\"," +
+                "   \"body\":" +
+                "   [" +
+                "   ]," +
+                "   \"actions\":" +
+                "   [" +
+                "       {" +
+                "           \"type\":\"TestCustomAction\"" +
+                "       }," +
+                "       {" +
+                "           \"type\":\"Action.Submit\"" +
+                "       }" +
+                "   ]" +
+                "}";
+
+            AdaptiveCard card = AdaptiveCard.FromJsonString(testCard, null, actionParserRegistration).AdaptiveCard;
+            Assert.IsNotNull(card);
+
+
+            // Need to move the test to the UI Thread to render
+            Exception dispatcherException = null;
             await dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
-                AdaptiveActionParserRegistration actionParserRegistration = new AdaptiveActionParserRegistration();
-                List<AdaptiveWarning> warnings = new List<AdaptiveWarning>();
-
-                actionParserRegistration.Set("TestCustomAction", new TestActionParser());
-
-                String testCard =
-                    "{" +
-                    "   \"type\":\"AdaptiveCard\"," +
-                    "   \"version\":\"1.0\"," +
-                    "   \"body\":" +
-                    "   [" +
-                    "   ]," +
-                    "   \"actions\":" +
-                    "   [" +
-                    "       {" +
-                    "           \"type\":\"TestCustomAction\"" +
-                    "       }," +
-                    "       {" +
-                    "           \"type\":\"Action.Submit\"" +
-                    "       }" +
-                    "   ]" +
-                    "}";
-
-                AdaptiveCard card = AdaptiveCard.FromJsonString(testCard, null, actionParserRegistration).AdaptiveCard;
-                Assert.IsNotNull(card);
-
-                AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
-
-                renderer.ActionRenderers.Set("TestCustomAction", new TestCustomActionRenderer());
-                renderer.ActionRenderers.Set("Action.Submit", new TestSubmitActionRenderer());
-
-                Assert.IsNotNull(renderer.ActionRenderers.Get("TestCustomAction") as TestCustomActionRenderer);
-                Assert.IsNotNull(renderer.ActionRenderers.Get("Action.Submit") as TestSubmitActionRenderer);
-
-                FrameworkElement renderedCard = renderer.RenderAdaptiveCard(card).FrameworkElement;
-
-                bool submitFound = false;
-                bool customFound = false;
-                foreach (var radioButton in RenderTestHelpers.GetAllDescendants(renderedCard).OfType<RadioButton>())
+                try
                 {
-                    customFound |= radioButton.Name == "CustomActionRadioButton";
-                    submitFound |= radioButton.Name == "SubmitActionRadioButton";
+                    AdaptiveCardRenderer renderer = new AdaptiveCardRenderer();
+
+                    renderer.ActionRenderers.Set("TestCustomAction", new TestCustomActionRenderer());
+                    renderer.ActionRenderers.Set("Action.Submit", new TestSubmitActionRenderer());
+
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("TestCustomAction") as TestCustomActionRenderer);
+                    Assert.IsNotNull(renderer.ActionRenderers.Get("Action.Submit") as TestSubmitActionRenderer);
+
+                    FrameworkElement renderedCard = renderer.RenderAdaptiveCard(card).FrameworkElement;
+
+                    bool submitFound = false;
+                    bool customFound = false;
+                    foreach (var radioButton in RenderTestHelpers.GetAllDescendants(renderedCard).OfType<RadioButton>())
+                    {
+                        customFound |= radioButton.Name == "CustomActionRadioButton";
+                        submitFound |= radioButton.Name == "SubmitActionRadioButton";
+                    }
+
+                    Assert.IsTrue(customFound && submitFound);
+
+                    renderer.ActionRenderers.Remove("TestCustomAction");
+                    renderer.ActionRenderers.Remove("Action.Submit");
+                    renderer.ActionRenderers.Remove("TestCustomActionThatDoesntExist");
                 }
-
-                Assert.IsTrue(customFound && submitFound);
-
-                renderer.ActionRenderers.Remove("TestCustomAction");
-                renderer.ActionRenderers.Remove("Action.Submit");
-                renderer.ActionRenderers.Remove("TestCustomActionThatDoesntExist");
+                catch (Exception e)
+                {
+                    // If we throw an exception from inside the dispatcher the test infrastructure loses its
+                    // connection with the tests. Hold onto this and throw it from the main test thread so
+                    // it is reported properly as a test failure.
+                    dispatcherException = e;
+                }
             });
+
+
+            if (dispatcherException != null)
+            {
+                // Rethrow any exceptions that may have happened within the dispatcher
+                throw dispatcherException;
+            }
         }
     }
 }

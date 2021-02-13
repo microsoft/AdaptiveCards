@@ -2123,8 +2123,8 @@ AdaptiveNamespaceStart
         contract(InternalContract, 1),
         internal
 #endif
-    ]
-    runtimeclass WholeItemsPanel
+    ] 
+    runtimeclass WholeItemsPanel : Windows.UI.Xaml.Controls.Panel
     {
         String GetAltText();
         Boolean IsAllContentClippedOut();

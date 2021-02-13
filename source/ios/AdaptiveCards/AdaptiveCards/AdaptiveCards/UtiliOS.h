@@ -49,7 +49,7 @@ void handleActionFallbackException(ACOFallbackException *exception,
                                    UIView<ACRIContentHoldingView> *view, ACRView *rootView,
                                    NSMutableArray *inputs, ACOBaseActionElement *acoElem,
                                    ACOHostConfig *config,
-                                   UIView<ACRIContentHoldingView> *actionSet);
+                                   UIStackView *actionSet);
 
 void removeLastViewFromCollectionView(const CardElementType elemType,
                                       UIView<ACRIContentHoldingView> *view);

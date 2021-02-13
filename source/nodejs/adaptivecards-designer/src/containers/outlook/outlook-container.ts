@@ -5,6 +5,13 @@ import { HostContainer } from "../host-container";
 import * as hostConfig from "../../hostConfigs/outlook-desktop.json";
 
 export class OutlookContainer extends HostContainer {
+    constructor(name: string, styleSheet: string) {
+        super(name, styleSheet);
+
+        this.actionsRegistry.unregister("Action.Submit");
+        this.actionsRegistry.register("Action.Http", Adaptive.HttpAction);
+    }
+
     public renderTo(hostElement: HTMLElement) {
         hostElement.classList.add("outlook-frame");
         hostElement.appendChild(this.cardHost);
@@ -13,16 +20,13 @@ export class OutlookContainer extends HostContainer {
     public initialize() {
         super.initialize();
 
-        Adaptive.AdaptiveCard.actionTypeRegistry.unregisterType("Action.Submit");
-        Adaptive.AdaptiveCard.actionTypeRegistry.registerType("Action.Http", () => { return new Adaptive.HttpAction(); });
-
-        Adaptive.AdaptiveCard.useMarkdownInRadioButtonAndCheckbox = false;
+        Adaptive.GlobalSettings.useMarkdownInRadioButtonAndCheckbox = false;
     }
 
-    private parsePadding(json: any): Adaptive.PaddingDefinition {
-        if (json) {
-            if (typeof json === "string") {
-                var uniformPadding = Adaptive.getEnumValue(Adaptive.Spacing, json, Adaptive.Spacing.None);
+    private parsePadding(source: any): Adaptive.PaddingDefinition {
+        if (source) {
+            if (typeof source === "string") {
+                var uniformPadding = Adaptive.parseEnum(Adaptive.Spacing, source, Adaptive.Spacing.None);
 
                 return new Adaptive.PaddingDefinition(
                     uniformPadding,
@@ -30,33 +34,37 @@ export class OutlookContainer extends HostContainer {
                     uniformPadding,
                     uniformPadding);
             }
-            else if (typeof json === "object") {
+            else if (typeof source === "object") {
                 return new Adaptive.PaddingDefinition(
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["top"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["right"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["bottom"], Adaptive.Spacing.None),
-                    Adaptive.getEnumValue(Adaptive.Spacing, json["left"], Adaptive.Spacing.None));
+                    Adaptive.parseEnum(Adaptive.Spacing, source["top"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["right"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["bottom"], Adaptive.Spacing.None),
+                    Adaptive.parseEnum(Adaptive.Spacing, source["left"], Adaptive.Spacing.None));
             }
         }
 
         return null;
     }
 
-    public parseElement(element: Adaptive.CardElement, json: any) {
+    public parseElement(element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) {
+        if (element instanceof Adaptive.Container && typeof source["rtl"] === "boolean") {
+            element.rtl = source["rtl"];
+        }
+
         if (element instanceof Adaptive.AdaptiveCard) {
             var card = <Adaptive.AdaptiveCard>element;
             var actionArray: Array<Adaptive.Action> = [];
 
             card["resources"] = { actions: actionArray };
 
-            if (typeof json["resources"] === "object") {
-                var actionResources = json["resources"]["actions"] as Array<any>;
+            if (typeof source["resources"] === "object") {
+                var actionResources = source["resources"]["actions"] as Array<any>;
 
                 for (var i = 0; i < actionResources.length; i++) {
-                    let action = Adaptive.AdaptiveCard.actionTypeRegistry.createInstance(actionResources[i]["type"]);
+                    let action = this.actionsRegistry.createInstance(actionResources[i]["type"], context.targetVersion);
 
                     if (action) {
-                        action.parse(actionResources[i]);
+                        action.parse(actionResources[i], context);
                         action.setParent(card);
 
                         actionArray.push(action);
@@ -66,11 +74,11 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.Image) {
-            (<Adaptive.Image>element).backgroundColor = json["backgroundColor"];
+            (<Adaptive.Image>element).backgroundColor = source["backgroundColor"];
         }
 
         if (element instanceof Adaptive.Container) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.Container>element).padding = padding;
@@ -78,7 +86,7 @@ export class OutlookContainer extends HostContainer {
         }
 
         if (element instanceof Adaptive.ColumnSet) {
-            var padding = this.parsePadding(json["padding"]);
+            var padding = this.parsePadding(source["padding"]);
 
             if (padding) {
                 (<Adaptive.ColumnSet>element).padding = padding;

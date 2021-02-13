@@ -17,8 +17,10 @@ import * as Constants from '../../utils/constants';
 import ElementWrapper from '../elements/element-wrapper';
 import { SelectAction } from '../actions';
 import { StyleManager } from '../../styles/style-config';
-import { InputContext,
-		InputContextConsumer } from '../../utils/context';
+import {
+	InputContext,
+	InputContextConsumer
+} from '../../utils/context';
 
 const ContainResizeMode = 'contain';
 
@@ -55,13 +57,13 @@ export class Img extends React.Component {
 			this.isSizeUndefined = true;
 			this.payload.size = Constants.Auto;
 		}
-		this.sizeStyling = this.applySize();
+
 		this.type = this.payload.type || Constants.EmptyString;
 		let imageUrl = this.payload.url || Constants.EmptyString
 
 		this.url = Utils.getImageUrl(imageUrl)
 		this.id = this.payload.id || Constants.EmptyString;
-		let spacingValue = Utils.parseHostConfigEnum(
+		const spacingValue = Utils.parseHostConfigEnum(
 			Enums.Spacing,
 			this.payload.spacing,
 			Enums.Spacing.Small);
@@ -110,11 +112,9 @@ export class Img extends React.Component {
 	applySize() {
 		let sizeStyle = [];
 		let sizeValue = Utils.parseHostConfigEnum(Enums.Size, this.payload.size, Enums.Size.Auto)
-		/*  This W2H ratio is calculated to determine the height required w.r.to pre-determined sizes */
-		var w2hratio = this.state.imageHeight / this.state.imageWidth;
-		if (!Utils.isaNumber(w2hratio)) {
-			w2hratio = 1;
-		}
+
+		const { width, height } = this.payload;
+
         /**
          * Scenario 1 : Either height or width has string value (Ex: '80px'),
          *               use the integer portion.
@@ -123,27 +123,11 @@ export class Img extends React.Component {
          * Scenario 3 : If either width or height is missing, apply the given value to the 
          *              other property.
          */
-		if (Utils.isaNumber(this.payload.width) || Utils.isaNumber(this.payload.height)) {
+		if (Utils.isaNumber(width) || Utils.isaNumber(height)) {
 
-			if (this.payload.width) {
-				this.width = parseInt(this.payload.width, 10);
-				sizeStyle.push({ width: this.width })
-			}
-			else {
-				this.height = parseInt(this.payload.height, 10);
-				sizeStyle.push({ width: this.height })
-				this.width = this.height;
-
-			}
-			if (this.payload.height) {
-				this.height = parseInt(this.payload.height, 10);
-				sizeStyle.push({ height: this.height })
-			}
-			else {
-				this.width = parseInt(this.payload.width, 10);
-				sizeStyle.push({ height: this.width * w2hratio })
-				this.height = this.width;
-			}
+			this.width = Utils.getSize(width) || this.state.imageWidth;
+			this.height = Utils.getSize(height) || this.getHeight(this.width);
+			sizeStyle.push({ width: this.width, height: this.height });
 		}
 		else {
 			switch (sizeValue) {
@@ -151,58 +135,38 @@ export class Img extends React.Component {
 					{
 						sizeStyle.push([styles.imageStretch,
 						{
-							width: this.state.imageWidth,
-							height: this.state.imageHeight
+							width: this.state.imageWidth, height: this.state.imageHeight
 						}]);
 						break;
 					}
 				case 2:
 					{
-						sizeStyle.push({ width: this.hostConfig.imageSizes.small });
-                        /**
-                         * "width:80px height:not set", "size": "small"
-                         */
-						this.isPersonStyle() ?
-							sizeStyle.push({ height: this.hostConfig.imageSizes.small }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.small * w2hratio })
-
-                        /**
-                         * When images are rendered from imageset,
-                         * give priority to aspect ratio for image height.
-                         */
-						this.payload.fromImageSet == true ?
-							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.small * w2hratio })
-
+						sizeStyle.push({
+							width: this.hostConfig.imageSizes.small,
+							height: this.hostConfig.imageSizes.small
+						});
 						this.width = this.hostConfig.imageSizes.small;
 						break;
 					}
 				case 3:
 					{
-						sizeStyle.push({ width: this.hostConfig.imageSizes.medium });
-
-						this.isPersonStyle() ?
-							sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
-
-						this.payload.fromImageSet == true ?
-							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.medium * w2hratio })
-
+						sizeStyle.push({ width: this.hostConfig.imageSizes.medium, height: this.hostConfig.imageSizes.medium });
+						const spacingValue = Utils.parseHostConfigEnum(
+							Enums.Spacing,
+							this.payload.spacing,
+							Enums.Spacing.Medium);
+						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
 						this.width = this.hostConfig.imageSizes.medium;
 						break;
 					}
 				case 4:
 					{
-						sizeStyle.push({ width: this.hostConfig.imageSizes.large });
-						this.isPersonStyle() ?
-							sizeStyle.push({ height: this.hostConfig.imageSizes.large }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
-
-						this.payload.fromImageSet == true ?
-							sizeStyle.push({ height: this.state.imageHeight }) :
-							sizeStyle.push({ height: this.hostConfig.imageSizes.large * w2hratio })
-
+						sizeStyle.push({ width: this.hostConfig.imageSizes.large, height: this.hostConfig.imageSizes.large });
+						const spacingValue = Utils.parseHostConfigEnum(
+							Enums.Spacing,
+							this.payload.spacing,
+							Enums.Spacing.Large);
+						this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
 						this.width = this.hostConfig.imageSizes.large;
 						break;
 					}
@@ -212,27 +176,23 @@ export class Img extends React.Component {
 						 * When the images are rendered via imageset and if the size is undefined or Auto, 
 						 * the size of the image is taken as medium as default as per native iOS renderer.
 						 */
+						sizeStyle.push(styles.imageAuto);
 						if ((this.isSizeUndefined && this.payload.fromImageSet == true) ||
 							(this.payload.fromImageSet == true)) {
-							sizeStyle.push([styles.imageAuto, { width: this.hostConfig.imageSizes.medium }]);
-							this.isPersonStyle() ?
-								sizeStyle.push({ height: this.hostConfig.imageSizes.medium }) :
-								sizeStyle.push({ height: this.state.imageHeight })
-
-							this.payload.fromImageSet == true ?
-								sizeStyle.push({ height: this.state.imageHeight }) :
-								sizeStyle.push({ height: this.hostConfig.imageSizes.medium })
-
+							const spacingValue = Utils.parseHostConfigEnum(
+								Enums.Spacing,
+								this.payload.spacing,
+								Enums.Spacing.Medium);
+							this.spacing = this.hostConfig.getEffectiveSpacing(spacingValue);
+							sizeStyle.push({
+								width: this.hostConfig.imageSizes.medium,
+								height: this.hostConfig.imageSizes.medium,
+							});
 							this.width = this.hostConfig.imageSizes.medium;
 						}
 						else {
-							sizeStyle.push([styles.imageAuto, {
-								width: this.state.imageWidth,
-								height: this.state.imageHeight
-							}]);
-
+							sizeStyle.push({ width: this.state.imageWidth, height: this.state.imageHeight });
 							this.width = this.state.imageWidth;
-							this.height = this.state.imageHeight;
 						}
 						break;
 					}
@@ -241,19 +201,23 @@ export class Img extends React.Component {
 		return sizeStyle;
 	}
 
+	getHeight(width) {
+		let widthToHeightRatio = (this.state.imageHeight / this.state.imageWidth) || 1;
+		if (this.isPersonStyle() || (this.props.columnWidth && this.props.columnWidth != Constants.Auto))
+			return width;
+		else return width * widthToHeightRatio;
+	}
+
+	getWidth(layoutWidth, imageWidth) {
+		if (this.isPersonStyle() || (this.props.columnWidth && this.props.columnWidth != Constants.Auto))
+			return layoutWidth;
+		else return imageWidth;
+	}
+
 	onPageLayoutHandler = (event) => {
 		const { width: layoutWidth } = event.nativeEvent.layout;
 		//This function is implemented to determine the actual dimensions of the component.
 		Image.getSize(this.url, (width, height) => {
-
-			/**
-			 * Calculating the width to height ratio based on layoutWidth and actual image width.
-			 */
-			const w2hratio = layoutWidth / width
-			/**
-				* The image-width and height are set in state to 
-				* re-render the element once we get the dimensions of the image.
-				*/
 
 			/**
 			 * If the payload contains "fromImageset" i.e(if the image is rendered via ImageSet),
@@ -271,12 +235,13 @@ export class Img extends React.Component {
 				this.height = this.payload.height || this.hostConfig.imageSet.maxImageHeight;
 			}
 			else {
-				this.setState({
-					imageWidth: layoutWidth,
-					imageHeight: w2hratio * height,
-				});
-				this.width = this.payload.width || layoutWidth;
-				this.height = this.payload.height || w2hratio * height;
+				const imageWidth = this.getWidth(layoutWidth, width);
+				const widthToHeightRatio = height / width;
+				const imageHeight = widthToHeightRatio * imageWidth;
+
+				this.setState({ imageWidth, imageHeight });
+				this.width = this.payload.width || imageWidth;
+				this.height = this.payload.height || imageHeight;
 			}
 
 		}, (error) => {
@@ -287,23 +252,17 @@ export class Img extends React.Component {
 	render() {
 		this.parseHostConfig();
 
-		const {
-			type,
-			url,
-			spacing,
-		} = this;
-
-		if (!type || !Utils.isValidImageURI(this.payload.url)) {
+		if (!this.type || !Utils.isValidImageURI(this.payload.url)) {
 			return null;
 		}
 
-		let imageComputedStyle = [this.sizeStyling];
+		let imageComputedStyle = this.applySize();
 		imageComputedStyle.push({ backgroundColor: this.backgroundColor })
 		let wrapperComputedStyle = this.horizontalAlignment;
 		wrapperComputedStyle.push({ backgroundColor: 'transparent' });
 
 		if (this.payload.fromImageSet == true) {
-			wrapperComputedStyle.push({ margin: spacing });
+			wrapperComputedStyle.push({ margin: this.spacing});
 		}
 
         /**
@@ -322,16 +281,16 @@ export class Img extends React.Component {
 				imageComputedStyle.push({ borderRadius: this.width / 2 }) : null;
 		}
 
-		let imageUrl = Utils.getImageUrl(url);
+		let imageUrl = Utils.getImageUrl(this.url);
 
-		var containerContent = (<InputContextConsumer>
+		let containerContent = (<InputContextConsumer>
 			{({ addResourceInformation }) => {
 				this.addResourceInformation = addResourceInformation;
 				return <ElementWrapper json={this.payload} isFirst={this.props.isFirst}
 					style={wrapperComputedStyle}
 					onPageLayout={this.onPageLayoutHandler}>
 
-					<Image resizeMode="contain" style={imageComputedStyle}
+					<Image style={imageComputedStyle}
 						source={{ uri: imageUrl }} />
 				</ElementWrapper>
 			}}

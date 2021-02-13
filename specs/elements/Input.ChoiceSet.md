@@ -16,6 +16,7 @@
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
+| **label** | `string`, `TextBlock`, `RichTextBlock` | No | Label for this input | 1.3 |
 | **fallback** | `Element`, `FallbackOption` | No | Describes what to do when an unknown element is encountered or the requires of this or any children can't be met. | 1.2 |
 | **height** | `BlockElementHeight` | No | Specifies the height of the element. | 1.1 |
 | **separator** | `boolean` | No | When `true`, draw a separating line at the top of the element. | 1.0 |
@@ -41,6 +42,19 @@
 * **Allowed values**:
   * `"compact"`
   * `"expanded"`
+
+
+## label
+
+Label for this input
+
+* **Type**: `string`, `TextBlock`, `RichTextBlock`
+* **Version** : 1.3
+* **Required**: No
+* **Allowed values**:
+  * `string`
+  * `TextBlock`
+  * `RichTextBlock`
 
 
 ## fallback
@@ -98,3 +112,9 @@ Controls the amount of spacing between this element and the preceding element.
 <!-- END AUTO-GENERATED -->
 
 ## Rendering
+
+### Labels
+The `label` property should be rendered above the choice set. In the case of a compact choice set, clicking/tapping on the rendered label should put focus on the input.
+
+### Accessibility
+The `label` property should be set as the accessibility text for the choice set when present. If the `label` property is not present, the `placeholder` property should be used instead if present.

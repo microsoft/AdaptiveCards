@@ -1,32 +1,32 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-  "extends": "Input",
-  "description": "Lets a user enter text.",
-  "properties": {
-    "isMultiline": {
-      "type": "boolean",
-      "description": "If `true`, allow multiple lines of input.",
-      "default": false
-    },
-    "maxLength": {
-      "type": "number",
-      "description": "Hint of maximum length characters to collect (may be ignored by some clients)."
-    },
-    "placeholder": {
-      "type": "string",
-      "description": "Description of the input desired. Displayed when no text has been input."
-    },
-    "style": {
-      "type": "TextInputStyle"
-    },
-    "inlineAction": {
-      "type": "ISelectAction",
-      "description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action).",
-      "version": "1.2"
-    },
-    "value": {
-      "type": "string",
-      "description": "The initial value for this field."
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"extends": "Input",
+	"description": "Lets a user enter text.",
+	"properties": {
+		"isMultiline": {
+			"type": "boolean",
+			"description": "If `true`, allow multiple lines of input.",
+			"default": false
+		},
+		"maxLength": {
+			"type": "number",
+			"description": "Hint of maximum length characters to collect (may be ignored by some clients)."
+		},
+		"placeholder": {
+			"type": "string",
+			"description": "Description of the input desired. Displayed when no text has been input."
+		},
+		"style": {
+			"type": "TextInputStyle"
+		},
+		"inlineAction": {
+			"type": "ISelectAction",
+			"description": "The inline action for the input. Typically displayed to the right of the input. It is strongly recommended to provide an icon on the action (which will be displayed instead of the title of the action).",
+			"version": "1.2"
+		},
+		"value": {
+			"type": "string", 
+			"description": "The initial value for this field."
+		}
+	}
 }

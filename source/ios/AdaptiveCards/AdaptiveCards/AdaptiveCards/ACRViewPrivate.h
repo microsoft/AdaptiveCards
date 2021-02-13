@@ -57,4 +57,7 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 
 - (void)enqueueIntermediateTextProcessingResult:(NSDictionary *)data
                                       elementId:(NSString *)elementId;
+
+- (void)addWarnings:(ACRWarningStatusCode)statusCode mesage:(NSString *)message;
+
 @end

@@ -1,0 +1,85 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "\\n:\nnext line\n\ntwo lines down",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "\\r:\rnext line\r\rtwo lines down",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "\\r\\n:\r\nnext line\r\n\r\ntwo lines down",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "\\r\\r\\n:\r\r\nshould be two lines down\r\r\ntwo lines down",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "\\no newlines, \\just backslashes\\",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "Some legal escape chars after newline:\n\b\f\t\"\\\/",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "This should be the letter 'A': \u0041",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "HTML entities ahoy: \"Foo &amp; Bar\" &lt;admin@example.com&gt;",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "&amp**;** &am&nbsp;p;",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "↓ Empty TextBlock below ↓",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "↑ Empty TextBlock above ↑",
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "0123456789012345678901234567890123456789-->\n<--0123456789012345678901234567890123456789",
+			"wrap": true,
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "0123456789012345678901234567890123456789-->\r<--0123456789012345678901234567890123456789",
+			"wrap": true,
+			"separator": true
+		},
+		{
+			"type": "TextBlock",
+			"text": "0123456789012345678901234567890123456789-->\r\n<--0123456789012345678901234567890123456789",
+			"wrap": true,
+			"separator": true
+		}
+	]
+}

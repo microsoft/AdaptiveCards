@@ -30,8 +30,10 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
         return this.owner.getTreeItemText();
     }
 
-    protected selected() {
-        this.owner.isSelected = true;
+    protected selectedChanged(scrollIntoView: boolean) {
+        super.selectedChanged(scrollIntoView);
+
+        this.owner.isSelected = this.isSelected;
     }
 
     readonly owner: DesignerPeer;
@@ -53,11 +55,5 @@ export class DesignerPeerTreeItem extends BaseTreeItem {
 
     getChildAt(index: number): BaseTreeItem {
         return this.owner.getChildAt(index).treeItem;
-    }
-
-    updateLayout() {
-        super.updateLayout();
-
-        this.isSelected = this.owner.isSelected;
     }
 }

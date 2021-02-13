@@ -6,16 +6,32 @@ export abstract class BaseTreeItem extends DraggableElement {
 
     private _isExpanded: boolean = true;
     private _isSelected: boolean = false;
+    private _rootElement: HTMLElement;
     private _treeItemElement: HTMLElement;
     private _expandCollapseElement: HTMLElement;
     private _childContainerElement: HTMLElement;
+
+    private setIsSelected(value: boolean, scrollIntoView: boolean) {
+        if (this._isSelected !== value) {
+            this._isSelected = value;
+
+            if (this._isSelected) {
+                this._treeItemElement.classList.add("selected");
+            }
+            else {
+                this._treeItemElement.classList.remove("selected");
+            }
+
+            this.selectedChanged(scrollIntoView);
+        }
+    }
 
     protected abstract getLabelText(): string;
 
     protected click(e: MouseEvent) {
         super.click(e);
 
-        this.selected();
+        this.setIsSelected(true, false);
     }
 
     protected getIconClass(): string {
@@ -38,12 +54,18 @@ export abstract class BaseTreeItem extends DraggableElement {
         return this._treeItemElement;
     }
 
-    protected selected() {
-        // Do nothing in base implementation
+    protected selectedChanged(scrollIntoView: boolean) {
+        if (this.isSelected && scrollIntoView) {
+            this._rootElement.scrollIntoView();
+        }
+
+        if (this.onSelectedChange) {
+            this.onSelectedChange(this);
+        }
     }
 
     protected internalRender(): HTMLElement {
-        let rootElement = document.createElement("div");
+        this._rootElement = document.createElement("div");
 
         this._treeItemElement = document.createElement("div");
         this._treeItemElement.classList.add("acd-tree-item");
@@ -100,7 +122,7 @@ export abstract class BaseTreeItem extends DraggableElement {
 
         this._treeItemElement.appendChild(textElement);
 
-        rootElement.appendChild(this._treeItemElement);
+        this._rootElement.appendChild(this._treeItemElement);
 
         this._childContainerElement = document.createElement("div");
 
@@ -110,15 +132,17 @@ export abstract class BaseTreeItem extends DraggableElement {
             this._childContainerElement.appendChild(renderedChildItem);
         }
 
-        rootElement.appendChild(this._childContainerElement);
+        this._rootElement.appendChild(this._childContainerElement);
 
         this.updateLayout();
 
-        return rootElement;
+        return this._rootElement;
     }
 
     protected _level: number = 0;
-    
+
+    onSelectedChange: (sender: BaseTreeItem) => void;
+
     constructor() {
         super();
     }
@@ -158,13 +182,6 @@ export abstract class BaseTreeItem extends DraggableElement {
     }
 
     set isSelected(value: boolean) {
-        this._isSelected = value;
-
-        if (this._isSelected) {
-            this._treeItemElement.classList.add("selected");
-        }
-        else {
-            this._treeItemElement.classList.remove("selected");
-        }
+        this.setIsSelected(value, true);
     }
 }

@@ -82,7 +82,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
         }
 
         @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
+        public Bitmap styleBitmap(Bitmap bitmap)
         {
             Button button = (Button) super.m_view;
 

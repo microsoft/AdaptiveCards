@@ -95,6 +95,10 @@
 		6BB211FF20FFF9C0009EA1BA /* ACRIMedia.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BB2121821001596009EA1BA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB2121721001596009EA1BA /* AVFoundation.framework */; };
 		6BB21219210015A7009EA1BA /* AVKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB2120F210013AA009EA1BA /* AVKit.framework */; };
+		6BBE841923CD184D00ECA586 /* ACREnums.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BBE841623CD184D00ECA586 /* ACREnums.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BBE841A23CD184D00ECA586 /* ACOWarning.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BBE841723CD184D00ECA586 /* ACOWarning.mm */; };
+		6BBE841B23CD184D00ECA586 /* ACOWarning.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BBE841823CD184D00ECA586 /* ACOWarning.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BBE841F23CE60E300ECA586 /* ACRMediaRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BBE841E23CE60E300ECA586 /* ACRMediaRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BC30F6C21E56A6900B9FAAE /* UtiliOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BC30F6B21E56A6900B9FAAE /* UtiliOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BC30F6E21E56CF900B9FAAE /* UtiliOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BC30F6D21E56CF900B9FAAE /* UtiliOS.mm */; };
 		6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BC30F7521E5750A00B9FAAE /* EnumMagic.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -420,9 +424,12 @@
 		6BB211FA20FF9FE9009EA1BA /* ACRActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRActionSetRenderer.mm; sourceTree = "<group>"; };
 		6BB211FB20FF9FEA009EA1BA /* ACRActionSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRActionSetRenderer.h; sourceTree = "<group>"; };
 		6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRIMedia.h; sourceTree = "<group>"; };
-		6BB212082100042B009EA1BA /* ACRMediaRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRMediaRenderer.h; sourceTree = "<group>"; };
 		6BB2120F210013AA009EA1BA /* AVKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVKit.framework; path = System/Library/Frameworks/AVKit.framework; sourceTree = SDKROOT; };
 		6BB2121721001596009EA1BA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6BBE841623CD184D00ECA586 /* ACREnums.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACREnums.h; sourceTree = "<group>"; };
+		6BBE841723CD184D00ECA586 /* ACOWarning.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACOWarning.mm; sourceTree = "<group>"; };
+		6BBE841823CD184D00ECA586 /* ACOWarning.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACOWarning.h; sourceTree = "<group>"; };
+		6BBE841E23CE60E300ECA586 /* ACRMediaRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRMediaRenderer.h; sourceTree = "<group>"; };
 		6BC30F6B21E56A6900B9FAAE /* UtiliOS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UtiliOS.h; sourceTree = "<group>"; };
 		6BC30F6D21E56CF900B9FAAE /* UtiliOS.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UtiliOS.mm; sourceTree = "<group>"; };
 		6BC30F7521E5750A00B9FAAE /* EnumMagic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnumMagic.h; path = ../../../../shared/cpp/ObjectModel/EnumMagic.h; sourceTree = "<group>"; };
@@ -694,11 +701,11 @@
 		6BB2120621000024009EA1BA /* Media */ = {
 			isa = PBXGroup;
 			children = (
+				6BBE841E23CE60E300ECA586 /* ACRMediaRenderer.h */,
 				6B9D650721095C7A00BB5C7B /* ACOMediaEvent.h */,
 				6B9D650821095C7A00BB5C7B /* ACOMediaEvent.mm */,
 				6B9D650621095C7A00BB5C7B /* ACOMediaEventPrivate.h */,
 				6BB211FE20FFF9C0009EA1BA /* ACRIMedia.h */,
-				6BB212082100042B009EA1BA /* ACRMediaRenderer.h */,
 				6BCE4B242108FA7C00021A62 /* ACRMediaRenderer.mm */,
 				6B9D650C21095CBE00BB5C7B /* ACRMediaTarget.h */,
 				6B9D650D21095CBE00BB5C7B /* ACRMediaTarget.mm */,
@@ -761,7 +768,10 @@
 				6B5D2409212C89E60010EB07 /* ACORemoteResourceInformationPrivate.h */,
 				6B9BDF7E20F40D1000F13155 /* ACOResourceResolvers.h */,
 				6B9BDF7D20F40D0F00F13155 /* ACOResourceResolvers.mm */,
+				6BBE841823CD184D00ECA586 /* ACOWarning.h */,
+				6BBE841723CD184D00ECA586 /* ACOWarning.mm */,
 				6B1147D01F32E53A008846EC /* ACRActionDelegate.h */,
+				6BBE841623CD184D00ECA586 /* ACREnums.h */,
 				F42979401F322C3E00E89914 /* ACRErrors.h */,
 				F42979411F322C3E00E89914 /* ACRErrors.mm */,
 				F4F6BA34204F200E003741B6 /* ACRParseWarning.h */,
@@ -779,11 +789,10 @@
 				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
 				F4960C022051FE8000780566 /* ACRView.h */,
 				F4960C032051FE8100780566 /* ACRView.mm */,
+				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				F4D06948205B27E9003645E4 /* ACRViewController.h */,
 				F4D06947205B27E9003645E4 /* ACRViewController.mm */,
 				F4D06949205B27EA003645E4 /* ACRViewPrivate.h */,
-				6BC30F6B21E56A6900B9FAAE /* UtiliOS.h */,
-				6BC30F6D21E56CF900B9FAAE /* UtiliOS.mm */,
 				F42979331F30079D00E89914 /* Actions */,
 				6B14FC682122263800A11CC5 /* Images */,
 				F423C0B91EE1FBAA00905679 /* Info.plist */,
@@ -792,6 +801,8 @@
 				6BB2120621000024009EA1BA /* Media */,
 				F42979341F3007C500E89914 /* ReadOnlyObjects */,
 				F423C0D71EE1FF2F00905679 /* SharedLib */,
+				6BC30F6B21E56A6900B9FAAE /* UtiliOS.h */,
+				6BC30F6D21E56CF900B9FAAE /* UtiliOS.mm */,
 				F460323D20757AE6006C5358 /* XIB */,
 			);
 			path = AdaptiveCards;
@@ -986,7 +997,6 @@
 				F4C1F5FD1F2C235E0018CB78 /* ACRActionShowCardRenderer.mm */,
 				F42979381F31458800E89914 /* ACRActionSubmitRenderer.h */,
 				F42979391F31458800E89914 /* ACRActionSubmitRenderer.mm */,
-				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,
 				6B616C4221CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.mm */,
 				F4F6BA3A204F3109003741B6 /* ACRAggregateTarget.h */,
 				F4F6BA39204F3109003741B6 /* ACRAggregateTarget.mm */,
@@ -1102,6 +1112,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BBE841923CD184D00ECA586 /* ACREnums.h in Headers */,
+				6BBE841F23CE60E300ECA586 /* ACRMediaRenderer.h in Headers */,
+				6BBE841B23CD184D00ECA586 /* ACOWarning.h in Headers */,
 				6B2242B022334452000ACDA1 /* Inline.h in Headers */,
 				7EDC0F67213878E800077A13 /* SemanticVersion.h in Headers */,
 				F4F44B8020478C6F00A2F24C /* Util.h in Headers */,
@@ -1303,15 +1316,17 @@
 		F423C0AC1EE1FBA900905679 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0940;
+				LastUpgradeCheck = 1130;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					F423C0B41EE1FBA900905679 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = UBF8T346G9;
 						ProvisioningStyle = Automatic;
 					};
 					F423C0BD1EE1FBAA00905679 = {
 						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = UBF8T346G9;
 						ProvisioningStyle = Automatic;
 					};
 					F47ACEE01F62495B0010BEF0 = {
@@ -1397,7 +1412,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=false\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n######################\n# On Release, copy the result to release directory\n######################\nOUTPUT_DIR=\"${PROJECT_DIR}\"\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\nzip -r AdaptiveCards.framework.zip AdaptiveCards.framework/\nrm -rf AdaptiveCards.framework";
+			shellScript = "######################\n# Options\n######################\nNULL=\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\t\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\nDEVICE_BCSYMBOLMAP_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos\"\n\nDEVICE_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${PROJECT_NAME}.framework.dSYM\"\n\nSIMULATOR_DSYM_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${PROJECT_NAME}.framework.dSYM\"\n\n# Take build target\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n######################\n# Build Frameworks\n######################\nif [ -d ${PROJECT_NAME}.xcworkspace ]; then\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nelse\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\nxcodebuild -project ${PROJECT_NAME}.xcodeproj -scheme ${PROJECT_NAME} -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\nfi\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\nOUTPUT_DIR=\"${PROJECT_DIR}/output\"\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n######################\n# Make an universal binary\n######################\nmkdir -p $OUTPUT_DIR\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\ncp -r \"${DEVICE_DSYM_PATH}\" \"$OUTPUT_DIR\"\n\nlipo -create -output \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${DEVICE_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" \\\n            \"${SIMULATOR_DSYM_PATH}/Contents/Resources/DWARF/${PROJECT_NAME}\" || exit 1\n\n######################\n# On Release, copy the result to release directory\n######################\ncp -rf \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\nUUIDs=$(dwarfdump --uuid \"${DEVICE_DSYM_PATH}\" | cut -d ' ' -f2)\n\nfor file in `find \"${DEVICE_BCSYMBOLMAP_PATH}\" -name \"*.bcsymbolmap\" -type f`; do\n    fileName=$(basename \"$file\" \".bcsymbolmap\")\n    for UUID in $UUIDs; do\n     if [[ \"$UUID\" = \"$fileName\" ]]; then\n     dsymutil --symbol-map \"$fileName\" \"$OUTPUT_DIR/${PROJECT_NAME}.framework.dSYM\"\n     cp -R \"$file\" $OUTPUT_DIR\n     fi\n    done\ndone\n\ncd ${OUTPUT_DIR}\nzip -r AdaptiveCards.framework.zip \"${FRAMEWORK_NAME}.framework\" \"${FRAMEWORK_NAME}.framework.dSYM\"\n\ncp AdaptiveCards.framework.zip ../\ncd ..\nrm -rf ${OUTPUT_DIR}\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1429,6 +1444,7 @@
 				F44873171EE2261F00FCAFAE /* jsoncpp.cpp in Sources */,
 				F42E51781FEC3840008F9642 /* MarkDownHtmlGenerator.cpp in Sources */,
 				F49683551F6CA24600DF0D3A /* ACRRenderResult.mm in Sources */,
+				6BBE841A23CD184D00ECA586 /* ACOWarning.mm in Sources */,
 				F44873071EE2261F00FCAFAE /* DateInput.cpp in Sources */,
 				F43110461F357487001AAE30 /* ACOHostConfig.mm in Sources */,
 				F4F6BA2F204F18D8003741B6 /* ParseResult.cpp in Sources */,
@@ -1589,10 +1605,10 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joseph Woo (S9N98EFDW7)";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
-				DEBUG_INFORMATION_FORMAT = dwarf;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1.2.5;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1651,10 +1667,10 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Joseph Woo (S9N98EFDW7)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Joseph Woo (S9N98EFDW7)";
-				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				CURRENT_PROJECT_VERSION = 1.2.5;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1681,11 +1697,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1.2.5;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1704,6 +1723,8 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1714,11 +1735,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1.2.5;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1737,6 +1761,8 @@
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCards;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SCAN_ALL_SOURCE_FILES_FOR_INCLUDES = NO;
 				SKIP_INSTALL = YES;
 				USER_HEADER_SEARCH_PATHS = "";
@@ -1746,6 +1772,7 @@
 		F423C0CD1EE1FBAA00905679 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = AdaptiveCardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCardsTests;
@@ -1756,6 +1783,7 @@
 		F423C0CE1EE1FBAA00905679 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				INFOPLIST_FILE = AdaptiveCardsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = MSFT.AdaptiveCardsTests;

@@ -78,6 +78,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     private Switch m_customImageLoader;
     private Switch m_customMediaLoader;
     private Switch m_onlineImageLoader;
+    private Switch m_httpResourceResolver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,6 +172,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
         m_onlineImageLoader = (Switch) findViewById(R.id.onlineImageLoader);
         m_onlineImageLoader.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsCustomOnlineImageLoader)));
+
+        m_httpResourceResolver = (Switch) findViewById(R.id.httpResourceResolver);
+        m_httpResourceResolver.setOnCheckedChangeListener(new SwitchListener(findViewById(R.id.cardsHttpResourceResolver)));
     }
 
     private void renderAdaptiveCardAfterDelay(boolean showErrorToast)
@@ -233,6 +237,13 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             svgImageLoader = new SvgImageLoader();
         }
         CardRendererRegistration.getInstance().registerResourceResolver("data", svgImageLoader);
+
+        CustomImageLoaderForButtons httpResourceResolver = null;
+        if (m_httpResourceResolver.isChecked())
+        {
+            httpResourceResolver = new CustomImageLoaderForButtons();
+        }
+        CardRendererRegistration.getInstance().registerResourceResolver("http", httpResourceResolver);
     }
 
     private void registerCustomMediaLoaders()

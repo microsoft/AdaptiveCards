@@ -48,7 +48,7 @@ home:
       tag: 
       tag_class: ac-blue
     - title: Roadmap
-      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
+      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-features/tabs/5-roadmap
       fa: far fa-calendar-alt
       tag: 
       tag_class: w3-light-gray
@@ -71,9 +71,9 @@ footer:
     - title: Find us on GitHub
       href: https://github.com/Microsoft/AdaptiveCards
     - title: Roadmap
-      href: https://portal.productboard.com/adaptivecards/1-adaptive-cards-portal/tabs/4-1-3-proposed/tabs/1-under-consideration
-    - title: Latest Build conference recording
-      href: https://www.youtube.com/watch?v=wT1yFr_j6IM
+      href: https://aka.ms/ACRoadmap
+    - title: Watch the Build 2020 video
+      href: https://aka.ms/m365sk134
       
 
 # Directory

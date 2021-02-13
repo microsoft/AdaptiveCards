@@ -1,7 +1,7 @@
 {
   "name": "adaptivecards-reactnative",
   "description": "AdaptiveCards implementation in ReactNative",
-  "version": "1.2.1",
+  "version": "2.1",
   "keywords": [
     "adaptivecards",
     "cards",
@@ -16,8 +16,11 @@
   "private": false,
   "license": "MIT",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "repository": {
     "url": "https://github.com/Microsoft/AdaptiveCards/tree/master/source/community/reactnative",
@@ -32,16 +35,21 @@
   ],
   "main": "./src/adaptive-card",
   "devDependencies": {
-    "babel-jest": "24.0.0",
-    "jest": "24.0.0",
-    "metro-react-native-babel-preset": "0.48.1",
-    "react": "16.6.0-alpha.8af6728",
-    "react-native": "0.57.4",
-    "react-test-renderer": "16.6.0-alpha.8af6728",
+    "@babel/core": "^7.6.2",
+    "@babel/runtime": "^7.6.2",
+    "@react-native-community/eslint-config": "^0.0.5",
+    "babel-jest": "^24.9.0",
+    "eslint": "^6.5.1",
+    "jest": "^24.9.0",
+    "metro-react-native-babel-preset": "^0.58.0",
+    "react": "16.11.0",
+    "react-native": "0.62.0",
+    "react-test-renderer": "16.11.0",
     "rnpm-plugin-windows": "^0.2.11"
   },
   "dependencies": {
-    "react-native-video": "^4.2.0",
+    "adaptivecards-templating": "^0.1.1-alpha.0",
+    "react-native-video": "^4.4.2",
     "react-native-windows": "0.57.1"
   },
   "jest": {

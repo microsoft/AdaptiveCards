@@ -1,6 +1,7 @@
 
 import AdaptiveCardPayloads from './payloads/payloads';
 import OtherCardPayloads from '../../experimental/adaptive-card-builder/payloads';
+import DataBindingPayloads from './payloads/data-binding';
 
 // sample scenarios
 const calendarReminderPayload = require('./payloads/scenarios/calendar-reminder.json');
@@ -104,7 +105,7 @@ const AdaptiveCardScenarios = [{
 }];
 
 
-export { AdaptiveCardPayloads, AdaptiveCardScenarios, OtherCardPayloads };
+export { AdaptiveCardPayloads, AdaptiveCardScenarios, OtherCardPayloads, DataBindingPayloads };
 
 
 

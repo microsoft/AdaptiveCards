@@ -1,0 +1,135 @@
+name: "Daily Code Scanning - Action"
+
+on:
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  CodeQL-Build-NodeJS:
+
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: javascript
+
+    - run: |
+       cd source/nodejs
+       npm i
+       npx lerna bootstrap
+       npx lerna run build
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  CodeQL-Build-Android:
+
+    strategy:
+      fail-fast: false
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: java
+
+    - run: ./gradlew build
+      working-directory: source/android
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  CodeQL-Build-Dotnet:
+
+    strategy:
+      fail-fast: false
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: csharp
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+
+    - name: Nuget setup
+      uses: nuget/setup-nuget@v1
+      with:
+        nuget-version: '5.x'
+
+    - run: cd source\dotnet && nuget restore AdaptiveCards.sln
+      shell: cmd
+
+    # nowarn here is just to remove warnings for missing public docs -- increases log readability
+    - run: cd source\dotnet && msbuild AdaptiveCards.sln /target:Clean;Build /m /p:nowarn=1591
+      shell: cmd
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+  CodeQL-Build-UWP:
+
+    strategy:
+      fail-fast: false
+
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+      with:
+        languages: cpp
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+      
+    - run: msbuild AdaptiveCards.sln /p:Configuration=Release /p:Platform=x64 /t:AdaptiveCardRenderer:Rebuild /m
+      shell: cmd
+      working-directory: source/uwp
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
+
+# TODO: reenable when we figure out how to get iOS building
+#
+#  CodeQL-Build-IOS:
+#
+#    strategy:
+#      fail-fast: false
+#
+#    runs-on: macos-latest
+#
+#    steps:
+#    - name: Checkout repository
+#      uses: actions/checkout@v2
+#
+#    - name: Initialize CodeQL
+#      uses: github/codeql-action/init@v1
+#
+#    - run: xcodebuild -sdk iphonesimulator -configuration Release -workspace AdaptiveCards/AdaptiveCards.xcworkspace -scheme ADCIOSVisualizer -destination 'platform=iOS Simulator,name=iPhone 7,OS=10.3.1' build
+#      working-directory: source/ios
+#
+#    - name: Perform CodeQL Analysis
+#      uses: github/codeql-action/analyze@v1

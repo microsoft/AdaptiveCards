@@ -5,40 +5,36 @@ import * as Utils from "./utils";
 import { InputControl } from "./inputcontrol";
 
 export abstract class PopupControl {
+    private _isOpen: boolean = false;
+    private _overlayElement: HTMLElement;
     private _popupElement: HTMLElement;
 
     protected abstract renderContent(): HTMLElement;
 
-    protected close() {
-        if (this.onClose) {
-            this.onClose(this);
-        }
-    }
-
-    onClose: (popupControl: PopupControl) => void;
+    onClose: (popupControl: PopupControl, wasCancelled: boolean) => void;
 
     keyDown(e: KeyboardEvent) {
         switch (e.keyCode) {
             case Constants.KEY_ESCAPE:
-                this.close();
+                this.closePopup(true);
 
                 break;
         }
     }
 
     render(rootElementBounds: ClientRect): HTMLElement {
-        this._popupElement = document.createElement("div");
-        this._popupElement.tabIndex = 0;
-        this._popupElement.className = "ms-ctrl ms-ctrl-popup-container";
-        this._popupElement.onkeydown = (e) => {
+        let element = document.createElement("div");
+        element.tabIndex = 0;
+        element.className = "ms-ctrl ms-ctrl-popup-container";
+        element.onkeydown = (e) => {
             this.keyDown(e);
 
             return !e.cancelBubble;
         };
 
-        this._popupElement.appendChild(this.renderContent());
+        element.appendChild(this.renderContent());
 
-        return this._popupElement;
+        return element;
     }
 
     focus() {
@@ -46,15 +42,129 @@ export abstract class PopupControl {
             (<HTMLElement>this._popupElement.firstElementChild).focus();
         }
     }
+
+    popup(rootElement: HTMLElement) {
+        if (!this._isOpen) {
+            this._overlayElement = document.createElement("div");
+            this._overlayElement.className = "ms-ctrl-overlay";
+            this._overlayElement.tabIndex = 0;
+            this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
+            this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
+            this._overlayElement.onfocus = (e) => { this.closePopup(true); };
+
+            document.body.appendChild(this._overlayElement);
+
+            var rootElementBounds = rootElement.getBoundingClientRect();
+
+            this._popupElement = this.render(rootElementBounds);
+            this._popupElement.classList.remove(
+                "ms-ctrl-slide",
+                "ms-ctrl-slideLeftToRight",
+                "ms-ctrl-slideRightToLeft",
+                "ms-ctrl-slideTopToBottom",
+                "ms-ctrl-slideRightToLeft");
+
+            this._overlayElement.appendChild(this._popupElement);
+
+            var popupElementBounds = this._popupElement.getBoundingClientRect();
+
+            var availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
+            var availableSpaceAbove = rootElementBounds.top;
+            var availableSpaceRight = window.innerWidth - rootElementBounds.left;
+            var availableSpaceRight = window.innerWidth - rootElementBounds.right;
+            var availableSpaceLeft = rootElementBounds.left;
+
+            var left = rootElementBounds.left + Utils.getScrollX();
+            var top;
+
+            if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
+                // Not enough space above or below root element
+                var actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
+
+                this._popupElement.style.maxHeight = actualPopupHeight + "px";
+
+                if (actualPopupHeight < popupElementBounds.height) {
+                    top = Utils.getScrollY();
+                }
+                else {
+                    top = Utils.getScrollY() + rootElementBounds.top + (rootElementBounds.height - actualPopupHeight) /2;
+                }
+
+                if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
+                    // Not enough space left or right of root element
+                    var actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
+
+                    this._popupElement.style.maxWidth = actualPopupWidth + "px";
+
+                    if (actualPopupWidth < popupElementBounds.width) {
+                        left = Utils.getScrollX();
+                    }
+                    else {
+                        left = Utils.getScrollX() + rootElementBounds.left + (rootElementBounds.width - actualPopupWidth) /2;
+                    }
+                }
+                else {
+                    // Enough space on the left or right of the root element
+                    if (availableSpaceRight >= popupElementBounds.width) {
+                        left = Utils.getScrollX() + rootElementBounds.right;
+
+                        this._popupElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideLeftToRight");
+                    }
+                    else {
+                        left = Utils.getScrollX() + rootElementBounds.left - popupElementBounds.width;
+
+                        this._popupElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideRightToLeft");
+                    }
+                }
+            }
+            else {
+                // Enough space above or below root element
+                if (availableSpaceBelow >= popupElementBounds.height) {
+                    top = Utils.getScrollY() + rootElementBounds.bottom;
+
+                    this._popupElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideTopToBottom");
+                }
+                else {
+                    top = Utils.getScrollY() + rootElementBounds.top - popupElementBounds.height
+
+                    this._popupElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideBottomToTop");
+                }
+
+                if (availableSpaceRight < popupElementBounds.width) {
+                    left = Utils.getScrollX() + rootElementBounds.right - popupElementBounds.width;
+                }
+            }
+
+            this._popupElement.style.left = left + "px";
+            this._popupElement.style.top = top + "px";
+
+            this._popupElement.focus();
+
+            this._isOpen = true;
+        }
+    }
+
+    closePopup(wasCancelled: boolean) {
+        if (this._isOpen) {
+            document.body.removeChild(this._overlayElement);
+
+            this._isOpen = false;
+
+            if (this.onClose) {
+                this.onClose(this, wasCancelled);
+            }
+        }
+    }
+
+    get isOpen(): boolean {
+        return this._isOpen;
+    }
 }
 
 export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue> extends InputControl {
-    private _isOpen: boolean;
     private _labelElement: HTMLElement;
     private _dropDownButtonElement: HTMLElement;
-    private _overlayElement: HTMLElement;
     private _popupControl: TPopupControl;
-    private _popupControlElement: HTMLElement;
     private _placeholderText: string;
     private _value: TValue;
 
@@ -108,11 +218,11 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         rootElement.tabIndex = 0;
         rootElement.className = this.getCssClassName();
 
-        window.addEventListener("resize", (e) => { this.closePopup(); });
+        window.addEventListener("resize", (e) => { this.closePopup(true); });
 
         this.rootElement.onclick = (e) => {
-            if (this._isOpen) {
-                this.closePopup();
+            if (this.isOpen) {
+                this.closePopup(true);
             }
             else {
                 this.popup();
@@ -129,7 +239,7 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
         this._labelElement.className = "ms-ctrl ms-dropdown-label";
 
         this._dropDownButtonElement = document.createElement("i");
-        this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();;
+        this._dropDownButtonElement.className = "ms-icon ms-ctrl-dropdown-button " + this.getButtonIconCssClassName();
 
         this.rootElement.appendChild(this._labelElement);
         this.rootElement.appendChild(this._dropDownButtonElement);
@@ -138,119 +248,25 @@ export abstract class InputWithPopup<TPopupControl extends PopupControl, TValue>
     }
 
     popup() {
-        if (!this._isOpen) {
-            this._overlayElement = document.createElement("div");
-            this._overlayElement.className = "ms-ctrl-overlay";
-            this._overlayElement.tabIndex = 0;
-            this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
-            this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
-            this._overlayElement.onfocus = (e) => { this.closePopup(); };
+        this._popupControl = this.createPopupControl();
+        this._popupControl = this.createPopupControl();
+        this._popupControl.onClose = (sender, wasCancelled) => {
+            this.closePopup(wasCancelled);
 
-            document.body.appendChild(this._overlayElement);
+            this.rootElement.focus();
+        };
 
-            this._popupControl = this.createPopupControl();
-            this._popupControl.onClose = (sender) => {
-                this.closePopup();
-
-                this.rootElement.focus();
-            };
-
-            var rootElementBounds = this.rootElement.getBoundingClientRect();
-
-            this._popupControlElement = this._popupControl.render(rootElementBounds);
-            this._popupControlElement.classList.remove(
-                "ms-ctrl-slide",
-                "ms-ctrl-slideLeftToRight",
-                "ms-ctrl-slideRightToLeft",
-                "ms-ctrl-slideTopToBottom",
-                "ms-ctrl-slideRightToLeft");
-
-            this._overlayElement.appendChild(this._popupControlElement);
-
-            var popupElementBounds = this._popupControlElement.getBoundingClientRect();
-
-            var availableSpaceBelow = window.innerHeight - rootElementBounds.bottom;
-            var availableSpaceAbove = rootElementBounds.top;
-
-            var left = rootElementBounds.left + Utils.getScrollX();
-            var top;
-
-            if (availableSpaceAbove < popupElementBounds.height && availableSpaceBelow < popupElementBounds.height) {
-                // Not enough space above or below root element
-                var actualPopupHeight = Math.min(popupElementBounds.height, window.innerHeight);
-
-                this._popupControlElement.style.maxHeight = actualPopupHeight + "px";
-
-                if (actualPopupHeight < popupElementBounds.height) {
-                    top = Utils.getScrollY();
-                }
-                else {
-                    top = Utils.getScrollY() + rootElementBounds.top + (rootElementBounds.height - actualPopupHeight) /2;
-                }
-
-                var availableSpaceRight = window.innerWidth - rootElementBounds.right;
-                var availableSpaceLeft = rootElementBounds.left;
-
-                if (availableSpaceLeft < popupElementBounds.width && availableSpaceRight < popupElementBounds.width) {
-                    // Not enough space left or right of root element
-                    var actualPopupWidth = Math.min(popupElementBounds.width, window.innerWidth);
-
-                    this._popupControlElement.style.maxWidth = actualPopupWidth + "px";
-
-                    if (actualPopupWidth < popupElementBounds.width) {
-                        left = Utils.getScrollX();
-                    }
-                    else {
-                        left = Utils.getScrollX() + rootElementBounds.left + (rootElementBounds.width - actualPopupWidth) /2;
-                    }
-                }
-                else {
-                    // Enough space on the left or right of the root element
-                    if (availableSpaceRight >= popupElementBounds.width) {
-                        left = Utils.getScrollX() + rootElementBounds.right;
-
-                        this._popupControlElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideLeftToRight");
-                    }
-                    else {
-                        left = Utils.getScrollX() + rootElementBounds.left - popupElementBounds.width;
-
-                        this._popupControlElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideRightToLeft");
-                    }
-                }
-            }
-            else {
-                // Enough space above or below root element
-                if (availableSpaceBelow >= popupElementBounds.height) {
-                    top = Utils.getScrollY() + rootElementBounds.bottom;
-
-                    this._popupControlElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideTopToBottom");
-                }
-                else {
-                    top = Utils.getScrollY() + rootElementBounds.top - popupElementBounds.height
-
-                    this._popupControlElement.classList.add("ms-ctrl-slide", "ms-ctrl-slideBottomToTop");
-                }
-            }
-
-            this._popupControlElement.style.left = left + "px";
-            this._popupControlElement.style.top = top + "px";
-
-            this._popupControlElement.focus();
-
-            this._isOpen = true;
-        }
+        this._popupControl.popup(this.rootElement);
     }
 
-    closePopup() {
-        if (this._isOpen) {
-            document.body.removeChild(this._overlayElement);
-
-            this._isOpen = false;
+    closePopup(wasCancelled: boolean) {
+        if (this.popupControl) {
+            this.popupControl.closePopup(wasCancelled);
         }
     }
 
     get isOpen(): boolean {
-        return this._isOpen;
+        return this._popupControl ? this._popupControl.isOpen : false;
     }
 
     get placeholderText(): string {

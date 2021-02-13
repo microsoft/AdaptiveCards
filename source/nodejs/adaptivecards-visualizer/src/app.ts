@@ -1,24 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import * as AdaptiveCards from "adaptivecards";
-import * as MarkdownIt from "markdown-it";
+import * as Adaptive from "adaptivecards";
 import * as Constants from "./constants";
 
 import { HostContainer } from "./containers/host-container";
-import { SkypeContainer } from "./containers/skype";
 import { WebChatContainer } from "./containers/webchat";
 import { TeamsContainer } from "./containers/teams";
 import { ToastContainer } from "./containers/toast";
 import { TimelineContainer } from "./containers/timeline";
 import { OutlookContainer } from "./containers/outlook";
 import { BotFrameworkImageContainer } from "./containers/bf-image";
-
 import { adaptiveCardSchema } from "./adaptive-card-schema";
-import { CortanaContainer } from "./containers/cortana";
+
 
 var hostContainerOptions: Array<HostContainerOption> = [];
 var hostContainerPicker: HTMLSelectElement;
-var lastValidationErrors: Array<AdaptiveCards.IValidationError> = [];
+var lastValidationErrors: Array<Adaptive.IValidationEvent> = [];
 
 function getSelectedHostContainer(): HostContainer {
     return hostContainerOptions[hostContainerPicker.selectedIndex].hostContainer;
@@ -33,23 +30,24 @@ function setContent(element) {
 
 function renderCard(target: HTMLElement): HTMLElement {
     document.getElementById("errorContainer").hidden = true;
-    lastValidationErrors = [];
 
     let json = JSON.parse(currentCardPayload);
-    let adaptiveCard = new AdaptiveCards.AdaptiveCard();
-    adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(currentConfigPayload);
+    let adaptiveCard = new Adaptive.AdaptiveCard();
+    adaptiveCard.hostConfig = new Adaptive.HostConfig(currentConfigPayload);
 
     getSelectedHostContainer().setHostCapabilities(adaptiveCard.hostConfig);
 
-    adaptiveCard.parse(json, lastValidationErrors);
+    let serializationContext = new Adaptive.SerializationContext();
+    
+    serializationContext.onParseElement = (element: Adaptive.CardElement, source: any, context: Adaptive.SerializationContext) => {
+        getSelectedHostContainer().parseElement(element, source, context);
+    }
+
+    adaptiveCard.parse(json, serializationContext);
 
     let validationResults = adaptiveCard.validateProperties();
 
-    for (let failure of validationResults.failures) {
-        lastValidationErrors = lastValidationErrors.concat(failure.errors);
-    }
-
-    // lastValidationErrors = lastValidationErrors.concat(adaptiveCard.validate());
+    lastValidationErrors.push(...validationResults.validationEvents);
 
     showValidationErrors();
 
@@ -179,12 +177,10 @@ function setupContainerPicker() {
     hostContainerPicker = <HTMLSelectElement>document.getElementById("hostContainerPicker");
 
     hostContainerOptions.push(new HostContainerOption("Bot Framework WebChat", new WebChatContainer("css/webchat.css")));
-    hostContainerOptions.push(new HostContainerOption("Cortana Skills", new CortanaContainer(true, "css/cortana.css")));
     hostContainerOptions.push(new HostContainerOption("Microsoft Teams", new TeamsContainer("css/teams.css")));
     hostContainerOptions.push(new HostContainerOption("Outlook Actionable Messages", new OutlookContainer("css/outlook.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Timeline", new TimelineContainer(320, 176, "css/timeline.css")));
     hostContainerOptions.push(new HostContainerOption("Bot Framework Other Channels (Image render)", new BotFrameworkImageContainer(400, "css/bf.css")));
-	hostContainerOptions.push(new HostContainerOption("Skype (Preview)", new SkypeContainer(350, "css/skype.css")));
     hostContainerOptions.push(new HostContainerOption("Windows Notifications (Preview)", new ToastContainer(362, "css/toast.css")));
 
 	// hostContainerOptions.push(//     new HostContainerOption(//         "All at once", //         new BotFrameworkImageContainer(400, "css/bf.css")));
@@ -219,20 +215,20 @@ function setupFilePicker() {
     document.getElementById("filePicker").addEventListener("change", filePickerChanged);
 }
 
-function actionExecuted(action: AdaptiveCards.Action) {
+function actionExecuted(action: Adaptive.Action) {
     var message: string = "Action executed\n";
     message += "    Title: " + action.title + "\n";
 
-    if (action instanceof AdaptiveCards.OpenUrlAction) {
+    if (action instanceof Adaptive.OpenUrlAction) {
         message += "    Type: OpenUrl\n";
-        message += "    Url: " + (<AdaptiveCards.OpenUrlAction>action).url + "\n";
+        message += "    Url: " + (<Adaptive.OpenUrlAction>action).url + "\n";
     }
-    else if (action instanceof AdaptiveCards.SubmitAction) {
+    else if (action instanceof Adaptive.SubmitAction) {
         message += "    Type: Submit";
-        message += "    Data: " + JSON.stringify((<AdaptiveCards.SubmitAction>action).data);
+        message += "    Data: " + JSON.stringify((<Adaptive.SubmitAction>action).data);
     }
-    else if (action instanceof AdaptiveCards.HttpAction) {
-        var httpAction = <AdaptiveCards.HttpAction>action;
+    else if (action instanceof Adaptive.HttpAction) {
+        var httpAction = <Adaptive.HttpAction>action;
         message += "    Type: Http\n";
         message += "    Url: " + httpAction.url + "\n";
         message += "    Method: " + httpAction.method + "\n";
@@ -244,8 +240,8 @@ function actionExecuted(action: AdaptiveCards.Action) {
 
         message += "    Body: " + httpAction.body + "\n";
     }
-    else if (action instanceof AdaptiveCards.ShowCardAction) {
-        showPopupCard(<AdaptiveCards.ShowCardAction>action);
+    else if (action instanceof Adaptive.ShowCardAction) {
+        showPopupCard(<Adaptive.ShowCardAction>action);
         return;
     }
     else {
@@ -255,7 +251,7 @@ function actionExecuted(action: AdaptiveCards.Action) {
     alert(message);
 }
 
-function showPopupCard(action: AdaptiveCards.ShowCardAction) {
+function showPopupCard(action: Adaptive.ShowCardAction) {
     var overlayElement = document.createElement("div");
     overlayElement.id = "popupOverlay";
     overlayElement.className = "popupOverlay";
@@ -319,11 +315,11 @@ function switchToConfigEditor() {
     monacoEditor.focus();
 }
 
-function inlineCardExpanded(action: AdaptiveCards.ShowCardAction, isExpanded: boolean) {
+function inlineCardExpanded(action: Adaptive.ShowCardAction, isExpanded: boolean) {
     alert("Card \"" + action.title + "\" " + (isExpanded ? "expanded" : "collapsed"));
 }
 
-function elementVisibilityChanged(element: AdaptiveCards.CardElement) {
+function elementVisibilityChanged(element: Adaptive.CardElement) {
     alert("An element is now " + (element.isVisible ? "visible" : "invisible"));
 }
 
@@ -334,11 +330,7 @@ declare var monacoEditor: any;
 declare function loadMonacoEditor(schema: any, callback: () => void);
 
 function monacoEditorLoaded() {
-    AdaptiveCards.AdaptiveCard.onParseElement = (element: AdaptiveCards.CardElement, json: any) => {
-        getSelectedHostContainer().parseElement(element, json);
-    }
-
-    AdaptiveCards.AdaptiveCard.onAnchorClicked = (element: AdaptiveCards.CardElement, anchor: HTMLAnchorElement) => {
+    Adaptive.AdaptiveCard.onAnchorClicked = (element: Adaptive.CardElement, anchor: HTMLAnchorElement) => {
         return getSelectedHostContainer().anchorClicked(element, anchor);
     }
 
@@ -352,7 +344,7 @@ function monacoEditorLoaded() {
         switchToConfigEditor();
     };
 
-    AdaptiveCards.AdaptiveCard.onExecuteAction = actionExecuted;
+    Adaptive.AdaptiveCard.onExecuteAction = actionExecuted;
     // Adaptive.AdaptiveCard.onShowPopupCard = showPopupCard;
 
     /*

@@ -1,3 +1,7 @@
+import { ThemeElement } from '../utils/enums';
+import * as Constants from '../utils/constants';
+
+
 export class ThemeConfigManager {
 
     static themeConfig = null;
@@ -25,18 +29,23 @@ export class ThemeConfigManager {
 
 class ThemeConfig {
     constructor(obj = {}) {
-        this.button = new Config("button", obj);
-        this.input = new Config("input", obj);
+        this.button = new Config(ThemeElement.Button, obj);
+        this.input = new Config(ThemeElement.Input, obj);
+        this.inputDate = new Config(ThemeElement.InputDate, obj);
+        this.inputTime = new Config(ThemeElement.InputTime, obj);
+        this.radioButton = new Config(ThemeElement.RadioButton, obj);
+        this.checkBox = new Config(ThemeElement.CheckBox, obj);
+        this.choiceSetTitle = new Config(ThemeElement.ChoiceSetTitle, obj);
     }
-} 
+}
 
 // Each instance of this class holds config of specific element type 
 class Config {
     constructor(type, customConfig = {}) {
         this.type = type;
-        this.ios = defaultThemeConfig[type].ios;
-        this.android = defaultThemeConfig[type].android;
-        this.windows = defaultThemeConfig[type].windows;
+        this.ios = defaultThemeConfig[type].ios || defaultThemeConfig[type];
+        this.android = defaultThemeConfig[type].android || defaultThemeConfig[type];
+        this.windows = defaultThemeConfig[type].windows || defaultThemeConfig[type];
 
         if (customConfig[type]) { // any custom config ?
             let config = customConfig[type];
@@ -58,41 +67,58 @@ const defaultThemeConfig = {
     button: {
         ios: {
             borderRadius: 15,
-            backgroundColor: "#1D9BF6",
-            color: "#FFFFFF",
+            backgroundColor: Constants.buttonDefaultColor,
+            color: Constants.WhiteColor,
             textTransform: 'none'
         },
         android: {
             borderRadius: 15,
-            backgroundColor: "#1D9BF6",
-            color: "#FFFFFF",
+            backgroundColor: Constants.buttonDefaultColor,
+            color: Constants.WhiteColor,
             textTransform: undefined
         },
         windows: {
             borderRadius: 15,
-            backgroundColor: "#1D9BF6",
-            color: "#FFFFFF",
+            backgroundColor: Constants.buttonDefaultColor,
+            color: Constants.WhiteColor,
             textTransform: 'none'
         },
     },
     input: {
-        ios: {
-            borderColor: "#dcdcdc",
-            backgroundColor: "#FFFFFF",
-            borderRadius: 5,
-            borderWidth: 1
-        },
-        android: {
-            borderColor: "#dcdcdc",
-            backgroundColor: "#FFFFFF",
-            borderRadius: 5,
-            borderWidth: 1
-        },
-        windows: {
-            borderColor: "#dcdcdc",
-            backgroundColor: "#FFFFFF",
-            borderRadius: 5,
-            borderWidth: 1
-        },
-    }
+        borderColor: Constants.EmphasisColor,
+        backgroundColor: Constants.WhiteColor,
+        borderRadius: 5,
+        borderWidth: 1
+    },
+    inputDate: {
+        width: Constants.FullWidth,
+        height: 44,
+        padding: 5,
+        borderWidth: 1,
+        backgroundColor: Constants.WhiteColor,
+        borderColor: Constants.LightGreyColor,
+        borderRadius: 5,
+    },
+    inputTime: {
+        width: Constants.FullWidth,
+        height: 44,
+        padding: 5,
+        borderWidth: 1,
+        backgroundColor: Constants.WhiteColor,
+        borderColor: Constants.LightGreyColor,
+        borderRadius: 5,
+    },
+    radioButton: {
+        width: 28,
+        height: 28
+    },
+    checkBox: {
+        width: 28,
+        height: 28
+    },
+    choiceSetTitle: {
+        marginLeft: 8,
+        flexShrink: 1
+    },
+
 }
