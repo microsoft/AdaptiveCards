@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content" />
 
             </HorizontalScrollView>
-            
+
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="match_parent"
@@ -282,6 +282,20 @@
                                 android:visibility="gone" />
 
                             <Switch
+                                android:id="@+id/customTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Custom Typeface" />
+
+                            <TextView
+                                android:id="@+id/cardsCustomTypeface"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Change config to customFontConfig.json"
+                                android:visibility="gone"
+                                tools:visibility="gone" />
+
+                            <Switch
                                 android:id="@+id/httpResourceResolver"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -294,7 +308,8 @@
                                 android:layout_height="wrap_content"
                                 android:paddingLeft="15dp"
                                 android:text="Action.OpenUrl.IconUrl.json"
-                                android:visibility="gone" />-
+                                android:visibility="gone" />
+
                         </LinearLayout>
                     </ScrollView>
                 </LinearLayout>

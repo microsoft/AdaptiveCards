@@ -10,7 +10,7 @@
     <PackageProjectUrl>https://adaptivecards.io</PackageProjectUrl>
     <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageLicenseFile>EULA-Windows.txt</PackageLicenseFile>
     <RootNamespace>AdaptiveCards.Rendering.Wpf</RootNamespace>
     <DefineConstants>WPF;$(DefineConstants);$(AdditionalConstants)</DefineConstants>
     <copyright>© Microsoft Corporation. All rights reserved.</copyright>
@@ -18,7 +18,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Extended.Wpf.Toolkit" Version="3.8.1" />
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="EULA-Windows.txt" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,6 +1,6 @@
 [Adaptive Cards Javascript SDK](../README.md) › [CardObjectRegistry](cardobjectregistry.md)
 
-# Class: CardObjectRegistry <**T**>
+# Class: CardObjectRegistry ‹**T**›
 
 ## Type parameters
 

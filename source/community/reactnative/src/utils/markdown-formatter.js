@@ -6,7 +6,8 @@ import React from 'react';
 import {
 	StyleSheet,
 	Text,
-	Linking
+	Linking,
+	View
 } from 'react-native';
 import PropTypes from 'prop-types';
 
@@ -28,14 +29,14 @@ export default class MarkdownFormatter extends React.PureComponent {
 		{
 			type: 'numbered',
 			styles: [],
-			pattern: ['^\\d+\.\\s+(.*)'],
+			pattern: ['^\\d+.\\s+(.*)'],
 			patternType: 'custom',
 			groups: 1,
 		},
 		{
 			type: 'numbered',
 			styles: [],
-			pattern: ['[\\r,\\n]\\d+\.\\s+(.*)'],
+			pattern: ['[\\r,\\n]\\d+.\\s+(.*)'],
 			patternType: 'custom',
 			groups: 1,
 		},
@@ -82,6 +83,7 @@ export default class MarkdownFormatter extends React.PureComponent {
 		this.numberOfLines = props.numberOfLines;
 		this.userStyles = props.defaultStyles;
 		this.text = props.text;
+		this.altText = props.altText;
 		this.regexArray = this.MD_FORMATTER_CONFIG;
 
 		this.init();
@@ -95,6 +97,10 @@ export default class MarkdownFormatter extends React.PureComponent {
 		}
 
 		return (
+			this.altText ?
+			<View accessible={true} accessibilityLabel={this.altText}>
+				{this.renderText(this.text)}
+			</View> :
 			this.renderText(this.text)
 		);
 	}

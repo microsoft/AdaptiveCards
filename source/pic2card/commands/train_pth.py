@@ -4,7 +4,7 @@ Pytorch training pipeline for FASTER-RCNN
 import click
 import datetime
 from mystique.models.pth.frcnn import CustomModel
-from mystique.utils import xml_to_csv
+from detecto.utils import xml_to_csv
 from detecto.utils import normalize_transform
 import torchvision.transforms as T
 from detecto.core import DataLoader, Dataset

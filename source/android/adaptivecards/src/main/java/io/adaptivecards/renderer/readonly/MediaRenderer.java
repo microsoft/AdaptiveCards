@@ -140,7 +140,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             Media media,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         ImageView posterView = null;
 
@@ -158,11 +158,11 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             // Draw poster in posterLayout
             poster.SetImageSize(ImageSize.Auto);
-            posterView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, renderArgs);
+            posterView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, poster, cardActionHandler, hostConfig, renderArgs);
 
-            RelativeLayout.LayoutParams posterLayoutParams = (RelativeLayout.LayoutParams) posterView.getLayoutParams();
+            RelativeLayout.LayoutParams posterLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             posterLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-            posterView.setLayoutParams(posterLayoutParams);
+            ((TagContent) posterView.getTag()).GetStretchContainer().setLayoutParams(posterLayoutParams);
         }
         return posterView;
     }
@@ -174,18 +174,23 @@ public class MediaRenderer extends BaseCardElementRenderer
             ViewGroup viewGroup,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
         // Draw play button on top of poster (or instead of the poster if no poster defined)
         ImageView playButtonView;
         String playButtonUrl = hostConfig.GetMedia().getPlayButton();
+
+        RelativeLayout.LayoutParams playButtonLayoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        playButtonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+
         if(!playButtonUrl.isEmpty())
         {
             Image playButton = new Image();
             playButton.SetUrl(playButtonUrl);
             playButton.SetImageSize(ImageSize.Small);
 
-            playButtonView = (ImageView) ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, renderArgs);
+            playButtonView = ImageRenderer.getInstance().render(renderedCard, context, fragmentManager, viewGroup, playButton, cardActionHandler, hostConfig, renderArgs);
+            ((TagContent) playButtonView.getTag()).GetStretchContainer().setLayoutParams(playButtonLayoutParams);
         }
         else
         {
@@ -195,11 +200,8 @@ public class MediaRenderer extends BaseCardElementRenderer
             playButtonView = new ImageView(context);
             playButtonView.setImageBitmap(playButton);
             viewGroup.addView(playButtonView);
+            playButtonView.setLayoutParams(playButtonLayoutParams);
         }
-
-        RelativeLayout.LayoutParams playButtonLayoutParams = (RelativeLayout.LayoutParams) playButtonView.getLayoutParams();
-        playButtonLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-        playButtonView.setLayoutParams(playButtonLayoutParams);
 
         return playButtonView;
     }
@@ -281,34 +283,12 @@ public class MediaRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        Media media = null;
-
-        if (baseCardElement instanceof Media)
-        {
-            media = (Media) baseCardElement;
-        }
-        else if ((media = Media.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to Media object model.");
-        }
-
-        View separator = setSpacingAndSeparator(context, viewGroup, media.GetSpacing(), media.GetSeparator(), hostConfig, true);
+        Media media = Util.castTo(baseCardElement, Media.class);
 
         LinearLayout mediaLayout = new LinearLayout(context);
-        mediaLayout.setTag(new TagContent(media, separator, viewGroup));
-
-        setVisibility(baseCardElement.GetIsVisible(), mediaLayout);
-
-        if( media.GetHeight() == HeightType.Stretch )
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            mediaLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        mediaLayout.setTag(new TagContent(media));
         mediaLayout.setOrientation(LinearLayout.VERTICAL);
 
         RelativeLayout posterLayout = new RelativeLayout(context);

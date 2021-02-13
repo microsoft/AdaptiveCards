@@ -82,8 +82,14 @@ namespace AdaptiveNamespace
     std::string CustomActionWrapper::GetActionElementTitle() const
     {
         Wrappers::HString title;
-        THROW_IF_FAILED(m_actionElement->get_Title(title.GetAddressOf()));
-        return HStringToUTF8(title.Get());
+        if (SUCCEEDED(m_actionElement->get_Title(title.GetAddressOf())) && title.IsValid())
+        {
+            return HStringToUTF8(title.Get());
+        }
+        else
+        {
+            return "";
+        }
     }
 
     void CustomActionWrapper::SetActionElementTitle(const std::string& value)

@@ -1,0 +1,44 @@
+# Docker Image with detr model loaded.
+#
+FROM python:3.8.5-alpine3.12 as base
+ADD requirements/requirements.txt /app/requirements.txt
+ADD requirements/torch-cpu.txt /app/torch-cpu.txt
+RUN cat /app/torch-cpu.txt >> /app/requirements.txt
+COPY model/pth_models/detr_trace.pt /app/model/pth_models/
+COPY app /app/app
+COPY mystique /app/mystique
+
+
+FROM python:3.8.5-slim-buster
+
+ARG COMMIT_SHA=
+ARG BRANCH_NAME=
+
+COPY --from=base /app /pic2card
+WORKDIR /pic2card
+
+ENV COMMIT_SHA=$COMMIT_SHA
+ENV BRANCH_NAME=$BRANCH_NAME
+ENV PORT=5050 \
+    ACTIVE_MODEL_NAME=pth_detr \
+    PIP_DEFAULT_TIMEOUT=1000
+
+RUN pip install --upgrade pip && \
+    apt-get update && \
+    apt-get install -y --no-install-recommends libsm6 tesseract-ocr && \
+    # libopencv-core-dev libopencv-imgproc-dev g++ && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
+    echo "$COMMIT_SHA" > /app/git_commit.md5 && \
+    echo "$BRANCH_NAME" > /app/git_branch_name.txt
+
+RUN pip install -r requirements.txt && \
+    #python mystique/models/pth/detr_cpp/setup.py install && \
+    rm -rf /root/.cache/pip && \
+    echo '#!/bin/bash \n\n\
+          gunicorn -w 2 -b 0.0.0.0:$PORT app.api:app \
+          "$@"' >> /usr/local/bin/entrypoint.sh &&\
+    chmod +x /usr/local/bin/entrypoint.sh
+
+EXPOSE $PORT
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]

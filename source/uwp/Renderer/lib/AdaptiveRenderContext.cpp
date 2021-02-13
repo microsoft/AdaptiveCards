@@ -118,29 +118,60 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveRenderContext::AddInlineShowCard(ABI::AdaptiveNamespace::IAdaptiveCard* adaptiveCard,
                                                      ABI::AdaptiveNamespace::IAdaptiveShowCardAction* showCardAction,
-                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
+                                                     ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                                     ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddInlineShowCard(adaptiveCard, showCardAction, showCardFrameworkElement);
+        return renderResult->AddInlineShowCard(adaptiveCard, showCardAction, showCardFrameworkElement, renderArgs);
     }
 
     HRESULT AdaptiveRenderContext::AddInlineShowCard(_In_opt_ IAdaptiveActionSet* actionSet,
                                                      _In_ IAdaptiveShowCardAction* showCardAction,
-                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement)
+                                                     _In_ ABI::Windows::UI::Xaml::IUIElement* showCardFrameworkElement,
+                                                     _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
-        return renderResult->AddInlineShowCard(actionSet, showCardAction, showCardFrameworkElement);
+        return renderResult->AddInlineShowCard(actionSet, showCardAction, showCardFrameworkElement, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue)
+    HRESULT AdaptiveRenderContext::AddInputValue(_In_ IAdaptiveInputValue* inputValue, _In_ IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->AddInputValue(inputValue);
+        return renderResult->AddInputValue(inputValue, renderArgs);
     }
+
+    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->LinkSubmitActionToCard(submitAction, renderArgs);
+    }
+
+
+    HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
+                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->LinkCardToParent(card, renderArgs);
+    }
+
+    HRESULT AdaptiveRenderContext::GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
+                                                 _In_ ABI::AdaptiveNamespace::IAdaptiveInputValue** inputValue)
+    {
+        ComPtr<RenderedAdaptiveCard> renderResult;
+        RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
+        RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
+        return renderResult->GetInputValue(inputElement, inputValue);
+    }
+  
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {

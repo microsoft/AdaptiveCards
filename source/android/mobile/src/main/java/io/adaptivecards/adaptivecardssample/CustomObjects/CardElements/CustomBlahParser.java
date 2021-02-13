@@ -9,6 +9,7 @@ import io.adaptivecards.objectmodel.BaseCardElementParser;
 import io.adaptivecards.objectmodel.CardElementType;
 import io.adaptivecards.objectmodel.JsonValue;
 import io.adaptivecards.objectmodel.ParseContext;
+import io.adaptivecards.renderer.Util;
 
 public class CustomBlahParser extends BaseCardElementParser
 {
@@ -16,6 +17,8 @@ public class CustomBlahParser extends BaseCardElementParser
     public BaseCardElement Deserialize(ParseContext context, JsonValue value)
     {
         CustomCardElement element = new CustomCardElement(CardElementType.Custom);
+        Util.deserializeBaseCardElementProperties(context, value, element);
+
         element.SetElementTypeString("blah");
         element.SetId("BlahDeserialize");
         String val = value.getString();
@@ -36,6 +39,8 @@ public class CustomBlahParser extends BaseCardElementParser
     public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
     {
         CustomCardElement element = new CustomCardElement(CardElementType.Custom);
+        Util.deserializeBaseCardElementPropertiesFromString(context, jsonString, element);
+
         element.SetElementTypeString("blah");
         element.SetId("BlahDeserialize");
         try

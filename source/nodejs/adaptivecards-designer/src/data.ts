@@ -1,5 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+function shouldUseIndexerSyntax(name: string): boolean {
+    let regEx = /[a-zA-Z0-9_$]*/;
+    let matches = regEx.exec(name);
+
+    // If name doesn't only contain letters/digits/_
+    // the accessor must use the indexer syntax
+    return !(matches && matches[0] === name);
+}   
+
 export type ValueType = "String" | "Boolean" | "Number" | "Array" | "Object";
 
 export interface IStringData {
@@ -163,15 +172,17 @@ export class ArrayData extends DataType {
     generateSampleData(): any {
         let result = [];
 
-        for (let i = 1; i <= 3; i++) {
-            result.push(this.dataType.generateSampleData());
+        if (this.dataType) {
+            for (let i = 1; i <= 3; i++) {
+                result.push(this.dataType.generateSampleData());
+            }
         }
 
         return result;
     }
 
     getChildFields(): FieldDefinition[] {
-        return this.dataType.getChildFields();
+        return this.dataType ? this.dataType.getChildFields() : [];
     }
 
     qualifyFieldName(fieldName: string, fieldIsLeaf: boolean) {
@@ -278,13 +289,33 @@ export class FieldDefinition {
     }
 
     getPath(asLeaf: boolean = true): string {
-        let result: string = this.qualifiedName(asLeaf);
-        let currentField = this.parent;
+        let currentField: FieldDefinition = this;
+        let path: FieldDefinition[] = [];
 
         while (currentField) {
-            result = currentField.qualifiedName(false) + "." + result;
+            path.push(currentField);
 
             currentField = currentField.parent;
+        }
+
+        let result = "";
+        let forceIndexerSyntax: boolean = false;
+
+        for (let i = path.length - 1; i >= 0; i--) {
+            let qualifiedName = path[i].qualifiedName(false)
+
+            if (shouldUseIndexerSyntax(qualifiedName) || forceIndexerSyntax) {
+                qualifiedName = "['" + qualifiedName + "']";
+
+                forceIndexerSyntax = true;
+            }
+            else {
+                if (result) {
+                    result += ".";
+                }
+            }
+
+            result += qualifiedName;
         }
 
         return result;

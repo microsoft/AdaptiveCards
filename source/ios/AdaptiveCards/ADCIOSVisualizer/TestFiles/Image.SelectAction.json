@@ -1,0 +1,25 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Click the cat!",
+			"weight": "bolder"
+		},
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/cats/1.png",
+			"selectAction": {
+                "type": "NewStyle",
+                "title": "New Button Type ",
+                "Red":150,
+                "Green":100,
+                "Blue":100,
+                "CornerRadius":10,
+                "alertMessage": "Add Custom Message Here"
+			}
+		}
+	]
+}

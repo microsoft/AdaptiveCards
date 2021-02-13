@@ -111,7 +111,7 @@ namespace AdaptiveNamespace
             HRESULT hr = columnRenderer->Render(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn);
             if (hr == E_PERFORM_FALLBACK)
             {
-                RETURN_IF_FAILED(XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn));
+                RETURN_IF_FAILED(XamlHelpers::RenderFallback(columnAsCardElement.Get(), renderContext, newRenderArgs.Get(), &xamlColumn, nullptr));
             }
 
             RETURN_IF_FAILED(newRenderArgs->put_AncestorHasFallback(ancestorHasFallback));

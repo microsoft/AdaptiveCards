@@ -1,20 +1,22 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
-import vuetify from './plugins/vuetify'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import Loader from "./components/loader/Loader.vue";
+import { BootstrapVue, IconsPlugin } from "bootstrap-vue";
+import VJsoneditor from "v-jsoneditor/src/index";
 
-// import UploadImage from 'vue-upload-image'
+Vue.config.productionTip = false;
 
-Vue.config.productionTip = false
-
-// Vue.component('upload-image', UploadImage)
-import VueKonva from 'vue-konva'
-Vue.use(VueKonva)
-
+import VueKonva from "vue-konva";
+Vue.use(VueKonva);
+Vue.use(VJsoneditor);
+Vue.component("app-loading", Loader);
+Vue.component("json-viewer", VJsoneditor);
+// Install BootstrapVue
+Vue.use(BootstrapVue);
 new Vue({
     router,
     store,
-    vuetify,
     render: h => h(App)
-}).$mount('#app')
+}).$mount("#app");

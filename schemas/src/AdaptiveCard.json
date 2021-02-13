@@ -1,77 +1,77 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
-  "description": "An Adaptive Card, containing a free-form body of card elements, and an optional set of actions.",
-  "properties": {
-    "version": {
-      "type": "string",
-	"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
-      "examples": [
-        "1.0",
-        "1.1",
-        "1.2"
-      ]
-    },
-    "body": {
-      "type": "Element[]",
-      "description": "The card elements to show in the primary card region."
-    },
-    "actions": {
-      "type": "Action[]",
-      "description": "The Actions to show in the card's action bar."
-    },
-    "selectAction": {
-      "type": "ISelectAction",
-      "description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
-      "version": "1.1"
-    },
-    "fallbackText": {
-      "type": "string",
-      "description": "Text shown when the client doesn't support the version specified (may contain markdown)."
-    },
-    "backgroundImage": {
-      "type": "BackgroundImage",
-      "description": "Specifies the background image of the card. Acceptable formats are PNG, JPEG, and GIF",
-      "version": "1.2",
-      "shorthands": [
-        {
-          "type": "uri-reference",
-          "description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
-          "version": "1.0"
-        }
-      ]
-    },
-    "minHeight": {
-      "type": "string",
-      "description": "Specifies the minimum height of the card.",
-      "examples": [
-        "50px"
-      ],
-      "version": "1.2",
-      "features": [
-        2293
-      ]
-    },
-    "speak": {
-      "type": "string",
-      "description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
-    },
-    "lang": {
-      "type": "string",
-      "description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
-      "examples": [
-        "en",
-        "fr",
-        "es"
-      ]
-    },
-    "verticalContentAlignment": {
-      "type": "VerticalContentAlignment",
-      "description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
-      "version": "1.1"
-    },
-    "$schema": {
-      "type": "uri",
-      "description": "The Adaptive Card schema."
-    }
-  }
+	"$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+	"description": "An Adaptive Card, containing a free-form body of card elements, and an optional set of actions.",
+	"properties": {
+		"version": {
+			"type": "string",
+		"description": "Schema version that this card requires. If a client is **lower** than this version, the `fallbackText` will be rendered. NOTE: Version is not required for cards within an `Action.ShowCard`. However, it *is* required for the top-level card.",
+			"examples": [
+			"1.0",
+			"1.1",
+			"1.2"
+			]
+		},
+		"body": {
+			"type": "Element[]",
+			"description": "The card elements to show in the primary card region."
+		},
+		"actions": {
+			"type": "Action[]",
+			"description": "The Actions to show in the card's action bar."
+		},
+		"selectAction": {
+			"type": "ISelectAction",
+			"description": "An Action that will be invoked when the card is tapped or selected. `Action.ShowCard` is not supported.",
+			"version": "1.1"
+		},
+		"fallbackText": {
+			"type": "string",
+			"description": "Text shown when the client doesn't support the version specified (may contain markdown)."
+		},
+		"backgroundImage": {
+			"type": "BackgroundImage",
+			"description": "Specifies the background image of the card.",
+			"version": "1.2",
+			"shorthands": [
+			{
+				"type": "uri-reference",
+				"description": "The URL (or data url) to use as the background image. Supports data URI in version 1.2+",
+				"version": "1.0"
+			}
+			]
+		},
+		"minHeight": {
+			"type": "string",
+			"description": "Specifies the minimum height of the card.",
+			"examples": [
+			"50px"
+			],
+			"version": "1.2",
+			"features": [
+			2293
+			]
+		},
+		"speak": {
+			"type": "string",
+			"description": "Specifies what should be spoken for this entire card. This is simple text or SSML fragment."
+		},
+		"lang": {
+			"type": "string",
+			"description": "The 2-letter ISO-639-1 language used in the card. Used to localize any date/time functions.",
+			"examples": [
+			"en",
+			"fr",
+			"es"
+			]
+		},
+		"verticalContentAlignment": {
+			"type": "VerticalContentAlignment",
+			"description": "Defines how the content should be aligned vertically within the container. Only relevant for fixed-height cards, or cards with a `minHeight` specified.",
+			"version": "1.1"
+		},
+		"$schema": {
+			"type": "uri",
+			"description": "The Adaptive Card schema."
+		}
+	}
 }

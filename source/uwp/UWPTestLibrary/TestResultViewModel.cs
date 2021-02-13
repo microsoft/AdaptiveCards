@@ -232,7 +232,8 @@ namespace UWPTestLibrary
 
                 // See if the source chagned by checking
                 // if the hashes have changed since the stored info
-                if (storedInfo.HostConfigHash == hostConfigFile.Hash &&
+                if (storedInfo != null &&
+                    storedInfo.HostConfigHash == hostConfigFile.Hash &&
                     storedInfo.CardHash == cardFile.Hash)
                 {
                     answer.Status.OriginalMatched = true;
@@ -368,8 +369,11 @@ namespace UWPTestLibrary
                         var sourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, HostConfigFile.Hash), CreationCollisionOption.OpenIfExists);
                         await FileIO.WriteTextAsync(sourceHostConfigFile, HostConfigFile.Contents);
 
-                        var oldSourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, _oldHostConfigHash), CreationCollisionOption.OpenIfExists);
-                        await oldSourceHostConfigFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        if (HostConfigFile.Hash != _oldHostConfigHash)
+                        {
+                            var oldSourceHostConfigFile = await _sourceHostConfigsFolder.CreateFileAsync(GetStoredSourceFileName(HostConfigFile.Name, _oldHostConfigHash), CreationCollisionOption.OpenIfExists);
+                            await oldSourceHostConfigFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        }
                     }
                     catch { }
                     try
@@ -377,8 +381,11 @@ namespace UWPTestLibrary
                         var sourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, CardFile.Hash), CreationCollisionOption.OpenIfExists);
                         await FileIO.WriteTextAsync(sourceCardFile, CardFile.Contents);
 
-                        var oldSourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, _oldCardHash), CreationCollisionOption.OpenIfExists);
-                        await oldSourceCardFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        if (CardFile.Hash != _oldCardHash)
+                        {
+                            var oldSourceCardFile = await _sourceCardsFolder.CreateFileAsync(GetStoredSourceFileName(CardFile.Name, _oldCardHash), CreationCollisionOption.OpenIfExists);
+                            await oldSourceCardFile.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        }
                     }
                     catch { }
                 }

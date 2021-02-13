@@ -8,9 +8,8 @@ import argparse
 import json
 from PIL import Image
 
-from mystique.detect_objects import ObjectDetection
 from mystique.predict_card import PredictCard
-from mystique.initial_setups import set_graph_and_tensors
+from mystique.utils import load_od_instance
 
 
 def main(image_path=None, card_format=None):
@@ -20,13 +19,11 @@ def main(image_path=None, card_format=None):
     @param image_path: input image path
     """
     image = Image.open(image_path)
-    object_detection = ObjectDetection(*set_graph_and_tensors())
+    object_detection = load_od_instance()
     card_json = PredictCard(object_detection).main(image=image,
                                                    card_format=card_format)
     print(json.dumps(card_json.get("card_json"), indent=2))
-    if card_format:
-        print(json.dumps(card_json.get('template_data_payload', ''),
-                         indent=2))
+    print(card_json.keys(), card_json["card_json"].keys())
 
 
 if __name__ == "__main__":

@@ -270,5 +270,22 @@
 			"wrap": true
 		},
 		"spacing": 10
+	},
+	"inputs": {
+		"label": {
+			"inputSpacing": "small",
+			"requiredInputs": {
+				"suffix": " *"
+			},
+			"optionalInputs": {
+				"isSubtle": true,
+				"weight": "lighter"
+			}
+		},
+		"errorMessage": {
+			"spacing": "small",
+			"size": "small",
+			"weight": "lighter"
+		}
 	}
 }

@@ -21,16 +21,17 @@
 * [maxVersion](backgroundimage.md#maxversion)
 * [url](backgroundimage.md#optional-url)
 * [verticalAlignment](backgroundimage.md#verticalalignment)
-* [fillModeProperty](backgroundimage.md#static-fillmodeproperty)
-* [horizontalAlignmentProperty](backgroundimage.md#static-horizontalalignmentproperty)
+* [fillModeProperty](backgroundimage.md#static-readonly-fillmodeproperty)
+* [horizontalAlignmentProperty](backgroundimage.md#static-readonly-horizontalalignmentproperty)
 * [onRegisterCustomProperties](backgroundimage.md#static-optional-onregistercustomproperties)
-* [urlProperty](backgroundimage.md#static-urlproperty)
-* [verticalAlignmentProperty](backgroundimage.md#static-verticalalignmentproperty)
+* [urlProperty](backgroundimage.md#static-readonly-urlproperty)
+* [verticalAlignmentProperty](backgroundimage.md#static-readonly-verticalalignmentproperty)
 
 ### Methods
 
 * [apply](backgroundimage.md#apply)
 * [getCustomProperty](backgroundimage.md#getcustomproperty)
+* [getDefaultSerializationContext](backgroundimage.md#protected-getdefaultserializationcontext)
 * [getSchema](backgroundimage.md#getschema)
 * [getSchemaKey](backgroundimage.md#protected-getschemakey)
 * [getValue](backgroundimage.md#protected-getvalue)
@@ -73,7 +74,7 @@ ___
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -91,13 +92,13 @@ ___
 
 ___
 
-### `Static` fillModeProperty
+### `Static` `Readonly` fillModeProperty
 
 ▪ **fillModeProperty**: *[EnumProperty](enumproperty.md)‹[FillMode](../enums/fillmode.md)›* = new EnumProperty(Versions.v1_2, "fillMode", Enums.FillMode, Enums.FillMode.Cover)
 
 ___
 
-### `Static` horizontalAlignmentProperty
+### `Static` `Readonly` horizontalAlignmentProperty
 
 ▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(Versions.v1_2, "horizontalAlignment", Enums.HorizontalAlignment, Enums.HorizontalAlignment.Left)
 
@@ -111,13 +112,13 @@ ___
 
 ___
 
-### `Static` urlProperty
+### `Static` `Readonly` urlProperty
 
 ▪ **urlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "url")
 
 ___
 
-### `Static` verticalAlignmentProperty
+### `Static` `Readonly` verticalAlignmentProperty
 
 ▪ **verticalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[VerticalAlignment](../enums/verticalalignment.md)›* = new EnumProperty(Versions.v1_2, "verticalAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top)
 
@@ -150,6 +151,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

@@ -6,7 +6,8 @@
 		"start:designer": "lerna run start --scope=adaptivecards-designer --stream",
 		"start:visualizer": "lerna run start --scope=adaptivecards-visualizer --stream",
 		"start:designer-app": "lerna run start --scope=adaptivecards-designer-app --stream",
-		"start:all": "lerna run --parallel watch && lerna run --parallel start"
+		"start:all": "lerna run --parallel watch && lerna run --parallel start",
+		"audit-all": "lerna-audit"
 	},
 	"devDependencies": {
 		"@types/jest": "^23.3.14",
@@ -25,6 +26,7 @@
 		"jest": "^26.1.0",
 		"json-loader": "^0.5.7",
 		"lerna": "^3.22.1",
+		"lerna-audit": "^1.3.0",
 		"lerna-update-wizard": "^0.17.8",
 		"mini-css-extract-plugin": "^0.5.0",
 		"monaco-editor-webpack-plugin": "^1.7.0",

@@ -10,8 +10,8 @@
 
 ### Properties
 
-* [actions](globalregistry.md#static-actions)
-* [elements](globalregistry.md#static-elements)
+* [actions](globalregistry.md#static-readonly-actions)
+* [elements](globalregistry.md#static-readonly-elements)
 
 ### Methods
 
@@ -21,13 +21,13 @@
 
 ## Properties
 
-### `Static` actions
+### `Static` `Readonly` actions
 
 ▪ **actions**: *[CardObjectRegistry](cardobjectregistry.md)‹[Action](action.md)‹››* = new CardObjectRegistry<Action>()
 
 ___
 
-### `Static` elements
+### `Static` `Readonly` elements
 
 ▪ **elements**: *[CardObjectRegistry](cardobjectregistry.md)‹[CardElement](cardelement.md)‹››* = new CardObjectRegistry<CardElement>()
 

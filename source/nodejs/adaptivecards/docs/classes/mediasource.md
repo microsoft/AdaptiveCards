@@ -19,13 +19,14 @@
 * [maxVersion](mediasource.md#maxversion)
 * [mimeType](mediasource.md#optional-mimetype)
 * [url](mediasource.md#optional-url)
-* [mimeTypeProperty](mediasource.md#static-mimetypeproperty)
+* [mimeTypeProperty](mediasource.md#static-readonly-mimetypeproperty)
 * [onRegisterCustomProperties](mediasource.md#static-optional-onregistercustomproperties)
-* [urlProperty](mediasource.md#static-urlproperty)
+* [urlProperty](mediasource.md#static-readonly-urlproperty)
 
 ### Methods
 
 * [getCustomProperty](mediasource.md#getcustomproperty)
+* [getDefaultSerializationContext](mediasource.md#protected-getdefaultserializationcontext)
 * [getSchema](mediasource.md#getschema)
 * [getSchemaKey](mediasource.md#protected-getschemakey)
 * [getValue](mediasource.md#protected-getvalue)
@@ -64,7 +65,7 @@ Name | Type |
 
 ###  maxVersion
 
-• **maxVersion**: *[Version](version.md)* = Versions.latest
+• **maxVersion**: *[Version](version.md)* = Versions.v1_3
 
 *Inherited from [SerializableObject](serializableobject.md).[maxVersion](serializableobject.md#maxversion)*
 
@@ -82,7 +83,7 @@ ___
 
 ___
 
-### `Static` mimeTypeProperty
+### `Static` `Readonly` mimeTypeProperty
 
 ▪ **mimeTypeProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "mimeType")
 
@@ -96,7 +97,7 @@ ___
 
 ___
 
-### `Static` urlProperty
+### `Static` `Readonly` urlProperty
 
 ▪ **urlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "url")
 
@@ -115,6 +116,16 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
+
+___
+
+### `Protected` getDefaultSerializationContext
+
+▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
+
+*Inherited from [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
+
+**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 

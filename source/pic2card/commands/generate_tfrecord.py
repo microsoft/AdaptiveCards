@@ -47,13 +47,15 @@ def class_text_to_int(row_label):
         return 3
     if row_label == "actionset":
         return 4
+    if row_label == "image":
+        return 5
     else:
         return 0
 
 
 def create_tf_example(group, path):
     """
-    Generate tf recods by parsing the xml with 
+    Generate tf recods by parsing the xml with
     the properites and labels.
 
     @param group: filename group
@@ -61,8 +63,9 @@ def create_tf_example(group, path):
 
     @return: the tf record
     """
-    name_filename = group.filename[:group.filename.find(".")] + ".png"
-    with tf.gfile.GFile(os.path.join(path, "{}".format(name_filename)),
+    # import pdb; pdb.set_trace()
+    # name_filename = group.filename[:group.filename.find(".")] + ".png"
+    with tf.gfile.GFile(os.path.join(path, "{}".format(group.filename)),
                         "rb") as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)

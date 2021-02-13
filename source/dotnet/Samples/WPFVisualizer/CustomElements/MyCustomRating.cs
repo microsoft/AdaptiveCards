@@ -35,15 +35,36 @@ namespace WpfVisualizer
 
     public class MyCustomInput : AdaptiveInput
     {
-        public override string Type { get; set; } = "MyCustomInput";
+        public override string Type { get; set; } = "customInput";
 
         public string Value { get; set; }
+
+        public class CustomInputValue : AdaptiveInputValue
+        {
+            public CustomInputValue(AdaptiveInput inputElement, UIElement renderedElement) : base(inputElement, renderedElement) { }
+
+            public override string GetValue()
+            {
+                return ((TextBox)RenderedInputElement).Text;
+            }
+
+            public override void SetFocus()
+            {
+                ((TextBox)RenderedInputElement).Focus();
+            }
+
+            public override bool Validate()
+            {
+                return true;
+            }
+        }
 
         public static FrameworkElement Render(MyCustomInput input, AdaptiveRenderContext context)
         {
             var textBox = new TextBox();
             textBox.Text = input.Value;
-            context.InputBindings.Add(input.Id, () => textBox.Text);
+
+            context.InputValues.Add(input.Id, new CustomInputValue(input, textBox));
 
             return textBox;
         }

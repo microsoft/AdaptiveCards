@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace AdaptiveCards.Rendering.Wpf
@@ -39,5 +40,15 @@ namespace AdaptiveCards.Rendering.Wpf
         public RowDefinition RowDefinition { get; set; } = null;
 
         public int ViewIndex { get; set; }
+
+        /// <summary>
+        /// Row Definition for the rendered element in the container
+        /// </summary>
+        public Panel EnclosingElement { get; set; }
+
+        /// <summary>
+        /// Row Definition for the rendered element in the container
+        /// </summary>
+        public UIElement ErrorMessage { get; set; }
     }
 }

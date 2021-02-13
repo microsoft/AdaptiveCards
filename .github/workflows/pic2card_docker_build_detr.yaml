@@ -1,0 +1,57 @@
+name: pic2card-build-docker-detr
+on:
+  workflow_dispatch:
+    inputs:
+      releaseTag:
+        description: 'Release tag'   
+        required: true
+        default: 'v1.0'
+      modelUrl:
+        description: 'Link to the pytorch model using torch script tracing.'   
+        required: true
+        default: ''
+env:
+  # TODO: Change variable to your image's name.
+  IMAGE_NAME: pic2card-detr
+
+defaults:
+  run:
+    shell: bash
+    working-directory: source/pic2card
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Download model into model/pth_models/detr_trace.pt
+        run: |
+          mkdir -p model/pth_models
+          wget "${{ github.event.inputs.modelUrl }}" -O model/pth_models/detr_trace.pt
+
+      - name: Build image
+        run: |
+            docker build . --build-arg=COMMIT_SHA=$GITHUB_SHA \
+                --build-arg=BRANCH_NAME=$GITHUB_REF \
+                --file docker/Dockerfile-detr --tag $IMAGE_NAME
+
+      - name: Log into GitHub Container Registry
+        # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          #IMAGE_ID=ghcr.io/${{ github.actor }}/$IMAGE_NAME
+
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          
+          # Use user provided version tag.
+          VERSION="${{ github.event.inputs.releaseTag }}"
+
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
+
+          docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
+          docker push $IMAGE_ID:$VERSION

@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6]
+        python-version: [3.7]
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
@@ -35,15 +35,15 @@ jobs:
         
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        if [ -f requirements-frozen_graph.txt ]; then pip install -r requirements-frozen_graph.txt; fi
+        if [ -f requirements/requirements.txt ]; then pip install -r requirements/requirements.txt; fi
+        if [ -f requirements/requirements-frozen_graph.txt ]; then pip install -r requirements/requirements-frozen_graph.txt; fi
         
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=80 --statistics
+        flake8 . --count --max-complexity=14 --max-line-length=80 --statistics
     - name: Test with pytest
       run: |
         pytest

@@ -19,6 +19,12 @@ import io.adaptivecards.objectmodel.MarkDownParser;
 public class RendererUtil
 {
 
+    public static boolean isValidDate(String s)
+    {
+        long[] year = {0}, month = {0}, day = {0};
+        return DateTimePreparser.TryParseSimpleDate(s, year, month, day);
+    }
+
     public static Calendar getDate(String s)
     {
         Calendar calendar = new GregorianCalendar();
@@ -31,6 +37,12 @@ public class RendererUtil
         }
 
         return calendar;
+    }
+
+    public static boolean isValidTime(String s)
+    {
+        long[] hour = {0}, minutes = {0};
+        return DateTimePreparser.TryParseSimpleTime(s, hour, minutes);
     }
 
     public static Calendar getTime(String s)

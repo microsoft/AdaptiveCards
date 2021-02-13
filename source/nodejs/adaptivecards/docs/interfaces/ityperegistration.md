@@ -1,6 +1,6 @@
 [Adaptive Cards Javascript SDK](../README.md) › [ITypeRegistration](ityperegistration.md)
 
-# Interface: ITypeRegistration <**T**>
+# Interface: ITypeRegistration ‹**T**›
 
 ## Type parameters
 

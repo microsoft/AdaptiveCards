@@ -7,22 +7,24 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Input which collects Time from the user
+    /// Represents the Input.Time element.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTimeInput.TypeName)]
 #endif
     public class AdaptiveTimeInput : AdaptiveInput
     {
+        /// <inheritdoc />
         public const string TypeName = "Input.Time";
 
+        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        ///     Placeholder text for the input desired
+        /// Placeholder text to display when the input is empty.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -32,7 +34,7 @@ namespace AdaptiveCards
         public string Placeholder { get; set; }
 
         /// <summary>
-        ///     The initial value for the field
+        /// The initial value for the field.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -42,7 +44,7 @@ namespace AdaptiveCards
         public string Value { get; set; }
 
         /// <summary>
-        ///     hint of minimum value(may be ignored by some clients)
+        /// Hint of minimum value (may be ignored by some clients).
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -52,7 +54,7 @@ namespace AdaptiveCards
         public string Min { get; set; }
 
         /// <summary>
-        ///     hint of maximum value(may be ignored by some clients)
+        /// Hint of maximum value (may be ignored by some clients)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -61,6 +63,7 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Max { get; set; }
 
+        /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
             return Value ?? $"*[{Placeholder}]*";

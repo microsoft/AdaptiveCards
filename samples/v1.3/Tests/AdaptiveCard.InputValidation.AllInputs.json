@@ -1,0 +1,82 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "label": "This is an optional input",
+            "id": "input1"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "isRequired": true,
+            "id": "input2",
+            "regex": "abc",
+            "label": "This is a required Text input. This label is intentionally long to show that it correctly wraps."
+        },
+        {
+            "type": "Input.Date",
+            "label": "This is a required Date input",
+            "isRequired": true,
+            "min": "6/1/2020",
+            "max": "6/30/2020",
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "id": "input3"
+        },
+        {
+            "type": "Input.Time",
+            "label": "This is a required Time input",
+            "isRequired": true,
+            "min": "08:00",
+            "max": "15:00",
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "id": "input4"
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "Placeholder text",
+            "label": "This is a required Number input",
+            "isRequired": true,
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "min": 4,
+            "max": 6,
+            "id": "input5"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "Choice 1",
+                    "value": "Choice 1"
+                },
+                {
+                    "title": "Choice 2",
+                    "value": "Choice 2"
+                }
+            ],
+            "placeholder": "Placeholder text",
+            "label": "This is a required ChoiceSet input",
+            "isRequired": true,
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "id": "input6"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "New Input.Toggle",
+            "label": "This is a required Toggle input",
+            "isRequired": true,
+            "errorMessage": "The input value is invalid. This error message is intentionally long to show that it wraps.",
+            "id": "input7"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Action.Submit"
+        }
+    ]
+}

@@ -32,19 +32,19 @@
 
 ### `Optional` actions
 
-• **actions**? : *ISubmitAction | IOpenUrlAction | IShowCardAction[]*
+• **actions**? : *[ISubmitAction](isubmitaction.md) | [IOpenUrlAction](iopenurlaction.md) | [IShowCardAction](ishowcardaction.md)[]*
 
 ___
 
 ### `Optional` backgroundImage
 
-• **backgroundImage**? : *IBackgroundImage | string*
+• **backgroundImage**? : *[IBackgroundImage](ibackgroundimage.md) | string*
 
 ___
 
 ### `Optional` body
 
-• **body**? : *ITextBlock | IImage | IImageSet | IFactSet | IColumnSet | IContainer[]*
+• **body**? : *[ITextBlock](itextblock.md) | [IImage](iimage.md) | [IImageSet](iimageset.md) | [IFactSet](ifactset.md) | [IColumnSet](icolumnset.md) | [IContainer](icontainer.md)[]*
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 • **height**? : *"auto" | "stretch"*
 
-*Inherited from [IAdaptiveCard](iadaptivecard.md).[height](iadaptivecard.md#optional-height)*
+*Inherited from [ICardElement](icardelement.md).[height](icardelement.md#optional-height)*
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 • **horizontalAlignment**? : *[HorizontalAlignment](../enums/horizontalalignment.md)*
 
-*Inherited from [IAdaptiveCard](iadaptivecard.md).[horizontalAlignment](iadaptivecard.md#optional-horizontalalignment)*
+*Inherited from [ICardElement](icardelement.md).[horizontalAlignment](icardelement.md#optional-horizontalalignment)*
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 • **id**? : *undefined | string*
 
-*Inherited from [IAdaptiveCard](iadaptivecard.md).[id](iadaptivecard.md#optional-id)*
+*Inherited from [ICardElement](icardelement.md).[id](icardelement.md#optional-id)*
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 • **separator**? : *undefined | false | true*
 
-*Inherited from [IAdaptiveCard](iadaptivecard.md).[separator](iadaptivecard.md#optional-separator)*
+*Inherited from [ICardElement](icardelement.md).[separator](icardelement.md#optional-separator)*
 
 ___
 
@@ -84,7 +84,7 @@ ___
 
 • **spacing**? : *[Spacing](../enums/spacing.md)*
 
-*Inherited from [IAdaptiveCard](iadaptivecard.md).[spacing](iadaptivecard.md#optional-spacing)*
+*Inherited from [ICardElement](icardelement.md).[spacing](icardelement.md#optional-spacing)*
 
 ___
 
@@ -104,4 +104,4 @@ ___
 
 ### `Optional` version
 
-• **version**? : *IVersion | string*
+• **version**? : *[IVersion](iversion.md) | string*

@@ -7,31 +7,15 @@
 
 #import "ACRTextField.h"
 #import "ACOBaseCardElementPrivate.h"
+#import "ACRInputLabelView.h"
 #import "TextInput.h"
 
 
 @implementation ACRTextField
 
-- (BOOL)validate:(NSError **)error
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    if (self.isRequired && !self.hasText) {
-        if (error) {
-            *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorValueMissing userInfo:nil];
-        }
-        return NO;
-    } else
-        return YES;
-}
-
-- (void)getInput:(NSMutableDictionary *)dictionary
-{
-    dictionary[self.id] = self.text;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    [self resignFirstResponder];
-    return YES;
+    return [super initWithCoder:coder];
 }
 
 - (void)dismissNumPad
@@ -39,17 +23,13 @@
     [self resignFirstResponder];
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    if (!_maxLength) {
-        return YES;
-    }
+@end
 
-    if (range.length + range.location > textField.text.length) {
-        return NO;
-    }
+@implementation ACRTextEmailField : ACRTextField
+@end
 
-    NSUInteger newLength = [textField.text length] + [string length] - range.length;
-    return newLength <= _maxLength;
-}
+@implementation ACRTextTelelphoneField : ACRTextField
+@end
+
+@implementation ACRTextUrlField : ACRTextField
 @end

@@ -10,6 +10,7 @@ namespace AdaptiveCards.Rendering.Wpf
             renderer.ElementRenderers.Set<AdaptiveNumberInput>(XceedNumberInput.Render);
             renderer.ElementRenderers.Set<AdaptiveDateInput>(XceedDateInput.Render);
             renderer.ElementRenderers.Set<AdaptiveTimeInput>(XceedTimeInput.Render);
+            renderer.ElementRenderers.Set<AdaptiveChoiceSetInput>(XceedChoiceSetInput.Render);
         }
 
         public static void UseDefaultElementRenderers(this AdaptiveCardRenderer renderer)
@@ -18,6 +19,7 @@ namespace AdaptiveCards.Rendering.Wpf
             renderer.ElementRenderers.Set<AdaptiveNumberInput>(AdaptiveNumberInputRenderer.Render);
             renderer.ElementRenderers.Set<AdaptiveDateInput>(AdaptiveDateInputRenderer.Render);
             renderer.ElementRenderers.Set<AdaptiveTimeInput>(AdaptiveTimeInputRenderer.Render);
+            renderer.ElementRenderers.Set<AdaptiveChoiceSetInput>(AdaptiveChoiceSetRenderer.Render);
         }
     }
 }

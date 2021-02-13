@@ -2,7 +2,6 @@
     rcnn object detection
 """
 import tensorflow as tf
-from object_detection.utils import label_map_util
 from mystique import config
 
 
@@ -35,7 +34,4 @@ def set_graph_and_tensors(tensors=("detection_boxes", "detection_scores",
                     tmp_tensor_name
                 )
 
-    category_index = label_map_util.create_category_index_from_labelmap(
-        config.TF_LABEL_PATH, use_display_name=True)
-
-    return detection_graph, category_index, tensor_dict
+    return detection_graph, tensor_dict

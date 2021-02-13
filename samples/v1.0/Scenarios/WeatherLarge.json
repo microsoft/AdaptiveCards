@@ -3,7 +3,7 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"speak": "<s>Weather forecast for Monday is high of 62 and low of 42 degrees with a 20% chance of rain</s><s>Winds will be 5 mph from the northeast</s>",
-	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background-Dark.jpg",
+	"backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Background.jpg",
 	"body": [
 		{
 			"type": "ColumnSet",
@@ -26,28 +26,29 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "Monday April 1",
+							"text": "Tue, Nov 5, 2019",
 							"weight": "bolder",
 							"size": "large",
-							"color": "light"
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"text": "63 / 42",
+							"text": "32 / 50",
 							"size": "medium",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"isSubtle": true,
-							"text": "20% chance of rain",
-							"spacing": "none"
+							"text": "31% chance of rain",
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
-							"isSubtle": true,
-							"text": "Winds 5 mph NE",
-							"spacing": "none"
+							"text": "Winds 4.4 mph SSE",
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				}
@@ -64,7 +65,44 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": false,
-							"text": "Fri"
+							"text": "Wednesday"
+						},
+						{
+							"type": "Image",
+							"size": "auto",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png",
+							"altText": "Drizzly weather"
+						},
+						{
+							"type": "FactSet",
+							"horizontalAlignment": "right",
+							"facts": [
+								{
+									"title": "High",
+									"value": "50"
+								},
+								{
+									"title": "Low",
+									"value": "32"
+								}
+							]
+						}
+					],
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"title": "View Wednesday",
+						"url": "https://www.microsoft.com"
+					}
+				},
+				{
+					"type": "Column",
+					"width": "20",
+					"items": [
+						{
+							"type": "TextBlock",
+							"horizontalAlignment": "center",
+							"wrap": false,
+							"text": "Thursday"
 						},
 						{
 							"type": "Image",
@@ -73,18 +111,53 @@
 							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "62"
-						},
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "50"
+								},
+								{
+									"title": "Low",
+									"value": "32"
+								}
+							]
+						}
+					],
+					"selectAction": {
+						"type": "Action.OpenUrl",
+						"title": "View Thursday",
+						"url": "https://www.microsoft.com"
+					}
+				},
+				{
+					"type": "Column",
+					"width": "20",
+					"items": [
 						{
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
-							"isSubtle": true,
 							"wrap": false,
-							"text": "52",
-							"spacing": "none"
+							"text": "Friday"
+						},
+						{
+							"type": "Image",
+							"size": "auto",
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"altText": "Mostly cloudy weather"
+						},
+						{
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "59"
+								},
+								{
+									"title": "Low",
+									"value": "32"
+								}
+							]
 						}
 					],
 					"selectAction": {
@@ -101,106 +174,31 @@
 							"type": "TextBlock",
 							"horizontalAlignment": "center",
 							"wrap": false,
-							"text": "Sat"
+							"text": "Saturday"
 						},
 						{
 							"type": "Image",
 							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Drizzle-Square.png",
-							"altText": "Drizzly weather"
+							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
+							"altText": "Mostly cloudy weather"
 						},
 						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "60"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "48",
-							"spacing": "none"
+							"type": "FactSet",
+							"facts": [
+								{
+									"title": "High",
+									"value": "50"
+								},
+								{
+									"title": "Low",
+									"value": "32"
+								}
+							]
 						}
 					],
 					"selectAction": {
 						"type": "Action.OpenUrl",
 						"title": "View Saturday",
-						"url": "https://www.microsoft.com"
-					}
-				},
-				{
-					"type": "Column",
-					"width": "20",
-					"items": [
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "Sun"
-						},
-						{
-							"type": "Image",
-							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-							"altText": "Mostly cloudy weather"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "59"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "49",
-							"spacing": "none"
-						}
-					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"title": "View Sunday",
-						"url": "https://www.microsoft.com"
-					}
-				},
-				{
-					"type": "Column",
-					"width": "20",
-					"items": [
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "Mon"
-						},
-						{
-							"type": "Image",
-							"size": "auto",
-							"url": "https://messagecardplayground.azurewebsites.net/assets/Mostly%20Cloudy-Square.png",
-							"altText": "Mostly cloudy weather"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"wrap": false,
-							"text": "64"
-						},
-						{
-							"type": "TextBlock",
-							"horizontalAlignment": "center",
-							"isSubtle": true,
-							"wrap": false,
-							"text": "51",
-							"spacing": "none"
-						}
-					],
-					"selectAction": {
-						"type": "Action.OpenUrl",
-						"title": "View Monday",
 						"url": "https://www.microsoft.com"
 					}
 				}

@@ -24,7 +24,6 @@ public class OpenUrlActionPropertiesTest
     @Test
     public void urlTest() throws Exception
     {
-
         {
             final String openUrlActionWithNoUrl = "{\"type\":\"Action.OpenUrl\"}";
 
@@ -61,7 +60,6 @@ public class OpenUrlActionPropertiesTest
             OpenUrlAction parsedOpenUrlAction = TestUtil.castToOpenUrlAction(result.GetAdaptiveCard().GetActions().get(0));
             Assert.assertEquals("http://", parsedOpenUrlAction.GetUrl());
         }
-
     }
 
     public static final String s_defaultOpenUrlJson = "{\"type\":\"Action.OpenUrl\",\"url\":\"\"}\n";

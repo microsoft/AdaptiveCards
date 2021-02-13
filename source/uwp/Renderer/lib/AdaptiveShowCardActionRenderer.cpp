@@ -68,6 +68,8 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderArgs->get_IsInShowCard(&wasInShowCard));
         RETURN_IF_FAILED(renderArgs->put_IsInShowCard(true));
 
+        RETURN_IF_FAILED(renderContext->LinkCardToParent(showCard, renderArgs));
+
         ComPtr<IFrameworkElement> localUiShowCard;
         RETURN_IF_FAILED(
             XamlBuilder::BuildXamlTreeFromAdaptiveCard(showCard, localUiShowCard.GetAddressOf(), renderContext, nullptr, showCardConfigStyle));

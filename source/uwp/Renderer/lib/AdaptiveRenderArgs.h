@@ -23,6 +23,11 @@ namespace AdaptiveNamespace
                                        _In_opt_ IInspectable* parentElement,
                                        _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
 
+        HRESULT RuntimeClassInitialize(ABI::AdaptiveNamespace::ContainerStyle containerStyle,
+                                       _In_opt_ IInspectable* parentElement,
+                                       _In_ ABI::AdaptiveNamespace::IAdaptiveCard* parentCard, 
+                                       _In_opt_ IAdaptiveRenderArgs* renderArgs) noexcept;
+
         IFACEMETHODIMP get_ContainerStyle(_Out_ ABI::AdaptiveNamespace::ContainerStyle* value) override;
         IFACEMETHODIMP put_ContainerStyle(ABI::AdaptiveNamespace::ContainerStyle value) override;
 
@@ -38,12 +43,16 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_AncestorHasFallback(_Out_ boolean* hasFallback);
         IFACEMETHODIMP put_AncestorHasFallback(boolean hasFallback);
 
+        IFACEMETHODIMP get_ParentCard(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCard** value) override;
+        IFACEMETHODIMP put_ParentCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* value) override;
+
     private:
         ABI::AdaptiveNamespace::ContainerStyle m_containerStyle;
         Microsoft::WRL::ComPtr<IInspectable> m_parentElement;
         boolean m_isInShowCard;
         boolean m_allowAboveTitleIconPlacement;
         boolean m_ancestorHasFallback;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveCard> m_parentCard;
     };
 
     ActivatableClass(AdaptiveRenderArgs);

@@ -48,6 +48,14 @@ namespace AdaptiveCards.Rendering.Wpf
             inlineRun.Foreground = context.GetColorBrush(colorCode);
         }
 
+        public static void SetColor(this Inline inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
+        {
+            FontColorConfig colorOption = context.GetForegroundColors(color);
+            string colorCode = isSubtle ? colorOption.Subtle : colorOption.Default;
+            inlineRun.Foreground = context.GetColorBrush(colorCode);
+        }
+
+
         public static void SetHighlightColor(this Span inlineRun, AdaptiveTextColor color, bool isSubtle, AdaptiveRenderContext context)
         {
             FontColorConfig colorOption = context.GetForegroundColors(color);

@@ -5,7 +5,7 @@
   "properties": {
     "card": {
       "type": "AdaptiveCard",
-      "description": "The Adaptive Card to show."
+      "description": "The Adaptive Card to show. Inputs in ShowCards will not be submitted if the submit button is located on a parent card. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details."
     }
   }
 }

@@ -8,14 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.google.android.flexbox.FlexDirection;
+import com.google.android.flexbox.FlexWrap;
+import com.google.android.flexbox.FlexboxLayout;
+
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.AdaptiveFallbackException;
-import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.CardElementType;
@@ -24,9 +27,9 @@ import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.ColumnVector;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
-
 
 public class ColumnSetRenderer extends BaseCardElementRenderer
 {
@@ -53,17 +56,9 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         BaseCardElement baseCardElement,
         ICardActionHandler cardActionHandler,
         HostConfig hostConfig,
-        RenderArgs renderArgs) throws AdaptiveFallbackException
+        RenderArgs renderArgs) throws Exception
     {
-        ColumnSet columnSet = null;
-        if (baseCardElement instanceof ColumnSet)
-        {
-            columnSet = (ColumnSet) baseCardElement;
-        }
-        else if ((columnSet = ColumnSet.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to ColumnSet object model.");
-        }
+        ColumnSet columnSet = Util.castTo(baseCardElement, ColumnSet.class);
 
         IBaseCardElementRenderer columnRenderer = CardRendererRegistration.getInstance().getRenderer(CardElementType.Column.toString());
         if (columnRenderer == null)
@@ -71,19 +66,15 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
             throw new UnknownError(CardElementType.Column.toString() + " is not a registered renderer.");
         }
 
-        View separator = setSpacingAndSeparator(context, viewGroup, columnSet.GetSpacing(), columnSet.GetSeparator(), hostConfig, true);
-
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
-        LinearLayout layout = new LinearLayout(context);
+        SelectableFlexboxLayout columnSetLayout = new SelectableFlexboxLayout(context);
+        columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
+        columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-
-        // Add this two for allowing children to bleed
-        layout.setClipChildren(false);
-        layout.setClipToPadding(false);
-
-        setMinHeight(columnSet.GetMinHeight(), layout, context);
+        // TODO: Consistent column-width across platforms, which may need normalized weights:
+        // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
@@ -91,6 +82,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
+
+            if(columnSet.GetMinHeight() > column.GetMinHeight())
+            {
+                column.SetMinHeight(columnSet.GetMinHeight());
+            }
 
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
@@ -101,47 +97,64 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    context,
                                                                                    fragmentManager,
                                                                                    column,
-                                                                                   layout,
+                                                                                   columnSetLayout,
                                                                                    cardActionHandler,
                                                                                    hostConfig,
                                                                                    columnRenderArgs,
                                                                                    featureRegistration);
         }
 
-        if (columnSet.GetSelectAction() != null)
-        {
-            layout.setClickable(true);
-            layout.setOnClickListener(new BaseActionElementRenderer.SelectActionOnClickListener(renderedCard, columnSet.GetSelectAction(), cardActionHandler));
-        }
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler, renderArgs);
 
-        TagContent tagContent = new TagContent(columnSet, separator, viewGroup);
-
+        TagContent tagContent = new TagContent(columnSet);
         if (columnSet.GetHeight() == HeightType.Stretch)
         {
             LinearLayout stretchLayout = new LinearLayout(context);
             stretchLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
             stretchLayout.setOrientation(LinearLayout.VERTICAL);
 
-            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-
+            columnSetLayout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
             tagContent.SetStretchContainer(stretchLayout);
 
-            stretchLayout.addView(layout);
+            stretchLayout.addView(columnSetLayout);
             viewGroup.addView(stretchLayout);
         }
         else
         {
-            layout.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            viewGroup.addView(layout);
+            columnSetLayout.setLayoutParams(new FlexboxLayout.LayoutParams(FlexboxLayout.LayoutParams.MATCH_PARENT, FlexboxLayout.LayoutParams.WRAP_CONTENT));
+            viewGroup.addView(columnSetLayout);
         }
 
-        layout.setTag(tagContent);
-        setVisibility(baseCardElement.GetIsVisible(), layout);
+        columnSetLayout.setTag(tagContent);
 
-        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, layout, context, hostConfig);
-        ContainerRenderer.ApplyBleed(columnSet, layout, context, hostConfig);
+        ContainerRenderer.ApplyPadding(styleForThis, parentContainerStyle, columnSetLayout, context, hostConfig);
+        ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
 
-        return layout;
+        return columnSetLayout;
+    }
+
+    /**
+     * Normalize width of columns such that all relative weights, if any, sum to 1.
+     * @param columns Columns to normalize
+     */
+    private static void normalizeWeights(ColumnVector columns) {
+        float totalWeight = 0;
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null)
+            {
+                totalWeight += relativeWidth;
+            }
+        }
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null && totalWeight > 0)
+            {
+                c.SetWidth(String.valueOf(relativeWidth / totalWeight));
+            }
+        }
     }
 
     private static ColumnSetRenderer s_instance = null;

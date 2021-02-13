@@ -29,7 +29,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return outerActionSet;
         }
 
-        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context, AdaptiveInternalID actionSetId)
+        public static void AddRenderedActions(Grid uiContainer, IList<AdaptiveAction> actions, AdaptiveRenderContext context,  AdaptiveInternalID actionSetId)
         {
             if (!context.Config.SupportsInteractivity)
                 return;
@@ -89,8 +89,15 @@ namespace AdaptiveCards.Rendering.Wpf
 
                 foreach (AdaptiveAction action in actionsToProcess)
                 {
+                    var rendereableAction = context.GetRendereableElement(action);
+
+                    if (rendereableAction is AdaptiveSubmitAction)
+                    {
+                        context.SubmitActionCardId[rendereableAction as AdaptiveSubmitAction] = context.RenderArgs.ContainerCardId;
+                    }
+
                     // add actions
-                    var uiAction = context.Render(action) as Button;
+                    var uiAction = context.Render(rendereableAction) as Button;
 
                     if (uiAction == null)
                     {
@@ -141,10 +148,17 @@ namespace AdaptiveCards.Rendering.Wpf
                             var showCardStyleConfig = context.Config.ContainerStyles.GetContainerStyleConfig(actionsConfig.ShowCard.Style);
                             uiShowCardContainer.Background = context.GetColorBrush(showCardStyleConfig.BackgroundColor);
 
+                            // before rendering the card, we save the current parent card id
+                            AdaptiveInternalID currentParentCardId = context.RenderArgs.ContainerCardId;
+
                             // render the card
                             var uiShowCardWrapper = (Grid)context.Render(showCardAction.Card);
                             uiShowCardWrapper.Background = context.GetColorBrush("Transparent");
                             uiShowCardWrapper.DataContext = showCardAction;
+
+                            // after rendering we re-establish the ContainerCardId as it may have been modified
+                            // while rendering other cards
+                            context.RenderArgs.ContainerCardId = currentParentCardId;
 
                             uiShowCardContainer.Children.Add(uiShowCardWrapper);
                             context.ActionShowCards.Add(uiAction, uiShowCardContainer);

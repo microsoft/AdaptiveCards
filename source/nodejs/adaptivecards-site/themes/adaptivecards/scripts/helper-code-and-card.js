@@ -14,10 +14,10 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 	let dataAttribute = null;
 
 	const templating = dataPath && fs.existsSync(dataPath);
-	
+
 	let div = `
 	<div class="w3-cell-row w3-margin-bottom reverse-order-mobile code-and-card">
-		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet hide-with-templating" style="display: ${templating ? 'none' : 'display'}">
+		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet hide-with-templating">
 			<div class="codeHeader">
 				<span class="language">JSON</span>
 				<button aria-label="Copy Adaptive Card sample JSON" class="action copy-code">
@@ -55,7 +55,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile card" >
 			<div class="codeHeader">
 				<span class="language">Adaptive Card</span>
-				<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard">
+				<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard" role="link">
 					<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 				</button>
 			</div>

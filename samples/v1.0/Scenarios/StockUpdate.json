@@ -7,17 +7,24 @@
 		{
 			"type": "Container",
 			"items": [
-				{
-					"type": "TextBlock",
-					"text": "Microsoft Corp (NASDAQ: MSFT)",
-					"size": "medium",
-					"isSubtle": true
-				},
-				{
-					"type": "TextBlock",
-					"text": "September 19, 4:00 PM EST",
-					"isSubtle": true
-				}
+                {
+                    "type": "TextBlock",
+                    "text": "Microsoft Corporation",
+                    "size": "Medium",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Nasdaq Global Select: MSFT",
+                    "isSubtle": true,
+                    "spacing": "None",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Fri, May 3, 2019 1:00 PM",
+					"wrap": true
+                }
 			]
 		},
 		{
@@ -33,15 +40,16 @@
 							"items": [
 								{
 									"type": "TextBlock",
-									"text": "75.30",
-									"size": "extraLarge"
+									"text": "128.90",
+									"size": "extraLarge",
+									"wrap": true
 								},
 								{
 									"type": "TextBlock",
-									"text": "▼ 0.20 (0.32%)",
-									"size": "small",
-									"color": "attention",
-									"spacing": "none"
+									"text": "▲ 2.69 USD (2.13%)",
+									"color": "good",
+									"spacing": "none",
+									"wrap": true
 								}
 							]
 						},
@@ -54,15 +62,15 @@
 									"facts": [
 										{
 											"title": "Open",
-											"value": "62.24"
+											"value": "127.42"
 										},
 										{
 											"title": "High",
-											"value": "62.98"
+											"value": "129.43"
 										},
 										{
 											"title": "Low",
-											"value": "62.20"
+											"value": "127.25"
 										}
 									]
 								}

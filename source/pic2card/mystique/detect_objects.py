@@ -9,6 +9,7 @@ from PIL import Image
 
 from mystique.utils import id_to_label
 from mystique.image_extraction import ImageExtraction
+from mystique.initial_setups import set_graph_and_tensors
 
 
 if StrictVersion(tf.__version__) < StrictVersion("1.9.0"):
@@ -22,15 +23,18 @@ class ObjectDetection:
     graph and returning the ouput dict which consists of classes, scores,
     and object bounding boxes.
     """
-
-    def __init__(self, detection_graph, category_index, tensor_dict):
+    def __init__(self):
         """
         Initialize the object detection using model loaded from forzen
         graph
         """
-        self.detection_graph = detection_graph
-        self.category_index = category_index
-        self.tensor_dict = tensor_dict
+        det_g, tens_d = self._load_model_dump()
+        self.detection_graph = det_g
+        self.tensor_dict = tens_d
+
+    @staticmethod
+    def _load_model_dump():
+        return set_graph_and_tensors()
 
     def _img_preprocess(self, image_path: str) -> Tuple[Image.Image, np.array]:
         """
@@ -66,7 +70,7 @@ class ObjectDetection:
         """
         image, image_np = self._img_preprocess(image_path)
         width, height = image.size
-        result, _index = self.get_objects(image_np)
+        result = self.get_objects(image_np=image_np, image=image)
         classes = [id_to_label(i) for i in result['detection_classes']]
         scores = result['detection_scores'].tolist()
         boxes = result['detection_boxes'].tolist()
@@ -88,17 +92,28 @@ class ObjectDetection:
 
         return classes, bbox_dnorm, scores
 
-    def get_objects(self, image: np.array = None):
+    def get_objects(self, image_np: np.array, image: Image):
         """
         Returns the objects and coordiates detected
         from the faster rcnn detected boxes]
 
-        @param image: Image tensor, dimension should be HxWx3
+        @param image_np: Image tensor, dimension should be HxWx3
+        @param image: PIL Image object
 
         @return: ouput dict from the faster rcnn inference
         """
-        output_dict = self.run_inference_for_single_image(image)
-        return output_dict, self.category_index
+        output_dict = self.run_inference_for_single_image(image_np)
+        width, height = image.size
+        # format: ymin, xmin, ymax, xmax, renormalize the coords.
+        bboxes = output_dict[
+            "detection_boxes"] * [height, width, height, width]
+
+        # format: xmin, ymin, xmax, ymax
+        bboxes = bboxes[:, [1, 0, 3, 2]]
+        output_dict["detection_boxes"] = bboxes
+
+        # renormalize the the box cooridinates
+        return output_dict
 
     def run_inference_for_single_image(self, image: np.array):
         """
@@ -127,3 +142,11 @@ class ObjectDetection:
             "detection_scores"][0]
 
         return output_dict
+
+
+class TfsObjectDetection:
+    """
+    Do the object detection using Tensorflow Serving service.
+    """
+    def __init__(self):
+        pass

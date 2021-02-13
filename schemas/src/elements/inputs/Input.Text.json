@@ -16,6 +16,11 @@
 			"type": "string",
 			"description": "Description of the input desired. Displayed when no text has been input."
 		},
+		"regex": {
+			"type": "string",
+			"description": "Regular expression indicating the required format of this text input.",
+			"version": "1.3"
+		},
 		"style": {
 			"type": "TextInputStyle",
 			"description": "Style hint for text input."
@@ -26,7 +31,7 @@
 			"version": "1.2"
 		},
 		"value": {
-			"type": "string", 
+			"type": "string",
 			"description": "The initial value for this field."
 		}
 	}

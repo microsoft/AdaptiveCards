@@ -8,8 +8,11 @@
 #import "ACRButton.h"
 #import "ACRTextView.h"
 #import <UIKit/UIKit.h>
+@protocol ACRIQuickReply
+- (ACRButton *) getButton;
+@end
 
-@interface ACRQuickReplyMultilineView : UIView
+@interface ACRQuickReplyMultilineView : UIView <ACRIQuickReply>
 @property (strong, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet ACRTextView *textView;
 @property (weak, nonatomic) IBOutlet UIView *spacing;

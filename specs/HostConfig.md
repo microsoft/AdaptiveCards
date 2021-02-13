@@ -17,6 +17,7 @@
 |**spacing**|`object`| No|Controls how elements are to be laid out|1.0
 |**separator**|`object`| No|Controls how separators are displayed|1.0
 |**media**|`object`| No|Controls the display and behavior of `Media` elements|1.1
+|**inputs**|`object`| No|Controls display and behavior of Input types|1.3
 
 
 
@@ -112,7 +113,7 @@
 
 ## ShowCardConfig|Property|Type|Required|Description|Version|
 |--------|----|--------|-----------|-------|
-|**actionMode**|`string`| No, default: `"inline"`|Controls how the card is displayed|1.0
+|**actionMode**|`string`| No, default: `"inline"`|Controls how the card is displayed. Note: Popup show cards are not recommended for cards with input validation, and may be deprecated in the future.|1.0
 |**style**|`object`| No, default: `emphasis`|Controls styling of a container|1.0
 |**inlineTopMargin**|`integer`| No, default: `16`|Amount of margin to use when displaying the card|1.0
 

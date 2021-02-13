@@ -1,5 +1,6 @@
-venv/
-notebooks/
-.git/
-.gitignore/
-data/
+**
+!requirements*
+!model/pth_models/detr_trace.pt
+!model/frozen_inference_graph.pb
+!app
+!mystique

@@ -104,7 +104,7 @@ export function createPropertiesSummary(classDefinition: SchemaClass, knownTypes
 		}
 
 		if (inheritedFormattedProperties.length > 0) {
-			md += "\n**Inherited properties**\n\n";
+			md += "\n### Inherited properties\n\n";
 			md += createTable(inheritedFormattedProperties);
 			md += "\n";
 		}

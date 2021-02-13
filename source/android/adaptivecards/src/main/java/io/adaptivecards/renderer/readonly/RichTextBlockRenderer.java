@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
+import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
@@ -39,6 +40,7 @@ import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class RichTextBlockRenderer extends BaseCardElementRenderer
@@ -69,6 +71,33 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         }
 
         private BaseActionElementRenderer.SelectActionOnClickListener m_actionListener;
+    }
+
+    public static SpannableStringBuilder setColor(SpannableStringBuilder paragraph,
+                                                  int spanStart,
+                                                  int spanEnd,
+                                                  ForegroundColor textColor,
+                                                  boolean isSubtle,
+                                                  HostConfig hostConfig,
+                                                  RenderArgs renderArgs)
+    {
+        int color = getColor(TextRendererUtil.getTextColor(textColor, hostConfig, isSubtle, renderArgs.getContainerStyle()));
+        paragraph.setSpan(new ForegroundColorSpan(color), spanStart, spanEnd, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        return paragraph;
+    }
+
+    public static TextRun castInlineToTextRun(Inline inline)
+    {
+        TextRun textRun = null;
+        if (inline instanceof TextRun)
+        {
+            textRun = (TextRun) inline;
+        }
+        else if ((textRun = TextRun.dynamic_cast(inline)) == null)
+        {
+            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
+        }
+        return textRun;
     }
 
     private SpannableStringBuilder buildSpannableParagraph(
@@ -162,40 +191,15 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
             BaseCardElement baseCardElement,
             ICardActionHandler cardActionHandler,
             HostConfig hostConfig,
-            RenderArgs renderArgs)
+            RenderArgs renderArgs) throws Exception
     {
-        RichTextBlock richTextBlock = null;
-        if (baseCardElement instanceof TextBlock)
-        {
-            richTextBlock = (RichTextBlock) baseCardElement;
-        }
-        else if ((richTextBlock = RichTextBlock.dynamic_cast(baseCardElement)) == null)
-        {
-            throw new InternalError("Unable to convert BaseCardElement to TextBlock object model.");
-        }
+        RichTextBlock richTextBlock = Util.castTo(baseCardElement, RichTextBlock.class);
 
         TextView textView = new TextView(context);
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setHorizontallyScrolling(false);
 
-        // BaseCardElement properties
-        // Separator
-        // Height
-        // IsVisible
-        // Spacing
-        View separator = setSpacingAndSeparator(context, viewGroup, richTextBlock.GetSpacing(), richTextBlock.GetSeparator(), hostConfig, true);
-
-        textView.setTag(new TagContent(richTextBlock, separator, viewGroup));
-        setVisibility(baseCardElement.GetIsVisible(), textView);
-
-        if (richTextBlock.GetHeight() == HeightType.Stretch)
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        }
-        else
-        {
-            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        }
+        textView.setTag(new TagContent(richTextBlock));
 
         // RichTextBlock properties
         // HorizontalAlignment

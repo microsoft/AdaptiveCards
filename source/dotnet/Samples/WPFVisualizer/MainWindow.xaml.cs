@@ -18,15 +18,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
-using Newtonsoft.Json.Linq;
 using Xceed.Wpf.Toolkit.PropertyGrid;
 using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
-using System.Windows.Media;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Document;
-using System.Collections.ObjectModel;
-using System.Threading;
 using ICSharpCode.AvalonEdit;
 
 namespace WpfVisualizer
@@ -86,8 +82,10 @@ namespace WpfVisualizer
             // TODO: Change to instance property? Change to UWP parser registration
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomRating>();
             AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomAction>();
+            AdaptiveTypedElementConverter.RegisterTypedElement<MyCustomInput>();
 
             Renderer.ElementRenderers.Set<MyCustomRating>(MyCustomRating.Render);
+            Renderer.ElementRenderers.Set<MyCustomInput>(MyCustomInput.Render);
 
             // This seems unecessary?
             Renderer.ActionHandlers.AddSupportedAction<MyCustomAction>();

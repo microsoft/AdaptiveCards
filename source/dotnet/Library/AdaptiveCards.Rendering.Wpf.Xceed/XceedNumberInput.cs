@@ -6,6 +6,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace AdaptiveCards.Rendering.Wpf
 {
+
     public static class XceedNumberInput
     {
         public static FrameworkElement Render(AdaptiveNumberInput input, AdaptiveRenderContext context)
@@ -13,22 +14,25 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
 
-                IntegerUpDown numberPicker = new IntegerUpDown();
-                // numberPicker.ShowButtonSpinner = true;
+                DoubleUpDown numberPicker = new DoubleUpDown();
 
                 if (!Double.IsNaN(input.Value))
-                    numberPicker.Value = Convert.ToInt32(input.Value);
-
-                if (!Double.IsNaN(input.Min))
-                    numberPicker.Minimum = Convert.ToInt32(input.Min);
-
-                if (!Double.IsNaN(input.Max))
-                    numberPicker.Maximum = Convert.ToInt32(input.Max);
+                    numberPicker.Value = input.Value;
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
-                context.InputBindings.Add(input.Id, () => numberPicker.Value?.ToString());
+
+                numberPicker.Maximum = input.Max;
+                numberPicker.Minimum = input.Min;
+
+                if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput, "Inputs with validation should include an ErrorMessage"));
+                }
+
+                context.InputValues.Add(input.Id, new AdaptiveXceedNumberInputValue(input, numberPicker));
+
                 return numberPicker;
             }
             else

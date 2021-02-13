@@ -25,6 +25,11 @@ namespace AdaptiveNamespace
                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
     try
     {
+        ComPtr<IAdaptiveActionElement> localAction(action);
+        ComPtr<IAdaptiveSubmitAction> submitAction;
+        RETURN_IF_FAILED(localAction.As(&submitAction));
+        RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(submitAction.Get(), renderArgs));
+
         return ActionHelpers::BuildAction(action, renderContext, renderArgs, result);
     }
     CATCH_RETURN;

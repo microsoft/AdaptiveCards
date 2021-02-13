@@ -79,8 +79,6 @@ namespace AdaptiveSharedNamespace
         void SetHeight(const HeightType value);
         unsigned int GetMinHeight() const;
         void SetMinHeight(const unsigned int value);
-        InputNecessityIndicators GetInputNecessityIndicators() const;
-        void SetInputNecessityIndicators(const InputNecessityIndicators value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -94,6 +92,7 @@ namespace AdaptiveSharedNamespace
 
         CardElementType GetElementType() const;
 #ifdef __ANDROID__
+#pragma GCC diagnostic ignored "-Wdynamic-exception-spec"
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 std::string rendererVersion,
                                                                 ParseContext& context) throw(AdaptiveSharedNamespace::AdaptiveCardParseException);
@@ -116,16 +115,14 @@ namespace AdaptiveSharedNamespace
         static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
                                                                 const std::string& rendererVersion,
                                                                 ParseContext& context);
-        static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile,
-                                                                const std::string& rendererVersion);
+        static std::shared_ptr<ParseResult> DeserializeFromFile(const std::string& jsonFile, const std::string& rendererVersion);
 
         static std::shared_ptr<ParseResult> Deserialize(const Json::Value& json, const std::string& rendererVersion, ParseContext& context);
 
         static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
                                                                   const std::string& rendererVersion,
                                                                   ParseContext& context);
-        static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString,
-                                                                  const std::string& rendererVersion);
+        static std::shared_ptr<ParseResult> DeserializeFromString(const std::string& jsonString, const std::string& rendererVersion);
 
         static std::shared_ptr<AdaptiveCard> MakeFallbackTextCard(const std::string& fallbackText,
                                                                   const std::string& language,
@@ -149,8 +146,6 @@ namespace AdaptiveSharedNamespace
         VerticalContentAlignment m_verticalContentAlignment;
         HeightType m_height;
         unsigned int m_minHeight;
-        InputNecessityIndicators m_inputNecessityIndicators;
-
         InternalId m_internalId;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;

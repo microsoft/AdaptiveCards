@@ -76,49 +76,61 @@ namespace AdaptiveNamespace
         ComPtr<IImage> image;
         RETURN_IF_FAILED(m_resolvedImage.As(&image));
 
-        if (image != nullptr)
+        if (image == nullptr)
         {
-            ComPtr<IImageSource> imageSource;
-            THROW_IF_FAILED(image->get_Source(&imageSource));
-
-            EventRegistrationToken eventToken;
-            ComPtr<IBitmapImage> bitmapImage;
-            THROW_IF_FAILED(imageSource.As(&bitmapImage));
-            THROW_IF_FAILED(bitmapImage->add_ImageOpened(Callback<IRoutedEventHandler>([&](IInspectable* /*sender*/, IRoutedEventArgs *
-                                                                                           /*args*/) -> HRESULT {
-                                                             ComPtr<IUIElement> uiElement;
-                                                             THROW_IF_FAILED(get_ResolvedImage(&uiElement));
-
-                                                             // Extract BitmapSource from Image
-                                                             ComPtr<IImage> image;
-                                                             THROW_IF_FAILED(uiElement.As(&image));
-                                                             ComPtr<IImageSource> imageSource;
-                                                             THROW_IF_FAILED(image->get_Source(&imageSource));
-                                                             ComPtr<IBitmapSource> bitmapSource;
-                                                             THROW_IF_FAILED(imageSource.As(&bitmapSource));
-
-                                                             // Extract Size from Image
-                                                             int height{}, width{};
-                                                             THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
-                                                             THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
-
-                                                             // Save size to member variable
-                                                             Size imageSize{};
-                                                             imageSize.Height = static_cast<float>(height);
-                                                             imageSize.Width = static_cast<float>(width);
-                                                             THROW_IF_FAILED(put_ImageSize(imageSize));
-
-                                                             RefreshContainerTile();
-                                                             return S_OK;
-                                                         }).Get(),
-                                                         &eventToken));
-
-            THROW_IF_FAILED(image->get_Source(&imageSource));
-            THROW_IF_FAILED(m_brushXaml->put_ImageSource(imageSource.Get()));
-
-            return S_OK;
+            return E_INVALIDARG;
         }
-        return E_INVALIDARG;
+
+        ComPtr<IImageSource> imageSource;
+        THROW_IF_FAILED(image->get_Source(&imageSource));
+
+        if (imageSource == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        ComPtr<IBitmapImage> bitmapImage;
+        THROW_IF_FAILED(imageSource.As(&bitmapImage));
+
+        if (bitmapImage == nullptr)
+        {
+            return E_INVALIDARG;
+        }
+
+        EventRegistrationToken eventToken;
+
+        THROW_IF_FAILED(bitmapImage->add_ImageOpened(Callback<IRoutedEventHandler>(
+            [&](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
+                ComPtr<IUIElement> uiElement;
+                THROW_IF_FAILED(get_ResolvedImage(&uiElement));
+
+                // Extract BitmapSource from Image
+                ComPtr<IImage> image;
+                THROW_IF_FAILED(uiElement.As(&image));
+                ComPtr<IImageSource> imageSource;
+                THROW_IF_FAILED(image->get_Source(&imageSource));
+                ComPtr<IBitmapSource> bitmapSource;
+                THROW_IF_FAILED(imageSource.As(&bitmapSource));
+
+                // Extract Size from Image
+                int height{}, width{};
+                THROW_IF_FAILED(bitmapSource->get_PixelHeight(&height));
+                THROW_IF_FAILED(bitmapSource->get_PixelWidth(&width));
+
+                // Save size to member variable
+                Size imageSize{};
+                imageSize.Height = static_cast<float>(height);
+                imageSize.Width = static_cast<float>(width);
+                THROW_IF_FAILED(put_ImageSize(imageSize));
+
+                RefreshContainerTile();
+                return S_OK;
+            }).Get(),
+                &eventToken));
+
+        THROW_IF_FAILED(m_brushXaml->put_ImageSource(imageSource.Get()));
+
+        return S_OK;
     }
 
     HRESULT TileControl::OnApplyTemplate()

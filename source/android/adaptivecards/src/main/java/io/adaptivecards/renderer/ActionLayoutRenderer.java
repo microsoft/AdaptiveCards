@@ -165,16 +165,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                         {
                             try
                             {
-                                BaseActionElement fallbackActionElement = null;
-                                if (fallbackElement instanceof BaseActionElement)
-                                {
-                                    fallbackActionElement = (BaseActionElement) fallbackElement;
-                                }
-                                else if ((fallbackActionElement = BaseActionElement.dynamic_cast(fallbackElement)) == null)
-                                {
-                                    throw new InternalError("Unable to convert BaseElement to BaseActionElement object model.");
-                                }
-
+                                BaseActionElement fallbackActionElement = Util.castToBaseActionElement(fallbackElement);
                                 IBaseActionElementRenderer fallbackActionRenderer = CardRendererRegistration.getInstance().getActionRenderer(fallbackActionElement.GetElementTypeString());
 
                                 if (fallbackActionRenderer == null)

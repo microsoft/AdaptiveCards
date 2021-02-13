@@ -167,10 +167,11 @@ namespace AdaptiveCards.Templating
                 throw new ArgumentNullException("Parent data context or selection path is null");
             }
 
-            var (value, error) = new ValueExpression(jpath).TryGetValue(parentDataContext.AELMemory);
+            var (value, error) = new ValueExpression("=" + jpath).TryGetValue(parentDataContext.AELMemory);
             if (error == null)
             {
-                dataContext.Push(new DataContext(value as string, parentDataContext.RootDataContext));
+                var serializedValue = JsonConvert.SerializeObject(value);
+                dataContext.Push(new DataContext(serializedValue, parentDataContext.RootDataContext));
             }
             else
             {
@@ -231,7 +232,8 @@ namespace AdaptiveCards.Templating
                     var templateLiteral = (templateStrings[0] as AdaptiveCardsTemplateParser.TemplatedStringContext).TEMPLATELITERAL();
                     try
                     {
-                        PushTemplatedDataContext(templateLiteral.GetText());
+                        string templateLiteralExpression = templateLiteral.GetText(); 
+                        PushTemplatedDataContext(templateLiteralExpression.Substring(2, templateLiteralExpression.Length - 3));
                     }
                     catch (ArgumentNullException)
                     {

@@ -18,6 +18,7 @@
 #include <locale>
 #include <memory>
 #include <numeric>
+#include <optional>
 #include <regex>
 #include <sstream>
 #include <string>

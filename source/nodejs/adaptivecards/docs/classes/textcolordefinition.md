@@ -17,7 +17,7 @@
 ### Properties
 
 * [default](textcolordefinition.md#default)
-* [highlightColors](textcolordefinition.md#highlightcolors)
+* [highlightColors](textcolordefinition.md#readonly-highlightcolors)
 * [subtle](textcolordefinition.md#subtle)
 
 ### Methods
@@ -51,7 +51,7 @@ Name | Type |
 
 ___
 
-###  highlightColors
+### `Readonly` highlightColors
 
 • **highlightColors**: *[ColorDefinition](colordefinition.md)‹›* = new ColorDefinition("#22000000", "#11000000")
 

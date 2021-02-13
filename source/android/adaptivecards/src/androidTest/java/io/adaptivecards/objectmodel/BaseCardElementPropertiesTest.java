@@ -8,6 +8,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
 public class BaseCardElementPropertiesTest
 {
 
@@ -266,6 +269,188 @@ public class BaseCardElementPropertiesTest
             }
         }
 
+    }
+
+    @Test
+    public void ExtractBaseCardElementPropertiesFromStringTest() throws Exception
+    {
+        class MockCustomElement extends BaseCardElement
+        {
+            public MockCustomElement(CardElementType type) {
+                super(type);
+            }
+        }
+
+        class MockCustomElementParser extends BaseCardElementParser
+        {
+            // This is the method that is called during parsing
+            @Override
+            public BaseCardElement Deserialize(ParseContext context, JsonValue value)
+            {
+                MockCustomElement customElement = new MockCustomElement(CardElementType.Custom);
+                Util.deserializeBaseCardElementProperties(context, value, customElement);
+
+                Assert.assertEquals(customElement.GetHeight(), HeightType.Stretch);
+                Assert.assertEquals(customElement.GetId(), "Sample id");
+                Assert.assertEquals(customElement.GetIsVisible(), false);
+                Assert.assertEquals(customElement.GetSeparator(), true);
+                Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
+                Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
+
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+                return customElement;
+            }
+
+            @Override
+            public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
+            {
+                MockCustomElement customElement = new MockCustomElement(CardElementType.Custom);
+                Util.deserializeBaseCardElementPropertiesFromString(context, jsonString, customElement);
+
+                Assert.assertEquals(customElement.GetHeight(), HeightType.Stretch);
+                Assert.assertEquals(customElement.GetId(), "Sample id");
+                Assert.assertEquals(customElement.GetIsVisible(), false);
+                Assert.assertEquals(customElement.GetSeparator(), true);
+                Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
+                Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
+
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+                return customElement;
+            }
+        }
+
+        final String customElementJson = "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+            "\"height\":\"Stretch\"," +
+            "\"id\":\"Sample id\"," +
+            "\"isVisible\":false," +
+            "\"separator\":true," +
+            "\"spacing\":\"medium\"," +
+            "\"type\":\"CustomElement\"}\n";
+
+        ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
+        MockCustomElementParser customElementParser = new MockCustomElementParser();
+        elementParserRegistration.AddParser("CustomElement", customElementParser);
+        ParseContext parseContext = new ParseContext(elementParserRegistration, null);
+
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(customElementJson), "1.0", parseContext);
+        AdaptiveCard adaptiveCard = result.GetAdaptiveCard();
+
+        BaseCardElement cardElement = adaptiveCard.GetBody().get(0);
+
+        // Verify that the element in the card has all the properties
+        Assert.assertEquals(cardElement.GetHeight(), HeightType.Stretch);
+        Assert.assertEquals(cardElement.GetId(), "Sample id");
+        Assert.assertEquals(cardElement.GetIsVisible(), false);
+        Assert.assertEquals(cardElement.GetSeparator(), true);
+        Assert.assertEquals(cardElement.GetSpacing(), Spacing.Medium);
+        Assert.assertEquals(cardElement.GetFallbackType(), FallbackType.Content);
+
+        BaseCardElement fallbackContent = Util.castToBaseCardElement(cardElement.GetFallbackContent());
+        Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+        // Verify that the DeserializeFromString method works
+        customElementParser.DeserializeFromString(parseContext, customElementJson);
+    }
+
+    @Test
+    public void ExtractBaseInputPropertiesFromStringTest() throws Exception
+    {
+        class MockCustomElement extends BaseInputElement
+        {
+            public MockCustomElement(CardElementType type) {
+                super(type);
+            }
+        }
+
+        class MockCustomElementParser extends BaseCardElementParser
+        {
+            // This is the method that is called during parsing
+            @Override
+            public BaseCardElement Deserialize(ParseContext context, JsonValue value)
+            {
+                MockCustomElement customElement = new MockCustomElement(CardElementType.Custom);
+                Util.deserializeBaseInputProperties(context, value, customElement);
+
+                Assert.assertEquals(customElement.GetHeight(), HeightType.Stretch);
+                Assert.assertEquals(customElement.GetId(), "Sample id");
+                Assert.assertEquals(customElement.GetIsVisible(), false);
+                Assert.assertEquals(customElement.GetSeparator(), true);
+                Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
+                Assert.assertEquals(customElement.GetErrorMessage(), "Error message");
+                Assert.assertEquals(customElement.GetLabel(), "Input label");
+                Assert.assertEquals(customElement.GetIsRequired(), true);
+                Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
+
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+                return customElement;
+            }
+
+            @Override
+            public BaseCardElement DeserializeFromString(ParseContext context, String jsonString)
+            {
+                MockCustomElement customElement = new MockCustomElement(CardElementType.Custom);
+                Util.deserializeBaseInputPropertiesFromString(context, jsonString, customElement);
+
+                Assert.assertEquals(customElement.GetHeight(), HeightType.Stretch);
+                Assert.assertEquals(customElement.GetId(), "Sample id");
+                Assert.assertEquals(customElement.GetIsVisible(), false);
+                Assert.assertEquals(customElement.GetSeparator(), true);
+                Assert.assertEquals(customElement.GetSpacing(), Spacing.Medium);
+                Assert.assertEquals(customElement.GetErrorMessage(), "Error message");
+                Assert.assertEquals(customElement.GetLabel(), "Input label");
+                Assert.assertEquals(customElement.GetIsRequired(), true);
+                Assert.assertEquals(customElement.GetFallbackType(), FallbackType.Content);
+
+                BaseCardElement fallbackContent = Util.castToBaseCardElement(customElement.GetFallbackContent());
+                Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+                return customElement;
+            }
+        }
+
+        final String customElementJson = "{\"fallback\":{\"type\":\"Image\",\"url\":\"http://\"}," +
+            "\"height\":\"Stretch\"," +
+            "\"id\":\"Sample id\"," +
+            "\"isVisible\":false," +
+            "\"separator\":true," +
+            "\"spacing\":\"medium\"," +
+            "\"errorMessage\":\"Error message\"," +
+            "\"label\":\"Input label\"," +
+            "\"isRequired\":true," +
+            "\"type\":\"CustomElement\"}\n";
+
+        ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
+        MockCustomElementParser customElementParser = new MockCustomElementParser();
+        elementParserRegistration.AddParser("CustomElement", customElementParser);
+        ParseContext parseContext = new ParseContext(elementParserRegistration, null);
+
+        ParseResult result = AdaptiveCard.DeserializeFromString(TestUtil.encloseElementJsonInCard(customElementJson), "1.0", parseContext);
+        AdaptiveCard adaptiveCard = result.GetAdaptiveCard();
+
+        BaseInputElement cardElement = Util.castTo(adaptiveCard.GetBody().get(0), BaseInputElement.class);
+
+        // Verify that the element in the card has all the properties
+        Assert.assertEquals(cardElement.GetHeight(), HeightType.Stretch);
+        Assert.assertEquals(cardElement.GetId(), "Sample id");
+        Assert.assertEquals(cardElement.GetIsVisible(), false);
+        Assert.assertEquals(cardElement.GetSeparator(), true);
+        Assert.assertEquals(cardElement.GetSpacing(), Spacing.Medium);
+        Assert.assertEquals(cardElement.GetErrorMessage(), "Error message");
+        Assert.assertEquals(cardElement.GetLabel(), "Input label");
+        Assert.assertEquals(cardElement.GetIsRequired(), true);
+        Assert.assertEquals(cardElement.GetFallbackType(), FallbackType.Content);
+
+        BaseCardElement fallbackContent = Util.castToBaseCardElement(cardElement.GetFallbackContent());
+        Assert.assertEquals(fallbackContent.GetElementType(), CardElementType.Image);
+
+        // Verify that the DeserializeFromString method works
+        customElementParser.DeserializeFromString(parseContext, customElementJson);
     }
 
 }

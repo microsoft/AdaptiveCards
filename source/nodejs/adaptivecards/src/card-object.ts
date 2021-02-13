@@ -1,6 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
+import * as Utils from "./utils";
+import { Strings} from "./strings";
 import { Dictionary, GlobalSettings } from "./shared";
 import { HostConfig } from "./host-config";
 import { HostCapabilities } from "./host-capabilities";
@@ -40,7 +42,8 @@ export abstract class CardObject extends SerializableObject {
     static readonly requiresProperty = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
-        HostCapabilities);
+        HostCapabilities,
+        new HostCapabilities());
 
     protected getSchemaKey(): string {
         return this.getJsonTypeName();
@@ -114,7 +117,7 @@ export abstract class CardObject extends SerializableObject {
                     context.addFailure(
                         this,
                         Enums.ValidationEvent.DuplicateId,
-                        "Duplicate Id: " + this.id);
+                        Strings.errors.duplicateId(this.id));
                 }
 
                 context.allIds[this.id] += 1;

@@ -5,6 +5,7 @@
 #include "AdaptiveElementParserRegistration.h"
 #include "AdaptiveNumberInput.h"
 #include "AdaptiveNumberInputRenderer.h"
+#include <limits>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -17,16 +18,11 @@ using namespace ABI::Windows::UI::Xaml::Input;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept
-    try
-    {
-        return S_OK;
-    }
-    CATCH_RETURN;
+    HRESULT AdaptiveNumberInputRenderer::RuntimeClassInitialize() noexcept { return S_OK; }
 
     HRESULT AdaptiveNumberInputRenderer::Render(_In_ IAdaptiveCardElement* adaptiveCardElement,
                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                _In_ IAdaptiveRenderArgs* /*renderArgs*/,
+                                                _In_ IAdaptiveRenderArgs* renderArgs,
                                                 _COM_Outptr_ IUIElement** numberInputControl) noexcept
     try
     {
@@ -34,9 +30,9 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderContext->get_HostConfig(&hostConfig));
         if (!XamlHelpers::SupportsInteractivity(hostConfig.Get()))
         {
-            renderContext->AddWarning(
+            RETURN_IF_FAILED(renderContext->AddWarning(
                 ABI::AdaptiveNamespace::WarningStatusCode::InteractivityNotSupported,
-                HStringReference(L"Number input was stripped from card because interactivity is not supported").Get());
+                HStringReference(L"Number input was stripped from card because interactivity is not supported").Get()));
             return S_OK;
         }
 
@@ -59,11 +55,18 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        INT32 value;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> value;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Value(&value));
 
-        std::wstring stringValue = std::to_wstring(value);
-        RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+        if (value.Get())
+        {
+            int boxValue;
+            if (SUCCEEDED(value->get_Value(&boxValue)))
+            {
+                std::wstring stringValue = std::to_wstring(boxValue);
+                RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
+            }
+        }
 
         ComPtr<ITextBox2> textBox2;
         RETURN_IF_FAILED(textBox.As(&textBox2));
@@ -78,10 +81,31 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, L"Adaptive.Input.Number", frameworkElement.Get()));
 
-        // TODO: Handle max and min?
-        RETURN_IF_FAILED(textBox.CopyTo(numberInputControl));
-        XamlHelpers::AddInputValueToContext(renderContext, adaptiveCardElement, *numberInputControl);
+        ComPtr<IAdaptiveInputElement> numberInputAsAdaptiveInput;
+        RETURN_IF_FAILED(adaptiveNumberInput.As(&numberInputAsAdaptiveInput));
 
+        ComPtr<IUIElement> textBoxAsUIElement;
+        RETURN_IF_FAILED(textBox.As(&textBoxAsUIElement));
+
+        // If there's any validation on this input, put the input inside a border
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
+        RETURN_IF_FAILED(adaptiveNumberInput->get_Max(&max));
+
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
+        RETURN_IF_FAILED(adaptiveNumberInput->get_Min(&min));
+
+        ComPtr<IUIElement> inputLayout;
+        ComPtr<IBorder> validationBorder;
+        RETURN_IF_FAILED(XamlHelpers::HandleInputLayoutAndValidation(
+            numberInputAsAdaptiveInput.Get(), textBoxAsUIElement.Get(), (max.Get() || min.Get()), renderContext, &inputLayout, &validationBorder));
+
+        // Create the InputValue and add it to the context
+        ComPtr<NumberInputValue> input;
+        RETURN_IF_FAILED(
+            MakeAndInitialize<NumberInputValue>(&input, adaptiveNumberInput.Get(), textBox.Get(), validationBorder.Get()));
+        RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
+
+        RETURN_IF_FAILED(inputLayout.CopyTo(numberInputControl));
         return S_OK;
     }
     CATCH_RETURN;

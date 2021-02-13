@@ -28,6 +28,12 @@ PS: Latest Build Status is against `main` branch.
 | iOS | [![CocoaPods](https://img.shields.io/cocoapods/v/AdaptiveCards.svg)](https://cocoapods.org/pods/AdaptiveCards) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/ios) | [Docs](https://docs.microsoft.com/en-us/adaptive-cards/display/libraries/ios) |  ![Build status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/37917/main.svg) |
 | Card Designer | [![npm install](https://img.shields.io/npm/v/adaptivecards-designer.svg)](https://www.npmjs.com/package/adaptivecards-designer) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)| [Docs](https://www.npmjs.com/package/adaptivecards-designer) | ![Build Status](https://img.shields.io/azure-devops/build/Microsoft/56cf629e-8f3a-4412-acbc-bf69366c552c/20564/main.svg) |
 
+#### End User License Agreement for our binary packages
+Consumption of the AdaptiveCards binary packages are subject to the Microsoft EULA (End User License Agreement). Please see the relevant terms as listed below:
+- [UWP/.NET](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Windows.txt)
+- [Android/iOS](https://github.com/microsoft/AdaptiveCards/blob/main/source/EULA-Non-Windows.txt)
+
+NOTE: All of the source code, itself, made available in this repo as well as our NPM packages, continue to be governed by the open source [MIT license](https://github.com/microsoft/AdaptiveCards/blob/main/LICENSE).
 ### Community SDKs
 
 The following SDKs are lovingly maintained by the Adaptive Cards community. Their contributions are sincerely appreciated! 🎉
@@ -36,6 +42,8 @@ The following SDKs are lovingly maintained by the Adaptive Cards community. Thei
 |---|---|---|---|---|---|
 | ReactNative | [![npm install](https://img.shields.io/npm/v/adaptivecards-reactnative.svg)](https://www.npmjs.com/package/adaptivecards-reactnative) | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/community/reactnative)| [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/README.md) | [![react-native-build](https://github.com/microsoft/AdaptiveCards/workflows/react-native-build/badge.svg)](https://dev.azure.com/microsoft/AdaptiveCards/_build/latest?definitionId=38416) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md)
 | Pic2Card | | [Source](https://github.com/Microsoft/AdaptiveCards/tree/main/source/pic2card) | [Docs](https://github.com/Microsoft/AdaptiveCards/blob/main/source/pic2card/README.md) | ![pic2card-build](https://github.com/Microsoft/AdaptiveCards/workflows/pic2card-build/badge.svg) | [Imaginea](https://github.com/Microsoft/AdaptiveCards/blob/main/source/community/reactnative/Contributors.md)
+| Vue.js | [![npm install](https://img.shields.io/npm/v/adaptivecards-vue.svg)](https://www.npmjs.com/package/adaptivecards-vue) | [Source](https://github.com/DeeJayTC/adaptivecards-vue)| [Docs](https://github.com/DeeJayTC/adaptivecards-vue/blob/master/README.md) | OK | [Tim Cadenbach](https://github.com/DeeJayTC)
+
 
 
 ## Contribute
@@ -49,4 +57,3 @@ There are many ways to [contribute](https://github.com/Microsoft/AdaptiveCards/b
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see 
 the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

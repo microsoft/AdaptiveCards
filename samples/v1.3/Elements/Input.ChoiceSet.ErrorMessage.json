@@ -1,0 +1,71 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "Input.ChoiceSet",
+			"id": "requiredCompactId",
+			"style": "compact",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (compact)",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"placeholder" : "Please make selection",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "requiredExpandedId",
+			"style": "expanded",
+			"isMultiSelect": false,
+			"label": "Required Input.ChoiceSet label (expanded)",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		},
+		{
+			"type": "Input.ChoiceSet",
+			"id": "requiredMultiselectId",
+			"style": "expanded",
+			"isMultiSelect": true,
+			"label": "Required Input.ChoiceSet label (expanded, multiselect)",
+			"isRequired": true,
+			"errorMessage": "This is a required input",
+			"choices": [
+				{
+					"title": "Option 1",
+					"value": "1"
+				},
+				{
+					"title": "Option 2",
+					"value": "2"
+				}
+			]
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}

@@ -83,9 +83,9 @@ void MarkDownParsedResult::Clear()
 }
 
 // create and add new MarkDownStringHtmlGenerator object that has string of ch
-void MarkDownParsedResult::AddNewTokenToParsedResult(char ch)
+void MarkDownParsedResult::AddNewTokenToParsedResult(int ch)
 {
-    std::string string_token = std::string(1, ch);
+    std::string string_token = std::string(1, static_cast<char>(ch));
     std::shared_ptr<MarkDownStringHtmlGenerator> htmlToken = std::make_shared<MarkDownStringHtmlGenerator>(string_token);
     AppendToTokens(htmlToken);
 }
