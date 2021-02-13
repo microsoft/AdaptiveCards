@@ -53,7 +53,7 @@ namespace RendererQml
 
         auto rectangle = std::make_shared<QmlTag>("Rectangle");
         rectangle->Property("id", "adaptiveCardRectangle");
-        rectangle->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor), true);
+        rectangle->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         rectangle->Property("Layout.margins", std::to_string(context->GetConfig()->GetSpacing().paddingSpacing));
         rectangle->Property("Layout.fillWidth", "true");
         rectangle->Property("Layout.preferredHeight", "40");

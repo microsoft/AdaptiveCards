@@ -46,7 +46,7 @@ namespace RendererQml
         {
             if (color.length() == 7)
             {
-                return color;
+                return Formatter() << "'" << color << "'";
             }
             if (color.length() == 9)
             {
@@ -60,11 +60,11 @@ namespace RendererQml
                 }
                 catch (const std::exception&)
                 {
-                    return color;
+                    return Formatter() << "'" << color << "'";
                 }
             }
         }
-        return color;
+        return Formatter() << "'" << color << "'";
     }
 
     std::string AdaptiveRenderContext::GetLang()
