@@ -38,18 +38,22 @@ namespace RendererQml
 
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveCardRender(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::shared_ptr<AdaptiveRenderContext> context)
     {
-        auto uiCard = std::make_shared<QmlTag>("Item", "adaptiveCard");
+        auto uiCard = std::make_shared<QmlTag>("Item");
         uiCard->AddImports("import QtQuick 2.15");
         uiCard->AddImports("import QtQuick.Layouts 1.3");
         uiCard->Property("id", "adaptiveCard");
-        uiCard->Property("anchors.fill", "parent");
+        uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
+        //TODO: Width can be set as config
+        uiCard->Property("width", "600");
 
         auto columnLayout = std::make_shared<QmlTag>("ColumnLayout");
-        columnLayout->Property("anchors.fill", "parent");
+        columnLayout->Property("id", "adaptiveCardLayout");
+        columnLayout->Property("width", "parent.width");
         uiCard->AddChild(columnLayout);
 
         auto rectangle = std::make_shared<QmlTag>("Rectangle");
-        rectangle->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
+        rectangle->Property("id", "adaptiveCardRectangle");
+        rectangle->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor), true);
         rectangle->Property("Layout.margins", std::to_string(context->GetConfig()->GetSpacing().paddingSpacing));
         rectangle->Property("Layout.fillWidth", "true");
         rectangle->Property("Layout.preferredHeight", "40");

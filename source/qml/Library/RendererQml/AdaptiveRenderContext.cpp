@@ -56,7 +56,7 @@ namespace RendererQml
                     const int r = Utils::HexStrToInt(color.substr(3, 2));
                     const int g = Utils::HexStrToInt(color.substr(5, 2));
                     const int b = Utils::HexStrToInt(color.substr(7, 2));
-                    return Formatter() << "rgba(" << r << ", " << g << ", " << b << ", " << std::fixed << std::setprecision(2) << opacity << ")";
+                    return Formatter() << "Qt.rgba(" << r << ", " << g << ", " << b << ", " << std::fixed << std::setprecision(2) << opacity << ")";
                 }
                 catch (const std::exception&)
                 {

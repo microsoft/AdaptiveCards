@@ -1,21 +1,33 @@
 import QtQuick 2.15
-import QtQuick.Window 2.2
+import QtQuick.Window 2.15
+import Qt.labs.qmlmodels 1.0
 
-Item {
+Rectangle{
     id: root
-    width: 600
-    height: 600
+    height: 800
+    width: 800
 
-    Rectangle {
-        id: cardArea
-        width: 600
-        height: 80
-        color: "lightgrey"
-        anchors.centerIn: root
-        Component.onCompleted: root.createItem();
+    ListModel{
+        id: cardModel
+        Component.onCompleted: {
+            append({"CardString": _aQmlCard});
+        }
     }
 
-    function createItem() {
-        Qt.createQmlObject(_aQmlCard, cardArea, "dynamicItem");
+    Component{
+        id: delegate
+        Loader{
+            id: loader
+            source: "AdaptiveCardItemDelegate.qml"
+        }
+    }
+
+    ListView{
+        id: cardsList
+        anchors.fill: parent
+        cacheBuffer: 10000
+        delegate: delegate
+        model: cardModel
+        clip: true
     }
 }

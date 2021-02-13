@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>main.qml</file>
+        <file>AdaptiveCardItemDelegate.qml</file>
+        <file>CardComponent.qml</file>
+        <file>CardContent.qml</file>
+        <file>qmldir</file>
     </qresource>
 </RCC>

@@ -46,6 +46,7 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\dev\DesktopAdaptiveCards\source\qml\Samples\QmlVisualizer;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
   </PropertyGroup>
@@ -104,6 +105,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <QtRcc Include="qml.qrc" />
+    <None Include="AdaptiveCardItemDelegate.qml" />
+    <None Include="CardComponent.qml" />
+    <None Include="CardContent.qml" />
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>

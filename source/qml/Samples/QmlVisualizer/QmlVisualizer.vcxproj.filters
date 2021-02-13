@@ -38,4 +38,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="AdaptiveCardItemDelegate.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CardComponent.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CardContent.qml">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>
