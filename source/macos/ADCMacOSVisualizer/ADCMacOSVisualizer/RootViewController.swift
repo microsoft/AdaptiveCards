@@ -6,7 +6,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     @IBOutlet var stackView: NSStackView!
     @IBOutlet var textView: NSTextView!
     
-    var items: [String] = []
+    private var items: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +20,10 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             print(error)
         }
         tableView.rowHeight = 32
+        textView.isAutomaticQuoteSubstitutionEnabled = false
+        textView.isAutomaticDashSubstitutionEnabled = false
+        textView.isAutomaticTextReplacementEnabled = false
+        textView.smartInsertDeleteEnabled = false
     }
     
     // MARK: Private Methods
@@ -64,6 +68,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     
     func tableViewSelectionDidChange(_ notification: Notification) {
         let selectedRowNum = tableView.selectedRow
+        guard selectedRowNum >= 0 && selectedRowNum < items.count else { return }
         let path = "/samples/\(items[selectedRowNum])"
         let parts = path.components(separatedBy: ".")
         guard let filepath = Bundle.main.path(forResource: parts[0], ofType: "json") else {

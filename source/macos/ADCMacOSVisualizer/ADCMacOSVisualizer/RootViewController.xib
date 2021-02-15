@@ -111,7 +111,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="350" height="401"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Ww0-OY-Znl">
+                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" id="Ww0-OY-Znl">
                                 <rect key="frame" x="0.0" y="0.0" width="350" height="401"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>

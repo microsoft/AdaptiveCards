@@ -16,6 +16,9 @@
 		08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08299E3D25AF254000799C66 /* AdaptiveCardsTests.swift */; };
 		08299E4025AF254000799C66 /* AdaptiveCards.h in Headers */ = {isa = PBXBuildFile; fileRef = 08299E3225AF254000799C66 /* AdaptiveCards.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 08299F9D25AF279E00799C66 /* AdaptiveCards.xcconfig */; };
+		082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D912A25D67042000226C4 /* FakeHostConfig.swift */; };
+		082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D913325D67455000226C4 /* TextBlockRendererTests.swift */; };
+		082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D914325D6DC7A000226C4 /* FakeTextBlock.swift */; };
 		083E513725C2F87B007247A9 /* ACSHostConfigParseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */; };
 		083E513E25C2F8C1007247A9 /* ACSHostConfigParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		083EA8E725C19E1000DE2BF7 /* ACSDelimiterTypeConvertor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */; };
@@ -589,6 +592,9 @@
 		08299F1E25AF26C800799C66 /* SubmitAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SubmitAction.cpp; path = ../../../../shared/cpp/ObjectModel/SubmitAction.cpp; sourceTree = "<group>"; };
 		08299F1F25AF26C800799C66 /* RichTextBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RichTextBlock.h; path = ../../../../shared/cpp/ObjectModel/RichTextBlock.h; sourceTree = "<group>"; };
 		08299F9D25AF279E00799C66 /* AdaptiveCards.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = AdaptiveCards.xcconfig; sourceTree = "<group>"; };
+		082D912A25D67042000226C4 /* FakeHostConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeHostConfig.swift; sourceTree = "<group>"; };
+		082D913325D67455000226C4 /* TextBlockRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockRendererTests.swift; sourceTree = "<group>"; };
+		082D914325D6DC7A000226C4 /* FakeTextBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextBlock.swift; sourceTree = "<group>"; };
 		083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACSHostConfigParseResult.h; sourceTree = "<group>"; };
 		083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACSHostConfigParseResult.m; sourceTree = "<group>"; };
 		083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACSDelimiterTypeConvertor.mm; sourceTree = "<group>"; };
@@ -966,6 +972,8 @@
 		08299E3C25AF254000799C66 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				082D913225D67440000226C4 /* Renderers */,
+				082D912925D66FEE000226C4 /* Fakes */,
 				08299E3D25AF254000799C66 /* AdaptiveCardsTests.swift */,
 				08299E3F25AF254000799C66 /* Info.plist */,
 			);
@@ -1107,6 +1115,23 @@
 			);
 			name = json;
 			path = ../../../../shared/cpp/ObjectModel/json;
+			sourceTree = "<group>";
+		};
+		082D912925D66FEE000226C4 /* Fakes */ = {
+			isa = PBXGroup;
+			children = (
+				082D912A25D67042000226C4 /* FakeHostConfig.swift */,
+				082D914325D6DC7A000226C4 /* FakeTextBlock.swift */,
+			);
+			path = Fakes;
+			sourceTree = "<group>";
+		};
+		082D913225D67440000226C4 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				082D913325D67455000226C4 /* TextBlockRendererTests.swift */,
+			);
+			path = Renderers;
 			sourceTree = "<group>";
 		};
 		083E513425C2F839007247A9 /* BridgeHelpers */ = {
@@ -1911,6 +1936,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
+				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,
+				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
