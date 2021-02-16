@@ -33,6 +33,7 @@ Item {
                 CardContent {
                     id: cardContentLoader
                     Layout.fillWidth: true
+                    Layout.margins: 5
                     Layout.preferredHeight: item ? item.height : 25
                 }
             }

@@ -36,16 +36,17 @@ namespace RendererQml
 		return output;
 	}
 
-	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveCardRender(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::shared_ptr<AdaptiveRenderContext> context)
-	{
-		auto uiCard = std::make_shared<QmlTag>("Item");
-		uiCard->AddImports("import QtQuick 2.15");
-		uiCard->AddImports("import QtQuick.Layouts 1.3");
-		uiCard->Property("id", "adaptiveCard");
-		uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
-		
-		//TODO: Width can be set as config
-		uiCard->Property("width", "600");
+    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveCardRender(std::shared_ptr<AdaptiveCards::AdaptiveCard> card, std::shared_ptr<AdaptiveRenderContext> context)
+    {
+        auto uiCard = std::make_shared<QmlTag>("Rectangle");
+        uiCard->AddImports("import QtQuick 2.15");
+        uiCard->AddImports("import QtQuick.Layouts 1.3");
+        uiCard->AddImports("import QtQuick.Controls 2.15");
+        uiCard->AddImports("import QtGraphicalEffects 1.15");
+        uiCard->Property("id", "adaptiveCard");
+        uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
+        //TODO: Width can be set as config
+        uiCard->Property("width", "600");
 
 		auto columnLayout = std::make_shared<QmlTag>("ColumnLayout");
 		columnLayout->Property("id", "adaptiveCardLayout");
@@ -88,6 +89,7 @@ namespace RendererQml
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
+        //TODO: Need to fix the color calculation
 		std::string color = context->GetColor(textBlock->GetTextColor(), textBlock->GetIsSubtle(), false);
 		
 		uiTextBlock->Property("color", color);
@@ -131,30 +133,26 @@ namespace RendererQml
 
 	void AdaptiveCardQmlRenderer::AddContainerElements(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& elements, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		if (elements.size() == 1)
-		{
-			auto cardElement = elements.at(0);
-			auto uiElement= context->Render(cardElement);
-			if (uiElement != nullptr)
-			{
-				uiContainer->AddChild(uiElement);
-			}
-		}
+        if (!elements.empty())
+        {
+            auto bodyLayout = std::make_shared<QmlTag>("Column");
+            bodyLayout->Property("id", "bodyLayout");
+            bodyLayout->Property("width", "parent.width");
+            //TODO: Set spacing from host config
+            bodyLayout->Property("spacing", "8");
+            uiContainer->Property("Layout.preferredHeight", "bodyLayout.height");
+            uiContainer->AddChild(bodyLayout);
 
-		else if (elements.size() > 1)
-		{
-			auto columnElement = std::make_shared<QmlTag>("Column");
-			columnElement->Property("anchors.fill", "parent");
-			uiContainer->AddChild(columnElement);
-			for (const auto& cardElement : elements)
-			{
-				auto uiElement = context->Render(cardElement);
-				if (uiElement != nullptr)
-				{
-					columnElement->AddChild(uiElement);
-				}
-			}
-		}
+            for (const auto& cardElement : elements)
+            {
+                auto uiElement = context->Render(cardElement);
+
+                if (uiElement != nullptr)
+                {
+                    bodyLayout->AddChild(uiElement);
+                }
+            }
+        }
 	}
 
 	void AdaptiveCardQmlRenderer::SetObjectTypes()
