@@ -37,7 +37,7 @@ namespace AdaptiveCards
             {
                 // Catch invalid values and replace them with default value
                 // Add warning stating behavior
-                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Value \"{reader.Value.ToString()}\" could not be converted to \"{typeof(TEnum).ToString()}\", using the default value of \"{defaultValue}\" instead."));
+                Warnings.Add(new AdaptiveWarning((int)WarningStatusCode.UnknownElementType, $"Value \"{reader.Value}\" could not be converted to \"{typeof(TEnum).ToString()}\", using the default value of \"{defaultValue}\" instead."));
                 return Enum.Parse(typeof(TEnum), "0");
             }
         }

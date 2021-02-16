@@ -16,17 +16,19 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
         {
+            return RenderHelper(new Grid(), new ComboBox(), new StackPanel(), input, context);
+        }
+
+        public static FrameworkElement RenderHelper(Grid uiGrid, ComboBox uiComboBox, StackPanel uiChoices, AdaptiveChoiceSetInput input, AdaptiveRenderContext context)
+        {
             var chosen = input.Value?.Split(',').Select(p => p.Trim()).Where(s => !string.IsNullOrEmpty(s)).ToList() ?? new List<string>();
 
-            var uiGrid = new Grid();
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             uiGrid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(1, GridUnitType.Star) });
 
-            var uiComboBox = new ComboBox();
             uiComboBox.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput.ComboBox");
             uiComboBox.DataContext = input;
 
-            var uiChoices = new StackPanel();
             uiChoices.DataContext = input;
             uiChoices.Style = context.GetStyle("Adaptive.Input.AdaptiveChoiceSetInput");
 
@@ -100,6 +102,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 Grid.SetRow(uiChoices, 1);
                 uiGrid.Children.Add(uiChoices);
                 inputValue = new AdaptiveChoiceSetInputValue(input, uiChoices, uiChoices.Children[0]);
+            }
+
+            if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
+            {
+                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
+                    "Inputs with validation should include an ErrorMessage"));
             }
 
             context.InputValues.Add(input.Id, inputValue);

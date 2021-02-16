@@ -686,6 +686,50 @@
 				}
 			],
 			"bleed": true
+		},
+		{
+			"type":"TextBlock",
+			"text":"REMOVED TEXT",
+			"size":"ExtraLarge",
+			"weight":"Bolder",
+			"wrap":true
+		},
+		{
+			"type":"ActionSet",
+			"actions":[
+			{
+				"type":"Action.ShowCard",
+				"title":"Results",
+				"card":{
+					"type":"AdaptiveCard",
+					"$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
+					"body":[
+					{
+						"type":"Container",
+						"items":[
+							{
+								"type":"Container",
+								"items":[
+								{
+									"type":"TextBlock",
+									"text":"REMOVED TEXT",
+									"fontType":"Default",
+									"size":"ExtraLarge",
+									"spacing":"None",
+									"weight":"Bolder",
+									"wrap":true
+								}
+								],
+								"style":"default"
+							}
+						],
+						"style":"emphasis",
+						"bleed":true
+					}
+					]
+				}
+			}
+		]
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

@@ -111,7 +111,14 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
-            contentStackPanel.Children.Add(uiTitle);
+            if (!context.IsRenderingSelectAction)
+            {
+                contentStackPanel.Children.Add(uiTitle);
+            }
+            else
+            {
+                uiButton.ToolTip = uiTitle;
+            }
 
             string name = context.GetType().Name.Replace("Action", String.Empty);
             return uiButton;

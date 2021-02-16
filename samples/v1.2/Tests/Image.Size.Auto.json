@@ -1,0 +1,21 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "Image",
+            "url": "https://picsum.photos/300?image=882",
+            "size": "auto",
+            "altText": "Seated guest drinking a cup of coffee"
+        },
+        {
+            "type": "Image",
+            "url": "https://picsum.photos/300?image=882",
+            "size": "auto",
+            "altText": "Seated guest drinking a cup of coffee",
+            "width": "300",
+            "height": "300"
+        }
+    ]
+}

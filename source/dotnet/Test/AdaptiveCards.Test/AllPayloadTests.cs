@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace AdaptiveCards.Test
 {
@@ -72,7 +73,14 @@ namespace AdaptiveCards.Test
                     // Make sure JsonConvert works also
                     var card = JsonConvert.DeserializeObject<AdaptiveCard>(json, new JsonSerializerSettings
                     {
-                        Converters = { new StrictIntConverter() }
+                        Converters = { new StrictIntConverter() },
+                        Error = delegate(object sender, Newtonsoft.Json.Serialization.ErrorEventArgs args)
+                        {
+                            if (args.ErrorContext.Error.GetType() == typeof(JsonSerializationException))
+                            {
+                                args.ErrorContext.Handled = true;
+                            }
+                        }
                     });
                     Assert.AreEqual(parseResult.Card.Body.Count, card.Body.Count, "A converted card should have the same number of body elements as the parsed card");
                     Assert.AreEqual(parseResult.Card.Actions.Count, card.Actions.Count, "A converted card should have the same number of actions as the parsed card");
@@ -125,7 +133,7 @@ namespace AdaptiveCards.Test
                     "Action.NestedDuplicateIds",
                 });
 
-            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.3", "tests"), null);
+            TestPayloadsInDirectory(Path.Combine(SamplesPath, "v1.3", "tests"), null); 
         }
     }
 }

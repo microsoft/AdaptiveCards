@@ -4,7 +4,8 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Please provide the following information:"
+			"text": "Please provide the following information:",
+			"wrap": true
 		}
 	],
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

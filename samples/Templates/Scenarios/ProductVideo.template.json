@@ -10,7 +10,7 @@
             "sources": [
                 {
                     "mimeType": "video/mp4",
-                    "url": "${Url}"                      
+                    "url": "${Url}"
                 }
             ]
         }

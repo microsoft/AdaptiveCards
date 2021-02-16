@@ -9,6 +9,7 @@
             "id": "id1",
             "selectAction": {
                 "type": "Action.ToggleVisibility",
+                "altText":"This is to test select action",
                 "targetElements": [
                     "id2"
                 ]
@@ -17,6 +18,7 @@
         {
             "type": "Container",
             "id": "id2",
+            "altText":"This container will have a text and an image",
             "selectAction": {
                 "type": "Action.ToggleVisibility",
                 "targetElements": [
@@ -30,6 +32,7 @@
                 },
                 {
                     "type": "Image",
+                    "altText":"Cat",
                     "url": "https://adaptivecards.io/content/cats/1.png"
                 }
             ]
@@ -49,6 +52,7 @@
                     "items": [
                         {
                             "type": "TextBlock",
+                            "altText": "This is to test column description",
                             "text": "Column 1"
                         }
                     ]

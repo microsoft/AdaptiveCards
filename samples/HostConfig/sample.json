@@ -14,7 +14,7 @@
 	"supportsInteractivity": true,
 	"fontTypes": {
 		"default": {
-			"fontFamily": "'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+			"fontFamily": "'Segoe UI', 'sans-serif', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue'",
 			"fontSizes": {
 				"small": 12,
 				"default": 14,

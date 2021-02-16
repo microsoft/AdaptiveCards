@@ -360,6 +360,16 @@
 				},
 				"errorMessage": {
 					"$ref": "#/definitions/ErrorMessageConfig"
+				},
+				"validationBehavior":{
+					"type":"string",
+					"description":"Controls when inputs are validated",
+					"default":"onFocusLost",
+					"enum":[
+						"onFocusLost",
+						"onFocusLostWithInput",
+						"onSubmit"
+					]
 				}
 			}
 		},

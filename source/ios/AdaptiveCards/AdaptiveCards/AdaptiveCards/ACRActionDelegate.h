@@ -17,5 +17,6 @@
 - (void)didLoadElements;
 - (void)didChangeVisibility:(UIButton *)button isVisible:(BOOL)isVisible;
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame;
+- (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties;
 
 @end

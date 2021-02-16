@@ -3,6 +3,7 @@
 	"packages": [
 		"adaptivecards*/**",
 		"aclint/**",
+		"marked-schema/**",
 		"spec-generator/**",
 		"ac-typed-schema/**"
 	],

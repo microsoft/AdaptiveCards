@@ -38,11 +38,16 @@ namespace AdaptiveSharedNamespace
         bool GetWrap() const;
         void SetWrap(bool value);
 
+        std::string GetPlaceholder() const;
+        void SetPlaceholder(const std::string& value);
+
     private:
         void PopulateKnownPropertiesSet();
 
         bool m_wrap;
         bool m_isMultiSelect;
+        std::string m_placeholder;
+
         std::string m_value;
         ChoiceSetStyle m_choiceSetStyle;
 
