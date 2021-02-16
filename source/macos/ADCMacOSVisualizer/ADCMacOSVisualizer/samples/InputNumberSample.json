@@ -1,0 +1,60 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Input.Number (With Placeholder Text)",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "This is placeholder text",
+            "id": "asdasd"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input Number (No Placeholder Text)",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "id": "dfdfg"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Number (With Default Value)",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "This is placeholder text",
+            "value": 25,
+            "id": "dffg"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Number (With Min (5) and Max (50) Value)",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "This is placeholder text",
+            "min": 5,
+            "max": 50,
+            "id": "gfghh"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Number (Hidden) ",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "This is placeholder text",
+            "id": "ettrtrt",
+            "isVisible": false
+        }
+    ]
+}

@@ -10,6 +10,7 @@ class RendererManager: RendererManagerProtocol {
         switch elementType {
         case .textBlock: return TextBlockRenderer.shared
         case .toggleInput: return InputToggleRenderer.shared
+        case .numberInput: return InputNumberRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }
