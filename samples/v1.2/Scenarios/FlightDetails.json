@@ -76,7 +76,8 @@
 													"type": "TextBlock",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "SFO"
+													"text": "SFO",
+													"wrap": true
 												}
 											],
 											"width": "auto"
@@ -116,7 +117,8 @@
 													"horizontalAlignment": "right",
 													"size": "extraLarge",
 													"weight": "lighter",
-													"text": "JFK"
+													"text": "JFK",
+													"wrap": true
 												}
 											],
 											"width": "auto"
@@ -191,16 +193,10 @@
 											"type": "Action.Submit",
 											"title": "Check in",
 											"style": "positive"
-										}
-									],
-									"spacing": "medium"
-								},
-								{
-									"type": "ActionSet",
-									"actions": [
+										},
 										{
 											"type": "Action.Submit",
-											"title": "View in calendar"
+											"title": "View"
 										}
 									],
 									"spacing": "medium"

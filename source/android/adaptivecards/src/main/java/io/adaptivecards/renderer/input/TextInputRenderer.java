@@ -45,13 +45,13 @@ import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.action.ActionElementRenderer;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
+import io.adaptivecards.renderer.input.customcontrols.ValidatedEditText;
 import io.adaptivecards.renderer.inputhandler.TextInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextInputStyle;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.readonly.TextRendererUtil;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 
@@ -282,14 +282,19 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
 
-                        InlineActionIconImageLoaderAsync imageLoader =
-                                new InlineActionIconImageLoaderAsync(
-                                        renderedCard,
-                                        inlineButton,
-                                        url,
-                                        editText);
+                        InlineActionIconImageLoaderAsync imageLoader = new InlineActionIconImageLoaderAsync(
+                            renderedCard,
+                            inlineButton,
+                            url,
+                            editText);
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
+
+                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        {
+                            renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
+                        }
+
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
                     else
@@ -310,6 +315,12 @@ public class TextInputRenderer extends BaseCardElementRenderer
                             inlineButton.setPadding(16, 0, 0, 8);
                         }
                         inlineButton.setText(title);
+
+                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        {
+                            renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
+                        }
+
                         textInputViewGroup.addView(inlineButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
                     }
                     textInputViewGroup.setGravity(Gravity.CENTER);
@@ -369,11 +380,6 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
         BaseActionElement action = textInput.GetInlineAction();
 
-        if (Util.isOfType(action, SubmitAction.class))
-        {
-            renderedCard.setCardForSubmitAction(action.GetInternalId(), renderArgs.getContainerCardId());
-        }
-
         if (textInput.GetIsMultiline())
         {
             editText.setLines(3);
@@ -431,13 +437,14 @@ public class TextInputRenderer extends BaseCardElementRenderer
         protected void renderBitmap(Bitmap bitmap)
         {
             ImageButton button = (ImageButton) super.m_view;
-            Drawable drawableIcon = new BitmapDrawable(null, bitmap);
 
-            double editTextHeight = (m_editText.getLineHeight() + (int) m_editText.getLineSpacingExtra()) * 2.5;
-            double intrinsicWidth = drawableIcon.getIntrinsicHeight();
-            double scaleRatio = (editTextHeight )/ drawableIcon.getIntrinsicHeight();
-            double imageWidth = scaleRatio * drawableIcon.getIntrinsicWidth();
-            button.setImageDrawable(new BitmapDrawable(null, Bitmap.createScaledBitmap(bitmap, (int)imageWidth, (int)editTextHeight, false)));
+            // Image height should match single-line EditText height (even if the current EditText is multi-line).
+            // This is computed using line height, line spacing, and vertical padding.
+            float editTextHeight = m_editText.getLineHeight()*m_editText.getLineSpacingMultiplier()
+                + m_editText.getLineSpacingExtra()
+                + m_editText.getPaddingBottom()
+                + m_editText.getPaddingTop();
+            button.setImageDrawable(new BitmapDrawable(null, Util.scaleBitmapToHeight(editTextHeight, bitmap)));
         }
     }
 

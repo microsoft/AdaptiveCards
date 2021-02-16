@@ -41,6 +41,12 @@ namespace AdaptiveCards.Rendering.Wpf
                 timePicker.Style = context.GetStyle("Adaptive.Input.Time");
                 timePicker.DataContext = input;
 
+                if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
+                {
+                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
+                        "Inputs with validation should include an ErrorMessage"));
+                }
+
                 context.InputValues.Add(input.Id, new AdaptiveXceedTimeInputValue(input, timePicker));
 
                 return timePicker;

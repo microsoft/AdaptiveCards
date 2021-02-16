@@ -7,6 +7,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACOInputResults.h"
 #import "ACRTargetBuilderDirector.h"
 #import "ACRView.h"
 #import "ActionParserRegistration.h"
@@ -45,6 +46,8 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
                                            key:(NSString *)key
                                 observerAction:(ObserverActionBlock)observerAction;
 
+- (void)removeObserverOnImageView:(NSString *)KeyPath onObject:(NSObject *)object keyToImageView:(NSString *)key;
+
 - (void)updatePaddingMap:(std::shared_ptr<CollectionTypeElement> const &)collection view:(UIView *)view;
 
 - (UIView *)getBleedTarget:(InternalId const &)internalId;
@@ -69,4 +72,6 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (void)popCurrentShowcard;
 
 - (ACRColumnView *)peekCurrentShowCard;
+
+- (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent;
 @end

@@ -71,7 +71,7 @@ a.ac-anchor:visited:active {
     text-overflow: ellipsis;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     font-family: "Segoe UI", sans-serif;
     font-size: 15px;
     font-weight: 500;

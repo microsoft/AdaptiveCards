@@ -11,12 +11,12 @@ assignees: ''
 
 What platform is your issue or question related to? (Delete other platforms).
 
-* .NET HTML
-* .NET WPF
-* Android
-* iOS
-* JavaScript
-* UWP
+- [ ] .NET HTML
+- [ ] .NET WPF
+- [ ] Android
+- [ ] iOS
+- [ ] JavaScript
+- [ ] UWP
 
 # Author or host
 

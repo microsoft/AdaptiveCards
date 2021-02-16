@@ -11,15 +11,21 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     ActionSet
+    /// Represents the ActionSet element.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveActionSet.TypeName)]
 #endif
     public class AdaptiveActionSet : AdaptiveElement
     {
+        /// <summary>
+        /// The AdaptiveCard element that this class implements.
+        /// </summary>
         public const string TypeName = "ActionSet";
 
+        /// <summary>
+        /// The JSON property name that this class implements.
+        /// </summary>
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
@@ -27,7 +33,7 @@ namespace AdaptiveCards
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        ///     Actions of the action set
+        /// The actions contained within this ActionSet.
         /// </summary>
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveAction>))]
 #if !NETSTANDARD1_3

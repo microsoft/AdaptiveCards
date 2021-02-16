@@ -214,18 +214,6 @@ export class Template {
      * @returns An Expression object if the provided interpolated string contained at least one expression (e.g. "${expression}"); the original string otherwise.
      */
     public static parseInterpolatedString(interpolatedString: string): AEL.Expression | string {
-        let regExp = /\${([^{}}]+)}/g;
-        let matches: RegExpExecArray = null;
-        let lastMatch: RegExpExecArray;
-        let matchCount = 0;
-
-        // Determine if the string contains any ${<expression>}
-        while (matchCount <= 1 && (matches = regExp.exec(interpolatedString)) != null) {
-            lastMatch = matches;
-
-            matchCount++;
-        };
-
         let lookup: AEL.EvaluatorLookup = (type: string) => {
             let standardFunction = AEL.ExpressionFunctions.standardFunctions.get(type);
 
@@ -240,17 +228,36 @@ export class Template {
             }
         }
 
-        // If there are none, it's just a string
-        if (matchCount === 0) {
-            return interpolatedString;
-        }
-        // If the entire string is enclosed in a single ${}, extract the enclosed expression
-        else if (matchCount === 1 && lastMatch[0].length === interpolatedString.length) {
-            return AEL.Expression.parse(lastMatch[1], lookup);
+        // If there is at least one expression start marker, let's attempt to convert into an expression
+        if (interpolatedString.indexOf("${") >= 0) {
+            let parsedExpression = AEL.Expression.parse("`" + interpolatedString + "`", lookup);
+
+            if (parsedExpression.type === "concat") {
+                if (parsedExpression.children.length === 1 && !(parsedExpression.children[0] instanceof AEL.Constant)) {
+                    // The concat contains a single child that isn't a constant, thus the original
+                    // string was a single expression. When evaluated, we want it to produce the type
+                    // of that single expression
+                    return parsedExpression.children[0];
+                }
+                else if (parsedExpression.children.length === 2) {
+                    let firstChild = parsedExpression.children[0];
+
+                    if (firstChild instanceof AEL.Constant && firstChild.value === "" && !(parsedExpression.children[1] instanceof AEL.Constant)) {
+                        // The concat contains 2 children, and the first one is an empty string constant and the second isn't a constant.
+                        // From version 4.10.3, AEL always inserts an empty string constant in all concat expression. Thus the original
+                        // string was a single expression in this case as well. When evaluated, we want it to produce the type
+                        // of that single expression.
+                        return parsedExpression.children[1];
+                    }
+                }
+
+                // Otherwise, we want the expression to produce a string
+                return parsedExpression;
+            }
         }
 
-        // Otherwise, it's an interpolated string with multiple embedded expressions
-        return AEL.Expression.parse("`" + interpolatedString + "`", lookup);
+        // If the original string didn't contain any expression, return i as is
+        return interpolatedString;
     }
 
     /**

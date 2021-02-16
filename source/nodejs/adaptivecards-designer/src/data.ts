@@ -172,15 +172,17 @@ export class ArrayData extends DataType {
     generateSampleData(): any {
         let result = [];
 
-        for (let i = 1; i <= 3; i++) {
-            result.push(this.dataType.generateSampleData());
+        if (this.dataType) {
+            for (let i = 1; i <= 3; i++) {
+                result.push(this.dataType.generateSampleData());
+            }
         }
 
         return result;
     }
 
     getChildFields(): FieldDefinition[] {
-        return this.dataType.getChildFields();
+        return this.dataType ? this.dataType.getChildFields() : [];
     }
 
     qualifyFieldName(fieldName: string, fieldIsLeaf: boolean) {

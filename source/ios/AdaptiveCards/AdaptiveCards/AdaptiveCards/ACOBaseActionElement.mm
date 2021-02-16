@@ -9,6 +9,8 @@
 #import "BaseActionElement.h"
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
+#import "UnknownAction.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -29,6 +31,33 @@ using namespace AdaptiveCards;
         [self setElem:element];
     }
     return self;
+}
+
++ (instancetype)getACOActionElementFromAdaptiveElement:(std::shared_ptr<BaseActionElement> const &)element
+{
+    ACOBaseActionElement *actionElement = nil;
+
+    if (!element) {
+        return nil;
+    }
+
+    AdaptiveCards::ActionType type = element->GetElementType();
+    if (element->GetElementType() == AdaptiveCards::ActionType::UnknownAction) {
+        std::shared_ptr<UnknownAction> unknownAction = std::dynamic_pointer_cast<UnknownAction>(element);
+        // we get back a deserialized action object by calling a custom parser registered via host
+        actionElement = deserializeUnknownActionToCustomAction(unknownAction);
+    } else {
+        actionElement = [[ACOBaseActionElement alloc] initWithBaseActionElement:element];
+    }
+
+    if (type == ActionType::OpenUrl) {
+        actionElement.accessibilityTraits |= UIAccessibilityTraitLink;
+    } else if (type == ActionType::UnknownAction) {
+        actionElement.accessibilityTraits |= actionElement.accessibilityTraits;
+    } else {
+        actionElement.accessibilityTraits |= UIAccessibilityTraitButton;
+    }
+    return actionElement;
 }
 
 - (std::shared_ptr<BaseActionElement>)element
@@ -53,8 +82,10 @@ using namespace AdaptiveCards;
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
         writer->write(blob, &sstream);
+        delete writer;
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
     }
     return nil;
@@ -101,6 +132,30 @@ using namespace AdaptiveCards;
         return _elem->MeetsRequirements(*sharedFReg.get());
     }
     return false;
+}
+
++ (NSNumber *)getKey:(ACRActionType)actionType
+{
+    NSNumber *key = nil;
+    switch (actionType) {
+        case ACRShowCard:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::ShowCard)];
+            break;
+        case ACRSubmit:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Submit)];
+            break;
+        case ACROpenUrl:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::OpenUrl)];
+            break;
+        case ACRToggleVisibility:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
+            break;
+        case ACRUnknownAction:
+        default:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];
+    }
+
+    return key;
 }
 
 @end

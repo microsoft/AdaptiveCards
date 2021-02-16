@@ -1,0 +1,145 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Invalid Properties Test",
+            "wrap": true,
+            "horizontalAlignment": "Center",
+            "size": "ExtraLarge",
+            "weight": "Bolder"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Adaptive elements with invalid properties will get parse warnings during parsing.  If such element is encountered while rendering, renderer will drop such element and log it as render error.",
+            "wrap": true,
+            "size": "Medium"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "TextBlock",
+                    "size": "Large",
+                    "weight": "Bolder",
+                    "horizontalAlignment": "Center",
+                    "separator": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "**Required Properties**\n- *text* "
+                },
+                {
+                    "text": "The ColumnSet below has a column that has a TextBlock witout the required property, \"text\", Renderers should render this card as rendering decision is made per element",
+                    "weight": "Bolder",
+                    "wrap": true,
+                    "type": "TextBlock"
+                },
+                {
+                    "items": [
+                        {
+                            "columns": [
+                                {
+                                    "items": [
+                                        {
+                                            "spacing": "Padding",
+                                            "type": "Container"
+                                        },
+                                        {
+                                            "type": "TextBlock"
+                                        },
+                                        {
+                                            "spacing": "Padding",
+                                            "type": "Container"
+                                        }
+                                    ],
+                                    "type": "Column",
+                                    "width": "stretch"
+                                }
+                            ],
+                            "type": "ColumnSet"
+                        }
+                    ],
+                    "spacing": "Small",
+                    "type": "Container"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "Empty text should be dropped"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": ""
+                }
+            ],
+            "style": "emphasis"
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "FactSet",
+                    "size": "Large",
+                    "weight": "Bolder",
+                    "horizontalAlignment": "Center",
+                    "separator": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "**Required Properties**\n- *Facts*\n- *Fact* must have either *title* or *value* to be valid",
+                    "wrap": true
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "FactSet with missing facts property is below, and it should be dropped.",
+                    "wrap": true
+                },
+                {
+                    "type": "FactSet"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "FactSet with 0 fact is below, and it should be dropped.",
+                    "spacing": "None",
+                    "wrap": true,
+                    "separator": true
+                },
+                {
+                    "type": "FactSet"
+                },
+                {
+                    "type": "TextBlock",
+                    "text": "FactSet with facts without Title, without Value, without both, and a random property is below.",
+                    "spacing": "None",
+                    "wrap": true,
+                    "separator": true
+                },
+                {
+                    "type": "FactSet",
+                    "spacing": "None",
+                    "facts": [
+                        {
+                            "value": "value"
+                        },
+                        {
+                            "title": "title"
+                        },
+                        {},
+                        {
+                            "title": "title",
+                            "value": "value"
+                        },
+                        {
+                            "hello": "ha ha ha"
+                        }
+                    ]
+                }
+            ],
+            "style": "good"
+        }
+    ]
+}

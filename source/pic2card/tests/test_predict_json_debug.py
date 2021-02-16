@@ -9,14 +9,6 @@ from tests.utils import get_response
 class PredictJsonDebugTestAPI(BaseAPITest):
     """ tests for predict_json_debug api """
 
-    @classmethod
-    def setUpClass(cls):
-        super(PredictJsonDebugTestAPI, cls).setUpClass()
-        cls.api = "/predict_json_debug"
-        cls.response = get_response(cls.client, cls.api, cls.headers,
-                                    cls.data)
-        cls.output = json.loads(cls.response.data)
-
     def test_status_code(self):
         """ checks if the response has a success status code 200 """
         self.assertEqual(self.response.status_code, 200)
