@@ -16,7 +16,8 @@ const std::string card = R"({
                 "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                 "type" : "AdaptiveCard",
                 "version" : "1.2",
-                "body" : []
+				"body": [
+				]
             })";
 
 static std::shared_ptr<AdaptiveCards::HostConfig> GetHostConfig()

@@ -255,4 +255,28 @@ namespace RendererQml
     }
 
     std::regex TextUtils::m_textFunctionRegex(R"xxx(\{\{(DATE|TIME)\(([\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2})(Z|(?:(?:-|\+)\d{2}:\d{2}))(?:,\s*(SHORT|LONG|COMPACT)\s*)??\)\}\})xxx");
+
+	std::string Utils::GetHorizontalAlignment(std::string aligntype)
+	{
+		if (aligntype.compare("center") == 0)
+			return "Text.AlignHCenter";
+		else if (aligntype.compare("right") == 0)
+			return "Text.AlignRight";
+		else
+			return "Text.AlignLeft";
+
+	}
+
+	std::string Utils::GetWeight(AdaptiveCards::TextWeight weight)
+	{
+		switch (weight)
+		{
+			case AdaptiveCards::TextWeight::Lighter:
+				return "Font.ExtraLight";
+			case AdaptiveCards::TextWeight::Bolder:
+				return "Font.Bold";
+			default:
+				return "Font.Normal";
+		}
+	}
 }

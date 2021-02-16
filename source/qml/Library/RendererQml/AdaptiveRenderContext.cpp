@@ -25,7 +25,18 @@ namespace RendererQml
         return qmlTagOut;
     }
 
-    const std::vector<AdaptiveWarning>& AdaptiveRenderContext::GetWarnings()
+	std::shared_ptr<QmlTag> AdaptiveRenderContext::Render(std::shared_ptr<AdaptiveCards::BaseElement> element)
+	{
+		std::shared_ptr<QmlTag> QmlTagOut;
+		auto renderer = m_elementRenderers->Get(typeid(*element), Utils::IsInstanceOfSmart<AdaptiveCards::BaseElement>(element));
+		if (renderer != nullptr)
+		{
+			QmlTagOut = renderer(element, shared_from_this());
+		}
+		return QmlTagOut;
+	}
+
+	const std::vector<AdaptiveWarning>& AdaptiveRenderContext::GetWarnings()
     {
         return m_warnings;
     }
@@ -66,6 +77,45 @@ namespace RendererQml
         }
         return Formatter() << "'" << color << "'";
     }
+
+	std::string AdaptiveRenderContext::GetColor(const AdaptiveCards::ForegroundColor color, bool isSubtle, bool isHighlight)
+	{
+
+		AdaptiveCards::ColorConfig colorConfig;
+		switch (color)
+		{
+		case AdaptiveCards::ForegroundColor::Accent:
+			colorConfig = m_renderArgs.GetForegroundColors().accent;
+			break;
+		case AdaptiveCards::ForegroundColor::Good:
+			colorConfig = m_renderArgs.GetForegroundColors().good;
+			break;
+		case AdaptiveCards::ForegroundColor::Warning:
+			colorConfig = m_renderArgs.GetForegroundColors().warning;
+			break;
+		case AdaptiveCards::ForegroundColor::Attention:
+			colorConfig = m_renderArgs.GetForegroundColors().attention;
+			break;
+		case AdaptiveCards::ForegroundColor::Dark:
+			colorConfig = m_renderArgs.GetForegroundColors().dark;
+			break;
+		case AdaptiveCards::ForegroundColor::Light:
+			colorConfig = m_renderArgs.GetForegroundColors().light;
+			break;
+		default:
+			colorConfig = m_renderArgs.GetForegroundColors().defaultColor;
+			break;
+		}
+
+		if (isHighlight)
+		{
+			return GetRGBColor(isSubtle ? colorConfig.highlightColors.subtleColor : colorConfig.highlightColors.defaultColor);
+		}
+		else
+		{
+			return GetRGBColor(isSubtle ? colorConfig.subtleColor : colorConfig.defaultColor);
+		}
+	}
 
     std::string AdaptiveRenderContext::GetLang()
     {

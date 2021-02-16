@@ -31,6 +31,10 @@ namespace RendererQml
         static bool TryParse(const std::string& str, double& value);
         static bool EndsWith(const std::string& str, const std::string& end);
 
+		//Mapping values for textblock
+		static std::string GetHorizontalAlignment(std::string aligntype);
+		static std::string GetWeight(AdaptiveCards::TextWeight weight);
+
     private:
         Utils() {}
     };
