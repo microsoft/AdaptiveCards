@@ -783,6 +783,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
+                removeAction.accessibleTitle = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
