@@ -1,4 +1,4 @@
-# Focus Lost Input Validation
+# Focus Lost Input Validation - Draft
 
 In version 1.3 of the Adaptive Cards schema we introduced input validation in Adaptive Cards. For that initial version we validated inputs only when the user presses the submit button. In order to improve the user experience, and to allow more control to the hosts, this spec covers the introduction of additional options for validation.
 
