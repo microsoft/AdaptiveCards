@@ -25,7 +25,7 @@ export class StyleManager {
 	styles = StyleSheet.create({
 		defaultFontFamilyName: {
 			fontFamily: this.hostConfig.fontStyles.default.fontFamily
-		}, 
+		},
 		defaultFontConfig: {
 			fontSize: this.hostConfig.fontStyles.default.fontSizes.default,
 			fontWeight: this.hostConfig.fontStyles.default.fontWeights.default.toString(),
@@ -46,35 +46,36 @@ export class StyleManager {
 		borderAttention: {
 			borderColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},
-		buttonBackgroundColor: {
-			backgroundColor: this.themeConfig.button[Platform.OS].backgroundColor,
+		button: {
+			...this.themeConfig.button[Platform.OS]
 		},
-		buttonTitleColor:{
+		buttonTitle: {
 			color: this.themeConfig.button[Platform.OS].color,
-		},
-		buttonBorderRadius: {
-			borderRadius: this.themeConfig.button[Platform.OS].borderRadius,
-		},
-		buttonTitleTransform:{
 			textTransform: this.themeConfig.button[Platform.OS].textTransform,
 		},
-		inputBorderColor: {
-			borderColor: this.themeConfig.input[Platform.OS].borderColor,
-		},
-		inputBackgroundColor: {
-			backgroundColor: this.themeConfig.input[Platform.OS].backgroundColor,
-		},
-		inputBorderRadius: {
-			borderRadius: this.themeConfig.input[Platform.OS].borderRadius,
-		},
-		inputBorderWidth: {
-			borderWidth: this.themeConfig.input[Platform.OS].borderWidth,
+		input: {
+			...this.themeConfig.input[Platform.OS]
 		},
 		defaultPositiveButtonBackgroundColor: {
 			backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.accent.default,
 		},
 		defaultDestructiveButtonForegroundColor: {
 			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
+		},
+		inputDate: {
+			...this.themeConfig.inputDate[Platform.OS]
+		},
+		inputTime: {
+			...this.themeConfig.inputTime[Platform.OS]
+		},
+		radioButton: {
+			...this.themeConfig.radioButton[Platform.OS]
+		},
+		checkBox: {
+			...this.themeConfig.checkBox[Platform.OS]
+		},
+		choiceSetTitle: {
+			...this.themeConfig.choiceSetTitle[Platform.OS]
 		},
 	});
 }

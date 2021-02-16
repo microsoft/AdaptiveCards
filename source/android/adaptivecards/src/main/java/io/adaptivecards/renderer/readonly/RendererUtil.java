@@ -55,6 +55,7 @@ public class RendererUtil
 
         // preprocess string to change <li> to <listItem> so we get a chance to handle them
         textString = textString.replace("<li>", "<listItem>");
+        textString = textString.replaceAll("(" + System.lineSeparator() + "|\r\n|\n\r|\r|\n)", "<br/>");
 
         Spanned htmlString;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)

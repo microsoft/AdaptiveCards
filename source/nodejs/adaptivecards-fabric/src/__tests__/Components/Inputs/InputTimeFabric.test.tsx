@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-import { InputTimeFabric } from "../../../Components/Inputs/InputTimeFabric";
+import { InputTimeFabric } from "../../../components/inputs/InputTimeFabric";
 import * as TestUtils from "../../TestUtils";
 import { initializeIcons } from "office-ui-fabric-react";
 

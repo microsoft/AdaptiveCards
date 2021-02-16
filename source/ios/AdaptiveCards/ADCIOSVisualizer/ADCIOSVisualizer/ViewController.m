@@ -121,6 +121,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
     ADCResolver *resolver = [[ADCResolver alloc] init];
     [_resolvers setResourceResolver:resolver scheme:@"http"];
     [_resolvers setResourceResolver:resolver scheme:@"https"];
+    [_resolvers setResourceResolver:resolver scheme:@"data"];
     _enableCustomRenderer = NO;
     self.curView = nil;
 
@@ -392,9 +393,7 @@ const CGFloat kAdaptiveCardsWidth = 330;
             [self presentViewController:alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Toggle Visibilty" message:nil preferredStyle:UIAlertControllerStyleAlert];
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDefault handler:nil]];
-        [self presentViewController:alertController animated:YES completion:nil];
+        NSLog(@"toggle visibility");
     }
 }
 

@@ -216,7 +216,7 @@
 							},
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "collapsed"
+							"altText": "Air travel expense collapsed"
 						}
 					],
 					"width": "auto"
@@ -241,7 +241,7 @@
 							},
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "expanded"
+							"altText": "Air travel expense expanded"
 						}
 					],
 					"width": "auto"
@@ -369,7 +369,7 @@
 							},
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "collapsed"
+							"altText": "Auto mobile expense collapsed"
 						}
 					],
 					"width": "auto"
@@ -394,7 +394,7 @@
 							},
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "expanded"
+							"altText": "Auto mobile expense expanded"
 						}
 					],
 					"width": "auto"
@@ -516,7 +516,7 @@
 							},
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "collapsed"
+							"altText": "Air travel expense collapsed"
 						}
 					],
 					"width": "auto"
@@ -541,7 +541,7 @@
 							},
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "expanded"
+							"altText": "Air travel expense expanded"
 						}
 					],
 					"width": "auto"

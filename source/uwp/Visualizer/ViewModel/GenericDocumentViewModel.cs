@@ -1,18 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+using AdaptiveCardVisualizer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI.Popups;
-using AdaptiveCardVisualizer.Helpers;
+using Windows.Storage.Pickers;
+using Windows.UI.Xaml;
+using Windows.Storage.Provider;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
+    
+
     public abstract class GenericDocumentViewModel : BindableBase
     {
         public MainPageViewModel MainPageViewModel { get; private set; }
@@ -26,9 +29,12 @@ namespace AdaptiveCardVisualizer.ViewModel
             set { SetProperty(ref _name, value); }
         }
 
+        protected KeyboardPressTimeCounter TimeCounter;
+
         public GenericDocumentViewModel(MainPageViewModel model)
         {
             MainPageViewModel = model;
+            TimeCounter = new KeyboardPressTimeCounter(this);
         }
 
         public bool IsOutdated { get; set; } = true;
@@ -53,7 +59,6 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
 
             SetProperty(ref _payload, value);
-
             Reload();
         }
 
@@ -65,11 +70,13 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 IsLoading = true;
 
-                await Task.Delay(1000);
+                await Task.Delay(TimeSpan.FromSeconds(1));
 
                 IsLoading = false;
                 NotifyPropertyChanged(DelayedUpdatePayload);
                 Load();
+
+                TimeCounter.ResetCounter();
             }
         }
 
@@ -119,15 +126,55 @@ namespace AdaptiveCardVisualizer.ViewModel
             }
         }
 
+        private void CreateMessageDialog(string text)
+        {
+            var messageDialog = new MessageDialog(text);
+            // Set the index of the command to be used as cancel (when ESC is pressed)
+            // As there's only one command, command 0 is selected
+            messageDialog.CancelCommandIndex = 0;
+            var dontWait = messageDialog.ShowAsync();
+        }
+
+        private async Task SaveNewFileAsync()
+        {
+            var savePicker = new FileSavePicker();
+            savePicker.SuggestedStartLocation = PickerLocationId.DocumentsLibrary;
+            savePicker.FileTypeChoices.Add("Adaptive Card JSON", new List<string>() { ".json" });
+            savePicker.SuggestedFileName = "NewAdaptiveCard.json";
+
+            File = await savePicker.PickSaveFileAsync();
+            if (File != null)
+            {
+                CachedFileManager.DeferUpdates(File);
+                await FileIO.WriteTextAsync(File, File.Name);
+                FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(File);
+                if (status == FileUpdateStatus.Complete)
+                {
+                    this.Name = File.Name;
+                }
+                else
+                {
+                    CreateMessageDialog("File " + File.Name + " couldn't be saved");
+                }
+            }
+        }
+
         public async Task SaveAsync()
         {
             try
             {
-                await FileIO.WriteTextAsync(File, Payload);
+                if (File == null)
+                {
+                    await SaveNewFileAsync();
+                }
+                else
+                {
+                    await FileIO.WriteTextAsync(File, Payload);      
+                }
             }
             catch (Exception ex)
             {
-                var dontWait = new MessageDialog(ex.ToString()).ShowAsync();
+                CreateMessageDialog(ex.ToString());
             }
         }
 
@@ -152,14 +199,16 @@ namespace AdaptiveCardVisualizer.ViewModel
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.ToString());
-                MakeErrorsLike(new List<ErrorViewModel>()
+                errors = new List<ErrorViewModel>()
                 {
                     new ErrorViewModel()
                     {
                         Message = "Loading failed",
                         Type = ErrorViewModelType.Error
                     }
-                });
+                };
+
+                TimeCounter.ResetCounter();
             }
 
             IsOutdated = false;
@@ -169,13 +218,19 @@ namespace AdaptiveCardVisualizer.ViewModel
 
         protected void SetSingleError(ErrorViewModel error)
         {
-            MakeErrorsLike(new List<ErrorViewModel>() { error });
+            errors = new List<ErrorViewModel>() { error };
+            TimeCounter.ResetCounter();
         }
 
-        protected void MakeErrorsLike(List<ErrorViewModel> errors)
+        public void MakeErrorsLike()
         {
-            errors.Sort();
-            Errors.MakeListLike(errors);
+            if (errors != null)
+            {
+                errors.Sort();
+                Errors.MakeListLike(errors);
+            }
         }
+
+        protected List<ErrorViewModel> errors = new List<ErrorViewModel>();
     }
 }

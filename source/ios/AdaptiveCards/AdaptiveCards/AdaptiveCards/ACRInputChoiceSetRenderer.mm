@@ -54,7 +54,7 @@
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
-        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet];
+        dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     }
 

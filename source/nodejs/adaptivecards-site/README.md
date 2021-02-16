@@ -1,6 +1,6 @@
 # About the AdaptiveCards website
 
-The https://adaptivecards.io site is entirely static-generated HTML using NodeJS and Hexo. It uses other files in the repo to help build out the site, like the JSON-schema file, and sample card payloads.
+The https://adaptivecards.io site is entirely static-generated HTML using NodeJS and Hexo. It uses other files in the repo to help build out the site, like the JSON-schema file, and sample card payloads. [Hexo](https://hexo.io/) is the static-site-generator used to build the site.
 
 * **[Schema Explorer](https://adaptivecards.io/explorer)** is built by generating markdown and then generating HTML based on the [JSON-Schama file](../../../schemas/adaptive-card.json). The **Example** cards are found by naming convention: 
   * The default example is: `../../../samples/v1.*/Elements/<ElementName>.json` (e.g., `v1.0/Elements/TextBlock.json`)
@@ -40,28 +40,20 @@ Microsoft properties have a standard header/footer that is provided by the UHF A
 
 ## Install and Build
 
-### Install Hexo
+### Prerequisites
+Ensure that you've bootstrapped the repo following instructions [here](https://github.com/microsoft/AdaptiveCards/tree/master/source/nodejs#build). Note that since we use lerna to manage our node project, the instructions below reference lerna commands rather than raw npm commands for consistency.
 
-[Hexo](https://hexo.io/) is the static-site-generator used to build the site.
-
-```console
-npm install hexo-cli -g
-```
-
-### Build
+### Build & Generate
 
 ```console
-npm install
-```
+1. cd adaptivecards-site
+2. npx lerna run release
 
-### Generate
-
-```console
-npm run build
 ```
 
 ### Run
 
 ```console
-npm start
+1. npm start
+2. Open up the browser to point to: localhost:[portnumber] printed after the command above returns under "Hexo is running at".
 ```

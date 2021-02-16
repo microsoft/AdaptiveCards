@@ -35,43 +35,6 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public abstract class BaseActionElementRenderer implements IBaseActionElementRenderer
 {
-    protected static class ButtonOnLayoutChangedListener implements View.OnLayoutChangeListener
-    {
-        public ButtonOnLayoutChangedListener(){}
-
-        @Override
-        public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom)
-        {
-            Button button = (Button)v;
-
-            double textHeight = button.getTextSize();
-
-            Rect bounds = new Rect();
-            String text = button.getText().toString().toUpperCase();
-
-            Paint paint = button.getPaint();
-            paint.setTextSize((float) textHeight);
-            paint.getTextBounds(text, 0, text.length(), bounds);
-
-            Drawable[] icons = button.getCompoundDrawables();
-            if(icons[0] != null) {
-                double iconWidth = icons[0].getIntrinsicWidth();
-                double buttonWidth = button.getWidth();
-                double boundsWidth = bounds.width();
-                double iconStartPosition = (buttonWidth - (iconWidth + mPadding + boundsWidth)) / 2;
-
-                button.setCompoundDrawablePadding((int) (-iconStartPosition + mPadding));
-                button.setPadding((int) iconStartPosition, 0, 0, 0);
-            }
-        }
-
-        public void setPadding(int padding){
-            mPadding = padding;
-        }
-
-        private int mPadding;
-    }
-
     protected static int getColor(String colorCode)
     {
         return android.graphics.Color.parseColor(colorCode);

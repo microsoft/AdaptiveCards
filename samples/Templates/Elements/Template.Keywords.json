@@ -1,0 +1,34 @@
+{ 
+	"type": "AdaptiveCard", 
+	"version": "1.2",
+	"body": [ 
+		{ 
+			"type": "TextBlock", 
+			"text": "Data context is set with employee.manager, and the usage of name in template will refer to employee.manager's name",
+			"wrap": true
+		}, 
+		{ 
+			"type": "Container",
+			"$data": "${employee.manager}",
+			"items": [ 
+				{ 
+					"type": "TextBlock", 
+					"text": "name: ${name}"
+				}, 
+				{
+					"type": "Container",
+					"items": [
+						{ 
+							"type": "TextBlock", 
+							"text": "Root keyword allows to access root data context "
+						},
+						{ 
+							"type": "TextBlock", 
+							"text": "name: ${$root.employee.name}"
+						}
+					]
+				}
+			] 
+		}
+	]
+}

@@ -14,6 +14,7 @@ import {
 	Text,
 	StyleSheet
 } from 'react-native';
+import PropTypes from 'prop-types';
 import { HostConfigManager } from "../../utils/host-config";
 import { StyleManager } from "../../styles/style-config";
 import { InputContext } from '../../utils/context';
@@ -28,14 +29,22 @@ export default class ElementWrapper extends React.Component {
 
 	static contextType = InputContext;
 
+	static propTypes = {
+		isFirst: PropTypes.bool
+	};
+
+	static defaultProps = {
+		isFirst: false
+	};
+
 	render() {
 		const computedStyles = this.getComputedStyles();
 		const showValidationText = this.props.isError && this.context.showErrors;
-        const isFirstElement = this.props.isFirst; // Is first element?
-
+		const { isFirst } = this.props; //isFirst represent, it is first element
+		const isColumnSet = this.props.json.type === Constants.TypeColumnSet;
 		return (
 			<React.Fragment>
-				{!isFirstElement && this.getSpacingElement()}
+				{!isColumnSet ? !isFirst && this.getSpacingElement() : this.props.json.separator && !isFirst && this.getSeparatorElement()}
 				<View style={computedStyles} onLayout={this.props.onPageLayout}>
 					{this.props.children}
 					{showValidationText && this.getValidationText()}
@@ -108,6 +117,14 @@ export default class ElementWrapper extends React.Component {
 		}
 
 		return <View style={separatorStyles}></View>
+	}
+
+	/**
+     * @description Return the element for separator
+     * @returns {object} View element with `separator` prop
+     */
+	getSeparatorElement = () => {
+		return <View style={[this.styleConfig.separatorStyle, { height: 3 }]}></View>
 	}
 }
 

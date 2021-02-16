@@ -1,0 +1,55 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Your registration is almost complete",
+			"size": "Medium",
+			"weight": "Bolder"
+		},
+		{
+			"type": "TextBlock",
+			"text": "What type of food would you like?",
+			"wrap": true
+		},
+		{
+			"type": "Input.Text",
+			"placeholder": "enter food here",
+			"id": "txtFood"
+		},
+		{
+			"type": "ActionSet",
+			"actions": [
+				{
+					"type": "Action.Submit",
+					"title": "Submit",
+					"id": "submitFood"
+				},
+				{
+					"type": "Action.ShowCard",
+					"title": "Drink only order",
+					"card": {
+						"type": "AdaptiveCard",
+						"body": [
+							{
+								"type": "Input.Text",
+								"id": "txtDrink",
+								"placeholder": "Enter drink order here"
+							}
+						],
+						"actions": [
+							{
+								"type": "Action.Submit",
+								"title": "OK",
+								"id": "submitDrink"
+							}
+						],
+						"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+					}
+				}
+			]
+		}
+	]
+}

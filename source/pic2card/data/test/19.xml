@@ -1,0 +1,26 @@
+<annotation>
+	<folder>dataset_final</folder>
+	<filename>19.png</filename>
+	<path>/home/keerthanamanoharan/Documents/office_work/Pic2Code/dataset_final/19.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>553</width>
+		<height>74</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>textbox</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>24</xmin>
+			<ymin>25</ymin>
+			<xmax>156</xmax>
+			<ymax>56</ymax>
+		</bndbox>
+	</object>
+</annotation>

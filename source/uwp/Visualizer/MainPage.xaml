@@ -42,7 +42,7 @@
                         Label="Save file"
                         Click="AppBarSave_Click"
                         IsCompact="True"/>
-                    <AppBarToggleButton
+                    <AppBarButton
                         x:Name="AppBarHostConfigEditor"
                         Icon="Setting"
                         Label="Host config"
@@ -81,6 +81,7 @@
 
             <!--Tab page-->
             <local:DocumentView
+                x:Name="AdaptiveCardDocumentView"
                 Grid.Column="1"
                 DataContext="{Binding CurrentDocument}"
                 Visibility="{Binding CurrentDocument, Converter={StaticResource NotNullToVisibilityConverter}}"/>
@@ -118,34 +119,6 @@
             </Grid>
         </Grid>
 
-
-
-
-
-
-
-
-
-        <!-- JSON input panel-->
-        <!--<Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="5"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="JSON:" HorizontalAlignment="Left" VerticalAlignment="Bottom" Grid.Row="0"/>
-            <RichEditBox x:Name="adaptiveJson" Grid.Row="2"/>
-        </Grid>-->
-
-        <!-- Render outputs-->
-        <!--<Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Rendered As Xaml Output:" Grid.Row="0"/>
-            <ContentPresenter x:Name="renderedXamlPresenter" Grid.Row="1"/>
-        </Grid>-->
     </Grid>
     
 </Page>

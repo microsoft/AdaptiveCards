@@ -83,7 +83,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         @Override
-        protected Bitmap styleBitmap(Bitmap bitmap)
+        public Bitmap styleBitmap(Bitmap bitmap)
         {
             if (bitmap != null && m_imageStyle == ImageStyle.Person)
             {

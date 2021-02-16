@@ -19,7 +19,19 @@
         </Grid.ColumnDefinitions>
 
         <!--Editor and errors-->
-        <local:GenericDocumentView />
+        <local:GenericDocumentView x:Name="GenericDocumentViewName"/>
+
+        <!--Vertical draggable column splitter-->
+        <toolkitControls:GridSplitter
+            Width="11"
+            Background="{ThemeResource SystemControlBackgroundAccentBrush}"
+            GripperCursor="Default"
+            HorizontalAlignment="Left"
+            Grid.Column="1"
+            ResizeDirection="Auto"
+            ResizeBehavior="BasedOnAlignment"
+            CursorBehavior="ChangeOnSplitterHover"
+            GripperForeground="White"/>
 
         <!--Preview-->
         <Grid
@@ -39,17 +51,5 @@
                     Height="40"/>
             </Border>
         </Grid>
-
-        <!--Vertical draggable column splitter-->
-        <toolkitControls:GridSplitter
-            Width="11"
-            Background="{ThemeResource SystemControlBackgroundAccentBrush}"
-            GripperCursor="Default"
-            HorizontalAlignment="Left"
-            Grid.Column="1"
-            ResizeDirection="Auto"
-            ResizeBehavior="BasedOnAlignment"
-            CursorBehavior="ChangeOnSplitterHover"
-            GripperForeground="White"/>
     </Grid>
 </UserControl>

@@ -1,0 +1,19 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.2",
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "Lowest Price: ${min(select(requests, iter, iter.price))}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Highest Price: ${max(select(requests, iter, iter.price))}"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Sum of Price: ${sum(select(requests, iter, iter.price))}"
+		}
+	],
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

@@ -42,7 +42,8 @@
 						{
 							"type": "Image",
 							"url": "https://picsum.photos/300?image=882",
-							"size": "auto"
+							"size": "auto",
+							"altText": "Seated guest drinking a cup of coffee"
 						}
 					]
 				}

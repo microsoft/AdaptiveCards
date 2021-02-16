@@ -241,6 +241,7 @@
     <ClCompile Include="ContainerStyleTest.cpp" />
     <ClCompile Include="ElementTest.cpp" />
     <ClCompile Include="FallbackTests.cpp" />
+    <ClCompile Include="TextParsingTest.cpp" />
     <ClCompile Include="UnsupportedtypesParsingTest.cpp" />
     <ClCompile Include="EnumTest.cpp" />
     <ClCompile Include="EverythingBagel.cpp" />

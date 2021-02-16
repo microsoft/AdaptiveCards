@@ -38,6 +38,7 @@ import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ChoiceSetInput;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.renderer.inputhandler.RadioGroupInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -76,6 +77,7 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         List<CheckBox> checkBoxList = new Vector<CheckBox>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
+
         String value = choiceSetInput.GetValue();
         Vector<String> defaults = new Vector<>();
         defaults.addAll(Arrays.asList(value.split(",")));
@@ -90,9 +92,9 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             CheckBox checkBox = new CheckBox(context);
             checkBox.setText(choiceInput.GetTitle());
 
-            if(!choiceSetInput.GetWrap())
+            if (!choiceSetInput.GetWrap())
             {
-                checkBox.setLines(1);
+                checkBox.setMaxLines(1);
                 checkBox.setEllipsize(TextUtils.TruncateAt.END);
             }
 
@@ -171,11 +173,12 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             View separator,
             ViewGroup viewGroup)
     {
-        Vector<String> titleList = new Vector<String>();
+        final Vector<String> titleList = new Vector<>();
         ChoiceInputVector choiceInputVector = choiceSetInput.GetChoices();
         long size = choiceInputVector.size();
         int selection = 0;
         String value = choiceSetInput.GetValue();
+
         for (int i = 0; i < size; i++)
         {
             ChoiceInput choiceInput = choiceInputVector.get(i);
@@ -187,20 +190,55 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
             }
         }
 
+        // If the default value is empty, then create an empty option at the end to avoid any mess
+        // with indexes
+        boolean hasEmptyDefault = value.isEmpty();
+        if (hasEmptyDefault)
+        {
+            titleList.addElement("");
+            selection = (int)size;
+        }
+
         final ComboBoxInputHandler comboBoxInputHandler = new ComboBoxInputHandler(choiceSetInput);
-        Spinner spinner = new Spinner(context);
+        final Spinner spinner = new Spinner(context);
         comboBoxInputHandler.setView(spinner);
 
         spinner.setTag(new TagContent(choiceSetInput, comboBoxInputHandler, separator, viewGroup));
 
         renderedCard.registerInputHandler(comboBoxInputHandler);
 
-        class WrappedTextSpinnerAdapter extends ArrayAdapter<String>
+        class TextSpinnerAdapter extends ArrayAdapter<String>
         {
-            WrappedTextSpinnerAdapter(Context context, int resource,
-                               Vector<String>items)
+            TextSpinnerAdapter(Context context, int resource,
+                                      Vector<String> items, boolean hasEmptyDefault)
             {
                 super(context, resource, items);
+                m_hasEmptyDefault = hasEmptyDefault;
+                m_itemCount = items.size();
+            }
+
+            public int getCount()
+            {
+                if (m_hasEmptyDefault)
+                {
+                    return m_itemCount - 1;
+                }
+                else
+                {
+                    return m_itemCount;
+                }
+            }
+
+            private int m_itemCount = 0;
+            private boolean m_hasEmptyDefault = false;
+        }
+
+        class WrappedTextSpinnerAdapter extends TextSpinnerAdapter
+        {
+            WrappedTextSpinnerAdapter(Context context, int resource,
+                               Vector<String>items, boolean hasEmptyDefault)
+            {
+                super(context, resource, items, hasEmptyDefault);
             }
             @NonNull
             @Override
@@ -218,15 +256,16 @@ public class ChoiceSetInputRenderer extends BaseCardElementRenderer
         ArrayAdapter<String> spinnerArrayAdapter;
         if(choiceSetInput.GetWrap())
         {
-            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList);
+            spinnerArrayAdapter = new WrappedTextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
         }
         else
         {
-            spinnerArrayAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, titleList);
+            spinnerArrayAdapter = new TextSpinnerAdapter(context, android.R.layout.simple_spinner_item, titleList, hasEmptyDefault);
         }
 
         spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(spinnerArrayAdapter);
+
         spinner.setSelection(selection);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {

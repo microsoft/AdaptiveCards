@@ -1,0 +1,71 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <VersionPrefix>1.0.0</VersionPrefix>
+    <VersionSuffix>$(VersionSuffix)</VersionSuffix>
+    <Authors>Microsoft</Authors>
+    <Product>Adaptive Cards</Product>
+    <Summary>JSON templating library</Summary>
+    <Description>This library implements a JSON-to-JSON templating/data-binding engine. While it is designed to be used with Adaptive Cards, it is not dependent on Adaptive Cards and can therefore be used in many contexts and applications.</Description>
+    <Copyright>© Microsoft Corporation. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/Microsoft/AdaptiveCards</RepositoryUrl>
+    <PackageIconUrl>https://adaptivecards.io/content/icons_blue/blue-48.png</PackageIconUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/microsoft/AdaptiveCards/issues/2448</PackageProjectUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DefineConstants>$(DefineConstants);$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>$(MSBuildProjectDirectory)\docs\AdaptiveCardsTemplate.xml</DocumentationFile>
+    <VsxmdAutoDeleteXml>True</VsxmdAutoDeleteXml>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Antlr4 Remove="tool\**" />
+    <Compile Remove="tool\**" />
+    <EmbeddedResource Remove="tool\**" />
+    <None Remove="tool\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="AdaptiveCardsTemplatingBaseVisitor.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingLexer.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingParser.cs" />
+    <Compile Remove="AdaptiveCardsTemplatingVisitor.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AdaptiveCardsTemplating.interp" />
+    <None Remove="AdaptiveCardsTemplating.tokens" />
+    <None Remove="AdaptiveCardsTemplatingLexer.interp" />
+    <None Remove="AdaptiveCardsTemplatingLexer.tokens" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AdaptiveExpressions" Version="4.9.0" />
+    <PackageReference Include="Antlr4" Version="4.6.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0-beta3.final">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Vsxmd" Version="1.4.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Antlr4 Update="AdaptiveCardsTemplateLexer.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+    <Antlr4 Update="AdaptiveCardsTemplateParser.g4">
+      <Listener>false</Listener>
+    </Antlr4>
+  </ItemGroup>
+
+</Project>

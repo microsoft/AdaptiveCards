@@ -17,8 +17,7 @@
 
 		<div class="w3-margin w3-padding-32">
 			<h1 class="w3-xxxlarge">A whole new way to deliver UI</h1>
-			<h3>Adaptive Cards is an open source toolset that helps apps and services exchange rich snippets of native UI. Tap into an ecosystem of shared tooling, seamless integration, and
-				native cross-platform performance on any device.</h3>
+			<h3>Adaptive Cards are platform-agnostic snippets of UI, authored in JSON, that apps and services can openly exchange. When delivered to a specific app, the JSON is transformed into native UI that automatically adapts to its surroundings. It helps design and integrate light-weight UI for all major platforms and frameworks.</h3>
 			<div class="w3-padding-16">
 				<button onclick="window.location.href='https://docs.microsoft.com/en-us/adaptive-cards/'"
 					style="width:150px" class="w3-button w3-round-xxlarge ac-blue">
@@ -150,8 +149,8 @@
 			"smallImage": url_for('content/Feature.jpg')
 		},
 		{
-			"title": "Safe and secure",
-			"subtitle":  "Cards are purely declarative so you can trust content from any source",
+			"title": "Dynamic and interactive",
+			"subtitle":  "Interactivity is expressed declaratively to help reduce risk of custom code injection",
 			"smallImage": url_for('content/Feature.jpg')
 		}]	
 	}) %>
@@ -163,7 +162,8 @@
 		author: "Bill Bliss",
 		title: "Platform Architect",
 		profilePic: "https://pbs.twimg.com/profile_images/1257201339/Disneyland-2009_200x200.png",
-		productLogo: url_for('content/teams-logo.png')
+		productLogo: url_for('content/teams-logo.png'),
+		productName: "Microsoft Teams"
 	}) %>
 
 	<div class="divider"></div>
@@ -184,7 +184,8 @@
 		author: "Joe Herres",
 		title: "Co-CEO",
 		profilePic: "https://pbs.twimg.com/profile_images/911946058242158594/oyph7XGi_200x200.jpg",
-		productLogo: url_for('content/atbot-logo.png')
+		productLogo: url_for('content/atbot-logo.png'),
+		productName: "AtBot"
 	}) %>
 
 	<div class="divider"></div>
@@ -196,7 +197,7 @@
 		video: "https://adaptivecardsblob.blob.core.windows.net/assets/Video-RenderingCards.mp4",
 		learnMoreTitle: "Create reusable card templates",
 		learnMoreLink: "https://docs.microsoft.com/en-us/adaptive-cards/templating",
-		tag: "Preview"
+		tag: "Updated May 2020"
 	}) %>
 
 	<%- partial("_partial/section-details", {
@@ -226,11 +227,12 @@
 
 
 	<%- partial("_partial/quote", { 
-		quote: "Teamwork offers a suite of productivity tools that integrate into many platforms. By creating reusable Adaptive Card templates we were able to deliver the same UI natively into our own apps, as well as tools our customers already use like Microsoft Teams and Visual Studio Code.",
+		quote: "Teamwork offers a suite of productivity tools that integrate into many platforms. By creating reusable Adaptive Card templates we are able to deliver the same UI natively into our own apps, as well as tools our customers already use like Microsoft Teams and Visual Studio Code.",
 		author: "Tim Cadenbach",
 		title: "Head of Integrations",
 		profilePic: "https://pbs.twimg.com/profile_images/919315256563978241/2LDFiF5m_400x400.jpg",
-		productLogo: url_for('content/teamwork-logo.png')
+		productLogo: url_for('content/teamwork-logo.png'),
+		productName: "Teamwork.com"
 	}) %>
 
 </div>

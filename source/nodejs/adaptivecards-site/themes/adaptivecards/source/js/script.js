@@ -1,6 +1,19 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+if (typeof hljs !== 'undefined') {
+	hljs.configure({
+		tabReplace: '  '
+	});
+
+	hljs.initHighlightingOnLoad();
+}
+
 $(function () {
+	if(localStorage.getItem("enable-templating") === null) {
+		localStorage.setItem("enable-templating", true);
+	}
+
+	$("#enableTemplating").prop("checked", localStorage.getItem("enable-templating") === "true");
 
 	if (typeof AdaptiveCards !== 'undefined') {
 		AdaptiveCards.AdaptiveCard.onExecuteAction = function (action) {
@@ -310,7 +323,7 @@ $(function () {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
 
-	// Loop videos 
+	// Loop videos
 	$("video").each(function () {
 		var $video = $(this);
 		var loopDelay = $video.attr("data-loop-delay");
@@ -325,14 +338,6 @@ $(function () {
 
 
 	$('.ac-properties table').addClass("w3-table w3-bordered");
-
-	if (typeof hljs !== 'undefined') {
-		hljs.configure({
-			tabReplace: '  '
-		});
-		
-		hljs.initHighlightingOnLoad();
-	}
 
 
 	// From https://github.com/30-seconds/30-seconds-of-code/blob/20e7d899f31ac3d8fb2b30b2e311acf9a1964fe8/snippets/copyToClipboard.md
@@ -355,50 +360,108 @@ $(function () {
 	}
 
 
-	$('.adaptivecard').each(function () {
+	function renderAllCards() {
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
 
+		$(".show-with-templating").css("display", "none");
+		$(".hide-with-templating").css("display", "block");
 
-		var cardUrl = $(this).attr("data-card-url");
-		var el = $(this);
-		if (cardUrl) {
-			$.getJSON(cardUrl, function (json) { renderCard(el, json); });
-		} else {
-			renderCard($(this), el.text());
-		}
-	});
+		$(".adaptivecard").each(function () {
 
-	function renderCard(el, json) {
+			var cardUrl = $(this).attr("data-card-url");
+			var templateUrl = $(this).attr("data-template-url");
+			var dataUrl = $(this).attr("data-data-url");
+			var el = $(this);
+
+			if (templateUrl && enableTemplating) {
+
+				$(".show-with-templating").css("display", "block");
+				$(".hide-with-templating").css("display", "none");
+
+				$.getJSON(templateUrl, function (templateJson) {
+					$.getJSON(dataUrl, function (dataJson) {
+						renderCard(el, templateJson, dataJson);
+					});
+				});
+			}
+			else if (cardUrl) {
+				$.getJSON(cardUrl, function (json) { renderCard(el, json); });
+			} else {
+				renderCard($(this), el.text());
+			}
+		});
+	}
+	renderAllCards();
+
+	function renderCard(el, json, dataJson) {
 		if (typeof json === "string")
 			json = JSON.parse(json);
+
+		if (dataJson && typeof dataJson === "string")
+			dataJson = JSON.parse(dataJson);
 
 		// TODO: clean this up to only provide custom host config options
 		// it breaks on any rename as-is
 		var adaptiveCard = new AdaptiveCards.AdaptiveCard();
 		adaptiveCard.hostConfig = new AdaptiveCards.HostConfig(hostConfig);
-		adaptiveCard.parse(json);
-		var renderedCard = adaptiveCard.render();
+		var renderedCard;
+
+		if (dataJson) {
+			var template = new ACData.Template(json);
+			adaptiveCard.parse(template.expand({
+				$root: dataJson
+			}));
+			renderedCard = adaptiveCard.render();
+		} else {
+			adaptiveCard.parse(json);
+			renderedCard = adaptiveCard.render();
+		}
 
 		el.text('').append(renderedCard).show();
 	}
 
+	$("#enableTemplating").change(function () {
+		localStorage.setItem("enable-templating", this.checked);
+		renderAllCards();
+
+	});
+
 	$("button.copy-code").click(function (e) {
-		var content = $(this).parent().siblings("pre").text();
+		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
 	});
 
+	function launchDesigner(designerUrl, cardUrl, dataUrl) {
+		if(!designerUrl || !cardUrl) {
+			alert("Whoops, something went wrong. Please click the Feedback button in the top right and let us know what happened.");
+			return;
+		}
+
+		designerUrl += "?card=" + cardUrl;
+
+		if(dataUrl) {
+			designerUrl += "&data=" + dataUrl
+		}
+
+		window.open(designerUrl);
+	}
+
 	$("button.try-adaptivecard").click(function (e) {
-		var $button = $(this);
-		if ($button.attr("data-designer-url")) {
-			window.open($button.attr("data-designer-url"));
+		var enableTemplating = localStorage.getItem("enable-templating") === "true";
+		var cardEl = $(this).parent().siblings("div.adaptivecard");
+		var designerUrl = cardEl.attr("data-designer-url");
+		var cardUrl = cardEl.attr("data-card-url");
+		var dataUrl = cardEl.attr("data-data-url");
+		var templateUrl = cardEl.attr("data-template-url");
+
+		if (enableTemplating && dataUrl && templateUrl) {
+			launchDesigner(designerUrl, templateUrl, dataUrl);
 		} else {
-			var cardUrl = $(this).parent().siblings("div.adaptivecard").attr("data-card-url");
-			var isAbsolutelUri = new RegExp('^(?:[a-z]+:)?//', 'i');
-			if (isAbsolutelUri.test(cardUrl) === false) {
-				cardUrl = window.location.href + cardUrl;
-			}
-			window.open("/designer/index.html?card=" + encodeURIComponent(cardUrl));
+			launchDesigner(designerUrl, cardUrl);
 		}
 	});
+
+
 
 	$("#feedback-button").click(function (e) {
 		e.preventDefault();
@@ -436,8 +499,7 @@ $(function () {
 
 	// Resize youtube videos
 	// https://css-tricks.com/NetMag/FluidWidthVideo/Article-FluidWidthVideo.php
-	var $allVideos = $("iframe"),
-		$fluidEl = $(".blog");
+	var $allVideos = $("iframe");
 
 	// Figure out and save aspect ratio for each video
 	$allVideos.each(function () {
@@ -449,12 +511,11 @@ $(function () {
 
 	// When the window is resized
 	$(window).resize(function () {
-		//debugger;
 
-		var newWidth = $fluidEl.width() - 32;
 		// Resize all videos according to their own aspect ratio
 		$allVideos.each(function () {
 			var $el = $(this);
+			var newWidth = $el.parent().innerWidth();
 			$el.width(newWidth).height(newWidth * $el.data('aspectRatio'));
 		});
 

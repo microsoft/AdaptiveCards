@@ -7,7 +7,9 @@
 // {% adaptivecard [URL] %}
 //
 hexo.extend.tag.register('adaptivecard', function (args) {
+	const url_for = hexo.extend.helper.get('url_for').bind(hexo);
 	var payloadUrl = args[0];
+	var designerUrl = url_for(`/designer/index.html`);
 
 	return `
 		<div class="codeHeader">
@@ -16,5 +18,5 @@ hexo.extend.tag.register('adaptivecard', function (args) {
 				<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 			</button>
 		</div>
-		<div class="adaptivecard" data-card-url="${payloadUrl}"></div>`;	
+		<div class="adaptivecard" data-designer-url="${designerUrl}" data-card-url="${payloadUrl}"></div>`;	
 });

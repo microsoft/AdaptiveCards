@@ -5,6 +5,7 @@
 //  Copyright © 2018 Microsoft. All rights reserved.
 //
 
+#import "ACOBaseCardElement.h"
 #import "ACRColumnSetView.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRIBaseInputHandler.h"
@@ -13,6 +14,7 @@
 
 @interface ACRToggleInputDataSource : NSObject <UITableViewDataSource, UITableViewDelegate, ACRIBaseInputHandler>
 
+@property ACRContainerStyle parentStyle;
 @property NSString *id;
 @property NSString *valueOn;
 @property NSString *valueOff;

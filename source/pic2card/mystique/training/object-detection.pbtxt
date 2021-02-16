@@ -1,0 +1,17 @@
+item {
+    id: 1
+    name: 'textbox'
+}
+item {
+    id: 2
+    name: 'radiobutton'
+}
+item {
+    id: 3
+    name: 'checkbox'
+}
+item {
+    id: 4
+    name: 'actionset'
+}
+
