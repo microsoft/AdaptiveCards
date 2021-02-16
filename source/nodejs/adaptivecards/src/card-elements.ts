@@ -214,6 +214,10 @@ export abstract class CardElement extends CardObject {
         return sizeChanged;
     }
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext();
+    }
+
     protected createPlaceholderElement(): HTMLElement {
         let styleDefinition = this.getEffectiveStyleDefinition();
         let foregroundCssColor = Utils.stringToCssColor(styleDefinition.foregroundColors.default.subtle);
@@ -324,10 +328,6 @@ export abstract class CardElement extends CardObject {
 
     parse(source: any, context?: SerializationContext) {
         super.parse(source, context ? context : new SerializationContext());
-    }
-
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext());
     }
 
     asString(): string | undefined {
@@ -745,7 +745,7 @@ export abstract class BaseTextBlock extends CardElement {
 
     constructor(text?: string) {
         super();
-        
+
         if (text) {
             this.text = text;
         }
@@ -885,7 +885,7 @@ export class TextBlock extends BaseTextBlock {
             let hostConfig = this.hostConfig;
 
             let element: HTMLElement;
-            
+
             if (this.forElementId) {
                 let labelElement = document.createElement("label");
                 labelElement.htmlFor = this.forElementId;
@@ -1015,8 +1015,20 @@ export class TextBlock extends BaseTextBlock {
                 element.style.wordWrap = "break-word";
 
                 if (this.maxLines && this.maxLines > 0) {
-                    element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
                     element.style.overflow = "hidden";
+
+                    if (Utils.isInternetExplorer() || !GlobalSettings.useWebkitLineClamp) {
+                        element.style.maxHeight = (this._computedLineHeight * this.maxLines) + "px";
+                    }
+                    else {
+                        // While non standard, --webkit-line-clamp works in every browser (except IE)
+                        // and is a great solution to support the maxLines feature with ellipsis
+                        // truncation. With --webkit-line-clamp there is need to use explicit line heights
+                        element.style.removeProperty("line-height");
+                        element.style.display = "-webkit-box";
+                        element.style.webkitBoxOrient = "vertical";
+                        element.style.webkitLineClamp = this.maxLines.toString();
+                    }
                 }
             }
             else {
@@ -1182,6 +1194,7 @@ export class TextRun extends BaseTextBlock {
                 }
 
                 if (this.selectAction.title) {
+                    anchor.setAttribute("aria-label", this.selectAction.title);
                     anchor.title = this.selectAction.title;
                 }
 
@@ -1552,7 +1565,7 @@ class ImageDimensionProperty extends PropertyDefinition {
             }
 
             // If the source value isn't valid per this property definition,
-            // check its validity per the fallback property, if specified 
+            // check its validity per the fallback property, if specified
             if (!isValid && this.fallbackProperty) {
                 isValid = this.fallbackProperty.isValidValue(sourceValue, context);
             }
@@ -2215,6 +2228,7 @@ export class Media extends CardElement {
                 this.renderedElement.appendChild(mediaPlayerElement);
 
                 mediaPlayerElement.play();
+                mediaPlayerElement.focus();
             }
         }
         else {
@@ -2244,6 +2258,7 @@ export class Media extends CardElement {
             let posterImageElement = document.createElement("img");
             posterImageElement.style.width = "100%";
             posterImageElement.style.height = "100%";
+            posterImageElement.setAttribute("role", "presentation");
 
             posterImageElement.onerror = (e: Event) => {
                 if (posterImageElement.parentNode) {
@@ -2701,7 +2716,7 @@ export class TextInput extends Input {
         input.oninput = () => { this.valueChanged(); }
         input.onkeypress = (e: KeyboardEvent) => {
             // Ctrl+Enter pressed
-            if (e.keyCode == 10 && this.inlineAction) {
+            if (e.ctrlKey && e.code === "Enter" && this.inlineAction) {
                 this.inlineAction.execute();
             }
         }
@@ -2745,6 +2760,7 @@ export class TextInput extends Input {
 
                 let icon = document.createElement("img");
                 icon.style.height = "100%";
+                icon.setAttribute("role", "presentation");
 
                 // The below trick is necessary as a workaround in Chrome where the icon is initially displayed
                 // at its native size then resized to 100% of the button's height. This cfreates an unpleasant
@@ -2758,26 +2774,17 @@ export class TextInput extends Input {
                     button.removeChild(icon);
                     button.classList.remove("iconOnly");
                     button.classList.add("textOnly");
-
-                    if (this.inlineAction) {
-                        button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
-                    }
-                    else {
-                        button.textContent = "Title";
-                    }
+                    button.textContent = this.inlineAction && this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
                 }
 
                 icon.src = this.inlineAction.iconUrl;
 
                 button.appendChild(icon);
-
-                if (this.inlineAction.title) {
-                    button.title = this.inlineAction.title;
-                }
+                button.title = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
             else {
                 button.classList.add("textOnly");
-                button.textContent = this.inlineAction.title ? this.inlineAction.title : "Title";
+                button.textContent = this.inlineAction.title ? this.inlineAction.title : Strings.defaults.inlineActionTitle();
             }
 
             button.style.marginLeft = "8px";
@@ -3056,8 +3063,24 @@ export class ChoiceSetInput extends Input {
 
     private _uniqueCategoryName: string;
     private _selectElement: HTMLSelectElement;
-    private _toggleInputs: HTMLInputElement[];
+    private _toggleInputs: HTMLInputElement[] | undefined;
     private _labels: Array<HTMLElement | undefined>;
+
+    // Make sure `aria-current` is applied to the currently-selected item
+    private internalApplyAriaCurrent(): void {
+        const options = this._selectElement.options;
+
+        if (options) {
+            for (let i = 0; i < options.length; i++) {
+                if (options[i].selected) {
+                    options[i].setAttribute("aria-current", "true");
+                }
+                else {
+                    options[i].removeAttribute("aria-current");
+                }
+            }
+        }
+    }
 
     private renderCompoundInput(cssClassName: string, type: "checkbox" | "radio", defaultValues: string[] | undefined): HTMLElement {
         let element = document.createElement("div");
@@ -3138,7 +3161,7 @@ export class ChoiceSetInput extends Input {
     }
 
     protected updateInputControlAriaLabelledBy() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if ((this.isMultiSelect || this.style === "expanded") && this._toggleInputs && this._labels) {
             let labelIds: string[] = this.getAllLabelIds();
 
             for (let i = 0; i < this._toggleInputs.length; i++) {
@@ -3159,22 +3182,6 @@ export class ChoiceSetInput extends Input {
         }
         else {
             super.updateInputControlAriaLabelledBy();
-        }
-    }
-
-    // Make sure `aria-current` is applied to the currently-selected item
-    protected internalApplyAriaCurrent(): void {
-        const options = this._selectElement.options;
-
-        if (options) {
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].selected) {
-                    options[i].setAttribute("aria-current", "true");
-                }
-                else {
-                    options[i].removeAttribute("aria-current");
-                }
-            }
         }
     }
 
@@ -3233,7 +3240,7 @@ export class ChoiceSetInput extends Input {
                 }
 
                 this.internalApplyAriaCurrent();
-                
+
                 return this._selectElement;
             }
         }
@@ -3244,7 +3251,7 @@ export class ChoiceSetInput extends Input {
     }
 
     focus() {
-        if (this.isMultiSelect || this.style === "expanded") {
+        if (this._toggleInputs && (this.isMultiSelect || this.style === "expanded")) {
             if (this._toggleInputs.length > 0) {
                 this._toggleInputs[0].focus();
             }
@@ -3351,11 +3358,11 @@ export class NumberInput extends Input {
         this._numberInputElement = document.createElement("input");
         this._numberInputElement.setAttribute("type", "number");
 
-        if (this.min) {
+        if (this.min !== undefined) {
             this._numberInputElement.setAttribute("min", this.min.toString());
         }
 
-        if (this.max) {
+        if (this.max !== undefined) {
             this._numberInputElement.setAttribute("max", this.max.toString());
         }
 
@@ -3386,7 +3393,7 @@ export class NumberInput extends Input {
     }
 
     isValid(): boolean {
-        if (!this.value) {
+        if (this.value === undefined) {
             return !this.isRequired;
         }
 
@@ -3706,8 +3713,6 @@ export abstract class Action extends CardObject {
             { value: Enums.ActionStyle.Destructive }
         ],
         Enums.ActionStyle.Default);
-    // TODO: Revise this when finalizing input validation
-    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(Action.titleProperty)
     title?: string;
@@ -3721,6 +3726,10 @@ export abstract class Action extends CardObject {
     //#endregion
 
     private _actionCollection?: ActionCollection; // hold the reference to its action collection
+
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext();
+    }
 
     protected addCssClasses(element: HTMLElement) {
         // Do nothing in base implementation
@@ -3737,7 +3746,7 @@ export abstract class Action extends CardObject {
     protected internalValidateInputs(referencedInputs: Dictionary<Input> | undefined): Input[] {
         let result: Input[] = [];
 
-        if (!this.ignoreInputValidation && referencedInputs) {
+        if (referencedInputs) {
             for (let key of Object.keys(referencedInputs)) {
                 let input = referencedInputs[key];
 
@@ -3753,6 +3762,16 @@ export abstract class Action extends CardObject {
     protected shouldSerialize(context: SerializationContext): boolean {
         return context.actionRegistry.findByName(this.getJsonTypeName()) !== undefined;
     }
+
+    protected raiseExecuteActionEvent() {
+        if (this.onExecute) {
+            this.onExecute(this);
+        }
+
+        raiseExecuteActionEvent(this);
+    }
+
+    accessibleTitle?: string;
 
     onExecute: (sender: Action) => void;
 
@@ -3772,10 +3791,6 @@ export abstract class Action extends CardObject {
         return super.parse(source, context ? context : new SerializationContext());
     }
 
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext());
-    }
-
     render(baseCssClass: string = "ac-pushButton") {
         // Cache hostConfig for perf
         let hostConfig = this.hostConfig;
@@ -3784,7 +3799,10 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.title) {
+        if (this.accessibleTitle) {
+            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+        }
+        else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
         }
 
@@ -3845,11 +3863,11 @@ export abstract class Action extends CardObject {
     }
 
     execute() {
-        if (this.onExecute) {
-            this.onExecute(this);
+        if (this._actionCollection) {
+            this._actionCollection.actionExecuted(this);
         }
 
-        raiseExecuteActionEvent(this);
+        this.raiseExecuteActionEvent();
     }
 
     prepareForExecution(): boolean {
@@ -3893,7 +3911,7 @@ export abstract class Action extends CardObject {
 
     /**
      * Validates the inputs associated with this action.
-     * 
+     *
      * @returns A list of inputs that failed validation, or an empty array if no input failed validation.
      */
     validateInputs(): Input[] {
@@ -3915,10 +3933,6 @@ export abstract class Action extends CardObject {
         }
     }
 
-    get ignoreInputValidation(): boolean {
-        return true;
-    }
-
     get hostConfig(): HostConfig {
         return this.parent ? this.parent.hostConfig : defaultHostConfig;
     }
@@ -3932,12 +3946,27 @@ export class SubmitAction extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
+    static readonly associatedInputsProperty = new CustomProperty(
+        Versions.v1_3,
+        "associatedInputs",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let value = source[property.name];
+
+            if (value !== undefined && typeof value === "string") {
+                return value.toLowerCase() === "none" ? "none" : "auto";
+            }
+            
+            return undefined;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
+            context.serializeValue(target, property.name, value);
+        });
 
     @property(SubmitAction.dataProperty)
     private _originalData?: PropertyBag;
 
-    @property(Action.ignoreInputValidationProperty)
-    private _ignoreInputValidation: boolean = false;
+    @property(SubmitAction.associatedInputsProperty)
+    associatedInputs?: "auto" | "none";
 
     //#endregion
 
@@ -3950,18 +3979,21 @@ export class SubmitAction extends Action {
 
     protected internalGetReferencedInputs(): Dictionary<Input> {
         let result: Dictionary<Input> = {};
-        let current: CardElement | undefined = this.parent;
-        let inputs: Input[] = [];
 
-        while (current) {
-            inputs = inputs.concat(current.getAllInputs(false));
+        if (this.associatedInputs !== "none") {
+            let current: CardElement | undefined = this.parent;
+            let inputs: Input[] = [];
 
-            current = current.parent;
-        }
+            while (current) {
+                inputs = inputs.concat(current.getAllInputs(false));
 
-        for (let input of inputs) {
-            if (input.id) {
-                result[input.id] = input;
+                current = current.parent;
+            }
+
+            for (let input of inputs) {
+                if (input.id) {
+                    result[input.id] = input;
+                }
             }
         }
 
@@ -3980,8 +4012,8 @@ export class SubmitAction extends Action {
             for (let key of Object.keys(inputs)) {
                 let input = inputs[key];
 
-                if (input.id) {
-                    this._processedData[input.id] = input.value;
+                if (input.id && input.isSet()) {
+                    this._processedData[input.id] = typeof input.value === "string" ? input.value : input.value.toString();
                 }
             }
         }
@@ -3991,14 +4023,6 @@ export class SubmitAction extends Action {
 
     getJsonTypeName(): string {
         return SubmitAction.JsonTypeName;
-    }
-
-    get ignoreInputValidation(): boolean {
-        return this._ignoreInputValidation;
-    }
-
-    set ignoreInputValidation(value: boolean) {
-        this._ignoreInputValidation = value;
     }
 
     get data(): object | undefined {
@@ -4227,12 +4251,7 @@ export class HttpAction extends Action {
     static readonly bodyProperty = new StringWithSubstitutionProperty(Versions.v1_0, "body");
     static readonly methodProperty = new StringProperty(Versions.v1_0, "method");
     static readonly headersProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "headers", HttpHeader);
-
-    protected populateSchema(schema: SerializableObjectSchema) {
-        super.populateSchema(schema);
-
-        schema.add(Action.ignoreInputValidationProperty);
-    }
+    static readonly ignoreInputValidationProperty = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false);
 
     @property(HttpAction.urlProperty)
     private _url: StringWithSubstitutions;
@@ -4246,7 +4265,7 @@ export class HttpAction extends Action {
     @property(HttpAction.headersProperty)
     headers: HttpHeader[];
 
-    @property(Action.ignoreInputValidationProperty)
+    @property(HttpAction.ignoreInputValidationProperty)
     private _ignoreInputValidation: boolean = false;
 
     //#endregion
@@ -4376,6 +4395,13 @@ export class ShowCardAction extends Action {
         }
     }
 
+    protected raiseExecuteActionEvent() {
+        if (this.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
+            // Only raise the event in Popup mode.
+            super.raiseExecuteActionEvent();
+        }
+    }
+
     readonly card: AdaptiveCard = new InlineAdaptiveCard();
 
     getJsonTypeName(): string {
@@ -4480,21 +4506,6 @@ class ActionCollection {
         this._owner.getRootElement().updateLayout();
     }
 
-    private hideActionCard() {
-        let previouslyExpandedAction = this._expandedAction;
-
-        this._expandedAction = undefined;
-        this._actionCard = undefined;
-
-        this.refreshContainer();
-
-        if (previouslyExpandedAction) {
-            this.layoutChanged();
-
-            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
-        }
-    }
-
     private showActionCard(action: ShowCardAction, suppressStyle: boolean = false, raiseEvent: boolean = true) {
         (<InlineAdaptiveCard>action.card).suppressStyle = suppressStyle;
 
@@ -4518,7 +4529,18 @@ class ActionCollection {
             button.state = ActionButtonState.Normal;
         }
 
-        this.hideActionCard();
+        let previouslyExpandedAction = this._expandedAction;
+
+        this._expandedAction = undefined;
+        this._actionCard = undefined;
+
+        this.refreshContainer();
+
+        if (previouslyExpandedAction) {
+            this.layoutChanged();
+
+            raiseInlineCardExpandedEvent(previouslyExpandedAction, false);
+        }
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
@@ -4535,29 +4557,6 @@ class ActionCollection {
             action,
             !(this._owner.isAtTheVeryLeft() && this._owner.isAtTheVeryRight()),
             raiseEvent);
-    }
-
-    private actionClicked(actionButton: ActionButton) {
-        if (!(actionButton.action instanceof ShowCardAction)) {
-            for (let button of this.buttons) {
-                button.state = ActionButtonState.Normal;
-            }
-
-            this.hideActionCard();
-
-            actionButton.action.execute();
-        }
-        else {
-            if (this._owner.hostConfig.actions.showCard.actionMode === Enums.ShowCardActionMode.Popup) {
-                actionButton.action.execute();
-            }
-            else if (actionButton.action === this._expandedAction) {
-                this.collapseExpandedAction();
-            }
-            else {
-                this.expandShowCardAction(actionButton.action, true);
-            }
-        }
     }
 
     private getParentContainer(): Container | undefined {
@@ -4584,6 +4583,20 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    actionExecuted(action: Action) {
+        if (!(action instanceof ShowCardAction)) {
+            this.collapseExpandedAction();
+        }
+        else {
+            if (action === this._expandedAction) {
+                this.collapseExpandedAction();
+            }
+            else {
+                this.expandShowCardAction(action, true);
+            }
+        }
     }
 
     parse(source: any, context: SerializationContext) {
@@ -4671,7 +4684,7 @@ class ActionCollection {
             let buttonStrip = document.createElement("div");
             buttonStrip.className = hostConfig.makeCssClassName("ac-actionSet");
             buttonStrip.style.display = "flex";
-            buttonStrip.setAttribute("role", "group");
+            buttonStrip.setAttribute("role", "menubar");
 
             if (orientation == Enums.Orientation.Horizontal) {
                 buttonStrip.style.flexDirection = "row";
@@ -4749,7 +4762,7 @@ class ActionCollection {
 
                     if (!actionButton) {
                         actionButton = new ActionButton(allowedActions[i], parentContainerStyle);
-                        actionButton.onClick = (ab) => { this.actionClicked(ab); };
+                        actionButton.onClick = (ab) => { ab.action.execute(); };
 
                         this.buttons.push(actionButton);
                     }
@@ -4757,9 +4770,11 @@ class ActionCollection {
                     actionButton.render();
 
                     if (actionButton.action.renderedElement) {
-                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "listitem");
+                        if (allowedActions.length > 1) {
+                            actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                            actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+                            actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        }
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";
@@ -4961,6 +4976,12 @@ export class ActionSet extends CardElement {
         else {
             return super.getActionAt(index);
         }
+    }
+
+    getActionById(id: string): Action | undefined {
+        let result: Action | undefined = this._actionCollection.getActionById(id);
+
+        return result ? result : super.getActionById(id);
     }
 
     internalValidateProperties(context: ValidationResults) {
@@ -6434,6 +6455,10 @@ export class AdaptiveCard extends ContainerWithActions {
         }
     }
 
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SerializationContext(this.version);
+    }
+
     protected getItemsCollectionPropertyName(): string {
         return "body";
     }
@@ -6575,10 +6600,6 @@ export class AdaptiveCard extends ContainerWithActions {
         }
 
         return renderedCard;
-    }
-
-    toJSON(context?: SerializationContext): PropertyBag | undefined {
-        return super.toJSON(context ? context : new SerializationContext(this.version));
     }
 
     updateLayout(processChildren: boolean = true) {

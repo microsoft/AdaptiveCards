@@ -16,12 +16,12 @@
 
 ### Properties
 
-* [defaultValue](boolproperty.md#optional-defaultvalue)
+* [defaultValue](boolproperty.md#optional-readonly-defaultvalue)
 * [isSerializationEnabled](boolproperty.md#isserializationenabled)
-* [name](boolproperty.md#name)
-* [onGetInitialValue](boolproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](boolproperty.md#sequentialnumber)
-* [targetVersion](boolproperty.md#targetversion)
+* [name](boolproperty.md#readonly-name)
+* [onGetInitialValue](boolproperty.md#optional-readonly-ongetinitialvalue)
+* [sequentialNumber](boolproperty.md#readonly-sequentialnumber)
+* [targetVersion](boolproperty.md#readonly-targetversion)
 
 ### Methods
 
@@ -50,11 +50,11 @@ Name | Type |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *any*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
@@ -66,35 +66,35 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ## Methods
 

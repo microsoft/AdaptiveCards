@@ -27,12 +27,14 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "**Redmond**"
+                                            "text": "**Redmond**",
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
-                                            "text": "8a - 12:30p"
+                                            "text": "8a - 12:30p",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -66,12 +68,14 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "**Bellevue**"
+                                            "text": "**Bellevue**",
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
-                                            "text": "12:30p - 3p"
+                                            "text": "12:30p - 3p",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -105,12 +109,14 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "**Seattle**"
+                                            "text": "**Seattle**",
+                                            "wrap": true
                                         },
                                         {
                                             "type": "TextBlock",
                                             "spacing": "None",
-                                            "text": "8p"
+                                            "text": "8p",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "auto"
@@ -148,7 +154,8 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "2:00 PM"
+                                            "text": "2:00 PM",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -159,7 +166,8 @@
                             "type": "TextBlock",
                             "spacing": "None",
                             "text": "1hr",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         }
                     ],
                     "width": "110px"
@@ -186,7 +194,8 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "**${Subject}**"
+                            "text": "**${Subject}**",
+                            "wrap": true
                         },
                         {
                             "type": "ColumnSet",
@@ -207,7 +216,8 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "${Location.DisplayName}"
+                                            "text": "${Location.DisplayName}",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -255,7 +265,8 @@
                                     "items": [
                                         {
                                             "type": "TextBlock",
-                                            "text": "**Contoso Brand Guidelines** shared by **Susan Metters**"
+                                            "text": "**Contoso Brand Guidelines** shared by **Susan Metters**",
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -314,7 +325,8 @@
                                         {
                                             "type": "TextBlock",
                                             "text": "about 45 minutes",
-                                            "isSubtle": true
+                                            "isSubtle": true,
+                                            "wrap": true
                                         }
                                     ],
                                     "width": "stretch"
@@ -336,13 +348,15 @@
                         {
                             "type": "TextBlock",
                             "spacing": "None",
-                            "text": "8:00 PM"
+                            "text": "8:00 PM",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "spacing": "None",
                             "text": "1hr",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         }
                     ],
                     "width": "110px"
@@ -369,7 +383,8 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "**Alaska Airlines AS1021 flight to Chicago**"
+                            "text": "**Alaska Airlines AS1021 flight to Chicago**",
+                            "wrap": true
                         },
                         {
                             "type": "ColumnSet",

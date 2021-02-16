@@ -5,7 +5,7 @@
 	"body": [
 		{
 			"type": "Input.Toggle",
-			"id": "input1",
+			"id": "toggleLabelId",
 			"title": "I accept the terms and agreements",
 			"value": "false",
 			"valueOn": "true",
@@ -14,7 +14,7 @@
 		},
 		{
 			"type": "Input.Toggle",
-			"id": "input2",
+			"id": "requiredToggleLabelId",
 			"title": "I accept the terms and agreements",
 			"value": "false",
 			"valueOn": "true",

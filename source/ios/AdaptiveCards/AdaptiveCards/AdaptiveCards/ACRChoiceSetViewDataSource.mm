@@ -17,6 +17,35 @@ NSString *uncheckedCheckboxReuseID = @"unchecked-checkbox";
 NSString *checkedRadioButtonReuseID = @"checked-radiobutton";
 NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
+const CGFloat padding = 16.0f;
+
+@implementation ACRChoiceSetCell
+
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(nullable NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        UIImage *iconImage = nil;
+        if ([reuseIdentifier isEqualToString:@"checked-checkbox"]) {
+            iconImage = [UIImage imageNamed:@"checked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if ([reuseIdentifier isEqualToString:@"checked-radiobutton"]) {
+            iconImage = [UIImage imageNamed:@"checked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else if ([reuseIdentifier isEqualToString:@"unchecked-checkbox"]) {
+            iconImage = [UIImage imageNamed:@"unchecked-checkbox-24.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        } else {
+            iconImage = [UIImage imageNamed:@"unchecked.png" inBundle:[NSBundle bundleWithIdentifier:@"MSFT.AdaptiveCards"] compatibleWithTraitCollection:nil];
+        }
+        self.imageView.image = iconImage;
+        self.textLabel.numberOfLines = 0;
+        self.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        self.textLabel.adjustsFontSizeToFitWidth = NO;
+        self.backgroundColor = UIColor.clearColor;
+    }
+    return self;
+}
+
+@end
+
 @implementation ACRChoiceSetViewDataSource {
     std::shared_ptr<ChoiceSetInput> _choiceSetDataSource;
     NSMutableDictionary *_userSelections;
@@ -27,6 +56,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
     BOOL _shouldWrap;
     std::shared_ptr<HostConfig> _config;
     CGSize _contentSize;
+    NSString *_accessibilityString;
 }
 
 - (instancetype)initWithInputChoiceSet:(std::shared_ptr<AdaptiveCards::ChoiceSetInput> const &)choiceSet WithHostConfig:(std::shared_ptr<AdaptiveCards::HostConfig> const &)hostConfig;
@@ -62,7 +92,7 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             }
             ++index;
         }
-        
+
         self.hasValidationProperties = self.isRequired;
     }
     return self;
@@ -99,14 +129,21 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
         }
         cell.accessibilityTraits &= ~UIAccessibilityTraitSelected;
     }
-    
+
     NSString *title = [NSString stringWithCString:_choiceSetDataSource->GetChoices()[indexPath.row]->GetTitle().c_str()
                                          encoding:NSUTF8StringEncoding];
     cell.textLabel.text = title;
     cell.textLabel.numberOfLines = _choiceSetDataSource->GetWrap() ? 0 : 1;
     cell.textLabel.textColor = getForegroundUIColorFromAdaptiveAttribute(_config, _parentStyle);
+    cell.textLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    if (!_accessibilityString) {
+        _accessibilityString = tableView.accessibilityLabel;
+        tableView.accessibilityLabel = nil;
+    }
     cell.accessibilityTraits = cell.accessibilityTraits | UIAccessibilityTraitButton;
-    
+    cell.accessibilityLabel = [NSString stringWithFormat:@"%@, %@", _accessibilityString, title];
+
     return cell;
 }
 
@@ -148,10 +185,9 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
             _userSelections[[NSNumber numberWithInteger:indexPath.row]] = [NSNumber numberWithBool:YES];
         }
     }
-    
+
     [tableView reloadData];
     _currentSelectedIndexPath = indexPath;
-
 }
 
 - (void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
@@ -230,7 +266,10 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    if (shouldBecomeFirstResponder) {
+        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
+        [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    }
 }
 
 - (NSString *)getTitlesOfChoices
@@ -253,10 +292,11 @@ NSString *uncheckedRadioButtonReuseID = @"unchecked-radiobutton";
 
 - (float)getNonInputWidth:(UITableViewCell *)cell
 {
-    return cell.separatorInset.left + cell.indentationWidth + cell.accessoryView.frame.size.width + cell.imageView.image.size.width;
+    return padding * 3 + cell.imageView.image.size.width;
 }
 
 @synthesize isRequired;
 @synthesize hasValidationProperties;
+@synthesize hasVisibilityChanged;
 
 @end

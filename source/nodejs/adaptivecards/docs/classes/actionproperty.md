@@ -16,13 +16,13 @@
 
 ### Properties
 
-* [defaultValue](actionproperty.md#optional-defaultvalue)
-* [forbiddenActionTypes](actionproperty.md#forbiddenactiontypes)
+* [defaultValue](actionproperty.md#optional-readonly-defaultvalue)
+* [forbiddenActionTypes](actionproperty.md#readonly-forbiddenactiontypes)
 * [isSerializationEnabled](actionproperty.md#isserializationenabled)
-* [name](actionproperty.md#name)
-* [onGetInitialValue](actionproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](actionproperty.md#sequentialnumber)
-* [targetVersion](actionproperty.md#targetversion)
+* [name](actionproperty.md#readonly-name)
+* [onGetInitialValue](actionproperty.md#optional-readonly-ongetinitialvalue)
+* [sequentialNumber](actionproperty.md#readonly-sequentialnumber)
+* [targetVersion](actionproperty.md#readonly-targetversion)
 
 ### Methods
 
@@ -50,15 +50,15 @@ Name | Type | Default |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *any*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
-###  forbiddenActionTypes
+### `Readonly` forbiddenActionTypes
 
 • **forbiddenActionTypes**: *string[]*
 
@@ -72,35 +72,35 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ## Methods
 

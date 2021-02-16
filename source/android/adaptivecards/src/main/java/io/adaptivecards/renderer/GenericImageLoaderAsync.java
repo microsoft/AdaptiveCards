@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.DisplayMetrics;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -254,7 +255,11 @@ public abstract class GenericImageLoaderAsync extends AsyncTask<String, Void, Ht
     {
         if (result.isSuccessful())
         {
-            onSuccessfulPostExecute(result.getResult());
+            Bitmap image = result.getResult();
+            if(image != null) {
+                image.setDensity(DisplayMetrics.DENSITY_DEFAULT);
+            }
+            onSuccessfulPostExecute(image);
         }
         else
         {

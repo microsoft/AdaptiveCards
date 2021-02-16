@@ -129,6 +129,8 @@ export function isVersionLessOrEqual(version: TargetVersion, targetVersion: Targ
 export abstract class BaseSerializationContext {
     private _validationEvents: IValidationEvent[] = [];
 
+    toJSONOriginalParam: any;
+
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             if (!GlobalSettings.enableFullJsonRoundTrip) {
@@ -761,6 +763,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
+    static defaultMaxVersion: Version = Versions.v1_3;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -768,6 +771,10 @@ export abstract class SerializableObject {
     private _rawProperties: PropertyBag = {};
 
     protected abstract getSchemaKey(): string;
+
+    protected getDefaultSerializationContext(): BaseSerializationContext {
+        return new SimpleSerializationContext();
+    }
 
     protected populateSchema(schema: SerializableObjectSchema) {
         let ctor = <any>this.constructor;
@@ -879,7 +886,7 @@ export abstract class SerializableObject {
         return true;
     }
 
-    maxVersion: Version = Versions.v1_3;
+    maxVersion: Version = SerializableObject.defaultMaxVersion;
 
     constructor() {
         let s = this.getSchema();
@@ -898,7 +905,15 @@ export abstract class SerializableObject {
     }
 
     toJSON(context?: BaseSerializationContext): PropertyBag | undefined {
-        let effectiveContext = context ? context : new SimpleSerializationContext();
+        let effectiveContext: BaseSerializationContext;
+        
+        if (context && context instanceof BaseSerializationContext) {
+            effectiveContext = context;
+        }
+        else {
+            effectiveContext = this.getDefaultSerializationContext();
+            effectiveContext.toJSONOriginalParam = context;
+        }
 
         if (this.shouldSerialize(effectiveContext)) {
             let result: PropertyBag;

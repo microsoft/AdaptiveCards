@@ -80,7 +80,7 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(textBoxFrameworkElement->put_VerticalAlignment(ABI::Windows::UI::Xaml::VerticalAlignment_Top));
         }
 
-        // Call XamlHelpers::HandleInputLayoutAndValidation to handle label and error message. Pass nullptr for
+        // Call XamlHelpers::HandleInputLayoutAndValidation to handle accessibility properties. Pass nullptr for
         // validationBorder as we've already handled that above.
         ComPtr<IUIElement> inputLayout;
         ComPtr<IUIElement> validationError;
@@ -122,7 +122,11 @@ namespace AdaptiveNamespace
 
         boolean isMultiLine;
         RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
-        RETURN_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+        if (isMultiLine)
+        {
+            RETURN_IF_FAILED(textBox->put_AcceptsReturn(true));
+            RETURN_IF_FAILED(textBox->put_TextWrapping(TextWrapping_Wrap));
+        }
 
         HString textValue;
         RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));

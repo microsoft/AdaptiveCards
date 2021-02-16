@@ -14,7 +14,8 @@
                             "type": "TextBlock",
                             "text": "${title}",
                             "weight": "Bolder",
-                            "size": "Medium"
+                            "size": "Medium",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",

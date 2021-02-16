@@ -272,7 +272,7 @@ export class SidePanel {
             this._attachedTo.appendChild(this._contentHost);
         }
         else {
-            this._attachedTo.append(this._contentHost);
+            this._attachedTo.appendChild(this._contentHost);
 
             if (splitterElement) {
                 this._attachedTo.appendChild(splitterElement);

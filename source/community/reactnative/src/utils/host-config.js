@@ -231,7 +231,7 @@ export class ActionsConfig {
 	showCard = new ShowCardActionConfig();
 	preExpandSingleShowCardAction = false;
 	actionsOrientation = Enums.Orientation.Horizontal;
-	actionAlignment = Enums.ActionAlignment.Left;
+	actionAlignment = Enums.ActionAlignment.Stretch;
 	iconPlacement = Enums.ActionIconPlacement.LeftOfTitle;
 	allowTitleToWrap = false;
 	iconSize = 24;
@@ -244,7 +244,7 @@ export class ActionsConfig {
 			this.showCard = new ShowCardActionConfig(obj["showCard"]);
 			this.preExpandSingleShowCardAction = Utils.getValueOrDefault(obj["preExpandSingleShowCardAction"], false);
 			this.actionsOrientation = Utils.parseHostConfigEnum(Enums.Orientation, obj["actionsOrientation"], Enums.Orientation.Horizontal);
-			this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Left);
+			this.actionAlignment = Utils.parseHostConfigEnum(Enums.ActionAlignment, obj["actionAlignment"], Enums.ActionAlignment.Stretch);
 			this.iconPlacement = Utils.parseHostConfigEnum(Enums.ActionIconPlacement, obj["iconPlacement"], Enums.ActionIconPlacement.LeftOfTitle);
 			this.allowTitleToWrap = obj["allowTitleToWrap"] != null ? obj["allowTitleToWrap"] : this.allowTitleToWrap;
 
@@ -1150,7 +1150,7 @@ export const defaultHostConfig = {
 			inlineTopMargin: 16
 		},
 		actionsOrientation: Enums.Orientation.Horizontal,
-		actionAlignment: Enums.ActionAlignment.Left
+		actionAlignment: Enums.ActionAlignment.Stretch
 	},
 	adaptiveCard: {
 		allowCustomStyle: false

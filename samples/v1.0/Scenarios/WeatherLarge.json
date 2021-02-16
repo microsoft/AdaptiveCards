@@ -28,23 +28,27 @@
 							"type": "TextBlock",
 							"text": "Tue, Nov 5, 2019",
 							"weight": "bolder",
-							"size": "large"
+							"size": "large",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "32 / 50",
 							"size": "medium",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "31% chance of rain",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "Winds 4.4 mph SSE",
-							"spacing": "none"
+							"spacing": "none",
+							"wrap": true
 						}
 					]
 				}
