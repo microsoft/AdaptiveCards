@@ -427,6 +427,9 @@
 		08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */ = {isa = PBXBuildFile; fileRef = 08299E3225AF254000799C66 /* AdaptiveCards.h */; };
 		08E4047025B46BDB00C2092A /* AdaptiveCards_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08E4052125B46C3B00C2092A /* SwiftInterfaceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E402EB25B463D200C2092A /* SwiftInterfaceHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
+		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
+		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -886,6 +889,9 @@
 		08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards_bridge.h; sourceTree = "<group>"; };
 		08E4046325B46BDA00C2092A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08E4054D25B4764400C2092A /* AdaptiveCards-bridge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AdaptiveCards-bridge.xcconfig"; sourceTree = "<group>"; };
+		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
+		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
+		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1122,6 +1128,7 @@
 			children = (
 				082D912A25D67042000226C4 /* FakeHostConfig.swift */,
 				082D914325D6DC7A000226C4 /* FakeTextBlock.swift */,
+				29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1130,6 +1137,7 @@
 			isa = PBXGroup;
 			children = (
 				082D913325D67455000226C4 /* TextBlockRendererTests.swift */,
+				29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1447,6 +1455,7 @@
 			children = (
 				08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */,
 				08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */,
+				29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1927,6 +1936,7 @@
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
+				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				0801D5EA25C2C3B500AABD6C /* AdaptiveCard.swift in Sources */,
 			);
@@ -1937,8 +1947,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
+				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,
 				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
+				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
