@@ -793,8 +793,18 @@
     background-color: transparent;
 }
 
-.acd-toolbar-button.acd-toolbar-button-toggled {
-    background-color: rgba(0, 0, 0, 0.1);
+@media not (forced-colors: active) {
+    .acd-toolbar-button.acd-toolbar-button-toggled {
+        background-color: rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (forced-colors: active) {
+    .acd-toolbar-button.acd-toolbar-button-toggled {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .acd-toolbar-button-iconOnly::before {
@@ -925,10 +935,20 @@ a.default-ac-anchor:visited:active {
     border: 1px solid #0078D7;
 }
 
-.default-ac-pushButton.expanded {
-    background-color: #0078D7;
-    color: white;
-    border: 1px solid #0078D7;
+@media not (forced-colors: active) {
+    .default-ac-pushButton.expanded {
+        background-color: #0078D7;
+        color: white;
+        border: 1px solid #0078D7;
+    }
+}
+
+@media (forced-colors: active) {
+    .default-ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .default-ac-pushButton.expandable:after {

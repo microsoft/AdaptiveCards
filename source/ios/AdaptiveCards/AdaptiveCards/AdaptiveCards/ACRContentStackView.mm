@@ -21,6 +21,7 @@ static int kToggleVisibilityContext;
     ACRContainerStyle _style;
     UIStackView *_stackView;
     NSHashTable<UIView *> *_hiddenSubviews;
+    NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -52,6 +53,7 @@ static int kToggleVisibilityContext;
     if (self) {
         _stackView = [[UIStackView alloc] init];
         _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
+        _subviewIntrinsicContentSizeCollection = [[NSMutableDictionary alloc] init];
         self.clipsToBounds = NO;
         [self config:attributes];
     }
@@ -452,6 +454,18 @@ static int kToggleVisibilityContext;
 
 - (void)increaseIntrinsicContentSize:(UIView *)view
 {
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    _subviewIntrinsicContentSizeCollection[key] = [NSValue valueWithCGSize:[view intrinsicContentSize]];
+}
+
+- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *)view
+{
+    if (not view) {
+        return CGSizeZero;
+    }
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    NSValue *value = _subviewIntrinsicContentSizeCollection[key];
+    return value ? [value CGSizeValue] : CGSizeZero;
 }
 
 - (void)decreaseIntrinsicContentSize:(UIView *)view
