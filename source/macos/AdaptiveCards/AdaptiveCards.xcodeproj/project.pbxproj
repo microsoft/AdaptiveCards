@@ -430,6 +430,9 @@
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
+		A0CA276D25DD1759004871B4 /* InputNumberRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA276C25DD1759004871B4 /* InputNumberRenderer.swift */; };
+		A0CA277225DD177C004871B4 /* FakeInputNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA277125DD177C004871B4 /* FakeInputNumber.swift */; };
+		A0CA277A25DD178C004871B4 /* InputNumberRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA277925DD178C004871B4 /* InputNumberRendererTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -892,6 +895,9 @@
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
+		A0CA276C25DD1759004871B4 /* InputNumberRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputNumberRenderer.swift; sourceTree = "<group>"; };
+		A0CA277125DD177C004871B4 /* FakeInputNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FakeInputNumber.swift; sourceTree = "<group>"; };
+		A0CA277925DD178C004871B4 /* InputNumberRendererTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputNumberRendererTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1126,6 +1132,7 @@
 		082D912925D66FEE000226C4 /* Fakes */ = {
 			isa = PBXGroup;
 			children = (
+				A0CA277125DD177C004871B4 /* FakeInputNumber.swift */,
 				082D912A25D67042000226C4 /* FakeHostConfig.swift */,
 				082D914325D6DC7A000226C4 /* FakeTextBlock.swift */,
 				29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */,
@@ -1136,6 +1143,7 @@
 		082D913225D67440000226C4 /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
+				A0CA277925DD178C004871B4 /* InputNumberRendererTest.swift */,
 				082D913325D67455000226C4 /* TextBlockRendererTests.swift */,
 				29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */,
 			);
@@ -1453,6 +1461,7 @@
 		08B5F90F25C924D900A7D37A /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
+				A0CA276C25DD1759004871B4 /* InputNumberRenderer.swift */,
 				08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */,
 				08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */,
 				29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */,
@@ -1932,6 +1941,7 @@
 			files = (
 				08D7767125CBF27B0095C1B3 /* LogUtils.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
+				A0CA276D25DD1759004871B4 /* InputNumberRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
@@ -1946,9 +1956,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0CA277A25DD178C004871B4 /* InputNumberRendererTest.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,
+				A0CA277225DD177C004871B4 /* FakeInputNumber.swift in Sources */,
 				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
