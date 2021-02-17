@@ -22,14 +22,6 @@
     baseCardElement:(ACOBaseCardElement *)acoElem
          hostConfig:(ACOHostConfig *)acoConfig
 {
-    //std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    //std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-    // get renderers by enum type
-    // call the default renderers --> why? so the renderer won't break
-    // call container renderer
-    // call addtional properties on  acoElem elem
-    // check the additional properties on contaienr element
-    //
     ACRContainerRenderer *defaultRenderer = [ACRContainerRenderer getInstance];
 
     UIView *view = [defaultRenderer render:viewGroup rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:acoConfig];
