@@ -1,62 +1,59 @@
 ---
-title: 🎉  Pic2Card Service Now available on AdaptiveCards Designer
-subtitle: Generate AdaptiveCards by Uploading Card Image
+title: 🎉 Pic2Card Service Now available on Adaptive Card Designer
+subtitle: Generate cards automatically by uploading an image
 date: 2020-11-01
-feature_image: ![what-is-pic2card](Community-Call-November/whatispic2card.png)
-github_username: haridas, Vasanth-S
-twitter: haridas_n, vasanth1603
-
+feature_image: whatispic2card.png
+github_username: haridas
+twitter: haridas_n
 ---
 
-We are excited to share this; finally, the pic2card service is available on https://adaptivecards.io/designer.
+## Introducing Pic2Card 
 
-Pic2Card helps the new AdpativeCard users to try out the Adaptive card generation by merely uploading a card image. 
-This further reduces the learning curve needed to develop adaptive cards using the designer.
-AdaptiveCard Designer’s whole idea was to help the card designers to create new cards with ease.
-Designer provides a WYSIWYG IDE environment to card developers to create their cards if the template
-designs don’t fit their requirements.
+We are excited to share a new addition to the [Adaptive Card Designer](https://adaptivecards.io/designer), **enabling you to instantly create a card from a bitmap image**. 
 
-Here is what team Imaginea wants to pitch in and make this process much easier for the 
-new AdaptiveCards users by simply upload a card image that you got from the internet or
-your designer, upload, and right away grasp your Adaptivecards representation of it.
-
-Go ahead and play with it, and let’s know your feedbacks via Github issues.
-
-
-## How to use this Feature
-
-![Pic2Card](Community-Call-November/pic2card.gif)
-
-## What's Pic2Card
-
-Pic2Card converts the image to Adaptivecards card schema. The card generated will
-reproduce the image text, color, and font details from the image so that the final 
-card looks almost similar to the image uploaded to the pic2card service.
+Pic2Card automatically converts a card-like image into an Adaptive Card payload. The generated Adaptive Card will reproduce any internal images, text, color, fonts, and even detect input fields -- so that the output card matches the source image as closely as possible.
 
 ![what-is-pic2card](Community-Call-November/whatispic2card.png)
 
-## Pipeline
+This service helps users get started quickly with the Adaptive Card Designer, especially those who are more comfortable with traditional image editing tools. 
 
-We haven’t discussed anything much about its internals till now, here it’s.
-We have the state of art ML and other heuristic processing involved to recreate the card from the image.
-The entire pipeline is shown below. The two main parts are,
+### How it works
 
+Pic2card uses Machine Learning and other heuristic processing to recreate the Adaptive Card from the image. The entire pipeline is shown below. The two main parts are:
 
-- The Machine Learning model identifies each element’s bounding boxes that we need to be extracted for the card.
-- The pipeline, which does all the layout setting, property extraction, etc., is based on the ML model outpu
-
+- The **Machine Learning model** identifies each elements' bounding box to identify what type of element is resembles
+- The **pipeline** then does all the layout settings, property extraction, etc. 
+  
 ![pic2card-pipeline](Community-Call-November/pic2card_pipeline.png)
 
+### Source code
 
-This entire pipeline is part of our backend [pic2card](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card)
-service, which is hosted as azure functions. The frontend part of the pic2card
-integrates with the [AdaptiveCards Designer](https://github.com/microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer).
+Curious to see how it was built?
 
-## Watch the call here
-<iframe width="560" height="315" src="https://www.youtube.com/embed/b7FVAsaWo3g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+This entire pipeline is part of the [pic2card backend](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card)
+service, which is hosted as an Azure Function. 
 
-## Contribute
+The frontend part of the pic2card integrates with the [Adaptive Card Designer](https://github.com/microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)
 
-Try the service, and Let's know your feedback on [github issues](https://github.com/microsoft/AdaptiveCards/issues).
 
-@Team [Imaginea](https://www.imaginea.com/)
+### Try it out today
+
+![Pic2Card](Community-Call-November/pic2card.gif)
+
+
+> Try it now at **https://adaptivecards.io/designer** by clicking **New Card** and then **Create from Image**
+> 
+
+#### Find any issues?
+
+Go ahead and play with it, and let us know if you have any issues or suggestions [via GitHub](https://github.com/microsoft/AdaptiveCards/issues/new?template=pi2card.md)
+
+### Special thanks to Imaginea
+
+This entire feature was built by our wonderful community member [Imaginea](https://www.imaginea.com/). Many thanks to your whole team for bringing this feature to Adaptive Card users!
+
+### Watch the Community Call for full details
+
+<iframe width="560" title="Community Call Video" height="315" src="https://www.youtube.com/embed/b7FVAsaWo3g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
