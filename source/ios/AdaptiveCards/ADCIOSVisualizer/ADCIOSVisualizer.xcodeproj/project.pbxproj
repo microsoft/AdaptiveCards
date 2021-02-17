@@ -60,6 +60,7 @@
 		6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
 		6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */; };
+		6BF1E31625539B5500DA7561 /* ACRChatWindow.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF1E31525539B5500DA7561 /* ACRChatWindow.mm */; };
 		6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */; };
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -162,6 +163,8 @@
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = Action.ShowCard.Style.json; path = ../../../../../samples/v1.0/Elements/Action.ShowCard.Style.json; sourceTree = "<group>"; };
 		6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRImageRenderingTest.mm; sourceTree = "<group>"; };
+		6BF1E31425539B5400DA7561 /* ACRChatWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRChatWindow.h; sourceTree = "<group>"; };
+		6BF1E31525539B5500DA7561 /* ACRChatWindow.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRChatWindow.mm; sourceTree = "<group>"; };
 		6BF339D420A665E600DA5973 /* CustomTextBlockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomTextBlockRenderer.mm; sourceTree = "<group>"; };
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -320,6 +323,8 @@
 		F423C0741EE1FB6100905679 /* ADCIOSVisualizer */ = {
 			isa = PBXGroup;
 			children = (
+				6BF1E31425539B5400DA7561 /* ACRChatWindow.h */,
+				6BF1E31525539B5500DA7561 /* ACRChatWindow.mm */,
 				6B250FC7253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.h */,
 				6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */,
 				6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */,
@@ -566,6 +571,7 @@
 				F4D33E861F04705800941E44 /* ACVTableViewController.m in Sources */,
 				6BF339D620A665E600DA5973 /* CustomTextBlockRenderer.mm in Sources */,
 				6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */,
+				6BF1E31625539B5500DA7561 /* ACRChatWindow.mm in Sources */,
 				F423C07D1EE1FB6100905679 /* ViewController.m in Sources */,
 				F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */,
 				6B22426621E92AF9000ACDA1 /* CustomActionNewType.mm in Sources */,
