@@ -2,6 +2,8 @@
 
 #include "AdaptiveRenderContext.h"
 #include "AdaptiveFallbackException.h"
+#include "BaseInputElement.h"
+#include "TextBlock.h"
 
 namespace RendererQml
 {
@@ -28,11 +30,71 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveRenderContext::Render(std::shared_ptr<AdaptiveCards::BaseElement> element)
 	{
 		std::shared_ptr<QmlTag> QmlTagOut;
-		auto renderer = m_elementRenderers->Get(typeid(*element), Utils::IsInstanceOfSmart<AdaptiveCards::BaseElement>(element));
-		if (renderer != nullptr)
-		{
-			QmlTagOut = renderer(element, shared_from_this());
-		}
+        const bool oldAncestorHasFallback = m_ancestorHasFallback;
+        const bool elementHasFallback = element != nullptr && element->GetFallbackContent() != nullptr && (element->GetFallbackType() != AdaptiveCards::FallbackType::None);
+        m_ancestorHasFallback = m_ancestorHasFallback || elementHasFallback;
+
+        try
+        {
+            if (m_ancestorHasFallback && !element->MeetsRequirements(m_featureRegistration))
+            {
+                throw AdaptiveFallbackException("Element requirements aren't met");
+            }
+
+            // If non-interactive, inputs should just render text
+            if (!m_hostConfig->GetSupportsInteractivity() && Utils::IsInstanceOfSmart<AdaptiveCards::BaseInputElement>(element))
+            {
+                std::shared_ptr< AdaptiveCards::BaseInputElement> input = std::dynamic_pointer_cast<AdaptiveCards::BaseInputElement>(element);
+                std::shared_ptr<AdaptiveCards::TextBlock> tb;
+                //TODO: This is not supported in c++ shared model. 
+                //tb->SetText(input->GetNonInteractiveValue());
+                AddWarning(AdaptiveWarning(Code::RenderException, Formatter() << "Rendering non-interactive input element '" << element->GetElementTypeString() << "'"));
+                QmlTagOut = Render(tb);
+            }
+
+            if (QmlTagOut == nullptr)
+            {
+                auto renderer = m_elementRenderers->Get(typeid(*element), Utils::IsInstanceOfSmart<AdaptiveCards::BaseElement>(element));
+                if (renderer != nullptr)
+                {
+                    QmlTagOut = renderer(element, shared_from_this());
+                }
+            }
+        }
+        catch (const AdaptiveFallbackException&)
+        {
+            if (!elementHasFallback)
+            {
+                throw;
+            }            
+        }
+
+        if (QmlTagOut == nullptr)
+        {
+            // Since no renderer exists for this element, add warning and render fallback (if available)
+            if (element->GetFallbackContent() != nullptr && element->GetFallbackType() != AdaptiveCards::FallbackType::None)
+            {
+                if (element->GetFallbackType() == AdaptiveCards::FallbackType::Drop)
+                {
+                    AddWarning(AdaptiveWarning(Code::RenderException, Formatter() << "Dropping element for fallback '" << element->GetElementTypeString() << "'"));
+                }
+                else if (element->GetFallbackType() == AdaptiveCards::FallbackType::Content && element->GetFallbackContent() != nullptr)
+                {
+                    // Render fallback content
+                    QmlTagOut = Render(element->GetFallbackContent());
+                }
+            }
+            else if (m_ancestorHasFallback)
+            {
+                throw AdaptiveFallbackException("Fallback to ancestor");
+            }
+            else
+            {
+                AddWarning(AdaptiveWarning(Code::RenderException, Formatter() << "No renderer for element '" << element->GetElementTypeString() << "'"));
+            }
+        }
+
+        m_ancestorHasFallback = oldAncestorHasFallback;
 		return QmlTagOut;
 	}
 

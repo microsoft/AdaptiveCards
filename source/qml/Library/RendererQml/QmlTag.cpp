@@ -41,17 +41,17 @@ namespace RendererQml
 
         for (const auto import : m_imports)
         {
-            qmlString << import << ";";
+            qmlString << import << "\n";
         }
 
         if (!m_element.empty())
         {
-            qmlString << m_element << "{";
+            qmlString << m_element << "{\n";
         }
 
         if (!m_properties.empty())
         {
-            qmlString << QmlUtils::Join(m_properties, ":", ";");
+            qmlString << QmlUtils::Join(m_properties, ":", "\n");
         }
 
         if (!m_children.empty())
@@ -61,12 +61,12 @@ namespace RendererQml
                 qmlString << child->ToString();
             }
 
-            qmlString << "}";
+            qmlString << "}\n";
         }
         else
         {
             // No children, so just self-close the element.
-            qmlString << "}";
+            qmlString << "}\n";
         }
 
         return qmlString.str();
