@@ -26,27 +26,20 @@ Pic2card uses Machine Learning and other heuristic processing to recreate the Ad
   
 ![pic2card-pipeline](Community-Call-November/pic2card_pipeline.png)
 
-### Source code
-
 Curious to see how it was built?
 
-This entire pipeline is part of the [pic2card backend](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card)
+- This entire pipeline is part of the [pic2card backend](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card)
 service, which is hosted as an Azure Function. 
-
-The frontend part of the pic2card integrates with the [Adaptive Card Designer](https://github.com/microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)
+- The frontend part of the pic2card integrates with the [Adaptive Card Designer](https://github.com/microsoft/AdaptiveCards/tree/main/source/nodejs/adaptivecards-designer)
 
 
 ### Try it out today
 
+Try it now at **https://adaptivecards.io/designer** by clicking **New Card** and then **Create from Image**
+
+We'll be improving the model over time, so please let us know if you encounter any issues [via GitHub](https://github.com/microsoft/AdaptiveCards/issues/new?template=pi2card.md).
+
 ![Pic2Card](Community-Call-November/pic2card.gif)
-
-
-> Try it now at **https://adaptivecards.io/designer** by clicking **New Card** and then **Create from Image**
-> 
-
-#### Find any issues?
-
-Go ahead and play with it, and let us know if you have any issues or suggestions [via GitHub](https://github.com/microsoft/AdaptiveCards/issues/new?template=pi2card.md)
 
 ### Special thanks to Imaginea
 
