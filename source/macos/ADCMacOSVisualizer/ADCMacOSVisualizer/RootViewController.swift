@@ -1,12 +1,15 @@
 import AdaptiveCards
 import Cocoa
 
-class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
+class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource, NSComboBoxDelegate, NSComboBoxDataSource {
     @IBOutlet var tableView: NSTableView!
     @IBOutlet var stackView: NSStackView!
     @IBOutlet var textView: NSTextView!
+    @IBOutlet var comboBox: NSComboBox!
     
     private var items: [String] = []
+    private var configs: [String] = []
+    private var hostConfigString = sampleHostConfig // default config string
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,6 +22,23 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         } catch {
             print(error)
         }
+        guard let hostConfig = main.resourcePath?.appending("/hostconfigs") else { return }
+        do {
+            let hostConfigs = try filesManager.contentsOfDirectory(atPath: hostConfig)
+            configs = hostConfigs.sorted()
+        } catch {
+            print(error)
+        }
+        
+        comboBox.dataSource = self
+        comboBox.delegate = self
+        
+        // setting the first host config on init
+        if !configs.isEmpty {
+            comboBox.selectItem(at: 0)
+            hostConfigString = selectedHostConfigString()
+        }
+        
         tableView.rowHeight = 32
         textView.isAutomaticQuoteSubstitutionEnabled = false
         textView.isAutomaticDashSubstitutionEnabled = false
@@ -36,8 +56,8 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         print("ELEMENTS:")
         card.getBody().forEach { print($0.getTypeString() ?? "nil") }
         card.getBody().forEach { print(type(of: $0)) }
-        
-        switch AdaptiveCard.parseHostConfig(from: hostConfig) {
+
+        switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
             print("PARSED HOSTCONFIG")
             print("Font family - \(config.getFontFamily() ?? "nil")")
@@ -51,6 +71,24 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         case .failure(let error):
             print("Failure: \(error.localizedDescription)")
         }
+    }
+    
+    private func selectedHostConfigString() -> String {
+        var config: String = sampleHostConfig
+        let selectedItem = comboBox.indexOfSelectedItem
+        guard selectedItem >= 0 && selectedItem < configs.count else { return config }
+        let path = "/hostconfigs/\(configs[selectedItem])"
+        let parts = path.components(separatedBy: ".")
+        guard let filepath = Bundle.main.path(forResource: parts[0], ofType: "json") else {
+            print("File Not found: \(configs[selectedItem])")
+            return config
+        }
+        do {
+            config = try String(contentsOfFile: filepath)
+        } catch {
+            print(error)
+        }
+        return config
     }
 
     @IBAction private func handleRenderAction(_ sender: Any) {
@@ -81,6 +119,24 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             textView.string = contents
         } catch {
             print(error)
+        }
+    }
+    
+    // MARK: ComboBox
+    func comboBox(_ comboBox: NSComboBox, objectValueForItemAt index: Int) -> Any? {
+        return configs[index]
+    }
+    
+    func numberOfItems(in comboBox: NSComboBox) -> Int {
+        configs.count
+    }
+    
+    func comboBoxSelectionDidChange(_ notification: Notification) {
+        if (notification.object as? NSComboBox) != nil {
+            hostConfigString = selectedHostConfigString()
+            if !textView.string.isEmpty {
+                renderCard(with: textView.string)
+            }
         }
     }
 }

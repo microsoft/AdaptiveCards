@@ -27,7 +27,7 @@ class MainViewController: NSViewController {
         card.getBody().forEach { print($0.getTypeString() ?? "nil") }
         card.getBody().forEach { print(type(of: $0)) }
         
-        switch AdaptiveCard.parseHostConfig(from: hostConfig) {
+        switch AdaptiveCard.parseHostConfig(from: sampleHostConfig) {
         case .success(let config):
             print("PARSED HOSTCONFIG")
             print("Font family - \(config.getFontFamily() ?? "nil")")
@@ -323,7 +323,7 @@ let testPayload = """
 }
 """
 
-let hostConfig = """
+let sampleHostConfig = """
 {
     "hostCapabilities": {
         "capabilities": null
