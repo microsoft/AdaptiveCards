@@ -14,6 +14,19 @@
             "value": "true",
             "valueOn": "true",
             "valueOff": "false"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Toggle Input With Wrap"
+        },
+        {
+            "type": "Input.Toggle",
+            "id": "acceptTermsWrapOn",
+            "title": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
+            "value": "true",
+            "valueOn": "true",
+            "valueOff": "false",
+            "wrap" : true
         }
     ],
     "actions": [

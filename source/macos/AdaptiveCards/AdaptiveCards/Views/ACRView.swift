@@ -37,6 +37,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         let view = NSStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.orientation = .vertical
+        view.alignment = .leading
         view.spacing = 8 // TODO: Must be set by hostconfig
         return view
     }()

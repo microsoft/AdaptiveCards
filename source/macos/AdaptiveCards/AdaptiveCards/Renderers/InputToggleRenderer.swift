@@ -10,14 +10,15 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
              return NSView()
          }
         // NSMutableAttributedString for the checkbox title
-        var attributedString: NSMutableAttributedString
+        let attributedString: NSMutableAttributedString
         // NSButton for checkbox
-        let inputToggleView = ACRInputToggleView(checkboxWithTitle: inputToggle.getTitle() ?? "", target: self, action: nil)
+        let title = inputToggle.getTitle() ?? ""
+        let resolvedTitle = inputToggle.getWrap() ? title + "\n" : title
+        let inputToggleView = ACRInputToggleView(checkboxWithTitle: resolvedTitle, target: self, action: nil)
         inputToggleView.translatesAutoresizingMaskIntoConstraints = false
         // adding attributes to the string
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.firstLineHeadIndent = 10
-        attributedString = NSMutableAttributedString(string: inputToggle.getTitle() ?? "", attributes: [.paragraphStyle: paragraphStyle])
+        attributedString = NSMutableAttributedString(string: resolvedTitle, attributes: [.paragraphStyle: paragraphStyle])
         if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: true), let textColor = ColorUtils.color(from: colorHex) {
             attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedString.length))
         }
@@ -28,18 +29,15 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         inputToggleView.state = defaultInputToggleStateValue
         inputToggleView.attributedTitle = attributedString
-        // Wrap
-        if inputToggle.getWrap() {
-        }
+        inputToggleView.wraps = inputToggle.getWrap()
         return inputToggleView
      }
 }
 
 class ACRInputToggleView: NSButton {
-    override func viewDidMoveToSuperview() {
-        super.viewDidMoveToSuperview()
-        // Should look for better solution
-        guard let superview = superview else { return }
-        leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
+    public var wraps = false
+    override var intrinsicContentSize: NSSize {
+        guard wraps, let titleRect = cell?.titleRect(forBounds: bounds) else { return super.intrinsicContentSize }
+        return NSSize(width: super.intrinsicContentSize.width, height: titleRect.height)
     }
 }
