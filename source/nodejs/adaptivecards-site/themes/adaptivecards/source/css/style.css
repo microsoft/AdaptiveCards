@@ -627,7 +627,6 @@ dir {
   font-size: 15px;
   line-height: 29px;
   font-weight: 600;
-  text-decoration: underline;
 }
 
 .homepage a:hover {
@@ -660,15 +659,10 @@ dir {
 
 .ac-footer a:link,
 .ac-footer a:visited {
-  color: #5a5a5a;
+  color: #0b78d0;
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
-  text-decoration: underline;
-}
-
-.ac-footer a:hover {
-  color: #6b6b6b;
 }
 
 .ac-footer .post-subtitle {
@@ -688,9 +682,4 @@ dir {
 input.bigbox {
   transform: scale(2.5);
   transform-origin: left;
-}
-
-.ac-link-with-chevron
-{
-  text-decoration: none!important;
 }
