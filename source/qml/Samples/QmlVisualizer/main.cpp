@@ -235,6 +235,53 @@ const std::string card_InputText = R"({
   ]
 })";
 
+const std::string card_InputNumber = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Default text input"
+    },
+    {
+      "type": "Input.Text",
+      "id": "defaultInputId",
+      "placeholder": "enter comment",
+      "maxLength": 500
+    },
+    {
+      "type": "TextBlock",
+      "text": "Multiline text input"
+    },
+    {
+      "type": "Input.Text",
+      "id": "multilineInputId",
+      "placeholder": "enter comment",
+      "maxLength": 50,
+      "isMultiline": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "Input Number"
+    },
+    {
+      "type": "Input.Number",
+      "id": "number",
+      "placeholder": "Enter a number",
+      "min": 1,
+      "max": 10,
+      "value": 3
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "OK"
+    }
+  ]
+})";
+
 static std::shared_ptr<AdaptiveCards::HostConfig> GetHostConfig()
 {
     std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = std::make_shared<AdaptiveCards::HostConfig>();
@@ -288,7 +335,7 @@ int main(int argc, char* argv[])
     QQuickView view;
     QQmlContext* context = view.engine()->rootContext();
 
-    const std::string qmlString = GenerateQml(card_InputText);
+    const std::string qmlString = GenerateQml(card_InputNumber);
     context->setContextProperty("_aQmlCard", QString::fromStdString(qmlString));
 
     view.setSource(QUrl("qrc:main.qml"));

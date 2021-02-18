@@ -76,8 +76,8 @@ namespace RendererQml
         (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
-        /*(*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
+        (*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
+        /*(*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ToggleInput>(AdaptiveCardQmlRenderer::ToggleInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::SubmitAction>(AdaptiveCardQmlRenderer::AdaptiveActionRender);
@@ -248,7 +248,7 @@ namespace RendererQml
             uiTextInput->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
         }
 
-        //TODO: Add stretch propert
+        //TODO: Add stretch property
 
         if (!input->GetIsVisible())
         {
@@ -261,5 +261,73 @@ namespace RendererQml
         }
 
         return uiTextInput;
+    }
+
+    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context)
+    {
+        const auto inputId = input->GetId();
+
+        auto glowTag = std::make_shared<QmlTag>("Glow");
+        glowTag->Property("samples", "25");
+        glowTag->Property("color", "'skyblue'");
+
+        auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
+        backgroundTag->Property("radius", "5");
+        //TODO: These color styling should come from css
+        backgroundTag->Property("color", Formatter() << inputId + "_contentItem" << ".hovered ? 'lightgray' : 'white'");
+        backgroundTag->Property("layer.enabled", Formatter() << inputId + "_contentItem" << ".activeFocus ? true : false");
+        backgroundTag->Property("layer.effect", glowTag->ToString());
+
+        auto contentItemTag = std::make_shared<QmlTag>("TextField");
+        contentItemTag->Property("id", inputId + "_contentItem");
+        contentItemTag->Property("padding", "10");
+        contentItemTag->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
+        contentItemTag->Property("readOnly", Formatter() << "!" << inputId << ".editable");
+        contentItemTag->Property("validator", Formatter() << inputId << ".validator");
+        contentItemTag->Property("inputMethodHints", "Qt.ImhFormattedNumbersOnly");
+        contentItemTag->Property("text", Formatter() << inputId << ".textFromValue(" << inputId << ".value, " << inputId << ".locale)");
+        if (!input->GetPlaceholder().empty())
+        {
+            contentItemTag->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
+        }
+        contentItemTag->Property("background", backgroundTag->ToString());
+
+        auto doubleValidatorTag = std::make_shared<QmlTag>("DoubleValidator");
+
+        auto uiNumberInput = std::make_shared<QmlTag>("SpinBox");
+        uiNumberInput->Property("id", input->GetId());
+        uiNumberInput->Property("width", "parent.width");
+        uiNumberInput->Property("stepSize", "1");
+        uiNumberInput->Property("editable", "true");
+        uiNumberInput->Property("validator", doubleValidatorTag->ToString());
+
+        if ((input->GetMin() == input->GetMax() && input->GetMin() == 0) || input->GetMin() > input->GetMax())
+        {
+            input->SetMin(INT_MIN);
+            input->SetMax(INT_MAX);
+        }
+        if (input->GetValue() < input->GetMin())
+        {
+            input->SetValue(input->GetMin());
+        }
+        if (input->GetValue() > input->GetMax())
+        {
+            input->SetValue(input->GetMax());
+        }
+
+        uiNumberInput->Property("from", std::to_string(input->GetMin().value()));
+        uiNumberInput->Property("to", std::to_string(input->GetMax().value()));
+        uiNumberInput->Property("value", std::to_string(input->GetValue().value()));
+
+        //TODO: Add stretch property
+
+        if (!input->GetIsVisible())
+        {
+            uiNumberInput->Property("visible", "false");
+        }
+
+        uiNumberInput->Property("contentItem", contentItemTag->ToString());
+
+        return uiNumberInput;
     }
 }
