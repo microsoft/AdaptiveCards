@@ -659,10 +659,18 @@ dir {
 
 .ac-footer a:link,
 .ac-footer a:visited {
-  color: #0b78d0;
+  color: #5a5a5a;
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.ac-footer a:hover {
+  color: #6b6b6b;
+}
+
+.ac-footer-link-no-chevron{
+  color: #0b78d0!important;  
 }
 
 .ac-footer .post-subtitle {
