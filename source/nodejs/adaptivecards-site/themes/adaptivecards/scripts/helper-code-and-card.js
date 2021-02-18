@@ -55,7 +55,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile card" >
 			<div class="codeHeader">
 				<span class="language">Adaptive Card</span>
-				<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard">
+				<button aria-label="Try it yourself" class="w3-button ac-blue action try-adaptivecard" role="link">
 					<span>Try it Yourself <i class="fas fa-chevron-right"></i></span>
 				</button>
 			</div>

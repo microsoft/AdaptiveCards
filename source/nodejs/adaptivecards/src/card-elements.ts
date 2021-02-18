@@ -2456,6 +2456,10 @@ export abstract class Input extends CardElement implements IInput {
         if (this._renderedInputControlElement) {
             let labelIds: string[] = this.getAllLabelIds();
 
+            if (this.labelledBy) {
+                labelIds.push(this.labelledBy);
+            }
+
             if (this._renderedLabelElement) {
                 labelIds.push(this._renderedLabelElement.id);
             }
@@ -2597,6 +2601,8 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     onValueChanged: (sender: Input) => void;
+
+    labelledBy?: string;
 
     abstract isSet(): boolean;
 
@@ -3771,6 +3777,8 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    accessibleTitle?: string;
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3797,7 +3805,10 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.title) {
+        if (this.accessibleTitle) {
+            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+        }
+        else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
         }
 
@@ -4765,9 +4776,11 @@ class ActionCollection {
                     actionButton.render();
 
                     if (actionButton.action.renderedElement) {
-                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        if (allowedActions.length > 1) {
+                            actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                            actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+                            actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        }
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";

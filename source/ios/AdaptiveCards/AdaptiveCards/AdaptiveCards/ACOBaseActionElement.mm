@@ -78,6 +78,9 @@ using namespace AdaptiveCards;
 {
     if (_elem) {
         Json::Value blob = _elem->GetAdditionalProperties();
+        if (blob.empty()) {
+            return nil;
+        }
         Json::StreamWriterBuilder streamWriterBuilder;
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
