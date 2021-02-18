@@ -58,6 +58,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _startDragPayload: object;
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
+    private _propertySheetCard: Adaptive.AdaptiveCard;
     private _treeViewToolbox: Toolbox;
     private _jsonEditorsPanel: SidePanel;
     private _cardEditorToolbox: Toolbox;
@@ -118,16 +119,15 @@ export class CardDesigner extends Designer.DesignContext {
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
         if (this._propertySheetToolbox.content) {
+            const restoreFocusId = this._propertySheetCard?.findObject(document.activeElement)?.id;
             this._propertySheetToolbox.content.innerHTML = "";
 
-            let card: Adaptive.AdaptiveCard;
-
             if (peer) {
-                card = peer.buildPropertySheetCard(this);
+                this._propertySheetCard = peer.buildPropertySheetCard(this);
             }
             else {
-                card = new Adaptive.AdaptiveCard();
-                card.parse(
+                this._propertySheetCard = new Adaptive.AdaptiveCard();
+                this._propertySheetCard.parse(
                     {
                         type: "AdaptiveCard",
                         version: "1.0",
@@ -146,17 +146,21 @@ export class CardDesigner extends Designer.DesignContext {
                     },
                     new Adaptive.SerializationContext(this.targetVersion)
                 );
-                card.padding = new Adaptive.PaddingDefinition(
+                this._propertySheetCard.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small
-                )
+                );
             }
 
-            card.hostConfig = defaultHostConfig;
+            this._propertySheetCard.hostConfig = defaultHostConfig;
 
-            this._propertySheetToolbox.content.appendChild(card.render());
+            this._propertySheetToolbox.content.appendChild(this._propertySheetCard.render());
+            if (restoreFocusId) {
+                const focusTarget = this._propertySheetCard.getElementById(restoreFocusId) ?? this._propertySheetCard.getActionById(restoreFocusId);
+                focusTarget?.renderedElement?.focus();
+            }
         }
     }
 

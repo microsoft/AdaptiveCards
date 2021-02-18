@@ -200,6 +200,7 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 }
 
 export interface IPropertySheetEditorCommand {
+    id?: string;
     caption: string;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
@@ -276,6 +277,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
+                action.id = command.id;
                 action.title = command.caption;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
@@ -337,13 +339,14 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
         if (GlobalSettings.enableDataBindingSupport && this.allowBinding) {
             return [
                 {
-                    caption: "...",
+                    id: this.propertyName+Strings.toolboxes.propertySheet.commands.bindData.id,
+                    caption: Strings.toolboxes.propertySheet.commands.bindData.id,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
                             if (!wasCancelled) {
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
+                                clickedElement.focus();
                                 context.peer.changed(true);
                             }
                         }

@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Enums from "./enums";
 import { PaddingDefinition, GlobalSettings, SizeAndUnit,SpacingDefinition,
@@ -2007,6 +2007,17 @@ export abstract class CardElementContainer extends CardElement {
         }
 
         return result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    findObject(node: Node): CardObject | undefined {
+        let target;
+        for(let i = 0; i < this.getItemCount(); i++) {
+            target = target ?? this.getItemAt(i).findObject(node); // recur through child elements
+        }
+        return target ?? super.findObject(node); // else, check this element
     }
 }
 
@@ -5000,6 +5011,17 @@ export class ActionSet extends CardElement {
 
     getResourceInformation(): IResourceInformation[] {
         return this._actionCollection.getResourceInformation();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    findObject(node: Node): CardObject | undefined {
+        let target;
+        for(const action of this._actionCollection.items) {
+            target = target ?? action.findObject(node); // recur through Actions
+        }
+        return target ?? super.findObject(node); // else, check ActionSet
     }
 
     get isInteractive(): boolean {
