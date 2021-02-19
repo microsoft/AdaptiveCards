@@ -157,7 +157,6 @@
 
 - (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
-    printSize(@"IR CUF", imageView.image.size);
     ACRContentHoldingUIView *superview = nil;
     ACRImageProperties *imageProps = nil;
     if ([imageView.superview isKindOfClass:[ACRContentHoldingUIView class]]) {

@@ -148,7 +148,14 @@
                                                                constant:0]];
             }
             stretchView = curView;
-        } else if (![curView.columnWidth isEqualToString:@"auto"]) {
+        } else if ([curView.columnWidth isEqualToString:@"auto"]) {
+            CGSize intrinsicContentSize = [curView intrinsicContentSize];
+            printSize(@"ColumnView Size = ", intrinsicContentSize);
+            if (intrinsicContentSize.width > 0) {
+                [constraints addObject:
+                                 [curView.widthAnchor constraintLessThanOrEqualToConstant:intrinsicContentSize.width]];
+            }
+        } else {
             try {
                 relativeColumnWidth = std::stof(column->GetWidth());
                 if (prevRelColumnWidth) {

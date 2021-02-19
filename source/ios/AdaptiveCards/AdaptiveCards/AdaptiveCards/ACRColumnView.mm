@@ -7,7 +7,9 @@
 
 #import "ACRColumnView.h"
 
-@implementation ACRColumnView
+@implementation ACRColumnView {
+    NSLayoutConstraint *widthConstraint;
+}
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
@@ -52,7 +54,7 @@
         [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
-        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 }
@@ -64,8 +66,17 @@
     }
     [super increaseIntrinsicContentSize:view];
     CGSize size = [view intrinsicContentSize];
+    CGFloat width = self.combinedContentSize.width;
+
     if (size.width >= 0 and size.height >= 0) {
         self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+    }
+
+    if (self.combinedContentSize.width > width) {
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        widthConstraint = [self.widthAnchor constraintLessThanOrEqualToConstant:self.combinedContentSize.width];
+        widthConstraint.priority = 999;
+        widthConstraint.active = YES;
     }
 }
 

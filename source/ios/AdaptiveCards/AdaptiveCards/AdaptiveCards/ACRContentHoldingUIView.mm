@@ -53,8 +53,6 @@ using namespace AdaptiveCards;
 
 - (void)layoutSubviews
 {
-    printSize(@"CHUV before", self.frame.size);
-    printSize(@"CHUV imageview before", self.subviews[0].frame.size);
     [super layoutSubviews];
 
     if (_isPersonStyle) {
@@ -137,8 +135,6 @@ using namespace AdaptiveCards;
             }
         }
     } else {
-        printSize(@"CHUV after", self.frame.size);
-        printSize(@"CHUV imageview after", self.subviews[0].frame.size);
         if (isImageSet || _imageView.image) {
             BOOL bUpdate = NO;
             if (self.imageProperties.acrImageSize != ACRImageSizeExplicit && !heightConstraint) {
@@ -153,9 +149,9 @@ using namespace AdaptiveCards;
                     [self setHeightConstraint];
                 }
 
-//                if (!imageViewHeightConstraint) {
-//                    [self setImageViewHeightConstraint];
-//                }
+                //                if (!imageViewHeightConstraint) {
+                //                    [self setImageViewHeightConstraint];
+                //                }
             }
 
             if (bUpdate) {
