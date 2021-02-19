@@ -279,4 +279,25 @@ namespace RendererQml
 				return "Font.Normal";
 		}
 	}
+
+	std::string Utils::GetTextHighlightColor(std::string textColor)
+	{
+		//input format:rgba(r,g,b,a)
+		std::vector<std::string> color;
+
+		std::stringstream ss(textColor);
+
+		while (ss.good()) {
+			std::string substr;
+			getline(ss, substr, ',');
+			color.push_back(substr);
+		}
+
+		auto red=color.front().substr(5);
+		auto opacitystring= color.back().substr(0, color.back().size() - 1);
+		double opacity = std::stod(opacitystring);
+		opacity = 1 - opacity;
+		opacity = opacity == 0 ? opacity + 0.2 : opacity ;
+		return "rgba(" + red + "," + color[1] + "," + color[2] + "," + std::to_string(opacity) + ")";
+	}
 }
