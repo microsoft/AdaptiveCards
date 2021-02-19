@@ -11,6 +11,7 @@ class RendererManager: RendererManagerProtocol {
         case .textBlock: return TextBlockRenderer.shared
         case .toggleInput: return InputToggleRenderer.shared
         case .numberInput: return InputNumberRenderer.shared
+        case .textInput: return TextInputRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }

@@ -1,0 +1,37 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Input.Text",
+            "placeholder": "",
+            "isMultiline": true,
+            "value": "Multiline with value",
+            "id": "ml1"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Multiline with placeholder",
+            "isMultiline": true,
+            "id": "ml2"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "value": "Value and placeholder exists",
+            "isMultiline": true,
+            "id": "ml3",
+            "maxLength": 20
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder exists",
+            "id": "ml4",
+            "isMultiline": true,
+            "maxLength": 15,
+            "value": "Value exists"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "id": "wa"
+}

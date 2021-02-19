@@ -35,6 +35,7 @@ class AdaptiveCardRenderer {
             rootView.addArrangedSubview(view)
         }
         
+        rootView.appearance = NSAppearance(named: .aqua)
         rootView.layoutSubtreeIfNeeded()
         return rootView
     }

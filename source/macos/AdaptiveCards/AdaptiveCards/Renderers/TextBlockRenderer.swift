@@ -69,6 +69,8 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
 }
 
 class ACRTextView: NSTextView {
+    var placeholderAttrString: NSAttributedString?
+    
     override var intrinsicContentSize: NSSize {
         guard let layoutManager = layoutManager, let textContainer = textContainer else {
             return super.intrinsicContentSize
@@ -82,5 +84,22 @@ class ACRTextView: NSTextView {
         // Should look for better solution
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
+    }
+    // This point onwards adds placeholder funcunality to TextView
+    override func becomeFirstResponder() -> Bool {
+        self.needsDisplay = true
+        return super.becomeFirstResponder()
+    }
+
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+
+        guard string.isEmpty else { return }
+        placeholderAttrString?.draw(in: dirtyRect.offsetBy(dx: 5, dy: 0))
+    }
+    
+    override func resignFirstResponder() -> Bool {
+        self.needsDisplay = true
+        return super.resignFirstResponder()
     }
 }

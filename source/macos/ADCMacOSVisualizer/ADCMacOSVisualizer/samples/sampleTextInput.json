@@ -1,0 +1,30 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "Input.Text",
+            "placeholder": "Single Line placeholder",
+            "id": "box1"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "id": "box2",
+            "value": "Has initial value"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Multiline with placeholder",
+            "id": "box3",
+            "isMultiline": true
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "This box has character limit of 10",
+            "id": "box 4",
+            "maxLength": 10
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
