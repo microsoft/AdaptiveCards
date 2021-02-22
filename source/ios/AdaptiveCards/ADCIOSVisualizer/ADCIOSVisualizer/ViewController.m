@@ -29,6 +29,8 @@ CGFloat kAdaptiveCardsWidth = 360;
     dispatch_queue_t _global_queue;
     dispatch_group_t _async_tasks_group;
     BOOL _ran;
+    BOOL cardRendered;
+    BOOL cardLoaded;
 }
 
 @end
@@ -263,30 +265,6 @@ CGFloat kAdaptiveCardsWidth = 360;
     [super didReceiveMemoryWarning];
 }
 
-- (void)update:(NSString *)jsonStr
-{
-    dispatch_async(_global_queue,
-                   ^{
-                       if (@available(iOS 11.0, *)) {
-                           [self.chatWindow
-                               performBatchUpdates:^(void) {
-                                   NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
-                                   NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                                   [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-                                   self.editableStr = jsonStr;
-                                   [_dataSource insertCard:jsonStr];
-                               }
-                                        completion:nil];
-                       } else {
-                           [self.chatWindow beginUpdates];
-                           NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-                           NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                           [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-                           [self.chatWindow endUpdates];
-                       }
-                   });
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -438,19 +416,6 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
-- (void)didLoadElements
-{
-    if (!_ran) {
-        dispatch_async(_global_queue,
-                       ^{
-                           NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
-                           NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                           [self reloadRowsAtChatWindows:pathToLastRow];
-                           _ran = NO;
-                       });
-    }
-}
-
 - (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor
 {
     NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
@@ -514,6 +479,45 @@ CGFloat kAdaptiveCardsWidth = 360;
     return buttonLayout;
 }
 
+- (void)update:(NSString *)jsonStr
+{
+    NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
+    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    self.editableStr = jsonStr;
+    [_dataSource insertCard:jsonStr];
+    cardRendered = YES;
+    if (cardLoaded) {
+        cardLoaded = NO;
+        cardRendered = NO;
+        [self reloadRowsAtChatWindowsWithIndexPaths:nil];
+    }
+    //    dispatch_async(_global_queue,
+    //                   ^{
+    //                       } else {
+    //                           [self.chatWindow beginUpdates];
+    //                           NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
+    //                           NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    //                           [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+    //                           [self.chatWindow endUpdates];
+    //                       }
+    //                   });
+}
+
+- (void)didLoadElements
+{
+    cardLoaded = YES;
+    if (cardRendered) {
+        cardLoaded = NO;
+        cardRendered = NO;
+        dispatch_async(_global_queue,
+                       ^{
+            [self reloadRowsAtChatWindowsWithIndexPaths:nil];
+                       });
+    }
+}
+
+
+
 - (void)reloadRowsAtChatWindows:(NSIndexPath *)indexPath
 {
     [self reloadRowsAtChatWindowsWithIndexPaths:@[ indexPath ]];
@@ -521,21 +525,51 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
+//    void (^scroll)(BOOL) = ^(BOOL isFinished) {
+//        if (isFinished) {
+//            [self.chatWindow scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//        }
+//    };
+    //    if (!_ran) {
+    //        dispatch_async(_global_queue,
+    //                       ^{
     void (^scroll)(BOOL) = ^(BOOL isFinished) {
         if (isFinished) {
-            [self.chatWindow scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+            [self.chatWindow scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     };
-
+    
+    NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
     if (@available(iOS 11.0, *)) {
         [self.chatWindow
-            performBatchUpdates:^(void) {
-                [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-            }
-                     completion:scroll];
-    } else {
-        [self.chatWindow reloadData];
-        scroll(YES);
+         performBatchUpdates:^(void) {
+            
+            [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+            //[self.chatWindow reloadData];
+            NSInteger rowIndex = lastRowIndex + 1;
+            NSIndexPath *pathToRow = [NSIndexPath indexPathForRow:rowIndex inSection:0];
+            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToRow] withRowAnimation:UITableViewRowAnimationTop];
+            
+        }
+         completion:scroll];
     }
+    
+    //    [self reloadRowsAtChatWindows:pathToLastRow];
+    //                           _ran = NO;
+    //                       });
+    //    }
+//    if (@available(iOS 11.0, *)) {
+//        [self.chatWindow
+//            performBatchUpdates:^(void) {
+//                [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
+//            }
+//         completion:nil];//scroll];
+//    } else {
+//        [self.chatWindow reloadData];
+//        scroll(YES);
+//    }
 }
 @end

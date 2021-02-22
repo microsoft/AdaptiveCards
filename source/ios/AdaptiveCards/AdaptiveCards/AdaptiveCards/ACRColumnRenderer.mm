@@ -42,8 +42,6 @@
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
 
-    [viewGroup addArrangedSubview:column];
-
     configBleed(rootView, elem, column, acoConfig, viewGroup);
 
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
@@ -115,6 +113,8 @@
     configVisibility(column, elem);
 
     [column hideIfSubviewsAreAllHidden];
+    
+    [viewGroup addArrangedSubview:column];
 
     return column;
 }

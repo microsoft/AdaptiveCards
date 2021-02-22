@@ -476,7 +476,9 @@ static int kToggleVisibilityContext;
 {
     return [self getViewWithMaxDimensionAfterExcluding:view
                                              dimension:^CGFloat(UIView *v) {
-                                                 return [v intrinsicContentSize].height;
+                                                 NSString *key = [NSString stringWithFormat:@"%p", v];
+                                                 NSValue *value = self->_subviewIntrinsicContentSizeCollection[key];
+                                                 return (value ? [value CGSizeValue] : CGSizeZero).height;
                                              }];
 }
 
@@ -484,7 +486,9 @@ static int kToggleVisibilityContext;
 {
     return [self getViewWithMaxDimensionAfterExcluding:view
                                              dimension:^CGFloat(UIView *v) {
-                                                 return [v intrinsicContentSize].width;
+                                                 NSString *key = [NSString stringWithFormat:@"%p", v];
+                                                 NSValue *value = self->_subviewIntrinsicContentSizeCollection[key];
+                                                 return (value ? [value CGSizeValue] : CGSizeZero).width;
                                              }];
 }
 
@@ -493,7 +497,7 @@ static int kToggleVisibilityContext;
     CGFloat currentBest = 0.0;
     for (UIView *v in _stackView.arrangedSubviews) {
         if (![v isEqual:view]) {
-            currentBest = MAX(currentBest, dimension(view));
+            currentBest = MAX(currentBest, dimension(v));
         }
     }
     return currentBest;
