@@ -225,14 +225,19 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         for (let category in categorizedTypes) {
+
+            let categoryList = document.createElement('div');
+            categoryList.setAttribute("aria-label", category)
+            
             let node = document.createElement('div');
+            categoryList.appendChild(node);
             node.innerText = category;
             node.className = "acd-palette-category";
 
-            this._toolPaletteToolbox.content.appendChild(node);
+            this._toolPaletteToolbox.content.appendChild(categoryList);
 
             for (var i = 0; i < categorizedTypes[category].length; i++) {
-                this.addPaletteItem(categorizedTypes[category][i], this._toolPaletteToolbox.content);
+                this.addPaletteItem(categorizedTypes[category][i], categoryList);
             }
         }
     }
