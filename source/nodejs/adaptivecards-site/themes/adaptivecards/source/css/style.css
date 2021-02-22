@@ -329,13 +329,23 @@ s {
   text-decoration: none;
 }
 
-.toc-todo .selectedHolder {
-  background-color: #0050c5;
+@media not (forced-colors: active) {
+    .toc-todo .selectedHolder {
+        background-color: #0050c5;
+    }
+
+    .toc-todo .selectedHolder > a,
+    .toc-todo .selectedHolder > a:hover {
+        color: #fff;
+    }
 }
 
-.toc-todo .selectedHolder > a,
-.toc-todo .selectedHolder > a:hover {
-  color: #fff;
+@media (forced-colors: active) {
+    .toc-todo .selectedHolder {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .toc-todo li a {
@@ -621,7 +631,6 @@ dir {
 
 .homepage a:hover {
   color: blue;
-  text-decoration: none;
 }
 
 /* .fa-chevron-right {
@@ -658,7 +667,10 @@ dir {
 
 .ac-footer a:hover {
   color: #6b6b6b;
-  text-decoration: none;
+}
+
+.ac-footer-link-no-chevron{
+  color: #0b78d0!important;  
 }
 
 .ac-footer .post-subtitle {
