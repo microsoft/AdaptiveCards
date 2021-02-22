@@ -3,8 +3,8 @@ title: 🎉 Pic2Card Service Now available on Adaptive Card Designer
 subtitle: Generate cards automatically by uploading an image
 date: 2020-11-01
 feature_image: whatispic2card.png
-github_username: haridas
-twitter: haridas_n
+github_username: Vasanth-S
+twitter: ImagineaTech
 ---
 
 ## Introducing Pic2Card 
@@ -43,10 +43,12 @@ We'll be improving the model over time, so please let us know if you encounter a
 
 ### Special thanks to Imaginea
 
-This entire feature was built by our wonderful community member [Imaginea](https://www.imaginea.com/). Many thanks to your whole team for bringing this feature to Adaptive Card users!
+This entire feature was built by our wonderful community member [Imaginea](https://www.imaginea.com/). Many thanks to your whole team for bringing this feature to Adaptive Card users, including:
+
+* [Vasanthakumar Sarpasayanam](https://www.linkedin.com/in/vasanthakumar-sarpasayanam/)
+* [Haridas Narayanaswamy](https://github.com/haridas)
+* [Keerthana Manoharan](https://github.com/Keerthana786)
 
 ### Watch the Community Call for full details
 
 <iframe width="560" title="Community Call Video" height="315" src="https://www.youtube.com/embed/b7FVAsaWo3g" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
