@@ -31,6 +31,14 @@
 
 namespace RendererQml
 {
+	struct CustomCheckboxParams
+	{
+		const std::string id;
+		const std::string text;
+		const std::string font;
+		const bool isChecked;
+		const bool isWrap;
+	};
     class AdaptiveCardQmlRenderer : public AdaptiveCardsRendererBase<QmlTag, AdaptiveRenderContext>
     {
     public:
@@ -63,12 +71,12 @@ namespace RendererQml
         static std::shared_ptr<QmlTag> TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context);
         /*static std::shared_ptr<QmlTag> DateInputRender(std::shared_ptr<AdaptiveCards::DateInput> input, std::shared_ptr<AdaptiveRenderContext> context);
-        static std::shared_ptr<QmlTag> TimeInputRender(std::shared_ptr<AdaptiveCards::TimeInput> input, std::shared_ptr<AdaptiveRenderContext> context);
+        static std::shared_ptr<QmlTag> TimeInputRender(std::shared_ptr<AdaptiveCards::TimeInput> input, std::shared_ptr<AdaptiveRenderContext> context);*/
         static std::shared_ptr<QmlTag> ToggleInputRender(std::shared_ptr<AdaptiveCards::ToggleInput> input, std::shared_ptr<AdaptiveRenderContext> context);
-
-        static std::shared_ptr<QmlTag> AdaptiveActionRender(std::shared_ptr<AdaptiveCards::BaseActionElement> adaptiveAction, std::shared_ptr<AdaptiveRenderContext> context);*/
+        /*static std::shared_ptr<QmlTag> AdaptiveActionRender(std::shared_ptr<AdaptiveCards::BaseActionElement> adaptiveAction, std::shared_ptr<AdaptiveRenderContext> context);*/
 
     private:
         void SetObjectTypes();
+		static std::shared_ptr<QmlTag> GetCheckbox(std::shared_ptr<QmlTag> uiCheckboxInput, CustomCheckboxParams& params);
     };
 }

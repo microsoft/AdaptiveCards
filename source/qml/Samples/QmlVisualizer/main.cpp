@@ -188,7 +188,7 @@ const std::string card_TextBlock = R"({
 }
 )";
 
-	const std::string card_InputText = R"({
+const std::string card_InputText = R"({
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
@@ -385,6 +385,32 @@ const std::string card_richText = R"({
   ]
 })";
 
+const std::string card_CheckboxInput = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Toggle Input"
+    },
+    {
+      "type": "Input.Toggle",
+      "id": "acceptTerms",
+      "title": "I accept the terms and agreements",
+      "value": "true",
+      "valueOn": "true",
+      "valueOff": "false"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "OK"
+    }
+  ]
+})";
+
 static std::shared_ptr<AdaptiveCards::HostConfig> GetHostConfig()
 {
     std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = std::make_shared<AdaptiveCards::HostConfig>();
@@ -438,7 +464,7 @@ int main(int argc, char* argv[])
     QQuickView view;
     QQmlContext* context = view.engine()->rootContext();
 
-    const std::string qmlString = GenerateQml(card_richText);
+    const std::string qmlString = GenerateQml(card_CheckboxInput);
 
 	context->setContextProperty("_aQmlCard", QString::fromStdString(qmlString));
 
