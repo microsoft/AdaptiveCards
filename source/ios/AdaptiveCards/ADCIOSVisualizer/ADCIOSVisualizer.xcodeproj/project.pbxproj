@@ -57,6 +57,8 @@
 		6B980939215AE9A10024B79B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B98093A215AF05A0024B79B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980930215AE4310024B79B /* CoreGraphics.framework */; };
 		6B9BDFCC20F6D11F00F13155 /* ADCResolver.m in Sources */ = {isa = PBXBuildFile; fileRef = 6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */; };
+		6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */; };
+		6B9FAF5425D7182600D1A791 /* MockRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6B9FAF5225D7182600D1A791 /* MockRenderer.mm */; };
 		6BA88FD12545337C00BF2CDB /* CustomActionSetRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */; };
 		6BBE841D23CD1A4900ECA586 /* Action.ShowCard.Style.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */; };
 		6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */; };
@@ -158,6 +160,9 @@
 		6B980935215AE8780024B79B /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B9BDFCB20F6D11F00F13155 /* ADCResolver.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ADCResolver.m; sourceTree = "<group>"; };
 		6B9BDFCD20F6D16E00F13155 /* ADCResolver.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ADCResolver.h; sourceTree = "<group>"; };
+		6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = AdditionalProperties.json; sourceTree = "<group>"; };
+		6B9FAF5225D7182600D1A791 /* MockRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MockRenderer.mm; sourceTree = "<group>"; };
+		6B9FAF5325D7182600D1A791 /* MockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MockRenderer.h; sourceTree = "<group>"; };
 		6BA88FCF2545337B00BF2CDB /* CustomActionSetRenderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = CustomActionSetRenderer.mm; sourceTree = "<group>"; };
 		6BA88FD02545337B00BF2CDB /* CustomActionSetRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomActionSetRenderer.h; sourceTree = "<group>"; };
 		6BA9091A23985CB5009421CA /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
@@ -239,6 +244,7 @@
 		6B150A0823034DAB00046B3A /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */,
 				6B70AB87256490CC0095D925 /* Image.SelectAction.json */,
 				6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */,
 				6BBE841C23CD1A4900ECA586 /* Action.ShowCard.Style.json */,
@@ -372,6 +378,8 @@
 		F423C0911EE1FB6100905679 /* ADCIOSVisualizerTests */ = {
 			isa = PBXGroup;
 			children = (
+				6B9FAF5325D7182600D1A791 /* MockRenderer.h */,
+				6B9FAF5225D7182600D1A791 /* MockRenderer.mm */,
 				6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */,
 				F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */,
 				F423C0941EE1FB6100905679 /* Info.plist */,
@@ -514,6 +522,7 @@
 				6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
+				6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */,
 				6B150A20230353AB00046B3A /* TextBlock.Color.json in Resources */,
 				6B150A25230353AB00046B3A /* TextBlock.Lists.json in Resources */,
 				F423C0881EE1FB6100905679 /* LaunchScreen.storyboard in Resources */,
@@ -588,6 +597,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B9FAF5425D7182600D1A791 /* MockRenderer.mm in Sources */,
 				6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */,
 				F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */,
 				6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */,
