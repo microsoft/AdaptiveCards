@@ -101,15 +101,6 @@
     self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 
-- (UIView *)addPaddingSpace
-{
-    UIView *blankTrailingSpace = [[UIView alloc] init];
-    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
-    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
-    [self addArrangedSubview:blankTrailingSpace];
-    return blankTrailingSpace;
-}
-
 - (CGSize)intrinsicContentSize
 {
     CGSize size = [super intrinsicContentSize];
