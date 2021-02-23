@@ -478,14 +478,24 @@ $(function () {
 	$("button.copy-data").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
-		$(this).append("<span role='status' aria-label='Sample data copied successfully' id='dataCopySuccess' />");
+
+        if ($("#dataCopySuccess").length === 0) {
+		    $(this).append("<span role='status' aria-label='Sample data copied successfully' id='dataCopySuccess'> <i class='fas fa-check'></i></span>");
+            setTimeout(() => { $("#dataCopySuccess").remove(); }, 2000);
+        }
+
 		$(this).focus();
 	});
 
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
-		$(this).append("<span role='status' aria-label='Sample JSON copied successfully' id='copySuccess' />");
+
+        if ($("#copySuccess").length === 0) {
+		    $(this).append("<span role='status' aria-label='Sample JSON copied successfully' id='copySuccess'> <i class='fas fa-check'></i></span>");
+            setTimeout(() => { $("#copySuccess").remove(); }, 2000);
+        }
+
 		$(this).focus();
 	});
 
