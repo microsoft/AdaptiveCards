@@ -134,4 +134,11 @@ NSString *const ACRParseErrorDomain = @"ACRParseErrorDomain";
     return [[ACSCollectionTypeElement alloc] initWithCollectionTypeElement:collectionTypeElementCpp];
 }
 
++ (ACSInline *)convertFromInline:(std::shared_ptr<Inline>)inlineCpp
+{
+    if (auto textRun = dynamic_pointer_cast<TextRun>(inlineCpp))
+        return [[ACSTextRun alloc] initWithTextRun:textRun];
+    return [[ACSInline alloc] initWithInline:inlineCpp];
+}
+
 @end

@@ -10,6 +10,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private var items: [String] = []
     private var configs: [String] = []
     private var hostConfigString = sampleHostConfig // default config string
+    private let webexConfig: String = "webex_light_config.json"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,11 +34,12 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         comboBox.dataSource = self
         comboBox.delegate = self
         
-        // setting the first host config on init
+        // setting Webex Light theme if present or the first config entry
         if !configs.isEmpty {
-            comboBox.selectItem(at: 0)
+            comboBox.selectItem(at: configs.firstIndex(of: webexConfig) ?? 0)
             hostConfigString = selectedHostConfigString()
         }
+        comboBox.numberOfVisibleItems = 10
         
         tableView.rowHeight = 32
         textView.isAutomaticQuoteSubstitutionEnabled = false

@@ -89,16 +89,17 @@ class ColorUtils {
         var rgbValue: UInt64 = 0
         Scanner(string: hexString).scanHexInt64(&rgbValue)
         
+        // Need to revisit and validate
         switch hexString.count {
         case 6: return NSColor(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
                                green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
                                blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
                                alpha: CGFloat(1.0))
             
-        case 8: return NSColor(red: CGFloat((rgbValue & 0xFF000000) >> 24) / 255.0,
-                               green: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
-                               blue: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
-                               alpha: CGFloat(rgbValue & 0x000000FF) / 255.0)
+        case 8: return NSColor(red: CGFloat((rgbValue & 0x00FF0000) >> 16) / 255.0,
+                               green: CGFloat((rgbValue & 0x0000FF00) >> 8) / 255.0,
+                               blue: CGFloat((rgbValue & 0x000000FF)) / 255.0,
+                               alpha: CGFloat(rgbValue & 0xFF000000) / 255.0)
         
         default:
             logError("Not valid HexCode: \(hexString)")

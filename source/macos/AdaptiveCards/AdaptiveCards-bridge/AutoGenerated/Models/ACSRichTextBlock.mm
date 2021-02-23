@@ -52,7 +52,7 @@
     NSMutableArray*  objList = [NSMutableArray new];
     for (const auto& item: getInlinesCpp)
     {
-        [objList addObject: [[ACSInline alloc] initWithInline:item]];
+        [objList addObject: [BridgeConverter convertFromInline:item]];
     }
     return objList;
 

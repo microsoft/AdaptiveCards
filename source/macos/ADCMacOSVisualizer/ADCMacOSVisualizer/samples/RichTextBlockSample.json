@@ -1,0 +1,110 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "RichTextBlock",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "This is the first inline. "
+                },
+                {
+                    "type": "TextRun",
+                    "text": "We support colors,",
+                    "color": "Good"
+                },
+                {
+                    "type": "TextRun",
+                    "text": " both regular and subtle. ",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Text ",
+                    "size": "Small"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "of ",
+                    "size": "Medium"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "all ",
+                    "size": "Large"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "sizes! ",
+                    "size": "ExtraLarge"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Light weight text. ",
+                    "weight": "Lighter"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Bold weight text. ",
+                    "weight": "Bolder"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Highlights. ",
+                    "highlight": true
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Italics. ",
+                    "italic": true
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Strikethrough. ",
+                    "strikethrough": true
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Monospace too!",
+                    "fontType": "Monospace"
+                },
+                    {
+                    "type": "TextRun",
+                    "text": "and Underlined",
+                    "underline": true
+                }
+            ]
+        },
+        {
+            "type": "RichTextBlock",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "Date-Time parsing: {{DATE(2017-02-14T06:08:39Z,LONG)}} {{TIME(2017-02-14T06:08:39Z)}}"
+                }
+            ]
+        },
+        {
+            "type": "RichTextBlock",
+            "horizontalAlignment": "Center",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "Rich text blocks also support center alignment. Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor "
+                }
+            ]
+        },
+        {
+            "type": "RichTextBlock",
+            "horizontalAlignment": "Right",
+            "inlines": [
+                {
+                    "type": "TextRun",
+                    "text": "Rich text blocks also support right alignment. Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor Lorem ipsum dolor "
+                }
+            ]
+        }
+    ]
+}
