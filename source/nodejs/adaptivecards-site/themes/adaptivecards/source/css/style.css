@@ -329,15 +329,13 @@ s {
   text-decoration: none;
 }
 
-@media not (forced-colors: active) {
-    .toc-todo .selectedHolder {
-        background-color: #0050c5;
-    }
+.toc-todo .selectedHolder {
+    background-color: #0050c5;
+}
 
-    .toc-todo .selectedHolder > a,
-    .toc-todo .selectedHolder > a:hover {
-        color: #fff;
-    }
+.toc-todo .selectedHolder > a,
+.toc-todo .selectedHolder > a:hover {
+    color: #fff;
 }
 
 @media (forced-colors: active) {
