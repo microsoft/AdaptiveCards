@@ -201,6 +201,7 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 
 export interface IPropertySheetEditorCommand {
     caption: string;
+    altText: string;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -266,6 +267,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
                 action.title = command.caption;
+                action.accessibleTitle = command.altText;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -302,14 +304,21 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
             return [
                 {
                     caption: "...",
+                    altText: (this.label + " " + "Data Binding Collapsed"),
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
+                                               
+                        clickedElement.setAttribute("aria-label",this.label + " " + "Data Binding Expanded");
+                        
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
+                            clickedElement.setAttribute("aria-label",this.label + " " + "Data Binding Collapsed");
                             if (!wasCancelled) {
+                                
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
 
                                 context.peer.changed(true);
                             }
+                            clickedElement.focus();
                         }
                         fieldPicker.popup(clickedElement);
                     }
