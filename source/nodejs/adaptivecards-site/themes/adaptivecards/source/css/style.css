@@ -629,7 +629,6 @@ dir {
 
 .homepage a:hover {
   color: blue;
-  text-decoration: none;
 }
 
 /* .fa-chevron-right {
@@ -666,7 +665,10 @@ dir {
 
 .ac-footer a:hover {
   color: #6b6b6b;
-  text-decoration: none;
+}
+
+.ac-footer-link-no-chevron{
+  color: #0b78d0!important;  
 }
 
 .ac-footer .post-subtitle {
