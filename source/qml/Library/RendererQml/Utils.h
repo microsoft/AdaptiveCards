@@ -38,6 +38,8 @@ namespace RendererQml
 		static std::string GetTextHighlightColor(std::string textColor);
 		static std::string AddCSSProperty(std::string property,std::string value);
 
+		static std::string GetDate(std::string& date, bool MinimumorMaximum);
+
     private:
         Utils() {}
     };

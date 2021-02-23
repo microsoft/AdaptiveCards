@@ -300,4 +300,24 @@ namespace RendererQml
 		opacity = opacity == 0 ? opacity + 0.2 : opacity ;
 		return "rgba(" + red + "," + color[1] + "," + color[2] + "," + std::to_string(opacity) + ")";
 	}
+
+	std::string Utils::GetDate(std::string& date, bool MiniumDate_MaximumDate)
+	{
+		//Input format:"yyyy-mm-dd" , Output Format:"mm-dd-yyyy" or "new Date(yyyy,mm,dd)"
+		std::vector<std::string> d;
+
+		std::stringstream ss(date);
+
+		while (ss.good()) 
+		{
+			std::string substr;
+			getline(ss, substr, '-');
+			d.push_back(substr);
+		}
+		if (MiniumDate_MaximumDate == true)
+		{
+			return "new Date(" + d[0] + "," + d[1] + "," + d[2] + ")";
+		}
+		return d[1] + "-" + d[2] + "-" + d[0];
+	}
 }
