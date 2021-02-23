@@ -475,10 +475,18 @@ $(function () {
 
 	});
 
+	$("button.copy-data").click(function (e) {
+		var content = $(this).parent().next("pre").text();
+		copyToClipboard(content);
+		$(this).append("<span role='status' aria-label='Sample data copied successfully' id='dataCopySuccess' />");
+		$(this).focus();
+	});
+
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
-    	$("button.copy-code").focus();
+		$(this).append("<span role='status' aria-label='Sample JSON copied successfully' id='copySuccess' />");
+		$(this).focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
