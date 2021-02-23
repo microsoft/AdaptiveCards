@@ -301,7 +301,7 @@ namespace RendererQml
 		return "rgba(" + red + "," + color[1] + "," + color[2] + "," + std::to_string(opacity) + ")";
 	}
 
-	std::string Utils::GetDate(std::string& date, bool MiniumDate_MaximumDate)
+	std::string Utils::GetDate(std::string date, bool MiniumDate_MaximumDate)
 	{
 		//Input format:"yyyy-mm-dd" , Output Format:"mm-dd-yyyy" or "new Date(yyyy,mm,dd)"
 		std::vector<std::string> d;
