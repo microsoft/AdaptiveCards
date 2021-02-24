@@ -605,6 +605,11 @@ dir {
   width: 20px;
 }
 
+button .fa-check {
+  color: green;
+  padding-left: 10px;
+}
+
 .fa,
 .fas {
   font-weight: 900 !important;
