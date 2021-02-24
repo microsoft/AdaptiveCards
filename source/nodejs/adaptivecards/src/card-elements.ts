@@ -3666,6 +3666,7 @@ class ActionButton {
         this._parentContainerStyle = parentContainerStyle;
     }
 
+    onBlur?: (actionButton: ActionButton) => void;
     onClick?: (actionButton: ActionButton) => void;
 
     render() {
@@ -3679,7 +3680,17 @@ class ActionButton {
                 this.click();
             };
 
+            this.action.renderedElement.onblur = (e) => {
+                this.blur();
+            };
+
             this.updateCssStyle();
+        }
+    }
+
+    blur() {
+        if (this.onBlur !== undefined) {
+            this.onBlur(this);
         }
     }
 
@@ -4559,13 +4570,10 @@ class ActionCollection {
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
         let afterSelectedAction = false;
-        for (let button of this.buttons) {
-            console.log(button);
-            console.log(afterSelectedAction);
-            // remove all following actions from tabOrder, to skip focus directly to expanded card
+        for (const button of this.buttons) {
+            // remove actions after selected action from tabOrder, to skip focus directly to expanded card
             if (afterSelectedAction) {
                 button.focusable = false;
-                console.log(button.focusable);
             }
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
@@ -4573,13 +4581,11 @@ class ActionCollection {
             else {
                 button.state = ActionButtonState.Expanded;
                 afterSelectedAction = true;
-            }
-        }
-        if(action.renderedElement) {
-            action.renderedElement.onblur = (e) => {
-                for (let button of this.buttons) {
-                    button.focusable = true;
-                }
+                button.onBlur = (e) => {
+                    for (const b of this.buttons) {
+                        b.focusable = true;
+                    }
+                };
             }
         }
 
