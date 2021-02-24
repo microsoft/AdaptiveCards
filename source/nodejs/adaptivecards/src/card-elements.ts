@@ -3620,6 +3620,7 @@ const enum ActionButtonState {
 class ActionButton {
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
+    private _focusable: boolean = true;
 
     private updateCssStyle() {
         if (this.action.parent && this.action.renderedElement) {
@@ -3632,6 +3633,8 @@ class ActionButton {
             }
 
             this.action.updateActionButtonCssStyle(this.action.renderedElement, this._state);
+
+            this.action.renderedElement.tabIndex = this.focusable ? 0 : -1;
 
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("expanded"));
             this.action.renderedElement.classList.remove(hostConfig.makeCssClassName("subdued"));
@@ -3694,6 +3697,17 @@ class ActionButton {
         this._state = value;
 
         this.updateCssStyle();
+    }
+
+    get focusable(): boolean {
+        return this._focusable;
+    }
+
+    set focusable(value: boolean) {
+        if(value != this._focusable) {
+            this._focusable = value;
+            this.updateCssStyle();
+        }
     }
 }
 
@@ -3955,7 +3969,7 @@ export class SubmitAction extends Action {
             if (value !== undefined && typeof value === "string") {
                 return value.toLowerCase() === "none" ? "none" : "auto";
             }
-            
+
             return undefined;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
@@ -4544,12 +4558,28 @@ class ActionCollection {
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
+        let afterSelectedAction = false;
         for (let button of this.buttons) {
+            console.log(button);
+            console.log(afterSelectedAction);
+            // remove all following actions from tabOrder, to skip focus directly to expanded card
+            if (afterSelectedAction) {
+                button.focusable = false;
+                console.log(button.focusable);
+            }
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
             }
             else {
                 button.state = ActionButtonState.Expanded;
+                afterSelectedAction = true;
+            }
+        }
+        if(action.renderedElement) {
+            action.renderedElement.onblur = (e) => {
+                for (let button of this.buttons) {
+                    button.focusable = true;
+                }
             }
         }
 
