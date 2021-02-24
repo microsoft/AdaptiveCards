@@ -14,7 +14,7 @@
 		</div>
 
 		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px">
-			<h6>Learn</h6>
+			<div role="heading" aria-level="2" class="platform-header">Learn</div>
 			<% for (var link of config.footer.learn_links) { %>
 				<p><a href="<%- url_for(link.href) %>"><%- link.title %> <i class="fas fa-chevron-right"></i></a></p>
 			<% } %>
@@ -22,7 +22,7 @@
  
 		<div class="w3-cell w3-container w3-margin-top w3-mobile" style="width: 300px; max-width: 300px">
 			<div class="w3-cell-row" style="margin-top: 6px;">
-				<h6 class="w3-cell w3-cell-middle">Blog</h6>
+				<div role="heading" aria-level="2" class="w3-cell w3-cell-middle platform-header">Blog</div>
 				<a class="w3-cell w3-cell-middle w3-small" aria-label="Read more blog posts" style="padding-left: 20px;"
 					href="<%- url_for('blog') %>">Read more <i class="fa fa-chevron-right"></i></a>
 			</div>

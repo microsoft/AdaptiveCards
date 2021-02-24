@@ -488,12 +488,14 @@ dir {
   line-height: 36px;
 }
 
+.homepage .accent-paragraph,
 .homepage h3 {
   font-size: 20px;
   font-weight: lighter;
   line-height: 30px;
 }
 
+.homepage h3.callout-title,
 .homepage h4 {
   font-size: 18px;
   line-height: 28px;
@@ -508,6 +510,7 @@ dir {
   margin-top: 2px;
 }
 
+.platform-header,
 .homepage h6,
 .footer-holder h6 {
   text-transform: uppercase;
@@ -603,6 +606,11 @@ dir {
 .homepage i.fas,
 .homepage i.far {
   width: 20px;
+}
+
+button .fa-check {
+  color: green;
+  padding-left: 10px;
 }
 
 .fa,
