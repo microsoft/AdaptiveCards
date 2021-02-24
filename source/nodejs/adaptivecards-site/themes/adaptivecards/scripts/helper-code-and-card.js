@@ -36,7 +36,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet show-with-templating">
 			<div class="codeHeader">
 				<span class="language">Data JSON</span>
-				<button aria-label="Copy sample data JSON" class="action copy-code">
+				<button aria-label="Copy sample data JSON" class="action copy-data">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
