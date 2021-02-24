@@ -61,14 +61,22 @@ export class ToolbarButton extends ToolbarElement {
     private _isToggled: boolean = false;
 
     protected clicked() {
-        if (this.onClick) {
+        if (this.isEnabled && this.onClick) {
             this.onClick(this);
         }
     }
 
     protected internalUpdateLayout() {
         this.renderedElement.className = "acd-toolbar-button";
-        (this.renderedElement as HTMLButtonElement).disabled = !this.isEnabled;
+
+        if(!this.isEnabled) {
+            this.renderedElement.classList.add("acd-toolbar-button-disabled");
+            this.renderedElement.setAttribute("aria-disabled", "true");
+        }
+        else {
+            this.renderedElement.classList.remove("acd-toolbar-button-disabled");
+            this.renderedElement.removeAttribute("aria-disabled");
+        }
 
         if (this.isToggled) {
             this.renderedElement.classList.add("acd-toolbar-button-toggled");
@@ -77,7 +85,9 @@ export class ToolbarButton extends ToolbarElement {
             this.renderedElement.classList.remove("acd-toolbar-button-toggled");
         }
 
-        this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
+        if (this.allowToggle) {
+            this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
+        }
 
         if (this.iconClass) {
             this.renderedElement.classList.add(this.iconClass);
@@ -102,7 +112,7 @@ export class ToolbarButton extends ToolbarElement {
             if (this.allowToggle) {
                 this.isToggled = !this.isToggled;
             }
-            
+
             this.clicked();
         }
 
