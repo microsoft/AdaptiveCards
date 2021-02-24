@@ -201,8 +201,8 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 
 export interface IPropertySheetEditorCommand {
     caption: string;
-    altText: string;
-    expanded?: string;
+    altText?: string;
+    expanded?: boolean;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -307,7 +307,7 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
                 {
                     caption: "...",
                     altText: (this.label + " " + "Data Binding"),
-                    expanded: "false",
+                    expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
                                                
                         clickedElement.setAttribute("aria-label", this.label + " " + "Data Binding");
