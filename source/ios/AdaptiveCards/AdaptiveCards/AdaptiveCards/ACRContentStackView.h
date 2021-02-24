@@ -20,6 +20,8 @@
 @property UIStackViewAlignment alignment;
 @property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
 @property BOOL isActionSet;
+// tells if a background image is set
+@property BOOL isBackgroundImageSet;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 

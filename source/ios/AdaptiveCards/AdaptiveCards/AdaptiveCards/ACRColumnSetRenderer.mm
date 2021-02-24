@@ -152,7 +152,6 @@
             stretchView = curView;
         } else if ([curView.columnWidth isEqualToString:@"auto"]) {
             CGSize intrinsicContentSize = [curView intrinsicContentSize];
-            printSize(@"ColumnView Size = ", intrinsicContentSize);
             if (intrinsicContentSize.width > 0) {
                 [constraints addObject:
                                  [curView.widthAnchor constraintLessThanOrEqualToConstant:intrinsicContentSize.width]];
@@ -209,6 +208,8 @@
     configVisibility(columnSetView, elem);
 
     [columnSetView hideIfSubviewsAreAllHidden];
+    
+    [columnSetView setNeedsLayout];
 
     return columnSetView;
 }

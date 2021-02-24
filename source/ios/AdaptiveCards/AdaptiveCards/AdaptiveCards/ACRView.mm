@@ -53,6 +53,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     dispatch_group_t _async_tasks_group;
     int _serialNumber;
     int _numberOfSubscribers;
+    // flag that's set if didLoadElements delegate is called
+    BOOL _hasCalled;
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
@@ -112,6 +114,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         self.acrActionDelegate = acrActionDelegate;
         [self render];
     }
+    // call to check if all resources are loaded
+    [self callDidLoadElementsIfNeeded];
     return self;
 }
 
@@ -126,8 +130,9 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (UIView *)render
 {
+    // set the width constraint only if it's explicitly asked
     if (self.frame.size.width) {
-//        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
+        [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
 
     [self pushCurrentShowcard:self];
@@ -135,14 +140,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:self.inputHandlers context:self containingView:self hostconfig:_hostConfig];
 
-    [self popCurrentShowcard];
-
     ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
                                                [ACOHostConfig getPlatformContainerStyle:style]];
-
-    renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
+  
+    [self popCurrentShowcard];
 
     return newView;
 }
@@ -156,7 +159,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)callDidLoadElementsIfNeeded
 {
     // Call back app with didLoadElements
-    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers) {
+    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers && !_hasCalled) {
+        _hasCalled = YES;
         [[self acrActionDelegate] didLoadElements];
     }
 }
@@ -814,12 +818,6 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     if (imageView.image) {
         self->_imageViewMap[key] = imageView.image;
     }
-}
-
-- (void)drawRect:(CGRect)rect
-{
-    [super drawRect:rect];
-    [self callDidLoadElementsIfNeeded];
 }
 
 @end

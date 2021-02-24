@@ -13,6 +13,7 @@
 #import "ACRRendererPrivate.h"
 #import "ACRViewPrivate.h"
 #import "BaseActionElement.h"
+#import "UtiliOS.h"
 #import <UIKit/UIKit.h>
 
 @implementation ACRShowCardTarget {
@@ -112,6 +113,14 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
+    
+    // send candidate background image view, if the sent view is UIImageView and has UIImage in it
+    // AdatpiveCard will configure the backgroun
+    if (hidden) {
+        if ([_adcView.subviews count] > 1) {            
+            renderBackgroundCoverMode(_adcView.subviews[1], _adcView);
+        }
+    }
     _button.selected = !isSelected;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {

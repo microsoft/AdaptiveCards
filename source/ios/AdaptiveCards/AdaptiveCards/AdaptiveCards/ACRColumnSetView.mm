@@ -72,13 +72,4 @@
     super.alignment = UIStackViewAlignmentFill;
 }
 
-- (CGSize)intrinsicContentSize
-{
-    CGSize size = [super intrinsicContentSize];
-    
-    printSize(@"ColumnSet Size = ", size);
-    printSize(@"ColumnSet Combined Size = ", self.combinedContentSize);
-    return size;
-}
-
 @end

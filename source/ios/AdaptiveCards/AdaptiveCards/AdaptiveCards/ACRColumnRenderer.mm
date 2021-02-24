@@ -41,9 +41,7 @@
                                                      parentStyle:[viewGroup style]
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
-
-    configBleed(rootView, elem, column, acoConfig, viewGroup);
-
+    
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
     column.pixelWidth = columnElem->GetPixelWidth();
@@ -115,7 +113,10 @@
     [column hideIfSubviewsAreAllHidden];
     
     [viewGroup addArrangedSubview:column];
-
+    
+    // viewGroup and column has to be in view hierarchy before configBleed is called 
+    configBleed(rootView, elem, column, acoConfig, viewGroup);
+    
     return column;
 }
 

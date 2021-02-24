@@ -59,9 +59,9 @@
         [self setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
-        [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:ACRColumnWidthPriorityStretchAuto forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentHuggingPriority:ACRColumnWidthPriorityStretchAuto forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 }
@@ -99,15 +99,6 @@
     // for dimension
     CGFloat newWidth = (maxWidthExcludingTheView < size.width) ? maxWidthExcludingTheView : self.combinedContentSize.width;
     self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
-}
-
-- (CGSize)intrinsicContentSize
-{
-    CGSize size = [super intrinsicContentSize];
-    
-    printSize(@"Column Size = ", size);
-    printSize(@"Column Combined Size = ", self.combinedContentSize);
-    return size;
 }
 
 @end

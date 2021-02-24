@@ -58,7 +58,10 @@
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    } 
+    }
+    
+    // removes leading padding
+    choiceSetView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);    
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;

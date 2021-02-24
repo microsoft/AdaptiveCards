@@ -20,7 +20,7 @@
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
-CGFloat kAdaptiveCardsWidth = 360;
+CGFloat kAdaptiveCardsWidth = 0;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
@@ -240,6 +240,9 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+    
+    // the width of the AdaptiveCards does not need to be set.
+    // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
     _dataSource = [[ACRChatWindow alloc] init:kAdaptiveCardsWidth];
     _dataSource.adaptiveCardsDelegates = self;
     self.chatWindow.dataSource = _dataSource;
@@ -483,39 +486,35 @@ CGFloat kAdaptiveCardsWidth = 360;
 {
     NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
     NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-    self.editableStr = jsonStr;
-    [_dataSource insertCard:jsonStr];
-    cardRendered = YES;
-    if (cardLoaded) {
-        cardLoaded = NO;
-        cardRendered = NO;
-        [self reloadRowsAtChatWindowsWithIndexPaths:nil];
-    }
-    //    dispatch_async(_global_queue,
-    //                   ^{
-    //                       } else {
-    //                           [self.chatWindow beginUpdates];
-    //                           NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-    //                           NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-    //                           [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-    //                           [self.chatWindow endUpdates];
-    //                       }
-    //                   });
+    // resources such as images may not be ready when AdaptiveCard is added to its super view
+    // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate
+    // but the notification can come at any time
+    // adding the two tasks, rendering the card & handling the notification, to a task queue ensures
+    // the syncronization.
+    dispatch_async(_global_queue, ^{
+        self.editableStr = jsonStr;
+        // the data source will parse & render the card, and update its store for AdaptiveCards
+        [self->_dataSource insertCard:jsonStr];
+        // tell the table view UI to add a row
+        [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationBottom];
+    });
 }
 
+// ViewController's AdaptiveCard delegate that handles the resource loading completion event.
 - (void)didLoadElements
 {
-    cardLoaded = YES;
-    if (cardRendered) {
-        cardLoaded = NO;
-        cardRendered = NO;
-        dispatch_async(_global_queue,
-                       ^{
-            [self reloadRowsAtChatWindowsWithIndexPaths:nil];
-                       });
-    }
+    // GCD ensures that this event happens after the AdaptiveCard is rendered and added to the table view.
+    // updating the data source & its table view is complete when it's the turn for the enqueued task by the delegate.
+    dispatch_async(_global_queue,
+                   ^{
+                       NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+                       NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+                       // reload the row; it is possible that the row height, for example, is calculated without images loaded
+                       [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+                       // scroll the new card to the top
+                       [self.chatWindow scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                   });
 }
-
 
 
 - (void)reloadRowsAtChatWindows:(NSIndexPath *)indexPath
@@ -525,51 +524,9 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
 {
-//    void (^scroll)(BOOL) = ^(BOOL isFinished) {
-//        if (isFinished) {
-//            [self.chatWindow scrollToRowAtIndexPath:indexPaths[0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
-//        }
-//    };
-    //    if (!_ran) {
-    //        dispatch_async(_global_queue,
-    //                       ^{
-    void (^scroll)(BOOL) = ^(BOOL isFinished) {
-        if (isFinished) {
-            NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
-            NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-            [self.chatWindow scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
-        }
-    };
-    
-    NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
-    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-    if (@available(iOS 11.0, *)) {
-        [self.chatWindow
-         performBatchUpdates:^(void) {
-            
-            [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-            //[self.chatWindow reloadData];
-            NSInteger rowIndex = lastRowIndex + 1;
-            NSIndexPath *pathToRow = [NSIndexPath indexPathForRow:rowIndex inSection:0];
-            [self.chatWindow reloadRowsAtIndexPaths:@[ pathToRow] withRowAnimation:UITableViewRowAnimationTop];
-            
-        }
-         completion:scroll];
-    }
-    
-    //    [self reloadRowsAtChatWindows:pathToLastRow];
-    //                           _ran = NO;
-    //                       });
-    //    }
-//    if (@available(iOS 11.0, *)) {
-//        [self.chatWindow
-//            performBatchUpdates:^(void) {
-//                [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationTop];
-//            }
-//         completion:nil];//scroll];
-//    } else {
-//        [self.chatWindow reloadData];
-//        scroll(YES);
-//    }
+    dispatch_async(_global_queue,
+                   ^{
+                       [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                   });
 }
 @end
