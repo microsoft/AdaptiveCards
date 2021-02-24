@@ -202,6 +202,7 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 export interface IPropertySheetEditorCommand {
     caption: string;
     altText: string;
+    expanded?: string;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -268,6 +269,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 let action = new Adaptive.SubmitAction();
                 action.title = command.caption;
                 action.accessibleTitle = command.altText;
+                action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -304,14 +306,17 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
             return [
                 {
                     caption: "...",
-                    altText: (this.label + " " + "Data Binding Collapsed"),
+                    altText: (this.label + " " + "Data Binding"),
+                    expanded: "false",
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
                                                
-                        clickedElement.setAttribute("aria-label",this.label + " " + "Data Binding Expanded");
+                        clickedElement.setAttribute("aria-label", this.label + " " + "Data Binding");
+                        clickedElement.setAttribute("aria-expanded", "true");
                         
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
-                            clickedElement.setAttribute("aria-label",this.label + " " + "Data Binding Collapsed");
+                            clickedElement.setAttribute("aria-label", this.label + " " + "Data Binding");
+                            clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
                                 
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());

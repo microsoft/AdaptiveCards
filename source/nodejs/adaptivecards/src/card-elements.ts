@@ -3778,6 +3778,7 @@ export abstract class Action extends CardObject {
     }
 
     accessibleTitle?: string;
+    expanded?: string;
 
     onExecute: (sender: Action) => void;
 
@@ -3810,6 +3811,10 @@ export abstract class Action extends CardObject {
         }
         else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
+        }
+
+        if (this.expanded){
+            buttonElement.setAttribute("aria-expanded", this.expanded)
         }
 
         buttonElement.type = "button";
