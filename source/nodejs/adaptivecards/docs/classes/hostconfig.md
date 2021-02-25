@@ -14,19 +14,19 @@
 
 ### Properties
 
-* [actions](hostconfig.md#actions)
-* [adaptiveCard](hostconfig.md#adaptivecard)
+* [actions](hostconfig.md#readonly-actions)
+* [adaptiveCard](hostconfig.md#readonly-adaptivecard)
 * [alwaysAllowBleed](hostconfig.md#alwaysallowbleed)
 * [choiceSetInputValueSeparator](hostconfig.md#choicesetinputvalueseparator)
-* [containerStyles](hostconfig.md#containerstyles)
+* [containerStyles](hostconfig.md#readonly-containerstyles)
 * [cssClassNamePrefix](hostconfig.md#optional-cssclassnameprefix)
-* [factSet](hostconfig.md#factset)
+* [factSet](hostconfig.md#readonly-factset)
 * [fontTypes](hostconfig.md#optional-fonttypes)
-* [hostCapabilities](hostconfig.md#hostcapabilities)
-* [imageSet](hostconfig.md#imageset)
-* [inputs](hostconfig.md#inputs)
+* [hostCapabilities](hostconfig.md#readonly-hostcapabilities)
+* [imageSet](hostconfig.md#readonly-imageset)
+* [inputs](hostconfig.md#readonly-inputs)
 * [lineHeights](hostconfig.md#optional-lineheights)
-* [media](hostconfig.md#media)
+* [media](hostconfig.md#readonly-media)
 * [supportsInteractivity](hostconfig.md#supportsinteractivity)
 
 ### Accessors
@@ -45,9 +45,9 @@
 
 ### Object literals
 
-* [imageSizes](hostconfig.md#imagesizes)
-* [separator](hostconfig.md#separator)
-* [spacing](hostconfig.md#spacing)
+* [imageSizes](hostconfig.md#readonly-imagesizes)
+* [separator](hostconfig.md#readonly-separator)
+* [spacing](hostconfig.md#readonly-spacing)
 
 ## Constructors
 
@@ -65,13 +65,13 @@ Name | Type |
 
 ## Properties
 
-###  actions
+### `Readonly` actions
 
 • **actions**: *[ActionsConfig](actionsconfig.md)* = new ActionsConfig()
 
 ___
 
-###  adaptiveCard
+### `Readonly` adaptiveCard
 
 • **adaptiveCard**: *[AdaptiveCardConfig](adaptivecardconfig.md)* = new AdaptiveCardConfig()
 
@@ -89,7 +89,7 @@ ___
 
 ___
 
-###  containerStyles
+### `Readonly` containerStyles
 
 • **containerStyles**: *[ContainerStyleSet](containerstyleset.md)* = new ContainerStyleSet()
 
@@ -101,7 +101,7 @@ ___
 
 ___
 
-###  factSet
+### `Readonly` factSet
 
 • **factSet**: *[FactSetConfig](factsetconfig.md)* = new FactSetConfig()
 
@@ -113,19 +113,19 @@ ___
 
 ___
 
-###  hostCapabilities
+### `Readonly` hostCapabilities
 
-• **hostCapabilities**: *HostCapabilities‹›* = new HostCapabilities()
+• **hostCapabilities**: *[HostCapabilities](hostcapabilities.md)‹›* = new HostCapabilities()
 
 ___
 
-###  imageSet
+### `Readonly` imageSet
 
 • **imageSet**: *[ImageSetConfig](imagesetconfig.md)* = new ImageSetConfig()
 
 ___
 
-###  inputs
+### `Readonly` inputs
 
 • **inputs**: *[InputConfig](inputconfig.md)* = new InputConfig()
 
@@ -137,7 +137,7 @@ ___
 
 ___
 
-###  media
+### `Readonly` media
 
 • **media**: *[MediaConfig](mediaconfig.md)* = new MediaConfig()
 
@@ -253,7 +253,7 @@ Name | Type |
 
 ## Object literals
 
-###  imageSizes
+### `Readonly` imageSizes
 
 ### ▪ **imageSizes**: *object*
 
@@ -271,7 +271,7 @@ Name | Type |
 
 ___
 
-###  separator
+### `Readonly` separator
 
 ### ▪ **separator**: *object*
 
@@ -285,7 +285,7 @@ ___
 
 ___
 
-###  spacing
+### `Readonly` spacing
 
 ### ▪ **spacing**: *object*
 

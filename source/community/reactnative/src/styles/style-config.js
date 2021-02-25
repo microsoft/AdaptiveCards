@@ -59,6 +59,9 @@ export class StyleManager {
 		defaultPositiveButtonBackgroundColor: {
 			backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.accent.default,
 		},
+		defaultDestructiveButtonBackgroundColor: {
+			backgroundColor: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
+		},
 		defaultDestructiveButtonForegroundColor: {
 			color: this.hostConfig.containerStyles.default.foregroundColors.attention.default,
 		},

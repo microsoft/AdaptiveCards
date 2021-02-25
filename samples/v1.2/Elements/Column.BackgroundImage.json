@@ -51,7 +51,7 @@
                         {
                             "type": "TextBlock",
                             "horizontalAlignment": "Center",
-                            "text": "Those are some crazy arrows",
+                            "text": "Those are some neat arrows",
                             "wrap": true
                         }
                     ],

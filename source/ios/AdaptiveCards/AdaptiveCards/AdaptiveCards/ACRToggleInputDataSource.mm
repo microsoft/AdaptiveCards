@@ -47,7 +47,8 @@ using namespace AdaptiveCards;
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:_toggleSwitch];
+    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, _toggleSwitch);
 }
 
 @synthesize isRequired;

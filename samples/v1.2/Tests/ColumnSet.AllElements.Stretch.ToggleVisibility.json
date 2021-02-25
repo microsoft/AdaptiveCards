@@ -96,7 +96,7 @@
 						{
 							"type": "Input.Number",
 							"id": "id5",
-							"placeholder": "enter comment",
+							"placeholder": "enter number",
 							"max": 500,
 							"height": "stretch"
 						},

@@ -20,7 +20,7 @@ export class Label extends React.Component {
 	hostConfig = HostConfigManager.getHostConfig();
 
 	render() {
-		let { text, wrap, maxLines, onDidLayout } = this.props;
+		let { text, altText, wrap, maxLines, onDidLayout } = this.props;
 
 		// parse & format DATE/TIME values
 		let lang = this.context.lang;
@@ -40,9 +40,10 @@ export class Label extends React.Component {
 		}
 		return (
 			<MarkDownFormatter
-				defaultStyles={[receivedStyle, computedStyle]}
+				defaultStyles={[computedStyle, receivedStyle]}
 				numberOfLines={numberOfLines}
 				text={formattedText}
+				altText={altText}
 				onDidLayout={onDidLayout}
 				{...clickProps} />
 		)

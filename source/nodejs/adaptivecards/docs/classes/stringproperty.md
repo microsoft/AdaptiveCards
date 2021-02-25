@@ -16,14 +16,14 @@
 
 ### Properties
 
-* [defaultValue](stringproperty.md#optional-defaultvalue)
+* [defaultValue](stringproperty.md#optional-readonly-defaultvalue)
 * [isSerializationEnabled](stringproperty.md#isserializationenabled)
-* [name](stringproperty.md#name)
-* [onGetInitialValue](stringproperty.md#optional-ongetinitialvalue)
-* [regEx](stringproperty.md#optional-regex)
-* [sequentialNumber](stringproperty.md#sequentialnumber)
-* [targetVersion](stringproperty.md#targetversion)
-* [treatEmptyAsUndefined](stringproperty.md#treatemptyasundefined)
+* [name](stringproperty.md#readonly-name)
+* [onGetInitialValue](stringproperty.md#optional-readonly-ongetinitialvalue)
+* [regEx](stringproperty.md#optional-readonly-regex)
+* [sequentialNumber](stringproperty.md#readonly-sequentialnumber)
+* [targetVersion](stringproperty.md#readonly-targetversion)
+* [treatEmptyAsUndefined](stringproperty.md#readonly-treatemptyasundefined)
 
 ### Methods
 
@@ -54,11 +54,11 @@ Name | Type | Default |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *undefined | string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
@@ -70,45 +70,45 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-### `Optional` regEx
+### `Optional` `Readonly` regEx
 
 • **regEx**? : *RegExp*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ___
 
-###  treatEmptyAsUndefined
+### `Readonly` treatEmptyAsUndefined
 
 • **treatEmptyAsUndefined**: *boolean*
 

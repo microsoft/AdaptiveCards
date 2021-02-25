@@ -111,7 +111,6 @@
     [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
-
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [self resignFirstResponder];

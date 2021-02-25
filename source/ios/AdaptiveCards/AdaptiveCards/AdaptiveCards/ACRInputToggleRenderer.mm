@@ -51,6 +51,8 @@
     toggleView.title.text = [NSString stringWithCString:adaptiveToggleInput->GetTitle().c_str() encoding:NSUTF8StringEncoding];
     toggleView.title.textColor = getForegroundUIColorFromAdaptiveAttribute(config, viewGroup.style);
     toggleView.title.adjustsFontSizeToFitWidth = NO;
+    toggleView.title.isAccessibilityElement = NO;
+
     if (!adaptiveToggleInput->GetWrap()) {
         toggleView.title.numberOfLines = 1;
         toggleView.title.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -63,7 +65,12 @@
     ACRToggleInputDataSource *dataSource = [[ACRToggleInputDataSource alloc] initWithInputToggle:adaptiveToggleInput WithHostConfig:config];
     dataSource.toggleSwitch = toggleView.toggle;
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView viewGroup:viewGroup dataSource:dataSource];
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:adaptiveToggleInput inputView:toggleView accessibilityItem:toggleView.toggle viewGroup:viewGroup dataSource:dataSource];
+    
+    toggleView.isAccessibilityElement = NO;
+    if (toggleView.title.text) {
+        toggleView.toggle.accessibilityLabel = [NSString stringWithFormat:@"%@, %@,", toggleView.toggle.accessibilityLabel, toggleView.title.text];
+    }
 
     [inputs addObject:inputLabelView];
 

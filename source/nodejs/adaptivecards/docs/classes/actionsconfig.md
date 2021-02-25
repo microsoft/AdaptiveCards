@@ -22,7 +22,7 @@
 * [iconSize](actionsconfig.md#iconsize)
 * [maxActions](actionsconfig.md#maxactions)
 * [preExpandSingleShowCardAction](actionsconfig.md#optional-preexpandsingleshowcardaction)
-* [showCard](actionsconfig.md#showcard)
+* [showCard](actionsconfig.md#readonly-showcard)
 * [spacing](actionsconfig.md#spacing)
 
 ### Methods
@@ -93,7 +93,7 @@ ___
 
 ___
 
-###  showCard
+### `Readonly` showCard
 
 • **showCard**: *[ShowCardActionConfig](showcardactionconfig.md)* = new ShowCardActionConfig()
 

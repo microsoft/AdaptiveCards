@@ -1,8 +1,7 @@
 package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import io.adaptivecards.renderer.TagContent;
@@ -29,6 +28,16 @@ public class StretchableElementLayout extends LinearLayout
     public StretchableElementLayout(Context context, TagContent tag, boolean mustStretch) {
         this(context, mustStretch);
         setTag(tag);
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName()
+    {
+        if (isClickable())
+        {
+            return Button.class.getName();
+        }
+        return super.getAccessibilityClassName();
     }
 
 }

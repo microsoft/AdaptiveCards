@@ -45,12 +45,17 @@ using namespace AdaptiveCards;
 {
     if (_elem) {
         Json::Value blob = _elem->GetAdditionalProperties();
+        if (blob.empty()) {
+            return nil;
+        }
         Json::StreamWriterBuilder streamWriterBuilder;
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
         writer->write(blob, &sstream);
+        delete writer;
         NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];
+            [[NSString alloc] initWithCString:sstream.str().c_str()
+                                     encoding:NSUTF8StringEncoding];
         return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
     }
     return nil;

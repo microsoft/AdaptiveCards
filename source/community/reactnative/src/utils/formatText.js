@@ -43,7 +43,7 @@ function processText(text) {
 		urlLinks.push(matches[1]);
 		if ((matches = URL_LINK_REGEX.exec(input)) != null) {
 			let splitArrayURL = input.split(' ');
-			let searchText = matches[0].replace(']()', '').replace('[', '');
+			let searchText = matches[0].replace(']()', '').replace(/\[/g, '');
 			let urlMatchArray = matches[0].split(' ');
 			let indexOfFirstWord = splitArrayURL.indexOf(urlMatchArray[0])
 			urlMatchArray.forEach((word, index) => {

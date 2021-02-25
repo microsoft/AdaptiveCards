@@ -109,7 +109,9 @@
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
-        lab.isAccessibilityElement = YES;
+        if ([content.string stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet].length == 0) {
+            lab.accessibilityElementsHidden = YES;
+        }
     }
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;

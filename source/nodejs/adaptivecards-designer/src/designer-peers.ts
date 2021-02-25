@@ -201,6 +201,8 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 
 export interface IPropertySheetEditorCommand {
     caption: string;
+    altText?: string;
+    expanded?: boolean;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -239,8 +241,11 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
         label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
         label.wrap = true;
         label.text = this.label;
+        label.id = Adaptive.generateUniqueId();
 
         let input = this.createInput(context);
+        input.labelledBy = label.id;
+
         input.onValueChanged = () => {
             this.setPropertyValue(context, input.value);
 
@@ -263,6 +268,8 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
                 action.title = command.caption;
+                action.accessibleTitle = command.altText;
+                action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -299,14 +306,19 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
             return [
                 {
                     caption: "...",
+                    altText: (this.label + " " + "Data Binding"),
+                    expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
+                        clickedElement.setAttribute("aria-expanded", "true");
+                        
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
+                            clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
                                 context.peer.changed(true);
                             }
+                            clickedElement.focus();
                         }
                         fieldPicker.popup(clickedElement);
                     }
@@ -714,6 +726,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
+                removeAction.accessibleTitle = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
@@ -790,7 +803,7 @@ export abstract class DesignerPeer extends DraggableElement {
 
             this._inplaceEditor = null;
 
-            this._inplaceEditorOverlay.remove();
+            this._inplaceEditorOverlay.parentNode.removeChild(this._inplaceEditorOverlay);
         }
     }
 
@@ -1081,7 +1094,7 @@ export abstract class DesignerPeer extends DraggableElement {
     }
 
     removeElementsFromDesignerSurface(processChildren: boolean = false) {
-        this.renderedElement.remove();
+        this.renderedElement.parentNode.removeChild(this.renderedElement);
 
         if (processChildren) {
             for (var i = 0; i < this.getChildCount(); i++) {
@@ -1318,16 +1331,23 @@ export class HttpActionPeer extends TypedActionPeer<Adaptive.HttpAction> {
 }
 
 export class SubmitActionPeer extends TypedActionPeer<Adaptive.SubmitAction> {
-    static readonly ignoreInputValidationProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_3, "ignoreInputValidation", "Ignore input validation");
     static readonly dataProperty = new ObjectPropertyEditor(Adaptive.Versions.v1_0, "data", "Data");
+    static readonly associatedInputsProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_3,
+        "associatedInputs",
+        "Associated inputs",
+        [
+            { targetVersion: Adaptive.Versions.v1_3, name: "Automatic", value: "auto" },
+            { targetVersion: Adaptive.Versions.v1_3, name: "None", value: "none" }
+        ]);
 
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
         propertySheet.add(
             defaultCategory,
-            SubmitActionPeer.ignoreInputValidationProperty,
-            SubmitActionPeer.dataProperty);
+            SubmitActionPeer.dataProperty,
+            SubmitActionPeer.associatedInputsProperty);
     }
 }
 

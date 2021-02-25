@@ -7,22 +7,24 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    ///     Input which collects a choice between two options from the user
+    /// Represents the Input.Toggle element.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveToggleInput.TypeName)]
 #endif
     public class AdaptiveToggleInput : AdaptiveInput
     {
+        /// <inheritdoc />
         public const string TypeName = "Input.Toggle";
 
+        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        ///     Title text for toggle
+        /// Title text for this element.
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -32,7 +34,7 @@ namespace AdaptiveCards
         public string Title { get; set; }
 
         /// <summary>
-        ///     Value to use for on (Default: true)
+        /// Value to use when toggle is on.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -42,7 +44,7 @@ namespace AdaptiveCards
         public string ValueOn { get; set; } = bool.TrueString;
 
         /// <summary>
-        ///     Value to use for off (Default: false)
+        /// Value to use when toggle is off.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -52,7 +54,7 @@ namespace AdaptiveCards
         public string ValueOff { get; set; } = bool.FalseString;
 
         /// <summary>
-        ///      when set true, text will wrap
+        /// Controls text wrapping behavior.
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -62,7 +64,7 @@ namespace AdaptiveCards
         public bool Wrap { get; set; }
 
         /// <summary>
-        ///     The initial value for the field
+        /// The value for the field.
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -71,6 +73,7 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Value { get; set; }
 
+        /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
             var x = Value == ValueOn ? "X" : " ";

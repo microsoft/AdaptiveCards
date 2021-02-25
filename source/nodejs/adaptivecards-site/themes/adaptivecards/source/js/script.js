@@ -316,20 +316,60 @@ $(function () {
 		}
 	}
 
-	$("#closeVideo").click(function () {
+    function closeVideo(e) {
+        e.preventDefault();
 		$("#overviewVideo")[0].pause();
 		$('#videoModal').css("display", "none");
-	});
+    }
+
+	$("#closeVideo").on({
+        click: closeVideo,
+        keydown: function(e) {
+            if (e.key === "Enter") {
+                closeVideo(e);
+            }
+        }
+    });
 
 	$("#watchVideo").click(function () {
-		$("#overviewVideo")[0].play();
 		$('#videoModal').css("display", "block");
-
+		$("#overviewVideo")[0].play();
+        $("#overviewVideo").focus();
 	});
 
 	$(document).keyup(function (e) {
 		if (e.keyCode === 27) $('#closeVideo').click();
 	});
+
+    // restrict keyboard tab focus to video modal if it's playing
+    const focusableElements = $("#videoModal").find('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]');
+    const firstVideoFocusable = focusableElements.first();
+    const lastVideoFocusable = focusableElements.last();
+
+    $("#videoModal").keydown(function (e) {
+        switch (e.key) {
+        case "Tab":
+            if (e.shiftKey && firstVideoFocusable.is(document.activeElement)) {
+                // backwards tab on first element. set focus on last
+                e.preventDefault();
+                lastVideoFocusable.focus();
+            }
+            else if (!e.shiftKey && lastVideoFocusable.is(document.activeElement)) {
+                // forward tab on last element
+                e.preventDefault();
+                firstVideoFocusable.focus();
+            }
+            break;
+
+        case "Escape":
+            this.close();
+            e.preventDefault();
+            e.cancelBubble = true;
+            break;
+        }
+
+        return !e.cancelBubble;
+    });
 
 	// Loop videos
 	$("video").each(function () {
@@ -435,10 +475,28 @@ $(function () {
 
 	});
 
+	$("button.copy-data").click(function (e) {
+		var content = $(this).parent().next("pre").text();
+		copyToClipboard(content);
+
+        if ($("#dataCopySuccess").length === 0) {
+		    $(this).append("<span role='status' aria-label='Sample data copied successfully' id='dataCopySuccess'> <i class='fas fa-check'></i></span>");
+            setTimeout(() => { $("#dataCopySuccess").remove(); }, 2000);
+        }
+
+		$(this).focus();
+	});
+
 	$("button.copy-code").click(function (e) {
 		var content = $(this).parent().next("pre").text();
 		copyToClipboard(content);
-    	$("button.copy-code").focus();
+
+        if ($("#copySuccess").length === 0) {
+		    $(this).append("<span role='status' aria-label='Sample JSON copied successfully' id='copySuccess'> <i class='fas fa-check'></i></span>");
+            setTimeout(() => { $("#copySuccess").remove(); }, 2000);
+        }
+
+		$(this).focus();
 	});
 
 	function launchDesigner(designerUrl, cardUrl, dataUrl) {
@@ -536,6 +594,20 @@ $(function () {
 
 		// Kick off one resize to fix all videos on page load
 	}).resize();
+
+    function makeTabIndicesZero() {
+        $("[tabindex]").each((i, elem) => {
+            if (elem.tabIndex > 0) {
+                elem.setAttribute("tabindex", 0);
+            }
+        });
+    }
+
+    // rewrite non-zero tabindex values (UHF script can add explicit tabindices, breaking keyboard tab order)
+    $(window).resize(makeTabIndicesZero);
+
+    // this is sadly fragile, but should work in the majority of cases (I'm so sorry).
+    $(document).ready(() => { setTimeout(makeTabIndicesZero, 200); });
 
 	// Code for making sidebar sticky
 	var headerHolder;

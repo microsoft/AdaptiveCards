@@ -16,17 +16,18 @@
 
 ### Properties
 
-* [defaultValue](valuesetproperty.md#optional-defaultvalue)
+* [defaultValue](valuesetproperty.md#optional-readonly-defaultvalue)
 * [isSerializationEnabled](valuesetproperty.md#isserializationenabled)
-* [name](valuesetproperty.md#name)
-* [onGetInitialValue](valuesetproperty.md#optional-ongetinitialvalue)
-* [sequentialNumber](valuesetproperty.md#sequentialnumber)
-* [targetVersion](valuesetproperty.md#targetversion)
-* [values](valuesetproperty.md#values)
+* [name](valuesetproperty.md#readonly-name)
+* [onGetInitialValue](valuesetproperty.md#optional-readonly-ongetinitialvalue)
+* [sequentialNumber](valuesetproperty.md#readonly-sequentialnumber)
+* [targetVersion](valuesetproperty.md#readonly-targetversion)
+* [values](valuesetproperty.md#readonly-values)
 
 ### Methods
 
 * [getInternalName](valuesetproperty.md#getinternalname)
+* [isValidValue](valuesetproperty.md#isvalidvalue)
 * [parse](valuesetproperty.md#parse)
 * [toJSON](valuesetproperty.md#tojson)
 
@@ -52,11 +53,11 @@ Name | Type |
 
 ## Properties
 
-### `Optional` defaultValue
+### `Optional` `Readonly` defaultValue
 
 • **defaultValue**? : *undefined | string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-defaultvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[defaultValue](propertydefinition.md#optional-readonly-defaultvalue)*
 
 ___
 
@@ -68,39 +69,39 @@ ___
 
 ___
 
-###  name
+### `Readonly` name
 
 • **name**: *string*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#name)*
+*Overrides [PropertyDefinition](propertydefinition.md).[name](propertydefinition.md#readonly-name)*
 
 ___
 
-### `Optional` onGetInitialValue
+### `Optional` `Readonly` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)*
+*Overrides [PropertyDefinition](propertydefinition.md).[onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)*
 
 ___
 
-###  sequentialNumber
+### `Readonly` sequentialNumber
 
 • **sequentialNumber**: *number*
 
-*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#sequentialnumber)*
+*Inherited from [PropertyDefinition](propertydefinition.md).[sequentialNumber](propertydefinition.md#readonly-sequentialnumber)*
 
 ___
 
-###  targetVersion
+### `Readonly` targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 
-*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#targetversion)*
+*Overrides [PropertyDefinition](propertydefinition.md).[targetVersion](propertydefinition.md#readonly-targetversion)*
 
 ___
 
-###  values
+### `Readonly` values
 
 • **values**: *[IVersionedValue](../interfaces/iversionedvalue.md)‹string›[]*
 
@@ -113,6 +114,21 @@ ___
 *Inherited from [PropertyDefinition](propertydefinition.md).[getInternalName](propertydefinition.md#getinternalname)*
 
 **Returns:** *string*
+
+___
+
+###  isValidValue
+
+▸ **isValidValue**(`value`: string, `context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`value` | string |
+`context` | [BaseSerializationContext](baseserializationcontext.md) |
+
+**Returns:** *boolean*
 
 ___
 

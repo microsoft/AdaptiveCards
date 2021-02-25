@@ -7,34 +7,40 @@
         {
             "type": "TextBlock",
             "text": "Passengers",
-            "weight": "Bolder"
+            "weight": "Bolder",
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "Sarah Hum",
-            "separator": true
+            "separator": true,
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "Jeremy Goldberg",
-            "spacing": "None"
+            "spacing": "None",
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "Evan Litvak",
-            "spacing": "None"
+            "spacing": "None",
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "2 Stops",
             "weight": "Bolder",
-            "spacing": "Medium"
+            "spacing": "Medium",
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "{{DATE(${string(Segments[0].DepartureDateTime)}, SHORT)}} {{TIME(${string(Segments[0].DepartureDateTime)})}}",
             "weight": "Bolder",
-            "spacing": "None"
+            "spacing": "None",
+            "wrap": true
         },
         {
             "type": "ColumnSet",
@@ -48,13 +54,15 @@
                             "type": "TextBlock",
                             "$when": "${Segments[0].OriginStation == 11235}",
                             "text": "${Places[0].Name}",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "$when": "${Segments[0].OriginStation == 13554}",
                             "text": "${Places[1].Name}",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -62,7 +70,8 @@
                             "color": "Accent",
                             "$when": "${Segments[0].OriginStation == 11235}",
                             "text": "${Places[0].Code}",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -70,7 +79,8 @@
                             "color": "Accent",
                             "$when": "${Segments[0].OriginStation == 13554}",
                             "text": "${Places[1].Code}",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         }
                     ]
                 },
@@ -80,7 +90,8 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "&nbsp;"
+                            "text": "&nbsp;",
+                            "wrap": true
                         },
                         {
                             "type": "Image",
@@ -99,14 +110,16 @@
                             "$when": "${Segments[0].DestinationStation == 11235}",
                             "text": "${Places[0].Name}",
                             "horizontalAlignment": "Right",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "$when": "${Segments[0].DestinationStation == 13554}",
                             "text": "${Places[1].Name}",
                             "horizontalAlignment": "Right",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -115,7 +128,8 @@
                             "$when": "${Segments[0].DestinationStation == 11235}",
                             "text": "${Places[0].Code}",
                             "horizontalAlignment": "Right",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -124,7 +138,8 @@
                             "$when": "${Segments[0].DestinationStation == 13554}",
                             "text": "${Places[1].Code}",
                             "horizontalAlignment": "Right",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         }
                     ]
                 }
@@ -134,13 +149,15 @@
             "type": "TextBlock",
             "text": "Non-Stop",
             "weight": "Bolder",
-            "spacing": "Medium"
+            "spacing": "Medium",
+            "wrap": true
         },
         {
             "type": "TextBlock",
             "text": "{{DATE(${string(Segments[1].ArrivalDateTime)}, SHORT)}} {{TIME(${string(Segments[1].ArrivalDateTime)})}}",
             "weight": "Bolder",
-            "spacing": "None"
+            "spacing": "None",
+            "wrap": true
         },
         {
             "type": "ColumnSet",
@@ -154,13 +171,15 @@
                             "type": "TextBlock",
                             "$when": "${Segments[1].OriginStation == 11235}",
                             "text": "${Places[0].Name}",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "$when": "${Segments[1].OriginStation == 13554}",
                             "text": "${Places[1].Name}",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -168,7 +187,8 @@
                             "color": "Accent",
                             "$when": "${Segments[1].OriginStation == 11235}",
                             "text": "${Places[0].Code}",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -176,7 +196,8 @@
                             "color": "Accent",
                             "$when": "${Segments[1].OriginStation == 13554}",
                             "text": "${Places[1].Code}",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         }
                     ]
                 },
@@ -186,7 +207,8 @@
                     "items": [
                         {
                             "type": "TextBlock",
-                            "text": "&nbsp;"
+                            "text": "&nbsp;",
+                            "wrap": true
                         },
                         {
                             "type": "Image",
@@ -205,14 +227,16 @@
                             "$when": "${Segments[1].DestinationStation == 11235}",
                             "text": "${Places[0].Name}",
                             "horizontalAlignment": "Right",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
                             "$when": "${Segments[1].DestinationStation == 13554}",
                             "text": "${Places[1].Name}",
                             "horizontalAlignment": "Right",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -221,7 +245,8 @@
                             "$when": "${Segments[1].DestinationStation == 11235}",
                             "text": "${Places[0].Code}",
                             "horizontalAlignment": "Right",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         },
                         {
                             "type": "TextBlock",
@@ -230,7 +255,8 @@
                             "$when": "${Segments[1].DestinationStation == 13554}",
                             "text": "${Places[1].Code}",
                             "horizontalAlignment": "Right",
-                            "spacing": "None"
+                            "spacing": "None",
+                            "wrap": true
                         }
                     ]
                 }
@@ -248,7 +274,8 @@
                             "type": "TextBlock",
                             "text": "Total",
                             "size": "Medium",
-                            "isSubtle": true
+                            "isSubtle": true,
+                            "wrap": true
                         }
                     ]
                 },
@@ -261,7 +288,8 @@
                             "horizontalAlignment": "Right",
                             "text": "$${formatNumber(BookingOptions[0].BookingItems[0].Price, 2)}",
                             "size": "Medium",
-                            "weight": "Bolder"
+                            "weight": "Bolder",
+                            "wrap": true
                         }
                     ]
                 }

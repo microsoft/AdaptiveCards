@@ -8,6 +8,8 @@
 #include "ACRContentStackView.h"
 #include "ACOHostConfigPrivate.h"
 #import "ACRShowCardTarget.h"
+#import "ACRViewPrivate.h"
+#import "UtiliOS.h"
 
 using namespace AdaptiveCards;
 
@@ -18,7 +20,8 @@ static int kToggleVisibilityContext;
     NSMutableArray<ACRShowCardTarget *> *_showcardTargets;
     ACRContainerStyle _style;
     UIStackView *_stackView;
-    NSMutableSet<UIView *> *_hiddenSubviews;
+    NSHashTable<UIView *> *_hiddenSubviews;
+    NSMutableDictionary<NSString *, NSValue *> *_subviewIntrinsicContentSizeCollection;
 }
 
 - (instancetype)initWithStyle:(ACRContainerStyle)style
@@ -49,7 +52,8 @@ static int kToggleVisibilityContext;
     self = [super initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
+        _subviewIntrinsicContentSizeCollection = [[NSMutableDictionary alloc] init];
         self.clipsToBounds = NO;
         [self config:attributes];
     }
@@ -67,7 +71,7 @@ static int kToggleVisibilityContext;
 
     if (self) {
         _stackView = [[UIStackView alloc] init];
-        _hiddenSubviews = [[NSMutableSet alloc] init];
+        _hiddenSubviews = [[NSHashTable alloc] initWithOptions:NSHashTableWeakMemory capacity:5];
         [self config:nil];
     }
 
@@ -450,6 +454,18 @@ static int kToggleVisibilityContext;
 
 - (void)increaseIntrinsicContentSize:(UIView *)view
 {
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    _subviewIntrinsicContentSizeCollection[key] = [NSValue valueWithCGSize:[view intrinsicContentSize]];
+}
+
+- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *)view
+{
+    if (not view) {
+        return CGSizeZero;
+    }
+    NSString *key = [NSString stringWithFormat:@"%p", view];
+    NSValue *value = _subviewIntrinsicContentSizeCollection[key];
+    return value ? [value CGSizeValue] : CGSizeZero;
 }
 
 - (void)decreaseIntrinsicContentSize:(UIView *)view
@@ -481,6 +497,36 @@ static int kToggleVisibilityContext;
         }
     }
     return currentBest;
+}
+
+- (void)configureForSelectAction:(ACOBaseActionElement *)action rootView:(ACRView *)rootView
+{
+    if (action != nullptr) {
+        NSObject<ACRSelectActionDelegate> *target = nil;
+        if (ACRRenderingStatus::ACROk == buildTarget([rootView getSelectActionsTargetBuilderDirector], action, &target)) {
+            [self addTarget:target];
+            self.selectActionTarget = target;
+            setAccessibilityTrait(self, action);
+        }
+    }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    if (self.selectActionTarget) {
+        [self.selectActionTarget doSelectAction];
+    } else {
+        [self.nextResponder touchesBegan:touches withEvent:event];
+    }
+}
+
+- (UIView *)addPaddingSpace
+{
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
 }
 
 - (void)dealloc

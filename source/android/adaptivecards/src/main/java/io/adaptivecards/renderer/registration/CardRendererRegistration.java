@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -469,7 +470,7 @@ public class CardRendererRegistration
 
             if (inputHasLabel)
             {
-                View inputLabel = InputUtil.RenderInputLabel(element.GetLabel(), element.GetIsRequired(), context, hostConfig, renderArgs);
+                TextView inputLabel = InputUtil.RenderInputLabel(element.GetLabel(), element.GetIsRequired(), context, hostConfig, renderArgs);
                 inputLayout.setLabel(inputLabel);
 
                 // Render spacing
@@ -479,8 +480,6 @@ public class CardRendererRegistration
                     false /* separator */,
                     hostConfig,
                     true /* horizontalLine */);
-
-                inputLabel.setLabelFor(actualInput.getId());
             }
             else if (element.GetIsRequired())
             {
@@ -510,7 +509,7 @@ public class CardRendererRegistration
                     hostConfig,
                     true /* horizontalLine */);
 
-                View errorMessage = InputUtil.RenderErrorMessage(element.GetErrorMessage(), context, hostConfig, renderArgs);
+                TextView errorMessage = InputUtil.RenderErrorMessage(element.GetErrorMessage(), context, hostConfig, renderArgs);
                 errorMessage.setTag(new TagContent(null, spacing, null));
                 inputLayout.setErrorMessage(errorMessage);
 

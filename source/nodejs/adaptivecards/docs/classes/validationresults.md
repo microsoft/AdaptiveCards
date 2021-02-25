@@ -10,8 +10,8 @@
 
 ### Properties
 
-* [allIds](validationresults.md#allids)
-* [validationEvents](validationresults.md#validationevents)
+* [allIds](validationresults.md#readonly-allids)
+* [validationEvents](validationresults.md#readonly-validationevents)
 
 ### Methods
 
@@ -19,13 +19,13 @@
 
 ## Properties
 
-###  allIds
+### `Readonly` allIds
 
 • **allIds**: *[Dictionary](../README.md#dictionary)‹number›*
 
 ___
 
-###  validationEvents
+### `Readonly` validationEvents
 
 • **validationEvents**: *[IValidationEvent](../interfaces/ivalidationevent.md)[]* = []
 

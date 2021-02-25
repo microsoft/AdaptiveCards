@@ -89,8 +89,7 @@ namespace AdaptiveNamespace
 
         // Create the InputValue and add it to the context
         ComPtr<TextInputValue> input;
-        RETURN_IF_FAILED(MakeAndInitialize<TextInputValue>(
-            &input, adaptiveTextInput, textBox, validationBorder.Get()));
+        RETURN_IF_FAILED(MakeAndInitialize<TextInputValue>(&input, adaptiveTextInput, textBox, validationBorder.Get()));
         RETURN_IF_FAILED(renderContext->AddInputValue(input.Get(), renderArgs));
 
         RETURN_IF_FAILED(inputLayout.CopyTo(textInputLayout));
@@ -122,7 +121,11 @@ namespace AdaptiveNamespace
 
         boolean isMultiLine;
         RETURN_IF_FAILED(adaptiveTextInput->get_IsMultiline(&isMultiLine));
-        RETURN_IF_FAILED(textBox->put_AcceptsReturn(isMultiLine));
+        if (isMultiLine)
+        {
+            RETURN_IF_FAILED(textBox->put_AcceptsReturn(true));
+            RETURN_IF_FAILED(textBox->put_TextWrapping(TextWrapping_Wrap));
+        }
 
         HString textValue;
         RETURN_IF_FAILED(adaptiveTextInput->get_Value(textValue.GetAddressOf()));

@@ -5,17 +5,19 @@ using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Base for almost all representable elements in AdaptiveCards.
+    /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
     [JsonConverter(typeof(AdaptiveTypedElementConverter))]
     public abstract class AdaptiveTypedElement
     {
         /// <summary>
-        /// The type name of the element
+        /// The AdaptiveCard element that this class implements.
         /// </summary>
         [JsonProperty(Order = -10, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
 #if !NETSTANDARD1_3
@@ -25,7 +27,7 @@ namespace AdaptiveCards
         public abstract string Type { get; set; }
 
         /// <summary>
-        /// Additional properties not found on the default schema
+        /// Additional properties not found on the default schema.
         /// </summary>
         [JsonExtensionData]
 #if NETSTANDARD1_3
@@ -34,9 +36,16 @@ namespace AdaptiveCards
         // Dictionary<> is not supported with XmlSerialization because Dictionary is not serializable, SerializableDictionary<> is
         [XmlElement]
         public SerializableDictionary<string, object> AdditionalProperties { get; set; } = new SerializableDictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Determines whether the <see cref="AdditionalProperties"/> property should be serialized.
+        /// </summary>
         public bool ShouldSerializeAdditionalProperties() => this.AdditionalProperties.Count > 0;
 #endif
 
+        /// <summary>
+        /// The fallback property controls behavior when an unexpected element or error is encountered.
+        /// </summary>
         [JsonConverter(typeof(AdaptiveFallbackConverter))]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -45,6 +54,9 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public AdaptiveFallbackElement Fallback { get; set; }
 
+        /// <summary>
+        /// The <see cref="AdaptiveInternalID"/> for this element.
+        /// </summary>
         [JsonIgnore]
 #if !NETSTANDARD1_3
         // don't serialize type with xml, because we use element name or attribute for type
@@ -53,7 +65,7 @@ namespace AdaptiveCards
         public AdaptiveInternalID InternalID { get; set; }
 
         /// <summary>
-        /// A unique ID associated with the element. For Inputs the ID will be used as the key for Action.Submit response
+        /// A unique ID associated with the element. For Inputs, the ID will be used as the key for Action.Submit response.
         /// </summary>
         [JsonProperty(Order = -9, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -63,7 +75,7 @@ namespace AdaptiveCards
         public string Id { get; set; }
 
         /// <summary>
-        ///  A collection representing features and feature versions that this element is declared as requiring
+        ///  A collection representing features and feature versions that this element requires.
         /// </summary>
         [JsonProperty(Order = 1, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
 #if !NETSTANDARD1_3
@@ -72,7 +84,12 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public IDictionary<string, string> Requires;
 
-        // Given a map of what our host provides, determine if this element's requirements are satisfied.
+
+        /// <summary>
+        /// Determines if this element's requirements are satisfied.
+        /// </summary>
+        /// <param name="featureRegistration">The host's <see cref="AdaptiveFeatureRegistration"/>.</param>
+        /// <returns>true iff this element's requirements are met.</returns>
         public bool MeetsRequirements(AdaptiveFeatureRegistration featureRegistration)
         {
             if (Requires != null)

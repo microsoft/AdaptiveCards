@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRSeparator.h"
 #import "ACRView.h"
@@ -47,6 +46,7 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+
     [viewGroup addArrangedSubview:columnSetView];
 
     configBleed(rootView, elem, columnSetView, acoConfig);
@@ -86,6 +86,7 @@
     auto lastColumn = columns.empty() ? nullptr : columns.back();
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     ACRSeparator *separator = nil;
+    BOOL hasPixelWidthColumn = NO;
 
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
@@ -128,6 +129,7 @@
 
         // when stretch, views with stretch properties should have equal width
         if (curView.pixelWidth) {
+            hasPixelWidthColumn = YES;
             [constraints addObject:
                              [NSLayoutConstraint constraintWithItem:curView
                                                           attribute:NSLayoutAttributeWidth
@@ -190,13 +192,13 @@
         [NSLayoutConstraint activateConstraints:constraints];
     }
 
+    if (hasPixelWidthColumn && columns.size() == 1) {
+        [columnSetView addPaddingSpace];
+    }
+
     std::shared_ptr<BaseActionElement> selectAction = columnSetElem->GetSelectAction();
-    // instantiate and add long press gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:columnSetView
-                                                                  actionElement:selectAction
-                                                                     hostConfig:acoConfig];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+    [columnSetView configureForSelectAction:acoSelectAction rootView:rootView];
     configVisibility(columnSetView, elem);
 
     [columnSetView hideIfSubviewsAreAllHidden];
