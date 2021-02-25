@@ -2291,6 +2291,11 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
                 PropertySheetCategory.DefaultCategory,
                 TextInputPeer.styleProperty);
         }
+        else {
+            propertySheet.add(
+                PropertySheetCategory.LayoutCategory,
+                CardElementPeer.heightProperty);
+        }
 
         propertySheet.add(
             PropertySheetCategory.InlineAction,
