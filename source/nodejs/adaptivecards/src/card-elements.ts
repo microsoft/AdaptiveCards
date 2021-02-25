@@ -3813,7 +3813,7 @@ export abstract class Action extends CardObject {
             buttonElement.setAttribute("aria-label", this.title);
         }
 
-        if (this.expanded != undefined){
+        if (this.expanded != undefined) {
             buttonElement.setAttribute("aria-expanded", this.expanded.toString())
         }
 
