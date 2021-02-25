@@ -385,7 +385,7 @@ const std::string card_richText = R"({
   ]
 })";
 
-const std::string card_CheckboxInput = R"({
+const std::string card_ToggleInput = R"({
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
   "version": "1.0",
@@ -442,6 +442,120 @@ const std::string card_CheckboxInput = R"({
 	]
 })";
 
+const std::string card_ChoiceSetInput = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor",
+      "style": "compact",
+      "isMultiSelect": false,
+      "value": "2",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor2",
+      "style": "expanded",
+      "isMultiSelect": false,
+      "value": "1",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor3",
+      "isMultiSelect": true,
+      "value": "1,3",
+      "style": "compact",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor4",
+      "isMultiSelect": true,
+      "value": "1",
+      "style": "expanded",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.Submit",
+      "title": "OK"
+    }
+  ]
+})";
+
 static std::shared_ptr<AdaptiveCards::HostConfig> GetHostConfig()
 {
     std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = std::make_shared<AdaptiveCards::HostConfig>();
@@ -495,7 +609,7 @@ int main(int argc, char* argv[])
     QQuickView view;
     QQmlContext* context = view.engine()->rootContext();
 
-    const std::string qmlString = GenerateQml(card_dateInput);
+    const std::string qmlString = GenerateQml(card_ChoiceSetInput);
 
 	context->setContextProperty("_aQmlCard", QString::fromStdString(qmlString));
 

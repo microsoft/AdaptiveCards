@@ -5,8 +5,74 @@
 
 namespace RendererQml
 {
+	enum CheckBoxType
+	{
+		Toggle,
+		RadioButton,
+		CheckBox,
+		ComboBox
+	};
 
-    class Utils
+	struct Checkbox
+	{
+		const std::string id;
+		CheckBoxType type = CheckBoxType::Toggle;
+		const std::string text;
+		const std::string value;
+		const std::string valueOn;
+		const std::string valueOff;
+		const int fontSize;
+		const bool isWrap;
+		const bool isVisible;
+		const bool isChecked;
+
+		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const std::string valueOn, const std::string valueOff, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked)
+			: id(id),
+			type(type),
+			text(text),
+			value(value),
+			valueOn(valueOn),
+			valueOff(valueOff),
+			fontSize(fontSize),
+			isWrap(isWrap),
+			isVisible(isVisible),
+			isChecked(isChecked)
+		{}
+
+		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked)
+			: id(id),
+			type(type),
+			text(text),
+			value(value),
+			fontSize(fontSize),
+			isWrap(isWrap),
+			isVisible(isVisible),
+			isChecked(isChecked)
+		{}
+	};	
+	
+	using Checkboxes = std::vector<Checkbox>;
+
+	struct ChoiceSet
+	{
+		const std::string id;
+		const bool isMultiSelect;
+		AdaptiveCards::ChoiceSetStyle style = AdaptiveCards::ChoiceSetStyle::Compact;
+		const std::vector<std::string> values;
+		Checkboxes choices;
+		const std::string placeholder;
+
+		ChoiceSet(const std::string id, const bool isMultiSelect, AdaptiveCards::ChoiceSetStyle style, const std::vector<std::string> values, Checkboxes choices, const std::string placeholder)
+			: id(id),
+			isMultiSelect(isMultiSelect),
+			style(style),
+			values(values),
+			choices(choices),
+			placeholder(placeholder)
+		{}
+	};
+
+	class Utils
     {
     public:
 
@@ -39,6 +105,9 @@ namespace RendererQml
 		static std::string AddCSSProperty(std::string property,std::string value);
 
 		static std::string GetDate(std::string date, bool MinimumorMaximum);
+    
+    static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
+
 
     private:
         Utils() {}

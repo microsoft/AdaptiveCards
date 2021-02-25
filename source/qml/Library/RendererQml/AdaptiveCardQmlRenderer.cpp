@@ -73,8 +73,8 @@ namespace RendererQml
         (*GetElementRenderers()).Set<AdaptiveCards::ColumnSet>(AdaptiveCardQmlRenderer::ColumnSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::FactSet>(AdaptiveCardQmlRenderer::FactSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);*/
+        (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);*/
+        (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
@@ -119,7 +119,7 @@ namespace RendererQml
 		}
 		columnLayout->AddChild(rectangle);
 
-        //TODO: Add card vertical content alignment
+		//TODO: Add card vertical content alignment
 
 		AddContainerElements(rectangle, card->GetBody(), context);
 
@@ -133,7 +133,7 @@ namespace RendererQml
 		//TODO: To get the Qml equivalant of monospace fontType and add it to config
 		std::string fontFamily = context->GetConfig()->GetFontFamily(textBlock->GetFontType());
 		int fontSize = context->GetConfig()->GetFontSize(textBlock->GetFontType(), textBlock->GetTextSize());
-		
+
 		auto uiTextBlock = std::make_shared<QmlTag>("Text");
 		std::string textType = textBlock->GetElementTypeString();
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(textBlock->GetHorizontalAlignment());
@@ -144,9 +144,9 @@ namespace RendererQml
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
-        //TODO: Need to fix the color calculation
+		//TODO: Need to fix the color calculation
 		std::string color = context->GetColor(textBlock->GetTextColor(), textBlock->GetIsSubtle(), false);
-		
+
 		uiTextBlock->Property("color", color);
 
 		//Value based on what is mentioned in the html renderer
@@ -186,152 +186,152 @@ namespace RendererQml
 
 	}
 
-    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context)
-    {
-        //TODO: Add inline action
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		//TODO: Add inline action
 
-        std::shared_ptr<QmlTag> uiTextInput;
-        std::shared_ptr<QmlTag> scrollViewTag;        
+		std::shared_ptr<QmlTag> uiTextInput;
+		std::shared_ptr<QmlTag> scrollViewTag;
 
-        if (input->GetIsMultiline())
-        {
-            scrollViewTag = std::make_shared<QmlTag>("ScrollView");
-            scrollViewTag->Property("width", "parent.width");
-            scrollViewTag->Property("height", "50");
-            scrollViewTag->Property("ScrollBar.vertical.interactive", "true");
+		if (input->GetIsMultiline())
+		{
+			scrollViewTag = std::make_shared<QmlTag>("ScrollView");
+			scrollViewTag->Property("width", "parent.width");
+			scrollViewTag->Property("height", "50");
+			scrollViewTag->Property("ScrollBar.vertical.interactive", "true");
 
-            uiTextInput = std::make_shared<QmlTag>("TextArea");
-            uiTextInput->Property("id", input->GetId());
-            uiTextInput->Property("wrapMode", "Text.Wrap");
-            uiTextInput->Property("padding", "10");
+			uiTextInput = std::make_shared<QmlTag>("TextArea");
+			uiTextInput->Property("id", input->GetId());
+			uiTextInput->Property("wrapMode", "Text.Wrap");
+			uiTextInput->Property("padding", "10");
 
-            if (input->GetMaxLength() > 0)
-            {
-                uiTextInput->Property("onTextChanged", Formatter() << "remove(" << input->GetMaxLength() << ", length)");
-            }
+			if (input->GetMaxLength() > 0)
+			{
+				uiTextInput->Property("onTextChanged", Formatter() << "remove(" << input->GetMaxLength() << ", length)");
+			}
 
-            scrollViewTag->AddChild(uiTextInput);
-        }
-        else
-        {
-            uiTextInput = std::make_shared<QmlTag>("TextField");
-            uiTextInput->Property("id", input->GetId());
-            uiTextInput->Property("width", "parent.width");
+			scrollViewTag->AddChild(uiTextInput);
+		}
+		else
+		{
+			uiTextInput = std::make_shared<QmlTag>("TextField");
+			uiTextInput->Property("id", input->GetId());
+			uiTextInput->Property("width", "parent.width");
 
-            if (input->GetMaxLength() > 0)
-            {
-                uiTextInput->Property("maximumLength", std::to_string(input->GetMaxLength()));
-            }
-        }
-        
-        uiTextInput->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
+			if (input->GetMaxLength() > 0)
+			{
+				uiTextInput->Property("maximumLength", std::to_string(input->GetMaxLength()));
+			}
+		}
 
-        auto glowTag = std::make_shared<QmlTag>("Glow");
-        glowTag->Property("samples", "25");
-        glowTag->Property("color", "'skyblue'");
+		uiTextInput->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
 
-        auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
-        backgroundTag->Property("radius", "5");
-        //TODO: These color styling should come from css
-        backgroundTag->Property("color", Formatter() << input->GetId() <<".hovered ? 'lightgray' : 'white'");
-        backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
-        backgroundTag->Property("border.width", "1");
-        backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
-        backgroundTag->Property("layer.effect", glowTag->ToString());
-        uiTextInput->Property("background", backgroundTag->ToString());
+		auto glowTag = std::make_shared<QmlTag>("Glow");
+		glowTag->Property("samples", "25");
+		glowTag->Property("color", "'skyblue'");
 
-        if (!input->GetValue().empty())
-        {
-            uiTextInput->Property("text", "\"" + input->GetValue() + "\"");
-        }
+		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
+		backgroundTag->Property("radius", "5");
+		//TODO: These color styling should come from css
+		backgroundTag->Property("color", Formatter() << input->GetId() << ".hovered ? 'lightgray' : 'white'");
+		backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
+		backgroundTag->Property("border.width", "1");
+		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
+		backgroundTag->Property("layer.effect", glowTag->ToString());
+		uiTextInput->Property("background", backgroundTag->ToString());
 
-        if (!input->GetPlaceholder().empty())
-        {
-            uiTextInput->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
-        }
+		if (!input->GetValue().empty())
+		{
+			uiTextInput->Property("text", "\"" + input->GetValue() + "\"");
+		}
 
-        //TODO: Add stretch property
+		if (!input->GetPlaceholder().empty())
+		{
+			uiTextInput->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
+		}
 
-        if (!input->GetIsVisible())
-        {
-            uiTextInput->Property("visible", "false");
-        }
+		//TODO: Add stretch property
 
-        if (input->GetIsMultiline())
-        {
-            return scrollViewTag;
-        }
+		if (!input->GetIsVisible())
+		{
+			uiTextInput->Property("visible", "false");
+		}
 
-        return uiTextInput;
-    }
+		if (input->GetIsMultiline())
+		{
+			return scrollViewTag;
+		}
 
-    std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context)
-    {
-        const auto inputId = input->GetId();
+		return uiTextInput;
+	}
 
-        auto glowTag = std::make_shared<QmlTag>("Glow");
-        glowTag->Property("samples", "25");
-        glowTag->Property("color", "'skyblue'");
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		const auto inputId = input->GetId();
 
-        auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
-        backgroundTag->Property("radius", "5");
-        //TODO: These color styling should come from css
-        backgroundTag->Property("color", Formatter() << inputId + "_contentItem" << ".hovered ? 'lightgray' : 'white'");
-        backgroundTag->Property("layer.enabled", Formatter() << inputId + "_contentItem" << ".activeFocus ? true : false");
-        backgroundTag->Property("layer.effect", glowTag->ToString());
+		auto glowTag = std::make_shared<QmlTag>("Glow");
+		glowTag->Property("samples", "25");
+		glowTag->Property("color", "'skyblue'");
 
-        auto contentItemTag = std::make_shared<QmlTag>("TextField");
-        contentItemTag->Property("id", inputId + "_contentItem");
-        contentItemTag->Property("padding", "10");
-        contentItemTag->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
-        contentItemTag->Property("readOnly", Formatter() << "!" << inputId << ".editable");
-        contentItemTag->Property("validator", Formatter() << inputId << ".validator");
-        contentItemTag->Property("inputMethodHints", "Qt.ImhFormattedNumbersOnly");
-        contentItemTag->Property("text", Formatter() << inputId << ".textFromValue(" << inputId << ".value, " << inputId << ".locale)");
-        if (!input->GetPlaceholder().empty())
-        {
-            contentItemTag->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
-        }
-        contentItemTag->Property("background", backgroundTag->ToString());
+		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
+		backgroundTag->Property("radius", "5");
+		//TODO: These color styling should come from css
+		backgroundTag->Property("color", Formatter() << inputId + "_contentItem" << ".hovered ? 'lightgray' : 'white'");
+		backgroundTag->Property("layer.enabled", Formatter() << inputId + "_contentItem" << ".activeFocus ? true : false");
+		backgroundTag->Property("layer.effect", glowTag->ToString());
 
-        auto doubleValidatorTag = std::make_shared<QmlTag>("DoubleValidator");
+		auto contentItemTag = std::make_shared<QmlTag>("TextField");
+		contentItemTag->Property("id", inputId + "_contentItem");
+		contentItemTag->Property("padding", "10");
+		contentItemTag->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveSharedNamespace::FontType::Default, AdaptiveSharedNamespace::TextSize::Default)));
+		contentItemTag->Property("readOnly", Formatter() << "!" << inputId << ".editable");
+		contentItemTag->Property("validator", Formatter() << inputId << ".validator");
+		contentItemTag->Property("inputMethodHints", "Qt.ImhFormattedNumbersOnly");
+		contentItemTag->Property("text", Formatter() << inputId << ".textFromValue(" << inputId << ".value, " << inputId << ".locale)");
+		if (!input->GetPlaceholder().empty())
+		{
+			contentItemTag->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
+		}
+		contentItemTag->Property("background", backgroundTag->ToString());
 
-        auto uiNumberInput = std::make_shared<QmlTag>("SpinBox");
-        uiNumberInput->Property("id", input->GetId());
-        uiNumberInput->Property("width", "parent.width");
-        uiNumberInput->Property("stepSize", "1");
-        uiNumberInput->Property("editable", "true");
-        uiNumberInput->Property("validator", doubleValidatorTag->ToString());
+		auto doubleValidatorTag = std::make_shared<QmlTag>("DoubleValidator");
 
-        if ((input->GetMin() == input->GetMax() && input->GetMin() == 0) || input->GetMin() > input->GetMax())
-        {
-            input->SetMin(INT_MIN);
-            input->SetMax(INT_MAX);
-        }
-        if (input->GetValue() < input->GetMin())
-        {
-            input->SetValue(input->GetMin());
-        }
-        if (input->GetValue() > input->GetMax())
-        {
-            input->SetValue(input->GetMax());
-        }
+		auto uiNumberInput = std::make_shared<QmlTag>("SpinBox");
+		uiNumberInput->Property("id", input->GetId());
+		uiNumberInput->Property("width", "parent.width");
+		uiNumberInput->Property("stepSize", "1");
+		uiNumberInput->Property("editable", "true");
+		uiNumberInput->Property("validator", doubleValidatorTag->ToString());
 
-        uiNumberInput->Property("from", std::to_string(input->GetMin().value()));
-        uiNumberInput->Property("to", std::to_string(input->GetMax().value()));
-        uiNumberInput->Property("value", std::to_string(input->GetValue().value()));
+		if ((input->GetMin() == input->GetMax() && input->GetMin() == 0) || input->GetMin() > input->GetMax())
+		{
+			input->SetMin(INT_MIN);
+			input->SetMax(INT_MAX);
+		}
+		if (input->GetValue() < input->GetMin())
+		{
+			input->SetValue(input->GetMin());
+		}
+		if (input->GetValue() > input->GetMax())
+		{
+			input->SetValue(input->GetMax());
+		}
 
-        //TODO: Add stretch property
+		uiNumberInput->Property("from", std::to_string(input->GetMin().value()));
+		uiNumberInput->Property("to", std::to_string(input->GetMax().value()));
+		uiNumberInput->Property("value", std::to_string(input->GetValue().value()));
 
-        if (!input->GetIsVisible())
-        {
-            uiNumberInput->Property("visible", "false");
-        }
+		//TODO: Add stretch property
 
-        uiNumberInput->Property("contentItem", contentItemTag->ToString());
+		if (!input->GetIsVisible())
+		{
+			uiNumberInput->Property("visible", "false");
+		}
 
-        return uiNumberInput;
-    }
+		uiNumberInput->Property("contentItem", contentItemTag->ToString());
+
+		return uiNumberInput;
+	}
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::RichTextBlockRender(std::shared_ptr<AdaptiveCards::RichTextBlock> richTextBlock, std::shared_ptr<AdaptiveRenderContext> context)
 	{
@@ -365,7 +365,7 @@ namespace RendererQml
 		return uiTextBlock;
 
 	}
-	
+
 	std::string AdaptiveCardQmlRenderer::TextRunRender(std::shared_ptr<AdaptiveCards::TextRun> textRun, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		const std::string fontFamily = context->GetConfig()->GetFontFamily(textRun->GetFontType());
@@ -417,73 +417,285 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ToggleInputRender(std::shared_ptr<AdaptiveCards::ToggleInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		const auto id = input->GetId();
 		const auto valueOn = !input->GetValueOn().empty() ? input->GetValueOn() : "true";
 		const auto valueOff = !input->GetValueOff().empty() ? input->GetValueOff() : "false";
-		const bool isChecked = input->GetValue().compare(valueOn) == 0 ? "true" : "false";
-		
-		auto uiCheckboxInput = std::make_shared<QmlTag>("CheckBox");
+		const bool isChecked = input->GetValue().compare(valueOn) == 0 ? true : false;
 
-		uiCheckboxInput->Property("readonly property string valueOn", "\"" + valueOn + "\"");
-		uiCheckboxInput->Property("readonly property string valueOff", "\"" + valueOff + "\"");
-
-		CustomCheckboxParams Parameters = {
-			input->GetId(),
-			input->GetTitle(),
-			context->GetConfig()->GetFontFamily(AdaptiveCards::FontType::Default),
-			isChecked,
-			input->GetWrap() };
-
-		GetCheckbox(uiCheckboxInput, Parameters);
-
-		if (!input->GetIsVisible())
-		{
-			uiCheckboxInput->Property("visible", "false");
-		}
 		//TODO: Add Height
-		
-		return uiCheckboxInput;
+		return GetCheckBox(RendererQml::Checkbox(input->GetId(),
+			CheckBoxType::Toggle,
+			input->GetTitle(),
+			input->GetValue(),
+			valueOn,
+			valueOff,
+			context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default),
+			input->GetWrap(),
+			input->GetIsVisible(),
+			isChecked));
+
 	}
 
-	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetCheckbox(std::shared_ptr<QmlTag> uiCheckboxInput, CustomCheckboxParams& params)
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		uiCheckboxInput->Property("id", params.id);
-		uiCheckboxInput->Property("text", "\"" + params.text + "\"");
-		uiCheckboxInput->Property("width", "parent.width");
+		int ButtonNumber = 0;
+		RendererQml::Checkboxes choices;
+		const std::string id = input->GetId();
+		enum CheckBoxType type = !input->GetIsMultiSelect() && input->GetChoiceSetStyle() == AdaptiveCards::ChoiceSetStyle::Compact ? ComboBox : input->GetIsMultiSelect() ? CheckBox : RadioButton;
+		const int fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
+		const bool isWrap = input->GetWrap();
+		const bool isVisible = input->GetIsVisible();
+		bool isChecked;
 
-		if (params.isChecked)
+		std::vector<std::string> parsedValues;
+		parsedValues = Utils::ParseChoiceSetInputDefaultValues(input->GetValue());
+
+		for (const auto& choice : input->GetChoices())
 		{
-			uiCheckboxInput->Property("checked", "true");
+			isChecked = (std::find(parsedValues.begin(), parsedValues.end(), choice->GetValue()) != parsedValues.end() && (input->GetIsMultiSelect() || parsedValues.size() == 1)) ? true : false;
+			choices.emplace_back(RendererQml::Checkbox(id + GenerateButtonId(type, ButtonNumber++),
+				type,
+				choice->GetTitle(),
+				choice->GetValue(),
+				fontSize,
+				isWrap,
+				isVisible,
+				isChecked));
 		}
 
+		RendererQml::ChoiceSet choiceSet(id,
+			input->GetIsMultiSelect(),
+			input->GetChoiceSetStyle(),
+			parsedValues,
+			choices,
+			input->GetPlaceholder());
+
+		if (CheckBoxType::ComboBox == type)
+		{
+			return GetComboBox(choiceSet);
+		}
+		else
+		{
+			return GetButtonGroup(choiceSet);
+		}
+
+		std::shared_ptr<QmlTag> uiColumn;
+		return uiColumn;
+	}
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetComboBox(ChoiceSet choiceset)
+	{
+		auto uiComboBox = std::make_shared<QmlTag>("ComboBox");
+				
+		uiComboBox->Property("id",choiceset.id);
+		uiComboBox->Property("textRole", "'text'");
+		uiComboBox->Property("valueRole", "'value'");
+		uiComboBox->Property("width", "parent.width");
+		//TODO : Add Height
+				
+		uiComboBox->Property("model", GetModel(choiceset.choices)); 
+				
+		if (!choiceset.placeholder.empty())
+		{
+			uiComboBox->Property("currentIndex", "-1");
+			uiComboBox->Property("displayText", "currentIndex === -1 ? '" + choiceset.placeholder + "' : currentText");
+		}
+		else if (choiceset.values.size() ==1)
+		{
+			std::string target = choiceset.values[0];
+			auto index = std::find_if(choiceset.choices.begin(), choiceset.choices.end(), [target](const Checkbox& options) {
+				return options.value == target;
+				}) - choiceset.choices.begin();
+			uiComboBox->Property("currentIndex", std::to_string(index));
+			uiComboBox->Property("displayText", "currentText");
+		}
+		
+		auto uiItemDelegate = std::make_shared<QmlTag>("ItemDelegate");
+		uiItemDelegate->Property("width", "parent.width");
+		
+		auto uiItemDelegate_Text = std::make_shared<QmlTag>("Text");
+		uiItemDelegate_Text->Property("text", "modelData.text");
+		uiItemDelegate_Text->Property("font", "parent.font");
+		uiItemDelegate_Text->Property("verticalAlignment", "Text.AlignVCenter");
+
+		if (choiceset.choices[0].isWrap)
+		{
+			uiItemDelegate_Text->Property("wrapMode", "Text.Wrap");
+		}
+		else
+		{
+			uiItemDelegate_Text->Property("elide", "Text.ElideRight");
+		}
+
+		uiItemDelegate->Property("contentItem", uiItemDelegate_Text->ToString());
+				
+		uiComboBox->Property("delegate", uiItemDelegate->ToString());
+
+		auto uiContentItem_Text = std::make_shared<QmlTag>("Text");
+		uiContentItem_Text->Property("text", "parent.displayText");
+		uiContentItem_Text->Property("font", "parent.font");
+		uiContentItem_Text->Property("verticalAlignment", "Text.AlignVCenter");
+		uiContentItem_Text->Property("leftPadding", "parent.font.pixelSize + parent.spacing");
+		uiContentItem_Text->Property("elide", "Text.ElideRight");
+				
+		uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
+				
+		return uiComboBox;
+	}
+
+	std::string AdaptiveCardQmlRenderer::GetModel(std::vector<Checkbox>& Choices)
+	{
+		std::ostringstream model;
+		model << "[";
+		for (const auto& choice : Choices)
+		{
+			model << "{ value: '" << choice.value << "', text: '" << choice.text << "'},\n";
+		}
+		model << "]";
+		return model.str();
+	}
+
+	// Default values are specified by a comma separated string
+	std::vector<std::string> Utils::ParseChoiceSetInputDefaultValues(const std::string& value)
+	{
+		std::vector<std::string> parsedValues;
+		std::string element;
+		std::stringstream ss(value);
+		while (std::getline(ss, element, ','))
+		{
+			Utils::Trim(element);		
+			if (!element.empty())
+			{
+				parsedValues.push_back(element);
+			}
+		}
+		return parsedValues;
+	}
+
+	std::string AdaptiveCardQmlRenderer::GenerateButtonId(enum CheckBoxType ButtonType, int  ButtonNumber)
+	{
+		
+		return "_" + std::to_string(ButtonType) + "_" + std::to_string(ButtonNumber);
+	}
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetButtonGroup(ChoiceSet choiceset)
+	{
+		auto uiColumn = std::make_shared<QmlTag>("Column");
+	
+		auto uiButtonGroup = std::make_shared<QmlTag>("ButtonGroup");
+	
+		uiButtonGroup->Property("id", choiceset.id);
+	
+		if (choiceset.isMultiSelect)
+		{
+			uiButtonGroup->Property("buttons", choiceset.id + "_checkbox.children");
+			uiButtonGroup->Property("exclusive", "false");
+		}
+		else
+		{
+			uiButtonGroup->Property("buttons", choiceset.id + "_radio.children");
+		}
+	
+		uiColumn->AddChild(uiButtonGroup);
+	
+		auto uiInnerColumn = std::make_shared<QmlTag>("ColumnLayout");
+	
+		if (choiceset.isMultiSelect)
+		{
+			uiInnerColumn->Property("id", choiceset.id + "_checkbox");
+		}
+		else
+		{
+			uiInnerColumn->Property("id", choiceset.id + "_radio");
+		}
+	
+		// render as a series of buttons
+		for (const auto& choice : choiceset.choices)
+		{
+			uiInnerColumn->AddChild(GetCheckBox(choice));
+		}
+	
+		uiColumn->AddChild(uiInnerColumn);
+		return uiColumn;
+	}
+
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetCheckBox(Checkbox checkbox)
+	{
+		std::shared_ptr<QmlTag> uiButton;
+
+		if (checkbox.type == CheckBoxType::RadioButton)
+		{
+			uiButton = std::make_shared<QmlTag>("RadioButton");
+		}
+		else
+		{
+			uiButton = std::make_shared<QmlTag>("CheckBox");
+		}
+
+		if (checkbox.type == CheckBoxType::Toggle)
+		{
+			uiButton->Property("readonly property string valueOn", "\"" + checkbox.valueOn + "\"");
+			uiButton->Property("readonly property string valueOff", "\"" + checkbox.valueOff + "\"");
+		}
+
+		uiButton->Property("id", checkbox.id);
+		uiButton->Property("text", "\"" + checkbox.text + "\"");
+		uiButton->Property("width", "parent.width");
+		uiButton->Property("font.pixelSize", std::to_string(checkbox.fontSize));
+
+		if (!checkbox.isVisible)
+		{
+			uiButton->Property("visible", "false");
+		}
+		
+		if (checkbox.isChecked)
+		{
+			uiButton->Property("checked", "true");
+		}
+	
 		auto uiOuterRectangle = std::make_shared<QmlTag>("Rectangle");
 		uiOuterRectangle->Property("width", "parent.font.pixelSize");
 		uiOuterRectangle->Property("height", "parent.font.pixelSize");
 		uiOuterRectangle->Property("y", "parent.topPadding + (parent.availableHeight - height) / 2");
-		uiOuterRectangle->Property("radius", "3");
-		uiOuterRectangle->Property("border.color", params.id + ".checkState === Qt.Checked ? '#0075FF' : '767676'");
-
+		if (checkbox.type == CheckBoxType::RadioButton)
+		{
+			uiOuterRectangle->Property("radius", "height/2"); 
+		}
+		else
+		{
+			uiOuterRectangle->Property("radius", "3");
+		}
+		uiOuterRectangle->Property("border.color", checkbox.id + ".checked ? '#0075FF' : '767676'");
+	
 		//To be replaced with image of checkmark.
 		auto uiInnerRectangle = std::make_shared<QmlTag>("Rectangle");
 		uiInnerRectangle->Property("width", "parent.width/2");
 		uiInnerRectangle->Property("height", "parent.height/2");
-		uiInnerRectangle->Property("anchors.centerIn", "parent");
-		uiInnerRectangle->Property("radius", "2");
-		uiInnerRectangle->Property("color", params.id + ".down ? '#ffffff' : '#0075FF'");
-		uiInnerRectangle->Property("visible", params.id + ".checked");
-
+		uiInnerRectangle->Property("x", "width/2");
+		uiInnerRectangle->Property("y", "height/2");
+		if (checkbox.type == CheckBoxType::RadioButton)
+		{
+			uiInnerRectangle->Property("radius", "height/2");
+		}
+		else
+		{
+			uiInnerRectangle->Property("radius", "2"); 
+		}
+		uiInnerRectangle->Property("color", checkbox.id + ".down ? '#ffffff' : '#0075FF'");
+		uiInnerRectangle->Property("visible", checkbox.id + ".checked");
+	
 		uiOuterRectangle->AddChild(uiInnerRectangle);
-
-		uiCheckboxInput->Property("indicator", uiOuterRectangle->ToString());
-
+	
+		uiButton->Property("indicator", uiOuterRectangle->ToString());
+	
 		auto uiText = std::make_shared<QmlTag>("Text");
 		uiText->Property("text", "parent.text");
 		uiText->Property("font", "parent.font");
 		uiText->Property("horizontalAlignment", "Text.AlignLeft");
 		uiText->Property("verticalAlignment", "Text.AlignVCenter");
 		uiText->Property("leftPadding", "parent.indicator.width + parent.spacing");
-
-		if (params.isWrap)
+	
+		if (checkbox.isWrap)
 		{
 			uiText->Property("wrapMode", "Text.Wrap");
 		}
@@ -491,12 +703,12 @@ namespace RendererQml
 		{
 			uiText->Property("elide", "Text.ElideRight");
 		}
-
-		uiCheckboxInput->Property("contentItem", uiText->ToString());
-
-		return uiCheckboxInput;
+	
+		uiButton->Property("contentItem", uiText->ToString());
+	
+		return uiButton;
 	}
-
+    
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::DateInputRender(std::shared_ptr<AdaptiveCards::DateInput> input, std::shared_ptr<AdaptiveRenderContext> context)
     {
         auto uiDateInput = std::make_shared<QmlTag>("TextField");
@@ -591,4 +803,6 @@ namespace RendererQml
 
         return uiDateInput;
     }
+
 }
+	

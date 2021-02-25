@@ -18,6 +18,7 @@
 #include "ImageSet.h"
 #include "ActionSet.h"
 #include "ChoiceSetInput.h"
+#include "ChoiceInput.h"
 #include "CollectionTypeElement.h"
 #include "TextInput.h"
 #include "NumberInput.h"
@@ -31,14 +32,6 @@
 
 namespace RendererQml
 {
-	struct CustomCheckboxParams
-	{
-		const std::string id;
-		const std::string text;
-		const std::string font;
-		const bool isChecked;
-		const bool isWrap;
-	};
     class AdaptiveCardQmlRenderer : public AdaptiveCardsRendererBase<QmlTag, AdaptiveRenderContext>
     {
     public:
@@ -65,10 +58,11 @@ namespace RendererQml
         static std::shared_ptr<QmlTag> ColumnSetRender(std::shared_ptr<AdaptiveCards::ColumnSet> columnSet, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> ImageSetRender(std::shared_ptr<AdaptiveCards::ImageSet> imageSet, std::shared_ptr<AdaptiveRenderContext> context);
-        static std::shared_ptr<QmlTag> ActionSetRender(std::shared_ptr<AdaptiveCards::ActionSet> actionSet, std::shared_ptr<AdaptiveRenderContext> context);
+        static std::shared_ptr<QmlTag> ActionSetRender(std::shared_ptr<AdaptiveCards::ActionSet> actionSet, std::shared_ptr<AdaptiveRenderContext> context);*/
 
-        static std::shared_ptr<QmlTag> ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet, std::shared_ptr<AdaptiveRenderContext> context);*/
-        static std::shared_ptr<QmlTag> TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context);
+        static std::shared_ptr<QmlTag> ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet, std::shared_ptr<AdaptiveRenderContext> context);
+		//static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
+		static std::shared_ptr<QmlTag> TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context);
 
         static std::shared_ptr<QmlTag> DateInputRender(std::shared_ptr<AdaptiveCards::DateInput> input, std::shared_ptr<AdaptiveRenderContext> context);
@@ -80,6 +74,11 @@ namespace RendererQml
 
     private:
         void SetObjectTypes();
-		static std::shared_ptr<QmlTag> GetCheckbox(std::shared_ptr<QmlTag> uiCheckboxInput, CustomCheckboxParams& params);
+		static std::shared_ptr<QmlTag> GetComboBox(ChoiceSet choiceset);
+		static std::shared_ptr<QmlTag> GetButtonGroup(ChoiceSet choiceset);
+		static std::shared_ptr<QmlTag> GetCheckBox(Checkbox checkbox);
+		//static std::shared_ptr<QmlTag> GetRadioButton(std::shared_ptr<QmlTag> uiRadioButton, CustomRadioButtonParams& params);
+		static std::string GenerateButtonId(enum CheckBoxType ButtonType, int ButtonNumber);
+		static std::string GetModel(std::vector<Checkbox>& Choices);
     };
 }
