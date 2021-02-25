@@ -595,6 +595,20 @@ $(function () {
 		// Kick off one resize to fix all videos on page load
 	}).resize();
 
+    function makeTabIndicesZero() {
+        $("[tabindex]").each((i, elem) => {
+            if (elem.tabIndex > 0) {
+                elem.setAttribute("tabindex", 0);
+            }
+        });
+    }
+
+    // rewrite non-zero tabindex values (UHF script can add explicit tabindices, breaking keyboard tab order)
+    $(window).resize(makeTabIndicesZero);
+
+    // this is sadly fragile, but should work in the majority of cases (I'm so sorry).
+    $(document).ready(() => { setTimeout(makeTabIndicesZero, 200); });
+
 	// Code for making sidebar sticky
 	var headerHolder;
 	var footerHolder;
