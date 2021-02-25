@@ -176,11 +176,11 @@ using namespace AdaptiveCards;
 
     // adjust intrinsic contentsize of superview
     // substract the previous intrinsic content size from the view group
-    //[_viewGroup decreaseIntrinsicContentSize:self];
+    [_viewGroup decreaseIntrinsicContentSize:self];
     // update it to the new value
     self.imageProperties.contentSize = CGSizeMake(width, height);
     // increase the view group's intrinsic content size by the new ICS
-    //[_viewGroup increaseIntrinsicContentSize:self];
+    [_viewGroup increaseIntrinsicContentSize:self];
 }
 
 - (void)update:(ACRImageProperties *)imageProperties

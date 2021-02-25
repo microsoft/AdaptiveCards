@@ -77,7 +77,9 @@
     if (!backgroundColor.empty()) {
         view.backgroundColor = [ACOHostConfig convertHexColorCodeToUIColor:imgElem->GetBackgroundColor()];
     }
-    
+
+    [viewGroup addArrangedSubview:wrappingView];
+
     switch (imageProps.acrHorizontalAlignment) {
         case ACRCenter:
             [view.centerXAnchor constraintEqualToAnchor:wrappingView.centerXAnchor].active = YES;
@@ -143,16 +145,13 @@
     if (imgElem->GetImageStyle() == ImageStyle::Person) {
         wrappingView.isPersonStyle = YES;
     }
-    
-    NSLog(@"%@", [NSString stringWithCString:imgElem->GetUrl().c_str() encoding:NSUTF8StringEncoding]);
+
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
         [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
     }
-    
-    [viewGroup addArrangedSubview:wrappingView];
-   
+
     return wrappingView;
 }
 
@@ -219,8 +218,6 @@
     
     if (imageProps.acrImageSize == ACRImageSizeAuto) {
         [constraints addObject:[imageView.widthAnchor constraintLessThanOrEqualToConstant:imageProps.contentSize.width]];
-//        widthConstraint.priority = 999;
-//        widthConstraint.active = YES;
     }
     
     [NSLayoutConstraint activateConstraints:constraints];
