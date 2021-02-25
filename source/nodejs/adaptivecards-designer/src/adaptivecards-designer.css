@@ -788,9 +788,10 @@
     border: 1px solid black;
 }
 
-.acd-toolbar-button:disabled {
+.acd-toolbar-button.acd-toolbar-button-disabled {
     color: lightgray;
     background-color: transparent;
+    cursor: default;
 }
 
 @media not (forced-colors: active) {
