@@ -597,7 +597,7 @@ $(function () {
 
     function makeTabIndicesZero() {
         $("[tabindex]").each((i, elem) => {
-            if (elem.tabIndex !== 0) {
+            if (elem.tabIndex > 0) {
                 elem.setAttribute("tabindex", 0);
             }
         });
