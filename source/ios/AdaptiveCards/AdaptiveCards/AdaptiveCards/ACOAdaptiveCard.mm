@@ -111,4 +111,24 @@ using namespace AdaptiveCards;
     return nil;
 }
 
+- (NSData *)additionalProperty
+{
+    if (_adaptiveCard) {
+        Json::Value blob = _adaptiveCard->GetAdditionalProperties();
+        if (blob.empty()) {
+            return nil;
+        }
+        Json::StreamWriterBuilder streamWriterBuilder;
+        auto writer = streamWriterBuilder.newStreamWriter();
+        std::stringstream sstream;
+        writer->write(blob, &sstream);
+        delete writer;
+        NSString *jsonString =
+        [[NSString alloc] initWithCString:sstream.str().c_str()
+                                 encoding:NSUTF8StringEncoding];
+        return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+    }
+    return nil;
+}
+
 @end

@@ -136,6 +136,7 @@ namespace AdaptiveSharedNamespace
 
     private:
         static void _ValidateLanguage(const std::string& language, std::vector<std::shared_ptr<AdaptiveCardParseWarning>>& warnings);
+        void PopulateKnownPropertiesSet();
 
         std::string m_version;
         std::string m_fallbackText;
@@ -147,6 +148,8 @@ namespace AdaptiveSharedNamespace
         HeightType m_height;
         unsigned int m_minHeight;
         InternalId m_internalId;
+        std::unordered_set<std::string> m_knownProperties;
+        Json::Value m_additionalProperties;
 
         std::vector<std::shared_ptr<BaseCardElement>> m_body;
         std::vector<std::shared_ptr<BaseActionElement>> m_actions;

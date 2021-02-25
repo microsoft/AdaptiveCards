@@ -475,6 +475,24 @@ void AdaptiveCard::SetMinHeight(const unsigned int value)
     m_minHeight = value;
 }
 
+void AdaptiveCard::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Version),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Language),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::$Scheme)});
+}
+
 std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
 {
     auto resourceVector = std::vector<RemoteResourceInformation>();
