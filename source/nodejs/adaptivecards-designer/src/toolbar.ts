@@ -335,10 +335,12 @@ export class Toolbar {
         let leftContainer = document.createElement("div");
         leftContainer.style.display = "flex";
         leftContainer.style.alignItems = "center";
+        leftContainer.style.flexWrap = "wrap";
 
         let rightContainer = document.createElement("div");
         rightContainer.style.display = "flex";
         rightContainer.style.alignItems = "center";
+        rightContainer.style.flexWrap = "wrap";
 
         this.renderElementsInto(
             leftContainer,
