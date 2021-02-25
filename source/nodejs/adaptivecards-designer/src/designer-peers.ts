@@ -309,18 +309,13 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
                     altText: (this.label + " " + "Data Binding"),
                     expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
-                                               
-                        clickedElement.setAttribute("aria-label", this.label + " " + "Data Binding");
                         clickedElement.setAttribute("aria-expanded", "true");
                         
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
-                            clickedElement.setAttribute("aria-label", this.label + " " + "Data Binding");
                             clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
-                                
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
                                 context.peer.changed(true);
                             }
                             clickedElement.focus();
