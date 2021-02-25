@@ -266,6 +266,12 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
                 configWidthAndHeightAnchors(superView, imageView, false);
             } else if (isDeficientInHeight) {
                 configWidthAndHeightAnchors(superView, imageView, true);
+            } else {
+                // constraint the background image to the container's width according to the spec
+                [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
+                if (imageView.image.size.width > 0) {
+                    [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
+                }
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -834,3 +840,9 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
             return ACRLeft;
     }
 }
+
+void printSize(NSString *msg, CGSize size)
+{
+    NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
+}
+

@@ -53,9 +53,14 @@
 
 - (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
+- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *_Nonnull)view;
+
 - (void)hideIfSubviewsAreAllHidden;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
+
+- (UIView *_Nonnull)addPaddingSpace;
+
 @end

@@ -100,10 +100,20 @@ a.ac-anchor:visited:active {
     color: black;
 }
 
-.ac-pushButton.expanded {
-    background-color: #6165A4;
-    border: 2px solid #A7A8DA;
-    color: black;
+@media not (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: #6165A4;
+        border: 2px solid #A7A8DA;
+        color: black;
+    }
+}
+
+@media (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .ac-pushButton.style-emphasis {
