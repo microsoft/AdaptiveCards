@@ -88,6 +88,11 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseActionElement>>& GetActions();
         const std::vector<std::shared_ptr<BaseActionElement>>& GetActions() const;
 
+        const std::unordered_set<std::string>& GetKnownProperties() const;
+        const Json::Value& GetAdditionalProperties() const;
+        void SetAdditionalProperties(Json::Value&& additionalProperties);
+        void SetAdditionalProperties(const Json::Value& additionalProperties);
+
         std::vector<RemoteResourceInformation> GetResourceInformation();
 
         CardElementType GetElementType() const;

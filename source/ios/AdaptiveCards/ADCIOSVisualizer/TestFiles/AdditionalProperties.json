@@ -2,6 +2,7 @@
     "type": "AdaptiveCard",
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.3",
+    "card.cornerRadius" : 50.0,
     "body": [
         {
             "type": "Container",

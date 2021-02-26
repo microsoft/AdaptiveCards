@@ -99,7 +99,8 @@ namespace AdaptiveSharedNamespace
 
     Json::Value BaseElement::SerializeToJsonValue() const
     {
-        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the return value to a value, rather than reference, type
+        Json::Value root = GetAdditionalProperties(); // Create a copy of the additional properties by assigning the
+                                                      // return value to a value, rather than reference, type
 
         // Important -- we're explicitly getting the type as a string here because that's where we store the type that
         // was specified by the card author.
@@ -167,7 +168,7 @@ namespace AdaptiveSharedNamespace
                         catch (const AdaptiveCardParseException&)
                         {
                             throw AdaptiveCardParseException(ErrorStatusCode::InvalidPropertyValue,
-                                "Invalid version in requires value: '" + memberValue + "'");
+                                                             "Invalid version in requires value: '" + memberValue + "'");
                         }
                     }
                 }
