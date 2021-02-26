@@ -96,11 +96,6 @@
                 } else {
                     textRunContent = [[NSMutableAttributedString alloc] initWithString:text
                                                                             attributes:descriptor];
-                    // text is preprocessed by markdown parser, and will wrapped by <p></P>
-                    // lines below remove the p tags
-                    [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
-                    [textRunContent
-                        deleteCharactersInRange:NSMakeRange([textRunContent length] - 4, 4)];
                 }
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];

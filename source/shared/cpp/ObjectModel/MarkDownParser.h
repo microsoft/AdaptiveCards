@@ -17,6 +17,8 @@ namespace AdaptiveSharedNamespace
 
         std::string TransformToHtml();
 
+        std::string GetText() const;
+
         bool HasHtmlTags();
 
         bool IsEscaped() const;
