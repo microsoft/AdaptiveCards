@@ -139,7 +139,7 @@ a.ac-anchor:visited:active {
     border: 1px solid #0078D7;
 }
 
-@media not (forced-colors: active) {
+@media (forced-colors: none) {
     .ac-pushButton.expanded {
         background-color: #004980;
         color: white;
