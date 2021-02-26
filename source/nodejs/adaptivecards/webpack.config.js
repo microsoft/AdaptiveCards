@@ -37,8 +37,8 @@ module.exports = (env, argv) => {
 				{
 					test: /\.css$/,
 					use: [
-						// 'style-loader',
-						// MiniCssExtractPlugin.loader,
+						'style-loader',
+						MiniCssExtractPlugin.loader,
 						'css-loader',
 						//'typings-for-css-modules-loader?modules&namedExport&camelCase'
 					]
@@ -46,6 +46,7 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
+			new MiniCssExtractPlugin(),
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Example",
 				template: "./example.html"
