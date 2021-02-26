@@ -4820,70 +4820,69 @@ class ActionCollection {
 
                 // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
                 const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
-                if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
+
+				if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
                     secondaryActions.push(...overflowPrimaryActions);
                 }
 
-                const hasOverflow = secondaryActions.length > 0;
                 let shouldRenderOverflowActionButton = true;
 
-                if (hasOverflow) {
-                    if (!this._overflowAction) {
-                        this._overflowAction = new OverflowAction(secondaryActions);
-                        this._overflowAction.setParent(this._owner);
-                    }
+				if (secondaryActions.length > 0) {
+					if (!this._overflowAction) {
+						this._overflowAction = new OverflowAction(secondaryActions);
+						this._overflowAction.setParent(this._owner);
+					}
 
-                    let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
-                    shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
-                }
+					let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
+					shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
+				}
 
-                const actionsToRender = [...primaryActions, ...(hasOverflow && shouldRenderOverflowActionButton ? [this._overflowAction!] : [])]
-                const actionBtnsToRender = actionsToRender.map(action => {
-                    let btn = this.findActionButton(action);
+				if (this._overflowAction && shouldRenderOverflowActionButton) {
+					primaryActions.push(this._overflowAction);
+				}
 
-                    if (!btn) {
-                        btn = new ActionButton(action, parentContainerStyle);
-                        btn.onClick = (ab) => { ab.action.execute(); };
-                        this._buttons.push(btn);
-                    }
+				for (let i = 0; i < primaryActions.length; i++) {
+					let actionButton = this.findActionButton(primaryActions[i]);
 
-                    return btn;
-                });
+					if (!actionButton) {
+						actionButton = new ActionButton(primaryActions[i], parentContainerStyle);
+						actionButton.onClick = (ab) => { ab.action.execute(); };
+						this._buttons.push(actionButton);
+					}
 
-                actionBtnsToRender.forEach((actionButton, i) => {
-                    actionButton.render();
+					actionButton.render();
 
-                    if (actionButton.action.renderedElement) {
-                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
+					if (actionButton.action.renderedElement) {
+						actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+						actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+						actionButton.action.renderedElement.setAttribute("role", "menuitem");
 
-                        if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
-                            actionButton.action.renderedElement.style.flex = "0 1 100%";
-                        }
-                        else {
-                            actionButton.action.renderedElement.style.flex = "0 1 auto";
-                        }
+						if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
+							actionButton.action.renderedElement.style.flex = "0 1 100%";
+						}
+						else {
+							actionButton.action.renderedElement.style.flex = "0 1 auto";
+						}
 
-                        buttonStrip.appendChild(actionButton.action.renderedElement);
+						buttonStrip.appendChild(actionButton.action.renderedElement);
 
-                        this._renderedActionCount++;
+						this._renderedActionCount++;
 
-                        if (i !== actionBtnsToRender.length - 1 && hostConfig.actions.buttonSpacing > 0) {
-                            let spacer = document.createElement("div");
+						if (i < primaryActions.length - 1 && hostConfig.actions.buttonSpacing > 0) {
+							let spacer = document.createElement("div");
 
-                            if (orientation === Enums.Orientation.Horizontal) {
-                                spacer.style.flex = "0 0 auto";
-                                spacer.style.width = hostConfig.actions.buttonSpacing + "px";
-                            }
-                            else {
-                                spacer.style.height = hostConfig.actions.buttonSpacing + "px";
-                            }
+							if (orientation === Enums.Orientation.Horizontal) {
+								spacer.style.flex = "0 0 auto";
+								spacer.style.width = hostConfig.actions.buttonSpacing + "px";
+							}
+							else {
+								spacer.style.height = hostConfig.actions.buttonSpacing + "px";
+							}
 
-                            Utils.appendChild(buttonStrip, spacer);
-                        }
-                    }
-                });
+							Utils.appendChild(buttonStrip, spacer);
+						}
+					}
+				}
             }
 
             let buttonStripContainer = document.createElement("div");
