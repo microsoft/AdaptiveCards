@@ -143,6 +143,15 @@ export abstract class BaseSerializationContext {
         }
     }
 
+    serializeBool(target: { [key: string]: any }, propertyName: string, propertyValue: boolean | undefined, defaultValue: boolean | undefined = undefined) {
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
+        }
+        else {
+            target[propertyName] = propertyValue;
+        }
+    }
+
     serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
             delete target[propertyName];
@@ -324,7 +333,7 @@ export class BoolProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
-        context.serializeValue(
+        context.serializeBool(
             target,
             this.name,
             value,
@@ -764,6 +773,7 @@ export type PropertyBag = { [propertyName: string]: any };
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
+    static defaultMaxVersion: Version = Versions.v1_3;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -886,7 +896,7 @@ export abstract class SerializableObject {
         return true;
     }
 
-    maxVersion: Version = Versions.v1_3;
+    maxVersion: Version = SerializableObject.defaultMaxVersion;
 
     constructor() {
         let s = this.getSchema();

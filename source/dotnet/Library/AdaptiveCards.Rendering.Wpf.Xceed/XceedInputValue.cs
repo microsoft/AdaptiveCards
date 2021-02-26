@@ -25,7 +25,7 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public override string GetValue()
         {
-            return (RenderedInputElement as IntegerUpDown).Value?.ToString();
+            return (RenderedInputElement as DoubleUpDown).Value?.ToString();
         }
     }
 

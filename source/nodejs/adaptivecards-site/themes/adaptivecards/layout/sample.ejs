@@ -1,17 +1,22 @@
 <div id="content-wrapper" class="sample-browser w3-margin-bottom" style="max-width:1550px">
 
 	<nav id="sidebar-todo" class="toc-todo sidebar w3-cell w3-hide-small w3-hide-medium w3-bar-block"
-		style="width: 200px">
+		style="width: 200px" aria-label="Sample cards">
 		<div class="sidebar__inner">
 			<ul class="samples-sidebar-list">
-				<% page.samples.forEach(function(sample, i) { %>
-				<li class='<%= page.samplePath === sample.htmlPath ? "selectedHolder" : "" %>'>
-					<a href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
+				<% page.samples.forEach(function(sample, i) {
+                    const isSelected = (page.samplePath === sample.htmlPath);
+                %>
+				<li <%= isSelected ? "class=selectedHolder" : "" %>>
+					<a role="listitem"
+                       aria-selected='<%= isSelected.toString() %>'
+                       aria-posinset='<%= (i+1).toString() %>'
+                       aria-setsize='<%= page.samples.length.toString() %>'
+                       href="<%- url_for(sample.htmlPath) %>"><%= sample.name %></a>
 				</li>
 				<% }) %>
 
 			</ul>
-
 		</div>
 	</nav>
 
@@ -47,7 +52,7 @@
 				<div class="w3-cell-row2">
 					<div class="w3-cell" style="width: 50px;">
 						<label>
-							<input type="checkbox" checked id="enableTemplating" class="bigbox" />
+							<input type="checkbox" checked id="enableTemplating" class="bigbox" tabIndex="0" />
 						</label>
 					</div>
 					<div class="w3-cell w3-cell-middle">

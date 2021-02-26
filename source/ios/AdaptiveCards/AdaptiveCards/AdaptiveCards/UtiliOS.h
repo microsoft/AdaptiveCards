@@ -96,3 +96,5 @@ CGSize getAspectRatio(CGSize size);
 ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
 
 ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+void printSize(NSString *msg, CGSize size);

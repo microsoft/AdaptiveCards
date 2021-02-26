@@ -24,31 +24,29 @@ export class InputText extends React.Component {
 		this.id = Constants.EmptyString;
 		this.style = Constants.EmptyString;
 		this.styleValue = Constants.EmptyString;
-
-		this.isValidationRequired = !!this.payload.validation &&
-			(Enums.ValidationNecessity.Required == this.payload.validation.necessity ||
-				Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
+		this.isRequired = this.payload.isRequired || false
+		this.regex = this.payload.regex ? new RegExp(this.payload.regex) : undefined;
 
 		this.state = {
-			isError: this.isValidationRequired,
+			isError: this.isRequired,
 			text: Constants.EmptyString,
 		}
 	}
 
 
 
-    /**
-     * @description Invoked on every change in Input field
-     * @param {string} text
-     */
+	/**
+	 * @description Invoked on every change in Input field
+	 * @param {string} text
+	 */
 	textValueChanged = (text, addInputItem) => {
 		this.setState({ text });
 		addInputItem(this.id, { value: text, errorState: this.state.isError });
 	}
 
 	/**
-     * @description Parse hostConfig specific to this element
-     */
+	 * @description Parse hostConfig specific to this element
+	 */
 	parseHostConfig() {
 		this.id = this.payload.id;
 		this.styleValue = Utils.parseHostConfigEnum(
@@ -78,55 +76,52 @@ export class InputText extends React.Component {
 		);
 	}
 
-    /**
-     * @description validate the text in the textInput field based on style of the textInput.
-     */
+	/**
+	 * @description validate the text in the textInput field based on style of the textInput.
+	 */
 	validate = () => {
 		let isError = true;
-		let REGEX;
 		let text = this.state.text.trim();
 		if (text) {
-			switch (this.styleValue) {
-				case Enums.InputTextStyle.Email: {
-					REGEX = EMAIL_REGEX;
+			if (Utils.isNullOrEmpty(this.regex)) {
+				switch (this.styleValue) {
+					case Enums.InputTextStyle.Email:
+						this.regex = EMAIL_REGEX;
+						break;
+					case Enums.InputTextStyle.Url:
+						this.regex = URL_REGEX;
+						break;
+					case Enums.InputTextStyle.Tel:
+						this.regex = TEL_REGEX;
+						text = text.replace(/\D/g, Constants.EmptyString);
+						break;
+					default:
+						isError = false;
+						break;
 				}
-					break;
-				case Enums.InputTextStyle.Url: {
-					REGEX = URL_REGEX;
-				}
-					break;
-				case Enums.InputTextStyle.Tel: {
-					REGEX = TEL_REGEX;
-					text = text.replace(/\D/g, Constants.EmptyString);
-				}
-					break;
-				default: {
-					isError = false;
-				}
-					break;
 			}
 
-			if (REGEX) {
-				isError = !REGEX.test(text);
+			if (this.regex) {
+				isError = !this.regex.test(text);
 			}
 		}
 		this.setState({ isError });
 	};
 
-    /**
-     * @description handle textInput when in focus
-     */
+	/**
+	 * @description handle textInput when in focus
+	 */
 	handleFocus = () => {
 		this.setState({
 			isError: false
 		});
 	}
 
-    /**
-     * @description handle textInput when out of focus
-     */
+	/**
+	 * @description handle textInput when out of focus
+	 */
 	handleBlur = () => {
-		if (this.isValidationRequired)
+		if (this.isRequired)
 			this.validate();
 	}
 }

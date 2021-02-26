@@ -4,6 +4,12 @@ This library implements a JSON-to-JSON templating/data-binding engine. While it 
 
 [Learn more about Adaptive Card Templating](https://aka.ms/actemplating)
 
+> ## IMPORTANT: Breaking change in version 2.0 and later
+> 
+> Before version 2.0, the `adaptivecards-templating` package embedded a full copy of the `adaptive-expressions` package. This model didn't allow an application to use Adaptive Card templating with a more recent version of `adaptive-expressions`, and bug fixes in `adaptive-expressions` would always have to be accompanied with a new release of the `adaptivecards-templating` package.
+>
+> From version 2.0 on, `adaptivecards-templating` doesn't embed `adaptive-expressions` anymore, and it is the responsibility of the consuming application to explicitly load this  package.
+
 ## Install and import the module
 
 ### Node

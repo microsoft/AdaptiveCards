@@ -21,6 +21,9 @@ import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
+import InputLabel from "./input-label";
+
+const ERROR_MESSAGE = "Inline ShowCard is not supported as of now";
 
 export class Input extends React.Component {
 
@@ -37,12 +40,9 @@ export class Input extends React.Component {
 		this.type = Constants.EmptyString;
 		this.keyboardType = Constants.EmptyString;
 		this.textStyle = Constants.EmptyString;
-
-		this.validationRequiredWithVisualCue = (!this.payload.validation ||
-			Enums.ValidationNecessity.RequiredWithVisualCue == this.payload.validation.necessity);
-
-		this.errorMessage = (this.payload.validation && this.payload.validation.errorMessage) ?
-			this.payload.validation.errorMessage : Constants.ErrorMessage;
+		this.label = Constants.EmptyString;
+		this.isRequired = this.payload.isRequired || false;
+		this.errorMessage = this.payload.errorMessage || Constants.ErrorMessage;
 
 		this.inlineAction = {};
 		this.state = {
@@ -62,7 +62,8 @@ export class Input extends React.Component {
 			type,
 			isMultiline,
 			placeholder,
-			maxLength
+			maxLength,
+			label
 		} = this;
 
 		if (!id || !type) {
@@ -79,7 +80,8 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+							<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+								<InputLabel isRequired={this.isRequired} label={label} />
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -120,7 +122,7 @@ export class Input extends React.Component {
 		isMultiline ?
 			inputComputedStyles.push(styles.multiLineHeight) :
 			inputComputedStyles.push(styles.singleLineHeight);
-		this.props.isError && (showErrors || this.validationRequiredWithVisualCue) ?
+		this.props.isError && showErrors && this.isRequired ?
 			inputComputedStyles.push(this.styleConfig.borderAttention) :
 			inputComputedStyles.push(this.styleConfig.inputBorderColor);
 
@@ -142,6 +144,7 @@ export class Input extends React.Component {
 		this.textStyle = Utils.getEffectiveInputStyle(this.props.styleValue);
 		this.keyboardType = Utils.getKeyboardType(this.props.styleValue);
 		this.inlineAction = this.payload.inlineAction;
+		this.label = this.payload.label;
 	}
 
 	/**
@@ -158,10 +161,10 @@ export class Input extends React.Component {
 	inlineActionComponent = () => {
 		return (
 			<InputContextConsumer>
-				{({ addInputItem, onExecuteAction, onParseError, inputArray }) => {
+				{({ addInputItem, onExecuteAction, onParseError, inputArray, showErrors }) => {
 					if (!inputArray[this.id])
 						addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
-					return this.parsePayload(addInputItem, onExecuteAction, onParseError)
+					return this.parsePayload(addInputItem, onExecuteAction, onParseError, showErrors)
 				}}
 			</InputContextConsumer>
 		);
@@ -170,7 +173,7 @@ export class Input extends React.Component {
 	/**
 	 * @description Parse the given payload and render the card accordingly
 	 */
-	parsePayload = (addInputItem, onExecuteAction, onParseError) => {
+	parsePayload = (addInputItem, onExecuteAction, onParseError, showErrors) => {
 		const {
 			id,
 			type,
@@ -181,24 +184,25 @@ export class Input extends React.Component {
 			textStyle,
 			keyboardType,
 			inlineAction,
+			label,
 		} = this;
 
 		if (!id || !type) {
 			return null;
 		}
 
-		var returnKeyType = "done"
+		var returnKeyType = Constants.ReturnDone
 		let wrapperStyle = [styles.inlineActionWrapper];
-		wrapperStyle.push({ alignItems: 'center' })
+		wrapperStyle.push({ alignItems: Constants.CenterString })
 
 		if (isMultiline) {
-			wrapperStyle.push({ alignItems: 'flex-end' })
-			returnKeyType = "default";
+			wrapperStyle.push({ alignItems: Constants.FlexEnd })
+			returnKeyType = Constants.ReturnDefault;
 		}
-		if (inlineAction.type === "Action.ShowCard") {
+		if (inlineAction.type == Enums.ElementType.ActionShowCard) {
 			let error = {
-				"error": Enums.ValidationError.ActionTypeNotAllowed,
-				"message": `Inline ShowCard is not supported as of now`
+				error: Enums.ValidationError.ActionTypeNotAllowed,
+				message: ERROR_MESSAGE
 			};
 			onParseError(error);
 			return null;
@@ -207,32 +211,34 @@ export class Input extends React.Component {
 			return (
 				<View>
 					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
-						<TextInput
-							style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
-							autoCapitalize={Constants.NoneString}
-							autoCorrect={false}
-							accessible={true}
-							accessibilityLabel={payload.altText}
-							placeholder={placeholder}
-							placeholderTextColor='#3a3a3a'
-							multiline={isMultiline}
-							maxLength={maxLength}
-							returnKeyLabel={'submit'}
-							returnKeyType={returnKeyType}
-							onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
-							underlineColorAndroid={Constants.TransparentString}
-							clearButtonMode={Constants.WhileEditingString}
-							textContentType={textStyle}
-							keyboardType={keyboardType}
-							onFocus={this.handleFocus}
-							onBlur={this.props.handleBlur}
-							onChangeText={(text) => {
-								this.props.textValueChanged(text, addInputItem);
-								this.textValueChanged(text);
-							}}
-							value={this.props.value}
-						/>
-						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, 'inline-action') }}>
+						<View style={styles.elementWrapper}>
+							<InputLabel isRequired={this.isRequired} label={label} />
+							<TextInput
+								style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
+								autoCapitalize={Constants.NoneString}
+								autoCorrect={false}
+								accessible={true}
+								accessibilityLabel={payload.altText}
+								placeholder={placeholder}
+								multiline={isMultiline}
+								maxLength={maxLength}
+								returnKeyLabel={'submit'}
+								returnKeyType={returnKeyType}
+								onSubmitEditing={() => this.onClickHandle(onExecuteAction, 'onSubmit')}
+								underlineColorAndroid={Constants.TransparentString}
+								clearButtonMode={Constants.WhileEditingString}
+								textContentType={textStyle}
+								keyboardType={keyboardType}
+								onFocus={this.handleFocus}
+								onBlur={this.props.handleBlur}
+								onChangeText={(text) => {
+									this.props.textValueChanged(text, addInputItem);
+									this.textValueChanged(text);
+								}}
+								value={this.props.value}
+							/>
+						</View>
+						<TouchableOpacity onPress={() => { this.onClickHandle(onExecuteAction, Constants.InlineAction) }}>
 							{Utils.isNullOrEmpty(inlineAction.iconUrl) ?
 								<Text style={styles.inlineActionText}>{inlineAction.title}</Text> :
 								<Image
@@ -242,7 +248,7 @@ export class Input extends React.Component {
 							}
 						</TouchableOpacity>
 					</ElementWrapper>
-					{this.props.isError && this.state.showInlineActionErrors && this.showErrorMessage()}
+					{this.props.isError && (this.state.showInlineActionErrors || showErrors) && this.showErrorMessage()}
 				</View>
 			);
 		}
@@ -274,7 +280,7 @@ export class Input extends React.Component {
 	 * @param {string} action - parameter to determine the origin of the action('onSubmit' OR 'inline-action')
 	 */
 	onClickHandle(onExecuteAction, action) {
-		if (this.isMultiline && action != 'inline-action')
+		if (this.isMultiline && action != Constants.InlineAction)
 			return;
 		this.setState({ showInlineActionErrors: true });
 		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
@@ -308,15 +314,19 @@ const styles = StyleSheet.create({
 	singleLineHeight: {
 		height: 44,
 	},
+	elementWrapper: {
+		flex: 1,
+		marginVertical: 3
+	},
 	input: {
 		width: Constants.FullWidth,
 		padding: 5,
-		marginTop: 15,
+		marginTop: 3,
 	},
 	inlineActionWrapper: {
 		flexDirection: 'row',
 		backgroundColor: "transparent",
-		borderRadius: 5,
+		borderRadius: 5
 	},
 	inlineActionTextInput: {
 		padding: 5,
@@ -330,7 +340,6 @@ const styles = StyleSheet.create({
 		marginLeft: 10,
 		width: 40,
 		height: 40,
-		marginTop: 15,
 		backgroundColor: 'transparent',
 		flexShrink: 0,
 	},
