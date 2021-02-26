@@ -157,6 +157,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._propertySheetCard.hostConfig = defaultHostConfig;
 
             this._propertySheetToolbox.content.appendChild(this._propertySheetCard.render());
+
             if (restoreFocusId) {
                 const focusTarget = this._propertySheetCard.getElementById(restoreFocusId) ?? this._propertySheetCard.getActionById(restoreFocusId);
                 focusTarget?.renderedElement?.focus();
@@ -232,7 +233,7 @@ export class CardDesigner extends Designer.DesignContext {
 
             let categoryList = document.createElement('div');
             categoryList.setAttribute("aria-label", category)
-            
+
             let node = document.createElement('div');
             categoryList.appendChild(node);
             node.innerText = category;
