@@ -581,7 +581,7 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
 
     // MarkDownParser transforms text with MarkDown to a html string
     auto markdownString = markDownParser->TransformToHtml();
-    NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetText().c_str() encoding:NSUTF8StringEncoding];
+    NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
 
     NSDictionary *data = nil;
 

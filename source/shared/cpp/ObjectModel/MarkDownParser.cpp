@@ -43,7 +43,7 @@ bool MarkDownParser::IsEscaped() const
     return m_isEscaped;
 }
 
-std::string MarkDownParser::GetText() const
+std::string MarkDownParser::GetRawText() const
 {
     return m_text;
 }
