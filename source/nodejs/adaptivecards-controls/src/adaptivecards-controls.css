@@ -137,7 +137,7 @@
     border: 1px solid #0078D7;
 }
 
-@media not (forced-colors: active) {
+@media (forced-colors: none) {
     .ms-ctrl-dropdown:focus {
         border: 1px solid #0078D7;
         outline: 0;
@@ -184,7 +184,7 @@
     background-color: #EEEEEE;
 }
 
-@media not (forced-colors: active) {
+@media (forced-colors: none) {
     .ms-ctrl-dropdown-item:focus {
         outline: 0;
         background-color: #CCCCCC;
