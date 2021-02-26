@@ -30,6 +30,20 @@ namespace RendererQml
         return *this;
     }
 
+	QmlTag& QmlTag::RemoveProperty(const std::string& name)
+	{
+		auto iterator = std::find_if(m_properties.begin(), m_properties.end(), [name](const auto property) {
+			return property.first == name;
+		});
+
+		if (iterator != m_properties.end())
+		{
+			m_properties.erase(iterator);
+			return *this;
+		}
+		return *this;
+	}
+
     void QmlTag::AddChild(const std::shared_ptr<QmlTag>& child)
     {
         m_children.emplace_back(child);
