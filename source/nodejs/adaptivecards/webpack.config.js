@@ -50,6 +50,13 @@ module.exports = (env, argv) => {
 			new HtmlWebpackPlugin({
 				title: "Adaptive Cards Example",
 				template: "./example.html"
+			}),
+			new CopyWebpackPlugin({
+				patterns: [{
+					from: 'src/controls/adaptivecards-controls.css',
+					to: '../lib/controls/',
+                	flatten:true
+				}]
 			})
 		]
 	};
