@@ -244,3 +244,11 @@ export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.
         return Enums.ContainerFitStatus.FullyOutOfContainer;
     }
 }
+
+export function getScrollX(): number {
+    return window.pageXOffset;
+}
+
+export function getScrollY(): number {
+    return window.pageYOffset;
+}

@@ -3733,7 +3733,7 @@ export abstract class Action extends CardObject {
     style: string = Enums.ActionStyle.Default;
 
     @property(Action.modeProperty)
-    mode?: string = Enums.ActionMode.Primary;
+    mode: string = Enums.ActionMode.Primary;
 
     //#endregion
 
@@ -4455,16 +4455,16 @@ export class ShowCardAction extends Action {
     }
 }
 
-export class OverflowAction extends Action {
+class OverflowAction extends Action {
     static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
-    private contextMenu: PopupMenu;
-    private readonly styleNodeId = "ac-ctrlContextMenu";
+    private static readonly _styleNodeId = "ac-ctrlContextMenu";
 
-    constructor(
-        private actions: Action[]
-	) {
+    private _contextMenu: PopupMenu;
+
+    constructor(private actions: Action[]) {
         super();
-		this.title = Strings.defaults.overflowButtonText();
+
+        this.title = Strings.defaults.overflowButtonText();
     }
 
     getActions(): readonly Action[] {
@@ -4477,40 +4477,43 @@ export class OverflowAction extends Action {
 
     execute() {
         const shouldDisplayPopupMenu = raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
+
         if (shouldDisplayPopupMenu && this.renderedElement) {
-            if (!this.contextMenu) {
-                this.contextMenu = new PopupMenu();
-                this.contextMenu.onClose = () => {
+            if (!this._contextMenu) {
+                this._contextMenu = new PopupMenu();
+                this._contextMenu.onClose = () => {
                     this.removeCssForContextMenu();
                 }
                 this.actions.forEach((action, id) => {
                     const menuItem = new DropDownItem(id.toString(), action.title ?? "");
                     menuItem.onClick = () => {
                         action.execute();
-                        this.contextMenu.closePopup(false);
+                        this._contextMenu.closePopup(false);
                     };
-                    this.contextMenu.items.add(menuItem);
+                    this._contextMenu.items.add(menuItem);
                 });
             }
 
             this.setupCssForContextMenu();
-            this.contextMenu.popup(this.renderedElement);
+            this._contextMenu.popup(this.renderedElement);
         }
 	}
 
     private setupCssForContextMenu() {
-        const node = document.head.querySelector(`style#${this.styleNodeId}`);
+        const node = document.head.querySelector(`style#${OverflowAction._styleNodeId}`);
+
         if (!node) {
             const style = document.createElement("style");
-            style.id = this.styleNodeId;
+            style.id = OverflowAction._styleNodeId;
             style.textContent = ControlsCSS.toString();
+
             document.head.appendChild(style);
         }
     }
 
     private removeCssForContextMenu() {
-        const node = document.head.querySelector(`style#${this.styleNodeId}`);
-        node?.remove();
+        const node = document.head.querySelector(`style#${OverflowAction._styleNodeId}`);
+        node && node.remove();
     }
 }
 
@@ -4591,7 +4594,7 @@ class ActionCollection {
     }
 
     private collapseExpandedAction() {
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             button.state = ActionButtonState.Normal;
         }
 
@@ -4610,7 +4613,7 @@ class ActionCollection {
     }
 
     private expandShowCardAction(action: ShowCardAction, raiseEvent: boolean) {
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             if (button.action !== action) {
                 button.state = ActionButtonState.Subdued;
             }
@@ -4635,7 +4638,7 @@ class ActionCollection {
     }
 
     private findActionButton(action: Action): ActionButton | undefined {
-        for (let actionButton of this.buttons) {
+        for (let actionButton of this._buttons) {
             if (actionButton.action == action) {
                 return actionButton;
             }
@@ -4644,9 +4647,9 @@ class ActionCollection {
         return undefined;
     }
 
-    private items: Action[] = [];
-    private buttons: ActionButton[] = [];
-    private overflowAction: OverflowAction | undefined;
+    private _items: Action[] = [];
+    private _buttons: ActionButton[] = [];
+    private _overflowAction?: OverflowAction;
 
     constructor(owner: CardElement) {
         this._owner = owner;
@@ -4685,21 +4688,21 @@ class ActionCollection {
     }
 
     toJSON(target: PropertyBag, propertyName: string, context: SerializationContext): any {
-        context.serializeArray(target, propertyName, this.items);
+        context.serializeArray(target, propertyName, this._items);
     }
 
     getActionAt(id: number): Action | undefined {
-        return this.items[id];
+        return this._items[id];
     }
 
     getActionCount(): number {
-        return this.items.length;
+        return this._items.length;
     }
 
     getActionById(id: string): Action | undefined {
         let result: Action | undefined = undefined;
 
-        for (let item of this.items) {
+        for (let item of this._items) {
             result = item.getActionById(id);
 
             if (result) {
@@ -4711,21 +4714,21 @@ class ActionCollection {
     }
 
     validateProperties(context: ValidationResults) {
-        if (this._owner.hostConfig.actions.maxActions && this.items.length > this._owner.hostConfig.actions.maxActions) {
+        if (this._owner.hostConfig.actions.maxActions && this._items.length > this._owner.hostConfig.actions.maxActions) {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.TooManyActions,
                 Strings.errors.tooManyActions(this._owner.hostConfig.actions.maxActions));
         }
 
-        if (this.items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
+        if (this._items.length > 0 && !this._owner.hostConfig.supportsInteractivity) {
             context.addFailure(
                 this._owner,
                 Enums.ValidationEvent.InteractivityNotAllowed,
                 Strings.errors.interactivityNotAllowed());
         }
 
-        for (let item of this.items) {
+        for (let item of this._items) {
             if (!this.isActionAllowed(item)) {
                 context.addFailure(
                     this._owner,
@@ -4746,13 +4749,13 @@ class ActionCollection {
         }
 
         let element = document.createElement("div");
-        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this.items.length) : this.items.length;
+        let maxActions = hostConfig.actions.maxActions ? Math.min(hostConfig.actions.maxActions, this._items.length) : this._items.length;
 
         this._actionCardContainer = document.createElement("div");
         this._renderedActionCount = 0;
 
-        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this.items[0] instanceof ShowCardAction && this.isActionAllowed(this.items[0])) {
-            this.showActionCard(<ShowCardAction>this.items[0], true);
+        if (hostConfig.actions.preExpandSingleShowCardAction && maxActions == 1 && this._items[0] instanceof ShowCardAction && this.isActionAllowed(this._items[0])) {
+            this.showActionCard(<ShowCardAction>this._items[0], true);
             this._renderedActionCount = 1;
         }
         else {
@@ -4830,57 +4833,45 @@ class ActionCollection {
             if (parentContainer) {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
-                const allowedActions = this.items.filter(this.isActionAllowed.bind(this));
+                const allowedActions = this._items.filter(this.isActionAllowed.bind(this));
 
-                const plainActions: Action[] = [];
-                const overflowActions: Action[] = [];
-                allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? overflowActions.push(action) : plainActions.push(action));
+                const primaryActions: Action[] = [];
+                const secondaryActions: Action[] = [];
+                allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
 
-                // given plainActions.length > maxActions, exceeding actions are forced moved to overflow
+                // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
+                const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
                 if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
-                    const overflowPrimaryActions = plainActions.splice(hostConfig.actions.maxActions);
-                    overflowActions.push(...overflowPrimaryActions);
+                    secondaryActions.push(...overflowPrimaryActions);
                 }
 
-                const hasOverflow = overflowActions.length > 0;
-
+                const hasOverflow = secondaryActions.length > 0;
                 let shouldRenderOverflowActionButton = true;
+
                 if (hasOverflow) {
-                    if (!this.overflowAction) {
-                        this.overflowAction = new OverflowAction(overflowActions);
-                        this.overflowAction.setParent(this._owner);
+                    if (!this._overflowAction) {
+                        this._overflowAction = new OverflowAction(secondaryActions);
+                        this._overflowAction.setParent(this._owner);
                     }
-                    let isRootAction = false;
-                    const card = this.overflowAction.parent?.getRootElement() as AdaptiveCard;
-                    if (card && card.getActionCount() === this.items.length) {
-                        isRootAction = true;
-                        for (let i = 0; i < card.getActionCount(); ++i) {
-                            isRootAction = isRootAction && (card.getActionAt(i) === this.items[i]);
-                        }
-                    }
-                    shouldRenderOverflowActionButton = raiseRenderOverflowActionsEvent(this.overflowAction, isRootAction);
+
+                    let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
+                    shouldRenderOverflowActionButton = raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
                 }
 
-                const numActionsToRender = plainActions.length + (hasOverflow && shouldRenderOverflowActionButton ? 1 : 0);
+                const actionsToRender = [...primaryActions, ...(hasOverflow && shouldRenderOverflowActionButton ? [this._overflowAction!] : [])]
+                const actionBtnsToRender = actionsToRender.map(action => {
+                    let btn = this.findActionButton(action);
 
-                for (let i = 0; i < numActionsToRender; i++) {
-                    const getActionButton = (action: Action) => {
-                        let btn = this.findActionButton(action);
-                        if (!btn) {
-                            btn = new ActionButton(action, parentContainerStyle);
-                            btn.onClick = (ab) => { ab.action.execute(); };
-                            this.buttons.push(btn);
-                        }
-                        return btn;
-                    };
-
-                    let actionButton: ActionButton | undefined;
-                    if (hasOverflow && shouldRenderOverflowActionButton && i == numActionsToRender - 1) {
-                        actionButton = getActionButton(this.overflowAction!);
-                    } else {
-                        actionButton = getActionButton(plainActions[i]);
+                    if (!btn) {
+                        btn = new ActionButton(action, parentContainerStyle);
+                        btn.onClick = (ab) => { ab.action.execute(); };
+                        this._buttons.push(btn);
                     }
 
+                    return btn;
+                });
+
+                actionBtnsToRender.forEach((actionButton, i) => {
                     actionButton.render();
 
                     if (actionButton.action.renderedElement) {
@@ -4899,10 +4890,7 @@ class ActionCollection {
 
                         this._renderedActionCount++;
 
-                        if (!GlobalSettings.allowMoreThanMaxActionsInOverflowMenu &&
-                            (this._renderedActionCount >= hostConfig.actions.maxActions || i == numActionsToRender - 1)) {
-                            break;
-                        } else if (hostConfig.actions.buttonSpacing > 0) {
+                        if (i !== actionBtnsToRender.length - 1 && hostConfig.actions.buttonSpacing > 0) {
                             let spacer = document.createElement("div");
 
                             if (orientation === Enums.Orientation.Horizontal) {
@@ -4916,7 +4904,7 @@ class ActionCollection {
                             Utils.appendChild(buttonStrip, spacer);
                         }
                     }
-                }
+                });
             }
 
             let buttonStripContainer = document.createElement("div");
@@ -4928,7 +4916,7 @@ class ActionCollection {
 
         Utils.appendChild(element, this._actionCardContainer);
 
-        for (let button of this.buttons) {
+        for (let button of this._buttons) {
             if (button.state == ActionButtonState.Expanded) {
                 this.expandShowCardAction(<ShowCardAction>button.action, false);
 
@@ -4944,8 +4932,8 @@ class ActionCollection {
             throw new Error("The action parameter cannot be null.");
         }
 
-        if ((!action.parent || action.parent === this._owner) && this.items.indexOf(action) < 0) {
-            this.items.push(action);
+        if ((!action.parent || action.parent === this._owner) && this._items.indexOf(action) < 0) {
+            this._items.push(action);
 
             if (!action.parent) {
                 action.setParent(this._owner);
@@ -4963,18 +4951,18 @@ class ActionCollection {
             this.collapseExpandedAction();
         }
 
-        let actionIndex = this.items.indexOf(action);
+        let actionIndex = this._items.indexOf(action);
 
         if (actionIndex >= 0) {
-            this.items.splice(actionIndex, 1);
+            this._items.splice(actionIndex, 1);
 
             action.setParent(undefined);
 
             action["_actionCollection"] = undefined;
 
-            for (let i = 0; i < this.buttons.length; i++) {
-                if (this.buttons[i].action == action) {
-                    this.buttons.splice(i, 1);
+            for (let i = 0; i < this._buttons.length; i++) {
+                if (this._buttons[i].action == action) {
+                    this._buttons.splice(i, 1);
 
                     break;
                 }
@@ -4987,8 +4975,8 @@ class ActionCollection {
     }
 
     clear() {
-        this.items = [];
-        this.buttons = [];
+        this._items = [];
+        this._buttons = [];
 
         this._expandedAction = undefined;
         this._renderedActionCount = 0;
@@ -4998,7 +4986,7 @@ class ActionCollection {
         let result: Input[] = [];
 
         if (processActions) {
-            for (let action of this.items) {
+            for (let action of this._items) {
                 result = result.concat(action.getAllInputs());
             }
         }
@@ -5009,7 +4997,7 @@ class ActionCollection {
     getResourceInformation(): IResourceInformation[] {
         let result: IResourceInformation[] = [];
 
-        for (let action of this.items) {
+        for (let action of this._items) {
             result = result.concat(action.getResourceInformation());
         }
 

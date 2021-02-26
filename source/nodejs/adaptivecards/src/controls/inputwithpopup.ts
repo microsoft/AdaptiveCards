@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import { Constants } from "./constants";
-import * as Utils from "./utils";
+import * as Utils from "../utils";
 
 export abstract class PopupControl {
     private _isOpen: boolean = false;
