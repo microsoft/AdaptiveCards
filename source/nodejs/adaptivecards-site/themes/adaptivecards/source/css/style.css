@@ -329,15 +329,13 @@ s {
   text-decoration: none;
 }
 
-@media not (forced-colors: active) {
-    .toc-todo .selectedHolder {
-        background-color: #0050c5;
-    }
+.toc-todo .selectedHolder {
+    background-color: #0050c5;
+}
 
-    .toc-todo .selectedHolder > a,
-    .toc-todo .selectedHolder > a:hover {
-        color: #fff;
-    }
+.toc-todo .selectedHolder > a,
+.toc-todo .selectedHolder > a:hover {
+    color: #fff;
 }
 
 @media (forced-colors: active) {
@@ -490,12 +488,14 @@ dir {
   line-height: 36px;
 }
 
+.homepage .accent-paragraph,
 .homepage h3 {
   font-size: 20px;
   font-weight: lighter;
   line-height: 30px;
 }
 
+.homepage h3.callout-title,
 .homepage h4 {
   font-size: 18px;
   line-height: 28px;
@@ -510,6 +510,7 @@ dir {
   margin-top: 2px;
 }
 
+.platform-header,
 .homepage h6,
 .footer-holder h6 {
   text-transform: uppercase;
@@ -607,6 +608,11 @@ dir {
   width: 20px;
 }
 
+button .fa-check {
+  color: green;
+  padding-left: 10px;
+}
+
 .fa,
 .fas {
   font-weight: 900 !important;
@@ -631,7 +637,6 @@ dir {
 
 .homepage a:hover {
   color: blue;
-  text-decoration: none;
 }
 
 /* .fa-chevron-right {
@@ -668,7 +673,10 @@ dir {
 
 .ac-footer a:hover {
   color: #6b6b6b;
-  text-decoration: none;
+}
+
+.ac-footer-link-no-chevron{
+  color: #0b78d0!important;  
 }
 
 .ac-footer .post-subtitle {

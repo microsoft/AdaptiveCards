@@ -13,8 +13,8 @@ export class Strings {
             title: "ELEMENT PROPERTIES",
             commands: {
                 bindData: {
-                    id: "bindDataCommand",
-                    text: "..."
+                    visualText: () => "...",
+                    accessibleText: (propertyLabel: string) => "Data Binding"
                 }
             }
         },

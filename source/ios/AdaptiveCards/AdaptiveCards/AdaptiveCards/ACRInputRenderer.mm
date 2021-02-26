@@ -163,7 +163,7 @@
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (elem->GetHeight() == HeightType::Stretch) {
+    if (elem->GetHeight() == HeightType::Stretch && !inputBlck->GetIsMultiline()) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:inputview];
 
