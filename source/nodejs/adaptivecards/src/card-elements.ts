@@ -4455,7 +4455,7 @@ export class ShowCardAction extends Action {
     }
 }
 
-class OverflowAction extends Action {
+export class OverflowAction extends Action {
     static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
     private static readonly _styleNodeId = "ac-ctrlContextMenu";
 
