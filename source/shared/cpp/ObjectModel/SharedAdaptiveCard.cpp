@@ -233,9 +233,9 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // Parse optional selectAction
     result->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
-    Json::Value addtionalProperties;
-    HandleUnknownProperties(json, result->GetKnownProperties(), addtionalProperties);
-    result->SetAdditionalProperties(addtionalProperties);
+    Json::Value additionalProperties;
+    HandleUnknownProperties(json, result->GetKnownProperties(), additionalProperties);
+    result->SetAdditionalProperties(additionalProperties);
 
     return std::make_shared<ParseResult>(result, context.warnings);
 }
