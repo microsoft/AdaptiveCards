@@ -584,7 +584,7 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     NSDictionary *data = nil;
 
     // use Apple's html rendering only if the string has markdowns
-    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
+    if (markDownParser->HasHtmlTags()) {
         NSString *fontFamilyName = nil;
 
         if (![hostConfig getFontFamily:textProperties.GetFontType()]) {

@@ -30,7 +30,19 @@ std::string MarkDownParser::TransformToHtml()
     m_parsedResult.AddBlockTags();
 
     m_hasHTMLTag = m_parsedResult.HasHtmlTags();
-    return m_parsedResult.GenerateHtmlString();
+
+    if (HasHtmlTags())
+    {
+        return m_parsedResult.GenerateHtmlString();
+    }
+    // return original text if there are no MarkDown
+    else
+    {
+        std::string parsed("<p>");
+        parsed.append(m_text);
+        parsed.append("</p>");
+        return parsed;
+    }
 }
 
 bool MarkDownParser::HasHtmlTags()
