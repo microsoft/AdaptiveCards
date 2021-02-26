@@ -12,7 +12,7 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
-import { DropDownItem, PopupMenu, ControlsCSS } from "./controls";
+import { DropDownItem, PopupMenu } from "./controls";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -4476,14 +4476,11 @@ class OverflowAction extends Action {
     }
 
     execute() {
-        const shouldDisplayPopupMenu = raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
+        const shouldDisplayPopupMenu = !raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
 
         if (shouldDisplayPopupMenu && this.renderedElement) {
             if (!this._contextMenu) {
                 this._contextMenu = new PopupMenu();
-                this._contextMenu.onClose = () => {
-                    this.removeCssForContextMenu();
-                }
                 this.actions.forEach((action, id) => {
                     const menuItem = new DropDownItem(id.toString(), action.title ?? "");
                     menuItem.onClick = () => {
@@ -4494,27 +4491,9 @@ class OverflowAction extends Action {
                 });
             }
 
-            this.setupCssForContextMenu();
             this._contextMenu.popup(this.renderedElement);
         }
 	}
-
-    private setupCssForContextMenu() {
-        const node = document.head.querySelector(`style#${OverflowAction._styleNodeId}`);
-
-        if (!node) {
-            const style = document.createElement("style");
-            style.id = OverflowAction._styleNodeId;
-            style.textContent = ControlsCSS.toString();
-
-            document.head.appendChild(style);
-        }
-    }
-
-    private removeCssForContextMenu() {
-        const node = document.head.querySelector(`style#${OverflowAction._styleNodeId}`);
-        node && node.remove();
-    }
 }
 
 class ActionCollection {
@@ -4855,7 +4834,7 @@ class ActionCollection {
                     }
 
                     let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
-                    shouldRenderOverflowActionButton = raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
+                    shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
                 }
 
                 const actionsToRender = [...primaryActions, ...(hasOverflow && shouldRenderOverflowActionButton ? [this._overflowAction!] : [])]
@@ -6299,23 +6278,23 @@ function raiseElementVisibilityChangedEvent(element: CardElement, shouldUpdateLa
 }
 
 /**
- * @returns return true to continue with default context menu; return false to skip SDK default context menu
+ * @returns return false to continue with default context menu; return true to skip SDK default context menu
  */
 function raiseDisplayOverflowActionMenuEvent(action: OverflowAction, target?: HTMLElement): boolean {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
     let onDisplayOverflowActionMenuHandler = (card && card.onDisplayOverflowActionMenu) ? card.onDisplayOverflowActionMenu : AdaptiveCard.onDisplayOverflowActionMenu;
 
-    return onDisplayOverflowActionMenuHandler !== undefined ? onDisplayOverflowActionMenuHandler(action.getActions(), target) : true;
+    return onDisplayOverflowActionMenuHandler !== undefined ? onDisplayOverflowActionMenuHandler(action.getActions(), target) : false;
 }
 
 /**
- * @returns return true to continue with default action button; return false to skip SDK default action button
+ * @returns return false to continue with default action button; return true to skip SDK default action button
  */
 function raiseRenderOverflowActionsEvent(action: OverflowAction, isAtRootLevelActions: boolean): boolean {
     let card = action.parent ? action.parent.getRootElement() as AdaptiveCard : undefined;
     let onRenderOverflowActionsHandler = (card && card.onRenderOverflowActions) ? card.onRenderOverflowActions : AdaptiveCard.onRenderOverflowActions;
 
-    return onRenderOverflowActionsHandler !== undefined ? onRenderOverflowActionsHandler(action.getActions(), isAtRootLevelActions) : true;
+    return onRenderOverflowActionsHandler !== undefined ? onRenderOverflowActionsHandler(action.getActions(), isAtRootLevelActions) : false;
 }
 
 export abstract class ContainerWithActions extends Container {

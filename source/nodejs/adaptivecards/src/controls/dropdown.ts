@@ -28,7 +28,7 @@ export class DropDownItem {
     render(): HTMLElement {
         if (!this._element) {
             this._element = document.createElement("span");
-            this._element.className = "ms-ctrl ms-ctrl-dropdown-item";
+            this._element.className = "ac-ctrl ac-ctrl-dropdown-item";
             this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
             this._element.setAttribute("aria-selected", "false");
