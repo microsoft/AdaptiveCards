@@ -225,14 +225,19 @@ export class CardDesigner extends Designer.DesignContext {
         }
 
         for (let category in categorizedTypes) {
+
+            let categoryList = document.createElement('div');
+            categoryList.setAttribute("aria-label", category)
+            
             let node = document.createElement('div');
+            categoryList.appendChild(node);
             node.innerText = category;
             node.className = "acd-palette-category";
 
-            this._toolPaletteToolbox.content.appendChild(node);
+            this._toolPaletteToolbox.content.appendChild(categoryList);
 
             for (var i = 0; i < categorizedTypes[category].length; i++) {
-                this.addPaletteItem(categorizedTypes[category][i], this._toolPaletteToolbox.content);
+                this.addPaletteItem(categorizedTypes[category][i], categoryList);
             }
         }
     }
@@ -670,7 +675,6 @@ export class CardDesigner extends Designer.DesignContext {
             this._hostContainerChoicePicker = new ToolbarChoicePicker(CardDesigner.ToolbarCommands.HostAppPicker);
             this._hostContainerChoicePicker.separator = true;
             this._hostContainerChoicePicker.label = "Select host app:"
-            this._hostContainerChoicePicker.width = 350;
 
             for (let i = 0; i < this._hostContainers.length; i++) {
                 this._hostContainerChoicePicker.choices.push(
@@ -698,7 +702,6 @@ export class CardDesigner extends Designer.DesignContext {
         this._undoButton.separator = true;
         this._undoButton.toolTip = "Undo your last change";
         this._undoButton.isEnabled = false;
-        this._undoButton.displayCaption = false;
 
         this.toolbar.addElement(this._undoButton);
 
@@ -709,7 +712,6 @@ export class CardDesigner extends Designer.DesignContext {
             (sender: ToolbarButton) => { this.redo(); });
         this._redoButton.toolTip = "Redo your last changes";
         this._redoButton.isEnabled = false;
-        this._redoButton.displayCaption = false;
 
         this.toolbar.addElement(this._redoButton);
 

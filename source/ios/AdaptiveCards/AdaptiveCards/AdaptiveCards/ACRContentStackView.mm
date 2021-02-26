@@ -520,6 +520,15 @@ static int kToggleVisibilityContext;
     }
 }
 
+- (UIView *)addPaddingSpace
+{
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    blankTrailingSpace.translatesAutoresizingMaskIntoConstraints = NO;
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow - 10 forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
+}
+
 - (void)dealloc
 {
     for (UIView *view in _stackView.arrangedSubviews) {
