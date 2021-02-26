@@ -794,7 +794,7 @@
     cursor: default;
 }
 
-@media not (forced-colors: active) {
+@media (forced-colors: none) {
     .acd-toolbar-button.acd-toolbar-button-toggled {
         background-color: rgba(0, 0, 0, 0.1);
     }
@@ -936,7 +936,7 @@ a.default-ac-anchor:visited:active {
     border: 1px solid #0078D7;
 }
 
-@media not (forced-colors: active) {
+@media (forced-colors: none) {
     .default-ac-pushButton.expanded {
         background-color: #0078D7;
         color: white;
