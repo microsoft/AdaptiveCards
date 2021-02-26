@@ -14,6 +14,7 @@
 #import "AdaptiveCardParseWarning.h"
 #import "ParseResult.h"
 #import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -118,15 +119,7 @@ using namespace AdaptiveCards;
         if (blob.empty()) {
             return nil;
         }
-        Json::StreamWriterBuilder streamWriterBuilder;
-        auto writer = streamWriterBuilder.newStreamWriter();
-        std::stringstream sstream;
-        writer->write(blob, &sstream);
-        delete writer;
-        NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str()
-                                 encoding:NSUTF8StringEncoding];
-        return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+        return JsonToNSData(blob);
     }
     return nil;
 }
