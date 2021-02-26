@@ -445,6 +445,12 @@
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
+		29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */; };
+		29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */; };
+		29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */; };
+		29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */; };
+		29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */; };
+		29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */; };
 		A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */; };
 		A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */; };
 		A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */; };
@@ -926,6 +932,12 @@
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
+		29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRenderer.swift; sourceTree = "<group>"; };
+		29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceButton.swift; sourceTree = "<group>"; };
+		29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceSetView.swift; sourceTree = "<group>"; };
+		29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceSetInput.swift; sourceTree = "<group>"; };
+		29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRendererTests.swift; sourceTree = "<group>"; };
+		29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceInput.swift; sourceTree = "<group>"; };
 		A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRenderer.swift; sourceTree = "<group>"; };
 		A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocol.swift; sourceTree = "<group>"; };
 		A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRendererTest.swift; sourceTree = "<group>"; };
@@ -1173,6 +1185,8 @@
 				2871B13625DD41C60040AB27 /* FakeInputNumber.swift */,
 				29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */,
 				A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */,
+				29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */,
+				29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1187,6 +1201,7 @@
 				2871B14F25DD4C4D0040AB27 /* TextInputRedererTest.swift */,
 				29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */,
 				A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */,
+				29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1508,6 +1523,7 @@
 				28CE1A4325DFD64B00BFCFD9 /* FactSetRenderer.swift */,
 				08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */,
 				29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */,
+				29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */,
 				A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */,
 			);
 			path = Renderers;
@@ -1533,6 +1549,8 @@
 		08D9547325D17FE6001442D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */,
+				29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */,
 				08D9547425D17FF9001442D3 /* ACRView.swift */,
 				2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */,
 				2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */,
@@ -2009,10 +2027,13 @@
 				28CE1A4425DFD64B00BFCFD9 /* FactSetRenderer.swift in Sources */,
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
+				29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */,
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
 				A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */,
+				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				0801D5EA25C2C3B500AABD6C /* AdaptiveCard.swift in Sources */,
+				29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2022,7 +2043,9 @@
 			files = (
 				2871B13725DD41C60040AB27 /* FakeInputNumber.swift in Sources */,
 				2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */,
+				29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
+				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
 				2871B15025DD4C4D0040AB27 /* TextInputRedererTest.swift in Sources */,
@@ -2034,6 +2057,7 @@
 				28CE1A7025E4B96300BFCFD9 /* FactSetRendererTest.swift in Sources */,
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
+				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,
 				A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */,
 			);

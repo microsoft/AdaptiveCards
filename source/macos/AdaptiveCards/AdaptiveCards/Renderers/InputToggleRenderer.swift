@@ -13,12 +13,10 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
         let attributedString: NSMutableAttributedString
         // NSButton for checkbox
         let title = inputToggle.getTitle() ?? ""
-        let resolvedTitle = inputToggle.getWrap() ? title + "\n" : title
-        let inputToggleView = ACRInputToggleView(checkboxWithTitle: resolvedTitle, target: self, action: nil)
-        inputToggleView.translatesAutoresizingMaskIntoConstraints = false
+        let inputToggleView = ACRChoiceButton()
+        inputToggleView.type = .switch
         // adding attributes to the string
-        let paragraphStyle = NSMutableParagraphStyle()
-        attributedString = NSMutableAttributedString(string: resolvedTitle, attributes: [.paragraphStyle: paragraphStyle])
+        attributedString = NSMutableAttributedString(string: title)
         if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: true), let textColor = ColorUtils.color(from: colorHex) {
             attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedString.length))
         }
@@ -28,16 +26,9 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
             defaultInputToggleStateValue = .off
         }
         inputToggleView.state = defaultInputToggleStateValue
-        inputToggleView.attributedTitle = attributedString
-        inputToggleView.wraps = inputToggle.getWrap()
+        inputToggleView.labelAttributedString = attributedString
+        inputToggleView.backgroundColor = hostConfig.getBackgroundColor(for: style) ?? .clear
+        inputToggleView.wrap = inputToggle.getWrap()
         return inputToggleView
      }
-}
-
-class ACRInputToggleView: NSButton {
-    public var wraps = false
-    override var intrinsicContentSize: NSSize {
-        guard wraps, let titleRect = cell?.titleRect(forBounds: bounds) else { return super.intrinsicContentSize }
-        return NSSize(width: super.intrinsicContentSize.width, height: titleRect.height)
-    }
 }

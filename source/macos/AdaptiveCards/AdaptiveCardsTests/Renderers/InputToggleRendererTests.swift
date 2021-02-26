@@ -60,18 +60,18 @@ class InputToggleRendererTests: XCTestCase {
         inputToggle = .make(title: "Hello World", wrap: false)
         
         var inputToggleView = renderInputToggleView()
-        XCTAssertEqual(inputToggleView.wraps, false)
+        XCTAssertEqual(inputToggleView.wrap, false)
         
         inputToggle = .make(title: "Hello World", wrap: true)
         inputToggleView = renderInputToggleView()
-        XCTAssertEqual(inputToggleView.wraps, true)
+        XCTAssertEqual(inputToggleView.wrap, true)
     }
     
-    private func renderInputToggleView() -> ACRInputToggleView {
+    private func renderInputToggleView() -> ACRChoiceButton {
         let view = inputToggleRenderer.render(element: inputToggle, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
         
-        XCTAssertTrue(view is ACRInputToggleView)
-        guard let inputToggleView = view as? ACRInputToggleView else { fatalError() }
+        XCTAssertTrue(view is ACRChoiceButton)
+        guard let inputToggleView = view as? ACRChoiceButton else { fatalError() }
         return inputToggleView
     }
 }
