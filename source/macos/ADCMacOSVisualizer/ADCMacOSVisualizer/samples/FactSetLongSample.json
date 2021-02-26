@@ -1,0 +1,32 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "Last Name",
+                    "value": "Agarwal"
+                },
+                {
+                    "title": "First name",
+                    "value": "Mukul"
+                },
+                {
+                    "title": "Repeat",
+                    "value": "Again"
+                },
+                {
+                    "title": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi efficitur ligula sed tempus vulputate. Quisque euismod et magna et tincidunt. Nullam cursus consequat aliquam. Nulla lacinia mauris a quam sodales ultricies.",
+                    "value": "Cras hendrerit mauris sed tincidunt auctor. Nam fermentum finibus dignissim. Duis pulvinar posuere lacus, at aliquet dolor cursus ut. Aliquam semper dapibus lacus, vel cursus leo maximus at. Vestibulum quis pulvinar magna. Etiam quis maximus dui. Donec nec auctor lacus. Nunc lorem dolor, tristique sit amet erat in, mollis efficitur magna. Sed commodo nunc at justo condimentum tempus."
+                },
+                {
+                    "title": "Wow",
+                    "value": "Block #5"
+                }
+                           ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

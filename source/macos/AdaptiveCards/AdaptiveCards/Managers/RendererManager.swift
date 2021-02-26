@@ -13,6 +13,7 @@ class RendererManager: RendererManagerProtocol {
         case .toggleInput: return InputToggleRenderer.shared
         case .numberInput: return InputNumberRenderer.shared
         case .textInput: return TextInputRenderer.shared
+        case .factSet: return FactSetRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }

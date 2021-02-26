@@ -436,6 +436,12 @@
 		2871B15025DD4C4D0040AB27 /* TextInputRedererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B14F25DD4C4D0040AB27 /* TextInputRedererTest.swift */; };
 		2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B16525DF72290040AB27 /* MultilineInputTextRendererTest.swift */; };
 		28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BDFD5425D55AF3000C3795 /* TextInputRenderer.swift */; };
+		28CE1A4425DFD64B00BFCFD9 /* FactSetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A4325DFD64B00BFCFD9 /* FactSetRenderer.swift */; };
+		28CE1A6B25E4B67B00BFCFD9 /* FakeFactSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A6A25E4B67B00BFCFD9 /* FakeFactSet.swift */; };
+		28CE1A7025E4B96300BFCFD9 /* FactSetRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A6F25E4B96300BFCFD9 /* FactSetRendererTest.swift */; };
+		28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */; };
+		28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */; };
+		28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */; };
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
@@ -911,6 +917,12 @@
 		2871B14F25DD4C4D0040AB27 /* TextInputRedererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputRedererTest.swift; sourceTree = "<group>"; };
 		2871B16525DF72290040AB27 /* MultilineInputTextRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineInputTextRendererTest.swift; sourceTree = "<group>"; };
 		28BDFD5425D55AF3000C3795 /* TextInputRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputRenderer.swift; sourceTree = "<group>"; };
+		28CE1A4325DFD64B00BFCFD9 /* FactSetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactSetRenderer.swift; sourceTree = "<group>"; };
+		28CE1A6A25E4B67B00BFCFD9 /* FakeFactSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFactSet.swift; sourceTree = "<group>"; };
+		28CE1A6F25E4B96300BFCFD9 /* FactSetRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FactSetRendererTest.swift; sourceTree = "<group>"; };
+		28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFacts.swift; sourceTree = "<group>"; };
+		28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRFactTextField.xib; sourceTree = "<group>"; };
+		28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRFactTextField.swift; sourceTree = "<group>"; };
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
@@ -1155,6 +1167,8 @@
 			children = (
 				082D912A25D67042000226C4 /* FakeHostConfig.swift */,
 				2871B11725DD20A30040AB27 /* FakeTextInput.swift */,
+				28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */,
+				28CE1A6A25E4B67B00BFCFD9 /* FakeFactSet.swift */,
 				082D914325D6DC7A000226C4 /* FakeTextBlock.swift */,
 				2871B13625DD41C60040AB27 /* FakeInputNumber.swift */,
 				29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */,
@@ -1168,6 +1182,7 @@
 			children = (
 				082D913325D67455000226C4 /* TextBlockRendererTests.swift */,
 				2871B13E25DD41D80040AB27 /* InputNumberRendererTest.swift */,
+				28CE1A6F25E4B96300BFCFD9 /* FactSetRendererTest.swift */,
 				2871B16525DF72290040AB27 /* MultilineInputTextRendererTest.swift */,
 				2871B14F25DD4C4D0040AB27 /* TextInputRedererTest.swift */,
 				29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */,
@@ -1490,6 +1505,7 @@
 				08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */,
 				28BDFD5425D55AF3000C3795 /* TextInputRenderer.swift */,
 				2871B12E25DD292A0040AB27 /* InputNumberRenderer.swift */,
+				28CE1A4325DFD64B00BFCFD9 /* FactSetRenderer.swift */,
 				08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */,
 				29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */,
 				A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */,
@@ -1520,6 +1536,8 @@
 				08D9547425D17FF9001442D3 /* ACRView.swift */,
 				2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */,
 				2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */,
+				28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */,
+				28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1932,6 +1950,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
+				28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */,
 				2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1986,6 +2005,8 @@
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
 				A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */,
 				28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */,
+				28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */,
+				28CE1A4425DFD64B00BFCFD9 /* FactSetRenderer.swift in Sources */,
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
@@ -2003,11 +2024,14 @@
 				2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
+				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
 				2871B15025DD4C4D0040AB27 /* TextInputRedererTest.swift in Sources */,
+				28CE1A6B25E4B67B00BFCFD9 /* FakeFactSet.swift in Sources */,
 				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,
 				A0805F5D25E40D0F00B3F8EA /* FakeRichTextBlock.swift in Sources */,
 				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
 				2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */,
+				28CE1A7025E4B96300BFCFD9 /* FactSetRendererTest.swift in Sources */,
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,

@@ -1,0 +1,32 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "Last Name",
+                    "value": "Agarwal"
+                },
+                {
+                    "title": "First name",
+                    "value": "Mukul"
+                },
+                {
+                    "title": "Repeat",
+                    "value": "Again"
+                },
+                {
+                    "title": "empus vulputate. Quisque euismod et magna et tincidunt. Nullam cursus consequat aliquam. Nulla lacinia mauris a quam sodales ultricies.",
+                    "value": ". Nunc lorem dolor, tristique sit amet erat in, mollis efficitur magna. Sed commodo nunc at justo condimentum tempus."
+                },
+                {
+                    "title": "Title is multi word",
+                    "value": "This is also muti word but longer as empus vulputate. Quisque euismod et magna et tincidunt. Nullam cursus consequat aliquam. Nulla lacinia mauris a quam sodales ultricies"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}

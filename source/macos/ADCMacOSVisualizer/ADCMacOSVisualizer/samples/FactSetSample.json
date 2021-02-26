@@ -1,0 +1,20 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "FactSet",
+            "facts": [
+                {
+                    "title": "First Name followed by a long string",
+                    "value": "Mukul"
+                },
+                {
+                    "title": "Last Name",
+                    "value": "Agarwal followed by a long string to check wrap"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
