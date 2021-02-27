@@ -66,10 +66,7 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
         } else {
-            // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
-            [content deleteCharactersInRange:NSMakeRange(0, 3)];
-            [content deleteCharactersInRange:NSMakeRange([content length] - 4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
         lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
@@ -197,7 +194,7 @@
         [titleStack addArrangedSubview:blankTrailingSpace0];
         [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-        
+
         UIView *blankTrailingSpace1 = [[UIView alloc] init];
         blankTrailingSpace1.translatesAutoresizingMaskIntoConstraints = NO;
         [valueStack addArrangedSubview:blankTrailingSpace1];
