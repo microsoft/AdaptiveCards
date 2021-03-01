@@ -63,27 +63,27 @@ public class NumberInput extends BaseInputElement {
     AdaptiveCardObjectModelJNI.NumberInput_SetPlaceholder(swigCPtr, this, value);
   }
 
-  public Integer GetValue() {
-    return AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this);
-  }
+  public Double GetValue() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetValue(swigCPtr, this);
+}
 
-  public void SetValue(Integer value) {
+  public void SetValue(Double value) {
     AdaptiveCardObjectModelJNI.NumberInput_SetValue(swigCPtr, this, value);
   }
 
-  public Integer GetMax() {
-    return AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this);
-  }
+  public Double GetMax() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetMax(swigCPtr, this);
+}
 
-  public void SetMax(Integer value) {
+  public void SetMax(Double value) {
     AdaptiveCardObjectModelJNI.NumberInput_SetMax(swigCPtr, this, value);
   }
 
-  public Integer GetMin() {
-    return AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this);
-  }
+  public Double GetMin() {
+  return AdaptiveCardObjectModelJNI.NumberInput_GetMin(swigCPtr, this);
+}
 
-  public void SetMin(Integer value) {
+  public void SetMin(Double value) {
     AdaptiveCardObjectModelJNI.NumberInput_SetMin(swigCPtr, this, value);
   }
 

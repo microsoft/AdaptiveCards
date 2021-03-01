@@ -43,6 +43,8 @@ namespace AdaptiveSharedNamespace
 
         std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
 
+        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<double> defaultValue, bool isRequired = false);
+
         CardElementType GetCardElementType(const Json::Value& json);
 
         CardElementType TryGetCardElementType(const Json::Value& json);
