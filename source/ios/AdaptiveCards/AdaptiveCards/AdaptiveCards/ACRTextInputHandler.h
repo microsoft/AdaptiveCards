@@ -22,9 +22,9 @@
 
 @interface ACRNumberInputHandler : ACRTextInputHandler
 
-@property NSInteger min;
+@property double min;
 @property bool hasMin;
-@property NSInteger max;
+@property double max;
 @property bool hasMax;
 
 @end
