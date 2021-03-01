@@ -65,9 +65,9 @@ export abstract class CardObject extends SerializableObject {
     protected _renderedElement?: HTMLElement;
 
     /**
-     * Check if this CardObject contains the given DOM Node.
-     * @param node the DOM Node to look for
-     * @returns true if the DOM Node was found, false otherwise
+     * Checks if this CardObject contains the given DOM Node.
+     * @param node The DOM Node to look for.
+     * @returns `true` if the DOM Node was found, `false` otherwise.
      */
     protected contains(node: Node): boolean {
         if (this._renderedElement) {
@@ -153,9 +153,9 @@ export abstract class CardObject extends SerializableObject {
      * Recursively searches this CardObject and any children to find the
      * innermost CardObject that owns the given DOM Node.
      *
-     * @param node the DOM Node to look for
+     * @param node The DOM Node to look for.
      *
-     * @returns the owner of the given DOM Node, or undefined if no owner was found
+     * @returns The owner of the given DOM Node, or `undefined` if no owner was found.
      */
     findDOMNodeOwner(node: Node): CardObject | undefined {
         // default implementation for CardObjects with no associated children

@@ -2015,13 +2015,13 @@ export abstract class CardElementContainer extends CardElement {
     findDOMNodeOwner(node: Node): CardObject | undefined {
         let target: CardObject | undefined = undefined;
 
-        for (let i = 0; !target && i < this.getItemCount(); i++) {
+        for (let i = 0; i < this.getItemCount(); i++) {
             // recur through child elements
             target = this.getItemAt(i).findDOMNodeOwner(node);
-        }
 
-        if (target) {
-            return target;
+            if (target) {
+                return target;
+            }
         }
 
         // if not found in children, defer to parent implementation
@@ -5048,14 +5048,12 @@ export class ActionSet extends CardElement {
         let target: CardObject | undefined = undefined;
 
         for (const action of this._actionCollection.items) {
-            if (!target) {
-                // recur through each Action
-                target = action.findDOMNodeOwner(node);
-            }
-        }
+            // recur through each Action
+            target = action.findDOMNodeOwner(node);
 
-        if (target) {
-            return target;
+            if (target) {
+                return target;
+            }
         }
 
         // if not found in any Action, defer to parent implementation
