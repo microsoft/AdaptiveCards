@@ -2533,6 +2533,11 @@ export abstract class Input extends CardElement implements IInput {
         this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
         this._inputControlContainerElement.style.display = "flex";
 
+        if (this.height === "stretch") {
+            this._inputControlContainerElement.style.alignItems = "stretch";
+            this._inputControlContainerElement.style.flex = "1 1 auto";
+        }
+
         this._renderedInputControlElement = this.internalRender();
 
         if (this._renderedInputControlElement) {
@@ -2734,6 +2739,10 @@ export class TextInput extends Input {
         if (this.isMultiline) {
             result = document.createElement("textarea");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
+
+            if (this.height === "stretch") {
+                result.style.height = "initial";
+            }
         }
         else {
             result = document.createElement("input");
@@ -3778,6 +3787,7 @@ export abstract class Action extends CardObject {
     }
 
     accessibleTitle?: string;
+    expanded?: boolean;
 
     onExecute: (sender: Action) => void;
 
@@ -3810,6 +3820,10 @@ export abstract class Action extends CardObject {
         }
         else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
+        }
+
+        if (this.expanded != undefined) {
+            buttonElement.setAttribute("aria-expanded", this.expanded.toString())
         }
 
         buttonElement.type = "button";
