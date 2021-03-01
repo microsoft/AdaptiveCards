@@ -848,3 +848,14 @@ void printSize(NSString *msg, CGSize size)
     NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
 }
 
+NSData *JsonToNSData(const Json::Value &blob)
+{
+    Json::StreamWriterBuilder streamWriterBuilder;
+    std::unique_ptr<Json::StreamWriter> writer(streamWriterBuilder.newStreamWriter());
+    std::stringstream sstream;
+    writer->write(blob, &sstream);
+    NSString *jsonString =
+    [[NSString alloc] initWithCString:sstream.str().c_str()
+                             encoding:NSUTF8StringEncoding];
+    return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+}

@@ -18,5 +18,6 @@
 - (void)setInputs:(NSArray *)inputs;
 - (void)appendInputs:(NSArray *)inputs;
 - (NSArray<ACORemoteResourceInformation *> *)remoteResourceInformation;
+- (NSData *)additionalProperty;
 
 @end
