@@ -201,6 +201,8 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 
 export interface IPropertySheetEditorCommand {
     caption: string;
+    altText?: string;
+    expanded?: boolean;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -266,6 +268,8 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
                 action.title = command.caption;
+                action.accessibleTitle = command.altText;
+                action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -302,14 +306,19 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
             return [
                 {
                     caption: "...",
+                    altText: (this.label + " " + "Data Binding"),
+                    expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
+                        clickedElement.setAttribute("aria-expanded", "true");
+                        
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
+                            clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
                                 context.peer.changed(true);
                             }
+                            clickedElement.focus();
                         }
                         fieldPicker.popup(clickedElement);
                     }
@@ -2281,6 +2290,11 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
                 TextInputPeer.styleProperty);
+        }
+        else {
+            propertySheet.add(
+                PropertySheetCategory.LayoutCategory,
+                CardElementPeer.heightProperty);
         }
 
         propertySheet.add(

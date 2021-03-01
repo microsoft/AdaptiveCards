@@ -212,7 +212,7 @@
 							"id": "chevronDown1",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Details collapsed"
+							"altText": "Air Travel Expense $300 collapsed"
 						},
 						{
 							"type": "Image",
@@ -220,7 +220,7 @@
 							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded"
+							"altText": "Air Travel Expense $300 expanded"
 						}
 					],
 					"selectAction": {
@@ -347,7 +347,7 @@
 							"id": "chevronDown2",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Details collapsed"
+							"altText": "Auto Mobile Expense $100 collapsed"
 						},
 						{
 							"type": "Image",
@@ -355,7 +355,7 @@
 							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded"
+							"altText": "Auto Mobile Expense $100 expanded"
 						}
 					],
 					"selectAction": {
@@ -476,7 +476,7 @@
 							"id": "chevronDown3",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Details collapsed"
+							"altText": "Excess Baggage Cost $50.38 collapsed"
 						},
 						{
 							"type": "Image",
@@ -484,7 +484,7 @@
 							"isVisible": false,
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Details expanded"
+							"altText": "Excess Baggage Cost $50.38 expanded"
 						}
 					],
 					"selectAction": {
