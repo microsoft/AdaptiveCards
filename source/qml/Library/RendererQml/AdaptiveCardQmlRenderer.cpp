@@ -70,9 +70,9 @@ namespace RendererQml
         /*(*GetElementRenderers()).Set<AdaptiveCards::Media>(AdaptiveCardQmlRenderer::MediaRender);
         (*GetElementRenderers()).Set<AdaptiveCards::Container>(AdaptiveCardQmlRenderer::ContainerRender);
         (*GetElementRenderers()).Set<AdaptiveCards::Column>(AdaptiveCardQmlRenderer::ColumnRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::ColumnSet>(AdaptiveCardQmlRenderer::ColumnSetRender);
+        (*GetElementRenderers()).Set<AdaptiveCards::ColumnSet>(AdaptiveCardQmlRenderer::ColumnSetRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::FactSet>(AdaptiveCardQmlRenderer::FactSetRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
+        /*(*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
@@ -803,6 +803,57 @@ namespace RendererQml
 
         return uiDateInput;
     }
+
+	
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		auto uiFactSet = std::make_shared<QmlTag>("Column");
+
+		if (!factSet->GetIsVisible())
+		{
+			uiFactSet->Property("visible", "false");
+		}
+
+		for (const auto fact : factSet->GetFacts())
+		{
+			auto uiRow = std::make_shared<QmlTag>("RowLayout");
+
+			auto factTitle = std::make_shared<AdaptiveCards::TextBlock>();
+
+			factTitle->SetText(fact->GetTitle());
+			factTitle->SetTextSize(context->GetConfig()->GetFactSet().title.size);
+			factTitle->SetTextColor(context->GetConfig()->GetFactSet().title.color);
+			factTitle->SetTextWeight(context->GetConfig()->GetFactSet().title.weight);
+			factTitle->SetIsSubtle(context->GetConfig()->GetFactSet().title.isSubtle);
+			factTitle->SetWrap(context->GetConfig()->GetFactSet().title.wrap);
+
+			//TODO: cpp Object Model does not support max width.
+			//factTitle->SetMaxWidth(context->GetConfig()->GetFactSet().title.maxWidth);
+
+			auto uiTitle = context->Render(factTitle);
+
+			//uiTitle->Property("spacing", std::to_string(context->GetConfig()->GetFactSet().spacing));
+			
+			auto factValue = std::make_shared<AdaptiveCards::TextBlock>();
+
+			factValue->SetText(fact->GetValue());
+			factValue->SetTextSize(context->GetConfig()->GetFactSet().value.size);
+			factValue->SetTextColor(context->GetConfig()->GetFactSet().value.color);
+			factValue->SetTextWeight(context->GetConfig()->GetFactSet().value.weight);
+			factValue->SetIsSubtle(context->GetConfig()->GetFactSet().value.isSubtle);
+			factValue->SetWrap(context->GetConfig()->GetFactSet().value.wrap);
+			// MaxWidth is not supported on the Value of FactSet. Do not set it.
+
+			auto uiValue = context->Render(factValue);
+
+			uiRow->AddChild(uiTitle);
+			uiRow->AddChild(uiValue);
+			uiFactSet->AddChild(uiRow);
+		}
+
+		return uiFactSet;
+  }
+  
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ImageRender(std::shared_ptr<AdaptiveCards::Image> image, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		//TODO: Height(Stretch/Automatic)
@@ -914,3 +965,4 @@ namespace RendererQml
 	}
 }
 	
+

@@ -556,6 +556,35 @@ const std::string card_ChoiceSetInput = R"({
   ]
 })";
 
+	const std::string card_FactSet = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "FactSet",
+      "facts": [
+        {
+          "title": "Fact 1",
+          "value": "Value 1"
+        },
+        {
+          "title": "Fact 2",
+          "value": "Value 2"
+        },
+        {
+          "title": "Fact 3",
+          "value": "Value 3"
+        },
+        {
+          "title": "Fact 4",
+          "value": "Value 5"
+        }
+      ]
+    }
+  ]
+})";
+
   const std::string card_Image = R"({
   "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
   "type": "AdaptiveCard",
@@ -619,7 +648,7 @@ const std::string card_ChoiceSetInput = R"({
       "id": "img4",
 	  "backgroundColor": "#FF0000FF",
 	  "height": "80px"
-    }
+   }
   ]
 })";
 
@@ -676,7 +705,8 @@ int main(int argc, char* argv[])
     QQuickView view;
     QQmlContext* context = view.engine()->rootContext();
 
-    const std::string qmlString = GenerateQml(card_Image);
+
+    const std::string qmlString = GenerateQml(card_FactSet);
 
 	context->setContextProperty("_aQmlCard", QString::fromStdString(qmlString));
 

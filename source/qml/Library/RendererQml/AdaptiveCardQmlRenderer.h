@@ -15,6 +15,7 @@
 #include "Column.h"
 #include "ColumnSet.h"
 #include "FactSet.h"
+#include "Fact.h"
 #include "ImageSet.h"
 #include "ActionSet.h"
 #include "ChoiceSetInput.h"
@@ -55,13 +56,12 @@ namespace RendererQml
 
         static std::shared_ptr<QmlTag> ContainerRender(std::shared_ptr<AdaptiveCards::Container> container, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> ColumnRender(std::shared_ptr<AdaptiveCards::Column> column, std::shared_ptr<AdaptiveRenderContext> context);
-        static std::shared_ptr<QmlTag> ColumnSetRender(std::shared_ptr<AdaptiveCards::ColumnSet> columnSet, std::shared_ptr<AdaptiveRenderContext> context);
+        static std::shared_ptr<QmlTag> ColumnSetRender(std::shared_ptr<AdaptiveCards::ColumnSet> columnSet, std::shared_ptr<AdaptiveRenderContext> context);*/
         static std::shared_ptr<QmlTag> FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context);
-        static std::shared_ptr<QmlTag> ImageSetRender(std::shared_ptr<AdaptiveCards::ImageSet> imageSet, std::shared_ptr<AdaptiveRenderContext> context);
+        /*static std::shared_ptr<QmlTag> ImageSetRender(std::shared_ptr<AdaptiveCards::ImageSet> imageSet, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> ActionSetRender(std::shared_ptr<AdaptiveCards::ActionSet> actionSet, std::shared_ptr<AdaptiveRenderContext> context);*/
 
         static std::shared_ptr<QmlTag> ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> choiceSet, std::shared_ptr<AdaptiveRenderContext> context);
-		//static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
 		static std::shared_ptr<QmlTag> TextInputRender(std::shared_ptr<AdaptiveCards::TextInput> input, std::shared_ptr<AdaptiveRenderContext> context);
         static std::shared_ptr<QmlTag> NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context);
 
@@ -77,7 +77,6 @@ namespace RendererQml
 		static std::shared_ptr<QmlTag> GetComboBox(ChoiceSet choiceset);
 		static std::shared_ptr<QmlTag> GetButtonGroup(ChoiceSet choiceset);
 		static std::shared_ptr<QmlTag> GetCheckBox(Checkbox checkbox);
-		//static std::shared_ptr<QmlTag> GetRadioButton(std::shared_ptr<QmlTag> uiRadioButton, CustomRadioButtonParams& params);
 		static std::string GenerateButtonId(enum CheckBoxType ButtonType, int ButtonNumber);
 		static std::string GetModel(std::vector<Checkbox>& Choices);
     };
