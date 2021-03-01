@@ -14,6 +14,7 @@
 #import "AdaptiveCardParseWarning.h"
 #import "ParseResult.h"
 #import "SharedAdaptiveCard.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -107,6 +108,18 @@ using namespace AdaptiveCards;
         }
         NSArray<ACORemoteResourceInformation *> *remoteResources = [NSArray arrayWithArray:mutableRemoteResources];
         return remoteResources;
+    }
+    return nil;
+}
+
+- (NSData *)additionalProperty
+{
+    if (_adaptiveCard) {
+        Json::Value blob = _adaptiveCard->GetAdditionalProperties();
+        if (blob.empty()) {
+            return nil;
+        }
+        return JsonToNSData(blob);
     }
     return nil;
 }

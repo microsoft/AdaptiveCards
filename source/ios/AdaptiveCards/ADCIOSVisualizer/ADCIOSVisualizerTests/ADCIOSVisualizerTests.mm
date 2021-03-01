@@ -76,7 +76,7 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
-    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];    
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];
     [super tearDown];
 }
 
@@ -680,6 +680,18 @@
 
     renderBackgroundImage(&backgroundImage, nil, image);
     XCTAssertTrue(YES);
+}
+
+// Test that additional property at card level
+- (void)testAdditionalPropertiesParsingAtCardLevel
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    NSData *additionalProperty = iOSCard.additionalProperty;
+    XCTAssertTrue(additionalProperty != nullptr);
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+    NSNumber *radius = dictionary[@"card.cornerRadius"];
+    XCTAssertTrue([radius floatValue] == 50.0f);
 }
 
 // Test that additional property is returned as NSData
