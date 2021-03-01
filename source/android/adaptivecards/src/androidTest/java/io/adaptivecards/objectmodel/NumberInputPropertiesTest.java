@@ -17,19 +17,19 @@ public class NumberInputPropertiesTest
             "{\"errorMessage\":\"Error message\"," +
                 "\"id\":\"id\"," +
                 "\"label\":\"Input label\"," +
-                "\"max\":10," +
-                "\"min\":1," +
+                "\"max\":9.5," +
+                "\"min\":2.5," +
                 "\"placeholder\":\"Sample placeholder\"," +
                 "\"type\":\"Input.Number\"," +
-                "\"value\":5}\n";
+                "\"value\":5.5}\n";
 
         NumberInput numberInput = TestUtil.createMockNumberInput();
         numberInput.SetErrorMessage("Error message");
         numberInput.SetLabel("Input label");
-        numberInput.SetMax(10);
-        numberInput.SetMin(1);
+        numberInput.SetMax(9.5);
+        numberInput.SetMin(2.5);
         numberInput.SetPlaceholder("Sample placeholder");
-        numberInput.SetValue(5);
+        numberInput.SetValue(5.5);
 
         Assert.assertEquals(numberInputNoDefaultValues, numberInput.Serialize());
     }
@@ -44,13 +44,13 @@ public class NumberInputPropertiesTest
                 "\"id\":\"id\"," +
                 "\"isVisible\":false," +
                 "\"label\":\"Input label\"," +
-                "\"max\":100," +
-                "\"min\":-10," +
+                "\"max\":128.5," +
+                "\"min\":-9.5," +
                 "\"placeholder\":\"Sample placeholder\"," +
                 "\"separator\":true," +
                 "\"spacing\":\"medium\"," +
                 "\"type\":\"Input.Number\"," +
-                "\"value\":60}\n";
+                "\"value\":64.5}\n";
 
         NumberInput numberInput = TestUtil.createMockNumberInput();
         numberInput.SetErrorMessage("Error message");
@@ -59,12 +59,12 @@ public class NumberInputPropertiesTest
         numberInput.SetHeight(HeightType.Stretch);
         numberInput.SetIsVisible(false);
         numberInput.SetLabel("Input label");
-        numberInput.SetMax(100);
-        numberInput.SetMin(-10);
+        numberInput.SetMax(128.5);
+        numberInput.SetMin(-9.5);
         numberInput.SetPlaceholder("Sample placeholder");
         numberInput.SetSeparator(true);
         numberInput.SetSpacing(Spacing.Medium);
-        numberInput.SetValue(60);
+        numberInput.SetValue(64.5);
 
         Assert.assertEquals(textInputNoDefaultValues, numberInput.Serialize());
     }
@@ -72,37 +72,35 @@ public class NumberInputPropertiesTest
     @Test
     public void MaxTest() throws Exception
     {
-        NumberInputCommand<Integer> c = new NumberInputCommand<Integer>() {
+        NumberInputCommand<Double> c = new NumberInputCommand<Double>() {
             @Override
-            public Integer get(NumberInput element) { return element.GetMax(); }
+            public Double get(NumberInput element) { return element.GetMax(); }
 
             @Override
-            public void set(Integer value, NumberInput element) { element.SetMax(value); }
+            public void set(Double value, NumberInput element) { element.SetMax(value); }
         };
 
         TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
-        final String inputNumberMaxTemplate = "{\"id\":\"id\",\"max\":%d,\"type\":\"Input.Number\"}\n";
-        TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_numericalMinValue);
-        TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_numericalTestCases);
+        final String inputNumberMaxTemplate = "{\"id\":\"id\",\"max\":%s,\"type\":\"Input.Number\"}\n";
+        TestUtil.executeTests(c, inputNumberMaxTemplate, TestUtil.c_doubleTestCases);
     }
 
     @Test
     public void MinTest() throws Exception
     {
-        NumberInputCommand<Integer> c = new NumberInputCommand<Integer>() {
+        NumberInputCommand<Double> c = new NumberInputCommand<Double>() {
             @Override
-            public Integer get(NumberInput element) { return element.GetMin(); }
+            public Double get(NumberInput element) { return element.GetMin(); }
 
             @Override
-            public void set(Integer value, NumberInput element) { element.SetMin(value); }
+            public void set(Double value, NumberInput element) { element.SetMin(value); }
         };
 
         TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
-        final String inputNumberMinTemplate = "{\"id\":\"id\",\"min\":%d,\"type\":\"Input.Number\"}\n";
-        TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_numericalMaxValue);
-        TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_numericalTestCases);
+        final String inputNumberMinTemplate = "{\"id\":\"id\",\"min\":%s,\"type\":\"Input.Number\"}\n";
+        TestUtil.executeTests(c, inputNumberMinTemplate, TestUtil.c_doubleTestCases);
     }
 
     @Test
@@ -126,18 +124,18 @@ public class NumberInputPropertiesTest
     @Test
     public void ValueTest() throws Exception
     {
-        NumberInputCommand<Integer> c = new NumberInputCommand<Integer>() {
+        NumberInputCommand<Double> c = new NumberInputCommand<Double>() {
             @Override
-            public Integer get(NumberInput element) { return element.GetValue(); }
+            public Double get(NumberInput element) { return element.GetValue(); }
 
             @Override
-            public void set(Integer value, NumberInput element) { element.SetValue(value); }
+            public void set(Double value, NumberInput element) { element.SetValue(value); }
         };
 
         TestUtil.executeDefaultTestCase(c, c_defaultInputNumber, null);
 
-        final String inputNumberValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Number\",\"value\":%d}\n";
-        TestUtil.executeTests(c, inputNumberValueTemplate, TestUtil.c_numericalTestCases);
+        final String inputNumberValueTemplate = "{\"id\":\"id\",\"type\":\"Input.Number\",\"value\":%s}\n";
+        TestUtil.executeTests(c, inputNumberValueTemplate, TestUtil.c_doubleTestCases);
     }
 
     @Test

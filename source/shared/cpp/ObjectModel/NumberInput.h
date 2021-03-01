@@ -23,22 +23,22 @@ namespace AdaptiveSharedNamespace
         std::string GetPlaceholder() const;
         void SetPlaceholder(const std::string& value);
 
-        std::optional<int> GetValue() const;
-        void SetValue(const std::optional<int>& value);
+        std::optional<double> GetValue() const;
+        void SetValue(const std::optional<double>& value);
 
-        std::optional<int> GetMax() const;
-        void SetMax(const std::optional<int>& value);
+        std::optional<double> GetMax() const;
+        void SetMax(const std::optional<double>& value);
 
-        std::optional<int> GetMin() const;
-        void SetMin(const std::optional<int>& value);
+        std::optional<double> GetMin() const;
+        void SetMin(const std::optional<double>& value);
 
     private:
         void PopulateKnownPropertiesSet();
 
         std::string m_placeholder;
-        std::optional<int> m_value;
-        std::optional<int> m_max;
-        std::optional<int> m_min;
+        std::optional<double> m_value;
+        std::optional<double> m_max;
+        std::optional<double> m_min;
     };
 
     class NumberInputParser : public BaseCardElementParser
