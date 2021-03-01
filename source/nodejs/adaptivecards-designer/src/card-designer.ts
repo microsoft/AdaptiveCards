@@ -119,6 +119,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
         if (this._propertySheetToolbox.content) {
+            // if focus is already on _propertySheetCard, remember the focused object's id
             const restoreFocusId = this._propertySheetCard?.findDOMNodeOwner(document.activeElement)?.id;
             this._propertySheetToolbox.content.innerHTML = "";
 
@@ -159,6 +160,7 @@ export class CardDesigner extends Designer.DesignContext {
             this._propertySheetToolbox.content.appendChild(this._propertySheetCard.render());
 
             if (restoreFocusId) {
+                // attempt to restore focus if new card has object with same id
                 const focusTarget = this._propertySheetCard.getElementById(restoreFocusId) ?? this._propertySheetCard.getActionById(restoreFocusId);
                 focusTarget?.renderedElement?.focus();
             }

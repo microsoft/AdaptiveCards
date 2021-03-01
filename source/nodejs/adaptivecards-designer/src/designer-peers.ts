@@ -308,7 +308,7 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
         if (GlobalSettings.enableDataBindingSupport && this.allowBinding) {
             return [
                 {
-                    id: Adaptive.generateUniqueId(),
+                    id: this.propertyName + "BindData",
                     caption: Strings.toolboxes.propertySheet.commands.bindData.displayText(),
                     altText: Strings.toolboxes.propertySheet.commands.bindData.accessibleText(this.label),
                     expanded: false,
