@@ -59,9 +59,9 @@
         [self setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
-        [view setContentHuggingPriority:ACRColumnWidthPriorityStretchAuto forAxis:UILayoutConstraintAxisHorizontal];
+        [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:ACRColumnWidthPriorityStretchAuto forAxis:UILayoutConstraintAxisHorizontal];
+        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 }
@@ -73,17 +73,9 @@
     }
     [super increaseIntrinsicContentSize:view];
     CGSize size = [view intrinsicContentSize];
-    CGFloat width = self.combinedContentSize.width;
 
     if (size.width >= 0 and size.height >= 0) {
         self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
-    }
-
-    if (self.combinedContentSize.width > width) {
-        self.translatesAutoresizingMaskIntoConstraints = NO;
-        widthConstraint = [self.widthAnchor constraintLessThanOrEqualToConstant:self.combinedContentSize.width];
-        widthConstraint.priority = 999;
-        widthConstraint.active = YES;
     }
 }
 
