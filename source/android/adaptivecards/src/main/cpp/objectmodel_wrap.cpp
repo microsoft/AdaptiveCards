@@ -15520,7 +15520,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   jobject jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  std::optional< double > result;
   
   (void)jenv;
   (void)jcls;
@@ -15529,8 +15529,8 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetValue();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
+  jclass clazz = jenv->FindClass("java/lang/Double");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(D)V");
   jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
   jresult = obj;
   return jresult;
@@ -15539,7 +15539,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetValue(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15548,16 +15548,16 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
+  std::optional<double> optVal = std::nullopt;
   if (jarg2) {
     jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "doubleValue", "()D");
+    jdouble val = (jdouble)jenv->CallDoubleMethod(jarg2, mid);
     if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+    optVal = std::optional<double>(val);
   }
   arg2 = &optVal;
-  (arg1)->SetValue((std::optional< int > const &)*arg2);
+  (arg1)->SetValue((std::optional< double > const &)*arg2);
 }
 
 
@@ -15565,7 +15565,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   jobject jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  std::optional< double > result;
   
   (void)jenv;
   (void)jcls;
@@ -15574,8 +15574,8 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetMax();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
+  jclass clazz = jenv->FindClass("java/lang/Double");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(D)V");
   jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
   jresult = obj;
   return jresult;
@@ -15584,7 +15584,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMax(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15593,16 +15593,16 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
+  std::optional<double> optVal = std::nullopt;
   if (jarg2) {
     jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "doubleValue", "()D");
+    jdouble val = (jdouble)jenv->CallDoubleMethod(jarg2, mid);
     if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+    optVal = std::optional<double>(val);
   }
   arg2 = &optVal;
-  (arg1)->SetMax((std::optional< int > const &)*arg2);
+  (arg1)->SetMax((std::optional< double > const &)*arg2);
 }
 
 
@@ -15610,7 +15610,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   jobject jresult = 0 ;
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput const > *smartarg1 = 0 ;
-  std::optional< int > result;
+  std::optional< double > result;
   
   (void)jenv;
   (void)jcls;
@@ -15619,8 +15619,8 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
   smartarg1 = *(std::shared_ptr< const AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
   result = ((AdaptiveCards::NumberInput const *)arg1)->GetMin();
-  jclass clazz = jenv->FindClass("java/lang/Integer");
-  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(I)V");
+  jclass clazz = jenv->FindClass("java/lang/Double");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(D)V");
   jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
   jresult = obj;
   return jresult;
@@ -15629,7 +15629,7 @@ SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectM
 
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_NumberInput_1SetMin(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
   AdaptiveCards::NumberInput *arg1 = (AdaptiveCards::NumberInput *) 0 ;
-  std::optional< int > *arg2 = 0 ;
+  std::optional< double > *arg2 = 0 ;
   std::shared_ptr< AdaptiveCards::NumberInput > *smartarg1 = 0 ;
   
   (void)jenv;
@@ -15638,16 +15638,16 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   
   smartarg1 = *(std::shared_ptr<  AdaptiveCards::NumberInput > **)&jarg1;
   arg1 = (AdaptiveCards::NumberInput *)(smartarg1 ? smartarg1->get() : 0); 
-  std::optional<int> optVal = std::nullopt;
+  std::optional<double> optVal = std::nullopt;
   if (jarg2) {
     jclass sbufClass = jenv->GetObjectClass(jarg2);
-    jmethodID mid = jenv->GetMethodID(sbufClass, "intValue", "()I");
-    jint val = (jint)jenv->CallIntMethod(jarg2, mid);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "doubleValue", "()D");
+    jdouble val = (jdouble)jenv->CallDoubleMethod(jarg2, mid);
     if (jenv->ExceptionCheck()) return ;
-    optVal = std::optional<int>(val);
+    optVal = std::optional<double>(val);
   }
   arg2 = &optVal;
-  (arg1)->SetMin((std::optional< int > const &)*arg2);
+  (arg1)->SetMin((std::optional< double > const &)*arg2);
 }
 
 

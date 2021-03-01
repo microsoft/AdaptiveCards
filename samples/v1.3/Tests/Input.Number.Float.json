@@ -1,0 +1,22 @@
+{
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "Input.Number",
+			"id": "number",
+			"label": "Enter a number between 2.5 and 9.5",
+			"min": 2.5,
+			"max": 9.5,
+			"value": 4.5,
+			"errorMessage": "Invalid input. Ensure it's between 2.5 and 9.5, inclusive."
+		}
+	],
+	"actions": [
+		{
+			"type": "Action.Submit",
+			"title": "OK"
+		}
+	]
+}
