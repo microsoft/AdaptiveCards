@@ -309,7 +309,7 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
             return [
                 {
                     id: Adaptive.generateUniqueId(),
-                    caption: Strings.toolboxes.propertySheet.commands.bindData.visualText(),
+                    caption: Strings.toolboxes.propertySheet.commands.bindData.displayText(),
                     altText: Strings.toolboxes.propertySheet.commands.bindData.accessibleText(this.label),
                     expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {

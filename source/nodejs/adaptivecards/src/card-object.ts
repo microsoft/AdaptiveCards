@@ -65,12 +65,16 @@ export abstract class CardObject extends SerializableObject {
     protected _renderedElement?: HTMLElement;
 
     /**
-     * Check if renderedElement contains query Node
-     * @param node query Node
-     * @returns true if node exists, else false
+     * Check if this CardObject contains the given DOM Node.
+     * @param node the DOM Node to look for
+     * @returns true if the DOM Node was found, false otherwise
      */
     protected contains(node: Node): boolean {
-        return this?._renderedElement?.contains(node) ?? false;
+        if (this._renderedElement) {
+            return this._renderedElement.contains(node);
+        }
+
+        return false;
     }
 
     onPreProcessPropertyValue?: (sender: CardObject, property: PropertyDefinition, value: any) => any;
@@ -146,17 +150,17 @@ export abstract class CardObject extends SerializableObject {
     }
 
     /**
-     * Finds the innermost CardObject who's renderedElement is equal to or parent of the query Node.
+     * Recursively searches this CardObject and any children to find the
+     * innermost CardObject that owns the given DOM Node.
      *
-     * @param node query Node
+     * @param node the DOM Node to look for
      *
-     * @returns CardObject containing node, or undefined if not in tree.
+     * @returns the owner of the given DOM Node, or undefined if no owner was found
      */
-    findObject(node: Node): CardObject | undefined {
-        // default implementation for non-heirarchical CardObjects
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        // default implementation for CardObjects with no associated children
         return this.contains(node) ? this : undefined;
     }
-
 
     get parent(): CardObject | undefined {
         return this._parent;

@@ -2012,12 +2012,20 @@ export abstract class CardElementContainer extends CardElement {
     /**
      * @inheritdoc
      */
-    findObject(node: Node): CardObject | undefined {
-        let target;
-        for (let i = 0; i < this.getItemCount(); i++) {
-            target = target ?? this.getItemAt(i).findObject(node); // recur through child elements
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (let i = 0; !target && i < this.getItemCount(); i++) {
+            // recur through child elements
+            target = this.getItemAt(i).findDOMNodeOwner(node);
         }
-        return target ?? super.findObject(node); // else, check this element
+
+        if (target) {
+            return target;
+        }
+
+        // if not found in children, defer to parent implementation
+        return super.findDOMNodeOwner(node);
     }
 }
 
@@ -5036,12 +5044,22 @@ export class ActionSet extends CardElement {
     /**
      * @inheritdoc
      */
-    findObject(node: Node): CardObject | undefined {
-        let target;
-        for(const action of this._actionCollection.items) {
-            target = target ?? action.findObject(node); // recur through Actions
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (const action of this._actionCollection.items) {
+            if (!target) {
+                // recur through each Action
+                target = action.findDOMNodeOwner(node);
+            }
         }
-        return target ?? super.findObject(node); // else, check ActionSet
+
+        if (target) {
+            return target;
+        }
+
+        // if not found in any Action, defer to parent implementation
+        return super.findDOMNodeOwner(node);
     }
 
     get isInteractive(): boolean {

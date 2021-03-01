@@ -119,7 +119,7 @@ export class CardDesigner extends Designer.DesignContext {
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
         if (this._propertySheetToolbox.content) {
-            const restoreFocusId = this._propertySheetCard?.findObject(document.activeElement)?.id;
+            const restoreFocusId = this._propertySheetCard?.findDOMNodeOwner(document.activeElement)?.id;
             this._propertySheetToolbox.content.innerHTML = "";
 
             if (peer) {
