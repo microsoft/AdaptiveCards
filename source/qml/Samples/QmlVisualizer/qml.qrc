@@ -5,5 +5,7 @@
         <file>CardComponent.qml</file>
         <file>CardContent.qml</file>
         <file>qmldir</file>
+        <file>CardEditor.qml</file>
+        <file>SampleCardListView.qml</file>
     </qresource>
 </RCC>

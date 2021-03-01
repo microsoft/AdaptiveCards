@@ -103,11 +103,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="samplecardlist.cpp" />
+    <ClCompile Include="samplecardmodel.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <None Include="SampleCardListView.qml" />
     <QtRcc Include="qml.qrc" />
     <None Include="AdaptiveCardItemDelegate.qml" />
     <None Include="CardComponent.qml" />
     <None Include="CardContent.qml" />
+    <None Include="CardEditor.qml" />
     <None Include="main.qml" />
   </ItemGroup>
   <ItemGroup>
@@ -119,6 +123,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="SampleCardJson.h" />
+    <ClInclude Include="samplecardlist.h" />
+    <QtMoc Include="samplecardmodel.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

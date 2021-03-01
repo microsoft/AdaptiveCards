@@ -4,5 +4,16 @@ import QtQuick.Layouts 1.3;
 ColumnLayout{
     id: cardComponent
 
-    Component.onCompleted: Qt.createQmlObject(CardString, cardComponent, "card")
+    property var card
+
+    Component.onCompleted: reload(CardString);
+
+    function reload(mCard)
+    {
+        if(card){
+            card.destroy()
+        }
+
+        card = Qt.createQmlObject(mCard, cardComponent, "card")
+    }
 }
