@@ -24,26 +24,26 @@ module.exports = {
         "camelcase": "off", // disable eslint version
         "@typescript-eslint/naming-convention": [
             "error",
-            {                                // let someGlobal : number = 42;
-                "selector": "default",         //
-                "format": ["camelCase"]        // function someFunction(someParameter: number): number {
-            },                               //   let someVariable : number = someParameter*someParameter;
-            {                                //   return someVariable;
-                "selector": "property",        // }
-                "format": ["camelCase"],       //
-                "leadingUnderscore": "forbid"  // class SomeClass {
-            },                               //   publicProperty : number;
-            {                                //   protected _protectedProperty : number;
-                "selector": "property",        //   private _privateProperty : number;
-                "modifiers": ["private"],      //   publicMemberFunction() : void { /* ... */ }
-                "format": ["camelCase"],       //   protected _protectedMemberFunction() : void { /* ... */ }
-                "leadingUnderscore": "require" //   private _privateMemberFunction() : void { /* ... */ }
-            },                               // }
-            {                                //
-                "selector": "property",        // enum SomeEnum {
-                "modifiers": ["protected"],    //   FirstValue,
-                "format": ["camelCase"],       //   SecondValue
-                "leadingUnderscore": "require" // }
+            {                                   // let someGlobal : number = 42;
+                "selector": "default",          //
+                "format": ["camelCase"]         // function someFunction(someParameter: number): number {
+            },                                  //   let someVariable : number = someParameter*someParameter;
+            {                                   //   return someVariable;
+                "selector": "property",         // }
+                "format": ["camelCase"],        //
+                "leadingUnderscore": "forbid"   // class SomeClass {
+            },                                  //   publicProperty : number;
+            {                                   //   protected _protectedProperty : number;
+                "selector": "property",         //   private _privateProperty : number;
+                "modifiers": ["private"],       //   publicMemberFunction() : void { /* ... */ }
+                "format": ["camelCase"],        //   protected _protectedMemberFunction() : void { /* ... */ }
+                "leadingUnderscore": "require"  //   private _privateMemberFunction() : void { /* ... */ }
+            },                                  // }
+            {                                   //
+                "selector": "property",         // enum SomeEnum {
+                "modifiers": ["protected"],     //   FirstValue,
+                "format": ["camelCase"],        //   SecondValue
+                "leadingUnderscore": "require"  // }
             },
             {
                 "selector": "enum",
