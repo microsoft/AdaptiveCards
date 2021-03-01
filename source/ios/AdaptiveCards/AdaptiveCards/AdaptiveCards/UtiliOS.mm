@@ -580,11 +580,13 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
 
     // MarkDownParser transforms text with MarkDown to a html string
-    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
+    auto markdownString = markDownParser->TransformToHtml();
+    NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
+
     NSDictionary *data = nil;
 
     // use Apple's html rendering only if the string has markdowns
-    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
+    if (markDownParser->HasHtmlTags()) {
         NSString *fontFamilyName = nil;
 
         if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
