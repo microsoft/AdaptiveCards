@@ -11,7 +11,8 @@ export class GlobalSettings {
         Adaptive.Versions.v1_0,
         Adaptive.Versions.v1_1,
         Adaptive.Versions.v1_2,
-        Adaptive.Versions.v1_3
+        Adaptive.Versions.v1_3,
+        Adaptive.Versions.v1_5
     ];
 }
 

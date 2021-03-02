@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+import { defaultHostConfig, HostConfig } from "../host-config";
 import { Constants } from "./constants";
 
-export class DropDownItem {
+export class MenuItem {
     private _element: HTMLElement;
     private _value: string;
 
@@ -14,7 +15,7 @@ export class DropDownItem {
 
     readonly key: string;
 
-    onClick?: (item: DropDownItem) => void;
+    onClick?: (item: MenuItem) => void;
 
     constructor(key: string, value: string) {
         this.key = key;
@@ -25,10 +26,12 @@ export class DropDownItem {
         return this.value;
     }
 
-    render(): HTMLElement {
+    render(hostConfig?: HostConfig): HTMLElement {
         if (!this._element) {
+            let effectiveHostConfig = hostConfig ? hostConfig : defaultHostConfig;
+
             this._element = document.createElement("span");
-            this._element.className = "ac-ctrl ac-ctrl-dropdown-item";
+            this._element.className = effectiveHostConfig.makeCssClassName("ac-ctrl ac-ctrl-dropdown-item");
             this._element.innerText = this.value;
             this._element.setAttribute("role", "menuitem");
             this._element.setAttribute("aria-selected", "false");

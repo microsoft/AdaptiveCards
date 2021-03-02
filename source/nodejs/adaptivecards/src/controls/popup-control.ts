@@ -2,11 +2,13 @@
 // Licensed under the MIT License.
 import { Constants } from "./constants";
 import * as Utils from "../utils";
+import { defaultHostConfig, HostConfig } from "../host-config";
 
 export abstract class PopupControl {
     private _isOpen: boolean = false;
     private _overlayElement: HTMLElement;
     private _popupElement: HTMLElement;
+    private _hostConfig?: HostConfig;
 
     protected abstract renderContent(): HTMLElement;
 
@@ -24,7 +26,7 @@ export abstract class PopupControl {
     render(rootElementBounds: ClientRect): HTMLElement {
         let element = document.createElement("div");
         element.tabIndex = 0;
-        element.className = "ac-ctrl ac-ctrl-popup-container";
+        element.className = this.hostConfig.makeCssClassName("ac-ctrl", "ac-ctrl-popup-container");
         element.setAttribute("role", "dialog");
         element.setAttribute("aria-modal", "true");
         element.onkeydown = (e) => {
@@ -47,7 +49,7 @@ export abstract class PopupControl {
     popup(rootElement: HTMLElement) {
         if (!this._isOpen) {
             this._overlayElement = document.createElement("div");
-            this._overlayElement.className = "ac-ctrl-overlay";
+            this._overlayElement.className = this.hostConfig.makeCssClassName("ac-ctrl-overlay");
             this._overlayElement.tabIndex = 0;
             this._overlayElement.style.width = document.documentElement.scrollWidth + "px";
             this._overlayElement.style.height = document.documentElement.scrollHeight + "px";
@@ -59,11 +61,12 @@ export abstract class PopupControl {
 
             this._popupElement = this.render(rootElementBounds);
             this._popupElement.classList.remove(
-                "ac-ctrl-slide",
-                "ac-ctrl-slideLeftToRight",
-                "ac-ctrl-slideRightToLeft",
-                "ac-ctrl-slideTopToBottom",
-                "ac-ctrl-slideRightToLeft");
+                ...this.hostConfig.makeCssClassNames(
+                    "ac-ctrl-slide",
+                    "ac-ctrl-slideLeftToRight",
+                    "ac-ctrl-slideRightToLeft",
+                    "ac-ctrl-slideTopToBottom",
+                    "ac-ctrl-slideRightToLeft"));
 
             window.addEventListener("resize", (e) => { this.closePopup(true); });
 
@@ -116,12 +119,12 @@ export abstract class PopupControl {
                     if (availableSpaceRight >= popupElementBounds.width) {
                         left = Utils.getScrollX() + rootElementBounds.right;
 
-                        this._popupElement.classList.add("ac-ctrl-slide", "ac-ctrl-slideLeftToRight");
+                        this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideLeftToRight"));
                     }
                     else {
                         left = Utils.getScrollX() + rootElementBounds.left - popupElementBounds.width;
 
-                        this._popupElement.classList.add("ac-ctrl-slide", "ac-ctrl-slideRightToLeft");
+                        this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideRightToLeft"));
                     }
                 }
             }
@@ -130,12 +133,12 @@ export abstract class PopupControl {
                 if (availableSpaceBelow >= popupElementBounds.height) {
                     top = Utils.getScrollY() + rootElementBounds.bottom;
 
-                    this._popupElement.classList.add("ac-ctrl-slide", "ac-ctrl-slideTopToBottom");
+                    this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideTopToBottom"));
                 }
                 else {
                     top = Utils.getScrollY() + rootElementBounds.top - popupElementBounds.height
 
-                    this._popupElement.classList.add("ac-ctrl-slide", "ac-ctrl-slideBottomToTop");
+                    this._popupElement.classList.add(...this.hostConfig.makeCssClassNames("ac-ctrl-slide", "ac-ctrl-slideBottomToTop"));
                 }
 
                 if (availableSpaceRight < popupElementBounds.width) {
@@ -162,6 +165,14 @@ export abstract class PopupControl {
                 this.onClose(this, wasCancelled);
             }
         }
+    }
+
+    get hostConfig(): HostConfig {
+        return this._hostConfig ? this._hostConfig : defaultHostConfig;
+    }
+
+    set hostConfig(value: HostConfig) {
+        this._hostConfig = value;
     }
 
     get isOpen(): boolean {

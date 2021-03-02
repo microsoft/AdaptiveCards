@@ -12,7 +12,7 @@ import { Versions, Version, property, BaseSerializationContext, SerializableObje
     NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
-import { DropDownItem, PopupMenu } from "./controls";
+import { MenuItem, PopupMenu } from "./controls";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -3634,6 +3634,7 @@ const enum ActionButtonState {
 }
 
 class ActionButton {
+    private _action: Action;
     private _parentContainerStyle: string;
     private _state: ActionButtonState = ActionButtonState.Normal;
 
@@ -3672,11 +3673,10 @@ class ActionButton {
         }
     }
 
-    readonly action: Action;
-
     constructor(action: Action, parentContainerStyle: string) {
-        this.action = action;
         this._parentContainerStyle = parentContainerStyle;
+
+        this.action = action;
     }
 
     onClick?: (actionButton: ActionButton, event?: MouseEvent) => void;
@@ -3699,6 +3699,22 @@ class ActionButton {
     click(event?: MouseEvent) {
         if (this.onClick !== undefined) {
             this.onClick(this, event);
+        }
+    }
+
+    get action(): Action {
+        return this._action;
+    }
+
+    set action(value: Action) {
+        if (this._action !== value) {
+            if (this._action !== undefined && this._action.renderedElement) {
+                this._action.renderedElement.removeAttribute("onclick");
+            }
+
+            this._action = value;
+
+            this.render();
         }
     }
 
@@ -3752,7 +3768,7 @@ export abstract class Action extends CardObject {
 
     //#endregion
 
-    private _actionCollection?: ActionCollection; // hold the reference to its action collection
+    protected _actionCollection?: ActionCollection; // hold the reference to its action collection
 
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext();
@@ -3819,7 +3835,7 @@ export abstract class Action extends CardObject {
         return super.parse(source, context ? context : new SerializationContext());
     }
 
-    render(baseCssClass: string = "ac-pushButton") {
+    render() {
         // Cache hostConfig for perf
         let hostConfig = this.hostConfig;
 
@@ -3948,6 +3964,10 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
+    get promoteToPrimaryOnExecute(): boolean {
+        return false;
     }
 
     get isPrimary(): boolean {
@@ -4182,8 +4202,9 @@ export class ToggleVisibilityAction extends Action {
         return ToggleVisibilityAction.JsonTypeName;
     }
 
-    render(baseCssClass: string = "ac-pushButton") {
-        super.render(baseCssClass);
+    render() {
+        super.render();
+
         this.updateAriaControlsAttribute();
     }
 
@@ -4478,13 +4499,14 @@ export class ShowCardAction extends Action {
 
         return result;
     }
+
+    get promoteToPrimaryOnExecute(): boolean {
+        return true;
+    }
 }
 
 class OverflowAction extends Action {
     static readonly JsonTypeName: "Action.Overflow" = "Action.Overflow";
-    private static readonly _styleNodeId = "ac-ctrlContextMenu";
-
-    private _contextMenu: PopupMenu;
 
     constructor(private actions: Action[]) {
         super();
@@ -4504,19 +4526,31 @@ class OverflowAction extends Action {
         const shouldDisplayPopupMenu = !raiseDisplayOverflowActionMenuEvent(this, this.renderedElement);
 
         if (shouldDisplayPopupMenu && this.renderedElement) {
-            if (!this._contextMenu) {
-                this._contextMenu = new PopupMenu();
-                this.actions.forEach((action, id) => {
-                    const menuItem = new DropDownItem(id.toString(), action.title ?? "");
-                    menuItem.onClick = () => {
-                        action.execute();
-                        this._contextMenu.closePopup(false);
-                    };
-                    this._contextMenu.items.add(menuItem);
-                });
-            }
+            let contextMenu = new PopupMenu();
+            contextMenu.hostConfig = this.hostConfig;
 
-            this._contextMenu.popup(this.renderedElement);
+            for (let i = 0; i < this.actions.length; i++) {
+                const menuItem = new MenuItem(i.toString(), this.actions[i].title ?? "");
+                menuItem.onClick = () => {
+                    let actionToExecute = this.actions[i];
+
+                    if (this._actionCollection && actionToExecute.promoteToPrimaryOnExecute) {
+                        let swappedAction = this._actionCollection.promoteAsPrimaryAction(actionToExecute);
+
+                        if (swappedAction) {
+                            this.actions[i] = swappedAction;
+                        }
+                    }
+
+                    contextMenu.closePopup(false);
+
+                    actionToExecute.execute();
+                };
+
+                contextMenu.items.add(menuItem);
+            };
+
+            contextMenu.popup(this.renderedElement);
         }
 	}
 }
@@ -4657,6 +4691,34 @@ class ActionCollection {
 
     constructor(owner: CardElement) {
         this._owner = owner;
+    }
+
+    promoteAsPrimaryAction(action: Action): Action | undefined {
+        if (this._buttons.length > 1) {
+            let button = this._buttons[this._buttons.length - 2];
+
+            let swappedAction = button.action;
+
+            action.render();
+
+            if (swappedAction.renderedElement && swappedAction.renderedElement.parentElement && action.renderedElement) {
+                button.action = action;
+
+                swappedAction.renderedElement.parentElement.replaceChild(action.renderedElement, swappedAction.renderedElement);
+
+                action.renderedElement.setAttribute("aria-posinset", (this._buttons.length - 1).toString());
+                action.renderedElement.setAttribute("aria-setsize", this._buttons.length.toString());
+                action.renderedElement.setAttribute("role", "menuitem");
+
+                swappedAction.renderedElement.removeAttribute("aria-posinset");
+                swappedAction.renderedElement.removeAttribute("aria-setsize");
+                swappedAction.renderedElement.removeAttribute("role");
+
+                return swappedAction;
+            }
+        }
+
+        return undefined;
     }
 
     actionExecuted(action: Action) {
@@ -4837,34 +4899,41 @@ class ActionCollection {
             if (parentContainer) {
                 let parentContainerStyle = parentContainer.getEffectiveStyle();
 
+                let primaryActions: Action[] = [];
+                let secondaryActions: Action[] = [];
+
                 const allowedActions = this._items.filter(this.isActionAllowed.bind(this));
 
-                const primaryActions: Action[] = [];
-                const secondaryActions: Action[] = [];
-                allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
+                if (!this._owner.isDesignMode()) {
+                    allowedActions.forEach(action => action.mode === Enums.ActionMode.Secondary ? secondaryActions.push(action) : primaryActions.push(action));
 
-                // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
-                const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
+                    // given primaryActions.length > maxActions, exceeding actions are forced moved to overflow
+                    const overflowPrimaryActions = primaryActions.splice(hostConfig.actions.maxActions);
 
-				if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
-                    secondaryActions.push(...overflowPrimaryActions);
+                    if (GlobalSettings.allowMoreThanMaxActionsInOverflowMenu) {
+                        secondaryActions.push(...overflowPrimaryActions);
+                    }
+
+                    let shouldRenderOverflowActionButton = true;
+
+                    if (secondaryActions.length > 0) {
+                        if (!this._overflowAction) {
+                            this._overflowAction = new OverflowAction(secondaryActions);
+                            this._overflowAction.setParent(this._owner);
+                            this._overflowAction["_actionCollection"] = this;
+                        }
+
+                        let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
+                        shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
+                    }
+
+                    if (this._overflowAction && shouldRenderOverflowActionButton) {
+                        primaryActions.push(this._overflowAction);
+                    }
                 }
-
-                let shouldRenderOverflowActionButton = true;
-
-				if (secondaryActions.length > 0) {
-					if (!this._overflowAction) {
-						this._overflowAction = new OverflowAction(secondaryActions);
-						this._overflowAction.setParent(this._owner);
-					}
-
-					let isRootAction = this._owner instanceof AdaptiveCard && !this._owner.parent;
-					shouldRenderOverflowActionButton = !raiseRenderOverflowActionsEvent(this._overflowAction, isRootAction);
-				}
-
-				if (this._overflowAction && shouldRenderOverflowActionButton) {
-					primaryActions.push(this._overflowAction);
-				}
+                else {
+                    primaryActions = allowedActions;
+                }
 
 				for (let i = 0; i < primaryActions.length; i++) {
 					let actionButton = this.findActionButton(primaryActions[i]);
@@ -4872,15 +4941,16 @@ class ActionCollection {
 					if (!actionButton) {
 						actionButton = new ActionButton(primaryActions[i], parentContainerStyle);
 						actionButton.onClick = (ab) => { ab.action.execute(); };
+
 						this._buttons.push(actionButton);
 					}
 
 					actionButton.render();
 
 					if (actionButton.action.renderedElement) {
-						if (allowedActions.length > 1) {
+						if (primaryActions.length > 1) {
 							actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-							actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+							actionButton.action.renderedElement.setAttribute("aria-setsize", primaryActions.length.toString());
 							actionButton.action.renderedElement.setAttribute("role", "menuitem");
 						}
 
