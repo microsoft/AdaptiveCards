@@ -3,6 +3,8 @@
 
 namespace RendererQml
 {
+	int AdaptiveCardQmlRenderer::imageCounter = 0;
+
 	AdaptiveCardQmlRenderer::AdaptiveCardQmlRenderer()
 		: AdaptiveCardQmlRenderer(std::make_shared<AdaptiveCards::HostConfig>())
 	{
@@ -72,15 +74,13 @@ namespace RendererQml
         (*GetElementRenderers()).Set<AdaptiveCards::Column>(AdaptiveCardQmlRenderer::ColumnRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ColumnSet>(AdaptiveCardQmlRenderer::ColumnSetRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::FactSet>(AdaptiveCardQmlRenderer::FactSetRender);
-        /*(*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);*/
+        (*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
+        /*(*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);
-        /*(*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
-        (*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::ToggleInput>(AdaptiveCardQmlRenderer::ToggleInputRender);
         /*(*GetElementRenderers()).Set<AdaptiveCards::SubmitAction>(AdaptiveCardQmlRenderer::AdaptiveActionRender);
         (*GetElementRenderers()).Set<AdaptiveCards::OpenUrlAction>(AdaptiveCardQmlRenderer::AdaptiveActionRender);
@@ -850,7 +850,7 @@ namespace RendererQml
 		}
 
 		return uiFactSet;
-	}
+    }
   
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ImageRender(std::shared_ptr<AdaptiveCards::Image> image, std::shared_ptr<AdaptiveRenderContext> context)
 	{
@@ -864,6 +864,11 @@ namespace RendererQml
 		std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
 		dir_path.append("\\Images\\Cat.png");
 		std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
+
+		if (image->GetId().empty())
+		{
+			image->SetId(Formatter() << "image_auto_" << ++imageCounter);
+		}
 
 		uiImage->Property("id", image->GetId());
 		uiImage->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
@@ -932,14 +937,13 @@ namespace RendererQml
 
 		switch (image->GetHorizontalAlignment())
 		{
-		case AdaptiveCards::HorizontalAlignment::Left:
-			uiRectangle->Property("anchors.left", "parent.left");
-			break;
 		case AdaptiveCards::HorizontalAlignment::Center:
 			uiRectangle->Property("anchors.horizontalCenter", "parent.horizontalCenter");
 			break;
 		case AdaptiveCards::HorizontalAlignment::Right:
 			uiRectangle->Property("anchors.right", "parent.right");
+			break;
+		default:
 			break;
 		}
 
@@ -1177,6 +1181,35 @@ namespace RendererQml
 		ListViewTag->Property("delegate", delegateRectTag->ToString());
 
 		return ListViewTag;
+	}
+
+	std::shared_ptr<QmlTag> RendererQml::AdaptiveCardQmlRenderer::ImageSetRender(std::shared_ptr<AdaptiveCards::ImageSet> imageSet, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		auto uiFlow = std::make_shared<QmlTag>("Flow");
+
+		uiFlow->Property("width", "parent.width");
+		uiFlow->Property("spacing", "10");
+
+		if (!imageSet->GetIsVisible())
+		{
+			uiFlow->Property("visible", "false");
+		}
+
+		for (auto& image : imageSet->GetImages())
+		{
+			if (imageSet->GetImageSize() != AdaptiveCards::ImageSize::None)
+			{
+				image->SetImageSize(imageSet->GetImageSize());
+			}
+			else if (image->GetImageSize() != AdaptiveCards::ImageSize::None)
+			{
+				image->SetImageSize(image->GetImageSize());
+			}
+
+			uiFlow->AddChild(context->Render(image));
+		}
+
+		return uiFlow;
 	}
 }
 	

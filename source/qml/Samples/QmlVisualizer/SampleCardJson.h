@@ -616,7 +616,6 @@ namespace Samples
 	    {
           "type": "Image",
           "url": "https://adaptivecards.io/content/cats/1.png",
-          "id": "img",
           "size": "Small",
           "horizontalAlignment": "Right",
 	      "backgroundColor": "#FF0000FF"
@@ -694,6 +693,44 @@ namespace Samples
 		  "max": "17:00",
 		  "value": "25:30"
 		}
-	   ]	
+	   ]
+	})";
+
+	const std::string card_ImageSet = R"({
+	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "type": "AdaptiveCard",
+      "version": "1.0",
+      "body": [
+        {
+          "type": "ImageSet",
+          "imageSize": "Small",
+          "images": [
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ]
+        }
+      ]
 	})";
 }

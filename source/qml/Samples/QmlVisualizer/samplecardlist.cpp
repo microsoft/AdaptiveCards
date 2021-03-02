@@ -14,6 +14,7 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
     mCards.append({ QStringLiteral("Image"), QString::fromStdString(Samples::card_Image) });
     mCards.append({ QStringLiteral("Fact Set"), QString::fromStdString(Samples::card_FactSet) });
 	mCards.append({ QStringLiteral("Input Time"), QString::fromStdString(Samples::card_timeInput) });
+	mCards.append({ QStringLiteral("Image Set"), QString::fromStdString(Samples::card_ImageSet) });
 }
 
 QVector<Card> SampleCardList::cardList() const
