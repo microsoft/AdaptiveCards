@@ -283,7 +283,15 @@ static int kToggleVisibilityContext;
             [_hiddenSubviews removeObject:view];
         }
     }
-    [view removeObserver:self forKeyPath:@"hidden"];
+    if ([view isKindOfClass:[ACRSeparator class]]) {
+        ACRSeparator *separator = (ACRSeparator *)view;
+        if (separator.isVisibilityObserved) {
+            [view removeObserver:self forKeyPath:@"hidden"];
+            separator.isVisibilityObserved = NO;
+        }
+    } else {
+        [view removeObserver:self forKeyPath:@"hidden"];
+    }
     [_stackView removeArrangedSubview:view];
     [view removeFromSuperview];
 }

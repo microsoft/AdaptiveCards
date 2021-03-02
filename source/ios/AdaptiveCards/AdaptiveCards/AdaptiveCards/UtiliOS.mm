@@ -52,6 +52,7 @@ void configSeparatorVisibility(ACRSeparator *view,
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
     view.tag = hashkey.hash;
+    view.isVisibilityObserved = YES;
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
@@ -126,10 +127,16 @@ void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targ
     if (![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
         return;
     }
-
-    targetView.isBackgroundImageSet = YES;
+    
     UIImageView *imageView = (UIImageView *)backgroundView;
     UIImage *image = imageView.image;
+    
+    if (!image) {
+        return;
+    }
+    
+    targetView.isBackgroundImageSet = YES;
+    
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     // Fill Mode Description
     // ScaleAspectFill increases one dimension of image proportionally if
