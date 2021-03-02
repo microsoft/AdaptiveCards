@@ -4534,7 +4534,7 @@ class OverflowAction extends Action {
                 menuItem.onClick = () => {
                     let actionToExecute = this.actions[i];
 
-                    if (this._actionCollection && actionToExecute.promoteToPrimaryOnExecute) {
+                    if (this._actionCollection && (actionToExecute.promoteToPrimaryOnExecute || actionToExecute.mode === "primary")) {
                         let swappedAction = this._actionCollection.promoteAsPrimaryAction(actionToExecute);
 
                         if (swappedAction) {
