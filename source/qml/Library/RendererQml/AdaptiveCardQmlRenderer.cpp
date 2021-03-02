@@ -78,7 +78,7 @@ namespace RendererQml
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
-        /*(*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);
+        (*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);
         /*(*GetElementRenderers()).Set<AdaptiveCards::DateInput>(AdaptiveCardQmlRenderer::DateInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TimeInput>(AdaptiveCardQmlRenderer::TimeInputRender);*/
         (*GetElementRenderers()).Set<AdaptiveCards::ToggleInput>(AdaptiveCardQmlRenderer::ToggleInputRender);
@@ -739,8 +739,7 @@ namespace RendererQml
 
         std::string calendar_box_id = input->GetId() + "_cal_box";
 
-        uiDateInput->Property("inputMask", "text != \"\" ? \"00-00-0000;0\" : \"\"");
-        uiDateInput->Property("onFocusChanged", "{if(activeFocus === false){ z=0; if( " + calendar_box_id + ".visible === true){ " + calendar_box_id + ".visible=false}}}");
+        uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus==true) inputMask=\"00-00-0000;0\";" << "if(activeFocus === false){ z=0; if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
 
         auto glowTag = std::make_shared<QmlTag>("Glow");
         glowTag->Property("samples", "25");
@@ -804,7 +803,6 @@ namespace RendererQml
         return uiDateInput;
     }
 
-	
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		auto uiFactSet = std::make_shared<QmlTag>("Column");
@@ -852,7 +850,7 @@ namespace RendererQml
 		}
 
 		return uiFactSet;
-  }
+	}
   
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ImageRender(std::shared_ptr<AdaptiveCards::Image> image, std::shared_ptr<AdaptiveRenderContext> context)
 	{
@@ -962,6 +960,223 @@ namespace RendererQml
 		uiRectangle->AddChild(uiImage);
 
 		return uiRectangle;
+	}
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TimeInputRender(std::shared_ptr<AdaptiveCards::TimeInput> input, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		//TODO: Fetch System Time Format 
+		bool is12hour = true;
+
+		auto uiTimeInput = std::make_shared<QmlTag>("TextField");
+		std::string id = input->GetId();
+
+		uiTimeInput->Property("id", id);
+		uiTimeInput->Property("width", "parent.width");
+		uiTimeInput->Property("placeholderText", !input->GetPlaceholder().empty() ? input->GetPlaceholder() : "\"Select time\"");
+
+		uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
+
+		std::string value = input->GetValue();
+		if (!input->GetValue().empty() && Utils::isValidTime(value))
+		{
+			std::string defaultTime = value;
+			if (is12hour == true)
+			{
+				defaultTime = Utils::defaultTimeto12hour(defaultTime);
+			}
+			uiTimeInput->Property("text", Formatter() << "\"" << defaultTime << "\"");
+		}
+
+		if (!input->GetIsVisible())
+		{
+			uiTimeInput->Property("visibile", "false");
+		}
+
+		//TODO: Height Property, Spacing Property
+
+		std::string listViewHours_id = id + "_hours";
+		std::string listViewMin_id = id + "_min";
+		std::string listViewtt_id = id + "_tt";
+		std::string timeBox_id = id + "_timeBox";
+
+		uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus==true) inputMask=\"xx:xx;-\";" << " if(activeFocus==false){ z=0;" << "if(" << timeBox_id << ".visible==true)" << timeBox_id << ".visible=false ;" << "}}");
+
+		uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2));" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));" << "}");
+
+		auto glowTag = std::make_shared<QmlTag>("Glow");
+		glowTag->Property("samples", "25");
+		glowTag->Property("color", "'skyblue'");
+
+		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
+		backgroundTag->Property("radius", "5");
+		//TODO: These color styling should come from css
+		backgroundTag->Property("color", Formatter() << input->GetId() << ".hovered ? 'lightgray' : 'white'");
+		backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
+		backgroundTag->Property("border.width", "1");
+		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
+		backgroundTag->Property("layer.effect", glowTag->ToString());
+		uiTimeInput->Property("background", backgroundTag->ToString());
+
+		auto imageTag = std::make_shared<QmlTag>("Image");
+		imageTag->Property("anchors.fill", "parent");
+		imageTag->Property("anchors.margins", "5");
+
+		//Finding absolute Path at runtime
+		std::string file_path = __FILE__;
+		std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
+		dir_path.append("\\Images\\clockIcon.png");
+		std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
+		imageTag->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
+
+		//Relative wrt main.qml not working
+		//imageTag->Property("source", "\"" + std::string("file:/../../Library/RendererQml/Images/calendarIcon.png") + "\"");
+
+		auto mouseAreaTag = std::make_shared<QmlTag>("MouseArea");
+
+		mouseAreaTag->AddChild(imageTag);
+		mouseAreaTag->Property("height", "parent.height");
+		mouseAreaTag->Property("width", "height");
+		mouseAreaTag->Property("anchors.right", "parent.right");
+		mouseAreaTag->Property("enabled", "true");
+
+		mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2));\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n" << "}");
+
+		uiTimeInput->AddChild(mouseAreaTag);
+
+		//Rectangle that contains the hours and min ListViews 
+		auto timeBoxTag = std::make_shared<QmlTag>("Rectangle");
+		timeBoxTag->Property("id", timeBox_id);
+		timeBoxTag->Property("anchors.topMargin", "1");
+		timeBoxTag->Property("anchors.left", "parent.left");
+		timeBoxTag->Property("anchors.top", "parent.bottom");
+		timeBoxTag->Property("width", "105");
+		timeBoxTag->Property("height", "200");
+		timeBoxTag->Property("visible", "false");
+		timeBoxTag->Property("layer.enabled", "true");
+		timeBoxTag->Property("layer.effect", glowTag->ToString());
+
+		//ListView for DropDown Selection
+		std::map<std::string, std::map<std::string, std::string>> ListViewHoursProperties;
+		std::map<std::string, std::map<std::string, std::string>> ListViewMinProperties;
+		std::map<std::string, std::map<std::string, std::string>> ListViewttProperties;
+		int hoursRange = 24;
+
+		if (is12hour == true)
+		{
+			timeBoxTag->Property("width", "155");
+			uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01]-|0\\d|1[0-2]):(--|[0-5]-|[0-5]\\d)\\s(--|A-|AM|P-|PM)$/}");
+			uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus==true) inputMask=\"xx:xx >xx;-\";" << " if(activeFocus==false){ z=0;" << "if(" << timeBox_id << ".visible==true)" << timeBox_id << ".visible=false ;" << "}}");
+			uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2))-1;" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));"
+				<< "var tt_index=3;" << "switch(getText(6,8)){ case 'PM':tt_index = 1; break;case 'AM':tt_index = 0; break;}" << listViewtt_id << ".currentIndex=tt_index;" << "}");
+			mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2))-1;\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n"
+				<< "var tt_index=3;" << "switch(parent.getText(6,8)){ case 'PM':tt_index = 1; break;case 'AM':tt_index = 0; break;}" << listViewtt_id << ".currentIndex=tt_index;" << "}");
+
+
+			ListViewHoursProperties["Text"].insert(std::pair<std::string, std::string>("text", "String(index+1).padStart(2, '0')"));
+			ListViewHoursProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{" << listViewHours_id << ".currentIndex=index;" << "var x=String(index+1).padStart(2, '0') ;" << id << ".insert(0,x);" << "}"));
+
+			hoursRange = 12;
+
+			ListViewttProperties["ListView"].insert(std::pair<std::string, std::string>("anchors.right", "parent.right"));
+			ListViewttProperties["ListView"].insert(std::pair<std::string, std::string>("model", "ListModel{ListElement { name: \"AM\"} ListElement { name: \"PM\"}}"));
+			ListViewttProperties["Text"].insert(std::pair<std::string, std::string>("text", "model.name"));
+			ListViewttProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{" << listViewtt_id << ".currentIndex=index;" << id << ".insert(6,model.name);" << "}"));
+
+			auto listViewttTag = AdaptiveCardQmlRenderer::ListViewTagforTimeInput(id, listViewtt_id, ListViewttProperties);
+			timeBoxTag->AddChild(listViewttTag);
+
+		}
+
+		ListViewHoursProperties["ListView"].insert(std::pair<std::string, std::string>("anchors.left", "parent.left"));
+		ListViewHoursProperties["ListView"].insert(std::pair<std::string, std::string>("model", std::to_string(hoursRange)));
+		ListViewHoursProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{" << listViewHours_id << ".currentIndex=index;" << "var x=String(index).padStart(2, '0') ;" << id << ".insert(0,x);" << "}"));
+
+		auto ListViewHoursTag = AdaptiveCardQmlRenderer::ListViewTagforTimeInput(id, listViewHours_id, ListViewHoursProperties);
+
+		ListViewMinProperties["ListView"].insert(std::pair<std::string, std::string>("anchors.left", listViewHours_id + ".right"));
+		ListViewMinProperties["ListView"].insert(std::pair<std::string, std::string>("model", "60"));
+		ListViewMinProperties["MouseArea"].insert(std::pair<std::string, std::string>("onClicked", Formatter() << "{" << listViewMin_id << ".currentIndex=index;" << "var x=String(index).padStart(2, '0') ;" << id << ".insert(2,x);" << "}"));
+
+		auto ListViewMinTag = AdaptiveCardQmlRenderer::ListViewTagforTimeInput(id, listViewMin_id, ListViewMinProperties);
+
+		timeBoxTag->AddChild(ListViewHoursTag);
+		timeBoxTag->AddChild(ListViewMinTag);
+		uiTimeInput->AddChild(timeBoxTag);
+
+		return uiTimeInput;
+
+	}
+
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ListViewTagforTimeInput(std::string& parent_id, std::string& listView_id, std::map < std::string, std::map<std::string, std::string>>& properties)
+	{
+		auto ListViewTag = std::make_shared<QmlTag>("ListView");
+		ListViewTag->Property("id", listView_id);
+
+		//TODO:Avoid fixed values inside ListView
+		ListViewTag->Property("width", "45");
+		ListViewTag->Property("height", "parent.height-10");
+		ListViewTag->Property("anchors.margins", "5");
+		ListViewTag->Property("anchors.top", "parent.top");
+		ListViewTag->Property("flickableDirection", "Flickable.VerticalFlick");
+		ListViewTag->Property("boundsBehavior", "Flickable.StopAtBounds");
+		ListViewTag->Property("clip", "true");
+
+
+		//Elements inside delegate: Rectangle{ Text{} MouseArea{} }
+		std::string MouseArea_id = listView_id + "mouseArea";
+		auto MouseAreaTag = std::make_shared<QmlTag>("MouseArea");
+		MouseAreaTag->Property("id", MouseArea_id);
+		MouseAreaTag->Property("anchors.fill", "parent");
+		MouseAreaTag->Property("enabled", "true");
+		MouseAreaTag->Property("hoverEnabled", "true");
+		MouseAreaTag->Property("onClicked", Formatter() << "{" << listView_id << ".currentIndex=index;" << "var x=String(index).padStart(2, '0') ;" << parent_id << ".insert(0,x);" << "}");
+
+		auto TextTag = std::make_shared<QmlTag>("Text");
+		TextTag->Property("text", "String(index).padStart(2, '0')");
+		TextTag->Property("anchors.fill", "parent");
+		TextTag->Property("horizontalAlignment", "Text.AlignHCenter");
+		TextTag->Property("verticalAlignment", "Text.AlignVCenter");
+		TextTag->Property("color", Formatter() << listView_id << ".currentIndex==index ? \"white\" : \"black\"");
+
+		auto delegateRectTag = std::make_shared<QmlTag>("Rectangle");
+		delegateRectTag->Property("width", "45");
+		delegateRectTag->Property("height", "45");
+		delegateRectTag->Property("color", Formatter() << listView_id << ".currentIndex==index ? \"blue\" : " << MouseArea_id << ".containsMouse?\"lightblue\":\"white\"");
+
+		std::map<std::string, std::map<std::string, std::string>>::iterator outer_iterator;
+		std::map<std::string, std::string>::iterator inner_iterator;
+		
+		for (outer_iterator = properties.begin(); outer_iterator != properties.end(); outer_iterator++)
+		{
+			std::shared_ptr<QmlTag> propertyTag;
+
+			if (outer_iterator->first.compare("ListView") == 0)
+			{
+				propertyTag = ListViewTag;
+			}
+
+			else if (outer_iterator->first.compare("MouseArea") == 0)
+			{
+				propertyTag = MouseAreaTag;
+			}
+
+			else if (outer_iterator->first.compare("Text") == 0)
+			{
+				propertyTag = TextTag;
+			}
+
+			for (inner_iterator = outer_iterator->second.begin(); inner_iterator != outer_iterator->second.end(); inner_iterator++)
+			{
+				propertyTag->Property(inner_iterator->first, inner_iterator->second);
+			}
+		}
+
+		delegateRectTag->AddChild(MouseAreaTag);
+		delegateRectTag->AddChild(TextTag);
+
+		ListViewTag->Property("delegate", delegateRectTag->ToString());
+
+		return ListViewTag;
 	}
 }
 	

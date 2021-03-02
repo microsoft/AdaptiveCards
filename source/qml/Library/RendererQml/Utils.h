@@ -104,10 +104,10 @@ namespace RendererQml
 		static std::string GetTextHighlightColor(std::string textColor);
 		static std::string AddCSSProperty(std::string property,std::string value);
 
-		static std::string GetDate(std::string date, bool MinimumorMaximum);
-    
-    static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
-
+		static std::string GetDate(std::string date, bool MinimumorMaximum);   
+		static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
+		static bool isValidTime(std::string& time);
+		static std::string defaultTimeto12hour(std::string& defaultTime);
 
     private:
         Utils() {}

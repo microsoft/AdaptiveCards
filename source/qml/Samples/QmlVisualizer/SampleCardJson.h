@@ -670,4 +670,30 @@ namespace Samples
        }
       ]
     })";
+
+	const std::string card_timeInput = R"({
+	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	  "type": "AdaptiveCard",
+	  "version": "1.0",
+	  "body": [
+		{
+		  "type": "TextBlock",
+		  "text": "What time do you want to meet?"
+		},
+		{
+		  "type": "Input.Time",
+		  "id": "time1",
+		  "min": "09:00",
+		  "max": "17:00",
+		  "value": "15:30"
+		},
+		{
+		  "type": "Input.Time",
+		  "id": "time2",
+		  "min": "09:00",
+		  "max": "17:00",
+		  "value": "25:30"
+		}
+	   ]	
+	})";
 }

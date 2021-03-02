@@ -320,4 +320,53 @@ namespace RendererQml
 		}
 		return d[1] + "-" + d[2] + "-" + d[0];
 	}
+
+	bool Utils::isValidTime(std::string& time)
+	{
+		//24 hour format check
+		std::vector<std::string> time_split;
+
+		std::stringstream ss(time);
+
+		try
+		{
+			while (ss.good())
+			{
+				std::string substr;
+				getline(ss, substr, ':');
+				time_split.push_back(substr);
+			}
+			if (stoi(time_split[0]) >= 0 && stoi(time_split[0]) <= 23)
+			{
+				if(stoi(time_split[1]) >= 0 && stoi(time_split[1]) <= 59)
+				return true;
+			}
+			return false;
+		}
+		catch(...)
+		{
+			return false;
+		}
+	}
+
+	std::string Utils::defaultTimeto12hour(std::string& defaultTime)
+	{
+		std::vector<std::string> time_split;
+
+		std::stringstream ss(defaultTime);
+		while (ss.good())
+		{
+			std::string substr;
+			getline(ss, substr, ':');
+			time_split.push_back(substr);
+		}
+		std::string tt = "AM";
+		if (stoi(time_split[0]) > 12)
+		{
+			tt = "PM";
+		}
+		time_split[0] = std::to_string(stoi(time_split[0]) > 12 ? stoi(time_split[0]) - 12 : stoi(time_split[0]));
+		return Formatter() << std::setfill('0') << std::setw(2) << time_split[0] << ":" << time_split[1] << " " << tt;
+	}
+
 }
