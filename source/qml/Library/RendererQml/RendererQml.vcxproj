@@ -201,6 +201,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Images\calendarIcon.png" />
+    <Image Include="Images\Cat.png" />
+    <Image Include="Images\clockIcon.png" />
+    <Image Include="Images\sampleImage.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

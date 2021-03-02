@@ -82,7 +82,7 @@ namespace RendererQml
 		static std::shared_ptr<QmlTag> GetNewColumn(std::shared_ptr<AdaptiveCards::Container> container, std::shared_ptr<AdaptiveRenderContext> context);		
 		static std::shared_ptr<QmlTag> ListViewTagforTimeInput(std::string& parent_id, std::string& id, std::map < std::string, std::map<std::string, std::string>>& properties);
     
-    static int containerCounter;
+        static int containerCounter;
 		static int imageCounter;
     };
 }

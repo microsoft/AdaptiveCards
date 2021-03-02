@@ -806,7 +806,7 @@ namespace Samples
 		]
 	  }
 	  ]
-  })";
+    })";
 
 	const std::string card_timeInput = R"({
 	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",

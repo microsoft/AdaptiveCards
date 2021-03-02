@@ -3,9 +3,6 @@
 #include "samplecardlist.h"
 #include "SampleCardJson.h"
 
-#include "HostConfig.h"
-#include "QmlTag.h"
-
 #include <QGuiApplication>
 #include <QQuickView>
 #include <QQmlContext>

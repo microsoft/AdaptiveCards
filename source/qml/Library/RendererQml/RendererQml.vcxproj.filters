@@ -100,5 +100,14 @@
     <Image Include="Images\calendarIcon.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Images\Cat.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\clockIcon.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Images\sampleImage.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>
