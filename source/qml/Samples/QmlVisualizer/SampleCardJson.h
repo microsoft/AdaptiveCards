@@ -670,6 +670,144 @@ namespace Samples
       ]
     })";
 
+	const std::string card_Container = R"({
+	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	"type": "AdaptiveCard",
+	"version": "1.0",
+	"body": [
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "This is some text"
+        },
+        {
+          "type": "Image",
+	      "id": "image1",
+          "url": "https://adaptivecards.io/content/cats/1.png"
+        }
+      ]
+    },
+	{
+      "type": "Container",
+      "style": "accent",
+      "items": [
+        {
+          "type": "Container",
+          "style": "emphasis",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - emphasis"
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "style": "default",
+	      "bleed": true,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - default"
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "style": "good",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - good"
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "style": "warning",
+	      "bleed": true,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - warning"
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "style": "attention",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - attention"
+            }
+          ]
+        },
+        {
+          "type": "Container",
+          "style": "accent",
+		  "bleed": true,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Contained container - accent"
+            }
+          ]
+        }
+      ]
+    },
+	{
+      "type": "TextBlock",
+      "text": "I'm a regular TextBlock..."
+    },
+    {
+      "type": "Container",
+      "minHeight": "400px",
+      "verticalContentAlignment": "center",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "But I'm centered..."
+        },
+        {
+          "type": "Container",
+          "style": "accent",
+          "verticalContentAlignment": "center",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "But I'm centered..."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Container",
+      "verticalContentAlignment": "bottom",
+      "items": [
+        {
+          "type": "TextBlock",
+          "text": "And I'm like a footer!"
+        }
+      ]
+    },
+	{
+	  "type": "Container",
+	  "minHeight": "150px",
+	  "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+	  "items": [
+		{
+		  "type": "TextBlock",
+		  "text": "What a beautiful background"
+		}
+		]
+	  }
+	  ]
+  })";
+
 	const std::string card_timeInput = R"({
 	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	  "type": "AdaptiveCard",
