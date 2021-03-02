@@ -9,9 +9,10 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
+import { AdaptiveApplet } from "./adaptive-applet";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -6417,6 +6418,83 @@ export class RefreshDefinition extends SerializableObject {
     parent: CardElement;
 }
 
+export class CardButton extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_4, "type");
+    static readonly titleProperty = new StringProperty(Versions.v1_4, "title");
+    static readonly imageProperty = new StringProperty(Versions.v1_4, "image");
+    static readonly valueProperty = new StringProperty(Versions.v1_4, "value");
+
+    protected getSchemaKey(): string {
+        return "SigninButton";
+    }
+
+    //#endregion
+
+    @property(CardButton.typeProperty)
+    type?: string;
+
+    @property(CardButton.titleProperty)
+    title?: string;
+
+    @property(CardButton.imageProperty)
+    image?: string;
+
+    @property(CardButton.valueProperty)
+    value?: string;
+}
+
+export class TokenExchangeResource extends SerializableObject {
+    //#region Schema
+
+    static readonly idProperty = new StringProperty(Versions.v1_4, "id");
+    static readonly uriProperty = new StringProperty(Versions.v1_4, "uri");
+    static readonly providerIdProperty = new StringProperty(Versions.v1_4, "providerId");
+
+    protected getSchemaKey(): string {
+        return "TokenExchangeResource";
+    }
+
+    //#endregion
+
+    @property(TokenExchangeResource.idProperty)
+    id?: string;
+
+    @property(TokenExchangeResource.uriProperty)
+    uri?: string;
+
+    @property(TokenExchangeResource.providerIdProperty)
+    providerId?: string;
+}
+
+export class Authentication extends SerializableObject {
+    //#region Schema
+
+    static readonly textProperty = new StringProperty(Versions.v1_4, "text");
+    static readonly connectionNameProperty = new StringProperty(Versions.v1_4, "connectionName");
+    static readonly buttonsProperty = new SerializableObjectCollectionProperty(Versions.v1_4, "buttons", CardButton);
+    static readonly tokenExchangeResourceProperty = new SerializableObjectProperty(Versions.v1_4, "tokenExchangeResource", TokenExchangeResource, true);
+
+    protected getSchemaKey(): string {
+        return "Authentication";
+    }
+
+    //#endregion
+
+    @property(Authentication.textProperty)
+    text?: string;
+
+    @property(Authentication.connectionNameProperty)
+    connectionName?: string;
+
+    @property(Authentication.buttonsProperty)
+    buttons: CardButton[];
+
+    @property(Authentication.tokenExchangeResourceProperty)
+    tokenExchangeResource?: TokenExchangeResource;
+}
+
 // @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     static readonly schemaUrl = "http://adaptivecards.io/schemas/adaptive-card.json";
@@ -6459,6 +6537,7 @@ export class AdaptiveCard extends ContainerWithActions {
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
     static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
+    static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
 
     @property(AdaptiveCard.versionProperty)
     version: Version;
@@ -6481,6 +6560,9 @@ export class AdaptiveCard extends ContainerWithActions {
             value.parent = this;
         }
     }
+
+    @property(AdaptiveCard.authenticationProperty)
+    authentication?: Authentication;
 
     //#endregion
 

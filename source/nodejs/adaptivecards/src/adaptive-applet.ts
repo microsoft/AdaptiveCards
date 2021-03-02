@@ -2,9 +2,9 @@ import * as Enums from "./enums";
 import * as Utils from "./utils";
 import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
-import { ActivityStatus, ActivityResponse, ActivityRequest, ActivityInvocationTrigger } from "./invoke-activity";
+import { ActivityResponse, ActivityRequest, ActivityRequestTrigger, SuccessResponse, ErrorResponse, LoginRequestResponse } from "./activity-request";
 import { Strings } from "./strings";
-import { SubmitAction, ExecuteAction, SerializationContext, CardElement, AdaptiveCard, Action, Input } from "./card-elements";
+import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input } from "./card-elements";
 import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
 
@@ -30,6 +30,9 @@ function logEvent(level: Enums.LogLevel, message?: any, ...optionalParams: any[]
 }
 
 export class AdaptiveApplet {
+    private static readonly submitMagicCodeActionId = "submitMagicCode";
+    private static readonly cancelMagicCodeAuthActionId = "cancelMagicCodeAuth";
+
     private _card?: AdaptiveCard;
     private _cardPayload: any;
     private _allowAutomaticCardUpdate: boolean = false;
@@ -58,7 +61,8 @@ export class AdaptiveApplet {
             renderedRefreshButton = this.onRenderRefreshButton(this);
         }
         else {
-            let cardPayload: object;
+            // let cardPayload: object;
+            let message = Strings.runtime.refreshThisCard();
             
             if (GlobalSettings.applets.refresh.mode === Enums.RefreshMode.Automatic) {
                 let autoRefreshPausedMessage = Strings.runtime.automaticRefreshPaused();
@@ -67,6 +71,9 @@ export class AdaptiveApplet {
                     autoRefreshPausedMessage += " ";
                 }
 
+                message = Strings.runtime.clckToRestartAutomaticRefresh();
+
+                /*
                 cardPayload = {
                     type: "AdaptiveCard",
                     version: "1.2",
@@ -88,7 +95,9 @@ export class AdaptiveApplet {
                         }
                     ]
                 };
+                */
             }
+            /*
             else {
                 cardPayload = {
                     type: "AdaptiveCard",
@@ -111,6 +120,28 @@ export class AdaptiveApplet {
                     ]
                 };
             }
+            */
+
+            let cardPayload = {
+                type: "AdaptiveCard",
+                version: "1.2",
+                body: [
+                    {
+                        type: "RichTextBlock",
+                        horizontalAlignment: "right",
+                        inlines: [
+                            {
+                                type: "TextRun",
+                                text: message,
+                                selectAction: {
+                                    type: "Action.Submit",
+                                    id: "refreshCard"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
 
             let card = new AdaptiveCard();
             card.parse(cardPayload, new SerializationContext(Versions.v1_2));
@@ -118,7 +149,7 @@ export class AdaptiveApplet {
                 if (action.id === "refreshCard") {
                     Utils.clearElementChildren(this._refreshButtonHostElement);
                     
-                    this.internalExecuteAction(refreshAction, ActivityInvocationTrigger.Automatic, 0);
+                    this.internalExecuteAction(refreshAction, ActivityRequestTrigger.Automatic, 0);
                 }
             }
 
@@ -134,27 +165,13 @@ export class AdaptiveApplet {
         }
     }
 
-    private createActivityRequest(action: ExecuteAction, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number): ActivityRequest | undefined {
+    private createActivityRequest(action: ExecuteAction, trigger: ActivityRequestTrigger, consecutiveRefreshes: number): ActivityRequest | undefined {
         if (this.card) {
             let request: ActivityRequest = {
-                activity: {
-                    type: "invoke",
-                    name: "adaptiveCard/action",
-                    localTimezone: "",
-                    localTimestamp: "",
-                    value: {
-                        action: {
-                            type: "Action.Execute",
-                            id: action.id,
-                            verb: action.verb,
-                            data: action.data
-                        },
-                        trigger: trigger,
-                    }
-                },
+                action: action,
+                trigger: trigger,
                 attemptNumber: 0,
                 consecutiveRefreshes: consecutiveRefreshes,
-                action: action
             };
 
             let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
@@ -195,18 +212,13 @@ export class AdaptiveApplet {
                     actions: [
                         {
                             type: "Action.Submit",
-                            id: "submitMagicCode",
+                            id: AdaptiveApplet.submitMagicCodeActionId,
                             title: "Submit"
                         },
                         {
                             type: "Action.Submit",
-                            id: "cancel",
+                            id: AdaptiveApplet.cancelMagicCodeAuthActionId,
                             title: "Cancel"
-                        },
-                        {
-                            type: "Action.Submit",
-                            id: "wontWork",
-                            title: "This won't work"
                         }
                     ]
                 }
@@ -256,7 +268,7 @@ export class AdaptiveApplet {
                         // If the user takes an action, cancel any pending automatic refresh
                         this.cancelAutomaticRefresh();
 
-                        this.internalExecuteAction(action, ActivityInvocationTrigger.Manual, 0);
+                        this.internalExecuteAction(action, ActivityRequestTrigger.Manual, 0);
                     }
                     this._card.onInputValueChanged = (input: Input) => {
                         // If the user modifies an input, cancel any pending automatic refresh
@@ -277,7 +289,7 @@ export class AdaptiveApplet {
                                 if (GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes <= 0) {
                                     logEvent(Enums.LogLevel.Info, "Triggering automatic card refresh number " + (consecutiveRefreshes + 1));
 
-                                    this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
+                                    this.internalExecuteAction(this._card.refresh.action, ActivityRequestTrigger.Automatic, consecutiveRefreshes + 1);
                                 }
                                 else {
                                     logEvent(Enums.LogLevel.Info, "Scheduling automatic card refresh number " + (consecutiveRefreshes + 1) + " in " + GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes + "ms");
@@ -289,7 +301,7 @@ export class AdaptiveApplet {
                                     window.setTimeout(
                                         () => {
                                             if (this._allowAutomaticCardUpdate) {
-                                                this.internalExecuteAction(action, ActivityInvocationTrigger.Automatic, consecutiveRefreshes + 1);
+                                                this.internalExecuteAction(action, ActivityRequestTrigger.Automatic, consecutiveRefreshes + 1);
                                             }
                                         },
                                         GlobalSettings.applets.refresh.timeBetweenAutomaticRefreshes
@@ -321,7 +333,7 @@ export class AdaptiveApplet {
         }
     }
 
-    private internalExecuteAction(action: Action, trigger: ActivityInvocationTrigger, consecutiveRefreshes: number) {
+    private internalExecuteAction(action: Action, trigger: ActivityRequestTrigger, consecutiveRefreshes: number) {
         if (action instanceof ExecuteAction) {
             if (this.channelAdapter) {
                 let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
@@ -335,18 +347,18 @@ export class AdaptiveApplet {
             }
         }
 
-        if (this.onExecuteAction) {
-            this.onExecuteAction(this, action);
+        if (this.onAction) {
+            this.onAction(this, action);
         }
     }
 
-    private activityRequestSucceeded(response: ActivityResponse) {
+    private activityRequestSucceeded(response: SuccessResponse, parsedContent: string | AdaptiveCard | undefined) {
         if (this.onActivityRequestSucceeded) {
-            this.onActivityRequestSucceeded(this, response);
+            this.onActivityRequestSucceeded(this, response, parsedContent);
         }
     }
 
-    private activityRequestFailed(response: ActivityResponse): number {
+    private activityRequestFailed(response: ErrorResponse): number {
         return this.onActivityRequestFailed ? this.onActivityRequestFailed(this, response) : GlobalSettings.applets.defaultTimeBetweenRetryAttempts;
     }
 
@@ -395,139 +407,144 @@ export class AdaptiveApplet {
             }
 
             if (response) {
-                switch (response.status) {
-                    case ActivityStatus.Success:
+                if (response instanceof SuccessResponse) {
+                    removeOverlay();
+
+                    if (response.rawContent === undefined) {
+                        throw new Error("internalSendActivityRequestAsync: Action.Execute result is undefined");
+                    }
+
+                    let parsedContent = response.rawContent;
+
+                    try {
+                        parsedContent = JSON.parse(response.rawContent);
+                    }
+                    catch {
+                        // Leave parseContent as is
+                    }
+
+                    if (typeof parsedContent === "string") {
+                        logEvent(Enums.LogLevel.Info, "The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                        this.activityRequestSucceeded(response, parsedContent);
+                    }
+                    else if (typeof parsedContent === "object" && parsedContent["type"] === "AdaptiveCard") {
+                        logEvent(Enums.LogLevel.Info, "The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                        this.internalSetCard(parsedContent, request.consecutiveRefreshes);
+                        this.activityRequestSucceeded(response, this.card);
+                    }
+                    else {
+                        throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof response.rawContent + ")");
+                    }
+
+                    done = true;
+                }
+                else if (response instanceof ErrorResponse) {
+                    let retryIn: number = this.activityRequestFailed(response);
+
+                    if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.applets.maximumRetryAttempts) {
+                        logEvent(Enums.LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
+
+                        request.attemptNumber++;
+
+                        await new Promise<void>(
+                            (resolve, reject) => {
+                                window.setTimeout(
+                                    () => { resolve(); },
+                                    retryIn
+                                )
+                            });
+                    }
+                    else {
+                        logEvent(Enums.LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+
                         removeOverlay();
 
+                        done = true;
+                    }
+                }
+                else if (response instanceof LoginRequestResponse) {
+                    logEvent(Enums.LogLevel.Info, "The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
+
+                    if ((request.attemptNumber + 1) <= GlobalSettings.applets.maximumRetryAttempts) {
+                        let signinUrl = response.getSinginUrl();
+
+                        if (signinUrl === undefined) {
+                            throw new Error("internalSendActivityRequestAsync: the login request doesn't contain a valid siginin URL.");
+                        }
+
+                        let loginUrl: URL;
+
                         try {
-                            response.content = JSON.parse(response.content);
+                            loginUrl = new URL(signinUrl);
                         }
-                        catch {
-                            // Leave the content as is
+                        catch (e) {
+                            logEvent(Enums.LogLevel.Error, "Invalid signin URL: " + signinUrl);
+
+                            throw e;
                         }
 
-                        if (typeof response.content === "string") {
-                            logEvent(Enums.LogLevel.Info, "The activity request returned a string after " + (request.attemptNumber + 1) + " attempt(s).");
-                        }
-                        else if (typeof response.content === "object") {
-                            switch (response.content["type"]) {
-                                case "AdaptiveCard":
-                                    logEvent(Enums.LogLevel.Info, "The activity request returned an Adaptive Card after " + (request.attemptNumber + 1) + " attempt(s).");
+                        logEvent(Enums.LogLevel.Info, "Login required at " + loginUrl.toString());
 
-                                    this.internalSetCard(response.content, request.consecutiveRefreshes);
+                        let authCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
+                        authCodeInputCard.render();
+                        authCodeInputCard.onExecuteAction = (submitMagicCodeAction: Action) => {
+                            if (this.card && submitMagicCodeAction instanceof SubmitAction) {
+                                switch (submitMagicCodeAction.id) {
+                                    case AdaptiveApplet.submitMagicCodeActionId:
+                                        let authCode: string | undefined = undefined;
 
-                                    break;
-                                case "Activity.InvocationError.Unauthorized":
-                                    logEvent(Enums.LogLevel.Info, "The activity request returned Activity.InvocationError.Unauthorized after " + (request.attemptNumber + 1) + " attempt(s).");
-
-                                    if ((request.attemptNumber + 1) <= GlobalSettings.applets.maximumRetryAttempts) {
-                                        let loginUrl: URL;
-
-                                        try {
-                                            loginUrl = new URL(response.content["loginUrl"]);
-                                        }
-                                        catch (e) {
-                                            logEvent(Enums.LogLevel.Error, "Invalid loginUrl: " + response.content["loginUrl"]);
-
-                                            throw e;
+                                        if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
+                                            authCode = (<any>submitMagicCodeAction.data)["magicCode"];
                                         }
 
-                                        logEvent(Enums.LogLevel.Info, "Login required at " + loginUrl.toString());
+                                        if (authCode) {
+                                            this.displayCard(this.card);
 
-                                        let magicCodeInputCard = this.createMagicCodeInputCard(request.attemptNumber);
-                                        magicCodeInputCard.render();
-                                        magicCodeInputCard.onExecuteAction = (submitMagicCodeAction: Action) => {
-                                            if (this.card && submitMagicCodeAction instanceof SubmitAction) {
-                                                switch (submitMagicCodeAction.id) {
-                                                    case "submitMagicCode":
-                                                        let magicCode: string | undefined = undefined;
+                                            request.authCode = authCode;
+                                            request.attemptNumber++;
 
-                                                        if (submitMagicCodeAction.data && typeof (<any>submitMagicCodeAction.data)["magicCode"] === "string") {
-                                                            magicCode = (<any>submitMagicCodeAction.data)["magicCode"];
-                                                        }
-
-                                                        if (magicCode) {
-                                                            this.displayCard(this.card);
-
-                                                            request.activity.value.magicCode = magicCode;
-                                                            request.attemptNumber++;
-
-                                                            this.internalSendActivityRequestAsync(request);
-                                                        }
-                                                        else {
-                                                            alert("Please enter the magic code you received.");
-                                                        }
-
-                                                        break;
-                                                    case "cancel":
-                                                        logEvent(Enums.LogLevel.Warning, "Authentication cancelled by user.");
-
-                                                        this.displayCard(this.card);
-
-                                                        break;
-                                                    default:
-                                                        logEvent(Enums.LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
-
-                                                        alert("Something went wrong. This action can't be handled.");
-
-                                                        break;
-                                                }
-                                            }
+                                            this.internalSendActivityRequestAsync(request);
+                                        }
+                                        else {
+                                            alert("Please enter the magic code you received.");
                                         }
 
-                                        this.displayCard(magicCodeInputCard);
+                                        break;
+                                    case AdaptiveApplet.cancelMagicCodeAuthActionId:
+                                        logEvent(Enums.LogLevel.Warning, "Authentication cancelled by user.");
 
-                                        let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
-                                        let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
+                                        this.displayCard(this.card);
 
-                                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`);
-                                    }
-                                    else {
-                                        logEvent(Enums.LogLevel.Error, "Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
+                                        break;
+                                    default:
+                                        logEvent(Enums.LogLevel.Error, "Unespected action taken from magic code input card (id = " + submitMagicCodeAction.id + ")");
 
-                                        alert("Authentication failed.");
-                                    }
+                                        alert(Strings.magicCodeInputCard.somethingWentWrong());
 
-                                    break;
-                                default:
-                                    throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof response.content + ")");
+                                        break;
+                                }
                             }
                         }
-                        else {
-                            throw new Error("internalSendActivityRequestAsync: Action.Execute result is of unsupported type (" + typeof response.content + ")");
-                        }
 
-                        this.activityRequestSucceeded(response);
+                        this.displayCard(authCodeInputCard);
 
-                        done = true;
+                        let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
+                        let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
 
-                        break;
-                    case ActivityStatus.Failure:
-                    default:
-                        let retryIn: number = this.activityRequestFailed(response);
+                        window.open(loginUrl.toString(), "Login", `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`);
+                    }
+                    else {
+                        logEvent(Enums.LogLevel.Error, "Authentication failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
 
-                        if (retryIn >= 0 && (request.attemptNumber + 1) < GlobalSettings.applets.maximumRetryAttempts) {
-                            logEvent(Enums.LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
+                        alert(Strings.magicCodeInputCard.authenticationFailed());
+                    }
 
-                            request.attemptNumber++;
-
-                            await new Promise<void>(
-                                (resolve, reject) => {
-                                    window.setTimeout(
-                                        () => { resolve(); },
-                                        retryIn
-                                    )
-                                });
-                        }
-                        else {
-                            logEvent(Enums.LogLevel.Error, "Activity request failed. Giving up after " + (request.attemptNumber + 1) + " attempt(s)");
-
-                            removeOverlay();
-
-                            done = true;
-                        }
-
-                        break;
+                    break;
+                }
+                else {
+                    throw new Error("Unhandled response type: " + response.toString());
                 }
             }
         }
@@ -563,13 +580,13 @@ export class AdaptiveApplet {
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
     onCardChanged?: (sender: AdaptiveApplet) => void;
     onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: ActivityRequest) => boolean;
-    onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: ActivityResponse) => void;
-    onActivityRequestFailed?: (sender: AdaptiveApplet, response: ActivityResponse) => number;
+    onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: SuccessResponse, parsedContent: string | AdaptiveCard | undefined) => void;
+    onActivityRequestFailed?: (sender: AdaptiveApplet, response: ErrorResponse) => number;
     onCreateSerializationContext?: (sender: AdaptiveApplet) => SerializationContext;
     onCreateProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => HTMLElement | undefined;
     onRemoveProgressOverlay?: (sender: AdaptiveApplet, request: ActivityRequest) => void;
     onRenderRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
-    onExecuteAction?: (sender: AdaptiveApplet, action: Action) => void;
+    onAction?: (sender: AdaptiveApplet, action: Action) => void;
 
     constructor() {
         this.renderedElement = document.createElement("div");
@@ -590,7 +607,7 @@ export class AdaptiveApplet {
 
     refreshCard() {
         if (this._card && this._card.refresh) {
-            this.internalExecuteAction(this._card.refresh.action, ActivityInvocationTrigger.Manual, 0);
+            this.internalExecuteAction(this._card.refresh.action, ActivityRequestTrigger.Manual, 0);
         }
     }
 

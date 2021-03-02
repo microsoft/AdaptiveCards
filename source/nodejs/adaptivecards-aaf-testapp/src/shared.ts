@@ -1,5 +1,31 @@
 export const sampleCard = {
     type: "AdaptiveCard",
+    $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+    version: "1.4",
+    authentication: {
+        text: "Let's authenticate",
+        connectionName: "myConnection",
+        tokenExchangeResource: {
+            id: "abc",
+            uri: "http://contoso.com/ter",
+            providerId: "myProviderId"
+        },
+        buttons: [
+            {
+                type: "signin",
+                title: "Click me to sign in",
+                image: "http://contoso.com/someimage.jpg",
+                value: "http://singinurl"
+            }
+        ]
+    },
+    refresh: {
+        action: {
+            type: "Action.Execute",
+            verb: "refreshAction"
+        },
+        userIds: [ "fdsfds@consotos.com", "david@ms.com" ]
+    },
     body: [
         {
             type: "TextBlock",
@@ -84,9 +110,7 @@ export const sampleCard = {
             verb: "localException",
             title: "Fail with exception"
         }
-    ],
-    $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
-    version: "1.4"
+    ]
 };
 
 export const sampleRefreshCard = {
