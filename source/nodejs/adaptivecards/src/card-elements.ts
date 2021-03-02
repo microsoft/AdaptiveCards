@@ -3768,7 +3768,7 @@ export abstract class Action extends CardObject {
 
     //#endregion
 
-    protected _actionCollection?: ActionCollection; // hold the reference to its action collection
+    private _actionCollection?: ActionCollection; // hold the reference to its action collection
 
     protected getDefaultSerializationContext(): BaseSerializationContext {
         return new SerializationContext();
@@ -3829,6 +3829,18 @@ export abstract class Action extends CardObject {
 
     updateActionButtonCssStyle(actionButtonElement: HTMLElement, buttonState: ActionButtonState = ActionButtonState.Normal): void {
         // Do nothing in base implementation
+    }
+
+    promoteAsPrimary(): Action | undefined {
+        if (this._actionCollection) {
+            let button = this._actionCollection.findActionButton(this);
+
+            if (!button) {
+                return this._actionCollection.promoteAsPrimary(this);
+            }
+        }
+
+        return undefined;
     }
 
     parse(source: any, context?: SerializationContext) {
@@ -3966,8 +3978,8 @@ export abstract class Action extends CardObject {
         return this.internalValidateInputs(this.getReferencedInputs());
     }
 
-    get promoteToPrimaryOnExecute(): boolean {
-        return false;
+    get shouldPromoteAsPrimaryOnExecute(): boolean {
+        return this.mode === "primary";
     }
 
     get isPrimary(): boolean {
@@ -4500,7 +4512,7 @@ export class ShowCardAction extends Action {
         return result;
     }
 
-    get promoteToPrimaryOnExecute(): boolean {
+    get shouldPromoteAsPrimaryOnExecute(): boolean {
         return true;
     }
 }
@@ -4534,8 +4546,8 @@ class OverflowAction extends Action {
                 menuItem.onClick = () => {
                     let actionToExecute = this.actions[i];
 
-                    if (this._actionCollection && (actionToExecute.promoteToPrimaryOnExecute || actionToExecute.mode === "primary")) {
-                        let swappedAction = this._actionCollection.promoteAsPrimaryAction(actionToExecute);
+                    if (actionToExecute.shouldPromoteAsPrimaryOnExecute) {
+                        let swappedAction = actionToExecute.promoteAsPrimary();
 
                         if (swappedAction) {
                             this.actions[i] = swappedAction;
@@ -4675,16 +4687,6 @@ class ActionCollection {
         }
     }
 
-    private findActionButton(action: Action): ActionButton | undefined {
-        for (let actionButton of this._buttons) {
-            if (actionButton.action == action) {
-                return actionButton;
-            }
-        }
-
-        return undefined;
-    }
-
     private _items: Action[] = [];
     private _buttons: ActionButton[] = [];
     private _overflowAction?: OverflowAction;
@@ -4693,7 +4695,7 @@ class ActionCollection {
         this._owner = owner;
     }
 
-    promoteAsPrimaryAction(action: Action): Action | undefined {
+    promoteAsPrimary(action: Action): Action | undefined {
         if (this._buttons.length > 1) {
             let button = this._buttons[this._buttons.length - 2];
 
@@ -5067,6 +5069,16 @@ class ActionCollection {
         }
 
         return result;
+    }
+
+    findActionButton(action: Action): ActionButton | undefined {
+        for (let actionButton of this._buttons) {
+            if (actionButton.action == action) {
+                return actionButton;
+            }
+        }
+
+        return undefined;
     }
 
     getResourceInformation(): IResourceInformation[] {
