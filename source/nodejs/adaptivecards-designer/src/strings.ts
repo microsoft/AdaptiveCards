@@ -10,7 +10,13 @@ export class Strings {
             title: "SAMPLE DATA EDITOR"
         },
         propertySheet: {
-            title: "ELEMENT PROPERTIES"
+            title: "ELEMENT PROPERTIES",
+            commands: {
+                bindData: {
+                    displayText: () => "...",
+                    accessibleText: (propertyLabel: string) => "Data Binding"
+                }
+            }
         },
         cardStructure: {
             title: "CARD STRUCTURE"

@@ -44,7 +44,7 @@ using namespace AdaptiveCards;
         UIDatePicker *picker = nil;
         if (@available(iOS 14.0, *)) {
             picker = [[UIDatePicker alloc] init];
-            picker.preferredDatePickerStyle = UIDatePickerStyleInline;
+            picker.preferredDatePickerStyle = UIDatePickerStyleWheels;
         } else {
             // Fallback on earlier versions
             picker = [bundle loadNibNamed:@"ACRDatePicker" owner:self options:nil][0];

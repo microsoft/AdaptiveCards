@@ -21,6 +21,4 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
 @property BOOL isLastColumn;
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
 
-- (UIView *)addPaddingSpace;
-
 @end

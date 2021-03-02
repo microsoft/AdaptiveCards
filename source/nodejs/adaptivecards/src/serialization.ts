@@ -145,6 +145,15 @@ export abstract class BaseSerializationContext {
         }
     }
 
+    serializeBool(target: { [key: string]: any }, propertyName: string, propertyValue: boolean | undefined, defaultValue: boolean | undefined = undefined) {
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
+        }
+        else {
+            target[propertyName] = propertyValue;
+        }
+    }
+
     serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
             delete target[propertyName];
@@ -328,7 +337,7 @@ export class BoolProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
-        context.serializeValue(
+        context.serializeBool(
             target,
             this.name,
             value,

@@ -65,6 +65,19 @@ export abstract class CardObject extends SerializableObject {
     protected _parent?: CardObject;
     protected _renderedElement?: HTMLElement;
 
+    /**
+     * Checks if this CardObject contains the given DOM Node.
+     * @param node The DOM Node to look for.
+     * @returns `true` if the DOM Node was found, `false` otherwise.
+     */
+    protected contains(node: Node): boolean {
+        if (this._renderedElement) {
+            return this._renderedElement.contains(node);
+        }
+
+        return false;
+    }
+
     onPreProcessPropertyValue?: (sender: CardObject, property: PropertyDefinition, value: any) => any;
 
     abstract getJsonTypeName(): string;
@@ -135,6 +148,19 @@ export abstract class CardObject extends SerializableObject {
         this.internalValidateProperties(result);
 
         return result;
+    }
+
+    /**
+     * Recursively searches this CardObject and any children to find the
+     * innermost CardObject that owns the given DOM Node.
+     *
+     * @param node The DOM Node to look for.
+     *
+     * @returns The owner of the given DOM Node, or `undefined` if no owner was found.
+     */
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        // default implementation for CardObjects with no associated children
+        return this.contains(node) ? this : undefined;
     }
 
     get parent(): CardObject | undefined {
