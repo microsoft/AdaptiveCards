@@ -63,12 +63,8 @@ namespace AdaptiveNamespace
         ComPtr<IUIElement> posterContainer;
         CreatePosterContainerWithPlayButton(posterImage.Get(), renderContext, renderArgs, &posterContainer);
 
-        HString altText;
-        RETURN_IF_FAILED(adaptiveMedia->get_AltText(altText.GetAddressOf()));
-
         ComPtr<IUIElement> touchTargetUIElement;
-        ActionHelpers::WrapInTouchTarget(
-            adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", altText.Get(), &touchTargetUIElement);
+        ActionHelpers::WrapInTouchTarget(adaptiveCardElement, posterContainer.Get(), nullptr, renderContext, true, L"Adaptive.SelectAction", &touchTargetUIElement);
 
         // Create a panel to hold the poster and the media element
         ComPtr<IStackPanel> mediaStackPanel =
