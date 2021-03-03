@@ -148,7 +148,6 @@
 
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
-        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
         [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
     }
 
@@ -212,14 +211,14 @@
                                     multiplier:cgsize.width / cgsize.height
                                       constant:0]
     ]];
-    
+
     constraints[2].priority = priority + 2;
     constraints[3].priority = priority + 2;
-    
+
     if (imageProps.acrImageSize == ACRImageSizeAuto) {
         [constraints addObject:[imageView.widthAnchor constraintLessThanOrEqualToConstant:imageProps.contentSize.width]];
     }
-    
+
     [NSLayoutConstraint activateConstraints:constraints];
 
     if (superview) {

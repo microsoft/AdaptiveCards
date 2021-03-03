@@ -106,7 +106,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
         _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
         _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
-        unsigned int padding = [_hostConfig getHostConfig] -> GetSpacing().paddingSpacing;
+        unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
         if (padding) {
             [self applyPadding:padding priority:1000];
@@ -140,11 +140,11 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:self.inputHandlers context:self containingView:self hostconfig:_hostConfig];
 
-    ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card]->GetStyle() : ContainerStyle::Default;
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
                                                [ACOHostConfig getPlatformContainerStyle:style]];
-  
+
     [self popCurrentShowcard];
 
     return newView;
@@ -168,50 +168,50 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
 {
     switch (elem->GetElementType()) {
-            //        case CardElementType::TextBlock: {
-            //            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
-            //            RichTextElementProperties textProp;
-            //            TextBlockToRichTextElementProperties(textBlockElement, textProp);
-            //
-            //            /// tag a base card element with unique key
-            //            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
-            //            NSString *key = [number stringValue];
-            //            [self processTextConcurrently:textProp elementId:key];
-            //            break;
-            //        }
-            //        case CardElementType::RichTextBlock: {
-            //            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
-            //            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
-            //                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
-            //                if (textRun) {
-            //                    RichTextElementProperties textProp;
-            //                    TextRunToRichTextElementProperties(textRun, textProp);
-            //                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
-            //                    NSString *key = [number stringValue];
-            //                    [self processTextConcurrently:textProp elementId:key];
-            //                }
-            //            }
-            //            break;
-            //        }
-            //        case CardElementType::FactSet: {
-            //            [self tagBaseCardElement:elem];
-            //            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
-            //            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
-            //            key = [key stringByAppendingString:@"*"];
-            //            int rowFactId = 0;
-            //            for (auto fact : factSet->GetFacts()) {
-            //
-            //                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
-            //                [self processTextConcurrently:titleTextProp
-            //                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-            //
-            //
-            //                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
-            //                [self processTextConcurrently:valueTextProp
-            //                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
-            //            }
-            //            break;
-            //        }
+        case CardElementType::TextBlock: {
+            std::shared_ptr<TextBlock> textBlockElement = std::static_pointer_cast<TextBlock>(elem);
+            RichTextElementProperties textProp;
+            TextBlockToRichTextElementProperties(textBlockElement, textProp);
+
+            /// tag a base card element with unique key
+            NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textBlockElement.get()];
+            NSString *key = [number stringValue];
+            [self processTextConcurrently:textProp elementId:key];
+            break;
+        }
+        case CardElementType::RichTextBlock: {
+            std::shared_ptr<RichTextBlock> rTxtBlkElement = std::static_pointer_cast<RichTextBlock>(elem);
+            for (const auto &inlineText : rTxtBlkElement->GetInlines()) {
+                std::shared_ptr<TextRun> textRun = std::static_pointer_cast<TextRun>(inlineText);
+                if (textRun) {
+                    RichTextElementProperties textProp;
+                    TextRunToRichTextElementProperties(textRun, textProp);
+                    NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)textRun.get()];
+                    NSString *key = [number stringValue];
+                    [self processTextConcurrently:textProp elementId:key];
+                }
+            }
+            break;
+        }
+        case CardElementType::FactSet: {
+            [self tagBaseCardElement:elem];
+            std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
+            NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
+            key = [key stringByAppendingString:@"*"];
+            int rowFactId = 0;
+            for (auto fact : factSet->GetFacts()) {
+
+                RichTextElementProperties titleTextProp{[_hostConfig getHostConfig] -> GetFactSet().title, fact->GetTitle(), fact->GetLanguage()};
+                [self processTextConcurrently:titleTextProp
+                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+
+
+                RichTextElementProperties valueTextProp{[_hostConfig getHostConfig] -> GetFactSet().value, fact->GetValue(), fact->GetLanguage()};
+                [self processTextConcurrently:valueTextProp
+                                    elementId:[key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]]];
+            }
+            break;
+        }
         case CardElementType::Image: {
 
             ObserverActionBlock observerAction =
@@ -265,7 +265,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
             std::string poster = mediaElem->GetPoster();
             if (poster.empty()) {
-                poster = [_hostConfig getHostConfig] -> GetMedia().defaultPoster;
+                poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
             }
 
             if (!poster.empty()) {
@@ -291,7 +291,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
             }
 
-            if (![_hostConfig getHostConfig] -> GetMedia().playButton.empty()) {
+            if (![_hostConfig getHostConfig]->GetMedia().playButton.empty()) {
                 ObserverActionBlock observerAction =
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
@@ -310,7 +310,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
                 NSString *key = [NSString stringWithFormat:@"%@_%@", [number stringValue], @"playIcon"];
 
-                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig] -> GetMedia().playButton key:key observerAction:observerAction];
+                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig]->GetMedia().playButton key:key observerAction:observerAction];
             }
 
             break;
@@ -382,6 +382,17 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig];
             break;
         }
+        case AdaptiveCards::CardElementType::AdaptiveCard:
+        case AdaptiveCards::CardElementType::ChoiceInput:
+        case AdaptiveCards::CardElementType::ChoiceSetInput:
+        case AdaptiveCards::CardElementType::Custom:
+        case AdaptiveCards::CardElementType::DateInput:
+        case AdaptiveCards::CardElementType::Fact:
+        case AdaptiveCards::CardElementType::NumberInput:
+        case AdaptiveCards::CardElementType::TimeInput:
+        case AdaptiveCards::CardElementType::ToggleInput:
+        case AdaptiveCards::CardElementType::Unknown:
+            break;
     }
 }
 
@@ -564,7 +575,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 } else {
                     // handle background image for adaptive card that uses resource resolver
                     UIImageView *imageView = (UIImageView *)object;
-                    auto backgroundImage = [_adaptiveCard card] -> GetBackgroundImage();
+                    auto backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
 
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
@@ -655,13 +666,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (void)loadImage:(NSString *)nSUrlStr key:(NSString *)key context:(std::shared_ptr<BaseCardElement> const &)elem observerAction:(ObserverActionBlock)observerAction
 {
-    _numberOfSubscribers++;
-
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     if (imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
         if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
+            _numberOfSubscribers++;
         }
     } else {
         [self loadImage:[nSUrlStr cStringUsingEncoding:NSUTF8StringEncoding]];
