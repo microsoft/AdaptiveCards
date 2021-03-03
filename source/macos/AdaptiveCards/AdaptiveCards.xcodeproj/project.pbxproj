@@ -442,6 +442,7 @@
 		28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */; };
 		28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */; };
 		28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */; };
+		28D7A51425E9300300AEA09C /* BaseCardElementRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D7A51325E9300300AEA09C /* BaseCardElementRenderer.swift */; };
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
@@ -929,6 +930,7 @@
 		28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeFacts.swift; sourceTree = "<group>"; };
 		28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRFactTextField.xib; sourceTree = "<group>"; };
 		28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRFactTextField.swift; sourceTree = "<group>"; };
+		28D7A51325E9300300AEA09C /* BaseCardElementRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCardElementRenderer.swift; sourceTree = "<group>"; };
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
@@ -1522,6 +1524,7 @@
 				2871B12E25DD292A0040AB27 /* InputNumberRenderer.swift */,
 				28CE1A4325DFD64B00BFCFD9 /* FactSetRenderer.swift */,
 				08B5F91825C9272500A7D37A /* AdaptiveCardRenderer.swift */,
+				28D7A51325E9300300AEA09C /* BaseCardElementRenderer.swift */,
 				29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */,
 				29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */,
 				A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */,
@@ -2021,6 +2024,7 @@
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
+				28D7A51425E9300300AEA09C /* BaseCardElementRenderer.swift in Sources */,
 				A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */,
 				28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */,
 				28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */,

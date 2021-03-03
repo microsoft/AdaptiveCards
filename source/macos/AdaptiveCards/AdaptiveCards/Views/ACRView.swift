@@ -33,12 +33,29 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         stackViewBottomConstraint?.constant = -padding
     }
     
+    func addSeperator(thickness: NSNumber, color: String) {
+        let seperatorView = NSBox()
+        seperatorView.boxType = .custom
+        seperatorView.heightAnchor.constraint(equalToConstant: CGFloat(truncating: thickness)).isActive = true
+        seperatorView.borderColor = ColorUtils.color(from: color) ?? .black
+        stackView.addArrangedSubview(seperatorView)
+        stackView.setCustomSpacing(3, after: seperatorView)
+    }
+    
+    func addSpacing(spacing: CGFloat) {
+        let spacingView = NSBox()
+        spacingView.boxType = .custom
+        spacingView.heightAnchor.constraint(equalToConstant: spacing).isActive = true
+        spacingView.borderColor = .clear
+        stackView.addArrangedSubview(spacingView)
+    }
+    
     private lazy var stackView: NSStackView = {
         let view = NSStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.orientation = .vertical
         view.alignment = .leading
-        view.spacing = 8 // TODO: Must be set by hostconfig
+        view.spacing = 0 // TODO: Must be set by hostconfig
         return view
     }()
     
@@ -54,6 +71,13 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         
         guard let leading = stackViewLeadingConstraint, let trailing = stackViewTrailingConstraint, let top = stackViewTopConstraint, let bottom = stackViewBottomConstraint else { return }
         NSLayoutConstraint.activate([leading, trailing, top, bottom])
+    }
+    
+    // TODO: Figure out a way to set constraints without this method to avoid conflicts
+    override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        guard let superview = superview else { return }
+        widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
     }
 }
 

@@ -28,6 +28,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
             let titleView = ACRFactTextField()
             let valueView = ACRFactTextField()
             titleView.textValue = fact.getTitle()
+            titleView.setupTitle()
             valueView.textValue = fact.getValue()
             
             if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: false), let textColor = ColorUtils.color(from: colorHex) {

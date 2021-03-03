@@ -1,0 +1,31 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Texblock with both seperation and spacing"
+        },
+        {
+            "type": "TextBlock",
+            "text": "only seperator",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "only spacing",
+            "spacing": "ExtraLarge"
+        },
+        {
+            "type": "TextBlock",
+            "text": "both seperator and spacing",
+            "separator": true,
+            "spacing": "ExtraLarge"
+        },
+        {
+            "type": "TextBlock",
+            "text": "no seperator or spacing"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+}
