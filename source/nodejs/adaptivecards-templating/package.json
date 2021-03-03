@@ -1,6 +1,6 @@
 {
 	"name": "adaptivecards-templating",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Adaptive Card data binding and templating engine for JavaScript",
 	"author": "AdaptiveCards",
 	"license": "MIT",
