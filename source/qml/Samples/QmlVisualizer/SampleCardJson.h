@@ -588,8 +588,8 @@ namespace Samples
               "value": "Value 1"
             },
             {
-              "title": "Fact 2",
-              "value": "Value 2"
+              "title": "TEXT FOR FACTSET TESTING",
+              "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
             },
             {
               "title": "Fact 3",
@@ -597,7 +597,7 @@ namespace Samples
             },
             {
               "title": "Fact 4",
-              "value": "Value 5"
+              "value": "Value 4"
             }
           ]
         }
@@ -668,7 +668,7 @@ namespace Samples
 	      "height": "80px"
        }
       ]
-    })";
+    })"; 
 
 	const std::string card_Container = R"({
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -871,4 +871,5 @@ namespace Samples
         }
       ]
 	})";
+
 }

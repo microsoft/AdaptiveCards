@@ -176,7 +176,7 @@ namespace RendererQml
 
 		if (textBlock->GetWrap())
 		{
-			uiTextBlock->Property("wrapMode", "Text.WordWrap");
+			uiTextBlock->Property("wrapMode", "Text.Wrap");
 		}
 
 		if (!fontFamily.empty())
@@ -345,7 +345,7 @@ namespace RendererQml
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(richTextBlock->GetHorizontalAlignment());
 
 		uiTextBlock->Property("textFormat", "Text.RichText");
-		uiTextBlock->Property("wrapMode", "Text.WordWrap");
+		uiTextBlock->Property("wrapMode", "Text.Wrap");
 		uiTextBlock->Property("width", "parent.width");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
@@ -815,7 +815,11 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		auto uiFactSet = std::make_shared<QmlTag>("Column");
+		auto uiFactSet = std::make_shared<QmlTag>("GridLayout");
+		uiFactSet->Property("columns", "2");
+		uiFactSet->Property("rows", std::to_string(factSet->GetFacts().size()));
+		uiFactSet->Property("property int titleWidth", "0");
+		uiFactSet->AddFunctions("function setTitleWidth(item){	if (item.width > titleWidth){ titleWidth = item.width }}");
 
 		if (!factSet->GetIsVisible())
 		{
@@ -824,8 +828,6 @@ namespace RendererQml
 
 		for (const auto fact : factSet->GetFacts())
 		{
-			auto uiRow = std::make_shared<QmlTag>("RowLayout");
-
 			auto factTitle = std::make_shared<AdaptiveCards::TextBlock>();
 
 			factTitle->SetText(fact->GetTitle());
@@ -839,6 +841,8 @@ namespace RendererQml
 			//factTitle->SetMaxWidth(context->GetConfig()->GetFactSet().title.maxWidth);
 
 			auto uiTitle = context->Render(factTitle);
+			uiTitle->Property("Layout.maximumWidth", std::to_string(context->GetConfig()->GetFactSet().title.maxWidth));
+			uiTitle->Property("Component.onCompleted", "parent.setTitleWidth(this)");
 
 			//uiTitle->Property("spacing", std::to_string(context->GetConfig()->GetFactSet().spacing));
 			
@@ -853,10 +857,10 @@ namespace RendererQml
 			// MaxWidth is not supported on the Value of FactSet. Do not set it.
 
 			auto uiValue = context->Render(factValue);
+			uiValue->Property("Layout.preferredWidth", "parent.parent.width - parent.titleWidth");
 
-			uiRow->AddChild(uiTitle);
-			uiRow->AddChild(uiValue);
-			uiFactSet->AddChild(uiRow);
+			uiFactSet->AddChild(uiTitle);
+			uiFactSet->AddChild(uiValue);
 		}
 
 		return uiFactSet;
