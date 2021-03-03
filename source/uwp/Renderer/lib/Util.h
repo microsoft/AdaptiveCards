@@ -253,7 +253,7 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
+ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
 
 ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 

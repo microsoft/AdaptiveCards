@@ -82,7 +82,8 @@ std::string WStringToString(std::wstring_view in)
         {
             std::string out(length_out, '\0');
 
-            const int length_written = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out, NULL, NULL);
+            const int length_written =
+                ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out, NULL, NULL);
 
             if (length_written == length_out)
             {
@@ -108,7 +109,8 @@ std::wstring StringToWString(std::string_view in)
         {
             std::wstring out(length_out, L'\0');
 
-            const int length_written = ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
+            const int length_written =
+                ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
 
             if (length_written == length_out)
             {
@@ -352,9 +354,8 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
     return S_OK;
 }
 
-HRESULT GenerateSharedRequirements(
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
-    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept
+HRESULT GenerateSharedRequirements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+                                   std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept
 try
 {
     sharedRequirements.clear();
@@ -771,8 +772,9 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateRequirementsProjection(const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
-                                       _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
+HRESULT GenerateRequirementsProjection(
+    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
     for (const auto& sharedRequirement : sharedRequirements)
@@ -1600,16 +1602,16 @@ HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collecti
     return S_OK;
 }
 
-Color GenerateLighterColor(const Color& originalColor)
+Color GenerateLHoverColor(const Color& originalColor)
 {
-    const double lightIncrement = 0.25;
+    const double hoverIncrement = 0.25;
 
-    Color lighterColor;
-    lighterColor.A = originalColor.A;
-    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
-    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
-    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
-    return lighterColor;
+    Color hoverColor;
+    hoverColor.A = originalColor.A;
+    hoverColor.R = originalColor.R - static_cast<BYTE>(originalColor.R * hoverIncrement);
+    hoverColor.G = originalColor.G - static_cast<BYTE>(originalColor.G * hoverIncrement);
+    hoverColor.B = originalColor.B - static_cast<BYTE>(originalColor.B * hoverIncrement);
+    return hoverColor;
 }
 
 DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)
