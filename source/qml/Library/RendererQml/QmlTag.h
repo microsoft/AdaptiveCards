@@ -25,6 +25,8 @@ namespace RendererQml
         void AddChild(const std::shared_ptr<QmlTag>& child);
         std::string ToString();
 
+        const std::string GetId() const;
+
     private:
         std::string m_element;
         std::vector<std::string> m_imports;

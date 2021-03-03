@@ -369,4 +369,12 @@ namespace RendererQml
 		return Formatter() << std::setfill('0') << std::setw(2) << time_split[0] << ":" << time_split[1] << " " << tt;
 	}
 
+    std::string Utils::ConvertToLowerIdValue(const std::string& value)
+    {
+        std::string newId = value;
+
+        transform(newId.begin(), newId.end(), newId.begin(), ::tolower);
+        return newId;
+    }
+
 }

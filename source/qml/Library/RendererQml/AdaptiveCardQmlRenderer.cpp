@@ -37,33 +37,7 @@ namespace RendererQml
 		}
 
 		return output;
-	}
-
-    void AdaptiveCardQmlRenderer::AddContainerElements(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& elements, std::shared_ptr<AdaptiveRenderContext> context)
-    {
-        if (!elements.empty())
-        {
-            auto bodyLayout = std::make_shared<QmlTag>("Column");
-            bodyLayout->Property("id", "bodyLayout");
-            bodyLayout->Property("width", "parent.width");
-            //TODO: Set spacing from host config
-            bodyLayout->Property("spacing", "8");
-            uiContainer->Property("Layout.preferredHeight", "bodyLayout.height");
-            uiContainer->AddChild(bodyLayout);
-
-            for (const auto& cardElement : elements)
-            {
-                auto uiElement = context->Render(cardElement);
-
-                if (uiElement != nullptr)
-                {
-                    //TODO: Add separator
-                    //TODO: Add collection element
-                    bodyLayout->AddChild(uiElement);
-                }
-            }
-        }
-    }
+	}    
 
     void AdaptiveCardQmlRenderer::SetObjectTypes()
     {
@@ -127,6 +101,32 @@ namespace RendererQml
 		return uiCard;
 	}
 
+    void AdaptiveCardQmlRenderer::AddContainerElements(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& elements, std::shared_ptr<AdaptiveRenderContext> context)
+    {
+        if (!elements.empty())
+        {
+            auto bodyLayout = std::make_shared<QmlTag>("Column");
+            bodyLayout->Property("id", "bodyLayout");
+            bodyLayout->Property("width", "parent.width");
+            //TODO: Set spacing from host config
+            bodyLayout->Property("spacing", "8");
+            uiContainer->Property("Layout.preferredHeight", "bodyLayout.height");
+            uiContainer->AddChild(bodyLayout);
+
+            for (const auto& cardElement : elements)
+            {
+                auto uiElement = context->Render(cardElement);
+
+                if (uiElement != nullptr)
+                {
+                    //TODO: Add separator
+                    //TODO: Add collection element
+                    bodyLayout->AddChild(uiElement);
+                }
+            }
+        }
+    }
+
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextBlockRender(std::shared_ptr<AdaptiveCards::TextBlock> textBlock, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		//TODO:Parse markdown in the text
@@ -160,6 +160,7 @@ namespace RendererQml
 
 		if (!textBlock->GetId().empty())
 		{
+            textBlock->SetId(Utils::ConvertToLowerIdValue(textBlock->GetId()));
 			uiTextBlock->Property("id", textBlock->GetId());
 		}
 
@@ -193,6 +194,8 @@ namespace RendererQml
 
 		std::shared_ptr<QmlTag> uiTextInput;
 		std::shared_ptr<QmlTag> scrollViewTag;
+
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 
 		if (input->GetIsMultiline())
 		{
@@ -268,6 +271,7 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::NumberInputRender(std::shared_ptr<AdaptiveCards::NumberInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 		const auto inputId = input->GetId();
 
 		auto glowTag = std::make_shared<QmlTag>("Glow");
@@ -418,6 +422,8 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ToggleInputRender(std::shared_ptr<AdaptiveCards::ToggleInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+
 		const auto valueOn = !input->GetValueOn().empty() ? input->GetValueOn() : "true";
 		const auto valueOff = !input->GetValueOff().empty() ? input->GetValueOff() : "false";
 		const bool isChecked = input->GetValue().compare(valueOn) == 0 ? true : false;
@@ -438,6 +444,8 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ChoiceSetRender(std::shared_ptr<AdaptiveCards::ChoiceSetInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
+
 		int ButtonNumber = 0;
 		RendererQml::Checkboxes choices;
 		const std::string id = input->GetId();
@@ -712,8 +720,9 @@ namespace RendererQml
     
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::DateInputRender(std::shared_ptr<AdaptiveCards::DateInput> input, std::shared_ptr<AdaptiveRenderContext> context)
     {
-        auto uiDateInput = std::make_shared<QmlTag>("TextField");
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 
+        auto uiDateInput = std::make_shared<QmlTag>("TextField");
         uiDateInput->Property("id", input->GetId());
         uiDateInput->Property("width", "parent.width");
         const int fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
@@ -870,6 +879,10 @@ namespace RendererQml
 		{
 			image->SetId(Formatter() << "image_auto_" << ++imageCounter);
 		}
+        else
+        {
+            image->SetId(Utils::ConvertToLowerIdValue(image->GetId()));
+        }
 
 		uiImage->Property("id", image->GetId());
 		uiImage->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
@@ -1003,6 +1016,10 @@ namespace RendererQml
 		{
 			container->SetId(Formatter() << "container_auto_" << ++containerCounter);
 		}
+        else
+        {
+            container->SetId(Utils::ConvertToLowerIdValue(container->GetId()));
+        }
 
 		const auto id = container->GetId();
 
@@ -1076,6 +1093,8 @@ namespace RendererQml
 	{
 		//TODO: Fetch System Time Format 
 		bool is12hour = true;
+
+        input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 
 		auto uiTimeInput = std::make_shared<QmlTag>("TextField");
 		std::string id = input->GetId();
