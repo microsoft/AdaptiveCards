@@ -50,6 +50,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     
     // MARK: Private Methods
     private func renderCard(with jsonString: String) {
+        guard !jsonString.isEmpty else { return }
         let result = AdaptiveCard.from(jsonString: jsonString)
         guard let card = result.getAdaptiveCard() else {
             print("RENDER FAILED")

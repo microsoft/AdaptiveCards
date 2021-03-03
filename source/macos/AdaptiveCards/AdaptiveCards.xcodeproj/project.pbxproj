@@ -452,6 +452,8 @@
 		29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */; };
 		29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */; };
 		29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */; };
+		8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25625EF9894003D4CC9 /* FlatButton.swift */; };
+		8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25725EF9894003D4CC9 /* ACRButton.swift */; };
 		A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */; };
 		A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */; };
 		A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */; };
@@ -940,6 +942,8 @@
 		29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceSetInput.swift; sourceTree = "<group>"; };
 		29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRendererTests.swift; sourceTree = "<group>"; };
 		29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceInput.swift; sourceTree = "<group>"; };
+		8106A25625EF9894003D4CC9 /* FlatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
+		8106A25725EF9894003D4CC9 /* ACRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRButton.swift; sourceTree = "<group>"; };
 		A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRenderer.swift; sourceTree = "<group>"; };
 		A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocol.swift; sourceTree = "<group>"; };
 		A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRendererTest.swift; sourceTree = "<group>"; };
@@ -1552,6 +1556,8 @@
 		08D9547325D17FE6001442D3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				8106A25725EF9894003D4CC9 /* ACRButton.swift */,
+				8106A25625EF9894003D4CC9 /* FlatButton.swift */,
 				29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */,
 				29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */,
 				08D9547425D17FF9001442D3 /* ACRView.swift */,
@@ -2019,7 +2025,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2871B12F25DD292A0040AB27 /* InputNumberRenderer.swift in Sources */,
+				8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */,
 				08D7767125CBF27B0095C1B3 /* LogUtils.swift in Sources */,
+				8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
