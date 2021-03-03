@@ -1,0 +1,35 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Text input with an inline action"
+        },
+        {
+            "type": "Input.Text",
+            "id": "iconInlineActionId",
+            "inlineAction": {
+                "type": "Action.Submit",
+                "iconUrl": "https://adaptivecards.io/content/send.png",
+                "title": "Send"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "Text input with an inline action with no icon",
+            "wrap": true
+        },
+        {
+            "type": "Input.Text",
+            "id": "textInlineActionId",
+            "inlineAction": {
+                "type": "Action.OpenUrl",
+                "title": "Reply",
+                "url": "https://adaptivecards.io"
+            }
+        }
+    ]
+}
+
