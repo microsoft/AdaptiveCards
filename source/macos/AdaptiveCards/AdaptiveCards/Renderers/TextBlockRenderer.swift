@@ -45,7 +45,7 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
             attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedString.length))
         }
         
-        textView.textContainer?.lineBreakMode = .byTruncatingTail
+        textView.textContainer?.lineBreakMode = .byWordWrapping
         let resolvedMaxLines = textBlock.getMaxLines()?.intValue ?? 0
         textView.textContainer?.maximumNumberOfLines = textBlock.getWrap() ? resolvedMaxLines : 1
     
@@ -79,6 +79,7 @@ class ACRTextView: NSTextView {
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
     }
+    
     // This point onwards adds placeholder funcunality to TextView
     override func becomeFirstResponder() -> Bool {
         self.needsDisplay = true

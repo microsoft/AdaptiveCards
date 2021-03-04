@@ -1,0 +1,98 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "This is some text",
+      "size": "large"
+    },
+    {
+      "type": "TextBlock",
+      "text": "It doesn't wrap by default",
+      "weight": "bolder"
+    },
+    {
+      "type": "TextBlock",
+      "text": "So set **wrap** to true if you plan on showing a paragraph of text",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "You can also use **maxLines** to prevent it from getting out of hand",
+      "wrap": true,
+      "maxLines": 2
+    },
+    {
+      "type": "TextBlock",
+      "text": "You can even draw attention to certain text with color",
+      "wrap": true,
+      "color": "attention"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: default",
+      "color": "default"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: accent",
+      "color": "accent"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: good",
+      "color": "good"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: warning",
+      "color": "warning"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: attention",
+      "color": "attention"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: light",
+      "color": "light"
+    },
+    {
+      "type": "TextBlock",
+      "text": "color: dark",
+      "color": "dark"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Font type not set."
+    },
+    {
+      "type": "TextBlock",
+      "text": "Font type set to *default*.",
+      "fontType": "default"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Font type set to *monospace*.",
+      "fontType": "monospace"
+    },
+    {
+      "type": "TextBlock",
+      "text": "**horizontalAlignment:left**",
+      "horizontalAlignment": "left"
+    },
+    {
+      "type": "TextBlock",
+      "text": "**horizontalAlignment:center**",
+      "horizontalAlignment": "center"
+    },
+    {
+      "type": "TextBlock",
+      "text": "**horizontalAlignment:right**",
+      "horizontalAlignment": "right"
+    }
+  ]
+}

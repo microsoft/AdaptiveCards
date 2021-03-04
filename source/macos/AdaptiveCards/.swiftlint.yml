@@ -60,7 +60,6 @@ opt_in_rules:
   - generic_type_name # Generic type name should only contain alphanumeric characters, start with an uppercase character and span between 1 and 20 characters in length.
   - identical_operands # Comparing two identical operands is likely a mistake.
   - identifier_name # Identifier names should only contain alphanumeric characters and start with a lowercase character or should only contain capital letters.
-  - implicit_getter # Computed read-only properties and subscripts should avoid using the get keyword.
   - implicitly_unwrapped_optional # Implicitly unwrapped optionals should be avoided when possible.
   - inert_defer # If defer is at the end of its parent scope, it will be executed right where it is anyway.
   - is_disjoint # Prefer using Set.isDisjoint(with:) over Set.intersection(_:).isEmpty.
@@ -149,6 +148,7 @@ opt_in_rules:
   - yoda_condition # The variable should be placed on the left, the constant on the right of a comparison operator.
 
 disabled_rules: # rule identifiers to exclude from running
+  - implicit_getter # Computed read-only properties and subscripts should avoid using the get keyword.
   - attributes # Attributes should be on their own lines in functions and types, but on the same line as variables and imports. - Disable because we dont use this style
   - closure_body_length # Closure bodies should not span too many lines. - Disable because we dont enforce lengths
   - closure_end_indentation # Closure end should have the same indentation as the line that started it. - Disable because its not xcode auto tab style

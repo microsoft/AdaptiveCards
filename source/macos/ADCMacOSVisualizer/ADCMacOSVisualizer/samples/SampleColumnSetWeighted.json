@@ -1,0 +1,70 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "Container",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Hello Card!",
+                                    "wrap": true
+                                }
+                            ],
+                            "style": "accent",
+                            "bleed": true,
+                            "horizontalAlignment": "Right"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/cats/2.png"
+                        }
+                    ],
+                    "width": 1,
+                    "height": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {
+                                    "title": "Category A",
+                                    "value": "This is a long value that takes in some lines"
+                                },
+                                {
+                                    "title": "Categroy B with  long title that takes in a bigger lenght",
+                                    "value": "Hello world"
+                                }
+                            ]
+                        }
+                    ],
+                    "width": 2,
+                    "minHeight": "300px"
+                },
+                {
+                    "type": "Column",
+                    "width": 1,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/cats/2.png",
+                            "spacing": "None",
+                            "horizontalAlignment": "Center",
+                            "width": "8px"
+                        }
+                    ],
+                    "spacing": "None"
+                }
+            ]
+        }
+    ]
+}

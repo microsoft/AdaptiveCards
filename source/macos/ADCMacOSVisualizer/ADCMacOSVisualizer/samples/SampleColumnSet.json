@@ -1,0 +1,55 @@
+{
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            },
+            {
+              "type": "TextBlock",
+              "text": "https://adaptivecards.io/content/cats/1.png",
+              "wrap": true
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            },
+            {
+              "type": "TextBlock",
+              "text": "https://adaptivecards.io/content/cats/1.png Hello world is fjkanvnakjfnvjkanfvj",
+              "wrap": true
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            },
+            {
+              "type": "TextBlock",
+              "text": "https://adaptivecards.io/content/cats/1.png",
+              "wrap": true
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
