@@ -12,7 +12,7 @@
 #import "ACRColumnSetView.h"
 #import "ACRRegistration.h"
 #import "ACRSeparator.h"
-#import "ACRView.h"
+#import "ACRViewPrivate.h"
 #import "Column.h"
 #import "ColumnSet.h"
 #import "Enums.h"
@@ -56,10 +56,7 @@
     ACRBaseCardElementRenderer *columnRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]];
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
-
-    ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
-    float relativeColumnWidth = 0, prevRelColumnWidth = 0;
-    float multiplier = 1.0;
+    
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
 
     if (columnSetElem->GetMinHeight() > 0) {
@@ -79,15 +76,36 @@
             castedRenderer.fillAlignment = YES;
         }
     }
-
+    
+    auto relativeColumnWidthCounts = 0;
+    for (std::shared_ptr<Column> column : columns) {
+        auto pixelWidth = column->GetPixelWidth();
+        if (pixelWidth == 0) {
+            auto width = column->GetWidth();
+            if (!width.empty() && width != "stretch" && width != "auto") {
+                try {
+                    (void)std::stof(width);
+                    ++relativeColumnWidthCounts;
+                } catch (...) {
+                    [rootView addWarnings:ACRInvalidValue mesage:@"Invalid column width is given"];
+                }
+            }
+        }
+    }
+    
+    columnSetView.hasMoreThanOneColumnWithRelatvieWidth = (relativeColumnWidthCounts > 1);
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
+    ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
     auto firstColumn = columns.begin();
     auto prevColumn = columns.empty() ? nullptr : *firstColumn;
     auto lastColumn = columns.empty() ? nullptr : columns.back();
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
     ACRSeparator *separator = nil;
     BOOL hasPixelWidthColumn = NO;
-
+    auto accumulativeWidth = 0;
+    CGFloat minRelativeWidth = INT_MAX;
+    UIView *viewWithMinWidth = nil;
+    NSMutableArray<ACRColumnView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
@@ -151,30 +169,13 @@
             }
             stretchView = curView;
         } else if (![curView.columnWidth isEqualToString:@"auto"]) {
-            try {
-                relativeColumnWidth = std::stof(column->GetWidth());
-                if (prevRelColumnWidth) {
-                    multiplier = relativeColumnWidth / prevRelColumnWidth;
+            if (relativeColumnWidthCounts > 1) {
+                [viewsWithRelativeWidth addObject:curView];
+                accumulativeWidth += curView.relativeWidth;
+                if (minRelativeWidth > curView.relativeWidth) {
+                    viewWithMinWidth = curView;
+                    minRelativeWidth = curView.relativeWidth;
                 }
-
-                if (prevView && prevRelColumnWidth) {
-                    [constraints addObject:
-                                     [NSLayoutConstraint constraintWithItem:curView
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:prevView
-                                                                  attribute:NSLayoutAttributeWidth
-                                                                 multiplier:multiplier
-                                                                   constant:0]];
-                    prevRelColumnWidth = relativeColumnWidth;
-                }
-
-                prevView = curView;
-                prevRelColumnWidth = relativeColumnWidth;
-            } catch (...) {
-                multiplier = 1;
-                relativeColumnWidth = 1;
-                NSLog(@"unexpected column width property is given");
             }
         }
 
@@ -184,6 +185,19 @@
         }
 
         prevColumn = column;
+    }
+
+    for (ACRColumnView *view in viewsWithRelativeWidth) {
+        if (view != viewWithMinWidth && view.relativeWidth) {
+            [constraints addObject:
+             [NSLayoutConstraint constraintWithItem:view
+                                          attribute:NSLayoutAttributeWidth
+                                          relatedBy:NSLayoutRelationEqual
+                                             toItem:viewWithMinWidth
+                                          attribute:NSLayoutAttributeWidth
+                                         multiplier:view.relativeWidth / minRelativeWidth
+                                           constant:0]];
+        }
     }
 
     castedRenderer.fillAlignment = NO;
@@ -202,7 +216,7 @@
     configVisibility(columnSetView, elem);
 
     [columnSetView hideIfSubviewsAreAllHidden];
-    
+
     [columnSetView setNeedsLayout];
 
     return columnSetView;

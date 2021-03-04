@@ -41,14 +41,22 @@
                                                      parentStyle:[viewGroup style]
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
-    
+
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
     column.pixelWidth = columnElem->GetPixelWidth();
-    if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+    auto width = columnElem->GetWidth();
+    if (width.empty() || width == "stretch") {
         column.columnWidth = @"stretch";
-    } else if (columnElem->GetWidth() == "auto") {
+    } else if (width == "auto") {
         column.columnWidth = @"auto";
+    } else {
+        try {
+            column.relativeWidth = std::stof(width);
+            column.hasMoreThanOneRelativeWidth = ((ACRColumnSetView *)viewGroup).hasMoreThanOneColumnWithRelatvieWidth;
+        } catch (...) {
+            [rootView addWarnings:ACRInvalidValue mesage:@"Invalid column width is given"];
+        }
     }
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
@@ -111,12 +119,12 @@
     configVisibility(column, elem);
 
     [column hideIfSubviewsAreAllHidden];
-    
+
     [viewGroup addArrangedSubview:column];
-    
-    // viewGroup and column has to be in view hierarchy before configBleed is called 
+
+    // viewGroup and column has to be in view hierarchy before configBleed is called
     configBleed(rootView, elem, column, acoConfig, viewGroup);
-    
+
     return column;
 }
 

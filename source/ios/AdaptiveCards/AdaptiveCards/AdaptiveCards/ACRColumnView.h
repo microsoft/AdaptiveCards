@@ -17,6 +17,8 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
 
 @property NSString *columnWidth;
 @property CGFloat pixelWidth;
+@property CGFloat relativeWidth;
+@property BOOL hasMoreThanOneRelativeWidth;
 @property BOOL hasStretchableView;
 @property BOOL isLastColumn;
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
