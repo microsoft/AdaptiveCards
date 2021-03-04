@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 import { Constants } from "./constants";
 import { Collection } from "./collection";
-import { PopupControl } from "./inputwithpopup";
-import { DropDownItem } from "./dropdown";
+import { PopupControl } from "./popup-control";
+import { MenuItem } from "./menu-item";
 
 export class PopupMenu extends PopupControl {
-    private _items: Collection<DropDownItem> = new Collection<DropDownItem>();
+    private _items: Collection<MenuItem> = new Collection<MenuItem>();
     private _renderedItems: Array<HTMLElement> = [];
     private _selectedIndex: number = -1;
 
@@ -16,11 +16,11 @@ export class PopupMenu extends PopupControl {
 
     protected renderContent(): HTMLElement {
         var element = document.createElement("div");
-        element.className = "ms-ctrl ms-popup";
+        element.className = this.hostConfig.makeCssClassName("ac-ctrl ac-popup");
         element.setAttribute("role", "listbox");
 
         for (var i = 0; i < this._items.length; i++) {
-            var renderedItem = this._items.get(i).render();
+            var renderedItem = this._items.get(i).render(this.hostConfig);
             renderedItem.tabIndex = 0;
 
             element.appendChild(renderedItem);
@@ -92,7 +92,7 @@ export class PopupMenu extends PopupControl {
         }
     }
 
-    get items(): Collection<DropDownItem> {
+    get items(): Collection<MenuItem> {
         return this._items;
     }
 

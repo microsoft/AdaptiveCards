@@ -1187,6 +1187,14 @@ export abstract class DesignerPeer extends DraggableElement {
 
 export class ActionPeer extends DesignerPeer {
     static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title");
+    static readonly modeProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_5,
+        "mode",
+        "Mode",
+        [
+            { targetVersion: Adaptive.Versions.v1_5, name: "Primary", value: Adaptive.ActionMode.Primary },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Secondary", value: Adaptive.ActionMode.Secondary }
+        ]);
     static readonly styleProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_2,
         "style",
@@ -1259,6 +1267,7 @@ export class ActionPeer extends DesignerPeer {
             defaultCategory,
             ActionPeer.idProperty,
             ActionPeer.titleProperty,
+            ActionPeer.modeProperty,
             ActionPeer.styleProperty,
             ActionPeer.iconUrlProperty);
     }

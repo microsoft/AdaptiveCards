@@ -212,6 +212,8 @@ a.ac-anchor:visited:active {
     border-radius: 4px;
 }
 
+/* Popup menu */
+
 .ac-ctrl-overlay {
     position: absolute;
     left: 0;
