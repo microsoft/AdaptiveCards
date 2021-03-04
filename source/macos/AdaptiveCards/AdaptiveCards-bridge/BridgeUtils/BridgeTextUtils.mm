@@ -75,6 +75,7 @@
 + (ACSRichTextElementProperties * _Nonnull)convertTextRunToRichTextElementProperties:(ACSTextRun * _Nonnull)textRun
 {
     ACSRichTextElementProperties* textProp = [[ACSRichTextElementProperties alloc] initWithRichTextElementProperties:std::make_shared<RichTextElementProperties>()];
+    [textProp setLanguage:[textRun getLanguage]];
     [textProp setText:[textRun getText]];
     [textProp setTextSize:[textRun getTextSize]];
     [textProp setTextWeight:[textRun getTextWeight]];

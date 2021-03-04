@@ -459,8 +459,14 @@
 		8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25725EF9894003D4CC9 /* ACRButton.swift */; };
 		A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */; };
 		A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */; };
+		A032271B25E9176D00E7172E /* ACRContentHoldingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */; };
+		A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032271F25E9254C00E7172E /* ACRImageProperties.swift */; };
+		A032272525E93C7400E7172E /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032272425E93C7400E7172E /* ImageUtils.swift */; };
+		A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */; };
+		A04EA82925F00F3400C4C7DB /* FakeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EA82825F00F3400C4C7DB /* FakeImageView.swift */; };
 		A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */; };
 		A0805F5D25E40D0F00B3F8EA /* FakeRichTextBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */; };
+		A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -952,8 +958,14 @@
 		8106A25725EF9894003D4CC9 /* ACRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRButton.swift; sourceTree = "<group>"; };
 		A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRenderer.swift; sourceTree = "<group>"; };
 		A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocol.swift; sourceTree = "<group>"; };
+		A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRContentHoldingView.swift; sourceTree = "<group>"; };
+		A032271F25E9254C00E7172E /* ACRImageProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRImageProperties.swift; sourceTree = "<group>"; };
+		A032272425E93C7400E7172E /* ImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
+		A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRendererTests.swift; sourceTree = "<group>"; };
+		A04EA82825F00F3400C4C7DB /* FakeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeImageView.swift; sourceTree = "<group>"; };
 		A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRendererTest.swift; sourceTree = "<group>"; };
 		A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRichTextBlock.swift; sourceTree = "<group>"; };
+		A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -995,6 +1007,7 @@
 			children = (
 				082864FC25C99E300080D767 /* HostConfigUtils.swift */,
 				08D7767025CBF27B0095C1B3 /* LogUtils.swift */,
+				A032272425E93C7400E7172E /* ImageUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1199,6 +1212,7 @@
 				A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */,
 				29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */,
 				29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */,
+				A04EA82825F00F3400C4C7DB /* FakeImageView.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1214,6 +1228,7 @@
 				29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */,
 				A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */,
 				29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */,
+				A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1540,6 +1555,7 @@
 				A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */,
 				0872608F25E6AF530036061C /* ColumnSetRenderer.swift */,
 				0872609425E6AF5F0036061C /* ColumnRenderer.swift */,
+				A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1574,6 +1590,7 @@
 				2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */,
 				28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */,
 				28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */,
+				A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1620,6 +1637,7 @@
 			isa = PBXGroup;
 			children = (
 				A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */,
+				A032271F25E9254C00E7172E /* ACRImageProperties.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2040,15 +2058,18 @@
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
+				A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */,
 				08B5F91925C9272500A7D37A /* AdaptiveCardRenderer.swift in Sources */,
 				08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */,
 				28D7A51425E9300300AEA09C /* BaseCardElementRenderer.swift in Sources */,
+				A032271B25E9176D00E7172E /* ACRContentHoldingView.swift in Sources */,
 				A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */,
 				0872608825E6AD420036061C /* ACRColumnView.swift in Sources */,
 				28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */,
 				28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */,
 				28CE1A4425DFD64B00BFCFD9 /* FactSetRenderer.swift in Sources */,
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
+				A032272525E93C7400E7172E /* ImageUtils.swift in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
 				29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */,
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
@@ -2056,6 +2077,7 @@
 				A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */,
 				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
+				A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */,
 				0801D5EA25C2C3B500AABD6C /* AdaptiveCard.swift in Sources */,
 				29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */,
 			);
@@ -2069,7 +2091,9 @@
 				2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */,
 				29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
+				A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */,
 				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
+				A04EA82925F00F3400C4C7DB /* FakeImageView.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
 				2871B15025DD4C4D0040AB27 /* TextInputRedererTest.swift in Sources */,

@@ -20,6 +20,11 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         }
     }
     
+    public var alignment: NSLayoutConstraint.Attribute {
+        get { return stackView.alignment }
+        set { stackView.alignment = newValue }
+    }
+    
     public var distribution: NSStackView.Distribution {
         get { return stackView.distribution }
         set { stackView.distribution = newValue }

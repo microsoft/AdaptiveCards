@@ -31,6 +31,14 @@ class BaseCardElementRenderer {
             updatedView.addSpacing(spacing: CGFloat(truncating: spaceAdded))
         }
         
+        if let elem = element as? ACSImage {
+            switch elem.getHorizontalAlignment() {
+            case .center: updatedView.alignment = .centerX
+            case .right: updatedView.alignment = .trailing
+            default: updatedView.alignment = .leading
+            }
+        }
+        
         // For seperator
         if element.getSeparator(), !isfirstElement {
             let seperatorConfig = hostConfig.getSeparator()

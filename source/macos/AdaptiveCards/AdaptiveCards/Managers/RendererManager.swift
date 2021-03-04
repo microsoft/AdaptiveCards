@@ -17,6 +17,7 @@ class RendererManager: RendererManagerProtocol {
         case .factSet: return FactSetRenderer.shared
         case .columnSet: return ColumnSetRenderer.shared
         case .column: return ColumnRenderer.shared
+        case .image: return ImageRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }
