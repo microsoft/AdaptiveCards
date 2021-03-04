@@ -25,6 +25,8 @@ namespace RendererQml
 		QmlTag& AddFunctions(const std::string& function);
         void AddChild(const std::shared_ptr<QmlTag>& child);
         std::string ToString();
+		const std::vector<std::shared_ptr<QmlTag>>& GetChildren();
+
 
         const std::string GetId() const;
 

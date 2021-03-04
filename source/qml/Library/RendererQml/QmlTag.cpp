@@ -111,6 +111,11 @@ namespace RendererQml
         return qmlString.str();
     }
 
+	const std::vector<std::shared_ptr<QmlTag>>& QmlTag::GetChildren()
+	{
+		return m_children;
+	}
+
     std::string QmlUtils::Join(const std::vector<std::pair<std::string, std::string>>& vectorPairs, const std::string& kvSeparator, const std::string& itemSeparator)
     {
         std::ostringstream os;

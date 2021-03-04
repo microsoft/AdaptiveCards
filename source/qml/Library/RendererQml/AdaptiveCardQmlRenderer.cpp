@@ -37,7 +37,7 @@ namespace RendererQml
 		}
 
 		return output;
-	}    
+	}
 
     void AdaptiveCardQmlRenderer::SetObjectTypes()
     {
@@ -119,7 +119,11 @@ namespace RendererQml
 
                 if (uiElement != nullptr)
                 {
-                    //TODO: Add separator
+					if (!bodyLayout->GetChildren().empty())
+					{
+						AddSeparator(bodyLayout, cardElement, context);
+					}
+
                     //TODO: Add collection element
                     bodyLayout->AddChild(uiElement);
                 }
@@ -307,6 +311,15 @@ namespace RendererQml
 		uiNumberInput->Property("stepSize", "1");
 		uiNumberInput->Property("editable", "true");
 		uiNumberInput->Property("validator", doubleValidatorTag->ToString());
+
+		if (input->GetMin() == std::nullopt)
+		{
+			input->SetMin(INT_MIN);
+		}
+		if (input->GetMax() == std::nullopt)
+		{
+			input->SetMax(INT_MAX);
+		}
 
 		if ((input->GetMin() == input->GetMax() && input->GetMin() == 0) || input->GetMin() > input->GetMax())
 		{
@@ -1339,6 +1352,38 @@ namespace RendererQml
 		}
 
 		return uiFlow;
+	}
+
+	void AdaptiveCardQmlRenderer::AddSeparator(std::shared_ptr<QmlTag> uiContainer, std::shared_ptr<AdaptiveCards::BaseCardElement> adaptiveElement, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		//Returns only when seperator=false and spacing=none
+		if (!adaptiveElement->GetSeparator() && adaptiveElement->GetSpacing() == AdaptiveCards::Spacing::None)
+		{
+			return;
+		}
+
+		int spacing = Utils::GetSpacing(context->GetConfig()->GetSpacing(), adaptiveElement->GetSpacing());
+
+		AdaptiveCards::SeparatorConfig separator = context->GetConfig()->GetSeparator();
+
+		auto uiSep = std::make_shared<QmlTag>("Rectangle");
+		uiSep->Property("width", "parent.width");
+		uiSep->Property("height", std::to_string(spacing == 0 ? separator.lineThickness : spacing));
+		uiSep->Property("color", "\"transparent\"");
+		uiSep->Property("visible", adaptiveElement->GetIsVisible() ? "true" : "false");
+
+		if (adaptiveElement->GetSeparator() && adaptiveElement->GetIsVisible())
+		{
+			auto uiLine = std::make_shared<QmlTag>("Rectangle");
+			uiLine->Property("width", "parent.width");
+			uiLine->Property("height", std::to_string(separator.lineThickness));
+			uiLine->Property("anchors.centerIn", "parent");
+			uiLine->Property("color", Formatter() << "\"" << separator.lineColor << "\"");
+
+			uiSep->AddChild(uiLine);
+		}
+
+		uiContainer->AddChild(uiSep);
 	}
 }
 	

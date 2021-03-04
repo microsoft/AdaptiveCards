@@ -3,13 +3,13 @@
 
 namespace Samples
 {
-    const std::string card_Empty = R"({
+	const std::string card_Empty = R"({
     "type": "AdaptiveCard",
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
     "version": "1.3"
     })";
 
-    const std::string card_TextBlock = R"({
+	const std::string card_TextBlock = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -22,7 +22,9 @@ namespace Samples
         {
           "type": "TextBlock",
           "text": "It doesn't wrap by default",
-          "weight": "bolder"
+          "weight": "bolder",
+		  "spacing":"large",
+		  "seperator":true
         },
         {
           "type": "TextBlock",
@@ -185,7 +187,7 @@ namespace Samples
     }
     )";
 
-    const std::string card_InputText = R"({
+	const std::string card_InputText = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -232,7 +234,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_InputNumber = R"({
+	const std::string card_InputNumber = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -279,7 +281,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_richText = R"({
+	const std::string card_richText = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -382,7 +384,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_CheckboxInput = R"({
+	const std::string card_CheckboxInput = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -430,7 +432,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_dateInput = R"({
+	const std::string card_dateInput = R"({
 	"$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
 	"type": "AdaptiveCard",
 	"version": "1.0",
@@ -461,7 +463,7 @@ namespace Samples
 	]
     })";
 
-    const std::string card_ChoiceSetInput = R"({
+	const std::string card_ChoiceSetInput = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -575,7 +577,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_FactSet = R"({
+	const std::string card_FactSet = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -604,7 +606,7 @@ namespace Samples
       ]
     })";
 
-    const std::string card_Image = R"({
+	const std::string card_Image = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.0",
@@ -872,4 +874,146 @@ namespace Samples
       ]
 	})";
 
+	const std::string card_Separator = R"({
+      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "type": "AdaptiveCard",
+      "version": "1.0",
+      "body": [
+	    {
+          "type": "TextBlock",
+          "text": "Demo for Spacing and Separator",
+          "size": "Large"
+        },
+        {
+          "type": "Image",
+          "url": "https://adaptivecards.io/content/cats/1.png",
+          "id": "img4",
+	      "backgroundColor": "#FF0000FF",
+	      "height": "80px",
+          "spacing": "small",
+          "separator":true
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:Small, Separator:true"
+        },
+        {
+          "type": "Input.Date",
+          "id": "defaultDateid",
+          "text": "Spacing: None",
+          "wrap": true,
+          "separator": false,
+          "spacing": "default"
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:default, Separator:false"
+        },
+        {
+          "type": "Input.Time",
+          "id": "defaulttimeid",
+          "wrap": true,
+          "separator": true,
+          "spacing": "none"
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:None, Separator:true"
+        },
+        {
+          "type": "FactSet",
+          "spacing":"large",
+          "separator":true,
+          "facts": [
+            {
+              "title": "Fact 1",
+              "value": "Value 1"
+            },
+            {
+              "title": "Fact 2",
+              "value": "Value 2"
+            },
+            {
+              "title": "Fact 3",
+              "value": "Value 3"
+            },
+            {
+              "title": "Fact 4",
+              "value": "Value 5"
+            }
+          ]
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:Large, Separator:true"
+        },
+        {
+          "type": "Input.ChoiceSet",
+          "id": "myColor2",
+          "style": "expanded",
+          "isMultiSelect": false,
+          "value": "1",
+          "choices": [
+            {
+              "title": "Red",
+              "value": "1"
+            },
+            {
+              "title": "Green",
+              "value": "2"
+            },
+            {
+              "title": "Blue",
+              "value": "3"
+            }
+          ],
+          "spacing": "extraLarge",
+          "separator": true
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:extraLarge, Separator:true"
+        },
+        {
+          "type": "Input.Toggle",
+          "id": "acceptTerms",
+          "title": "I accept the terms and agreements",
+          "value": "true",
+          "valueOn": "true",
+          "valueOff": "false",
+          "spacing": "padding",
+          "separator": true 
+        },
+        {
+           "type":"TextBlock",
+           "text":"Spacing:padding, Separator:true"
+        },
+        {
+          "type": "Input.Text",
+          "id": "defaultInputId",
+          "placeholder": "enter comment",
+          "maxLength": 500,
+          "spacing": "extraLarge",
+          "separator":false
+       },
+       {
+           "type":"TextBlock",
+           "text":"Spacing:extraLarge, Separator:false"
+        },
+       {
+          "type": "Input.Number",
+          "id": "defaultNumberId",
+          "placeholder": "enter comment",
+          "value": 0,
+          "spacing": "none",
+          "separator":false
+       },
+       {
+           "type":"TextBlock",
+           "text":"Spacing:none, Separator:false"
+       }
+      ]
+    })";
+
 }
+

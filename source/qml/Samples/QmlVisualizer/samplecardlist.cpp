@@ -16,6 +16,8 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
 	mCards.append({ QStringLiteral("Container"), QString::fromStdString(Samples::card_Container) });
 	mCards.append({ QStringLiteral("Input Time"), QString::fromStdString(Samples::card_timeInput) });
 	mCards.append({ QStringLiteral("Image Set"), QString::fromStdString(Samples::card_ImageSet) });
+	mCards.append({ QStringLiteral("Seperator and Spacing"), QString::fromStdString(Samples::card_Separator) });
+
 }
 
 QVector<Card> SampleCardList::cardList() const
