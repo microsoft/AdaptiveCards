@@ -79,6 +79,10 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
     }
+    
+    func setCustomSpacing(spacing: CGFloat, view: NSView) {
+        stackView.setCustomSpacing(spacing, after: view)
+    }
 }
 
 class ACRColumnView: ACRContentStackView { }

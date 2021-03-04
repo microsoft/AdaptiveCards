@@ -1,0 +1,42 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "id": "1",
+            "type": "Input.Toggle",
+            "title": "New Input.Toggle",
+            "label": "Label Input Toggle"
+        },
+        {
+            "id": "2",
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "label": "Label Input text"
+        },
+        {
+            "id": "3",
+            "type": "Input.Number",
+            "placeholder": "Placeholder text",
+            "label": "Label InputNumber",
+            "value": 3
+        },
+        {
+            "id": "4",
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "Choice 1",
+                    "value": "Choice 1"
+                },
+                {
+                    "title": "Choice 2",
+                    "value": "Choice 2"
+                }
+            ],
+            "placeholder": "Choice Set",
+            "label": "Label ChoiceSet"
+        }
+    ]
+}

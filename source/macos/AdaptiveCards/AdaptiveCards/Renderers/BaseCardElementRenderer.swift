@@ -3,11 +3,6 @@ import AppKit
 
 class BaseCardElementRenderer {
     func updateView(view: NSView, element: ACSBaseCardElement, style: ACSContainerStyle, hostConfig: ACSHostConfig, isfirstElement: Bool) -> NSView {
-        // Can't do this as updatedView needed for spacing when no property set
-//        if isfirstElement || !element.getSeparator() {
-//            return view
-//        }
-        
         let updatedView = ACRContentStackView()
         
         // For Spacing
@@ -42,9 +37,20 @@ class BaseCardElementRenderer {
         }
         
         view.identifier = .init(element.getId() ?? "")
-        updatedView.addArrangedSubview(view)
         updatedView.isHidden = !element.getIsVisible()
         
+        // Input label handling
+        if let inputElement = element as? ACSBaseInputElement, let label = inputElement.getLabel(), !label.isEmpty {
+            let attributedString = NSMutableAttributedString(string: label)
+            if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: true), let textColor = ColorUtils.color(from: colorHex) {
+                attributedString.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedString.length))
+            }
+            let labelView = NSTextField(labelWithAttributedString: attributedString)
+            labelView.isEditable = false
+            updatedView.addArrangedSubview(labelView)
+            updatedView.setCustomSpacing(spacing: 3, view: labelView)
+        }
+        updatedView.addArrangedSubview(view)
         return updatedView
     }
 }
