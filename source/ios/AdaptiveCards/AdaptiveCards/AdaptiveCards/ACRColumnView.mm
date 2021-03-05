@@ -93,4 +93,15 @@
     self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 
+- (void)updateIntrinsicContentSize
+{
+    self.combinedContentSize = CGSizeZero;
+    [super updateIntrinsicContentSize:^(UIView *view, NSUInteger idx, BOOL *stop) {
+        CGSize size = [view intrinsicContentSize];
+        if (!view.hidden) {
+        if (size.width >= 0 and size.height >= 0) {
+            self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+        }}}];
+}
+
 @end

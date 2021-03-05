@@ -57,6 +57,10 @@
 
 - (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *_Nonnull)view;
 
+- (void)updateIntrinsicContentSize;
+
+- (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block;
+
 - (void)hideIfSubviewsAreAllHidden;
 
 - (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;

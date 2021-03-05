@@ -95,11 +95,7 @@
 
     [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
 
-    if (imageProps.acrImageSize == ACRImageSizeStretch) {
-        [wrappingView.widthAnchor constraintEqualToAnchor:view.widthAnchor].active = YES;
-    } else {
-        [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
-    }
+    [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
 

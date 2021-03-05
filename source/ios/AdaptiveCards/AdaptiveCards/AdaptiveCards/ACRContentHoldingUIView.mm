@@ -155,6 +155,11 @@ using namespace AdaptiveCards;
             }
 
             if (bUpdate) {
+                if ([_viewGroup isKindOfClass:[ACRColumnView class]]) {
+                    ACRColumnSetView *columnSetView = ((ACRColumnView *)_viewGroup).columnsetView;
+                    [columnSetView updateIntrinsicContentSize];
+                    [columnSetView invalidateIntrinsicContentSize];
+                }
                 [_viewGroup invalidateIntrinsicContentSize];
             }
         }

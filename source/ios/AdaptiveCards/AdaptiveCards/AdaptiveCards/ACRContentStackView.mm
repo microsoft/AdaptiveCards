@@ -205,6 +205,15 @@ static int kToggleVisibilityContext;
     return self.combinedContentSize;
 }
 
+- (void)updateIntrinsicContentSize
+{
+}
+
+- (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block
+{
+    [_stackView.arrangedSubviews enumerateObjectsUsingBlock:block];
+}
+
 - (void)addArrangedSubview:(UIView *)view
 {
     [_stackView addArrangedSubview:view];

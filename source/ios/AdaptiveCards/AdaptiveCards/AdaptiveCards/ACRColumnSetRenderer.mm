@@ -71,14 +71,12 @@
     }
 
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
+    auto relativeColumnWidthCounts = 0;
+    
     for (std::shared_ptr<Column> column : columns) {
         if (column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
             castedRenderer.fillAlignment = YES;
         }
-    }
-    
-    auto relativeColumnWidthCounts = 0;
-    for (std::shared_ptr<Column> column : columns) {
         auto pixelWidth = column->GetPixelWidth();
         if (pixelWidth == 0) {
             auto width = column->GetWidth();
@@ -91,7 +89,7 @@
                 }
             }
         }
-    }
+    }   
     
     columnSetView.hasMoreThanOneColumnWithRelatvieWidth = (relativeColumnWidthCounts > 1);
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
@@ -104,8 +102,12 @@
     BOOL hasPixelWidthColumn = NO;
     auto accumulativeWidth = 0;
     CGFloat minRelativeWidth = INT_MAX;
+    double maxIntrinsicSize = 0;
     UIView *viewWithMinWidth = nil;
+    ACRColumnView *viewWithMaxSize = nil;
     NSMutableArray<ACRColumnView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
+    NSMutableSet<ACRColumnView *> *viewsWithPaddingView = [[NSMutableSet alloc] init];
+    
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
@@ -183,10 +185,25 @@
         if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
             [columnSetView setAlignmentForColumnStretch];
         }
+        
+        if (curView.hasPaddingView) {
+            [viewsWithPaddingView addObject:curView];
+        }
+        
+        CGSize size = [curView intrinsicContentSize];
+        if (size.width * size.height > maxIntrinsicSize) {
+            maxIntrinsicSize = size.width * size.height;
+            viewWithMaxSize = curView;
+        }
 
         prevColumn = column;
     }
 
+    if ([viewsWithPaddingView containsObject:viewWithMaxSize]) {
+        viewWithMaxSize.hasPaddingView = NO;
+        [viewWithMaxSize removeLastViewFromArrangedSubview];
+    }
+    
     for (ACRColumnView *view in viewsWithRelativeWidth) {
         if (view != viewWithMinWidth && view.relativeWidth) {
             [constraints addObject:

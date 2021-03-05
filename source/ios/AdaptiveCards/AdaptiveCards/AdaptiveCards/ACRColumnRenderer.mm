@@ -66,6 +66,7 @@
 
     ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
     column.isLastColumn = columnsetView.isLastColumn;
+    column.columnsetView = columnsetView;
 
     [ACRRenderer render:column
                rootView:rootView
@@ -83,6 +84,7 @@
 
     if (!column.hasStretchableView) {
         [column addPaddingSpace];
+        column.hasPaddingView = YES;
     }
 
     if (columnElem->GetMinHeight() > 0) {
