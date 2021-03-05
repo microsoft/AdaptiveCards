@@ -27,10 +27,6 @@ CGFloat kAdaptiveCardsWidth = 0;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
     dispatch_queue_t _global_queue;
-    dispatch_group_t _async_tasks_group;
-    BOOL _ran;
-    BOOL cardRendered;
-    BOOL cardLoaded;
 }
 
 @end
@@ -169,7 +165,6 @@ CGFloat kAdaptiveCardsWidth = 0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _async_tasks_group = dispatch_group_create();
     _global_queue = dispatch_get_main_queue();
 
     kAdaptiveCardsWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;

@@ -124,7 +124,7 @@ void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundI
 // the backgroundView is set on the targetView
 void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView)
 {
-    if (![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
+    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
         return;
     }
     
