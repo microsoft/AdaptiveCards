@@ -38,7 +38,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	public const int
 		COMMA=1, COLON=2, LCB=3, RCB=4, LSB=5, RSB=6, TRUE=7, FALSE=8, NULL=9, 
 		StringDeclOpen=10, NUMBER=11, WS=12, CLOSE=13, TEMPLATEDATA=14, TEMPLATEWHEN=15, 
-		JPATH=16, TEMPLATEROOT=17, STRING=18, TEMPLATELITERAL=19;
+		JPATH=16, TEMPLATELITERAL=17, TEMPLATEROOT=18, STRING=19;
 	public const int
 		RULE_json = 0, RULE_obj = 1, RULE_pair = 2, RULE_array = 3, RULE_value = 4, 
 		RULE_templateString = 5, RULE_templateRoot = 6, RULE_templateExpression = 7;
@@ -54,7 +54,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 	private static readonly string[] _SymbolicNames = {
 		null, "COMMA", "COLON", "LCB", "RCB", "LSB", "RSB", "TRUE", "FALSE", "NULL", 
 		"StringDeclOpen", "NUMBER", "WS", "CLOSE", "TEMPLATEDATA", "TEMPLATEWHEN", 
-		"JPATH", "TEMPLATEROOT", "STRING", "TEMPLATELITERAL"
+		"JPATH", "TEMPLATELITERAL", "TEMPLATEROOT", "STRING"
 	};
 	public static readonly IVocabulary DefaultVocabulary = new Vocabulary(_LiteralNames, _SymbolicNames);
 
@@ -571,7 +571,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 				State = 83;
 				ErrorHandler.Sync(this);
 				_la = TokenStream.LA(1);
-				while (_la==STRING || _la==TEMPLATELITERAL) {
+				while (_la==TEMPLATELITERAL || _la==STRING) {
 					{
 					{
 					State = 80; templateString();
@@ -886,7 +886,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		'\x5', '\x2', '\x2', ' ', '\"', '\a', '\x6', '\x2', '\x2', '!', '\x14', 
 		'\x3', '\x2', '\x2', '\x2', '!', '\x1F', '\x3', '\x2', '\x2', '\x2', '\"', 
 		'\x5', '\x3', '\x2', '\x2', '\x2', '#', '\'', '\a', '\f', '\x2', '\x2', 
-		'$', '&', '\a', '\x14', '\x2', '\x2', '%', '$', '\x3', '\x2', '\x2', '\x2', 
+		'$', '&', '\a', '\x15', '\x2', '\x2', '%', '$', '\x3', '\x2', '\x2', '\x2', 
 		'&', ')', '\x3', '\x2', '\x2', '\x2', '\'', '%', '\x3', '\x2', '\x2', 
 		'\x2', '\'', '(', '\x3', '\x2', '\x2', '\x2', '(', '*', '\x3', '\x2', 
 		'\x2', '\x2', ')', '\'', '\x3', '\x2', '\x2', '\x2', '*', '+', '\a', '\xF', 
@@ -921,7 +921,7 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		'Y', 'm', '\x3', '\x2', '\x2', '\x2', 'Z', '[', '\a', '\f', '\x2', '\x2', 
 		'[', '\\', '\x5', '\xE', '\b', '\x2', '\\', ']', '\a', '\xF', '\x2', '\x2', 
 		']', 'm', '\x3', '\x2', '\x2', '\x2', '^', '\x62', '\a', '\f', '\x2', 
-		'\x2', '_', '\x61', '\a', '\x14', '\x2', '\x2', '`', '_', '\x3', '\x2', 
+		'\x2', '_', '\x61', '\a', '\x15', '\x2', '\x2', '`', '_', '\x3', '\x2', 
 		'\x2', '\x2', '\x61', '\x64', '\x3', '\x2', '\x2', '\x2', '\x62', '`', 
 		'\x3', '\x2', '\x2', '\x2', '\x62', '\x63', '\x3', '\x2', '\x2', '\x2', 
 		'\x63', '\x65', '\x3', '\x2', '\x2', '\x2', '\x64', '\x62', '\x3', '\x2', 
@@ -934,16 +934,16 @@ public partial class AdaptiveCardsTemplateParser : Parser {
 		'\x3', '\x2', '\x2', '\x2', 'l', 'h', '\x3', '\x2', '\x2', '\x2', 'l', 
 		'i', '\x3', '\x2', '\x2', '\x2', 'l', 'j', '\x3', '\x2', '\x2', '\x2', 
 		'l', 'k', '\x3', '\x2', '\x2', '\x2', 'm', '\v', '\x3', '\x2', '\x2', 
-		'\x2', 'n', 'p', '\a', '\x14', '\x2', '\x2', 'o', 'n', '\x3', '\x2', '\x2', 
+		'\x2', 'n', 'p', '\a', '\x15', '\x2', '\x2', 'o', 'n', '\x3', '\x2', '\x2', 
 		'\x2', 'p', 's', '\x3', '\x2', '\x2', '\x2', 'q', 'o', '\x3', '\x2', '\x2', 
 		'\x2', 'q', 'r', '\x3', '\x2', '\x2', '\x2', 'r', 't', '\x3', '\x2', '\x2', 
-		'\x2', 's', 'q', '\x3', '\x2', '\x2', '\x2', 't', 'x', '\a', '\x15', '\x2', 
-		'\x2', 'u', 'w', '\a', '\x14', '\x2', '\x2', 'v', 'u', '\x3', '\x2', '\x2', 
+		'\x2', 's', 'q', '\x3', '\x2', '\x2', '\x2', 't', 'x', '\a', '\x13', '\x2', 
+		'\x2', 'u', 'w', '\a', '\x15', '\x2', '\x2', 'v', 'u', '\x3', '\x2', '\x2', 
 		'\x2', 'w', 'z', '\x3', '\x2', '\x2', '\x2', 'x', 'v', '\x3', '\x2', '\x2', 
 		'\x2', 'x', 'y', '\x3', '\x2', '\x2', '\x2', 'y', '\r', '\x3', '\x2', 
-		'\x2', '\x2', 'z', 'x', '\x3', '\x2', '\x2', '\x2', '{', '|', '\a', '\x13', 
+		'\x2', '\x2', 'z', 'x', '\x3', '\x2', '\x2', '\x2', '{', '|', '\a', '\x14', 
 		'\x2', '\x2', '|', '\xF', '\x3', '\x2', '\x2', '\x2', '}', '~', '\a', 
-		'\f', '\x2', '\x2', '~', '\x7F', '\a', '\x15', '\x2', '\x2', '\x7F', '\x80', 
+		'\f', '\x2', '\x2', '~', '\x7F', '\a', '\x13', '\x2', '\x2', '\x7F', '\x80', 
 		'\a', '\xF', '\x2', '\x2', '\x80', '\x11', '\x3', '\x2', '\x2', '\x2', 
 		'\r', '\x1A', '!', '\'', '?', 'G', 'N', 'U', '\x62', 'l', 'q', 'x',
 	};
