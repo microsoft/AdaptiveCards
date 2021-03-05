@@ -49,6 +49,12 @@
     <ClInclude Include="SampleCardJson.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="adaptivecard_light_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="adaptivecard_dark_config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="AdaptiveCardItemDelegate.qml">

@@ -1,5 +1,7 @@
 #include "samplecardmodel.h"
 #include "samplecardlist.h"
+#include "adaptivecard_light_config.h"
+#include "adaptivecard_dark_config.h"
 
 using namespace RendererQml;
 
@@ -7,6 +9,9 @@ SampleCardModel::SampleCardModel(QObject *parent)
     : QAbstractListModel(parent)
     , mList(nullptr)
 {
+
+    std::shared_ptr<AdaptiveSharedNamespace::HostConfig> hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(LightConfig::lightConfig));
+    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig));
 }
 
 int SampleCardModel::rowCount(const QModelIndex &parent) const
@@ -99,12 +104,23 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 {
     std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
 
-    std::shared_ptr<AdaptiveCards::HostConfig> hostConfig = getHostConfig();
-
-    AdaptiveCardQmlRenderer renderer = AdaptiveCardQmlRenderer(hostConfig);
-    std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer.RenderCard(mainCard->GetAdaptiveCard(), nullptr);
-
+    std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard(), nullptr);
     const auto generatedQml = result->GetResult();
     const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
     return generatedQmlString;
+}
+
+void SampleCardModel::setTheme(const QString& theme)
+{
+    std::shared_ptr<AdaptiveSharedNamespace::HostConfig> hostConfig;
+    if(theme.toStdString() == "Light Theme")
+    {
+        hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(LightConfig::lightConfig));
+    }
+    else
+    {
+        hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(DarkConfig::darkConfig));
+    }
+    renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig));
+    emit reloadCardOnThemeChange();
 }

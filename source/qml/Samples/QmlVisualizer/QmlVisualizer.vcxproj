@@ -123,6 +123,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adaptivecard_dark_config.h" />
+    <ClInclude Include="adaptivecard_light_config.h" />
     <ClInclude Include="SampleCardJson.h" />
     <ClInclude Include="samplecardlist.h" />
     <QtMoc Include="samplecardmodel.h" />

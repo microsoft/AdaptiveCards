@@ -75,6 +75,7 @@ namespace RendererQml
         uiCard->Property("implicitHeight", "adaptiveCardLayout.implicitHeight");
         //TODO: Width can be set as config
         uiCard->Property("width", "600");
+        uiCard->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
 
 		auto columnLayout = std::make_shared<QmlTag>("ColumnLayout");
 		columnLayout->Property("id", "adaptiveCardLayout");
