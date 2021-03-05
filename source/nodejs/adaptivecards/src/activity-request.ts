@@ -1,76 +1,84 @@
-import { AdaptiveCard, Authentication, ExecuteAction } from "./card-elements";
+import { Authentication, CardButton, ExecuteAction } from "./card-elements";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
     Manual = "manual",
 }
 
-/*
-export enum ActivityStatus {
-    Success,
-    Error,
-    LoginRequest,
-    IncorrectAuthCode,
-    PreconditionFailed
-}
-*/
+export interface IActivityRequest {
+    readonly action: ExecuteAction;
+    readonly trigger: ActivityRequestTrigger;
+    readonly attemptNumber: number;
+    readonly consecutiveRefreshes: number;
 
-export interface ActivityRequest {
-    readonly action: ExecuteAction,
-    readonly trigger: ActivityRequestTrigger,
-    authCode?: string,
-    attemptNumber: number,
-    consecutiveRefreshes: number
+    authCode?: string;
+
+    trySendAsync(): void;
 }
 
 export class ActivityRequestError {
     constructor(readonly code?: string, readonly message?: string) { }
 }
 
-/*
-export interface ActivityResponse {
-    readonly request: ActivityRequest,
-    readonly status: ActivityStatus,
-    content?: string | ActivityRequestError | Authentication
-}
-*/
-
 export abstract class ActivityResponse {
-    constructor(readonly request: ActivityRequest) { }
+    constructor(readonly request: IActivityRequest) { }
 }
 
 export class SuccessResponse extends ActivityResponse {
-    constructor(readonly request: ActivityRequest, readonly rawContent?: string) {
+    constructor(readonly request: IActivityRequest, readonly rawContent?: string) {
         super(request);
     }
 }
 
 export class ErrorResponse extends ActivityResponse {
-    constructor(readonly request: ActivityRequest, readonly error: ActivityRequestError) {
+    constructor(readonly request: IActivityRequest, readonly error: ActivityRequestError) {
         super(request);
     }
 }
 
 export class LoginRequestResponse extends ActivityResponse {
-    constructor(readonly request: ActivityRequest, readonly auth: Authentication) {
-        super(request);
-    }
+    private static getSinginButton(auth: Authentication): CardButton | undefined {
+        for (let button of auth.buttons) {
+            if (button.type === "signin" && button.value !== undefined) {
+                try {
+                    let parsedUrl = new URL(button.value);
 
-    getSinginUrl(): string | undefined {
-        for (let button of this.auth.buttons) {
-            if (button.type === "singin") {
-                return button.value;
+                    return button;
+                }
+                catch (e) {
+                    return undefined;
+                }
             }
         }
 
         return undefined;
+    }
+
+    private _signinButton?: CardButton;
+
+    constructor(readonly request: IActivityRequest, auth: Authentication) {
+        super(request);
+
+        this._signinButton = LoginRequestResponse.getSinginButton(auth);
+    }
+
+    get signinButtonTitle(): string | undefined {
+        return this._signinButton ? this._signinButton.title : undefined;
+    }
+
+    get signinButtonImage(): string | undefined {
+        return this._signinButton ? this._signinButton.image : undefined;
+    }
+
+    get signinUrl(): string | undefined {
+        return this._signinButton ? this._signinButton.value : undefined;
     }
 }
 
 export class InvalidAuthCodeResponse extends ActivityResponse { }
 
 export class PreconditionFailedResponse extends ActivityResponse {
-    constructor(readonly request: ActivityRequest, readonly error: ActivityRequestError) {
+    constructor(readonly request: IActivityRequest, readonly error: ActivityRequestError) {
         super(request);
     }
 }

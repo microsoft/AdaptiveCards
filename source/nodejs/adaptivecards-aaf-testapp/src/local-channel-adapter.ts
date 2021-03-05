@@ -3,7 +3,7 @@ import { ActivityRequestError, ErrorResponse, SuccessResponse } from "adaptiveca
 import * as Shared from "./shared";
 
 export class LocalChannelAdapter extends Adaptive.ChannelAdapter {
-    async sendRequestAsync(request: Adaptive.ActivityRequest): Promise<Adaptive.ActivityResponse> {
+    async sendRequestAsync(request: Adaptive.IActivityRequest): Promise<Adaptive.ActivityResponse> {
         return new Promise<Adaptive.ActivityResponse>(
             (resolve, reject) => {
                 switch (request.action.verb) {

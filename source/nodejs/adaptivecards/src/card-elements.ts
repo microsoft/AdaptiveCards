@@ -6498,7 +6498,7 @@ export class CardButton extends SerializableObject {
     //#endregion
 
     @property(CardButton.typeProperty)
-    type?: string;
+    type: string;
 
     @property(CardButton.titleProperty)
     title?: string;
@@ -6507,7 +6507,7 @@ export class CardButton extends SerializableObject {
     image?: string;
 
     @property(CardButton.valueProperty)
-    value?: string;
+    value: string;
 }
 
 export class TokenExchangeResource extends SerializableObject {

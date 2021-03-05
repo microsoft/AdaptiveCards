@@ -1,5 +1,5 @@
-import { ActivityResponse, ActivityRequest } from "./activity-request";
+import { ActivityResponse, IActivityRequest } from "./activity-request";
 
 export abstract class ChannelAdapter {
-    abstract sendRequestAsync(request: ActivityRequest): Promise<ActivityResponse>;
+    abstract sendRequestAsync(request: IActivityRequest): Promise<ActivityResponse>;
 }

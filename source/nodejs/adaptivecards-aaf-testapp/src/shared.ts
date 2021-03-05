@@ -1,3 +1,12 @@
+/*
+    refresh: {
+        action: {
+            type: "Action.Execute",
+            verb: "refreshAction"
+        },
+        userIds: [ "fdsfds@consotos.com", "david@ms.com" ]
+    },
+*/
 export const sampleCard = {
     type: "AdaptiveCard",
     $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -18,13 +27,6 @@ export const sampleCard = {
                 value: "http://singinurl"
             }
         ]
-    },
-    refresh: {
-        action: {
-            type: "Action.Execute",
-            verb: "refreshAction"
-        },
-        userIds: [ "fdsfds@consotos.com", "david@ms.com" ]
     },
     body: [
         {
