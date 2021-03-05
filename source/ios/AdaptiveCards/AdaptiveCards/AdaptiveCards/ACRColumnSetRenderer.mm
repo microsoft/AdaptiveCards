@@ -56,7 +56,7 @@
     ACRBaseCardElementRenderer *columnRenderer =
         [[ACRRegistration getInstance] getRenderer:[NSNumber numberWithInt:(int)CardElementType::Column]];
     std::vector<std::shared_ptr<Column>> columns = columnSetElem->GetColumns();
-    
+
     NSMutableArray *constraints = [[NSMutableArray alloc] init];
 
     if (columnSetElem->GetMinHeight() > 0) {
@@ -72,7 +72,7 @@
 
     ACRColumnRenderer *castedRenderer = (ACRColumnRenderer *)columnRenderer;
     auto relativeColumnWidthCounts = 0;
-    
+
     for (std::shared_ptr<Column> column : columns) {
         if (column->GetVerticalContentAlignment() != VerticalContentAlignment::Top) {
             castedRenderer.fillAlignment = YES;
@@ -89,8 +89,8 @@
                 }
             }
         }
-    }   
-    
+    }
+
     columnSetView.hasMoreThanOneColumnWithRelatvieWidth = (relativeColumnWidthCounts > 1);
     ACOBaseCardElement *acoColumn = [[ACOBaseCardElement alloc] init];
     ACRColumnView *prevView = nil, *curView = nil, *stretchView = nil;
@@ -107,7 +107,7 @@
     ACRColumnView *viewWithMaxSize = nil;
     NSMutableArray<ACRColumnView *> *viewsWithRelativeWidth = [[NSMutableArray alloc] init];
     NSMutableSet<ACRColumnView *> *viewsWithPaddingView = [[NSMutableSet alloc] init];
-    
+
     for (std::shared_ptr<Column> column : columns) {
         if (*firstColumn != column) {
             separator = [ACRSeparator renderSeparation:column forSuperview:columnSetView withHostConfig:config];
@@ -185,11 +185,11 @@
         if (curView.hasStretchableView || (columnSetElem->GetHeight() == HeightType::Stretch)) {
             [columnSetView setAlignmentForColumnStretch];
         }
-        
+
         if (curView.hasPaddingView) {
             [viewsWithPaddingView addObject:curView];
         }
-        
+
         CGSize size = [curView intrinsicContentSize];
         if (size.width * size.height > maxIntrinsicSize) {
             maxIntrinsicSize = size.width * size.height;
@@ -203,17 +203,17 @@
         viewWithMaxSize.hasPaddingView = NO;
         [viewWithMaxSize removeLastViewFromArrangedSubview];
     }
-    
+
     for (ACRColumnView *view in viewsWithRelativeWidth) {
         if (view != viewWithMinWidth && view.relativeWidth) {
             [constraints addObject:
-             [NSLayoutConstraint constraintWithItem:view
-                                          attribute:NSLayoutAttributeWidth
-                                          relatedBy:NSLayoutRelationEqual
-                                             toItem:viewWithMinWidth
-                                          attribute:NSLayoutAttributeWidth
-                                         multiplier:view.relativeWidth / minRelativeWidth
-                                           constant:0]];
+                             [NSLayoutConstraint constraintWithItem:view
+                                                          attribute:NSLayoutAttributeWidth
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:viewWithMinWidth
+                                                          attribute:NSLayoutAttributeWidth
+                                                         multiplier:view.relativeWidth / minRelativeWidth
+                                                           constant:0]];
         }
     }
 

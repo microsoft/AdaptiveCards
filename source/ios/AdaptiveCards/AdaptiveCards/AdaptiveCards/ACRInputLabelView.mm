@@ -248,7 +248,7 @@
             height += size.height;
         }
     }
-    
+
     return CGSizeMake(width, height);
 }
 

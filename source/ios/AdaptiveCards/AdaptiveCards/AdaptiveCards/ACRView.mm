@@ -108,9 +108,9 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
         unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
-        
+
         [self applyPadding:padding priority:1000];
-        
+
         self.acrActionDelegate = acrActionDelegate;
         [self render];
     }

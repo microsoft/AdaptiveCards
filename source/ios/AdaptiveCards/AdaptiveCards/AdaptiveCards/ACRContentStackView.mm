@@ -443,12 +443,12 @@ static int kToggleVisibilityContext;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     if ([self.subviews count]) {
         // configures background when this view contains a background image, and does only once
         renderBackgroundCoverMode(self.subviews[0], self);
     }
-    
+
     if (_isActionSet) {
         float accumulatedWidth = 0, accumulatedHeight = 0, spacing = _stackView.spacing, maxWidth = 0, maxHeight = 0;
 

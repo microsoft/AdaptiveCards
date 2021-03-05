@@ -6,11 +6,8 @@
 //
 
 #import "ACRColumnView.h"
-#import "UtiliOS.h"
 
-@implementation ACRColumnView {
-    NSLayoutConstraint *widthConstraint;
-}
+@implementation ACRColumnView
 
 - (void)config:(nullable NSDictionary<NSString *, id> *)attributes
 {
@@ -99,9 +96,11 @@
     [super updateIntrinsicContentSize:^(UIView *view, NSUInteger idx, BOOL *stop) {
         CGSize size = [view intrinsicContentSize];
         if (!view.hidden) {
-        if (size.width >= 0 and size.height >= 0) {
-            self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
-        }}}];
+            if (size.width >= 0 and size.height >= 0) {
+                self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
+            }
+        }
+    }];
 }
 
 @end

@@ -48,7 +48,7 @@
     // we list all the parts that are needed in building the key.
     NSString *urlString = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *numberString = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())] stringValue];
-    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig] -> GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
+    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *piikeyViewIF = [NSString stringWithFormat:@"%llu_playIcon", (unsigned long long)elem.get()];
 
     NSDictionary *pieces = @{
@@ -127,7 +127,7 @@
 
     [viewGroup addArrangedSubview:contentholdingview];
 
-    if ([acoConfig getHostConfig] -> GetSupportsInteractivity()) {
+    if ([acoConfig getHostConfig]->GetSupportsInteractivity()) {
         ACRMediaTarget *mediaTarget = nil;
         ACOMediaEvent *mediaEvent = [[ACOMediaEvent alloc] initWithMedia:mediaElem];
         if (!mediaEvent.isValid) {
@@ -135,7 +135,7 @@
             return nil;
         }
         // create target for gesture recongnizer;
-        if (![acoConfig getHostConfig] -> GetMedia().allowInlinePlayback) {
+        if (![acoConfig getHostConfig]->GetMedia().allowInlinePlayback) {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig];
         } else {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig containingview:contentholdingview];

@@ -13,7 +13,7 @@
 #import "ACRImageProperties.h"
 #import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRUIImageView.h"
-#import "ACRViewPrivate.h"
+#import "ACRView.h"
 #import "Enums.h"
 #import "Image.h"
 #import "SharedAdaptiveCard.h"

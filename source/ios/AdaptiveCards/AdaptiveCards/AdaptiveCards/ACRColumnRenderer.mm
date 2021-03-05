@@ -56,6 +56,7 @@
             column.hasMoreThanOneRelativeWidth = ((ACRColumnSetView *)viewGroup).hasMoreThanOneColumnWithRelatvieWidth;
         } catch (...) {
             [rootView addWarnings:ACRInvalidValue mesage:@"Invalid column width is given"];
+            column.columnWidth = @"stretch"
         }
     }
 

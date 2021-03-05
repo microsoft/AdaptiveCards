@@ -20,6 +20,8 @@
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
+// the width of the AdaptiveCards does not need to be set.
+// if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
 CGFloat kAdaptiveCardsWidth = 0;
 
 @interface ViewController () {
@@ -235,7 +237,7 @@ CGFloat kAdaptiveCardsWidth = 0;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
-    
+
     // the width of the AdaptiveCards does not need to be set.
     // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
     _dataSource = [[ACRChatWindow alloc] init:kAdaptiveCardsWidth];

@@ -127,16 +127,16 @@ void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targ
     if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
         return;
     }
-    
+
     UIImageView *imageView = (UIImageView *)backgroundView;
     UIImage *image = imageView.image;
-    
+
     if (!image) {
         return;
     }
-    
+
     targetView.isBackgroundImageSet = YES;
-    
+
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     // Fill Mode Description
     // ScaleAspectFill increases one dimension of image proportionally if
@@ -295,8 +295,8 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         }
         case ImageFillMode::Cover:
         default: {
-            // we should not apply the constraints if the superView's frame is not ready 
-	    // check layoutSubview of ACRContentStackView to see the alternate case
+            // we should not apply the constraints if the superView's frame is not ready
+            // check layoutSubview of ACRContentStackView to see the alternate case
             if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
                 renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView);
             }
@@ -882,7 +882,7 @@ NSData *JsonToNSData(const Json::Value &blob)
     std::stringstream sstream;
     writer->write(blob, &sstream);
     NSString *jsonString =
-    [[NSString alloc] initWithCString:sstream.str().c_str()
-                             encoding:NSUTF8StringEncoding];
+        [[NSString alloc] initWithCString:sstream.str().c_str()
+                                 encoding:NSUTF8StringEncoding];
     return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
 }
