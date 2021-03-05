@@ -113,7 +113,7 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 void SampleCardModel::setTheme(const QString& theme)
 {
     std::shared_ptr<AdaptiveSharedNamespace::HostConfig> hostConfig;
-    if(theme.toStdString() == "Light Theme")
+    if(theme.toStdString() == "Light")
     {
         hostConfig = std::make_shared<AdaptiveSharedNamespace::HostConfig>(AdaptiveSharedNamespace::HostConfig::DeserializeFromString(LightConfig::lightConfig));
     }
