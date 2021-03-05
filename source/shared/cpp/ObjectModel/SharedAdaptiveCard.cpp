@@ -15,8 +15,9 @@ using namespace AdaptiveSharedNamespace;
 
 AdaptiveCard::AdaptiveCard() :
     m_style(ContainerStyle::None), m_verticalContentAlignment(VerticalContentAlignment::Top),
-    m_height(HeightType::Auto), m_minHeight(0), m_internalId{InternalId::Next()}
+    m_height(HeightType::Auto), m_minHeight(0), m_internalId{InternalId::Next()}, m_additionalProperties{}
 {
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -31,9 +32,10 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height),
-    m_minHeight(minHeight), m_internalId{InternalId::Next()}
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_additionalProperties{}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -50,9 +52,10 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_speak(speak), m_style(style), m_language(language),
     m_verticalContentAlignment(verticalContentAlignment), m_height(height),
-    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions)
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions), m_additionalProperties{}
 {
     m_backgroundImage = std::make_shared<BackgroundImage>(backgroundImageUrl);
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -67,8 +70,9 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
     m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
-    m_minHeight(minHeight), m_internalId{InternalId::Next()}
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_additionalProperties{}
 {
+    PopulateKnownPropertiesSet();
 }
 
 AdaptiveCard::AdaptiveCard(std::string const& version,
@@ -85,8 +89,9 @@ AdaptiveCard::AdaptiveCard(std::string const& version,
     m_version(version),
     m_fallbackText(fallbackText), m_backgroundImage(backgroundImage), m_speak(speak), m_style(style),
     m_language(language), m_verticalContentAlignment(verticalContentAlignment), m_height(height),
-    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions)
+    m_minHeight(minHeight), m_internalId{InternalId::Next()}, m_body(body), m_actions(actions), m_additionalProperties{}
 {
+    PopulateKnownPropertiesSet();
 }
 
 #ifdef __ANDROID__
@@ -228,6 +233,10 @@ std::shared_ptr<ParseResult> AdaptiveCard::Deserialize(const Json::Value& json, 
     // Parse optional selectAction
     result->SetSelectAction(ParseUtil::GetAction(context, json, AdaptiveCardSchemaKey::SelectAction, false));
 
+    Json::Value additionalProperties;
+    HandleUnknownProperties(json, result->GetKnownProperties(), additionalProperties);
+    result->SetAdditionalProperties(additionalProperties);
+
     return std::make_shared<ParseResult>(result, context.warnings);
 }
 
@@ -257,7 +266,7 @@ std::shared_ptr<ParseResult> AdaptiveCard::DeserializeFromString(const std::stri
 
 Json::Value AdaptiveCard::SerializeToJsonValue() const
 {
-    Json::Value root;
+    Json::Value root = GetAdditionalProperties();
     root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = CardElementTypeToString(CardElementType::AdaptiveCard);
 
     if (!m_version.empty())
@@ -473,6 +482,43 @@ unsigned int AdaptiveCard::GetMinHeight() const
 void AdaptiveCard::SetMinHeight(const unsigned int value)
 {
     m_minHeight = value;
+}
+
+void AdaptiveCard::PopulateKnownPropertiesSet()
+{
+    m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Version),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Body),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::FallbackText),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Speak),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Language),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Height),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Schema)});
+}
+
+const std::unordered_set<std::string>& AdaptiveCard::GetKnownProperties() const
+{
+    return m_knownProperties;
+}
+
+const Json::Value& AdaptiveCard::GetAdditionalProperties() const
+{
+    return m_additionalProperties;
+}
+
+void AdaptiveCard::SetAdditionalProperties(Json::Value&& value)
+{
+    m_additionalProperties = std::move(value);
+}
+void AdaptiveCard::SetAdditionalProperties(const Json::Value& value)
+{
+    m_additionalProperties = value;
 }
 
 std::vector<RemoteResourceInformation> AdaptiveCard::GetResourceInformation()
