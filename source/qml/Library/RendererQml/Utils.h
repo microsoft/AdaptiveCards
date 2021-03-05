@@ -101,8 +101,6 @@ namespace RendererQml
 		static std::string GetHorizontalAlignment(std::string aligntype);
 		static std::string GetWeight(AdaptiveCards::TextWeight weight);
 
-		static std::string GetTextHighlightColor(std::string textColor);
-
 		static std::string GetDate(std::string date, bool MinimumorMaximum);   
 		static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
 		static bool isValidTime(std::string& time);

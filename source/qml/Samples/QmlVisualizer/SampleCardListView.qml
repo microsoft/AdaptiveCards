@@ -25,19 +25,21 @@ Frame{
         width: parent.width
         spacing: 15
         Row{
-            spacing: 10
+            width: parent.width
             Text {
+                width: parent.width/2
                 font.weight: Font.DemiBold
                 text: "Select theme:"
-                font.pointSize:   10
+                font.pointSize: 9
                 anchors.verticalCenter: parent.verticalCenter
             }
             ComboBox {
                 id : comboId
+                width: parent.width/2
                 model: ListModel {
                     id: cbItems
-                    ListElement { text: "Light Theme"}
-                    ListElement { text: "Dark Theme"}
+                    ListElement { text: "Light"}
+                    ListElement { text: "Dark"}
                 }
                 onActivated: {
                     _aModel.setTheme(cbItems.get(currentIndex).text)

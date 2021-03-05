@@ -3,9 +3,6 @@
 
 namespace RendererQml
 {
-	int AdaptiveCardQmlRenderer::containerCounter = 0;
-	int AdaptiveCardQmlRenderer::imageCounter = 0;
-
 	AdaptiveCardQmlRenderer::AdaptiveCardQmlRenderer()
 		: AdaptiveCardQmlRenderer(std::make_shared<AdaptiveCards::HostConfig>())
 	{
@@ -401,7 +398,7 @@ namespace RendererQml
 		uiTextRun.append("font-family:" + std::string("\\\"") + fontFamily + std::string("\\\"") + ";");
 
 		//TODO: Need to fix the color calculation
-		std::string color = context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), false).substr(3);
+		std::string color = context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), false, false);
 		uiTextRun.append("color:" + color + ";");
 
 		std::string lineheight = Formatter() << std::fixed << std::setprecision(2) << lineHeight << "px";
@@ -411,10 +408,9 @@ namespace RendererQml
 
 		uiTextRun.append("font-weight:" + std::to_string(weight) + ";");
 
-		//TODO: Exact calculation for background color
 		if (textRun->GetHighlight())
 		{
-			uiTextRun.append("background-color:" + Utils::GetTextHighlightColor(color) + ";");
+			uiTextRun.append("background-color:" + context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), true, false) + ";");
 		}
 
 		if (textRun->GetItalic())
@@ -895,7 +891,7 @@ namespace RendererQml
 
 		if (image->GetId().empty())
 		{
-			image->SetId(Formatter() << "image_auto_" << ++imageCounter);
+			image->SetId(Formatter() << "image_auto_" << context->getImageCounter());
 		}
         else
         {
@@ -1032,7 +1028,7 @@ namespace RendererQml
 
 		if (container->GetId().empty())
 		{
-			container->SetId(Formatter() << "container_auto_" << ++containerCounter);
+			container->SetId(Formatter() << "container_auto_" << context->getContainerCounter());
 		}
         else
         {
