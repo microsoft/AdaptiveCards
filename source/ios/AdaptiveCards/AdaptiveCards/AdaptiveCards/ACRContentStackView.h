@@ -59,7 +59,7 @@
 
 - (void)updateIntrinsicContentSize;
 
-- (void)updateIntrinsicContentSize:(void (^)(UIView *view, NSUInteger idx, BOOL *stop))block;
+- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
 
 - (void)hideIfSubviewsAreAllHidden;
 
