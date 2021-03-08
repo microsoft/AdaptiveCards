@@ -430,6 +430,13 @@
 		08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */ = {isa = PBXBuildFile; fileRef = 08299E3225AF254000799C66 /* AdaptiveCards.h */; };
 		08E4047025B46BDB00C2092A /* AdaptiveCards_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08E4052125B46C3B00C2092A /* SwiftInterfaceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E402EB25B463D200C2092A /* SwiftInterfaceHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4B25E750CB005D9380 /* FakeInputDate.swift */; };
+		13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */; };
+		13C41B0725F226C9008A1F2E /* InputTimeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */; };
+		13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0825F257C2008A1F2E /* FakeInputTime.swift */; };
+		13C41B0B25F25836008A1F2E /* InputTimeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */; };
+		13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0C25F25D06008A1F2E /* ACRDateField.swift */; };
+		13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C465E425DD3C07006E4605 /* InputDateRenderer.swift */; };
 		2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B11725DD20A30040AB27 /* FakeTextInput.swift */; };
 		2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */; };
 		2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */; };
@@ -929,6 +936,13 @@
 		08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards_bridge.h; sourceTree = "<group>"; };
 		08E4046325B46BDA00C2092A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08E4054D25B4764400C2092A /* AdaptiveCards-bridge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AdaptiveCards-bridge.xcconfig"; sourceTree = "<group>"; };
+		13B13E4B25E750CB005D9380 /* FakeInputDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputDate.swift; sourceTree = "<group>"; };
+		13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRendererTests.swift; sourceTree = "<group>"; };
+		13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTimeRenderer.swift; sourceTree = "<group>"; };
+		13C41B0825F257C2008A1F2E /* FakeInputTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputTime.swift; sourceTree = "<group>"; };
+		13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTimeRendererTests.swift; sourceTree = "<group>"; };
+		13C41B0C25F25D06008A1F2E /* ACRDateField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRDateField.swift; sourceTree = "<group>"; };
+		13C465E425DD3C07006E4605 /* InputDateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRenderer.swift; sourceTree = "<group>"; };
 		2871B11725DD20A30040AB27 /* FakeTextInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextInput.swift; sourceTree = "<group>"; };
 		2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRMultilineInputTextView.xib; sourceTree = "<group>"; };
 		2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRMultilineInputTextView.swift; sourceTree = "<group>"; };
@@ -1213,6 +1227,8 @@
 				29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */,
 				29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */,
 				A04EA82825F00F3400C4C7DB /* FakeImageView.swift */,
+				13B13E4B25E750CB005D9380 /* FakeInputDate.swift */,
+				13C41B0825F257C2008A1F2E /* FakeInputTime.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1229,6 +1245,8 @@
 				A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */,
 				29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */,
 				A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */,
+				13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */,
+				13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1556,6 +1574,8 @@
 				0872608F25E6AF530036061C /* ColumnSetRenderer.swift */,
 				0872609425E6AF5F0036061C /* ColumnRenderer.swift */,
 				A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */,
+				13C465E425DD3C07006E4605 /* InputDateRenderer.swift */,
+				13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1591,6 +1611,7 @@
 				28CE1A7C25E7553600BFCFD9 /* ACRFactTextField.xib */,
 				28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */,
 				A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */,
+				13C41B0C25F25D06008A1F2E /* ACRDateField.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2056,6 +2077,7 @@
 				08D7767125CBF27B0095C1B3 /* LogUtils.swift in Sources */,
 				8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
+				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */,
@@ -2067,6 +2089,7 @@
 				0872608825E6AD420036061C /* ACRColumnView.swift in Sources */,
 				28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */,
 				28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */,
+				13C41B0725F226C9008A1F2E /* InputTimeRenderer.swift in Sources */,
 				28CE1A4425DFD64B00BFCFD9 /* FactSetRenderer.swift in Sources */,
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
 				A032272525E93C7400E7172E /* ImageUtils.swift in Sources */,
@@ -2078,6 +2101,7 @@
 				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */,
+				13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */,
 				0801D5EA25C2C3B500AABD6C /* AdaptiveCard.swift in Sources */,
 				29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */,
 			);
@@ -2090,6 +2114,7 @@
 				2871B13725DD41C60040AB27 /* FakeInputNumber.swift in Sources */,
 				2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */,
 				29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */,
+				13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
 				A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */,
 				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
@@ -2106,8 +2131,11 @@
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
 				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
+				13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,
 				A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */,
+				13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */,
+				13C41B0B25F25836008A1F2E /* InputTimeRendererTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

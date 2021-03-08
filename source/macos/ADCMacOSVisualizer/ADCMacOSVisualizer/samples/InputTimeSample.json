@@ -1,0 +1,51 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "What time do you want to meet?"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time1"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time2",
+            "placeholder": "Enter a time"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time3",
+            "value": "16:00"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time4",
+            "min": "09:00:32",
+            "max": "17:00:43",
+            "value": "15:30"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time5",
+            "min": "09:00",
+            "max": "17:00",
+            "value": "15:30:43"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time6",
+            "min": "09:00:32",
+            "max": "08:00:43"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "OK"
+        }
+    ]
+}

@@ -18,6 +18,8 @@ class RendererManager: RendererManagerProtocol {
         case .columnSet: return ColumnSetRenderer.shared
         case .column: return ColumnRenderer.shared
         case .image: return ImageRenderer.shared
+        case .dateInput: return InputDateRenderer.shared
+        case .timeInput: return InputTimeRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }
