@@ -900,11 +900,8 @@ namespace RendererQml
 
 		uiImage->Property("id", image->GetId());
 		uiImage->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
-		uiImage->Property("width", "parent.width");
-		uiImage->Property("fillMode", "Image.PreserveAspectFit");
-		
-		uiRectangle->Property("height", Formatter() << image->GetId() << ".implicitHeight");
-		
+		uiImage->Property("anchors.fill", "parent");
+
 		if (!image->GetIsVisible())
 		{
 			uiRectangle->Property("visible", "false");
@@ -914,22 +911,20 @@ namespace RendererQml
 		{
 			if (image->GetPixelWidth() != 0)
 			{
-				uiRectangle->Property("width",  Formatter() << "Math.min(" << image->GetPixelWidth() << ", parent.width)");
+				uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetPixelWidth() << ", parent.width)");
+
+				if (image->GetPixelHeight() == 0)
+				{
+					uiRectangle->Property("height", Formatter() << image->GetId() << ".implicitHeight / " << image->GetId() << ".implicitWidth * width");
+				}
 			}
 			if (image->GetPixelHeight() != 0)
 			{
 				uiRectangle->Property("height", Formatter() << image->GetPixelHeight());
-				uiImage->Property("height", "parent.height");
 
 				if (image->GetPixelWidth() == 0)
 				{
-					uiImage->RemoveProperty("width");
-					uiImage->Property("fillMode", "height < implicitHeight ? Image.PreserveAspectFit : Image.NoOption");
-					uiRectangle->Property("width", Formatter() << image->GetId() << ".width");
-				}
-				else
-				{
-					uiImage->RemoveProperty("fillMode");
+					uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetId() << ".implicitWidth / " << image->GetId() << ".implicitHeight * height, parent.width)");
 				}
 			}
 		}
@@ -940,7 +935,6 @@ namespace RendererQml
 			case AdaptiveCards::ImageSize::None:
 			case AdaptiveCards::ImageSize::Auto:
 				uiRectangle->Property("width", "parent.width");
-				uiImage->RemoveProperty("fillMode");
 				break;
 			case AdaptiveCards::ImageSize::Small:
 				uiRectangle->Property("width", Formatter() << context->GetConfig()->GetImageSizes().smallSize);
@@ -953,9 +947,10 @@ namespace RendererQml
 				break;
 			case AdaptiveCards::ImageSize::Stretch:
 				uiRectangle->Property("width", "parent.width");
-				uiImage->RemoveProperty("fillMode");
 				break;
 			}
+
+			uiRectangle->Property("height", Formatter() << image->GetId() << ".implicitHeight / " << image->GetId() << ".implicitWidth * width");
 		}
 
 		if (!image->GetBackgroundColor().empty())
