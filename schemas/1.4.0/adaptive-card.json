@@ -12,6 +12,10 @@
           ],
           "description": "Must be `Action.Execute`"
         },
+        "verb": {
+          "type": "string",
+          "description": "The developer-defined verb associated with this action."
+        },
         "data": {
           "anyOf": [
             {
@@ -165,6 +169,9 @@
       },
       "type": "object",
       "additionalProperties": false,
+      "required": [
+        "targetElements"
+      ],
       "allOf": [
         {
           "$ref": "#/definitions/Extendable.Action"
