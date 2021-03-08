@@ -112,7 +112,7 @@ using namespace AdaptiveCards;
         [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
-    ACRContainerStyle style = ([config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
@@ -123,8 +123,6 @@ using namespace AdaptiveCards;
     if (!actions.empty()) {
         [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
     }
-
-    [rootView waitForAsyncTasksToFinish];
 
     UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
@@ -144,6 +142,9 @@ using namespace AdaptiveCards;
         [card setCard:adaptiveCard];
         [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
     }
+
+    // renders background image for AdaptiveCard and an inner AdaptiveCard in a ShowCard
+    renderBackgroundImage(backgroundImageProperties, verticalView, rootView);
 
     return verticalView;
 }

@@ -193,11 +193,17 @@
         } else {
             XCTAssertTrue(cardParseResult.isValid);
             ACRRenderResult *renderResult;
-            renderResult = [ACRRenderer render:cardParseResult.card
-                                        config:nil
-                               widthConstraint:300
-                                      delegate:nil];
-            XCTAssertTrue(renderResult.succeeded);
+            @try {
+                renderResult = [ACRRenderer render:cardParseResult.card
+                                            config:nil
+                                   widthConstraint:300
+                                          delegate:nil];
+                XCTAssertTrue(renderResult.succeeded);
+            }
+            @catch (NSException *exception) {
+                NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
+                XCTAssertTrue(NO);
+            }
         }
     }
 }
@@ -664,21 +670,21 @@
     XCTAssertTrue(YES);
 
     auto backgroundImage = BackgroundImage();
-    renderBackgroundImage(&backgroundImage, nil, nil);
+    renderBackgroundImage(nil, &backgroundImage, nil, nil);
     XCTAssertTrue(YES);
 
     UIImageView *imageView = [[UIImageView alloc] init];
-    renderBackgroundImage(&backgroundImage, imageView, nil);
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
     XCTAssertTrue(YES);
 
     UIImage *image = [UIImage imageNamed:@"Adaptive1.0.png"];
-    renderBackgroundImage(&backgroundImage, imageView, image);
+    renderBackgroundImage(nil, &backgroundImage, imageView, image);
     XCTAssertTrue(YES);
 
-    renderBackgroundImage(&backgroundImage, imageView, nil);
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
     XCTAssertTrue(YES);
 
-    renderBackgroundImage(&backgroundImage, nil, image);
+    renderBackgroundImage(nil, &backgroundImage, nil, image);
     XCTAssertTrue(YES);
 }
 
