@@ -18,7 +18,7 @@
         },
         "value": {
             "type": "string",
-            "description": "The value associated eith the button. The meaning of value depends on the button's type.",
+            "description": "The value associated with the button. The meaning of value depends on the button's type.",
             "required": true
         }
     }

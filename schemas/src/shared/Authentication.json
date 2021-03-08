@@ -9,7 +9,7 @@
         },
         "connectionName": {
             "type": "string",
-            "description": "The identifier for registered OAuth connenection setting information."
+            "description": "The identifier for registered OAuth connection setting information."
         },
         "tokenExchangeResource": {
             "type": "TokenExchangeResource",

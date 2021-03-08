@@ -10,7 +10,7 @@
         },
         "uri": {
             "type": "string",
-            "description": "An application ID or resource identifier with which to exchange a token on behalf of. This property is is identity provider- and application-specific.",
+            "description": "An application ID or resource identifier with which to exchange a token on behalf of. This property is identity provider- and application-specific.",
             "required": true
         },
         "providerId": {

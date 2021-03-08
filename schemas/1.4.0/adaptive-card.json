@@ -235,7 +235,7 @@
         },
         "authentication": {
           "$ref": "#/definitions/Authentication",
-          "description": "Defines authentication information to enable on-behalf-f single sign on or just-in-time OAuth.",
+          "description": "Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.",
           "version": "1.4"
         },
         "body": {
@@ -1716,7 +1716,7 @@
         },
         "value": {
           "type": "string",
-          "description": "The value associated eith the button. The meaning of value depends on the button's type."
+          "description": "The value associated with the button. The meaning of value depends on the button's type."
         }
       },
       "type": "object",
@@ -1742,7 +1742,7 @@
         },
         "connectionName": {
           "type": "string",
-          "description": "The identifier for registered OAuth connenection setting information."
+          "description": "The identifier for registered OAuth connection setting information."
         },
         "tokenExchangeResource": {
           "$ref": "#/definitions/TokenExchangeResource",
@@ -1834,7 +1834,7 @@
         },
         "uri": {
           "type": "string",
-          "description": "An application ID or resource identifier with which to exchange a token on behalf of. This property is is identity provider- and application-specific."
+          "description": "An application ID or resource identifier with which to exchange a token on behalf of. This property is identity provider- and application-specific."
         },
         "providerId": {
           "type": "string",

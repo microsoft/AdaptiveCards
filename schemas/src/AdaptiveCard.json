@@ -18,7 +18,7 @@
 		},
 		"authentication": {
 			"type": "Authentication",
-			"description": "Defines authentication information to enable on-behalf-f single sign on or just-in-time OAuth.",
+			"description": "Defines authentication information to enable on-behalf-of single sign on or just-in-time OAuth.",
 			"version": "1.4"
 		},
 		"body": {
