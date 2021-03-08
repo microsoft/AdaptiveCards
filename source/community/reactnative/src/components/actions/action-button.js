@@ -55,14 +55,18 @@ export class ActionButton extends React.Component {
 		}
 	}
 
+	getActionAlignment() {
+		if (HostConfigManager.getHostConfig().actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+			return { flexGrow: 0 }
+		} else return { flexGrow: 1 }
+	}
+
 	render() {
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
 		this.parseHostConfig();
-
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
-
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
 				this.inputArray = inputArray;
@@ -71,9 +75,10 @@ export class ActionButton extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
-					style={{ flexGrow: 1 }}
+					style={this.getActionAlignment()}
 					accessible={true}
 					accessibilityLabel={this.altText}
+					accessibilityRole={Constants.Button}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
@@ -99,6 +104,8 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
+				//Invoked for the custom action type.
+				this.onExecuteAction(this.payload);
 				break;
 		}
 	}
@@ -118,7 +125,7 @@ export class ActionButton extends React.Component {
 				mergedObject["actionData"] = this.data;
 		}
 		const { type, title = "", ignoreInputValidation } = this.payload;
-		let actionObject = { "type": type,"title": title, "data": mergedObject };
+		let actionObject = { "type": type, "title": title, "data": mergedObject };
 		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 
@@ -168,6 +175,7 @@ export class ActionButton extends React.Component {
 			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
+		computedStyles.push(this.props.style)
 		return computedStyles;
 	}
 
@@ -177,7 +185,7 @@ export class ActionButton extends React.Component {
 	*/
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
-		this.styleConfig.buttonTitle];
+		this.styleConfig.buttonTitle, this.props.titleStyle];
 		return computedStyles;
 	}
 

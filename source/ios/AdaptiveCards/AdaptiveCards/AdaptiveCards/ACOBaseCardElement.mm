@@ -7,6 +7,7 @@
 #import "ACOBaseCardElement.h"
 #import "ACRRegistrationPrivate.h"
 #import "BaseCardElement.h"
+#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -45,15 +46,10 @@ using namespace AdaptiveCards;
 {
     if (_elem) {
         Json::Value blob = _elem->GetAdditionalProperties();
-        Json::StreamWriterBuilder streamWriterBuilder;
-        auto writer = streamWriterBuilder.newStreamWriter();
-        std::stringstream sstream;
-        writer->write(blob, &sstream);
-        delete writer;
-        NSString *jsonString =
-            [[NSString alloc] initWithCString:sstream.str().c_str()
-                                     encoding:NSUTF8StringEncoding];
-        return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
+        if (blob.empty()) {
+            return nil;
+        }
+        return JsonToNSData(blob);
     }
     return nil;
 }

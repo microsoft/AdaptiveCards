@@ -7,16 +7,20 @@
 
 #import "AdaptiveCards/ACOAdaptiveCardPrivate.h"
 #import "AdaptiveCards/ACOBaseActionElementPrivate.h"
+#import "AdaptiveCards/ACOBaseCardElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
+#import "AdaptiveCards/Container.h"
 #import "AdaptiveCards/OpenUrlAction.h"
 #import "AdaptiveCards/ShowCardAction.h"
 #import "AdaptiveCards/SubmitAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
 #import "CustomActionNewType.h"
+#import "MockRenderer.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -72,6 +76,7 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];
     [super tearDown];
 }
 
@@ -188,11 +193,17 @@
         } else {
             XCTAssertTrue(cardParseResult.isValid);
             ACRRenderResult *renderResult;
-            renderResult = [ACRRenderer render:cardParseResult.card
-                                        config:nil
-                               widthConstraint:300
-                                      delegate:nil];
-            XCTAssertTrue(renderResult.succeeded);
+            @try {
+                renderResult = [ACRRenderer render:cardParseResult.card
+                                            config:nil
+                                   widthConstraint:300
+                                          delegate:nil];
+                XCTAssertTrue(renderResult.succeeded);
+            }
+            @catch (NSException *exception) {
+                NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
+                XCTAssertTrue(NO);
+            }
         }
     }
 }
@@ -651,6 +662,90 @@
 {
     ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 100.0f)];
     XCTAssertNotNil(toggleView);
+}
+
+- (void)testBackGroundImageNullCheck
+{
+    renderBackgroundImage(nil, nil, nil);
+    XCTAssertTrue(YES);
+
+    auto backgroundImage = BackgroundImage();
+    renderBackgroundImage(nil, &backgroundImage, nil, nil);
+    XCTAssertTrue(YES);
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    UIImage *image = [UIImage imageNamed:@"Adaptive1.0.png"];
+    renderBackgroundImage(nil, &backgroundImage, imageView, image);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(nil, &backgroundImage, nil, image);
+    XCTAssertTrue(YES);
+}
+
+// Test that additional property at card level
+- (void)testAdditionalPropertiesParsingAtCardLevel
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    NSData *additionalProperty = iOSCard.additionalProperty;
+    XCTAssertTrue(additionalProperty != nullptr);
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+    NSNumber *radius = dictionary[@"card.cornerRadius"];
+    XCTAssertTrue([radius floatValue] == 50.0f);
+}
+
+// Test that additional property is returned as NSData
+- (void)testAdditionalPropertiesParsing
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    XCTAssertTrue(adaptiveElement != nullptr);
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveElement];
+    Json::Value blob = adaptiveElement->GetAdditionalProperties();
+    NSData *additionalProperty = acoElem.additionalProperty;
+    XCTAssertTrue(additionalProperty != nullptr);
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+    NSNumber *radius = dictionary[@"my.cornerRadius"];
+    XCTAssertTrue([radius floatValue] == 20.0f);
+}
+
+// Test that empty addtional property is returned as nil
+- (void)testAdditionalPropertiesParsingNilValue
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(adaptiveElement);
+    std::shared_ptr<BaseCardElement> adaptiveTextBlock = container->GetItems()[0];
+
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveTextBlock];
+    NSData *additionalProperty = acoElem.additionalProperty;
+    XCTAssertTrue(additionalProperty == nullptr);
+}
+
+// Test that additional property is accessible in the renderer context
+- (void)testAdditionalPropertiesRendering
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance]
+                             cardElementType:ACRContainer];
+    [ACRRenderer render:iOSCard
+                 config:nil
+        widthConstraint:300
+               delegate:nil];
 }
 
 @end

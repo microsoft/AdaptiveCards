@@ -130,6 +130,7 @@ namespace AdaptiveSharedNamespace
         Requires,
         RichTextBlock,
         Right,
+        Schema,
         SelectAction,
         Separator,
         ShowActionMode,

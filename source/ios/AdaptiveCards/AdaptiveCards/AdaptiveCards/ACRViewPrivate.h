@@ -74,4 +74,6 @@ typedef void (^ObserverActionBlockForBaseAction)(NSObject<ACOIResourceResolver> 
 - (ACRColumnView *)peekCurrentShowCard;
 
 - (ACOInputResults *)dispatchAndValidateInput:(ACRColumnView *)parent;
+
+- (void)removeObserver:(NSObject *)observer forKeyPath:(NSString *)path onObject:(NSObject *)object;
 @end

@@ -92,6 +92,58 @@ namespace std {
     return $jnicall;
   }
 
+// Map C++ "std::optional<double>" and "std::optional<double>&" types to Java "Double" objects
+
+%template() std::optional<double>;
+
+%typemap(jni) std::optional<double> "jobject"
+%typemap(jtype) std::optional<double> "Double"
+%typemap(jstype) std::optional<double> "Double"
+%typemap(in, noblock=1) std::optional<double> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "doubleValue", "()D");
+    jdouble val = (jdouble)JCALL2(CallDoubleMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (double)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<double> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Double");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(D)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<double> "$javainput"
+%typemap(javaout) std::optional<double> {
+  return $jnicall;
+}
+
+%typemap(jni) std::optional<double>& "jobject"
+%typemap(jtype) std::optional<double>& "Double"
+%typemap(jstype) std::optional<double>& "Double"
+%typemap(in, noblock=1) std::optional<double>& {
+  std::optional<double> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "doubleValue", "()D");
+    jdouble val = (jdouble)JCALL2(CallDoubleMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<double>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<double>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Double");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(D)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<double>& "$javainput"
+%typemap(javaout) std::optional<double>& {
+  return $jnicall;
+}
+
 %include <typemaps.i>
 %include <std_string.i>
 %include <std_shared_ptr.i>
