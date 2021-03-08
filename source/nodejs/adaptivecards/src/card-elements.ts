@@ -253,8 +253,8 @@ export abstract class CardElement extends CardObject {
     }
 
     protected applyPadding() {
-        if (this.separatorElement) {
-            if (GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
+        if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
+            if (GlobalSettings.alwaysBleedSeparators && !this.isBleeding()) {
                 let padding = new PaddingDefinition();
 
                 this.getImmediateSurroundingPadding(padding);
@@ -2008,6 +2008,25 @@ export abstract class CardElementContainer extends CardElement {
 
         return result;
     }
+
+    /**
+     * @inheritdoc
+     */
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            // recur through child elements
+            target = this.getItemAt(i).findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in children, defer to parent implementation
+        return super.findDOMNodeOwner(node);
+    }
 }
 
 export class ImageSet extends CardElementContainer {
@@ -2456,6 +2475,10 @@ export abstract class Input extends CardElement implements IInput {
         if (this._renderedInputControlElement) {
             let labelIds: string[] = this.getAllLabelIds();
 
+            if (this.labelledBy) {
+                labelIds.push(this.labelledBy);
+            }
+
             if (this._renderedLabelElement) {
                 labelIds.push(this._renderedLabelElement.id);
             }
@@ -2529,6 +2552,11 @@ export abstract class Input extends CardElement implements IInput {
         this._inputControlContainerElement.className = hostConfig.makeCssClassName("ac-input-container");
         this._inputControlContainerElement.style.display = "flex";
 
+        if (this.height === "stretch") {
+            this._inputControlContainerElement.style.alignItems = "stretch";
+            this._inputControlContainerElement.style.flex = "1 1 auto";
+        }
+
         this._renderedInputControlElement = this.internalRender();
 
         if (this._renderedInputControlElement) {
@@ -2597,6 +2625,8 @@ export abstract class Input extends CardElement implements IInput {
     }
 
     onValueChanged: (sender: Input) => void;
+
+    labelledBy?: string;
 
     abstract isSet(): boolean;
 
@@ -2728,6 +2758,10 @@ export class TextInput extends Input {
         if (this.isMultiline) {
             result = document.createElement("textarea");
             result.className = this.hostConfig.makeCssClassName("ac-input", "ac-textInput", "ac-multiline");
+
+            if (this.height === "stretch") {
+                result.style.height = "initial";
+            }
         }
         else {
             result = document.createElement("input");
@@ -3771,6 +3805,9 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    accessibleTitle?: string;
+    expanded?: boolean;
+
     onExecute: (sender: Action) => void;
 
     getHref(): string | undefined {
@@ -3797,8 +3834,15 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.title) {
+        if (this.accessibleTitle) {
+            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+        }
+        else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
+        }
+
+        if (this.expanded != undefined) {
+            buttonElement.setAttribute("aria-expanded", this.expanded.toString())
         }
 
         buttonElement.type = "button";
@@ -3948,9 +3992,9 @@ export class SubmitAction extends Action {
             let value = source[property.name];
 
             if (value !== undefined && typeof value === "string") {
-                return value === "none" ? "none" : "auto";
+                return value.toLowerCase() === "none" ? "none" : "auto";
             }
-            
+
             return undefined;
         },
         (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) => {
@@ -4765,9 +4809,11 @@ class ActionCollection {
                     actionButton.render();
 
                     if (actionButton.action.renderedElement) {
-                        actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
-                        actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
-                        actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        if (allowedActions.length > 1) {
+                            actionButton.action.renderedElement.setAttribute("aria-posinset", (i + 1).toString());
+                            actionButton.action.renderedElement.setAttribute("aria-setsize", allowedActions.length.toString());
+                            actionButton.action.renderedElement.setAttribute("role", "menuitem");
+                        }
 
                         if (hostConfig.actions.actionsOrientation == Enums.Orientation.Horizontal && hostConfig.actions.actionAlignment == Enums.ActionAlignment.Stretch) {
                             actionButton.action.renderedElement.style.flex = "0 1 100%";
@@ -4995,6 +5041,25 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getResourceInformation();
     }
 
+    /**
+     * @inheritdoc
+     */
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (const action of this._actionCollection.items) {
+            // recur through each Action
+            target = action.findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in any Action, defer to parent implementation
+        return super.findDOMNodeOwner(node);
+    }
+
     get isInteractive(): boolean {
         return true;
     }
@@ -5107,7 +5172,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             this.renderedElement.style.marginTop = "0";
             this.renderedElement.style.marginBottom = "0";
 
-            if (this.separatorElement) {
+            if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
                 this.separatorElement.style.marginRight = "0";
                 this.separatorElement.style.marginLeft = "0";
             }

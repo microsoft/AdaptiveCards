@@ -4,12 +4,8 @@ package io.adaptivecards.renderer.inputhandler;
 
 import android.widget.EditText;
 
-import java.text.NumberFormat;
-import java.util.regex.Pattern;
-
 import io.adaptivecards.objectmodel.BaseInputElement;
 import io.adaptivecards.objectmodel.NumberInput;
-import io.adaptivecards.objectmodel.TextInput;
 import io.adaptivecards.renderer.Util;
 
 public class NumberInputHandler extends TextInputHandler
@@ -49,10 +45,10 @@ public class NumberInputHandler extends TextInputHandler
             return true;
         }
 
-        int inputValue = 0;
+        double inputValue = 0;
         try
         {
-            inputValue = Integer.parseInt(numberInputValue);
+            inputValue = Double.parseDouble(numberInputValue);
         }
         catch (NumberFormatException ex)
         {

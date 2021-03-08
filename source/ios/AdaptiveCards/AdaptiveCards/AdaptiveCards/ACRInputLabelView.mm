@@ -237,6 +237,21 @@
     return YES;
 }
 
+// returns intrinsic content size for inputs
+- (CGSize)intrinsicContentSize
+{
+    CGFloat width = 0.0f, height = 0.0f;
+    for (UIView *view in self.stack.arrangedSubviews) {
+        if (!view.hidden) {
+            CGSize size = [view intrinsicContentSize];
+            width = MAX(size.width, width);
+            height += size.height;
+        }
+    }
+
+    return CGSizeMake(width, height);
+}
+
 @synthesize hasValidationProperties;
 
 @synthesize id;

@@ -6,9 +6,10 @@ import { DraggableElement } from "./draggable-element";
 import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface, DesignContext } from "./card-designer-surface";
 import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
-import { Rect, IPoint } from "./miscellaneous";
+import { Rect, IPoint, Utils } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
 import { FieldPicker } from "./field-picker";
+import { Strings } from "./strings";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -200,23 +201,15 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 }
 
 export interface IPropertySheetEditorCommand {
+    id?: string;
     caption: string;
+    altText?: string;
+    expanded?: boolean;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
-// The element properties pane has the labels to the left of the inputs. Adaptive card elements 
-// do not currently support this positioning for the labels, nor the ability to set labelledby to 
-// indicate the element is labelled by something other than it's label property for accessibility. 
-// This interface and it's implementing classes extend Adaptive.Inputs to add labelled by functionality 
-// to inputs. This allows us to make the designer inputs accessible until such time as we have a way 
-// to support this scenario in the official schema elements.
-interface InputWithLabelledBy extends Adaptive.Input
-{
-    labelledBy?: string;
-}
-
 export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
-    protected abstract createInput(context: PropertySheetContext): InputWithLabelledBy;
+    protected abstract createInput(context: PropertySheetContext): Adaptive.Input;
 
     protected getPropertyValue(context: PropertySheetContext): any {
         return context.target[this.propertyName];
@@ -250,7 +243,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
         label.horizontalAlignment = Adaptive.HorizontalAlignment.Right;
         label.wrap = true;
         label.text = this.label;
-        label.id = this.label.replace(/\s+/g,'') + "Id";
+        label.id = Adaptive.generateUniqueId();
 
         let input = this.createInput(context);
         input.labelledBy = label.id;
@@ -276,7 +269,10 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
+                action.id = command.id;
                 action.title = command.caption;
+                action.accessibleTitle = command.altText;
+                action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -298,34 +294,9 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
     }
 }
 
-function AppendToLabelledBy(htmlElement: HTMLElement, labelledByToAppend: string) : void
-{    
-    let labelledBy :string = htmlElement.getAttribute("aria-labelledby");
-
-    if(labelledByToAppend)
-    {
-        labelledBy = labelledBy ? labelledBy + " " + labelledByToAppend : labelledByToAppend;
-    }
-
-    if(labelledBy)
-    {
-        htmlElement.setAttribute("aria-labelledby", labelledBy)
-    }
-}
-
-class TextInputWithLabelledBy extends Adaptive.TextInput implements InputWithLabelledBy
-{
-    labelledBy?: string;
-    protected updateInputControlAriaLabelledBy(): void
-    {
-        super.updateInputControlAriaLabelledBy();
-        AppendToLabelledBy(this.renderedInputControlElement, this.labelledBy);
-    }
-}
-
 export class StringPropertyEditor extends SingleInputPropertyEditor {
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new TextInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.TextInput();
         input.defaultValue = this.getPropertyValue(context);
         input.placeholder = "(not set)";
         input.isMultiline = this.isMultiline;
@@ -337,15 +308,22 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
         if (GlobalSettings.enableDataBindingSupport && this.allowBinding) {
             return [
                 {
-                    caption: "...",
+                    id: this.propertyName + "BindData",
+                    caption: Strings.toolboxes.propertySheet.commands.bindData.displayText(),
+                    altText: Strings.toolboxes.propertySheet.commands.bindData.accessibleText(this.label),
+                    expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
+                        clickedElement.setAttribute("aria-expanded", "true");
+
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
+                            clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
+                                clickedElement.focus();
                                 context.peer.changed(true);
                             }
+                            clickedElement.focus();
                         }
                         fieldPicker.popup(clickedElement);
                     }
@@ -368,16 +346,6 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
     }
 }
 
-class NumberInputWithLabelledBy extends Adaptive.NumberInput implements InputWithLabelledBy
-{
-    labelledBy?: string;
-    protected updateInputControlAriaLabelledBy(): void
-    {
-        super.updateInputControlAriaLabelledBy();
-        AppendToLabelledBy(this.renderedInputControlElement, this.labelledBy);
-    }
-}
-
 export class NumberPropertyEditor extends SingleInputPropertyEditor {
     protected setPropertyValue(context: PropertySheetContext, value: string) {
         try {
@@ -388,8 +356,8 @@ export class NumberPropertyEditor extends SingleInputPropertyEditor {
         }
     }
 
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new NumberInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.NumberInput();
         input.defaultValue = this.getPropertyValue(context);
         input.placeholder = "(not set)";
 
@@ -426,16 +394,6 @@ export class CustomCardObjectPropertyEditor extends StringPropertyEditor {
     }
 }
 
-class ToggleInputWithLabelledBy extends Adaptive.ToggleInput implements InputWithLabelledBy
-{
-    labelledBy?: string;
-    protected updateInputControlAriaLabelledBy(): void
-    {
-        super.updateInputControlAriaLabelledBy();
-        AppendToLabelledBy(this.renderedInputControlElement, this.labelledBy);
-    }
-}
-
 export class BooleanPropertyEditor extends SingleInputPropertyEditor {
     protected getPropertyValue(context: PropertySheetContext): any {
         let v = context.target[this.propertyName];
@@ -447,8 +405,8 @@ export class BooleanPropertyEditor extends SingleInputPropertyEditor {
         context.target[this.propertyName] = value == "true";
     }
 
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new ToggleInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ToggleInput();
         input.defaultValue = this.getPropertyValue(context);
 
         return input;
@@ -461,19 +419,9 @@ export interface IVersionedChoice {
     value: string;
 }
 
-class ChoiceSetInputWithLabelledBy extends Adaptive.ChoiceSetInput implements InputWithLabelledBy
-{
-    labelledBy?: string;
-    protected updateInputControlAriaLabelledBy(): void
-    {
-        super.updateInputControlAriaLabelledBy();
-        AppendToLabelledBy(this.renderedInputControlElement, this.labelledBy);
-    }
-}
-
 export class ChoicePropertyEditor extends SingleInputPropertyEditor {
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new ChoiceSetInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
         input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
@@ -620,8 +568,8 @@ export class ActionPropertyEditor extends SingleInputPropertyEditor {
         }
     }
 
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new ChoiceSetInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
         input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
@@ -682,8 +630,8 @@ export class EnumPropertyEditor extends SingleInputPropertyEditor {
         context.target[this.propertyName] = parseInt(value, 10);
     }
 
-    protected createInput(context: PropertySheetContext): InputWithLabelledBy {
-        let input = new ChoiceSetInputWithLabelledBy();
+    protected createInput(context: PropertySheetContext): Adaptive.Input {
+        let input = new Adaptive.ChoiceSetInput();
         input.defaultValue = this.getPropertyValue(context);
         input.isCompact = true;
         input.placeholder = "(not set)";
@@ -783,6 +731,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
+                removeAction.accessibleTitle = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
@@ -2346,6 +2295,11 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
                 TextInputPeer.styleProperty);
+        }
+        else {
+            propertySheet.add(
+                PropertySheetCategory.LayoutCategory,
+                CardElementPeer.heightProperty);
         }
 
         propertySheet.add(

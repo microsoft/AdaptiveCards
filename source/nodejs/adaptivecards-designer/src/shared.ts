@@ -7,11 +7,11 @@ export class GlobalSettings {
     static showVersionPicker: boolean = false;
     static selectedHostContainerControlsTargetVersion: boolean = true;
     static showTargetVersionMismatchWarning: boolean = true;
+    static supportedTargetVersions: Adaptive.Version[] = [
+        Adaptive.Versions.v1_0,
+        Adaptive.Versions.v1_1,
+        Adaptive.Versions.v1_2,
+        Adaptive.Versions.v1_3
+    ];
 }
 
-export var SupportedTargetVersions: Adaptive.Version[] = [
-    Adaptive.Versions.v1_0,
-    Adaptive.Versions.v1_1,
-    Adaptive.Versions.v1_2,
-    Adaptive.Versions.v1_3
-];

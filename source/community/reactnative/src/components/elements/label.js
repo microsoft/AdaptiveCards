@@ -40,7 +40,7 @@ export class Label extends React.Component {
 		}
 		return (
 			<MarkDownFormatter
-				defaultStyles={[receivedStyle, computedStyle]}
+				defaultStyles={[computedStyle, receivedStyle]}
 				numberOfLines={numberOfLines}
 				text={formattedText}
 				altText={altText}

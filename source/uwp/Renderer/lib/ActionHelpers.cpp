@@ -571,7 +571,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
         // Wrap the action in a button
         ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", &touchTargetUIElement);
+        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", nullptr, &touchTargetUIElement);
 
         ComPtr<IFrameworkElement> touchTargetFrameworkElement;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
@@ -613,6 +613,7 @@ namespace AdaptiveNamespace::ActionHelpers
                            _In_ IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
+                           HSTRING altText,
                            _COM_Outptr_ IUIElement** finalElement)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -674,11 +675,19 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));
 
-        if (action != nullptr)
+        if ((action != nullptr) || (altText != nullptr))
         {
-            // If we have an action, use the title for the AutomationProperties.Name and tooltip
+            // If we have an action, use the title for the AutomationProperties.Name and tooltip.
+            // Otherwise use the altText.
             HString title;
-            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            if (action)
+            {
+                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+            }
+            else
+            {
+                THROW_IF_FAILED(title.Set(altText));
+            }
 
             if (title.IsValid())
             {
@@ -692,8 +701,6 @@ namespace AdaptiveNamespace::ActionHelpers
                                          &automationPropertiesStatics));
 
                 THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
-
-                WireButtonClickToAction(button.Get(), action, renderContext);
 
                 // Also use the title as the tooltip
                 ComPtr<IToolTip> toolTip =
@@ -714,6 +721,11 @@ namespace AdaptiveNamespace::ActionHelpers
 
                 THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
             }
+        }
+
+        if (action != nullptr)
+        {
+            WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
         THROW_IF_FAILED(button.CopyTo(finalElement));
@@ -751,7 +763,7 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
-            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", outUiElement);
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", nullptr, outUiElement);
         }
         else
         {

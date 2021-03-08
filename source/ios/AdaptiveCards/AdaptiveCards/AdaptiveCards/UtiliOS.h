@@ -5,6 +5,7 @@
 //
 
 #import "ACRErrors.h"
+#import "ACRIBaseCardElementRenderer.h"
 #import "ACRSeparator.h"
 #import "ACRViewPrivate.h"
 #import "BaseCardElement.h"
@@ -31,13 +32,15 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview);
 
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
-                           UIView *containerView, ACRView *rootView);
+                           ACRContentStackView *containerView, ACRView *rootView);
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *img);
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
+
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView);
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
@@ -89,3 +92,13 @@ void configWidthAndHeightAnchors(UIView *superView, UIImageView *imageView, bool
 NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const std::string &text, const AdaptiveCards::RichTextElementProperties &textElementProperties, ACRContainerStyle style);
 
 NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces);
+
+CGSize getAspectRatio(CGSize size);
+
+ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions);
+
+ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
+
+void printSize(NSString *msg, CGSize size);
+
+NSData *JsonToNSData(const Json::Value &blob);
