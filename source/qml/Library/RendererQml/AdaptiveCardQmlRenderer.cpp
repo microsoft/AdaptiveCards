@@ -1003,7 +1003,6 @@ namespace RendererQml
 		}
 
 		uiColumn->Property("Layout.fillWidth", "true");
-		uiColumn->Property("spacing", std::to_string(spacing));
 
 		if (cardElement->GetVerticalContentAlignment() == AdaptiveCards::VerticalContentAlignment::Top)
 		{
@@ -1356,16 +1355,35 @@ namespace RendererQml
 		AdaptiveCards::SeparatorConfig separator = context->GetConfig()->GetSeparator();
 
 		auto uiSep = std::make_shared<QmlTag>("Rectangle");
-		uiSep->Property("width", "parent.width");
-		uiSep->Property("height", std::to_string(spacing == 0 ? separator.lineThickness : spacing));
+		if (adaptiveElement->GetElementTypeString() == "Column")
+		{
+			uiSep->Property("width", std::to_string(spacing == 0 ? separator.lineThickness : spacing));
+			uiSep->Property("height", "parent.height");
+		}
+		else
+		{
+			uiSep->Property("width", "parent.width");
+			uiSep->Property("height", std::to_string(spacing == 0 ? separator.lineThickness : spacing));
+		}
+		
 		uiSep->Property("color", "\"transparent\"");
 		uiSep->Property("visible", adaptiveElement->GetIsVisible() ? "true" : "false");
 
 		if (adaptiveElement->GetSeparator() && adaptiveElement->GetIsVisible())
 		{
 			auto uiLine = std::make_shared<QmlTag>("Rectangle");
-			uiLine->Property("width", "parent.width");
-			uiLine->Property("height", std::to_string(separator.lineThickness));
+
+			if (adaptiveElement->GetElementTypeString() == "Column")
+			{
+				uiLine->Property("width", std::to_string(separator.lineThickness));
+				uiLine->Property("height", "parent.height");
+			}
+			else
+			{
+				uiLine->Property("width", "parent.width");
+				uiLine->Property("height", std::to_string(separator.lineThickness));
+			}
+			
 			uiLine->Property("anchors.centerIn", "parent");
 			uiLine->Property("color", Formatter() << "\"" << separator.lineColor << "\"");
 
@@ -1377,8 +1395,8 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> RendererQml::AdaptiveCardQmlRenderer::ColumnSetRender(std::shared_ptr<AdaptiveCards::ColumnSet> columnSet, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		const int margin = int(context->GetConfig()->GetSpacing().paddingSpacing);
-		const int spacing = int(Utils::GetSpacing(context->GetConfig()->GetSpacing(), columnSet->GetSpacing()));
+		const int margin = context->GetConfig()->GetSpacing().paddingSpacing;
+		const int spacing = Utils::GetSpacing(context->GetConfig()->GetSpacing(), columnSet->GetSpacing());
 		const int no_of_columns = int(columnSet->GetColumns().size());
 		auto columns = columnSet->GetColumns();
 		std::string heightString = "";
@@ -1416,8 +1434,6 @@ namespace RendererQml
 			uiRow->Property("Layout.leftMargin", std::to_string(margin));
 			uiRow->Property("Layout.rightMargin", std::to_string(margin));
 		}
-
-		uiRow->Property("spacing", std::to_string(spacing));
 
 		//TODO: Add Horizontal Alignment
 
@@ -1464,7 +1480,12 @@ namespace RendererQml
 
 			if (uiElement != nullptr)
 			{
-				//TODO: Add Seperator element
+				if (!uiRow->GetChildren().empty())
+				{
+					AddSeparator(uiRow, cardElement, context);
+					usedWidth += Utils::GetSpacing(context->GetConfig()->GetSpacing(), cardElement->GetSpacing());
+				}
+
 				//TODO: Add collection element
 				heightString += ("clayout_" + cardElement->GetId() + ".implicitHeight, " + cardElement->GetId() + ".minHeight, ");
 				uiElement->Property("implicitHeight", columnSet->GetId() + ".getColumnHeight()");
@@ -1510,7 +1531,7 @@ namespace RendererQml
 
 		uiFrame->AddFunctions("function getColumnHeight(){return Math.max(minHeight," + heightString.substr(0, heightString.size() - 2) + ")}");
 
-		uiRow->AddFunctions("function getColumnWidth() {return (parent.width - (" + std::to_string(usedWidth + ((no_of_columns - 1) * spacing) + (2 * margin)) + ")) / " + std::to_string(no_of_columns - widthElements) + "}");
+		uiRow->AddFunctions("function getColumnWidth() {return (parent.width - (" + std::to_string(usedWidth + (2 * margin)) + ")) / " + std::to_string(no_of_columns - widthElements) + "}");
 
 		if (columnSet->GetBleed() && columnSet->GetCanBleed())
 		{

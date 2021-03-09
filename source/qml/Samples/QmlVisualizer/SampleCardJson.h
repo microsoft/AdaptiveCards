@@ -1385,6 +1385,63 @@ namespace Samples
           "width": "stretch"
         }
       ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Columns With Seperator"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "spacing": "ExtraLarge",
+          "width": "auto",
+          "separator": true
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2 Large Spacing"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto",
+          "spacing": "ExtraLarge",
+          "separator": true
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3 Small Spacing"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto",
+          "spacing": "small",
+          "separator": true
+        }
+      ]
     }
   ]
 })";
