@@ -20,6 +20,6 @@
 		"webpack-dev-server": "^3.1.14"
 	},
 	"dependencies": {
-		"adaptivecards": "^2.7.0"
+		"adaptivecards": "^2.8.0"
 	}
 }

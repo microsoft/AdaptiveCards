@@ -305,6 +305,10 @@ export abstract class CardElement extends CardObject {
         this._padding = value;
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return context.elementRegistry.findByName(this.getJsonTypeName()) !== undefined;
+    }
+
     protected get useDefaultSizing(): boolean {
         return true;
     }
@@ -5867,6 +5871,10 @@ export class Column extends Container {
         }
     }
 
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
+    }
+
     protected get separatorOrientation(): Enums.Orientation {
         return Enums.Orientation.Vertical;
     }
@@ -6735,6 +6743,10 @@ export class AdaptiveCard extends ContainerWithActions {
             Enums.Spacing.Padding,
             Enums.Spacing.Padding,
             Enums.Spacing.Padding);
+    }
+
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
     }
 
     protected get renderIfEmpty(): boolean {

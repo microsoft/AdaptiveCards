@@ -250,10 +250,6 @@ export abstract class BaseSerializationContext {
         return this._validationEvents[index];
     }
 
-    shouldSerialize(o: SerializableObject): boolean {
-        return true;
-    }
-
     get eventCount(): number {
         return this._validationEvents.length;
     }
@@ -968,7 +964,7 @@ export abstract class SerializableObject {
             effectiveContext.toJSONOriginalParam = context;
         }
 
-        if (effectiveContext.shouldSerialize(this)) {
+        if (this.shouldSerialize(effectiveContext)) {
             let result: PropertyBag;
 
             if (GlobalSettings.enableFullJsonRoundTrip && this._rawProperties && typeof this._rawProperties === "object") {

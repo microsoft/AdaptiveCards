@@ -1,5 +1,5 @@
 import * as Adaptive from "adaptivecards";
-import { ActivityRequestError, Authentication, CardButton, ErrorResponse, LoginRequestResponse, SuccessResponse, TokenExchangeResource } from "adaptivecards";
+import { ActivityRequestError, AuthCardButton, Authentication, ErrorResponse, LoginRequestResponse, SuccessResponse, TokenExchangeResource } from "adaptivecards";
 
 export class TestHttpChannelAdapter extends Adaptive.ChannelAdapter {
     constructor(readonly url: string) {
@@ -21,7 +21,7 @@ export class TestHttpChannelAdapter extends Adaptive.ChannelAdapter {
             auth.tokenExchangeResource.providerId = "prop_providerId";
             auth.tokenExchangeResource.uri = "https://somewhere.under.the.rainbow"
 
-            let button = new CardButton();
+            let button = new AuthCardButton();
             button.type = "signin";
             button.value = "http://www.microsoft.com";
 
