@@ -14,7 +14,7 @@
         },
         "verb": {
           "type": "string",
-          "description": "The developer-defined verb associated with this action."
+          "description": "The card author-defined verb associated with this action."
         },
         "data": {
           "anyOf": [
