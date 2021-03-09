@@ -20,6 +20,7 @@ class RendererManager: RendererManagerProtocol {
         case .image: return ImageRenderer.shared
         case .dateInput: return InputDateRenderer.shared
         case .timeInput: return InputTimeRenderer.shared
+        case .imageSet: return ImageSetRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }

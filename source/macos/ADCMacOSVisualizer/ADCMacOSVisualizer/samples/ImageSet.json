@@ -1,0 +1,56 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "ImageSet",
+            "images": [
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "url": "https://via.placeholder.com/150",
+                    "spacing": "ExtraLarge"
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "url": "https://via.placeholder.com/1500",
+                    "spacing": "ExtraLarge"
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "url": "https://via.placeholder.com/180"
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "url": "https://via.placeholder.com/150",
+                    "spacing": "None"
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "altText": "",
+                    "url": "https://via.placeholder.com/150"
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "altText": "",
+                    "url": "https://via.placeholder.com/150",
+                    "spacing": "ExtraLarge",
+                    "separator": true
+                },
+                {
+                    "type": "Image",
+                    "size": "Small",
+                    "altText": "",
+                    "url": "https://via.placeholder.com/150"
+                }
+            ],
+            "imageSize": "Small"
+        }
+    ]
+}
