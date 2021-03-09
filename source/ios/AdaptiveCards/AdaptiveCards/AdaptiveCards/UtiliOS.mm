@@ -52,12 +52,13 @@ void configSeparatorVisibility(ACRSeparator *view,
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
     view.tag = hashkey.hash;
+    view.isVisibilityObserved = YES;
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
-                           UIView *containerView, ACRView *rootView)
+                           ACRContentStackView *containerView, ACRView *rootView)
 {
-    if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
+    if (rootView == nil || backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
 
@@ -94,17 +95,17 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             [containerView insertSubview:imgView atIndex:0];
 
             if (imgView.image) {
-                // apply now if image is ready, otherwise wait until it is loaded
-                applyBackgroundImageConstraints(backgroundImage.get(), imgView, imgView.image);
+                // if image is ready, proceed to setting contraints
+                renderBackgroundImage(rootView, backgroundImage.get(), imgView, imgView.image);
             }
         }
     }
 }
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
-    if (backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
+    if (rootView == nil || backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
         return;
     }
 
@@ -112,9 +113,77 @@ void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UII
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
+        [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
         imageView.image = nil;
     }
     applyBackgroundImageConstraints(backgroundImageProperties, imageView, image);
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
+}
+
+// apply contraints for 'Cover' fill mode
+// the backgroundView is set on the targetView
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView)
+{
+    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
+        return;
+    }
+
+    UIImageView *imageView = (UIImageView *)backgroundView;
+    UIImage *image = imageView.image;
+
+    if (!image) {
+        return;
+    }
+
+    targetView.isBackgroundImageSet = YES;
+
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    // Fill Mode Description
+    // ScaleAspectFill increases one dimension of image proportionally if
+    // corresponding dimension increases but it does not increase view surroinding the image
+    // find which dimension is in deficit and act accordingly
+    // when both dimensions are in deficit find the most deficient dimension
+    // and increase
+    // center the modified image view to the target view.
+
+    CGSize targetViewSize = targetView.frame.size;
+    CGSize sourceSize = image.size;
+    BOOL isDeficientInWidth = NO;
+    BOOL isDeficientInHeight = NO;
+
+    if (sourceSize.width < targetViewSize.width) {
+        isDeficientInWidth = YES;
+    }
+
+    if (sourceSize.height < targetViewSize.height) {
+        isDeficientInHeight = YES;
+    }
+
+    if (isDeficientInWidth and isDeficientInHeight) {
+        CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
+        CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
+        // m * a >= x
+        // m * b >= y
+        // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
+        // then m is max of (a/x, b/y)
+        // we applies m to image view's corresponding axis.
+        // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
+        if (widthDeficiencyRaito >= heightDifficiencyRaito) {
+            configWidthAndHeightAnchors(targetView, imageView, false);
+        } else {
+            configWidthAndHeightAnchors(targetView, imageView, true);
+        }
+    } else if (isDeficientInWidth) {
+        configWidthAndHeightAnchors(targetView, imageView, false);
+    } else if (isDeficientInHeight) {
+        configWidthAndHeightAnchors(targetView, imageView, true);
+    } else {
+        // constraint the background image to the container's width according to the spec
+        [imageView.widthAnchor constraintEqualToAnchor:targetView.widthAnchor].active = YES;
+        if (imageView.image.size.width > 0) {
+            [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
+        }
+    }
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
@@ -226,52 +295,10 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         }
         case ImageFillMode::Cover:
         default: {
-            imageView.contentMode = UIViewContentModeScaleAspectFill;
-            // Fill Mode Description
-            // ScaleAspectFill increases one dimension of image proportionally if
-            // corresponding dimension increases but it does not increase view surroinding the image
-            // find which dimension is in deficit and act accordingly
-            // when both dimensions are in deficit find the most deficient dimension
-            // and increase
-            // center the modified image view to the target view.
-
-            CGSize targetViewSize = superView.frame.size;
-            CGSize sourceSize = image.size;
-            BOOL isDeficientInWidth = NO;
-            BOOL isDeficientInHeight = NO;
-
-            if (sourceSize.width < targetViewSize.width) {
-                isDeficientInWidth = YES;
-            }
-
-            if (sourceSize.height < targetViewSize.height) {
-                isDeficientInHeight = YES;
-            }
-
-            if (isDeficientInWidth and isDeficientInHeight) {
-                CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
-                CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
-                // m * a >= x
-                // m * b >= y
-                // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
-                // then m is max of (a/x, b/y)
-                // we applies m to image view's corresponding axis.
-                // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
-                if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-                    configWidthAndHeightAnchors(superView, imageView, false);
-                } else {
-                    configWidthAndHeightAnchors(superView, imageView, true);
-                }
-            } else if (isDeficientInWidth) {
-                configWidthAndHeightAnchors(superView, imageView, false);
-            } else if (isDeficientInHeight) {
-                configWidthAndHeightAnchors(superView, imageView, true);
-            } else {
-                // constraint the background image to the container's width according to the spec
-                [imageView.widthAnchor constraintEqualToAnchor:superView.widthAnchor].active = YES;
-                if (imageView.image.size.width > 0) {
-                    [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
-                }
+            // we should not apply the constraints if the superView's frame is not ready
+            // check layoutSubview of ACRContentStackView to see the alternate case
+            if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
+                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView);
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -855,7 +882,7 @@ NSData *JsonToNSData(const Json::Value &blob)
     std::stringstream sstream;
     writer->write(blob, &sstream);
     NSString *jsonString =
-    [[NSString alloc] initWithCString:sstream.str().c_str()
-                             encoding:NSUTF8StringEncoding];
+        [[NSString alloc] initWithCString:sstream.str().c_str()
+                                 encoding:NSUTF8StringEncoding];
     return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
 }

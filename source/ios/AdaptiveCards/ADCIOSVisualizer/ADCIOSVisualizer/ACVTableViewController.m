@@ -17,7 +17,7 @@
     [super viewDidLoad];
 
     NSBundle *main = [NSBundle mainBundle];
-    
+
     selectedRow = -1;
 
     [_delegate source:self
@@ -46,14 +46,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    self.userSelectedJSon =
+    NSString *payload =
         [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
                                   encoding:NSUTF8StringEncoding
                                      error:nil];
-    if (!self.IsCollapsed) {
-        if (selectedRow != indexPath.row) {
-            [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
-        }
+    // we don't want to re-render card when a row is selected for selection
+    // we don't want to go through the whole logic when payload is nil or empty
+    if (!self.IsCollapsed && payload && payload.length) {
+        self.userSelectedJSon = payload;
+        [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
+
         selectedRow = indexPath.row;
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         CGFloat height = cell.frame.size.height;

@@ -16,7 +16,6 @@
 #import "ACRView.h"
 #import "Enums.h"
 #import "Image.h"
-#import "ImageSet.h"
 #import "SharedAdaptiveCard.h"
 #import "UtiliOS.h"
 
@@ -96,11 +95,7 @@
 
     [wrappingView.heightAnchor constraintEqualToAnchor:view.heightAnchor].active = YES;
 
-    if (imageProps.acrImageSize == ACRImageSizeStretch) {
-        [wrappingView.widthAnchor constraintEqualToAnchor:view.widthAnchor].active = YES;
-    } else {
-        [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
-    }
+    [wrappingView.widthAnchor constraintGreaterThanOrEqualToAnchor:view.widthAnchor].active = YES;
 
     [view.topAnchor constraintEqualToAnchor:wrappingView.topAnchor].active = YES;
 
@@ -149,14 +144,13 @@
 
     if (view && view.image) {
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
-        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:view.image imageView:view];
+        [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:view.image imageView:view];
     }
 
     return wrappingView;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     ACRContentHoldingUIView *superview = nil;
     ACRImageProperties *imageProps = nil;
@@ -216,11 +210,18 @@
 
     constraints[2].priority = priority + 2;
     constraints[3].priority = priority + 2;
+
+    if (imageProps.acrImageSize == ACRImageSizeAuto) {
+        [constraints addObject:[imageView.widthAnchor constraintLessThanOrEqualToConstant:imageProps.contentSize.width]];
+    }
+
     [NSLayoutConstraint activateConstraints:constraints];
 
     if (superview) {
         [superview update:imageProps];
     }
+
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
 
 + (UILayoutPriority)getImageUILayoutPriority:(UIView *)wrappingView

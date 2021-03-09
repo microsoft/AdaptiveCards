@@ -254,8 +254,8 @@ export abstract class CardElement extends CardObject {
     }
 
     protected applyPadding() {
-        if (this.separatorElement) {
-            if (GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
+        if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
+            if (GlobalSettings.alwaysBleedSeparators && !this.isBleeding()) {
                 let padding = new PaddingDefinition();
 
                 this.getImmediateSurroundingPadding(padding);
@@ -5190,7 +5190,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             this.renderedElement.style.marginTop = "0";
             this.renderedElement.style.marginBottom = "0";
 
-            if (this.separatorElement) {
+            if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
                 this.separatorElement.style.marginRight = "0";
                 this.separatorElement.style.marginLeft = "0";
             }
