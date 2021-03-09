@@ -1,5 +1,6 @@
 #include "Utils.h"
 #include <time.h>
+#include <windows.h>
 
 namespace RendererQml
 {
@@ -283,38 +284,20 @@ namespace RendererQml
 	std::string Utils::GetDate(std::string date, bool MiniumDate_MaximumDate)
 	{
 		//Input format:"yyyy-mm-dd" , Output Format:"mm-dd-yyyy" or "new Date(yyyy,mm,dd)"
-		std::vector<std::string> d;
-
-		std::stringstream ss(date);
-
-		while (ss.good()) 
-		{
-			std::string substr;
-			getline(ss, substr, '-');
-			d.push_back(substr);
-		}
+		std::vector<std::string> date_split = Utils::splitString(date, '-');
 		if (MiniumDate_MaximumDate == true)
 		{
-			return "new Date(" + d[0] + "," + d[1] + "," + d[2] + ")";
+			return "new Date(" + date_split[0] + "," + date_split[1] + "," + date_split[2] + ")";
 		}
-		return d[1] + "-" + d[2] + "-" + d[0];
+		return date_split[1] + "-" + date_split[2] + "-" + date_split[0];
 	}
 
 	bool Utils::isValidTime(std::string& time)
 	{
 		//24 hour format check
-		std::vector<std::string> time_split;
-
-		std::stringstream ss(time);
-
 		try
 		{
-			while (ss.good())
-			{
-				std::string substr;
-				getline(ss, substr, ':');
-				time_split.push_back(substr);
-			}
+			std::vector<std::string> time_split = Utils::splitString(time, ':');
 			if (stoi(time_split[0]) >= 0 && stoi(time_split[0]) <= 23)
 			{
 				if(stoi(time_split[1]) >= 0 && stoi(time_split[1]) <= 59)
@@ -330,21 +313,17 @@ namespace RendererQml
 
 	std::string Utils::defaultTimeto12hour(std::string& defaultTime)
 	{
-		std::vector<std::string> time_split;
+		std::vector<std::string> time_split=Utils::splitString(defaultTime,':');
 
-		std::stringstream ss(defaultTime);
-		while (ss.good())
-		{
-			std::string substr;
-			getline(ss, substr, ':');
-			time_split.push_back(substr);
-		}
 		std::string tt = "AM";
+
 		if (stoi(time_split[0]) > 12)
 		{
 			tt = "PM";
 		}
+
 		time_split[0] = std::to_string(stoi(time_split[0]) > 12 ? stoi(time_split[0]) - 12 : stoi(time_split[0]));
+
 		return Formatter() << std::setfill('0') << std::setw(2) << time_split[0] << ":" << time_split[1] << " " << tt;
 	}
 
@@ -355,5 +334,36 @@ namespace RendererQml
         transform(newId.begin(), newId.end(), newId.begin(), ::tolower);
         return newId;
     }
+
+	bool Utils::isSystemTime12Hour()
+	{
+		char dateTimeBuffer[80];
+		struct tm newtime;
+		time_t now = time(0);
+		localtime_s(&newtime, &now);
+		setlocale(LC_TIME, "");
+		strftime(dateTimeBuffer, 80, "%c", &newtime);
+
+		std::vector<std::string> time_split = Utils::splitString( std::string(dateTimeBuffer), ' ');
+
+		if (time_split.size() == 2)
+		{
+			return false;
+		}
+		return true;
+	}
+
+	std::vector<std::string> Utils::splitString(const std::string& string, char delimiter)
+	{
+		std::vector<std::string> splitElements;
+		std::stringstream ss(string);
+		while (ss.good())
+		{
+			std::string substr;
+			getline(ss, substr, delimiter);
+			splitElements.push_back(substr);
+		}
+		return splitElements;
+	}
 
 }

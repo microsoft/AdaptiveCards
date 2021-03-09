@@ -1,5 +1,7 @@
 #include "AdaptiveCardQmlRenderer.h"
 #include "pch.h"
+#include <windows.h>
+//#include <time.h>
 
 namespace RendererQml
 {
@@ -1096,9 +1098,8 @@ namespace RendererQml
   
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TimeInputRender(std::shared_ptr<AdaptiveCards::TimeInput> input, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		//TODO: Fetch System Time Format 
-		bool is12hour = true;
-
+		bool is12hour = Utils::isSystemTime12Hour();
+		
         input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 
 		auto uiTimeInput = std::make_shared<QmlTag>("TextField");
@@ -1127,7 +1128,7 @@ namespace RendererQml
 		}
 
 		//TODO: Height Property, Spacing Property
-
+		// Time Format: hh:mm tt -> 03:30 AM or hh:mm -> 15:30 
 		std::string listViewHours_id = id + "_hours";
 		std::string listViewMin_id = id + "_min";
 		std::string listViewtt_id = id + "_tt";
