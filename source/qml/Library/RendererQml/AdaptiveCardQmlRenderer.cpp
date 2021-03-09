@@ -210,6 +210,7 @@ namespace RendererQml
 			uiTextInput->Property("id", input->GetId());
 			uiTextInput->Property("wrapMode", "Text.Wrap");
 			uiTextInput->Property("padding", "10");
+            uiTextInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 			if (input->GetMaxLength() > 0)
 			{
@@ -223,6 +224,7 @@ namespace RendererQml
 			uiTextInput = std::make_shared<QmlTag>("TextField");
 			uiTextInput->Property("id", input->GetId());
 			uiTextInput->Property("width", "parent.width");
+            uiTextInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 			if (input->GetMaxLength() > 0)
 			{
@@ -239,8 +241,9 @@ namespace RendererQml
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
-		backgroundTag->Property("color", Formatter() << input->GetId() << ".hovered ? 'lightgray' : 'white'");
-		backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
+        //TODO: Add hover effect
+        backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
+        backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
 		backgroundTag->Property("border.width", "1");
 		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
 		backgroundTag->Property("layer.effect", glowTag->ToString());
@@ -283,7 +286,9 @@ namespace RendererQml
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
-		backgroundTag->Property("color", Formatter() << inputId + "_contentItem" << ".hovered ? 'lightgray' : 'white'");
+        //TODO: Add hover effect
+        backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
+
 		backgroundTag->Property("layer.enabled", Formatter() << inputId + "_contentItem" << ".activeFocus ? true : false");
 		backgroundTag->Property("layer.effect", glowTag->ToString());
 
@@ -300,6 +305,7 @@ namespace RendererQml
 			contentItemTag->Property("placeholderText", "\"" + input->GetPlaceholder() + "\"");
 		}
 		contentItemTag->Property("background", backgroundTag->ToString());
+        contentItemTag->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 		auto doubleValidatorTag = std::make_shared<QmlTag>("DoubleValidator");
 
@@ -437,6 +443,7 @@ namespace RendererQml
 		const auto valueOn = !input->GetValueOn().empty() ? input->GetValueOn() : "true";
 		const auto valueOff = !input->GetValueOff().empty() ? input->GetValueOff() : "false";
 		const bool isChecked = input->GetValue().compare(valueOn) == 0 ? true : false;
+        const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
 
 		//TODO: Add Height
 		return GetCheckBox(RendererQml::Checkbox(input->GetId(),
@@ -448,7 +455,8 @@ namespace RendererQml
 			context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default),
 			input->GetWrap(),
 			input->GetIsVisible(),
-			isChecked));
+			isChecked,
+            textColor));
 
 	}
 
@@ -464,6 +472,7 @@ namespace RendererQml
 		const bool isWrap = input->GetWrap();
 		const bool isVisible = input->GetIsVisible();
 		bool isChecked;
+        const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
 
 		std::vector<std::string> parsedValues;
 		parsedValues = Utils::ParseChoiceSetInputDefaultValues(input->GetValue());
@@ -478,7 +487,8 @@ namespace RendererQml
 				fontSize,
 				isWrap,
 				isVisible,
-				isChecked));
+				isChecked,
+                textColor));
 		}
 
 		RendererQml::ChoiceSet choiceSet(id,
@@ -512,7 +522,7 @@ namespace RendererQml
 		//TODO : Add Height
 				
 		uiComboBox->Property("model", GetModel(choiceset.choices)); 
-				
+
 		if (!choiceset.placeholder.empty())
 		{
 			uiComboBox->Property("currentIndex", "-1");
@@ -713,6 +723,7 @@ namespace RendererQml
 		uiText->Property("horizontalAlignment", "Text.AlignLeft");
 		uiText->Property("verticalAlignment", "Text.AlignVCenter");
 		uiText->Property("leftPadding", "parent.indicator.width + parent.spacing");
+        uiText->Property("color", checkbox.textColor);
 	
 		if (checkbox.isWrap)
 		{
@@ -739,7 +750,7 @@ namespace RendererQml
 
         uiDateInput->Property("font.family", "\"" + context->GetConfig()->GetFontFamily(AdaptiveCards::FontType::Default) + "\"");
         uiDateInput->Property("font.pixelSize", std::to_string(fontSize));
-
+        uiDateInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
         uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? "\"" + input->GetPlaceholder() + "\"" : "\"mm-dd-yyyy\""));
 
@@ -768,7 +779,8 @@ namespace RendererQml
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
-        backgroundTag->Property("color", Formatter() << input->GetId() << ".hovered ? 'lightgray' : 'white'");
+        //TODO: ADD hover effect
+        backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
         backgroundTag->Property("border.width", "1");
         backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
@@ -1059,8 +1071,9 @@ namespace RendererQml
 		}
 		else
 		{
-			uiContainer->Property("background", "Rectangle{border.width : 0; color: \"transparent\" }");
-		}
+            const auto color = context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor);
+            uiContainer->Property("background", "Rectangle{border.width : 0; color: " + color + " }");
+        }
 
 		return uiContainer;
 	}
@@ -1107,6 +1120,7 @@ namespace RendererQml
 		uiTimeInput->Property("id", id);
 		uiTimeInput->Property("width", "parent.width");
 		uiTimeInput->Property("placeholderText", !input->GetPlaceholder().empty() ? input->GetPlaceholder() : "\"Select time\"");
+        uiTimeInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 		uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
 
@@ -1144,8 +1158,9 @@ namespace RendererQml
 		auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
 		backgroundTag->Property("radius", "5");
 		//TODO: These color styling should come from css
-		backgroundTag->Property("color", Formatter() << input->GetId() << ".hovered ? 'lightgray' : 'white'");
-		backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
+        //TODO: Add hover effect
+        backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
+        backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
 		backgroundTag->Property("border.width", "1");
 		backgroundTag->Property("layer.enabled", Formatter() << input->GetId() << ".activeFocus ? true : false");
 		backgroundTag->Property("layer.effect", glowTag->ToString());

@@ -25,8 +25,9 @@ namespace RendererQml
 		const bool isWrap;
 		const bool isVisible;
 		const bool isChecked;
+        const std::string textColor;
 
-		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const std::string valueOn, const std::string valueOff, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked)
+		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const std::string valueOn, const std::string valueOff, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked, const std::string textColor)
 			: id(id),
 			type(type),
 			text(text),
@@ -36,10 +37,11 @@ namespace RendererQml
 			fontSize(fontSize),
 			isWrap(isWrap),
 			isVisible(isVisible),
-			isChecked(isChecked)
+			isChecked(isChecked),
+            textColor(textColor)
 		{}
 
-		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked)
+		Checkbox(std::string id, CheckBoxType type, const std::string text, const std::string value, const int fontSize, const bool isWrap, const bool isVisible, const bool isChecked, const std::string textColor)
 			: id(id),
 			type(type),
 			text(text),
@@ -47,7 +49,8 @@ namespace RendererQml
 			fontSize(fontSize),
 			isWrap(isWrap),
 			isVisible(isVisible),
-			isChecked(isChecked)
+			isChecked(isChecked),
+            textColor(textColor)
 		{}
 	};	
 	
