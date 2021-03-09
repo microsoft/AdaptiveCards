@@ -1,7 +1,8 @@
 import * as Adaptive from "adaptivecards";
+import * as Shared from "./shared";
 import { ActivityRequestError, AuthCardButton, Authentication, ErrorResponse, LoginRequestResponse, SuccessResponse, TokenExchangeResource } from "adaptivecards";
 
-export class TestHttpChannelAdapter extends Adaptive.ChannelAdapter {
+export class TestChannelAdapter extends Adaptive.ChannelAdapter {
     constructor(readonly url: string) {
         super();
     }
@@ -11,7 +12,12 @@ export class TestHttpChannelAdapter extends Adaptive.ChannelAdapter {
             throw new Error("Local exception");
         }
 
-        if (request.action.verb === "remoteFailedUnauthenticated") {
+        if (request.action.verb === "localFailSSO") {
+            if (request.token === "valid_sso_token") {
+                // We have an SSO token
+                return new SuccessResponse(request, JSON.stringify(Shared.ssoSuccessCard));
+            }
+
             let auth = new Authentication();
             auth.text = "prop_text";
             auth.connectionName = "prop_connectionName";
@@ -20,6 +26,19 @@ export class TestHttpChannelAdapter extends Adaptive.ChannelAdapter {
             auth.tokenExchangeResource.id = "prop_id";
             auth.tokenExchangeResource.providerId = "prop_providerId";
             auth.tokenExchangeResource.uri = "https://somewhere.under.the.rainbow"
+
+            return new LoginRequestResponse(request, auth)
+        }
+
+        if (request.action.verb === "localFailOAuth") {
+            if (request.authCode === "valid_auth_code") {
+                // We have an auth code
+                return new SuccessResponse(request, JSON.stringify(Shared.oauthSuccessCard));
+            }
+
+            let auth = new Authentication();
+            auth.text = "prop_text";
+            auth.connectionName = "prop_connectionName";
 
             let button = new AuthCardButton();
             button.type = "signin";

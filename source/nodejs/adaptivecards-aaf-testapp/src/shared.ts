@@ -104,8 +104,13 @@ export const sampleCard = {
         },
         {
             type: "Action.Execute",
-            verb: "remoteFailedUnauthenticated",
-            title: "Fail with auth"
+            verb: "localFailSSO",
+            title: "Fail, require SSO"
+        },
+        {
+            type: "Action.Execute",
+            verb: "localFailOAuth",
+            title: "Fail, require OAuth"
         },
         {
             type: "Action.Execute",
@@ -127,6 +132,35 @@ export const sampleRefreshCard = {
         {
             type: "TextBlock",
             text: "The response to the Submit action included a new card payload.",
+            wrap: true
+        }
+    ],
+    $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+    version: "1.0"
+};
+
+export const ssoSuccessCard = {
+    type: "AdaptiveCard",
+    body: [
+        {
+            type: "TextBlock",
+            text: "Successfully authenticated with SSO!",
+            size: "ExtraLarge",
+            wrap: true
+        }
+    ],
+    $schema: "http://adaptivecards.io/schemas/adaptive-card.json",
+    version: "1.0"
+};
+
+
+export const oauthSuccessCard = {
+    type: "AdaptiveCard",
+    body: [
+        {
+            type: "TextBlock",
+            text: "Successfully authenticated with OAuth!",
+            size: "ExtraLarge",
             wrap: true
         }
     ],

@@ -4,7 +4,7 @@ import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityResponse, IActivityRequest, ActivityRequestTrigger, SuccessResponse, ErrorResponse, LoginRequestResponse } from "./activity-request";
 import { Strings } from "./strings";
-import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, Authentication } from "./card-elements";
+import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, Authentication, TokenExchangeResource, AuthCardButton } from "./card-elements";
 import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
 
@@ -36,11 +36,12 @@ class ActivityRequest implements IActivityRequest {
         readonly consecutiveRefreshes: number) { }
 
     authCode?: string;
+    token?: string;
     attemptNumber: number = 0;
 
     onSend: (sender: ActivityRequest) => void;
 
-    async trySendAsync(): Promise<void> {
+    async retryAsync(): Promise<void> {
         if (this.onSend) {
             this.onSend(this);
         }
@@ -56,6 +57,7 @@ export class AdaptiveApplet {
     private _allowAutomaticCardUpdate: boolean = false;
     private _refreshButtonHostElement: HTMLElement;
     private _cardHostElement: HTMLElement;
+    private _progressOverlay?: HTMLElement;
 
     private displayCard(card: AdaptiveCard) {
         if (card.renderedElement) {
@@ -147,7 +149,7 @@ export class AdaptiveApplet {
                 this.internalSendActivityRequestAsync(request);
             }
 
-            let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, action, request) : false;
+            let cancel = this.onPrepareActivityRequest ? !this.onPrepareActivityRequest(this, request, action) : false;
 
             return cancel ? undefined : request;
         }
@@ -238,8 +240,8 @@ export class AdaptiveApplet {
                 if (doChangeCard) {
                     this._card = card;
 
-                    if (this._card.authentication && this.onPrefetchSsoAuthToken) {
-                        this.onPrefetchSsoAuthToken(this, this._card.authentication);
+                    if (this._card.authentication && this._card.authentication.tokenExchangeResource && this.onPrefetchSSOToken) {
+                        this.onPrefetchSSOToken(this, this._card.authentication.tokenExchangeResource);
                     }
 
                     this._card.onExecuteAction = (action: Action) => {
@@ -318,7 +320,7 @@ export class AdaptiveApplet {
 
                 if (request) {
                     // this.internalSendActivityRequestAsync(request);
-                    request.trySendAsync();
+                    request.retryAsync();
                 }
             }
             else {
@@ -328,6 +330,39 @@ export class AdaptiveApplet {
 
         if (this.onAction) {
             this.onAction(this, action);
+        }
+    }
+
+    private createProgressOverlay(request: ActivityRequest): HTMLElement | undefined {
+        if (!this._progressOverlay) {
+            if (this.onCreateProgressOverlay) {
+                this._progressOverlay = this.onCreateProgressOverlay(this, request);
+            }
+            else {
+                this._progressOverlay = document.createElement("div");
+                this._progressOverlay.className = "aaf-progress-overlay";
+
+                let spinner = document.createElement("div");
+                spinner.className = "aaf-spinner";
+                spinner.style.width = "28px";
+                spinner.style.height = "28px";
+
+                this._progressOverlay.appendChild(spinner);
+            }
+        }
+
+        return this._progressOverlay;
+    }
+
+    private removeProgressOverlay(request: IActivityRequest) {
+        if (this.onRemoveProgressOverlay) {
+            this.onRemoveProgressOverlay(this, request);
+        }
+        
+        if (this._progressOverlay !== undefined) {
+            this.renderedElement.removeChild(this._progressOverlay);
+
+            this._progressOverlay = undefined;
         }
     }
 
@@ -361,7 +396,7 @@ export class AdaptiveApplet {
                                 this.displayCard(this.card);
 
                                 request.authCode = authCode;
-                                request.trySendAsync();
+                                request.retryAsync();
                             }
                             else {
                                 alert("Please enter the magic code you received.");
@@ -399,16 +434,6 @@ export class AdaptiveApplet {
             this.renderedElement.appendChild(overlay);
         }
 
-        const removeOverlay = () => {
-            if (this.onRemoveProgressOverlay) {
-                this.onRemoveProgressOverlay(this, request);
-            }
-            
-            if (overlay !== undefined) {
-                this.renderedElement.removeChild(overlay);
-            }
-        }
-
         let done = false;
 
         while (!done) {
@@ -427,14 +452,14 @@ export class AdaptiveApplet {
             catch (error) {
                 logEvent(Enums.LogLevel.Error, "Activity request failed: " + error);
 
-                removeOverlay();
+                this.removeProgressOverlay(request);
 
                 done = true;
             }
 
             if (response) {
                 if (response instanceof SuccessResponse) {
-                    removeOverlay();
+                    this.removeProgressOverlay(request);
 
                     if (response.rawContent === undefined) {
                         throw new Error("internalSendActivityRequestAsync: Action.Execute result is undefined");
@@ -470,7 +495,9 @@ export class AdaptiveApplet {
                     let retryIn: number = this.activityRequestFailed(response);
 
                     if (retryIn >= 0 && request.attemptNumber < GlobalSettings.applets.maximumRetryAttempts) {
-                        logEvent(Enums.LogLevel.Warning, "Activity request failed. Retrying in " + retryIn + "ms");
+                        logEvent(
+                            Enums.LogLevel.Warning,
+                            `Activity request failed: ${response.error.message}. Retrying in ${retryIn}ms`);
 
                         request.attemptNumber++;
 
@@ -483,9 +510,11 @@ export class AdaptiveApplet {
                             });
                     }
                     else {
-                        logEvent(Enums.LogLevel.Error, "Activity request failed. Giving up after " + request.attemptNumber + " attempt(s)");
+                        logEvent(
+                            Enums.LogLevel.Error,
+                            `Activity request failed: ${response.error.message}. Giving up after ${request.attemptNumber} attempt(s)`);
 
-                        removeOverlay();
+                        this.removeProgressOverlay(request);
 
                         done = true;
                     }
@@ -493,24 +522,44 @@ export class AdaptiveApplet {
                 else if (response instanceof LoginRequestResponse) {
                     logEvent(Enums.LogLevel.Info, "The activity request returned a LoginRequestResponse after " + request.attemptNumber + " attempt(s).");
 
-                    removeOverlay();
-
                     if (request.attemptNumber <= GlobalSettings.applets.maximumRetryAttempts) {
-                        if (response.signinUrl === undefined) {
-                            throw new Error("internalSendActivityRequestAsync: the login request doesn't contain a valid siginin URL.");
+                        let attemptOAuth = true;
+
+                        if (response.tokenExchangeResource && this.onSSOTokenNeeded) {
+                            // Attempt to use SSO
+                            this.onSSOTokenNeeded(this, request, response.tokenExchangeResource);
+
+                            if (request.token) {
+                                attemptOAuth = false;
+                            }
                         }
 
-                        logEvent(Enums.LogLevel.Info, "Login required at " + response.signinUrl);
+                        if (attemptOAuth) {
+                            // Attempt to use OAuth
+                            this.removeProgressOverlay(request);
+                            
+                            if (response.signinButton === undefined) {
+                                throw new Error("internalSendActivityRequestAsync: the login request doesn't contain a valid signin URL.");
+                            }
 
-                        this.showAuthCodeInputDialog(request);
+                            logEvent(Enums.LogLevel.Info, "Login required at " + response.signinButton.value);
 
-                        let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
-                        let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
+                            if (this.onShowSigninPrompt) {
+                                // Bypass the built-in auth prompt if the host app handles it
+                                this.onShowSigninPrompt(this, request, response.signinButton);
+                            }
+                            else {
+                                this.showAuthCodeInputDialog(request);
 
-                        window.open(
-                            response.signinUrl,
-                            response.signinButtonTitle ? response.signinButtonTitle : "Sign in",
-                            `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`);
+                                let left = window.screenX + (window.outerWidth - GlobalSettings.applets.authPromptWidth) / 2;
+                                let top = window.screenY + (window.outerHeight - GlobalSettings.applets.authPromptHeight) / 2;
+
+                                window.open(
+                                    response.signinButton.value,
+                                    response.signinButton.title ? response.signinButton.title : "Sign in",
+                                    `width=${GlobalSettings.applets.authPromptWidth},height=${GlobalSettings.applets.authPromptHeight},left=${left},top=${top}`);
+                            }
+                        }
                     }
                     else {
                         logEvent(Enums.LogLevel.Error, "Authentication failed. Giving up after " + request.attemptNumber + " attempt(s)");
@@ -518,6 +567,7 @@ export class AdaptiveApplet {
                         alert(Strings.magicCodeInputCard.authenticationFailed());
                     }
 
+                    // Exit the loop. After a LoginRequestResponse, the host app is responsible for retrying the request
                     break;
                 }
                 else {
@@ -526,28 +576,6 @@ export class AdaptiveApplet {
             }
         }
     }
-
-    private createProgressOverlay(request: ActivityRequest): HTMLElement | undefined {
-        let overlay: HTMLElement | undefined = undefined;
-
-        if (this.onCreateProgressOverlay) {
-            overlay = this.onCreateProgressOverlay(this, request);
-        }
-        else {
-            overlay = document.createElement("div");
-            overlay.className = "aaf-progress-overlay";
-
-            let spinner = document.createElement("div");
-            spinner.className = "aaf-spinner";
-            spinner.style.width = "28px";
-            spinner.style.height = "28px";
-
-            overlay.appendChild(spinner);
-        }
-
-        return overlay;
-    }
-
     readonly renderedElement: HTMLElement;
 
     userId?: string;
@@ -556,8 +584,9 @@ export class AdaptiveApplet {
 
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
     onCardChanged?: (sender: AdaptiveApplet) => void;
-    onPrefetchSsoAuthToken: (sender: AdaptiveApplet, authentication: Authentication) => void;
-    onPrepareActivityRequest?: (sender: AdaptiveApplet, action: ExecuteAction, request: IActivityRequest) => boolean;
+    onPrefetchSSOToken?: (sender: AdaptiveApplet, tokenExchangeResource: TokenExchangeResource) => void;
+    onSSOTokenNeeded?: (sender: AdaptiveApplet, request: IActivityRequest, tokenExchangeResource: TokenExchangeResource) => void;
+    onPrepareActivityRequest?: (sender: AdaptiveApplet, request: IActivityRequest, action: ExecuteAction) => boolean;
     onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: SuccessResponse, parsedContent: string | AdaptiveCard | undefined) => void;
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ErrorResponse) => number;
     onCreateSerializationContext?: (sender: AdaptiveApplet) => SerializationContext;
@@ -566,7 +595,8 @@ export class AdaptiveApplet {
     onRenderManualRefreshButton?: (sender: AdaptiveApplet) => HTMLElement | undefined;
     onAction?: (sender: AdaptiveApplet, action: Action) => void;
     onShowManualRefreshButton?: (sender: AdaptiveApplet) => boolean;
-    onShowAuthCodeInputDialog: (sender: AdaptiveApplet, request: IActivityRequest) => boolean;
+    onShowAuthCodeInputDialog?: (sender: AdaptiveApplet, request: IActivityRequest) => boolean;
+    onShowSigninPrompt?:(sender: AdaptiveApplet, request: IActivityRequest, signinButton: AuthCardButton) => void;
 
     constructor() {
         this.renderedElement = document.createElement("div");

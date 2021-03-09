@@ -3,8 +3,7 @@
 import * as Shared from "./shared";
 import * as Adaptive from "adaptivecards";
 import "adaptivecards/dist/adaptivecards.css";
-import { TestHttpChannelAdapter } from "./test-http-channel-adapter";
-import { ExecuteAction } from "adaptivecards";
+import { TestChannelAdapter } from "./test-channel-adapter";
 
 window.onload = function() {
     Adaptive.GlobalSettings.applets.refresh.mode = Adaptive.RefreshMode.Automatic;
@@ -22,7 +21,7 @@ window.onload = function() {
 
     // applet.channelAdapter = new LocalChannelAdapter();
 
-    applet.channelAdapter = new TestHttpChannelAdapter("https://acv2testbot.azurewebsites.net/aaftestbot/invoke");
+    applet.channelAdapter = new TestChannelAdapter("https://acv2testbot.azurewebsites.net/aaftestbot/invoke");
 
     applet.setCard(Shared.sampleCard);
     // applet.onActivityRequestFailed = (sender, response) => { return 2000; }
@@ -31,5 +30,16 @@ window.onload = function() {
             alert(parsedContent);
         }
     }
+    applet.onSSOTokenNeeded = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, tokenExchangeResource: Adaptive.TokenExchangeResource) => {
+        request.token = "valid_sso_token";
+        request.retryAsync();
+    }
+    applet.onShowSigninPrompt = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, signinButton: Adaptive.AuthCardButton) => {
+        alert("Simulating auth prompt...");
+
+        request.authCode = "valid_auth_code";
+        request.retryAsync();
+    }
+    
     document.getElementById("appHost").appendChild(applet.renderedElement);
 }

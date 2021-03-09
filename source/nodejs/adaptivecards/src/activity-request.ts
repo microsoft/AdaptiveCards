@@ -1,4 +1,4 @@
-import { Authentication, AuthCardButton, ExecuteAction } from "./card-elements";
+import { Authentication, AuthCardButton, ExecuteAction, TokenExchangeResource } from "./card-elements";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
@@ -12,8 +12,9 @@ export interface IActivityRequest {
     readonly consecutiveRefreshes: number;
 
     authCode?: string;
+    token?: string;
 
-    trySendAsync(): void;
+    retryAsync(): void;
 }
 
 export class ActivityRequestError {
@@ -37,31 +38,32 @@ export class ErrorResponse extends ActivityResponse {
 }
 
 export class LoginRequestResponse extends ActivityResponse {
-    private static getSigninButton(auth: Authentication): AuthCardButton | undefined {
-        for (let button of auth.buttons) {
+    readonly signinButton?: AuthCardButton;
+
+    constructor(readonly request: IActivityRequest, private _auth: Authentication) {
+        super(request);
+
+        for (let button of this._auth.buttons) {
             if (button.type === "signin" && button.value !== undefined) {
                 try {
-                    let parsedUrl = new URL(button.value);
+                    new URL(button.value);
 
-                    return button;
+                    this.signinButton = button;
+
+                    break;
                 }
                 catch (e) {
-                    return undefined;
+                    // Ignore parsing error
                 }
             }
         }
-
-        return undefined;
     }
 
-    private _signinButton?: AuthCardButton;
-
-    constructor(readonly request: IActivityRequest, auth: Authentication) {
-        super(request);
-
-        this._signinButton = LoginRequestResponse.getSigninButton(auth);
+    get tokenExchangeResource(): TokenExchangeResource | undefined {
+        return this._auth.tokenExchangeResource;
     }
 
+    /*
     get signinButtonTitle(): string | undefined {
         return this._signinButton ? this._signinButton.title : undefined;
     }
@@ -73,6 +75,7 @@ export class LoginRequestResponse extends ActivityResponse {
     get signinUrl(): string | undefined {
         return this._signinButton ? this._signinButton.value : undefined;
     }
+    */
 }
 
 export class InvalidAuthCodeResponse extends ActivityResponse { }
