@@ -10,15 +10,35 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             return NSView()
         }
         
-        let columnView = ACRColumnView(style: style, hostConfig: hostConfig)
+        let columnView = ACRColumnView(style: column.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: parentView)
         columnView.translatesAutoresizingMaskIntoConstraints = false
         columnView.setWidth(ColumnWidth(columnWidth: column.getWidth(), pixelWidth: column.getPixelWidth()))
+        
+        var topSpacingView: NSView?
+        if column.getVerticalContentAlignment() == .center || column.getVerticalContentAlignment() == .bottom {
+            let view = NSView()
+            columnView.addArrangedSubview(view)
+            topSpacingView = view
+        }
         
         for item in column.getItems() {
             let renderer = RendererManager.shared.renderer(for: item.getType())
             let view = renderer.render(element: item, with: hostConfig, style: style, rootView: rootView, parentView: columnView, inputs: [])
             columnView.addArrangedSubview(view)
         }
+        
+        if column.getVerticalContentAlignment() == .center, let topView = topSpacingView {
+            let view = NSView()
+            view.translatesAutoresizingMaskIntoConstraints = false
+            topView.translatesAutoresizingMaskIntoConstraints = false
+            columnView.addArrangedSubview(view)
+            view.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
+        }
+        
+        if let height = column.getMinHeight(), let heightPt = CGFloat(exactly: height), heightPt > 0 {
+            columnView.heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
+        }
+        
         return columnView
     }
 }

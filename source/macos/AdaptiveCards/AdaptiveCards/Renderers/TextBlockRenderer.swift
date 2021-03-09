@@ -70,7 +70,9 @@ class ACRTextView: NSTextView {
             return super.intrinsicContentSize
         }
         layoutManager.ensureLayout(for: textContainer)
-        return layoutManager.usedRect(for: textContainer).size
+        let size = layoutManager.usedRect(for: textContainer).size
+        let width = size.width + 2
+        return NSSize(width: width, height: size.height)
     }
     
     override func viewDidMoveToSuperview() {

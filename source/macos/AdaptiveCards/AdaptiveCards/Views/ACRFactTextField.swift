@@ -60,13 +60,6 @@ class ACRFactTextField: NSView {
         get { return labelTextField.stringValue }
         set { labelTextField.stringValue = newValue ?? "" }
     }
-    
-    override func viewDidMoveToSuperview() {
-        super.viewDidMoveToSuperview()
-        // Should look for better solution
-        guard let superview = superview else { return }
-        widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
-    }
 }
 
 // MARK: Class required for Horizontal Stack View

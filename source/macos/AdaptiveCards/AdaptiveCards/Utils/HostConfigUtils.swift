@@ -18,6 +18,22 @@ extension ACSHostConfig {
         }
         return ColorUtils.color(from: hexColorCode)
     }
+    
+    func getBorderColor(for containerStyle: ACSContainerStyle) -> NSColor? {
+        guard let hexColorCode = getBorderColor(containerStyle) else {
+            logError("HexColorCode is nil")
+            return nil
+        }
+        return ColorUtils.color(from: hexColorCode)
+    }
+    
+    func getBorderThickness(for containerStyle: ACSContainerStyle) -> CGFloat? {
+        guard let thickness = getBorderThickness(containerStyle) else {
+            logError("HexColorCode is nil")
+            return nil
+        }
+        return CGFloat(exactly: thickness)
+    }
 }
 
 class FontUtils {

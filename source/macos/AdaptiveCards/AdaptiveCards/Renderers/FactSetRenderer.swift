@@ -17,11 +17,14 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         
         // Create stacks to hold title and value of FactSet
         let titleStack = NSStackView()
-        let valueStack = NSStackView()
-        titleStack.orientation = .vertical
-        valueStack.orientation = .vertical
         titleStack.translatesAutoresizingMaskIntoConstraints = false
+        titleStack.orientation = .vertical
+        titleStack.alignment = .leading
+        
+        let valueStack = NSStackView()
         valueStack.translatesAutoresizingMaskIntoConstraints = false
+        valueStack.orientation = .vertical
+        valueStack.alignment = .leading
         
         // Main loop to iterate over Array of facts
         for fact in factArray {

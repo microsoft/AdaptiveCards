@@ -1,0 +1,190 @@
+{
+    "type": "AdaptiveCard",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Add Reports To Space"
+        },
+        {
+            "type": "Input.ChoiceSet",
+            "choices": [
+                {
+                    "title": "All Reports",
+                    "value": "1"
+                },
+                {
+                    "title": "Direct Reports",
+                    "value": "2"
+                }
+            ],
+            "placeholder": "Please choose type of report (all or direct)",
+            "id": "report"
+        },
+        {
+            "type": "Input.Toggle",
+            "title": "Include all employee types",
+            "id": "all_employees",
+            "value": "false",
+            "wrap": false
+        },
+        {
+            "type": "TextBlock",
+            "text": "Or choose specific types:",
+            "wrap": true
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "choices": [
+                                {
+                                    "title": "Full-time",
+                                    "value": "1"
+                                },
+                                {
+                                    "title": "Hourly",
+                                    "value": "2"
+                                },
+                                {
+                                    "title": "Agency",
+                                    "value": "3"
+                                }
+                            ],
+                            
+                            "id": "employee_1",
+                            "isMultiSelect": true,
+                            "style": "expanded",
+                            
+                            "wrap": true,
+                            "spacing": "None"
+                        }
+                    ],
+                    
+                    "style": "default",
+                    "spacing": "None"
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "choices": [
+                                {
+                                    "title": "Joint Venture",
+                                    "value": "4"
+                                },
+                                {
+                                    "title": "Part-time",
+                                    "value": "5"
+                                },
+                                {
+                                    "title": "New Employee",
+                                    "value": "6"
+                                }
+                            ],
+                            
+                            "isMultiSelect": true,
+                            "id": "employee_2",
+                            "wrap": true,
+                            "style": "expanded",
+                            "spacing": "None"
+                        }
+                    ],
+                    
+                    "style": "default",
+                    "spacing": "None"
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "items": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "choices": [
+                                {
+                                    "title": "Subsidiary",
+                                    "value": "7"
+                                },
+                                {
+                                    "title": "Supplier",
+                                    "value": "8"
+                                }
+                            ],
+                            
+                            "isMultiSelect": true,
+                            "id": "employee_3",
+                            "style": "expanded",
+                            "wrap": true,
+                            "spacing": "None"
+                        }
+                    ],
+                    
+                    "style": "default",
+                    "spacing": "None"
+                }
+            ],
+            "spacing": "None"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit",
+            "style": "positive",
+            "id": "submit"
+        },
+        {
+            "type": "Action.Submit",
+            "title": "Cancel",
+            "id": "cancel",
+            "style": "destructive"
+        },
+        {
+            "type": "Action.ShowCard",
+            "title": "Help",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "How to use:",
+                        "wrap": true,
+                        "weight": "Bolder"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "To add reports to a space, select \"Direct\" or \"All\" from the dropdown menu. Then either choose to include all employee types or specify individual classifications using the checkboxes. Click Submit, and the bot will add your direct reports to the space.",
+                        "wrap": true
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "Employee Types Key:",
+                        "wrap": true,
+                        "weight": "Bolder"
+                    },
+                    {
+                        "type": "RichTextBlock",
+                        "inlines": [
+                            {
+                                "type": "TextRun",
+                                "text": "F - Ford Full-time Salaried \nH - Ford Hourly \nA - Agency/Contractor \nJ - Ford Joint Venture \nP - Ford Part-time \nN - Ford Full-time salaried, Part-time, or Hourly \nW - Ford Wholly Owned Subsidiary \nM - Non-production Supplier"
+                            }
+                        ]
+                    }
+                ],
+                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+            },
+            "id": "help"
+        }
+    ]
+}

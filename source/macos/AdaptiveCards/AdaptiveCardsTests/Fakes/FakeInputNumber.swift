@@ -46,6 +46,10 @@ class FakeInputNumber: ACSNumberInput {
     override func setIsVisible(_ value: Bool) {
         isVisible = value
     }
+    
+    override func getType() -> ACSCardElementType {
+        return .numberInput
+    }
 }
 
 extension FakeInputNumber {
