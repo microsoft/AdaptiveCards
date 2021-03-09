@@ -469,6 +469,7 @@ namespace RendererQml
 		const std::string id = input->GetId();
 		enum CheckBoxType type = !input->GetIsMultiSelect() && input->GetChoiceSetStyle() == AdaptiveCards::ChoiceSetStyle::Compact ? ComboBox : input->GetIsMultiSelect() ? CheckBox : RadioButton;
 		const int fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
+		const std::string fontColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false, false);
 		const bool isWrap = input->GetWrap();
 		const bool isVisible = input->GetIsVisible();
 		bool isChecked;
@@ -695,25 +696,38 @@ namespace RendererQml
 			uiOuterRectangle->Property("radius", "3");
 		}
 		uiOuterRectangle->Property("border.color", checkbox.id + ".checked ? '#0075FF' : '767676'");
-	
-		//To be replaced with image of checkmark.
-		auto uiInnerRectangle = std::make_shared<QmlTag>("Rectangle");
-		uiInnerRectangle->Property("width", "parent.width/2");
-		uiInnerRectangle->Property("height", "parent.height/2");
-		uiInnerRectangle->Property("x", "width/2");
-		uiInnerRectangle->Property("y", "height/2");
+		uiOuterRectangle->Property("color", checkbox.id + ".checked ? '#0075FF' : '#ffffff'");
+
+		std::shared_ptr<QmlTag> uiInnerSegment;
+
 		if (checkbox.type == CheckBoxType::RadioButton)
 		{
-			uiInnerRectangle->Property("radius", "height/2");
+			uiInnerSegment = std::make_shared<QmlTag>("Rectangle");
+			uiInnerSegment->Property("width", "parent.width/2");
+			uiInnerSegment->Property("height", "parent.height/2");
+			uiInnerSegment->Property("x", "width/2");
+			uiInnerSegment->Property("y", "height/2");
+			uiInnerSegment->Property("radius", "height/2");
+			uiInnerSegment->Property("color", checkbox.id + ".checked ? '#ffffff' : 'defaultPalette.backgroundColor'");
+			uiInnerSegment->Property("visible", checkbox.id + ".checked");
 		}
 		else
 		{
-			uiInnerRectangle->Property("radius", "2"); 
+			uiInnerSegment = std::make_shared<QmlTag>("Image");
+			uiInnerSegment->Property("anchors.centerIn", "parent");
+			uiInnerSegment->Property("width", "parent.width - 3");
+			uiInnerSegment->Property("height", "parent.height - 3");
+			uiInnerSegment->Property("visible", checkbox.id + ".checked");
+
+			//Finding absolute Path at runtime
+			std::string file_path = __FILE__;
+			std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
+			dir_path.append("\\Images\\checkmarkIcon.svg");
+			std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
+			uiInnerSegment->Property("source", Formatter() << "\"" << std::string("file:/") << dir_path << "\"");
 		}
-		uiInnerRectangle->Property("color", checkbox.id + ".down ? '#ffffff' : '#0075FF'");
-		uiInnerRectangle->Property("visible", checkbox.id + ".checked");
-	
-		uiOuterRectangle->AddChild(uiInnerRectangle);
+			
+		uiOuterRectangle->AddChild(uiInnerSegment);
 	
 		uiButton->Property("indicator", uiOuterRectangle->ToString());
 	
