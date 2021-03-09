@@ -1015,5 +1015,378 @@ namespace Samples
       ]
     })";
 
+	const std::string card_columnSet = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Simple ColumnSet"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "ColumnSet with bleed property"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "good",
+      "bleed": true,
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "style": "default",
+          "width": "auto",
+          "bleed": true
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto",
+          "style": "attention",
+          "bleed": true
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "MinHeight"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "good",
+      "bleed": true,
+      "minHeight": "300px",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Aligned Top"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "style": "default",
+          "width": "auto"
+        },
+        {
+          "type": "Column",
+          "verticalContentAlignment": "Center",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Aligned Center"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto",
+          "style": "warning"
+        },
+        {
+          "type": "Column",
+          "verticalContentAlignment": "Bottom",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Aligned Bottom"
+            },
+            {
+              "type": "Image",
+              "url": "https://adaptivecards.io/content/cats/1.png"
+            }
+          ],
+          "width": "auto",
+          "style": "accent"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "BackGround Image"
+    },
+    {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "minHeight": "50px",
+          "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+          "width": "auto",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Background Image"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Bleed left"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "emphasis",
+      "columns": [
+        {
+          "type": "Column",
+          "style": "good",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "attention",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "warning",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Bleed center"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "emphasis",
+      "columns": [
+        {
+          "type": "Column",
+          "style": "good",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "attention",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "warning",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            }
+          ],
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Bleed right"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "emphasis",
+      "columns": [
+        {
+          "type": "Column",
+          "style": "good",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "attention",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            }
+          ],
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "warning",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "Bleed all"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "emphasis",
+      "columns": [
+        {
+          "type": "Column",
+          "style": "good",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 1"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "attention",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 2"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        },
+        {
+          "type": "Column",
+          "style": "warning",
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "Column 3"
+            }
+          ],
+          "bleed": true,
+          "width": "stretch"
+        }
+      ]
+    }
+  ]
+})";
 }
 

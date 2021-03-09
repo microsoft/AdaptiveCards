@@ -35,6 +35,8 @@ namespace RendererQml
 
         const int getContainerCounter();
         const int getImageCounter();
+		const int getColumnSetCounter();
+		const int getColumnCounter();
 
     private:
         std::vector<AdaptiveWarning> m_warnings;
@@ -47,5 +49,7 @@ namespace RendererQml
         AdaptiveCardDependency::OnClickFunction m_onClickFunction;
         int m_ContainerCounter{ 0 };
         int m_ImageCounter{ 0 };
+		int m_ColumnSetCounter{ 0 };
+		int m_ColumnCounter{ 0 };
     };
 }

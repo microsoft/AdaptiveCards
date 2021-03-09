@@ -209,4 +209,14 @@ namespace RendererQml
     {
         return ++m_ImageCounter;
     }
+
+	const int AdaptiveRenderContext::getColumnSetCounter()
+	{
+		return ++m_ColumnSetCounter;
+	}
+
+	const int AdaptiveRenderContext::getColumnCounter()
+	{
+		return ++m_ColumnCounter;
+	}
 }
