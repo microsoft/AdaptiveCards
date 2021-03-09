@@ -62,6 +62,9 @@ class BaseCardElementRenderer {
             updatedView.setCustomSpacing(spacing: 3, view: labelView)
         }
         updatedView.addArrangedSubview(view)
+        if view is ACRContentStackView {
+            view.widthAnchor.constraint(equalTo: updatedView.widthAnchor).isActive = true
+        }
         return updatedView
     }
 }

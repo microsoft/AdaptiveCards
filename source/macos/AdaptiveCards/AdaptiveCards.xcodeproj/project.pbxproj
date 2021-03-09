@@ -459,12 +459,15 @@
 		29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */; };
 		29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */; };
 		29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */; };
+		29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */; };
 		29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */; };
 		29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */; };
 		29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */; };
 		29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */; };
 		29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */; };
 		29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */; };
+		29F712EE25F73A360052DC41 /* FakeContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F712ED25F73A360052DC41 /* FakeContainer.swift */; };
+		29F712F325F750F30052DC41 /* ContainerRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F712F225F750F30052DC41 /* ContainerRendererTests.swift */; };
 		8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25625EF9894003D4CC9 /* FlatButton.swift */; };
 		8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25725EF9894003D4CC9 /* ACRButton.swift */; };
 		A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */; };
@@ -968,12 +971,15 @@
 		29050BFD25D59A3F00AF3CA9 /* InputToggleRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRenderer.swift; sourceTree = "<group>"; };
 		29050C3F25DA909000AF3CA9 /* FakeInputToggle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputToggle.swift; sourceTree = "<group>"; };
 		29050C4125DAAD9300AF3CA9 /* InputToggleRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputToggleRendererTests.swift; sourceTree = "<group>"; };
+		29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRenderer.swift; sourceTree = "<group>"; };
 		29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRenderer.swift; sourceTree = "<group>"; };
 		29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceButton.swift; sourceTree = "<group>"; };
 		29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceSetView.swift; sourceTree = "<group>"; };
 		29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceSetInput.swift; sourceTree = "<group>"; };
 		29E8DF8425E81E5A000EC12F /* ChoiceSetInputRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRendererTests.swift; sourceTree = "<group>"; };
 		29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceInput.swift; sourceTree = "<group>"; };
+		29F712ED25F73A360052DC41 /* FakeContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeContainer.swift; sourceTree = "<group>"; };
+		29F712F225F750F30052DC41 /* ContainerRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRendererTests.swift; sourceTree = "<group>"; };
 		8106A25625EF9894003D4CC9 /* FlatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		8106A25725EF9894003D4CC9 /* ACRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRButton.swift; sourceTree = "<group>"; };
 		A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRenderer.swift; sourceTree = "<group>"; };
@@ -1235,6 +1241,7 @@
 				A04EA82825F00F3400C4C7DB /* FakeImageView.swift */,
 				13B13E4B25E750CB005D9380 /* FakeInputDate.swift */,
 				13C41B0825F257C2008A1F2E /* FakeInputTime.swift */,
+				29F712ED25F73A360052DC41 /* FakeContainer.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1253,6 +1260,7 @@
 				A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */,
 				13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */,
 				13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */,
+				29F712F225F750F30052DC41 /* ContainerRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -1581,6 +1589,7 @@
 				0872608F25E6AF530036061C /* ColumnSetRenderer.swift */,
 				0872609425E6AF5F0036061C /* ColumnRenderer.swift */,
 				A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */,
+				29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */,
 				13C465E425DD3C07006E4605 /* InputDateRenderer.swift */,
 				13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */,
 			);
@@ -2109,6 +2118,7 @@
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
 				0872609525E6AF5F0036061C /* ColumnRenderer.swift in Sources */,
 				A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */,
+				29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */,
 				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */,
@@ -2141,7 +2151,9 @@
 				2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */,
 				28CE1A7025E4B96300BFCFD9 /* FactSetRendererTest.swift in Sources */,
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
+				29F712EE25F73A360052DC41 /* FakeContainer.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
+				29F712F325F750F30052DC41 /* ContainerRendererTests.swift in Sources */,
 				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
 				13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */,
 				2871B13F25DD41D80040AB27 /* InputNumberRendererTest.swift in Sources */,

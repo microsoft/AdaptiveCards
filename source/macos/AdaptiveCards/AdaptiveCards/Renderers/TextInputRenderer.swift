@@ -92,7 +92,10 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         parentview.addArrangedSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.isBordered = false
-        button.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        if view is ACRMultilineInputTextView {
+            button.setContentHuggingPriority(.required, for: .vertical)
+            button.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        }
         button.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.5).isActive = true
         button.attributedTitle = attributedString
         // image icon

@@ -1,0 +1,89 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "Container",
+            "style": "accent",
+            "items": [
+                {
+                    "type": "Container",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - no style",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - emphasis",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "default",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - default",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "good",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - good",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "warning",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - warning",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "attention",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - attention",
+                            "color": "Dark"
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "accent",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Contained container - accent",
+                            "color": "Dark"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

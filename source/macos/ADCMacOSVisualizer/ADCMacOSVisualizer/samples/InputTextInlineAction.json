@@ -24,6 +24,7 @@
         {
             "type": "Input.Text",
             "id": "textInlineActionId",
+            "isMultiline": true,
             "inlineAction": {
                 "type": "Action.OpenUrl",
                 "title": "Reply",
