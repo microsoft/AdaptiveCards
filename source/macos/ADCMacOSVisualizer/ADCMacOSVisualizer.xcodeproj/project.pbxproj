@@ -18,6 +18,7 @@
 		08E788DA25B1866100B21B60 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E788D925B1866100B21B60 /* MainViewController.swift */; };
 		131F476825D5088700E6667F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131F476725D5088700E6667F /* RootViewController.swift */; };
 		131F476A25D5089200E6667F /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 131F476925D5089200E6667F /* RootViewController.xib */; };
+		13C1F7EA25F7725B00B59001 /* Application.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13C1F7E925F7725B00B59001 /* Application.xib */; };
 		A0CA27A025DD53BE004871B4 /* hostconfigs in Resources */ = {isa = PBXBuildFile; fileRef = A0CA279F25DD53BE004871B4 /* hostconfigs */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		08E788D925B1866100B21B60 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		131F476725D5088700E6667F /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		131F476925D5089200E6667F /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
+		13C1F7E925F7725B00B59001 /* Application.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Application.xib; sourceTree = "<group>"; };
 		A0CA279F25DD53BE004871B4 /* hostconfigs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hostconfigs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -135,6 +137,7 @@
 				08D365D325B1F2E1001C1B53 /* ADCMacOSVisualizer.xcconfig */,
 				08299E5E25AF258900799C66 /* Info.plist */,
 				08299E5F25AF258900799C66 /* ADCMacOSVisualizer.entitlements */,
+				13C1F7E925F7725B00B59001 /* Application.xib */,
 			);
 			path = ADCMacOSVisualizer;
 			sourceTree = "<group>";
@@ -271,6 +274,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				08B1452325D262DA00A0B6D3 /* samples in Resources */,
+				13C1F7EA25F7725B00B59001 /* Application.xib in Resources */,
 				08299E5A25AF258900799C66 /* Assets.xcassets in Resources */,
 				A0CA27A025DD53BE004871B4 /* hostconfigs in Resources */,
 				131F476A25D5089200E6667F /* RootViewController.xib in Resources */,
