@@ -1,4 +1,4 @@
-import { Authentication, CardButton, ExecuteAction } from "./card-elements";
+import { Authentication, AuthCardButton, ExecuteAction } from "./card-elements";
 
 export enum ActivityRequestTrigger {
     Automatic = "automatic",
@@ -37,7 +37,7 @@ export class ErrorResponse extends ActivityResponse {
 }
 
 export class LoginRequestResponse extends ActivityResponse {
-    private static getSinginButton(auth: Authentication): CardButton | undefined {
+    private static getSigninButton(auth: Authentication): AuthCardButton | undefined {
         for (let button of auth.buttons) {
             if (button.type === "signin" && button.value !== undefined) {
                 try {
@@ -54,12 +54,12 @@ export class LoginRequestResponse extends ActivityResponse {
         return undefined;
     }
 
-    private _signinButton?: CardButton;
+    private _signinButton?: AuthCardButton;
 
     constructor(readonly request: IActivityRequest, auth: Authentication) {
         super(request);
 
-        this._signinButton = LoginRequestResponse.getSinginButton(auth);
+        this._signinButton = LoginRequestResponse.getSigninButton(auth);
     }
 
     get signinButtonTitle(): string | undefined {

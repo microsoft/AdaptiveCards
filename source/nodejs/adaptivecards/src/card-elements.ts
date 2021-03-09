@@ -6483,7 +6483,7 @@ export class RefreshDefinition extends SerializableObject {
     parent: CardElement;
 }
 
-export class CardButton extends SerializableObject {
+export class AuthCardButton extends SerializableObject {
     //#region Schema
 
     static readonly typeProperty = new StringProperty(Versions.v1_4, "type");
@@ -6497,16 +6497,16 @@ export class CardButton extends SerializableObject {
 
     //#endregion
 
-    @property(CardButton.typeProperty)
+    @property(AuthCardButton.typeProperty)
     type: string;
 
-    @property(CardButton.titleProperty)
+    @property(AuthCardButton.titleProperty)
     title?: string;
 
-    @property(CardButton.imageProperty)
+    @property(AuthCardButton.imageProperty)
     image?: string;
 
-    @property(CardButton.valueProperty)
+    @property(AuthCardButton.valueProperty)
     value: string;
 }
 
@@ -6538,7 +6538,7 @@ export class Authentication extends SerializableObject {
 
     static readonly textProperty = new StringProperty(Versions.v1_4, "text");
     static readonly connectionNameProperty = new StringProperty(Versions.v1_4, "connectionName");
-    static readonly buttonsProperty = new SerializableObjectCollectionProperty(Versions.v1_4, "buttons", CardButton);
+    static readonly buttonsProperty = new SerializableObjectCollectionProperty(Versions.v1_4, "buttons", AuthCardButton);
     static readonly tokenExchangeResourceProperty = new SerializableObjectProperty(Versions.v1_4, "tokenExchangeResource", TokenExchangeResource, true);
 
     protected getSchemaKey(): string {
@@ -6554,7 +6554,7 @@ export class Authentication extends SerializableObject {
     connectionName?: string;
 
     @property(Authentication.buttonsProperty)
-    buttons: CardButton[];
+    buttons: AuthCardButton[];
 
     @property(Authentication.tokenExchangeResourceProperty)
     tokenExchangeResource?: TokenExchangeResource;
