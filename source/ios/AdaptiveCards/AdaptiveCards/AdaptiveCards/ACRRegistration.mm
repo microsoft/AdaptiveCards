@@ -97,7 +97,7 @@ using namespace AdaptiveCards;
 
         overridenBaseElementRendererList = [[NSMutableDictionary alloc] init];
         overridenBaseActionRendererList = [[NSMutableDictionary alloc] init];
-        
+
         _useResourceResolverElementsSet = [[NSMutableSet alloc] init];
         _useResourceResolverActionsSet = [[NSMutableSet alloc] init];
     }
@@ -183,7 +183,7 @@ using namespace AdaptiveCards;
 
 - (void)addElementToResourceResolverSet:(NSNumber *)key isAction:(BOOL)isAction doUse:(BOOL)doUse
 {
-    if(!doUse) {
+    if (!doUse) {
         return;
     }
     if (isAction) {

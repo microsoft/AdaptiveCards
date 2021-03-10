@@ -347,7 +347,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
 
             std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-            [self addTasksToConcurrentQueue:new_body registration:registration];
+            [self addBaseCardElementListToConcurrentQueue:new_body registration:registration];
             break;
         }
         // continue on search
@@ -369,7 +369,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
             // add column fallbacks to async task queue
             [self processFallback:column registration:registration];
-            [self addTasksToConcurrentQueue:column->GetItems() registration:registration];
+            [self addBaseCardElementListToConcurrentQueue:column->GetItems() registration:registration];
             break;
         }
 
@@ -393,27 +393,27 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)doCommonTaskBeforeProcessBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
+- (void)addBaseCardElementToConcurrentQueue:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
     if ([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:(ACRCardElementType)elem->GetElementType()] == NO) {
         return;
     }
-    
+
     [self processFallback:elem registration:registration];
     [self processBaseCardElement:elem registration:registration];
 }
 // Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body registration:(ACRRegistration *)registration
+- (void)addBaseCardElementListToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body registration:(ACRRegistration *)registration
 {
     for (auto &elem : body) {
-        [self doCommonTaskBeforeProcessBaseCardElement:elem registration:registration];
+        [self addBaseCardElementToConcurrentQueue:elem registration:registration];
     }
 }
 
 - (void)addColumnsToConcurrentQueue:(std::vector<std::shared_ptr<Column>> const &)columns registration:(ACRRegistration *)registration
 {
     for (auto &column : columns) {
-        [self doCommonTaskBeforeProcessBaseCardElement:column registration:registration];
+        [self addBaseCardElementToConcurrentQueue:column registration:registration];
     }
 }
 

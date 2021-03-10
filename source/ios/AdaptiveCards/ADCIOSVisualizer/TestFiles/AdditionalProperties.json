@@ -6,7 +6,6 @@
     "body": [
         {
             "type": "Container",
-            "backgroundImage": "bundle:///SmallVerticalLineGray.png",
             "items": [
                 {
                     "type": "TextBlock",

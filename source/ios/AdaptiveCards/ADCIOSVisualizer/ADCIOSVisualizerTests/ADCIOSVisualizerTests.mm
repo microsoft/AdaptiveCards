@@ -9,7 +9,6 @@
 #import "AdaptiveCards/ACOBaseActionElementPrivate.h"
 #import "AdaptiveCards/ACOBaseCardElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
-#import "Adaptivecards/ACRRegistrationPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
 #import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
@@ -20,9 +19,10 @@
 #import "AdaptiveCards/SubmitAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "Adaptivecards/ACRRegistrationPrivate.h"
 #import "CustomActionNewType.h"
-#import "MockRenderer.h"
 #import "CustomActionOpenURLRenderer.h"
+#import "MockRenderer.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -79,7 +79,7 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];
-    [[ACRRegistration getInstance] setActionRenderer:nil actionElementType:ACROpenUrl];    
+    [[ACRRegistration getInstance] setActionRenderer:nil actionElementType:ACROpenUrl];
     [super tearDown];
 }
 
@@ -771,7 +771,7 @@
                              cardElementType:ACRContainer];
     XCTAssertFalse([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
     [registration setBaseCardElementRenderer:[MockRenderer getInstance] cardElementType:ACRContainer useResourceResolver:YES];
-    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);    
+    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
 }
 
 // Test that overriden default renders can be chosen to use resource resolvers
