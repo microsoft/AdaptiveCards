@@ -65,7 +65,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             print("PARSED HOSTCONFIG")
             print("Font family - \(config.getFontFamily() ?? "nil")")
             
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 335)
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 335, actionDelegate: self)
             if let renderedView = stackView.arrangedSubviews.first {
                 renderedView.removeFromSuperview()
             }
@@ -141,5 +141,13 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
                 renderCard(with: textView.string)
             }
         }
+    }
+}
+
+extension RootViewController: AdaptiveCardActionDelegate {
+    func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, button: NSButton) {
+        print("OPEN URL ACTION: \(urlString)")
+        guard let url = URL(string: urlString) else { return }
+        NSWorkspace.shared.open(url)
     }
 }

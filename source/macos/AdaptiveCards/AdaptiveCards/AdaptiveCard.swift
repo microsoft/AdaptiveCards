@@ -1,6 +1,10 @@
 import AdaptiveCards_bridge
 import AppKit
 
+public protocol AdaptiveCardActionDelegate: AnyObject {
+    func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, button: NSButton)
+}
+
 enum HostConfigParseError: Error {
     case resultIsNil, configIsNil
 }
@@ -20,7 +24,8 @@ open class AdaptiveCard {
         return .success(hostConfig)
     }
     
-    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat) -> NSView {
-        return AdaptiveCardRenderer().renderAdaptiveCard(card, with: hostConfig, width: width)
+    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, actionDelegate: AdaptiveCardActionDelegate?) -> NSView {
+        AdaptiveCardRenderer.shared.actionDelegate = actionDelegate
+        return AdaptiveCardRenderer.shared.renderAdaptiveCard(card, with: hostConfig, width: width)
     }
 }

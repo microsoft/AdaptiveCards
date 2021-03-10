@@ -13,9 +13,9 @@
 		08299E7425AF258900799C66 /* ADCMacOSVisualizerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08299E7325AF258900799C66 /* ADCMacOSVisualizerUITests.swift */; };
 		08299E9925AF263600799C66 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 08299E9825AF263600799C66 /* AdaptiveCards.framework */; };
 		08299E9A25AF263600799C66 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 08299E9825AF263600799C66 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0830D55B25F90FD000BBC245 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830D55A25F90FD000BBC245 /* Constants.swift */; };
 		08B1452325D262DA00A0B6D3 /* samples in Resources */ = {isa = PBXBuildFile; fileRef = 08B1452225D262DA00A0B6D3 /* samples */; };
 		08E788D425B185FE00B21B60 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E788D325B185FE00B21B60 /* main.swift */; };
-		08E788DA25B1866100B21B60 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E788D925B1866100B21B60 /* MainViewController.swift */; };
 		131F476825D5088700E6667F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131F476725D5088700E6667F /* RootViewController.swift */; };
 		131F476A25D5089200E6667F /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 131F476925D5089200E6667F /* RootViewController.xib */; };
 		13C1F7EA25F7725B00B59001 /* Application.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13C1F7E925F7725B00B59001 /* Application.xib */; };
@@ -66,10 +66,10 @@
 		08299E7325AF258900799C66 /* ADCMacOSVisualizerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ADCMacOSVisualizerUITests.swift; sourceTree = "<group>"; };
 		08299E7525AF258900799C66 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08299E9825AF263600799C66 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0830D55A25F90FD000BBC245 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		08B1452225D262DA00A0B6D3 /* samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = samples; sourceTree = "<group>"; };
 		08D365D325B1F2E1001C1B53 /* ADCMacOSVisualizer.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = ADCMacOSVisualizer.xcconfig; sourceTree = "<group>"; };
 		08E788D325B185FE00B21B60 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		08E788D925B1866100B21B60 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		131F476725D5088700E6667F /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		131F476925D5089200E6667F /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		13C1F7E925F7725B00B59001 /* Application.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Application.xib; sourceTree = "<group>"; };
@@ -128,10 +128,10 @@
 			children = (
 				A0CA279F25DD53BE004871B4 /* hostconfigs */,
 				08299E5725AF258800799C66 /* AppDelegate.swift */,
-				08E788D925B1866100B21B60 /* MainViewController.swift */,
 				131F476725D5088700E6667F /* RootViewController.swift */,
 				131F476925D5089200E6667F /* RootViewController.xib */,
 				08E788D325B185FE00B21B60 /* main.swift */,
+				0830D55A25F90FD000BBC245 /* Constants.swift */,
 				08B1452225D262DA00A0B6D3 /* samples */,
 				08299E5925AF258900799C66 /* Assets.xcassets */,
 				08D365D325B1F2E1001C1B53 /* ADCMacOSVisualizer.xcconfig */,
@@ -326,7 +326,7 @@
 				08299E5825AF258800799C66 /* AppDelegate.swift in Sources */,
 				08E788D425B185FE00B21B60 /* main.swift in Sources */,
 				131F476825D5088700E6667F /* RootViewController.swift in Sources */,
-				08E788DA25B1866100B21B60 /* MainViewController.swift in Sources */,
+				0830D55B25F90FD000BBC245 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

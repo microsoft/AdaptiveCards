@@ -23,6 +23,8 @@
 		082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D912A25D67042000226C4 /* FakeHostConfig.swift */; };
 		082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D913325D67455000226C4 /* TextBlockRendererTests.swift */; };
 		082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 082D914325D6DC7A000226C4 /* FakeTextBlock.swift */; };
+		0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */; };
+		0830D55125F90D4C00BBC245 /* Targets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0830D55025F90D4C00BBC245 /* Targets.swift */; };
 		083E513725C2F87B007247A9 /* ACSHostConfigParseResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */; };
 		083E513E25C2F8C1007247A9 /* ACSHostConfigParseResult.h in Headers */ = {isa = PBXBuildFile; fileRef = 083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		083EA8E725C19E1000DE2BF7 /* ACSDelimiterTypeConvertor.mm in Sources */ = {isa = PBXBuildFile; fileRef = 083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */; };
@@ -656,6 +658,8 @@
 		082D912A25D67042000226C4 /* FakeHostConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeHostConfig.swift; sourceTree = "<group>"; };
 		082D913325D67455000226C4 /* TextBlockRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockRendererTests.swift; sourceTree = "<group>"; };
 		082D914325D6DC7A000226C4 /* FakeTextBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextBlock.swift; sourceTree = "<group>"; };
+		0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionOpenURLRenderer.swift; sourceTree = "<group>"; };
+		0830D55025F90D4C00BBC245 /* Targets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Targets.swift; sourceTree = "<group>"; };
 		083E513525C2F868007247A9 /* ACSHostConfigParseResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ACSHostConfigParseResult.h; sourceTree = "<group>"; };
 		083E513625C2F87B007247A9 /* ACSHostConfigParseResult.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ACSHostConfigParseResult.m; sourceTree = "<group>"; };
 		083EA7A825C19E0F00DE2BF7 /* ACSDelimiterTypeConvertor.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACSDelimiterTypeConvertor.mm; sourceTree = "<group>"; };
@@ -1277,6 +1281,14 @@
 			path = Renderers;
 			sourceTree = "<group>";
 		};
+		0830D54625F8EBD400BBC245 /* ActionRenderers */ = {
+			isa = PBXGroup;
+			children = (
+				0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */,
+			);
+			path = ActionRenderers;
+			sourceTree = "<group>";
+		};
 		083E513425C2F839007247A9 /* BridgeHelpers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1588,6 +1600,7 @@
 		08B5F90F25C924D900A7D37A /* Renderers */ = {
 			isa = PBXGroup;
 			children = (
+				0830D54625F8EBD400BBC245 /* ActionRenderers */,
 				08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */,
 				28BDFD5425D55AF3000C3795 /* TextInputRenderer.swift */,
 				2871B12E25DD292A0040AB27 /* InputNumberRenderer.swift */,
@@ -1689,6 +1702,7 @@
 			children = (
 				A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */,
 				A032271F25E9254C00E7172E /* ACRImageProperties.swift */,
+				0830D55025F90D4C00BBC245 /* Targets.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2108,6 +2122,7 @@
 				8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
 				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
+				0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */,
@@ -2127,6 +2142,7 @@
 				A032272525E93C7400E7172E /* ImageUtils.swift in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
 				29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */,
+				0830D55125F90D4C00BBC245 /* Targets.swift in Sources */,
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
 				0872609525E6AF5F0036061C /* ColumnRenderer.swift in Sources */,
 				A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */,
