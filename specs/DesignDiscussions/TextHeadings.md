@@ -14,6 +14,35 @@ iOS - [`UIAccessibilityTraitHeader`]() no level support
 
 Add `style` property with enum options `Paragraph` (default) and `Heading` to the `TextBlock` element. (See precedent in Input.Text.style, Action.x.style). When set to `Heading`, renderers must surface that to the platform's accessibility tree. Will need discussion with Accessibility team to confirm what the default heading-level should be on desktop platforms, and whether this binary option is sufficient for our purpose.
 
+```json
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Lorem Ipsum",
+            "style": "heading"
+        },
+        {
+            "type": "TextBlock",
+            "text": "dolor sit amet"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Consectetur adipiscing elit",
+            "style": "heading"
+        },
+        {
+            "type": "TextBlock",
+            "text": "sed do eiusmod tempor incididunt",
+            "style": "paragraph"
+        }
+    ]
+}
+```
+
 ## A.) No Schema Change
 
 As `TextBlock` already renders Markdown, there is already a way for card authors to convey that certain text is a heading. Each renderer would have to correctly surface this information to the platform's accessibility tree.
