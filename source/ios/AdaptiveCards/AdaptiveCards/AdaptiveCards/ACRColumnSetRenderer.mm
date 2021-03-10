@@ -199,7 +199,7 @@
         prevColumn = column;
     }
 
-    if ([viewsWithPaddingView containsObject:viewWithMaxSize]) {
+    if (columns.size() > 1 && [viewsWithPaddingView containsObject:viewWithMaxSize]) {
         viewWithMaxSize.hasPaddingView = NO;
         [viewWithMaxSize removeLastViewFromArrangedSubview];
     }

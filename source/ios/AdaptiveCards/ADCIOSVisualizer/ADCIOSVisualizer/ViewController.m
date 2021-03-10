@@ -123,12 +123,12 @@ CGFloat kAdaptiveCardsWidth = 0;
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
-                      actionElementType:ACROpenUrl];
+                      actionElementType:ACROpenUrl useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance]
-                                 cardElementType:ACRTextBlock];
+                                 cardElementType:ACRTextBlock useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
-                                 cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
+                                 cardElementType:ACRNumberInput useResourceResolver:YES];
+        [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet useResourceResolver:YES];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRQuickReply];
@@ -139,7 +139,6 @@ CGFloat kAdaptiveCardsWidth = 0;
         [registration setActionRenderer:nil actionElementType:ACROpenUrl];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRActionSet];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255

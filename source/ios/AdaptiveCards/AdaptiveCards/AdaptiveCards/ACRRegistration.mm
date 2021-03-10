@@ -50,6 +50,8 @@ using namespace AdaptiveCards;
     id<ACRIBaseActionSetRenderer> _actionSetRenderer;
     NSMutableDictionary *overridenBaseElementRendererList;
     NSMutableDictionary *overridenBaseActionRendererList;
+    NSMutableSet *_useResourceResolverElementsSet;
+    NSMutableSet *_useResourceResolverActionsSet;
     id<ACRIBaseActionSetRenderer> _defaultActionSetRenderer;
     ACOParseContext *_parseContext;
 }
@@ -95,6 +97,9 @@ using namespace AdaptiveCards;
 
         overridenBaseElementRendererList = [[NSMutableDictionary alloc] init];
         overridenBaseActionRendererList = [[NSMutableDictionary alloc] init];
+
+        _useResourceResolverElementsSet = [[NSMutableSet alloc] init];
+        _useResourceResolverActionsSet = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -136,33 +141,73 @@ using namespace AdaptiveCards;
     _actionSetRenderer = actionsetRenderer;
 }
 
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer actionElementType:(ACRActionType)actionElementType useResourceResolver:(BOOL)doUse
+{
+    // custom action must be registered through set custom action renderer method
+    // standard actions element enum value must be higher than ACRUnknownAction
+    if (actionElementType > ACRUnknownAction) {
+        return;
+    }
+    NSNumber *key = @(actionElementType);
+    if (!renderer) {
+        [overridenBaseActionRendererList removeObjectForKey:key];
+        [self removeElementFromResourceResolverSet:key isAction:YES];
+    } else {
+        [overridenBaseActionRendererList setObject:renderer forKey:key];
+        [self addElementToResourceResolverSet:key isAction:YES doUse:doUse];
+    }
+}
+
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer actionElementType:(ACRActionType)actionElementType
 {
-    [self setActionRenderer:renderer cardElementType:[NSNumber numberWithLong:actionElementType]];
+    [self setActionRenderer:renderer actionElementType:actionElementType useResourceResolver:NO];
 }
 
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
 {
-    // custom action must be registered through set custom action renderer method
-    // standard actions element enum value must be higher than ACRUnknownAction
-    if (cardElementType.longValue > ACRUnknownAction) {
+    [self setActionRenderer:renderer actionElementType:(ACRActionType)cardElementType.intValue useResourceResolver:NO];
+}
+
+- (void)removeElementFromResourceResolverSet:(NSNumber *)key isAction:(BOOL)isAction
+{
+    if (isAction) {
+        if ([_useResourceResolverActionsSet containsObject:key]) {
+            [_useResourceResolverActionsSet removeObject:key];
+        }
+    } else {
+        if ([_useResourceResolverElementsSet containsObject:key]) {
+            [_useResourceResolverElementsSet removeObject:key];
+        }
+    }
+}
+
+- (void)addElementToResourceResolverSet:(NSNumber *)key isAction:(BOOL)isAction doUse:(BOOL)doUse
+{
+    if (!doUse) {
         return;
     }
-
-    if (!renderer) {
-        [overridenBaseActionRendererList removeObjectForKey:cardElementType];
+    if (isAction) {
+        [_useResourceResolverActionsSet addObject:key];
     } else {
-        [overridenBaseActionRendererList setObject:renderer forKey:cardElementType];
+        [_useResourceResolverElementsSet addObject:key];
+    }
+}
+
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType useResourceResolver:(BOOL)doUse
+{
+    NSNumber *key = @(cardElementType);
+    if (!renderer) {
+        [overridenBaseElementRendererList removeObjectForKey:key];
+        [self removeElementFromResourceResolverSet:key isAction:NO];
+    } else {
+        [overridenBaseElementRendererList setObject:renderer forKey:key];
+        [self addElementToResourceResolverSet:key isAction:NO doUse:doUse];
     }
 }
 
 - (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *)renderer cardElementType:(ACRCardElementType)cardElementType
 {
-    if (!renderer) {
-        [overridenBaseElementRendererList removeObjectForKey:[NSNumber numberWithInteger:cardElementType]];
-    } else {
-        [overridenBaseElementRendererList setObject:renderer forKey:[NSNumber numberWithInteger:cardElementType]];
-    }
+    [self setBaseCardElementRenderer:renderer cardElementType:cardElementType useResourceResolver:NO];
 }
 
 - (void)setCustomElementParser:(NSObject<ACOIBaseCardElementParser> *)customElementParser
@@ -228,7 +273,6 @@ using namespace AdaptiveCards;
     }
 }
 
-
 - (BOOL)isActionRendererOverridden:(NSNumber *)cardElementType
 {
     if ([overridenBaseActionRendererList objectForKey:cardElementType]) {
@@ -243,6 +287,30 @@ using namespace AdaptiveCards;
         return YES;
     }
     return NO;
+}
+
+- (BOOL)shouldUseResourceResolverForOverridenDefaultElementRenderers:(ACRCardElementType)cardElementType
+{
+    if ([self isElementRendererOverridden:cardElementType]) {
+        return [self checkResourceResolverSet:@(cardElementType) isAction:NO];
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)shouldUseResourceResolverForOverridenDefaultActionRenderers:(ACRActionType)actionType
+{
+    NSNumber *key = @(actionType);
+    if ([self isActionRendererOverridden:key]) {
+        return [self checkResourceResolverSet:key isAction:YES];
+    } else {
+        return YES;
+    }
+}
+
+- (BOOL)checkResourceResolverSet:(NSNumber *)key isAction:(BOOL)isAction
+{
+    return (isAction) ? [_useResourceResolverActionsSet containsObject:key] : [_useResourceResolverElementsSet containsObject:key];
 }
 
 @end
