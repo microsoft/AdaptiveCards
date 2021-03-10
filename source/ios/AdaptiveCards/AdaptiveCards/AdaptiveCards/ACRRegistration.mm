@@ -115,6 +115,11 @@ using namespace AdaptiveCards;
     return [typeToRendererDict objectForKey:cardElementType];
 }
 
+- (ACRBaseActionElementRenderer *)getActionRendererByType:(ACRActionType)actionElementType
+{
+    return [self getActionRenderer:[NSNumber numberWithLong:actionElementType]];
+}
+
 - (ACRBaseActionElementRenderer *)getActionRenderer:(NSNumber *)cardElementType
 {
     if ([overridenBaseActionRendererList objectForKey:cardElementType]) {
@@ -131,6 +136,11 @@ using namespace AdaptiveCards;
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>)actionsetRenderer
 {
     _actionSetRenderer = actionsetRenderer;
+}
+
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer actionElementType:(ACRActionType)actionElementType
+{
+    [self setActionRenderer:renderer cardElementType:[NSNumber numberWithLong:actionElementType]];
 }
 
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *)renderer cardElementType:(NSNumber *)cardElementType
