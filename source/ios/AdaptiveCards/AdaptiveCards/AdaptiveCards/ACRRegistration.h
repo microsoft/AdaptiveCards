@@ -27,7 +27,11 @@
 
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer cardElementType:(NSNumber *_Nonnull)cardElementType;
 
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer actionElementType:(ACRActionType)actionElementType useResourceResolver:(BOOL)doUse;
+
 - (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *_Nullable)renderer cardElementType:(ACRCardElementType)cardElementType;
+
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *_Nullable)renderer cardElementType:(ACRCardElementType)cardElementType useResourceResolver:(BOOL)doUse;
 
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>_Nullable)actionsetRenderer;
 
