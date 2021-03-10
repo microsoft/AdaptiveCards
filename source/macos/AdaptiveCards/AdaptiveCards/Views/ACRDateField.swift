@@ -9,7 +9,11 @@ class ACRDateField: NSView {
     }()
     private lazy var dateFormatterOut: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = isTimeMode ? "hh:mm:ss a" : "yyyy/MM/dd"
+        if isTimeMode {
+            formatter.timeStyle = .medium
+        } else {
+            formatter.dateStyle = .medium
+        }
         return formatter
     }()
     private let datepicker = NSDatePicker()
