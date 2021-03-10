@@ -87,6 +87,7 @@
 		6BF339E320A66A3F00DA5973 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; };
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */; };
+		6BFF998525F941BE0028069F /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
 		F423C07D1EE1FB6100905679 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
@@ -685,6 +686,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6BFF998525F941BE0028069F /* CustomActionOpenURLRenderer.mm in Sources */,
 				6B9FAF5425D7182600D1A791 /* MockRenderer.mm in Sources */,
 				6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */,
 				F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */,
