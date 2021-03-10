@@ -31,13 +31,15 @@ window.onload = function() {
         }
     }
     applet.onSSOTokenNeeded = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, tokenExchangeResource: Adaptive.TokenExchangeResource) => {
-        request.token = "valid_sso_token";
+        request.authToken = "valid_sso_token";
         request.retryAsync();
+
+        return true;
     }
     applet.onShowSigninPrompt = (sender: Adaptive.AdaptiveApplet, request: Adaptive.IActivityRequest, signinButton: Adaptive.AuthCardButton) => {
         alert("Simulating auth prompt...");
 
-        request.authCode = "valid_auth_code";
+        request.authCode = request.attemptNumber > 1 ? "valid_auth_code" : "invalid_auth_code";
         request.retryAsync();
     }
     

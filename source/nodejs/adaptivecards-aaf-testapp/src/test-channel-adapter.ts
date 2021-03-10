@@ -13,7 +13,7 @@ export class TestChannelAdapter extends Adaptive.ChannelAdapter {
         }
 
         if (request.action.verb === "localFailSSO") {
-            if (request.token === "valid_sso_token") {
+            if (request.authToken === "valid_sso_token") {
                 // We have an SSO token
                 return new SuccessResponse(request, JSON.stringify(Shared.ssoSuccessCard));
             }
@@ -31,9 +31,13 @@ export class TestChannelAdapter extends Adaptive.ChannelAdapter {
         }
 
         if (request.action.verb === "localFailOAuth") {
-            if (request.authCode === "valid_auth_code") {
-                // We have an auth code
-                return new SuccessResponse(request, JSON.stringify(Shared.oauthSuccessCard));
+            if (request.authCode) {
+                if (request.authCode === "valid_auth_code") {
+                    // We have an auth code
+                    return new SuccessResponse(request, JSON.stringify(Shared.oauthSuccessCard));
+                }
+
+                return new ErrorResponse(request, new ActivityRequestError("401", "Invalid auth code."));
             }
 
             let auth = new Authentication();

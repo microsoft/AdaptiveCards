@@ -36,7 +36,7 @@ class ActivityRequest implements IActivityRequest {
         readonly consecutiveRefreshes: number) { }
 
     authCode?: string;
-    token?: string;
+    authToken?: string;
     attemptNumber: number = 0;
 
     onSend: (sender: ActivityRequest) => void;
@@ -319,7 +319,6 @@ export class AdaptiveApplet {
                 let request = this.createActivityRequest(action, trigger, consecutiveRefreshes);
 
                 if (request) {
-                    // this.internalSendActivityRequestAsync(request);
                     request.retryAsync();
                 }
             }
@@ -526,12 +525,9 @@ export class AdaptiveApplet {
                         let attemptOAuth = true;
 
                         if (response.tokenExchangeResource && this.onSSOTokenNeeded) {
-                            // Attempt to use SSO
-                            this.onSSOTokenNeeded(this, request, response.tokenExchangeResource);
-
-                            if (request.token) {
-                                attemptOAuth = false;
-                            }
+                            // Attempt to use SSO. The host will return true if it can handle SSO, in which case
+                            // we bypass OAuth
+                            attemptOAuth = !this.onSSOTokenNeeded(this, request, response.tokenExchangeResource);
                         }
 
                         if (attemptOAuth) {
@@ -576,16 +572,16 @@ export class AdaptiveApplet {
             }
         }
     }
+
     readonly renderedElement: HTMLElement;
 
-    userId?: string;
     hostConfig?: HostConfig;
     channelAdapter?: ChannelAdapter;
 
     onCardChanging?: (sender: AdaptiveApplet, card: any) => boolean;
     onCardChanged?: (sender: AdaptiveApplet) => void;
     onPrefetchSSOToken?: (sender: AdaptiveApplet, tokenExchangeResource: TokenExchangeResource) => void;
-    onSSOTokenNeeded?: (sender: AdaptiveApplet, request: IActivityRequest, tokenExchangeResource: TokenExchangeResource) => void;
+    onSSOTokenNeeded?: (sender: AdaptiveApplet, request: IActivityRequest, tokenExchangeResource: TokenExchangeResource) => boolean;
     onPrepareActivityRequest?: (sender: AdaptiveApplet, request: IActivityRequest, action: ExecuteAction) => boolean;
     onActivityRequestSucceeded?: (sender: AdaptiveApplet, response: SuccessResponse, parsedContent: string | AdaptiveCard | undefined) => void;
     onActivityRequestFailed?: (sender: AdaptiveApplet, response: ErrorResponse) => number;
@@ -596,7 +592,7 @@ export class AdaptiveApplet {
     onAction?: (sender: AdaptiveApplet, action: Action) => void;
     onShowManualRefreshButton?: (sender: AdaptiveApplet) => boolean;
     onShowAuthCodeInputDialog?: (sender: AdaptiveApplet, request: IActivityRequest) => boolean;
-    onShowSigninPrompt?:(sender: AdaptiveApplet, request: IActivityRequest, signinButton: AuthCardButton) => void;
+    onShowSigninPrompt?: (sender: AdaptiveApplet, request: IActivityRequest, signinButton: AuthCardButton) => void;
 
     constructor() {
         this.renderedElement = document.createElement("div");

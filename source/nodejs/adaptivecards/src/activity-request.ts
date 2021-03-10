@@ -12,7 +12,7 @@ export interface IActivityRequest {
     readonly consecutiveRefreshes: number;
 
     authCode?: string;
-    token?: string;
+    authToken?: string;
 
     retryAsync(): void;
 }
@@ -61,13 +61,5 @@ export class LoginRequestResponse extends ActivityResponse {
 
     get tokenExchangeResource(): TokenExchangeResource | undefined {
         return this._auth.tokenExchangeResource;
-    }
-}
-
-export class InvalidAuthCodeResponse extends ActivityResponse { }
-
-export class PreconditionFailedResponse extends ActivityResponse {
-    constructor(readonly request: IActivityRequest, readonly error: ActivityRequestError) {
-        super(request);
     }
 }
