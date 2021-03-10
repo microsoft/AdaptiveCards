@@ -123,7 +123,7 @@ CGFloat kAdaptiveCardsWidth = 0;
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
-                        cardElementType:@3];
+                      actionElementType:ACROpenUrl];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance]
                                  cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
@@ -136,7 +136,7 @@ CGFloat kAdaptiveCardsWidth = 0;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
     } else {
-        [registration setActionRenderer:nil cardElementType:@3];
+        [registration setActionRenderer:nil actionElementType:ACROpenUrl];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];

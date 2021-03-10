@@ -263,6 +263,18 @@
     XCTAssert([dictionary count] == 1);
 }
 
+- (void)testActionRegistration
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    // override default Action.OpenUrl renderer
+    [registration setActionRenderer:[CustomActionNewTypeRenderer getInstance] actionElementType:ACROpenUrl];
+    // make sure it's registered
+    XCTAssertEqual([CustomActionNewTypeRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+    // reset
+    [registration setActionRenderer:nil actionElementType:ACROpenUrl];
+    // check the renderer is reset to the default renderer
+    XCTAssertEqual([ACRActionOpenURLRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+}
 // this test ensure that extending text render doesn't crash
 // in use case where custom renderer uses default text renderer
 - (void)testExtendingTextRenderersDoesNotCrash
