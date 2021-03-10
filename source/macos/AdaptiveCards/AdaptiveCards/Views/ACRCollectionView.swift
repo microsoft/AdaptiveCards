@@ -30,7 +30,9 @@ class ACRCollectionView: NSCollectionView {
         layout.itemSize = ImageUtils.getImageSizeAsCGSize(imageSize: self.imageSize ?? .medium, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
         collectionViewLayout = layout
         
-        register(ACRCollectionViewItem.self, forItemWithIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MyItem"))
+        self.backgroundColors = [.clear]
+        
+        register(ACRCollectionViewItem.self, forItemWithIdentifier: ACRCollectionViewItem.identifier)
     }
     
     func newIntrinsicContentSize() -> CGSize {
@@ -68,8 +70,9 @@ class ACRCollectionView: NSCollectionView {
 // MARK: DataSource for CollectionView
 class ACRCollectionViewDatasource: NSObject, NSCollectionViewDataSource {
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let collectionView = collectionView as? ACRCollectionView else { return NSCollectionViewItem() }
-        let item = collectionView.makeItem(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MyItem"), for: indexPath)
+        guard let collectionView = collectionView as? ACRCollectionView, let hostConfig = collectionView.hostConfig, let item = collectionView.makeItem(withIdentifier: ACRCollectionViewItem.identifier, for: indexPath) as? ACRCollectionViewItem else { return NSCollectionViewItem() }
+        guard let imageSet = collectionView.imageSet, let urlString = imageSet.getImages()[indexPath.item].getUrl() else { return item }
+        item.setupItem(with: urlString, hostConfig: hostConfig, imageSize: collectionView.imageSize ?? .medium)
         return item
     }
     
