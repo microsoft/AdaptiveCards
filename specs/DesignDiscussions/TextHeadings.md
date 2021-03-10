@@ -10,6 +10,9 @@ Android - [`android:accessibilityHeading="true"`](https://developer.android.com/
 
 iOS - [`UIAccessibilityTraitHeader`]() no level support
 
+## Outcome
+
+Add `style` property with enum options `Paragraph` (default) and `Heading` to the `TextBlock` element. (See precedent in Input.Text.style, Action.x.style). When set to `Heading`, renderers must surface that to the platform's accessibility tree. Will need discussion with Accessibility team to confirm what the default heading-level should be on desktop platforms, and whether this binary option is sufficient for our purpose.
 
 ## A.) No Schema Change
 
@@ -93,6 +96,3 @@ Add a `headingLevel` property to TextBlock. Zero and negative numbers indicate r
 }
 ```
 
-### Recommendation
-
-Implement Option A and only TextRun-portion of Option B. MVP would be Option A-only.
