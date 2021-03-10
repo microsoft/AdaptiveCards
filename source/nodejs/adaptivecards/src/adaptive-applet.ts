@@ -4,7 +4,7 @@ import { GlobalSettings } from "./shared";
 import { ChannelAdapter } from "./channel-adapter";
 import { ActivityResponse, IActivityRequest, ActivityRequestTrigger, SuccessResponse, ErrorResponse, LoginRequestResponse } from "./activity-request";
 import { Strings } from "./strings";
-import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, Authentication, TokenExchangeResource, AuthCardButton } from "./card-elements";
+import { SubmitAction, ExecuteAction, SerializationContext, AdaptiveCard, Action, Input, Authentication, TokenExchangeResource, AuthCardButton, CardElement } from "./card-elements";
 import { Versions } from "./serialization";
 import { HostConfig } from "./host-config";
 

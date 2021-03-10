@@ -62,20 +62,6 @@ export class LoginRequestResponse extends ActivityResponse {
     get tokenExchangeResource(): TokenExchangeResource | undefined {
         return this._auth.tokenExchangeResource;
     }
-
-    /*
-    get signinButtonTitle(): string | undefined {
-        return this._signinButton ? this._signinButton.title : undefined;
-    }
-
-    get signinButtonImage(): string | undefined {
-        return this._signinButton ? this._signinButton.image : undefined;
-    }
-
-    get signinUrl(): string | undefined {
-        return this._signinButton ? this._signinButton.value : undefined;
-    }
-    */
 }
 
 export class InvalidAuthCodeResponse extends ActivityResponse { }

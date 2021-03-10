@@ -33,7 +33,7 @@ export const sampleCard = {
             type: "TextBlock",
             size: "Medium",
             weight: "Bolder",
-            text: "Publish Adaptive Card Schema"
+            text: "Publish [Adaptive Card Schema](https://adaptivecards.io)"
         },
         {
             type: "ColumnSet",
