@@ -12,7 +12,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRImageRenderer.h"
-#import "ACRRegistration.h"
+#import "ACRRegistrationPrivate.h"
 #import "ACRRendererPrivate.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRUIImageView.h"
@@ -165,7 +165,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-- (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
     switch (elem->GetElementType()) {
         case CardElementType::TextBlock: {
@@ -347,17 +347,14 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
 
             std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-            [self addTasksToConcurrentQueue:new_body];
+            [self addBaseCardElementListToConcurrentQueue:new_body registration:registration];
             break;
         }
         // continue on search
         case CardElementType::ColumnSet: {
             std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
             std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
-            // ColumnSet is vector of Column, instead of vector of BaseCardElement
-            for (auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                [self processBaseCardElement:column];
-            }
+            [self addColumnsToConcurrentQueue:columns registration:registration];
             break;
         }
 
@@ -371,8 +368,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
 
             // add column fallbacks to async task queue
-            [self processFallback:column];
-            [self addTasksToConcurrentQueue:column->GetItems()];
+            [self processFallback:column registration:registration];
+            [self addBaseCardElementListToConcurrentQueue:column->GetItems() registration:registration];
             break;
         }
 
@@ -396,20 +393,30 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     }
 }
 
-// Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
+- (void)addBaseCardElementToConcurrentQueue:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
-    ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
+    if ([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:(ACRCardElementType)elem->GetElementType()] == NO) {
+        return;
+    }
 
+    [self processFallback:elem registration:registration];
+    [self processBaseCardElement:elem registration:registration];
+}
+// Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
+- (void)addBaseCardElementListToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body registration:(ACRRegistration *)registration
+{
     for (auto &elem : body) {
-        if ([rendererRegistration isElementRendererOverridden:(ACRCardElementType)elem->GetElementType()] == YES) {
-            continue;
-        }
-
-        [self processFallback:elem];
-        [self processBaseCardElement:elem];
+        [self addBaseCardElementToConcurrentQueue:elem registration:registration];
     }
 }
+
+- (void)addColumnsToConcurrentQueue:(std::vector<std::shared_ptr<Column>> const &)columns registration:(ACRRegistration *)registration
+{
+    for (auto &column : columns) {
+        [self addBaseCardElementToConcurrentQueue:column registration:registration];
+    }
+}
+
 
 // Walk through the actions found and process them concurrently
 - (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
@@ -749,13 +756,13 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 }
 
 // get fallback content and add them async task queue
-- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
     std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
     while (fallbackElem) {
         std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
         if (fallbackElemCard) {
-            [self processBaseCardElement:fallbackElemCard];
+            [self processBaseCardElement:fallbackElemCard registration:registration];
         }
 
         fallbackElem = fallbackElemCard->GetFallbackContent();

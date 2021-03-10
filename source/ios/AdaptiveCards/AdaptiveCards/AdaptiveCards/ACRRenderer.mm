@@ -116,7 +116,7 @@ using namespace AdaptiveCards;
     style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
-    [rootView addTasksToConcurrentQueue:body];
+    [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
 
     std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
