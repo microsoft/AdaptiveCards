@@ -777,6 +777,8 @@ namespace RendererQml
     
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::DateInputRender(std::shared_ptr<AdaptiveCards::DateInput> input, std::shared_ptr<AdaptiveRenderContext> context)
     {
+		//TODO: ids which are qml keywords would result in undefined behaviour
+
         input->SetId(Utils::ConvertToLowerIdValue(input->GetId()));
 
         auto uiDateInput = std::make_shared<QmlTag>("TextField");
@@ -826,17 +828,25 @@ namespace RendererQml
         auto imageTag = std::make_shared<QmlTag>("Image");
         imageTag->Property("anchors.fill", "parent");
         imageTag->Property("anchors.margins", "5");
+		imageTag->Property("fillMode", "Image.PreserveAspectFit");
+		imageTag->Property("mipmap", "true");
 
         //Finding absolute Path at runtime
         std::string file_path = __FILE__;
         std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-        dir_path.append("\\Images\\calendarIcon.png");
+        dir_path.append("\\Images\\calendarIcon.svg");
         std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
         imageTag->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
 
         //Relative wrt main.qml not working
         //imageTag->Property("source", "\"" + std::string("file:/../../Library/RendererQml/Images/calendarIcon.png") + "\"");
 
+		auto ColorOverlayTag = std::make_shared<QmlTag>("ColorOverlay");
+		ColorOverlayTag->Property("anchors.fill", "parent");
+		ColorOverlayTag->Property("source", "parent");
+		ColorOverlayTag->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
+
+		imageTag->AddChild(ColorOverlayTag);
 
         auto mouseAreaTag = std::make_shared<QmlTag>("MouseArea");
 
@@ -1205,16 +1215,25 @@ namespace RendererQml
 		auto imageTag = std::make_shared<QmlTag>("Image");
 		imageTag->Property("anchors.fill", "parent");
 		imageTag->Property("anchors.margins", "5");
+		imageTag->Property("fillMode", "Image.PreserveAspectFit");
+		imageTag->Property("mipmap", "true");
 
 		//Finding absolute Path at runtime
 		std::string file_path = __FILE__;
 		std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-		dir_path.append("\\Images\\clockIcon.png");
+		dir_path.append("\\Images\\clockIcon.svg");
 		std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
 		imageTag->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
 
 		//Relative wrt main.qml not working
 		//imageTag->Property("source", "\"" + std::string("file:/../../Library/RendererQml/Images/calendarIcon.png") + "\"");
+
+		auto ColorOverlayTag = std::make_shared<QmlTag>("ColorOverlay");
+		ColorOverlayTag->Property("anchors.fill", "parent");
+		ColorOverlayTag->Property("source", "parent");
+		ColorOverlayTag->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
+
+		imageTag->AddChild(ColorOverlayTag);
 
 		auto mouseAreaTag = std::make_shared<QmlTag>("MouseArea");
 

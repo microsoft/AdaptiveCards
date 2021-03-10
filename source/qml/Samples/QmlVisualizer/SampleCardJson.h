@@ -443,7 +443,7 @@ namespace Samples
 		},
 		{
 		    "type": "Input.Date",
-		    "id": "date",
+		    "id": "date1",
 		    "placeholder": "Enter a date",
 		    "value": "2017-10-12",
 		    "min":"1900-01-01",
