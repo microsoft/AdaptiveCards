@@ -64,14 +64,16 @@ namespace RendererQml
 		const std::vector<std::string> values;
 		Checkboxes choices;
 		const std::string placeholder;
+        const std::string backgroundColor;
 
-		ChoiceSet(const std::string id, const bool isMultiSelect, AdaptiveCards::ChoiceSetStyle style, const std::vector<std::string> values, Checkboxes choices, const std::string placeholder)
+		ChoiceSet(const std::string id, const bool isMultiSelect, AdaptiveCards::ChoiceSetStyle style, const std::vector<std::string> values, Checkboxes choices, const std::string placeholder, const std::string backgroundColor)
 			: id(id),
 			isMultiSelect(isMultiSelect),
 			style(style),
 			values(values),
 			choices(choices),
-			placeholder(placeholder)
+			placeholder(placeholder),
+            backgroundColor(backgroundColor)
 		{}
 	};
 

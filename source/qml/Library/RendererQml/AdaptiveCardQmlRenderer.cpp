@@ -474,6 +474,7 @@ namespace RendererQml
 		const bool isVisible = input->GetIsVisible();
 		bool isChecked;
         const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
+        const auto backgroundColor = context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor);
 
 		std::vector<std::string> parsedValues;
 		parsedValues = Utils::ParseChoiceSetInputDefaultValues(input->GetValue());
@@ -497,7 +498,8 @@ namespace RendererQml
 			input->GetChoiceSetStyle(),
 			parsedValues,
 			choices,
-			input->GetPlaceholder());
+			input->GetPlaceholder(),
+            backgroundColor);
 
 		if (CheckBoxType::ComboBox == type)
 		{
@@ -522,8 +524,18 @@ namespace RendererQml
 		uiComboBox->Property("width", "parent.width");
 		//TODO : Add Height
 				
-		uiComboBox->Property("model", GetModel(choiceset.choices)); 
+		uiComboBox->Property("model", GetModel(choiceset.choices));
 
+        const auto textColor = choiceset.choices[0].textColor;
+
+        auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
+        backgroundTag->Property("radius", "5");
+        //TODO: These color styling should come from css
+        //TODO: Add hover effect
+        backgroundTag->Property("color", choiceset.backgroundColor);
+        backgroundTag->Property("border.color", "'grey'");
+        backgroundTag->Property("border.width", "1");
+        uiComboBox->Property("background", backgroundTag->ToString());
 		if (!choiceset.placeholder.empty())
 		{
 			uiComboBox->Property("currentIndex", "-1");
@@ -541,11 +553,20 @@ namespace RendererQml
 		
 		auto uiItemDelegate = std::make_shared<QmlTag>("ItemDelegate");
 		uiItemDelegate->Property("width", "parent.width");
-		
+
+        auto backgroundTagDelegate = std::make_shared<QmlTag>("Rectangle");
+        backgroundTag->Property("radius", "5");
+        //TODO: These color styling should come from css
+        //TODO: Add hover effect
+        backgroundTagDelegate->Property("color", choiceset.backgroundColor);
+        backgroundTagDelegate->Property("border.color", "'grey'");
+        backgroundTagDelegate->Property("border.width", "1");
+        uiItemDelegate->Property("background", backgroundTagDelegate->ToString());
 		auto uiItemDelegate_Text = std::make_shared<QmlTag>("Text");
 		uiItemDelegate_Text->Property("text", "modelData.text");
 		uiItemDelegate_Text->Property("font", "parent.font");
 		uiItemDelegate_Text->Property("verticalAlignment", "Text.AlignVCenter");
+        uiItemDelegate_Text->Property("color", textColor);
 
 		if (choiceset.choices[0].isWrap)
 		{
@@ -566,7 +587,8 @@ namespace RendererQml
 		uiContentItem_Text->Property("verticalAlignment", "Text.AlignVCenter");
 		uiContentItem_Text->Property("leftPadding", "parent.font.pixelSize + parent.spacing");
 		uiContentItem_Text->Property("elide", "Text.ElideRight");
-				
+        uiContentItem_Text->Property("color", textColor);
+
 		uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
 				
 		return uiComboBox;
