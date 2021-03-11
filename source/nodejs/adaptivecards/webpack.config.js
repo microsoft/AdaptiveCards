@@ -46,10 +46,28 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
-			new HtmlWebpackPlugin({
-				title: "Adaptive Cards Example",
-				template: "./example.html"
-			})
+			new CopyWebpackPlugin(
+				{
+					patterns: [
+						{
+							from: 'src/adaptivecards.css',
+							to: '../lib/',
+							flatten: true
+						},
+						{
+							from: 'src/adaptivecards.css',
+							to: '../dist/',
+							flatten: true
+						}
+					]
+				}
+			),
+			new HtmlWebpackPlugin(
+				{
+					title: "Adaptive Cards Example",
+					template: "./example.html"
+				}
+			)
 		]
 	};
 }

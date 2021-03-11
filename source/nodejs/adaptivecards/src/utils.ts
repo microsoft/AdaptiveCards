@@ -244,3 +244,9 @@ export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.
         return Enums.ContainerFitStatus.FullyOutOfContainer;
     }
 }
+
+export function clearElementChildren(element: HTMLElement) {
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
