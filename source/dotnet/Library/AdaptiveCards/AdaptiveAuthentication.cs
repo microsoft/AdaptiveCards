@@ -38,9 +38,6 @@ namespace AdaptiveCards
         /// <summary>
         ///     Buttons that should be displayed to the user when prompting for authentication. The array MUST contain one button of type \"signin\". Other button types are not currently supported.
         /// </summary>
-        /// <summary>
-        /// Collection of images to display.
-        /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveAuthCardButton))]
