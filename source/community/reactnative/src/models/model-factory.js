@@ -21,7 +21,11 @@ export class ModelFactory {
             }
         } else {
             const elementModel = this.getElement(payload, parent);
-            return this.addCustomPropertyInModel(elementModel, payload)
+            if (elementModel) {
+                return this.addCustomPropertyInModel(elementModel, payload)
+            } else {
+                return ModelFactory.checkForFallBack(payload, parent);
+            }
         }
     }
 
@@ -76,10 +80,9 @@ export class ModelFactory {
                 //Handling registered custom components
                 const Element = Registry.getManager().getComponentOfType(payload.type);
                 if (Element) {
-                    const elementModel = new BaseModel(payload, parent);
-                    return this.addCustomPropertyInModel(elementModel, payload)
+                    return new BaseModel(payload, parent);
                 } else {
-                    return ModelFactory.checkForFallBack(payload, parent);
+                    return null;
                 }
         }
     }

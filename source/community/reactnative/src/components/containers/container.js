@@ -65,7 +65,7 @@ export class Container extends React.Component {
 
 		var containerContent = (
 			<ContainerWrapper json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
-				{payload.spacing && payload.separator && this.getSpacingElement()}
+				{this.getSpacingElement()}
 				{this.parsePayload()}
 				{showValidationText && this.getValidationText()}
 			</ContainerWrapper>
@@ -91,12 +91,14 @@ export class Container extends React.Component {
 			Enums.Spacing.Default);
 		const spacing = this.hostConfig.getEffectiveSpacing(spacingEnumValue);
 
-		// spacing styles
+		// separator and spacing styles
 		const separatorStyles = [{ height: spacing }];
 
 		// separator styles
-		separatorStyles.push(this.styleConfig.separatorStyle);
-		separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
+		this.payload.separator && separatorStyles.push(this.styleConfig.separatorStyle);
+
+		// spacing styles
+		this.payload.spacing && separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
 		return <View style={separatorStyles}></View>
 	}
 
