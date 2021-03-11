@@ -180,7 +180,7 @@ export class OpenImageDialog extends Dialog {
                 this._inputTemplate.appendChild(
                     this.renderUploadButton("file")
                 );
-                this.geneareteErrorText(
+                this.generateErrorText(
                     "Invalid file size. Try image under 2 MB"
                 );
                 this._uploadedImage =
@@ -192,8 +192,9 @@ export class OpenImageDialog extends Dialog {
         return inputElement;
     }
 
-    private geneareteErrorText(text: string) {
+    private generateErrorText(text: string) {
         const errorContent = document.createElement("div");
+        errorContent.setAttribute("role", "status");
         errorContent.className = "acd-error-text";
         errorContent.innerText = text;
         this._buttonContainer.appendChild(errorContent);
@@ -202,8 +203,10 @@ export class OpenImageDialog extends Dialog {
     private onCardFailure(spinnerElement: HTMLElement) {
         this.removeContent(spinnerElement);
         this._inputTemplate.removeChild(this._buttonContainer);
-        this._inputTemplate.appendChild(this.renderUploadButton("file"));
-        this.geneareteErrorText("Failed to generate card for selected Image");
+        let uploadButton = this.renderUploadButton("file");
+        this._inputTemplate.appendChild(uploadButton);
+        this.generateErrorText("Failed to generate card for selected Image");
+        uploadButton.focus();
     }
 
     createActionButton() {
@@ -216,6 +219,7 @@ export class OpenImageDialog extends Dialog {
             uploadButton.setAttribute("aria-label", "Conversion to Adaptive card button pressed. Adaptive Card conversion in Progress");
             let spinnerElement = this.loadSpinner();
             this.setContent(spinnerElement);
+            spinnerElement.focus();
             this.fetchManager
                 .getPredictedData(
                     this._uploadedImage,
@@ -240,6 +244,7 @@ export class OpenImageDialog extends Dialog {
         let spinnerElement = document.createElement("div");
         spinnerElement.className = "acd-spinner acd-image-spinner";
         let spinnerText = document.createElement("div");
+        spinnerText.setAttribute("role", "status");
         spinnerText.className = "acd-conversion-text";
         spinnerText.innerText = "Adaptive Card conversion in progress";
         spinnerHostElement.appendChild(spinnerElement);
@@ -322,6 +327,7 @@ export class OpenImageDialog extends Dialog {
                 const errorElement = document.createElement("div");
                 errorElement.innerText = "Failed to reach pic2card service";
                 errorElement.className = "acd-image-title error-info";
+                errorElement.setAttribute("role", "status");
                 sampleImageTemplate.removeChild(message);
                 sampleImageTemplate.removeChild(spinnerElement);
                 sampleImageTemplate.appendChild(errorElement);

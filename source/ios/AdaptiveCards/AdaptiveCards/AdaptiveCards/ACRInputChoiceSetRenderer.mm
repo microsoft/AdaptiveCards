@@ -51,18 +51,21 @@
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:checkedRadioButtonReuseID];
     [choiceSetView registerClass:[ACRChoiceSetCell class] forCellReuseIdentifier:uncheckedRadioButtonReuseID];
 
-    if(choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
+    if (choiceSet->GetChoiceSetStyle() == ChoiceSetStyle::Compact && choiceSet->GetIsMultiSelect() == false) {
         dataSource = [[ACRChoiceSetViewDataSourceCompactStyle alloc] initWithInputChoiceSet:choiceSet rootView:rootView];
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     } else {
         dataSource = [[ACRChoiceSetViewDataSource alloc] initWithInputChoiceSet:choiceSet WithHostConfig:config];
         ((ACRChoiceSetViewDataSource *)dataSource).spacing = choiceSetView.inputTableViewSpacing;
         [choiceSetView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
-    } 
+    }
+
+    // removes leading padding
+    choiceSetView.contentInset = UIEdgeInsetsMake(0, -15, 0, 0);
 
     choiceSetView.delegate = dataSource;
     choiceSetView.dataSource = dataSource;
-    
+
     ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:choiceSet inputView:choiceSetView accessibilityItem:choiceSetView viewGroup:viewGroup dataSource:dataSource];
     choiceSetView.isAccessibilityElement = NO;
     choiceSetView.shouldGroupAccessibilityChildren = YES;

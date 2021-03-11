@@ -11037,6 +11037,37 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestDateFormatTest()
+        {
+            string jsonTemplate = @"{
+            ""type"" : ""AdaptiveCard"",
+            ""$data"": {
+                ""date"" : ""03/15/2018 12:00:00""
+             },
+            ""body"" : [
+                {
+                ""type"" : ""TextBlock"",
+                ""text"" : ""**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**""
+                }
+            ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"" : ""AdaptiveCard"",
+    ""body"" : [
+        {
+        ""type"" : ""TextBlock"",
+        ""text"" : ""**{{DATE(2018-03-15T12:00:00Z, SHORT)}}**""
+        }
+    ]
+    }", cardJson);
+        }
+
+        [TestMethod]
         public void TestBoolConversion()
         {
             string jsonTemplate = @"{
