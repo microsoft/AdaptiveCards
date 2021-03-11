@@ -1,0 +1,23 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "description": "Defines authentication information associated with a card. This maps to the OAuthCard type defined by the Bot Framework (https://github.com/microsoft/botframework-obi/blob/jeffders/adaptiveCards2/protocols/botframework-activity/botframework-cards.md#oauth-card)",
+    "version": "1.4",
+    "properties": {
+        "text": {
+            "type": "string",
+            "description": "Text that can be displayed to the end user when prompting them to authenticate."
+        },
+        "connectionName": {
+            "type": "string",
+            "description": "The identifier for registered OAuth connection setting information."
+        },
+        "tokenExchangeResource": {
+            "type": "TokenExchangeResource",
+            "description": "Provides information required to enable on-behalf-of single sign-on user authentication."
+        },
+        "buttons": {
+            "type": "AuthCardButton[]",
+            "description": "Buttons that should be displayed to the user when prompting for authentication. The array MUST contain one button of type \"signin\". Other button types are not currently supported."
+        }
+    }
+}
