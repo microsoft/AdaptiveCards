@@ -9,9 +9,10 @@ import * as TextFormatters from "./text-formatters";
 import { CardObject, ValidationResults } from "./card-object";
 import { Versions, Version, property, BaseSerializationContext, SerializableObject, SerializableObjectSchema, StringProperty,
     BoolProperty, ValueSetProperty, EnumProperty, SerializableObjectCollectionProperty, SerializableObjectProperty, PixelSizeProperty,
-    NumProperty, PropertyBag, CustomProperty, PropertyDefinition } from "./serialization";
+    NumProperty, PropertyBag, CustomProperty, PropertyDefinition, StringArrayProperty } from "./serialization";
 import { CardObjectRegistry } from "./registry";
 import { Strings } from "./strings";
+import { AdaptiveApplet } from "./adaptive-applet";
 
 export type CardElementHeight = "auto" | "stretch";
 
@@ -1003,11 +1004,21 @@ export class TextBlock extends BaseTextBlock {
                 let anchor = <HTMLAnchorElement>anchors[i];
                 anchor.classList.add(hostConfig.makeCssClassName("ac-anchor"));
                 anchor.target = "_blank";
-                anchor.onclick = (e) => {
-                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement)) {
+                anchor.onclick = (e: MouseEvent) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
                         e.preventDefault();
                         e.cancelBubble = true;
                     }
+                }
+                anchor.oncontextmenu = (e: MouseEvent) => {
+                    if (raiseAnchorClickedEvent(this, e.target as HTMLAnchorElement, e)) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        return false;
+                    }
+
+                    return true;
                 }
             }
 
@@ -2267,7 +2278,7 @@ export class Media extends CardElement {
         let posterRootElement = document.createElement("div");
         posterRootElement.className = this.hostConfig.makeCssClassName("ac-media-poster");
         posterRootElement.setAttribute("role", "contentinfo");
-        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : "Media content");
+        posterRootElement.setAttribute("aria-label", this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel());
         posterRootElement.style.position = "relative";
         posterRootElement.style.display = "flex";
 
@@ -2301,7 +2312,7 @@ export class Media extends CardElement {
             let playButtonOuterElement = document.createElement("div");
             playButtonOuterElement.tabIndex = 0;
             playButtonOuterElement.setAttribute("role", "button");
-            playButtonOuterElement.setAttribute("aria-label", "Play media");
+            playButtonOuterElement.setAttribute("aria-label", Strings.defaults.mediaPlayerPlayMedia());
             playButtonOuterElement.className = this.hostConfig.makeCssClassName("ac-media-playButton");
             playButtonOuterElement.style.display = "flex";
             playButtonOuterElement.style.alignItems = "center";
@@ -2367,6 +2378,7 @@ export class Media extends CardElement {
             mediaElement = document.createElement("audio");
         }
 
+        mediaElement.setAttribute("aria-label", this.altText ? this.altText : Strings.defaults.mediaPlayerAriaLabel());
         mediaElement.setAttribute("webkit-playsinline", "");
         mediaElement.setAttribute("playsinline", "");
         mediaElement.autoplay = true;
@@ -3981,7 +3993,7 @@ export abstract class Action extends CardObject {
     }
 }
 
-export class SubmitAction extends Action {
+export abstract class SubmitActionBase extends Action {
     //#region Schema
 
     static readonly dataProperty = new PropertyDefinition(Versions.v1_0, "data");
@@ -4001,17 +4013,13 @@ export class SubmitAction extends Action {
             context.serializeValue(target, property.name, value);
         });
 
-    @property(SubmitAction.dataProperty)
+    @property(SubmitActionBase.dataProperty)
     private _originalData?: PropertyBag;
 
-    @property(SubmitAction.associatedInputsProperty)
+    @property(SubmitActionBase.associatedInputsProperty)
     associatedInputs?: "auto" | "none";
 
     //#endregion
-
-    // Note the "weird" way this field is declared is to work around a breaking
-    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
-    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
 
     private _isPrepared: boolean = false;
     private _processedData?: PropertyBag;
@@ -4060,10 +4068,6 @@ export class SubmitAction extends Action {
         this._isPrepared = true;
     }
 
-    getJsonTypeName(): string {
-        return SubmitAction.JsonTypeName;
-    }
-
     get data(): object | undefined {
         return this._isPrepared ? this._processedData : this._originalData;
     }
@@ -4071,6 +4075,35 @@ export class SubmitAction extends Action {
     set data(value: object | undefined) {
         this._originalData = value;
         this._isPrepared = false;
+    }
+}
+
+export class SubmitAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Submit" = "Action.Submit";
+
+    getJsonTypeName(): string {
+        return SubmitAction.JsonTypeName;
+    }
+}
+
+export class ExecuteAction extends SubmitActionBase {
+    // Note the "weird" way this field is declared is to work around a breaking
+    // change introduced in TS 3.1 wrt d.ts generation. DO NOT CHANGE
+    static readonly JsonTypeName: "Action.Execute" = "Action.Execute";
+
+    //#region Schema
+
+    static readonly verbProperty = new StringProperty(Versions.v1_4, "verb");
+
+    @property(ExecuteAction.verbProperty)
+    verb: string;
+
+    //#endregion
+
+    getJsonTypeName(): string {
+        return ExecuteAction.JsonTypeName;
     }
 }
 
@@ -6207,11 +6240,11 @@ function raiseImageLoadedEvent(image: Image) {
     }
 }
 
-function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement): boolean {
+function raiseAnchorClickedEvent(element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent): boolean {
     let card = element.getRootElement() as AdaptiveCard;
     let onAnchorClickedHandler = (card && card.onAnchorClicked) ? card.onAnchorClicked : AdaptiveCard.onAnchorClicked;
 
-    return onAnchorClickedHandler !== undefined ? onAnchorClickedHandler(element, anchor) : false;
+    return onAnchorClickedHandler !== undefined ? onAnchorClickedHandler(element, anchor, ev) : false;
 }
 
 function raiseExecuteActionEvent(action: Action) {
@@ -6406,6 +6439,146 @@ export interface IMarkdownProcessingResult {
     outputHtml?: any;
 }
 
+export class RefreshActionProperty extends PropertyDefinition {
+    parse(sender: RefreshDefinition, source: PropertyBag, context: SerializationContext): ExecuteAction | undefined {
+        let action = context.parseAction(
+            sender.parent,
+            source[this.name],
+            [],
+            false);
+
+        if (action !== undefined) {
+            if (action instanceof ExecuteAction) {
+                return action;
+            }
+
+            context.logParseEvent(
+                sender,
+                Enums.ValidationEvent.ActionTypeNotAllowed,
+                Strings.errors.actionTypeNotAllowed(action.getJsonTypeName()));
+        }
+
+        context.logParseEvent(
+            sender,
+            Enums.ValidationEvent.ActionTypeNotAllowed,
+            Strings.errors.propertyMustBeSet("action"));
+
+        return undefined;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+    }
+
+    constructor(readonly targetVersion: Version, readonly name: string) {
+        super(targetVersion, name, undefined);
+    }
+}
+
+export class RefreshDefinition extends SerializableObject {
+    //#region Schema
+
+    static readonly actionProperty = new RefreshActionProperty(Versions.v1_4, "action");
+
+    @property(RefreshDefinition.actionProperty)
+    get action(): ExecuteAction {
+        return this.getValue(RefreshDefinition.actionProperty);
+    }
+
+    set action(value: ExecuteAction) {
+        this.setValue(RefreshDefinition.actionProperty, value);
+
+        if (value) {
+            value.setParent(this.parent);
+        }
+    }
+
+    protected getSchemaKey(): string {
+        return "RefreshDefinition";
+    }
+
+    //#endregion
+
+    parent: CardElement;
+}
+
+export class AuthCardButton extends SerializableObject {
+    //#region Schema
+
+    static readonly typeProperty = new StringProperty(Versions.v1_4, "type");
+    static readonly titleProperty = new StringProperty(Versions.v1_4, "title");
+    static readonly imageProperty = new StringProperty(Versions.v1_4, "image");
+    static readonly valueProperty = new StringProperty(Versions.v1_4, "value");
+
+    protected getSchemaKey(): string {
+        return "SigninButton";
+    }
+
+    //#endregion
+
+    @property(AuthCardButton.typeProperty)
+    type: string;
+
+    @property(AuthCardButton.titleProperty)
+    title?: string;
+
+    @property(AuthCardButton.imageProperty)
+    image?: string;
+
+    @property(AuthCardButton.valueProperty)
+    value: string;
+}
+
+export class TokenExchangeResource extends SerializableObject {
+    //#region Schema
+
+    static readonly idProperty = new StringProperty(Versions.v1_4, "id");
+    static readonly uriProperty = new StringProperty(Versions.v1_4, "uri");
+    static readonly providerIdProperty = new StringProperty(Versions.v1_4, "providerId");
+
+    protected getSchemaKey(): string {
+        return "TokenExchangeResource";
+    }
+
+    //#endregion
+
+    @property(TokenExchangeResource.idProperty)
+    id?: string;
+
+    @property(TokenExchangeResource.uriProperty)
+    uri?: string;
+
+    @property(TokenExchangeResource.providerIdProperty)
+    providerId?: string;
+}
+
+export class Authentication extends SerializableObject {
+    //#region Schema
+
+    static readonly textProperty = new StringProperty(Versions.v1_4, "text");
+    static readonly connectionNameProperty = new StringProperty(Versions.v1_4, "connectionName");
+    static readonly buttonsProperty = new SerializableObjectCollectionProperty(Versions.v1_4, "buttons", AuthCardButton);
+    static readonly tokenExchangeResourceProperty = new SerializableObjectProperty(Versions.v1_4, "tokenExchangeResource", TokenExchangeResource, true);
+
+    protected getSchemaKey(): string {
+        return "Authentication";
+    }
+
+    //#endregion
+
+    @property(Authentication.textProperty)
+    text?: string;
+
+    @property(Authentication.connectionNameProperty)
+    connectionName?: string;
+
+    @property(Authentication.buttonsProperty)
+    buttons: AuthCardButton[];
+
+    @property(Authentication.tokenExchangeResourceProperty)
+    tokenExchangeResource?: TokenExchangeResource;
+}
+
 // @dynamic
 export class AdaptiveCard extends ContainerWithActions {
     static readonly schemaUrl = "http://adaptivecards.io/schemas/adaptive-card.json";
@@ -6447,6 +6620,8 @@ export class AdaptiveCard extends ContainerWithActions {
         Versions.v1_0);
     static readonly fallbackTextProperty = new StringProperty(Versions.v1_0, "fallbackText");
     static readonly speakProperty = new StringProperty(Versions.v1_0, "speak");
+    static readonly refreshProperty = new SerializableObjectProperty(Versions.v1_4, "refresh", RefreshDefinition, true);
+    static readonly authenticationProperty = new SerializableObjectProperty(Versions.v1_4, "authentication", Authentication, true);
 
     @property(AdaptiveCard.versionProperty)
     version: Version;
@@ -6457,9 +6632,25 @@ export class AdaptiveCard extends ContainerWithActions {
     @property(AdaptiveCard.speakProperty)
     speak?: string;
 
+    @property(AdaptiveCard.refreshProperty)
+    get refresh(): RefreshDefinition | undefined {
+        return this.getValue(AdaptiveCard.refreshProperty);
+    }
+
+    set refresh(value: RefreshDefinition | undefined) {
+        this.setValue(AdaptiveCard.refreshProperty, value);
+
+        if (value) {
+            value.parent = this;
+        }
+    }
+
+    @property(AdaptiveCard.authenticationProperty)
+    authentication?: Authentication;
+
     //#endregion
 
-    static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement) => boolean;
+    static onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     static onExecuteAction?: (action: Action) => void;
     static onElementVisibilityChanged?: (element: CardElement) => void;
     static onImageLoaded?: (image: Image) => void;
@@ -6585,7 +6776,7 @@ export class AdaptiveCard extends ContainerWithActions {
         return true;
     }
 
-    onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement) => boolean;
+    onAnchorClicked?: (element: CardElement, anchor: HTMLAnchorElement, ev?: MouseEvent) => boolean;
     onExecuteAction?: (action: Action) => void;
     onElementVisibilityChanged?: (element: CardElement) => void;
     onImageLoaded?: (image: Image) => void;
@@ -6760,6 +6951,7 @@ export class GlobalRegistry {
         registry.register(SubmitAction.JsonTypeName, SubmitAction);
         registry.register(ShowCardAction.JsonTypeName, ShowCardAction);
         registry.register(ToggleVisibilityAction.JsonTypeName, ToggleVisibilityAction, Versions.v1_2);
+        registry.register(ExecuteAction.JsonTypeName, ExecuteAction, Versions.v1_4);
     }
 
     static readonly elements = new CardObjectRegistry<CardElement>();
@@ -6852,6 +7044,18 @@ export class SerializationContext extends BaseSerializationContext {
 
     onParseAction?: (action: Action, source: any, context: SerializationContext) => void;
     onParseElement?: (element: CardElement, source: any, context: SerializationContext) => void;
+
+    shouldSerialize(o: SerializableObject): boolean {
+        if (o instanceof Action) {
+            return this.actionRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else if (o instanceof CardElement) {
+            return this.elementRegistry.findByName(o.getJsonTypeName()) !== undefined;
+        }
+        else {
+            return true;
+        }
+    }
 
     parseCardObject<T extends CardObject>(
         parent: CardElement | undefined,
