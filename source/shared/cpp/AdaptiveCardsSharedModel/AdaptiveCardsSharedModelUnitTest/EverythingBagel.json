@@ -3,6 +3,19 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"backgroundImage": "https://adaptivecards.io/content/cats/1.png",
+	"refresh": {
+		"action": {
+			"type": "Action.Submit",
+			"id": "refresh_action_id"
+		},
+		"userIds": [
+			"refresh_userIds_0"
+		]
+	},
+	"authentication": {
+		"text": "authentication_text",
+		"connectionName": "authentication_connectionName"
+	},
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
@@ -324,6 +337,16 @@
 			"id": "Action.Submit_id",
 			"data": {
 				"submitValue": true
+			}
+		},
+		{
+			"type": "Action.Execute",
+			"verb": "Action.Execute_verb",
+			"title": "Action.Execute_title",
+			"id": "Action.Execute_id",
+			"associatedInputs": "none",
+			"data": {
+				"Action.Execute_data_keyA": "Action.Execute_data_valueA"
 			}
 		},
 		{

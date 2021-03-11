@@ -10,6 +10,7 @@
 #include "ColumnSet.h"
 #include "Container.h"
 #include "DateInput.h"
+#include "ExecuteAction.h"
 #include "Fact.h"
 #include "FactSet.h"
 #include "Image.h"
@@ -40,9 +41,16 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(vAlignment == backImage.GetVerticalAlignment());
     }
 
+    
+    void ValidateRefresh(const Refresh& backImage, ImageFillMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment)
+    {
+        
+    }
+
     void ValidateTopLevelProperties(const AdaptiveCard &everythingBagel)
     {
         ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
+        ValidateRefresh(*everythingBagel.GetRefresh(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
         Assert::IsTrue(CardElementType::AdaptiveCard == everythingBagel.GetElementType());
         Assert::AreEqual("fallbackText"s, everythingBagel.GetFallbackText());
         Assert::IsTrue(HeightType::Auto == everythingBagel.GetHeight());
@@ -479,7 +487,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
     {
         auto actions = everythingBagel.GetActions();
-        Assert::AreEqual(size_t{ 2 }, actions.size());
+        Assert::AreEqual(size_t{ 3 }, actions.size());
 
         // validate submit action
         {
@@ -501,9 +509,29 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(size_t{ 0 }, resourceUris.size());
         }
 
+        // validate execute action
+        {
+            auto executeAction = std::static_pointer_cast<ExecuteAction>(actions.at(1));
+            Assert::IsTrue(executeAction->GetElementType() == ActionType::Execute);
+            Assert::AreEqual(ActionTypeToString(ActionType::Execute), executeAction->GetElementTypeString());
+            Assert::AreEqual(""s, executeAction->GetIconUrl());
+            Assert::AreEqual("Action.Execute_id"s, executeAction->GetId());
+            Assert::AreEqual("Action.Execute_title"s, executeAction->GetTitle());
+            Assert::AreEqual("Action.Execute_verb"s, executeAction->GetVerb());
+            Assert::AreEqual("{\"Action.Execute_data_keyA\":\"Action.Execute_data_valueA\"}\n"s, executeAction->GetDataJson());
+            Assert::IsTrue(executeAction->GetAssociatedInputs() == AssociatedInputs::None);
+
+            auto additionalProps = executeAction->GetAdditionalProperties();
+            Assert::IsTrue(additionalProps.empty());
+
+            std::vector<RemoteResourceInformation> resourceUris;
+            executeAction->GetResourceInformation(resourceUris);
+            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
+        }
+
         // validate showcard action
         {
-            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(1));
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(2));
             Assert::IsTrue(showCardAction->GetElementType() == ActionType::ShowCard);
             Assert::AreEqual(ActionTypeToString(ActionType::ShowCard), showCardAction->GetElementTypeString());
             Assert::AreEqual(""s, showCardAction->GetIconUrl());
