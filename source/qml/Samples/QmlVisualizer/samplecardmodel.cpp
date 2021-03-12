@@ -107,7 +107,7 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 {
     std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
 
-    std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard(), nullptr);
+    std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard());
     const auto generatedQml = result->GetResult();
     const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
     return generatedQmlString;

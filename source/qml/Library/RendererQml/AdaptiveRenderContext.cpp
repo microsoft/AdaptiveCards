@@ -190,16 +190,6 @@ namespace RendererQml
         m_lang = lang;
     }
 
-    void AdaptiveRenderContext::SetOnClickFunction(AdaptiveCardDependency::OnClickFunction onClickFunction)
-    {
-        m_onClickFunction = onClickFunction;
-    }
-
-    AdaptiveCardDependency::OnClickFunction& AdaptiveRenderContext::GetOnClickFunction()
-    {
-        return m_onClickFunction;
-    }
-
     const int AdaptiveRenderContext::getContainerCounter()
     {
         return ++m_ContainerCounter;
