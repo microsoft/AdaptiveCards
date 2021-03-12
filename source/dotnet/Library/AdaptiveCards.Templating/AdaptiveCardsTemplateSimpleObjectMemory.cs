@@ -14,7 +14,7 @@ namespace AdaptiveCards.Templating
         private SimpleObjectMemory simpleObjectMemory;
         /// <summary>
         /// Simple implementation of AEL.Memory.IMemory
-        /// It serves as an entry points for additional customazation and optimazation
+        /// It serves as an entry points to additional customazation and optimazation
         /// </summary>
         /// <param name="memory"></param>
         public AdaptiveCardsTemplateSimpleObjectMemory(object memory)
@@ -26,7 +26,7 @@ namespace AdaptiveCards.Templating
         /// Try get value from a given path.
         /// Expansion of the template is done in the context of serialized json payload,
         /// However, the memory that bounds to the template is in deserialized form.
-        /// This is noramllay not an issue for types other than string
+        /// This is normally not an issue for types other than string
         /// This override serializes the value if it's string
         /// </summary>
         /// <param name="path">Given path</param>

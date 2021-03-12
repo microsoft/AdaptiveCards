@@ -38,6 +38,11 @@
   - [Append(capturedString)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.Append(System.String)')
   - [Append(result)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-Append-AdaptiveCards-Templating-AdaptiveCardsTemplateResult- 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.Append(AdaptiveCards.Templating.AdaptiveCardsTemplateResult)')
   - [ToString()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateResult-ToString 'AdaptiveCards.Templating.AdaptiveCardsTemplateResult.ToString')
+- [AdaptiveCardsTemplateSimpleObjectMemory](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory')
+  - [#ctor(memory)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-#ctor-System-Object- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.#ctor(System.Object)')
+  - [SetValue(path,value)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-SetValue-System-String,System-Object- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.SetValue(System.String,System.Object)')
+  - [TryGetValue(path,value)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-TryGetValue-System-String,System-Object@- 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.TryGetValue(System.String,System.Object@)')
+  - [Version()](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-Version 'AdaptiveCards.Templating.AdaptiveCardsTemplateSimpleObjectMemory.Version')
 - [AdaptiveCardsTemplateVisitor](#T-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor')
   - [#ctor(nullSubstitutionOption,data)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-#ctor-System-Func{System-String,System-Object},System-String- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.#ctor(System.Func{System.String,System.Object},System.String)')
   - [Expand(unboundString,data,isTemplatedString)](#M-AdaptiveCards-Templating-AdaptiveCardsTemplateVisitor-Expand-System-String,AdaptiveExpressions-Memory-IMemory,System-Boolean- 'AdaptiveCards.Templating.AdaptiveCardsTemplateVisitor.Expand(System.String,AdaptiveExpressions.Memory.IMemory,System.Boolean)')
@@ -686,6 +691,82 @@ returns string representation
 ##### Returns
 
 `string`
+
+##### Parameters
+
+This method has no parameters.
+
+<a name='T-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory'></a>
+## AdaptiveCardsTemplateSimpleObjectMemory `type`
+
+##### Namespace
+
+AdaptiveCards.Templating
+
+##### Summary
+
+Implements AEL's IMemory interface
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-#ctor-System-Object-'></a>
+### #ctor(memory) `constructor`
+
+##### Summary
+
+Simple implementation of AEL.Memory.IMemory
+It serves as an entry points to additional customazation and optimazation
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| memory | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') |  |
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-SetValue-System-String,System-Object-'></a>
+### SetValue(path,value) `method`
+
+##### Summary
+
+Set value to a given path
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Memory path |
+| value | [System.Object](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object 'System.Object') | Value to set |
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-TryGetValue-System-String,System-Object@-'></a>
+### TryGetValue(path,value) `method`
+
+##### Summary
+
+Try get value from a given path.
+Expansion of the template is done in the context of serialized json payload,
+However, the memory that bounds to the template is in deserialized form.
+This is normally not an issue for types other than string
+This override serializes the value if it's string
+
+##### Returns
+
+True if the memory contains an element with the specified key; otherwise, false
+
+##### Parameters
+
+| Name | Type | Description |
+| ---- | ---- | ----------- |
+| path | [System.String](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.String 'System.String') | Given path |
+| value | [System.Object@](http://msdn.microsoft.com/query/dev14.query?appId=Dev14IDEF1&l=EN-US&k=k:System.Object@ 'System.Object@') | Resolved value |
+
+<a name='M-AdaptiveCards-Templating-AdaptiveCardsTemplateSimpleObjectMemory-Version'></a>
+### Version() `method`
+
+##### Summary
+
+
+
+##### Returns
+
+
 
 ##### Parameters
 
