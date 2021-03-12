@@ -8,6 +8,7 @@ Item {
     readonly property var listView: parent.ListView.view
 
     signal reloadCard(var card)
+    signal adaptiveCardButtonClicked(var title, var type, var data)
 
     height: mainLayout.height
     width: listView.width
@@ -38,7 +39,10 @@ Item {
                     Layout.margins: 5
                     Layout.preferredHeight: item ? item.height : 25
 
-                    onLoaded: reloadCard.connect(item.reload)
+                    onLoaded: {
+                        reloadCard.connect(item.reload)
+                        item.adaptiveCardButtonClicked.connect(adaptiveCardButtonClicked)
+                    }
                 }
             }
         }

@@ -13,8 +13,6 @@ Rectangle{
     border.width: 2
     radius: 8
     
-    property string cardJson: ""
-    
     signal reloadCard(var card)
     
     Column{
@@ -32,6 +30,7 @@ Rectangle{
                 id:multilineInputId;
                 wrapMode:Text.Wrap;
                 font.pixelSize:14;
+                selectByMouse: true
                 background:Rectangle{
                     radius:8;
                     color:multilineInputId.hovered ? 'lightgray' : 'white';
@@ -41,7 +40,6 @@ Rectangle{
                     
                 }
                 
-                text: cardJson
                 placeholderText:"enter card json";
             }
         }
@@ -60,7 +58,7 @@ Rectangle{
     }
     
     function setCardEditor(index, json){
-        cardJson = json;
+        multilineInputId.text = json
     }
     
     Connections {

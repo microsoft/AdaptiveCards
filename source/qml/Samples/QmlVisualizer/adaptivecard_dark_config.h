@@ -249,8 +249,8 @@ namespace DarkConfig
         },
         "style": "emphasis",
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Vertical",
-        "actionAlignment": "stretch"
+        "actionsOrientation": "Horizontal",
+        "actionAlignment": "Left"
     },
     "adaptiveCard": {
         "allowCustomStyle": false

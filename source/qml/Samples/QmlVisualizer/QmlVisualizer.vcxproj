@@ -106,6 +106,7 @@
     <ClCompile Include="samplecardlist.cpp" />
     <ClCompile Include="samplecardmodel.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <None Include="CardOutput.qml" />
     <None Include="SampleCardListView.qml" />
     <QtRcc Include="qml.qrc" />
     <None Include="AdaptiveCardItemDelegate.qml" />

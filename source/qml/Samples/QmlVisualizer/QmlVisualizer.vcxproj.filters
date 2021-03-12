@@ -72,6 +72,9 @@
     <None Include="SampleCardListView.qml">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="CardOutput.qml">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="samplecardmodel.h">

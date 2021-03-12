@@ -3,6 +3,9 @@
 #include "adaptivecard_light_config.h"
 #include "adaptivecard_dark_config.h"
 
+#include <windows.h>
+#include <shellapi.h>
+
 using namespace RendererQml;
 
 SampleCardModel::SampleCardModel(QObject *parent)
@@ -123,4 +126,42 @@ void SampleCardModel::setTheme(const QString& theme)
     }
     renderer_ptr = std::make_shared<AdaptiveCardQmlRenderer>(AdaptiveCardQmlRenderer(hostConfig));
     emit reloadCardOnThemeChange();
+}
+
+std::wstring SampleCardModel::toWString(const std::string& input)
+{
+#ifdef _WIN32
+    // Convert UTF-8 to UTF-16
+    if (!input.empty())
+    {
+        int size_needed = MultiByteToWideChar(CP_UTF8, 0, &input[0], static_cast<int>(input.length()), nullptr, 0);
+        std::wstring utf16String(size_needed, 0);
+        MultiByteToWideChar(CP_UTF8, 0, &input[0], static_cast<int>(input.length()), &utf16String[0], size_needed);
+        return utf16String;
+    }
+
+    return std::wstring();
+#else
+    return converterToString->from_bytes(input);
+#endif
+}
+
+void SampleCardModel::onAdaptiveCardButtonClicked(const QString& title, const QString& type, const QString& data)
+{
+    if (type == "Action.OpenUrl")
+    {
+        actionButtonClicked(title, type, data);
+    }
+}
+
+void SampleCardModel::actionButtonClicked(const QString& title, const QString& type, const QString& data)
+{
+    QString output;
+    output.append("Title: " + title + "\n");
+    output.append("Type: " + type + "\n");
+    output.append("Url: " + data);
+    emit sendCardResponseToQml(output);
+
+    // Open url in default browser
+    ShellExecute(0, 0, toWString(data.toStdString()).c_str(), 0, 0, SW_SHOW);
 }

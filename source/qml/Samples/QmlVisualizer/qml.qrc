@@ -7,5 +7,6 @@
         <file>qmldir</file>
         <file>CardEditor.qml</file>
         <file>SampleCardListView.qml</file>
+        <file>CardOutput.qml</file>
     </qresource>
 </RCC>

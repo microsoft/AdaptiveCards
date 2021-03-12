@@ -18,6 +18,7 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
 	mCards.append({ QStringLiteral("Image Set"), QString::fromStdString(Samples::card_ImageSet) });
 	mCards.append({ QStringLiteral("Seperator and Spacing"), QString::fromStdString(Samples::card_Separator) });
 	mCards.append({ QStringLiteral("ColumnSet"), QString::fromStdString(Samples::card_columnSet) });
+    mCards.append({ QStringLiteral("Action Open URL"), QString::fromStdString(Samples::card_Action_OpenUrl) });
 
 }
 

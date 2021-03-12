@@ -110,4 +110,15 @@
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrow-down_12.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Images\arrow-up_12.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Images\checkmarkIcon.svg">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

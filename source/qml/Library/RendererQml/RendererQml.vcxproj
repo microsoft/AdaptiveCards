@@ -205,6 +205,11 @@
     <Image Include="Images\clockIcon.png" />
     <Image Include="Images\sampleImage.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrow-down_12.svg" />
+    <None Include="Images\arrow-up_12.svg" />
+    <None Include="Images\checkmarkIcon.svg" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

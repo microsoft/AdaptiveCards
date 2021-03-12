@@ -5,6 +5,7 @@ ColumnLayout{
     id: cardComponent
 
     property var card
+    signal adaptiveCardButtonClicked(var title, var type, var data)
 
     Component.onCompleted: reload(CardString);
 
@@ -15,5 +16,6 @@ ColumnLayout{
         }
 
         card = Qt.createQmlObject(mCard, cardComponent, "card")
+        card.buttonClicked.connect(adaptiveCardButtonClicked)
     }
 }

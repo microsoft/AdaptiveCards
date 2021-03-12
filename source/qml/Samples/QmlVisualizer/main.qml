@@ -23,7 +23,7 @@ Row{
         id: cardRoot
 
         height: 800
-        width: 700
+        width: 650
         color: 'lightblue'
         radius: 8
         border.width: 2
@@ -31,7 +31,7 @@ Row{
 
         Rectangle{
             height: 780
-            width: 680
+            width: 630
             radius: 8
             x: 10;y: 10
             color: "transparent"
@@ -53,6 +53,7 @@ Row{
                     onLoaded: {
                         cardEditorLoader.item.reloadCard.connect(loader.item.reloadCard)
                         cardListViewLoader.item.reloadCard.connect(loader.item.reloadCard)
+                        loader.item.adaptiveCardButtonClicked.connect(root.onAdaptiveCardButtonClicked)
                     }
                 }
             }
@@ -68,7 +69,25 @@ Row{
         }
     }
 
+    Loader{
+        id: cardOutputLoader
+        source: "CardOutput.qml"
+    }
+
     Component.onCompleted: {
         cardListViewLoader.item.listItemClicked.connect(cardEditorLoader.item.setCardEditor)        
+    }
+
+    Connections {
+        target: _aModel
+
+        onSendCardResponseToQml: {
+            cardOutputLoader.item.output = output
+        }
+    }
+
+    function onAdaptiveCardButtonClicked(title, type, data){
+        _aModel.onAdaptiveCardButtonClicked(title, type, data)
+        cardOutputLoader.item.open()
     }
 }
