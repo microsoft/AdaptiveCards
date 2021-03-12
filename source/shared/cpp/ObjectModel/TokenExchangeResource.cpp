@@ -11,6 +11,11 @@ std::string TokenExchangeResource::GetId()
     return m_id;
 }
 
+const std::string TokenExchangeResource::GetId() const
+{
+    return m_id;
+}
+
 void TokenExchangeResource::SetId(std::string id)
 {
     m_id = id;
@@ -21,12 +26,22 @@ std::string TokenExchangeResource::GetUri()
     return m_uri;
 }
 
+const std::string TokenExchangeResource::GetUri() const
+{
+    return m_uri;
+}
+
 void TokenExchangeResource::SetUri(std::string uri)
 {
     m_uri = uri;
 }
 
 std::string TokenExchangeResource::GetProviderId()
+{
+    return m_providerId;
+}
+
+const std::string TokenExchangeResource::GetProviderId() const
 {
     return m_providerId;
 }
@@ -53,17 +68,17 @@ Json::Value TokenExchangeResource::SerializeToJsonValue() const
 
     if (!m_id.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Type)] = m_id;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Id)] = m_id;
     }
 
     if (!m_uri.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title)] = m_uri;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Uri)] = m_uri;
     }
 
     if (!m_providerId.empty())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Image)] = m_providerId;
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::ProviderId)] = m_providerId;
     }
 
     return root;
@@ -74,7 +89,7 @@ std::shared_ptr<TokenExchangeResource> TokenExchangeResource::Deserialize(ParseC
     std::shared_ptr<TokenExchangeResource> resource = std::make_shared<TokenExchangeResource>();
 
     resource->SetId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Id));
-    resource->SetUri(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url));
+    resource->SetUri(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Uri));
     resource->SetProviderId(ParseUtil::GetString(json, AdaptiveCardSchemaKey::ProviderId));
 
     return resource;

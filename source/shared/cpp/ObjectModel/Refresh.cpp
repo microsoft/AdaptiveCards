@@ -11,12 +11,22 @@ std::shared_ptr<BaseActionElement> Refresh::GetAction()
     return m_action;
 }
 
+const std::shared_ptr<BaseActionElement> Refresh::GetAction() const
+{
+    return m_action;
+}
+
 void Refresh::SetAction(std::shared_ptr<BaseActionElement> action)
 {
     m_action = action;
 }
 
 std::vector<std::string>& Refresh::GetUserIds()
+{
+    return m_userIds;
+}
+
+const std::vector<std::string>& Refresh::GetUserIds() const
 {
     return m_userIds;
 }

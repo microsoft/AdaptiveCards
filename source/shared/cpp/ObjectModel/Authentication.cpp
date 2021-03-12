@@ -12,12 +12,22 @@ std::string Authentication::GetText()
     return m_text;
 }
 
+const std::string Authentication::GetText() const
+{
+    return m_text;
+}
+
 void Authentication::SetText(std::string text)
 {
     m_text = text;
 }
 
 std::string Authentication::GetConnectionName()
+{
+    return m_connectionName;
+}
+
+const std::string Authentication::GetConnectionName() const
 {
     return m_connectionName;
 }
@@ -32,6 +42,11 @@ std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource(
     return m_tokenExchangeResource;
 }
 
+const std::shared_ptr<TokenExchangeResource> Authentication::GetTokenExchangeResource() const
+{
+    return m_tokenExchangeResource;
+}
+
 void Authentication::SetTokenExchangeResource(std::shared_ptr<TokenExchangeResource> tokenExchangeResource)
 {
     m_tokenExchangeResource = tokenExchangeResource;
@@ -42,9 +57,14 @@ std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveSharedNamespace::Authentic
     return m_buttons;
 }
 
+const std::vector<std::shared_ptr<AuthCardButton>>& AdaptiveSharedNamespace::Authentication::GetButtons() const
+{
+    return m_buttons;
+}
+
 void AdaptiveSharedNamespace::Authentication::SetButtons(std::vector<std::shared_ptr<AuthCardButton>> buttons)
 {
-    buttons = m_buttons;
+    m_buttons = buttons;
 }
 
 // Indicates non-default values have been set. If false, serialization can be safely skipped.

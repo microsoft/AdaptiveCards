@@ -4,6 +4,8 @@
 #include "EverythingBagel.h"
 
 #include "ActionSet.h"
+#include "AuthCardButton.h"
+#include "Authentication.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
 #include "Column.h"
@@ -25,6 +27,7 @@
 #include "TextRun.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
+#include "TokenExchangeResource.h"
 
 using namespace std::string_literals;
 
@@ -42,15 +45,35 @@ namespace AdaptiveCardsSharedModelUnitTest
     }
 
     
-    void ValidateRefresh(const Refresh& backImage, ImageFillMode mode, HorizontalAlignment hAlignment, VerticalAlignment vAlignment)
+    void ValidateRefresh(const Refresh& refresh)
     {
-        
+        Assert::IsTrue(refresh.GetAction() != nullptr);
+        Assert::IsTrue(refresh.GetAction()->GetElementType() == ActionType::Execute);
+        Assert::AreEqual(refresh.GetAction()->GetId(), "refresh_action_id"s);
+        Assert::AreEqual(refresh.GetUserIds().size(), size_t(1) );
+        Assert::AreEqual(refresh.GetUserIds().at(0), "refresh_userIds_0"s);
+    }
+
+    void ValidateAuthentication(const Authentication& authentication)
+    {
+        Assert::AreEqual(authentication.GetText(), "authentication_text"s);
+        Assert::AreEqual(authentication.GetConnectionName(), "authentication_connectionName"s);
+        Assert::IsTrue(authentication.GetTokenExchangeResource() != nullptr);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetId(), "authentication_tokenExchangeResource_id"s);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetUri(), "authentication_tokenExchangeResource_uri"s);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetProviderId(), "authentication_tokenExchangeResource_providerId"s);
+        Assert::AreEqual(authentication.GetButtons().size(), size_t(1) );
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetType(), "authentication_buttons_0_type"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetTitle(), "authentication_buttons_0_title"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetImage(), "authentication_buttons_0_image"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetValue(), "authentication_buttons_0_value"s);
     }
 
     void ValidateTopLevelProperties(const AdaptiveCard &everythingBagel)
     {
         ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
-        ValidateRefresh(*everythingBagel.GetRefresh(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
+        ValidateRefresh(*everythingBagel.GetRefresh());
+        ValidateAuthentication(*everythingBagel.GetAuthentication());
         Assert::IsTrue(CardElementType::AdaptiveCard == everythingBagel.GetElementType());
         Assert::AreEqual("fallbackText"s, everythingBagel.GetFallbackText());
         Assert::IsTrue(HeightType::Auto == everythingBagel.GetHeight());

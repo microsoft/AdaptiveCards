@@ -15,12 +15,15 @@ namespace AdaptiveSharedNamespace
             m_id(id), m_uri(uri), m_providerId(providerId) {}
 
         std::string GetId();
+        const std::string GetId() const;
         void SetId(std::string);
 
         std::string GetUri();
+        const std::string GetUri() const;
         void SetUri(std::string);
 
         std::string GetProviderId();
+        const std::string GetProviderId() const;
         void SetProviderId(std::string);
 
         bool ShouldSerialize() const;

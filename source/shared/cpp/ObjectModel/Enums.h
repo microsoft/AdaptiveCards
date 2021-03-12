@@ -169,6 +169,7 @@ namespace AdaptiveSharedNamespace
         Type,
         Underline,
         Url,
+        Uri,
         UserIds,
         Value,
         ValueOff,

@@ -15,9 +15,11 @@ namespace AdaptiveSharedNamespace
             m_action(action), m_userIds(userIds) {}
 
         std::shared_ptr<BaseActionElement> GetAction();
+        const std::shared_ptr<BaseActionElement> GetAction() const;
         void SetAction(std::shared_ptr<BaseActionElement>);
 
         std::vector<std::string>& GetUserIds();
+        const std::vector<std::string>& GetUserIds() const;
         void SetUserIds(std::vector<std::string>);
 
         bool ShouldSerialize() const;

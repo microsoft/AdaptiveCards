@@ -5,8 +5,9 @@
 	"backgroundImage": "https://adaptivecards.io/content/cats/1.png",
 	"refresh": {
 		"action": {
-			"type": "Action.Submit",
-			"id": "refresh_action_id"
+			"type": "Action.Execute",
+			"id": "refresh_action_id",
+			"verb": "refresh_action_verb"
 		},
 		"userIds": [
 			"refresh_userIds_0"
@@ -14,7 +15,20 @@
 	},
 	"authentication": {
 		"text": "authentication_text",
-		"connectionName": "authentication_connectionName"
+		"connectionName": "authentication_connectionName",
+		"tokenExchangeResource": {
+			"id": "authentication_tokenExchangeResource_id",
+			"uri": "authentication_tokenExchangeResource_uri",
+			"providerId": "authentication_tokenExchangeResource_providerId"
+		},
+		"buttons": [
+			{
+				"type": "authentication_buttons_0_type",
+				"title": "authentication_buttons_0_title",
+				"image": "authentication_buttons_0_image",
+				"value": "authentication_buttons_0_value"
+			}
+		]
 	},
 	"fallbackText": "fallbackText",
 	"speak": "speak",

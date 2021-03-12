@@ -11,12 +11,22 @@ std::string AuthCardButton::GetType()
     return m_type;
 }
 
+const std::string AuthCardButton::GetType() const
+{
+    return m_type;
+}
+
 void AuthCardButton::SetType(std::string type)
 {
     m_type = type;
 }
 
 std::string AuthCardButton::GetTitle()
+{
+    return m_title;
+}
+
+const std::string AuthCardButton::GetTitle() const
 {
     return m_title;
 }
@@ -31,12 +41,22 @@ std::string AuthCardButton::GetImage()
     return m_image;
 }
 
+const std::string AuthCardButton::GetImage() const
+{
+    return m_image;
+}
+
 void AuthCardButton::SetImage(std::string image)
 {
     m_image = image;
 }
 
 std::string AuthCardButton::GetValue()
+{
+    return m_value;
+}
+
+const std::string AuthCardButton::GetValue() const
 {
     return m_value;
 }

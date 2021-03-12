@@ -17,15 +17,19 @@ namespace AdaptiveSharedNamespace
             m_text(text), m_connectionName(connectionName), m_tokenExchangeResource(tokenExchangeResource), m_buttons(buttons) {}
 
         std::string GetText();
+        const std::string GetText() const;
         void SetText(std::string);
 
         std::string GetConnectionName();
+        const std::string GetConnectionName() const;
         void SetConnectionName(std::string);
 
         std::shared_ptr<TokenExchangeResource> GetTokenExchangeResource();
+        const std::shared_ptr<TokenExchangeResource> GetTokenExchangeResource() const;
         void SetTokenExchangeResource(std::shared_ptr<TokenExchangeResource>);
 
         std::vector<std::shared_ptr<AuthCardButton>>& GetButtons();
+        const std::vector<std::shared_ptr<AuthCardButton>>& GetButtons() const;
         void SetButtons(std::vector<std::shared_ptr<AuthCardButton>>);
 
         bool ShouldSerialize() const;

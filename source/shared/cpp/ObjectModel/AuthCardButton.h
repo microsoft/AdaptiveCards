@@ -15,15 +15,19 @@ namespace AdaptiveSharedNamespace
             m_type(type), m_title(title), m_image(image), m_value(value) {}
 
         std::string GetType();
+        const std::string GetType() const;
         void SetType(std::string);
 
         std::string GetTitle();
+        const std::string GetTitle() const;
         void SetTitle(std::string);
 
         std::string GetImage();
+        const std::string GetImage() const;
         void SetImage(std::string);
 
         std::string GetValue();
+        const std::string GetValue() const;
         void SetValue(std::string);
 
         bool ShouldSerialize() const;

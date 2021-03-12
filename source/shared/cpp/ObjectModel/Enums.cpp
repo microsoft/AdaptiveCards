@@ -167,6 +167,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Type, "type"},
             {AdaptiveCardSchemaKey::Underline, "underline"},
             {AdaptiveCardSchemaKey::Url, "url"},
+            {AdaptiveCardSchemaKey::Uri, "uri"},
             {AdaptiveCardSchemaKey::UserIds, "userIds"},
             {AdaptiveCardSchemaKey::Value, "value"},
             {AdaptiveCardSchemaKey::ValueOff, "valueOff"},
