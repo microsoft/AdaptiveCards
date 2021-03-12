@@ -526,7 +526,6 @@ namespace RendererQml
 		const auto valueOn = !input->GetValueOn().empty() ? input->GetValueOn() : "true";
 		const auto valueOff = !input->GetValueOff().empty() ? input->GetValueOff() : "false";
 		const bool isChecked = input->GetValue().compare(valueOn) == 0 ? true : false;
-        const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
 
 		//TODO: Add Height
 		return GetCheckBox(RendererQml::Checkbox(input->GetId(),
@@ -535,11 +534,9 @@ namespace RendererQml
 			input->GetValue(),
 			valueOn,
 			valueOff,
-			context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default),
 			input->GetWrap(),
 			input->GetIsVisible(),
-			isChecked,
-            textColor));
+			isChecked), context);
 
 	}
 
@@ -551,13 +548,9 @@ namespace RendererQml
 		RendererQml::Checkboxes choices;
 		const std::string id = input->GetId();
 		enum CheckBoxType type = !input->GetIsMultiSelect() && input->GetChoiceSetStyle() == AdaptiveCards::ChoiceSetStyle::Compact ? ComboBox : input->GetIsMultiSelect() ? CheckBox : RadioButton;
-		const int fontSize = context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default);
-		const std::string fontColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false, false);
 		const bool isWrap = input->GetWrap();
 		const bool isVisible = input->GetIsVisible();
 		bool isChecked;
-        const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
-        const auto backgroundColor = context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor);
 
 		std::vector<std::string> parsedValues;
 		parsedValues = Utils::ParseChoiceSetInputDefaultValues(input->GetValue());
@@ -569,11 +562,9 @@ namespace RendererQml
 				type,
 				choice->GetTitle(),
 				choice->GetValue(),
-				fontSize,
 				isWrap,
 				isVisible,
-				isChecked,
-                textColor));
+				isChecked));
 		}
 
 		RendererQml::ChoiceSet choiceSet(id,
@@ -581,44 +572,61 @@ namespace RendererQml
 			input->GetChoiceSetStyle(),
 			parsedValues,
 			choices,
-			input->GetPlaceholder(),
-            backgroundColor);
+			input->GetPlaceholder());
 
 		if (CheckBoxType::ComboBox == type)
 		{
-			return GetComboBox(choiceSet);
+			return GetComboBox(choiceSet,context);
 		}
 		else
 		{
-			return GetButtonGroup(choiceSet);
+			return GetButtonGroup(choiceSet, context);
 		}
 
 		std::shared_ptr<QmlTag> uiColumn;
 		return uiColumn;
 	}
 
-	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetComboBox(ChoiceSet choiceset)
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetComboBox(ChoiceSet choiceset, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		auto uiComboBox = std::make_shared<QmlTag>("ComboBox");
-				
+		const auto textColor = context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false);
+		const auto backgroundColor = context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor);
+
 		uiComboBox->Property("id",choiceset.id);
 		uiComboBox->Property("textRole", "'text'");
 		uiComboBox->Property("valueRole", "'value'");
 		uiComboBox->Property("width", "parent.width");
 		//TODO : Add Height
-				
-		uiComboBox->Property("model", GetModel(choiceset.choices));
 
-        const auto textColor = choiceset.choices[0].textColor;
+		auto dropIcon = std::make_shared<QmlTag>("Image");
+		dropIcon->Property("source", Formatter() << "\"" << RendererQml::arrow_down_12 << "\"");
+		dropIcon->Property("anchors.right", "parent.right");
+		dropIcon->Property("anchors.verticalCenter", "parent.verticalCenter");
+		dropIcon->Property("anchors.margins", "5");
+		dropIcon->Property("fillMode", "Image.PreserveAspectFit");
+		dropIcon->Property("mipmap", "true");
+
+		
+		auto ColorOverlayTag = std::make_shared<QmlTag>("ColorOverlay");
+		ColorOverlayTag->Property("anchors.fill", "parent");
+		ColorOverlayTag->Property("source", "parent");
+		ColorOverlayTag->Property("color", textColor);
+
+		dropIcon->AddChild(ColorOverlayTag);
+
+		uiComboBox->Property("indicator", dropIcon->ToString());
+		uiComboBox->Property("model", GetModel(choiceset.choices));
 
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
         //TODO: Add hover effect
-        backgroundTag->Property("color", choiceset.backgroundColor);
+        backgroundTag->Property("color", backgroundColor);
         backgroundTag->Property("border.color", "'grey'");
         backgroundTag->Property("border.width", "1");
-        uiComboBox->Property("background", backgroundTag->ToString());
+		uiComboBox->Property("background", backgroundTag->ToString());
+
 		if (!choiceset.placeholder.empty())
 		{
 			uiComboBox->Property("currentIndex", "-1");
@@ -641,16 +649,17 @@ namespace RendererQml
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
         //TODO: Add hover effect
-        backgroundTagDelegate->Property("color", choiceset.backgroundColor);
+        backgroundTagDelegate->Property("color", backgroundColor);
         backgroundTagDelegate->Property("border.color", "'grey'");
         backgroundTagDelegate->Property("border.width", "1");
         uiItemDelegate->Property("background", backgroundTagDelegate->ToString());
+
 		auto uiItemDelegate_Text = std::make_shared<QmlTag>("Text");
 		uiItemDelegate_Text->Property("text", "modelData.text");
 		uiItemDelegate_Text->Property("font", "parent.font");
 		uiItemDelegate_Text->Property("verticalAlignment", "Text.AlignVCenter");
-    uiItemDelegate_Text->Property("color", textColor);
-    
+		uiItemDelegate_Text->Property("color", textColor);
+		
 		if (choiceset.choices[0].isWrap)
 		{
 			uiItemDelegate_Text->Property("wrapMode", "Text.Wrap");
@@ -668,9 +677,10 @@ namespace RendererQml
 		uiContentItem_Text->Property("text", "parent.displayText");
 		uiContentItem_Text->Property("font", "parent.font");
 		uiContentItem_Text->Property("verticalAlignment", "Text.AlignVCenter");
-		uiContentItem_Text->Property("leftPadding", "parent.font.pixelSize + parent.spacing");
+		uiContentItem_Text->Property("padding", std::to_string(context->GetConfig()->GetSpacing().paddingSpacing));
 		uiContentItem_Text->Property("elide", "Text.ElideRight");
-    uiContentItem_Text->Property("color", textColor);
+		uiContentItem_Text->Property("color", textColor);
+
 
 		uiComboBox->Property("contentItem", uiContentItem_Text->ToString());
 				
@@ -712,7 +722,7 @@ namespace RendererQml
 		return "_" + std::to_string(ButtonType) + "_" + std::to_string(ButtonNumber);
 	}
 
-	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetButtonGroup(ChoiceSet choiceset)
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetButtonGroup(ChoiceSet choiceset, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		auto uiColumn = std::make_shared<QmlTag>("Column");
 	
@@ -746,7 +756,7 @@ namespace RendererQml
 		// render as a series of buttons
 		for (const auto& choice : choiceset.choices)
 		{
-			uiInnerColumn->AddChild(GetCheckBox(choice));
+			uiInnerColumn->AddChild(GetCheckBox(choice, context));
 		}
 	
 		uiColumn->AddChild(uiInnerColumn);
@@ -754,7 +764,7 @@ namespace RendererQml
 	}
 
 
-	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetCheckBox(Checkbox checkbox)
+	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::GetCheckBox(Checkbox checkbox, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		std::shared_ptr<QmlTag> uiButton;
 
@@ -776,7 +786,7 @@ namespace RendererQml
 		uiButton->Property("id", checkbox.id);
 		uiButton->Property("text", "\"" + checkbox.text + "\"");
 		uiButton->Property("Layout.maximumWidth", "parent.parent.parent.width");
-		uiButton->Property("font.pixelSize", std::to_string(checkbox.fontSize));
+		uiButton->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default)));
 
 		if (!checkbox.isVisible)
 		{
@@ -837,7 +847,7 @@ namespace RendererQml
 		uiText->Property("horizontalAlignment", "Text.AlignLeft");
 		uiText->Property("verticalAlignment", "Text.AlignVCenter");
 		uiText->Property("leftPadding", "parent.indicator.width + parent.spacing");
-        uiText->Property("color", checkbox.textColor);
+        uiText->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 	
 		if (checkbox.isWrap)
 		{
