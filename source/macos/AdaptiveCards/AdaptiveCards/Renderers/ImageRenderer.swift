@@ -22,7 +22,8 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         let cgsize = imageProperties.contentSize
 
         // Setting up ImageView based on Image Properties
-        let imageView = NSImageView(image: image)
+        let imageView = NSImageView(frame: NSRect(x: 0, y: 0, width: cgsize.width, height: cgsize.height))
+        imageView.image = image
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer?.masksToBounds = true
         
@@ -52,33 +53,64 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             }
         }
     
-        wrappingView.addSubview(imageView)
-        
-        // Image View anchors
-        imageView.leadingAnchor.constraint(equalTo: wrappingView.leadingAnchor).isActive = true
-        imageView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
-        imageView.topAnchor.constraint(equalTo: wrappingView.topAnchor).isActive = true
-        imageView.bottomAnchor.constraint(equalTo: wrappingView.bottomAnchor).isActive = true
-        
-        var radius: CGFloat = 0
-        if imageProperties.acsImageSize == ACSImageSize.stretch {
-            wrappingView.widthAnchor.constraint(equalToConstant: parent.fittingSize.width).isActive = true
-            wrappingView.heightAnchor.constraint(equalTo: wrappingView.widthAnchor, multiplier: ImageUtils.getAspectRatio(from: cgsize).width).isActive = true
-            radius = parent.fittingSize.width / 2.0
-        } else if imageProperties.hasExplicitDimensions {
-            wrappingView.widthAnchor.constraint(equalToConstant: imageProperties.pixelWidth).isActive = true
-            wrappingView.heightAnchor.constraint(equalToConstant: imageProperties.pixelHeight).isActive = true
-            radius = imageProperties.pixelWidth / 2.0
-        } else {
-            wrappingView.widthAnchor.constraint(equalToConstant: cgsize.width).isActive = true
-            wrappingView.heightAnchor.constraint(equalToConstant: cgsize.height).isActive = true
-            radius = cgsize.width / 2.0
+        switch imageProperties.acsHorizontalAlignment {
+        case .center: imageView.centerXAnchor.constraint(equalTo: wrappingView.centerXAnchor).isActive = true
+        case .right: imageView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
+        default: imageView.leadingAnchor.constraint(equalTo: wrappingView.leadingAnchor).isActive = true
         }
         
+        wrappingView.heightAnchor.constraint(equalTo: imageView.heightAnchor).isActive = true
+        if imageProperties.acsImageSize == ACSImageSize.stretch {
+            wrappingView.widthAnchor.constraint(greaterThanOrEqualTo: imageView.widthAnchor).isActive = true
+        } else {
+            wrappingView.widthAnchor.constraint(equalTo: imageView.widthAnchor).isActive = true
+        }
+        
+        let imagePriority = getImageViewLayoutPriority(wrappingView)
+        if imageProperties.acsImageSize != ACSImageSize.stretch {
+            imageView.setContentHuggingPriority(imagePriority, for: .horizontal)
+            imageView.setContentHuggingPriority(NSLayoutConstraint.Priority.defaultHigh, for: .vertical)
+            imageView.setContentCompressionResistancePriority(imagePriority, for: .horizontal)
+            imageView.setContentCompressionResistancePriority(imagePriority, for: .vertical)
+        }
+        
+        configUpdateForImage(element: imageElement, with: hostConfig, image: image, imageView: imageView, contendHoldingView: wrappingView)
+        
         if imageElement.getStyle() == .person {
-            imageView.layer?.cornerRadius = radius
+            wrappingView.isPersonStyle = true
         }
         
         return wrappingView
+    }
+    
+    func configUpdateForImage(element: ACSImage, with hostConfig: ACSHostConfig, image: NSImage, imageView: NSImageView, contendHoldingView: ACRContentHoldingView) {
+        let superView = contendHoldingView
+        let imageProperties = superView.imageProperties
+        imageProperties?.updateContentSize(size: image.size)
+        let cgSize = imageProperties?.contentSize ?? CGSize.zero
+        
+        let priority = getImageViewLayoutPriority(superView)
+        
+        var constraints: [NSLayoutConstraint] = []
+        
+        constraints.append(imageView.widthAnchor.constraint(equalToConstant: cgSize.width))
+        constraints.append(imageView.heightAnchor.constraint(equalToConstant: cgSize.height))
+        constraints[0].priority = priority
+        constraints[1].priority = priority
+        
+        constraints.append(imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: cgSize.width / cgSize.height, constant: 0))
+        constraints.append(imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: cgSize.height / cgSize.width, constant: 0))
+        constraints[2].priority = priority + 2
+        constraints[3].priority = priority + 2
+        
+        NSLayoutConstraint.activate(constraints)
+                    
+        superView.invalidateIntrinsicContentSize()
+    }
+    
+    func getImageViewLayoutPriority(_ wrappingView: NSView) -> NSLayoutConstraint.Priority {
+        let ACRColumnWidthPriorityStretch = 249
+        let priority = wrappingView.contentHuggingPriority(for: .horizontal)
+        return (Int(priority.rawValue) > ACRColumnWidthPriorityStretch) ? NSLayoutConstraint.Priority.defaultHigh : priority
     }
 }

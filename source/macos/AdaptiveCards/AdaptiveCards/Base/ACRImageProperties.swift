@@ -41,7 +41,7 @@ class ACRImageProperties: NSObject {
         acsHorizontalAlignment = imageElement.getHorizontalAlignment()
     }
     
-    private func updateContentSize(size: CGSize) {
+    func updateContentSize(size: CGSize) {
         let ratios: CGSize = ImageUtils.getAspectRatio(from: size)
 
         let heightToWidthRatio = ratios.height
@@ -70,6 +70,7 @@ class ACRImageProperties: NSObject {
         } else if acsImageSize == ACSImageSize.small || acsImageSize == ACSImageSize.medium || acsImageSize == ACSImageSize.large {
             newSize = contentSize
             newSize.height = contentSize.width * heightToWidthRatio
+            contentSize = newSize
         }
     }
 }
