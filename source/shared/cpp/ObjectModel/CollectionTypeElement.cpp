@@ -45,8 +45,8 @@ void CollectionTypeElement::SetPadding(const bool value)
 // Applies Padding Flag When appropriate
 void CollectionTypeElement::ConfigPadding(const ParseContext& context)
 {
-    // We set padding when child's style is set explicitly (not None) and is different than the parental style
-    const bool padding = (GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle() != GetStyle());
+    // We set padding when child's style is set explicitly (not None) and is different than the parental style or if the style is emphasis or if background image is not present
+    const bool padding = ( GetBackgroundImage() != NULL || ((GetStyle() != ContainerStyle::None) && (context.GetParentalContainerStyle()!= GetStyle())) || GetStyle() == ContainerStyle::Emphasis);
     SetPadding(padding);
 }
 

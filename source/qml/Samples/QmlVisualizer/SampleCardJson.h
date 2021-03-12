@@ -1442,6 +1442,36 @@ namespace Samples
           "separator": true
         }
       ]
+    },
+	{
+      "type": "TextBlock",
+      "text": "Weighted Width"
+    },
+    {
+      "type": "ColumnSet",
+      "style": "emphasis",
+      "columns": [
+        {
+          "type": "Column",
+          "width": 30,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "WeightedWidth:30%"
+            }
+          ]
+        },
+        {
+          "type": "Column",
+          "width": 70,
+          "items": [
+            {
+              "type": "TextBlock",
+              "text": "WeightedWidth:70%"
+            }
+          ]
+        }
+      ]
     }
   ]
 })";

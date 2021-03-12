@@ -1473,7 +1473,9 @@ namespace RendererQml
 		int usedWidth = 0;
 		int widthElements = 0;
 		bool bleedFlag = false;
-		int margin_released = 0;
+		int marginReleased = 0;
+		int weightedWidth = 0;
+		int weigthedWidthCount = 0;
 
 		if (columnSet->GetId().empty())
 		{
@@ -1519,18 +1521,7 @@ namespace RendererQml
 
 		uiFrame->Property("padding", "0");
 
-		if (columnSet->GetBackgroundImage())
-		{
-			auto url = columnSet->GetBackgroundImage()->GetUrl();
-
-			std::string file_path = __FILE__;
-			std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-			dir_path.append("\\Images\\sampleImage.jpg");
-			std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
-
-			uiFrame->Property("background", "Image { source: \"" + std::string("file:/") + dir_path + "\"}");
-		}
-		else if (columnSet->GetStyle() != AdaptiveCards::ContainerStyle::None)
+		if (columnSet->GetStyle() != AdaptiveCards::ContainerStyle::None)
 		{
 			const auto color = context->GetConfig()->GetBackgroundColor(columnSet->GetStyle());
 			uiFrame->Property("background", "Rectangle{border.width:0; color : \"" + color + "\";}");
@@ -1540,7 +1531,7 @@ namespace RendererQml
 			uiFrame->Property("background", "Rectangle{border.width : 0; color : \"transparent\"}");
 		}
 
-		//TODO : Stretch property.
+		//TODO : Auto and Stretch property.
 
 		for (int i = 0; i < no_of_columns; i++)
 		{
@@ -1562,7 +1553,8 @@ namespace RendererQml
 				uiRow->AddChild(uiElement);
 
 				const auto width = cardElement->GetWidth();
-				if (width != "stretch" && width != "auto" && width != "")
+				
+				if (width.size() > 2 && width.substr(width.size() - 3, 2) == "px")
 				{
 					uiElement->Property("width", width.substr(0, width.size() - 2));
 					usedWidth += std::stoi(width.substr(0, width.size() - 2));
@@ -1570,14 +1562,23 @@ namespace RendererQml
 				}
 				else
 				{
-					uiElement->Property("width", "row_" + columnSet->GetId() + ".getColumnWidth()");
 					bleedFlag = true;
+					if (width == "stretch" || width == "auto")
+					{
+						uiElement->Property("width", "row_" + columnSet->GetId() + ".getColumnWidth('')");
+					}
+					else
+					{
+						weightedWidth += std::stoi(width);
+						uiElement->Property("width", "row_" + columnSet->GetId() + ".getColumnWidth(" + width + ")");
+						weigthedWidthCount++;
+					}
 				}
 
 				if (i == 0 && cardElement->GetBleed() && cardElement->GetCanBleed())
 				{
 					uiRow->RemoveProperty("Layout.leftMargin");
-					margin_released += margin;
+					marginReleased += margin;
 					if (!columnSet->GetPadding())
 					{
 						uiRowLayout->Property("x", Formatter() << "-" << margin);
@@ -1587,21 +1588,21 @@ namespace RendererQml
 				if (i == no_of_columns - 1 && cardElement->GetBleed() && cardElement->GetCanBleed())
 				{
 					uiRow->RemoveProperty("Layout.rightMargin");
-					margin_released += margin;
+					marginReleased += margin;
 				}
 			}
 		}
 
 		if (!columnSet->GetPadding())
 		{
-			margin_released += (2 * margin);
+			marginReleased += (2 * margin);
 		}
 
-		uiRowLayout->Property("width", "parent.width + " + std::to_string(margin_released));
+		uiRowLayout->Property("width", "parent.width + " + std::to_string(marginReleased));
 
-		uiFrame->AddFunctions("function getColumnHeight(){return Math.max(minHeight," + heightString.substr(0, heightString.size() - 2) + ")}");
+		uiFrame->AddFunctions(Formatter() << "function getColumnHeight(){return Math.max(minHeight," << heightString.substr(0, heightString.size() - 2) << ")}");
 
-		uiRow->AddFunctions("function getColumnWidth() {return (parent.width - (" + std::to_string(usedWidth + (2 * margin)) + ")) / " + std::to_string(no_of_columns - widthElements) + "}");
+		uiRow->AddFunctions(Formatter() << "function getColumnWidth(width) { var calculatedWidth =  (parent.width - (" << usedWidth + (2 * margin) << ")) / " << no_of_columns - widthElements << "; if(width === ''){ return calculatedWidth} else { return (" << weigthedWidthCount << " * calculatedWidth * width)/ " << weightedWidth << "}}");
 
 		if (columnSet->GetBleed() && columnSet->GetCanBleed())
 		{
