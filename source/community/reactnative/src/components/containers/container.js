@@ -65,7 +65,7 @@ export class Container extends React.Component {
 
 		var containerContent = (
 			<ContainerWrapper json={payload} style={containerStyle} containerStyle={this.props.containerStyle}>
-				{this.getSpacingElement()}
+				{(payload.spacing || payload.separator) && this.getSpacingElement()}
 				{this.parsePayload()}
 				{showValidationText && this.getValidationText()}
 			</ContainerWrapper>
