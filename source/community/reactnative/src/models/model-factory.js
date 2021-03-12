@@ -13,8 +13,8 @@ export class ModelFactory {
         if (payload.requires) {
             let requirements = new HostCapabilities(payload.requires)
             let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
-            if (requirements.satisfied(hostCapabilities)) {
-                const elementModel = this.getElement(payload, parent);
+            const elementModel = this.getElement(payload, parent);
+            if (elementModel && requirements.satisfied(hostCapabilities)) {
                 return this.addCustomPropertyInModel(elementModel, payload)
             } else {
                 return ModelFactory.checkForFallBack(payload, parent);
