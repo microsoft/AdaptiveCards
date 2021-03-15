@@ -59,7 +59,7 @@ namespace AdaptiveNamespace
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* containerCardId);
-        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+        HRESULT LinkActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* submitAction,
                                        _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         HRESULT LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);

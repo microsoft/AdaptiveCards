@@ -2,30 +2,33 @@
 // Licensed under the MIT License.
 #pragma once
 
-#include "SubmitAction.h"
+#include "ExecuteAction.h"
 #include "AdaptiveActionElement.h"
 
 namespace AdaptiveNamespace
 {
-    class DECLSPEC_UUID("32114ce2-7e10-4f7f-8225-bfd661c6794c") AdaptiveSubmitAction
+    class DECLSPEC_UUID("05764D21-0053-4282-A254-10A93BA21D7B") AdaptiveExecuteAction
         : public Microsoft::WRL::RuntimeClass<Microsoft::WRL::RuntimeClassFlags<Microsoft::WRL::RuntimeClassType::WinRtClassicComMix>,
-                                              ABI::AdaptiveNamespace::IAdaptiveSubmitAction,
+                                              ABI::AdaptiveNamespace::IAdaptiveExecuteAction,
                                               ABI::AdaptiveNamespace::IAdaptiveActionElement,
                                               Microsoft::WRL::CloakedIid<ITypePeek>,
                                               Microsoft::WRL::CloakedIid<AdaptiveNamespace::AdaptiveActionElementBase>>
     {
-        AdaptiveRuntime(AdaptiveSubmitAction);
+        AdaptiveRuntime(AdaptiveExecuteAction);
 
     public:
         HRESULT RuntimeClassInitialize() noexcept;
-        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::SubmitAction>& sharedSubmitAction);
+        HRESULT RuntimeClassInitialize(const std::shared_ptr<AdaptiveSharedNamespace::ExecuteAction>& sharedExecuteAction);
 
-        // IAdaptiveSubmitAction
+        // IAdaptiveExecuteAction
         IFACEMETHODIMP get_DataJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonValue* data);
 
         IFACEMETHODIMP get_AssociatedInputs(_Out_ ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs);
         IFACEMETHODIMP put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs);
+
+        IFACEMETHODIMP get_Verb(_Outptr_ HSTRING* verb);
+        IFACEMETHODIMP put_Verb(_In_ HSTRING verb);
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
@@ -92,7 +95,7 @@ namespace AdaptiveNamespace
             returnPointer = PeekHelper(riid, this);
             if (returnPointer == nullptr)
             {
-                returnPointer = PeekHelper(riid, (AdaptiveActionElementBase*) this);
+                returnPointer = PeekHelper(riid, (AdaptiveActionElementBase*)this);
             }
 
             return returnPointer;
@@ -101,7 +104,8 @@ namespace AdaptiveNamespace
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonValue> m_dataJson;
         ABI::AdaptiveNamespace::AssociatedInputs m_associatedInputs;
+        Microsoft::WRL::Wrappers::HString m_verb;
     };
 
-    ActivatableClass(AdaptiveSubmitAction);
+    ActivatableClass(AdaptiveExecuteAction);
 }
