@@ -40,6 +40,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        scrollView.focusRingType = .exterior
         scrollView.borderType = NSBorderType.bezelBorder
         scrollView.autohidesScrollers = true
         textView.delegate = self

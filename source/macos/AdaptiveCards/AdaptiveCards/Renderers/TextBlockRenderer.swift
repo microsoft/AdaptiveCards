@@ -13,22 +13,7 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.translatesAutoresizingMaskIntoConstraints = false
         
         let markdownResult = BridgeTextUtils.processText(from: textBlock, hostConfig: hostConfig)
-        let attributedString: NSMutableAttributedString
-        if markdownResult.isHTML, let htmlData = markdownResult.htmlData {
-            do {
-                attributedString = try NSMutableAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-                // Delete trailing newline character
-                attributedString.deleteCharacters(in: NSRange(location: attributedString.length - 1, length: 1))
-                textView.isSelectable = true
-            } catch {
-                attributedString = NSMutableAttributedString(string: markdownResult.parsedString)
-            }
-        } else {
-            attributedString = NSMutableAttributedString(string: markdownResult.parsedString)
-            // Delete <p> and </p>
-            attributedString.deleteCharacters(in: NSRange(location: 0, length: 3))
-            attributedString.deleteCharacters(in: NSRange(location: attributedString.length - 4, length: 4))
-        }
+        let attributedString = TextUtils.getMarkdownString(parserResult: markdownResult)
         
         textView.isEditable = false
         textView.textContainer?.lineFragmentPadding = 0

@@ -28,25 +28,10 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
                 logError("Not of type ACSTextRun")
                 continue
             }
-
-            let textRunContent: NSMutableAttributedString
                 
             let markdownResult = BridgeTextUtils.processText(fromRichTextBlock: textRun, hostConfig: hostConfig)
-            if markdownResult.isHTML, let htmlData = markdownResult.htmlData {
-                do {
-                    textRunContent = try NSMutableAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
-                    // Delete trailing newline character
-                    textRunContent.deleteCharacters(in: NSRange(location: textRunContent.length - 1, length: 1))
-                    textView.isSelectable = true
-                } catch {
-                    textRunContent = NSMutableAttributedString(string: markdownResult.parsedString)
-                }
-            } else {
-                textRunContent = NSMutableAttributedString(string: markdownResult.parsedString)
-                // Delete <p> and </p>
-                textRunContent.deleteCharacters(in: NSRange(location: 0, length: 3))
-                textRunContent.deleteCharacters(in: NSRange(location: textRunContent.length - 4, length: 4))
-            }
+            
+            let textRunContent = TextUtils.getMarkdownString(parserResult: markdownResult)
                 
             // Set paragraph style such as line break mode and alignment
             let paragraphStyle = NSMutableParagraphStyle()

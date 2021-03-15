@@ -28,15 +28,26 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         
         // Main loop to iterate over Array of facts
         for fact in factArray {
+            let markdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig)
+            let attributedContent = TextUtils.getMarkdownString(parserResult: markdownParserResult)
             let titleView = ACRFactTextField()
             let valueView = ACRFactTextField()
-            titleView.textValue = fact.getTitle()
-            titleView.setupTitle()
-            valueView.textValue = fact.getValue()
+            titleView.plainTextValue = fact.getTitle()
+            titleView.setupTitleString(with: hostConfig.getFontSize(.default, size: .default))
+            // If not markdown use plain text
+            if !markdownParserResult.isHTML {
+                valueView.plainTextValue = fact.getValue()
+            } else {
+                valueView.attributedTextValue = attributedContent
+            }
             
             if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: false), let textColor = ColorUtils.color(from: colorHex) {
                 titleView.textColor = textColor
                 valueView.textColor = textColor
+                if markdownParserResult.isHTML {
+                    attributedContent.addAttributes([.foregroundColor: textColor], range: NSRange(location: 0, length: attributedContent.length))
+                    valueView.attributedTextValue = attributedContent
+                }
             }
             
             if !(titleView.isEmpty) || !(valueView.isEmpty) {
