@@ -167,7 +167,7 @@ namespace AdaptiveCards.Rendering
         public virtual void Visit(AdaptiveToggleVisibilityAction action)
         {
         }
-        public virtual void Visit(AdaptiveExecuteAction media)
+        public virtual void Visit(AdaptiveExecuteAction action)
         {
         }
 
