@@ -107,7 +107,8 @@ export class Versions {
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
-    static readonly latest = Versions.v1_3;
+    static readonly v1_4 = new Version(1, 4);
+    static readonly latest = Versions.v1_4;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -131,6 +132,8 @@ export abstract class BaseSerializationContext {
 
     toJSONOriginalParam: any;
 
+    constructor(public targetVersion: Version = Versions.latest) {}
+    
     serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             if (!GlobalSettings.enableFullJsonRoundTrip) {
@@ -246,8 +249,6 @@ export abstract class BaseSerializationContext {
     getEventAt(index: number): IValidationEvent {
         return this._validationEvents[index];
     }
-
-    constructor(public targetVersion: Version = Versions.latest) {}
 
     get eventCount(): number {
         return this._validationEvents.length;
@@ -397,6 +398,44 @@ export class PixelSizeProperty extends PropertyDefinition {
 export interface IVersionedValue<TValue> {
     value: TValue;
     targetVersion?: Version;
+}
+
+export class StringArrayProperty extends PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string[] | undefined {
+        let sourceValue = source[this.name];
+
+        if (sourceValue === undefined || !Array.isArray(sourceValue)) {
+            return this.defaultValue;
+        }
+
+        let result: string[] = [];
+
+        for (let value of sourceValue) {
+            if (typeof value === "string") {
+                result.push(value);
+            }
+            else {
+                context.logParseEvent(
+                    sender,
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    `Invalid array value "${value}" of type "${typeof value}" ignored for "${this.name}".`);
+            }
+        }
+
+        return result;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: string[] | undefined, context: BaseSerializationContext) {
+        context.serializeArray(target, this.name, value);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: string[],
+        readonly onGetInitialValue?: (sender: SerializableObject) => string[] | undefined) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
 }
 
 export class ValueSetProperty extends PropertyDefinition {
@@ -632,12 +671,13 @@ export class SerializableObjectProperty extends PropertyDefinition {
         readonly targetVersion: Version,
         readonly name: string,
         readonly objectType: SerializableObjectType,
+        readonly nullable: boolean = false,
         defaultValue?: SerializableObject) {
         super(
             targetVersion,
             name,
             defaultValue,
-            (sender: SerializableObject) => { return new this.objectType(); });
+            (sender: SerializableObject) => { return this.nullable ? undefined : new this.objectType(); });
     }
 }
 
