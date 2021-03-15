@@ -70,7 +70,7 @@ void AdaptiveSharedNamespace::Authentication::SetButtons(std::vector<std::shared
 // Indicates non-default values have been set. If false, serialization can be safely skipped.
 bool Authentication::ShouldSerialize() const
 {
-    return !m_text.empty() && !m_connectionName.empty() && (m_tokenExchangeResource != nullptr) || !m_buttons.empty();
+    return !m_text.empty() || !m_connectionName.empty() || (m_tokenExchangeResource != nullptr) || !m_buttons.empty();
 }
 
 std::string Authentication::Serialize() const

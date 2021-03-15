@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
     class Refresh
     {
     public:
-        Refresh() : Refresh(nullptr, {}) {}
+        Refresh() {}
         Refresh(std::shared_ptr<BaseActionElement> action, const std::vector<std::string> userIds) :
             m_action(action), m_userIds(userIds) {}
 

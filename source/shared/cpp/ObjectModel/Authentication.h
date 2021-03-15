@@ -12,7 +12,7 @@ namespace AdaptiveSharedNamespace
     class Authentication
     {
     public:
-        Authentication() : Authentication("", "", nullptr, {}) {}
+        Authentication() {}
         Authentication(std::string text, std::string connectionName, const std::shared_ptr<TokenExchangeResource>& tokenExchangeResource, const std::vector<std::shared_ptr<AuthCardButton>>& buttons) :
             m_text(text), m_connectionName(connectionName), m_tokenExchangeResource(tokenExchangeResource), m_buttons(buttons) {}
 

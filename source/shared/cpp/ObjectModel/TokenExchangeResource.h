@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
     class TokenExchangeResource
     {
     public:
-        TokenExchangeResource() : TokenExchangeResource("", "", "") {}
+        TokenExchangeResource() {}
         TokenExchangeResource(std::string id, std::string uri, std::string providerId) :
             m_id(id), m_uri(uri), m_providerId(providerId) {}
 

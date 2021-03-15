@@ -10,7 +10,7 @@ namespace AdaptiveSharedNamespace
     class AuthCardButton
     {
     public:
-        AuthCardButton() : AuthCardButton("", "", "", "") {}
+        AuthCardButton() {}
         AuthCardButton(std::string type, std::string title, std::string image, std::string value) :
             m_type(type), m_title(title), m_image(image), m_value(value) {}
 
