@@ -8,9 +8,12 @@
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACORemoteResourceInformation.h"
 #import "ACRIBaseInputHandler.h"
+#import "ACORefresh.h"
 #import <Foundation/Foundation.h>
 
 @interface ACOAdaptiveCard : NSObject
+
+@property ACORefresh *refresh;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 - (NSData *)inputs;

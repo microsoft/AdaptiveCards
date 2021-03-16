@@ -303,6 +303,7 @@ using namespace AdaptiveCards;
     NSNumber *showcard = [ACOBaseActionElement getKey:ACRShowCard];
     NSNumber *toggle = [ACOBaseActionElement getKey:ACRToggleVisibility];
     NSNumber *unknown = [ACOBaseActionElement getKey:ACRUnknownAction];
+    NSNumber *execute = [ACOBaseActionElement getKey:ACRExecute];
 
     _overwrittenBuilders = [[NSMutableDictionary alloc] init];
 
@@ -312,6 +313,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 showcard : [ACRShowCardTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance]
             };
@@ -320,6 +322,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance],
                 unknown : [ACRUnknownActionTargetBuilder getInstance]
             };
@@ -328,6 +331,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance]
             };
             break;

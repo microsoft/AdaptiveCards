@@ -2,7 +2,7 @@
 //  ACOBaseCardElement
 //  ACOBaseCardElement.mm
 //
-//  Copyright © 2018 Microsoft. All rights reserved.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 #import "ACOBaseCardElement.h"
 #import "ACRRegistrationPrivate.h"

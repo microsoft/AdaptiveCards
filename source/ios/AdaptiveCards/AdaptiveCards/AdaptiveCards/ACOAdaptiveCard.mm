@@ -14,6 +14,7 @@
 #import "AdaptiveCardParseWarning.h"
 #import "ParseResult.h"
 #import "SharedAdaptiveCard.h"
+#import "ACORefreshPrivate.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -59,7 +60,7 @@ using namespace AdaptiveCards;
     if (payload) {
         try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.3"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.4"));
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for (const auto &warning : parseWarnings) {
@@ -67,7 +68,10 @@ using namespace AdaptiveCards;
                 [acrParseWarnings addObject:acrParseWarning];
             }
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
-            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
+            if (card && card->_adaptiveCard) {
+                card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
+            }
+            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];            
         } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();
