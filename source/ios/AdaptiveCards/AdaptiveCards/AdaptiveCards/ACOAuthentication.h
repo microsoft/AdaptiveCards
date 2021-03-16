@@ -5,7 +5,6 @@
 //  Copyright © 2021 Microsoft. All rights reserved.
 //
 
-#import "ACOAdaptiveCard.h"
 #import "ACOAuthCardButton.h"
 #import "ACOTokenExchangeResource.h"
 #import <Foundation/Foundation.h>

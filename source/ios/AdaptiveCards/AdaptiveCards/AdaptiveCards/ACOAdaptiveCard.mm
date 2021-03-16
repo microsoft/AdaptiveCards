@@ -71,7 +71,7 @@ using namespace AdaptiveCards;
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
             if (card && card->_adaptiveCard) {
                 card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
-                card->_authenticaiton = [[ACOAuthentication init:card->_adaptiveCard->GetAuthentication()]];
+                card->_authenticaiton = [[ACOAuthentication alloc] init:card->_adaptiveCard->GetAuthentication()];
             }
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         } catch (const AdaptiveCardParseException &e) {

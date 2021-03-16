@@ -153,14 +153,14 @@
 		6BFF99E0260012380028069F /* ACORefresh.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99DD260012380028069F /* ACORefresh.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF99E1260012380028069F /* ACORefresh.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF99DE260012380028069F /* ACORefresh.mm */; };
 		6BFF99E2260012380028069F /* ACORefreshPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99DF260012380028069F /* ACORefreshPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		6BFF99EC2600387A0028069F /* ACOTokenExchangeResourcePrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99E92600387A0028069F /* ACOTokenExchangeResourcePrivate.h */; };
-		6BFF99ED2600387A0028069F /* ACOTokenExchangeResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99EA2600387A0028069F /* ACOTokenExchangeResource.h */; };
+		6BFF99EC2600387A0028069F /* ACOTokenExchangeResourcePrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99E92600387A0028069F /* ACOTokenExchangeResourcePrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BFF99ED2600387A0028069F /* ACOTokenExchangeResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99EA2600387A0028069F /* ACOTokenExchangeResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF99EE2600387A0028069F /* ACOTokenExchangeResource.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF99EB2600387A0028069F /* ACOTokenExchangeResource.mm */; };
-		6BFF99FA26003EBA0028069F /* ACOAuthCardButtonPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99F726003EBA0028069F /* ACOAuthCardButtonPrivate.h */; };
+		6BFF99FA26003EBA0028069F /* ACOAuthCardButtonPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99F726003EBA0028069F /* ACOAuthCardButtonPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF99FB26003EBA0028069F /* ACOAutoCardButton.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF99F826003EBA0028069F /* ACOAutoCardButton.mm */; };
-		6BFF99FC26003EBA0028069F /* ACOAuthCardButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99F926003EBA0028069F /* ACOAuthCardButton.h */; };
-		6BFF9A0326004C580028069F /* ACOAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF9A0026004C580028069F /* ACOAuthentication.h */; };
-		6BFF9A0426004C580028069F /* ACOAuthenticationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF9A0126004C580028069F /* ACOAuthenticationPrivate.h */; };
+		6BFF99FC26003EBA0028069F /* ACOAuthCardButton.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF99F926003EBA0028069F /* ACOAuthCardButton.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BFF9A0326004C580028069F /* ACOAuthentication.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF9A0026004C580028069F /* ACOAuthentication.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6BFF9A0426004C580028069F /* ACOAuthenticationPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BFF9A0126004C580028069F /* ACOAuthenticationPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		6BFF9A0526004C580028069F /* ACOAuthentication.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF9A0226004C580028069F /* ACOAuthentication.mm */; };
 		7ECFB640219A3940004727A9 /* ParseContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7ECFB63E219A3940004727A9 /* ParseContext.cpp */; };
 		7ECFB641219A3940004727A9 /* ParseContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 7ECFB63F219A3940004727A9 /* ParseContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -1275,7 +1275,6 @@
 				6B224279220BAC8B000ACDA1 /* BaseElement.h in Headers */,
 				F448732A1EE2261F00FCAFAE /* ToggleInput.h in Headers */,
 				6BC30F7621E5750A00B9FAAE /* EnumMagic.h in Headers */,
-				6BFF99FA26003EBA0028069F /* ACOAuthCardButtonPrivate.h in Headers */,
 				6B3787B720CA00D300015401 /* ACRUILabel.h in Headers */,
 				F44873281EE2261F00FCAFAE /* TimeInput.h in Headers */,
 				F44873261EE2261F00FCAFAE /* TextInput.h in Headers */,
@@ -1295,13 +1294,11 @@
 				F44873001EE2261F00FCAFAE /* ChoiceSetInput.h in Headers */,
 				F44872FE1EE2261F00FCAFAE /* ChoiceInput.h in Headers */,
 				F44872FC1EE2261F00FCAFAE /* BaseInputElement.h in Headers */,
-				6BFF9A0326004C580028069F /* ACOAuthentication.h in Headers */,
 				F4071C7A1FCCBAEF00AF4FEA /* ElementParserRegistration.h in Headers */,
 				F4071C7B1FCCBAEF00AF4FEA /* ActionParserRegistration.h in Headers */,
 				F4F44B7B20478C5C00A2F24C /* DateTimePreparser.h in Headers */,
 				F42C2F4C20351A8E008787B0 /* ACOBaseCardElementPrivate.h in Headers */,
 				F4F44B7A20478C5C00A2F24C /* DateTimePreparsedToken.h in Headers */,
-				6BFF9A0426004C580028069F /* ACOAuthenticationPrivate.h in Headers */,
 				F4CAE77C1F7325DF00545555 /* Separator.h in Headers */,
 				F4F6BA29204E107F003741B6 /* UnknownElement.h in Headers */,
 				F44873241EE2261F00FCAFAE /* TextBlock.h in Headers */,
@@ -1347,7 +1344,6 @@
 				F427410A1EF864A900399FBB /* ACRBaseCardElementRenderer.h in Headers */,
 				F4CAE7821F75AB9000545555 /* ACOAdaptiveCard.h in Headers */,
 				F4C1F6001F2C23FD0018CB78 /* ACRActionShowCardRenderer.h in Headers */,
-				6BFF99EC2600387A0028069F /* ACOTokenExchangeResourcePrivate.h in Headers */,
 				F4C1F5E61F2ABB0E0018CB78 /* ACRActionOpenURLRenderer.h in Headers */,
 				F429793A1F31458800E89914 /* ACRActionSubmitRenderer.h in Headers */,
 				F49683521F6CA24600DF0D3A /* ACRRenderer.h in Headers */,
@@ -1428,12 +1424,16 @@
 				6BFF99C425FFF53E0028069F /* ExecuteAction.h in Headers */,
 				6BFF99C625FFF53E0028069F /* TokenExchangeResource.h in Headers */,
 				6BFF99CA25FFF53E0028069F /* Refresh.h in Headers */,
-				6BFF99E2260012380028069F /* ACORefreshPrivate.h in Headers */,
+				6BFF99FA26003EBA0028069F /* ACOAuthCardButtonPrivate.h in Headers */,
+				6BFF9A0326004C580028069F /* ACOAuthentication.h in Headers */,
+				6BFF9A0426004C580028069F /* ACOAuthenticationPrivate.h in Headers */,
+				6BFF99EC2600387A0028069F /* ACOTokenExchangeResourcePrivate.h in Headers */,
 				6BFF99ED2600387A0028069F /* ACOTokenExchangeResource.h in Headers */,
+				6BFF99FC26003EBA0028069F /* ACOAuthCardButton.h in Headers */,
+				6BFF99E2260012380028069F /* ACORefreshPrivate.h in Headers */,
 				6BFF99E0260012380028069F /* ACORefresh.h in Headers */,
 				6BD90D8E24C37D5900B040FB /* ACRInputLabelViewPrivate.h in Headers */,
 				6B94F2DD24C7997D00E2B310 /* ACRTextInputHandler.h in Headers */,
-				6BFF99FC26003EBA0028069F /* ACOAuthCardButton.h in Headers */,
 				6BD025ED254784670009B019 /* ACOInputResults.h in Headers */,
 				6B250FB2253F5F8F007FFCFB /* ACRTargetBuilder.h in Headers */,
 				6B5E9CBB24B644B100757882 /* ACRToggleInputView.h in Headers */,
