@@ -27,7 +27,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     internal var alternateIconLayer = CAShapeLayer()
     internal var chevronLayer = CAShapeLayer()
     internal var titleLayer = CATextLayer()
-    internal var mouseDown = Bool()
+    internal var mouseDown: Bool = false
     public var showsIcon: Bool = false
     internal var chevronSetupFlag: Bool = true
     public var iconImageName: String = "attachment"
@@ -137,20 +137,26 @@ open class FlatButton: NSButton, CALayerDelegate {
             alphaValue = isEnabled ? 1 : 0.5
         }
     }
+    
+    public var contentInsets: NSEdgeInsets = NSEdgeInsets(top: 5, left: 20, bottom: 5, right: 20) {
+        didSet {
+            // TODO: Use this
+        }
+    }
 
     // MARK: Setup & Initialization
     
     public required init?(coder: NSCoder) {
         super.init(coder: coder)
-        setup()
+        initialize()
     }
     
     override init(frame: NSRect) {
         super.init(frame: frame)
-        setup()
+        initialize()
     }
     
-    internal func setup() {
+    private func initialize() {
         wantsLayer = true
         layer?.masksToBounds = false
         containerLayer.masksToBounds = false
@@ -178,6 +184,7 @@ open class FlatButton: NSButton, CALayerDelegate {
         layer?.addSublayer(containerLayer)
         setupTitle()
         setupImage()
+        setupTrackingArea()
         drawsChevron("arrowdown")
     }
     
@@ -209,7 +216,9 @@ open class FlatButton: NSButton, CALayerDelegate {
         length += showsIcon ? Float(iconLayer.frame.width) : 0
         length += Float(titleLayer.frame.width)
         length += Float(hSpacing * CGFloat(divisions))
-        layer?.frame = NSRect(x: Int((layer?.frame.origin.x)!), y: Int((layer?.frame.origin.y)!), width: Int(length), height: Int(bounds.height))
+        if let currentLayer = layer {
+            currentLayer.frame = NSRect(x: currentLayer.frame.minX, y: currentLayer.frame.minY, width: CGFloat(length), height: bounds.height)
+        }
         containerLayer.frame = NSRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
         switch imagePosition {
         case .imageAbove:
@@ -330,8 +339,7 @@ open class FlatButton: NSButton, CALayerDelegate {
         positionTitleAndImage()
     }
 
-    override open func awakeFromNib() {
-        super.awakeFromNib()
+    private func setupTrackingArea() {
         let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
         addTrackingArea(trackingArea)
     }

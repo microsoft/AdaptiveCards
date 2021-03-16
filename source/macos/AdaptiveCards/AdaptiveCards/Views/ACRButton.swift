@@ -29,7 +29,6 @@ class ACRButton: FlatButton {
     }
     
     private func initialize() {
-        cornerRadius = containerLayer.frame.height / 2
         borderWidth = 0
         borderColor = backgroundColor
         buttonColor = backgroundColor
@@ -56,6 +55,11 @@ class ACRButton: FlatButton {
     override func awakeFromNib() {
         super.awakeFromNib()
         initialize()
+    }
+    
+    override open func layout() {
+        super.layout()
+        cornerRadius = bounds.height / 2
     }
 
     override open func mouseEntered(with event: NSEvent) {
