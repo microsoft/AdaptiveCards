@@ -3,6 +3,33 @@
 	"type": "AdaptiveCard",
 	"version": "1.0",
 	"backgroundImage": "https://adaptivecards.io/content/cats/1.png",
+	"refresh": {
+		"action": {
+			"type": "Action.Execute",
+			"id": "refresh_action_id",
+			"verb": "refresh_action_verb"
+		},
+		"userIds": [
+			"refresh_userIds_0"
+		]
+	},
+	"authentication": {
+		"text": "authentication_text",
+		"connectionName": "authentication_connectionName",
+		"tokenExchangeResource": {
+			"id": "authentication_tokenExchangeResource_id",
+			"uri": "authentication_tokenExchangeResource_uri",
+			"providerId": "authentication_tokenExchangeResource_providerId"
+		},
+		"buttons": [
+			{
+				"type": "authentication_buttons_0_type",
+				"title": "authentication_buttons_0_title",
+				"image": "authentication_buttons_0_image",
+				"value": "authentication_buttons_0_value"
+			}
+		]
+	},
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
@@ -324,6 +351,16 @@
 			"id": "Action.Submit_id",
 			"data": {
 				"submitValue": true
+			}
+		},
+		{
+			"type": "Action.Execute",
+			"verb": "Action.Execute_verb",
+			"title": "Action.Execute_title",
+			"id": "Action.Execute_id",
+			"associatedInputs": "none",
+			"data": {
+				"Action.Execute_data_keyA": "Action.Execute_data_valueA"
 			}
 		},
 		{
