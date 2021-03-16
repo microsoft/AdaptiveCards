@@ -1053,11 +1053,6 @@ namespace RendererQml
 		auto uiRectangle = std::make_shared<QmlTag>("Rectangle");
 		auto uiImage = std::make_shared<QmlTag>("Image");
 
-		std::string file_path = __FILE__;
-		std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-		dir_path.append("\\Images\\Cat.png");
-		std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
-
 		if (image->GetId().empty())
 		{
 			image->SetId(Formatter() << "image_auto_" << context->getImageCounter());
@@ -1068,7 +1063,8 @@ namespace RendererQml
         }
 
 		uiImage->Property("id", image->GetId());
-		uiImage->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
+		uiImage->Property("readonly property bool isImage", "true");
+		uiImage->Property("source", "\"" + image->GetUrl() + "\"");
 		uiImage->Property("anchors.fill", "parent");
 
 		if (!image->GetIsVisible())
@@ -1214,12 +1210,8 @@ namespace RendererQml
 		{
 			auto url = cardElement->GetBackgroundImage()->GetUrl();
 
-			std::string file_path = __FILE__;
-			std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-			dir_path.append("\\Images\\sampleImage.jpg");
-			std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
-
-			uiContainer->Property("background", "Image { source: \"" + std::string("file:/") + dir_path + "\"}");
+			uiContainer->Property("background", "Image { source: \"" + url + "\" }");
+			uiContainer->Property("readonly property bool hasBackgroundImage", "true");
 		}
 		else if (cardElement->GetStyle() != AdaptiveCards::ContainerStyle::None)
 		{
@@ -1797,6 +1789,8 @@ namespace RendererQml
             //Add button icon
             if (!action->GetIconUrl().empty())
             {
+				buttonElement->Property("readonly property bool hasIconUrl", "true");
+
                 auto contentImage = std::make_shared<QmlTag>("Image");
                 contentImage->Property("id", Formatter() << buttonId << "_img");
                 contentImage->Property("height", Formatter() << fontSize);
@@ -1812,12 +1806,7 @@ namespace RendererQml
                     contentImage->Property("anchors.horizontalCenter", "parent.horizontalCenter");
                 }
 
-                //TODO: Adding dummy image. This should be replaced!
-                std::string file_path = __FILE__;
-                std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-                dir_path.append("\\Images\\Cat.png");
-                std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
-                contentImage->Property("source", "\"" + std::string("file:/") + dir_path + "\"");
+                contentImage->Property("source", "\"" + action->GetIconUrl() + "\"");
 
                 contentLayout->AddChild(contentImage);
             }

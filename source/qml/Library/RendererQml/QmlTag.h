@@ -29,6 +29,11 @@ namespace RendererQml
 
 
         const std::string GetId() const;
+		const std::string GetElement();
+		const std::string GetProperty(const std::string& name);
+		const std::vector<std::pair<std::string, std::string>>& GetProperties();
+		void Transform(Customizer tagCustomization);
+		const bool HasProperty(const std::string& name);
 
     private:
         std::string m_element;

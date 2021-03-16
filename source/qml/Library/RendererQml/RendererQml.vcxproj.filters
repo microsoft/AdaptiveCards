@@ -99,12 +99,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Image Include="Images\Cat.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Images\sampleImage.jpg">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
 </Project>
