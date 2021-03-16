@@ -14,6 +14,7 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate {
         setupViews()
         setupConstraints()
         setupActions()
+        setupTrackingArea()
     }
     
     public required init?(coder: NSCoder) {
@@ -67,6 +68,20 @@ class ACRChoiceButton: NSView, NSTextFieldDelegate {
         label.topAnchor.constraint(equalTo: topAnchor).isActive = true
         label.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
         label.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+    }
+    
+    private func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+    
+    override func mouseEntered(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRChoiceButton else { return }
+        contentView.button.isHighlighted = true
+    }
+    override func mouseExited(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRChoiceButton else { return }
+        contentView.button.isHighlighted = false
     }
     
     @objc private func handleButtonAction() {

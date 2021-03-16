@@ -36,6 +36,7 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
         setupConstraints()
         setUpControls()
         setUpTheme()
+        setupTrackingArea()
     }
     
     public required init?(coder: NSCoder) {
@@ -93,6 +94,21 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
         stepper.wantsLayer = true
         stepper.layer?.backgroundColor = .clear
         stepper.appearance = NSAppearance(named: .aqua)
+    }
+    
+    func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+    
+    override open func mouseEntered(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRNumericTextField else { return }
+        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
+    }
+    
+    override open func mouseExited(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRNumericTextField else { return }
+        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
 }
 

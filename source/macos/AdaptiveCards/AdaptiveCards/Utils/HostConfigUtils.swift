@@ -122,6 +122,18 @@ class ColorUtils {
             return nil
         }
     }
+    
+    static func hoverColorOnMouseEnter() -> NSColor {
+        if #available(OSX 10.14, *) {
+            return .unemphasizedSelectedTextBackgroundColor
+        } else {
+            return .windowBackgroundColor
+        }
+    }
+    
+    static func hoverColorOnMouseExit() -> NSColor {
+        return .textBackgroundColor
+    }
 }
 
 class TextUtils {

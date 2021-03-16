@@ -15,7 +15,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             view.translatesAutoresizingMaskIntoConstraints = false
             return view
         }()
-        let textView = ACRTextInputView()
+        let textView = ACRTextInputView(frame: .zero)
         var attributedInitialValue: NSMutableAttributedString
         
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -115,6 +115,15 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
 class ACRTextInputView: NSTextField, NSTextFieldDelegate {
     var maxLen: Int = 0
     
+    override init(frame frameRect: NSRect) {
+        super.init(frame: frameRect)
+        setupTrackingArea()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func textDidChange(_ notification: Notification) {
         guard maxLen > 0  else { return } // maxLen returns 0 if propery not set
         // This stops the user from exceeding the maxLength property of Inut.Text if prroperty was set
@@ -124,5 +133,20 @@ class ACRTextInputView: NSTextField, NSTextFieldDelegate {
         if textView.string.count > maxLen {
             textView.string = String(textView.string.dropLast(textView.string.count - maxLen))
         }
+    }
+    
+    func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+    
+    override func mouseEntered(with event: NSEvent) {
+        guard let textView = event.trackingArea?.owner as? ACRTextInputView else { return }
+        textView.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        guard let textView = event.trackingArea?.owner as? ACRTextInputView else { return }
+        textView.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
 }

@@ -63,8 +63,24 @@ extension ACRChoiceSetView: ACRChoiceButtonDelegate {
 // MARK: ACRChoiceSetFieldCompactView
 class ACRChoiceSetCompactView: NSPopUpButton {
     public let type: ACSChoiceSetStyle = .compact
+    private var trackingAreaDefined: Bool = false
     override func viewDidMoveToSuperview() {
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
+        // Could not create in init, had to add tracking area here
+        if !trackingAreaDefined {
+            trackingAreaDefined = true
+            let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+            addTrackingArea(trackingArea)
+        }
+    }
+    
+    override func mouseEntered(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRChoiceSetCompactView else { return }
+        contentView.isHighlighted = true
+    }
+    override func mouseExited(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRChoiceSetCompactView else { return }
+        contentView.isHighlighted = false
     }
 }

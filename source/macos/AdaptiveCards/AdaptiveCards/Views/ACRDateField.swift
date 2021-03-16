@@ -42,6 +42,7 @@ class ACRDateField: NSView {
         super.init(frame: frameRect)
         setupViews()
         setupConstraints()
+        setupTrackingArea()
     }
     
     public required init?(coder: NSCoder) {
@@ -76,6 +77,20 @@ class ACRDateField: NSView {
         
         testButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         testButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+    }
+    
+    private func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+    
+    override func mouseEntered(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
+        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseEnter()
+    }
+    override func mouseExited(with event: NSEvent) {
+        guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
+        contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
     
     // MARK: Actions
