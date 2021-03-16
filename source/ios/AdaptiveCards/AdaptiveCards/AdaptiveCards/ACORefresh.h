@@ -13,6 +13,6 @@
 @property ACOBaseActionElement *action;
 @property NSArray<NSString *> *userIds;
 
-- (instancetype)init:(ACOBaseActionElement *)action userIds:(NSArray<NSString *> *)userIds
+- (instancetype)init:(ACOBaseActionElement *)action userIds:(NSArray<NSString *> *)userIds;
 
 @end

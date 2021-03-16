@@ -6,6 +6,8 @@
 //
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACOAuthenticationPrivate.h"
+#import "ACORefreshPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
 #import "ACRIBaseInputHandler.h"
@@ -14,7 +16,6 @@
 #import "AdaptiveCardParseWarning.h"
 #import "ParseResult.h"
 #import "SharedAdaptiveCard.h"
-#import "ACORefreshPrivate.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -70,8 +71,9 @@ using namespace AdaptiveCards;
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
             if (card && card->_adaptiveCard) {
                 card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
+                card->_authenticaiton = [[ACOAuthentication init:card->_adaptiveCard->GetAuthentication()]];
             }
-            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];            
+            result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
             ErrorStatusCode errorStatusCode = e.GetStatusCode();

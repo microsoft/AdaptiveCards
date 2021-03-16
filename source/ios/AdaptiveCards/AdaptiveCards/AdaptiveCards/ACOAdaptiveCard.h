@@ -9,11 +9,13 @@
 #import "ACORemoteResourceInformation.h"
 #import "ACRIBaseInputHandler.h"
 #import "ACORefresh.h"
+#import "ACOAuthentication.h"
 #import <Foundation/Foundation.h>
 
 @interface ACOAdaptiveCard : NSObject
 
 @property ACORefresh *refresh;
+@property ACOAuthentication *authenticaiton;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 - (NSData *)inputs;
