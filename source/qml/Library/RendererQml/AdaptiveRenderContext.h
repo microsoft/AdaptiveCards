@@ -39,6 +39,9 @@ namespace RendererQml
         void setCardRootId(const std::string& rootId);
         const std::string getCardRootId();
 
+        void addToInputElementList(const std::string& elementId, const std::string& value);
+        const std::map<std::string, std::string> getInputElementList();
+
     private:
         std::vector<AdaptiveWarning> m_warnings;
         bool m_ancestorHasFallback;
@@ -48,6 +51,8 @@ namespace RendererQml
         std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> m_elementRenderers;
         std::string m_lang;
         std::string m_CardRootId;
+        std::map<std::string, std::string> m_inputElementList;
+
         int m_ContainerCounter{ 0 };
         int m_ImageCounter{ 0 };
 		int m_ColumnSetCounter{ 0 };

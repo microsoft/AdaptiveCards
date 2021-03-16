@@ -169,11 +169,15 @@ void SampleCardModel::onAdaptiveCardButtonClicked(const QString& title, const QS
 {
     if (type == "Action.OpenUrl")
     {
-        actionButtonClicked(title, type, data);
+        actionOpenUrlButtonClicked(title, type, data);
+    }
+    else if(type == "Action.Submit")
+    {
+        actionSubmitButtonClicked(title, type, data);
     }
 }
 
-void SampleCardModel::actionButtonClicked(const QString& title, const QString& type, const QString& data)
+void SampleCardModel::actionOpenUrlButtonClicked(const QString& title, const QString& type, const QString& data)
 {
     QString output;
     output.append("Title: " + title + "\n");
@@ -183,6 +187,15 @@ void SampleCardModel::actionButtonClicked(const QString& title, const QString& t
 
     // Open url in default browser
     ShellExecute(0, 0, toWString(data.toStdString()).c_str(), 0, 0, SW_SHOW);
+}
+
+void SampleCardModel::actionSubmitButtonClicked(const QString& title, const QString& type, const QString& data)
+{
+    QString output;
+    output.append("Title: " + title + "\n");
+    output.append("Type: " + type + "\n");
+    output.append("data: " + data);
+    emit sendCardResponseToQml(output);
 }
 
 const std::string SampleCardModel::getImagePath(const std::string& m_element)

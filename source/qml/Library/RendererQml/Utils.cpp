@@ -310,7 +310,7 @@ namespace RendererQml
 		
 	}
 
-	bool Utils::isValidTime(std::string& time)
+	const bool Utils::isValidTime(const std::string& time)
 	{
 		//24 hour format check
 		try

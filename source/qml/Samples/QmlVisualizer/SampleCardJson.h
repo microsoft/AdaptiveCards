@@ -460,7 +460,13 @@ namespace Samples
 		    "min":"1900-01-01",
 		    "max":"2030-01-01"
 		}
-	]
+	],
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "OK"
+        }
+      ]
     })";
 
 	const std::string card_ChoiceSetInput = R"({
@@ -833,7 +839,13 @@ namespace Samples
 		  "max": "17:00",
 		  "value": "25:30"
 		}
-	   ]
+	   ],
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "OK"
+        }
+      ]
 	})";
 
 	const std::string card_ImageSet = R"({
@@ -1512,6 +1524,37 @@ namespace Samples
                 "style": "positive"
             }
         ]
+    })";
+
+    const std::string card_Action_Submit = R"({
+      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "type": "AdaptiveCard",
+      "version": "1.0",
+      "body": [
+        {
+          "type": "TextBlock",
+          "text": "Present a form and submit it back to the originator"
+        },
+        {
+          "type": "Input.Text",
+          "id": "firstName",
+          "placeholder": "What is your first name?"
+        },
+        {
+          "type": "Input.Text",
+          "id": "lastName",
+          "placeholder": "What is your last name?"
+        }
+      ],
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "Action.Submit",
+          "data": {
+            "x": 13
+          }
+        }
+      ]
     })";
 }
 

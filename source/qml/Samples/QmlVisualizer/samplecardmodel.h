@@ -48,7 +48,8 @@ private:
     std::shared_ptr<AdaptiveCardQmlRenderer> renderer_ptr;
 
     static std::wstring toWString(const std::string& input);
-    void actionButtonClicked(const QString& title, const QString& type, const QString& data);
+    void actionOpenUrlButtonClicked(const QString& title, const QString& type, const QString& data);
+    void actionSubmitButtonClicked(const QString& title, const QString& type, const QString& data);
 
 	static const std::string getImagePath(const std::string& m_element);
 };

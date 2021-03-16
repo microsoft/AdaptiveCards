@@ -99,8 +99,7 @@ namespace RendererQml
 		static std::string GetWeight(AdaptiveCards::TextWeight weight);
 
 		static std::string GetDate(std::string date, bool MinimumorMaximum);   
-		static std::vector<std::string> ParseChoiceSetInputDefaultValues(const std::string& value);
-		static bool isValidTime(std::string& time);
+		static const bool isValidTime(const std::string& time);
 		static std::string defaultTimeto12hour(std::string& defaultTime);
 
         static std::string ConvertToLowerIdValue(const std::string& value);

@@ -224,4 +224,14 @@ namespace RendererQml
     {
         return m_CardRootId;
     }
+
+    void AdaptiveRenderContext::addToInputElementList(const std::string& elementId, const std::string& value)
+    {
+        m_inputElementList[elementId] = value;
+    }
+
+    const std::map<std::string, std::string> AdaptiveRenderContext::getInputElementList()
+    {
+        return m_inputElementList;
+    }
 }
