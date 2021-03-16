@@ -17,8 +17,8 @@
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
         <customObject id="-3" userLabel="Application" customClass="NSObject"/>
-        <customView misplaced="YES" id="Hz6-mo-xeY">
-            <rect key="frame" x="0.0" y="0.0" width="1044" height="437"/>
+        <customView misplaced="YES" id="Hz6-mo-xeY" customClass="z">
+            <rect key="frame" x="0.0" y="0.0" width="1044" height="412"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <scrollView misplaced="YES" autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n44-FB-6mh">
@@ -165,7 +165,6 @@
                 <constraint firstAttribute="trailing" secondItem="DZe-UF-Cz8" secondAttribute="trailing" constant="120" id="c0F-4a-epA"/>
                 <constraint firstItem="n44-FB-6mh" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="srJ-Vf-3DH"/>
                 <constraint firstItem="m2h-No-qKR" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="szG-Sd-8i0"/>
-                <constraint firstItem="DZe-UF-Cz8" firstAttribute="leading" secondItem="n44-FB-6mh" secondAttribute="trailing" constant="540" id="uOm-h8-U0d"/>
                 <constraint firstAttribute="trailing" secondItem="O4M-uk-PGq" secondAttribute="trailing" constant="76" id="uwU-JJ-SNm"/>
                 <constraint firstItem="O4M-uk-PGq" firstAttribute="top" secondItem="DZe-UF-Cz8" secondAttribute="bottom" constant="4" id="wk0-jC-LwJ"/>
                 <constraint firstItem="n44-FB-6mh" firstAttribute="bottom" secondItem="Hz6-mo-xeY" secondAttribute="bottom" id="z1a-zm-2kl"/>
