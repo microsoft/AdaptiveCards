@@ -439,7 +439,7 @@ namespace Samples
 	"body": [
 		{
 		    "type": "TextBlock",
-		    "text": "Date Format: MM/DD/YYYY"
+		    "text": "Sample Card with InputDate"
 		},
 		{
 		    "type": "Input.Date",

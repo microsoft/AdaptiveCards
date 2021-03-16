@@ -13,4 +13,12 @@ namespace RendererQml
         None
     };
 
+	enum class DateFormat
+	{
+		ddmmyy,
+		yymmdd,
+		yyddmm,
+		mmddyy
+	};
+
 }

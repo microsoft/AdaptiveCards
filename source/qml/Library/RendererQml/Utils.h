@@ -107,10 +107,13 @@ namespace RendererQml
 
 		static bool isSystemTime12Hour();
 
+		static RendererQml::DateFormat GetSystemDateFormat();
+
 		static std::vector<std::string> splitString(const std::string& string, char delimiter);
 
     private:
         Utils() {}
+		static std::string FetchSystemDateTime(const std::string& fetchFormat);
     };
 
     template<class T, class U>
