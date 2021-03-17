@@ -1,5 +1,7 @@
 # Text Headings
 
+Need to indicate to screen reader software that certain text acts as a heading, for accessible card navigation.
+
 ![Sample Card with Headings](https://user-images.githubusercontent.com/4442788/110691207-db662b80-81b2-11eb-9265-856d1885ad64.png)
 
 Web - `<h2>` or `aria-level="2"` supports levels 1-6 (though aria-level has no max, per spec)
@@ -12,7 +14,7 @@ iOS - [`UIAccessibilityTraitHeader`]() no level support
 
 ## Outcome
 
-Add `style` property with enum options `Paragraph` (default) and `Heading` to the `TextBlock` element. (See precedent in Input.Text.style, Action.x.style). When set to `Heading`, renderers must surface that to the platform's accessibility tree. Will need discussion with Accessibility team to confirm what the default heading-level should be on desktop platforms, and whether this binary option is sufficient for our purpose.
+Add `style` property with enum options `Paragraph` (default) and `Heading` to the `TextBlock` element. (See various usages of this property: Input.Text.style, Action.x.style, Container.style, Column.style, Image.style, Input.ChoiceSet.style). When set to `Heading`, renderers must surface that to the platform's accessibility tree. Will need discussion with Accessibility team to confirm what the default heading-level should be on desktop platforms, and whether this binary option is sufficient for our purpose.
 
 ```json
 {
@@ -43,7 +45,9 @@ Add `style` property with enum options `Paragraph` (default) and `Heading` to th
 }
 ```
 
-## A.) No Schema Change
+## Other options considered
+
+### A.) No Schema Change
 
 As `TextBlock` already renders Markdown, there is already a way for card authors to convey that certain text is a heading. Each renderer would have to correctly surface this information to the platform's accessibility tree.
 
@@ -75,7 +79,7 @@ As `TextBlock` already renders Markdown, there is already a way for card authors
 ```
 
 
-## B.) Add property to `TextBlock` and/or "TextRun"
+### B.) Add property to `TextBlock` and `TextRun`
 
 Add a `headingLevel` property to TextBlock. Zero and negative numbers indicate regular text (non-headings). Any positive number is acceptable. If number exceeds platform's max level, that max level will be used.
 
@@ -125,3 +129,6 @@ Add a `headingLevel` property to TextBlock. Zero and negative numbers indicate r
 }
 ```
 
+### C.) Add property to `TextRun` only
+
+Use above option B. only for `TextRun`, and combine with option A. for `TextBlock`. This avoids adding conflict between Markdown and our property in `TextBlock`, while still allowing `RichTextBlock` to contain headings.
