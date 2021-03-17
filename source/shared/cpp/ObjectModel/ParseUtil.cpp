@@ -85,6 +85,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
+    // Get value mapped to key. Validates that value is string JSON type.
     std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
@@ -143,10 +144,25 @@ namespace AdaptiveSharedNamespace
         return propertyValue.toStyledString();
     }
 
-    [[deprecated("Duplicate. Use GetString instead")]]
+    // Get value mapped to key as a string, regardless of value's JSON type.
     std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
-        return GetString(json, key, isRequired);
+        const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
+        auto propertyValue = json.get(propertyName, Json::Value());
+        if (propertyValue.empty())
+        {
+            if (isRequired)
+            {
+                throw AdaptiveCardParseException(ErrorStatusCode::RequiredPropertyMissing,
+                                                 "Property is required but was found empty: " + propertyName);
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        return propertyValue.asString();
     }
 
     [[deprecated("Use generalized DeserializeValue<T> instead")]]

@@ -19,6 +19,7 @@ import io.adaptivecards.objectmodel.ActionMode;
 import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.AssociatedInputs;
 import io.adaptivecards.objectmodel.BaseActionElement;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IsVisible;
 import io.adaptivecards.objectmodel.ShowCardAction;
@@ -331,13 +332,20 @@ public abstract class BaseActionElementRenderer implements IBaseActionElementRen
             }
             else
             {
-                if (m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
+                if (m_action.GetElementType() == ActionType.Execute || m_action.GetElementType() == ActionType.Submit || m_renderedAdaptiveCard.isActionSubmitable(view))
                 {
                     // Don't gather inputs or perform validation when AssociatedInputs is None
                     boolean gatherInputs = true;
                     try
                     {
-                        gatherInputs = Util.castTo(m_action, SubmitAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        try
+                        {
+                            gatherInputs = Util.castTo(m_action, ExecuteAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        }
+                        catch (ClassCastException e)
+                        {
+                            gatherInputs = Util.castTo(m_action, SubmitAction.class).GetAssociatedInputs() != AssociatedInputs.None;
+                        }
                     }
                     catch (ClassCastException e)
                     {
