@@ -51,7 +51,7 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
+    HRESULT AdaptiveExecuteAction::get_AssociatedInputs(_Out_ ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs)
     {
         *associatedInputs = m_associatedInputs;
         return S_OK;
@@ -63,9 +63,9 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveExecuteAction::get_Verb(HSTRING* verb) { return m_verb.CopyTo(verb); }
+    HRESULT AdaptiveExecuteAction::get_Verb(_Outptr_ HSTRING* verb) { return m_verb.CopyTo(verb); }
 
-    HRESULT AdaptiveExecuteAction::put_Verb(HSTRING verb) { return m_verb.Set(verb); }
+    HRESULT AdaptiveExecuteAction::put_Verb(_In_ HSTRING verb) { return m_verb.Set(verb); }
 
     HRESULT AdaptiveExecuteAction::GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel)
     try

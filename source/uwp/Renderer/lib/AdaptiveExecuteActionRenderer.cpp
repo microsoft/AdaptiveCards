@@ -20,9 +20,9 @@ namespace AdaptiveNamespace
     CATCH_RETURN;
 
     HRESULT AdaptiveExecuteActionRenderer::Render(_In_ IAdaptiveActionElement* action,
-                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                 _In_ IAdaptiveRenderArgs* renderArgs,
-                                                 _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+                                                  _In_ IAdaptiveRenderContext* renderContext,
+                                                  _In_ IAdaptiveRenderArgs* renderArgs,
+                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
     try
     {
         RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));

@@ -61,18 +61,18 @@ namespace AdaptiveNamespace
         return m_connectionName.Set(connectionName);
     }
 
-    HRESULT AdaptiveAuthentication::get_TokenExchangeResource(ABI::AdaptiveNamespace::IAdaptiveTokenExchangeResource** tokenExchangeResource)
+    HRESULT AdaptiveAuthentication::get_TokenExchangeResource(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveTokenExchangeResource** tokenExchangeResource)
     {
         return m_tokenExchangeResource.CopyTo(tokenExchangeResource);
     }
 
-    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(ABI::AdaptiveNamespace::IAdaptiveTokenExchangeResource* tokenExchangeResource)
+    HRESULT AdaptiveAuthentication::put_TokenExchangeResource(_In_ ABI::AdaptiveNamespace::IAdaptiveTokenExchangeResource* tokenExchangeResource)
     {
         m_tokenExchangeResource = tokenExchangeResource;
         return S_OK;
     }
 
-    HRESULT AdaptiveAuthentication::get_Buttons(IVector<ABI::AdaptiveNamespace::AdaptiveAuthCardButton*>** buttons)
+    HRESULT AdaptiveAuthentication::get_Buttons(_COM_Outptr_ IVector<ABI::AdaptiveNamespace::AdaptiveAuthCardButton*>** buttons)
     {
         return m_buttons.CopyTo(buttons);
     }

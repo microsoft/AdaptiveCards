@@ -32,18 +32,18 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveRefresh::get_Action(ABI::AdaptiveNamespace::IAdaptiveActionElement** action)
+    HRESULT AdaptiveRefresh::get_Action(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action)
     {
         return m_action.CopyTo(action);
     }
 
-    HRESULT AdaptiveRefresh::put_Action(ABI::AdaptiveNamespace::IAdaptiveActionElement* action)
+    HRESULT AdaptiveRefresh::put_Action(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action)
     {
         m_action = action;
         return S_OK;
     }
 
-    HRESULT AdaptiveRefresh::get_UserIds(ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds)
+    HRESULT AdaptiveRefresh::get_UserIds(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds)
     {
         return m_userIds.CopyTo(userIds);
     }

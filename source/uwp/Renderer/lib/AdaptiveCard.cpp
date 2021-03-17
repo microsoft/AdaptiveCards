@@ -292,23 +292,23 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Refresh(ABI::AdaptiveNamespace::IAdaptiveRefresh** refresh)
+    HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveRefresh** refresh)
     {
         return m_refresh.CopyTo(refresh);
     }
 
-    HRESULT AdaptiveCard::put_Refresh(ABI::AdaptiveNamespace::IAdaptiveRefresh* refresh)
+    HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveNamespace::IAdaptiveRefresh* refresh)
     {
         m_refresh = refresh;
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Authentication(ABI::AdaptiveNamespace::IAdaptiveAuthentication** authentication)
+    HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveAuthentication** authentication)
     {
         return m_authentication.CopyTo(authentication);
     }
 
-    HRESULT AdaptiveCard::put_Authentication(ABI::AdaptiveNamespace::IAdaptiveAuthentication* authentication)
+    HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveNamespace::IAdaptiveAuthentication* authentication)
     {
         m_authentication = authentication;
         return S_OK;

@@ -20,7 +20,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_Action(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** action);
         IFACEMETHODIMP put_Action(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action);
 
-        IFACEMETHODIMP get_UserIds(ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds);
+        IFACEMETHODIMP get_UserIds(_COM_Outptr_ ABI::Windows::Foundation::Collections::IVector<HSTRING>** userIds);
 
         HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::Refresh>& sharedModel);
 
