@@ -216,7 +216,6 @@ namespace RendererQml
 	{
 		//TODO:Parse markdown in the text
 
-		//TODO: To get the Qml equivalant of monospace fontType and add it to config
 		std::string fontFamily = context->GetConfig()->GetFontFamily(textBlock->GetFontType());
 		int fontSize = context->GetConfig()->GetFontSize(textBlock->GetFontType(), textBlock->GetTextSize());
 
@@ -230,17 +229,12 @@ namespace RendererQml
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
-		//TODO: Need to fix the color calculation
 		std::string color = context->GetColor(textBlock->GetTextColor(), textBlock->GetIsSubtle(), false);
 
 		uiTextBlock->Property("color", color);
 
-		//Value based on what is mentioned in the html renderer
-		uiTextBlock->Property("lineHeight", "1.33");
-
 		uiTextBlock->Property("font.pixelSize", std::to_string(fontSize));
 
-		//TODO: lighter weight showing same behaviour as default
 		uiTextBlock->Property("font.weight", Utils::GetWeight(textBlock->GetTextWeight()));
 
 		if (!textBlock->GetId().empty())
@@ -483,21 +477,13 @@ namespace RendererQml
 		const int fontSize = context->GetConfig()->GetFontSize(textRun->GetFontType(), textRun->GetTextSize());
 		const int weight = context->GetConfig()->GetFontWeight(textRun->GetFontType(), textRun->GetTextWeight());
 
-		//Value based on what is mentioned in the html renderer
-		const auto lineHeight = fontSize * 1.33;
-
 		std::string uiTextRun = "<span style='";
 		std::string textType = textRun->GetInlineTypeString();
 
-		//TODO: Add font to hostconfig
 		uiTextRun.append("font-family:" + std::string("\\\"") + fontFamily + std::string("\\\"") + ";");
 
-		//TODO: Need to fix the color calculation
 		std::string color = context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), false, false);
 		uiTextRun.append("color:" + color + ";");
-
-		std::string lineheight = Formatter() << std::fixed << std::setprecision(2) << lineHeight << "px";
-		uiTextRun.append("line-height:" + lineheight + ";");
 
 		uiTextRun.append("font-size:" + std::to_string(fontSize) + "px" + ";");
 

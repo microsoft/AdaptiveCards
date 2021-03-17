@@ -27,7 +27,7 @@ namespace LightConfig
             }
         },
         "monospace":{
-            "fontFamily":"'Courier New', Courier, monospace",
+            "fontFamily":"Courier New, Courier, monospace",
             "fontSizes":{
                 "small":12,
                 "default":14,
