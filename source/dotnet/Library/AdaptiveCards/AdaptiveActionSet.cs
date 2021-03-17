@@ -41,6 +41,7 @@ namespace AdaptiveCards
         [XmlElement(typeof(AdaptiveShowCardAction))]
         [XmlElement(typeof(AdaptiveSubmitAction))]
         [XmlElement(typeof(AdaptiveToggleVisibilityAction))]
+        [XmlElement(typeof(AdaptiveExecuteAction))]
         [XmlElement(typeof(AdaptiveUnknownAction))]
 #endif
         public List<AdaptiveAction> Actions { get; set; } = new List<AdaptiveAction>();
