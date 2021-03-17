@@ -92,7 +92,7 @@ using namespace AdaptiveCards;
     if (_elem) {
         return [NSString stringWithCString:_elem->GetTitle().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)elementId
@@ -100,7 +100,7 @@ using namespace AdaptiveCards;
     if (_elem) {
         return [NSString stringWithCString:_elem->GetId().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)url
@@ -109,7 +109,7 @@ using namespace AdaptiveCards;
         std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(_elem);
         return [NSString stringWithCString:openUrlAction->GetUrl().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)data
@@ -130,7 +130,7 @@ using namespace AdaptiveCards;
             return [NSString stringWithCString:data.c_str() encoding:NSUTF8StringEncoding];
         }
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)verb
@@ -139,7 +139,7 @@ using namespace AdaptiveCards;
         std::shared_ptr<ExecuteAction> executeAction = std::dynamic_pointer_cast<ExecuteAction>(_elem);
         return [NSString stringWithCString:executeAction->GetVerb().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
