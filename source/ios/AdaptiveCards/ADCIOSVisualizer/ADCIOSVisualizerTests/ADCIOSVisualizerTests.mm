@@ -191,7 +191,7 @@
         @try {
             cardParseResult = [ACOAdaptiveCard fromJson:payload];
             if ([_setOfExpectedToFailFiles containsObject:fileName]) {
-                //XCTAssertFalse(cardParseResult.isValid);
+                XCTAssertFalse(cardParseResult.isValid);
             } else {
                 if (!cardParseResult.isValid) {
                     NSException *e = [NSException exceptionWithName:@"ParseFailed" reason:@"Parsing Failed" userInfo:nil];
