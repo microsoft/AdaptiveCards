@@ -19,7 +19,7 @@
     self = [super init];
     if (self && adaptiveTokenExchangeResource) {
         _adaptiveTokenExchangeResource = adaptiveTokenExchangeResource;
-        _id = [NSString stringWithCString:adaptiveTokenExchangeResource->GetId().c_str() encoding:NSUTF8StringEncoding];
+        _Id = [NSString stringWithCString:adaptiveTokenExchangeResource->GetId().c_str() encoding:NSUTF8StringEncoding];
         _uri = [NSString stringWithCString:adaptiveTokenExchangeResource->GetUri().c_str() encoding:NSUTF8StringEncoding];
         _providerId = [NSString stringWithCString:adaptiveTokenExchangeResource->GetProviderId().c_str() encoding:NSUTF8StringEncoding];
     }

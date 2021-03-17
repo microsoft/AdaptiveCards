@@ -9,7 +9,7 @@
 #import "ACOAuthenticationPrivate.h"
 #import "ACOTokenExchangeResourcePrivate.h"
 
-@implementation ACOAuthentication {
+@implementation ACOAuthentication {    
     std::shared_ptr<Authentication> _adaptiveAuthentication;
 }
 

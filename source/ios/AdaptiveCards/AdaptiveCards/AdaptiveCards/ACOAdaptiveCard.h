@@ -15,7 +15,7 @@
 @interface ACOAdaptiveCard : NSObject
 
 @property ACORefresh *refresh;
-@property ACOAuthentication *authenticaiton;
+@property ACOAuthentication *authentication;
 
 + (ACOAdaptiveCardParseResult *)fromJson:(NSString *)payload;
 - (NSData *)inputs;

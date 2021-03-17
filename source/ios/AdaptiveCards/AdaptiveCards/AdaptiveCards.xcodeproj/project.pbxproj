@@ -879,8 +879,6 @@
 				F4D4020D1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.h */,
 				F4D4020E1F7DAC2C00D0356B /* ACOAdaptiveCardParseResult.mm */,
 				F4CAE7811F75AB9000545555 /* ACOAdaptiveCardPrivate.h */,
-				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
-				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				F4F2556D1F98247600A80D39 /* ACOBaseActionElementPrivate.h */,
 				F4F44B8A2048F83F00A2F24C /* ACOBaseCardElement.h */,
 				F4F44B882048F82F00A2F24C /* ACOBaseCardElement.mm */,
@@ -1121,6 +1119,8 @@
 			children = (
 				6BFF99DC2600121A0028069F /* Action.Execute */,
 				6B250FB1253F5F8E007FFCFB /* ACRTargetBuilder.h */,
+				F4F2556B1F98246000A80D39 /* ACOBaseActionElement.h */,
+				F4F2556E1F98247600A80D39 /* ACOBaseActionElement.mm */,
 				6B696CD823202B1A00E1D607 /* ACRTargetBuilderDirector.h */,
 				6B696CD723202B1A00E1D607 /* ACRTargetBuilderDirector.mm */,
 				6B616C4121CB20D1003E29CE /* ACRActionToggleVisibilityRenderer.h */,

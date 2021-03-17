@@ -61,7 +61,7 @@ using namespace AdaptiveCards;
     if (payload) {
         try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.4"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.3"));
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for (const auto &warning : parseWarnings) {
@@ -71,7 +71,7 @@ using namespace AdaptiveCards;
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
             if (card && card->_adaptiveCard) {
                 card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
-                card->_authenticaiton = [[ACOAuthentication alloc] init:card->_adaptiveCard->GetAuthentication()];
+                card->_authentication = [[ACOAuthentication alloc] init:card->_adaptiveCard->GetAuthentication()];
             }
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         } catch (const AdaptiveCardParseException &e) {
