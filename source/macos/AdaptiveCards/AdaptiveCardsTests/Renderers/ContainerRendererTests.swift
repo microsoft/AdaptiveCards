@@ -40,6 +40,12 @@ class ContainerRendererTests: XCTestCase {
         XCTAssertEqual(containerView.stackView.arrangedSubviews.capacity, 2)
     }
     
+    func testRendersItems() {
+        container = .make(items: [FakeInputToggle.make()])
+        let containerView = renderContainerView()
+        XCTAssertEqual(containerView.arrangedSubviews.count, 1)
+    }
+    
     private func renderContainerView() -> ACRColumnView {
         let view = containerRenderer.render(element: container, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
         

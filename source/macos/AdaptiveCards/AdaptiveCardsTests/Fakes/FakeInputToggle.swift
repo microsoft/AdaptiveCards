@@ -46,6 +46,26 @@ class FakeInputToggle: ACSToggleInput {
     open override func setWrap(_ value: Bool) {
         wrap = value
     }
+    
+    open override func getType() -> ACSCardElementType {
+        return .toggleInput
+    }
+    
+    open override func getSeparator() -> Bool {
+        return false
+    }
+    
+    open override func getId() -> String? {
+        return "input"
+    }
+    
+    override func getIsVisible() -> Bool {
+        return true
+    }
+    
+    override func getLabel() -> String? {
+        return "input Label"
+    }
 }
 extension FakeInputToggle {
     static func make(title: String? = "", value: String = "false", valueOn: String = "true", valueOff: String = "false", wrap: Bool = false) ->FakeInputToggle {
