@@ -55,7 +55,6 @@ class UnknownElementRenderer: BaseCardElementRendererProtocol, BaseActionElement
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.red.cgColor
         view.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
         return view
     }
 }
