@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 #include "pch.h"
 
-#include "AdaptiveSubmitAction.h"
-#include "AdaptiveSubmitActionRenderer.h"
+#include "AdaptiveExecuteAction.h"
+#include "AdaptiveExecuteActionRenderer.h"
 #include "AdaptiveElementParserRegistration.h"
 #include "ActionHelpers.h"
 
@@ -12,17 +12,17 @@ using namespace Microsoft::WRL;
 
 namespace AdaptiveNamespace
 {
-    HRESULT AdaptiveSubmitActionRenderer::RuntimeClassInitialize() noexcept
+    HRESULT AdaptiveExecuteActionRenderer::RuntimeClassInitialize() noexcept
     try
     {
         return S_OK;
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitActionRenderer::Render(_In_ IAdaptiveActionElement* action,
-                                                 _In_ IAdaptiveRenderContext* renderContext,
-                                                 _In_ IAdaptiveRenderArgs* renderArgs,
-                                                 _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
+    HRESULT AdaptiveExecuteActionRenderer::Render(_In_ IAdaptiveActionElement* action,
+                                                  _In_ IAdaptiveRenderContext* renderContext,
+                                                  _In_ IAdaptiveRenderArgs* renderArgs,
+                                                  _COM_Outptr_ ABI::Windows::UI::Xaml::IUIElement** result) noexcept
     try
     {
         RETURN_IF_FAILED(renderContext->LinkSubmitActionToCard(action, renderArgs));
@@ -30,7 +30,7 @@ namespace AdaptiveNamespace
     }
     CATCH_RETURN;
 
-    HRESULT AdaptiveSubmitActionRenderer::FromJson(
+    HRESULT AdaptiveExecuteActionRenderer::FromJson(
         _In_ ABI::Windows::Data::Json::IJsonObject* jsonObject,
         _In_ ABI::AdaptiveNamespace::IAdaptiveElementParserRegistration* elementParserRegistration,
         _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParserRegistration,
@@ -38,7 +38,7 @@ namespace AdaptiveNamespace
         _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveActionElement** element) noexcept
     try
     {
-        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveSubmitAction, AdaptiveSharedNamespace::SubmitAction, AdaptiveSharedNamespace::SubmitActionParser>(
+        return AdaptiveNamespace::FromJson<AdaptiveNamespace::AdaptiveExecuteAction, AdaptiveSharedNamespace::ExecuteAction, AdaptiveSharedNamespace::ExecuteActionParser>(
             jsonObject, elementParserRegistration, actionParserRegistration, adaptiveWarnings, element);
     }
     CATCH_RETURN;
