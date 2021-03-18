@@ -90,10 +90,8 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
     func setUpTheme() {
         textField.wantsLayer = true
         textField.layer?.backgroundColor = .clear
-        textField.appearance = NSAppearance(named: .aqua)
         stepper.wantsLayer = true
         stepper.layer?.backgroundColor = .clear
-        stepper.appearance = NSAppearance(named: .aqua)
     }
     
     func setupTrackingArea() {
