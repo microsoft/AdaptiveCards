@@ -208,7 +208,7 @@
 		"lineColor": "#FF000000"
 	},
 	"actions": {
-		"maxActions": 5,
+		"maxActions": 6,
 		"spacing": "Default",
 		"buttonSpacing": 10,
 		"showCard": {
