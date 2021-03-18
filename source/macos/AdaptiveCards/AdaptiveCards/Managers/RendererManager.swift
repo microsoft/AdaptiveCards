@@ -30,6 +30,7 @@ class RendererManager: RendererManagerProtocol {
     func actionRenderer(for elementType: ACSActionType) -> BaseActionElementRendererProtocol {
         switch elementType {
         case .openUrl: return ActionOpenURLRenderer.shared
+        case .showCard: return ActionShowCardRenderer.shared
         default: return UnknownElementRenderer.shared
         }
     }

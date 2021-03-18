@@ -17,7 +17,6 @@ class ACRDateField: NSView {
         return formatter
     }()
     private let datepicker = NSDatePicker()
-    var issecondadded: Bool = false
     var isTimeMode: Bool = false
     var selectedDate: Date?
     var minDateValue: String?
