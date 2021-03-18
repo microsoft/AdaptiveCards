@@ -3,7 +3,7 @@ import AppKit
 class ACRButton: FlatButton {
     public var backgroundColor: NSColor = .init(red: 0.35216, green: 0.823529412, blue: 1, alpha: 1)
     public var hoverBackgroundColor: NSColor = .linkColor
-    public var activeBackgroundColor: NSColor = .gray
+    public var activeBackgroundColor: NSColor = .linkColor
     
     override init(frame: NSRect) {
         super.init(frame: frame)
@@ -15,9 +15,8 @@ class ACRButton: FlatButton {
         initialize()
     }
     
-    init(frame: NSRect, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconPosition: NSControl.ImagePosition = .imageLeft) {
+    init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconPosition: NSControl.ImagePosition = .imageLeft) {
         super.init(frame: frame)
-        initialize()
         if wantsChevron {
             showsChevron = wantsChevron
         }
@@ -26,6 +25,7 @@ class ACRButton: FlatButton {
             iconImageName = iconNamed
             iconPositioned = iconPosition
         }
+        initialize()
     }
     
     private func initialize() {
@@ -40,7 +40,8 @@ class ACRButton: FlatButton {
         offAnimationDuration = 0.0
         iconColor = NSColor.white
         activeIconColor = NSColor.white
-        momentary = false
+        momentary = !showsChevron
+        iconColor = .white
         if showsIcon {
             guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
                   let path = bundle.path(forResource: iconImageName, ofType: "png") else {
