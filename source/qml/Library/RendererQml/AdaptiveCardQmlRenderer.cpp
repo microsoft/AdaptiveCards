@@ -104,6 +104,8 @@ namespace RendererQml
         AddContainerElements(bodyLayout, card->GetBody(), context);
         AddActions(bodyLayout, card->GetActions(), context);
 
+        //Add onclick event
+        addActionButtonClickFunc(context);
 		return uiCard;
 	}
 
@@ -345,6 +347,73 @@ namespace RendererQml
 		}
 
         context->addToInputElementList(origionalElementId, (uiTextInput->GetId() + ".text"));
+
+        // Add inline action mode
+        if (context->GetConfig()->GetSupportsInteractivity() && input->GetInlineAction() != nullptr)
+        {
+            // ShowCard Inline Action Mode is not supported
+            if (input->GetInlineAction()->GetElementType() == AdaptiveCards::ActionType::ShowCard &&
+                context->GetConfig()->GetActions().showCard.actionMode == AdaptiveCards::ActionMode::Inline)
+            {
+                context->AddWarning(AdaptiveWarning(Code::RenderException, "Inline ShowCard not supported for InlineAction"));
+            }
+            else
+            {
+                auto uiContainer = std::make_shared<QmlTag>("Row");
+                uiContainer->Property("id", Formatter() << input->GetId() << "_row");
+                uiContainer->Property("spacing", "5");
+                uiContainer->Property("width", "parent.width");
+                const auto actionsConfig = context->GetConfig()->GetActions();
+                
+                auto buttonElement = context->Render(input->GetInlineAction());
+                buttonElement->RemoveProperty("background");
+                buttonElement->RemoveProperty("contentItem");
+
+                // Append the icon to the button
+                // NOTE: always using icon size since it's difficult
+                // to match icon's height with text's height
+                auto bgRectangle = std::make_shared<QmlTag>("Rectangle");
+                bgRectangle->Property("id", Formatter() << buttonElement->GetId() << "_bg");
+                bgRectangle->Property("anchors.fill", "parent");
+                bgRectangle->Property("color", Formatter() << buttonElement->GetId() << ".pressed ? '#B4B6B8' : " << buttonElement->GetId() << ".hovered ? '#E6E8E8' : 'white'");
+                buttonElement->Property("background", bgRectangle->ToString());
+                
+                if (!input->GetInlineAction()->GetIconUrl().empty())
+                {
+                    buttonElement->Property("height", std::to_string(actionsConfig.iconSize));
+                    buttonElement->Property("width", std::to_string(actionsConfig.iconSize));
+
+                    auto iconItem = std::make_shared<QmlTag>("Item");
+                    iconItem->Property("anchors.fill", "parent");
+                    auto iconImage = std::make_shared<QmlTag>("Image");
+                    iconImage->Property("id", Formatter() << buttonElement->GetId() << "_img");
+                    iconImage->Property("height", std::to_string(actionsConfig.iconSize));
+                    iconImage->Property("width", std::to_string(actionsConfig.iconSize));
+                    iconImage->Property("fillMode", "Image.PreserveAspectFit");
+                    iconImage->Property("source", "\"" + input->GetInlineAction()->GetIconUrl() + "\"");
+                    iconItem->AddChild(iconImage);
+                    buttonElement->Property("contentItem", iconItem->ToString());
+                }
+                else
+                {
+                    buttonElement->Property("text", "\"" + input->GetInlineAction()->GetTitle() + "\"");
+                }
+
+                if (input->GetIsMultiline())
+                {
+                    buttonElement->Property("anchors.bottom", "parent.bottom");
+                    scrollViewTag->Property("width", Formatter() << "parent.width - " << buttonElement->GetId() << ".width - " << uiContainer->GetId() << ".spacing");
+                    uiContainer->AddChild(scrollViewTag);
+                }
+                else
+                {
+                    uiTextInput->Property("width", Formatter() << "parent.width - " << buttonElement->GetId() << ".width - " << uiContainer->GetId() << ".spacing");
+                    uiContainer->AddChild(uiTextInput);
+                }
+                uiContainer->AddChild(buttonElement);
+                return uiContainer;
+            }
+        }        
 
 		if (input->GetIsMultiline())
 		{
@@ -1897,10 +1966,21 @@ namespace RendererQml
             contentLayout->AddChild(textLayout);
             buttonElement->Property("contentItem", contentItem->ToString());
 
-            //TODO: Add logic for toggle visiblity
+            context->addToActionButtonList(buttonElement, action);
+            return buttonElement;
+        }
 
-            //Add onclick event
-            std::string onClickedFunction;
+        return nullptr;
+    }
+
+    void AdaptiveCardQmlRenderer::addActionButtonClickFunc(const std::shared_ptr<AdaptiveRenderContext>& context)
+    {
+        for (auto& element : context->getActionButtonList())
+        {
+            //TODO: Add logic for toggle visiblity            
+            std::string onClickedFunction;            
+            const auto buttonElement = element.first;
+            const auto action = element.second;
 
             if (action->GetElementTypeString() == "Action.OpenUrl")
             {
@@ -1917,18 +1997,15 @@ namespace RendererQml
             else if (action->GetElementTypeString() == "Action.Submit")
             {
                 onClickedFunction = getActionSubmitClickFunc(std::dynamic_pointer_cast<AdaptiveCards::SubmitAction>(action), context);
+
             }
             else
             {
                 onClickedFunction = "";
             }
-           
+
             buttonElement->Property("onClicked", Formatter() << "{\n" << onClickedFunction << "}\n");
-
-            return buttonElement;
-        }
-
-        return nullptr;
+        }        
     }
 
     const std::string AdaptiveCardQmlRenderer::getActionOpenUrlClickFunc(const std::shared_ptr<AdaptiveCards::OpenUrlAction>& action, const std::shared_ptr<AdaptiveRenderContext>& context)

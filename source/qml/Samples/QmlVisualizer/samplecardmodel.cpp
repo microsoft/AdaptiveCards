@@ -206,6 +206,10 @@ const std::string SampleCardModel::getImagePath(const std::string& m_element)
 	{
 		dir_path.append("\\Images\\sampleImage.jpg");
 	}
+    else if (m_element == "Button")
+    {
+        dir_path.append("\\Images\\buttonicon.png");
+    }
 	else
 	{
 		dir_path.append("\\Images\\Cat.png");

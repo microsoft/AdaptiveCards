@@ -1556,5 +1556,56 @@ namespace Samples
         }
       ]
     })";
+
+    const std::string card_Action_Inline = R"({
+      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+      "type": "AdaptiveCard",
+      "version": "1.2",
+      "body": [
+        {
+          "type": "TextBlock",
+          "text": "Text input with an inline action"
+        },
+        {
+          "type": "Input.Text",
+          "id": "iconInlineActionId",
+          "inlineAction": {
+            "type": "Action.Submit",
+            "iconUrl": "https://adaptivecards.io/content/send.png",
+            "title": "Send"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "Text input with an inline action with no icon",
+          "wrap": true
+        },
+        {
+          "type": "Input.Text",
+          "id": "textInlineActionId",
+          "inlineAction": {
+            "type": "Action.OpenUrl",
+            "title": "Reply",
+            "url": "https://adaptivecards.io"
+          }
+        },
+        {
+          "type": "TextBlock",
+          "text": "Multiline text input with an inline action"
+        },
+        {
+          "type": "Input.Text",
+          "id": "multilineInputId",
+          "inlineAction": {
+            "type": "Action.Submit",
+            "iconUrl": "https://adaptivecards.io/content/send.png",
+            "title": "Send"
+          },
+          "placeholder": "enter comment",
+          "maxLength": 500,
+          "isMultiline": true
+        }
+      ]
+    })";
 }
 
