@@ -6,6 +6,8 @@
 //
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACOAuthenticationPrivate.h"
+#import "ACORefreshPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
 #import "ACRIBaseInputHandler.h"
@@ -67,6 +69,10 @@ using namespace AdaptiveCards;
                 [acrParseWarnings addObject:acrParseWarning];
             }
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
+            if (card && card->_adaptiveCard) {
+                card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
+                card->_authentication = [[ACOAuthentication alloc] init:card->_adaptiveCard->GetAuthentication()];
+            }
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
