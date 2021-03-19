@@ -860,14 +860,15 @@ namespace RendererQml
 			uiButton->Property("readonly property string valueOn", "\"" + checkbox.valueOn + "\"");
 			uiButton->Property("readonly property string valueOff", "\"" + checkbox.valueOff + "\"");
             uiButton->Property("property string value", "checked ? valueOn : valueOff");
+			uiButton->Property("width", "parent.width");
 		}
         else
         {
             uiButton->Property("property string value", Formatter() << "checked ? \"" << checkbox.value << "\" : \"\"");
+			uiButton->Property("Layout.maximumWidth", "parent.parent.parent.width");
         }
 		        
 		uiButton->Property("text", "\"" + checkbox.text + "\"");
-		uiButton->Property("Layout.maximumWidth", "parent.parent.parent.width");
 		uiButton->Property("font.pixelSize", std::to_string(context->GetConfig()->GetFontSize(AdaptiveCards::FontType::Default, AdaptiveCards::TextSize::Default)));
 
 		if (!checkbox.isVisible)
