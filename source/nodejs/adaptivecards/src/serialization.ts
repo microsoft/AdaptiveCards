@@ -134,9 +134,9 @@ export abstract class BaseSerializationContext {
 
     constructor(public targetVersion: Version = Versions.latest) {}
     
-    serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+    serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined, forceDeleteIfNullOrDefault: boolean = false) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
+            if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault) {
                 delete target[propertyName];
             }
         }
@@ -145,7 +145,7 @@ export abstract class BaseSerializationContext {
         }
     }
 
-    serializeBool(target: { [key: string]: any }, propertyName: string, propertyValue: boolean | undefined, defaultValue: boolean | undefined = undefined) {
+    serializeString(target: { [key: string]: any }, propertyName: string, propertyValue?: string, defaultValue?: string) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
             delete target[propertyName];
         }
@@ -154,7 +154,16 @@ export abstract class BaseSerializationContext {
         }
     }
 
-    serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
+    serializeBool(target: { [key: string]: any }, propertyName: string, propertyValue?: boolean, defaultValue?: boolean) {
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
+        }
+        else {
+            target[propertyName] = propertyValue;
+        }
+    }
+
+    serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue?: number, defaultValue?: number) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
             delete target[propertyName];
         }
@@ -309,7 +318,7 @@ export class StringProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) {
-        context.serializeValue(
+        context.serializeString(
             target,
             this.name,
             value === "" && this.treatEmptyAsUndefined ? undefined : value,
@@ -658,13 +667,17 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined, context: BaseSerializationContext) {
-        let serializedValue = value !== undefined ? value.toJSON(context) : value;
+        let serializedValue: object | undefined = undefined;
+        
+        if (value !== undefined && !value.hasAllDefaultValues()) {
+            serializedValue = value.toJSON(context);
+        }
 
         if (typeof serializedValue === "object" && Object.keys(serializedValue).length === 0) {
             serializedValue = undefined;
         }
 
-        super.toJSON(sender, target, serializedValue, context);
+        context.serializeValue(target, this.name, serializedValue, this.defaultValue, true);
     }
 
     constructor(

@@ -624,7 +624,7 @@ export class ActionProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: Action | undefined, context: SerializationContext) {
-        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
     }
 
     constructor(
@@ -4218,6 +4218,17 @@ export class ToggleVisibilityAction extends Action {
         }
     }
 
+    internalValidateProperties(context: ValidationResults) {
+        super.internalValidateProperties(context);
+
+        if (!this.targetElements) {
+            context.addFailure(
+                this,
+                Enums.ValidationEvent.PropertyCantBeNull,
+                Strings.errors.propertyMustBeSet("targetElements"));
+        }
+    }
+
     getJsonTypeName(): string {
         return ToggleVisibilityAction.JsonTypeName;
     }
@@ -6460,14 +6471,14 @@ export class RefreshActionProperty extends PropertyDefinition {
 
         context.logParseEvent(
             sender,
-            Enums.ValidationEvent.ActionTypeNotAllowed,
+            Enums.ValidationEvent.PropertyCantBeNull,
             Strings.errors.propertyMustBeSet("action"));
 
         return undefined;
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: ExecuteAction | undefined, context: SerializationContext) {
-        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined);
+        context.serializeValue(target, this.name, value ? value.toJSON(context) : undefined, undefined, true);
     }
 
     constructor(readonly targetVersion: Version, readonly name: string) {
@@ -6479,6 +6490,7 @@ export class RefreshDefinition extends SerializableObject {
     //#region Schema
 
     static readonly actionProperty = new RefreshActionProperty(Versions.v1_4, "action");
+    static readonly userIdsProperty = new StringArrayProperty(Versions.v1_4, "userIds");
 
     @property(RefreshDefinition.actionProperty)
     get action(): ExecuteAction {
@@ -6492,6 +6504,9 @@ export class RefreshDefinition extends SerializableObject {
             value.setParent(this.parent);
         }
     }
+
+    @property(RefreshDefinition.userIdsProperty)
+    userIds?: string[];
 
     protected getSchemaKey(): string {
         return "RefreshDefinition";
@@ -6511,7 +6526,7 @@ export class AuthCardButton extends SerializableObject {
     static readonly valueProperty = new StringProperty(Versions.v1_4, "value");
 
     protected getSchemaKey(): string {
-        return "SigninButton";
+        return "AuthCardButton";
     }
 
     //#endregion
