@@ -42,17 +42,22 @@
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
 
-    [viewGroup addArrangedSubview:column];
-
-    configBleed(rootView, elem, column, acoConfig, viewGroup);
-
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
     column.pixelWidth = columnElem->GetPixelWidth();
-    if (columnElem->GetWidth() == "stretch" || columnElem->GetWidth() == "") {
+    auto width = columnElem->GetWidth();
+    if (width.empty() || width == "stretch") {
         column.columnWidth = @"stretch";
-    } else if (columnElem->GetWidth() == "auto") {
+    } else if (width == "auto") {
         column.columnWidth = @"auto";
+    } else {
+        try {
+            column.relativeWidth = std::stof(width);
+            column.hasMoreThanOneRelativeWidth = ((ACRColumnSetView *)viewGroup).hasMoreThanOneColumnWithRelatvieWidth;
+        } catch (...) {
+            [rootView addWarnings:ACRInvalidValue mesage:@"Invalid column width is given"];
+            column.columnWidth = @"stretch";
+        }
     }
 
     UIView *leadingBlankSpace = nil, *trailingBlankSpace = nil;
@@ -62,6 +67,7 @@
 
     ACRColumnSetView *columnsetView = (ACRColumnSetView *)viewGroup;
     column.isLastColumn = columnsetView.isLastColumn;
+    column.columnsetView = columnsetView;
 
     [ACRRenderer render:column
                rootView:rootView
@@ -79,6 +85,7 @@
 
     if (!column.hasStretchableView) {
         [column addPaddingSpace];
+        column.hasPaddingView = YES;
     }
 
     if (columnElem->GetMinHeight() > 0) {
@@ -116,16 +123,21 @@
 
     [column hideIfSubviewsAreAllHidden];
 
+    [viewGroup addArrangedSubview:column];
+
+    // viewGroup and column has to be in view hierarchy before configBleed is called
+    configBleed(rootView, elem, column, acoConfig, viewGroup);
+
     return column;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
     auto backgroundImageProperties = columnElem->GetBackgroundImage();
 
-    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
+    renderBackgroundImage(rootView, backgroundImageProperties.get(), imageView, image);
 }
 
 @end

@@ -254,8 +254,8 @@ export abstract class CardElement extends CardObject {
     }
 
     protected applyPadding() {
-        if (this.separatorElement) {
-            if (GlobalSettings.alwaysBleedSeparators && this.separatorOrientation == Enums.Orientation.Horizontal && !this.isBleeding()) {
+        if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
+            if (GlobalSettings.alwaysBleedSeparators && !this.isBleeding()) {
                 let padding = new PaddingDefinition();
 
                 this.getImmediateSurroundingPadding(padding);
@@ -2008,6 +2008,25 @@ export abstract class CardElementContainer extends CardElement {
         }
 
         return result;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (let i = 0; i < this.getItemCount(); i++) {
+            // recur through child elements
+            target = this.getItemAt(i).findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in children, defer to parent implementation
+        return super.findDOMNodeOwner(node);
     }
 }
 
@@ -5189,6 +5208,25 @@ export class ActionSet extends CardElement {
         return this._actionCollection.getResourceInformation();
     }
 
+    /**
+     * @inheritdoc
+     */
+    findDOMNodeOwner(node: Node): CardObject | undefined {
+        let target: CardObject | undefined = undefined;
+
+        for (const action of this._actionCollection.items) {
+            // recur through each Action
+            target = action.findDOMNodeOwner(node);
+
+            if (target) {
+                return target;
+            }
+        }
+
+        // if not found in any Action, defer to parent implementation
+        return super.findDOMNodeOwner(node);
+    }
+
     get isInteractive(): boolean {
         return true;
     }
@@ -5301,7 +5339,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
             this.renderedElement.style.marginTop = "0";
             this.renderedElement.style.marginBottom = "0";
 
-            if (this.separatorElement) {
+            if (this.separatorElement && this.separatorOrientation === Enums.Orientation.Horizontal) {
                 this.separatorElement.style.marginRight = "0";
                 this.separatorElement.style.marginLeft = "0";
             }

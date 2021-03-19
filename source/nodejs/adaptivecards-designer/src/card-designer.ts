@@ -58,6 +58,7 @@ export class CardDesigner extends Designer.DesignContext {
     private _startDragPayload: object;
     private _toolPaletteToolbox: Toolbox;
     private _propertySheetToolbox: Toolbox;
+    private _propertySheetCard: Adaptive.AdaptiveCard;
     private _treeViewToolbox: Toolbox;
     private _jsonEditorsPanel: SidePanel;
     private _cardEditorToolbox: Toolbox;
@@ -118,16 +119,16 @@ export class CardDesigner extends Designer.DesignContext {
 
     private buildPropertySheet(peer: DesignerPeers.DesignerPeer) {
         if (this._propertySheetToolbox.content) {
+            // if focus is already on _propertySheetCard, remember the focused object's id
+            const restoreFocusId = this._propertySheetCard?.findDOMNodeOwner(document.activeElement)?.id;
             this._propertySheetToolbox.content.innerHTML = "";
 
-            let card: Adaptive.AdaptiveCard;
-
             if (peer) {
-                card = peer.buildPropertySheetCard(this);
+                this._propertySheetCard = peer.buildPropertySheetCard(this);
             }
             else {
-                card = new Adaptive.AdaptiveCard();
-                card.parse(
+                this._propertySheetCard = new Adaptive.AdaptiveCard();
+                this._propertySheetCard.parse(
                     {
                         type: "AdaptiveCard",
                         version: "1.0",
@@ -146,17 +147,23 @@ export class CardDesigner extends Designer.DesignContext {
                     },
                     new Adaptive.SerializationContext(this.targetVersion)
                 );
-                card.padding = new Adaptive.PaddingDefinition(
+                this._propertySheetCard.padding = new Adaptive.PaddingDefinition(
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small,
                     Adaptive.Spacing.Small
-                )
+                );
             }
 
-            card.hostConfig = defaultHostConfig;
+            this._propertySheetCard.hostConfig = defaultHostConfig;
 
-            this._propertySheetToolbox.content.appendChild(card.render());
+            this._propertySheetToolbox.content.appendChild(this._propertySheetCard.render());
+
+            if (restoreFocusId) {
+                // attempt to restore focus if new card has object with same id
+                const focusTarget = this._propertySheetCard.getElementById(restoreFocusId) ?? this._propertySheetCard.getActionById(restoreFocusId);
+                focusTarget?.renderedElement?.focus();
+            }
         }
     }
 
@@ -228,7 +235,7 @@ export class CardDesigner extends Designer.DesignContext {
 
             let categoryList = document.createElement('div');
             categoryList.setAttribute("aria-label", category)
-            
+
             let node = document.createElement('div');
             categoryList.appendChild(node);
             node.innerText = category;
@@ -760,23 +767,33 @@ export class CardDesigner extends Designer.DesignContext {
         dialog.height = "80%";
         dialog.open();
         dialog.onClose = (d) => {
-            if(dialog.predictedCardJSON) {
+            const newCardButton = this._newCardButton.renderedElement;
+
+            if (dialog.predictedCardJSON) {
                 const { card, data } = dialog.predictedCardJSON;
                 const addToUndoStack = true;
-                const newCardButton = this._newCardButton.renderedElement;
-
-                if (newCardButton) {
-                    newCardButton.focus();
-                }
 
                 this.setCardPayload(card, addToUndoStack);
                 this.setSampleDataPayload(data);
-            } else {
-                const newCardButton = this._newCardButton.renderedElement;
 
-                if (newCardButton) {
-                    newCardButton.focus();
-                }
+                let loadNotification = document.createElement("span");
+                loadNotification.id = "pic2cardLoadNotification";
+                loadNotification.setAttribute("role", "status");
+                loadNotification.setAttribute("aria-label", "Pic2Card generated Adaptive Card loaded");
+
+                // It's a bit odd to jump up to the parent element here, but we need a place to park this empty element
+                // so that it's seen by accessibility tools. If we put it on the button itself, the status message gets
+                // read twice (once on DOM entry and again on focus).
+                newCardButton.parentElement.appendChild(loadNotification);
+
+                // element needs to enter the DOM, but shouldn't stay forever, lest it be read again...
+                setTimeout(() => {
+                    newCardButton.parentElement.removeChild(loadNotification);
+                }, 500);
+            }
+
+            if (newCardButton) {
+                newCardButton.focus();
             }
         };
     }

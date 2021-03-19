@@ -20,6 +20,8 @@
 @property UIStackViewAlignment alignment;
 @property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
 @property BOOL isActionSet;
+// tells if a background image is set
+@property BOOL isBackgroundImageSet;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
@@ -54,6 +56,10 @@
 - (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
 - (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *_Nonnull)view;
+
+- (void)updateIntrinsicContentSize;
+
+- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
 
 - (void)hideIfSubviewsAreAllHidden;
 

@@ -59,8 +59,8 @@
 					"subtle": "#0063B1"
 				},
 				"attention": {
-					"default": "#FF0000",
-					"subtle": "#DDFF0000"
+					"default": "#B00000",
+					"subtle": "#DDB00000"
 				},
 				"good": {
 					"default": "#028A02",

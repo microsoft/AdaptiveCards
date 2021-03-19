@@ -5,6 +5,7 @@
 //  Copyright © 2017 Microsoft. All rights reserved.
 //
 #import "ACRContentStackView.h"
+#import "ACRColumnSetView.h"
 #import "ACRIBaseInputHandler.h"
 
 @interface ACRColumnView : ACRContentStackView
@@ -17,8 +18,12 @@ typedef NS_ENUM(NSInteger, ACRColumnWidthPriority) {
 
 @property NSString *columnWidth;
 @property CGFloat pixelWidth;
+@property CGFloat relativeWidth;
+@property BOOL hasMoreThanOneRelativeWidth;
 @property BOOL hasStretchableView;
+@property BOOL hasPaddingView;
 @property BOOL isLastColumn;
 @property NSMutableArray<ACRIBaseInputHandler> *inputHandlers;
+@property (weak) ACRColumnSetView *columnsetView;
 
 @end
