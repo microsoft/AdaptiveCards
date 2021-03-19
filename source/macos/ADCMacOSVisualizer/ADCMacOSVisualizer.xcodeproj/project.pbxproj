@@ -19,6 +19,7 @@
 		131F476825D5088700E6667F /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 131F476725D5088700E6667F /* RootViewController.swift */; };
 		131F476A25D5089200E6667F /* RootViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 131F476925D5089200E6667F /* RootViewController.xib */; };
 		13C1F7EA25F7725B00B59001 /* Application.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13C1F7E925F7725B00B59001 /* Application.xib */; };
+		A0A2615B2603CD76009F241D /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A2615A2603CD76009F241D /* TestUtils.swift */; };
 		A0CA27A025DD53BE004871B4 /* hostconfigs in Resources */ = {isa = PBXBuildFile; fileRef = A0CA279F25DD53BE004871B4 /* hostconfigs */; };
 /* End PBXBuildFile section */
 
@@ -73,6 +74,7 @@
 		131F476725D5088700E6667F /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		131F476925D5089200E6667F /* RootViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RootViewController.xib; sourceTree = "<group>"; };
 		13C1F7E925F7725B00B59001 /* Application.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = Application.xib; sourceTree = "<group>"; };
+		A0A2615A2603CD76009F241D /* TestUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
 		A0CA279F25DD53BE004871B4 /* hostconfigs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = hostconfigs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -138,6 +140,7 @@
 				08299E5E25AF258900799C66 /* Info.plist */,
 				08299E5F25AF258900799C66 /* ADCMacOSVisualizer.entitlements */,
 				13C1F7E925F7725B00B59001 /* Application.xib */,
+				A0A2615A2603CD76009F241D /* TestUtils.swift */,
 			);
 			path = ADCMacOSVisualizer;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				08299E5825AF258800799C66 /* AppDelegate.swift in Sources */,
 				08E788D425B185FE00B21B60 /* main.swift in Sources */,
 				131F476825D5088700E6667F /* RootViewController.swift in Sources */,
+				A0A2615B2603CD76009F241D /* TestUtils.swift in Sources */,
 				0830D55B25F90FD000BBC245 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -492,7 +492,8 @@
 		A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032271F25E9254C00E7172E /* ACRImageProperties.swift */; };
 		A032272525E93C7400E7172E /* ImageUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032272425E93C7400E7172E /* ImageUtils.swift */; };
 		A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */; };
-		A04EA82925F00F3400C4C7DB /* FakeImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EA82825F00F3400C4C7DB /* FakeImageView.swift */; };
+		A04EA82925F00F3400C4C7DB /* FakeImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04EA82825F00F3400C4C7DB /* FakeImage.swift */; };
+		A06EF8CC2604A85100D7E63A /* ResourceResolverProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06EF8CB2604A85100D7E63A /* ResourceResolverProtocol.swift */; };
 		A0805F5825E40CB400B3F8EA /* RichTextBlockRendererTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */; };
 		A0805F5D25E40D0F00B3F8EA /* FakeRichTextBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */; };
 		A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */; };
@@ -1020,7 +1021,8 @@
 		A032271F25E9254C00E7172E /* ACRImageProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRImageProperties.swift; sourceTree = "<group>"; };
 		A032272425E93C7400E7172E /* ImageUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageUtils.swift; sourceTree = "<group>"; };
 		A04EA82325F00C6100C4C7DB /* ImageRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRendererTests.swift; sourceTree = "<group>"; };
-		A04EA82825F00F3400C4C7DB /* FakeImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeImageView.swift; sourceTree = "<group>"; };
+		A04EA82825F00F3400C4C7DB /* FakeImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeImage.swift; sourceTree = "<group>"; };
+		A06EF8CB2604A85100D7E63A /* ResourceResolverProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResourceResolverProtocol.swift; sourceTree = "<group>"; };
 		A0805F5725E40CB400B3F8EA /* RichTextBlockRendererTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRendererTest.swift; sourceTree = "<group>"; };
 		A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRichTextBlock.swift; sourceTree = "<group>"; };
 		A0D65D0925E6B4FD00A50EC1 /* ImageRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRenderer.swift; sourceTree = "<group>"; };
@@ -1271,7 +1273,7 @@
 				A0805F5C25E40D0F00B3F8EA /* FakeRichTextBlock.swift */,
 				29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */,
 				29E8DF8925E8223D000EC12F /* FakeChoiceInput.swift */,
-				A04EA82825F00F3400C4C7DB /* FakeImageView.swift */,
+				A04EA82825F00F3400C4C7DB /* FakeImage.swift */,
 				13B13E4B25E750CB005D9380 /* FakeInputDate.swift */,
 				13C41B0825F257C2008A1F2E /* FakeInputTime.swift */,
 				29F712ED25F73A360052DC41 /* FakeContainer.swift */,
@@ -1741,6 +1743,7 @@
 				A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */,
 				A032271F25E9254C00E7172E /* ACRImageProperties.swift */,
 				0830D55025F90D4C00BBC245 /* Targets.swift */,
+				A06EF8CB2604A85100D7E63A /* ResourceResolverProtocol.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2164,6 +2167,7 @@
 				8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
 				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
+				A06EF8CC2604A85100D7E63A /* ResourceResolverProtocol.swift in Sources */,
 				0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
@@ -2213,7 +2217,7 @@
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
 				A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */,
 				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
-				A04EA82925F00F3400C4C7DB /* FakeImageView.swift in Sources */,
+				A04EA82925F00F3400C4C7DB /* FakeImage.swift in Sources */,
 				0801EDC325F7914200D64C86 /* ColumnRendererTests.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,

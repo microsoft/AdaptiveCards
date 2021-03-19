@@ -10,7 +10,7 @@ class ACRImageProperties: NSObject {
     var pixelWidth: CGFloat = 0
     var pixelHeight: CGFloat = 0
     
-    init(element: ACSBaseCardElement, config: ACSHostConfig, image: NSImage, parentView: NSView) {
+    init(element: ACSBaseCardElement, config: ACSHostConfig, image: NSImage?, parentView: NSView) {
         super.init()
         guard let imageElement = element as? ACSImage else {
             logError("Element is not of type ACSImage")
@@ -37,7 +37,7 @@ class ACRImageProperties: NSObject {
                                                       height: pixelHeight,
                                                       with: config,
                                                       explicitDimensions: hasExplicitDimensions)
-        updateContentSize(size: image.size)
+        updateContentSize(size: image?.size ?? CGSize.zero)
         acsHorizontalAlignment = imageElement.getHorizontalAlignment()
     }
     

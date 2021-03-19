@@ -10,20 +10,19 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             logError("Element is not of type ACSImage")
             return NSView()
         }
-        // Fetching images from remote URL for testing purposes (Blocks main thread)
-        // This will be removed and changed to Resource Resolver or similar mechanism to resolve content
-        // swiftlint:disable force_cast
-        let url = URL(string: imageElement.getUrl() ?? self.sample)
-        let image = NSImage(byReferencing: url as! URL)
-        // swiftlint:enable force_cast
-                
-        // Setting up image Properties
-        let imageProperties = ACRImageProperties(element: imageElement, config: hostConfig, image: image, parentView: parentView)
+                        
+        guard let root = rootView as? ACRView, let url = imageElement.getUrl() else {
+                  logError("Root is not of type ACRView or url is not available")
+                  return NSView()
+        }
+        
+        let imageView = root.getImageView(for: ResourceKey(url: url, type: ResourceType.image))
+        
+        let imageProperties = ACRImageProperties(element: imageElement, config: hostConfig, image: imageView.image, parentView: parentView)
         let cgsize = imageProperties.contentSize
 
         // Setting up ImageView based on Image Properties
-        let imageView = NSImageView(frame: NSRect(x: 0, y: 0, width: cgsize.width, height: cgsize.height))
-        imageView.image = image
+        imageView.wantsLayer = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer?.masksToBounds = true
         
@@ -52,7 +51,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
                 imageView.layer?.backgroundColor = color.cgColor
             }
         }
-    
+        
         switch imageProperties.acsHorizontalAlignment {
         case .center: imageView.centerXAnchor.constraint(equalTo: wrappingView.centerXAnchor).isActive = true
         case .right: imageView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
@@ -74,8 +73,10 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             imageView.setContentCompressionResistancePriority(imagePriority, for: .vertical)
         }
         
-        configUpdateForImage(element: imageElement, with: hostConfig, image: image, imageView: imageView, contendHoldingView: wrappingView)
-        
+        if imageView.image != nil {
+            configUpdateForImage(image: imageView.image, imageView: imageView)
+        }
+         
         if imageElement.getStyle() == .person {
             wrappingView.isPersonStyle = true
         }
@@ -83,10 +84,14 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         return wrappingView
     }
     
-    func configUpdateForImage(element: ACSImage, with hostConfig: ACSHostConfig, image: NSImage, imageView: NSImageView, contendHoldingView: ACRContentHoldingView) {
-        let superView = contendHoldingView
+    func configUpdateForImage(image: NSImage?, imageView: NSImageView) {
+        guard let superView = imageView.superview as? ACRContentHoldingView, let imageSize = image?.size else {
+                logError("superView or image is nil")
+                return
+        }
+        
         let imageProperties = superView.imageProperties
-        imageProperties?.updateContentSize(size: image.size)
+        imageProperties?.updateContentSize(size: imageSize)
         let cgSize = imageProperties?.contentSize ?? CGSize.zero
         
         let priority = getImageViewLayoutPriority(superView)
@@ -97,6 +102,8 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         constraints.append(imageView.heightAnchor.constraint(equalToConstant: cgSize.height))
         constraints[0].priority = priority
         constraints[1].priority = priority
+        
+        guard cgSize.width > 0, cgSize.height > 0 else { return }
         
         constraints.append(imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor, multiplier: cgSize.width / cgSize.height, constant: 0))
         constraints.append(imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor, multiplier: cgSize.height / cgSize.width, constant: 0))

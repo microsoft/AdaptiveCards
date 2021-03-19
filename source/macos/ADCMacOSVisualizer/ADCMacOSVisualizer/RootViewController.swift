@@ -66,7 +66,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             print("PARSED HOSTCONFIG")
             print("Font family - \(config.getFontFamily() ?? "nil")")
             
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 335, actionDelegate: self)
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 335, actionDelegate: self, resourceResolver: self)
             // This changes the appearance of the native components depending on the hostConfig
             if darkTheme {
                 if #available(OSX 10.14, *) {
@@ -161,5 +161,26 @@ extension RootViewController: AdaptiveCardActionDelegate {
         print("OPEN URL ACTION: \(urlString)")
         guard let url = URL(string: urlString) else { return }
         NSWorkspace.shared.open(url)
+    }
+}
+
+extension RootViewController: AdaptiveCardResourceResolver {
+    func adaptiveCard(_ card: ImageResourceHandlerView, dimensionsForImageWith key: ResourceKey) -> NSSize? {
+        return nil
+    }
+    
+    func adaptiveCard(_ card: ImageResourceHandlerView, requestImageFor key: ResourceKey) {
+        guard let imageURL = URL(string: key.url) else {
+            return
+        }
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: imageURL) {
+                if let image = NSImage(data: data) {
+                    DispatchQueue.main.async {
+                        card.setImage(image, for: key)
+                    }
+                }
+            }
+        }
     }
 }

@@ -4,6 +4,7 @@ import AppKit
 class AdaptiveCardRenderer {
     static let shared = AdaptiveCardRenderer()
     weak var actionDelegate: AdaptiveCardActionDelegate?
+    weak var resolverDelegate: AdaptiveCardResourceResolver?
     
     func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat) -> NSView {
         var style: ACSContainerStyle = .default
@@ -15,6 +16,7 @@ class AdaptiveCardRenderer {
         rootView.translatesAutoresizingMaskIntoConstraints = false
         rootView.widthAnchor.constraint(equalToConstant: width).isActive = true
         rootView.delegate = self
+        rootView.resolverDelegate = self
            
         for (index, element) in card.getBody().enumerated() {
             let isFirstElement = index == 0
@@ -46,5 +48,14 @@ class AdaptiveCardRenderer {
 extension AdaptiveCardRenderer: ACRViewDelegate {
     func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton) {
         actionDelegate?.adaptiveCard(view, didSelectOpenURL: url, button: button)
+    }
+}
+
+extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {
+    func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor key: ResourceKey) {
+        resolverDelegate?.adaptiveCard(adaptiveCard, requestImageFor: key)
+    }
+    func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith key: ResourceKey) -> NSSize? {
+        resolverDelegate?.adaptiveCard(adaptiveCard, dimensionsForImageWith: key)
     }
 }

@@ -33,7 +33,6 @@ class ACRContentHoldingView: NSView {
     
     override func layout() {
         super.layout()
-        
         if isPersonStyle {
             let subview = self.subviews[0]
             let radius = subview.bounds.size.width / 2
@@ -41,7 +40,9 @@ class ACRContentHoldingView: NSView {
             subview.layer?.cornerRadius = radius
             subview.layer?.masksToBounds = true
         }
-        
+    }
+    
+    func configureHeight() {
         var shouldUpdate = false
         if !(imageProperties?.hasExplicitDimensions ?? false) && _heightConstraint == nil {
             setHeightConstraint()

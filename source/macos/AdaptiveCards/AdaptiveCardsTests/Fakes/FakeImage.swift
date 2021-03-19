@@ -1,6 +1,6 @@
 import AdaptiveCards_bridge
 
-class FakeImageView: ACSImage {
+class FakeImage: ACSImage {
     public var url: String?
     public var backgroundColor: String?
     public var imageStyle: ACSImageStyle = .default
@@ -38,9 +38,9 @@ class FakeImageView: ACSImage {
     }
 }
 
-extension FakeImageView {
-    static func make(url: String? = "", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0) -> FakeImageView {
-        let fakeImageView = FakeImageView()
+extension FakeImage {
+    static func make(url: String? = "sampleUrl", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0) -> FakeImage {
+        let fakeImageView = FakeImage()
         fakeImageView.url = url
         fakeImageView.backgroundColor = backgroundColor
         fakeImageView.imageStyle = imageStyle

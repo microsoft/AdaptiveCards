@@ -5,6 +5,11 @@ public protocol AdaptiveCardActionDelegate: AnyObject {
     func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, button: NSButton)
 }
 
+public protocol AdaptiveCardResourceResolver: AnyObject {
+    func adaptiveCard(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith key: ResourceKey) -> NSSize?
+    func adaptiveCard(_ adaptiveCard: ImageResourceHandlerView, requestImageFor key: ResourceKey)
+}
+
 enum HostConfigParseError: Error {
     case resultIsNil, configIsNil
 }
@@ -24,8 +29,9 @@ open class AdaptiveCard {
         return .success(hostConfig)
     }
     
-    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, actionDelegate: AdaptiveCardActionDelegate?) -> NSView {
+    public static func render(card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, actionDelegate: AdaptiveCardActionDelegate?, resourceResolver: AdaptiveCardResourceResolver?) -> NSView {
         AdaptiveCardRenderer.shared.actionDelegate = actionDelegate
+        AdaptiveCardRenderer.shared.resolverDelegate = resourceResolver
         return AdaptiveCardRenderer.shared.renderAdaptiveCard(card, with: hostConfig, width: width)
     }
 }
