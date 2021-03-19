@@ -25,6 +25,8 @@ namespace RendererQml
 
         std::shared_ptr<AdaptiveCards::HostConfig> GetConfig();
 
+		const std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> GetElementRenderers();
+
         std::string GetRGBColor(const std::string& color, bool isQml = 1);
 
 		std::string GetColor(const AdaptiveCards::ForegroundColor color, bool isSubtle, bool isHighlight, bool isQml = 1);
@@ -41,11 +43,16 @@ namespace RendererQml
         void setCardRootId(const std::string& rootId);
         const std::string getCardRootId();
 
-        void addToInputElementList(const std::string& elementId, const std::string& value);
+		void setCardRootElement(const std::shared_ptr<QmlTag>& rootElement);
+		const std::shared_ptr<QmlTag> getCardRootElement();
+
+		void addToInputElementList(const std::string& elementId, const std::string& value);
         const std::map<std::string, std::string> getInputElementList();
 
-        void addToActionButtonList(const std::shared_ptr<QmlTag>& buttonElement, const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
-        const std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::BaseActionElement>> getActionButtonList();
+		void addToActionButtonList(const std::shared_ptr<QmlTag>& buttonElement, const std::shared_ptr<AdaptiveCards::BaseActionElement>& action);
+		const std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::BaseActionElement>> getActionButtonList();
+
+		const int getCardWidth();
 
     private:
         std::vector<AdaptiveWarning> m_warnings;
@@ -56,9 +63,9 @@ namespace RendererQml
         std::shared_ptr<AdaptiveElementRenderers<QmlTag, AdaptiveRenderContext>> m_elementRenderers;
         std::string m_lang;
         std::string m_CardRootId;
+		std::shared_ptr<QmlTag> m_CardRootElement;
         std::map<std::string, std::string> m_inputElementList;
         std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::BaseActionElement>> m_actionButtonList;
-
         int m_ContainerCounter{ 0 };
         int m_ImageCounter{ 0 };
 		int m_ColumnSetCounter{ 0 };

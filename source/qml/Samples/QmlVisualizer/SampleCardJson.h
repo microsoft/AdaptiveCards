@@ -1557,7 +1557,40 @@ namespace Samples
       ]
     })";
 
-    const std::string card_Action_Inline = R"({
+	const std::string card_Action_ShowCard = R"({
+	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	  "type": "AdaptiveCard",
+	  "version": "1.0",
+	  "body": [
+		{
+		  "type": "TextBlock",
+		  "text": "This card's action will show another card"
+		}
+	  ],
+	  "actions": [
+		{
+		  "type": "Action.ShowCard",
+		  "title": "Action.ShowCard",
+		  "card": {
+			"type": "AdaptiveCard",
+			"body": [
+			  {
+				"type": "TextBlock",
+				"text": "What do you think?"
+			  }
+			],
+			"actions": [
+			  {
+				"type": "Action.Submit",
+				"title": "Neat!"
+			  }
+			]
+		  }
+		}
+	  ]
+	})";
+
+	const std::string card_Action_Inline = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
       "type": "AdaptiveCard",
       "version": "1.2",

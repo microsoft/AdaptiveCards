@@ -20,8 +20,9 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
 	mCards.append({ QStringLiteral("Seperator and Spacing"), QString::fromStdString(Samples::card_Separator) });
 	mCards.append({ QStringLiteral("ColumnSet"), QString::fromStdString(Samples::card_columnSet) });
     mCards.append({ QStringLiteral("Action Open URL"), QString::fromStdString(Samples::card_Action_OpenUrl) });
-    mCards.append({ QStringLiteral("Action Submit 1"), QString::fromStdString(Samples::card_Action_Submit) });
-
+	mCards.append({ QStringLiteral("Action Submit 1"), QString::fromStdString(Samples::card_Action_Submit) });
+	mCards.append({ QStringLiteral("Action Show Card"), QString::fromStdString(Samples::card_Action_ShowCard) });
+    
 }
 
 QVector<Card> SampleCardList::cardList() const
