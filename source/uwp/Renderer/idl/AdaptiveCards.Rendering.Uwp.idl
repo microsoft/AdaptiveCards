@@ -780,10 +780,10 @@ AdaptiveNamespaceStart
     {
         AdaptiveNumberInput();
 
-        Windows.Foundation.IReference<Int32> Max;
-        Windows.Foundation.IReference<Int32> Min;
+        Windows.Foundation.IReference<Double> Max;
+        Windows.Foundation.IReference<Double> Min;
         String Placeholder;
-        Windows.Foundation.IReference<Int32> Value;
+        Windows.Foundation.IReference<Double> Value;
     };
 
     [

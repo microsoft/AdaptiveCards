@@ -6,9 +6,10 @@ import { DraggableElement } from "./draggable-element";
 import { PeerCommand } from "./peer-command";
 import { CardDesignerSurface, DesignContext } from "./card-designer-surface";
 import { DesignerPeerTreeItem } from "./designer-peer-treeitem";
-import { Rect, IPoint } from "./miscellaneous";
+import { Rect, IPoint, Utils } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
 import { FieldPicker } from "./field-picker";
+import { Strings } from "./strings";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
@@ -200,7 +201,10 @@ export class CustomPropertySheetEntry extends PropertySheetEntry {
 }
 
 export interface IPropertySheetEditorCommand {
+    id?: string;
     caption: string;
+    altText?: string;
+    expanded?: boolean;
     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => void;
 }
 
@@ -265,7 +269,10 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
 
             for (let command of additionalCommands) {
                 let action = new Adaptive.SubmitAction();
+                action.id = command.id;
                 action.title = command.caption;
+                action.accessibleTitle = command.altText;
+                action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
                 actionSet.addAction(action);
@@ -301,15 +308,22 @@ export class StringPropertyEditor extends SingleInputPropertyEditor {
         if (GlobalSettings.enableDataBindingSupport && this.allowBinding) {
             return [
                 {
-                    caption: "...",
+                    id: this.propertyName + "BindData",
+                    caption: Strings.toolboxes.propertySheet.commands.bindData.displayText(),
+                    altText: Strings.toolboxes.propertySheet.commands.bindData.accessibleText(this.label),
+                    expanded: false,
                     onExecute: (sender: SingleInputPropertyEditor, clickedElement: HTMLElement) => {
+                        clickedElement.setAttribute("aria-expanded", "true");
+
                         let fieldPicker = new FieldPicker(context.designContext.dataStructure);
                         fieldPicker.onClose = (sender, wasCancelled) => {
+                            clickedElement.setAttribute("aria-expanded", "false");
                             if (!wasCancelled) {
                                 this.setPropertyValue(context, fieldPicker.selectedField.asExpression());
-
+                                clickedElement.focus();
                                 context.peer.changed(true);
                             }
+                            clickedElement.focus();
                         }
                         fieldPicker.popup(clickedElement);
                     }
@@ -2281,6 +2295,11 @@ export class TextInputPeer extends InputPeer<Adaptive.TextInput> {
             propertySheet.add(
                 PropertySheetCategory.DefaultCategory,
                 TextInputPeer.styleProperty);
+        }
+        else {
+            propertySheet.add(
+                PropertySheetCategory.LayoutCategory,
+                CardElementPeer.heightProperty);
         }
 
         propertySheet.add(

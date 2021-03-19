@@ -48,7 +48,7 @@
     // we list all the parts that are needed in building the key.
     NSString *urlString = [NSString stringWithCString:mediaElem->GetPoster().c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *numberString = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(elem.get())] stringValue];
-    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig] -> GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
+    NSString *piikey = [NSString stringWithCString:[acoConfig getHostConfig]->GetMedia().playButton.c_str() encoding:[NSString defaultCStringEncoding]];
     NSString *piikeyViewIF = [NSString stringWithFormat:@"%llu_playIcon", (unsigned long long)elem.get()];
 
     NSDictionary *pieces = @{
@@ -74,8 +74,7 @@
             [contentholdingview addSubview:view];
         }
         // if we already have UIImageView and UIImage, configures the constraints and turn off the notification
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:img imageView:view];
-        [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:mediaKey];
+        [self configUpdateForUIImageView:rootView acoElem:acoElem config:acoConfig image:img imageView:view];
     } else {
         contentholdingview = (ACRContentHoldingUIView *)[rootView getImageView:mediaKey];
         if (contentholdingview) {
@@ -89,7 +88,7 @@
         view.backgroundColor = UIColor.blackColor;
         contentholdingview = [[ACRContentHoldingUIView alloc] init];
         [contentholdingview addSubview:view];
-        [self configUpdateForUIImageView:acoElem config:acoConfig image:nil imageView:view];
+        [self configUpdateForUIImageView:nil acoElem:acoElem config:acoConfig image:nil imageView:view];
     }
 
     view.translatesAutoresizingMaskIntoConstraints = NO;
@@ -128,7 +127,7 @@
 
     [viewGroup addArrangedSubview:contentholdingview];
 
-    if ([acoConfig getHostConfig] -> GetSupportsInteractivity()) {
+    if ([acoConfig getHostConfig]->GetSupportsInteractivity()) {
         ACRMediaTarget *mediaTarget = nil;
         ACOMediaEvent *mediaEvent = [[ACOMediaEvent alloc] initWithMedia:mediaElem];
         if (!mediaEvent.isValid) {
@@ -136,7 +135,7 @@
             return nil;
         }
         // create target for gesture recongnizer;
-        if (![acoConfig getHostConfig] -> GetMedia().allowInlinePlayback) {
+        if (![acoConfig getHostConfig]->GetMedia().allowInlinePlayback) {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig];
         } else {
             mediaTarget = [[ACRMediaTarget alloc] initWithMediaEvent:mediaEvent rootView:rootView config:acoConfig containingview:contentholdingview];
@@ -160,7 +159,7 @@
     return view;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     ACRContentHoldingUIView *contentholdingview = (ACRContentHoldingUIView *)imageView.superview;
     CGFloat heightToWidthRatio = 0.0f;
@@ -206,6 +205,7 @@
                                   constant:0]
         .active = YES;
     [contentholdingview setNeedsLayout];
+    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
 }
 
 @end
