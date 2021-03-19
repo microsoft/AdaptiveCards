@@ -10,7 +10,6 @@ import { Rect, IPoint, Utils } from "./miscellaneous";
 import { GlobalSettings } from "./shared";
 import { FieldPicker } from "./field-picker";
 import { Strings } from "./strings";
-import { stringToCssColor } from "adaptivecards";
 
 export abstract class DesignerPeerInplaceEditor {
     onClose: (applyChanges: boolean) => void;
