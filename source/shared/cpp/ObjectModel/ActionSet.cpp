@@ -14,7 +14,7 @@ ActionSet::ActionSet() : BaseCardElement(CardElementType::ActionSet), m_actions{
 }
 
 ActionSet::ActionSet(std::vector<std::shared_ptr<BaseActionElement>>& actions) :
-    BaseCardElement(CardElementType::ActionSet), m_actions(actions)
+    BaseCardElement(CardElementType::ActionSet), m_actions(actions), m_hAlignment(HorizontalAlignment::Left)
 {
     PopulateKnownPropertiesSet();
 }
@@ -50,6 +50,8 @@ std::shared_ptr<BaseCardElement> ActionSetParser::Deserialize(ParseContext& cont
 
     auto actionSet = BaseCardElement::Deserialize<ActionSet>(context, value);
 
+	actionSet->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(value, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
+
     // Parse Actions
     auto actionElements = ParseUtil::GetActionCollection(context, value, AdaptiveCardSchemaKey::Actions, false);
     actionSet->m_actions = std::move(actionElements);
@@ -65,4 +67,14 @@ std::shared_ptr<BaseCardElement> ActionSetParser::DeserializeFromString(ParseCon
 void ActionSet::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert(AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Actions));
+}
+
+HorizontalAlignment ActionSet::GetHorizontalAlignment() const
+{
+    return m_hAlignment;
+}
+
+void ActionSet::SetHorizontalAlignment(const HorizontalAlignment& value)
+{
+    m_hAlignment = value;
 }

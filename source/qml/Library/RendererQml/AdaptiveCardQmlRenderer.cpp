@@ -48,7 +48,7 @@ namespace RendererQml
         (*GetElementRenderers()).Set<AdaptiveCards::ColumnSet>(AdaptiveCardQmlRenderer::ColumnSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::FactSet>(AdaptiveCardQmlRenderer::FactSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ImageSet>(AdaptiveCardQmlRenderer::ImageSetRender);
-        /*(*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);*/
+        (*GetElementRenderers()).Set<AdaptiveCards::ActionSet>(AdaptiveCardQmlRenderer::ActionSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::ChoiceSetInput>(AdaptiveCardQmlRenderer::ChoiceSetRender);
         (*GetElementRenderers()).Set<AdaptiveCards::TextInput>(AdaptiveCardQmlRenderer::TextInputRender);
         (*GetElementRenderers()).Set<AdaptiveCards::NumberInput>(AdaptiveCardQmlRenderer::NumberInputRender);
@@ -1891,6 +1891,30 @@ namespace RendererQml
     {
         return std::make_shared<QmlTag>("Rectangle");
     }
+  
+  std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::ActionSetRender(std::shared_ptr<AdaptiveCards::ActionSet> actionSet, std::shared_ptr<AdaptiveRenderContext> context)
+	{
+		auto outerContainer = std::make_shared<QmlTag>("Column");
+		outerContainer->Property("width", "parent.width");
+
+		if (!actionSet->GetIsVisible())
+		{
+			outerContainer->Property("visible", "false");
+		}
+
+		auto actionsConfig = context->GetConfig()->GetActions();
+		const auto oldActionAlignment = context->GetConfig()->GetActions().actionAlignment;
+
+		actionsConfig.actionAlignment = (AdaptiveCards::ActionAlignment) actionSet->GetHorizontalAlignment();
+		context->GetConfig()->SetActions(actionsConfig);
+
+		AddActions(outerContainer, actionSet->GetActions(), context);
+
+		actionsConfig.actionAlignment = oldActionAlignment;
+		context->GetConfig()->SetActions(actionsConfig);
+
+		return outerContainer;
+	}
 
     std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::AdaptiveActionRender(std::shared_ptr<AdaptiveCards::BaseActionElement> action, std::shared_ptr<AdaptiveRenderContext> context)
     {
@@ -2159,6 +2183,5 @@ namespace RendererQml
 
         return function.str();
     }
-
 }
 	
