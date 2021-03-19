@@ -9,7 +9,14 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
             logError("Element is not of type ACSActionSet")
             return NSView()
         }
-        
+        return renderView(actions: actionSet.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+    }
+    
+    func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+        return renderView(actions: actions, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+    }
+    
+    private func renderView(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         let actionSetView = ACRActionSetView()
         actionSetView.translatesAutoresizingMaskIntoConstraints = false
         let adaptiveActionHostConfig = hostConfig.getActions()
@@ -34,21 +41,21 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         var accumulatedWidth: CGFloat = 0, maxWidth: CGFloat = 0
-        guard !actionSet.getActions().isEmpty else {
+        guard !actions.isEmpty else {
             logInfo("Actions in ActionSet is empty")
             return actionSetView
         }
         
         var actionsToRender: Int = 0
         if let maxActionsToRender = adaptiveActionHostConfig?.maxActions, let uMaxActionsToRender = maxActionsToRender as? Int {
-            actionsToRender = min(uMaxActionsToRender, actionSet.getActions().count)
-            if actionSet.getActions().count > uMaxActionsToRender {
+            actionsToRender = min(uMaxActionsToRender, actions.count)
+            if actions.count > uMaxActionsToRender {
                 logError("WARNING: Some actions were not rendered due to exceeding the maximum number \(uMaxActionsToRender) actions are allowed")
             }
         }
         
         for index in 0..<actionsToRender {
-            let action = actionSet.getActions()[index]
+            let action = actions[index]
             let renderer = RendererManager.shared.actionRenderer(for: action.getType())
             if let curView = rootView as? ACRView {
                 let view = renderer.render(action: action, with: hostConfig, style: style, rootView: curView, parentView: rootView, inputs: [])
@@ -73,7 +80,6 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
                 contentWidth = maxWidth
             }
         }
-        
         actionSetView.totalWidth = CGFloat(contentWidth)
         return actionSetView
     }

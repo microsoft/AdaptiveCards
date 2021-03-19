@@ -157,3 +157,23 @@ class TextUtils {
         return content
     }
 }
+
+class HostConfigUtils {
+    static func getSpacing(_ spacing: ACSSpacing, with hostConfig: ACSHostConfig) -> NSNumber {
+        let spacingConfig = hostConfig.getSpacing()
+        let spaceAdded: NSNumber
+        switch spacing {
+        case .default: spaceAdded = spacingConfig?.defaultSpacing ?? 0
+        case .none: spaceAdded = 0
+        case .small: spaceAdded = spacingConfig?.smallSpacing ?? 3
+        case .medium: spaceAdded = spacingConfig?.mediumSpacing ?? 20
+        case .large: spaceAdded = spacingConfig?.largeSpacing ?? 30
+        case .extraLarge: spaceAdded = spacingConfig?.extraLargeSpacing ?? 40
+        case .padding: spaceAdded = spacingConfig?.paddingSpacing ?? 20
+        @unknown default:
+            logError("Unknown padding!")
+            spaceAdded = 0
+        }
+        return spaceAdded
+    }
+}

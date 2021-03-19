@@ -24,9 +24,16 @@ class AdaptiveCardRenderer {
             rootView.addArrangedSubview(viewWithInheritedProperties)
         }
         
-        for action in card.getActions() {
-            let renderer = RendererManager.shared.actionRenderer(for: action.getType())
-            let view = renderer.render(action: action, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+        if !card.getActions().isEmpty {
+            let view = ActionSetRenderer.shared.renderActionButtons(actions: card.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+            // getting spacing from hostConfig
+            if let verticalSpacing = hostConfig.getActions()?.spacing {
+                let spacing = HostConfigUtils.getSpacing(verticalSpacing, with: hostConfig)
+                // add vertical spacing b/w action button view and last BaseCard Element
+                if let lastView = rootView.arrangedSubviews.last {
+                    rootView.setCustomSpacing(spacing: CGFloat(truncating: spacing), after: lastView)
+                }
+            }
             rootView.addArrangedSubview(view)
         }
         

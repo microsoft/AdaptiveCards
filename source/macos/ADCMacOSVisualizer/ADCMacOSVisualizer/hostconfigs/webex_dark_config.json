@@ -244,7 +244,7 @@
         },
         "style": "emphasis",
         "preExpandSingleShowCardAction": false,
-        "actionsOrientation": "Vertical",
+        "actionsOrientation": "Horizontal",
         "actionAlignment": "stretch"
     },
     "adaptiveCard": {
