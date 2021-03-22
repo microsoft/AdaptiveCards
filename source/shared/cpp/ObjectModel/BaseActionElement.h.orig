@@ -38,10 +38,17 @@ namespace AdaptiveSharedNamespace
         void SetStyle(std::string&& value);
         void SetStyle(const std::string& value);
 
+<<<<<<< HEAD
+        const std::string& GetTooltip() const;
+
+        virtual void SetTooltip(std::string&& value);
+        virtual void SetTooltip(const std::string& value);
+=======
         const std::string& GetDescription() const;
 
         virtual void SetDescription(std::string&& value);
         virtual void SetDescription(const std::string& value);
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 
         ActionType GetElementType() const;
 
@@ -67,7 +74,11 @@ namespace AdaptiveSharedNamespace
         std::string m_title;
         std::string m_iconUrl;
         std::string m_style;
+<<<<<<< HEAD
+        std::string m_tooltip;
+=======
         std::string m_description;
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 
         ActionType m_type;
     };

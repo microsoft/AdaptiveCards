@@ -60,6 +60,21 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
+<<<<<<< HEAD
+const std::string& BaseActionElement::GetTooltip() const
+{
+    return m_tooltip;
+}
+
+void BaseActionElement::SetTooltip(std::string&& value)
+{
+    m_tooltip = std::move(value);
+}
+
+void BaseActionElement::SetTooltip(const std::string& value)
+{
+    m_tooltip = value;
+=======
 const std::string& BaseActionElement::GetDescription() const
 {
     return m_description;
@@ -73,6 +88,7 @@ void BaseActionElement::SetDescription(std::string&& value)
 void BaseActionElement::SetDescription(const std::string& value)
 {
     m_description = value;
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 }
 
 ActionType BaseActionElement::GetElementType() const
@@ -99,9 +115,15 @@ Json::Value BaseActionElement::SerializeToJsonValue() const
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = m_style;
     }
 
+<<<<<<< HEAD
+    if (!m_tooltip.empty())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip)] = m_tooltip;
+=======
     if (!m_description.empty())
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Description)] = m_description;
+>>>>>>> 550e574fb (Rename Tooltip to Description)
     }
 
     return root;
@@ -112,7 +134,11 @@ void BaseActionElement::PopulateKnownPropertiesSet()
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::IconUrl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Title),
+<<<<<<< HEAD
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Tooltip)});
+=======
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Description)});
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 }
 
 void BaseActionElement::GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo)
@@ -154,5 +180,9 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
     element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+<<<<<<< HEAD
+    element->SetTooltip(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Tooltip));
+=======
     element->SetDescription(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Description));
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 }

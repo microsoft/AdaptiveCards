@@ -281,13 +281,21 @@
 					"title": "ActionSet.Action.Submit",
 					"id": "ActionSet.Action.Submit_id",
 					"associatedInputs": "none",
+<<<<<<< HEAD
+					"tooltip": "tooltip"
+=======
 					"description": "This is a description"
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 				},
 				{
 					"type": "Action.OpenUrl",
 					"title": "ActionSet.Action.OpenUrl",
 					"id": "ActionSet.Action.OpenUrl_id",
+<<<<<<< HEAD
+					"tooltip": "tooltip",
+=======
 					"description": "This is a description",
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 					"url": "https://adaptivecards.io/"
 				}
 			]
@@ -324,7 +332,11 @@
 			"type": "Action.Submit",
 			"title": "Action.Submit",
 			"id": "Action.Submit_id",
+<<<<<<< HEAD
+			"tooltip": "tooltip",
+=======
 			"description": "This is a description",
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 			"data": {
 				"submitValue": true
 			}
@@ -333,7 +345,11 @@
 			"type": "Action.ShowCard",
 			"title": "Action.ShowCard",
 			"id": "Action.ShowCard_id",
+<<<<<<< HEAD
+			"tooltip": "tooltip",
+=======
 			"description": "This is a description",
+>>>>>>> 550e574fb (Rename Tooltip to Description)
 			"card": {
 				"type": "AdaptiveCard",
 				"backgroundImage": {
