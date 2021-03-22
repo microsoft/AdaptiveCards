@@ -255,13 +255,38 @@ namespace RendererQml
 		return 600;
 	}
 
-	void AdaptiveRenderContext::addToActionButtonList(const std::shared_ptr<QmlTag>& buttonElement, const std::shared_ptr<AdaptiveCards::BaseActionElement>& action)
+	void AdaptiveRenderContext::addToSubmitActionButtonList(const std::shared_ptr<QmlTag>& buttonElement, const std::shared_ptr<AdaptiveCards::SubmitAction>& action)
     {
-        m_actionButtonList[buttonElement] = action;
+        m_submitActionButtonList[buttonElement] = action;
     }
 
-    const std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::BaseActionElement>> AdaptiveRenderContext::getActionButtonList()
+    const std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::SubmitAction>> AdaptiveRenderContext::getSubmitActionButtonList()
     {
-        return m_actionButtonList;
+        return m_submitActionButtonList;
+    }
+
+    void AdaptiveRenderContext::addToShowCardButtonList(const std::shared_ptr<QmlTag>& buttonElement, const std::shared_ptr<AdaptiveCards::ShowCardAction>& action)
+    {
+        m_showCardButtonList[buttonElement] = action;
+    }
+
+    const std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::ShowCardAction>> AdaptiveRenderContext::getShowCardButtonList()
+    {
+        return m_showCardButtonList;
+    }
+
+    void AdaptiveRenderContext::clearShowCardButtonList()
+    {
+        m_showCardButtonList.clear();
+    }
+
+    void AdaptiveRenderContext::addToShowCardLoaderComponentList(const std::string& componentId, const std::shared_ptr<AdaptiveCards::ShowCardAction>& action)
+    {
+        m_showCardLoaderComponentList[componentId] = action;
+    }
+
+    const std::map<std::string, std::shared_ptr<AdaptiveCards::ShowCardAction>> AdaptiveRenderContext::getShowCardLoaderComponentList()
+    {
+        return m_showCardLoaderComponentList;
     }
 }

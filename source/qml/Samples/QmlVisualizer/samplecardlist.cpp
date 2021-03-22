@@ -21,8 +21,12 @@ SampleCardList::SampleCardList(QObject *parent) : QObject(parent)
 	mCards.append({ QStringLiteral("ColumnSet"), QString::fromStdString(Samples::card_columnSet) });
     mCards.append({ QStringLiteral("Action Open URL"), QString::fromStdString(Samples::card_Action_OpenUrl) });
 	mCards.append({ QStringLiteral("Action Submit 1"), QString::fromStdString(Samples::card_Action_Submit) });
-	mCards.append({ QStringLiteral("Action Show Card"), QString::fromStdString(Samples::card_Action_ShowCard) });
+	mCards.append({ QStringLiteral("Action Show Card 1"), QString::fromStdString(Samples::card_Action_ShowCard_1) });
+    mCards.append({ QStringLiteral("Action Show Card 2"), QString::fromStdString(Samples::card_Action_ShowCard_2) });
     mCards.append({ QStringLiteral("Action Set"), QString::fromStdString(Samples::card_ActionSet) });    
+    mCards.append({ QStringLiteral("Food order"), QString::fromStdString(Samples::card_FoodOrder) });
+    mCards.append({ QStringLiteral("Show card wizard"), QString::fromStdString(Samples::card_ShowCardWiz) });
+    
 }
 
 QVector<Card> SampleCardList::cardList() const

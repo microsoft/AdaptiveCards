@@ -1618,38 +1618,355 @@ namespace Samples
       ]
     })";
 
-	const std::string card_Action_ShowCard = R"({
-	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-	  "type": "AdaptiveCard",
-	  "version": "1.0",
-	  "body": [
-		{
-		  "type": "TextBlock",
-		  "text": "This card's action will show another card"
-		}
-	  ],
-	  "actions": [
-		{
-		  "type": "Action.ShowCard",
-		  "title": "Action.ShowCard",
-		  "card": {
-			"type": "AdaptiveCard",
-			"body": [
-			  {
-				"type": "TextBlock",
-				"text": "What do you think?"
-			  }
-			],
-			"actions": [
-			  {
-				"type": "Action.Submit",
-				"title": "Neat!"
-			  }
-			]
-		  }
-		}
-	  ]
-	})";
+	const std::string card_Action_ShowCard_1 = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "This card's action will show another card"
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Action.ShowCard",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "What do you think?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "Neat!"
+          }
+        ]
+      }
+    }
+  ]
+}
+)";
+
+    const std::string card_Action_ShowCard_2 = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor",
+      "style": "compact",
+      "isMultiSelect": false,
+      "value": "1",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What color do you want? *(isMultiSelect:false, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor2",
+      "style": "expanded",
+      "isMultiSelect": false,
+      "value": "1",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:compact)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor3",
+      "isMultiSelect": true,
+      "value": "1,3",
+      "style": "compact",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What colors do you want? *(isMultiSelect:true, style:expanded)*"
+    },
+    {
+      "type": "Input.ChoiceSet",
+      "id": "myColor4",
+      "isMultiSelect": true,
+      "value": "1",
+      "style": "expanded",
+      "choices": [
+        {
+          "title": "Red",
+          "value": "1"
+        },
+        {
+          "title": "Green",
+          "value": "2"
+        },
+        {
+          "title": "Blue",
+          "value": "3"
+        }
+      ]
+    },
+        {
+      "type": "TextBlock",
+      "text": "Your registration is almost complete",
+      "size": "medium",
+      "weight": "bolder",
+      "wrap": true
+    },
+    {
+      "type": "Container",
+      "items": [
+        {
+          "type": "ActionSet",
+          "actions": [
+            {
+              "type": "Action.Submit",
+              "title": "Approve",
+              "style": "positive",
+              "data": {
+                "id": "_qkQW8dJlUeLVi7ZMEzYVw",
+                "action": "approve"
+              }
+            },
+            {
+              "type": "Action.ShowCard",
+              "title": "Reject",
+              "style": "destructive",
+              "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                  {
+                    "type": "Input.Text",
+                    "id": "RejectCommentID",
+                    "placeholder": "Please specify an appropriate reason for rejection.",
+                    "isMultiline": true
+                  }
+                ],
+                "actions": [
+                  {
+                    "type": "Action.Submit",
+                    "title": "Send",
+                    "data": {
+                      "id": "_qkQW8dJlUeLVi7ZMEzYVw",
+                      "action": "reject"
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What type of food do you prefer?",
+      "wrap": true
+    },
+    {
+      "type": "ImageSet",
+      "imageSize": "medium",
+      "images": [
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+          "altText": "Steak cut with fries"
+        },
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+          "altText": "Fried chicken with lettuce"
+        },
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg",
+          "altText": "Tofu topped with red sauce"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Steak",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "How would you like your steak prepared?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.ChoiceSet",
+            "id": "SteakTemp",
+            "style": "expanded",
+            "choices": [
+              {
+                "title": "Rare",
+                "value": "rare"
+              },
+              {
+                "title": "Medium-Rare",
+                "value": "medium-rare"
+              },
+              {
+                "title": "Well-done",
+                "value": "well-done"
+              }
+            ]
+          },
+          {
+            "type": "Input.Text",
+            "id": "SteakOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Steak"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Chicken",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Do you have any allergies?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.ChoiceSet",
+            "id": "ChickenAllergy",
+            "style": "expanded",
+            "isMultiSelect": true,
+            "choices": [
+              {
+                "title": "I'm allergic to peanuts",
+                "value": "peanut"
+              }
+            ]
+          },
+          {
+            "type": "Input.Text",
+            "id": "ChickenOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Chicken"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Tofu",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Would you like it prepared vegan?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.Toggle",
+            "id": "Vegetarian",
+            "title": "Please prepare it vegan",
+            "valueOn": "vegan",
+            "valueOff": "notVegan"
+          },
+          {
+            "type": "Input.Text",
+            "id": "VegOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Vegetarian"
+            }
+          }
+        ]
+      }
+    }
+  ]
+})";
 
 	const std::string card_Action_Inline = R"({
       "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -1701,5 +2018,379 @@ namespace Samples
         }
       ]
     })";
-}
 
+    const std::string card_FoodOrder = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Your registration is almost complete",
+      "size": "medium",
+      "weight": "bolder",
+      "wrap": true
+    },
+    {
+      "type": "TextBlock",
+      "text": "What type of food do you prefer?",
+      "wrap": true
+    },
+    {
+      "type": "ImageSet",
+      "imageSize": "medium",
+      "images": [
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/steak.jpg",
+          "altText": "Steak cut with fries"
+        },
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/chicken.jpg",
+          "altText": "Fried chicken with lettuce"
+        },
+        {
+          "type": "Image",
+          "url": "https://contososcubademo.azurewebsites.net/assets/tofu.jpg",
+          "altText": "Tofu topped with red sauce"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "Steak",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "How would you like your steak prepared?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.ChoiceSet",
+            "id": "SteakTemp",
+            "style": "expanded",
+            "choices": [
+              {
+                "title": "Rare",
+                "value": "rare"
+              },
+              {
+                "title": "Medium-Rare",
+                "value": "medium-rare"
+              },
+              {
+                "title": "Well-done",
+                "value": "well-done"
+              }
+            ]
+          },
+          {
+            "type": "Input.Text",
+            "id": "SteakOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Steak"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Chicken",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Do you have any allergies?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.ChoiceSet",
+            "id": "ChickenAllergy",
+            "style": "expanded",
+            "isMultiSelect": true,
+            "choices": [
+              {
+                "title": "I'm allergic to peanuts",
+                "value": "peanut"
+              }
+            ]
+          },
+          {
+            "type": "Input.Text",
+            "id": "ChickenOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Chicken"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Tofu",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "Would you like it prepared vegan?",
+            "size": "medium",
+            "wrap": true
+          },
+          {
+            "type": "Input.Toggle",
+            "id": "Vegetarian",
+            "title": "Please prepare it vegan",
+            "valueOn": "vegan",
+            "valueOff": "notVegan"
+          },
+          {
+            "type": "Input.Text",
+            "id": "VegOther",
+            "isMultiline": true,
+            "placeholder": "Any other preparation requests?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "OK",
+            "data": {
+              "FoodChoice": "Vegetarian"
+            }
+          }
+        ]
+      }
+    }
+  ]
+})";
+
+    const std::string card_ShowCardWiz = R"({
+  "type": "AdaptiveCard",
+  "version": "1.0",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "Please provide the following information:",
+      "wrap": true
+    }
+  ],
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "actions": [
+    {
+      "type": "Action.ShowCard",
+      "title": "1. Name",
+      "card": {
+        "type": "AdaptiveCard",
+        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+        "body": [
+          {
+            "type": "Container",
+            "id": "nameProperties",
+            "items": [
+            {
+                "type": "TextBlock",
+                "text": "First Name",
+                "wrap": true
+            },
+              {
+                "type": "Input.Text",
+                "label": "First Name",
+                "id": "FirstName",
+                "isRequired": true,
+                "errorMessage": "First Name is required"
+              },
+            {
+                "type": "TextBlock",
+                "text": "Middle Name",
+                "wrap": true
+            },
+              {
+                "type": "Input.Text",
+                "label": "Middle Name",
+                "id": "MiddleName"
+              },
+            {
+                "type": "TextBlock",
+                "text": "Last Name",
+                "wrap": true
+            },
+              {
+                "type": "Input.Text",
+                "label": "Last Name",
+                "id": "LastName",
+                "isRequired": true,
+                "errorMessage": "Last Name is required"
+              }
+            ]
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.ShowCard",
+            "title": "2. Address",
+            "card": {
+              "type": "AdaptiveCard",
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "body": [
+                {
+                  "type": "Container",
+                  "id": "addressProperties",
+                  "items": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Address line 1",
+                        "wrap": true
+                    },
+                    {
+                      "type": "Input.Text",
+                      "label": "Address line 1",
+                      "id": "AddressLine1"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "Address line 2",
+                        "wrap": true
+                    },
+                    {
+                      "type": "Input.Text",
+                      "label": "Address line 2",
+                      "id": "AddressLine2"
+                    },
+                    {
+                      "type": "ColumnSet",
+                      "columns": [
+                        {
+                          "type": "Column",
+                          "width": "stretch",
+                          "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": "City",
+                                "wrap": true
+                            },
+                            {
+                              "type": "Input.Text",
+                              "label": "City",
+                              "id": "City"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Column",
+                          "width": "stretch",
+                          "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": "State",
+                                "wrap": true
+                            },
+                            {
+                              "type": "Input.Text",
+                              "label": "State",
+                              "id": "State1"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "Column",
+                          "width": "stretch",
+                          "items": [
+                            {
+                                "type": "TextBlock",
+                                "text": "Zip",
+                                "wrap": true
+                            },
+                            {
+                              "type": "Input.Text",
+                              "label": "Zip Code",
+                              "id": "Zip"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "actions": [
+                {
+                  "type": "Action.ShowCard",
+                  "title": "3. Phone/Email",
+                  "card": {
+                    "type": "AdaptiveCard",
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Cell Number",
+                        "wrap": true
+                    },
+                      {
+                        "type": "Input.Text",
+                        "label": "Cell Number",
+                        "id": "CellPhone"
+                      },
+                    {
+                        "type": "TextBlock",
+                        "text": "Home Number",
+                        "wrap": true
+                    },
+                      {
+                        "type": "Input.Text",
+                        "label": "Home Number",
+                        "id": "HomePhone"
+                      },
+                    {
+                        "type": "TextBlock",
+                        "text": "Email Address",
+                        "wrap": true
+                    },
+                      {
+                        "type": "Input.Text",
+                        "label": "Email Address",
+                        "id": "Email"
+                      }
+                    ],
+                    "actions": [
+                      {
+                        "type": "Action.Submit",
+                        "title": "Submit"
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+})";
+}
