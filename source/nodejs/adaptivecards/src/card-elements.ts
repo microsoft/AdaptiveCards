@@ -920,7 +920,7 @@ export class TextBlock extends BaseTextBlock {
                 element.setAttribute("aria-level", GlobalSettings.defaultHeadingLevel.toString());
             }
 
-            if (this.selectAction) {
+            if (this.selectAction && hostConfig.supportsInteractivity) {
                 element.onclick = (e) => {
                     e.preventDefault();
                     e.cancelBubble = true;
@@ -930,17 +930,15 @@ export class TextBlock extends BaseTextBlock {
                     }
                 }
 
-                if (hostConfig.supportsInteractivity) {
-                    element.tabIndex = 0
-                    element.setAttribute("role", this.selectAction.getAriaRole());
+                element.tabIndex = 0
+                element.setAttribute("role", this.selectAction.getAriaRole());
 
-                    if (this.selectAction.title) {
-                        element.setAttribute("aria-label", this.selectAction.title);
-                        element.title = this.selectAction.title;
-                    }
-
-                    element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+                if (this.selectAction.effectiveTooltip) {
+                    element.setAttribute("aria-label", this.selectAction.effectiveTooltip);
+                    element.title = this.selectAction.effectiveTooltip;
                 }
+
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             if (!this._processedText) {
@@ -1212,9 +1210,9 @@ export class TextRun extends BaseTextBlock {
                     }
                 }
 
-                if (this.selectAction.title) {
-                    anchor.setAttribute("aria-label", this.selectAction.title);
-                    anchor.title = this.selectAction.title;
+                if (this.selectAction.effectiveTooltip) {
+                    anchor.setAttribute("aria-label", this.selectAction.effectiveTooltip);
+                    anchor.title = this.selectAction.effectiveTooltip;
                 }
 
                 anchor.innerText = formattedText;
@@ -1734,22 +1732,37 @@ export class Image extends CardElement {
             element.style.display = "flex";
             element.style.alignItems = "flex-start";
 
-            element.onkeypress = (e) => {
-                if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
-                    e.preventDefault();
-                    e.cancelBubble = true;
+            // Cache hostConfig to avoid walking the parent hierarchy multiple times
+            let hostConfig = this.hostConfig;
 
-                    this.selectAction.execute();
+            if (this.selectAction && hostConfig.supportsInteractivity) {
+                element.onkeypress = (e) => {
+                    if (this.selectAction && (e.keyCode == 13 || e.keyCode == 32)) { // enter or space pressed
+                        e.preventDefault();
+                        e.cancelBubble = true;
+
+                        this.selectAction.execute();
+                    }
                 }
-            }
 
-            element.onclick = (e) => {
-                if (this.selectAction) {
-                    e.preventDefault();
-                    e.cancelBubble = true;
+                element.onclick = (e) => {
+                    if (this.selectAction) {
+                        e.preventDefault();
+                        e.cancelBubble = true;
 
-                    this.selectAction.execute();
+                        this.selectAction.execute();
+                    }
                 }
+
+                element.tabIndex = 0
+                element.setAttribute("role", this.selectAction.getAriaRole());
+
+                if (this.selectAction.effectiveTooltip) {
+                    element.setAttribute("aria-label", this.selectAction.effectiveTooltip);
+                    element.title = this.selectAction.effectiveTooltip;
+                }
+
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
             }
 
             switch (this.horizontalAlignment) {
@@ -1763,9 +1776,6 @@ export class Image extends CardElement {
                     element.style.justifyContent = "flex-start";
                     break;
             }
-
-            // Cache hostConfig to avoid walking the parent hierarchy multiple times
-            let hostConfig = this.hostConfig;
 
             let imageElement = document.createElement("img");
             imageElement.onload = (e: Event) => {
@@ -1798,13 +1808,13 @@ export class Image extends CardElement {
             imageElement.style.minWidth = "0";
             imageElement.classList.add(hostConfig.makeCssClassName("ac-image"));
 
-            if (this.selectAction !== undefined && hostConfig.supportsInteractivity) {
+            if (this.selectAction && hostConfig.supportsInteractivity) {
                 imageElement.tabIndex = 0
                 imageElement.setAttribute("role", this.selectAction.getAriaRole());
 
-                if (this.selectAction.title) {
-                    imageElement.setAttribute("aria-label", <string>this.selectAction.title);
-                    imageElement.title = this.selectAction.title;
+                if (this.selectAction.effectiveTooltip) {
+                    imageElement.setAttribute("aria-label", <string>this.selectAction.effectiveTooltip);
+                    imageElement.title = this.selectAction.effectiveTooltip;
                 }
 
                 imageElement.classList.add(hostConfig.makeCssClassName("ac-selectable"));
@@ -1949,15 +1959,6 @@ export abstract class CardElementContainer extends CardElement {
             }
 
             if (element && this.isSelectable && this._selectAction && hostConfig.supportsInteractivity) {
-                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
-                element.tabIndex = 0;
-                element.setAttribute("role", this._selectAction.getAriaRole());
-
-                if (this._selectAction.title) {
-                    element.setAttribute("aria-label", this._selectAction.title);
-                    element.title = this._selectAction.title;
-                }
-
                 element.onclick = (e) => {
                     if (this._selectAction !== undefined) {
                         e.preventDefault();
@@ -1976,6 +1977,17 @@ export abstract class CardElementContainer extends CardElement {
                         this._selectAction.execute();
                     }
                 }
+                
+                element.tabIndex = 0;
+                element.setAttribute("role", this._selectAction.getAriaRole());
+
+                if (this._selectAction.effectiveTooltip) {
+                    element.setAttribute("aria-label", this._selectAction.effectiveTooltip);
+                    element.title = this._selectAction.effectiveTooltip;
+                }
+
+                element.classList.add(hostConfig.makeCssClassName("ac-selectable"));
+
             }
         }
 
@@ -3772,7 +3784,7 @@ export abstract class Action extends CardObject {
     //#region Schema
 
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
-    static readonly descriptionProperty = new StringProperty(Versions.v1_5, "description", true);
+    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip", true);
     static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_2,
@@ -3795,8 +3807,8 @@ export abstract class Action extends CardObject {
     @property(Action.titleProperty)
     title?: string;
 
-    @property(Action.descriptionProperty)
-    description?: string;
+    @property(Action.tooltipProperty)
+    tooltip?: string;
 
     @property(Action.iconUrlProperty)
     iconUrl?: string;
@@ -3895,15 +3907,9 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.description) {
-            buttonElement.setAttribute("aria-label", this.description);
-
-            if (GlobalSettings.useActionDescriptionAsTooltip) {
-                buttonElement.title = this.description;
-            }
-        }
-        else if (this.title) {
-            buttonElement.setAttribute("aria-label", this.title);
+        if (this.effectiveTooltip) {
+            buttonElement.setAttribute("aria-label", this.effectiveTooltip);
+            buttonElement.title = this.effectiveTooltip;
         }
 
         if (this.expanded != undefined) {
@@ -4020,6 +4026,10 @@ export abstract class Action extends CardObject {
      */
     validateInputs(): Input[] {
         return this.internalValidateInputs(this.getReferencedInputs());
+    }
+
+    get effectiveTooltip(): string | undefined {
+        return this.tooltip ? this.tooltip : this.title;
     }
 
     get shouldPromoteAsPrimaryOnExecute(): boolean {

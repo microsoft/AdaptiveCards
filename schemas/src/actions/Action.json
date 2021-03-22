@@ -7,9 +7,9 @@
 			"type": "string",
 			"description": "Label for button or link that represents this action."
 		},
-		"description": {
+		"tooltip": {
 			"type": "string",
-			"description": "Optional description for this action. It is strongly recommended to specify a description for all actions as is provides for better accessibility. Action descriptions will also typically be displayed as tooltips.",
+			"description": "The tooltip associated with the action. If specified, tooltip is also used for accessibility purposes; otherwise, title is used instead. It is strongly recommended to specify a tooltip for all actions in a card to improve accessibility and more generally to provide useful information to the end user regarding what an action will do.",
 			"version": "1.5"
 		},
 		"iconUrl": {
