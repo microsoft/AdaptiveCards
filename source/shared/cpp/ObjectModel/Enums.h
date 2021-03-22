@@ -158,6 +158,7 @@ namespace AdaptiveSharedNamespace
         TimeInput,
         Title,
         ToggleInput,
+        Tooltip,
         Top,
         Type,
         Underline,
