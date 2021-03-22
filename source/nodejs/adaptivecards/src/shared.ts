@@ -15,6 +15,8 @@ export class GlobalSettings {
     static enableFallback: boolean = true;
     static useWebkitLineClamp: boolean = true;
     static allowMoreThanMaxActionsInOverflowMenu: boolean = false;
+    static defaultHeadingLevel: number = 2;
+    static useActionDescriptionAsTooltip: boolean = true;
 }
 
 export const ContentTypes = {

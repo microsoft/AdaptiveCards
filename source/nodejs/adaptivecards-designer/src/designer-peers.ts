@@ -271,7 +271,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 let action = new Adaptive.SubmitAction();
                 action.id = command.id;
                 action.title = command.caption;
-                action.accessibleTitle = command.altText;
+                action.description = command.altText;
                 action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
@@ -731,7 +731,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
-                removeAction.accessibleTitle = "Remove";
+                removeAction.description = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
@@ -1191,7 +1191,8 @@ export abstract class DesignerPeer extends DraggableElement {
 }
 
 export class ActionPeer extends DesignerPeer {
-    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title");
+    static readonly titleProperty = new StringPropertyEditor(Adaptive.Versions.v1_0, "title", "Title", true);
+    static readonly descriptionProperty = new StringPropertyEditor(Adaptive.Versions.v1_5, "description", "Description", true, true);
     static readonly modeProperty = new ChoicePropertyEditor(
         Adaptive.Versions.v1_5,
         "mode",
@@ -1272,6 +1273,7 @@ export class ActionPeer extends DesignerPeer {
             defaultCategory,
             ActionPeer.idProperty,
             ActionPeer.titleProperty,
+            ActionPeer.descriptionProperty,
             ActionPeer.modeProperty,
             ActionPeer.styleProperty,
             ActionPeer.iconUrlProperty);
@@ -2532,6 +2534,14 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
     static readonly weightProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "weight", "Weight", Adaptive.TextWeight);
     static readonly colorProperty = new EnumPropertyEditor(Adaptive.Versions.v1_0, "color", "Color", Adaptive.TextColor);
     static readonly subtleProperty = new BooleanPropertyEditor(Adaptive.Versions.v1_0, "isSubtle", "Subtle");
+    static readonly styleProperty = new ChoicePropertyEditor(
+        Adaptive.Versions.v1_5,
+        "style",
+        "Style",
+        [
+            { targetVersion: Adaptive.Versions.v1_5, name: "Paragraph", value: "paragraph" },
+            { targetVersion: Adaptive.Versions.v1_5, name: "Heading", value: "heading" }
+        ]);
 
     protected createInplaceEditor(): DesignerPeerInplaceEditor {
         return new TextBlockPeerInplaceEditor(this.cardElement);
@@ -2585,7 +2595,8 @@ export class TextBlockPeer extends TypedCardElementPeer<Adaptive.TextBlock> {
             TextBlockPeer.sizeProperty,
             TextBlockPeer.weightProperty,
             TextBlockPeer.colorProperty,
-            TextBlockPeer.subtleProperty);
+            TextBlockPeer.subtleProperty,
+            TextBlockPeer.styleProperty);
     }
 
     getToolTip(): string {

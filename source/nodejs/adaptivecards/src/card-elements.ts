@@ -822,17 +822,30 @@ export abstract class BaseTextBlock extends CardElement {
     }
 }
 
+export type TextBlockStyle = "paragraph" | "heading";
+
 export class TextBlock extends BaseTextBlock {
     //#region Schema
 
     static readonly wrapProperty = new BoolProperty(Versions.v1_0, "wrap", false);
     static readonly maxLinesProperty = new NumProperty(Versions.v1_0, "maxLines");
+    static readonly styleProperty = new ValueSetProperty(
+        Versions.v1_5,
+        "style",
+        [
+            { value: "paragraph" },
+            { value: "heading" }
+        ],
+        "paragraph");
 
     @property(TextBlock.wrapProperty)
     wrap: boolean = false;
 
     @property(TextBlock.maxLinesProperty)
     maxLines?: number;
+
+    @property(TextBlock.styleProperty)
+    style: TextBlockStyle = "paragraph";
 
     //#endregion
 
@@ -901,6 +914,11 @@ export class TextBlock extends BaseTextBlock {
             element.style.overflow = "hidden";
 
             this.applyStylesTo(element);
+
+            if (this.style === "heading") {
+                element.setAttribute("role", "heading");
+                element.setAttribute("aria-level", GlobalSettings.defaultHeadingLevel.toString());
+            }
 
             if (this.selectAction) {
                 element.onclick = (e) => {
@@ -3754,6 +3772,7 @@ export abstract class Action extends CardObject {
     //#region Schema
 
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
+    static readonly descriptionProperty = new StringProperty(Versions.v1_5, "description", true);
     static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_2,
@@ -3775,6 +3794,9 @@ export abstract class Action extends CardObject {
 
     @property(Action.titleProperty)
     title?: string;
+
+    @property(Action.descriptionProperty)
+    description?: string;
 
     @property(Action.iconUrlProperty)
     iconUrl?: string;
@@ -3833,7 +3855,6 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
-    accessibleTitle?: string;
     expanded?: boolean;
 
     onExecute: (sender: Action) => void;
@@ -3874,8 +3895,12 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.accessibleTitle) {
-            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+        if (this.description) {
+            buttonElement.setAttribute("aria-label", this.description);
+
+            if (GlobalSettings.useActionDescriptionAsTooltip) {
+                buttonElement.title = this.description;
+            }
         }
         else if (this.title) {
             buttonElement.setAttribute("aria-label", this.title);
@@ -5214,12 +5239,16 @@ export class ActionSet extends CardElement {
     findDOMNodeOwner(node: Node): CardObject | undefined {
         let target: CardObject | undefined = undefined;
 
-        for (const action of this._actionCollection.items) {
-            // recur through each Action
-            target = action.findDOMNodeOwner(node);
+        for (let i = 0; i < this.getActionCount(); i++) {
+            let action = this.getActionAt(i);
 
-            if (target) {
-                return target;
+            if (action) {
+                // recur through each Action
+                target = action.findDOMNodeOwner(node);
+
+                if (target) {
+                    return target;
+                }
             }
         }
 
