@@ -5,8 +5,8 @@
 	"scripts": {
 		"clean": "hexo clean",
 		"build": "hexo generate",
-		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./schema-explorer-toc.yml -r AdaptiveCard",
-		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./schema-hostconfig-toc.yml -r AdaptiveCardConfig",
+		"generate-md-ac": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/adaptive-card.json ./languages/en-us/schema-explorer-toc.yml -r AdaptiveCard",
+		"generate-md-hc": "node node_modules/marked-schema/bin/marked-schema ../../../schemas/host-config.json ./languages/en-us/schema-hostconfig-toc.yml -r AdaptiveCardConfig",
 		"release": "hexo clean && hexo generate",
 		"start": "hexo server"
 	},
