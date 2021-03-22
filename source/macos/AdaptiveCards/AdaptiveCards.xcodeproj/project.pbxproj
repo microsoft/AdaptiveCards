@@ -439,6 +439,8 @@
 		08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */ = {isa = PBXBuildFile; fileRef = 08299E3225AF254000799C66 /* AdaptiveCards.h */; };
 		08E4047025B46BDB00C2092A /* AdaptiveCards_bridge.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08E4052125B46C3B00C2092A /* SwiftInterfaceHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E402EB25B463D200C2092A /* SwiftInterfaceHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		08FFAC2D2608DB6B00296D62 /* ActionOpenURLRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */; };
+		08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */; };
 		13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4B25E750CB005D9380 /* FakeInputDate.swift */; };
 		13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */; };
 		13C1F7EE25FF0DFF00B59001 /* ActionShowCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C1F7ED25FF0DFF00B59001 /* ActionShowCardRenderer.swift */; };
@@ -971,6 +973,8 @@
 		08E4046225B46BDA00C2092A /* AdaptiveCards_bridge.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AdaptiveCards_bridge.h; sourceTree = "<group>"; };
 		08E4046325B46BDA00C2092A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		08E4054D25B4764400C2092A /* AdaptiveCards-bridge.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "AdaptiveCards-bridge.xcconfig"; sourceTree = "<group>"; };
+		08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionOpenURLRendererTests.swift; sourceTree = "<group>"; };
+		08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeOpenURLAction.swift; sourceTree = "<group>"; };
 		13B13E4B25E750CB005D9380 /* FakeInputDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputDate.swift; sourceTree = "<group>"; };
 		13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRendererTests.swift; sourceTree = "<group>"; };
 		13C1F7ED25FF0DFF00B59001 /* ActionShowCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionShowCardRenderer.swift; sourceTree = "<group>"; };
@@ -1289,6 +1293,7 @@
 				2910CF152600D610000910C8 /* FakeSubmitAction.swift */,
 				082E59A82604E76E00741958 /* FakeShowCardAction.swift */,
 				082E59AD2604E96E00741958 /* FakeAdaptiveCard.swift */,
+				08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */,
 			);
 			path = Fakes;
 			sourceTree = "<group>";
@@ -1313,6 +1318,7 @@
 				2910CF102600D2CC000910C8 /* ActionSetRendererTests.swift */,
 				299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */,
 				082E59B22604EE1F00741958 /* ActionShowCardRendererTests.swift */,
+				08FFAC2C2608DB6B00296D62 /* ActionOpenURLRendererTests.swift */,
 			);
 			path = Renderers;
 			sourceTree = "<group>";
@@ -2222,6 +2228,7 @@
 				2871B16625DF722A0040AB27 /* MultilineInputTextRendererTest.swift in Sources */,
 				29E8DF8A25E8223D000EC12F /* FakeChoiceInput.swift in Sources */,
 				13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */,
+				08FFAC2D2608DB6B00296D62 /* ActionOpenURLRendererTests.swift in Sources */,
 				0801EDBE25F7913300D64C86 /* ColumnSetRendererTests.swift in Sources */,
 				082D912B25D67042000226C4 /* FakeHostConfig.swift in Sources */,
 				A04EA82425F00C6100C4C7DB /* ImageRendererTests.swift in Sources */,
@@ -2229,6 +2236,7 @@
 				A04EA82925F00F3400C4C7DB /* FakeImage.swift in Sources */,
 				0801EDC325F7914200D64C86 /* ColumnRendererTests.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
+				08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */,
 				082E59A92604E76E00741958 /* FakeShowCardAction.swift in Sources */,
 				28CE1A7525E4F24F00BFCFD9 /* FakeFacts.swift in Sources */,
 				082E59AE2604E96E00741958 /* FakeAdaptiveCard.swift in Sources */,
