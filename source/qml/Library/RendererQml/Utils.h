@@ -98,7 +98,7 @@ namespace RendererQml
 		static std::string GetHorizontalAlignment(std::string aligntype);
 		static std::string GetWeight(AdaptiveCards::TextWeight weight);
 
-		static std::string GetDate(std::string date, bool MinimumorMaximum);   
+		static std::string GetDate(const std::string& date);
 		static const bool isValidTime(const std::string& time);
 		static std::string defaultTimeto12hour(std::string& defaultTime);
 

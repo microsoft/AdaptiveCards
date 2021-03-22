@@ -1010,14 +1010,10 @@ namespace RendererQml
         uiDateInput->Property("font.pixelSize", std::to_string(fontSize));
         uiDateInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
-        if (!input->GetValue().empty())
-        {
-            uiDateInput->Property("text", "\"" + Utils::GetDate(input->GetValue(), false) + "\"");
-        }
-
         uiDateInput->Property("property string selectedDate", "\"" + input->GetValue() + "\"");
+		uiDateInput->AddFunctions(Formatter() << "signal " << uiDateInput->GetId() << "TextChanged(var dateText)");
 
-        //TODO: Add stretch property
+		//TODO: Add stretch property
 
         if (!input->GetIsVisible())
         {
@@ -1033,7 +1029,6 @@ namespace RendererQml
         auto backgroundTag = std::make_shared<QmlTag>("Rectangle");
         backgroundTag->Property("radius", "5");
         //TODO: These color styling should come from css
-        //TODO: ADD hover effect
         backgroundTag->Property("color", context->GetRGBColor(context->GetConfig()->GetContainerStyles().defaultPalette.backgroundColor));
         backgroundTag->Property("border.color", Formatter() << input->GetId() << ".activeFocus? 'black' : 'grey'");
         backgroundTag->Property("border.width", "1");
@@ -1063,18 +1058,39 @@ namespace RendererQml
         mouseAreaTag->Property("anchors.right", "parent.right");
         mouseAreaTag->Property("enabled", "true");
 
-        std::string onClicked_value = "{ parent.focus=true; " + calendar_box_id + ".visible=!" + calendar_box_id + ".visible; parent.z=" + calendar_box_id + ".visible?1:0; }";
+        std::string onClicked_value = "{ parent.forceActiveFocus(); " + calendar_box_id + ".visible=!" + calendar_box_id + ".visible; parent.z=" + calendar_box_id + ".visible?1:0; }";
         mouseAreaTag->Property("onClicked", onClicked_value);
 
         uiDateInput->AddChild(mouseAreaTag);
 
         auto calendarTag = std::make_shared<QmlTag>("Calendar");
         calendarTag->AddImports("import QtQuick.Controls 1.4");
+		calendarTag->AddImports("import QtQuick 2.15");
         calendarTag->Property("anchors.fill", "parent");
-        calendarTag->Property("minimumDate", !input->GetMin().empty() ? Utils::GetDate(input->GetMin(), true) : "new Date(1900,1,1)");
-        calendarTag->Property("maximumDate", !input->GetMax().empty() ? Utils::GetDate(input->GetMax(), true) : "new Date(2050,1,1)");
 
-        auto calendarBoxTag = std::make_shared<QmlTag>("Rectangle");
+		if (!input->GetMin().empty())
+		{
+			calendarTag->Property("minimumDate", Utils::GetDate(input->GetMin()));
+		}
+
+		if (!input->GetMax().empty())
+		{
+			calendarTag->Property("maximumDate", Utils::GetDate(input->GetMax()));
+		}
+
+		//Supporting function to handle the signal of the TextField
+		calendarTag->AddFunctions(Formatter() << "function setCalendarDate(dateString)" << "{"
+			<< "var Months = {Jan: 0,Feb: 1,Mar: 2,Apr: 3,May: 4,Jun: 5,July: 6,Aug: 7,Sep: 8,Oct: 9,Nov: 10,Dec: 11};"
+			<< "var y=dateString.match(/\\\\d{4}/);"
+			<< "dateString=dateString.replace(y,\"\");"
+			<< "var m=dateString.match(/[a-zA-Z]{3}/);"
+			<< "var d=dateString.match(/\\\\d{2}/);"
+			<< "if (d!==null && m!==null && y!==null){selectedDate=new Date(y[0],Months[m[0]],d[0]) }"
+			<< "}" );
+
+		calendarTag->Property("Component.onCompleted", Formatter() << "{" << uiDateInput->GetId() << "." << uiDateInput->GetId() << "TextChanged.connect(setCalendarDate);" << uiDateInput->GetId() << "." << uiDateInput->GetId() << "TextChanged( "<< uiDateInput->GetId() <<".text)" << "}");
+
+		auto calendarBoxTag = std::make_shared<QmlTag>("Rectangle");
         calendarBoxTag->Property("id", calendar_box_id);
         calendarBoxTag->Property("visible", "false");
         calendarBoxTag->Property("anchors.left", "parent.left");
@@ -1083,42 +1099,76 @@ namespace RendererQml
         calendarBoxTag->Property("height", "300");
         
 		auto EnumDateFormat = Utils::GetSystemDateFormat();
-		auto StringDateFormat = "MM-dd-yyyy";
-		auto inputMask = "00-00-0000;0";
-		auto DateRegex = "/^(0[0-9]|1[0-2])-(0?[0-9]|[12][0-9]|3[01])-(\\d{4})$/";
+		
+		const auto dateSeparator = "-";
+		const auto day_Regex = "([-0123]-|0\\d|[12]\\d|3[01])";
+		const auto month_Regex = "(---|[JFMASOND]--|Ja-|Jan|Fe-|Feb|Ma-|Mar|Ap-|Apr|May|Ju--|Jun|Jul|Au-|Aug|Se-|Sep|Oc-|Oct|No-|Nov|De-|Dec)";
+		const auto year_Regex = "(-{4}|\\d-{3}|\\d{2}-{2}|\\d{3}-|\\d{4})";
+
+		//Default date format: MMM-dd-yyyy
+		auto month_Text = "getText(0,3)";
+		auto day_Text = "getText(4,6)";
+		auto year_Text = "getText(7,11)";
+		std::string DateRegex = Formatter() << "/^" << month_Regex << dateSeparator << day_Regex << dateSeparator << year_Regex << "$/";
+		std::string StringDateFormat = Formatter() << "MMM" << dateSeparator << "dd" << dateSeparator << "yyyy";
+		std::string inputMask = Formatter() << ">x<xx" << dateSeparator << "xx" << dateSeparator << "xxxx;-";
 
 		switch (EnumDateFormat)
 		{
 			case RendererQml::DateFormat::ddmmyy:
 			{
-				StringDateFormat = "dd-MM-yyyy";
-				DateRegex = "/^(0?[0-9]|[12][0-9]|3[01])-(0[0-9]|1[0-2])-(\\d{4})$/";
-                uiDateInput->Property("onTextChanged", "{if(getText(0,2) === '00' || getText(3,5) === '00' || getText(6,10) === '0000'){selectedDate = '';}else{selectedDate = getText(6,10) + '-' + getText(3,5) + '-' + getText(0,2);}}");
+				StringDateFormat = Formatter() << "dd" << dateSeparator << "MMM" << dateSeparator << "yyyy";
+				inputMask = Formatter() << "xx" << dateSeparator << ">x<xx" << dateSeparator << "xxxx;-";
+				DateRegex = Formatter() << "/^" << day_Regex << dateSeparator << month_Regex << dateSeparator << year_Regex << "$/";
+
+				day_Text = "getText(0,2)";
+				month_Text = "getText(3,6)";
+				year_Text = "getText(7,11)";
 				break;
 			}
 			case RendererQml::DateFormat::yymmdd:
 			{
-				StringDateFormat = "yyyy-MM-dd";
-				inputMask = "0000-00-00;0";
-				DateRegex = "/^(\\d{4})-(0[0-9]|1[0-2])-(0?[0-9]|[12][0-9]|3[01])$/";
-                uiDateInput->Property("onTextChanged", "{if(getText(0,4) === '00' || getText(5,7) === '00' || getText(8,10) === '0000'){selectedDate = '';}else{selectedDate = getText(0,4) + '-' + getText(5,7) + '-' + getText(8,10);}}");
+				StringDateFormat = Formatter() << "yyyy" << dateSeparator << "MMM" << dateSeparator << "dd";
+				inputMask = Formatter() << "xxxx" << dateSeparator << ">x<xx" << dateSeparator << "xx;-";
+				DateRegex = Formatter() << "/^" << year_Regex << dateSeparator << month_Regex << dateSeparator << day_Regex << "$/";
+
+				day_Text = "getText(9,11)";
+				month_Text = "getText(5,8)";
+				year_Text = "getText(0,4)";
 				break;
 			}
 			case RendererQml::DateFormat::yyddmm:
 			{
-				StringDateFormat = "yyyy-dd-MM";
-				inputMask = "0000-00-00;0";
-				DateRegex = "/^(\\d{4})-(0?[0-9]|[12][0-9]|3[01])-(0[0-9]|1[0-2])$/";
-                uiDateInput->Property("onTextChanged", "{if(getText(0,4) === '00' || getText(5,7) === '00' || getText(8,10) === '0000'){selectedDate = '';}else{selectedDate = getText(0,4) + '-' + getText(8,10) + '-' + getText(5,7);}}");
-                break;
+				StringDateFormat = Formatter() << "yyyy" << dateSeparator << "dd" << dateSeparator << "MMM";
+				inputMask = Formatter() << "xxxx" << dateSeparator << "xx" << dateSeparator << ">x<xx;-";
+				DateRegex = Formatter() << "/^" << year_Regex << dateSeparator << day_Regex << dateSeparator << month_Regex << "$/";
+
+				day_Text = "getText(5,7)";
+				month_Text = "getText(8,11)";
+				year_Text = "getText(0,4)";
+				break;
 			}
 			//Default case: mm-dd-yyyy
 			default:
 			{
-                uiDateInput->Property("onTextChanged", "{if(getText(0,2) === '00' || getText(3,5) === '00' || getText(6,10) === '0000'){selectedDate = '';}else{selectedDate = getText(6,10) + '-' + getText(0,2) + '-' + getText(3,5);}}");
 				break;
 			}
 		}
+
+		uiDateInput->AddFunctions(Formatter() << "function setValidDate(dateString)" << "{"
+			<< "var Months = {Jan: 0,Feb: 1,Mar: 2,Apr: 3,May: 4,Jun: 5,July: 6,Aug: 7,Sep: 8,Oct: 9,Nov: 10,Dec: 11};"
+			<< "var d=new Date(" << year_Text << "," << "Months[" << month_Text << "]," << day_Text << ");"
+			<< "if( d.getFullYear().toString() === " << year_Text <<"&& d.getMonth()===Months[" << month_Text << "] && d.getDate().toString()===" << day_Text << ")"
+			<< "{" << "selectedDate = d.toLocaleString(Qt.locale(\"en_US\"),\"yyyy-MM-dd\");" << "}"
+			<< "else { selectedDate = '' };" << "}");
+
+		uiDateInput->Property("onTextChanged", Formatter() << "{" << uiDateInput->GetId() << "TextChanged(text);" << "setValidDate(text);" << "}");
+
+		if (!input->GetValue().empty())
+		{
+			uiDateInput->Property("text", Formatter() << Utils::GetDate(input->GetValue()) << ".toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\"" << ")" );
+		}
+
 		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? "\"" + input->GetPlaceholder() : "\"Select date") << " in " << Utils::ConvertToLowerIdValue(StringDateFormat) << "\"");
 		uiDateInput->Property("validator", Formatter() << "RegExpValidator { regExp: " << DateRegex << "}");
 		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus==true) inputMask=\"" << inputMask << "\";" << "if(activeFocus === false){ z=0; if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
