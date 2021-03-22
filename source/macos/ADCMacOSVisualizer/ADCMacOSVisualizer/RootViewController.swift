@@ -68,14 +68,12 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
             
             let cardView = AdaptiveCard.render(card: card, with: config, width: 335, actionDelegate: self, resourceResolver: self)
             // This changes the appearance of the native components depending on the hostConfig
-            if darkTheme {
-                if #available(OSX 10.14, *) {
-                    cardView.appearance = NSAppearance(named: .darkAqua)
-                } else {
-                    // Fallback on earlier versions
-                    cardView.appearance = NSAppearance(named: .aqua)
-                }
+            if #available(OSX 10.14, *) {
+                cardView.appearance = NSAppearance(named: darkTheme ? .darkAqua : .aqua)
+            } else {
+                cardView.appearance = NSAppearance(named: .aqua)
             }
+            
             if let renderedView = stackView.arrangedSubviews.first {
                 renderedView.removeFromSuperview()
             }

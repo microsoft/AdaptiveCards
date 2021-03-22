@@ -10,10 +10,15 @@ class ActionShowCardRenderer: BaseActionElementRendererProtocol {
             return NSView()
         }
         
-        let button = ACRButton()
+        let button = ACRButton(wantsChevron: true)
         button.title = showCardAction.getTitle() ?? ""
 
-        let target = ActionShowCardTarget(element: showCardAction.getCard() ?? ACSAdaptiveCard(), delegate: rootView)
+        guard let showCard = showCardAction.getCard() else {
+            logError("ShowCard object is nil")
+            return button
+        }
+        
+        let target = ActionShowCardTarget(element: showCard, delegate: rootView)
         target.configureAction(for: button)
         rootView.addTarget(target)
         

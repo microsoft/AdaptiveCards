@@ -11,13 +11,16 @@ protocol ACRViewResourceResolverDelegate: AnyObject {
 }
 
 class ACRView: ACRColumnView {
+    typealias ShowCardItems = (id: NSNumber, button: NSButton, showCard: NSView)
+    
     weak var delegate: ACRViewDelegate?
     weak var resolverDelegate: ACRViewResourceResolverDelegate?
-    
-    private (set) var targets: [TargetHandler] = []
-    private var previousCardView = NSView()
-    private (set) var imageViewMap: [String: [NSImageView]] = [:]
 
+    private (set) var targets: [TargetHandler] = []
+    private (set) var showCardsMap: [NSNumber: NSView] = [:]
+    private (set) var currentShowCardItems: ShowCardItems?
+	private (set) var imageViewMap: [String: [NSImageView]] = [:]
+    
     init(style: ACSContainerStyle, hostConfig: ACSHostConfig) {
         super.init(style: style, parentStyle: nil, hostConfig: hostConfig, superview: nil)
     }
@@ -49,17 +52,37 @@ class ACRView: ACRColumnView {
 
 extension ACRView: TargetHandlerDelegate {
     func handleShowCardAction(button: NSButton, showCard: ACSAdaptiveCard) {
-//        let showcard = AdaptiveCardRenderer.shared.renderAdaptiveCard(showCard, with: hostConfig, width: 335)
-//
-//        if button.state == .on {
-//            showcard.layer?.backgroundColor = ColorUtils.hoverColorOnMouseEnter().cgColor
-//            showcard.translatesAutoresizingMaskIntoConstraints = false
-//
-//            addArrangedSubview(showcard)
-//            previousCardView = showcard
-//        } else {
-//            previousCardView.isHidden = true
-//        }
+        guard let cardId = showCard.getInternalId()?.hash() else {
+            logError("Card InternalID is nil")
+            return
+        }
+        
+        func manageShowCard(with id: NSNumber) {
+            let cardView = showCardsMap[id] ?? AdaptiveCardRenderer.shared.renderShowCard(showCard, with: hostConfig, parent: self)
+            showCardsMap[cardId] = cardView
+            currentShowCardItems = (cardId, button, cardView)
+            cardView.isHidden = false
+            return
+        }
+        
+        if button.state == .on {
+            if let currentCardItems = currentShowCardItems {
+                // Has a current open or closed showCard
+                if currentCardItems.id == cardId {
+                    // current card needs to be shown
+                    currentCardItems.showCard.isHidden = false
+                } else {
+                    // different card needs to shown
+                    currentCardItems.showCard.isHidden = true
+                    currentCardItems.button.state = .off
+                    manageShowCard(with: cardId)
+                }
+            } else {
+                manageShowCard(with: cardId)
+            }
+        } else {
+            currentShowCardItems?.showCard.isHidden = true
+        }
     }
     
     func handleOpenURLAction(button: NSButton, urlString: String) {

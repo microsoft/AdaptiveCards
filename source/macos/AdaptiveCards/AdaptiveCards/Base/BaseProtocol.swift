@@ -11,7 +11,7 @@ protocol BaseActionElementRendererProtocol {
     func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView
 }
 
-protocol TargetHandler {
+protocol TargetHandler: NSObject {
     var delegate: TargetHandlerDelegate? { get set }
     func configureAction(for button: NSButton)
 }

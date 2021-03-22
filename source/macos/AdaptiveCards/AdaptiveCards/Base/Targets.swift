@@ -1,7 +1,7 @@
 import AdaptiveCards_bridge
 import AppKit
 
-class ActionOpenURLTarget: TargetHandler {
+class ActionOpenURLTarget: NSObject, TargetHandler {
     weak var delegate: TargetHandlerDelegate?
     let url: String
     
@@ -20,7 +20,7 @@ class ActionOpenURLTarget: TargetHandler {
     }
 }
 
-class ActionShowCardTarget: TargetHandler {
+class ActionShowCardTarget: NSObject, TargetHandler {
     weak var delegate: TargetHandlerDelegate?
     let showCard: ACSAdaptiveCard
 

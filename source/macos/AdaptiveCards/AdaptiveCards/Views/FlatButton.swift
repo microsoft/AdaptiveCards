@@ -142,15 +142,22 @@ open class FlatButton: NSButton, CALayerDelegate {
         }
     }
     
-    public var contentInsets: NSEdgeInsets = NSEdgeInsets(top: 5, left: 20, bottom: 5, right: 20) {
+    override open var state: NSControl.StateValue {
+        didSet {
+            guard state != oldValue else { return }
+            animateColor(state == .on)
+        }
+    }
+    
+    public var contentInsets: NSEdgeInsets = NSEdgeInsets(top: 5, left: 16, bottom: 5, right: 16) {
         didSet {
             positionTitleAndImage()
         }
     }
     
-    public var iconImageSize: NSSize = NSSize(width: 18, height: 18)
-    public var chevronImageSize: NSSize = NSSize(width: 18, height: 18)
-    private let horizontalInternalSpacing: CGFloat = 8
+    public var iconImageSize: NSSize = NSSize(width: 16, height: 16)
+    public var chevronImageSize: NSSize = NSSize(width: 14, height: 14)
+    private let horizontalInternalSpacing: CGFloat = 6
     private let verticalInternalSpacing: CGFloat = 3
 
     // MARK: Setup & Initialization
@@ -335,27 +342,24 @@ open class FlatButton: NSButton, CALayerDelegate {
         positionTitleAndImage()
     }
     
-    func drawsChevron(_ nameOfFile: String) {
-        if showsChevron {
-            guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
-                  let path = bundle.path(forResource: nameOfFile, ofType: "png") else {
-                logError("image not found")
-                return
-            }
-            let chevIcon = NSImage(byReferencing: URL(fileURLWithPath: path))
-            let maskLayer = CALayer()
-            chevIcon.size = chevronImageSize
-            let chevIconSize = chevIcon.size
-            let chevIconRect: NSRect = .init(x: 0, y: 0, width: chevIconSize.width, height: chevIconSize.height)
-            let chevRef = chevIcon
-            maskLayer.contents = chevRef
-            chevronLayer.frame = chevIconRect
-            maskLayer.frame = chevIconRect
-            chevronLayer.mask = maskLayer
-            chevronLayer.backgroundColor = NSColor.white.cgColor
-        } else {
+    private func drawsChevron(_ nameOfFile: String) {
+        guard showsChevron else { return }
+        guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
+              let path = bundle.path(forResource: nameOfFile, ofType: "png") else {
+            logError("image not found")
             return
         }
+        let chevIcon = NSImage(byReferencing: URL(fileURLWithPath: path))
+        let maskLayer = CALayer()
+        chevIcon.size = chevronImageSize
+        let chevIconSize = chevIcon.size
+        let chevIconRect: NSRect = .init(x: 0, y: 0, width: chevIconSize.width, height: chevIconSize.height)
+        let chevRef = chevIcon
+        maskLayer.contents = chevRef
+        chevronLayer.frame = chevIconRect
+        maskLayer.frame = chevIconRect
+        chevronLayer.mask = maskLayer
+        chevronLayer.backgroundColor = NSColor.white.cgColor
         positionTitleAndImage()
     }
 
@@ -398,16 +402,14 @@ open class FlatButton: NSButton, CALayerDelegate {
         if glowRadius > 0, glowOpacity > 0 {
             containerLayer.animate(color: isOn ? activeIconColor.cgColor : NSColor.clear.cgColor, keyPath: "shadowColor", duration: duration)
         }
+        
+        drawsChevron(state == .on ? "arrowup" : "arrowdown")
     }
 
     // MARK: Interaction
-    
-    public func setOn(_ isOn: Bool) {
-        let nextState = isOn ? NSControl.StateValue.on : NSControl.StateValue.off
-        if nextState != state {
-            state = nextState
-            animateColor(state == .on)
-        }
+    private func toggleState() {
+        let nextState: NSButton.StateValue = state == .on ? .off : .on
+        state = nextState
     }
     
     override open func hitTest(_ point: NSPoint) -> NSView? {
@@ -417,25 +419,19 @@ open class FlatButton: NSButton, CALayerDelegate {
     override open func mouseDown(with event: NSEvent) {
         if isEnabled {
             mouseDown = true
-            setOn(state == .on ? false : true)
-        }
-        if state == .on {
-            drawsChevron("arrowup")
-        }
-        else {
-            drawsChevron("arrowdown")
+            toggleState()
         }
     }
     
     override open func mouseEntered(with event: NSEvent) {
         if mouseDown {
-            setOn(state == .on ? false : true)
+            toggleState()
         }
     }
     
     override open func mouseExited(with event: NSEvent) {
         if mouseDown {
-            setOn(state == .on ? false : true)
+            toggleState()
             mouseDown = false
         }
     }
@@ -444,14 +440,13 @@ open class FlatButton: NSButton, CALayerDelegate {
         if mouseDown {
             mouseDown = false
             if momentary {
-                setOn(state == .on ? false : true)
+                toggleState()
             }
             _ = target?.perform(action, with: self)
         }
     }
     
     // MARK: Drawing
-    
     override open func viewDidChangeBackingProperties() {
         super.viewDidChangeBackingProperties()
         if let scale = window?.backingScaleFactor {
@@ -465,15 +460,10 @@ open class FlatButton: NSButton, CALayerDelegate {
         return true
     }
     
-    override open func draw(_ dirtyRect: NSRect) {
-    }
+    override open func draw(_ dirtyRect: NSRect) { } // Needs to be empty
     
     override open func layout() {
         super.layout()
         positionTitleAndImage()
-    }
-    
-    override open func updateLayer() {
-        self.updateLayer()
     }
 }
