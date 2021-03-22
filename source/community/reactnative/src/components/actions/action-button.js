@@ -36,6 +36,7 @@ export class ActionButton extends React.Component {
 
 		this.payload = props.json;
 		this.title = Constants.EmptyString;
+		this.verb = Constants.EmptyString;
 		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.iconUrl = Constants.EmptyString;
@@ -94,6 +95,9 @@ export class ActionButton extends React.Component {
 			case Constants.ActionSubmit:
 				this.onSubmitActionCalled();
 				break;
+			case Constants.ActionExecute:
+				this.onExecuteActionCalled();
+				break;
 			case Constants.ActionOpenUrl:
 				this.onOpenURLCalled();
 				break;
@@ -110,10 +114,7 @@ export class ActionButton extends React.Component {
 		}
 	}
 
-	/**
-	 * @description Invoked for the action type Constants.ActionSubmit
-	 */
-	onSubmitActionCalled() {
+	getMergeObject = () => {
 		let mergedObject = {};
 		for (const key in this.inputArray) {
 			mergedObject[key] = this.inputArray[key].value;
@@ -124,8 +125,24 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
+		return mergedObject
+	}
+
+	/**
+	 * @description Invoked for the action type Constants.ActionSubmit
+	 */
+	onSubmitActionCalled() {
 		const { type, title = "", ignoreInputValidation } = this.payload;
-		let actionObject = { "type": type, "title": title, "data": mergedObject };
+		let actionObject = { "type": type, "title": title, "data": this.getMergeObject() };
+		this.onExecuteAction(actionObject, ignoreInputValidation);
+	}
+
+	/**
+	 * @description Invoked for the action type Constants.ActionExecute
+	 */
+	onExecuteActionCalled() {
+		const { type, verb = "", title = "", ignoreInputValidation } = this.payload;
+		let actionObject = { "type": type, "verb": verb, "title": title, "data": this.getMergeObject() };
 		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 

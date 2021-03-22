@@ -26,6 +26,7 @@ export const TextRunString = "textrun"
 
 export const ActionOpenUrl = "Action.OpenUrl";
 export const ActionSubmit = "Action.Submit";
+export const ActionExecute = "Action.Execute";
 export const ActionShowCard = "Action.ShowCard";
 export const ActionToggleVisibility = "Action.ToggleVisibility";
 export const OkText = "OK";

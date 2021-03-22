@@ -30,10 +30,13 @@ export class SelectAction extends React.Component {
 	 * @description Invoked on tapping the button component
 	 */
 	onClickHandle() {
-		switch (this.payload.type) {
+		const { type, verb = "", title = "", data } = this.payload;
+		switch (type) {
 			case Constants.ActionSubmit:
-				const { type, title = "", data } = this.payload;
-				this.onExecuteAction({type, title, data});
+				this.onExecuteAction({ type, title, data });
+				break;
+			case Constants.ActionExecute:
+				this.onExecuteAction({ type, verb, title, data });
 				break;
 			case Constants.ActionOpenUrl:
 				if (!Utils.isNullOrEmpty(this.props.selectActionData.url)) {

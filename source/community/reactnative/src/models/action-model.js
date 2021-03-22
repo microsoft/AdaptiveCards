@@ -22,6 +22,16 @@ export class SubmitActionModel extends BaseActionModel{
     }
 }
 
+export class ExecuteActionModel extends BaseActionModel{
+    data;
+    type = ElementType.ActionExecute;
+    constructor(payload, parent) {
+        super(payload, parent);
+        this.data = payload.data;
+        this.verb = payload.verb;
+    }
+}
+
 export class OpenUrlActionModel extends BaseActionModel{
     url;
     type = ElementType.ActionOpenUrl;

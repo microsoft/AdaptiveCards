@@ -169,6 +169,7 @@ export const ElementType = Object.freeze({
 
 	ActionShowCard: 'Action.ShowCard',
 	ActionSubmit: 'Action.Submit',
+	ActionExecute: 'Action.Execute',
 	ActionOpenUrl: 'Action.OpenUrl',
 	ActionToggleVisibility: 'Action.ToggleVisibility',
 	ActionSet: 'ActionSet'

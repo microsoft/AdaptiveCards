@@ -286,11 +286,19 @@ export class Input extends React.Component {
 		if (!this.props.isError && this.inlineAction.type === Constants.ActionSubmit) {
 			let actionObject = {
 				"type": Constants.ActionSubmit,
+				"title": this.inlineAction.title,
 				"data": this.state.text
 			};
 			onExecuteAction(actionObject, true);
-		}
-		else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
+		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionExecute) {
+			let actionObject = {
+				"type": Constants.ActionExecute,
+				"verb": this.inlineAction.verb,
+				"title": this.inlineAction.title,
+				"data": this.state.text
+			};
+			onExecuteAction(actionObject, true);
+		} else if (!this.props.isError && this.inlineAction.type === Constants.ActionOpenUrl) {
 			if (!Utils.isNullOrEmpty(this.inlineAction.url)) {
 				let actionObject = {
 					"type": Constants.ActionOpenUrl,

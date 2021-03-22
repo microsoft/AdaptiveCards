@@ -186,6 +186,15 @@ export default class Renderer extends React.Component {
                 ],
                 { cancelable: false }
             )
+        } else if (actionObject.type === "Action.Execute") {
+            Alert.alert(
+                'Rendered Univeral Action',
+                JSON.stringify(actionObject.data) + "\n Verb is " + actionObject.verb,
+                [
+                    { text: actionObject.title, onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            )
         } else if (actionObject.type === "Action.OpenUrl" && !Utils.isNullOrEmpty(actionObject.url)) {
             Linking.canOpenURL(actionObject.url).then(supported => {
                 if (supported) {
