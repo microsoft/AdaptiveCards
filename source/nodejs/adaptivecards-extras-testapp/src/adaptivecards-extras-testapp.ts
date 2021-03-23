@@ -1,4 +1,4 @@
-import * as ACExtras from "adaptivecards-extras";
+import * as ACExtras from "adaptivecards-extras"
 
 window.onload = function() {
     let a = new ACExtras.Table();
