@@ -93,7 +93,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
-			{AdaptiveCardSchemaKey::Label, "label"},
+            {AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
@@ -259,6 +259,10 @@ namespace AdaptiveSharedNamespace
             {ForegroundColor::Good, "Good"},
             {ForegroundColor::Light, "Light"},
             {ForegroundColor::Warning, "Warning"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextStyle , TextStyle::Paragraph, {
+            {TextStyle::Paragraph, "paragraph"},
+            {TextStyle::Heading, "heading"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextWeight, {
             {

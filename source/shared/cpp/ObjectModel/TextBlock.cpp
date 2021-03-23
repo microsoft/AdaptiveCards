@@ -60,6 +60,16 @@ DateTimePreparser TextBlock::GetTextForDateParsing() const
     return m_textElementProperties->GetTextForDateParsing();
 }
 
+TextStyle AdaptiveSharedNamespace::TextBlock::GetStyle() const
+{
+    return m_textStyle;
+}
+
+void AdaptiveSharedNamespace::TextBlock::SetStyle(const TextStyle value)
+{
+    m_textStyle = value;
+}
+
 TextSize TextBlock::GetTextSize() const
 {
     return m_textElementProperties->GetTextSize();
@@ -158,6 +168,7 @@ std::shared_ptr<BaseCardElement> TextBlockParser::Deserialize(ParseContext& cont
     textBlock->m_textElementProperties->Deserialize(context, json);
 
     textBlock->SetWrap(ParseUtil::GetBool(json, AdaptiveCardSchemaKey::Wrap, false));
+    textBlock->SetStyle(ParseUtil::GetEnumValue<TextStyle>(json, AdaptiveCardSchemaKey::Style, TextStyle::Paragraph, TextStyleFromString));
     textBlock->SetMaxLines(ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::MaxLines, 0));
     textBlock->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
         json, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
@@ -175,6 +186,7 @@ void TextBlock::PopulateKnownPropertiesSet()
     m_textElementProperties->PopulateKnownPropertiesSet(m_knownProperties);
 
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MaxLines),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::HorizontalAlignment)});
 }

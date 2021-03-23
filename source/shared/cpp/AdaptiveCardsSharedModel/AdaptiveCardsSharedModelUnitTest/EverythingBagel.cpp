@@ -60,6 +60,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
         Assert::AreEqual(id, textBlock.GetId());
         Assert::AreEqual("TextBlock_text"s, textBlock.GetText());
+        Assert::IsTrue(TextStyle::Paragraph == textBlock.GetStyle());
         Assert::IsTrue(ForegroundColor::Default == textBlock.GetTextColor());
         Assert::IsTrue(HorizontalAlignment::Left == textBlock.GetHorizontalAlignment());
         Assert::IsTrue(Spacing::Default == textBlock.GetSpacing());
@@ -277,7 +278,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
-		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
+        Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -343,7 +344,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
 
-		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
+        Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)
