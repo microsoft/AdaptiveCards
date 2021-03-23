@@ -236,14 +236,20 @@ open class FlatButton: NSButton, CALayerDelegate {
         var length : CGFloat = 0
         length += showsChevron ? chevronImageSize.width + horizontalInternalSpacing: 0
         length += showsIcon && (imagePosition == .imageLeft || imagePosition == .imageRight) ? iconImageSize.width + horizontalInternalSpacing : 0
-        length += titleLayer.frame.width
+        length += titleRect.width
         length += contentInsets.left + contentInsets.right
         var height : CGFloat = contentInsets.top + contentInsets.bottom + titleRect.height
         height += (imagePosition == .imageBelow || imagePosition == .imageAbove) ? iconImageSize.height + verticalInternalSpacing: 0
+        let calculatedWidth = max(bounds.width, length)
         if let currentLayer = layer {
-            currentLayer.frame = NSRect(x: currentLayer.frame.minX, y: currentLayer.frame.minY, width: length, height: bounds.height)
+            currentLayer.frame = NSRect(x: currentLayer.frame.minX, y: currentLayer.frame.minY, width: calculatedWidth, height: bounds.height)
         }
-        containerLayer.frame = NSRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
+        if showsChevron || showsIcon {
+            containerLayer.frame.size = NSSize(width: length, height: bounds.height)
+            containerLayer.position = NSPoint(x: bounds.midX, y: bounds.midY)
+        } else {
+            containerLayer.frame = NSRect(x: 0, y: 0, width: bounds.width, height: bounds.height)
+        }
         switch imagePosition {
         case .imageAbove:
             imageRect.origin.y = contentInsets.top
@@ -359,7 +365,7 @@ open class FlatButton: NSButton, CALayerDelegate {
         chevronLayer.frame = chevIconRect
         maskLayer.frame = chevIconRect
         chevronLayer.mask = maskLayer
-        chevronLayer.backgroundColor = NSColor.white.cgColor
+        chevronLayer.backgroundColor = titleLayer.foregroundColor
         positionTitleAndImage()
     }
 
