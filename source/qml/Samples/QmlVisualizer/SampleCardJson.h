@@ -2019,6 +2019,154 @@ namespace Samples
       ]
     })";
 
+	const std::string card_Action_ToggleVisibility = R"({
+	  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+	  "type": "AdaptiveCard",
+	  "version": "1.2",
+	  "body": [
+		{
+		  "type": "TextBlock",
+		  "text": "Press the buttons to toggle the images!",
+		  "wrap": true
+		},
+		{
+		  "type": "TextBlock",
+		  "text": "Here are some images:",
+		  "isVisible": false,
+		  "id": "textToToggle"
+		},
+		{
+		  "type": "ColumnSet",
+		  "columns": [
+			{
+			  "type": "Column",
+			  "items": [
+				{
+				  "style": "person",
+				  "type": "Image",
+				  "url": "https://adaptivecards.io/content/cats/1.png",
+				  "isVisible": false,
+				  "id": "imageToToggle",
+				  "altText": "sample image 1",
+				  "size": "medium"
+				}
+			  ],
+			  "width":"auto"
+			},
+			{
+			  "type": "Column",
+			  "items": [
+
+				{
+				  "type": "Image",
+				  "url": "https://adaptivecards.io/content/cats/1.png",
+				  "isVisible": false,
+				  "id": "imageToToggle2",
+				  "altText": "sample image 2",
+				  "size": "medium"
+				}
+			  ],
+			  "width":"auto"
+			}
+		  ]
+		}
+	  ],
+	  "actions": [
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Toggle!",
+		  "targetElements": [ "textToToggle", "imageToToggle", "imageToToggle2" ]
+		},
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Also Toggle!",
+		  "targetElements": [
+			{
+			  "elementId": "textToToggle"
+			},
+			{
+			  "elementId": "imageToToggle"
+			},
+			{
+			  "elementId": "imageToToggle2"
+			}
+		  ]
+		},
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Show!",
+		  "targetElements": [
+			{
+			  "elementId": "textToToggle",
+			  "isVisible": true
+			},
+			{
+			  "elementId": "imageToToggle",
+			  "isVisible": true
+			},
+			{
+			  "elementId": "imageToToggle2",
+			  "isVisible": true
+			}
+		  ]
+		},
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Hide!",
+		  "targetElements": [
+			{
+			  "elementId": "textToToggle",
+			  "isVisible": false
+			},
+			{
+			  "elementId": "imageToToggle",
+			  "isVisible": false
+			},
+			{
+			  "elementId": "imageToToggle2",
+			  "isVisible": false
+			}
+		  ]
+		},
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Cat 1",
+		  "targetElements": [
+			{
+			  "elementId": "textToToggle",
+			  "isVisible": true
+			},
+			{
+			  "elementId": "imageToToggle",
+			  "isVisible": true
+			},
+			{
+			  "elementId": "imageToToggle2",
+			  "isVisible": false
+			}
+		  ]
+		},
+		{
+		  "type": "Action.ToggleVisibility",
+		  "title": "Water!",
+		  "targetElements": [
+			{
+			  "elementId": "textToToggle",
+			  "isVisible": true
+			},
+			{
+			  "elementId": "imageToToggle",
+			  "isVisible": false
+			},
+			{
+			  "elementId": "imageToToggle2",
+			  "isVisible": true
+			}
+		  ]
+		}
+	  ]
+	})";
+
 	const std::string card_flight = R"(
 	{
   "$schema":"http://adaptivecards.io/schemas/adaptive-card.json",
@@ -2859,6 +3007,364 @@ namespace Samples
     }
   ]
 })";
+	const std::string card_ToggleVisibilityWiz = R"({
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Press the buttons to toggle the Elements!",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Text Block"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            "wrap": true,
+            "id": "textblock"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Rich Text Block"
+        },
+        {
+            "type": "RichTextBlock",
+            "id":"richtext",
+            "inlines": [
+                "This is the first inline. ",
+                {
+                    "type": "TextRun",
+                    "text": "We support colors,",
+                    "color": "good"
+                },
+                {
+                    "type": "TextRun",
+                    "text": " both regular and subtle. ",
+                    "isSubtle": true
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Text ",
+                    "size": "small"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "of ",
+                    "size": "medium"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "all ",
+                    "size": "large"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "sizes! ",
+                    "size": "extraLarge"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Light weight text. ",
+                    "weight": "lighter"
+                },
+                {
+                    "type": "TextRun",
+                    "text": "Bold weight text. ",
+                    "weight": "bolder"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Default Input Text"
+        },
+        {
+            "type": "Input.Text",
+            "id": "inputtext",
+            "placeholder": "enter comment",
+            "maxLength": 500
+        },
+        {
+            "type": "TextBlock",
+            "text": "Image Set"
+        },
+        {
+            "type": "ImageSet",
+            "imageSize": "Small",
+            "id":"imageset",
+            "images": [
+                {
+                    "type": "Image",
+                    "url": "https://adaptivecards.io/content/cats/1.png"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://adaptivecards.io/content/cats/1.png"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://adaptivecards.io/content/cats/1.png"
+                },
+                {
+                    "type": "Image",
+                    "url": "https://adaptivecards.io/content/cats/1.png"
+                }
+            ]
+        }
+
+    ],
+    "actions": [
+        {
+            "type": "Action.ToggleVisibility",
+            "title": "Text Block",
+            "targetElements": [ "textblock"]
+        },
+        {
+            "type": "Action.ToggleVisibility",
+            "title": "Rich Text",
+            "targetElements": [
+                {
+                    "elementId": "richtext"
+                }
+            ]
+        },
+        {
+            "type": "Action.ToggleVisibility",
+            "title": "Input Text",
+            "targetElements": [
+                {
+                    "elementId": "inputtext"
+                }
+            ]
+        },
+        {
+            "type": "Action.ToggleVisibility",
+            "title": "Image Set",
+            "targetElements": [
+                {
+                    "elementId": "imageset"
+                }
+            ]
+        },
+        {
+            "type": "Action.ShowCard",
+            "title": "Show More",
+            "card": {
+              "type": "AdaptiveCard",
+              "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+              "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Input Number"
+                    },
+                    {
+                        "type": "Input.Number",
+                        "id": "number",
+                        "placeholder": "Enter a number",
+                        "min": 1,
+                        "max": 10,
+                        "value": 3
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "Input Date"
+                    },
+                    {
+                        "type": "Input.Date",
+                        "id": "date1",
+                        "placeholder": "Enter a date",
+                        "value": "2017-10-12",
+                        "min":"1900-01-01",
+                        "max":"2030-01-01"
+                    },
+                    {
+                        "type": "TextBlock",
+                        "text": "Toggle Input"
+                    },
+                    {
+                        "type": "Input.Toggle",
+                        "id": "toggle",
+                        "title": "I accept the terms and agreements",
+                        "value": "true",
+                        "valueOn": "true",
+                        "valueOff": "false"
+                    },
+                    {
+                              "type": "TextBlock",
+                              "text": "Input ChoiceSet"
+                    },
+                    {
+                        "type": "Input.ChoiceSet",
+                        "id": "choiceset",
+                        "style": "expanded",
+                        "isMultiSelect": false,
+                        "value": "1",
+                        "choices": [
+                            {
+                                "title": "Red",
+                                "value": "1"
+                            },
+                            {
+                                "title": "Green",
+                                "value": "2"
+                            },
+                            {
+                                "title": "Blue",
+                                "value": "3"
+                            }
+                        ]
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.ToggleVisibility",
+                        "title": "Input Number",
+                        "targetElements": [ "number"]
+                    },
+                    {
+                        "type": "Action.ToggleVisibility",
+                        "title": "Input Date",
+                        "targetElements": [
+                            {
+                                "elementId": "date1"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Action.ToggleVisibility",
+                        "title": "Input Toggle",
+                        "targetElements": [
+                            {
+                                "elementId": "toggle"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Action.ToggleVisibility",
+                        "title": "Choiceset",
+                        "targetElements": [
+                            {
+                                "elementId": "choiceset"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "Action.ShowCard",
+                        "title": "Show More",
+                        "card": {
+                          "type": "AdaptiveCard",
+                          "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                          "body": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Fact Set"
+                                },
+                                {
+                                    "type": "FactSet",
+                                    "id":"factset",
+                                    "facts": [
+                                        {
+                                            "title": "Fact 1",
+                                            "value": "Value 1"
+                                        },
+                                        {
+                                            "title": "TEXT FOR FACTSET TESTING",
+                                            "value": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                        },
+                                        {
+                                            "title": "Fact 3",
+                                            "value": "Value 3"
+                                        },
+                                        {
+                                            "title": "Fact 4",
+                                            "value": "Value 4"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Container"
+                                },
+                                {
+                                    "type": "Container",
+                                    "style": "good",
+                                    "id":"container",
+                                    "items": [
+                                        {
+                                            "type": "TextBlock",
+                                            "text": "Contained container - good"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Input Time"
+                                },
+                                {
+                                    "type": "Input.Time",
+                                    "id": "time1",
+                                    "min": "09:00",
+                                    "max": "17:00",
+                                    "value": "15:30"
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Multiline Input Text"
+                                },
+                                {
+                                    "type": "Input.Text",
+                                    "id": "multilineinput",
+                                    "placeholder": "enter comment",
+                                    "maxLength": 50,
+                                    "isMultiline": true
+                                }
+
+                            ],
+                            "actions": [
+                                {
+                                    "type": "Action.ToggleVisibility",
+                                    "title": "Fact Set",
+                                    "targetElements": ["factset"]
+                                },
+                                {
+                                    "type": "Action.ToggleVisibility",
+                                    "title": "Container",
+                                    "targetElements": [
+                                        {
+                                            "elementId": "container"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Action.ToggleVisibility",
+                                    "title": "Input Time",
+                                    "targetElements": [
+                                        {
+                                            "elementId": "time1"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "type": "Action.ToggleVisibility",
+                                    "title": "Input Text Multiline  ",
+                                    "targetElements": [
+                                        {
+                                            "elementId": "multilineinput"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+})";
+
 }
 
     

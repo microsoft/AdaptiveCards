@@ -340,7 +340,7 @@ namespace RendererQml
 		{
 			scrollViewTag = std::make_shared<QmlTag>("ScrollView");
 			scrollViewTag->Property("width", "parent.width");
-			scrollViewTag->Property("height", "100");
+			scrollViewTag->Property("height", Formatter() << input->GetId() <<".visible ? 100 : 0");
 			scrollViewTag->Property("ScrollBar.vertical.interactive", "true");
 
 			uiTextInput = std::make_shared<QmlTag>("TextArea");
@@ -569,6 +569,12 @@ namespace RendererQml
 		auto uiTextBlock = std::make_shared<QmlTag>("Text");
 		std::string textType = richTextBlock->GetElementTypeString();
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(richTextBlock->GetHorizontalAlignment());
+
+		if (!richTextBlock->GetId().empty())
+		{
+			richTextBlock->SetId(Utils::ConvertToLowerIdValue(richTextBlock->GetId()));
+			uiTextBlock->Property("id", richTextBlock->GetId());
+		}
 
 		uiTextBlock->Property("textFormat", "Text.RichText");
 		uiTextBlock->Property("wrapMode", "Text.Wrap");
@@ -1193,6 +1199,13 @@ namespace RendererQml
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::FactSetRender(std::shared_ptr<AdaptiveCards::FactSet> factSet, std::shared_ptr<AdaptiveRenderContext> context)
 	{
 		auto uiFactSet = std::make_shared<QmlTag>("GridLayout");
+
+		if (!factSet->GetId().empty())
+		{
+			factSet->SetId(Utils::ConvertToLowerIdValue(factSet->GetId()));
+			uiFactSet->Property("id", factSet->GetId());	
+		}
+		
 		uiFactSet->Property("columns", "2");
 		uiFactSet->Property("rows", std::to_string(factSet->GetFacts().size()));
 		uiFactSet->Property("property int titleWidth", "0");
@@ -1261,10 +1274,12 @@ namespace RendererQml
             image->SetId(Utils::ConvertToLowerIdValue(image->GetId()));
         }
 
-		uiImage->Property("id", image->GetId());
+		uiRectangle->Property("id", image->GetId());
+		uiImage->Property("id", Formatter() << image->GetId() << "_img");
 		uiImage->Property("readonly property bool isImage", "true");
 		uiImage->Property("source", "\"" + image->GetUrl() + "\"");
 		uiImage->Property("anchors.fill", "parent");
+		uiImage->Property("visible", "parent.visible");
 
 		if (!image->GetIsVisible())
 		{
@@ -1279,7 +1294,7 @@ namespace RendererQml
 
 				if (image->GetPixelHeight() == 0)
 				{
-					uiRectangle->Property("height", Formatter() << image->GetId() << ".implicitHeight / " << image->GetId() << ".implicitWidth * width");
+					uiRectangle->Property("height", Formatter() << image->GetId() << "_img.implicitHeight / " << image->GetId() << "_img.implicitWidth * width");
 				}
 			}
 			if (image->GetPixelHeight() != 0)
@@ -1288,7 +1303,7 @@ namespace RendererQml
 
 				if (image->GetPixelWidth() == 0)
 				{
-					uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetId() << ".implicitWidth / " << image->GetId() << ".implicitHeight * height, parent.width)");
+					uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetId() << "_img.implicitWidth / " << image->GetId() << "_img.implicitHeight * height, parent.width)");
 				}
 			}
 
@@ -1316,16 +1331,17 @@ namespace RendererQml
 				break;
 			}
 
-			uiRectangle->Property("height", Formatter() << image->GetId() << ".implicitHeight / " << image->GetId() << ".implicitWidth * width");
+			uiRectangle->Property("height", Formatter() << image->GetId() << "_img.implicitHeight / " << image->GetId() << "_img.implicitWidth * width");
 
 			if (image->GetImageSize() == AdaptiveCards::ImageSize::None)
 			{
-				uiRectangle->Property("implicitWidth", Formatter() << image->GetId() << ".implicitWidth");
+				uiRectangle->Property("implicitWidth", Formatter() << image->GetId() << "_img.implicitWidth");
 			}
 			else
 			{
 				uiRectangle->Property("implicitWidth", "width");
 			}
+
 		}
 
 		if (!image->GetBackgroundColor().empty())
@@ -1711,6 +1727,12 @@ namespace RendererQml
 
 		uiFlow->Property("width", "parent.width");
 		uiFlow->Property("spacing", "10");
+
+		if (!imageSet->GetId().empty())
+		{
+			imageSet->SetId(Utils::ConvertToLowerIdValue(imageSet->GetId()));
+			uiFlow->Property("id", imageSet->GetId());
+		}
 
 		if (!imageSet->GetIsVisible())
 		{
@@ -2157,7 +2179,7 @@ namespace RendererQml
             }
             else if (action->GetElementTypeString() == "Action.ToggleVisibility")
             {
-
+				onClickedFunction = getActionToggleVisibilityClickFunc(std::dynamic_pointer_cast<AdaptiveCards::ToggleVisibilityAction>(action), context);
             }
             else if (action->GetElementTypeString() == "Action.Submit")
             {
@@ -2293,6 +2315,36 @@ namespace RendererQml
 
         return function.str();
     }
+	
+	const std::string AdaptiveCardQmlRenderer::getActionToggleVisibilityClickFunc(const std::shared_ptr<AdaptiveCards::ToggleVisibilityAction>& action, const std::shared_ptr<AdaptiveRenderContext>& context)
+	{
+		std::ostringstream function;
+
+		for (const auto& targetElement : action->GetTargetElements())
+		{			
+			std::string targetElementId;
+
+			if (targetElement != nullptr)
+			{
+				targetElementId = Utils::ConvertToLowerIdValue(targetElement->GetElementId());
+
+				switch (targetElement->GetIsVisible())
+				{
+				case AdaptiveCards::IsVisible::IsVisibleTrue:
+					function << targetElementId << ".visible = true";
+					break;
+				case AdaptiveCards::IsVisible::IsVisibleFalse:
+					function << targetElementId << ".visible = false";
+					break;
+				default:
+					function << targetElementId << ".visible = !" << targetElementId << ".visible ";
+				}
+			}
+			function << "\n";
+		}
+
+		return function.str();
+  }
 
 	const std::string RendererQml::AdaptiveCardQmlRenderer::getStretchHeight()
 	{
