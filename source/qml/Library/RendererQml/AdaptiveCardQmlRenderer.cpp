@@ -612,32 +612,35 @@ namespace RendererQml
 		std::string uiTextRun = "<span style='";
 		std::string textType = textRun->GetInlineTypeString();
 
-		uiTextRun.append("font-family:" + std::string("\\\"") + fontFamily + std::string("\\\"") + ";");
+		uiTextRun.append(Formatter() << "font-family:" << std::string("\\\"") << fontFamily << std::string("\\\"") << ";");
 
 		std::string color = context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), false, false);
-		uiTextRun.append("color:" + color + ";");
+		uiTextRun.append(Formatter() << "color:" << color << ";");
 
-		uiTextRun.append("font-size:" + std::to_string(fontSize) + "px" + ";");
+		uiTextRun.append(Formatter() << "font-size:" << std::to_string(fontSize) << "px" << ";");
 
-		uiTextRun.append("font-weight:" + std::to_string(weight) + ";");
+		uiTextRun.append(Formatter() << "font-weight:" << std::to_string(weight) << ";");
 
 		if (textRun->GetHighlight())
 		{
-			uiTextRun.append("background-color:" + context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), true, false) + ";");
+			uiTextRun.append(Formatter() << "background-color:" << context->GetColor(textRun->GetTextColor(), textRun->GetIsSubtle(), true, false) << ";");
 		}
 
 		if (textRun->GetItalic())
 		{
-			uiTextRun.append("font-style:" + std::string("italic") + ";");
+			uiTextRun.append(Formatter() << "font-style:" << std::string("italic") << ";");
 		}
 
 		if (textRun->GetStrikethrough())
 		{
-			uiTextRun.append("text-decoration:" + std::string("line-through") + ";");
+			uiTextRun.append(Formatter() << "text-decoration:" << std::string("line-through") << ";");
 		}
 
 		uiTextRun.append("'>");
-		uiTextRun.append(TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang()));
+
+		std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
+		text = Utils::Replace(text, "\n", "<br/>");
+		uiTextRun.append(text);
 		uiTextRun.append("</span>");
 
 		return uiTextRun;
