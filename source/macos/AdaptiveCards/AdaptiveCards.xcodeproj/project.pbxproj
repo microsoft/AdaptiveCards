@@ -491,6 +491,9 @@
 		81A94A7025FF80D60018213A /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A6F25FF80D60018213A /* arrowdown.png */; };
 		81A94A7925FF86E70018213A /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7725FF86E70018213A /* attachment.png */; };
 		81A94A7A25FF86E70018213A /* arrowup.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7825FF86E70018213A /* arrowup.png */; };
+		81C0371B26047C1E00B33324 /* ACRBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */; };
+		81C037242604AB9D00B33324 /* BackgroundImageViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */; };
+		81C037292604B1F700B33324 /* cisco.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81C037282604B1F700B33324 /* cisco.jpg */; };
 		A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */; };
 		A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */; };
 		A032271B25E9176D00E7172E /* ACRContentHoldingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */; };
@@ -1025,6 +1028,9 @@
 		81A94A6F25FF80D60018213A /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdown.png; sourceTree = "<group>"; };
 		81A94A7725FF86E70018213A /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
 		81A94A7825FF86E70018213A /* arrowup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup.png; sourceTree = "<group>"; };
+		81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRBackgroundImageView.swift; sourceTree = "<group>"; };
+		81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImageViewTests.swift; sourceTree = "<group>"; };
+		81C037282604B1F700B33324 /* cisco.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = cisco.jpg; sourceTree = "<group>"; };
 		A01CA38525DFE3E400A07E21 /* RichTextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RichTextBlockRenderer.swift; sourceTree = "<group>"; };
 		A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProtocol.swift; sourceTree = "<group>"; };
 		A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRContentHoldingView.swift; sourceTree = "<group>"; };
@@ -1125,6 +1131,7 @@
 		08299E3C25AF254000799C66 /* AdaptiveCardsTests */ = {
 			isa = PBXGroup;
 			children = (
+				81C0371F260499B900B33324 /* Views */,
 				082D913225D67440000226C4 /* Renderers */,
 				082D912925D66FEE000226C4 /* Fakes */,
 				08299E3D25AF254000799C66 /* AdaptiveCardsTests.swift */,
@@ -1699,6 +1706,7 @@
 				28CE1A8125E7557400BFCFD9 /* ACRFactTextField.swift */,
 				A032271A25E9176D00E7172E /* ACRContentHoldingView.swift */,
 				13C41B0C25F25D06008A1F2E /* ACRDateField.swift */,
+				81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */,
 				2910CF002600A82A000910C8 /* ACRActionSetView.swift */,
 			);
 			path = Views;
@@ -1745,11 +1753,20 @@
 		81A94A6E25FF80D60018213A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				81C037282604B1F700B33324 /* cisco.jpg */,
 				81A94A7825FF86E70018213A /* arrowup.png */,
 				81A94A7725FF86E70018213A /* attachment.png */,
 				81A94A6F25FF80D60018213A /* arrowdown.png */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		81C0371F260499B900B33324 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		A01CA38B25DFE82E00A07E21 /* Base */ = {
@@ -2125,6 +2142,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				81A94A7025FF80D60018213A /* arrowdown.png in Resources */,
+				81C037292604B1F700B33324 /* cisco.jpg in Resources */,
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
 				81A94A7A25FF86E70018213A /* arrowup.png in Resources */,
 				28CE1A7D25E7553700BFCFD9 /* ACRFactTextField.xib in Resources */,
@@ -2210,6 +2228,7 @@
 				A01CA38625DFE3E400A07E21 /* RichTextBlockRenderer.swift in Sources */,
 				29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */,
 				29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */,
+				81C0371B26047C1E00B33324 /* ACRBackgroundImageView.swift in Sources */,
 				08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */,
 				A032272025E9254C00E7172E /* ACRImageProperties.swift in Sources */,
 				13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */,
@@ -2235,6 +2254,7 @@
 				29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */,
 				A04EA82925F00F3400C4C7DB /* FakeImage.swift in Sources */,
 				0801EDC325F7914200D64C86 /* ColumnRendererTests.swift in Sources */,
+				81C037242604AB9D00B33324 /* BackgroundImageViewTests.swift in Sources */,
 				29050C4225DAAD9300AF3CA9 /* InputToggleRendererTests.swift in Sources */,
 				08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */,
 				082E59A92604E76E00741958 /* FakeShowCardAction.swift in Sources */,
