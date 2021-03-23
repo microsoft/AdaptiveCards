@@ -25,6 +25,16 @@ std::vector<std::shared_ptr<Column>>& ColumnSet::GetColumns()
     return m_columns;
 }
 
+HorizontalAlignment ColumnSet::GetHorizontalAlignment() const
+{
+    return m_hAlignment;
+}
+
+void ColumnSet::SetHorizontalAlignment(const HorizontalAlignment value)
+{
+    m_hAlignment = value;
+}
+
 Json::Value ColumnSet::SerializeToJsonValue() const
 {
     Json::Value root = CollectionTypeElement::SerializeToJsonValue();
@@ -69,6 +79,9 @@ std::shared_ptr<BaseCardElement> ColumnSetParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(value, CardElementType::ColumnSet);
 
     auto container = CollectionTypeElement::Deserialize<ColumnSet>(context, value);
+
+	 container->SetHorizontalAlignment(ParseUtil::GetEnumValue<HorizontalAlignment>(
+        value, AdaptiveCardSchemaKey::HorizontalAlignment, HorizontalAlignment::Left, HorizontalAlignmentFromString));
 
     return container;
 }
