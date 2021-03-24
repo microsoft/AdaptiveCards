@@ -3007,6 +3007,43 @@ namespace Samples
     }
   ]
 })";
+
+	const std::string card_BackgroundImage = R"({
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "TextBlock"
+        },
+        {
+            "type": "TextBlock",
+            "text": "TextBlock"
+        },
+        {
+            "type": "TextBlock",
+            "text": "TextBlock"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "id": "textField1"
+        },
+        {
+            "type": "Input.Text",
+            "placeholder": "Placeholder text",
+            "id": "textField2"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "backgroundImage": {
+        "url": "https://adaptivecards.io/content/cats/1.png",
+        "horizontalAlignment": "Left",
+        "verticalAlignment": "Top",
+        "fillMode": "Cover"
+    }
+    })";
+
 	const std::string card_ToggleVisibilityWiz = R"({
     "type": "AdaptiveCard",
     "version": "1.2",

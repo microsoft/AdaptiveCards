@@ -257,15 +257,24 @@ namespace RendererQml
 
     std::regex TextUtils::m_textFunctionRegex(R"xxx(\{\{(DATE|TIME)\(([\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2})(Z|(?:(?:-|\+)\d{2}:\d{2}))(?:,\s*(SHORT|LONG|COMPACT)\s*)??\)\}\})xxx");
 
-	std::string Utils::GetHorizontalAlignment(std::string aligntype)
+	std::string Utils::GetHorizontalAlignment(std::string alignType)
 	{
-		if (aligntype.compare("center") == 0)
-			return "Text.AlignHCenter";
-		else if (aligntype.compare("right") == 0)
-			return "Text.AlignRight";
+		if (alignType.compare("center") == 0)
+			return "Qt.AlignHCenter";
+		else if (alignType.compare("right") == 0)
+			return "Qt.AlignRight";
 		else
-			return "Text.AlignLeft";
+			return "Qt.AlignLeft";
+	}
 
+	std::string Utils::GetVerticalAlignment(std::string alignType)
+	{
+		if (alignType.compare("center") == 0)
+			return "Qt.AlignVCenter";
+		else if (alignType.compare("bottom") == 0)
+			return "Qt.AlignBottom";
+		else
+			return "Qt.AlignTop";
 	}
 
 	std::string Utils::GetWeight(AdaptiveCards::TextWeight weight)
