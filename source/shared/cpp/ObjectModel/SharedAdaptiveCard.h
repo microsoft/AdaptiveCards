@@ -99,6 +99,8 @@ namespace AdaptiveSharedNamespace
         void SetHeight(const HeightType value);
         unsigned int GetMinHeight() const;
         void SetMinHeight(const unsigned int value);
+        std::optional<bool> GetRtl() const;
+        void SetRtl(const std::optional<bool>& value);
 
         std::shared_ptr<BaseActionElement> GetSelectAction() const;
         void SetSelectAction(const std::shared_ptr<BaseActionElement> action);
@@ -174,6 +176,7 @@ namespace AdaptiveSharedNamespace
         VerticalContentAlignment m_verticalContentAlignment;
         HeightType m_height;
         unsigned int m_minHeight;
+        std::optional<bool> m_rtl;
         InternalId m_internalId;
         std::unordered_set<std::string> m_knownProperties;
         Json::Value m_additionalProperties;

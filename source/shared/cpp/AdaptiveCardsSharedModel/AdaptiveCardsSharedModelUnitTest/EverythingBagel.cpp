@@ -82,6 +82,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("speak"s, everythingBagel.GetSpeak());
         Assert::IsTrue(ContainerStyle::None == everythingBagel.GetStyle());
         Assert::AreEqual("1.0"s, everythingBagel.GetVersion());
+        Assert::IsTrue(everythingBagel.GetRtl().has_value());
+        Assert::IsFalse(everythingBagel.GetRtl().value());
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
     }
 
@@ -135,6 +137,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("ColumnSet_id"s, columnSet.GetId());
         Assert::IsTrue(Spacing::Large == columnSet.GetSpacing());
         Assert::IsTrue(columnSet.GetSeparator());
+        Assert::IsTrue(columnSet.GetRtl().has_value());
+        Assert::IsTrue(columnSet.GetRtl().value());
 
         auto columns = columnSet.GetColumns();
         Assert::AreEqual(size_t{ 3 }, columns.size());
@@ -148,6 +152,8 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("auto"s, firstColumn->GetWidth());
             Assert::AreEqual(0, firstColumn->GetPixelWidth());
             Assert::IsTrue(ContainerStyle::Default == firstColumn->GetStyle());
+            Assert::IsTrue(firstColumn->GetRtl().has_value());
+            Assert::IsFalse(firstColumn->GetRtl().value());
 
             auto items = firstColumn->GetItems();
             Assert::AreEqual(size_t{ 1 }, items.size());
@@ -162,6 +168,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual("20px"s, secondColumn->GetWidth());
             Assert::AreEqual(20, secondColumn->GetPixelWidth());
             Assert::IsTrue(ContainerStyle::Emphasis == secondColumn->GetStyle());
+            Assert::IsFalse(secondColumn->GetRtl().has_value());
 
             auto items = secondColumn->GetItems();
             Assert::AreEqual(size_t{ 1 }, items.size());
@@ -195,6 +202,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Container_id"s, container.GetId());
         Assert::IsTrue(Spacing::Medium == container.GetSpacing());
         Assert::IsTrue(ContainerStyle::Default == container.GetStyle());
+        Assert::IsFalse(container.GetRtl().has_value());
 
         // validate container action
         {

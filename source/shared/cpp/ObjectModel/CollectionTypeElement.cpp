@@ -8,7 +8,7 @@ using namespace AdaptiveSharedNamespace;
 
 CollectionTypeElement::CollectionTypeElement(CardElementType type, ContainerStyle style, VerticalContentAlignment alignment) :
     BaseCardElement(type), m_style(style), m_verticalContentAlignment(alignment),
-    m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_parentalId()
+    m_bleedDirection(ContainerBleedDirection::BleedAll), m_minHeight(0), m_hasPadding(false), m_hasBleed(false), m_rtl(), m_parentalId()
 {
 }
 
@@ -115,6 +115,17 @@ void CollectionTypeElement::SetMinHeight(const unsigned int value)
     m_minHeight = value;
 }
 
+// value is present if and only if "rtl" property is explicitly set
+std::optional<bool> CollectionTypeElement::GetRtl() const
+{
+    return m_rtl;
+}
+
+void CollectionTypeElement::SetRtl(const std::optional<bool>& value)
+{
+    m_rtl = value;
+}
+
 std::shared_ptr<BaseActionElement> CollectionTypeElement::GetSelectAction() const
 {
     return m_selectAction;
@@ -159,6 +170,11 @@ Json::Value CollectionTypeElement::SerializeToJsonValue() const
     if (m_minHeight)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::MinHeight)] = std::to_string(GetMinHeight()) + "px";
+    }
+
+    if (m_rtl.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value();
     }
 
     return root;

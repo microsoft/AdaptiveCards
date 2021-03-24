@@ -33,6 +33,7 @@
 	"fallbackText": "fallbackText",
 	"speak": "speak",
 	"lang": "en",
+	"rtl": false,
 	"body": [
 		{
 			"type": "TextBlock",
@@ -118,12 +119,14 @@
 					"id": "ColumnSet_id",
 					"spacing": "large",
 					"separator": true,
+					"rtl":true,
 					"columns": [
 						{
 							"type": "Column",
 							"style": "default",
 							"width": "auto",
 							"id": "Column_id1",
+							"rtl":false,
 							"items": [
 								{
 									"type": "Image",
