@@ -13,6 +13,7 @@
 #include "AdaptiveContainerRenderer.h"
 #include "AdaptiveDateInputRenderer.h"
 #include "AdaptiveElementRendererRegistration.h"
+#include "AdaptiveExecuteActionRenderer.h"
 #include "AdaptiveFactSetRenderer.h"
 #include "AdaptiveFeatureRegistration.h"
 #include "AdaptiveHostConfig.h"

@@ -59,8 +59,8 @@ namespace AdaptiveNamespace
 
         HRESULT AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue,
                               _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* containerCardId);
-        HRESULT LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
-                                       _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
+        HRESULT LinkActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* submitAction,
+                                 _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         HRESULT LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
                                  _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs);
         HRESULT GetInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputElement* inputElement,
@@ -91,7 +91,7 @@ namespace AdaptiveNamespace
 
         // Map of rendered show cards. The key is the id of the show card action, and the value is a pair made up of the
         // id of the action set (InvalidId for actions in the bottom action bar) and the UIElement for the card.
-        std::unordered_map<AdaptiveSharedNamespace::InternalId, std::pair<AdaptiveSharedNamespace::InternalId, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>>, InternalIdKeyHash> m_showCards;        
+        std::unordered_map<AdaptiveSharedNamespace::InternalId, std::pair<AdaptiveSharedNamespace::InternalId, Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IUIElement>>, InternalIdKeyHash> m_showCards;
     };
 
     ActivatableClass(RenderedAdaptiveCard);

@@ -69,6 +69,7 @@
 		6B268FE320CEF19400D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B268FE520CEF89100D99C1B /* (null) in Resources */ = {isa = PBXBuildFile; };
 		6B2D8605211143BD008DD972 /* AdaptiveCards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B2D8604211143BD008DD972 /* AdaptiveCards.framework */; };
+		6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B37723E26015FA30024E527 /* Action.Execute.Auth.json */; };
 		6B5E9CBD24B663CA00757882 /* Adaptive1.0.png in Resources */ = {isa = PBXBuildFile; fileRef = 6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */; };
 		6B696CDB2321AC1C00E1D607 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B980933215AE6EC0024B79B /* UIKit.framework */; };
 		6B70AB88256490CC0095D925 /* Image.SelectAction.json in Resources */ = {isa = PBXBuildFile; fileRef = 6B70AB87256490CC0095D925 /* Image.SelectAction.json */; };
@@ -88,6 +89,8 @@
 		6BF339E420A66A4D00DA5973 /* AdaptiveCards.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */; };
 		6BFF998525F941BE0028069F /* CustomActionOpenURLRenderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = F4F255711F993CD200A80D39 /* CustomActionOpenURLRenderer.mm */; };
+		6BFF9A12260132800028069F /* Action.ExecuteTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = 6BFF9A11260132800028069F /* Action.ExecuteTest.mm */; };
+		6BFF9A18260155240028069F /* Action.Execute.json in Resources */ = {isa = PBXBuildFile; fileRef = 6BFF9A17260155240028069F /* Action.Execute.json */; };
 		F423C0771EE1FB6100905679 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0761EE1FB6100905679 /* main.m */; };
 		F423C07A1EE1FB6100905679 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C0791EE1FB6100905679 /* AppDelegate.m */; };
 		F423C07D1EE1FB6100905679 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F423C07C1EE1FB6100905679 /* ViewController.m */; };
@@ -194,6 +197,7 @@
 		6B250FC7253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACRCustomSubmitTargetBuilder.h; sourceTree = "<group>"; };
 		6B250FC8253FB0CC007FFCFB /* ACRCustomSubmitTargetBuilder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ACRCustomSubmitTargetBuilder.mm; sourceTree = "<group>"; };
 		6B2D8604211143BD008DD972 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B37723E26015FA30024E527 /* Action.Execute.Auth.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.Auth.json; sourceTree = "<group>"; };
 		6B5E9CBC24B663CA00757882 /* Adaptive1.0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Adaptive1.0.png; path = ../../../../../assets/Adaptive1.0.png; sourceTree = "<group>"; };
 		6B70AB87256490CC0095D925 /* Image.SelectAction.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Image.SelectAction.json; sourceTree = "<group>"; };
 		6B980930215AE4310024B79B /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -215,6 +219,8 @@
 		6BF339D520A665E600DA5973 /* CustomTextBlockRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTextBlockRenderer.h; sourceTree = "<group>"; };
 		6BF339E220A66A3F00DA5973 /* AdaptiveCards.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AdaptiveCards.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = ActionSet.Inputs.Tests.json; sourceTree = "<group>"; };
+		6BFF9A11260132800028069F /* Action.ExecuteTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = Action.ExecuteTest.mm; sourceTree = "<group>"; };
+		6BFF9A17260155240028069F /* Action.Execute.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Action.Execute.json; sourceTree = "<group>"; };
 		F423C0721EE1FB6100905679 /* AdaptiveCards.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; name = AdaptiveCards.app; path = ADCIOSVisualizer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F423C0761EE1FB6100905679 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		F423C0781EE1FB6100905679 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -285,6 +291,8 @@
 		6B150A0823034DAB00046B3A /* TestFiles */ = {
 			isa = PBXGroup;
 			children = (
+				6B37723E26015FA30024E527 /* Action.Execute.Auth.json */,
+				6BFF9A17260155240028069F /* Action.Execute.json */,
 				6B9FAF4E25D70AAB00D1A791 /* AdditionalProperties.json */,
 				6B70AB87256490CC0095D925 /* Image.SelectAction.json */,
 				6BFBF9602457ADCF006FF8FB /* ActionSet.Inputs.Tests.json */,
@@ -452,6 +460,7 @@
 				6BD6E86025B28475007B0168 /* ACRImageRenderingTest.mm */,
 				F423C0921EE1FB6100905679 /* ADCIOSVisualizerTests.mm */,
 				F423C0941EE1FB6100905679 /* Info.plist */,
+				6BFF9A11260132800028069F /* Action.ExecuteTest.mm */,
 			);
 			path = ADCIOSVisualizerTests;
 			sourceTree = "<group>";
@@ -587,6 +596,7 @@
 				6B182BBB25DF5FB700629A39 /* power_point.png in Resources */,
 				6B182BB325DF5FB700629A39 /* SmallVerticalLineGray.png in Resources */,
 				6B150A2A230353AB00046B3A /* TextBlock.IsSubtle.json in Resources */,
+				6B37723F26015FA30024E527 /* Action.Execute.Auth.json in Resources */,
 				6B150A29230353AB00046B3A /* TextBlock.Spacing.json in Resources */,
 				6B14FC5D2113BC2200A11CC5 /* (null) in Resources */,
 				6B150A3E230354F200046B3A /* Column.Size.Ratio.json in Resources */,
@@ -595,6 +605,7 @@
 				6BFBF9612457ADD0006FF8FB /* ActionSet.Inputs.Tests.json in Resources */,
 				6B182BBA25DF5FB700629A39 /* Action.Scrolling.json in Resources */,
 				6B182BCF25E5AD3500629A39 /* image_3.png in Resources */,
+				6BFF9A18260155240028069F /* Action.Execute.json in Resources */,
 				30860BC220C9B5C9009F9D99 /* (null) in Resources */,
 				6B150A3C230354F200046B3A /* Column.Width.json in Resources */,
 				6B9FAF4F25D70AAB00D1A791 /* AdditionalProperties.json in Resources */,
@@ -690,6 +701,7 @@
 				6B9FAF5425D7182600D1A791 /* MockRenderer.mm in Sources */,
 				6B70ABB5257B18390095D925 /* CustomActionNewType.mm in Sources */,
 				F423C0931EE1FB6100905679 /* ADCIOSVisualizerTests.mm in Sources */,
+				6BFF9A12260132800028069F /* Action.ExecuteTest.mm in Sources */,
 				6BD6E86125B28475007B0168 /* ACRImageRenderingTest.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
