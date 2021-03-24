@@ -220,6 +220,11 @@ namespace RendererQml
         return ++m_ButtonCounter;
     }
 
+    const int AdaptiveRenderContext::getSelectActionCounter()
+    {
+        return ++m_SelectActionCounter;
+    }
+
     void AdaptiveRenderContext::setCardRootId(const std::string& rootId)
     {
         m_CardRootId = rootId;
@@ -288,5 +293,15 @@ namespace RendererQml
     const std::map<std::string, std::shared_ptr<AdaptiveCards::ShowCardAction>> AdaptiveRenderContext::getShowCardLoaderComponentList()
     {
         return m_showCardLoaderComponentList;
+    }
+
+    void AdaptiveRenderContext::addToTextRunSelectActionList(const std::shared_ptr<QmlTag>& textRunElement, std::map<std::string, std::shared_ptr<AdaptiveCards::BaseActionElement>>& actionList)
+    {
+        m_textRunSelectActionList[textRunElement] = actionList;
+    }
+
+    const std::map<std::shared_ptr<QmlTag>, std::map<std::string, std::shared_ptr<AdaptiveCards::BaseActionElement>>> AdaptiveRenderContext::getTextRunSelectActionList()
+    {
+        return m_textRunSelectActionList;
     }
 }

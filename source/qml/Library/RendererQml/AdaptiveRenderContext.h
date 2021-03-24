@@ -40,7 +40,8 @@ namespace RendererQml
 		const int getColumnSetCounter();
 		const int getColumnCounter();
         const int getButtonCounter();
-		
+        const int getSelectActionCounter();
+
         void setCardRootId(const std::string& rootId);
         const std::string getCardRootId();
 
@@ -60,6 +61,9 @@ namespace RendererQml
         void addToShowCardLoaderComponentList(const std::string& componentId, const std::shared_ptr<AdaptiveCards::ShowCardAction>& action);
         const std::map<std::string, std::shared_ptr<AdaptiveCards::ShowCardAction>> getShowCardLoaderComponentList();
 
+        void addToTextRunSelectActionList(const std::shared_ptr<QmlTag>& textRunElement, std::map<std::string, std::shared_ptr<AdaptiveCards::BaseActionElement>>& actionList);
+        const std::map<std::shared_ptr<QmlTag>, std::map<std::string, std::shared_ptr<AdaptiveCards::BaseActionElement>>> getTextRunSelectActionList();
+
 		const int getCardWidth();
 
     private:
@@ -78,11 +82,13 @@ namespace RendererQml
         std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::SubmitAction>> m_submitActionButtonList;
         std::map<std::shared_ptr<QmlTag>, std::shared_ptr<AdaptiveCards::ShowCardAction>> m_showCardButtonList;
         std::map<std::string, std::shared_ptr<AdaptiveCards::ShowCardAction>> m_showCardLoaderComponentList;
+        std::map<std::shared_ptr<QmlTag>, std::map<std::string, std::shared_ptr<AdaptiveCards::BaseActionElement>>> m_textRunSelectActionList;
 
         int m_ContainerCounter{ 0 };
         int m_ImageCounter{ 0 };
 		int m_ColumnSetCounter{ 0 };
 		int m_ColumnCounter{ 0 };
         int m_ButtonCounter{ 0 };
+        int m_SelectActionCounter{ 0 };
     };
 }

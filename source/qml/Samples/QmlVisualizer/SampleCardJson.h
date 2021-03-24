@@ -3402,6 +3402,480 @@ namespace Samples
     ]
 })";
 
+    const std::string card_CardSelectAction = R"({
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "selectAction": {
+        "type": "Action.Submit",
+        "title": "Submit action",
+        "data": {
+            "info": "My submit action data"
+        }
+    },
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Publish Adaptive Card schema",
+                    "weight": "Bolder",
+                    "size": "Medium"
+                },
+                {
+                    "type": "ColumnSet",
+                    "columns": [
+                        {
+                            "type": "Column",
+                            "width": "auto",
+                            "items": [
+                                {
+                                    "type": "Image",
+                                    "url": "https://pbs.twimg.com/profile_images/3647943215/d7f12830b3c17a5a9e4afcc370e3a37e_400x400.jpeg",
+                                    "size": "Small",
+                                    "style": "Person"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Column",
+                            "width": "stretch",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Matt Hidinger",
+                                    "weight": "Bolder",
+                                    "wrap": true
+                                },
+                                {
+                                    "type": "TextBlock",
+                                    "spacing": "None",
+                                    "text": "Created {{DATE(2017-02-14T06:08:39Z, SHORT)}}",
+                                    "isSubtle": true,
+                                    "wrap": true
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Now that we have defined the main rules and features of the format, we need to produce a schema and publish it to GitHub. The schema will be the starting point of our reference documentation.",
+                    "wrap": true
+                },
+                {
+                    "type": "FactSet",
+                    "facts": [
+                        {
+                            "title": "Board:",
+                            "value": "Adaptive Card"
+                        },
+                        {
+                            "title": "List:",
+                            "value": "Backlog"
+                        },
+                        {
+                            "title": "Assigned to:",
+                            "value": "Matt Hidinger"
+                        },
+                        {
+                            "title": "Due date:",
+                            "value": "Not set"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "What time do you want to meet?"
+        },
+        {
+            "type": "Input.Time",
+            "id": "time",
+            "min": "09:00",
+            "max": "17:00",
+            "value": "15:30"
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.ShowCard",
+            "title": "Comment",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "Input.Text",
+                        "id": "comment",
+                        "isMultiline": true,
+                        "placeholder": "Enter your comment"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK"
+                    }
+                ]
+            }
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "View",
+            "url": "https://adaptivecards.io"
+        }
+    ]
+})";
+
+    const std::string card_ImageSelectAction = R"({
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "Image",
+            "url": "https://adaptivecards.io/content/cats/1.png",
+            "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "My submit action data"
+                }
+            }
+        }
+    ]
+})";
+
+    const std::string card_TextRunSelectAction = R"({
+  "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+  "type": "AdaptiveCard",
+  "version": "1.2",
+  "body": [
+    {
+      "type": "TextBlock",
+      "text": "What time do you want to meet?"
+    },
+    {
+      "type": "Input.Time",
+      "id": "time",
+      "min": "09:00",
+      "max": "17:00",
+      "value": "15:30"
+    },
+    {        
+      "type": "RichTextBlock",
+      "inlines": [
+        "This is the first inline. ",
+        {
+          "type": "TextRun",
+          "text": "We support colors,",
+          "color": "good"
+        },
+        {
+          "type": "TextRun",
+          "text": " We support select action,",
+          "color": "good",
+          "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "My submit action data"
+                }
+            }
+        },
+        {
+          "type": "TextRun",
+          "text": " both regular and subtle. ",
+          "isSubtle": true
+        },
+        {
+          "type": "TextRun",
+          "text": "Text ",
+          "size": "small"
+        },
+        {
+          "type": "TextRun",
+          "text": "of ",
+          "size": "medium"
+        },
+        {
+          "type": "TextRun",
+          "text": "all ",
+          "size": "large"
+        },
+        {
+          "type": "TextRun",
+          "text": "sizes! ",
+          "size": "extraLarge"
+        },
+        {
+          "type": "TextRun",
+          "text": "Light weight text. ",
+          "weight": "lighter"
+        },
+        {
+          "type": "TextRun",
+          "text": "Bold weight text. ",
+          "weight": "bolder"
+        },
+        {
+          "type": "TextRun",
+          "text": "Highlights. ",
+          "highlight": true
+        },
+        {
+          "type": "TextRun",
+          "text": "Italics. ",
+          "italic": true
+        },
+        {
+          "type": "TextRun",
+          "text": "Strikethrough. ",
+          "strikethrough": true
+        },
+        {
+          "type": "TextRun",
+          "text": "Monospace too!",
+          "fontType": "monospace",
+          "selectAction": {
+            "type": "Action.OpenUrl",
+            "url": "https://msn.com"
+          }
+        }
+      ]
+    },
+    {
+      "type": "TextBlock",
+      "text": "What time do you want to meet?"
+    },
+    {
+      "type": "Input.Time",
+      "id": "time1",
+      "min": "09:00",
+      "max": "17:00",
+      "value": "15:30"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Date Input"
+    },
+    {
+      "type": "Input.Date",
+      "id": "date",
+      "placeholder": "Enter a date",
+      "value": "2017-10-12"
+    }
+  ]
+})";
+
+    const std::string card_ContainerSelectAction = R"({
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "Container",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Cool link"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+            }
+        },
+        {
+            "type": "Container",
+            "style": "emphasis",
+            "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Emphasis link"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://msn.com"
+            }
+        },
+        {
+            "type": "Container",
+            "style": "good",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Submit action"
+                }
+            ],
+            "selectAction": {
+                "type": "Action.Submit",
+                "title": "Submit action",
+                "data": {
+                    "info": "My submit action data"
+                }
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "Date Input"
+        },
+        {
+            "type": "Input.Date",
+            "id": "date",
+            "placeholder": "Enter a date",
+            "value": "2017-10-12"
+        }
+    ]
+})";
+
+    const std::string card_ColumnSetSelectAction = R"({
+    "type": "AdaptiveCard",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Pick up where you left off?",
+            "weight": "Bolder"
+        },
+        {
+            "type": "ColumnSet",
+            "spacing": "Medium",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://unsplash.it/80?image=1083",
+                            "size": "Medium"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 4,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Silver Star Mountain"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Maps",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        }
+                    ]
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.msn.com"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://unsplash.it/80?image=1082",
+                            "size": "Medium"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 4,
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Kitchen Remodel"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "With EMPHASIS",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        }
+                    ]
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.AdaptiveCards.io"
+            }
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "auto",
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://unsplash.it/80?image=1080",
+                            "size": "Medium"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": 4,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "The Witcher"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Netflix",
+                            "isSubtle": true,
+                            "spacing": "None"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+                    }
+                }
+            ],
+            "selectAction": {
+                "type": "Action.OpenUrl",
+                "url": "https://www.outlook.com"
+            }
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.OpenUrl",
+            "title": "Resume all",
+            "url": "ms-cortana:resume-all"
+        },
+        {
+            "type": "Action.OpenUrl",
+            "title": "More activities",
+            "url": "ms-cortana:more-activities"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
+})";
 }
 
     
