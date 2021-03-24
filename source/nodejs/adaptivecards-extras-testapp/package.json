@@ -12,7 +12,7 @@
 		"microsoft",
 		"bot"
 	],
-	"main": "lib/adaptivecards-extras-testapp.js",
+	"main": "dist/adaptivecards-extras-testapp.js",
 	"types": "lib/adaptivecards-extras-testapp.d.ts",
 	"files": [
 		"lib",
