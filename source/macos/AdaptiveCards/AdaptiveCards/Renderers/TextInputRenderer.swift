@@ -52,11 +52,11 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             multilineView.maxLen = inputBlock.getMaxLength() as? Int ?? 0
             // Add Input Handler
             if let acrView = rootView as? ACRView {
-            acrView.addInputHandler(multilineView)
+                acrView.addInputHandler(multilineView)
             }
             if renderButton {
                 stackview.addArrangedSubview(multilineView)
-                addInlineButton(parentview: stackview, view: multilineView, element: inputBlock, style: style, with: hostConfig)
+                addInlineButton(parentview: stackview, view: multilineView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)
                 return stackview
             }
             return multilineView
@@ -84,18 +84,22 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         // Add Input Handler
         if let acrView = rootView as? ACRView {
-        acrView.addInputHandler(textView)
+            acrView.addInputHandler(textView)
         }
         if renderButton {
             stackview.addArrangedSubview(textView)
-            addInlineButton(parentview: stackview, view: textView, element: inputBlock, style: style, with: hostConfig)
+            addInlineButton(parentview: stackview, view: textView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)
             return stackview
         }
         return textView
     }
-    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig) {
+    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: NSView) {
         let action = element.getInlineAction()
-        let button = NSButton(title: action?.getTitle() ?? "", target: self, action: Selector(("test")))
+        let button = ACRButton(style: .inline)
+        button.title = action?.getTitle() ?? ""
+        button.cornerRadius = 0
+        button.isBordered = false
+        
         let attributedString: NSMutableAttributedString
         attributedString = NSMutableAttributedString(string: button.title)
         if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: true), let textColor = ColorUtils.color(from: colorHex) {
@@ -103,24 +107,62 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         parentview.addArrangedSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.isBordered = false
+        
         if view is ACRMultilineInputTextView {
             button.setContentHuggingPriority(.required, for: .vertical)
             button.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         }
         button.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.5).isActive = true
         button.attributedTitle = attributedString
+        
         // image icon
         if let imageIcon = action?.getIconUrl(), !imageIcon.isEmpty {
             guard let url = URL(string: imageIcon) else { return }
             DispatchQueue.global().async {
                 guard let data = try? Data(contentsOf: url) else { return }
                 DispatchQueue.main.async {
-                    let image = NSImage(data: data)
-                    image?.size = .init(width: button.bounds.width, height: button.bounds.height)
+                    guard let image = NSImage(data: data) else {
+                        return
+                    }
+                    image.size = .init(width: button.bounds.width, height: button.bounds.height)
+                    button.showsIcon = true
+                    button.title = ""
+                    button.iconImageSize = NSSize(width: 25, height: 25)
                     button.image = image
+                    // added this to maintain the color of the image
+                    button.iconColor = NSColor(patternImage: image)
+                    button.activeIconColor = button.iconColor
+                    // for icon added left and right contentInsets
+                    button.contentInsets.left = 10
+                    button.contentInsets.right = 10
                 }
             }
+        }
+        
+        // adding target to the Buttons
+        guard let acrView = rootview as? ACRView else {
+            logError("rootView should be ACRView")
+            return
+        }
+        switch action?.getType() {
+        case .openUrl:
+            guard let openURLAction = action as? ACSOpenUrlAction else {
+                logError("Element is not of type ACSOpenUrlAction")
+                return
+            }
+            let target = ActionOpenURLTarget(element: openURLAction, delegate: acrView)
+            target.configureAction(for: button)
+            acrView.addTarget(target)
+        case .submit:
+            guard let submitAction = action as? ACSSubmitAction else {
+                logError("Element is not of type ACSSubmitAction")
+                return
+            }
+            let target = ActionSubmitTarget(element: submitAction, delegate: acrView)
+            target.configureAction(for: button)
+            acrView.addTarget(target)
+        default:
+            break
         }
     }
 }

@@ -6,7 +6,7 @@ class ActionSubmitRenderer: BaseActionElementRendererProtocol {
     
     func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let submitAction = action as? ACSSubmitAction else {
-            logError("Element is not of type ACSOpenUrlAction")
+            logError("Element is not of type ACSSubmitAction")
             return NSView()
         }
         

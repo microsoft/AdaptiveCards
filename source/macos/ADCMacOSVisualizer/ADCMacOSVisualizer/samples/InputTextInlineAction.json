@@ -23,14 +23,28 @@
         },
         {
             "type": "Input.Text",
+            "id": "textInlineActionId2",
+            "inlineAction": {
+                "type": "Action.OpenUrl",
+                "title": "Reply",
+                "url": "https://adaptivecards.io"
+            }
+        },
+        {
+            "type": "TextBlock",
+            "text": "Text input with an inline action with no icon",
+            "wrap": true
+        },
+        {
+            "type": "Input.Text",
             "id": "textInlineActionId",
             "isMultiline": true,
             "inlineAction": {
                 "type": "Action.OpenUrl",
                 "title": "Reply",
                 "url": "https://adaptivecards.io"
-            }
         }
+    }
+
     ]
 }
-
