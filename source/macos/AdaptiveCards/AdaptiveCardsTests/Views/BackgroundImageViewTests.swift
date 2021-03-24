@@ -251,7 +251,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height, 657)
         XCTAssertEqual(imageLayer.frame.minX, 0)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRptverticallyLeftCenter() {
@@ -263,7 +263,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.minX, 0)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     func testBGImageRptverticallyRightTop() {
@@ -287,7 +287,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.maxX, 200)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRptverticallyRightCenter() {
@@ -299,7 +299,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.maxX, 200)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     func testBGImageRptverticallyCenterTop() {
@@ -323,7 +323,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height, 657)
         XCTAssertEqual(imageLayer.frame.midX, 100)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRptverticallyCenterCenter() {
@@ -335,7 +335,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 100)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.midX, 100)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     func testBGImageRepeatLeftTop() {
@@ -359,7 +359,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.minX, 0)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRepeatLeftCenter() {
@@ -371,7 +371,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.minX, 0)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     func testBGImageRepeatRightTop() {
@@ -395,7 +395,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.maxX, 200)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRepeatRightCenter() {
@@ -407,7 +407,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.maxX, 200)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     func testBGImageRepeatCenterTop() {
@@ -431,7 +431,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.midX, 100)
-        XCTAssertEqual(imageLayer.frame.maxY, 630)
+        XCTAssertEqual(imageLayer.frame.maxY, 657)
     }
     
     func testBGImageRepeatCenterCenter() {
@@ -443,7 +443,7 @@ class ViewTests: XCTestCase {
         XCTAssertEqual(imageLayer.frame.width, 300)
         XCTAssertEqual(imageLayer.frame.height,657)
         XCTAssertEqual(imageLayer.frame.midX, 100)
-        XCTAssertEqual(imageLayer.frame.midY, 315)
+        XCTAssertEqual(imageLayer.frame.midY, 300)
     }
     
     

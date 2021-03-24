@@ -6,14 +6,14 @@ class ActionOpenURLRendererTests: XCTestCase {
     private var hostConfig: FakeHostConfig!
     private var actionOpenURL: FakeOpenURLAction!
     private var acrView: ACRView!
-    private var delegate: FakeACRViewDelegate!
+    private var delegate: FakeACRViewOpenURLDelegate!
     private var actionOpenURLRenderer: ActionOpenURLRenderer!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
         hostConfig = .make()
         actionOpenURL = .make()
-        delegate = FakeACRViewDelegate()
+        delegate = FakeACRViewOpenURLDelegate()
         acrView = ACRView(style: .default, hostConfig: hostConfig)
         actionOpenURLRenderer = ActionOpenURLRenderer()
     }
@@ -52,7 +52,8 @@ class ActionOpenURLRendererTests: XCTestCase {
     }
 }
 
-private class FakeACRViewDelegate: ACRViewDelegate {
+private class FakeACRViewOpenURLDelegate: ACRViewDelegate {
+    func acrInputViewHandler(_ view: ACRView, didSubmitUserResponses dict: [String : String], button: NSButton) { }
     var calledURL: String?
     func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton) {
         calledURL = url
