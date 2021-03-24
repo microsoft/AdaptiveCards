@@ -5894,7 +5894,7 @@ export class ColumnSet extends StylableCardElementContainer {
             (typeName: string) => {
                 return !typeName || typeName === "Column" ? new Column() : undefined;
             },
-            (typeName: string, errorType: TypeErrorType) => {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
                 context.logParseEvent(
                     undefined,
                     Enums.ValidationEvent.ElementTypeNotAllowed,
@@ -6773,11 +6773,6 @@ export class GlobalRegistry {
 
 GlobalRegistry.reset();
 
-const enum TypeErrorType {
-    UnknownType,
-    ForbiddenType
-}
-
 export class SerializationContext extends BaseSerializationContext {
     private _elementRegistry?: CardObjectRegistry<CardElement>;
     private _actionRegistry?: CardObjectRegistry<Action>;
@@ -6787,52 +6782,50 @@ export class SerializationContext extends BaseSerializationContext {
         source: any,
         forbiddenTypeNames: string[],
         allowFallback: boolean,
-        createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
+        createInstanceCallback: (typeName: string | undefined) => T | undefined,
+        logParseEvent: (typeName: string | undefined, errorType: Enums.TypeErrorType) => void): T | undefined {
         let result: T | undefined = undefined;
 
         if (source && typeof source === "object") {
             let typeName = Utils.parseString(source["type"]);
 
-            if (typeName) {
-                if (forbiddenTypeNames.indexOf(typeName) >= 0) {
-                    logParseEvent(typeName, TypeErrorType.ForbiddenType);
+            if (typeName && forbiddenTypeNames.indexOf(typeName) >= 0) {
+                logParseEvent(typeName, Enums.TypeErrorType.ForbiddenType);
+            }
+            else {
+                let tryToFallback = false;
+
+                result = createInstanceCallback(typeName);
+
+                if (!result) {
+                    tryToFallback = GlobalSettings.enableFallback && allowFallback;
+
+                    logParseEvent(typeName, Enums.TypeErrorType.UnknownType);
                 }
                 else {
-                    let tryToFallback = false;
+                    result.setParent(parent);
+                    result.parse(source, this);
 
-                    result = createInstanceCallback(typeName);
+                    tryToFallback = GlobalSettings.enableFallback && allowFallback && result.shouldFallback();
+                }
 
-                    if (!result) {
-                        tryToFallback = GlobalSettings.enableFallback && allowFallback;
+                if (tryToFallback) {
+                    let fallback = source["fallback"];
 
-                        logParseEvent(typeName, TypeErrorType.UnknownType);
+                    if (!fallback && parent) {
+                        parent.setShouldFallback(true);
                     }
-                    else {
-                        result.setParent(parent);
-                        result.parse(source, this);
-
-                        tryToFallback = GlobalSettings.enableFallback && allowFallback && result.shouldFallback();
+                    if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
+                        result = undefined;
                     }
-
-                    if (tryToFallback) {
-                        let fallback = source["fallback"];
-
-                        if (!fallback && parent) {
-                            parent.setShouldFallback(true);
-                        }
-                        if (typeof fallback === "string" && fallback.toLowerCase() === "drop") {
-                            result = undefined;
-                        }
-                        else if (typeof fallback === "object") {
-                            result = this.internalParseCardObject<T>(
-                                parent,
-                                fallback,
-                                forbiddenTypeNames,
-                                true,
-                                createInstanceCallback,
-                                logParseEvent);
-                        }
+                    else if (typeof fallback === "object") {
+                        result = this.internalParseCardObject<T>(
+                            parent,
+                            fallback,
+                            forbiddenTypeNames,
+                            true,
+                            createInstanceCallback,
+                            logParseEvent);
                     }
                 }
             }
@@ -6859,7 +6852,7 @@ export class SerializationContext extends BaseSerializationContext {
         forbiddenTypeNames: string[],
         allowFallback: boolean,
         createInstanceCallback: (typeName: string) => T | undefined,
-        logParseEvent: (typeName: string, errorType: TypeErrorType) => void): T | undefined {
+        logParseEvent: (typeName: string, errorType: Enums.TypeErrorType) => void): T | undefined {
         let result = this.internalParseCardObject(
             parent,
             source,
@@ -6884,8 +6877,8 @@ export class SerializationContext extends BaseSerializationContext {
             (typeName: string) => {
                 return this.elementRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: TypeErrorType) => {
-                if (errorType === TypeErrorType.UnknownType) {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
+                if (errorType === Enums.TypeErrorType.UnknownType) {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownElementType,
@@ -6913,8 +6906,8 @@ export class SerializationContext extends BaseSerializationContext {
             (typeName: string) => {
                 return this.actionRegistry.createInstance(typeName, this.targetVersion);
             },
-            (typeName: string, errorType: TypeErrorType) => {
-                if (errorType == TypeErrorType.UnknownType) {
+            (typeName: string, errorType: Enums.TypeErrorType) => {
+                if (errorType == Enums.TypeErrorType.UnknownType) {
                     this.logParseEvent(
                         undefined,
                         Enums.ValidationEvent.UnknownActionType,

@@ -1,5 +1,4 @@
 const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = (env, argv) => {
 	const mode = argv.mode || 'development';
@@ -10,12 +9,12 @@ module.exports = (env, argv) => {
 	return {
 		mode: mode,
 		entry: {
-			"adaptivecards-extras-testapp": "./src/adaptivecards-extras-testapp.ts"
+			"adaptivecards-extras-designer": "./src/adaptivecards-extras-designer.ts"
 		},
 		output: {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
-			library: "ACExtrasTestApp",
+			library: "ACExtrasDesigner",
 			libraryTarget: "umd",
 			globalObject: "this",
 			// umdNamedDefine: true
@@ -36,17 +35,16 @@ module.exports = (env, argv) => {
 				}
 			]
 		},
-		plugins: [
-            new HtmlWebpackPlugin({
-				title: "Adataptive Cards Extras test application",
-				template: "./index.html"
-			})
-		],
 		externals: {
 			"adaptivecards": {
 				commonjs2: "adaptivecards",
 				commonjs: "adaptivecards",
 				root: "AdaptiveCards"
+			},
+			"adaptivecards-designer": {
+				commonjs2: "adaptivecards-designer",
+				commonjs: "adaptivecards-designer",
+				root: "ACDesigner"
 			},
 			"adaptivecards-extras": {
 				commonjs2: "adaptivecards-extras",
