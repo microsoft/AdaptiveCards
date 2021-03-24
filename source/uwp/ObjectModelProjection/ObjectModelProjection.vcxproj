@@ -37,9 +37,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ActionSet.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\AuthCardButton.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Authentication.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BackgroundImage.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\BaseElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\CollectionTypeElement.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\ExecuteAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Inline.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Media.cpp" />
@@ -70,6 +73,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\MarkDownParser.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\NumberInput.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ParseResult.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\Refresh.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextBlock.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\RichTextElementProperties.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\SemanticVersion.cpp" />
@@ -93,6 +97,7 @@
     <ClCompile Include="..\..\shared\cpp\ObjectModel\TextBlock.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.cpp" />
+    <ClCompile Include="..\..\shared\cpp\ObjectModel\TokenExchangeResource.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownAction.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\UnknownElement.cpp" />
     <ClCompile Include="..\..\shared\cpp\ObjectModel\Util.cpp" />
@@ -103,6 +108,8 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseException.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveCardParseWarning.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\AdaptiveBase64Util.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\AuthCardButton.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Authentication.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BackgroundImage.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseActionElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\BaseElement.h" />
@@ -114,6 +121,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ColumnSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ElementParserRegistration.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\EnumMagic.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\ExecuteAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Fact.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FactSet.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\FeatureRegistration.h" />
@@ -131,6 +139,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\NumberInput.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseContext.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ParseResult.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\Refresh.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RemoteResourceInformation.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextBlock.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\RichTextElementProperties.h" />
@@ -157,6 +166,7 @@
     <ClInclude Include="..\..\shared\cpp\ObjectModel\TextBlock.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\ToggleVisibilityTarget.h" />
+    <ClInclude Include="..\..\shared\cpp\ObjectModel\TokenExchangeResource.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownAction.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\UnknownElement.h" />
     <ClInclude Include="..\..\shared\cpp\ObjectModel\Util.h" />

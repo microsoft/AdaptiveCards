@@ -38,7 +38,7 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_UserInputs(_COM_Outptr_ ABI::AdaptiveCards::Rendering::Uwp::IAdaptiveInputs** value) override;
         IFACEMETHODIMP AddInputValue(_In_ ABI::AdaptiveNamespace::IAdaptiveInputValue* inputValue,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs) override;
-        IFACEMETHODIMP LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+        IFACEMETHODIMP LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* submitAction,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs) override;
         IFACEMETHODIMP LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
                                      _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs) override;

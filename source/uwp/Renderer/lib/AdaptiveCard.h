@@ -4,6 +4,8 @@
 
 #include "SharedAdaptiveCard.h"
 #include "AdaptiveBackgroundImage.h"
+#include "AdaptiveRefresh.h"
+#include "AdaptiveAuthentication.h"
 
 namespace AdaptiveNamespace
 {
@@ -56,6 +58,12 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_MinHeight(_Out_ UINT32* minHeight);
         IFACEMETHODIMP put_MinHeight(UINT32 minHeight);
 
+        IFACEMETHODIMP get_Refresh(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveRefresh** refresh);
+        IFACEMETHODIMP put_Refresh(_In_ ABI::AdaptiveNamespace::IAdaptiveRefresh* refresh);
+
+        IFACEMETHODIMP get_Authentication(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveAuthentication** authentication);
+        IFACEMETHODIMP put_Authentication(_In_ ABI::AdaptiveNamespace::IAdaptiveAuthentication* authentication);
+
         IFACEMETHODIMP ToJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonObject** result);
 
         IFACEMETHODIMP GetResourceInformation(
@@ -87,6 +95,8 @@ namespace AdaptiveNamespace
         Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveActionElement> m_selectAction;
         ABI::AdaptiveNamespace::ContainerStyle m_style;
         ABI::AdaptiveNamespace::VerticalContentAlignment m_verticalAlignment;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveRefresh> m_refresh;
+        Microsoft::WRL::ComPtr<ABI::AdaptiveNamespace::IAdaptiveAuthentication> m_authentication;
     };
 
     class AdaptiveCardStaticsImpl WrlFinal : public Microsoft::WRL::AgileActivationFactory<ABI::AdaptiveNamespace::IAdaptiveCardStatics>

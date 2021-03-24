@@ -23,6 +23,7 @@ import io.adaptivecards.objectmodel.ActionType;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.IconPlacement;
@@ -171,8 +172,7 @@ public class ActionElementRenderer extends BaseActionElementRenderer
 
         Button button = getButtonForStyle(context, baseActionElement.GetStyle(), hostConfig);
 
-        SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
-        if (action != null)
+        if (Util.isOfType(baseActionElement, ExecuteAction.class) || Util.isOfType(baseActionElement, SubmitAction.class))
         {
             long actionId = Util.getViewId(button);
             renderedCard.setCardForSubmitAction(actionId, renderArgs.getContainerCardId());

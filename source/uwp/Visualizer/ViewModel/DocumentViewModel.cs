@@ -218,6 +218,11 @@ namespace AdaptiveCardVisualizer.ViewModel
             {
                 answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson?.Stringify();
             }
+            else if (args.Action is AdaptiveExecuteAction)
+            {
+                answer += "\nVerb: " + (args.Action as AdaptiveExecuteAction).Verb;
+                answer += "\nData: " + (args.Action as AdaptiveExecuteAction).DataJson?.Stringify();
+            }
             else if (args.Action is AdaptiveOpenUrlAction)
             {
                 answer += "\nUrl: " + (args.Action as AdaptiveOpenUrlAction).Url;

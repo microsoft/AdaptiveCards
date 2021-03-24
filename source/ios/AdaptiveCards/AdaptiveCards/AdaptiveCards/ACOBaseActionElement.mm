@@ -10,6 +10,7 @@
 #import "OpenUrlAction.h"
 #import "SubmitAction.h"
 #import "UnknownAction.h"
+#import "ExecuteAction.h"
 #import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
@@ -91,7 +92,7 @@ using namespace AdaptiveCards;
     if (_elem) {
         return [NSString stringWithCString:_elem->GetTitle().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)elementId
@@ -99,7 +100,7 @@ using namespace AdaptiveCards;
     if (_elem) {
         return [NSString stringWithCString:_elem->GetId().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)url
@@ -108,16 +109,37 @@ using namespace AdaptiveCards;
         std::shared_ptr<OpenUrlAction> openUrlAction = std::dynamic_pointer_cast<OpenUrlAction>(_elem);
         return [NSString stringWithCString:openUrlAction->GetUrl().c_str() encoding:NSUTF8StringEncoding];
     }
-    return @"";
+    return nil;
 }
 
 - (NSString *)data
 {
-    if (_elem && _type == ACRSubmit) {
-        std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(_elem);
-        return [NSString stringWithCString:submitAction->GetDataJson().c_str() encoding:NSUTF8StringEncoding];
+    if (_elem) {
+        std::string data;
+        if (_type == ACRSubmit) {
+            std::shared_ptr<SubmitAction> submitAction = std::dynamic_pointer_cast<SubmitAction>(_elem);
+            data = submitAction->GetDataJson();
+        }
+        
+        if (_type == ACRExecute) {
+            std::shared_ptr<ExecuteAction> executeAction = std::dynamic_pointer_cast<ExecuteAction>(_elem);
+            data = executeAction->GetDataJson();
+        }
+    
+        if (!data.empty()) {
+            return [NSString stringWithCString:data.c_str() encoding:NSUTF8StringEncoding];
+        }
     }
-    return @"";
+    return nil;
+}
+
+- (NSString *)verb
+{
+    if (_elem && _type == ACRExecute) {
+        std::shared_ptr<ExecuteAction> executeAction = std::dynamic_pointer_cast<ExecuteAction>(_elem);
+        return [NSString stringWithCString:executeAction->GetVerb().c_str() encoding:NSUTF8StringEncoding];
+    }
+    return nil;
 }
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg
@@ -144,6 +166,9 @@ using namespace AdaptiveCards;
             break;
         case ACRToggleVisibility:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
+            break;
+        case ACRExecute:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Execute)];
             break;
         case ACRUnknownAction:
         default:

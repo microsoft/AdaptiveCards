@@ -222,6 +222,11 @@ namespace std {
 #include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 #include "../../../shared/cpp/ObjectModel/TextRun.h"
 #include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+#include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+#include "../../../shared/cpp/ObjectModel/Refresh.h"
+#include "../../../shared/cpp/ObjectModel/Authentication.h"
+#include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+#include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
 %}
 
 
@@ -256,6 +261,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInput)
 %shared_ptr(AdaptiveCards::TimeInput)
 %shared_ptr(AdaptiveCards::ToggleInput)
+%shared_ptr(AdaptiveCards::ExecuteAction)
 %shared_ptr(AdaptiveCards::OpenUrlAction)
 %shared_ptr(AdaptiveCards::ShowCardAction)
 %shared_ptr(AdaptiveCards::SubmitAction)
@@ -273,6 +279,7 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextInputParser)
 %shared_ptr(AdaptiveCards::TimeInputParser)
 %shared_ptr(AdaptiveCards::ToggleInputParser)
+%shared_ptr(AdaptiveCards::ExecuteActionParser)
 %shared_ptr(AdaptiveCards::OpenUrlActionParser)
 %shared_ptr(AdaptiveCards::ShowCardActionParser)
 %shared_ptr(AdaptiveCards::SubmitActionParser)
@@ -297,6 +304,10 @@ namespace std {
 %shared_ptr(AdaptiveCards::TextRun)
 %shared_ptr(AdaptiveCards::TextElementProperties)
 %shared_ptr(AdaptiveCards::RichTextElementProperties)
+%shared_ptr(AdaptiveCards::Refresh)
+%shared_ptr(AdaptiveCards::Authentication)
+%shared_ptr(AdaptiveCards::TokenExchangeResource)
+%shared_ptr(AdaptiveCards::AuthCardButton)
 
 %apply unsigned int& INOUT { unsigned int& };
 
@@ -513,6 +524,7 @@ namespace Json {
 %template(StringVector) std::vector<std::string>;
 %template(CharVector) std::vector<char>;
 %template(InlineVector) std::vector<std::shared_ptr<AdaptiveCards::Inline>>;
+%template(AuthCardButtonVector) std::vector<std::shared_ptr<AdaptiveCards::AuthCardButton>>;
 
 %template(EnableSharedFromThisContainer) std::enable_shared_from_this<AdaptiveCards::Container>;
 
@@ -771,6 +783,21 @@ namespace Json {
     }
 };
 
+%exception AdaptiveCards::ExecuteAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+    $action
+    if (!result) {
+        jclass excep = jenv->FindClass("java/lang/ClassCastException");
+        if (excep) {
+            jenv->ThrowNew(excep, "dynamic_cast exception");
+        }
+    }
+}
+%extend AdaptiveCards::ExecuteAction {
+    static AdaptiveCards::ExecuteAction *dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
+        return dynamic_cast<AdaptiveCards::ExecuteAction *>(baseActionElement);
+    }
+};
+
 %exception AdaptiveCards::OpenUrlAction::dynamic_cast(AdaptiveCards::BaseActionElement *baseActionElement) {
     $action
     if (!result) {
@@ -924,6 +951,11 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/TextInput.h"
 %include "../../../shared/cpp/ObjectModel/TimeInput.h"
 %include "../../../shared/cpp/ObjectModel/ToggleInput.h"
+%include "../../../shared/cpp/ObjectModel/ExecuteAction.h"
+%include "../../../shared/cpp/ObjectModel/TokenExchangeResource.h"
+%include "../../../shared/cpp/ObjectModel/AuthCardButton.h"
+%include "../../../shared/cpp/ObjectModel/Refresh.h"
+%include "../../../shared/cpp/ObjectModel/Authentication.h"
 %include "../../../shared/cpp/ObjectModel/OpenUrlAction.h"
 %include "../../../shared/cpp/ObjectModel/ShowCardAction.h"
 %include "../../../shared/cpp/ObjectModel/SubmitAction.h"
@@ -949,3 +981,4 @@ namespace Json {
 %include "../../../shared/cpp/ObjectModel/RichTextBlock.h"
 %include "../../../shared/cpp/ObjectModel/TextRun.h"
 %include "../../../shared/cpp/ObjectModel/RichTextElementProperties.h"
+

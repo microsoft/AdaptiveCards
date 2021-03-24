@@ -189,24 +189,35 @@
                                          error:nil];
 
         NSString *fileName = [pathToFile lastPathComponent];
-        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-
-        if ([_setOfExpectedToFailFiles containsObject:fileName]) {
-            XCTAssertFalse(cardParseResult.isValid);
-        } else {
-            XCTAssertTrue(cardParseResult.isValid);
-            ACRRenderResult *renderResult;
-            @try {
-                renderResult = [ACRRenderer render:cardParseResult.card
-                                            config:nil
-                                   widthConstraint:300
-                                          delegate:nil];
-                XCTAssertTrue(renderResult.succeeded);
+        
+        ACOAdaptiveCardParseResult *cardParseResult = nil;
+        @try {
+            cardParseResult = [ACOAdaptiveCard fromJson:payload];
+            if ([_setOfExpectedToFailFiles containsObject:fileName]) {
+                XCTAssertFalse(cardParseResult.isValid);
+            } else {
+                if (!cardParseResult.isValid) {
+                    NSException *e = [NSException exceptionWithName:@"ParseFailed" reason:@"Parsing Failed" userInfo:nil];
+                    @throw e;
+                }
+                XCTAssertTrue(cardParseResult.isValid);
+                ACRRenderResult *renderResult;
+                @try {
+                    renderResult = [ACRRenderer render:cardParseResult.card
+                                                config:nil
+                                       widthConstraint:300
+                                              delegate:nil];
+                    XCTAssertTrue(renderResult.succeeded);
+                }
+                @catch (NSException *exception) {
+                    NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
+                    XCTAssertTrue(NO);
+                }
             }
-            @catch (NSException *exception) {
-                NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
-                XCTAssertTrue(NO);
-            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Parsing Failed %@\n%@", fileName, exception);
+            XCTAssertTrue(NO);
         }
     }
 }
