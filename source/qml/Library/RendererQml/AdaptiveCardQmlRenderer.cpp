@@ -283,7 +283,7 @@ namespace RendererQml
 
 	std::shared_ptr<QmlTag> AdaptiveCardQmlRenderer::TextBlockRender(std::shared_ptr<AdaptiveCards::TextBlock> textBlock, std::shared_ptr<AdaptiveRenderContext> context)
 	{
-		//TODO:Parse markdown in the text
+		//LIMITATION: Elide and maximumLineCount property do not work for textFormat:Text.MarkdownText
 
 		std::string fontFamily = context->GetConfig()->GetFontFamily(textBlock->GetFontType());
 		int fontSize = context->GetConfig()->GetFontSize(textBlock->GetFontType(), textBlock->GetTextSize());
@@ -293,7 +293,12 @@ namespace RendererQml
 		std::string horizontalAlignment = AdaptiveCards::EnumHelpers::getHorizontalAlignmentEnum().toString(textBlock->GetHorizontalAlignment());
 
 		uiTextBlock->Property("width", "parent.width");
+
+		//Does not work for Markdown text
 		uiTextBlock->Property("elide", "Text.ElideRight");
+
+		uiTextBlock->Property("clip", "true");
+		uiTextBlock->Property("textFormat", "Text.MarkdownText");
 		uiTextBlock->Property("text", "\"" + textBlock->GetText() + "\"");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
@@ -317,6 +322,7 @@ namespace RendererQml
 			uiTextBlock->Property("visible", "false");
 		}
 
+		//Does not work for Markdown text
 		if (textBlock->GetMaxLines() > 0)
 		{
 			uiTextBlock->Property("maximumLineCount", std::to_string(textBlock->GetMaxLines()));
