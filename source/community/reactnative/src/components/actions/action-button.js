@@ -93,10 +93,10 @@ export class ActionButton extends React.Component {
 	onActionButtonTapped = () => {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
-				this.onSubmitActionCalled();
+				this.onSubmitExecuteActionCalled();
 				break;
 			case Constants.ActionExecute:
-				this.onExecuteActionCalled();
+				this.onSubmitExecuteActionCalled();
 				break;
 			case Constants.ActionOpenUrl:
 				this.onOpenURLCalled();
@@ -129,20 +129,14 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-	 * @description Invoked for the action type Constants.ActionSubmit
+	 * @description Invoked for the action type Constants.ActionSubmit and Constants.ActionExecute
 	 */
-	onSubmitActionCalled() {
-		const { type, title = "", ignoreInputValidation } = this.payload;
-		let actionObject = { "type": type, "title": title, "data": this.getMergeObject() };
-		this.onExecuteAction(actionObject, ignoreInputValidation);
-	}
-
-	/**
-	 * @description Invoked for the action type Constants.ActionExecute
-	 */
-	onExecuteActionCalled() {
+	onSubmitExecuteActionCalled() {
 		const { type, verb = "", title = "", ignoreInputValidation } = this.payload;
-		let actionObject = { "type": type, "verb": verb, "title": title, "data": this.getMergeObject() };
+		var actionObject = { "type": type, "title": title, "data": this.getMergeObject() };
+		if (this.payload.type == Constants.ActionExecute) {
+			actionObject["verb"] = verb
+		}
 		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 
