@@ -3,6 +3,7 @@ import AppKit
 
 protocol ACRViewDelegate: AnyObject {
     func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton)
+    func acrInputViewHandler(_ view: ACRView, didSubmitUserResponses dict: [String: String], button: NSButton )
 }
 
 protocol ACRViewResourceResolverDelegate: AnyObject {
@@ -17,6 +18,7 @@ class ACRView: ACRColumnView {
     weak var resolverDelegate: ACRViewResourceResolverDelegate?
 
     private (set) var targets: [TargetHandler] = []
+    private (set) var inputHandlers: [InputHandlingViewProtocol] = []
     private (set) var showCardsMap: [NSNumber: NSView] = [:]
     private (set) var currentShowCardItems: ShowCardItems?
 	private (set) var imageViewMap: [String: [NSImageView]] = [:]
@@ -31,6 +33,10 @@ class ACRView: ACRColumnView {
     
     func addTarget(_ target: TargetHandler) {
         targets.append(target)
+    }
+    
+    func addInputHandler(_ handler: InputHandlingViewProtocol) {
+        inputHandlers.append(handler)
     }
     
     func getImageView(for key: ResourceKey) -> NSImageView {
@@ -87,6 +93,19 @@ extension ACRView: TargetHandlerDelegate {
     
     func handleOpenURLAction(button: NSButton, urlString: String) {
         delegate?.acrView(self, didSelectOpenURL: urlString, button: button)
+    }
+    
+    func handleSubmitAction(button: NSButton, dataJson: String?) {
+        var dict = [String: String]()
+        for handler in inputHandlers {
+            guard handler.isValid else { continue }
+            dict[handler.key] = handler.value
+        }
+        
+        if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+            dict.merge(dataJsonDict) { current, _ in current }
+        }
+        delegate?.acrInputViewHandler(self, didSubmitUserResponses: dict, button: button)
     }
 }
 

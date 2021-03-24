@@ -1,10 +1,10 @@
 import AdaptiveCards_bridge
 import AppKit
 
-class ACRDateField: NSView {
+class ACRDateField: NSView, InputHandlingViewProtocol {
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = isTimeMode ? "HH:mm:ss" : "yyyy/MM/dd"
+        formatter.dateFormat = isTimeMode ? "HH:mm:ss" : "yyyy-MM-dd"
         return formatter
     }()
     private lazy var dateFormatterOut: DateFormatter = {
@@ -18,14 +18,16 @@ class ACRDateField: NSView {
     }()
     private let datepicker = NSDatePicker()
     var isTimeMode: Bool = false
-    var selectedDate: Date?
+    var selectedDate: Date? = Date()
     var minDateValue: String?
     var maxDateValue: String?
+    var idString: String?
     var dateValue: String? {
         didSet {
             if let dateValue = dateValue, let date = dateFormatter.date(from: dateValue) {
                 datepicker.dateValue = date
                 textField.stringValue = dateFormatterOut.string(from: date)
+                selectedDate = date
             }
         }
     }
@@ -90,6 +92,25 @@ class ACRDateField: NSView {
     override func mouseExited(with event: NSEvent) {
         guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
         contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
+    }
+    
+    var value: String {
+        guard let selectedDate = selectedDate else {
+            return ""
+        }
+        return dateFormatter.string(from: selectedDate)
+    }
+    
+    var key: String {
+        guard let id = idString else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false)
     }
     
     // MARK: Actions

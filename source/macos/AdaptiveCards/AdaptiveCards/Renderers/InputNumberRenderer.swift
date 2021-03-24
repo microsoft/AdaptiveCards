@@ -23,6 +23,10 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
         inputField.setNumericFormatter(InputNumberFormatter())
         inputField.stepperShouldWrapValues(false)
         inputField.isHidden = !inputElement.getIsVisible()
+        inputField.id = inputElement.getId()
+        if let acrView = rootView as? ACRView {
+            acrView.addInputHandler(inputField)
+        }
         
         return inputField
     }
@@ -30,6 +34,7 @@ open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
 
 // MARK: - ACRNumericTextField Class
 open class ACRNumericTextField: NSView, NSTextFieldDelegate {
+    var id: String?
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupViews()
@@ -111,7 +116,7 @@ open class ACRNumericTextField: NSView, NSTextFieldDelegate {
 }
 
 // MARK: - EXTENSION
-extension ACRNumericTextField {
+extension ACRNumericTextField: InputHandlingViewProtocol {
     static let MAXVAL = Double.greatestFiniteMagnitude
     static let MINVAL = -MAXVAL
     
@@ -156,6 +161,26 @@ extension ACRNumericTextField {
     
     func stepperShouldWrapValues(_ shouldWrap: Bool) {
         stepper.valueWraps = shouldWrap
+    }
+    
+    func setId(idString: String?) {
+        self.id = idString
+    }
+    
+    var value: String {
+        return String(Int(inputValue))
+    }
+    
+    var key: String {
+        guard let id = id else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false)
     }
 }
 

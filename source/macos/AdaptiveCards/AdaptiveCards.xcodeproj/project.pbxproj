@@ -449,6 +449,8 @@
 		13C41B0B25F25836008A1F2E /* InputTimeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */; };
 		13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0C25F25D06008A1F2E /* ACRDateField.swift */; };
 		13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C465E425DD3C07006E4605 /* InputDateRenderer.swift */; };
+		2806E8EC26010C3800CF7A40 /* ActionSubmitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E8EB26010C3800CF7A40 /* ActionSubmitRenderer.swift */; };
+		2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E8F52608886F00CF7A40 /* ActionSubmitRendererTests.swift */; };
 		2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B11725DD20A30040AB27 /* FakeTextInput.swift */; };
 		2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */; };
 		2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */; };
@@ -986,6 +988,8 @@
 		13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTimeRendererTests.swift; sourceTree = "<group>"; };
 		13C41B0C25F25D06008A1F2E /* ACRDateField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRDateField.swift; sourceTree = "<group>"; };
 		13C465E425DD3C07006E4605 /* InputDateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRenderer.swift; sourceTree = "<group>"; };
+		2806E8EB26010C3800CF7A40 /* ActionSubmitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSubmitRenderer.swift; sourceTree = "<group>"; };
+		2806E8F52608886F00CF7A40 /* ActionSubmitRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSubmitRendererTests.swift; sourceTree = "<group>"; };
 		2871B11725DD20A30040AB27 /* FakeTextInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextInput.swift; sourceTree = "<group>"; };
 		2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRMultilineInputTextView.xib; sourceTree = "<group>"; };
 		2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRMultilineInputTextView.swift; sourceTree = "<group>"; };
@@ -1321,6 +1325,7 @@
 				13C41B0A25F25836008A1F2E /* InputTimeRendererTests.swift */,
 				29F712F225F750F30052DC41 /* ContainerRendererTests.swift */,
 				0801EDBD25F7913300D64C86 /* ColumnSetRendererTests.swift */,
+				2806E8F52608886F00CF7A40 /* ActionSubmitRendererTests.swift */,
 				0801EDC225F7914200D64C86 /* ColumnRendererTests.swift */,
 				2910CF102600D2CC000910C8 /* ActionSetRendererTests.swift */,
 				299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */,
@@ -1334,6 +1339,7 @@
 			isa = PBXGroup;
 			children = (
 				0830D54725F8EBF300BBC245 /* ActionOpenURLRenderer.swift */,
+				2806E8EB26010C3800CF7A40 /* ActionSubmitRenderer.swift */,
 				13C1F7ED25FF0DFF00B59001 /* ActionShowCardRenderer.swift */,
 			);
 			path = ActionRenderers;
@@ -2220,6 +2226,7 @@
 				08E4044825B46ABA00C2092A /* AdaptiveCards.h in Sources */,
 				A032272525E93C7400E7172E /* ImageUtils.swift in Sources */,
 				2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */,
+				2806E8EC26010C3800CF7A40 /* ActionSubmitRenderer.swift in Sources */,
 				29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */,
 				0830D55125F90D4C00BBC245 /* Targets.swift in Sources */,
 				29050BFE25D59A3F00AF3CA9 /* InputToggleRenderer.swift in Sources */,
@@ -2275,6 +2282,7 @@
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
 				082E59B32604EE1F00741958 /* ActionShowCardRendererTests.swift in Sources */,
 				29F712F325F750F30052DC41 /* ContainerRendererTests.swift in Sources */,
+				2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */,
 				29E8DF8525E81E5A000EC12F /* ChoiceSetInputRendererTests.swift in Sources */,
 				2910CF162600D610000910C8 /* FakeSubmitAction.swift in Sources */,
 				13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */,

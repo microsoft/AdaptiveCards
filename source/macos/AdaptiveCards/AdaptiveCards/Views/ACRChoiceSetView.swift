@@ -2,7 +2,7 @@ import AdaptiveCards_bridge
 import AppKit
 
 // MARK: ACRChoiceSetView
-class ACRChoiceSetView: NSView {
+class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     private lazy var stackview: NSStackView = {
         let view = NSStackView()
         view.orientation = .vertical
@@ -14,6 +14,7 @@ class ACRChoiceSetView: NSView {
     public var isRadioGroup: Bool = false
     public var previousButton: ACRChoiceButton?
     public var wrap: Bool = false
+    public var idString: String?
     
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -34,7 +35,7 @@ class ACRChoiceSetView: NSView {
     
     private func handleClickAction(_ clickedButton: ACRChoiceButton) {
         guard isRadioGroup else { return }
-        if previousButton?.value != clickedButton.value {
+        if previousButton?.buttonValue != clickedButton.buttonValue {
             previousButton?.state = .off
             previousButton = clickedButton
         }
@@ -49,8 +50,31 @@ class ACRChoiceSetView: NSView {
         let newButton = ACRChoiceButton()
         newButton.labelAttributedString = attributedString
         newButton.wrap = self.wrap
-        newButton.value = value
+        newButton.buttonValue = value
         return newButton
+    }
+    
+    var value: String {
+        var stringOfSelectedValues: [String] = []
+        let arrayViews = stackview.arrangedSubviews
+        for view in arrayViews {
+            if let view = view as? ACRChoiceButton, view.state == .on {
+                stringOfSelectedValues.append(view.buttonValue ?? "")
+            }
+        }
+        return stringOfSelectedValues.joined(separator: ",")
+    }
+    
+    var key: String {
+        guard let id = idString else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false) && !value.isEmpty
     }
 }
 // MARK: Extension
@@ -61,9 +85,12 @@ extension ACRChoiceSetView: ACRChoiceButtonDelegate {
 }
 
 // MARK: ACRChoiceSetFieldCompactView
-class ACRChoiceSetCompactView: NSPopUpButton {
+class ACRChoiceSetCompactView: NSPopUpButton, InputHandlingViewProtocol {
     public let type: ACSChoiceSetStyle = .compact
     private var trackingAreaDefined: Bool = false
+    public var idString: String?
+    public var valueSelected: String?
+    public var arrayValues: [String] = []
     override func viewDidMoveToSuperview() {
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
@@ -82,5 +109,21 @@ class ACRChoiceSetCompactView: NSPopUpButton {
     override func mouseExited(with event: NSEvent) {
         guard let contentView = event.trackingArea?.owner as? ACRChoiceSetCompactView else { return }
         contentView.isHighlighted = false
+    }
+    
+    var value: String {
+        return arrayValues[indexOfSelectedItem]
+    }
+    
+    var key: String {
+        guard let id = idString else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false)
     }
 }

@@ -1,0 +1,102 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "TextBlock",
+            "size": "Medium",
+            "weight": "Bolder",
+            "text": "Input.Text elements",
+            "horizontalAlignment": "Center",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Text",
+            "wrap": true
+        },
+        {
+            "type": "Input.Text",
+            "style": "text",
+            "id": "SimpleVal",
+            "value": "Random String"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Date",
+            "wrap": true
+        },
+        {
+            "type": "Input.Date",
+            "id": "dateValue",
+            "value": "2000/02/20"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input.Time",
+            "wrap": true
+        },
+        {
+            "type": "Input.Time",
+            "id": "timeValue",
+            "value": "10:55"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Input Number",
+            "wrap": true
+        },
+        {
+            "type": "Input.Number",
+            "placeholder": "Placeholder text",
+            "id": "number",
+            "value": 10
+        },
+        {
+            "type": "TextBlock",
+            "text": "Multiline",
+            "wrap": true
+        },
+        {
+            "type": "Input.Text",
+            "style": "Tel",
+            "id": "Multiline",
+            "isMultiline": true
+        }
+    ],
+    "actions": [
+        {
+            "type": "Action.Submit",
+            "title": "Submit",
+            "data": {
+                "id": "1234567890"
+            }
+        },
+        {
+            "type": "Action.ShowCard",
+            "title": "Show Card",
+            "card": {
+                "type": "AdaptiveCard",
+                "body": [
+                    {
+                        "type": "TextBlock",
+                        "text": "Enter comment",
+                        "wrap": true
+                    },
+                    {
+                        "type": "Input.Text",
+                        "style": "text",
+                        "id": "CommentVal"
+                    }
+                ],
+                "actions": [
+                    {
+                        "type": "Action.Submit",
+                        "title": "OK"
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -8,6 +8,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     
     private var placeholderAttrString: NSAttributedString?
     var maxLen: Int = 0
+    var id: String?
     
     init() {
         super.init(frame: .zero)
@@ -64,6 +65,14 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         textView.textStorage?.setAttributedString(attributedValue)
     }
     
+    func setId(_ idString: String?) {
+        self.id = idString
+    }
+    
+    func setVisibilty(to isVisible: Bool) {
+        self.isHidden = !isVisible
+    }
+    
     func textDidChange(_ notification: Notification) {
         guard maxLen > 0  else { return } // maxLen returns 0 if propery not set
         // This stops the user from exceeding the maxLength property of Inut.Text if prroperty was set
@@ -83,5 +92,23 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
     override func mouseExited(with event: NSEvent) {
         guard let contentView = event.trackingArea?.owner as? ACRMultilineInputTextView else { return }
         contentView.textView.backgroundColor = ColorUtils.hoverColorOnMouseExit()
+    }
+}
+
+extension ACRMultilineInputTextView: InputHandlingViewProtocol {
+    var value: String {
+        textView.string
+    }
+    
+    var key: String {
+        guard let id = id else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false)
     }
 }

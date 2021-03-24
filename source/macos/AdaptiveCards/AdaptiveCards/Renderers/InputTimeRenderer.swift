@@ -22,8 +22,14 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
             view.minDateValue = timeMin
             view.dateValue = timeValue
             view.placeholder = timeElement.getPlaceholder() ?? ""
+            view.idString = timeElement.getId()
+            view.isHidden = !timeElement.getIsVisible()
             return view
         }()
+        
+        if let acrView = rootView as? ACRView {
+            acrView.addInputHandler(inputField)
+        }
         return inputField
     }
     // if input time doesn't have seconds then this function appends seconds' value as 00

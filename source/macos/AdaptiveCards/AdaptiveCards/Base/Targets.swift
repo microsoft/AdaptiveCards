@@ -19,6 +19,25 @@ class ActionOpenURLTarget: NSObject, TargetHandler {
         delegate?.handleOpenURLAction(button: sender, urlString: url)
     }
 }
+    
+class ActionSubmitTarget: NSObject, TargetHandler {
+    weak var delegate: TargetHandlerDelegate?
+    let dataJson: String?
+    
+    init(element: ACSSubmitAction, delegate: TargetHandlerDelegate) {
+        self.delegate = delegate
+        self.dataJson = element.getDataJson()
+    }
+    
+    func configureAction(for button: NSButton) {
+        button.target = self
+        button.action = #selector(handleButtonAction(_:))
+    }
+    
+    @objc private func handleButtonAction(_ sender: NSButton) {
+        delegate?.handleSubmitAction(button: sender, dataJson: self.dataJson)
+    }
+}
 
 class ActionShowCardTarget: NSObject, TargetHandler {
     weak var delegate: TargetHandlerDelegate?
@@ -33,6 +52,7 @@ class ActionShowCardTarget: NSObject, TargetHandler {
         button.target = self
         button.action = #selector(handleButtonAction(_:))
     }
+    
     @objc private func handleButtonAction(_ sender: NSButton) {
         delegate?.handleShowCardAction(button: sender, showCard: showCard)
     }

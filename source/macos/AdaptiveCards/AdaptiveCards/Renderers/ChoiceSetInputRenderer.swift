@@ -12,23 +12,24 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         if !choiceSetInput.getIsMultiSelect() {
             // style is compact or expanded
             if choiceSetInput.getChoiceSetStyle() == .compact {
-                return  choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style)
+                return  choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
             } else {
                 // radio button renderer
-                return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style)
+                return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
             }
         }
         // display multi-select check-boxes
-        return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style)
+        return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
     }
     
-    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle) -> NSView {
+    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView) -> NSView {
         // Parse input default values for multi-select
         let defaultParsedValues = parseChoiceSetInputDefaultValues(value: choiceSetInput.getValue() ?? "")
         let isMultiSelect = choiceSetInput.getIsMultiSelect()
         let view = ACRChoiceSetView()
         view.isRadioGroup = !isMultiSelect
         view.wrap = choiceSetInput.getWrap()
+        view.idString = choiceSetInput.getId()
         for choice in choiceSetInput.getChoices() {
             let title = choice.getTitle() ?? ""
             let attributedString = getAttributedString(title: title, with: hostConfig, style: style)
@@ -36,9 +37,13 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
             choiceButton.type = isMultiSelect ? .switch : .radio
             if defaultParsedValues.contains(choice.getValue() ?? "") {
                 choiceButton.state = .on
+                choiceButton.buttonValue = choice.getValue()
                 view.previousButton = choiceButton
             }
             view.addChoiceButton(choiceButton)
+        }
+        if let acrView = rootView as? ACRView {
+            acrView.addInputHandler(view)
         }
         return view
     }
@@ -47,7 +52,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         return value.components(separatedBy: ",")
     }
     
-    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle) -> NSView {
+    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView) -> NSView {
         // compact button renderer
         let choiceSetFieldCompactView = ACRChoiceSetCompactView()
         choiceSetFieldCompactView.autoenablesItems = false
@@ -57,18 +62,25 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
             if let menuItem = choiceSetFieldCompactView.item(at: 0) {
                 menuItem.isEnabled = false
             }
+            choiceSetFieldCompactView.arrayValues.append("")
             index += 1
         }
+        choiceSetFieldCompactView.idString = choiceSetInput.getId()
         for choice in choiceSetInput.getChoices() {
             let title = choice.getTitle() ?? ""
             choiceSetFieldCompactView.addItem(withTitle: "")
             let item = choiceSetFieldCompactView.item(at: index)
             item?.title = title
             // item?.attributedTitle = getAttributedString(title: title, with: hostConfig, style: style, wrap: choiceSetInput.getWrap())
+            choiceSetFieldCompactView.arrayValues.append(choice.getValue() ?? "")
             if choiceSetInput.getValue() == choice.getValue() {
                 choiceSetFieldCompactView.select(item)
+                choiceSetFieldCompactView.valueSelected = choice.getValue()
             }
             index += 1
+        }
+        if let acrView = rootView as? ACRView {
+            acrView.addInputHandler(choiceSetFieldCompactView)
         }
         return choiceSetFieldCompactView
     }

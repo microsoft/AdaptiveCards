@@ -18,8 +18,14 @@ open class InputDateRenderer: NSObject, BaseCardElementRendererProtocol {
             view.minDateValue = dateElement.getMin() ?? ""
             view.dateValue = dateElement.getValue() ?? ""
             view.placeholder = dateElement.getPlaceholder() ?? ""
+            view.idString = dateElement.getId()
+            view.isHidden = !dateElement.getIsVisible()
             return view
         }()
+        
+        if let acrView = rootView as? ACRView {
+            acrView.addInputHandler(inputField)
+        }
         return inputField
     }
 }
