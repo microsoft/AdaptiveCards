@@ -296,6 +296,10 @@ export abstract class CardElement extends CardObject {
         return false;
     }
 
+    protected getHasBorder(): boolean {
+        return false;
+    }
+
     protected getPadding(): PaddingDefinition | undefined {
         return this._padding;
     }
@@ -5111,6 +5115,10 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         }
     }
 
+    protected applyBorder() {
+        // No border in base implementation
+    }
+
     protected applyBackground() {
         if (this.renderedElement) {
             let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
@@ -5194,7 +5202,7 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
     }
 
     protected getDefaultPadding(): PaddingDefinition {
-        return this.getHasBackground() ?
+        return this.getHasBackground() || this.getHasBorder() ?
             new PaddingDefinition(
                 Enums.Spacing.Padding,
                 Enums.Spacing.Padding,
@@ -5253,6 +5261,8 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         if (renderedElement && this.getHasBackground()) {
             this.applyBackground();
         }
+
+        this.applyBorder();
 
         return renderedElement;
     }

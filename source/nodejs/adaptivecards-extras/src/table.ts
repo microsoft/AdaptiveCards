@@ -1,6 +1,6 @@
 import { Container, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
     Strings, ValidationEvent, Versions, TypeErrorType, CardElement, CardElementContainer, PropertyBag, SizeAndUnit,
-    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit } from "adaptivecards";
+    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing, VerticalAlignment, EnumProperty } from "adaptivecards";
 
 export class ColumnDefinition extends SerializableObject {
     //#region Schema
@@ -154,13 +154,45 @@ export abstract class TypedCardElementContainer<T extends CardElement> extends C
 }
 
 export class TableCell extends Container {
+    protected getHasBorder(): boolean {
+        return this.parentTable.showGridLines;
+    }
+
+    protected applyBorder() {
+        if (this.renderedElement && this.getHasBorder()) {
+            this.renderedElement.style.border = "1px solid red";
+        }
+    }
+
+    protected getDefaultPadding(): PaddingDefinition {
+        return this.getHasBackground() || this.getHasBorder() ?
+            new PaddingDefinition(
+                Spacing.Small,
+                Spacing.Small,
+                Spacing.Small,
+                Spacing.Small) : super.getDefaultPadding();
+    }
+
     protected internalRender(): HTMLElement | undefined {
         let element = super.internalRender();
 
         if (element) {
             let td = document.createElement("td");
-            td.style.border = "1px solid red";
-            td.style.verticalAlign = "top";
+
+            let verticalAlignment = this.parentTable.verticalCellContentAlignment ? this.parentTable.verticalCellContentAlignment : this.verticalContentAlignment;
+
+            switch (verticalAlignment) {
+                case VerticalAlignment.Center:
+                    td.style.verticalAlign = "center";
+                    break;
+                case VerticalAlignment.Bottom:
+                    td.style.verticalAlign = "bottom";
+                    break;
+                default:
+                    td.style.verticalAlign = "top";
+                    break;                                
+            }
+
             td.appendChild(element);
 
             return td;
@@ -175,6 +207,10 @@ export class TableCell extends Container {
 
     getJsonTypeName(): string {
         return "TableCell";
+    }
+
+    get parentTable(): Table {
+        return (this.parent as TableRow).parentTable;
     }
 
     get isStandalone(): boolean {
@@ -193,7 +229,6 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
     
     protected internalRender(): HTMLElement | undefined {
         let element = document.createElement("tr");
-        element.style.border = "1px solid red";
 
         while (this.getItemCount() < this.parentTable.getColumnCount()) {
             let cell = new TableCell();
@@ -238,8 +273,17 @@ export class Table extends TypedCardElementContainer<TableRow> {
 
     private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "columns", ColumnDefinition);
 
+    static readonly showGridLines = new BoolProperty(Versions.v1_3, "showGridLines", true);
+    static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
+
     @property(Table.columnsProperty)
     private _columns: ColumnDefinition[] = [];
+
+    @property(Table.showGridLines)
+    showGridLines: boolean = true;
+
+    @property(Table.verticalCellContentAlignmentProperty)
+    verticalCellContentAlignment?: VerticalAlignment;
 
     //#endregion
 
@@ -282,7 +326,6 @@ export class Table extends TypedCardElementContainer<TableRow> {
             element.style.tableLayout = "fixed";
             element.style.width = "100%";
             element.style.borderCollapse = "collapse";
-            element.style.border = "1px solid red";
 
             element.appendChild(colGroup);
 

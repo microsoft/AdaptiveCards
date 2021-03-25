@@ -2258,6 +2258,10 @@ export abstract class InputPeer<TInput extends Adaptive.Input> extends TypedCard
         "errorMessage",
         "Error message");
 
+    protected internalGetTreeItemText(): string {
+        return this.cardElement.id ? this.cardElement.id : super.internalGetTreeItemText();
+    }
+
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
