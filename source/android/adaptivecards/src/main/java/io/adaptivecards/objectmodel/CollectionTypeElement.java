@@ -121,14 +121,6 @@ public class CollectionTypeElement extends BaseCardElement {
     AdaptiveCardObjectModelJNI.CollectionTypeElement_SetMinHeight(swigCPtr, this, value);
   }
 
-  public Boolean GetRtl() {
-  return AdaptiveCardObjectModelJNI.CollectionTypeElement_GetRtl(swigCPtr, this);
-}
-
-  public void SetRtl(Boolean value) {
-    AdaptiveCardObjectModelJNI.CollectionTypeElement_SetRtl(swigCPtr, this, value);
-  }
-
   public void DeserializeChildren(ParseContext context, JsonValue value) {
     AdaptiveCardObjectModelJNI.CollectionTypeElement_DeserializeChildren(swigCPtr, this, ParseContext.getCPtr(context), context, JsonValue.getCPtr(value), value);
   }

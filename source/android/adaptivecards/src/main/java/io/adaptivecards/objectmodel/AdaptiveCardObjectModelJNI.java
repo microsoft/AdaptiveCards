@@ -563,8 +563,6 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_SetBackgroundImage(long jarg1, CollectionTypeElement jarg1_, long jarg2, BackgroundImage jarg2_);
   public final static native long CollectionTypeElement_GetMinHeight(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetMinHeight(long jarg1, CollectionTypeElement jarg1_, long jarg2);
-  public final static native Boolean CollectionTypeElement_GetRtl(long jarg1, CollectionTypeElement jarg1_);
-  public final static native void CollectionTypeElement_SetRtl(long jarg1, CollectionTypeElement jarg1_, Boolean jarg2);
   public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native String c_adaptiveCardsFeature_get();
@@ -590,6 +588,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long Container_SerializeToJsonValue(long jarg1, Container jarg1_);
   public final static native void Container_DeserializeChildren(long jarg1, Container jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long Container_GetItems__SWIG_0(long jarg1, Container jarg1_);
+  public final static native Boolean Container_GetRtl(long jarg1, Container jarg1_);
+  public final static native void Container_SetRtl(long jarg1, Container jarg1_, Boolean jarg2);
   public final static native void Container_GetResourceInformation(long jarg1, Container jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Container_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native long new_ContainerParser__SWIG_0();
@@ -651,6 +651,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native int Column_GetPixelWidth(long jarg1, Column jarg1_);
   public final static native void Column_SetPixelWidth(long jarg1, Column jarg1_, int jarg2);
   public final static native long Column_GetItems__SWIG_0(long jarg1, Column jarg1_);
+  public final static native Boolean Column_GetRtl(long jarg1, Column jarg1_);
+  public final static native void Column_SetRtl(long jarg1, Column jarg1_, Boolean jarg2);
   public final static native void Column_GetResourceInformation(long jarg1, Column jarg1_, long jarg2, RemoteResourceInformationVector jarg2_);
   public final static native long Column_dynamic_cast(long jarg1, BaseCardElement jarg1_);
   public final static native void delete_Column(long jarg1);
