@@ -82,7 +82,10 @@ export class RichTextBlock extends React.Component {
      */
     onClickHandle(selectAction) {
         if (selectAction.type === Constants.ActionSubmit) {
-            let actionObject = { "type": Constants.ActionSubmit, "data": selectAction.data };
+            let actionObject = { "type": Constants.ActionSubmit, "title": selectAction.title, "data": selectAction.data };
+            this.onExecuteAction(actionObject);
+        } else if (selectAction.type === Constants.ActionExecute) {
+            let actionObject = { "type": Constants.ActionExecute, "verb": selectAction.verb, "title": selectAction.title, "data": selectAction.data };
             this.onExecuteAction(actionObject);
         } else if (selectAction.type === Constants.ActionOpenUrl && !Utils.isNullOrEmpty(selectAction.url)) {
             let actionObject = { "type": Constants.ActionOpenUrl, "url": selectAction.url };

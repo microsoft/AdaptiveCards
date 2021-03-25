@@ -70,6 +70,8 @@ export class ModelFactory {
                 return new Models.OpenUrlActionModel(payload, parent);
             case ElementType.ActionSubmit:
                 return new Models.SubmitActionModel(payload, parent);
+            case ElementType.ActionExecute:
+                return new Models.ExecuteActionModel(payload, parent);
             case ElementType.ActionShowCard:
                 return new Models.ShowCardActionModel(payload, parent);
             case ElementType.ActionToggleVisibility:
