@@ -1229,7 +1229,7 @@ namespace RendererQml
         
 		auto EnumDateFormat = Utils::GetSystemDateFormat();
 		
-		const auto dateSeparator = "-";
+		const auto dateSeparator = "\\/";
 		const auto day_Regex = "([-0123]-|0\\d|[12]\\d|3[01])";
 		const auto month_Regex = "(---|[JFMASOND]--|Ja-|Jan|Fe-|Feb|Ma-|Mar|Ap-|Apr|May|Ju--|Jun|Jul|Au-|Aug|Se-|Sep|Oc-|Oct|No-|Nov|De-|Dec)";
 		const auto year_Regex = "(-{4}|\\d-{3}|\\d{2}-{2}|\\d{3}-|\\d{4})";
@@ -1300,7 +1300,8 @@ namespace RendererQml
 
 		uiDateInput->Property("placeholderText", Formatter() << (!input->GetPlaceholder().empty() ? "\"" + input->GetPlaceholder() : "\"Select date") << " in " << Utils::ConvertToLowerIdValue(StringDateFormat) << "\"");
 		uiDateInput->Property("validator", Formatter() << "RegExpValidator { regExp: " << DateRegex << "}");
-		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus==true) inputMask=\"" << inputMask << "\";" << "if(activeFocus === false){ z=0; if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
+		uiDateInput->Property("onFocusChanged", Formatter() << "{" << "if(focus===true) inputMask=\"" << inputMask << "\";" <<
+			"if(focus === false){ z=0;" << "if(text === \""<< std::string(dateSeparator) + std::string(dateSeparator) << "\"){ inputMask = \"\" ; } " <<"if( " << calendar_box_id << ".visible === true){ " << calendar_box_id << ".visible=false}}} ");
         calendarTag->Property("onReleased", Formatter() << "{parent.visible=false; " << input->GetId() << ".text=selectedDate.toLocaleString(Qt.locale(\"en_US\")," << "\"" << StringDateFormat << "\")}");
 
 		calendarBoxTag->Property("Component.onCompleted", "{ Qt.createQmlObject('" + calendarTag->ToString() + "'," + calendar_box_id + ",'calendar')}");
@@ -1545,7 +1546,8 @@ namespace RendererQml
 		std::string listViewtt_id = id + "_tt";
 		std::string timeBox_id = id + "_timeBox";
 
-		uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus==true) inputMask=\"xx:xx;-\";" << " if(activeFocus==false){ z=0;" << "if(" << timeBox_id << ".visible==true)" << timeBox_id << ".visible=false ;" << "}}");
+		uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus===true) inputMask=\"xx:xx;-\";"
+			<< " if(focus===false){ z=0;" << "if(text===\":\") { inputMask=\"\" }" << "if(" << timeBox_id << ".visible===true)" << timeBox_id << ".visible=false ;" << "}}");
 
 		uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2));" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));" << "if(getText(0,2) === '--' || getText(3,5) === '--'){" << id << ".selectedTime ='';} else{" << id << ".selectedTime =" << id << ".text;}}");
 
@@ -1612,7 +1614,8 @@ namespace RendererQml
 		{
 			timeBoxTag->Property("width", "155");
 			uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01]-|0\\d|1[0-2]):(--|[0-5]-|[0-5]\\d)\\s(--|A-|AM|P-|PM)$/}");
-			uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus==true) inputMask=\"xx:xx >xx;-\";" << " if(activeFocus==false){ z=0;" << "if(" << timeBox_id << ".visible==true)" << timeBox_id << ".visible=false ;" << "}}");
+			uiTimeInput->Property("onFocusChanged", Formatter() << "{ if (focus===true) inputMask=\"xx:xx >xx;-\";" <<
+				" if(focus===false){ z=0;" << "if(text===\": \" ) { inputMask=\"\" }" << "if(" << timeBox_id << ".visible===true)" << timeBox_id << ".visible=false ;" << "}}");
 			uiTimeInput->Property("onTextChanged", Formatter() << "{" << listViewHours_id << ".currentIndex=parseInt(getText(0,2))-1;" << listViewMin_id << ".currentIndex=parseInt(getText(3,5));"
 				<< "var tt_index=3;var hh = getText(0,2);" << "switch(getText(6,8)){ case 'PM':tt_index = 1; if(parseInt(getText(0,2))!==12){hh=parseInt(getText(0,2))+12;} break;case 'AM':tt_index = 0; if(parseInt(getText(0,2))===12){hh=parseInt(getText(0,2))-12;} break;}" << listViewtt_id << ".currentIndex=tt_index;" << "if(getText(0,2) === '--' || getText(3,5) === '--' || getText(6,8) === '--'){" << id <<".selectedTime ='';} else{" << id <<".selectedTime = (hh === 0 ? '00' : hh) + ':' + getText(3,5);}}");
 			mouseAreaTag->Property("onClicked", Formatter() << "{" << id << ".forceActiveFocus();\n" << timeBox_id << ".visible=!" << timeBox_id << ".visible;\n" << "parent.z=" << timeBox_id << ".visible?1:0;\n" << listViewHours_id << ".currentIndex=parseInt(parent.getText(0,2))-1;\n" << listViewMin_id << ".currentIndex=parseInt(parent.getText(3,5));\n"
