@@ -18,7 +18,7 @@ Build 2020 was all-virtual this year, and we had the opportunity to share the la
 
 ### Adaptive Card Templating and Designer Updates
 
-Templating helps you save time by easily populating reusable card templates with data. [Release Candidate SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk) are now available for .NET and JavaScript, and we plan to make them Generally Available in the coming weeks. We also added rich data-binding support in the [Adaptive Card Designer](https://adaptivecards.io/designer) to make it even faster to design new cards based on your data payloads.
+Templating helps you save time by easily populating reusable card templates with data. [Release Candidate SDKs](https://docs.microsoft.com/adaptive-cards/templating/sdk) are now available for .NET and JavaScript, and we plan to make them Generally Available in the coming weeks. We also added rich data-binding support in the [Adaptive Card Designer](https://adaptivecards.io/designer) to make it even faster to design new cards based on your data payloads.
 
 [Get started with templating](https://aka.ms/ACTemplating)
 
@@ -65,8 +65,8 @@ Resources from this month's call
 
 -   [Watch the latest Adaptive Cards session from Build 2020](https://aka.ms/m365sk134)
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
--   [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
+-   [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service)
 -   <https://aka.ms/ACFeatures> -- Let us know what features you need
 
 Next month's call will be held on **Thursday, July 9, 2020 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.

@@ -13,13 +13,13 @@ Agenda for this month's call, hosted by Matt Hidinger, included:
 
 ### Power Automate and the Template Service
 
-The goal of [Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) is to **save you time** when building cards. And what's better than building a card template yourself? *Having someone else build it!*
+The goal of [Adaptive Card Templating](https://docs.microsoft.com/adaptive-cards/templating/) is to **save you time** when building cards. And what's better than building a card template yourself? *Having someone else build it!*
 
-The [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service) enables the community to contribute, discover, and share reusable templates over common data types, like the Microsoft Graph. If someone already wrote a template over the same data you have, why not use it! And while this service is already available in preview form, we wanted to go one step further: make it simple to use from Power Automate.
+The [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service) enables the community to contribute, discover, and share reusable templates over common data types, like the Microsoft Graph. If someone already wrote a template over the same data you have, why not use it! And while this service is already available in preview form, we wanted to go one step further: make it simple to use from Power Automate.
 
 ### What the heck is Power Automate?
 
-Last month, Microsoft rebranded Flow into Power Automate. [Power Automate](https://flow.microsoft.com/en-us/) is part of the Microsoft Power Platform which allows anyone (even non-developers) to optimize business workflows without having to write any code --<wbr> all from the convenience of their browser.
+Last month, Microsoft rebranded Flow into Power Automate. [Power Automate](https://flow.microsoft.com/) is part of the Microsoft Power Platform which allows anyone (even non-developers) to optimize business workflows without having to write any code --<wbr> all from the convenience of their browser.
 
 Below is a Flow I created for demo purposes during the community call. It's a simple Flow that activates on the push of a button and presents an Adaptive Card to a Teams channel. **The magic is that I didn't have to build an Adaptive Card at all, and the entire thing took literally 5 minutes to create!**
 
@@ -74,8 +74,8 @@ Watch the call here.
 Resources from this month's call
 
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
--   [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
+-   [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service)
 -   [New Designer Preview](https://adaptivecardsci.z5.web.core.windows.net/pr/3508/designer/?preview=1)
 -   <https://aka.ms/ACFeatures> -- Let us know what features you need
 

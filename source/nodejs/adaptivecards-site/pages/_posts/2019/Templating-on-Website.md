@@ -11,13 +11,13 @@ The goal of Adaptive Card Templating is to **save you time** when building cards
 
 Most adaptive cards present data of some kind, but today that data is mixed with the layout properties in the same JSON payload. It isn't easy or straight-forward to create a **single card template** that can reused over and over, populated with **real data** at runtime. 
 
-[Adaptive Card Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/) sets out to address that. We want to make it super simple to create a reusable card in the [rich card designer](https://adaptivecards.io/designer), preview it with your own data at design-time, and then populate that same exact template with real data in your app's code.
+[Adaptive Card Templating](https://docs.microsoft.com/adaptive-cards/templating/) sets out to address that. We want to make it super simple to create a reusable card in the [rich card designer](https://adaptivecards.io/designer), preview it with your own data at design-time, and then populate that same exact template with real data in your app's code.
 
 It's comprised of 3 major components:
 
-1. The [Template Language](https://docs.microsoft.com/en-us/adaptive-cards/templating/language) is the syntax used for authoring a template. 
-2. The [Templating SDK's](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk) will exist on all supported Adaptive Card platforms. These SDKs allow you to populate a template with real data, on the back-end or directly on the client.
-3. The [Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service) is a proof-of-concept service that allows anyone to find, contribute to, and share a set of well-known templates.
+1. The [Template Language](https://docs.microsoft.com/adaptive-cards/templating/language) is the syntax used for authoring a template. 
+2. The [Templating SDK's](https://docs.microsoft.com/adaptive-cards/templating/sdk) will exist on all supported Adaptive Card platforms. These SDKs allow you to populate a template with real data, on the back-end or directly on the client.
+3. The [Template Service](https://docs.microsoft.com/adaptive-cards/templating/service) is a proof-of-concept service that allows anyone to find, contribute to, and share a set of well-known templates.
 
 ## Real-world template samples
 
@@ -50,7 +50,7 @@ A "template" is an Adaptive Card that you're used to, but all of the dynamically
 
 ## Using a template in your app
 
-How exactly is that `text` property dynamically populated? By using the [Templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk). With the Templating SDKs, you can generate a fully-populated Adaptive Card, ready to send to any current host app!
+How exactly is that `text` property dynamically populated? By using the [Templating SDKs](https://docs.microsoft.com/adaptive-cards/templating/sdk). With the Templating SDKs, you can generate a fully-populated Adaptive Card, ready to send to any current host app!
 
 This means you **don't have to wait for hosts to update to the latest version** -- you can get started today building cards for Teams, Outlook, and your own apps!**
 

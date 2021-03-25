@@ -83,8 +83,8 @@ Resources from this month's call
 -   [Adaptive Card Studio](https://marketplace.visualstudio.com/items?itemName=madewithcardsio.adaptivecardsstudiobeta) from the VS Code Marketplace
 -   [Watch the latest Adaptive Cards session from Build 2020](https://aka.ms/m365sk134)
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
--   [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
+-   [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service)
 
 Next month's call will be held on **Thursday, August 13, 2020 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.
 

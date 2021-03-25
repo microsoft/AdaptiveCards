@@ -13,11 +13,11 @@ Agenda for this month's call, hosted by Matt Hidinger, included:
 
 ### Adaptive Cards Templating
 
-The team polished up and released in-depth documentation to better understand [how templating can help you](https://docs.microsoft.com/en-us/adaptive-cards/templating/#how-can-templating-help-you), and how all the pieces fit together. Take a look and let us know if you have any feedback!
+The team polished up and released in-depth documentation to better understand [how templating can help you](https://docs.microsoft.com/adaptive-cards/templating/#how-can-templating-help-you), and how all the pieces fit together. Take a look and let us know if you have any feedback!
 
-1.  The **[Template Language](https://docs.microsoft.com/en-us/adaptive-cards/templating/language)** is the syntax used for authoring a template. The Designer even lets you preview your templates at design time by including "sample data".
-2.  The [**Templating SDK's**](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk) will exist on all supported Adaptive Card platforms. These SDKs allow you to populate a template with real data, on the back-end or directly on the client.
-3.  The [**Template Service**](https://docs.microsoft.com/en-us/adaptive-cards/templating/service) is a proof-of-concept service that allows anyone to find, contribute to, and share a set of well-known templates.
+1.  The **[Template Language](https://docs.microsoft.com/adaptive-cards/templating/language)** is the syntax used for authoring a template. The Designer even lets you preview your templates at design time by including "sample data".
+2.  The [**Templating SDK's**](https://docs.microsoft.com/adaptive-cards/templating/sdk) will exist on all supported Adaptive Card platforms. These SDKs allow you to populate a template with real data, on the back-end or directly on the client.
+3.  The [**Template Service**](https://docs.microsoft.com/adaptive-cards/templating/service) is a proof-of-concept service that allows anyone to find, contribute to, and share a set of well-known templates.
 
 ### Vote on the features you need!
 

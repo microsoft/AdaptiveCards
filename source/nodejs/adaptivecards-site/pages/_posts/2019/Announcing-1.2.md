@@ -35,7 +35,7 @@ Check out this sample card using some of the new functionality.
 
 ## When can I use it?
 
-We're working closely with all our partners to roll out the update as soon as possible. Stay tuned here and keep an eye on the [Partner Status](https://docs.microsoft.com/en-us/adaptive-cards/resources/partners) page to see which version works in which hosts.
+We're working closely with all our partners to roll out the update as soon as possible. Stay tuned here and keep an eye on the [Partner Status](https://docs.microsoft.com/adaptive-cards/resources/partners) page to see which version works in which hosts.
 
 ## Learn more
 

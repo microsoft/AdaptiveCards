@@ -17,7 +17,7 @@ We've divided the [Roadmap Portal](https://aka.ms/ACRoadmap) to 3 distinct secti
 
 Coming in Q4 and Q1 2021 you can expect the following things:
 
--   [**Templating SDKs**](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk) **for iOS, Android, and UWP**. Currently the templating SDKs are only available for .NET and JavaScript. This work will pave the way for exciting improvements once we are able to evaluate template bindings and expressions directly on the client where the cards are being rendered.
+-   [**Templating SDKs**](https://docs.microsoft.com/adaptive-cards/templating/sdk) **for iOS, Android, and UWP**. Currently the templating SDKs are only available for .NET and JavaScript. This work will pave the way for exciting improvements once we are able to evaluate template bindings and expressions directly on the client where the cards are being rendered.
 -   **A new Universal Action model for handling actions in your backend in a consistent way**, whether the card appears in Teams, Outlook, or elsewhere. We'll share more details on this shortly.
 -   **In the Rendering/Schema category, we've got some nice fit-and-finish improvements under way:**
     -   Improved accessibility across the board.
@@ -75,7 +75,7 @@ Let us know on [GitHub](https://github.com/microsoft/AdaptiveCards/issues/4761) 
 
 -   [Watch the latest Adaptive Cards session from Build 2020](https://aka.ms/m365sk134)
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
 
 Next month's call will be held on **Thursday, October 8, 2020 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.
 

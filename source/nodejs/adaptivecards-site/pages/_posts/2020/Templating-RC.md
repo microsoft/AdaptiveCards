@@ -265,7 +265,7 @@ To use a template we will do following:
 }
 ```
 
-Notice the new keyword: [`$data`](https://docs.microsoft.com/en-us/adaptive-cards/templating/language#assigning-a-data-context-to-elements). 
+Notice the new keyword: [`$data`](https://docs.microsoft.com/adaptive-cards/templating/language#assigning-a-data-context-to-elements). 
 
 `$data` is used in this example to specify the "data context" for the `ColumnSet`, and in this example `expense` is a [a JSON object](https://www.w3schools.com/js/js_json_objects.asp). Data contexts are useful when you have a deep object hierarchy and want to simplify the data-binding expressions for children of the element. For example, if `$data` context is defined on a `Container`, and if `TextBlock` is an item of the Container, the `TextBlock` will get the same data context. 
 
@@ -289,7 +289,7 @@ Now let's add an `expense` property to our data.
 
 With the addition of `expense`, binding will occur *almost* correctly. Another powerful feature of templating is **repeating elements**. As shown in the example, what was lacking was the ability to popluate the card with the submitter's full set of line items.
 
-This can be accomplished by a template's [repeating element feature](https://docs.microsoft.com/en-us/adaptive-cards/templating/language#repeating-items-in-an-array). This allows adaptive elements to be repeated by simply changing the data type to array. 
+This can be accomplished by a template's [repeating element feature](https://docs.microsoft.com/adaptive-cards/templating/language#repeating-items-in-an-array). This allows adaptive elements to be repeated by simply changing the data type to array. 
 
 **If the data an element is bound to is an array, the Adaptive Card element will be repeated by the number of elements in the array.**
 
@@ -432,7 +432,7 @@ Finally, the total amount of expense shown below is static, and should be fixed.
 }
 ```
 
-Using AEL's [sum](https://docs.microsoft.com/en-us/azure/bot-service/adaptive-expressions/adaptive-expressions-prebuilt-functions?view=azure-bot-service-4.0#sum), [select](https://docs.microsoft.com/en-us/azure/bot-service/adaptive-expressions/adaptive-expressions-prebuilt-functions?view=azure-bot-service-4.0#select) functions, we modify "403.30" to ```${sum(select(expenses, x, x.amount))}```. This change will allow the card to dynamically update the expanses based on the data
+Using AEL's [sum](https://docs.microsoft.com/azure/bot-service/adaptive-expressions/adaptive-expressions-prebuilt-functions?view=azure-bot-service-4.0#sum), [select](https://docs.microsoft.com/azure/bot-service/adaptive-expressions/adaptive-expressions-prebuilt-functions?view=azure-bot-service-4.0#select) functions, we modify "403.30" to ```${sum(select(expenses, x, x.amount))}```. This change will allow the card to dynamically update the expanses based on the data
 
 ```json
 "items": [

@@ -62,8 +62,8 @@ Watch the call here.
 Resources from this month's call
 
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
--   [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
+-   [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service)
 -   [New Designer Preview](https://adaptivecardsci.z5.web.core.windows.net/pr/3508/designer/?preview=1)
 -   <https://aka.ms/ACFeatures> -- Let us know what features you need
 

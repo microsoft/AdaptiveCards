@@ -41,9 +41,9 @@ Interested in how it's built? The website is open-source and built by utilizing 
 
 ### New ways to take advantage of Adaptive Cards Templating
 
-The bulk of this call was spent reviewing the time-saving benefits of [Adaptive Cards Templating](https://docs.microsoft.com/en-us/adaptive-cards/templating/), and introduced two new tools that help build reusable card templates faster than ever.
+The bulk of this call was spent reviewing the time-saving benefits of [Adaptive Cards Templating](https://docs.microsoft.com/adaptive-cards/templating/), and introduced two new tools that help build reusable card templates faster than ever.
 
-The first tool is a preview of the [AdaptiveCards.Templating](https://www.nuget.org/packages/AdaptiveCards.Templating) .NET SDK now available on NuGet. The [templating SDKs](https://docs.microsoft.com/en-us/adaptive-cards/templating/sdk) (also available for JavaScript) make it easy to populate an Adaptive Card template with real data at runtime.
+The first tool is a preview of the [AdaptiveCards.Templating](https://www.nuget.org/packages/AdaptiveCards.Templating) .NET SDK now available on NuGet. The [templating SDKs](https://docs.microsoft.com/adaptive-cards/templating/sdk) (also available for JavaScript) make it easy to populate an Adaptive Card template with real data at runtime.
 
 The second way we're helping developers get started with templating is by updating all the Adaptive Card Samples with reusable template payloads. This is a major improvement over the existing Samples, which don't make it very straight forward to populate them with your own data. We are also updating the Card Designer with full templating support. Stay tuned in the coming weeks for these updates and more to roll out to [https://adaptivecards.io](https://adaptivecards.io/)
 

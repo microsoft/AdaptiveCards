@@ -11,7 +11,7 @@ The Adaptive Cards community call for August, hosted by Matt Hidinger, also incl
 
 ### Adaptive Cards v1.3 is now available!
 
-On this call we reviewed the [**Adaptive Cards v1.3**](https://github.com/microsoft/AdaptiveCards/releases/tag/2020.07) release, which includes the most-requested feature of the past 2 years: [**Input Validation and Input Labels**](https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation)!
+On this call we reviewed the [**Adaptive Cards v1.3**](https://github.com/microsoft/AdaptiveCards/releases/tag/2020.07) release, which includes the most-requested feature of the past 2 years: [**Input Validation and Input Labels**](https://docs.microsoft.com/adaptive-cards/authoring-cards/input-validation)!
 
 With this release you'll be able to mark which **Inputs** are required, as well as any regex-based pattern matching for text, and min/max ranges for things like numbers and dates.
 
@@ -77,8 +77,8 @@ Resources from this month's call
 
 -   [Watch the latest Adaptive Cards session from Build 2020](https://aka.ms/m365sk134)
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
--   [Adaptive Card Template Service](https://docs.microsoft.com/en-us/adaptive-cards/templating/service)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
+-   [Adaptive Card Template Service](https://docs.microsoft.com/adaptive-cards/templating/service)
 -   <https://aka.ms/ACFeatures> -- Let us know what features you need
 
 Next month's call will be held on **Thursday, September 10, 2020 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.

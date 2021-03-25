@@ -21,7 +21,7 @@ The [Expense Report sample](https://adaptivecards.io/samples/ExpenseReport.html)
 - [ActionSet](https://adaptivecards.io/explorer/ActionSet.html) to place buttons anywhere in the body
 - [Container bleed](https://adaptivecards.io/explorer/Container.html) to visually enhance the look of styled containers
 
-The [full list of v1.2 features](https://github.com/Microsoft/AdaptiveCards/issues/2444) can be found on GitHub. We&#39;re working closely with our partners to roll-out v1.2 as soon as possible. To see which version the major platforms are currently on see the [Host App Docs](https://docs.microsoft.com/en-us/adaptive-cards/resources/partners).
+The [full list of v1.2 features](https://github.com/Microsoft/AdaptiveCards/issues/2444) can be found on GitHub. We&#39;re working closely with our partners to roll-out v1.2 as soon as possible. To see which version the major platforms are currently on see the [Host App Docs](https://docs.microsoft.com/adaptive-cards/resources/partners).
 
 {% adaptivecard ExpenseReport.json %}
 

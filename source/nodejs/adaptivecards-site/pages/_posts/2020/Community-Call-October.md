@@ -81,7 +81,7 @@ Watch the call here
 
 -   [Watch the latest Adaptive Cards session from Build 2020](https://aka.ms/m365sk134)
 -   [Adaptive Cards Roadmap](https://aka.ms/ACRoadmap)
--   [Adaptive Card Templating Overview](https://docs.microsoft.com/en-us/adaptive-cards/templating/)
+-   [Adaptive Card Templating Overview](https://docs.microsoft.com/adaptive-cards/templating/)
 -   <https://aka.ms/ACFeatures> -- Let us know what features you need
 
 Next month's call will be held on **Thursday, November 12, 2020 at 9:00am PST.** We look forward to talking to you then! Download a recurring calendar invite here at <https://aka.ms/adaptivecardscommunitycall>.

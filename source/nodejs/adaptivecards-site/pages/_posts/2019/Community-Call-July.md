@@ -13,7 +13,7 @@ Agenda for this month’s call, hosted by Matt Hidinger, included:
 
 ## Adaptive Cards 💙 Fabric
 
-[Microsoft UI Fabric](https://developer.microsoft.com/en-us/fabric#/) helps React developers build and integrate Fluent experiences into various Microsoft products. This month we released the [adaptivecards-fabric](https://www.npmjs.com/package/adaptivecards-fabric) package, which makes "lighting up" an Adaptive Cards with Fabric components seamless. 
+[Microsoft UI Fabric](https://developer.microsoft.com/fabric#/) helps React developers build and integrate Fluent experiences into various Microsoft products. This month we released the [adaptivecards-fabric](https://www.npmjs.com/package/adaptivecards-fabric) package, which makes "lighting up" an Adaptive Cards with Fabric components seamless. 
 
 Below is a standard Adaptive Card payload, but many of the inputs are rendered using Fabric components. If you’re using Fabric and Adaptive Cards give it a shot and let us know your thoughts!
 
@@ -28,7 +28,7 @@ We also walked through a very early preview of an “Adaptive Card Template Serv
 The service currently offers some basic functionality:
  
 •	**FIND** a template for a type of data (if one exists)
-•	**GET** a known template. The template can then be used for client-side data binding using the [adaptivecards-template](https://www.npmjs.com/package/adaptivecards-templating) package. (See the [June community call](https://developer.microsoft.com/en-us/office/blogs/adaptive-cards-community-call-june-13-2019/) for more on this library)
+•	**GET** a known template. The template can then be used for client-side data binding using the [adaptivecards-template](https://www.npmjs.com/package/adaptivecards-templating) package. (See the [June community call](https://developer.microsoft.com/office/blogs/adaptive-cards-community-call-june-13-2019/) for more on this library)
 •	**POPULATE** a known template with data server-side that can then be delivered to any adaptive card host
 
 We’d love feedback on this service as you have it, please reach out to us on GitHub or Twitter if you have any thoughts, use-cases, or feedback! 
