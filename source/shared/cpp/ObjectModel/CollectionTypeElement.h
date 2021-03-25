@@ -59,9 +59,6 @@ namespace AdaptiveSharedNamespace
         unsigned int GetMinHeight() const;
         void SetMinHeight(const unsigned int value);
 
-        std::optional<bool> GetRtl() const;
-        void SetRtl(const std::optional<bool>& value);
-
         template<typename T>
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo,
                                     const std::vector<std::shared_ptr<T>>& elements);
@@ -83,7 +80,6 @@ namespace AdaptiveSharedNamespace
         ContainerBleedDirection m_bleedDirection;
 
         unsigned int m_minHeight;
-        std::optional<bool> m_rtl;
         bool m_hasPadding;
         bool m_hasBleed;
         // id refers to parent to where bleed property should target
@@ -115,8 +111,6 @@ namespace AdaptiveSharedNamespace
 
         collection->SetMinHeight(
             ParseSizeForPixelSize(ParseUtil::GetString(value, AdaptiveCardSchemaKey::MinHeight), &context.warnings));
-
-        collection->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
         // configures for cotainer style
         collection->ConfigForContainerStyle(context);

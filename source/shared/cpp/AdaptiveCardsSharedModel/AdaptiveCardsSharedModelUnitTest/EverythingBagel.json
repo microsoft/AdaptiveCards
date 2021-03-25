@@ -113,13 +113,13 @@
 			"id": "Container_id",
 			"spacing": "medium",
 			"separator": false,
+			"rtl":true,
 			"items": [
 				{
 					"type": "ColumnSet",
 					"id": "ColumnSet_id",
 					"spacing": "large",
 					"separator": true,
-					"rtl":true,
 					"columns": [
 						{
 							"type": "Column",

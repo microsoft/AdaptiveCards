@@ -137,8 +137,6 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("ColumnSet_id"s, columnSet.GetId());
         Assert::IsTrue(Spacing::Large == columnSet.GetSpacing());
         Assert::IsTrue(columnSet.GetSeparator());
-        Assert::IsTrue(columnSet.GetRtl().has_value());
-        Assert::IsTrue(columnSet.GetRtl().value());
 
         auto columns = columnSet.GetColumns();
         Assert::AreEqual(size_t{ 3 }, columns.size());
@@ -202,7 +200,8 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Container_id"s, container.GetId());
         Assert::IsTrue(Spacing::Medium == container.GetSpacing());
         Assert::IsTrue(ContainerStyle::Default == container.GetStyle());
-        Assert::IsFalse(container.GetRtl().has_value());
+        Assert::IsTrue(container.GetRtl().has_value());
+        Assert::IsTrue(container.GetRtl().value());
 
         // validate container action
         {
@@ -388,6 +387,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateInputContainer(const Container &container)
     {
         Assert::AreEqual("Container_id_inputs"s, container.GetId());
+        Assert::IsFalse(container.GetRtl().has_value());
 
         auto items = container.GetItems();
         Assert::AreEqual(size_t{ 7 }, items.size());
