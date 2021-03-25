@@ -7,16 +7,43 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         formatter.dateFormat = isTimeMode ? "HH:mm:ss" : "yyyy-MM-dd"
         return formatter
     }()
+    
     private lazy var dateFormatterOut: DateFormatter = {
         let formatter = DateFormatter()
         if isTimeMode {
-            formatter.timeStyle = .medium
+            formatter.timeStyle = .short
         } else {
             formatter.dateStyle = .medium
         }
         return formatter
     }()
-    private let datepicker = NSDatePicker()
+    
+    private lazy var textField: NSTextField = {
+           let view = NSTextField()
+           view.translatesAutoresizingMaskIntoConstraints = false
+           view.isEditable = true
+           view.isSelectable = false
+           view.isBordered = true
+           return view
+    }()
+
+    private lazy var iconButton: NSButton = {
+       let view = NSButton(image: NSImage(named: "NSTouchBarHistoryTemplate") ?? NSImage(), target: self, action: #selector(handleButtonAction))
+       view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
+
+    private lazy var stackview: NSStackView = {
+       let view = NSStackView()
+       view.orientation = .vertical
+       view.alignment = .centerX
+       view.translatesAutoresizingMaskIntoConstraints = false
+       return view
+    }()
+       
+    private let datePickerCalendar = NSDatePicker()
+    private let datePickerTextfield = NSDatePicker()
+
     var isTimeMode: Bool = false
     var selectedDate: Date? = Date()
     var minDateValue: String?
@@ -25,7 +52,6 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     var dateValue: String? {
         didSet {
             if let dateValue = dateValue, let date = dateFormatter.date(from: dateValue) {
-                datepicker.dateValue = date
                 textField.stringValue = dateFormatterOut.string(from: date)
                 selectedDate = date
             }
@@ -39,6 +65,25 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         }
     }
     
+    var value: String {
+        guard !textField.stringValue.isEmpty, let selectedDate = selectedDate else {
+            return ""
+        }
+        return dateFormatterOut.string(from: selectedDate)
+    }
+    
+    var key: String {
+        guard let id = idString else {
+            logError("ID must be set on creation")
+            return ""
+        }
+        return id
+    }
+    
+    var isValid: Bool {
+        return !isHidden && !(superview?.isHidden ?? false)
+    }
+    
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
         setupViews()
@@ -50,34 +95,19 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private lazy var textField: NSTextField = {
-        let view = NSTextField()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.isEditable = true
-        view.isSelectable = false
-        view.isBordered = true
-        return view
-    }()
- 
-    private lazy var testButton: NSButton = {
-        let view = NSButton(image: NSImage(named: "NSTouchBarHistoryTemplate") ?? NSImage(), target: self, action: #selector(handleButtonAction))
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private func setupViews() {
         addSubview(textField)
-        addSubview(testButton)
+        addSubview(iconButton)
     }
     
     private func setupConstraints() {
         textField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        textField.trailingAnchor.constraint(equalTo: testButton.leadingAnchor, constant: -10).isActive = true
+        textField.trailingAnchor.constraint(equalTo: iconButton.leadingAnchor, constant: -10).isActive = true
         
-        testButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        testButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+        iconButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
     
     private func setupTrackingArea() {
@@ -94,50 +124,43 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
     
-    var value: String {
-        guard let selectedDate = selectedDate else {
-            return ""
-        }
-        return dateFormatter.string(from: selectedDate)
-    }
-    
-    var key: String {
-        guard let id = idString else {
-            logError("ID must be set on creation")
-            return ""
-        }
-        return id
-    }
-    
-    var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false)
-    }
-    
     // MARK: Actions
     @objc private func handleButtonAction() {
         let frame = isTimeMode ? NSRect(x: 0, y: 0, width: 122, height: 122) : NSRect(x: 0, y: 0, width: 138, height: 147)
         if let dateValue = selectedDate {
-            datepicker.dateValue = dateValue
+            datePickerCalendar.dateValue = dateValue
+            datePickerTextfield.dateValue = dateValue
         }
         if let minDate = minDateValue, let date = dateFormatter.date(from: minDate) {
-            datepicker.minDate = date
+            datePickerCalendar.minDate = date
+            datePickerTextfield.minDate = date
         }
         if let maxDate = maxDateValue, let date = dateFormatter.date(from: maxDate) {
-            datepicker.maxDate = date
+            datePickerCalendar.maxDate = date
+            datePickerTextfield.maxDate = date
         }
-        datepicker.datePickerStyle = .clockAndCalendar
-        datepicker.datePickerElements = isTimeMode ? .hourMinuteSecond : .yearMonthDay
-        datepicker.target = self
-        datepicker.action = #selector(handleDateAction(_:))
+        datePickerCalendar.datePickerStyle = .clockAndCalendar
+        datePickerCalendar.datePickerElements = isTimeMode ? .hourMinuteSecond : .yearMonthDay
+        datePickerCalendar.target = self
+        datePickerCalendar.action = #selector(handleDateAction(_:))
+
+        datePickerTextfield.datePickerElements = .yearMonthDay
+        datePickerTextfield.datePickerStyle = .textFieldAndStepper
+        datePickerTextfield.target = self
+        datePickerTextfield.action = #selector(handleDateAction(_:))
+        if !isTimeMode { stackview.addArrangedSubview(datePickerTextfield) }
+        stackview.addArrangedSubview(datePickerCalendar)
         let popover = NSViewController()
-        popover.view = datepicker
+        popover.view = stackview
         popover.view.frame = frame
-        _ = NSPopover(contentViewController: popover, sender: testButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
+        _ = NSPopover(contentViewController: popover, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
     }
     
     @objc private func handleDateAction(_ datePicker: NSDatePicker) {
         textField.stringValue = dateFormatterOut.string(from: datePicker.dateValue)
         selectedDate = datePicker.dateValue
+        datePickerCalendar.dateValue = datePicker.dateValue
+        datePickerTextfield.dateValue = datePicker.dateValue
     }
     override func viewDidMoveToSuperview() {
         super.viewDidMoveToSuperview()
