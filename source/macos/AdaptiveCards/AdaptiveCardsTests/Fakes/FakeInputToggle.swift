@@ -6,6 +6,9 @@ class FakeInputToggle: ACSToggleInput {
     public var valueOn: String?
     public var valueOff: String?
     public var wrap: Bool = false
+    public var id: String? = ""
+    public var label: String? = ""
+    public var visibility: Bool = true
     
     open override func getTitle() -> String? {
         return title
@@ -56,15 +59,15 @@ class FakeInputToggle: ACSToggleInput {
     }
     
     open override func getId() -> String? {
-        return "input"
+        return id
     }
     
     override func getIsVisible() -> Bool {
-        return true
+        return visibility
     }
     
     override func getLabel() -> String? {
-        return "input Label"
+        return label
     }
 }
 extension FakeInputToggle {

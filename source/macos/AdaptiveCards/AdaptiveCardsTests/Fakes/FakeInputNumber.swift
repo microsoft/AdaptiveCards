@@ -6,6 +6,7 @@ class FakeInputNumber: ACSNumberInput {
     public var max: NSNumber?
     public var min: NSNumber?
     public var isVisible: Bool?
+    public var id: String? = ""
 
     open override func getValue() -> NSNumber? {
         return value
@@ -49,6 +50,10 @@ class FakeInputNumber: ACSNumberInput {
     
     override func getType() -> ACSCardElementType {
         return .numberInput
+    }
+    
+    override func getId() -> String? {
+        return id
     }
 }
 

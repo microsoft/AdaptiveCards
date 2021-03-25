@@ -12,6 +12,7 @@ class FakeTextBlock: ACSTextBlock {
     public var maxLines: NSNumber = 0
     public var horizontalAlignment: ACSHorizontalAlignment = .left
     public var language: String?
+    public var id: String? = ""
 
     open override func getText() -> String? {
         return text
@@ -99,6 +100,10 @@ class FakeTextBlock: ACSTextBlock {
     
     open override func getType() -> ACSCardElementType {
         return .textBlock
+    }
+    
+    override func getId() -> String? {
+        return id
     }
 }
 

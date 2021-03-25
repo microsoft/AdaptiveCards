@@ -7,6 +7,7 @@ class FakeChoiceSetInput: ACSChoiceSetInput {
     public var placeholder: String?
     public var value: String?
     public var wrap: Bool = false
+    public var id: String? = ""
     
     open override func getIsMultiSelect() -> Bool {
         return isMultiSelect
@@ -50,6 +51,10 @@ class FakeChoiceSetInput: ACSChoiceSetInput {
 
     open override func setWrap(_ value: Bool) {
         wrap = value
+    }
+    
+    override func getId() -> String? {
+        return id
     }
 }
 extension FakeChoiceSetInput {

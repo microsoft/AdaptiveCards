@@ -10,6 +10,7 @@ class FakeColumn: ACSColumn {
     var bleed: Bool = false
     var spacing: ACSSpacing = .default
     var separator: Bool = false
+    var id: String? = ""
     
     override func getWidth() -> String? {
         return width
@@ -77,6 +78,10 @@ class FakeColumn: ACSColumn {
     
     override func setSeparator(_ value: Bool) {
         separator = value
+    }
+    
+    override func getId() -> String? {
+        return id
     }
 }
 

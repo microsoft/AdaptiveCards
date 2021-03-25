@@ -8,6 +8,8 @@ class FakeInputText: ACSTextInput {
     public var style: ACSTextInputStyle = .text
     public var inlineAction: ACSBaseActionElement? = .none
     public var regexString: String?
+    public var id: String? = ""
+    public var visibility: Bool = true
     
     override func getPlaceholder() -> String? {
         return placeholderString
@@ -63,6 +65,14 @@ class FakeInputText: ACSTextInput {
     
     override func setRegex(_ value: String) {
         regexString = value
+    }
+    
+    override func getId() -> String? {
+        return id
+    }
+    
+    override func getIsVisible() -> Bool {
+        return visibility
     }
 }
 

@@ -5,6 +5,8 @@ class FakeInputTime: ACSTimeInput {
     public var placeholder: String?
     public var max: String?
     public var min: String?
+    public var id: String? = ""
+    public var visibility: Bool = true
 
     open override func getValue() -> String? {
         return value
@@ -36,6 +38,14 @@ class FakeInputTime: ACSTimeInput {
     
     override func setMin(_ value: String?) {
         min = value
+    }
+    
+    override func getId() -> String? {
+        return id
+    }
+    
+    override func getIsVisible() -> Bool {
+        return visibility
     }
 }
 
