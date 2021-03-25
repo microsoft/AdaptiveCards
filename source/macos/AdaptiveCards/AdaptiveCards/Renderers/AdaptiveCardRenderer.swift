@@ -41,7 +41,7 @@ class AdaptiveCardRenderer {
             let isFirstElement = index == 0
             let renderer = RendererManager.shared.renderer(for: element.getType())
             let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
-            let viewWithInheritedProperties = BaseCardElementRenderer().updateView(view: view, element: element, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
+            let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
             rootView.addArrangedSubview(viewWithInheritedProperties)
         }
         

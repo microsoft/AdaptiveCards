@@ -2,6 +2,8 @@ import AdaptiveCards_bridge
 import AppKit
 
 class BaseCardElementRenderer {
+    static let shared = BaseCardElementRenderer()
+    
     func updateView(view: NSView, element: ACSBaseCardElement, style: ACSContainerStyle, hostConfig: ACSHostConfig, isfirstElement: Bool) -> NSView {
         let updatedView = ACRContentStackView(style: style, hostConfig: hostConfig)
         

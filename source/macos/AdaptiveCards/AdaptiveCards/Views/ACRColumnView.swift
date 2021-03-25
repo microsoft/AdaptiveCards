@@ -260,6 +260,10 @@ class ACRColumnView: ACRContentStackView {
         }
     }
     
+    func configureColumnProperties(for view: NSView) {
+        manageWidth(of: view)
+    }
+    
     func setWidth(_ width: ColumnWidth) {
         columnWidth = width
         manageWidth(of: self)

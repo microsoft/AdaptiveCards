@@ -13,6 +13,9 @@ class FakeTextBlock: ACSTextBlock {
     public var horizontalAlignment: ACSHorizontalAlignment = .left
     public var language: String?
     public var id: String? = ""
+    public var separator: Bool = false
+    public var isVisible: Bool = true
+    public var spacing: ACSSpacing = .default
 
     open override func getText() -> String? {
         return text
@@ -105,10 +108,22 @@ class FakeTextBlock: ACSTextBlock {
     override func getId() -> String? {
         return id
     }
+    
+    override func getSeparator() -> Bool {
+        return separator
+    }
+    
+    override func getIsVisible() -> Bool {
+        return isVisible
+    }
+    
+    override func getSpacing() -> ACSSpacing {
+        return spacing
+    }
 }
 
 extension FakeTextBlock {
-    static func make(text: String? = "", textForDateParsing: ACSDateTimePreparser? = nil, textSize: ACSTextSize = .default, textWeight: ACSTextWeight = .default, fontType: ACSFontType = .default, textColor: ACSForegroundColor = .default, wrap: Bool = false, isSubtle: Bool = false, maxLines: NSNumber = 0, horizontalAlignment: ACSHorizontalAlignment = .left, language: String? = "") -> FakeTextBlock {
+    static func make(text: String? = "", textForDateParsing: ACSDateTimePreparser? = nil, textSize: ACSTextSize = .default, textWeight: ACSTextWeight = .default, fontType: ACSFontType = .default, textColor: ACSForegroundColor = .default, wrap: Bool = false, isSubtle: Bool = false, maxLines: NSNumber = 0, horizontalAlignment: ACSHorizontalAlignment = .left, language: String? = "", separator: Bool = false, isVisible: Bool = false, spacing: ACSSpacing = .default) -> FakeTextBlock {
         let fakeTextBlock = FakeTextBlock()
         fakeTextBlock.text = text
         fakeTextBlock.textForDateParsing = textForDateParsing
@@ -121,6 +136,9 @@ extension FakeTextBlock {
         fakeTextBlock.maxLines = maxLines
         fakeTextBlock.horizontalAlignment = horizontalAlignment
         fakeTextBlock.language = language
+        fakeTextBlock.separator = separator
+        fakeTextBlock.spacing = spacing
+        fakeTextBlock.isVisible = isVisible
         return fakeTextBlock
     }
 }
