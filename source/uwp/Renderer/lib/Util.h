@@ -329,6 +329,8 @@ namespace AdaptiveNamespace
                                            Make<AdaptiveNamespace::AdaptiveSubmitActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
                                            Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionRenderer>().Get()));
+        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
+                                           Make<AdaptiveNamespace::AdaptiveExecuteActionRenderer>().Get()));
         return S_OK;
     }
 }

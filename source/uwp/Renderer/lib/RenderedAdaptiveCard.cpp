@@ -265,7 +265,7 @@ namespace AdaptiveNamespace
         {
             ComPtr<IAdaptiveActionsConfig> actionConfig;
             RETURN_IF_FAILED(m_originatingHostConfig->get_Actions(&actionConfig));
-            
+
             ComPtr<IAdaptiveShowCardActionConfig> showCardConfig;
             RETURN_IF_FAILED(actionConfig->get_ShowCard(&showCardConfig));
 
@@ -285,13 +285,23 @@ namespace AdaptiveNamespace
             }
         }
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
+        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Execute:
         {
             ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ComPtr<IAdaptiveSubmitAction> submitAction;
-            RETURN_IF_FAILED(localActionElement.As(&submitAction));
-
             ABI::AdaptiveNamespace::AssociatedInputs associatedInputs;
-            RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
+
+            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit)
+            {
+                ComPtr<IAdaptiveSubmitAction> submitAction;
+                RETURN_IF_FAILED(localActionElement.As(&submitAction));
+                RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
+            }
+            else
+            {
+                ComPtr<IAdaptiveExecuteAction> executeAction;
+                RETURN_IF_FAILED(localActionElement.As(&executeAction));
+                RETURN_IF_FAILED(executeAction->get_AssociatedInputs(&associatedInputs));
+            }
 
             ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
@@ -305,7 +315,7 @@ namespace AdaptiveNamespace
             {
                 // get the inputElements in Json form.
                 RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
+                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(localActionElement.Get(), &inputsAreValid));
             }
 
             if (!inputsAreValid)
@@ -418,10 +428,10 @@ namespace AdaptiveNamespace
         return m_inputs->AddInputValue(inputItem, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
-                                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
+                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
-        return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
+        return m_inputs->LinkSubmitActionToCard(action, renderArgs);
     }
 
     InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)

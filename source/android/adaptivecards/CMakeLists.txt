@@ -29,6 +29,8 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ActionSet.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseException.cpp
              ../../shared/cpp/ObjectModel/AdaptiveCardParseWarning.cpp
+             ../../shared/cpp/ObjectModel/AuthCardButton.cpp
+             ../../shared/cpp/ObjectModel/Authentication.cpp
              ../../shared/cpp/ObjectModel/BaseActionElement.cpp
              ../../shared/cpp/ObjectModel/BackgroundImage.cpp
              ../../shared/cpp/ObjectModel/BaseCardElement.cpp
@@ -45,6 +47,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/DateTimePreparser.cpp
              ../../shared/cpp/ObjectModel/ElementParserRegistration.cpp
              ../../shared/cpp/ObjectModel/Enums.cpp
+             ../../shared/cpp/ObjectModel/ExecuteAction.cpp
              ../../shared/cpp/ObjectModel/Fact.cpp
              ../../shared/cpp/ObjectModel/FactSet.cpp
              ../../shared/cpp/ObjectModel/FeatureRegistration.cpp
@@ -63,6 +66,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ParseContext.cpp
              ../../shared/cpp/ObjectModel/ParseResult.cpp
              ../../shared/cpp/ObjectModel/ParseUtil.cpp
+             ../../shared/cpp/ObjectModel/Refresh.cpp
              ../../shared/cpp/ObjectModel/RichTextBlock.cpp
              ../../shared/cpp/ObjectModel/RichTextElementProperties.cpp
              ../../shared/cpp/ObjectModel/SemanticVersion.cpp
@@ -77,6 +81,7 @@ add_library( # Sets the name of the library.
              ../../shared/cpp/ObjectModel/ToggleInput.cpp
              ../../shared/cpp/ObjectModel/ToggleVisibilityAction.cpp
              ../../shared/cpp/ObjectModel/ToggleVisibilityTarget.cpp
+             ../../shared/cpp/ObjectModel/TokenExchangeResource.cpp
              ../../shared/cpp/ObjectModel/UnknownElement.cpp
              ../../shared/cpp/ObjectModel/UnknownAction.cpp
              ../../shared/cpp/ObjectModel/Util.cpp

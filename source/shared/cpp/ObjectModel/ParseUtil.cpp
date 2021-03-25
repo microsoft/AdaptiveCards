@@ -85,6 +85,7 @@ namespace AdaptiveSharedNamespace
         }
     }
 
+    // Get value mapped to key. Validates that value is string JSON type.
     std::string ParseUtil::GetString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
@@ -143,6 +144,7 @@ namespace AdaptiveSharedNamespace
         return propertyValue.toStyledString();
     }
 
+    // Get value mapped to key as a string, regardless of value's JSON type.
     std::string ParseUtil::GetValueAsString(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
     {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
@@ -163,37 +165,10 @@ namespace AdaptiveSharedNamespace
         return propertyValue.asString();
     }
 
+    [[deprecated("Use generalized DeserializeValue<T> instead")]]
     std::shared_ptr<BackgroundImage> ParseUtil::GetBackgroundImage(const Json::Value& json)
     {
-        // handle "backgroundImage": <string>
-        const std::string& backgroundImagePropertyName = AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImage);
-        Json::Value propertyValue = json.get(backgroundImagePropertyName, Json::Value());
-
-        if (propertyValue.empty())
-        {
-            // handle "backgroundImageUrl": <string>
-            const std::string& backgroundImageUrlPropertyName =
-                AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::BackgroundImageUrl);
-            propertyValue = json.get(backgroundImageUrlPropertyName, Json::Value());
-        }
-
-        if (propertyValue.isString())
-        {
-            const std::string backgroundImageUrl = propertyValue.asString();
-
-            if (backgroundImageUrl != "")
-            {
-                return std::make_shared<BackgroundImage>(backgroundImageUrl);
-            }
-        }
-        else if (!propertyValue.empty())
-        {
-            // handle "backgroundImage": { <content> }
-            auto jsonValue = ParseUtil::ExtractJsonValue(json, AdaptiveCardSchemaKey::BackgroundImage, false);
-            return BackgroundImage::Deserialize(jsonValue);
-        }
-
-        return nullptr;
+        return DeserializeValue<BackgroundImage>(json, AdaptiveCardSchemaKey::BackgroundImage, BackgroundImage::Deserialize);
     }
 
     bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
@@ -418,6 +393,21 @@ namespace AdaptiveSharedNamespace
         }
 
         return elementArray;
+    }
+
+    std::vector<std::string> ParseUtil::GetStringArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+    {
+        auto jsonArray = ParseUtil::GetArray(json, key, isRequired);
+        std::vector<std::string> strings;
+
+        strings.reserve(jsonArray.size());
+
+        for (const auto& curJsonValue : jsonArray)
+        {
+            strings.push_back(curJsonValue.asString());
+        }
+
+        return strings;
     }
 
     Json::Value ParseUtil::GetJsonValueFromString(const std::string& jsonString)
