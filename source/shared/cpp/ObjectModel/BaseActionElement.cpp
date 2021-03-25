@@ -60,9 +60,24 @@ void BaseActionElement::SetStyle(const std::string& value)
     m_style = value;
 }
 
+void BaseActionElement::SetMode(Mode &&value)
+{
+    m_mode = value;
+}
+
+void BaseActionElement::SetMode(const Mode& value)
+{
+    m_mode = value;
+}
+
 ActionType BaseActionElement::GetElementType() const
 {
     return m_type;
+}
+
+Mode BaseActionElement::GetElementMode() const
+{
+    return m_mode;
 }
 
 Json::Value BaseActionElement::SerializeToJsonValue() const
@@ -132,4 +147,5 @@ void BaseActionElement::DeserializeBaseProperties(ParseContext& context, const J
     element->SetTitle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Title));
     element->SetIconUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::IconUrl));
     element->SetStyle(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Style, defaultStyle, false));
+    element->SetMode( ParseUtil::GetEnumValue<Mode>(json, AdaptiveCardSchemaKey::Mode,Mode::Primary, ModeFromString));
 }

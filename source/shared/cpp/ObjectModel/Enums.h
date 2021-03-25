@@ -115,6 +115,7 @@ namespace AdaptiveSharedNamespace
         MimeType,
         Min,
         MinHeight,
+        Mode,
         Monospace,
         NumberInput,
         OptionalInputs,
@@ -375,6 +376,13 @@ namespace AdaptiveSharedNamespace
         Accent
     };
     DECLARE_ADAPTIVECARD_ENUM(ContainerStyle);
+
+    enum class Mode
+    {
+        Primary = 0,
+        Secondary
+    };
+    DECLARE_ADAPTIVECARD_ENUM(Mode);
 
     enum class ErrorStatusCode
     {
