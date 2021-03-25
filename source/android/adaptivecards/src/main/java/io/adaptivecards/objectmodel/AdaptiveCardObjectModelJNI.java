@@ -563,6 +563,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void CollectionTypeElement_SetBackgroundImage(long jarg1, CollectionTypeElement jarg1_, long jarg2, BackgroundImage jarg2_);
   public final static native long CollectionTypeElement_GetMinHeight(long jarg1, CollectionTypeElement jarg1_);
   public final static native void CollectionTypeElement_SetMinHeight(long jarg1, CollectionTypeElement jarg1_, long jarg2);
+  public final static native Boolean CollectionTypeElement_GetRtl(long jarg1, CollectionTypeElement jarg1_);
+  public final static native void CollectionTypeElement_SetRtl(long jarg1, CollectionTypeElement jarg1_, Boolean jarg2);
   public final static native void CollectionTypeElement_DeserializeChildren(long jarg1, CollectionTypeElement jarg1_, long jarg2, ParseContext jarg2_, long jarg3, JsonValue jarg3_);
   public final static native long CollectionTypeElement_SerializeToJsonValue(long jarg1, CollectionTypeElement jarg1_);
   public final static native String c_adaptiveCardsFeature_get();
@@ -950,6 +952,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native void AdaptiveCard_SetHeight(long jarg1, AdaptiveCard jarg1_, int jarg2);
   public final static native long AdaptiveCard_GetMinHeight(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetMinHeight(long jarg1, AdaptiveCard jarg1_, long jarg2);
+  public final static native Boolean AdaptiveCard_GetRtl(long jarg1, AdaptiveCard jarg1_);
+  public final static native void AdaptiveCard_SetRtl(long jarg1, AdaptiveCard jarg1_, Boolean jarg2);
   public final static native long AdaptiveCard_GetSelectAction(long jarg1, AdaptiveCard jarg1_);
   public final static native void AdaptiveCard_SetSelectAction(long jarg1, AdaptiveCard jarg1_, long jarg2, BaseActionElement jarg2_);
   public final static native long AdaptiveCard_GetBody__SWIG_0(long jarg1, AdaptiveCard jarg1_);

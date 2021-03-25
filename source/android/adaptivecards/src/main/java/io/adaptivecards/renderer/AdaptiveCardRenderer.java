@@ -116,6 +116,7 @@ public class AdaptiveCardRenderer
         cardLayout.setClipToPadding(false);
 
         BaseCardElementRenderer.setMinHeight(cardMinHeight, rootLayout, context);
+        BaseCardElementRenderer.applyRtl(adaptiveCard.GetRtl(), cardLayout);
         ContainerRenderer.applyVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
 
         cardLayout.setOrientation(LinearLayout.VERTICAL);

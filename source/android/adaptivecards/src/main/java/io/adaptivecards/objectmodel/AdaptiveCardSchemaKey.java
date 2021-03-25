@@ -137,6 +137,7 @@ public enum AdaptiveCardSchemaKey {
   Requires,
   RichTextBlock,
   Right,
+  Rtl,
   Schema,
   SelectAction,
   Separator,

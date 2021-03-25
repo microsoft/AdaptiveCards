@@ -221,6 +221,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         // Start with base constraints from XML layout
         constraints.clone(context, R.layout.image_constraint_layout);
 
+        // TODO: Check RTL support
         // Constrain width to left/right barriers (defined in layout), and no stretch by default
         constraints.constrainWidth(id, ConstraintSet.MATCH_CONSTRAINT);
         constraints.constrainDefaultWidth(id, ConstraintSet.MATCH_CONSTRAINT_WRAP);

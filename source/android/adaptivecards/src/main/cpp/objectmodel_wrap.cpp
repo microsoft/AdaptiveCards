@@ -12573,6 +12573,51 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
 }
 
 
+SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CollectionTypeElement_1GetRtl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
+  AdaptiveCards::CollectionTypeElement *arg1 = (AdaptiveCards::CollectionTypeElement *) 0 ;
+  std::shared_ptr< AdaptiveCards::CollectionTypeElement const > *smartarg1 = 0 ;
+  std::optional< bool > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::CollectionTypeElement > **)&jarg1;
+  arg1 = (AdaptiveCards::CollectionTypeElement *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::CollectionTypeElement const *)arg1)->GetRtl();
+  jclass clazz = jenv->FindClass("java/lang/Boolean");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(Z)V");
+  jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
+  jresult = obj;
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CollectionTypeElement_1SetRtl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+  AdaptiveCards::CollectionTypeElement *arg1 = (AdaptiveCards::CollectionTypeElement *) 0 ;
+  std::optional< bool > *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::CollectionTypeElement > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::CollectionTypeElement > **)&jarg1;
+  arg1 = (AdaptiveCards::CollectionTypeElement *)(smartarg1 ? smartarg1->get() : 0); 
+  std::optional<bool> optVal = std::nullopt;
+  if (jarg2) {
+    jclass sbufClass = jenv->GetObjectClass(jarg2);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)jenv->CallBooleanMethod(jarg2, mid);
+    if (jenv->ExceptionCheck()) return ;
+    optVal = std::optional<bool>(val);
+  }
+  arg2 = &optVal;
+  (arg1)->SetRtl((std::optional< bool > const &)*arg2);
+}
+
+
 SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_CollectionTypeElement_1DeserializeChildren(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jlong jarg2, jobject jarg2_, jlong jarg3, jobject jarg3_) {
   AdaptiveCards::CollectionTypeElement *arg1 = (AdaptiveCards::CollectionTypeElement *) 0 ;
   AdaptiveCards::ParseContext *arg2 = 0 ;
@@ -20805,6 +20850,51 @@ SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectMode
   arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
   arg2 = (unsigned int)jarg2; 
   (arg1)->SetMinHeight(arg2);
+}
+
+
+SWIGEXPORT jobject JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1GetRtl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jobject jresult = 0 ;
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard const > *smartarg1 = 0 ;
+  std::optional< bool > result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr< const AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  result = ((AdaptiveCards::AdaptiveCard const *)arg1)->GetRtl();
+  jclass clazz = jenv->FindClass("java/lang/Boolean");
+  jmethodID mid = jenv->GetMethodID(clazz, "<init>", "(Z)V");
+  jobject obj = result ? jenv->NewObject(clazz, mid, *result) : 0;
+  jresult = obj;
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_io_adaptivecards_objectmodel_AdaptiveCardObjectModelJNI_AdaptiveCard_1SetRtl(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_, jobject jarg2) {
+  AdaptiveCards::AdaptiveCard *arg1 = (AdaptiveCards::AdaptiveCard *) 0 ;
+  std::optional< bool > *arg2 = 0 ;
+  std::shared_ptr< AdaptiveCards::AdaptiveCard > *smartarg1 = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  
+  smartarg1 = *(std::shared_ptr<  AdaptiveCards::AdaptiveCard > **)&jarg1;
+  arg1 = (AdaptiveCards::AdaptiveCard *)(smartarg1 ? smartarg1->get() : 0); 
+  std::optional<bool> optVal = std::nullopt;
+  if (jarg2) {
+    jclass sbufClass = jenv->GetObjectClass(jarg2);
+    jmethodID mid = jenv->GetMethodID(sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)jenv->CallBooleanMethod(jarg2, mid);
+    if (jenv->ExceptionCheck()) return ;
+    optVal = std::optional<bool>(val);
+  }
+  arg2 = &optVal;
+  (arg1)->SetRtl((std::optional< bool > const &)*arg2);
 }
 
 

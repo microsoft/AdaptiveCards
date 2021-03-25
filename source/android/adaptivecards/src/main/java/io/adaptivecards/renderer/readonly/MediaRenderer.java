@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Image;
 import io.adaptivecards.objectmodel.ImageSize;
@@ -262,8 +259,8 @@ public class MediaRenderer extends BaseCardElementRenderer
         mediaView.setShouldAutoplay(true);
 
         RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_START);
+        videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_END);
         videoViewLayoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         mediaView.setLayoutParams(videoViewLayoutParams);
 
