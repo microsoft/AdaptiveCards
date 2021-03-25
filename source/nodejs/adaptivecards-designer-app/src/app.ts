@@ -7,8 +7,7 @@ import * as ACTemplating from "adaptivecards-templating";
 import "adaptivecards-designer/dist/adaptivecards-designer.css";
 import "./app.css";
 import { OutlookContainerWithExtras } from "./outlook-container-with-extras";
-import { TablePeer } from "adaptivecards-extras-designer";
-import { Table } from "adaptivecards-extras";
+import * as ExtrasDesigner from "adaptivecards-extras-designer";
 
 // Uncomment below if you plan to use an empty hostContainers array
 // import "adaptivecards-designer/dist/adaptivecards-defaulthost.css";
@@ -64,7 +63,7 @@ window.onload = function() {
     }
     */
 
-    ACDesigner.CardDesignerSurface.cardElementPeerRegistry.registerPeer(Table, TablePeer, "Extras");
+    ExtrasDesigner.initializeDesignerSupport();
 
 	// let designer = new ACDesigner.CardDesigner(ACDesigner.defaultMicrosoftHosts);
 	let designer = new ACDesigner.CardDesigner([ new OutlookContainerWithExtras("Outlook (with extras)", "containers/outlook-container.css") ]);

@@ -1,17 +1,55 @@
-import { Container, NumProperty, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
-    StringProperty, Strings, ValidationEvent, Versions, TypeErrorType, CardElement, CardElementContainer } from "adaptivecards";
+import { Container, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
+    Strings, ValidationEvent, Versions, TypeErrorType, CardElement, CardElementContainer, PropertyBag, SizeAndUnit,
+    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit } from "adaptivecards";
 
 export class ColumnDefinition extends SerializableObject {
     //#region Schema
 
-    static readonly headerProperty = new StringProperty(Versions.v1_0, "header", true);
-    static readonly weightProperty = new NumProperty(Versions.v1_0, "weight", 1);
+    static readonly widthProperty = new CustomProperty<SizeAndUnit>(
+        Versions.v1_0,
+        "width",
+        (sender: SerializableObject, property: PropertyDefinition, source: PropertyBag, context: BaseSerializationContext) => {
+            let result: SizeAndUnit = property.defaultValue;
+            let value = source[property.name];
+            let invalidWidth = false;
 
-    @property(ColumnDefinition.headerProperty)
-    header?: string;
+            if (typeof value === "number" && !isNaN(value)) {
+                result = new SizeAndUnit(value, SizeUnit.Weight);
+            }
+            else if (typeof value === "string") {
+                try {
+                    result = SizeAndUnit.parse(value);
+                }
+                catch (e) {
+                    invalidWidth = true;
+                }
+            }
+            else {
+                invalidWidth = true;
+            }
 
-    @property(ColumnDefinition.weightProperty)
-    weight: number = 1;
+            if (invalidWidth) {
+                context.logParseEvent(
+                    sender,
+                    ValidationEvent.InvalidPropertyValue,
+                    Strings.errors.invalidColumnWidth(value));
+            }
+
+            return result;
+        },
+        (sender: SerializableObject, property: PropertyDefinition, target: PropertyBag, value: SizeAndUnit, context: BaseSerializationContext) => {
+            if (value.unit === SizeUnit.Pixel) {
+                context.serializeValue(target, "width", value.physicalSize + "px");
+            }
+            else {
+                context.serializeNumber(target, "width", value.physicalSize);
+            }
+        },
+        new SizeAndUnit(1, SizeUnit.Weight));
+
+    @property(ColumnDefinition.widthProperty)
+    width: SizeAndUnit = new SizeAndUnit(1, SizeUnit.Weight);
+
 
     getSchemaKey(): string {
         return "ColumnDefinition";
@@ -88,6 +126,12 @@ export abstract class TypedCardElementContainer<T extends CardElement> extends C
         }
     }
 
+    protected internalToJSON(target: PropertyBag, context: SerializationContext) {
+        super.internalToJSON(target, context);
+
+        context.serializeArray(target, this.getCollectionPropertyName(), this._items);
+    }
+
     removeItem(item: T): boolean {
         return this.internalRemoveItem(item);
     }
@@ -115,12 +159,18 @@ export class TableCell extends Container {
 
         if (element) {
             let td = document.createElement("td");
+            td.style.border = "1px solid red";
+            td.style.verticalAlign = "top";
             td.appendChild(element);
 
             return td;
         }
 
         return undefined;
+    }
+
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
     }
 
     getJsonTypeName(): string {
@@ -143,8 +193,9 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
     
     protected internalRender(): HTMLElement | undefined {
         let element = document.createElement("tr");
+        element.style.border = "1px solid red";
 
-        while (this.getItemCount() < this.parentTable.getItemCount()) {
+        while (this.getItemCount() < this.parentTable.getColumnCount()) {
             let cell = new TableCell();
 
             this.internalAddItem(cell);
@@ -158,15 +209,19 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
             }
         }
 
-        return element;
+        return element.children.length > 0 ? element : undefined;
     }
 
-    removeItem(item: TableCell): boolean {
-        return false;
+    protected shouldSerialize(context: SerializationContext): boolean {
+        return true;
     }
 
     getJsonTypeName(): string {
         return "TableRow";
+    }
+
+    removeItem(item: TableCell): boolean {
+        return false;
     }
 
     get parentTable(): Table {
@@ -198,22 +253,37 @@ export class Table extends TypedCardElementContainer<TableRow> {
 
     protected internalRender(): HTMLElement | undefined {
         if (this.getItemCount() > 0) {
-            let totalColumnWeght: number = 0;
+            let totalWeights: number = 0;
 
             for (let column of this._columns) {
-                totalColumnWeght += column.weight;
+                if (column.width.unit === SizeUnit.Weight) {
+                    totalWeights += column.width.physicalSize;
+                }
             }
 
             let colGroup = document.createElement("colgroup");
 
             for (let column of this._columns) {
                 let col = document.createElement("col");
-                col.style.width = (100 / totalColumnWeght * column.weight) + "%";
+
+                if (column.width.unit === SizeUnit.Pixel) {
+                    col.style.width = column.width.physicalSize + "px";
+                }
+                else {
+                    col.style.width = (100 / totalWeights * column.width.physicalSize) + "%";
+                }
 
                 colGroup.appendChild(col);
             }
 
             let element = document.createElement("table");
+            // Layout must be fixed and width must be 100%, otherwise cells will not
+            // shrink below the width of their content
+            element.style.tableLayout = "fixed";
+            element.style.width = "100%";
+            element.style.borderCollapse = "collapse";
+            element.style.border = "1px solid red";
+
             element.appendChild(colGroup);
 
             for (let i = 0; i < this.getItemCount(); i++) {
@@ -228,6 +298,14 @@ export class Table extends TypedCardElementContainer<TableRow> {
         }
 
         return undefined;
+    }
+
+    addColumn(column: ColumnDefinition) {
+        this._columns.push(column);
+    }
+
+    getColumnCount(): number {
+        return this._columns.length;
     }
 
     addRow(row: TableRow) {

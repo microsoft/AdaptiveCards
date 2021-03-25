@@ -312,10 +312,6 @@ export abstract class CardElement extends CardObject {
         return true;
     }
 
-    protected get allowCustomPadding(): boolean {
-        return true;
-    }
-
     protected get separatorOrientation(): Enums.Orientation {
         return Enums.Orientation.Horizontal;
     }
@@ -551,7 +547,7 @@ export abstract class CardElement extends CardObject {
     getEffectivePadding(): PaddingDefinition {
         let padding = this.getPadding();
 
-        return (padding && this.allowCustomPadding) ? padding : this.getDefaultPadding();
+        return padding ? padding : this.getDefaultPadding();
     }
 
     get hostConfig(): HostConfig {
