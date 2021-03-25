@@ -6,13 +6,13 @@
 		{
 			"type": "TextBlock",
 			"text": "Style: Heading",
-            "style": "heading",
+			"style": "heading",
 			"weight": "bolder"
 		},
 		{
 			"type": "TextBlock",
 			"text": "Style: Paragraph",
-            "style": "paragraph",
+			"style": "paragraph",
 			"weight": "default"
 		},
 		{
