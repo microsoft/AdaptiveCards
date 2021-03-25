@@ -22,25 +22,25 @@ home:
   made_for:
     - title: Android
       fa: fab fa-android
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/android/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/android/getting-started
     - title: iOS
       fa: fab fa-apple
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/ios/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/ios/getting-started
     - title: JavaScript
       fa: fab fa-js
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/javascript/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/javascript/getting-started
     - title: ASP.NET
       fa: fab fa-html5
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-html/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/net-html/getting-started
     - title: .NET WPF
       fa: far fa-window-maximize
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/net-wpf/getting-started
     - title: Windows
       fa: fab fa-windows
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/uwp/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/uwp/getting-started
     - title: ReactNative
       fa: fab fa-react
-      href: https://docs.microsoft.com/en-us/adaptive-cards/sdk/rendering-cards/react-native/getting-started
+      href: https://docs.microsoft.com/adaptive-cards/sdk/rendering-cards/react-native/getting-started
   releases:
     - title: v1.3
       href: https://github.com/microsoft/AdaptiveCards/releases/tag/2020.07
@@ -63,9 +63,9 @@ footer:
     - title: Embed the Card Designer
       href: https://docs.microsoft.com/adaptive-cards/sdk/designer
     - title: Host App Status
-      href: https://docs.microsoft.com/en-us/adaptive-cards/resources/partners
+      href: https://docs.microsoft.com/adaptive-cards/resources/partners
     - title: Take advantage of Templating
-      href: https://docs.microsoft.com/en-us/adaptive-cards/templating/
+      href: https://docs.microsoft.com/adaptive-cards/templating/
     - title: Join our monthly Community Calls
       href: /community-calls
     - title: Find us on GitHub
