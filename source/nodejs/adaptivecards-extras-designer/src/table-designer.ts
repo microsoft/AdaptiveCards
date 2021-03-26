@@ -1,5 +1,5 @@
 import { Versions, VerticalAlignment } from "adaptivecards";
-import { BooleanPropertyEditor, CardDesignerSurface, ContainerPeer, DesignContext, EnumPropertyEditor, PeerCommand, PropertySheet, PropertySheetCategory, TypedCardElementPeer } from "adaptivecards-designer";
+import { BooleanPropertyEditor, CardDesignerSurface, ContainerPeer, DesignContext, EnumPropertyEditor, PeerCommand, PropertySheet, PropertySheetCategory, StringPropertyEditor, TypedCardElementPeer } from "adaptivecards-designer";
 import { ColumnDefinition, Table, TableRow } from "adaptivecards-extras";
 
 export class TableCellPeer extends ContainerPeer { }
@@ -15,8 +15,13 @@ export class TableRowPeer extends TypedCardElementPeer<TableRow> {
 }
 
 export class TablePeer extends TypedCardElementPeer<Table> {
+    static readonly firstRowAsHeadersProperty = new BooleanPropertyEditor(
+        Versions.v1_0,
+        "firstRowAsHeaders",
+        "First row as headers");
+
     static readonly showGridLinesProperty = new BooleanPropertyEditor(
-        Versions.v1_3,
+        Versions.v1_0,
         "showGridLines",
         "Grid lines");
 
@@ -64,6 +69,7 @@ export class TablePeer extends TypedCardElementPeer<Table> {
     populatePropertySheet(propertySheet: PropertySheet, defaultCategory: string = PropertySheetCategory.DefaultCategory) {
         super.populatePropertySheet(propertySheet, defaultCategory);
 
+        propertySheet.add(defaultCategory, TablePeer.firstRowAsHeadersProperty);
         propertySheet.add(PropertySheetCategory.StyleCategory, TablePeer.showGridLinesProperty);
         propertySheet.add(PropertySheetCategory.LayoutCategory, TablePeer.verticalCellContentAlignmentProperty);
     }

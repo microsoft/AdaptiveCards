@@ -1,6 +1,6 @@
 import { Container, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
     Strings, ValidationEvent, Versions, TypeErrorType, CardElement, CardElementContainer, PropertyBag, SizeAndUnit,
-    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing, VerticalAlignment, EnumProperty } from "adaptivecards";
+    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing, VerticalAlignment, EnumProperty, StringProperty } from "adaptivecards";
 
 export class ColumnDefinition extends SerializableObject {
     //#region Schema
@@ -153,6 +153,8 @@ export abstract class TypedCardElementContainer<T extends CardElement> extends C
     }
 }
 
+export type CellType = "data" | "header";
+
 export class TableCell extends Container {
     protected getHasBorder(): boolean {
         return this.parentTable.showGridLines;
@@ -177,25 +179,29 @@ export class TableCell extends Container {
         let element = super.internalRender();
 
         if (element) {
-            let td = document.createElement("td");
+            let cellElement = document.createElement(this.cellType === "data" ? "td" : "th");
+
+            if (this.cellType === "header") {
+                cellElement.setAttribute("scope", "col");
+            }
 
             let verticalAlignment = this.parentTable.verticalCellContentAlignment ? this.parentTable.verticalCellContentAlignment : this.verticalContentAlignment;
 
             switch (verticalAlignment) {
                 case VerticalAlignment.Center:
-                    td.style.verticalAlign = "center";
+                    cellElement.style.verticalAlign = "center";
                     break;
                 case VerticalAlignment.Bottom:
-                    td.style.verticalAlign = "bottom";
+                    cellElement.style.verticalAlign = "bottom";
                     break;
                 default:
-                    td.style.verticalAlign = "top";
+                    cellElement.style.verticalAlign = "top";
                     break;                                
             }
 
-            td.appendChild(element);
+            cellElement.appendChild(element);
 
-            return td;
+            return cellElement;
         }
 
         return undefined;
@@ -204,6 +210,8 @@ export class TableCell extends Container {
     protected shouldSerialize(context: SerializationContext): boolean {
         return true;
     }
+
+    cellType: CellType = "data";
 
     getJsonTypeName(): string {
         return "TableCell";
@@ -228,7 +236,7 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
     }
     
     protected internalRender(): HTMLElement | undefined {
-        let element = document.createElement("tr");
+        let rowElement = document.createElement("tr");
 
         while (this.getItemCount() < this.parentTable.getColumnCount()) {
             let cell = new TableCell();
@@ -236,15 +244,27 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
             this.internalAddItem(cell);
         }
 
+        let isFirstRow = this.getIsFirstRow();
+
         for (let i = 0; i < this.getItemCount(); i++) {
-            let renderedCell = this.getItemAt(i).render();
+            let cell = this.getItemAt(i);
+
+            if (this.parentTable.firstRowAsHeaders && isFirstRow) {
+                cell.cellType = "header";
+            }
+
+            let renderedCell = cell.render();
 
             if (renderedCell) {
-                element.appendChild(renderedCell);
+                if (i > 0 && !this.parentTable.showGridLines) {
+                    renderedCell.style.paddingLeft = "4px";
+                }
+
+                rowElement.appendChild(renderedCell);
             }
         }
 
-        return element.children.length > 0 ? element : undefined;
+        return rowElement.children.length > 0 ? rowElement : undefined;
     }
 
     protected shouldSerialize(context: SerializationContext): boolean {
@@ -253,6 +273,10 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
 
     getJsonTypeName(): string {
         return "TableRow";
+    }
+
+    getIsFirstRow(): boolean {
+        return this.parentTable.getItemAt(0) === this;
     }
 
     removeItem(item: TableCell): boolean {
@@ -273,13 +297,17 @@ export class Table extends TypedCardElementContainer<TableRow> {
 
     private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "columns", ColumnDefinition);
 
-    static readonly showGridLines = new BoolProperty(Versions.v1_3, "showGridLines", true);
+    static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_0, "firstRowAsHeaders", true);
+    static readonly showGridLinesProperty = new BoolProperty(Versions.v1_0, "showGridLines", true);
     static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(Table.columnsProperty)
     private _columns: ColumnDefinition[] = [];
 
-    @property(Table.showGridLines)
+    @property(Table.firstRowAsHeadersProperty)
+    firstRowAsHeaders: boolean = true;
+
+    @property(Table.showGridLinesProperty)
     showGridLines: boolean = true;
 
     @property(Table.verticalCellContentAlignmentProperty)
@@ -320,24 +348,45 @@ export class Table extends TypedCardElementContainer<TableRow> {
                 colGroup.appendChild(col);
             }
 
-            let element = document.createElement("table");
+            let tableElement = document.createElement("table");
+
             // Layout must be fixed and width must be 100%, otherwise cells will not
             // shrink below the width of their content
-            element.style.tableLayout = "fixed";
-            element.style.width = "100%";
-            element.style.borderCollapse = "collapse";
+            tableElement.style.tableLayout = "fixed";
+            tableElement.style.width = "100%";
+            tableElement.style.borderCollapse = "collapse";
 
-            element.appendChild(colGroup);
+            tableElement.appendChild(colGroup);
+
+            let tableBody = document.createElement("tbody");
 
             for (let i = 0; i < this.getItemCount(); i++) {
                 let renderedRow = this.getItemAt(i).render();
 
                 if (renderedRow) {
-                    element.appendChild(renderedRow);
+                    if (i > 0 && !this.showGridLines) {
+                        let separatorRow = document.createElement("tr");
+                        separatorRow.setAttribute("aria-hidden", "true");
+                        separatorRow.style.height = "4px";
+
+                        tableBody.appendChild(separatorRow);
+                    }
+
+                    if (i === 0) {
+                        let theadElement = document.createElement("thead");
+                        theadElement.appendChild(renderedRow);
+
+                        tableElement.appendChild(theadElement);
+                    }
+                    else {
+                        tableBody.appendChild(renderedRow);
+                    }
                 }
             }
 
-            return element;
+            tableElement.appendChild(tableBody);
+
+            return tableElement;
         }
 
         return undefined;

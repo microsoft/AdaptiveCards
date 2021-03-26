@@ -530,7 +530,8 @@ export class ValueSetProperty extends PropertyDefinition {
                 target,
                 this.name,
                 value,
-                this.defaultValue);
+                this.defaultValue,
+                true);
         }
     }
 
