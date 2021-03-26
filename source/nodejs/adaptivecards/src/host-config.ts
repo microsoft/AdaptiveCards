@@ -350,6 +350,7 @@ export class ContainerStyleDefinition {
 
     highlightBackgroundColor?: string;
     highlightForegroundColor?: string;
+    borderColor?: string;
 
     parse(obj: any) {
         if (obj) {
@@ -359,6 +360,8 @@ export class ContainerStyleDefinition {
 
             this.highlightBackgroundColor = obj["highlightBackgroundColor"];
             this.highlightForegroundColor = obj["highlightForegroundColor"];
+
+            this.borderColor = obj["borderColor"];
         }
     }
 

@@ -304,6 +304,10 @@
     content: "\E7C2";
 }
 
+.acd-icon-defaultElementIcon::before {
+    content: "\F50B";
+}
+
 .acd-icon-image::before {
     content: "\ECAB";
 }

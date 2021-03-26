@@ -5109,22 +5109,32 @@ export class ActionSet extends CardElement {
     }
 }
 
+export class ContainerStyleProperty extends ValueSetProperty {
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: string,
+        readonly onGetInitialValue?: (sender: SerializableObject) => string) {
+        super(
+            targetVersion,
+            name,
+            [
+                { value: Enums.ContainerStyle.Default },
+                { value: Enums.ContainerStyle.Emphasis },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
+                { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
+            ],
+            defaultValue,
+            onGetInitialValue);
+    }
+}
+
 export abstract class StylableCardElementContainer extends CardElementContainer {
     //#region Schema
 
-    static readonly styleProperty = new ValueSetProperty(
-        Versions.v1_0,
-        "style",
-        [
-            { value: Enums.ContainerStyle.Default },
-            { value: Enums.ContainerStyle.Emphasis },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Accent },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Good },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Attention },
-            { targetVersion: Versions.v1_2, value: Enums.ContainerStyle.Warning }
-        ]);
-    static readonly bleedProperty = new BoolProperty(Versions.v1_2, "bleed", false);
-    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
+    static readonly styleProperty = new ContainerStyleProperty(Versions.v1_0, "style");
 
     @property(StylableCardElementContainer.styleProperty)
     get style(): string | undefined {
@@ -5143,20 +5153,14 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         this.setValue(StylableCardElementContainer.styleProperty, value);
     }
 
-    @property(StylableCardElementContainer.bleedProperty)
-    private _bleed: boolean = false;
-
-    @property(StylableCardElementContainer.minHeightProperty)
-    minPixelHeight?: number;
-
     //#endregion
 
-    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
-        super.adjustRenderedElementSize(renderedElement);
+    protected get allowCustomStyle(): boolean {
+        return true;
+    }
 
-        if (this.minPixelHeight) {
-            renderedElement.style.minHeight = this.minPixelHeight + "px";
-        }
+    protected get hasExplicitStyle(): boolean {
+        return this.getValue(StylableCardElementContainer.styleProperty) !== undefined;
     }
 
     protected applyBorder() {
@@ -5254,34 +5258,6 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
                 Enums.Spacing.Padding) : super.getDefaultPadding();
     }
 
-    protected getHasExpandedAction(): boolean {
-        return false;
-    }
-
-    protected getBleed(): boolean {
-        return this._bleed;
-    }
-
-    protected setBleed(value: boolean) {
-        this._bleed = value;
-    }
-
-    protected get renderedActionCount(): number {
-        return 0;
-    }
-
-    protected get hasExplicitStyle(): boolean {
-        return this.getValue(StylableCardElementContainer.styleProperty) !== undefined;
-    }
-
-    protected get allowCustomStyle(): boolean {
-        return true;
-    }
-
-    isBleeding(): boolean {
-		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
-    }
-
     internalValidateProperties(context: ValidationResults) {
         super.internalValidateProperties(context);
 
@@ -5315,6 +5291,49 @@ export abstract class StylableCardElementContainer extends CardElementContainer 
         let effectiveStyle = this.style;
 
         return effectiveStyle ? effectiveStyle : super.getEffectiveStyle();
+    }
+}
+
+export abstract class ContainerBase extends StylableCardElementContainer {
+    //#region Schema
+
+    static readonly bleedProperty = new BoolProperty(Versions.v1_2, "bleed", false);
+    static readonly minHeightProperty = new PixelSizeProperty(Versions.v1_2, "minHeight");
+
+    @property(ContainerBase.bleedProperty)
+    private _bleed: boolean = false;
+
+    @property(ContainerBase.minHeightProperty)
+    minPixelHeight?: number;
+
+    //#endregion
+
+    protected adjustRenderedElementSize(renderedElement: HTMLElement) {
+        super.adjustRenderedElementSize(renderedElement);
+
+        if (this.minPixelHeight) {
+            renderedElement.style.minHeight = this.minPixelHeight + "px";
+        }
+    }
+
+    protected getHasExpandedAction(): boolean {
+        return false;
+    }
+
+    protected getBleed(): boolean {
+        return this._bleed;
+    }
+
+    protected setBleed(value: boolean) {
+        this._bleed = value;
+    }
+
+    protected get renderedActionCount(): number {
+        return 0;
+    }
+
+    isBleeding(): boolean {
+		return (this.getHasBackground() || this.hostConfig.alwaysAllowBleed) && this.getBleed();
     }
 }
 
@@ -5400,7 +5419,7 @@ export class BackgroundImage extends SerializableObject {
     }
 }
 
-export class Container extends StylableCardElementContainer {
+export class Container extends ContainerBase {
     //#region Schema
 
     static readonly backgroundImageProperty = new SerializableObjectProperty(
@@ -5448,10 +5467,6 @@ export class Container extends StylableCardElementContainer {
         else {
             throw new Error(Strings.errors.elementAlreadyParented());
         }
-    }
-
-    protected supportsExcplitiHeight(): boolean {
-        return true;
     }
 
     protected getItemsCollectionPropertyName(): string {
@@ -5931,7 +5946,7 @@ export class Column extends Container {
     }
 }
 
-export class ColumnSet extends StylableCardElementContainer {
+export class ColumnSet extends ContainerBase {
     private _columns: Column[] = [];
     private _renderedColumns: Column[];
 

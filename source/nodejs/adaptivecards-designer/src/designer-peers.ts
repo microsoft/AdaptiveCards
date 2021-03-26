@@ -30,12 +30,17 @@ export abstract class CardElementPeerInplaceEditor<TCardElement extends Adaptive
 }
 
 export class DesignerPeerRegistrationBase {
-    readonly category: string;
-    readonly iconClass: string;
+    private _iconClass?: string;
 
-    constructor(category: string, iconClass: string = null) {
+    readonly category: string;
+
+    constructor(category: string, iconClass?: string) {
         this.category = category;
-        this.iconClass = iconClass;
+        this._iconClass = iconClass;
+    }
+
+    get iconClass(): string {
+        return this._iconClass ? this._iconClass : "acd-icon-defaultElementIcon";
     }
 }
 

@@ -1,6 +1,7 @@
 import { Container, property, SerializableObject, SerializableObjectCollectionProperty, SerializationContext,
-    Strings, ValidationEvent, Versions, TypeErrorType, CardElement, CardElementContainer, PropertyBag, SizeAndUnit,
-    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing, VerticalAlignment, EnumProperty, StringProperty } from "adaptivecards";
+    Strings, ValidationEvent, Versions, TypeErrorType, CardElement, StylableCardElementContainer, PropertyBag, SizeAndUnit,
+    CustomProperty, PropertyDefinition, BaseSerializationContext, SizeUnit, BoolProperty, PaddingDefinition, Spacing,
+    VerticalAlignment, EnumProperty, ContainerStyleProperty, stringToCssColor, NumProperty } from "adaptivecards";
 
 export class ColumnDefinition extends SerializableObject {
     //#region Schema
@@ -58,7 +59,7 @@ export class ColumnDefinition extends SerializableObject {
     //#endregion   
 }
 
-export abstract class TypedCardElementContainer<T extends CardElement> extends CardElementContainer {
+export abstract class StylableContainer<T extends CardElement> extends StylableCardElementContainer {
     private _items: T[] = [];
 
     private parseItem(source: any, context: SerializationContext): T | undefined {
@@ -162,7 +163,15 @@ export class TableCell extends Container {
 
     protected applyBorder() {
         if (this.renderedElement && this.getHasBorder()) {
-            this.renderedElement.style.border = "1px solid red";
+            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.parentTable.gridStyle);
+
+            if (styleDefinition.borderColor) {
+                const borderColor = <string>stringToCssColor(styleDefinition.borderColor);
+
+                if (borderColor) {
+                    this.renderedElement.style.border = "1px solid " + borderColor;
+                }
+            }
         }
     }
 
@@ -226,7 +235,39 @@ export class TableCell extends Container {
     }
 }
 
-export class TableRow extends TypedCardElementContainer<TableCell> {
+export class TableRow extends StylableContainer<TableCell> {
+    //#region Schema
+
+    static readonly styleProperty = new ContainerStyleProperty(Versions.v1_0, "style");
+
+    @property(TableRow.styleProperty)
+    get style(): string | undefined {
+        let style = this.getValue(TableRow.styleProperty);
+
+        if (style && this.hostConfig.containerStyles.getStyleByName(style)) {
+            return style;
+        }
+
+        return undefined;
+    }
+
+    set style(value: string | undefined) {
+        this.setValue(TableRow.styleProperty, value);
+    }
+
+    //#endregion
+
+    protected applyBackground() {
+        if (this.renderedElement) {
+            let styleDefinition = this.hostConfig.containerStyles.getStyleByName(this.style, this.hostConfig.containerStyles.getStyleByName(this.defaultStyle));
+
+            if (styleDefinition.backgroundColor) {
+                const bgColor = <string>stringToCssColor(styleDefinition.backgroundColor);
+                this.renderedElement.style.backgroundColor = bgColor;
+            }
+        }
+    }
+
     protected getCollectionPropertyName(): string {
         return "cells";
     }
@@ -238,11 +279,13 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
     protected internalRender(): HTMLElement | undefined {
         let rowElement = document.createElement("tr");
 
+        /*
         while (this.getItemCount() < this.parentTable.getColumnCount()) {
             let cell = new TableCell();
 
             this.internalAddItem(cell);
         }
+        */
 
         let isFirstRow = this.getIsFirstRow();
 
@@ -256,8 +299,8 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
             let renderedCell = cell.render();
 
             if (renderedCell) {
-                if (i > 0 && !this.parentTable.showGridLines) {
-                    renderedCell.style.paddingLeft = "4px";
+                if (i > 0 && !this.parentTable.showGridLines && this.parentTable.cellSpacing > 0) {
+                    renderedCell.style.paddingLeft = this.parentTable.cellSpacing + "px";
                 }
 
                 rowElement.appendChild(renderedCell);
@@ -271,16 +314,16 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
         return true;
     }
 
+    addCell(cell: TableCell) {
+        this.internalAddItem(cell);
+    }
+
     getJsonTypeName(): string {
         return "TableRow";
     }
 
     getIsFirstRow(): boolean {
         return this.parentTable.getItemAt(0) === this;
-    }
-
-    removeItem(item: TableCell): boolean {
-        return false;
     }
 
     get parentTable(): Table {
@@ -292,23 +335,44 @@ export class TableRow extends TypedCardElementContainer<TableCell> {
     }
 }
 
-export class Table extends TypedCardElementContainer<TableRow> {
+export class Table extends StylableContainer<TableRow> {
     //#region Schema
 
     private static readonly columnsProperty = new SerializableObjectCollectionProperty(Versions.v1_0, "columns", ColumnDefinition);
 
     static readonly firstRowAsHeadersProperty = new BoolProperty(Versions.v1_0, "firstRowAsHeaders", true);
+    static readonly cellSpacingProperty = new NumProperty(Versions.v1_0, "cellSpacing", 4);
     static readonly showGridLinesProperty = new BoolProperty(Versions.v1_0, "showGridLines", true);
+    static readonly gridStyleProperty = new ContainerStyleProperty(Versions.v1_0, "gridStyle");
     static readonly verticalCellContentAlignmentProperty = new EnumProperty(Versions.v1_0, "verticalCellContentAlignment", VerticalAlignment);
 
     @property(Table.columnsProperty)
     private _columns: ColumnDefinition[] = [];
+
+    @property(Table.cellSpacingProperty)
+    cellSpacing: number = 4;
 
     @property(Table.firstRowAsHeadersProperty)
     firstRowAsHeaders: boolean = true;
 
     @property(Table.showGridLinesProperty)
     showGridLines: boolean = true;
+
+    @property(Table.gridStyleProperty)
+    get gridStyle(): string | undefined {
+        let style = this.getValue(Table.gridStyleProperty);
+
+        if (style && this.hostConfig.containerStyles.getStyleByName(style)) {
+            return style;
+        }
+
+        return undefined;
+    }
+
+    set gridStyle(value: string | undefined) {
+        this.setValue(Table.gridStyleProperty, value);
+    }
+
 
     @property(Table.verticalCellContentAlignmentProperty)
     verticalCellContentAlignment?: VerticalAlignment;
@@ -364,10 +428,10 @@ export class Table extends TypedCardElementContainer<TableRow> {
                 let renderedRow = this.getItemAt(i).render();
 
                 if (renderedRow) {
-                    if (i > 0 && !this.showGridLines) {
+                    if (i > 0 && !this.showGridLines && this.cellSpacing > 0) {
                         let separatorRow = document.createElement("tr");
                         separatorRow.setAttribute("aria-hidden", "true");
-                        separatorRow.style.height = "4px";
+                        separatorRow.style.height = this.cellSpacing + "px";
 
                         tableBody.appendChild(separatorRow);
                     }
@@ -402,6 +466,10 @@ export class Table extends TypedCardElementContainer<TableRow> {
 
     addRow(row: TableRow) {
         this.internalAddItem(row);
+
+        while (row.getItemCount() < this.getColumnCount()) {
+            row.addCell(new TableCell());
+        }
     }
 
     getJsonTypeName(): string {

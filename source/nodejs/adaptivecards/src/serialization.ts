@@ -290,10 +290,10 @@ export class PropertyDefinition {
         readonly name: string,
         readonly defaultValue?: any,
         readonly onGetInitialValue?: (sender: SerializableObject) => any) {
-            this.sequentialNumber = PropertyDefinition._sequentialNumber;
+        this.sequentialNumber = PropertyDefinition._sequentialNumber;
 
-            PropertyDefinition._sequentialNumber++;
-        }
+        PropertyDefinition._sequentialNumber++;
+    }
 }
 
 export class StringProperty extends PropertyDefinition {
@@ -348,6 +348,14 @@ export class BoolProperty extends PropertyDefinition {
             value,
             this.defaultValue);
     }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: boolean,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
 }
 
 export class NumProperty extends PropertyDefinition {
@@ -361,6 +369,14 @@ export class NumProperty extends PropertyDefinition {
             this.name,
             value,
             this.defaultValue);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: number,
+        readonly onGetInitialValue?: (sender: SerializableObject) => any) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
     }
 }
 
@@ -502,36 +518,37 @@ export class ValueSetProperty extends PropertyDefinition {
     toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) {
         let valueFound = false;
 
-        for (let versionedValue of this.values) {
-            if (versionedValue.value === value) {
-                let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
+        if (value !== undefined) {
+            for (let versionedValue of this.values) {
+                if (versionedValue.value === value) {
+                    let targetVersion = versionedValue.targetVersion ? versionedValue.targetVersion : this.targetVersion;
 
-                if (targetVersion.compareTo(context.targetVersion) <= 0) {
-                    valueFound = true;
+                    if (targetVersion.compareTo(context.targetVersion) <= 0) {
+                        valueFound = true;
 
-                    break;
-                }
-                else {
-                    context.logEvent(
-                        sender,
-                        Enums.ValidationPhase.ToJSON,
-                        Enums.ValidationEvent.InvalidPropertyValue,
-                        Strings.errors.propertyValueNotSupported(
-                            value,
-                            this.name,
-                            targetVersion.toString(),
-                            context.targetVersion.toString()));
+                        break;
+                    }
+                    else {
+                        context.logEvent(
+                            sender,
+                            Enums.ValidationPhase.ToJSON,
+                            Enums.ValidationEvent.InvalidPropertyValue,
+                            Strings.errors.propertyValueNotSupported(
+                                value,
+                                this.name,
+                                targetVersion.toString(),
+                                context.targetVersion.toString()));
+                    }
                 }
             }
         }
 
-        if (valueFound) {
-            context.serializeValue(
+        if (valueFound || value === undefined) {
+            context.serializeString(
                 target,
                 this.name,
                 value,
-                this.defaultValue,
-                true);
+                this.defaultValue);
         }
     }
 
