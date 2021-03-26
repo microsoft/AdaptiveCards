@@ -81,23 +81,23 @@ def convert(xml_files, json_file):
                  "type": "instances",
                  "annotations": [],
                  "categories": []}
+    _image_fnames = {}
     if PRE_DEFINE_CATEGORIES is not None:
         categories = PRE_DEFINE_CATEGORIES
     else:
         categories = get_categories(xml_files)
     bnd_id = START_BOUNDING_BOX_ID
     for xml_file in xml_files:
+        print(xml_file)
         tree = ET.parse(xml_file)
         root = tree.getroot()
-        path = get(root, "path")
-        if len(path) == 1:
-            filename = os.path.basename(path[0].text)
-        elif len(path) == 0:
-            filename = get_and_check(root, "filename", 1).text
-        else:
-            raise ValueError("%d paths found in %s" % (len(path), xml_file))
+        # Only take the file name as absolute name -- no full path.
+        filename = get_and_check(root, "filename", 1).text
+
         # The filename must be a number
         image_id = get_filename_as_int(filename)
+        if image_id in _image_fnames:
+            raise Exception(f"The image: {image_id} being used more than once")
         size = get_and_check(root, "size", 1)
         width = int(get_and_check(size, "width", 1).text)
         height = int(get_and_check(size, "height", 1).text)
@@ -107,6 +107,7 @@ def convert(xml_files, json_file):
             "width": width,
             "id": image_id,
         }
+        _image_fnames[image_id] = xml_file
         json_dict["images"].append(image)
         # Currently we do not support segmentation.
         #  segmented = get_and_check(root, 'segmented', 1).text
