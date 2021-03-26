@@ -366,7 +366,10 @@ namespace RendererQml
 
 		uiTextBlock->Property("clip", "true");
 		uiTextBlock->Property("textFormat", "Text.MarkdownText");
-		uiTextBlock->Property("text", "\"" + textBlock->GetText() + "\"");
+
+		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
+		text = Utils::Replace(text, "\"", "\\\"");
+		uiTextBlock->Property("text", Formatter() << "\"" << text << "\"");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
 
