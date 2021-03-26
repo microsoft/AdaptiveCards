@@ -1082,18 +1082,15 @@ export class TextBlock extends BaseTextBlock {
     applyStylesTo(targetElement: HTMLElement) {
         super.applyStylesTo(targetElement);
 
-        let parentContainer = this.getParentContainer();
-        let isRtl = parentContainer ? parentContainer.isRtl() : false;
-
         switch (this.horizontalAlignment) {
             case Enums.HorizontalAlignment.Center:
                 targetElement.style.textAlign = "center";
                 break;
             case Enums.HorizontalAlignment.Right:
-                targetElement.style.textAlign = isRtl ? "left" : "right";
+                targetElement.style.textAlign = "end";
                 break;
             default:
-                targetElement.style.textAlign = isRtl ? "right" : "left";
+                targetElement.style.textAlign = "start";
                 break;
         }
 
@@ -1336,18 +1333,15 @@ export class RichTextBlock extends CardElement {
 
             element.className = this.hostConfig.makeCssClassName("ac-richTextBlock");
 
-            let parentContainer = this.getParentContainer();
-            let isRtl = parentContainer ? parentContainer.isRtl() : false;
-
             switch (this.horizontalAlignment) {
                 case Enums.HorizontalAlignment.Center:
                     element.style.textAlign = "center";
                     break;
                 case Enums.HorizontalAlignment.Right:
-                    element.style.textAlign = isRtl ? "left" : "right";
+                    element.style.textAlign = "end";
                     break;
                 default:
-                    element.style.textAlign = isRtl ? "right" : "left";
+                    element.style.textAlign = "start";
                     break;
             }
 
@@ -5468,8 +5462,12 @@ export class Container extends StylableCardElementContainer {
 
         let element = document.createElement("div");
 
-        if (this.rtl !== undefined && this.rtl) {
+        if (this.rtl === undefined) {
+            element.removeAttribute("dir");
+        } else if (this.rtl) {
             element.dir = "rtl";
+        } else {
+            element.dir = "ltr";
         }
 
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
