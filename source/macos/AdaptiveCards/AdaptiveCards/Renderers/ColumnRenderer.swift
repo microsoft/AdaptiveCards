@@ -41,6 +41,8 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             columnView.heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
         }
         
+        columnView.setupSelectAction(selectAction: column.getSelectAction(), rootView: rootView)
+        
         return columnView
     }
 }

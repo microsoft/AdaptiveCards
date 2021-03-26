@@ -62,6 +62,7 @@ class ACRMultilineInputTextView: NSView, NSTextViewDelegate {
         if maxCharLen > 0, attributedValue.string.count > maxCharLen {
             attributedValue = NSMutableAttributedString(string: String(attributedValue.string.dropLast(attributedValue.string.count - maxCharLen)))
         }
+        attributedValue.addAttributes([.foregroundColor: NSColor.textColor], range: NSRange(location: 0, length: attributedValue.length))
         textView.textStorage?.setAttributedString(attributedValue)
     }
     

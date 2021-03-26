@@ -85,8 +85,10 @@ NSString *const ACRParseErrorDomain = @"ACRParseErrorDomain";
     return [[ACSBaseCardElement alloc] initWithBaseCardElement:baseCardElementCpp];
 }
 
-+ (ACSBaseActionElement *)convertFromBaseActionElement:(std::shared_ptr<BaseActionElement>)baseActionElementCpp
++ (ACSBaseActionElement * _Nullable)convertFromBaseActionElement:(std::shared_ptr<BaseActionElement>)baseActionElementCpp
 {
+    if (!baseActionElementCpp)
+        return NULL;
     if (auto showCardAction = dynamic_pointer_cast<ShowCardAction>(baseActionElementCpp))
         return [[ACSShowCardAction alloc] initWithShowCardAction:showCardAction];
     if (auto toggleVisibilityAction = dynamic_pointer_cast<ToggleVisibilityAction>(baseActionElementCpp))

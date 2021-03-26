@@ -2,8 +2,8 @@ import AdaptiveCards_bridge
 import AppKit
 
 protocol ACRViewDelegate: AnyObject {
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton)
-    func acrInputViewHandler(_ view: ACRView, didSubmitUserResponses dict: [String: String], button: NSButton )
+    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView)
+    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView)
 }
 
 protocol ACRViewResourceResolverDelegate: AnyObject {
@@ -91,21 +91,21 @@ extension ACRView: TargetHandlerDelegate {
         }
     }
     
-    func handleOpenURLAction(button: NSButton, urlString: String) {
-        delegate?.acrView(self, didSelectOpenURL: urlString, button: button)
+    func handleOpenURLAction(actionView: NSView, urlString: String) {
+        delegate?.acrView(self, didSelectOpenURL: urlString, actionView: actionView)
     }
     
-    func handleSubmitAction(button: NSButton, dataJson: String?) {
-        var dict = [String: String]()
+    func handleSubmitAction(actionView: NSView, dataJson: String?) {
+        var dict = [String: Any]()
         for handler in inputHandlers {
             guard handler.isValid else { continue }
             dict[handler.key] = handler.value
         }
         
-        if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: String] {
+        if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             dict.merge(dataJsonDict) { current, _ in current }
         }
-        delegate?.acrInputViewHandler(self, didSubmitUserResponses: dict, button: button)
+        delegate?.acrView(self, didSubmitUserResponses: dict, actionView: actionView)
     }
 }
 

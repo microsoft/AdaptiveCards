@@ -155,18 +155,22 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
 }
 
 extension RootViewController: AdaptiveCardActionDelegate {
-    func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, button: NSButton) {
+    func adaptiveCard(_ adaptiveCard: NSView, didSelectOpenURL urlString: String, actionView: NSView) {
         print("OPEN URL ACTION: \(urlString)")
         guard let url = URL(string: urlString) else { return }
         NSWorkspace.shared.open(url)
     }
     
-    func adaptiveCard(_ adaptiveCard: NSView, didSubmitUserResponses: [String: String], button: NSButton) {
+    func adaptiveCard(_ adaptiveCard: NSView, didSubmitUserResponses: [String: Any], actionView: NSView) {
         let alert = NSAlert()
         guard let jsonData = try? JSONSerialization.data(withJSONObject: didSubmitUserResponses, options: [.prettyPrinted]), let jsonString = String(data: jsonData, encoding: .ascii) else {
             return
         }
-        alert.messageText = button.title
+        if let button = actionView as? NSButton {
+            alert.messageText = button.title
+        } else {
+            alert.messageText = "Select Action"
+        }
         alert.informativeText = jsonString
         alert.alertStyle = .informational
         alert.addButton(withTitle: "Ok")

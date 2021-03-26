@@ -15,8 +15,12 @@ class ActionOpenURLTarget: NSObject, TargetHandler {
         button.action = #selector(handleButtonAction(_:))
     }
     
+    func handleSelectionAction(for actionView: NSView) {
+        delegate?.handleOpenURLAction(actionView: actionView, urlString: url)
+    }
+    
     @objc private func handleButtonAction(_ sender: NSButton) {
-        delegate?.handleOpenURLAction(button: sender, urlString: url)
+        delegate?.handleOpenURLAction(actionView: sender, urlString: url)
     }
 }
     
@@ -34,8 +38,12 @@ class ActionSubmitTarget: NSObject, TargetHandler {
         button.action = #selector(handleButtonAction(_:))
     }
     
+    func handleSelectionAction(for actionView: NSView) {
+        delegate?.handleSubmitAction(actionView: actionView, dataJson: self.dataJson)
+    }
+    
     @objc private func handleButtonAction(_ sender: NSButton) {
-        delegate?.handleSubmitAction(button: sender, dataJson: self.dataJson)
+        delegate?.handleSubmitAction(actionView: sender, dataJson: self.dataJson)
     }
 }
 
@@ -52,6 +60,8 @@ class ActionShowCardTarget: NSObject, TargetHandler {
         button.target = self
         button.action = #selector(handleButtonAction(_:))
     }
+    
+    func handleSelectionAction(for actionView: NSView) { }
     
     @objc private func handleButtonAction(_ sender: NSButton) {
         delegate?.handleShowCardAction(button: sender, showCard: showCard)

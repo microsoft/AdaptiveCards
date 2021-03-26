@@ -92,6 +92,8 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             }
         }
         
+        columnSetView.setupSelectAction(selectAction: columnSet.getSelectAction(), rootView: rootView)
+        
         return columnSetView
     }
     

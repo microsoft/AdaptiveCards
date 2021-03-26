@@ -58,18 +58,21 @@ class AdaptiveCardRenderer {
             rootView.addArrangedSubview(view)
         }
         
+        // add selectAction
+        rootView.setupSelectAction(selectAction: card.getSelectAction(), rootView: rootView)
+        
         rootView.layoutSubtreeIfNeeded()
         return rootView
     }
 }
 
 extension AdaptiveCardRenderer: ACRViewDelegate {
-    func acrInputViewHandler(_ view: ACRView, didSubmitUserResponses dict: [String: String], button: NSButton) {
-        actionDelegate?.adaptiveCard(view, didSubmitUserResponses: dict, button: button)
+    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {
+        actionDelegate?.adaptiveCard(view, didSelectOpenURL: url, actionView: actionView)
     }
     
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton) {
-        actionDelegate?.adaptiveCard(view, didSelectOpenURL: url, button: button)
+    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String: Any], actionView: NSView) {
+        actionDelegate?.adaptiveCard(view, didSubmitUserResponses: dict, actionView: actionView)
     }
 }
 

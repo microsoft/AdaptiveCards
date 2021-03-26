@@ -1,0 +1,78 @@
+{
+    "type": "AdaptiveCard",
+    "selectAction": {
+        "type": "Action.OpenUrl",
+        "url": "https://elgoog.im/"
+},
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Try clicking a column!",
+            "weight": "Bolder"
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/cats/1.png"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "cool link",
+                        "url": "https://www.google.com"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/cats/1.png"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "cool link",
+                        "url": "https://www.google.com"
+                    },
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3"
+                        },
+                        {
+                            "type": "Image",
+                            "url": "https://adaptivecards.io/content/cats/1.png"
+                        }
+                    ],
+                    "selectAction": {
+                        "type": "Action.OpenUrl",
+                        "title": "cool link",
+                        "url": "https://www.google.com"
+                    },
+                    "width": "stretch"
+                }
+            ]
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.1"
+}

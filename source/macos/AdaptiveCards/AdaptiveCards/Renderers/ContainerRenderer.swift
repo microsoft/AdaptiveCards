@@ -18,6 +18,9 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
         // add background Image
         renderBackgroundImage(backgroundImage: container.getBackgroundImage(), view: containerView, rootview: rootView)
         
+        // add selectAction
+        containerView.setupSelectAction(selectAction: container.getSelectAction(), rootView: rootView)
+        
         var leadingBlankSpace: NSView?
         if container.getVerticalContentAlignment() == .center || container.getVerticalContentAlignment() == .bottom {
             let view = NSView()

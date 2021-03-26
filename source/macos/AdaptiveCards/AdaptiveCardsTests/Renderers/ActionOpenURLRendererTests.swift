@@ -39,7 +39,7 @@ class ActionOpenURLRendererTests: XCTestCase {
     
     func testViewCallsDelegateAction() {
         acrView.delegate = delegate
-        acrView.handleOpenURLAction(button: NSButton(), urlString: "www.google.com")
+        acrView.handleOpenURLAction(actionView: NSButton(), urlString: "www.google.com")
         XCTAssertEqual(delegate.calledURL, "www.google.com")
     }
     
@@ -53,9 +53,11 @@ class ActionOpenURLRendererTests: XCTestCase {
 }
 
 private class FakeACRViewOpenURLDelegate: ACRViewDelegate {
-    func acrInputViewHandler(_ view: ACRView, didSubmitUserResponses dict: [String : String], button: NSButton) { }
     var calledURL: String?
-    func acrView(_ view: ACRView, didSelectOpenURL url: String, button: NSButton) {
+    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {
         calledURL = url
     }
+    
+    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) { }
+    
 }
