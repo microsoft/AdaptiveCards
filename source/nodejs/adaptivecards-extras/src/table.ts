@@ -279,22 +279,12 @@ export class TableRow extends StylableContainer<TableCell> {
     protected internalRender(): HTMLElement | undefined {
         let rowElement = document.createElement("tr");
 
-        /*
-        while (this.getItemCount() < this.parentTable.getColumnCount()) {
-            let cell = new TableCell();
-
-            this.internalAddItem(cell);
-        }
-        */
-
         let isFirstRow = this.getIsFirstRow();
 
         for (let i = 0; i < this.getItemCount(); i++) {
             let cell = this.getItemAt(i);
 
-            if (this.parentTable.firstRowAsHeaders && isFirstRow) {
-                cell.cellType = "header";
-            }
+            cell.cellType = (this.parentTable.firstRowAsHeaders && isFirstRow) ? "header" : "data";
 
             let renderedCell = cell.render();
 
