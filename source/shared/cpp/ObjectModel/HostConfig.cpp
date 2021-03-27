@@ -300,6 +300,8 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 
     result.iconSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::IconSize, defaultValue.iconSize);
 
+    result.allowMoreThanMaxActionsInOverflowMenu = ParseUtil::GetBool(json,AdaptiveCardSchemaKey::AllowMoreThanMaxActionsInOverflowMenu,defaultValue.allowMoreThanMaxActionsInOverflowMenu);
+
     return result;
 }
 

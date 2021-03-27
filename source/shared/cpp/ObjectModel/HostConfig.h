@@ -293,14 +293,15 @@ namespace AdaptiveSharedNamespace
         Spacing spacing = Spacing::Default;
         IconPlacement iconPlacement = IconPlacement::AboveTitle;
         unsigned int iconSize = 30;
-
+        bool allowMoreThanMaxActionsInOverflowMenu = false;
+        
         static ActionsConfig Deserialize(const Json::Value& json, const ActionsConfig& defaultValue);
     };
 
     struct InputLabelConfig
     {
         ForegroundColor color = ForegroundColor::Default;
-        bool isSubtle = false; 
+        bool isSubtle = false;
         TextSize size = TextSize::Default;
         std::string suffix = std::string();
         TextWeight weight = TextWeight::Default;
