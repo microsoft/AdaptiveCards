@@ -42,7 +42,7 @@ namespace RendererQml
         std::shared_ptr<RenderedQmlAdaptiveCard> RenderCard(std::shared_ptr<AdaptiveCards::AdaptiveCard> card);
 
     protected:
-        static void addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context);
+        static void addSelectAction(const std::shared_ptr<QmlTag>& parent, const std::string& rectId, const std::shared_ptr<AdaptiveCards::BaseActionElement>& selectAction, const std::shared_ptr<AdaptiveRenderContext>& context, const bool hasBackgroundImage = false);
         static void addTextRunSelectActions(const std::shared_ptr<AdaptiveRenderContext>& context);
         static void AddActions(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseActionElement>>& actions, std::shared_ptr<AdaptiveRenderContext> context);
 		static void AddContainerElements(std::shared_ptr<QmlTag> uiContainer, const std::vector<std::shared_ptr<AdaptiveCards::BaseCardElement>>& elements, std::shared_ptr<AdaptiveRenderContext> context);
