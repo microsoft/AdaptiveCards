@@ -8,7 +8,7 @@ import * as Actions from "../actions";
 
 let iconsInitialized = false;
 
-export const useFluentUI = () => {
+export function useFluentUI() {
     if (!iconsInitialized) {
         initializeIcons();
         iconsInitialized = true;
@@ -18,7 +18,7 @@ export const useFluentUI = () => {
 	AC.GlobalRegistry.elements.register("Input.Date", Components.InputDateFluentUI);
     AC.GlobalRegistry.elements.register("Input.Text", Components.InputTextFluentUI);
     AC.GlobalRegistry.elements.register("Input.Time", Components.InputTimeFluentUI);
-	AC.GlobalRegistry.elements.register("Input.Number", Components.InputNumberFabric);
+	AC.GlobalRegistry.elements.register("Input.Number", Components.InputNumberFluentUI);
 	AC.GlobalRegistry.elements.register("Input.Toggle",  Components.InputToggleFluentUI);
     AC.GlobalRegistry.elements.register("Input.ChoiceSet", Components.InputChoiceSetFluentUI);
 

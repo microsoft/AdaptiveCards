@@ -97,6 +97,42 @@ This example is implemented in the **example.html** file.
 
 For a list of and documentation on built-in functions, please refer to the [AdaptiveExpressions documentation](https://aka.ms/adaptive-expressions).
 
+### Customization
+
+```js
+/**
+ * Holds global settings that can be used to customize the way templates are expanded.
+ */
+export class GlobalSettings {
+    /**
+     * Callback invoked when expression evaluation needs the value of a field in the source data object
+     * and that field is undefined or null. By default, expression evaluation will substitute an undefined
+     * field with its binding expression (e.g. `${field}`). This callback makes it possible to customize that
+     * behavior.
+     * 
+     * **Example**
+     * Given this data object:
+     * 
+     * ```json
+     * {
+     *     firstName: "David"
+     * }
+     * ```
+     * 
+     * The expression `${firstName} ${lastName}` will evaluate to "David ${lastName}" because the `lastName`
+     * field is undefined.
+     * 
+     * Now let's set the callback:
+     * ```typescript
+     * GlobalSettings.getUndefinedFieldValueSubstitutionString = (path: string) => { return "<undefined value>"; }
+     * ```
+     * 
+     * With that, the above expression will evaluate to "David &lt;undefined value&gt;"
+     */
+    static getUndefinedFieldValueSubstitutionString?: (path: string) => string | undefined = undefined;
+}
+```
+
 #### Custom functions
 
 ```typescript

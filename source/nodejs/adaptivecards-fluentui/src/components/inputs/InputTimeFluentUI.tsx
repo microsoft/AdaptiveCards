@@ -9,6 +9,10 @@ import * as Shared from "../../utils/shared";
 export class InputTimeFluentUI extends AC.TimeInput {
 
 	protected internalRender(): HTMLElement {
+		if(this.defaultValue) {
+			this._value = this.defaultValue;
+		}
+		
         const element = Shared.sharedInternalRender(this.renderReact);
         element.style.width = "100%";
         return element;
@@ -19,13 +23,12 @@ export class InputTimeFluentUI extends AC.TimeInput {
     }
 
 	private _value;
-	public get value(): any
-	{
-		return this._value || this.defaultValue;
+	public get value(): any {
+		return this._value;
 	}
 
 	public isSet(): any {
-		return this._value !== undefined || this.defaultValue !== undefined;
+		return this._value ? true : false;
 	}
 
 

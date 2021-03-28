@@ -6,23 +6,26 @@ import * as AC from "adaptivecards";
 import * as FluentUI from "@fluentui/react";
 import * as Shared from "../../utils/shared";
 
-export class InputNumberFabric extends AC.NumberInput {
+export class InputNumberFluentUI extends AC.NumberInput {
 
 	protected handleChange = (event: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>, newValue?: string) => {
 		this._value = newValue;
     }
 
 	private _value;
-	public get value(): any
-	{
-		return this._value || this.defaultValue;
+	public get value(): any {
+		return this._value;
 	}
 
 	public isSet(): any {
-		return this._value !== undefined || this.defaultValue !== undefined;
+		return this._value ? true : false
 	}
 
 	protected internalRender(): HTMLElement {
+		if(this.defaultValue) {
+			this._value = this.defaultValue;
+		}
+
         const element = Shared.sharedInternalRender(this.renderReact);
         element.style.width = "100%";
         return element;

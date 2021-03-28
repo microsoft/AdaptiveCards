@@ -10,18 +10,21 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
 
 	private _value;
 	public get value(): any {
-	  return this._value || this.defaultValue;
+	  return this._value;
 	}
   
 	public isSet(): any {
-	  return this._value !== undefined || this.defaultValue !== undefined;
+	  return this._value ? true : false;
 	}
 
 	private _selectedValues: string[] = []
 
-	
 	protected internalRender(): HTMLElement {
-		this._selectedValues = this.defaultValueToArray(this.defaultValue);
+		if(this.defaultValue) {
+			this._value = this.defaultValue;
+			this._selectedValues = this.defaultValueToArray(this.defaultValue);
+		}
+
         const element = Shared.sharedInternalRender(this.renderReact);
         element.style.width = "100%";
         return element;
@@ -44,7 +47,7 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
 			defaultSelectedKeys={this.isMultiSelect ? this.defaultValueToArray(this.defaultValue) : undefined}
 			defaultValue={this.defaultValue}
 			multiSelectDelimiter=", "
-            selectedKey={this._value}
+            //selectedKey={this._value}
 			//selectedKeys={this.isMultiSelect ? this._selectedValues : undefined}
         />
     )

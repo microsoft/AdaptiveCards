@@ -2,13 +2,13 @@
 
 This package "lights-up" the Adaptive Card renderer with [Microsoft's Fluent UI controls](https://developer.microsoft.com/en-us/fluentui#/).
 
-![Adaptive cards fluent animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/main/source/nodejs/adaptivecards-fluent/adaptivecards-fluent.gif)
+![Adaptive cards fluent animation](https://raw.githubusercontent.com/microsoft/AdaptiveCards/main/source/nodejs/adaptivecards-fluentui/adaptivecards-fluent.gif)
 
 
 ## Extended Controls
 
-| AdaptiveCard Element                                  | Fluent UI Control                                                                     |
-| ----------------------------------------------------- | ------------------------------------------------------------------------------------- |
+| AdaptiveCard Element                                  | Fluent UI Control                                                                       |
+| ----------------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Input.Date                                            | [DatePicker](https://developer.microsoft.com/en-us/fluentui#/controls/web/datepicker)   |
 | Input.Number, Input.Text, Input.Time                  | [TextField](https://developer.microsoft.com/en-us/fluentui#/controls/web/textfield)     |
 | Input.Toggle                                          | [Toggle](https://developer.microsoft.com/en-us/fluentui#/controls/web/toggle)           |
@@ -47,17 +47,17 @@ import * as ACFluentUI from "adaptivecards-fluentui";
 // In practice you'll probably get this from a service
 // see http://adaptivecards.io/samples/ for inspiration
 let card = {
-    "type": "AdaptiveCard",
-    "version": "1.3",
-    "body": [
-        {
-            "type": "Image",
-            "url": "https://adaptivecards.io/content/adaptive-card-50.png"
-        },
-        {
-            "type": "TextBlock",
-            "text": "Hello **Adaptive Cards!**"
-        },
+	"type": "AdaptiveCard",
+	"version": "1.3",
+	"body": [
+		{
+			"type": "Image",
+			"url": "https://adaptivecards.io/content/adaptive-card-50.png"
+		},
+		{
+			"type": "TextBlock",
+			"text": "Hello **Adaptive Cards!**"
+		},
 		{
 			"type": "Input.Text",
 			"placeholder": "Enter your name",
@@ -66,18 +66,18 @@ let card = {
 			"style": "text",
 			"id": "Name"
 		}
-    ],
-    "actions": [
-        {
-            "type": "Action.OpenUrl",
-            "title": "Learn more",
-            "url": "https://adaptivecards.io"
-        },
-        {
-            "type": "Action.Submit",
-            "title": "Submit"
-        }
-    ]
+	],
+	"actions": [
+		{
+			"type": "Action.OpenUrl",
+			"title": "Learn more",
+			"url": "https://adaptivecards.io"
+		},
+		{
+			"type": "Action.Submit",
+			"title": "Submit"
+		}
+	]
 };
 
 // Create an AdaptiveCard instance
@@ -89,8 +89,8 @@ ACFluentUI.useFluentUI();
 // Set its hostConfig property unless you want to use the default Host Config
 // Host Config defines the style and behavior of a card
 adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
-    fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
-    // More host config options
+	fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
+	// More host config options
 });
 
 // Set the adaptive card's event handlers. onExecuteAction is invoked

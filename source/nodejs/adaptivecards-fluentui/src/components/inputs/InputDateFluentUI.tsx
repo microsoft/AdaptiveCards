@@ -19,16 +19,19 @@ export class InputDateFluentUI extends AC.DateInput {
 
   private _value;
   public get value(): any {
-    return this._value || this.defaultValue;
+    return this._value;
   }
 
   public isSet(): any {
-    return this._value !== undefined || this.defaultValue !== undefined;
+    return this._value ? true : false;
   }
 
   protected internalRender(): HTMLElement {
-    const element = Shared.sharedInternalRender(this.renderReact);
+	if(this.defaultValue) {
+		this._value = this.defaultValue;
+	}
 
+    const element = Shared.sharedInternalRender(this.renderReact);
     element.style.width = "100%";
     return element;
   }
