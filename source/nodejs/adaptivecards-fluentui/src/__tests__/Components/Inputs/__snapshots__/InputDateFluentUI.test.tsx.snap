@@ -10,7 +10,7 @@ exports[`InputDateExtended renders component correctly 1`] = `
     style="display: flex;"
   >
     <div
-      id="__ac-3f485d42-bdd3-45fd-ba29-fbcedcffd129"
+      id="__ac-d0001c3f-ebc1-4e3d-bdc0-a92387195ddb"
       style="width: 100%; min-width: 0px;"
     >
       <div
@@ -35,9 +35,10 @@ exports[`InputDateExtended renders component correctly 1`] = `
                   class="ms-TextField-field field-47"
                   id="date-label"
                   placeholder="Enter a date"
+                  readonly=""
                   role="combobox"
                   type="text"
-                  value=""
+                  value="Invalid Date"
                 />
                 <i
                   aria-hidden="true"

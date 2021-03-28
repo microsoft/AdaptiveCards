@@ -23,7 +23,7 @@ This package "lights-up" the Adaptive Card renderer with [Microsoft's Fluent UI 
 npm install adaptivecards-fluentui
 ```
 
-**NOTE**: you must also install the necessary peer dependencies:
+**IMPORTANT**: you must also install the necessary peer dependencies:
 
 * adaptivecards
 * @fluentui/react
@@ -48,7 +48,7 @@ import * as ACFluentUI from "adaptivecards-fluentui";
 // see http://adaptivecards.io/samples/ for inspiration
 let card = {
     "type": "AdaptiveCard",
-    "version": "1.0",
+    "version": "1.3",
     "body": [
         {
             "type": "Image",
@@ -57,7 +57,15 @@ let card = {
         {
             "type": "TextBlock",
             "text": "Hello **Adaptive Cards!**"
-        }
+        },
+		{
+			"type": "Input.Text",
+			"placeholder": "Enter your name",
+			"label": "Name",
+			"isRequired": false,
+			"style": "text",
+			"id": "Name"
+		}
     ],
     "actions": [
         {
@@ -66,9 +74,8 @@ let card = {
             "url": "https://adaptivecards.io"
         },
         {
-            "type": "Action.OpenUrl",
-            "title": "GitHub",
-            "url": "https://github.com/Microsoft/AdaptiveCards"
+            "type": "Action.Submit",
+            "title": "Submit"
         }
     ]
 };
@@ -76,7 +83,7 @@ let card = {
 // Create an AdaptiveCard instance
 let adaptiveCard = new AdaptiveCards.AdaptiveCard();
 
-// Use Fabric controls when rendering Adaptive Cards
+// Use Fluent UI controls when rendering Adaptive Cards
 ACFluentUI.useFluentUI();
 
 // Set its hostConfig property unless you want to use the default Host Config
@@ -88,7 +95,24 @@ adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
 
 // Set the adaptive card's event handlers. onExecuteAction is invoked
 // whenever an action is clicked in the card
-adaptiveCard.onExecuteAction = function(action) { alert("Ow!"); }
+adaptiveCard.onExecuteAction = function (action) {
+	var message = "Action executed\n";
+	message += "    Title: " + action.title + "\n";
+
+	if (action instanceof AdaptiveCards.OpenUrlAction) {
+		message += "    Type: OpenUrl\n";
+		message += "    Url: " + action.url + "\n";
+	}
+	else if (action instanceof AdaptiveCards.SubmitAction) {
+		message += "    Type: Submit\n";
+		message += "    Data: " + JSON.stringify(action.data);
+	}
+	else {
+		message += "    Type: <unknown>";
+	}
+
+	alert(message);
+}
 
 // Parse the card payload
 adaptiveCard.parse(card);

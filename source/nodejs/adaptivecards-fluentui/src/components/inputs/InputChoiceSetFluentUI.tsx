@@ -17,10 +17,11 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
 	  return this._value !== undefined || this.defaultValue !== undefined;
 	}
 
-	private _selectedValues: string[] = [];
+	private _selectedValues: string[] = []
 
 	
 	protected internalRender(): HTMLElement {
+		this._selectedValues = this.defaultValueToArray(this.defaultValue);
         const element = Shared.sharedInternalRender(this.renderReact);
         element.style.width = "100%";
         return element;
@@ -33,26 +34,18 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
             this.createExpandedView()
     )
 
-    private parseChoises = (json: any) => {
-        this.choices = Array.isArray(json.choices) ?
-            json.choices.map(ch => {
-                let choice = new AC.Choice();
-                choice.parse(ch);
-                return choice;
-            }) :
-            [];
-    }
-
     private ComboBox = (): JSX.Element => (
-        <FluentUI.ComboBox
+        <FluentUI.Dropdown
             onChange={this.handleComboBoxChange}
             id={this.id}
             options={this.inputChoicesToComboBoxOptions(this.choices)}
             multiSelect={this.isMultiSelect}
-			defaultSelectedKey={this.defaultValue}
+			defaultSelectedKey={this.isMultiSelect ? undefined : this.defaultValue}
+			defaultSelectedKeys={this.isMultiSelect ? this.defaultValueToArray(this.defaultValue) : undefined}
 			defaultValue={this.defaultValue}
-			multiSelectDelimiter=","
+			multiSelectDelimiter=", "
             selectedKey={this._value}
+			//selectedKeys={this.isMultiSelect ? this._selectedValues : undefined}
         />
     )
 
@@ -79,11 +72,11 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
                 <FluentUI.Checkbox
                     key={c.value}
                     label={c.title}
-                    defaultChecked={this.defaultValueToArray(this.value).includes(c.value)}
+                    defaultChecked={this.defaultValueToArray(this.defaultValue).includes(c.value)}
                     onChange={(ev, checked) => {
                         this.updateMultiselectData(checked, c.value);
-                        ev.stopPropagation();
-                        ev.preventDefault();
+                        //ev.stopPropagation();
+                        //ev.preventDefault();
                     }}
                     styles={{
                         root: {
@@ -113,28 +106,24 @@ export class InputChoiceSetFluentUI extends AC.ChoiceSetInput {
     private handleChoiceGroupChange =
         (ev?: React.FormEvent<HTMLElement | HTMLInputElement>, option?: FluentUI.IChoiceGroupOption): void => {
             this._value = option.key;
-            ev.stopPropagation();
-            ev.preventDefault();
+            //ev.stopPropagation();
+            //ev.preventDefault();
         }
 
     private handleComboBoxChange =
-        (event: React.FormEvent<FluentUI.IComboBox>, option?: FluentUI.IComboBoxOption, index?: number, value?: string): void => {
+	(event: React.FormEvent<HTMLDivElement>, item: FluentUI.IDropdownOption): void => {
             if (this.isMultiSelect) {
-                this.updateMultiselectData(option.selected, option.key);
+                this.updateMultiselectData(item.selected, item.key);
             } else {
-                this._value = `${option.key}`;
+                this._value = `${item.key}`;
             }
-            event.stopPropagation();
-            event.preventDefault();
+           // event.stopPropagation();
+           // event.preventDefault();
         }
 
     private updateMultiselectData = (selected: boolean, key: any): void => {
-        this.updateSelectedValues(selected, key);
-        this._value = this._selectedValues.join(",");
-    }
-
-    private updateSelectedValues = (selected: boolean, key: any): void => {
         selected ? this._selectedValues.push(key) : this.removeItemFromArray(this._selectedValues, key);
+        this._value = this._selectedValues.join(",");
     }
 
     private removeItemFromArray = (arr: any[], item: any): void => {

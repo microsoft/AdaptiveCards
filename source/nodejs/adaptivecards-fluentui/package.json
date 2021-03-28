@@ -1,7 +1,7 @@
 {
 	"name": "adaptivecards-fluentui",
 	"version": "0.5.0",
-	"description": "Updates Adaptive Card rendering to use Fluent UI controls",
+	"description": "Renders Adaptive Card inputs using Fluent UI controls",
 	"author": "AdaptiveCards",
 	"license": "MIT",
 	"homepage": "https://adaptivecards.io",
@@ -30,7 +30,7 @@
 		"start": "webpack-dev-server --open --local",
 		"dts": "dts-generator --prefix adaptivecards-fluentui --project . --out dist/adaptivecards-fluentui.d.ts",
 		"lint": "eslint src/*.ts src/actions/**/*.ts* src/components/**/*.ts* src/utils/**/*.ts*",
-		"release": "npm run clean && npm run build && npm test && webpack --mode=production && npm run dts"
+		"release": "npm run clean && npm run build && npm test -- -u && webpack --mode=production && npm run dts"
 	},
 	"repository": {
 		"type": "git",

@@ -1,0 +1,55 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`InputChoiceSet inputChoiceSetComboBox should be rendered correctly 1`] = `
+<div
+  style="display: flex; flex-direction: column; box-sizing: border-box; flex: 0 0 auto;"
+>
+  <div
+    class="ac-input-container"
+    style="display: flex;"
+  >
+    <div
+      id="__ac-ed99977d-98c5-446c-8bb7-9a5a95ef0d82"
+      style="width: 100%; min-width: 0px;"
+    >
+      <div
+        class="ms-Dropdown-container"
+      >
+        <div
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="ms-Dropdown dropdown-40"
+          data-is-focusable="true"
+          role="listbox"
+          tabindex="0"
+        >
+          <span
+            aria-atomic="true"
+            aria-invalid="false"
+            aria-live="polite"
+            aria-posinset="1"
+            aria-selected="true"
+            aria-setsize="3"
+            class="ms-Dropdown-title title-41"
+            id="Dropdown0-option"
+            role="option"
+          >
+            Red
+          </span>
+          <span
+            class="ms-Dropdown-caretDownWrapper caretDownWrapper-42"
+          >
+            <i
+              aria-hidden="true"
+              class="ms-Dropdown-caretDown caretDown-57"
+              data-icon-name="ChevronDown"
+            >
+              
+            </i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
