@@ -149,7 +149,24 @@ adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
 
 // Set the adaptive card's event handlers. onExecuteAction is invoked
 // whenever an action is clicked in the card
-adaptiveCard.onExecuteAction = function(action) { alert("Ow!"); }
+adaptiveCard.onExecuteAction = function (action) {
+	var message = "Action executed\n";
+	message += "    Title: " + action.title + "\n";
+
+	if (action instanceof Adaptive.OpenUrlAction) {
+		message += "    Type: OpenUrl\n";
+		message += "    Url: " + action.url + "\n";
+	}
+	else if (action instanceof Adaptive.SubmitAction) {
+		message += "    Type: Submit\n";
+		message += "    Data: " + JSON.stringify(action.data);
+	}
+	else {
+		message += "    Type: <unknown>";
+	}
+
+	alert(message);
+}
 
 // Parse the card payload
 adaptiveCard.parse(card);
