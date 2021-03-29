@@ -8,17 +8,15 @@ import * as Shared from "../utils/shared";
 import { ActionButton } from "./ActionButton";
 
 export const createActionDiv = (
-    title: string,
-    iconUrl: string,
+    action: AC.Action,
     baseCssClass: string,
     iconPlacement: AC.ActionIconPlacement,
     iconSize: number): HTMLDivElement => {
     const div = Shared.getDiv();
     ReactDOM.render(
         <ActionButton
-            text={title}
+            action={action}
             className={baseCssClass}
-            iconUrl={iconUrl}
             iconPlacement={iconPlacement}
             iconSize={iconSize}></ActionButton>, div);
     return div;
@@ -34,7 +32,7 @@ export class OpenUrlActionFluentUI extends AC.OpenUrlAction {
 
     public render(baseCssClass?: string) {
         let actionsConfig = this.parent.hostConfig.actions;
-        const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
+        const div = createActionDiv(this, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
         this.internalRenderedElement = div;
     }
 }
@@ -49,7 +47,7 @@ export class SubmitActionFluentUI extends AC.SubmitAction {
 
     public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
-        const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
+        const div = createActionDiv(this, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
         this.internalRenderedElement = div;
     }
 }
@@ -64,7 +62,7 @@ export class ShowCardActionFluentUI extends AC.ShowCardAction {
 
     public render(baseCssClass?: string): void {
         let actionsConfig = this.parent.hostConfig.actions;
-        const div = createActionDiv(this.title, this.iconUrl, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
+        const div = createActionDiv(this, baseCssClass, actionsConfig.iconPlacement, actionsConfig.iconSize);
         this.internalRenderedElement = div;
     }
 }
@@ -79,7 +77,7 @@ export class ToggleVisibilityActionFluentUI extends AC.ToggleVisibilityAction {
 
     public render(baseCssClass?: string): void {
         const div = Shared.getDiv();
-        ReactDOM.render(<ActionButton text={this.title} className={baseCssClass} />, div);
+        ReactDOM.render(<ActionButton action={this} className={baseCssClass} />, div);
         this.internalRenderedElement = div;
     }
 }

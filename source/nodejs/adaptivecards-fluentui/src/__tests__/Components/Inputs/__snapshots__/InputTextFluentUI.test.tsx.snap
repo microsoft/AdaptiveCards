@@ -10,7 +10,7 @@ exports[`InputTextExtended renders int text multiline correctly 1`] = `
     style="display: flex;"
   >
     <div
-      id="__ac-2781ea7b-30e0-48b3-8836-653c79cb3445"
+      id="__ac-378f6a14-35ac-4249-9b3a-91854fe6f610"
       style="width: 100%; min-width: 0px;"
     >
       <div
@@ -50,7 +50,7 @@ exports[`InputTextExtended renders int text single line correctly 1`] = `
     style="display: flex;"
   >
     <div
-      id="__ac-191b2595-1742-4839-ac9c-cbcb74fa06bb"
+      id="__ac-e25c1801-2713-4f66-a937-2bb6660f8a02"
       style="width: 100%; min-width: 0px;"
     >
       <div
@@ -89,7 +89,7 @@ exports[`InputTextExtended renders text box with inline action correctly 1`] = `
     style="display: flex;"
   >
     <div
-      id="__ac-427bee49-fe38-4511-9101-172172da4fd4"
+      id="__ac-22ebedc1-f54f-46c7-ab2e-907f205db426"
       style="width: 100%; min-width: 0px;"
     >
       <div
