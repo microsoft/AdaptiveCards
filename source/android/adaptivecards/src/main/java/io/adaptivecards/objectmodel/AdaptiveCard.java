@@ -60,6 +60,10 @@ public class AdaptiveCard {
     this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_4(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
   }
 
+  public AdaptiveCard(String version, String fallbackText, BackgroundImage backgroundImage, Refresh refresh, Authentication authentication, ContainerStyle style, String speak, String language, VerticalContentAlignment verticalContentAlignment, HeightType height, long minHeight, BaseCardElementVector body, BaseActionElementVector actions) {
+    this(AdaptiveCardObjectModelJNI.new_AdaptiveCard__SWIG_5(version, fallbackText, BackgroundImage.getCPtr(backgroundImage), backgroundImage, Refresh.getCPtr(refresh), refresh, Authentication.getCPtr(authentication), authentication, style.swigValue(), speak, language, verticalContentAlignment.swigValue(), height.swigValue(), minHeight, BaseCardElementVector.getCPtr(body), body, BaseActionElementVector.getCPtr(actions), actions), true);
+  }
+
   public String GetVersion() {
     return AdaptiveCardObjectModelJNI.AdaptiveCard_GetVersion(swigCPtr, this);
   }
@@ -83,6 +87,24 @@ public class AdaptiveCard {
 
   public void SetBackgroundImage(BackgroundImage value) {
     AdaptiveCardObjectModelJNI.AdaptiveCard_SetBackgroundImage(swigCPtr, this, BackgroundImage.getCPtr(value), value);
+  }
+
+  public Refresh GetRefresh() {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetRefresh(swigCPtr, this);
+    return (cPtr == 0) ? null : new Refresh(cPtr, true);
+  }
+
+  public void SetRefresh(Refresh value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetRefresh(swigCPtr, this, Refresh.getCPtr(value), value);
+  }
+
+  public Authentication GetAuthentication() {
+    long cPtr = AdaptiveCardObjectModelJNI.AdaptiveCard_GetAuthentication(swigCPtr, this);
+    return (cPtr == 0) ? null : new Authentication(cPtr, true);
+  }
+
+  public void SetAuthentication(Authentication value) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetAuthentication(swigCPtr, this, Authentication.getCPtr(value), value);
   }
 
   public String GetSpeak() {
@@ -148,6 +170,18 @@ public class AdaptiveCard {
 
   public BaseActionElementVector GetActions() {
     return new BaseActionElementVector(AdaptiveCardObjectModelJNI.AdaptiveCard_GetActions__SWIG_0(swigCPtr, this), false);
+  }
+
+  public SWIGTYPE_p_std__unordered_setT_std__string_t GetKnownProperties() {
+    return new SWIGTYPE_p_std__unordered_setT_std__string_t(AdaptiveCardObjectModelJNI.AdaptiveCard_GetKnownProperties(swigCPtr, this), false);
+  }
+
+  public JsonValue GetAdditionalProperties() {
+    return new JsonValue(AdaptiveCardObjectModelJNI.AdaptiveCard_GetAdditionalProperties(swigCPtr, this), false);
+  }
+
+  public void SetAdditionalProperties(JsonValue additionalProperties) {
+    AdaptiveCardObjectModelJNI.AdaptiveCard_SetAdditionalProperties__SWIG_0(swigCPtr, this, JsonValue.getCPtr(additionalProperties), additionalProperties);
   }
 
   public RemoteResourceInformationVector GetResourceInformation() {

@@ -256,10 +256,10 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
     boolean isValid;
     RETURN_IF_FAILED(InputValue::IsValueValid(&isValid));
 
-    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
+    ComPtr<ABI::Windows::Foundation::IReference<double>> max;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Max(&max));
 
-    ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
+    ComPtr<ABI::Windows::Foundation::IReference<double>> min;
     RETURN_IF_FAILED(m_adaptiveNumberInput->get_Min(&min));
 
     HString currentValue;
@@ -271,20 +271,20 @@ HRESULT NumberInputValue::IsValueValid(_Out_ boolean* isInputValid)
         try
         {
             const std::string currentValueStdString = HStringToUTF8(currentValue.Get());
-            int currentInt = std::stoi(currentValueStdString);
+            double currentDouble = std::stod(currentValueStdString);
 
             if (max.Get())
             {
-                int maxInt;
-                RETURN_IF_FAILED(max->get_Value(&maxInt));
-                isValid &= (currentInt <= maxInt);
+                double maxDouble;
+                RETURN_IF_FAILED(max->get_Value(&maxDouble));
+                isValid &= (currentDouble <= maxDouble);
             }
 
             if (min.Get())
             {
-                int minInt;
-                RETURN_IF_FAILED(min->get_Value(&minInt));
-                isValid &= (currentInt >= minInt);
+                double minDouble;
+                RETURN_IF_FAILED(min->get_Value(&minDouble));
+                isValid &= (currentDouble >= minDouble);
             }
         }
         catch (...)

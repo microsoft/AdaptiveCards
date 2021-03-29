@@ -20,12 +20,15 @@
 #import "CustomTextBlockRenderer.h"
 #import <SafariServices/SafariServices.h>
 
-CGFloat kAdaptiveCardsWidth = 360;
+// the width of the AdaptiveCards does not need to be set.
+// if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
+CGFloat kAdaptiveCardsWidth = 0;
 
 @interface ViewController () {
     BOOL _enableCustomRenderer;
     id<ACRIBaseActionSetRenderer> _defaultRenderer;
     ACRChatWindow *_dataSource;
+    dispatch_queue_t _global_queue;
 }
 
 @end
@@ -120,12 +123,12 @@ CGFloat kAdaptiveCardsWidth = 360;
         // enum will be part of API in next iterations when custom renderer extended to non-action
         // type - tracked by issue #809
         [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance]
-                        cardElementType:@3];
+                      actionElementType:ACROpenUrl useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomTextBlockRenderer getInstance]
-                                 cardElementType:ACRTextBlock];
+                                 cardElementType:ACRTextBlock useResourceResolver:YES];
         [registration setBaseCardElementRenderer:[CustomInputNumberRenderer getInstance]
-                                 cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet];
+                                 cardElementType:ACRNumberInput useResourceResolver:YES];
+        [registration setBaseCardElementRenderer:[CustomActionSetRenderer getInstance] cardElementType:ACRActionSet useResourceResolver:YES];
 
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRAction];
         [[ACRTargetBuilderRegistration getInstance] setTargetBuilder:[ACRCustomSubmitTargetBuilder getInstance] actionElementType:ACRSubmit capability:ACRQuickReply];
@@ -133,10 +136,9 @@ CGFloat kAdaptiveCardsWidth = 360;
         _defaultRenderer = [registration getActionSetRenderer];
         [registration setActionSetRenderer:self];
     } else {
-        [registration setActionRenderer:nil cardElementType:@3];
+        [registration setActionRenderer:nil actionElementType:ACROpenUrl];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRTextBlock];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRNumberInput];
-        [registration setBaseCardElementRenderer:nil cardElementType:ACRImage];
         [registration setBaseCardElementRenderer:nil cardElementType:ACRActionSet];
         [registration setActionSetRenderer:nil];
         _enableCustomRendererButton.backgroundColor = [UIColor colorWithRed:0 / 255
@@ -164,6 +166,7 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _global_queue = dispatch_get_main_queue();
 
     kAdaptiveCardsWidth = [[UIScreen mainScreen] bounds].size.width - 32.0f;
     [self registerForKeyboardNotifications];
@@ -233,6 +236,9 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.chatWindow = [[UITableView alloc] init];
     self.chatWindow.translatesAutoresizingMaskIntoConstraints = NO;
     self.chatWindow.separatorStyle = UITableViewCellSeparatorStyleSingleLineEtched;
+
+    // the width of the AdaptiveCards does not need to be set.
+    // if the width for Adaptive Cards is zero, the width is determined by the contraint(s) set externally on the card.
     _dataSource = [[ACRChatWindow alloc] init:kAdaptiveCardsWidth];
     _dataSource.adaptiveCardsDelegates = self;
     self.chatWindow.dataSource = _dataSource;
@@ -256,29 +262,6 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)update:(NSString *)jsonStr
-{
-    self.editableStr = jsonStr;
-
-    if (@available(iOS 11.0, *)) {
-        [self.chatWindow
-            performBatchUpdates:^(void) {
-                [_dataSource insertCard:jsonStr];
-                NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-                NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-            }
-                     completion:nil];
-    } else {
-        [self.chatWindow beginUpdates];
-        [_dataSource insertCard:jsonStr];
-        NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-        NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-        [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
-        [self.chatWindow endUpdates];
-    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -306,17 +289,26 @@ CGFloat kAdaptiveCardsWidth = 360;
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
         [self presentViewController:svc animated:YES completion:nil];
-    } else if (action.type == ACRSubmit) {
+    } else if (action.type == ACRSubmit || action.type == ACRExecute) {
+        NSMutableArray<NSString *> *fetchedInputList = [NSMutableArray array];
         NSData *userInputsAsJson = [card inputs];
-        NSString *actionDataField = [action data];
-
-        NSData *actionData = [actionDataField dataUsingEncoding:NSUTF8StringEncoding];
-        NSMutableData *combinedData = [actionData mutableCopy];
-        [combinedData appendData:userInputsAsJson];
-        NSString *str = [[NSString alloc] initWithData:combinedData
-                                              encoding:NSUTF8StringEncoding];
+        if (userInputsAsJson) {
+            [fetchedInputList addObject:[[NSString alloc] initWithData:userInputsAsJson
+                                                              encoding:NSUTF8StringEncoding]];
+        }
+        
+        NSString *data = [action data];
+        if (data && data.length) {
+            [fetchedInputList addObject:[NSString stringWithFormat:@"\"data\" : %@", data]];
+        }
+        
+        if (action.type == ACRExecute) {
+            if (action.verb && action.verb.length) {
+                [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
+            }
+        }
+        NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
         [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
-
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;
@@ -324,9 +316,9 @@ CGFloat kAdaptiveCardsWidth = 360;
             [self presentViewController:newType.alertController animated:YES completion:nil];
         }
     } else if (action.type == ACRToggleVisibility) {
-        [self reloadRowsAtChatWindows];
+        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
     } else if (action.type == ACRShowCard) {
-        [self reloadRowsAtChatWindows];
+        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
     }
 }
 
@@ -339,7 +331,7 @@ CGFloat kAdaptiveCardsWidth = 360;
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame
 {
-    [self reloadRowsAtChatWindows];
+    [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForSelectedRows];
 }
 
 - (void)didChangeViewLayout:(CGRect)oldFrame newFrame:(CGRect)newFrame properties:(NSDictionary *)properties
@@ -349,10 +341,10 @@ CGFloat kAdaptiveCardsWidth = 360;
         UIView *focusedView = properties[ACRAggregateTargetFirstResponder];
         if (focusedView && [focusedView isKindOfClass:[UIView class]]) {
             [self.chatWindow setContentOffset:focusedView.frame.origin animated:YES];
-            [self reloadRowsAtChatWindows];
+            [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
         }
     } else {
-        [self reloadRowsAtChatWindows];
+        [self reloadRowsAtChatWindowsWithIndexPaths:self.chatWindow.indexPathsForVisibleRows];
     }
 }
 
@@ -432,11 +424,6 @@ CGFloat kAdaptiveCardsWidth = 360;
     self.scrView.scrollIndicatorInsets = contentInsets;
 }
 
-- (void)didLoadElements
-{
-    [self reloadRowsAtChatWindows];
-}
-
 - (NSArray<UIStackView *> *)buildButtonsLayout:(NSLayoutAnchor *)centerXAnchor
 {
     NSArray<UIStackView *> *layout = @[ [self configureButtons:centerXAnchor distribution:UIStackViewDistributionFillEqually],
@@ -500,18 +487,51 @@ CGFloat kAdaptiveCardsWidth = 360;
     return buttonLayout;
 }
 
-- (void)reloadRowsAtChatWindows
+- (void)update:(NSString *)jsonStr
 {
-    void (^scroll)(BOOL) = ^(BOOL isFinished) {
-        if (isFinished) {
-            NSInteger lastRowIndex1 = [self.chatWindow numberOfRowsInSection:0] - 1;
-            if (lastRowIndex1 > 0) {
-                NSIndexPath *pathToLastRow1 = [NSIndexPath indexPathForRow:lastRowIndex1 inSection:0];
-                [self.chatWindow scrollToRowAtIndexPath:pathToLastRow1 atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            }
-        }
-    };
-    [self.chatWindow reloadData];
-    scroll(YES);
+    NSInteger lastRowIndex = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
+    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+    // resources such as images may not be ready when AdaptiveCard is added to its super view
+    // AdaptiveCard can notify when its resources are all loaded via - (void)didLoadElements delegate
+    // but the notification can come at any time
+    // adding the two tasks, rendering the card & handling the notification, to a task queue ensures
+    // the syncronization.
+    dispatch_async(_global_queue, ^{
+        self.editableStr = jsonStr;
+        // the data source will parse & render the card, and update its store for AdaptiveCards
+        [self->_dataSource insertCard:jsonStr];
+        // tell the table view UI to add a row
+        [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationBottom];
+    });
+}
+
+// ViewController's AdaptiveCard delegate that handles the resource loading completion event.
+- (void)didLoadElements
+{
+    // GCD ensures that this event happens after the AdaptiveCard is rendered and added to the table view.
+    // updating the data source & its table view is complete when it's the turn for the enqueued task by the delegate.
+    dispatch_async(_global_queue,
+                   ^{
+                       NSInteger lastRowIndex = [self->_dataSource tableView:self.chatWindow numberOfRowsInSection:0] - 1;
+                       NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
+                       // reload the row; it is possible that the row height, for example, is calculated without images loaded
+                       [self.chatWindow reloadRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+                       // scroll the new card to the top
+                       [self.chatWindow scrollToRowAtIndexPath:pathToLastRow atScrollPosition:UITableViewScrollPositionTop animated:YES];
+                   });
+}
+
+
+- (void)reloadRowsAtChatWindows:(NSIndexPath *)indexPath
+{
+    [self reloadRowsAtChatWindowsWithIndexPaths:@[ indexPath ]];
+}
+
+- (void)reloadRowsAtChatWindowsWithIndexPaths:(NSArray<NSIndexPath *> *)indexPaths
+{
+    dispatch_async(_global_queue,
+                   ^{
+                       [self.chatWindow reloadRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
+                   });
 }
 @end

@@ -17,13 +17,21 @@
 
 - (ACRBaseCardElementRenderer *_Nullable)getRenderer:(NSNumber *_Nonnull)cardElementType;
 
+- (ACRBaseActionElementRenderer *_Nullable)getActionRendererByType:(ACRActionType)actionElementType;
+
 - (ACRBaseActionElementRenderer *_Nullable)getActionRenderer:(NSNumber *_Nonnull)cardElementType;
 
 - (id<ACRIBaseActionSetRenderer>_Nullable)getActionSetRenderer;
 
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer actionElementType:(ACRActionType)actionElementType;
+
 - (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer cardElementType:(NSNumber *_Nonnull)cardElementType;
 
+- (void)setActionRenderer:(ACRBaseActionElementRenderer *_Nullable)renderer actionElementType:(ACRActionType)actionElementType useResourceResolver:(BOOL)doUse;
+
 - (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *_Nullable)renderer cardElementType:(ACRCardElementType)cardElementType;
+
+- (void)setBaseCardElementRenderer:(ACRBaseCardElementRenderer *_Nullable)renderer cardElementType:(ACRCardElementType)cardElementType useResourceResolver:(BOOL)doUse;
 
 - (void)setActionSetRenderer:(id<ACRIBaseActionSetRenderer>_Nullable)actionsetRenderer;
 

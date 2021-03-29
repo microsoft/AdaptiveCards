@@ -32,13 +32,15 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
                  ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview);
 
 void renderBackgroundImage(const std::shared_ptr<BackgroundImage> backgroundImageProperties,
-                           UIView *containerView, ACRView *rootView);
+                           ACRContentStackView *containerView, ACRView *rootView);
 
-void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *img);
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
                                      UIImageView *imageView, UIImage *img);
+
+void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView);
 
 ObserverActionBlock generateBackgroundImageObserverAction(
     std::shared_ptr<BackgroundImage> backgroundImageProperties, ACRView *observer,
@@ -98,3 +100,5 @@ ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimens
 ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment);
 
 void printSize(NSString *msg, CGSize size);
+
+NSData *JsonToNSData(const Json::Value &blob);

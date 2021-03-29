@@ -104,7 +104,7 @@
     if (self) {
         self.isRequired = numberInputBlock->GetIsRequired();
         auto value = numberInputBlock->GetValue();
-        self.text = (value.has_value()) ? [NSString stringWithFormat:@"%d", value.value_or(0)] : nil;
+        self.text = (value.has_value()) ? [[NSNumber numberWithDouble:value.value_or(0)] stringValue] : nil;
         self.hasText = self.text != nil;
 
         NSMutableCharacterSet *characterSets = [NSMutableCharacterSet characterSetWithCharactersInString:@"-."];
@@ -133,7 +133,7 @@
         if ([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
             return NO;
         }
-        int val = [self.text intValue];
+        double val = [self.text doubleValue];
         if (self.hasMin && val < self.min) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMin userInfo:nil];

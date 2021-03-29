@@ -24,7 +24,7 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
-			<pre><code class="json w3-mobile">${fs.readFileSync(jsonPath)}</code></pre>
+			<pre><code class="json w3-mobile" tabindex="0">${fs.readFileSync(jsonPath)}</code></pre>
 		</div>`;
 
 	if (templating) {
@@ -36,18 +36,18 @@ hexo.extend.helper.register('code_and_card', function (jsonPath, templatePath = 
 		<div class="w3-container w3-cell w3-mobile w3-rest code-snippet show-with-templating">
 			<div class="codeHeader">
 				<span class="language">Data JSON</span>
-				<button aria-label="Copy sample data JSON" class="action copy-code">
+				<button aria-label="Copy sample data JSON" class="action copy-data">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
-			<pre><code class="json w3-mobile code-short">${fs.readFileSync(dataPath)}</code></pre>
+			<pre><code class="json w3-mobile code-short" tabindex="0">${fs.readFileSync(dataPath)}</code></pre>
 			<div class="codeHeader">
 				<span class="language">Template JSON</span>
 				<button aria-label="Copy Adaptive Card Template sample JSON" class="action copy-code">
 					<span><i class="far fa-copy"></i> Copy</span>
 				</button>
 			</div>
-			<pre><code class="json w3-mobile">${fs.readFileSync(templatePath)}</code></pre>
+			<pre><code class="json w3-mobile" tabindex="0">${fs.readFileSync(templatePath)}</code></pre>
 		</div>`;
 	}
 

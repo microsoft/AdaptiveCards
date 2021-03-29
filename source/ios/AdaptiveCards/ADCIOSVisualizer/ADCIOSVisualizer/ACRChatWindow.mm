@@ -65,7 +65,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return adaptiveCardsPayloads.count;
+    return adaptiveCardsViews.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

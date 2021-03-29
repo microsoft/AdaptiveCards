@@ -13,6 +13,7 @@
 #import "ACRRendererPrivate.h"
 #import "ACRViewPrivate.h"
 #import "BaseActionElement.h"
+#import "UtiliOS.h"
 #import <UIKit/UIKit.h>
 
 @implementation ACRShowCardTarget {
@@ -48,7 +49,7 @@
 - (void)createShowCard:(NSMutableArray *)inputs superview:(UIView<ACRIContentHoldingView> *)superview
 {
     // configure padding using LayoutGuid
-    unsigned int padding = [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
+    unsigned int padding = [_config getHostConfig]->GetActions().showCard.inlineTopMargin;
 
     NSDictionary<NSString *, NSNumber *> *attributes =
         @{@"padding-top" : [NSNumber numberWithFloat:padding]};
@@ -69,7 +70,7 @@
                               hostconfig:_config];
     [_rootView popCurrentShowcard];
 
-    ContainerStyle containerStyle = ([_config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? _adaptiveCard->GetStyle() : [_config getHostConfig] -> GetActions().showCard.style;
+    ContainerStyle containerStyle = ([_config getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? _adaptiveCard->GetStyle() : [_config getHostConfig]->GetActions().showCard.style;
 
     ACRContainerStyle style = (ACRContainerStyle)(containerStyle);
 
@@ -80,7 +81,7 @@
     _adcView = adcView;
     _adcView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    CGFloat showCardPadding = [_config getHostConfig] -> GetSpacing().paddingSpacing;
+    CGFloat showCardPadding = [_config getHostConfig]->GetSpacing().paddingSpacing;
 
     _adcView.backgroundColor = UIColor.clearColor;
 
@@ -112,6 +113,14 @@
     BOOL hidden = _adcView.hidden;
     [_superview hideAllShowCards];
     _adcView.hidden = (hidden == YES) ? NO : YES;
+
+    // send candidate background image view, if the sent view is UIImageView and has UIImage in it
+    // AdatpiveCard will configure the backgroun
+    if (hidden) {
+        if ([_adcView.subviews count] > 1) {
+            renderBackgroundCoverMode(_adcView.subviews[1], _adcView);
+        }
+    }
     _button.selected = !isSelected;
 
     if ([_rootView.acrActionDelegate respondsToSelector:@selector(didChangeVisibility:isVisible:)]) {
@@ -123,7 +132,7 @@
         showCardFrame.origin = [_adcView convertPoint:_adcView.frame.origin toView:nil];
         CGRect oldFrame = showCardFrame;
         oldFrame.size.height = 0;
-        showCardFrame.size.height += [_config getHostConfig] -> GetActions().showCard.inlineTopMargin;
+        showCardFrame.size.height += [_config getHostConfig]->GetActions().showCard.inlineTopMargin;
         [_rootView.acrActionDelegate didChangeViewLayout:oldFrame newFrame:showCardFrame];
     }
     [_rootView.acrActionDelegate didFetchUserResponses:[_rootView card] action:_actionElement];

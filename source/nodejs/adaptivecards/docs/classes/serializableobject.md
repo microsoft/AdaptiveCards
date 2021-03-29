@@ -20,6 +20,8 @@
 
   ↳ [BackgroundImage](backgroundimage.md)
 
+  ↳ [RefreshDefinition](refreshdefinition.md)
+
 ## Index
 
 ### Constructors

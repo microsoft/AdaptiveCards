@@ -552,6 +552,41 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
+
+    private void onExecute(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
+    {
+        ExecuteAction executeAction = Util.tryCastTo(actionElement, ExecuteAction.class);
+
+        String verb = executeAction.GetVerb();
+        String data = executeAction.GetDataJson();
+        Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
+        if (!data.isEmpty())
+        {
+            try
+            {
+                JSONObject object = null;
+                if (!data.equals("null\n"))
+                {
+                    object = new JSONObject(data);
+                }
+                else
+                {
+                    object = new JSONObject();
+                }
+                showToast("Execute verb: " + verb + "\nData: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            }
+            catch (JSONException e)
+            {
+                showToast(e.toString(), Toast.LENGTH_LONG);
+            }
+        }
+        else
+        {
+            showToast("Execute verb: " + verb + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+        }
+    }
+
+
     private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
     {
         SubmitAction submitAction = Util.tryCastTo(actionElement, SubmitAction.class);
@@ -630,7 +665,11 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedCard)
     {
         ActionType actionType = actionElement.GetElementType();
-        if (actionType == ActionType.Submit)
+        if (actionType == ActionType.Execute)
+        {
+            onExecute(actionElement, renderedCard);
+        }
+        else if (actionType == ActionType.Submit)
         {
             onSubmit(actionElement, renderedCard);
         }

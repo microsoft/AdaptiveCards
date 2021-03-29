@@ -12,7 +12,7 @@
 #import "ACRContentHoldingUIView.h"
 #import "ACRIBaseCardElementRenderer.h"
 #import "ACRImageRenderer.h"
-#import "ACRRegistration.h"
+#import "ACRRegistrationPrivate.h"
 #import "ACRRendererPrivate.h"
 #import "ACRTextBlockRenderer.h"
 #import "ACRUIImageView.h"
@@ -53,6 +53,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
     dispatch_group_t _async_tasks_group;
     int _serialNumber;
     int _numberOfSubscribers;
+    // flag that's set if didLoadElements delegate is called
+    BOOL _hasCalled;
     NSMutableDictionary *_imageContextMap;
     NSMutableDictionary *_imageViewContextMap;
     NSMutableSet *_setOfRemovedObservers;
@@ -104,14 +106,16 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _actionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRAction adaptiveHostConfig:_hostConfig];
         _selectActionsTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRSelectAction adaptiveHostConfig:_hostConfig];
         _quickReplyTargetBuilderDirector = [[ACRTargetBuilderDirector alloc] init:self capability:ACRQuickReply adaptiveHostConfig:_hostConfig];
-        unsigned int padding = [_hostConfig getHostConfig] -> GetSpacing().paddingSpacing;
+        unsigned int padding = [_hostConfig getHostConfig]->GetSpacing().paddingSpacing;
         [self removeConstraints:self.constraints];
-        if (padding) {
-            [self applyPadding:padding priority:1000];
-        }
+
+        [self applyPadding:padding priority:1000];
+
         self.acrActionDelegate = acrActionDelegate;
         [self render];
     }
+    // call to check if all resources are loaded
+    [self callDidLoadElementsIfNeeded];
     return self;
 }
 
@@ -126,6 +130,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (UIView *)render
 {
+    // set the width constraint only if it's explicitly asked
     if (self.frame.size.width) {
         [NSLayoutConstraint constraintWithItem:self attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:nil attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:self.frame.size.width].active = YES;
     }
@@ -135,16 +140,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
     UIView *newView = [ACRRenderer renderWithAdaptiveCards:[_adaptiveCard card] inputs:self.inputHandlers context:self containingView:self hostconfig:_hostConfig];
 
-    [self popCurrentShowcard];
-
-    ContainerStyle style = ([_hostConfig getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card] -> GetStyle() : ContainerStyle::Default;
+    ContainerStyle style = ([_hostConfig getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? [_adaptiveCard card]->GetStyle() : ContainerStyle::Default;
 
     newView.backgroundColor = [_hostConfig getBackgroundColorForContainerStyle:
                                                [ACOHostConfig getPlatformContainerStyle:style]];
 
-    renderBackgroundImage([_adaptiveCard card] -> GetBackgroundImage(), newView, self);
-
-    [self callDidLoadElementsIfNeeded];
+    [self popCurrentShowcard];
 
     return newView;
 }
@@ -158,12 +159,13 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 - (void)callDidLoadElementsIfNeeded
 {
     // Call back app with didLoadElements
-    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers) {
+    if ([[self acrActionDelegate] respondsToSelector:@selector(didLoadElements)] && !_numberOfSubscribers && !_hasCalled) {
+        _hasCalled = YES;
         [[self acrActionDelegate] didLoadElements];
     }
 }
 
-- (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)processBaseCardElement:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
     switch (elem->GetElementType()) {
         case CardElementType::TextBlock: {
@@ -263,7 +265,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             std::shared_ptr<Media> mediaElem = std::static_pointer_cast<Media>(elem);
             std::string poster = mediaElem->GetPoster();
             if (poster.empty()) {
-                poster = [_hostConfig getHostConfig] -> GetMedia().defaultPoster;
+                poster = [_hostConfig getHostConfig]->GetMedia().defaultPoster;
             }
 
             if (!poster.empty()) {
@@ -289,7 +291,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 [self loadImageAccordingToResourceResolverIF:elem key:nil observerAction:observerAction];
             }
 
-            if (![_hostConfig getHostConfig] -> GetMedia().playButton.empty()) {
+            if (![_hostConfig getHostConfig]->GetMedia().playButton.empty()) {
                 ObserverActionBlock observerAction =
                     ^(NSObject<ACOIResourceResolver> *imageResourceResolver, NSString *key, std::shared_ptr<BaseCardElement> const &elem, NSURL *url, ACRView *rootView) {
                         UIImageView *view = [imageResourceResolver resolveImageViewResource:url];
@@ -308,7 +310,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 NSNumber *number = [NSNumber numberWithUnsignedLongLong:(unsigned long long)elem.get()];
                 NSString *key = [NSString stringWithFormat:@"%@_%@", [number stringValue], @"playIcon"];
 
-                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig] -> GetMedia().playButton key:key observerAction:observerAction];
+                [self loadImageAccordingToResourceResolverIFFromString:[_hostConfig getHostConfig]->GetMedia().playButton key:key observerAction:observerAction];
             }
 
             break;
@@ -345,17 +347,14 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
 
             std::vector<std::shared_ptr<BaseCardElement>> &new_body = container->GetItems();
-            [self addTasksToConcurrentQueue:new_body];
+            [self addBaseCardElementListToConcurrentQueue:new_body registration:registration];
             break;
         }
         // continue on search
         case CardElementType::ColumnSet: {
             std::shared_ptr<ColumnSet> columSet = std::static_pointer_cast<ColumnSet>(elem);
             std::vector<std::shared_ptr<Column>> &columns = columSet->GetColumns();
-            // ColumnSet is vector of Column, instead of vector of BaseCardElement
-            for (auto const &column : columns) { // update serial number that is used for generating unique key for image_map
-                [self processBaseCardElement:column];
-            }
+            [self addColumnsToConcurrentQueue:columns registration:registration];
             break;
         }
 
@@ -369,8 +368,8 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             }
 
             // add column fallbacks to async task queue
-            [self processFallback:column];
-            [self addTasksToConcurrentQueue:column->GetItems()];
+            [self processFallback:column registration:registration];
+            [self addBaseCardElementListToConcurrentQueue:column->GetItems() registration:registration];
             break;
         }
 
@@ -380,23 +379,44 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
             [self loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:_hostConfig];
             break;
         }
+        case AdaptiveCards::CardElementType::AdaptiveCard:
+        case AdaptiveCards::CardElementType::ChoiceInput:
+        case AdaptiveCards::CardElementType::ChoiceSetInput:
+        case AdaptiveCards::CardElementType::Custom:
+        case AdaptiveCards::CardElementType::DateInput:
+        case AdaptiveCards::CardElementType::Fact:
+        case AdaptiveCards::CardElementType::NumberInput:
+        case AdaptiveCards::CardElementType::TimeInput:
+        case AdaptiveCards::CardElementType::ToggleInput:
+        case AdaptiveCards::CardElementType::Unknown:
+            break;
     }
 }
 
-// Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
-- (void)addTasksToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body
+- (void)addBaseCardElementToConcurrentQueue:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
-    ACRRegistration *rendererRegistration = [ACRRegistration getInstance];
+    if ([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:(ACRCardElementType)elem->GetElementType()] == NO) {
+        return;
+    }
 
+    [self processFallback:elem registration:registration];
+    [self processBaseCardElement:elem registration:registration];
+}
+// Walk through adaptive cards elements recursively and if images/images set/TextBlocks are found process them concurrently
+- (void)addBaseCardElementListToConcurrentQueue:(std::vector<std::shared_ptr<BaseCardElement>> const &)body registration:(ACRRegistration *)registration
+{
     for (auto &elem : body) {
-        if ([rendererRegistration isElementRendererOverridden:(ACRCardElementType)elem->GetElementType()] == YES) {
-            continue;
-        }
-
-        [self processFallback:elem];
-        [self processBaseCardElement:elem];
+        [self addBaseCardElementToConcurrentQueue:elem registration:registration];
     }
 }
+
+- (void)addColumnsToConcurrentQueue:(std::vector<std::shared_ptr<Column>> const &)columns registration:(ACRRegistration *)registration
+{
+    for (auto &column : columns) {
+        [self addBaseCardElementToConcurrentQueue:column registration:registration];
+    }
+}
+
 
 // Walk through the actions found and process them concurrently
 - (void)loadImagesForActionsAndCheckIfAllActionsHaveIconImages:(std::vector<std::shared_ptr<BaseActionElement>> const &)actions hostconfig:(ACOHostConfig *)hostConfig;
@@ -552,8 +572,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                     observerRemoved = true;
                     NSMutableDictionary *imageViewMap = [self getImageMap];
                     imageViewMap[key] = image;
-                    [self removeObserver:self forKeyPath:path onObject:object];
-                    [renderer configUpdateForUIImageView:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
+                    [renderer configUpdateForUIImageView:self acoElem:baseCardElement config:_hostConfig image:image imageView:(UIImageView *)object];
                 }
             } else {
                 id view = _imageViewContextMap[key];
@@ -563,13 +582,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
                 } else {
                     // handle background image for adaptive card that uses resource resolver
                     UIImageView *imageView = (UIImageView *)object;
-                    auto backgroundImage = [_adaptiveCard card] -> GetBackgroundImage();
+                    auto backgroundImage = [_adaptiveCard card]->GetBackgroundImage();
 
                     // remove observer early in case background image must be changed to handle mode = repeat
                     [self removeObserver:self forKeyPath:path onObject:object];
                     observerRemoved = true;
-
-                    renderBackgroundImage(backgroundImage.get(), imageView, image);
+                    renderBackgroundImage(self, backgroundImage.get(), imageView, image);
                 }
             }
         }
@@ -655,13 +673,12 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 
 - (void)loadImage:(NSString *)nSUrlStr key:(NSString *)key context:(std::shared_ptr<BaseCardElement> const &)elem observerAction:(ObserverActionBlock)observerAction
 {
-    _numberOfSubscribers++;
-
     NSURL *url = [NSURL URLWithString:nSUrlStr];
     NSObject<ACOIResourceResolver> *imageResourceResolver = [_hostConfig getResourceResolverForScheme:[url scheme]];
     if (imageResourceResolver && ACOImageViewIF == [_hostConfig getResolverIFType:[url scheme]]) {
         if (observerAction) {
             observerAction(imageResourceResolver, key, elem, url, self);
+            _numberOfSubscribers++;
         }
     } else {
         [self loadImage:[nSUrlStr cStringUsingEncoding:NSUTF8StringEncoding]];
@@ -739,13 +756,13 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
 }
 
 // get fallback content and add them async task queue
-- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem
+- (void)processFallback:(std::shared_ptr<BaseCardElement> const &)elem registration:(ACRRegistration *)registration
 {
     std::shared_ptr<BaseElement> fallbackElem = elem->GetFallbackContent();
     while (fallbackElem) {
         std::shared_ptr<BaseCardElement> fallbackElemCard = std::static_pointer_cast<BaseCardElement>(fallbackElem);
         if (fallbackElemCard) {
-            [self processBaseCardElement:fallbackElemCard];
+            [self processBaseCardElement:fallbackElemCard registration:registration];
         }
 
         fallbackElem = fallbackElemCard->GetFallbackContent();

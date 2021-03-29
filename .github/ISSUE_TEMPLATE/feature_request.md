@@ -3,8 +3,7 @@ name: Feature request
 about: Suggest an idea or an end-end feature you'd like to enable using AdaptiveCards
 title: "[Platform][Broader Feature Request Category if applicable] Title"
 labels: Request
-assignees: dclaux, matthidinger, shalinijoshi19
-
+assignees: 
 ---
 
 **What platform is your feature request related to? (Delete other platforms).**
