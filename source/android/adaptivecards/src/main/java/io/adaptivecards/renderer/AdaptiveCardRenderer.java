@@ -4,6 +4,7 @@ package io.adaptivecards.renderer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,10 @@ public class AdaptiveCardRenderer
     {
         return render(context, fragmentManager, adaptiveCard, cardActionHandler, defaultHostConfig);
     }
+    public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler, @Nullable IOverflowActionRenderer overflowActionRenderer)
+    {
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer,defaultHostConfig);
+    }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
     public RenderedAdaptiveCard render(
@@ -53,6 +58,22 @@ public class AdaptiveCardRenderer
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
         View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
         result.setView(cardView);
+        CardRendererRegistration.getInstance().registerOverflowActionLoader(OverflowActionLayoutRenderer.OverflowActionRenderer.getInstance());
+        return result;
+    }
+
+    public RenderedAdaptiveCard render(
+        Context context,
+        FragmentManager fragmentManager,
+        AdaptiveCard adaptiveCard,
+        ICardActionHandler cardActionHandler,
+        @Nullable IOverflowActionRenderer overflowActionRenderer,
+        HostConfig hostConfig)
+    {
+        RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
+        result.setView(cardView);
+        CardRendererRegistration.getInstance().registerOverflowActionLoader(overflowActionRenderer);
         return result;
     }
 
@@ -168,7 +189,9 @@ public class AdaptiveCardRenderer
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,
                     // no fallback should be performed here so we just catch the exception
-                    catch (AdaptiveFallbackException e) {}
+                    catch (AdaptiveFallbackException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
