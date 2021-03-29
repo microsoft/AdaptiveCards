@@ -490,6 +490,7 @@
 		29F712F325F750F30052DC41 /* ContainerRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29F712F225F750F30052DC41 /* ContainerRendererTests.swift */; };
 		8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25625EF9894003D4CC9 /* FlatButton.swift */; };
 		8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8106A25725EF9894003D4CC9 /* ACRButton.swift */; };
+		81A3000B260C7961003848DD /* BundleUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A3000A260C7961003848DD /* BundleUtils.swift */; };
 		81A94A7025FF80D60018213A /* arrowdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A6F25FF80D60018213A /* arrowdown.png */; };
 		81A94A7925FF86E70018213A /* attachment.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7725FF86E70018213A /* attachment.png */; };
 		81A94A7A25FF86E70018213A /* arrowup.png in Resources */ = {isa = PBXBuildFile; fileRef = 81A94A7825FF86E70018213A /* arrowup.png */; };
@@ -1029,6 +1030,7 @@
 		29F712F225F750F30052DC41 /* ContainerRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRendererTests.swift; sourceTree = "<group>"; };
 		8106A25625EF9894003D4CC9 /* FlatButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlatButton.swift; sourceTree = "<group>"; };
 		8106A25725EF9894003D4CC9 /* ACRButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRButton.swift; sourceTree = "<group>"; };
+		81A3000A260C7961003848DD /* BundleUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleUtils.swift; sourceTree = "<group>"; };
 		81A94A6F25FF80D60018213A /* arrowdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowdown.png; sourceTree = "<group>"; };
 		81A94A7725FF86E70018213A /* attachment.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = attachment.png; sourceTree = "<group>"; };
 		81A94A7825FF86E70018213A /* arrowup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrowup.png; sourceTree = "<group>"; };
@@ -1088,6 +1090,7 @@
 				082864FC25C99E300080D767 /* HostConfigUtils.swift */,
 				08D7767025CBF27B0095C1B3 /* LogUtils.swift */,
 				A032272425E93C7400E7172E /* ImageUtils.swift */,
+				81A3000A260C7961003848DD /* BundleUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -2208,6 +2211,7 @@
 				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
 				A06EF8CC2604A85100D7E63A /* ResourceResolverProtocol.swift in Sources */,
 				0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */,
+				81A3000B260C7961003848DD /* BundleUtils.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,
 				A0D65D0A25E6B4FD00A50EC1 /* ImageRenderer.swift in Sources */,

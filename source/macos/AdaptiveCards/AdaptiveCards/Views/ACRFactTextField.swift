@@ -7,11 +7,7 @@ class ACRFactTextField: NSView {
     
     init() {
         super.init(frame: .zero)
-        guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards") else {
-            logError("Bundle is nil")
-            return
-        }
-        bundle.loadNibNamed("ACRFactTextField", owner: self, topLevelObjects: nil)
+        BundleUtils.loadNibNamed("ACRFactTextField", owner: self)
         setupViews()
         setupConstraints()
     }

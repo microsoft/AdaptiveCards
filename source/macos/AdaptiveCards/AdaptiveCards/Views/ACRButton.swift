@@ -44,7 +44,7 @@ class ACRButton: FlatButton {
         setupButtonStyle()
     }
     
-    init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconPosition: NSControl.ImagePosition = .imageLeft, style: ActionStyle = .default) {
+    init(frame: NSRect = .zero, wantsChevron: Bool = false, wantsIcon: Bool = false, iconNamed: String = "", iconImageFileType: String = "", iconPosition: NSControl.ImagePosition = .imageLeft, style: ActionStyle = .default) {
         super.init(frame: frame)
         if wantsChevron {
             showsChevron = wantsChevron
@@ -52,6 +52,7 @@ class ACRButton: FlatButton {
         if wantsIcon {
             showsIcon = wantsIcon
             iconImageName = iconNamed
+            iconFileType = iconImageFileType
             iconPositioned = iconPosition
         }
         initialize()
@@ -68,12 +69,7 @@ class ACRButton: FlatButton {
         momentary = !showsChevron
         iconColor = .white
         if showsIcon {
-            guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
-                  let path = bundle.path(forResource: iconImageName, ofType: "png") else {
-                logError("Image Not Found")
-                return
-            }
-            image = NSImage(byReferencing: URL(fileURLWithPath: path))
+            image = BundleUtils.getImage(iconImageName, ofType: iconFileType)
             imagePosition = iconPositioned
         }
     }

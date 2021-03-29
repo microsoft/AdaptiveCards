@@ -30,6 +30,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     internal var mouseDown: Bool = false
     internal var chevronSetupFlag: Bool = true
     public var iconImageName: String = "attachment"
+    public var iconFileType: String = "png"
     public var iconPositioned: NSControl.ImagePosition = .imageLeft
     public var momentary: Bool = true {
         didSet {
@@ -350,12 +351,7 @@ open class FlatButton: NSButton, CALayerDelegate {
     
     private func drawsChevron(_ nameOfFile: String) {
         guard showsChevron else { return }
-        guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
-              let path = bundle.path(forResource: nameOfFile, ofType: "png") else {
-            logError("image not found")
-            return
-        }
-        let chevIcon = NSImage(byReferencing: URL(fileURLWithPath: path))
+        guard let chevIcon = BundleUtils.getImage(nameOfFile, ofType: "png") else { return }
         let maskLayer = CALayer()
         chevIcon.size = chevronImageSize
         let chevIconSize = chevIcon.size

@@ -447,14 +447,8 @@ class ViewTests: XCTestCase {
     }
     
     
-    private func getImageFile() -> NSImage {
-        guard let bundle = Bundle(identifier: "com.test.test.AdaptiveCards"),
-              let path = bundle.path(forResource: "cisco", ofType: "jpg") else {
-            logError("Image Not Found")
-            return NSImage()
-        }
-        let image = NSImage(byReferencing: URL(fileURLWithPath: path))
-        return image
+    private func getImageFile() -> NSImage? {
+        return BundleUtils.getImage("cisco", "jpg")
     }
     
     private func getImageLayer() -> CALayer {
