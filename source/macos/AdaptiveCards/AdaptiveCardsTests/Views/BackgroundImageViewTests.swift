@@ -2,7 +2,7 @@
 import AdaptiveCards_bridge
 import XCTest
 
-class ViewTests: XCTestCase {
+class ACRBackgroundImageViewTests: XCTestCase {
     var imageView: ACRBackgroundImageView!
     
     override func setUp() {

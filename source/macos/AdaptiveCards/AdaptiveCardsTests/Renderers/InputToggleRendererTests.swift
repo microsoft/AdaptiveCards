@@ -68,7 +68,7 @@ class InputToggleRendererTests: XCTestCase {
     }
     
     private func renderInputToggleView() -> ACRChoiceButton {
-        let view = inputToggleRenderer.render(element: inputToggle, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = inputToggleRenderer.render(element: inputToggle, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
         
         XCTAssertTrue(view is ACRChoiceButton)
         guard let inputToggleView = view as? ACRChoiceButton else { fatalError() }

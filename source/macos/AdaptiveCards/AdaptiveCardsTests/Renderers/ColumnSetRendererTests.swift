@@ -44,7 +44,7 @@ class ColumnSetRendererTests: XCTestCase {
     }
     
     private func renderColumnSetView() -> ACRContentStackView {
-        let view = columnSetRenderer.render(element: columnSet, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = columnSetRenderer.render(element: columnSet, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
         
         XCTAssertTrue(view is ACRContentStackView)
         guard let columnSetView = view as? ACRContentStackView else { fatalError() }

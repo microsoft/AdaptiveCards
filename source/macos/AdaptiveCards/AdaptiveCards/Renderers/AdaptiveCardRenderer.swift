@@ -41,7 +41,7 @@ class AdaptiveCardRenderer {
             let isFirstElement = index == 0
             let renderer = RendererManager.shared.renderer(for: element.getType())
             let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
-            let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
+            let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
             rootView.addArrangedSubview(viewWithInheritedProperties)
         }
         
@@ -61,6 +61,12 @@ class AdaptiveCardRenderer {
         // add selectAction
         rootView.setupSelectAction(selectAction: card.getSelectAction(), rootView: rootView)
         
+        if let backgroundImage = card.getBackgroundImage(), let url = backgroundImage.getUrl() {
+            rootView.setupBackgroundImageProperties(backgroundImage)
+            rootView.registerImageHandlingView(rootView.backgroundImageView, for: url)
+        }
+        
+        rootView.dispatchResolveRequests()
         rootView.layoutSubtreeIfNeeded()
         return rootView
     }
@@ -77,10 +83,11 @@ extension AdaptiveCardRenderer: ACRViewDelegate {
 }
 
 extension AdaptiveCardRenderer: ACRViewResourceResolverDelegate {
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor key: ResourceKey) {
-        resolverDelegate?.adaptiveCard(adaptiveCard, requestImageFor: key)
+    func resolve(_ adaptiveCard: ImageResourceHandlerView, requestImageFor url: String) {
+        resolverDelegate?.adaptiveCard(adaptiveCard, requestImageFor: url)
     }
-    func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith key: ResourceKey) -> NSSize? {
-        resolverDelegate?.adaptiveCard(adaptiveCard, dimensionsForImageWith: key)
+    
+    func resolve(_ adaptiveCard: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
+        resolverDelegate?.adaptiveCard(adaptiveCard, dimensionsForImageWith: url)
     }
 }

@@ -4,7 +4,7 @@ import AppKit
 class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = FactSetRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let factSet = element as? ACSFactSet else {
             logError("Element is not of type ACSFactSet")
             return NSView()

@@ -179,20 +179,18 @@ extension RootViewController: AdaptiveCardActionDelegate {
 }
 
 extension RootViewController: AdaptiveCardResourceResolver {
-    func adaptiveCard(_ card: ImageResourceHandlerView, dimensionsForImageWith key: ResourceKey) -> NSSize? {
+    func adaptiveCard(_ card: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
         return nil
     }
     
-    func adaptiveCard(_ card: ImageResourceHandlerView, requestImageFor key: ResourceKey) {
-        guard let imageURL = URL(string: key.url) else {
+    func adaptiveCard(_ card: ImageResourceHandlerView, requestImageFor url: String) {
+        guard let imageURL = URL(string: url) else {
             return
         }
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: imageURL) {
-                if let image = NSImage(data: data) {
-                    DispatchQueue.main.async {
-                        card.setImage(image, for: key)
-                    }
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: imageURL), let image = NSImage(data: data) {
+                DispatchQueue.main.async {
+                    card.setImage(image, for: url)
                 }
             }
         }

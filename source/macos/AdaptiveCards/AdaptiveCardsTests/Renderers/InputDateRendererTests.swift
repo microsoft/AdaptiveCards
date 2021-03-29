@@ -47,7 +47,7 @@ class InputDateRendererTest: XCTestCase {
     }
 
     private func renderDateInput() -> ACRDateField {
-        let view = inputDateRenderer.render(element: inputDate, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = inputDateRenderer.render(element: inputDate, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
 
         XCTAssertTrue(view is ACRDateField)
         guard let inputDate = view as? ACRDateField else { fatalError() }

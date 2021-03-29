@@ -76,8 +76,9 @@
 {
  
     auto getBackgroundImageCpp = mCppObj->GetBackgroundImage();
-    return [[ACSBackgroundImage alloc] initWithBackgroundImage:getBackgroundImageCpp];
-
+    if (getBackgroundImageCpp)
+        return [[ACSBackgroundImage alloc] initWithBackgroundImage:getBackgroundImageCpp];
+    return NULL;
 }
 
 - (void)setBackgroundImage:(ACSBackgroundImage * _Nonnull)value

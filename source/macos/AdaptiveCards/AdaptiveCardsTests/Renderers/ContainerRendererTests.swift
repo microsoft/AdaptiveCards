@@ -47,7 +47,7 @@ class ContainerRendererTests: XCTestCase {
     }
     
     private func renderContainerView() -> ACRColumnView {
-        let view = containerRenderer.render(element: container, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = containerRenderer.render(element: container, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
         
         XCTAssertTrue(view is ACRColumnView)
         guard let containerView = view as? ACRColumnView else { fatalError() }

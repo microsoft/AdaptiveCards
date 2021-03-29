@@ -41,7 +41,7 @@ class MultilineInputTextRendererTest: XCTestCase {
     
     
     private func renderTextInput() -> ACRMultilineInputTextView {
-        let view = multilineInputTextRenderer.render(element: inputText, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = multilineInputTextRenderer.render(element: inputText, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
         
         XCTAssertTrue(view is ACRMultilineInputTextView)
         guard let inputText = view as? ACRMultilineInputTextView else { fatalError() }

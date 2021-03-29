@@ -4,7 +4,7 @@ import AppKit
 class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ActionSetRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let actionSet = element as? ACSActionSet else {
             logError("Element is not of type ACSActionSet")
             return NSView()
@@ -12,11 +12,11 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
         return renderView(actions: actionSet.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
     }
     
-    func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         return renderView(actions: actions, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
     }
     
-    private func renderView(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    private func renderView(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         let actionSetView = ACRActionSetView()
         actionSetView.translatesAutoresizingMaskIntoConstraints = false
         let adaptiveActionHostConfig = hostConfig.getActions()
@@ -57,17 +57,16 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
         for index in 0..<actionsToRender {
             let action = actions[index]
             let renderer = RendererManager.shared.actionRenderer(for: action.getType())
-            if let curView = rootView as? ACRView {
-                let view = renderer.render(action: action, with: hostConfig, style: style, rootView: curView, parentView: rootView, inputs: [])
-                
-                actionSetView.addArrangedSubView(view)
-                if actionSetView.orientation == .vertical {
-                    view.widthAnchor.constraint(equalTo: actionSetView.widthAnchor).isActive = true
-                }
-                accumulatedWidth += view.intrinsicContentSize.width
-                maxWidth = max(maxWidth, view.intrinsicContentSize.width)
-                actionSetView.actions.append(view)
+            
+            let view = renderer.render(action: action, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+            
+            actionSetView.addArrangedSubView(view)
+            if actionSetView.orientation == .vertical {
+                view.widthAnchor.constraint(equalTo: actionSetView.widthAnchor).isActive = true
             }
+            accumulatedWidth += view.intrinsicContentSize.width
+            maxWidth = max(maxWidth, view.intrinsicContentSize.width)
+            actionSetView.actions.append(view)
         }
         
         var contentWidth = accumulatedWidth

@@ -4,7 +4,7 @@ import AppKit
 class BaseCardElementRenderer {
     static let shared = BaseCardElementRenderer()
     
-    func updateView(view: NSView, element: ACSBaseCardElement, style: ACSContainerStyle, hostConfig: ACSHostConfig, isfirstElement: Bool) -> NSView {
+    func updateView(view: NSView, element: ACSBaseCardElement, rootView: ACRView, style: ACSContainerStyle, hostConfig: ACSHostConfig, isfirstElement: Bool) -> NSView {
         let updatedView = ACRContentStackView(style: style, hostConfig: hostConfig)
         
         // For Spacing
@@ -17,6 +17,13 @@ class BaseCardElementRenderer {
             case .center: updatedView.alignment = .centerX
             case .right: updatedView.alignment = .trailing
             default: updatedView.alignment = .leading
+            }
+        }
+        
+        if let collectionElement = element as? ACSCollectionTypeElement, let columnView = view as? ACRColumnView {
+            if let backgroundImage = collectionElement.getBackgroundImage(), let url = backgroundImage.getUrl() {
+                columnView.setupBackgroundImageProperties(backgroundImage)
+                rootView.registerImageHandlingView(columnView.backgroundImageView, for: url)
             }
         }
         

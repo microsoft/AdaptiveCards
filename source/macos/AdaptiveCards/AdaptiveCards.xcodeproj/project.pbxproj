@@ -310,6 +310,8 @@
 		08B5F94F25C9762500A7D37A /* BridgeTextUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F91F25C9501E00A7D37A /* BridgeTextUtils.mm */; };
 		08B5F95325C9762800A7D37A /* BridgeTextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 08B5F91E25C9500800A7D37A /* BridgeTextUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		08B5F95D25C9764D00A7D37A /* ACSMarkdownParserResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F92425C9698A00A7D37A /* ACSMarkdownParserResult.swift */; };
+		08C86F48260E0843005252B0 /* ACRViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C86F47260E0843005252B0 /* ACRViewTests.swift */; };
+		08C86F4D260E0AAA005252B0 /* FakeRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08C86F4C260E0AAA005252B0 /* FakeRootView.swift */; };
 		08D7767125CBF27B0095C1B3 /* LogUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D7767025CBF27B0095C1B3 /* LogUtils.swift */; };
 		08D7767A25CC339D0095C1B3 /* RendererManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D7767925CC339D0095C1B3 /* RendererManager.swift */; };
 		08D9547525D17FF9001442D3 /* ACRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08D9547425D17FF9001442D3 /* ACRView.swift */; };
@@ -967,6 +969,8 @@
 		08B5F91E25C9500800A7D37A /* BridgeTextUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeTextUtils.h; sourceTree = "<group>"; };
 		08B5F91F25C9501E00A7D37A /* BridgeTextUtils.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeTextUtils.mm; sourceTree = "<group>"; };
 		08B5F92425C9698A00A7D37A /* ACSMarkdownParserResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACSMarkdownParserResult.swift; sourceTree = "<group>"; };
+		08C86F47260E0843005252B0 /* ACRViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRViewTests.swift; sourceTree = "<group>"; };
+		08C86F4C260E0AAA005252B0 /* FakeRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeRootView.swift; sourceTree = "<group>"; };
 		08D7767025CBF27B0095C1B3 /* LogUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogUtils.swift; sourceTree = "<group>"; };
 		08D7767925CC339D0095C1B3 /* RendererManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RendererManager.swift; sourceTree = "<group>"; };
 		08D9547425D17FF9001442D3 /* ACRView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRView.swift; sourceTree = "<group>"; };
@@ -1287,6 +1291,7 @@
 		082D912925D66FEE000226C4 /* Fakes */ = {
 			isa = PBXGroup;
 			children = (
+				08C86F51260E0AB5005252B0 /* Views */,
 				082D912A25D67042000226C4 /* FakeHostConfig.swift */,
 				2871B11725DD20A30040AB27 /* FakeTextInput.swift */,
 				28CE1A7425E4F24F00BFCFD9 /* FakeFacts.swift */,
@@ -1690,6 +1695,14 @@
 			path = BridgeUtils;
 			sourceTree = "<group>";
 		};
+		08C86F51260E0AB5005252B0 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				08C86F4C260E0AAA005252B0 /* FakeRootView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		08D7767825CC338A0095C1B3 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -1774,6 +1787,7 @@
 			isa = PBXGroup;
 			children = (
 				81C037232604AB9D00B33324 /* BackgroundImageViewTests.swift */,
+				08C86F47260E0843005252B0 /* ACRViewTests.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2276,6 +2290,7 @@
 				299DE17C26048FBB00605DAD /* ActionsRendererTests.swift in Sources */,
 				28CE1A6B25E4B67B00BFCFD9 /* FakeFactSet.swift in Sources */,
 				2910CF0C2600C6C9000910C8 /* FakeActionSet.swift in Sources */,
+				08C86F48260E0843005252B0 /* ACRViewTests.swift in Sources */,
 				082D914425D6DC7A000226C4 /* FakeTextBlock.swift in Sources */,
 				A0805F5D25E40D0F00B3F8EA /* FakeRichTextBlock.swift in Sources */,
 				082D913425D67455000226C4 /* TextBlockRendererTests.swift in Sources */,
@@ -2284,6 +2299,7 @@
 				29050C4025DA909000AF3CA9 /* FakeInputToggle.swift in Sources */,
 				29F712EE25F73A360052DC41 /* FakeContainer.swift in Sources */,
 				08299E3E25AF254000799C66 /* AdaptiveCardsTests.swift in Sources */,
+				08C86F4D260E0AAA005252B0 /* FakeRootView.swift in Sources */,
 				082E59B32604EE1F00741958 /* ActionShowCardRendererTests.swift in Sources */,
 				29F712F325F750F30052DC41 /* ContainerRendererTests.swift in Sources */,
 				2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */,

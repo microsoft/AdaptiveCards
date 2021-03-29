@@ -57,10 +57,6 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
     private (set) lazy var backgroundImageView: ACRBackgroundImageView = {
         let view = ACRBackgroundImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.fillMode = .cover
-        view.horizontalAlignment = .left
-        view.verticalAlignment = .top
-        // image to be initialized here for the background image from a url
         return view
     }()
     
@@ -68,17 +64,12 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         self.hostConfig = hostConfig
         super.init(frame: .zero)
         initialize()
-        wantsLayer = true
-        if style != .none, let bgColor = hostConfig.getBackgroundColor(for: style) {
-            layer?.backgroundColor = bgColor.cgColor
-        }
     }
     
     init(style: ACSContainerStyle, parentStyle: ACSContainerStyle?, hostConfig: ACSHostConfig, superview: NSView?) {
         self.hostConfig = hostConfig
         super.init(frame: .zero)
         initialize()
-        wantsLayer = true
         if style != .none {
             if let bgColor = hostConfig.getBackgroundColor(for: style) {
                 layer?.backgroundColor = bgColor.cgColor
@@ -105,6 +96,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
     }
     
     private func initialize() {
+        wantsLayer = true
         setupViews()
         setupConstraints()
         setupTrackingArea()
@@ -112,11 +104,6 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
     
     func addArrangedSubview(_ subview: NSView) {
         stackView.addArrangedSubview(subview)
-    }
-    
-    func addShowCard(_ cardView: ACRView) {
-        showCardStackView.addArrangedSubview(cardView)
-        cardView.widthAnchor.constraint(equalTo: showCardStackView.widthAnchor).isActive = true
     }
     
     func applyPadding(_ padding: CGFloat) {
@@ -141,6 +128,13 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
     
     func setCustomSpacing(spacing: CGFloat, after view: NSView) {
         stackView.setCustomSpacing(spacing, after: view)
+    }
+    
+    func setupBackgroundImageProperties(_ properties: ACSBackgroundImage) {
+        backgroundImageView.fillMode = properties.getFillMode()
+        backgroundImageView.horizontalAlignment = properties.getHorizontalAlignment()
+        backgroundImageView.verticalAlignment = properties.getVerticalAlignment()
+        heightAnchor.constraint(greaterThanOrEqualToConstant: 30).isActive = true
     }
     
     private func addSeperator(thickness: NSNumber, color: String) {

@@ -4,7 +4,7 @@ import AppKit
 class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = InputToggleRenderer()
      
-     func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+     func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
          guard let inputToggle = element as? ACSToggleInput else {
              logError("Element is not of type ACSToggleInput")
              return NSView()
@@ -29,14 +29,11 @@ class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         inputToggleView.state = defaultInputToggleStateValue
         inputToggleView.labelAttributedString = attributedString
-        inputToggleView.backgroundColor = hostConfig.getBackgroundColor(for: style) ?? .clear
         inputToggleView.wrap = inputToggle.getWrap()
         // This function returnns true/fase even if data not set in json
         inputToggleView.valueOn = inputToggle.getValueOn()
         inputToggleView.valueOff = inputToggle.getValueOff()
-        if let acrView = rootView as? ACRView {
-            acrView.addInputHandler(inputToggleView)
-        }
+        rootView.addInputHandler(inputToggleView)
         return inputToggleView
      }
 }

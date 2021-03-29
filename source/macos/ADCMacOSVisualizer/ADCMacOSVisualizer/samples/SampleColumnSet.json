@@ -8,6 +8,9 @@
       "columns": [
         {
           "type": "Column",
+          "backgroundImage": {
+            "url": "https://picsum.photos/200/200"
+          },
           "items": [
             {
               "type": "TextBlock",

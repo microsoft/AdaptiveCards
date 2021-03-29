@@ -39,7 +39,7 @@ class TextInputRendererTest: XCTestCase {
     }
     
     private func renderTextInput() -> ACRTextInputView {
-        let view = textInputRenderer.render(element: inputText, with: hostConfig, style: .default, rootView: NSView(), parentView: NSView(), inputs: [])
+        let view = textInputRenderer.render(element: inputText, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
         
         XCTAssertTrue(view is ACRTextInputView)
         guard let inputText = view as? ACRTextInputView else { fatalError() }

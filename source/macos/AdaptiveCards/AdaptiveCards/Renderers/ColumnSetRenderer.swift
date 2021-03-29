@@ -4,7 +4,7 @@ import AppKit
 class ColumnSetRenderer: BaseCardElementRendererProtocol {
     static let shared = ColumnSetRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let columnSet = element as? ACSColumnSet else {
             logError("Element is not of type ACSColumnSet")
             return NSView()

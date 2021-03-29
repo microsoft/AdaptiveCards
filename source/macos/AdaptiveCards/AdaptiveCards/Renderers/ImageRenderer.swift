@@ -5,18 +5,26 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ImageRenderer()
     let sample = "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let imageElement = element as? ACSImage else {
             logError("Element is not of type ACSImage")
             return NSView()
         }
                         
-        guard let root = rootView as? ACRView, let url = imageElement.getUrl() else {
-                  logError("Root is not of type ACRView or url is not available")
-                  return NSView()
+        guard let url = imageElement.getUrl() else {
+            logError("URL is not available")
+            return NSView()
         }
         
-        let imageView = root.getImageView(for: ResourceKey(url: url, type: ResourceType.image))
+        let imageView: NSImageView
+        if let dimensions = rootView.getImageDimensions(for: url) {
+            let image = NSImage(size: dimensions)
+            imageView = NSImageView(image: image)
+        } else {
+            imageView = NSImageView()
+        }
+        
+        rootView.registerImageHandlingView(imageView, for: url)
         
         let imageProperties = ACRImageProperties(element: imageElement, config: hostConfig, image: imageView.image, parentView: parentView)
         let cgsize = imageProperties.contentSize
@@ -39,14 +47,9 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         if (size == .small || size == .medium || size == .large) && cgsize.width > 0 {
             imageView.widthAnchor.constraint(equalToConstant: cgsize.width).isActive = true
         }
-        
-        guard let parent = rootView as? ACRContentStackView else {
-            logError("Parent is not of type ACRContentStackView")
-            return NSView()
-        }
     
         // Setting up content holder view
-        let wrappingView = ACRContentHoldingView(imageProperties: imageProperties, imageView: imageView, viewgroup: parent)
+        let wrappingView = ACRContentHoldingView(imageProperties: imageProperties, imageView: imageView, viewgroup: rootView)
         wrappingView.translatesAutoresizingMaskIntoConstraints = false
     
         // Background color attribute
@@ -124,5 +127,15 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
         let ACRColumnWidthPriorityStretch = 249
         let priority = wrappingView.contentHuggingPriority(for: .horizontal)
         return (Int(priority.rawValue) > ACRColumnWidthPriorityStretch) ? NSLayoutConstraint.Priority.defaultHigh : priority
+    }
+}
+
+extension NSImageView: ImageHoldingView {
+    func setImage(_ image: NSImage) {
+        if self.image == nil {
+            // update constraints only when image view does not contain an image
+            ImageRenderer.shared.configUpdateForImage(image: image, imageView: self)
+        }
+        self.image = image
     }
 }

@@ -4,7 +4,7 @@ import AppKit
 class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = TextInputRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let inputBlock = element as? ACSTextInput else {
             logError("Element is not of type ACSTextInput")
             return NSView()
@@ -51,9 +51,8 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             }
             multilineView.maxLen = inputBlock.getMaxLength() as? Int ?? 0
             // Add Input Handler
-            if let acrView = rootView as? ACRView {
-                acrView.addInputHandler(multilineView)
-            }
+            
+            rootView.addInputHandler(multilineView)
             if renderButton {
                 stackview.addArrangedSubview(multilineView)
                 addInlineButton(parentview: stackview, view: multilineView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)
@@ -83,9 +82,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             textView.attributedStringValue = attributedInitialValue
         }
         // Add Input Handler
-        if let acrView = rootView as? ACRView {
-            acrView.addInputHandler(textView)
-        }
+        rootView.addInputHandler(textView)
         if renderButton {
             stackview.addArrangedSubview(textView)
             addInlineButton(parentview: stackview, view: textView, element: inputBlock, style: style, with: hostConfig, rootview: rootView)

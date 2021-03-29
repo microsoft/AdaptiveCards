@@ -150,3 +150,9 @@ class ACRBackgroundImageView: NSView, CALayerDelegate {
         bgImageLayer.backgroundColor = NSColor(patternImage: image).cgColor
     }
 }
+
+extension ACRBackgroundImageView: ImageHoldingView {
+    func setImage(_ image: NSImage) {
+        self.image = image
+    }
+}

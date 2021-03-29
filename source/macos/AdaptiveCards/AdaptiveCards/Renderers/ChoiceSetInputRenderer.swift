@@ -4,7 +4,7 @@ import AppKit
 class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ChoiceSetInputRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         guard let choiceSetInput = element as? ACSChoiceSetInput else {
             logError("Element is not of type ACSChoiceSetInput")
             return NSView()
@@ -12,7 +12,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         if !choiceSetInput.getIsMultiSelect() {
             // style is compact or expanded
             if choiceSetInput.getChoiceSetStyle() == .compact {
-                return  choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
+                return choiceSetCompactRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
             } else {
                 // radio button renderer
                 return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
@@ -22,7 +22,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         return choiceSetRenderInternal(choiceSetInput: choiceSetInput, with: hostConfig, style: style, rootView: rootView)
     }
     
-    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView) -> NSView {
+    private func choiceSetRenderInternal(choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView) -> NSView {
         // Parse input default values for multi-select
         let defaultParsedValues = parseChoiceSetInputDefaultValues(value: choiceSetInput.getValue() ?? "")
         let isMultiSelect = choiceSetInput.getIsMultiSelect()
@@ -42,9 +42,8 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
             }
             view.addChoiceButton(choiceButton)
         }
-        if let acrView = rootView as? ACRView {
-            acrView.addInputHandler(view)
-        }
+        
+        rootView.addInputHandler(view)
         return view
     }
     
@@ -52,7 +51,7 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
         return value.components(separatedBy: ",")
     }
     
-    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: NSView) -> NSView {
+    private func choiceSetCompactRenderInternal (choiceSetInput: ACSChoiceSetInput, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView) -> NSView {
         // compact button renderer
         let choiceSetFieldCompactView = ACRChoiceSetCompactView()
         choiceSetFieldCompactView.autoenablesItems = false
@@ -79,9 +78,8 @@ class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
             }
             index += 1
         }
-        if let acrView = rootView as? ACRView {
-            acrView.addInputHandler(choiceSetFieldCompactView)
-        }
+        
+        rootView.addInputHandler(choiceSetFieldCompactView)
         return choiceSetFieldCompactView
     }
     

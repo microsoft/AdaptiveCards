@@ -1,0 +1,321 @@
+{
+    "type": "AdaptiveCard",
+    "version": "1.0",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 80,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "ADA",
+                            "id": "title_main",
+                            "horizontalAlignment": "Left",
+                            "weight": "Bolder",
+                            "size": "Large"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "text": "Enterprise Chatbot Platform",
+                            "id": "title_secondary",
+                            "spacing": "Small",
+                            "horizontalAlignment": "Left",
+                            "size": "Medium",
+                            "color": "Light"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Intelligent Process Automation mimics activities carried out by humans and over time learns to do them even better. Traditional levers of rule-based automation are augmented with decision-making capabilities and intelligence.",
+            "id": "desc_text",
+            "spacing": "ExtraLarge",
+            "separator": true,
+            "wrap": true,
+            "fontType": "Monospace",
+            "size": "Medium"
+        },
+        {
+            "type": "Container",
+            "id": "empty_1",
+            "spacing": "Small",
+            "horizontalAlignment": "Left",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "Types of Chatbots:",
+                    "id": "bot_head",
+                    "size": "Medium",
+                    "weight": "Bolder",
+                    "color": "Accent"
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 7,
+                    "items": [
+                        {
+                            "type": "ImageSet",
+                            "images": [
+                                {
+                                    "type": "Image",
+                                    "altText": "",
+                                    "id": "bot_1",
+                                    "url": "https://images-platform.99static.com/Tzb1bkeeHLl-rpIg8DFPKs0x48U=/0x0:1024x1024/500x500/top/smart/99designs-contests-attachments/87/87815/attachment_87815520",
+                                    "spacing": "Small",
+                                    "size": "Small",
+                                    "horizontalAlignment": "Left",
+                                    "height": "stretch"
+                                },
+                                {
+                                    "type": "Image",
+                                    "altText": "",
+                                    "url": "https://upload.wikimedia.org/wikipedia/commons/6/68/NoxttonBot.png",
+                                    "id": "bot_2",
+                                    "spacing": "Small",
+                                    "size": "Small",
+                                    "horizontalAlignment": "Left",
+                                    "height": "stretch"
+                                },
+                                {
+                                    "type": "Image",
+                                    "altText": "",
+                                    "id": "bot_3",
+                                    "url": "https://miro.medium.com/max/2100/1*QVnVYYqQ6Wx4B74kOM-VFQ.png",
+                                    "spacing": "Small",
+                                    "size": "Small",
+                                    "horizontalAlignment": "Left",
+                                    "height": "stretch"
+                                }
+                            ],
+                            "id": "bot_set",
+                            "separator": true,
+                            "horizontalAlignment": "Left",
+                            "spacing": "Small",
+                            "imageSize": "auto"
+                        }
+                    ],
+                    "horizontalAlignment": "Left"
+                },
+                {
+                    "type": "Column",
+                    "width": 90,
+                    "items": [
+                        {
+                            "type": "FactSet",
+                            "facts": [
+                                {
+                                    "title": "Informational:",
+                                    "value": "General information - FAQs"
+                                },
+                                {
+                                    "title": "Transactional:",
+                                    "value": "Transactions and interact"
+                                },
+                                {
+                                    "title": "Advisory:",
+                                    "value": "Able to learn"
+                                }
+                            ],
+                            "id": "bot_types",
+                            "separator": true,
+                            "spacing": "ExtraLarge",
+                            "height": "stretch"
+                        }
+                    ],
+                    "horizontalAlignment": "Right",
+                    "separator": true,
+                    "spacing": "ExtraLarge"
+                }
+            ]
+        },
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": 85,
+                    "items": [
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.ShowCard",
+                                    "title": "Book a demo",
+                                    "card": {
+                                        "type": "AdaptiveCard",
+                                        "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                                        "lang": "Eng",
+                                        "body": [
+                                            {
+                                                "type": "Container",
+                                                "items": [
+                                                    {
+                                                        "type": "ColumnSet",
+                                                        "columns": [
+                                                            {
+                                                                "type": "Column",
+                                                                "width": 55,
+                                                                "items": [
+                                                                    {
+                                                                        "type": "TextBlock",
+                                                                        "text": "What platform are you looking for?",
+                                                                        "id": "platform_text",
+                                                                        "size": "Small",
+                                                                        "weight": "Lighter",
+                                                                        "wrap": true
+                                                                    },
+                                                                    {
+                                                                        "type": "Input.ChoiceSet",
+                                                                        "placeholder": "Placeholder text",
+                                                                        "choices": [
+                                                                            {
+                                                                                "title": "ADA in Webex",
+                                                                                "value": "ADA in Webex"
+                                                                            },
+                                                                            {
+                                                                                "title": "ADA on your website",
+                                                                                "value": "ADA on your website"
+                                                                            }
+                                                                        ],
+                                                                        "id": "platform_choice",
+                                                                        "wrap": true,
+                                                                        "style": "expanded"
+                                                                    },
+                                                                    {
+                                                                        "type": "TextBlock",
+                                                                        "text": "What capabilities do you need?",
+                                                                        "id": "capab_text",
+                                                                        "size": "Small",
+                                                                        "wrap": true
+                                                                    },
+                                                                    {
+                                                                        "type": "Input.ChoiceSet",
+                                                                        "placeholder": "Placeholder text",
+                                                                        "choices": [
+                                                                            {
+                                                                                "title": "RPA",
+                                                                                "value": "RPA"
+                                                                            },
+                                                                            {
+                                                                                "title": "NLP",
+                                                                                "value": "NLP"
+                                                                            },
+                                                                            {
+                                                                                "title": "Machine Learning",
+                                                                                "value": "Machine Learning"
+                                                                            },
+                                                                            {
+                                                                                "title": "Cognitive Agent",
+                                                                                "value": "Cognitive Agent"
+                                                                            }
+                                                                        ],
+                                                                        "style": "expanded",
+                                                                        "id": "capab_choice",
+                                                                        "wrap": true,
+                                                                        "isMultiSelect": true
+                                                                    }
+                                                                ],
+                                                                "height": "stretch"
+                                                            },
+                                                            {
+                                                                "type": "Column",
+                                                                "width": 45,
+                                                                "items": [
+                                                                    {
+                                                                        "type": "Input.Date",
+                                                                        "id": "date_input"
+                                                                    },
+                                                                    {
+                                                                        "type": "Input.Time",
+                                                                        "id": "time_input"
+                                                                    },
+                                                                    {
+                                                                        "type": "Input.Number",
+                                                                        "placeholder": "Number of People",
+                                                                        "id": "people_input"
+                                                                    },
+                                                                    {
+                                                                        "type": "Input.ChoiceSet",
+                                                                        "placeholder": "Target Audience",
+                                                                        "choices": [
+                                                                            {
+                                                                                "title": "Business",
+                                                                                "value": "Business"
+                                                                            },
+                                                                            {
+                                                                                "title": "Individual",
+                                                                                "value": "Individual"
+                                                                            }
+                                                                        ],
+                                                                        "id": "audience_input"
+                                                                    }
+                                                                ]
+                                                            }
+                                                        ]
+                                                    },
+                                                    {
+                                                        "type": "Input.Text",
+                                                        "placeholder": "Comments",
+                                                        "id": "comments_text"
+                                                    },
+                                                    {
+                                                        "type": "ActionSet",
+                                                        "actions": [
+                                                            {
+                                                                "type": "Action.Submit",
+                                                                "title": "Book"
+                                                            }
+                                                        ],
+                                                        "id": "action_submit",
+                                                        "horizontalAlignment": "Center"
+                                                    }
+                                                ]
+                                            }
+                                        ],
+                                        "backgroundImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_UEaF4bpxcsrZ0mDTAIU5QS8XR3li8rkUfin3N0QHLehbE6HV&s",
+                                        "verticalContentAlignment": "Center"
+                                    },
+                                    "id": "show_card",
+                                    "style": "destructive"
+                                }
+                            ],
+                            "horizontalAlignment": "Center",
+                            "separator": true
+                        },
+                        {
+                            "type": "ActionSet",
+                            "actions": [
+                                {
+                                    "type": "Action.OpenUrl",
+                                    "title": "Try out ADA",
+                                    "id": "open_url",
+                                    "url": "https://avatar-prod-us-east-2.webexcontent.com/Avtr~V1~5d31b0ab-23ef-4c9e-a022-bb910a443c4c/V1~af10edd7-3b3c-4503-8ced-dd699c288380~e6e066c7283345ada0d36bc2770bcb2c~110",
+                                    "iconUrl": "https://avatar-prod-us-east-2.webexcontent.com/Avtr~V1~5d31b0ab-23ef-4c9e-a022-bb910a443c4c/V1~af10edd7-3b3c-4503-8ced-dd699c288380~e6e066c7283345ada0d36bc2770bcb2c~110"
+                                }
+                            ],
+                            "horizontalAlignment": "Center",
+                            "separator": true
+                        }
+                    ]
+                }
+            ],
+            "separator": true,
+            "spacing": "Small"
+        }
+    ],
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "id": "test_card",
+    "lang": "Eng",
+    "backgroundImage": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_UEaF4bpxcsrZ0mDTAIU5QS8XR3li8rkUfin3N0QHLehbE6HV&s"
+}
+
