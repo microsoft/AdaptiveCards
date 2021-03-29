@@ -403,6 +403,15 @@ AdaptiveNamespaceStart
         None,
     } AssociatedInputs;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum TextStyle {
+        Paragraph = 0,
+        Heading,
+    } TextStyle;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -522,6 +531,7 @@ AdaptiveNamespaceStart
         Boolean Wrap;
         HAlignment HorizontalAlignment;
         UInt32 MaxLines;
+        TextStyle Style;
     };
 
     [
