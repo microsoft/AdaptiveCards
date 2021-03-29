@@ -5462,12 +5462,8 @@ export class Container extends StylableCardElementContainer {
 
         let element = document.createElement("div");
 
-        if (this.rtl === undefined) {
-            element.removeAttribute("dir");
-        } else if (this.rtl) {
-            element.dir = "rtl";
-        } else {
-            element.dir = "ltr";
+        if (this.rtl !== undefined) {
+            element.dir = this.rtl ? "rtl" : "ltr";
         }
 
         element.classList.add(hostConfig.makeCssClassName("ac-container"));
