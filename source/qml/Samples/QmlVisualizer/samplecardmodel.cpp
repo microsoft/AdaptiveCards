@@ -124,7 +124,6 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 		else if (genQml.GetElement() == "Button" && genQml.HasProperty("readonly property bool hasIconUrl"))
 		{
 			std::string str = genQml.GetProperty("contentItem");
-
 			genQml.Property("contentItem", std::regex_replace(str, std::regex("source:.*\n"), "source:\"" + getImagePath("Button") + "\"\n"));
 		}
 	});
