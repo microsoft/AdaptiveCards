@@ -89,6 +89,8 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             wrappingView.isPersonStyle = true
         }
         
+        wrappingView.setupSelectAction(imageElement.getSelectAction(), rootView: rootView)
+        
         return wrappingView
     }
     

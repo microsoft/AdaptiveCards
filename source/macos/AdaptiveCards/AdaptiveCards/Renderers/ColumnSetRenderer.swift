@@ -43,6 +43,9 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             columnSetView.addArrangedSubview(wrappingView)
         }
         
+        // Add SelectAction
+        columnSetView.setupSelectAction(columnSet.getSelectAction(), rootView: rootView)
+        
         // Only one is weighted and others are stretch
         let isSpecialAllStretch = numberOfWeightedItems == 1 && numberOfStretchItems == totalColumns - 1
         
@@ -91,8 +94,6 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
                 }
             }
         }
-        
-        columnSetView.setupSelectAction(selectAction: columnSet.getSelectAction(), rootView: rootView)
         
         return columnSetView
     }

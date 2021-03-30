@@ -59,7 +59,7 @@ class AdaptiveCardRenderer {
         }
         
         // add selectAction
-        rootView.setupSelectAction(selectAction: card.getSelectAction(), rootView: rootView)
+        rootView.setupSelectAction(card.getSelectAction(), rootView: rootView)
         
         if let backgroundImage = card.getBackgroundImage(), let url = backgroundImage.getUrl() {
             rootView.setupBackgroundImageProperties(backgroundImage)

@@ -1,9 +1,5 @@
 {
     "type": "AdaptiveCard",
-    "selectAction": {
-        "type": "Action.OpenUrl",
-        "url": "https://elgoog.im/"
-},
     "body": [
         {
             "type": "TextBlock",
@@ -47,7 +43,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "cool link",
-                        "url": "https://www.google.com"
+                        "url": "https://www.yahoo.com"
                     },
                     "width": "stretch"
                 },
@@ -66,7 +62,7 @@
                     "selectAction": {
                         "type": "Action.OpenUrl",
                         "title": "cool link",
-                        "url": "https://www.google.com"
+                        "url": "https://www.elgoog.im"
                     },
                     "width": "stretch"
                 }

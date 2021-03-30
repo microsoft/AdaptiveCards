@@ -1,12 +1,13 @@
 import AdaptiveCards_bridge
 import AppKit
 
-class ACRContentHoldingView: NSView {
+class ACRContentHoldingView: NSView, SelectActionHandlingProtocol {
     private weak var _viewgroup: ACRContentStackView?
     private weak var _imageViewHeightConstraint: NSLayoutConstraint?
     private weak var _heightConstraint: NSLayoutConstraint?
     weak var imageView: NSImageView?
     var imageProperties: ACRImageProperties?
+    var target: TargetHandler?
     
     var isImageSet: Bool = true
     var isPersonStyle: Bool = false
@@ -29,6 +30,7 @@ class ACRContentHoldingView: NSView {
         self.imageView = imageView
         _viewgroup = viewgroup
         self.addSubview(imageView)
+        setupTrackingArea()
     }
     
     override func layout() {
@@ -100,5 +102,33 @@ class ACRContentHoldingView: NSView {
         constraint.priority = NSLayoutConstraint.Priority(rawValue: 999)
         constraint.isActive = true
         return constraint
+    }
+    
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        guard let target = target else { return }
+        target.handleSelectionAction(for: self)
+    }
+    
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        guard target != nil, frame.contains(point) else { return super.hitTest(point) }
+        return self
+    }
+    
+    private func setupTrackingArea() {
+        let trackingArea = NSTrackingArea(rect: bounds, options: [.activeAlways, .inVisibleRect, .mouseEnteredAndExited], owner: self, userInfo: nil)
+        addTrackingArea(trackingArea)
+    }
+    
+    private var previousBackgroundColor: CGColor?
+    override func mouseEntered(with event: NSEvent) {
+        guard let columnView = event.trackingArea?.owner as? ACRContentHoldingView, target != nil else { return }
+        previousBackgroundColor = columnView.layer?.backgroundColor
+        columnView.layer?.backgroundColor = ColorUtils.hoverColorOnMouseEnter().cgColor
+    }
+    
+    override func mouseExited(with event: NSEvent) {
+        guard let columnView = event.trackingArea?.owner as? ACRContentHoldingView, target != nil else { return }
+        columnView.layer?.backgroundColor = previousBackgroundColor ?? .clear
     }
  }

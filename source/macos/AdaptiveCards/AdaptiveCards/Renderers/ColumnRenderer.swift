@@ -46,8 +46,8 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             rootView.registerImageHandlingView(columnView.backgroundImageView, for: url)
         }
         
-        columnView.setupSelectAction(selectAction: column.getSelectAction(), rootView: rootView)
-        
+        columnView.setupSelectAction(column.getSelectAction(), rootView: rootView)
+     
         return columnView
     }
 }

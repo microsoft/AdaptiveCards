@@ -47,7 +47,7 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
     }
 }
 
-class ACRTextView: NSTextView {
+class ACRTextView: NSTextView, SelectActionHandlingProtocol {
     var placeholderAttrString: NSAttributedString?
     
     override var intrinsicContentSize: NSSize {
@@ -84,4 +84,33 @@ class ACRTextView: NSTextView {
         self.needsDisplay = true
         return super.resignFirstResponder()
     }
+    
+    override func mouseDown(with event: NSEvent) {
+        super.mouseDown(with: event)
+        let location = convert(event.locationInWindow, from: nil)
+        var fraction: CGFloat = 0.0
+        if let textContainer = self.textContainer, let textStorage = self.textStorage, let layoutManager = self.layoutManager {
+            let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fraction)
+            if characterIndex < textStorage.length, let action = textStorage.attribute(.submitAction, at: characterIndex, effectiveRange: nil) as? TargetHandler {
+                action.handleSelectionAction(for: self)
+            }
+        }
+    }
+    
+    override func hitTest(_ point: NSPoint) -> NSView? {
+        var location = convert(point, from: self)
+        location.y = self.bounds.height - location.y
+        var fraction: CGFloat = 0.0
+        if let textContainer = self.textContainer, let textStorage = self.textStorage, let layoutManager = self.layoutManager {
+            let characterIndex = layoutManager.characterIndex(for: location, in: textContainer, fractionOfDistanceBetweenInsertionPoints: &fraction)
+            if characterIndex < textStorage.length, textStorage.attribute(.submitAction, at: characterIndex, effectiveRange: nil) != nil {
+                return self
+            }
+        }
+        return super.hitTest(point)
+    }
+}
+
+extension NSAttributedString.Key {
+    static let submitAction = NSAttributedString.Key("submitAction")
 }

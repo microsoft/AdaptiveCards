@@ -52,6 +52,18 @@ class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
                     }
                 }
             }
+            
+            // Add SelectAction to textRun
+            if textRun.getSelectAction() != nil {
+                let target = textView.getTargetHandler(for: textRun.getSelectAction(), rootView: rootView)
+                if let actionTarget = target {
+                    textRunContent.addAttributes([.submitAction: actionTarget], range: NSRange(location: 0, length: textRunContent.length))
+                    textRunContent.addAttributes([.foregroundColor: NSColor.linkColor], range: NSRange(location: 0, length: textRunContent.length))
+                    textRunContent.addAttributes([.underlineStyle: 1], range: NSRange(location: 0, length: textRunContent.length))
+                    // Rootview add target
+                    rootView.addTarget(actionTarget)
+                }
+            }
                                 
             // apply strikethrough to textrun
             if textRun.getStrikethrough() {

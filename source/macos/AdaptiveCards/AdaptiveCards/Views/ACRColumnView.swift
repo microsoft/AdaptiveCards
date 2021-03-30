@@ -6,7 +6,7 @@ protocol ACRContentHoldingViewProtocol {
     func applyPadding(_ padding: CGFloat)
 }
 
-class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
+class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHandlingProtocol {
     private (set) var stackViewLeadingConstraint: NSLayoutConstraint?
     private (set) var stackViewTrailingConstraint: NSLayoutConstraint?
     private (set) var stackViewTopConstraint: NSLayoutConstraint?
@@ -179,28 +179,6 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol {
         
         guard let leading = stackViewLeadingConstraint, let trailing = stackViewTrailingConstraint, let top = stackViewTopConstraint, let bottom = stackViewBottomConstraint else { return }
         NSLayoutConstraint.activate([leading, trailing, top, bottom])
-    }
-    
-    func setupSelectAction(selectAction: ACSBaseActionElement?, rootView: NSView) {
-        guard let selectAction = selectAction, let rootView = rootView as? ACRView else { return }
-        var target: TargetHandler?
-        switch selectAction.getType() {
-        case .openUrl:
-            guard let openURLAction = selectAction as? ACSOpenUrlAction else { break }
-            target = ActionOpenURLTarget(element: openURLAction, delegate: rootView)
-            
-        case .submit:
-            guard let submitAction = selectAction as? ACSSubmitAction else { break }
-            target = ActionSubmitTarget(element: submitAction, delegate: rootView)
-            
-        default:
-            break
-        }
-        
-        if let actionTarget = target {
-            self.target = actionTarget
-            rootView.addTarget(actionTarget)
-        }
     }
     
     override func mouseDown(with event: NSEvent) {

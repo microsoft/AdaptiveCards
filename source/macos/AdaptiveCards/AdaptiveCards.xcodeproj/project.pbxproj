@@ -453,6 +453,7 @@
 		13C465E525DD3C07006E4605 /* InputDateRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C465E425DD3C07006E4605 /* InputDateRenderer.swift */; };
 		2806E8EC26010C3800CF7A40 /* ActionSubmitRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E8EB26010C3800CF7A40 /* ActionSubmitRenderer.swift */; };
 		2806E8F62608886F00CF7A40 /* ActionSubmitRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E8F52608886F00CF7A40 /* ActionSubmitRendererTests.swift */; };
+		2806E94826122F0D00CF7A40 /* SelectActionHandlingProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806E94726122F0D00CF7A40 /* SelectActionHandlingProtocol.swift */; };
 		2871B11825DD20A30040AB27 /* FakeTextInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B11725DD20A30040AB27 /* FakeTextInput.swift */; };
 		2871B11D25DD225C0040AB27 /* ACRMultilineInputTextView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */; };
 		2871B12A25DD27F10040AB27 /* ACRMultilineInputTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */; };
@@ -995,6 +996,7 @@
 		13C465E425DD3C07006E4605 /* InputDateRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRenderer.swift; sourceTree = "<group>"; };
 		2806E8EB26010C3800CF7A40 /* ActionSubmitRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSubmitRenderer.swift; sourceTree = "<group>"; };
 		2806E8F52608886F00CF7A40 /* ActionSubmitRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSubmitRendererTests.swift; sourceTree = "<group>"; };
+		2806E94726122F0D00CF7A40 /* SelectActionHandlingProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectActionHandlingProtocol.swift; sourceTree = "<group>"; };
 		2871B11725DD20A30040AB27 /* FakeTextInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeTextInput.swift; sourceTree = "<group>"; };
 		2871B11C25DD225C0040AB27 /* ACRMultilineInputTextView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ACRMultilineInputTextView.xib; sourceTree = "<group>"; };
 		2871B12925DD27F10040AB27 /* ACRMultilineInputTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRMultilineInputTextView.swift; sourceTree = "<group>"; };
@@ -1797,6 +1799,7 @@
 			children = (
 				A01CA38C25DFE85D00A07E21 /* BaseProtocol.swift */,
 				A032271F25E9254C00E7172E /* ACRImageProperties.swift */,
+				2806E94726122F0D00CF7A40 /* SelectActionHandlingProtocol.swift */,
 				0830D55025F90D4C00BBC245 /* Targets.swift */,
 				A06EF8CB2604A85100D7E63A /* ResourceResolverProtocol.swift */,
 			);
@@ -2220,6 +2223,7 @@
 				8106A25925EF9894003D4CC9 /* ACRButton.swift in Sources */,
 				13C1F7EE25FF0DFF00B59001 /* ActionShowCardRenderer.swift in Sources */,
 				08D7767125CBF27B0095C1B3 /* LogUtils.swift in Sources */,
+				2806E94826122F0D00CF7A40 /* SelectActionHandlingProtocol.swift in Sources */,
 				8106A25825EF9894003D4CC9 /* FlatButton.swift in Sources */,
 				08D9547525D17FF9001442D3 /* ACRView.swift in Sources */,
 				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
