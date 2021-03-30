@@ -386,7 +386,7 @@ namespace RendererQml
 		uiTextBlock->Property("textFormat", "Text.MarkdownText");
 
 		std::string text = TextUtils::ApplyTextFunctions(textBlock->GetText(), context->GetLang());
-		text = Utils::Replace(text, "\"", "\\\"");
+		text = Utils::HandleEscapeSequences(text);
 		uiTextBlock->Property("text", Formatter() << "\"" << text << "\"");
 
 		uiTextBlock->Property("horizontalAlignment", Utils::GetHorizontalAlignment(horizontalAlignment));
@@ -822,14 +822,14 @@ namespace RendererQml
         {
             uiTextRun.append("<a href='" + selectaction + "'>");
             std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
-            text = Utils::Replace(text, "\n", "<br/>");
+            text = Utils::HandleEscapeSequences(text);
             uiTextRun.append(text);
             uiTextRun.append("</a>");
         }
         else
         {
             std::string text = TextUtils::ApplyTextFunctions(textRun->GetText(), context->GetLang());
-            text = Utils::Replace(text, "\n", "<br/>");
+            text = Utils::HandleEscapeSequences(text);
             uiTextRun.append(text);
         }
 		uiTextRun.append("</span>");
