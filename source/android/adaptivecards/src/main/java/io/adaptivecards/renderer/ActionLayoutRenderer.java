@@ -5,11 +5,14 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import java.util.List;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
@@ -104,7 +107,6 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
-        int i = 0;
         long maxActions = hostConfig.GetActions().getMaxActions();
 
         // Allow the actions to have the icon drawn at the top as long as all actions have an icon
@@ -114,9 +116,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         BaseActionElementVector primaryActionElementVector = new BaseActionElementVector();
         BaseActionElementVector secondaryActionElementVector = new BaseActionElementVector();
 
-        for(; i < size && i < maxActions; ++i)
-        {
-            BaseActionElement actionElement = baseActionElementList.get(i);
+        for (BaseActionElement actionElement : baseActionElementList) {
 
             switch (actionElement.GetElementMode()) {
                 case Primary:
@@ -132,15 +132,21 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
             }
         }
 
-        if (i >= maxActions && size != maxActions && hostConfig.GetActions().getAllowMoreThanMaxActionsInOverflowMenu())
-        {
+        int primaryElementsSize = primaryActionElementVector.size();
+        if (primaryElementsSize > maxActions) {
+            List<BaseActionElement> excessElements = primaryActionElementVector.subList((int) maxActions, primaryElementsSize);
             //Add excess elements to the secondary list.
-            secondaryActionElementVector.addAll(baseActionElementList.subList(i,(int)size));
+            if (hostConfig.GetActions().getAllowMoreThanMaxActionsInOverflowMenu()) {
+                secondaryActionElementVector.addAll(excessElements);
+            } else {
+                renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
+            }
+            excessElements.clear();
         }
         renderPrimaryActionElements(primaryActionElementVector, renderedCard, context, fragmentManager, actionButtonsLayout, cardActionHandler, hostConfig, renderArgs);
-        if (!secondaryActionElementVector.isEmpty())
+        if (!secondaryActionElementVector.isEmpty()) {
             renderSecondaryActionElements(secondaryActionElementVector, renderedCard, context, fragmentManager, actionButtonsLayout, cardActionHandler, hostConfig, renderArgs);
-
+        }
 
         return actionButtonsLayout;
     }

@@ -23,13 +23,19 @@ public interface IOverflowActionRenderer {
      * This implementation displays menu for secondary actions.
      * @param actionElements secondary action elements list displayed on the menu
      * @param view Overflow action view.
-     * @return default {@link android.support.design.widget.BottomSheetDialog} will be shown if returned false.
      */
-    boolean onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view);
+    void onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view);
 
     /**
      * This implementation indicates if the current "..." overflow action belongs to root level actions array. If it's false then it indicates it's ActionSet as body elements.
-     * @return true
+     * @return true for Root Level Action otherwise false.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     boolean isRootLevelActions();
+
+    /**
+     * This implementation indicates whether to display custom action menu or not. if true then display the customized action menu otherwise display the default {@link android.support.design.widget.BottomSheetDialog}.
+     * @return true displays customized action menu otherwise default {@link android.support.design.widget.BottomSheetDialog}
+     */
+    boolean shouldDisplayCustomActionMenu();
 }

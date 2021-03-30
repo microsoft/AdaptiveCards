@@ -235,7 +235,11 @@ public class CardRendererRegistration
 
     public void registerOverflowActionLoader(IOverflowActionRenderer overflowActionRenderer)
     {
-        m_overflowActionRenderer = overflowActionRenderer;
+        //takes default Overflow renderer if null.
+        if(overflowActionRenderer!=null)
+          m_overflowActionRenderer = overflowActionRenderer;
+        else
+           m_overflowActionRenderer = OverflowActionLayoutRenderer.OverflowActionRenderer.getInstance();
     }
 
 

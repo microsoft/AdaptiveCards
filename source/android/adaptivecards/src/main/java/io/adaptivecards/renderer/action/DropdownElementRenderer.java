@@ -81,6 +81,7 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
             }
         };
         button.setOnClickListener(actionOnClickListener);
+        button.setTag(BOTTOM_SHEET_TAG,viewGroup);
         setIcon(button,renderedCard,baseActionElement,hostConfig,renderArgs);
         return button;
     }

@@ -40,7 +40,6 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
     private static final int MARGIN = 7;
     private static final int HORIZONTAL_PADDING = 6;
-    private BottomSheetDialog bottomSheetDialog;
 
     protected OverflowActionLayoutRenderer() {
     }
@@ -87,20 +86,24 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         viewGroup.post(new Runnable() {
             @Override
             public void run() {
-                if (!overflowActionRenderer.onDisplayOverflowActionMenu(baseActionElementList, overflowButton)) {
-                    try {
-                        bottomSheetDialog =renderActionSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
-                    } catch (AdaptiveFallbackException e) {
-                        e.printStackTrace();
+                try {
+                    if (!overflowActionRenderer.shouldDisplayCustomActionMenu()) {
+                        BottomSheetDialog bottomSheetDialog = renderActionSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+                        overflowButton.setTag(bottomSheetDialog);
                     }
+                } catch (AdaptiveFallbackException e) {
+                    e.printStackTrace();
                 }
             }
         });
         overflowButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(bottomSheetDialog!=null)
-                   bottomSheetDialog.show();
+                if (overflowActionRenderer.shouldDisplayCustomActionMenu()) {
+                    overflowActionRenderer.onDisplayOverflowActionMenu(baseActionElementList, overflowButton);
+                } else if(v.getTag() instanceof BottomSheetDialog) {
+                    ((BottomSheetDialog) v.getTag()).show();
+                }
             }
         });
         applyBackgroundDrawables(context, overflowButton);
@@ -213,7 +216,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
                 contentLayout.addView(actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs));
             } catch (AdaptiveFallbackException e) {
-                //handleActionElementFallbackException(renderedCard, actionElement, context, fragmentManager, actionButtonsLayout, cardActionHandler, hostConfig, renderArgs, e);
+                e.printStackTrace();
             }
         }
     }
@@ -257,12 +260,17 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
         }
 
         @Override
-        public boolean onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view) {
-            return false;
+        public void onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view) {
+            //default implementation.
         }
 
         @Override
         public boolean isRootLevelActions() {
+            return false;
+        }
+
+        @Override
+        public boolean shouldDisplayCustomActionMenu() {
             return false;
         }
     }
