@@ -1,0 +1,66 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Image With Separator",
+            "wrap": true,
+            "horizontalAlignment": "Center",
+            "separator": true
+        },
+        {
+            "type": "Image",
+            "url": "https://adaptivecards.io/content/cats/2.png",
+            "backgroundColor": "#FFBBAA",
+            "style": "Person",
+            "size": "Medium",
+            "horizontalAlignment": "Center",
+            "separator": true,
+            "spacing": "None"
+        },
+        {
+            "type": "TextBlock",
+            "text": "Image With Separator and Small Spacing",
+            "wrap": true,
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "Image",
+            "url": "https://adaptivecards.io/content/cats/3.png",
+            "backgroundColor": "#FFFFAA",
+            "horizontalAlignment": "Center",
+            "size": "Medium",
+            "spacing": "Small",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Image With Separator and Large Spacing",
+            "wrap": true,
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "Image",
+            "url": "https://adaptivecards.io/content/cats/1.png",
+            "backgroundColor": "#FFCFAA",
+            "horizontalAlignment": "Center",
+            "size": "Medium",
+            "spacing": "Large",
+            "separator": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Image with Visibility off",
+            "wrap": true,
+            "horizontalAlignment": "Center"
+        },
+        {
+            "type": "Image",
+            "url": "https://adaptivecards.io/content/cats/1.png",
+            "isVisible": false,
+            "separator": true
+        }
+    ]
+}

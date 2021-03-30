@@ -7,12 +7,11 @@ class ACRContentHoldingView: NSView, SelectActionHandlingProtocol {
     private weak var _heightConstraint: NSLayoutConstraint?
     weak var imageView: NSImageView?
     var imageProperties: ACRImageProperties?
+    var isVisible: Bool = true
     var target: TargetHandler?
     
-    var isImageSet: Bool = true
+    var isImageSet: Bool = false
     var isPersonStyle: Bool = false
-    var hidePlayicon: Bool = false
-    var isMediaType: Bool = false
 
     override public init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
@@ -41,6 +40,25 @@ class ACRContentHoldingView: NSView, SelectActionHandlingProtocol {
             subview.wantsLayer = true
             subview.layer?.cornerRadius = radius
             subview.layer?.masksToBounds = true
+        }
+    }
+    
+    override var intrinsicContentSize: NSSize {
+        guard let size = imageProperties?.contentSize else {
+            return super.intrinsicContentSize
+        }
+        return size.width > 0 ? size : super.intrinsicContentSize
+    }
+    
+    override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        guard let superView = self.superview else { return }
+        if !isImageSet {
+            if imageProperties?.acsImageSize != .stretch {
+                widthAnchor.constraint(greaterThanOrEqualTo: superView.widthAnchor).isActive = true
+            } else {
+                widthAnchor.constraint(equalTo: superView.widthAnchor).isActive = true
+            }
         }
     }
     

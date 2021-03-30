@@ -8,6 +8,7 @@ class FakeImage: ACSImage {
     public var horizontalAlignment: ACSHorizontalAlignment = .left
     public var pixelWidth: NSNumber = 0
     public var pixelHeight: NSNumber = 0
+    public var isVisible: Bool = true
 
     override func getUrl() -> String? {
         return url
@@ -36,10 +37,14 @@ class FakeImage: ACSImage {
     override func getPixelHeight() -> NSNumber? {
         return pixelHeight
     }
+    
+    override func getIsVisible() -> Bool {
+        return isVisible
+    }
 }
 
 extension FakeImage {
-    static func make(url: String? = "sampleUrl", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0) -> FakeImage {
+    static func make(url: String? = "sampleUrl", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0, isVisible: Bool = true) -> FakeImage {
         let fakeImageView = FakeImage()
         fakeImageView.url = url
         fakeImageView.backgroundColor = backgroundColor
@@ -48,6 +53,7 @@ extension FakeImage {
         fakeImageView.horizontalAlignment = horizontalAlignment
         fakeImageView.pixelWidth = pixelWidth
         fakeImageView.pixelHeight = pixelHeight
+        fakeImageView.isVisible = isVisible
         return fakeImageView
     }
 }

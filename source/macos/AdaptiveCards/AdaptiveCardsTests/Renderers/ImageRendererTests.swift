@@ -85,7 +85,7 @@ class ImageRendererTests: XCTestCase {
         let contentView = renderImageView()
         XCTAssertEqual(contentView.imageProperties?.hasExplicitDimensions, true)
     }
-
+    
     private func renderImageView() -> ACRContentHoldingView {
         let view = imageRenderer.render(element: fakeImageView, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [])
         
