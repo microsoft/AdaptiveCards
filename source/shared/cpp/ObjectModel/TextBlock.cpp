@@ -15,7 +15,7 @@ using namespace AdaptiveSharedNamespace;
 
 TextBlock::TextBlock() :
     BaseCardElement(CardElementType::TextBlock), m_wrap(false), m_maxLines(0), m_hAlignment(HorizontalAlignment::Left),
-    m_textElementProperties(std::make_shared<TextElementProperties>())
+    m_textStyle(TextStyle::Paragraph), m_textElementProperties(std::make_shared<TextElementProperties>())
 {
     PopulateKnownPropertiesSet();
 }
@@ -40,6 +40,11 @@ Json::Value TextBlock::SerializeToJsonValue() const
     if (m_wrap)
     {
         root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Wrap)] = true;
+    }
+
+    if (m_textStyle != TextStyle::Paragraph)
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style)] = TextStyleToString(m_textStyle);
     }
 
     return root;
