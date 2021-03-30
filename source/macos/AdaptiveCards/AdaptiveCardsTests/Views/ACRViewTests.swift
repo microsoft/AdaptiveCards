@@ -5,12 +5,14 @@ import XCTest
 class ACRViewTests: XCTestCase {
     private var view: ACRView!
     private var fakeResourceResolver: FakeResourceResolver!
+    private var fakeACRViewDelegate: FakeACRViewDelegate!
     
     override func setUp() {
         super.setUp()
         view = ACRView(style: .default, hostConfig: FakeHostConfig.make())
         fakeResourceResolver = FakeResourceResolver()
         view.resolverDelegate = fakeResourceResolver
+        fakeACRViewDelegate = FakeACRViewDelegate()
     }
     
     func testRegisterImageHandlingView() {
@@ -73,6 +75,73 @@ class ACRViewTests: XCTestCase {
         XCTAssertTrue(imageView2.imageDidSet)
         XCTAssertTrue(imageView3.imageDidSet)
     }
+    
+    // Test when ShowCard's Submit Action is Clicked
+    func testSubmitActionCountWithAShowCard() {
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
+        fakeShowCard.delegate = fakeACRViewDelegate
+        
+        view.addShowCard(fakeShowCard)
+        fakeShowCard.handleSubmitAction(actionView: NSView(), dataJson: "")
+        
+        XCTAssertEqual(fakeACRViewDelegate.submitActionCount, 1)
+    }
+    
+    // Test when ShowCard's Submit Action is clicked in nested setup
+    func testSubmitActionCountWithNestedShowCard() {
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
+        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig())
+        
+        fakeShowCard.addInputHandler(fakeInputHandlingView())
+        fakeShowCard.addInputHandler(fakeInputHandlingView())
+        fakeShowCard2.addInputHandler(fakeInputHandlingView())
+        
+        fakeShowCard2.delegate = fakeACRViewDelegate
+        
+        // Nested show cards
+        view.addShowCard(fakeShowCard)
+        fakeShowCard.addShowCard(fakeShowCard2)
+        
+        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
+        
+        XCTAssertEqual(fakeACRViewDelegate.dictValues, 3)
+    }
+    
+    // Test when ShowCard's Submit Action is clicked with sibling showcard
+    func testSubmitActionCountWithSiblingShowCard() {
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
+        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig())
+        
+        fakeShowCard.addInputHandler(fakeInputHandlingView())
+        fakeShowCard2.addInputHandler(fakeInputHandlingView())
+        
+        fakeShowCard2.delegate = fakeACRViewDelegate
+        
+        // sibling show cards
+        view.addShowCard(fakeShowCard)
+        view.addShowCard(fakeShowCard2)
+        
+        fakeShowCard2.handleSubmitAction(actionView: NSView(), dataJson: "")
+        
+        XCTAssertEqual(fakeACRViewDelegate.dictValues, 1)
+    }
+}
+
+private class FakeACRViewDelegate: NSView, ACRViewDelegate {
+    var submitActionCount = 0
+    var dictValues = 0
+    func acrView(_ view: ACRView, didSelectOpenURL url: String, actionView: NSView) {}
+    
+    func acrView(_ view: ACRView, didSubmitUserResponses dict: [String : Any], actionView: NSView) {
+        submitActionCount += 1
+        dictValues += dict.count
+    }
+}
+
+private class fakeInputHandlingView: NSView, InputHandlingViewProtocol {
+    var value: String = NSUUID().uuidString
+    var key: String = NSUUID().uuidString
+    var isValid: Bool = true
 }
 
 private class FakeImageHoldingView: NSView, ImageHoldingView {

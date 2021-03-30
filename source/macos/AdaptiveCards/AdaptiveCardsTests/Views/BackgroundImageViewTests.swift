@@ -448,7 +448,7 @@ class ACRBackgroundImageViewTests: XCTestCase {
     
     
     private func getImageFile() -> NSImage? {
-        return BundleUtils.getImage("cisco", "jpg")
+        return BundleUtils.getImage("cisco", ofType: "jpg")
     }
     
     private func getImageLayer() -> CALayer {

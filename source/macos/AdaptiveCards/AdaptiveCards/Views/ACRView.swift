@@ -16,6 +16,7 @@ class ACRView: ACRColumnView {
     
     weak var delegate: ACRViewDelegate?
     weak var resolverDelegate: ACRViewResourceResolverDelegate?
+    weak var parent: ACRView?
 
     private (set) var targets: [TargetHandler] = []
     private (set) var inputHandlers: [InputHandlingViewProtocol] = []
@@ -40,6 +41,7 @@ class ACRView: ACRColumnView {
     }
     
     func addShowCard(_ cardView: ACRView) {
+        cardView.parent = self
         showCardStackView.addArrangedSubview(cardView)
         cardView.widthAnchor.constraint(equalTo: showCardStackView.widthAnchor).isActive = true
     }
@@ -103,11 +105,19 @@ extension ACRView: TargetHandlerDelegate {
     
     func handleSubmitAction(actionView: NSView, dataJson: String?) {
         var dict = [String: Any]()
-        for handler in inputHandlers {
-            guard handler.isValid else { continue }
-            dict[handler.key] = handler.value
-        }
         
+        // recursively fetch input handlers dictionary from the parent
+        var parentView: ACRView? = self
+        repeat {
+            if let handlers = parentView?.inputHandlers {
+                for handler in handlers {
+                    guard handler.isValid else { continue }
+                    dict[handler.key] = handler.value
+                }
+            }
+            parentView = parentView?.parent
+        } while parentView != nil
+      
         if let data = dataJson?.data(using: String.Encoding.utf8), let dataJsonDict = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
             dict.merge(dataJsonDict) { current, _ in current }
         }
