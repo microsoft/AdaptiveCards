@@ -6,7 +6,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     @IBOutlet var stackView: NSStackView!
     @IBOutlet var textView: NSTextView!
     @IBOutlet var comboBox: NSComboBox!
-    
+    @IBOutlet var cardScrollView: NSView!
     private var items: [String] = []
     private var configs: [String] = []
     private var hostConfigString = sampleHostConfig // default config string
@@ -47,6 +47,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
         textView.isAutomaticDashSubstitutionEnabled = false
         textView.isAutomaticTextReplacementEnabled = false
         textView.smartInsertDeleteEnabled = false
+        cardScrollView.translatesAutoresizingMaskIntoConstraints = true
     }
     
     // MARK: Private Methods
