@@ -1531,8 +1531,13 @@ export class CardElementPeer extends DesignerPeer {
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
         registration: DesignerPeerRegistrationBase,
-        cardElement: Adaptive.CardElement) {
+        cardElement: Adaptive.CardElement,
+        initializeCardElement?: boolean) {
         super(parent, designerSurface, registration, cardElement);
+
+        if (initializeCardElement === true) {
+            this.initializeCardElement();
+        }
 
         if (cardElement instanceof Adaptive.CardElementContainer) {
             for (var i = 0; i < cardElement.getItemCount(); i++) {
@@ -1715,8 +1720,9 @@ export abstract class TypedCardElementPeer<TCardElement extends Adaptive.CardEle
         parent: DesignerPeer,
         designerSurface: CardDesignerSurface,
         registration: DesignerPeerRegistrationBase,
-        cardElement: TCardElement) {
-        super(parent, designerSurface, registration, cardElement);
+        cardElement: TCardElement,
+        initializeCardElement?: boolean) {
+        super(parent, designerSurface, registration, cardElement, initializeCardElement);
     }
 
     get cardElement(): TCardElement {

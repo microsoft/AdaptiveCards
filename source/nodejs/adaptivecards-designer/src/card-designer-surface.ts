@@ -23,7 +23,8 @@ export type CardElementPeerType = {
         parent: DesignerPeers.DesignerPeer,
         designerSurface: CardDesignerSurface,
         registration: DesignerPeers.DesignerPeerRegistrationBase,
-        cardElement: Adaptive.CardElement
+        cardElement: Adaptive.CardElement,
+        initializeCardElement?: boolean
     ): DesignerPeers.CardElementPeer
 };
 export type ActionPeerType = {
@@ -121,10 +122,12 @@ export class CardElementPeerRegistry extends DesignerPeerRegistry<CardElementTyp
         this.registerPeer(Adaptive.ChoiceSetInput, DesignerPeers.ChoiceSetInputPeer, DesignerPeerCategory.Inputs, "acd-icon-inputChoiceSet");
     }
 
-    createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement): DesignerPeers.CardElementPeer {
+    createPeerInstance(designerSurface: CardDesignerSurface, parent: DesignerPeers.DesignerPeer, cardElement: Adaptive.CardElement, initializeCardElement?: boolean): DesignerPeers.CardElementPeer {
         var registrationInfo = this.findTypeRegistration((<any>cardElement).constructor);
 
-        var peer = registrationInfo ? new registrationInfo.peerType(parent, designerSurface, registrationInfo, cardElement) : new DesignerPeers.CardElementPeer(parent, designerSurface, this.defaultRegistration, cardElement);
+        var peer = registrationInfo ?
+            new registrationInfo.peerType(parent, designerSurface, registrationInfo, cardElement, initializeCardElement) :
+            new DesignerPeers.CardElementPeer(parent, designerSurface, this.defaultRegistration, cardElement, initializeCardElement);
 
         return peer;
     }
