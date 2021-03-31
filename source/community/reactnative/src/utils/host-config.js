@@ -39,34 +39,6 @@ export class TextColorDefinition {
 	}
 }
 
-export class HostConfigManager {
-
-	static hostConfig = null;
-
-	/**
-	 * @returns {HostConfigManager}
-	 */
-	static getHostConfig() {
-		if (HostConfigManager.hostConfig === null) {
-			HostConfigManager.hostConfig = new HostConfig(defaultHostConfig);
-		}
-
-		return this.hostConfig;
-	}
-
-	static setHostConfig(value) {
-		this.hostConfig = new HostConfig(value);
-	}
-
-	/**
-	 * @description Return whether supports interactivity is enabled or not in the host config
-	 * @returns {boolean} - true|false based on the hostconfig supportsInteractivity value
-	 */
-	static supportsInteractivity() {
-		return this.getHostConfig().supportsInteractivity;
-	}
-}
-
 export class AdaptiveCardConfig {
 	allowCustomStyle = false;
 

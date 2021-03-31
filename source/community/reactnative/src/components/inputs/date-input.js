@@ -8,13 +8,9 @@ import React from 'react';
 import { Platform } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker'
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
-import { StyleManager } from '../../styles/style-config';
 import { PickerInput } from '../inputs';
 
 export class DateInput extends React.Component {
-
-	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
@@ -97,7 +93,7 @@ export class DateInput extends React.Component {
 
 	render() {
 
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -105,7 +101,7 @@ export class DateInput extends React.Component {
 			<>
 				<PickerInput
 					json={this.payload}
-					style={this.styleConfig.inputDate}
+					style={this.props.configManager.styleConfig.inputDate}
 					value={this.state.value}
 					showPicker={this.showDatePicker}
 					modalVisible={this.state.modalVisible}
@@ -115,6 +111,7 @@ export class DateInput extends React.Component {
 					maxDate={this.state.maxDate}
 					handleDateChange={this.handleDateChange}
 					mode='date'
+					configManager={this.props.configManager}
 				/>
 				{
 					this.state.modalVisibleAndroid &&
