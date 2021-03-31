@@ -9,7 +9,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             logError("Element is not of type ACSColumnSet")
             return NSView()
         }
-        let columnSetView = ACRContentStackView(style: columnSet.getStyle(), hostConfig: hostConfig)
+        let columnSetView = ACRContentStackView(style: columnSet.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: parentView)
         columnSetView.translatesAutoresizingMaskIntoConstraints = false
         columnSetView.orientation = .horizontal
         columnSetView.distribution = .fillEqually
@@ -30,6 +30,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             // Check if has extra properties else add column view
             guard index > 0, column.getSpacing() != .none, !column.getSeparator() else {
                 columnSetView.addArrangedSubview(columnView)
+                BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
                 continue
             }
             let wrappingView = ACRContentStackView(style: column.getStyle(), hostConfig: hostConfig)
@@ -41,6 +42,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             wrappingView.addArrangedSubview(columnView)
             columnView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
             columnSetView.addArrangedSubview(wrappingView)
+            BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
         }
         
         // Add SelectAction

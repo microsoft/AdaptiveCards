@@ -1,0 +1,53 @@
+{
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "type": "AdaptiveCard",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "emphasis",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Emphasis Style"
+                        },
+                        {
+                            "type": "Container",
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Container no style"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Container",
+                            "style": "default",
+                            "bleed": true,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Container default style"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "Container",
+                            "style": "warning",
+                            "bleed": true,
+                            "items": [
+                                {
+                                    "type": "TextBlock",
+                                    "text": "Container emphasis style"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -13,11 +13,6 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
         let containerView = ACRColumnView(style: container.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: rootView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
-        // add bleed
-        
-        // add background Image
-        renderBackgroundImage(backgroundImage: container.getBackgroundImage(), view: containerView, rootview: rootView)
-        
         // add selectAction
         containerView.setupSelectAction(container.getSelectAction(), rootView: rootView)
         
@@ -34,6 +29,7 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             let view = renderer.render(element: item, with: hostConfig, style: container.getStyle(), rootView: rootView, parentView: containerView, inputs: [])
             let viewWithInheritedProperties = BaseCardElementRenderer().updateView(view: view, element: item, rootView: rootView, style: container.getStyle(), hostConfig: hostConfig, isfirstElement: isFirstElement)
             containerView.addArrangedSubview(viewWithInheritedProperties)
+            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: containerView, with: hostConfig, element: item)
         }
         
         let verticalAlignment = container.getVerticalContentAlignment()
@@ -51,11 +47,5 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
         }
         return containerView
-    }
-    private func renderBackgroundImage(backgroundImage: ACSBackgroundImage?, view: NSView, rootview: NSView) {
-        // add image
-        if backgroundImage == nil, let url = backgroundImage?.getUrl(), url.isEmpty {
-            return
-        }
     }
 }

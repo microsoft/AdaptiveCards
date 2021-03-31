@@ -11,6 +11,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     private (set) var stackViewTrailingConstraint: NSLayoutConstraint?
     private (set) var stackViewTopConstraint: NSLayoutConstraint?
     private (set) var stackViewBottomConstraint: NSLayoutConstraint?
+    private (set) var style: ACSContainerStyle?
     let hostConfig: ACSHostConfig
     var target: TargetHandler?
     
@@ -62,15 +63,17 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     
     init(style: ACSContainerStyle, hostConfig: ACSHostConfig) {
         self.hostConfig = hostConfig
+        self.style = style
         super.init(frame: .zero)
         initialize()
     }
     
     init(style: ACSContainerStyle, parentStyle: ACSContainerStyle?, hostConfig: ACSHostConfig, superview: NSView?) {
         self.hostConfig = hostConfig
+        self.style = style
         super.init(frame: .zero)
         initialize()
-        if style != .none {
+        if style != .none && style != parentStyle {
             if let bgColor = hostConfig.getBackgroundColor(for: style) {
                 layer?.backgroundColor = bgColor.cgColor
             }
@@ -111,6 +114,21 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         stackViewTopConstraint?.constant = padding
         stackViewTrailingConstraint?.constant = -padding
         stackViewBottomConstraint?.constant = -padding
+    }
+    
+    func setBleedProp(top: Bool, bottom: Bool, trailing: Bool, leading: Bool) {
+        if top {
+            stackViewTopConstraint?.constant = 0
+        }
+        if bottom {
+            stackViewBottomConstraint?.constant = 0
+        }
+        if leading {
+            stackViewLeadingConstraint?.constant = 0
+        }
+        if trailing {
+            stackViewTrailingConstraint?.constant = 0
+        }
     }
     
     func addSeperator(_ separator: Bool) {

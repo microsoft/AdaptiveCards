@@ -484,6 +484,7 @@
 		29430A5C25F216AA00CBA72E /* ContainerRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */; };
 		299DE17C26048FBB00605DAD /* ActionsRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */; };
 		29BA82D725E265F4000B7578 /* ChoiceSetInputRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */; };
+		29C3AD38260C7C6A00467069 /* BleedUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29C3AD37260C7C6A00467069 /* BleedUtils.swift */; };
 		29E8DF5225E69B2B000EC12F /* ACRChoiceButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */; };
 		29E8DF6C25E7B95D000EC12F /* ACRChoiceSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */; };
 		29E8DF8025E7C567000EC12F /* FakeChoiceSetInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */; };
@@ -1027,6 +1028,7 @@
 		29430A5B25F216AA00CBA72E /* ContainerRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerRenderer.swift; sourceTree = "<group>"; };
 		299DE17B26048FBB00605DAD /* ActionsRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionsRendererTests.swift; sourceTree = "<group>"; };
 		29BA82D625E265F4000B7578 /* ChoiceSetInputRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceSetInputRenderer.swift; sourceTree = "<group>"; };
+		29C3AD37260C7C6A00467069 /* BleedUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BleedUtils.swift; sourceTree = "<group>"; };
 		29E8DF5125E69B2B000EC12F /* ACRChoiceButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceButton.swift; sourceTree = "<group>"; };
 		29E8DF6B25E7B95C000EC12F /* ACRChoiceSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRChoiceSetView.swift; sourceTree = "<group>"; };
 		29E8DF7F25E7C567000EC12F /* FakeChoiceSetInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeChoiceSetInput.swift; sourceTree = "<group>"; };
@@ -1096,6 +1098,7 @@
 				082864FC25C99E300080D767 /* HostConfigUtils.swift */,
 				08D7767025CBF27B0095C1B3 /* LogUtils.swift */,
 				A032272425E93C7400E7172E /* ImageUtils.swift */,
+				29C3AD37260C7C6A00467069 /* BleedUtils.swift */,
 				81A3000A260C7961003848DD /* BundleUtils.swift */,
 			);
 			path = Utils;
@@ -2229,6 +2232,7 @@
 				13C41B0D25F25D06008A1F2E /* ACRDateField.swift in Sources */,
 				A06EF8CC2604A85100D7E63A /* ResourceResolverProtocol.swift in Sources */,
 				0830D54825F8EBF300BBC245 /* ActionOpenURLRenderer.swift in Sources */,
+				29C3AD38260C7C6A00467069 /* BleedUtils.swift in Sources */,
 				81A3000B260C7961003848DD /* BundleUtils.swift in Sources */,
 				0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */,
 				082864FD25C99E300080D767 /* HostConfigUtils.swift in Sources */,

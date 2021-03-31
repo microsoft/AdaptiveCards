@@ -43,6 +43,7 @@ class AdaptiveCardRenderer {
             let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
             let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
             rootView.addArrangedSubview(viewWithInheritedProperties)
+            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: rootView, with: hostConfig, element: element)
         }
         
         if !card.getActions().isEmpty {

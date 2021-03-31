@@ -27,6 +27,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             columnView.configureColumnProperties(for: view)
             let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: item, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: index == 0)
             columnView.addArrangedSubview(viewWithInheritedProperties)
+            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: columnView, with: hostConfig, element: item)
         }
         
         if column.getVerticalContentAlignment() == .center, let topView = topSpacingView {
