@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
+#include <winrt/Windows.Foundation.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -49,6 +50,12 @@ namespace AdaptiveNamespace
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
+        }
+
+        const auto sharedRtl = sharedColumn->GetRtl();
+        if (sharedRtl)
+        {
+            m_rtl = winrt::box_value(sharedRtl.value()).as<ABI::Windows::Foundation::IReference<bool>>().get();
         }
 
         InitializeBaseElement(std::static_pointer_cast<BaseCardElement>(sharedColumn));
@@ -102,6 +109,17 @@ namespace AdaptiveNamespace
     HRESULT AdaptiveColumn::put_BackgroundImage(_In_ IAdaptiveBackgroundImage* backgroundImage)
     {
         m_backgroundImage = backgroundImage;
+        return S_OK;
+    }
+
+    HRESULT AdaptiveColumn::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    {
+        return m_rtl.CopyTo(rtl);
+    }
+
+    HRESULT AdaptiveColumn::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
+    {
+        m_rtl = rtl;
         return S_OK;
     }
 
@@ -193,6 +211,15 @@ namespace AdaptiveNamespace
             RETURN_IF_FAILED(GenerateSharedAction(m_selectAction.Get(), sharedAction));
             column->SetSelectAction(std::move(sharedAction));
         }
+
+        std::optional<bool> rtl;
+        if (m_rtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            rtl = rtlValue;
+        }
+        column->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), column->GetItems());
 
