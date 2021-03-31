@@ -5463,6 +5463,7 @@ export class Container extends StylableCardElementContainer {
         Versions.v1_0,
         "backgroundImage",
         BackgroundImage,
+        false,
         new BackgroundImage());
     static readonly verticalContentAlignmentProperty = new EnumProperty(Versions.v1_1, "verticalContentAlignment", Enums.VerticalAlignment, Enums.VerticalAlignment.Top);
     static readonly rtlProperty = new BoolProperty(Versions.v1_0, "rtl");
