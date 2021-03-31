@@ -28,14 +28,12 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Redmond**",
-											"wrap": true
+											"text": "**Redmond**"
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "8a - 12:30p",
-											"wrap": true
+											"text": "8a - 12:30p"
 										}
 									],
 									"width": "auto"
@@ -70,14 +68,12 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Bellevue**",
-											"wrap": true
+											"text": "**Bellevue**"
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "12:30p - 3p",
-											"wrap": true
+											"text": "12:30p - 3p"
 										}
 									],
 									"width": "auto"
@@ -112,14 +108,12 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Seattle**",
-											"wrap": true
+											"text": "**Seattle**"
 										},
 										{
 											"type": "TextBlock",
 											"spacing": "None",
-											"text": "8p",
-											"wrap": true
+											"text": "8p"
 										}
 									],
 									"width": "auto"
@@ -158,8 +152,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "2:00 PM",
-											"wrap": true
+											"text": "2:00 PM"
 										}
 									],
 									"width": "stretch"
@@ -170,8 +163,7 @@
 							"type": "TextBlock",
 							"spacing": "None",
 							"text": "1hr",
-							"isSubtle": true,
-							"wrap": true
+							"isSubtle": true
 						}
 					],
 					"width": "110px"
@@ -199,8 +191,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "**Contoso Campaign Status Meeting**",
-							"wrap": true
+							"text": "**Contoso Campaign Status Meeting**"
 						},
 						{
 							"type": "ColumnSet",
@@ -222,8 +213,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "Conf Room Bravern-2/9050",
-											"wrap": true
+											"text": "Conf Room Bravern-2/9050"
 										}
 									],
 									"width": "stretch"
@@ -275,8 +265,7 @@
 									"items": [
 										{
 											"type": "TextBlock",
-											"text": "**Contoso Brand Guidelines** shared by **Susan Metters**",
-											"wrap": true
+											"text": "**Contoso Brand Guidelines** shared by **Susan Metters**"
 										}
 									],
 									"width": "stretch"
@@ -336,8 +325,7 @@
 										{
 											"type": "TextBlock",
 											"text": "about 45 minutes",
-											"isSubtle": true,
-											"wrap": true
+											"isSubtle": true
 										}
 									],
 									"width": "stretch"
@@ -359,15 +347,13 @@
 						{
 							"type": "TextBlock",
 							"spacing": "None",
-							"text": "8:00 PM",
-							"wrap": true
+							"text": "8:00 PM"
 						},
 						{
 							"type": "TextBlock",
 							"spacing": "None",
 							"text": "1hr",
-							"isSubtle": true,
-							"wrap": true
+							"isSubtle": true
 						}
 					],
 					"width": "110px"
@@ -395,8 +381,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "**Alaska Airlines AS1021 flight to Chicago**",
-							"wrap": true
+							"text": "**Alaska Airlines AS1021 flight to Chicago**"
 						},
 						{
 							"type": "ColumnSet",

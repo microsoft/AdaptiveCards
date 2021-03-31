@@ -15,8 +15,7 @@
 									"type": "TextBlock",
 									"size": "Large",
 									"weight": "Bolder",
-									"text": "**EXPENSE APPROVAL**",
-									"wrap": true
+									"text": "**EXPENSE APPROVAL**"
 								}
 							],
 							"width": "stretch"
@@ -80,8 +79,7 @@
 					"size": "Small",
 					"weight": "Bolder",
 					"color": "Accent",
-					"text": "[ER-13052](https://adaptivecards.io)",
-					"wrap": true
+					"text": "[ER-13052](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
@@ -129,8 +127,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "DATE",
-									"wrap": true
+									"text": "DATE"
 								}
 							],
 							"width": "auto"
@@ -142,8 +139,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "CATEGORY",
-									"wrap": true
+									"text": "CATEGORY"
 								}
 							],
 							"width": "stretch"
@@ -154,8 +150,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "AMOUNT",
-									"wrap": true
+									"text": "AMOUNT"
 								}
 							],
 							"width": "auto"
@@ -220,14 +215,14 @@
 							"id": "chevronDown1",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Air Travel Expense $300 collapsed"
+							"altText": "Details collapsed"
 						},
 						{
 							"type": "Image",
 							"id": "chevronUp1",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Air Travel Expense $300 expanded",
+							"altText": "Details expanded",
 							"isVisible": false
 						}
 					],
@@ -355,14 +350,14 @@
 							"id": "chevronDown2",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Auto Mobile Expense $100 collapsed"
+							"altText": "Details collapsed"
 						},
 						{
 							"type": "Image",
 							"id": "chevronUp2",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Auto Mobile Expense $100 expanded",
+							"altText": "Details expanded",
 							"isVisible": false
 						}
 					],
@@ -484,14 +479,14 @@
 							"id": "chevronDown3",
 							"url": "https://adaptivecards.io/content/down.png",
 							"width": "20px",
-							"altText": "Excess Baggage Cost $50.38 collapsed"
+							"altText": "Details collapsed"
 						},
 						{
 							"type": "Image",
 							"id": "chevronUp3",
 							"url": "https://adaptivecards.io/content/up.png",
 							"width": "20px",
-							"altText": "Excess Baggage Cost $50.38 expanded",
+							"altText": "Details expanded",
 							"isVisible": false
 						}
 					],
@@ -580,18 +575,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$450.38",
-							"wrap": true
+							"text": "$450.38"
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 50.38 \t",
-							"wrap": true
+							"text": "(-) 50.38 \t"
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t",
-							"wrap": true
+							"text": "(-) 0.00 \t"
 						}
 					],
 					"width": "auto"
@@ -627,8 +619,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$ 400.00",
-									"wrap": true
+									"text": "$ 400.00"
 								}
 							],
 							"width": "auto"

@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
-import { Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import {
+	TimePickerAndroid,
+	Platform,
+} from 'react-native';
+
 import { HostConfigManager } from '../../utils/host-config';
 import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
@@ -32,7 +35,6 @@ export class TimeInput extends React.Component {
 			minTime: this.payload.min ? this.parseTimeString(this.payload.min) : undefined,
 			maxTime: this.payload.max ? this.parseTimeString(this.payload.max) : undefined,
 			modalVisible: false,
-			modalVisibleAndroid: false,
 			value: this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 
@@ -54,26 +56,21 @@ export class TimeInput extends React.Component {
 	/**
 	 * @description Binds the selected time
 	 * @param {Date} newTime 
-	 */
+     */
 	setTime(newTime) {
-		if (newTime !== undefined) {
-			const updatedTime = ("0" + newTime.getHours()).slice(-2) + ":"
-				+ ("0" + newTime.getMinutes()).slice(-2);
+		const updatedTime = ("0" + newTime.getHours()).slice(-2) + ":"
+			+ ("0" + newTime.getMinutes()).slice(-2);
 
-			this.setState({
-				chosenTime: newTime,
-				value: updatedTime
-			});
-		}
 		this.setState({
-			modalVisibleAndroid: false
+			chosenTime: newTime,
+			value: updatedTime
 		});
 	}
 
 	/**
-	 * @description Toggles the TimePicker model visibility.
-	 * @param {Boolean} visible 
-	 */
+     * @description Toggles the TimePicker model visibility.
+     * @param {Boolean} visible 
+     */
 	setModalVisible(visible) {
 		this.setState({ modalVisible: visible });
 	}
@@ -91,13 +88,34 @@ export class TimeInput extends React.Component {
 	handleTimeChange = time => this.setTime(time)
 
 	/**
+	 * @description Displays Android Time Picker
+	 */
+	async androidPicker() {
+		try {
+			const { action, hour, minute } = await TimePickerAndroid.open({
+				hour: this.state.chosenTime.getHours(),
+				minute: this.state.chosenTime.getMinutes()
+			});
+			if (action !== TimePickerAndroid.dismissedAction) {
+				// Selected hour (0-23), minute (0-59)
+				var date = new Date();
+				date.setHours(hour);
+				date.setMinutes(minute);
+				this.setTime(date)
+			}
+		} catch ({ code, message }) {
+			console.warn('Cannot open time picker', message);
+		}
+	}
+
+	/**
 	 * @description Displays Time Picker based on the platform.
 	 */
 	showTimePicker = () => {
 		if (Platform.OS === Constants.PlatformIOS) {
 			this.setState({ modalVisible: true });
 		} else {
-			this.setState({ modalVisibleAndroid: true });
+			this.androidPicker()
 		}
 	}
 
@@ -107,30 +125,20 @@ export class TimeInput extends React.Component {
 		}
 
 		return (
-			<>
-				<PickerInput
-					json={this.payload}
-					style={this.styleConfig.inputTime}
-					value={this.state.value}
-					format={"HH:mm"}
-					showPicker={this.showTimePicker}
-					modalVisible={this.state.modalVisible}
-					handleModalClose={this.handleModalClose}
-					chosenDate={this.state.chosenTime || new Date()}
-					minDate={this.state.minTime}
-					maxDate={this.state.maxTime}
-					handleDateChange={this.handleTimeChange}
-					mode='time'
-				/>
-				{
-					this.state.modalVisibleAndroid &&
-					<DateTimePicker
-						mode="time"
-						value={this.state.chosenTime}
-						onChange={(event, date) => this.setTime(date)}
-					/>
-				}
-			</>
+			<PickerInput
+				json={this.payload}
+				style={this.styleConfig.inputTime}
+				value={this.state.value}
+				format={"HH:mm"}
+				showPicker={this.showTimePicker}
+				modalVisible={this.state.modalVisible}
+				handleModalClose={this.handleModalClose}
+				chosenDate={this.state.chosenTime || new Date()}
+				minDate={this.state.minTime}
+				maxDate={this.state.maxTime}
+				handleDateChange={this.handleTimeChange}
+				mode='time'
+			/>
 		);
 	}
 }

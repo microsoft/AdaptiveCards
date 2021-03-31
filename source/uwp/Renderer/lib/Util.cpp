@@ -13,7 +13,6 @@
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveDateInput.h"
 #include "AdaptiveElementParserRegistration.h"
-#include "AdaptiveExecuteAction.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveFeatureRegistration.h"
@@ -83,8 +82,7 @@ std::string WStringToString(std::wstring_view in)
         {
             std::string out(length_out, '\0');
 
-            const int length_written =
-                ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out, NULL, NULL);
+            const int length_written = ::WideCharToMultiByte(CP_UTF8, WC_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out, NULL, NULL);
 
             if (length_written == length_out)
             {
@@ -110,8 +108,7 @@ std::wstring StringToWString(std::string_view in)
         {
             std::wstring out(length_out, L'\0');
 
-            const int length_written =
-                ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
+            const int length_written = ::MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, in.data(), length_in, out.data(), length_out);
 
             if (length_written == length_out)
             {
@@ -328,11 +325,6 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
             GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveToggleVisibilityAction>(
                 action);
         break;
-    case ABI::AdaptiveNamespace::ActionType::Execute:
-        sharedAction =
-            GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveExecuteAction>(
-                action);
-        break;
     case ABI::AdaptiveNamespace::ActionType::Custom:
         sharedAction = std::make_shared<CustomActionWrapper>(action);
         break;
@@ -360,8 +352,9 @@ HRESULT GenerateSharedActions(_In_ ABI::Windows::Foundation::Collections::IVecto
     return S_OK;
 }
 
-HRESULT GenerateSharedRequirements(_In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
-                                   std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept
+HRESULT GenerateSharedRequirements(
+    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* adaptiveRequirements,
+    std::unordered_map<std::string, AdaptiveSharedNamespace::SemanticVersion>& sharedRequirements) noexcept
 try
 {
     sharedRequirements.clear();
@@ -708,10 +701,6 @@ try
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleVisibilityAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleVisibilityAction>(action)));
         break;
-    case ActionType::Execute:
-        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveExecuteAction>(
-            projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::ExecuteAction>(action)));
-        break;
     case ActionType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));
         break;
@@ -782,9 +771,8 @@ try
 }
 CATCH_RETURN;
 
-HRESULT GenerateRequirementsProjection(
-    const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
-    _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
+HRESULT GenerateRequirementsProjection(const std::unordered_map<std::string, SemanticVersion>& sharedRequirements,
+                                       _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveRequirement*>* projectedRequirementVector) noexcept
 try
 {
     for (const auto& sharedRequirement : sharedRequirements)
@@ -1612,16 +1600,16 @@ HRESULT AdaptiveWarningsToSharedWarnings(_In_ ABI::Windows::Foundation::Collecti
     return S_OK;
 }
 
-Color GenerateLHoverColor(const Color& originalColor)
+Color GenerateLighterColor(const Color& originalColor)
 {
-    const double hoverIncrement = 0.25;
+    const double lightIncrement = 0.25;
 
-    Color hoverColor;
-    hoverColor.A = originalColor.A;
-    hoverColor.R = originalColor.R - static_cast<BYTE>(originalColor.R * hoverIncrement);
-    hoverColor.G = originalColor.G - static_cast<BYTE>(originalColor.G * hoverIncrement);
-    hoverColor.B = originalColor.B - static_cast<BYTE>(originalColor.B * hoverIncrement);
-    return hoverColor;
+    Color lighterColor;
+    lighterColor.A = originalColor.A;
+    lighterColor.R = originalColor.R + static_cast<BYTE>((255 - originalColor.R) * lightIncrement);
+    lighterColor.G = originalColor.G + static_cast<BYTE>((255 - originalColor.G) * lightIncrement);
+    lighterColor.B = originalColor.B + static_cast<BYTE>((255 - originalColor.B) * lightIncrement);
+    return lighterColor;
 }
 
 DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day)

@@ -23,8 +23,7 @@
                                     "type": "TextBlock",
                                     "text": "SHADES",
                                     "horizontalAlignment": "Center",
-                                    "weight": "Bolder",
-                                    "wrap": true
+                                    "weight": "Bolder"
                                 }
                             ]
                         },
@@ -37,22 +36,19 @@
                                 {
                                     "type": "TextBlock",
                                     "text": "{{DATE(${string(start_date)}, SHORT)}}",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
+                                    "horizontalAlignment": "Center"
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "Final",
                                     "spacing": "None",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
+                                    "horizontalAlignment": "Center"
                                 },
                                 {
                                     "type": "TextBlock",
                                     "text": "${home_points} - ${away_points}",
                                     "size": "ExtraLarge",
-                                    "horizontalAlignment": "Center",
-                                    "wrap": true
+                                    "horizontalAlignment": "Center"
                                 }
                             ]
                         },
@@ -72,8 +68,7 @@
                                     "type": "TextBlock",
                                     "text": "SKINS",
                                     "horizontalAlignment": "Center",
-                                    "weight": "Bolder",
-                                    "wrap": true
+                                    "weight": "Bolder"
                                 }
                             ]
                         }

@@ -60,7 +60,6 @@ An Action that will be invoked when the `Image` is tapped or selected. `Action.S
 * **Version** : 1.1
 * **Required**: No
 * **Allowed values**:
-  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`

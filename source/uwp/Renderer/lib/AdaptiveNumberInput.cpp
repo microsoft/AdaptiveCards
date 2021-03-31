@@ -30,19 +30,19 @@ namespace AdaptiveNamespace
         const auto sharedMin = sharedNumberInput->GetMin();
         if (sharedMin)
         {
-            m_min = winrt::box_value(sharedMin.value()).as<ABI::Windows::Foundation::IReference<double>>();
+            m_min = winrt::box_value(sharedMin.value()).as<ABI::Windows::Foundation::IReference<int32_t>>();
         }
 
         const auto sharedMax = sharedNumberInput->GetMax();
         if (sharedMax)
         {
-            m_max = winrt::box_value(sharedMax.value()).as<ABI::Windows::Foundation::IReference<double>>();
+            m_max = winrt::box_value(sharedMax.value()).as<ABI::Windows::Foundation::IReference<int32_t>>();
         }
 
         const auto sharedValue = sharedNumberInput->GetValue();
         if (sharedValue)
         {
-            m_value = winrt::box_value(sharedValue.value()).as<ABI::Windows::Foundation::IReference<double>>();
+            m_value = winrt::box_value(sharedValue.value()).as<ABI::Windows::Foundation::IReference<int32_t>>();
         }
 
         RETURN_IF_FAILED(UTF8ToHString(sharedNumberInput->GetPlaceholder(), m_placeholder.GetAddressOf()));
@@ -59,37 +59,37 @@ namespace AdaptiveNamespace
 
     HRESULT AdaptiveNumberInput::put_Placeholder(_In_ HSTRING placeholder) { return m_placeholder.Set(placeholder); }
 
-    HRESULT AdaptiveNumberInput::get_Value(_Out_ ABI::Windows::Foundation::IReference<double>** value)
+    HRESULT AdaptiveNumberInput::get_Value(_Out_ ABI::Windows::Foundation::IReference<int32_t>** value)
     {
         m_value.copy_to(value);
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::put_Value(ABI::Windows::Foundation::IReference<double>* value)
+    HRESULT AdaptiveNumberInput::put_Value(ABI::Windows::Foundation::IReference<int32_t>* value)
     {
         m_value.copy_from(value);
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::get_Max(_Out_ ABI::Windows::Foundation::IReference<double>** max)
+    HRESULT AdaptiveNumberInput::get_Max(_Out_ ABI::Windows::Foundation::IReference<int32_t>** max)
     {
         m_max.copy_to(max);
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::put_Max(ABI::Windows::Foundation::IReference<double>* max)
+    HRESULT AdaptiveNumberInput::put_Max(ABI::Windows::Foundation::IReference<int32_t>* max)
     {
         m_max.copy_from(max);
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::get_Min(_Out_ ABI::Windows::Foundation::IReference<double>** min)
+    HRESULT AdaptiveNumberInput::get_Min(_Out_ ABI::Windows::Foundation::IReference<int32_t>** min)
     {
         m_min.copy_to(min);
         return S_OK;
     }
 
-    HRESULT AdaptiveNumberInput::put_Min(ABI::Windows::Foundation::IReference<double>* min)
+    HRESULT AdaptiveNumberInput::put_Min(ABI::Windows::Foundation::IReference<int32_t>* min)
     {
         m_min.copy_from(min);
         return S_OK;
@@ -109,28 +109,28 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(CopySharedElementProperties(*numberInput));
 
-        std::optional<double> min;
+        std::optional<int> min;
         if (m_min)
         {
-            double minValue;
+            int minValue;
             RETURN_IF_FAILED(m_min->get_Value(&minValue));
             min = minValue;
         }
         numberInput->SetMin(min);
 
-        std::optional<double> max;
+        std::optional<int> max;
         if (m_max)
         {
-            double maxValue;
+            int maxValue;
             RETURN_IF_FAILED(m_max->get_Value(&maxValue));
             max = maxValue;
         }
         numberInput->SetMax(max);
 
-        std::optional<double> value;
+        std::optional<int> value;
         if (m_value)
         {
-            double valueValue;
+            int valueValue;
             RETURN_IF_FAILED(m_value->get_Value(&valueValue));
             value = valueValue;
         }

@@ -9,7 +9,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseCardElementRenderer.h"
-#import "ACRColumnSetView.h"
 #import "ACRContentStackView.h"
 #import "ACRIBaseActionElementRenderer.h"
 #import "ACRRegistration.h"
@@ -29,10 +28,7 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 {
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
-    } else {
-        view.hidden = NO;
     }
-
     NSString *hashkey = [NSString stringWithCString:visibilityInfo->GetId().c_str()
                                            encoding:NSUTF8StringEncoding];
     view.tag = hashkey.hash;
@@ -41,10 +37,6 @@ void configVisibility(UIView *view, std::shared_ptr<BaseCardElement> const &visi
 void configSeparatorVisibility(ACRSeparator *view,
                                std::shared_ptr<BaseCardElement> const &visibilityInfo)
 {
-    if (!view) {
-        return;
-    }
-
     if (!visibilityInfo->GetIsVisible()) {
         view.hidden = YES;
     }
@@ -52,18 +44,18 @@ void configSeparatorVisibility(ACRSeparator *view,
                                                          encoding:NSUTF8StringEncoding];
     [hashkey appendString:@"-separator"];
     view.tag = hashkey.hash;
-    view.isVisibilityObserved = YES;
 }
 
 void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage> backgroundImage,
-                           ACRContentStackView *containerView, ACRView *rootView)
+                           UIView *containerView, ACRView *rootView)
 {
-    if (rootView == nil || backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
+    if (backgroundImage == nullptr || backgroundImage->GetUrl().empty()) {
         return;
     }
 
     std::string imageUrl = backgroundImage->GetUrl();
-    NSString *key = [[NSNumber numberWithUnsignedLongLong:(unsigned long long)(backgroundImage.get())] stringValue];
+    NSString *key = [NSString stringWithCString:imageUrl.c_str()
+                                       encoding:[NSString defaultCStringEncoding]];
     if ([key length]) {
         UIImageView *imgView = nil;
         UIImage *img = [rootView getImageMap][key];
@@ -94,96 +86,24 @@ void renderBackgroundImage(const std::shared_ptr<AdaptiveCards::BackgroundImage>
             imgView.translatesAutoresizingMaskIntoConstraints = NO;
             [containerView insertSubview:imgView atIndex:0];
 
-            if (imgView.image) {
-                // if image is ready, proceed to setting contraints
-                renderBackgroundImage(rootView, backgroundImage.get(), imgView, imgView.image);
+            if (img) {
+                // apply now if image is ready, otherwise wait until it is loaded
+                applyBackgroundImageConstraints(backgroundImage.get(), imgView, img);
             }
         }
     }
 }
 
-void renderBackgroundImage(ACRView *rootView, const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
+void renderBackgroundImage(const BackgroundImage *backgroundImageProperties, UIImageView *imageView,
                            UIImage *image)
 {
-    if (rootView == nil || backgroundImageProperties == nullptr || imageView == nullptr || image == nullptr) {
-        return;
-    }
-
     if (backgroundImageProperties->GetFillMode() == ImageFillMode::Repeat ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatHorizontally ||
         backgroundImageProperties->GetFillMode() == ImageFillMode::RepeatVertically) {
         imageView.backgroundColor = [UIColor colorWithPatternImage:image];
-        [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
         imageView.image = nil;
     }
     applyBackgroundImageConstraints(backgroundImageProperties, imageView, image);
-    [rootView removeObserver:rootView forKeyPath:@"image" onObject:imageView];
-}
-
-// apply contraints for 'Cover' fill mode
-// the backgroundView is set on the targetView
-void renderBackgroundCoverMode(UIView *backgroundView, ACRContentStackView *targetView)
-{
-    if (!backgroundView || !targetView || ![backgroundView isKindOfClass:[UIImageView class]] || targetView.isBackgroundImageSet) {
-        return;
-    }
-
-    UIImageView *imageView = (UIImageView *)backgroundView;
-    UIImage *image = imageView.image;
-
-    if (!image) {
-        return;
-    }
-
-    targetView.isBackgroundImageSet = YES;
-
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    // Fill Mode Description
-    // ScaleAspectFill increases one dimension of image proportionally if
-    // corresponding dimension increases but it does not increase view surroinding the image
-    // find which dimension is in deficit and act accordingly
-    // when both dimensions are in deficit find the most deficient dimension
-    // and increase
-    // center the modified image view to the target view.
-
-    CGSize targetViewSize = targetView.frame.size;
-    CGSize sourceSize = image.size;
-    BOOL isDeficientInWidth = NO;
-    BOOL isDeficientInHeight = NO;
-
-    if (sourceSize.width < targetViewSize.width) {
-        isDeficientInWidth = YES;
-    }
-
-    if (sourceSize.height < targetViewSize.height) {
-        isDeficientInHeight = YES;
-    }
-
-    if (isDeficientInWidth and isDeficientInHeight) {
-        CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
-        CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
-        // m * a >= x
-        // m * b >= y
-        // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
-        // then m is max of (a/x, b/y)
-        // we applies m to image view's corresponding axis.
-        // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
-        if (widthDeficiencyRaito >= heightDifficiencyRaito) {
-            configWidthAndHeightAnchors(targetView, imageView, false);
-        } else {
-            configWidthAndHeightAnchors(targetView, imageView, true);
-        }
-    } else if (isDeficientInWidth) {
-        configWidthAndHeightAnchors(targetView, imageView, false);
-    } else if (isDeficientInHeight) {
-        configWidthAndHeightAnchors(targetView, imageView, true);
-    } else {
-        // constraint the background image to the container's width according to the spec
-        [imageView.widthAnchor constraintEqualToAnchor:targetView.widthAnchor].active = YES;
-        if (imageView.image.size.width > 0) {
-            [imageView.widthAnchor constraintEqualToAnchor:imageView.heightAnchor multiplier:imageView.image.size.height / imageView.image.size.width].active = YES;
-        }
-    }
 }
 
 void applyBackgroundImageConstraints(const BackgroundImage *backgroundImageProperties,
@@ -295,10 +215,46 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
         }
         case ImageFillMode::Cover:
         default: {
-            // we should not apply the constraints if the superView's frame is not ready
-            // check layoutSubview of ACRContentStackView to see the alternate case
-            if (superView.frame.size.width != 0 && superView.frame.size.height != 0) {
-                renderBackgroundCoverMode(imageView, (ACRContentStackView *)superView);
+            imageView.contentMode = UIViewContentModeScaleAspectFill;
+            // Fill Mode Description
+            // ScaleAspectFill increases one dimension of image proportionally if
+            // corresponding dimension increases but it does not increase view surroinding the image
+            // find which dimension is in deficit and act accordingly
+            // when both dimensions are in deficit find the most deficient dimension
+            // and increase
+            // center the modified image view to the target view.
+
+            CGSize targetViewSize = superView.frame.size;
+            CGSize sourceSize = image.size;
+            BOOL isDeficientInWidth = NO;
+            BOOL isDeficientInHeight = NO;
+
+            if (sourceSize.width < targetViewSize.width) {
+                isDeficientInWidth = YES;
+            }
+
+            if (sourceSize.height < targetViewSize.height) {
+                isDeficientInHeight = YES;
+            }
+
+            if (isDeficientInWidth and isDeficientInHeight) {
+                CGFloat widthDeficiencyRaito = sourceSize.width ? targetViewSize.width / sourceSize.width : 1;
+                CGFloat heightDifficiencyRaito = sourceSize.height ? targetViewSize.height / sourceSize.height : 1;
+                // m * a >= x
+                // m * b >= y
+                // we want factor m that produces width and height when multiplied to a and b that are equal or greater than x and y where a, b is the background image size, and x, y are size of super view we are trying to fill
+                // then m is max of (a/x, b/y)
+                // we applies m to image view's corresponding axis.
+                // then we applies a/b or b/a aspect raito to y or x to increase the other axis and keep the aspect ratio.
+                if (widthDeficiencyRaito >= heightDifficiencyRaito) {
+                    configWidthAndHeightAnchors(superView, imageView, false);
+                } else {
+                    configWidthAndHeightAnchors(superView, imageView, true);
+                }
+            } else if (isDeficientInWidth) {
+                configWidthAndHeightAnchors(superView, imageView, false);
+            } else if (isDeficientInHeight) {
+                configWidthAndHeightAnchors(superView, imageView, true);
             }
 
             configVerticalAlignmentConstraintsForBackgroundImageView(backgroundImageProperties, superView, imageView);
@@ -315,12 +271,6 @@ void applyBackgroundImageConstraints(const BackgroundImage *backgroundImagePrope
 void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
                  ACRContentStackView *container, ACOHostConfig *acoConfig)
 {
-    configBleed(rootView, elem, container, acoConfig, nil);
-}
-
-void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem,
-                 ACRContentStackView *container, ACOHostConfig *acoConfig, UIView<ACRIContentHoldingView> *superview)
-{
     std::shared_ptr<CollectionTypeElement> collection =
         std::dynamic_pointer_cast<CollectionTypeElement>(elem);
     if (collection) {
@@ -332,48 +282,49 @@ void configBleed(ACRView *rootView, std::shared_ptr<BaseCardElement> const &elem
             // bleed specification requires that there should be at leat one parental object with
             // padding
             if (collection->GetCanBleed()) {
-                InternalId parentInternalId = collection->GetParentalId();
-                ACRContentStackView *parentView =
-                    (ACRContentStackView *)[rootView getBleedTarget:parentInternalId];
+                InternalId internalId = collection->GetParentalId();
+                ACRContentStackView *view =
+                    (ACRContentStackView *)[rootView getBleedTarget:internalId];
                 // c++ to object-c enum conversion
                 ContainerBleedDirection adaptiveBleedDirection = collection->GetBleedDirection();
                 ACRBleedDirection direction = (ACRBleedDirection)adaptiveBleedDirection;
-                if (![parentView isKindOfClass:[ACRColumnSetView class]] || parentView != superview) {
-                    parentView = nil;
-                }
+                view = view ? view : rootView;
 
-                // 1. create a background view (bv).
-                // 2. bv is added to bleed target view (tv), which is also a parent view.
-                // bv is then pinned to the tv according to the bleed direction
-                // bv gets current container view's (cv) container style
-                // and cv's container style is reset to transparent, such that
-                // bv's container style will be diplayed.
-                // container view's stack view (csv) holds content views, and bv dislpays
-                // container style we transpose them, and get the final result
+                if (view) {
+                    // 1. create a background view (bv).
+                    // 2. bv is added to bleed target view (tv), which is also a parent view.
+                    // bv is then pinned to the tv according to the bleed direction
+                    // bv gets current container view's (cv) container style
+                    // and cv's container style is reset to transparent, such that
+                    // bv's container style will be diplayed.
+                    // container view's stack view (csv) holds content views, and bv dislpays
+                    // container style we transpose them, and get the final result
 
-                UIView *backgroundView = [[UIView alloc] init];
-                container.backgroundView = backgroundView;
-                backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
+                    UIView *backgroundView = [[UIView alloc] init];
+                    container.backgroundView = backgroundView;
+                    backgroundView.translatesAutoresizingMaskIntoConstraints = NO;
 
-                [container addSubview:backgroundView];
-                [container sendSubviewToBack:backgroundView];
-                backgroundView.backgroundColor = container.backgroundColor;
-                container.backgroundColor = UIColor.clearColor;
+                    UIView *marginalView = view.backgroundView ? view.backgroundView : view;
+                    [marginalView addSubview:backgroundView];
+                    [marginalView sendSubviewToBack:backgroundView];
+                    backgroundView.backgroundColor = container.backgroundColor;
+                    container.backgroundColor = UIColor.clearColor;
 
-                [container bleed:config->GetSpacing().paddingSpacing
-                        priority:1000
-                          target:backgroundView
-                       direction:direction
-                      parentView:parentView];
+                    [container bleed:config->GetSpacing().paddingSpacing
+                            priority:1000
+                              target:backgroundView
+                           direction:direction
+                          parentView:marginalView];
 
-                if ([container layer].borderWidth) {
-                    [backgroundView layer].borderWidth = [container layer].borderWidth;
-                    [container layer].borderWidth = 0;
-                }
+                    if ([container layer].borderWidth) {
+                        [backgroundView layer].borderWidth = [container layer].borderWidth;
+                        [container layer].borderWidth = 0;
+                    }
 
-                if ([container layer].borderColor) {
-                    [backgroundView layer].borderColor = [container layer].borderColor;
-                    [container layer].borderColor = 0;
+                    if ([container layer].borderColor) {
+                        [backgroundView layer].borderColor = [container layer].borderColor;
+                        [container layer].borderColor = 0;
+                    }
                 }
             }
         }
@@ -532,7 +483,7 @@ UIFontDescriptor *getItalicFontDescriptor(UIFontDescriptor *descriptor, bool isI
 }
 
 ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
-                                        ACOBaseActionElement *action,
+                                        std::shared_ptr<BaseActionElement> const &action,
                                         UIButton *button, NSObject **target)
 {
     *target = [director build:action forButton:button];
@@ -540,17 +491,11 @@ ACRRenderingStatus buildTargetForButton(ACRTargetBuilderDirector *director,
 }
 
 ACRRenderingStatus buildTarget(ACRTargetBuilderDirector *director,
-                               ACOBaseActionElement *action,
+                               std::shared_ptr<BaseActionElement> const &action,
                                NSObject **target)
 {
     *target = [director build:action];
     return *target ? ACRRenderingStatus::ACROk : ACRRenderingStatus::ACRFailed;
-}
-
-void setAccessibilityTrait(UIView *recipientView, ACOBaseActionElement *action)
-{
-    recipientView.userInteractionEnabled = YES;
-    recipientView.accessibilityTraits |= action.accessibilityTraits;
 }
 
 UIFont *getFont(ACOHostConfig *hostConfig, const AdaptiveCards::RichTextElementProperties &textProperties)
@@ -607,13 +552,11 @@ void buildIntermediateResultForText(ACRView *rootView, ACOHostConfig *hostConfig
     std::shared_ptr<MarkDownParser> markDownParser = std::make_shared<MarkDownParser>([ACOHostConfig getLocalizedDate:textProperties.GetText() language:textProperties.GetLanguage()]);
 
     // MarkDownParser transforms text with MarkDown to a html string
-    auto markdownString = markDownParser->TransformToHtml();
-    NSString *parsedString = (markDownParser->HasHtmlTags()) ? [NSString stringWithCString:markdownString.c_str() encoding:NSUTF8StringEncoding] : [NSString stringWithCString:markDownParser->GetRawText().c_str() encoding:NSUTF8StringEncoding];
-
+    NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
     NSDictionary *data = nil;
 
     // use Apple's html rendering only if the string has markdowns
-    if (markDownParser->HasHtmlTags()) {
+    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
         NSString *fontFamilyName = nil;
 
         if (![hostConfig getFontFamily:textProperties.GetFontType()]) {
@@ -691,10 +634,8 @@ ACOBaseActionElement *deserializeUnknownActionToCustomAction(const std::shared_p
         auto writer = streamWriterBuilder.newStreamWriter();
         std::stringstream sstream;
         writer->write(blob, &sstream);
-        delete writer;
         NSString *jsonString =
-            [[NSString alloc] initWithCString:sstream.str().c_str()
-                                     encoding:NSUTF8StringEncoding];
+        [[NSString alloc] initWithCString:sstream.str().c_str() encoding:NSUTF8StringEncoding];        
         if (jsonString.length > 0) {
             NSData *jsonPayload = [jsonString dataUsingEncoding:NSUTF8StringEncoding];
             ACOParseContext *context = [reg getParseContext];
@@ -794,95 +735,4 @@ NSMutableAttributedString *initAttributedText(ACOHostConfig *acoConfig, const st
     auto foregroundColor = [acoConfig getTextBlockColor:style textColor:textElementProperties.GetTextColor() subtleOption:NO];
 
     return [[NSMutableAttributedString alloc] initWithString:[NSString stringWithCString:text.c_str() encoding:NSUTF8StringEncoding] attributes:@{NSFontAttributeName : font, NSForegroundColorAttributeName : foregroundColor}];
-}
-
-NSString *makeKeyForImage(ACOHostConfig *acoConfig, NSString *keyType, NSDictionary<NSString *, NSString *> *pieces)
-{
-    ACOResolverIFType resolverType = ACODefaultIF;
-    NSString *urlString = pieces[@"url"], *key = urlString;
-    NSURL *url = nil;
-
-    if (urlString) {
-        url = [NSURL URLWithString:urlString];
-        resolverType = [acoConfig getResolverIFType:[url scheme]];
-    }
-
-    if ([keyType isEqualToString:@"image"] || [keyType isEqualToString:@"media-poster"]) {
-        if (ACOImageViewIF == resolverType) {
-            key = pieces[@"number"];
-        }
-    } else if ([keyType isEqualToString:@"media-playicon-image"]) {
-        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-viewIF"] : pieces[@"playicon-url"];
-    } else if ([keyType isEqualToString:@"media-playicon-imageView"]) {
-        key = (ACOImageViewIF == resolverType) ? pieces[@"playicon-url-imageView-viewIF"] : pieces[@"playicon-url-imageView"];
-    }
-    return key;
-}
-
-CGSize getAspectRatio(CGSize size)
-{
-    CGFloat heightToWidthRatio = 0.0f, widthToHeightRatio = 0.0f;
-    if (size.width > 0) {
-        heightToWidthRatio = size.height / size.width;
-    }
-
-    if (size.height > 0) {
-        widthToHeightRatio = size.width / size.height;
-    }
-    return CGSizeMake(widthToHeightRatio, heightToWidthRatio);
-}
-
-ACRImageSize getACRImageSize(ImageSize adaptiveImageSize, BOOL hasExplicitDimensions)
-{
-    if (hasExplicitDimensions) {
-        return ACRImageSizeExplicit;
-    }
-
-    switch (adaptiveImageSize) {
-        case ImageSize::None:
-            return ACRImageSizeNone;
-        case ImageSize::Auto:
-            return ACRImageSizeAuto;
-        case ImageSize::Stretch:
-            return ACRImageSizeStretch;
-        case ImageSize::Small:
-            return ACRImageSizeSmall;
-        case ImageSize::Medium:
-            return ACRImageSizeMedium;
-        case ImageSize::Large:
-            return ACRImageSizeLarge;
-        default:
-            return ACRImageSizeAuto;
-    }
-}
-
-ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalAlignment)
-{
-    switch (horizontalAlignment) {
-        case HorizontalAlignment::Left:
-            return ACRLeft;
-        case HorizontalAlignment::Center:
-            return ACRCenter;
-        case HorizontalAlignment::Right:
-            return ACRRight;
-        default:
-            return ACRLeft;
-    }
-}
-
-void printSize(NSString *msg, CGSize size)
-{
-    NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
-}
-
-NSData *JsonToNSData(const Json::Value &blob)
-{
-    Json::StreamWriterBuilder streamWriterBuilder;
-    std::unique_ptr<Json::StreamWriter> writer(streamWriterBuilder.newStreamWriter());
-    std::stringstream sstream;
-    writer->write(blob, &sstream);
-    NSString *jsonString =
-        [[NSString alloc] initWithCString:sstream.str().c_str()
-                                 encoding:NSUTF8StringEncoding];
-    return (jsonString.length > 0) ? [jsonString dataUsingEncoding:NSUTF8StringEncoding] : nil;
 }

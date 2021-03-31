@@ -9,11 +9,6 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveFactSet factSet, AdaptiveRenderContext context)
         {
-            if (factSet.Facts.Count == 0)
-            {
-                return null;
-            }
-
             var uiFactSet = new Grid();
             // grid.Margin = factSet.Theme.FactSetMargins;
             uiFactSet.Style = context.GetStyle("Adaptive.FactSet");
@@ -21,7 +16,6 @@ namespace AdaptiveCards.Rendering.Wpf
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = GridLength.Auto });
             uiFactSet.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) });
             int iRow = 0;
-
             foreach (var fact in factSet.Facts)
             {
                 var uiTitle = context.Render(new AdaptiveTextBlock()
@@ -35,6 +29,9 @@ namespace AdaptiveCards.Rendering.Wpf
                     Text = fact.Title
                 });
 
+                uiTitle.Style = context.GetStyle("Adaptive.Fact.Title");
+                uiTitle.Margin = new Thickness(left: 0, top: 0, right: context.Config.FactSet.Spacing, bottom: 0);
+
                 var uiValue = context.Render(new AdaptiveTextBlock()
                 {
                     Size = context.Config.FactSet.Value.Size,
@@ -47,37 +44,20 @@ namespace AdaptiveCards.Rendering.Wpf
                     Text = fact.Value
                 });
 
-                if (uiTitle != null || uiValue != null)
-                {
-                    uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
-                }
+                uiValue.Style = context.GetStyle("Adaptive.Fact.Value");
 
-                if (uiTitle != null)
-                {
-                    uiTitle.Style = context.GetStyle("Adaptive.Fact.Title");
-                    uiTitle.Margin = new Thickness(left: 0, top: 0, right: context.Config.FactSet.Spacing, bottom: 0);
+                uiFactSet.RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
-                    Grid.SetColumn(uiTitle, 0);
-                    Grid.SetRow(uiTitle, iRow);
-                    uiFactSet.Children.Add(uiTitle);
-                }
+                Grid.SetColumn(uiTitle, 0);
+                Grid.SetRow(uiTitle, iRow);
+                uiFactSet.Children.Add(uiTitle);
 
-                if (uiValue != null)
-                {
-                    uiValue.Style = context.GetStyle("Adaptive.Fact.Value");
-
-                    Grid.SetColumn(uiValue, 1);
-                    Grid.SetRow(uiValue, iRow);
-                    uiFactSet.Children.Add(uiValue);
-                }
-
-                if (uiTitle != null || uiValue != null)
-                {
-                    iRow++;
-                }
+                Grid.SetColumn(uiValue, 1);
+                Grid.SetRow(uiValue, iRow++);
+                uiFactSet.Children.Add(uiValue);
             }
 
-            return (iRow == 0) ? null : uiFactSet;
+            return uiFactSet;
         }
     }
 }

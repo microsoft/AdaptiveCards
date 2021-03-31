@@ -17,11 +17,11 @@
 				"choices": [
 				  {
 					"title": "ActivityUpdate",
-					"value": "v1.3/Scenarios/ActivityUpdateWithLabels.json"
+					"value": "v1.0/Scenarios/ActivityUpdate.json"
 				  },
 				  {
 					"title": "CalendarReminder",
-					"value": "v1.3/Scenarios/CalendarReminderWithLabels.json"
+					"value": "v1.0/Scenarios/CalendarReminder.json"
 				  },
 				  {
 					"title": "FlightItinerary",
@@ -33,7 +33,7 @@
 				  },
 				  {
 					"title": "FoodOrder",
-					"value": "v1.3/Scenarios/FoodOrderWithValidation.json"
+					"value": "v1.0/Scenarios/FoodOrder.json"
 				  },
 				  {
 					"title": "ImageGallery",
@@ -41,11 +41,11 @@
 				  },
 				  {
 					"title": "InputForm",
-					"value": "v1.3/Scenarios/InputFormWithLabels.json"
+					"value": "v1.0/Scenarios/InputForm.json"
 				  },
 				  {
 					"title": "Inputs",
-					"value": "v1.3/Scenarios/InputsWithValidation.json"
+					"value": "v1.0/Scenarios/Inputs.json"
 				  },
 				  {
 					"title": "Restaurant",
@@ -81,7 +81,7 @@
 				  },
 				  {
 					"title": "ExpenseReport",
-					"value": "v1.3/Scenarios/ExpenseReportWithLabels.json"
+					"value": "v1.2/Scenarios/ExpenseReport.json"
 				  },
 				  {
 					"title": "FlightDetails",

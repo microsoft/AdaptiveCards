@@ -87,11 +87,11 @@ namespace AdaptiveCardVisualizer.ViewModel
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
                     AdaptiveElementParserRegistration reg = new AdaptiveElementParserRegistration();
-                    reg.Set(CSharpKeywordInput.customInputType, new CustomInputParser());
+                    reg.Set(CustomInput.customInputType, new CustomInputParser());
 
                     AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, reg, new AdaptiveActionParserRegistration());
 
-                    _renderer.ElementRenderers.Set(CSharpKeywordInput.customInputType, new CustomInputRenderer());
+                    _renderer.ElementRenderers.Set(CustomInput.customInputType, new CustomInputRenderer());
                     _renderedAdaptiveCard = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (_renderedAdaptiveCard.FrameworkElement != null)
                     {
@@ -217,11 +217,6 @@ namespace AdaptiveCardVisualizer.ViewModel
             if (args.Action is AdaptiveSubmitAction)
             {
                 answer += "\nData: " + (args.Action as AdaptiveSubmitAction).DataJson?.Stringify();
-            }
-            else if (args.Action is AdaptiveExecuteAction)
-            {
-                answer += "\nVerb: " + (args.Action as AdaptiveExecuteAction).Verb;
-                answer += "\nData: " + (args.Action as AdaptiveExecuteAction).DataJson?.Stringify();
             }
             else if (args.Action is AdaptiveOpenUrlAction)
             {

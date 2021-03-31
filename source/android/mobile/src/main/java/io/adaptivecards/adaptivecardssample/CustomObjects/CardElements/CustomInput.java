@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
@@ -71,8 +70,7 @@ public class CustomInput extends BaseInputElement
         @Override
         public void setFocusToView()
         {
-            m_view.requestFocusFromTouch();
-            m_view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
+            m_view.requestFocus();
         }
     }
 
@@ -101,7 +99,7 @@ public class CustomInput extends BaseInputElement
             viewGroup.addView(renderedInput);
 
             BaseInputElement inputElement = Util.castTo(baseCardElement, BaseInputElement.class);
-            renderedCard.registerInputHandler(new CustomInputHandler(inputElement, renderedInput), renderArgs);
+            renderedCard.registerInputHandler(new CustomInputHandler(inputElement, renderedInput), renderArgs.getContainerCardId());
             return renderedInput;
         }
     }

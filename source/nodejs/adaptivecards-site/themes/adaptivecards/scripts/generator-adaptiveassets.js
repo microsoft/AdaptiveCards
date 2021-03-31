@@ -13,7 +13,6 @@ var md5 = require("md5");
 // and available to reference in HTML templates
 var simpleAssets = [
 	"node_modules/adaptivecards/dist/*.*",
-	"node_modules/adaptive-expressions/lib/*.*",
 	"node_modules/adaptivecards-designer/dist/*.*",
 	"node_modules/adaptivecards-templating/dist/*.*",
 	"node_modules/@fortawesome/fontawesome-free/css/all.min.css",
@@ -38,9 +37,9 @@ var customAssets = [
         dest: function (p) { return "payloads/" + path.basename(p); }
 	},
     {
-		// Unversioned JSON schema URL, set to the 1.3 (current) version as versioned schema paths are not in use.
-		// May be deprecated in the future in favor of versioned schema paths.
-        path: "../../../schemas/1.3.0/adaptive-card.json",
+		// Legacy JSON schema URL, it'll stay at 1.1 as a point-in-history and we're
+		// deprecating that url path as it's not versioned
+        path: "../../../schemas/1.1.0/adaptive-card.json",
         dest: function (p) { return "schemas/adaptive-card.json"; }
     },
     {
@@ -92,6 +91,11 @@ var customAssets = [
         // site JS
         path: "themes/adaptivecards/source/js/*.js",
 		dest: function (p) { return "js/" + path.basename(p) }
+	},
+	{
+        // third-party scripts and CSS
+        path: "node_modules/markdown-it/dist/markdown-it.min.js",
+		dest: function (p) { return p; }
 	}
 ];
 
@@ -121,7 +125,7 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 				let originalDestPath = destPath;
 				let hash = md5(fs.readFileSync(sourcePath)).substring(0, 6);
 				let hashedFilename = path.basename(destPath, path.extname(destPath)) + "." + hash + path.extname(destPath);
-
+				
 				destPath = path.dirname(destPath) + "/" + hashedFilename;
 				hashedAssets.push({
 					originalPath: originalDestPath,
@@ -139,7 +143,7 @@ hexo.extend.generator.register("generator-adaptiveassets", function (locals) {
 
         g.forEach(function (item) { allAssets.push(item); });
 	});
-
+	
 	hexo.locals.set("hashedAssets", () => hashedAssets);
 
     return allAssets;

@@ -253,7 +253,7 @@ HRESULT AdaptiveWarningsToSharedWarnings(
     _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
     std::vector<std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCardParseWarning>>& sharedWarnings);
 
-ABI::Windows::UI::Color GenerateLHoverColor(const ABI::Windows::UI::Color& originalColor);
+ABI::Windows::UI::Color GenerateLighterColor(const ABI::Windows::UI::Color& originalColor);
 
 ABI::Windows::Foundation::DateTime GetDateTime(unsigned int year, unsigned int month, unsigned int day);
 
@@ -329,8 +329,6 @@ namespace AdaptiveNamespace
                                            Make<AdaptiveNamespace::AdaptiveSubmitActionRenderer>().Get()));
         RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.ToggleVisibility").Get(),
                                            Make<AdaptiveNamespace::AdaptiveToggleVisibilityActionRenderer>().Get()));
-        RETURN_IF_FAILED(registration->Set(HStringReference(L"Action.Execute").Get(),
-                                           Make<AdaptiveNamespace::AdaptiveExecuteActionRenderer>().Get()));
         return S_OK;
     }
 }

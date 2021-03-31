@@ -1,16 +1,18 @@
 {
 	"name": "Adaptive Cards Javascript SDK",
-	"entryPoints": "./src",
+	"inputFiles": "./src",
+	"mode": "library",
 	"out": "docs",
 	"exclude": [
-		"**/__tests__/**"
+		"__tests__"
 	],
+	"excludeNotExported": true,
 	"excludePrivate": true,
-	"excludeExternals": true,
 	"readme": "none",
 	"plugin": [
 		"typedoc-plugin-markdown"
 	],
 	"theme": "markdown",
-	"excludeInternal": true
+	"stripInternal": true,
+	"hideSources": true
 }

@@ -5,9 +5,6 @@ using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    /// Controls which style to apply to a container.
-    /// </summary>
     [JsonConverter(typeof(IgnoreDefaultStringEnumConverter<AdaptiveContainerStyle>), true)]
     public enum AdaptiveContainerStyle
     {
@@ -18,33 +15,18 @@ namespace AdaptiveCards
         Normal = 0,
 
         /// <summary>
-        /// The container should be displayed using the default style
+        /// The container is a default container
         /// </summary>
         Default = 0,
 
         /// <summary>
-        /// The container should be displayed using the emphasis style
+        /// The container should be emphasized as a grouping of elements
         /// </summary>
         Emphasis = 1,
 
-        /// <summary>
-        /// The container should be displayed using the good style
-        /// </summary>
         Good = 2,
-
-        /// <summary>
-        /// The container should be displayed using the attention style
-        /// </summary>
         Attention = 3,
-
-        /// <summary>
-        /// The container should be displayed using the warning style
-        /// </summary>
         Warning = 4,
-
-        /// <summary>
-        /// The container should be displayed using the accent style
-        /// </summary>
         Accent = 5
     }
 }

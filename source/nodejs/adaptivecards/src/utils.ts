@@ -4,19 +4,6 @@ import * as Enums from "./enums";
 import * as Shared from "./shared";
 import { HostConfig } from "./host-config";
 
-// To work around TypeScript complaining about documentMode not being declared
-// on type Document
-declare global {
-    interface Document {
-        documentMode?: any;
-    }
-}
-
-export function isInternetExplorer(): boolean {
-    // The documentMode property only exists in IE
-    return window.document.documentMode !== undefined;
-}
-
 export function isMobileOS(): boolean {
     let userAgent = window.navigator.userAgent;
 
@@ -121,7 +108,6 @@ export function renderSeparation(hostConfig: HostConfig, separationDefinition: S
     if (separationDefinition.spacing > 0 || (separationDefinition.lineThickness && separationDefinition.lineThickness > 0)) {
         let separator = document.createElement("div");
         separator.className = hostConfig.makeCssClassName("ac-" + (orientation == Enums.Orientation.Horizontal ? "horizontal" : "vertical") + "-separator");
-        separator.setAttribute("aria-hidden", "true");
 
         let color = separationDefinition.lineColor ? stringToCssColor(separationDefinition.lineColor) : "";
 
@@ -271,11 +257,5 @@ export function getFitStatus(element: HTMLElement, containerEnd: number): Enums.
     }
     else {
         return Enums.ContainerFitStatus.FullyOutOfContainer;
-    }
-}
-
-export function clearElementChildren(element: HTMLElement) {
-    while (element.firstChild) {
-        element.removeChild(element.firstChild);
     }
 }

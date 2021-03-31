@@ -48,12 +48,12 @@ public class RenderArgs
         m_allowAboveTitleIconPlacement = allowAboveTitleIconPlacement;
     }
 
-    public void setContainerCardId(long id)
+    public void setContainerCardId(InternalId id)
     {
         m_containerCardId = id;
     }
 
-    public long getContainerCardId()
+    public InternalId getContainerCardId()
     {
         return m_containerCardId;
     }
@@ -61,5 +61,5 @@ public class RenderArgs
     private boolean m_ancestorHasFallback;
     private ContainerStyle m_containerStyle;
     private boolean m_allowAboveTitleIconPlacement;
-    private long m_containerCardId;
+    private InternalId m_containerCardId;
 }

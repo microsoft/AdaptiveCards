@@ -40,25 +40,25 @@
 * [spacing](choicesetinput.md#spacing)
 * [style](choicesetinput.md#optional-style)
 * [wrap](choicesetinput.md#wrap)
-* [choicesProperty](choicesetinput.md#static-readonly-choicesproperty)
-* [errorMessageProperty](choicesetinput.md#static-readonly-errormessageproperty)
-* [heightProperty](choicesetinput.md#static-readonly-heightproperty)
-* [horizontalAlignmentProperty](choicesetinput.md#static-readonly-horizontalalignmentproperty)
-* [idProperty](choicesetinput.md#static-readonly-idproperty)
-* [isMultiSelectProperty](choicesetinput.md#static-readonly-ismultiselectproperty)
-* [isRequiredProperty](choicesetinput.md#static-readonly-isrequiredproperty)
-* [isVisibleProperty](choicesetinput.md#static-readonly-isvisibleproperty)
-* [labelProperty](choicesetinput.md#static-readonly-labelproperty)
-* [langProperty](choicesetinput.md#static-readonly-langproperty)
+* [choicesProperty](choicesetinput.md#static-choicesproperty)
+* [errorMessageProperty](choicesetinput.md#static-errormessageproperty)
+* [heightProperty](choicesetinput.md#static-heightproperty)
+* [horizontalAlignmentProperty](choicesetinput.md#static-horizontalalignmentproperty)
+* [idProperty](choicesetinput.md#static-idproperty)
+* [isMultiSelectProperty](choicesetinput.md#static-ismultiselectproperty)
+* [isRequiredProperty](choicesetinput.md#static-isrequiredproperty)
+* [isVisibleProperty](choicesetinput.md#static-isvisibleproperty)
+* [labelProperty](choicesetinput.md#static-labelproperty)
+* [langProperty](choicesetinput.md#static-langproperty)
 * [onRegisterCustomProperties](choicesetinput.md#static-optional-onregistercustomproperties)
-* [placeholderProperty](choicesetinput.md#static-readonly-placeholderproperty)
-* [requiresProperty](choicesetinput.md#static-readonly-requiresproperty)
-* [separatorProperty](choicesetinput.md#static-readonly-separatorproperty)
-* [spacingProperty](choicesetinput.md#static-readonly-spacingproperty)
-* [styleProperty](choicesetinput.md#static-readonly-styleproperty)
-* [typeNameProperty](choicesetinput.md#static-readonly-typenameproperty)
-* [valueProperty](choicesetinput.md#static-readonly-valueproperty)
-* [wrapProperty](choicesetinput.md#static-readonly-wrapproperty)
+* [placeholderProperty](choicesetinput.md#static-placeholderproperty)
+* [requiresProperty](choicesetinput.md#static-requiresproperty)
+* [separatorProperty](choicesetinput.md#static-separatorproperty)
+* [spacingProperty](choicesetinput.md#static-spacingproperty)
+* [styleProperty](choicesetinput.md#static-styleproperty)
+* [typeNameProperty](choicesetinput.md#static-typenameproperty)
+* [valueProperty](choicesetinput.md#static-valueproperty)
+* [wrapProperty](choicesetinput.md#static-wrapproperty)
 
 ### Accessors
 
@@ -98,7 +98,6 @@
 * [getAllLabelIds](choicesetinput.md#protected-getalllabelids)
 * [getCustomProperty](choicesetinput.md#getcustomproperty)
 * [getDefaultPadding](choicesetinput.md#protected-getdefaultpadding)
-* [getDefaultSerializationContext](choicesetinput.md#protected-getdefaultserializationcontext)
 * [getEffectivePadding](choicesetinput.md#geteffectivepadding)
 * [getEffectiveStyle](choicesetinput.md#geteffectivestyle)
 * [getEffectiveStyleDefinition](choicesetinput.md#geteffectivestyledefinition)
@@ -118,6 +117,7 @@
 * [hasAllDefaultValues](choicesetinput.md#hasalldefaultvalues)
 * [hasDefaultValue](choicesetinput.md#hasdefaultvalue)
 * [indexOf](choicesetinput.md#indexof)
+* [internalApplyAriaCurrent](choicesetinput.md#protected-internalapplyariacurrent)
 * [internalParse](choicesetinput.md#protected-internalparse)
 * [internalRender](choicesetinput.md#protected-internalrender)
 * [internalToJSON](choicesetinput.md#protected-internaltojson)
@@ -225,8 +225,6 @@ ___
 
 • **height**: *[CardElementHeight](../README.md#cardelementheight)*
 
-*Implementation of [IInput](../interfaces/iinput.md).[height](../interfaces/iinput.md#optional-height)*
-
 *Inherited from [CardElement](cardelement.md).[height](cardelement.md#height)*
 
 ___
@@ -234,8 +232,6 @@ ___
 ###  horizontalAlignment
 
 • **horizontalAlignment**: *[HorizontalAlignment](../enums/horizontalalignment.md)*
-
-*Implementation of [IInput](../interfaces/iinput.md).[horizontalAlignment](../interfaces/iinput.md#optional-horizontalalignment)*
 
 *Inherited from [CardElement](cardelement.md).[horizontalAlignment](cardelement.md#horizontalalignment)*
 
@@ -317,8 +313,6 @@ ___
 
 • **separator**: *boolean*
 
-*Implementation of [IInput](../interfaces/iinput.md).[separator](../interfaces/iinput.md#optional-separator)*
-
 *Inherited from [CardElement](cardelement.md).[separator](cardelement.md#separator)*
 
 ___
@@ -326,8 +320,6 @@ ___
 ###  spacing
 
 • **spacing**: *[Spacing](../enums/spacing.md)*
-
-*Implementation of [IInput](../interfaces/iinput.md).[spacing](../interfaces/iinput.md#optional-spacing)*
 
 *Inherited from [CardElement](cardelement.md).[spacing](cardelement.md#spacing)*
 
@@ -345,21 +337,21 @@ ___
 
 ___
 
-### `Static` `Readonly` choicesProperty
+### `Static` choicesProperty
 
 ▪ **choicesProperty**: *[SerializableObjectCollectionProperty](serializableobjectcollectionproperty.md)‹›* = new SerializableObjectCollectionProperty(Versions.v1_0, "choices", Choice)
 
 ___
 
-### `Static` `Readonly` errorMessageProperty
+### `Static` errorMessageProperty
 
 ▪ **errorMessageProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "errorMessage", true)
 
-*Inherited from [Input](input.md).[errorMessageProperty](input.md#static-readonly-errormessageproperty)*
+*Inherited from [Input](input.md).[errorMessageProperty](input.md#static-errormessageproperty)*
 
 ___
 
-### `Static` `Readonly` heightProperty
+### `Static` heightProperty
 
 ▪ **heightProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_1,
@@ -370,11 +362,11 @@ ___
         ],
         "auto")
 
-*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-readonly-heightproperty)*
+*Inherited from [CardElement](cardelement.md).[heightProperty](cardelement.md#static-heightproperty)*
 
 ___
 
-### `Static` `Readonly` horizontalAlignmentProperty
+### `Static` horizontalAlignmentProperty
 
 ▪ **horizontalAlignmentProperty**: *[EnumProperty](enumproperty.md)‹[HorizontalAlignment](../enums/horizontalalignment.md)›* = new EnumProperty(
         Versions.v1_0,
@@ -382,53 +374,53 @@ ___
         Enums.HorizontalAlignment,
         Enums.HorizontalAlignment.Left)
 
-*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-readonly-horizontalalignmentproperty)*
+*Inherited from [CardElement](cardelement.md).[horizontalAlignmentProperty](cardelement.md#static-horizontalalignmentproperty)*
 
 ___
 
-### `Static` `Readonly` idProperty
+### `Static` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
 
 ___
 
-### `Static` `Readonly` isMultiSelectProperty
+### `Static` isMultiSelectProperty
 
 ▪ **isMultiSelectProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "isMultiSelect", false)
 
 ___
 
-### `Static` `Readonly` isRequiredProperty
+### `Static` isRequiredProperty
 
 ▪ **isRequiredProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "isRequired", false)
 
-*Inherited from [Input](input.md).[isRequiredProperty](input.md#static-readonly-isrequiredproperty)*
+*Inherited from [Input](input.md).[isRequiredProperty](input.md#static-isrequiredproperty)*
 
 ___
 
-### `Static` `Readonly` isVisibleProperty
+### `Static` isVisibleProperty
 
 ▪ **isVisibleProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "isVisible", true)
 
-*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-readonly-isvisibleproperty)*
+*Inherited from [CardElement](cardelement.md).[isVisibleProperty](cardelement.md#static-isvisibleproperty)*
 
 ___
 
-### `Static` `Readonly` labelProperty
+### `Static` labelProperty
 
 ▪ **labelProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_3, "label", true)
 
-*Inherited from [Input](input.md).[labelProperty](input.md#static-readonly-labelproperty)*
+*Inherited from [Input](input.md).[labelProperty](input.md#static-labelproperty)*
 
 ___
 
-### `Static` `Readonly` langProperty
+### `Static` langProperty
 
 ▪ **langProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "lang", true, /^[a-z]{2,3}$/ig)
 
-*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-readonly-langproperty)*
+*Inherited from [CardElement](cardelement.md).[langProperty](cardelement.md#static-langproperty)*
 
 ___
 
@@ -440,34 +432,33 @@ ___
 
 ___
 
-### `Static` `Readonly` placeholderProperty
+### `Static` placeholderProperty
 
 ▪ **placeholderProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "placeholder")
 
 ___
 
-### `Static` `Readonly` requiresProperty
+### `Static` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
         HostCapabilities,
-        false,
         new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
 ___
 
-### `Static` `Readonly` separatorProperty
+### `Static` separatorProperty
 
 ▪ **separatorProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_0, "separator", false)
 
-*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-readonly-separatorproperty)*
+*Inherited from [CardElement](cardelement.md).[separatorProperty](cardelement.md#static-separatorproperty)*
 
 ___
 
-### `Static` `Readonly` spacingProperty
+### `Static` spacingProperty
 
 ▪ **spacingProperty**: *[EnumProperty](enumproperty.md)‹[Spacing](../enums/spacing.md)›* = new EnumProperty(
         Versions.v1_0,
@@ -475,11 +466,11 @@ ___
         Enums.Spacing,
         Enums.Spacing.Default)
 
-*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-readonly-spacingproperty)*
+*Inherited from [CardElement](cardelement.md).[spacingProperty](cardelement.md#static-spacingproperty)*
 
 ___
 
-### `Static` `Readonly` styleProperty
+### `Static` styleProperty
 
 ▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_0,
@@ -492,7 +483,7 @@ ___
 
 ___
 
-### `Static` `Readonly` typeNameProperty
+### `Static` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -504,17 +495,17 @@ ___
             return (<CardObject>sender).getJsonTypeName()
         })
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
 
 ___
 
-### `Static` `Readonly` valueProperty
+### `Static` valueProperty
 
 ▪ **valueProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "value")
 
 ___
 
-### `Static` `Readonly` wrapProperty
+### `Static` wrapProperty
 
 ▪ **wrapProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_2, "wrap", false)
 
@@ -734,11 +725,11 @@ ___
 
 ###  requires
 
-• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
+• **get requires**(): *HostCapabilities*
 
 *Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
 
-**Returns:** *[HostCapabilities](hostcapabilities.md)*
+**Returns:** *HostCapabilities*
 
 ___
 
@@ -931,18 +922,6 @@ ___
 *Inherited from [CardElement](cardelement.md).[getDefaultPadding](cardelement.md#protected-getdefaultpadding)*
 
 **Returns:** *[PaddingDefinition](paddingdefinition.md)*
-
-___
-
-### `Protected` getDefaultSerializationContext
-
-▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
-
-*Inherited from [CardElement](cardelement.md).[getDefaultSerializationContext](cardelement.md#protected-getdefaultserializationcontext)*
-
-*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
-
-**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -1169,6 +1148,14 @@ Name | Type |
 `cardElement` | [CardElement](cardelement.md) |
 
 **Returns:** *number*
+
+___
+
+### `Protected` internalApplyAriaCurrent
+
+▸ **internalApplyAriaCurrent**(): *void*
+
+**Returns:** *void*
 
 ___
 
@@ -1646,15 +1633,17 @@ ___
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+*Inherited from [CardElement](cardelement.md).[shouldSerialize](cardelement.md#protected-shouldserialize)*
+
+*Overrides [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
+`context` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -1672,15 +1661,17 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [CardElement](cardelement.md).[toJSON](cardelement.md#tojson)*
+
+*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+`context?` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 

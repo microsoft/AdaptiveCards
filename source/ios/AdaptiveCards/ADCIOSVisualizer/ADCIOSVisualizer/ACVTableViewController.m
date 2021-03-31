@@ -9,7 +9,6 @@
 
 @implementation ACVTableViewController {
     NSArray<NSString *> *pathsToFiles;
-    CGFloat selectedRow;
 }
 
 - (void)viewDidLoad
@@ -17,8 +16,6 @@
     [super viewDidLoad];
 
     NSBundle *main = [NSBundle mainBundle];
-
-    selectedRow = -1;
 
     [_delegate source:self
            userconfig:[NSString stringWithContentsOfFile:[main pathForResource:@"sample" ofType:@"json"]
@@ -46,17 +43,12 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(nonnull NSIndexPath *)indexPath
 {
-    NSString *payload =
+    self.userSelectedJSon =
         [NSString stringWithContentsOfFile:pathsToFiles[indexPath.row]
                                   encoding:NSUTF8StringEncoding
                                      error:nil];
-    // we don't want to re-render card when a row is selected for selection
-    // we don't want to go through the whole logic when payload is nil or empty
-    if (!self.IsCollapsed && payload && payload.length) {
-        self.userSelectedJSon = payload;
-        [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
-
-        selectedRow = indexPath.row;
+    [_delegate fromACVTable:self userSelectedJson:self.userSelectedJSon];
+    if (!self.IsCollapsed) {
         UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
         CGFloat height = cell.frame.size.height;
         self.tableHeight.active = NO;

@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Constants } from "./constants";
+import * as Constants from "./constants";
 import { InputControl } from "./inputcontrol";
 
 export class CheckBox extends InputControl {
@@ -27,8 +27,8 @@ export class CheckBox extends InputControl {
     }
 
     protected keyDown(e: KeyboardEvent) {
-        switch (e.key) {
-            case Constants.keys.enter:
+        switch (e.keyCode) {
+            case Constants.KEY_ENTER:
                 this.isChecked = !this.isChecked;
                 break;
         }

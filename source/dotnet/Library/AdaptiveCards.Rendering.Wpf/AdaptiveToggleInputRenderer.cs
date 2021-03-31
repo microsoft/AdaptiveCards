@@ -19,12 +19,6 @@ namespace AdaptiveCards.Rendering.Wpf
             uiToggle.Style = context.GetStyle($"Adaptive.Input.Toggle");
             uiToggle.SetContext(input);
 
-            if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
-            {
-                context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput,
-                    "Inputs with validation should include an ErrorMessage"));
-            }
-
             context.InputValues.Add(input.Id, new AdaptiveToggleInputValue(input, uiToggle));
 
             return uiToggle;

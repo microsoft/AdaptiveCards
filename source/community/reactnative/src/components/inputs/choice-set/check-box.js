@@ -35,13 +35,6 @@ class CheckBox extends React.PureComponent {
 
 	styleConfig = StyleManager.getManager().styles;
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			checked: this.props.checked
-		}
-	}
-
 	static propTypes = {
 		style: ViewPropTypes.style,
 		onChange: PropTypes.func.isRequired,
@@ -60,8 +53,16 @@ class CheckBox extends React.PureComponent {
 		wrapText: false,
 	};
 
-	static getDerivedStateFromProps(nextProps, prevState) {
-		return { checked: nextProps.checked }
+	componentWillMount() {
+		this.setState({
+			checked: this.props.checked
+		});
+	}
+
+	componentWillReceiveProps(props) {
+		this.setState({
+			checked: props.checked
+		})
 	}
 
 	onChange = () => {

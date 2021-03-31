@@ -5,45 +5,33 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
+
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents the Adaptive Cards Image element type.
+    ///     The Image element allows for the inclusion of images in an Adaptive Card.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveImage.TypeName)]
 #endif
     public class AdaptiveImage : AdaptiveElement
     {
-        /// <summary>
-        /// Initializes an empty <see cref="AdaptiveImage"/> instance.
-        /// </summary>
         public AdaptiveImage()
         {
         }
 
-        /// <summary>
-        /// Initializes an <see cref="AdaptiveImage"/> instance with the given URL.
-        /// </summary>
-        /// <param name="url">The URL of the image as a string.</param>
         public AdaptiveImage(string url)
         {
             Url = new Uri(url);
         }
 
-        /// <summary>
-        /// Initializes an <see cref="AdaptiveImage"/> instance with the given URL.
-        /// </summary>
-        /// <param name="url">The URL of the image.</param>
         public AdaptiveImage(Uri url)
         {
             Url = url;
         }
 
-        /// <inheritdoc />
         public const string TypeName = "Image";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
@@ -51,9 +39,9 @@ namespace AdaptiveCards
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        /// Controls the sizing (<see cref="AdaptiveImageSize"/>) of the displayed image.
+        ///     Size for the Image
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -61,9 +49,9 @@ namespace AdaptiveCards
         public AdaptiveImageSize Size { get; set; }
 
         /// <summary>
-        /// The style (<see cref="AdaptiveImageStyle"/>) in which the image is displayed.
+        ///     The style in which the image is displayed.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -71,7 +59,7 @@ namespace AdaptiveCards
         public AdaptiveImageStyle Style { get; set; }
 
         /// <summary>
-        /// The URL of the image.
+        ///     A url pointing to an image to display
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -81,7 +69,7 @@ namespace AdaptiveCards
         public Uri Url { get; set; }
 
         /// <summary>
-        /// This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
+        ///     This is necessary for XML serialization. You should use the <see cref="F:Url" /> property directly.
         /// </summary>
 #if !NETSTANDARD1_3
         [XmlAttribute("Url")]
@@ -95,9 +83,9 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// Horizontal alignment (<see cref="AdaptiveHorizontalAlignment"/>) to use.
+        ///     Horizontal alignment for element
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -105,10 +93,10 @@ namespace AdaptiveCards
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
-        /// A background color for the image specified as #AARRGGBB or #RRGGBB.
+        ///     A background color for the image specified as #AARRGGBB or #RRGGBB
         /// </summary>
         [JsonConverter(typeof(HashColorConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -116,9 +104,9 @@ namespace AdaptiveCards
         public string BackgroundColor { get; set; }
 
         /// <summary>
-        /// Action to execute when image is invoked.
+        ///     Action for this image (this allows a default action to happen when a click on an image happens)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement]
 #endif
@@ -126,7 +114,7 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
-        /// Alternate text (alttext) to display for this image.
+        ///     Alternate text to display for this image
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -136,10 +124,10 @@ namespace AdaptiveCards
         public string AltText { get; set; }
 
         /// <summary>
-        /// Explicit image width.
+        ///    Explicit Image Width
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty("width", DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -147,7 +135,7 @@ namespace AdaptiveCards
         public uint PixelWidth { get; set; }
 
         /// <summary>
-        /// Explicit image height.
+        ///    Explicit Image Height
         /// </summary>
         [JsonIgnore]
 #if !NETSTANDARD1_3

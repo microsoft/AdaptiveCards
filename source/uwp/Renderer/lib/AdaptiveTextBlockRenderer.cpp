@@ -44,8 +44,6 @@ namespace AdaptiveNamespace
         if (text.Get() == nullptr)
         {
             *textBlockControl = nullptr;
-            renderContext->AddError(ABI::AdaptiveNamespace::ErrorStatusCode::RequiredPropertyMissing,
-                                      HStringReference(L"Required property, \"text\", is missing from TextBlock").Get());
             return S_OK;
         }
 

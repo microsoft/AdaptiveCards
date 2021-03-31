@@ -6,7 +6,6 @@
 //
 
 #import "ACRIContentHoldingView.h"
-#import "ACRLongPressGestureRecognizerEventHandler.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRContentStackView : UIView <ACRIContentHoldingView>
@@ -18,10 +17,8 @@
 @property UILayoutConstraintAxis axis;
 @property UIStackViewDistribution distribution;
 @property UIStackViewAlignment alignment;
-@property (weak, nullable) NSObject<ACRSelectActionDelegate> *selectActionTarget;
+
 @property BOOL isActionSet;
-// tells if a background image is set
-@property BOOL isBackgroundImageSet;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 
@@ -55,18 +52,9 @@
 
 - (void)decreaseIntrinsicContentSize:(UIView *_Nonnull)view;
 
-- (CGSize)getIntrinsicContentSizeInArragedSubviews:(UIView *_Nonnull)view;
-
-- (void)updateIntrinsicContentSize;
-
-- (void)updateIntrinsicContentSize:(void (^_Nonnull)(UIView * _Nonnull view, NSUInteger idx, BOOL * _Nonnull stop))block;
-
 - (void)hideIfSubviewsAreAllHidden;
 
-- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nullable)parent;
+- (void)bleed:(unsigned int)padding priority:(unsigned int)priority target:(UIView *_Nonnull)target direction:(ACRBleedDirection)direction parentView:(UIView *_Nonnull)parent;
 
 - (void)removeViewFromContentStackView:(UIView *_Nonnull)view;
-
-- (UIView *_Nonnull)addPaddingSpace;
-
 @end

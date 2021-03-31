@@ -9,7 +9,7 @@ using Newtonsoft.Json.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents a "fact" in a FactSet element.
+    ///     Represents one "fact" in a FactSet element.
     /// </summary>
     [JsonObject(NamingStrategyType = typeof(CamelCaseNamingStrategy))]
 #if !NETSTANDARD1_3
@@ -17,17 +17,9 @@ namespace AdaptiveCards
 #endif
     public class AdaptiveFact
     {
-        /// <summary>
-        /// Initializes an empty Fact.
-        /// </summary>
         public AdaptiveFact()
         { }
 
-        /// <summary>
-        /// Initializes a Fact with the given properties.
-        /// </summary>
-        /// <param name="title">The title of the Fact.</param>
-        /// <param name="value">The value of the Fact.</param>
         public AdaptiveFact(string title, string value)
         {
             Title = title;
@@ -35,7 +27,7 @@ namespace AdaptiveCards
         }
 
         /// <summary>
-        /// The Fact's title.
+        ///     The facts label
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -44,7 +36,7 @@ namespace AdaptiveCards
         public string Title { get; set; }
 
         /// <summary>
-        /// The Fact's value.
+        ///     The fact's value
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -53,7 +45,7 @@ namespace AdaptiveCards
         public string Value { get; set; }
 
         /// <summary>
-        /// (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment.
+        ///     (Optional) Specifies what should be spoken for this entire element. This is simple text or SSML fragment
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("FactSet.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]

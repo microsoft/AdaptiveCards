@@ -307,19 +307,16 @@ ul.action-list {
   margin: 0;
 }
 
-.toc-todo > div > ul > li,
-.toc-todo > div > ul > a {
+.toc-todo > div > ul > li {
   padding-left: 30px;
 }
 
 /* For samples, since there's no heirarchy, don't indent the left as much */
-.toc-todo .samples-sidebar-list li,
-.toc-todo .samples-sidebar-list a {
+.toc-todo .samples-sidebar-list li {
   padding-left: 12px;
 }
 
-.toc-todo li,
-.toc-todo a {
+.toc-todo li {
   padding-left: 30px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -333,23 +330,12 @@ s {
 }
 
 .toc-todo .selectedHolder {
-    background-color: #0050c5;
+  background-color: #0050c5;
 }
 
-.toc-todo .selectedHolder,
 .toc-todo .selectedHolder > a,
-.toc-todo .selectedHolder > a:hover,
-.toc-todo a.selectedHolder:hover
-{
-    color: #fff;
-}
-
-@media (forced-colors: active) {
-    .toc-todo .selectedHolder {
-        background-color: highlight;
-        color: highlightText;
-        forced-color-adjust: none;
-    }
+.toc-todo .selectedHolder > a:hover {
+  color: #fff;
 }
 
 .toc-todo li a {
@@ -494,14 +480,12 @@ dir {
   line-height: 36px;
 }
 
-.homepage .accent-paragraph,
 .homepage h3 {
   font-size: 20px;
   font-weight: lighter;
   line-height: 30px;
 }
 
-.homepage h3.callout-title,
 .homepage h4 {
   font-size: 18px;
   line-height: 28px;
@@ -516,7 +500,6 @@ dir {
   margin-top: 2px;
 }
 
-.platform-header,
 .homepage h6,
 .footer-holder h6 {
   text-transform: uppercase;
@@ -614,11 +597,6 @@ dir {
   width: 20px;
 }
 
-button .fa-check {
-  color: green;
-  padding-left: 10px;
-}
-
 .fa,
 .fas {
   font-weight: 900 !important;
@@ -643,6 +621,7 @@ button .fa-check {
 
 .homepage a:hover {
   color: blue;
+  text-decoration: none;
 }
 
 /* .fa-chevron-right {
@@ -679,10 +658,7 @@ button .fa-check {
 
 .ac-footer a:hover {
   color: #6b6b6b;
-}
-
-.ac-footer-link-no-chevron{
-  color: #0b78d0!important;  
+  text-decoration: none;
 }
 
 .ac-footer .post-subtitle {

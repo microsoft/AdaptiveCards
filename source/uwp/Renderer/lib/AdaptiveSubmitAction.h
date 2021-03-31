@@ -24,8 +24,8 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_DataJson(_COM_Outptr_ ABI::Windows::Data::Json::IJsonValue** data);
         IFACEMETHODIMP put_DataJson(_In_ ABI::Windows::Data::Json::IJsonValue* data);
 
-        IFACEMETHODIMP get_AssociatedInputs(_Out_ ABI::AdaptiveNamespace::AssociatedInputs* associatedInputs);
-        IFACEMETHODIMP put_AssociatedInputs(ABI::AdaptiveNamespace::AssociatedInputs associatedInputs);
+        IFACEMETHODIMP get_IgnoreInputValidation(_Out_ boolean* ignoreInputValidation);
+        IFACEMETHODIMP put_IgnoreInputValidation(boolean ignoreInputValidation);
 
         // IAdaptiveActionElement
         IFACEMETHODIMP get_ActionType(_Out_ ABI::AdaptiveNamespace::ActionType* actionType);
@@ -86,21 +86,11 @@ namespace AdaptiveNamespace
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) override;
 
         // ITypePeek method
-        void* PeekAt(REFIID riid) override
-        {
-            void* returnPointer;
-            returnPointer = PeekHelper(riid, this);
-            if (returnPointer == nullptr)
-            {
-                returnPointer = PeekHelper(riid, (AdaptiveActionElementBase*) this);
-            }
-
-            return returnPointer;
-        }
+        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonValue> m_dataJson;
-        ABI::AdaptiveNamespace::AssociatedInputs m_associatedInputs;
+        boolean m_ignoreInputValidation;
     };
 
     ActivatableClass(AdaptiveSubmitAction);

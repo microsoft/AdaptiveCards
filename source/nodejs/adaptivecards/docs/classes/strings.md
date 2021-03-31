@@ -10,25 +10,12 @@
 
 ### Object literals
 
-* [defaults](strings.md#static-readonly-defaults)
-* [errors](strings.md#static-readonly-errors)
-* [hints](strings.md#static-readonly-hints)
+* [errors](strings.md#static-errors)
+* [hints](strings.md#static-hints)
 
 ## Object literals
 
-### `Static` `Readonly` defaults
-
-### ▪ **defaults**: *object*
-
-###  inlineActionTitle
-
-▸ **inlineActionTitle**(): *string*
-
-**Returns:** *string*
-
-___
-
-### `Static` `Readonly` errors
+### `Static` errors
 
 ### ▪ **errors**: *object*
 
@@ -317,36 +304,12 @@ Name | Type |
 
 ___
 
-### `Static` `Readonly` hints
+### `Static` hints
 
 ### ▪ **hints**: *object*
 
 ###  dontUseWeightedAndStrecthedColumnsInSameSet
 
 ▸ **dontUseWeightedAndStrecthedColumnsInSameSet**(): *string*
-
-**Returns:** *string*
-
-___
-
-### `Static` runtime
-
-### ▪ **runtime**: *object*
-
-###  automaticRefreshPaused
-
-▸ **automaticRefreshPaused**(): *string*
-
-**Returns:** *string*
-
-###  clckToRestartAutomaticRefresh
-
-▸ **clckToRestartAutomaticRefresh**(): *string*
-
-**Returns:** *string*
-
-###  refreshThisCard
-
-▸ **refreshThisCard**(): *string*
 
 **Returns:** *string*

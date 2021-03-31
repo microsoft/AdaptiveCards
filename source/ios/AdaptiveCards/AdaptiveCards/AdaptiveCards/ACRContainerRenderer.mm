@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnView.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "ACRViewPrivate.h"
 #import "Container.h"
@@ -66,7 +67,7 @@
         trailingBlankSpace = [container addPaddingSpace];
     }
 
-    [container setClipsToBounds:NO];
+    [container setClipsToBounds:TRUE];
 
     if (containerElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:container
@@ -91,8 +92,12 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
-    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
-    [container configureForSelectAction:acoSelectAction rootView:rootView];
+    // instantiate and add tap gesture recognizer
+    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
+                                                                       rootView:rootView
+                                                                  recipientView:container
+                                                                  actionElement:selectAction
+                                                                     hostConfig:acoConfig];
 
     configVisibility(container, elem);
 
@@ -101,13 +106,13 @@
     return viewGroup;
 }
 
-- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     auto backgroundImageProperties = containerElem->GetBackgroundImage();
 
-    renderBackgroundImage(rootView, backgroundImageProperties.get(), imageView, image);
+    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
 }
 
 @end

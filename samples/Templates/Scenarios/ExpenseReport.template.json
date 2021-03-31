@@ -15,8 +15,7 @@
 									"type": "TextBlock",
 									"size": "Large",
 									"weight": "Bolder",
-									"text": "**EXPENSE APPROVAL**",
-									"wrap": true
+									"text": "**EXPENSE APPROVAL**"
 								}
 							],
 							"width": "stretch"
@@ -80,8 +79,7 @@
 					"size": "Small",
 					"weight": "Bolder",
 					"color": "Accent",
-					"text": "[${code}](https://adaptivecards.io)",
-					"wrap": true
+					"text": "[${code}](https://adaptivecards.io)"
 				},
 				{
 					"type": "FactSet",
@@ -129,8 +127,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "DATE",
-									"wrap": true
+									"text": "DATE"
 								}
 							],
 							"width": "auto"
@@ -142,8 +139,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "CATEGORY",
-									"wrap": true
+									"text": "CATEGORY"
 								}
 							],
 							"width": "stretch"
@@ -154,8 +150,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "AMOUNT",
-									"wrap": true
+									"text": "AMOUNT"
 								}
 							],
 							"width": "auto"
@@ -167,7 +162,7 @@
 		},
 		{
 			"$data": "${expenses}",
-			"type": "Container",
+			"type" : "Container",
 			"items": [
 				{
 					"type": "ColumnSet",
@@ -211,6 +206,7 @@
 							"spacing": "Small",
 							"selectAction": {
 								"type": "Action.ToggleVisibility",
+								"title": "expand",
 								"targetElements": [
 									"cardContent${$index}",
 									"chevronDown${$index}",
@@ -224,14 +220,14 @@
 									"id": "chevronDown${$index}",
 									"url": "https://adaptivecards.io/content/down.png",
 									"width": "20px",
-									"altText": "${description} $${total} collapsed"
+									"altText": "Details collapsed"
 								},
 								{
 									"type": "Image",
 									"id": "chevronUp${$index}",
 									"url": "https://adaptivecards.io/content/up.png",
 									"width": "20px",
-									"altText": "${description} $${total} expanded",
+									"altText": "Details expanded",
 									"isVisible": false
 								}
 							],
@@ -334,18 +330,15 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}",
-							"wrap": true
+							"text": "$${formatNumber(sum(select(expenses, x, x.total)), 2)}"
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t",
-							"wrap": true
+							"text": "(-) $${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, 0, x.total))), 2)} \t"
 						},
 						{
 							"type": "TextBlock",
-							"text": "(-) 0.00 \t",
-							"wrap": true
+							"text": "(-) 0.00 \t"
 						}
 					],
 					"width": "auto"
@@ -381,8 +374,7 @@
 								{
 									"type": "TextBlock",
 									"weight": "Bolder",
-									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}",
-									"wrap": true
+									"text": "$${formatNumber(sum(select(expenses, x, if(x.is_reimbursable, x.total, 0))), 2)}"
 								}
 							],
 							"width": "auto"

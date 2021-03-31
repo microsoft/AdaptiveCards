@@ -2,13 +2,13 @@
 //  ACRActionSetRenderer
 //  ACRActionSetRenderer.h
 //
-//  Copyright © 2020 Microsoft. All rights reserved.
+//  Copyright © 2018 Microsoft. All rights reserved.
 //
 
 #import "ACRBaseActionElementRenderer.h"
-#import "ACRBaseCardElementRenderer.h"
+#import "ACRIBaseCardElementRenderer.h"
 
-@interface ACRActionSetRenderer : ACRBaseCardElementRenderer<ACRIBaseActionSetRenderer>
+@interface ACRActionSetRenderer : NSObject <ACRIBaseActionSetRenderer, ACRIBaseCardElementRenderer>
 
 + (ACRActionSetRenderer *)getInstance;
 

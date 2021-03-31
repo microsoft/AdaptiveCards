@@ -5,13 +5,13 @@
 	"body": [
 		{
 			"type": "Input.Text",
-			"id": "textLabelId",
+			"id": "input1",
 			"style": "text",
 			"label": "Default Input.Text label"
 		},
 		{
 			"type": "Input.Text",
-			"id": "requiredTextLabelId",
+			"id": "input2",
 			"style": "text",
 			"label": "Required Input.Text label",
 			"isRequired": true,

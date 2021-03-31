@@ -8,32 +8,27 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents the Container element.
+    ///     Container for a collection of elements
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveContainer.TypeName)]
 #endif
     public class AdaptiveContainer : AdaptiveCollectionElement
     {
-        /// <inheritdoc />
         public const string TypeName = "Container";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
-        /// <summary>
-        /// Background image to use when displaying this container.
-        /// </summary>
         [JsonConverter(typeof(AdaptiveBackgroundImageConverter))]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [DefaultValue(null)]
         public AdaptiveBackgroundImage BackgroundImage { get; set; }
 
         /// <summary>
-        /// Elements within this container.
+        ///     Elements of the container
         /// </summary>
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         [JsonConverter(typeof(IgnoreEmptyItemsConverter<AdaptiveElement>))]

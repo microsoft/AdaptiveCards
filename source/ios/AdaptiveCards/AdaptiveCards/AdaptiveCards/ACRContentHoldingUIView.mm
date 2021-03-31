@@ -6,12 +6,8 @@
 //
 
 #import "ACRContentHoldingUIView.h"
-#import "ACOBaseCardElementPrivate.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACREnums.h"
 #import "ACRUILabel.h"
 #import "SharedAdaptiveCard.h"
-#import "UtiliOS.h"
 
 const NSInteger eACRUILabelTag = 0x1234;
 const NSInteger eACRUIFactSetTag = 0x1235;
@@ -19,42 +15,16 @@ const NSInteger eACRUIImageTag = 0x1236;
 
 using namespace AdaptiveCards;
 
-@implementation ACRContentHoldingUIView {
-    __weak UIImageView *_imageView;
-    __weak ACRContentStackView *_viewGroup;
-    __weak NSLayoutConstraint *imageViewHeightConstraint;
-    __weak NSLayoutConstraint *heightConstraint;
-    BOOL isImageSet;
-    CGSize prevIntrinsicContentSize;
-}
-
-- (instancetype)initWithImageProperties:(ACRImageProperties *)imageProperties imageView:(UIImageView *)imageView viewGroup:(ACRContentStackView *)viewGroup
-{
-    if (!imageProperties) {
-        imageProperties = [[ACRImageProperties alloc] init];
-    }
-
-    CGRect frame = CGRectMake(0, 0, imageProperties.contentSize.width, imageProperties.contentSize.height);
-    self = [super initWithFrame:frame];
-    if (self) {
-        self.imageProperties = imageProperties;
-        _imageView = imageView;
-        _viewGroup = viewGroup;
-        [self addSubview:imageView];
-    }
-
-    return self;
-}
+@implementation ACRContentHoldingUIView
 
 - (CGSize)intrinsicContentSize
 {
-    return self.imageProperties ? self.imageProperties.contentSize : [super intrinsicContentSize];
+    return self.desiredContentSize;
 }
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-
     if (_isPersonStyle) {
         UIView *subview = self.subviews[0];
         CGFloat radius = subview.bounds.size.width / 2.0;
@@ -134,88 +104,7 @@ using namespace AdaptiveCards;
                 [layer removeFromSuperlayer];
             }
         }
-    } else {
-        if (isImageSet || _imageView.image) {
-            BOOL bUpdate = NO;
-            if (self.imageProperties.acrImageSize != ACRImageSizeExplicit && !heightConstraint) {
-                [self setHeightConstraint];
-                bUpdate = YES;
-            }
-
-            if (self.imageProperties.acrImageSize == ACRImageSizeStretch) {
-                bUpdate = !(heightConstraint && imageViewHeightConstraint);
-
-                if (!heightConstraint) {
-                    [self setHeightConstraint];
-                }
-
-                if (!imageViewHeightConstraint) {
-                    [self setImageViewHeightConstraint];
-                }
-            }
-
-            if (bUpdate) {
-                if ([_viewGroup isKindOfClass:[ACRColumnView class]]) {
-                    ACRColumnSetView *columnSetView = ((ACRColumnView *)_viewGroup).columnsetView;
-                    if (columnSetView) {
-                        [columnSetView updateIntrinsicContentSize];
-                        [columnSetView invalidateIntrinsicContentSize];
-                    }
-                }
-                [_viewGroup invalidateIntrinsicContentSize];
-            }
-        }
     }
 }
 
-// update the intrinsic content size when the width become available
-- (void)updateIntrinsicContentSizeOfSelfAndViewGroup
-{
-    CGFloat width = self.imageProperties.contentSize.width;
-    if (self.imageProperties.acrImageSize == ACRImageSizeStretch || (width > self.frame.size.width)) {
-        width = self.frame.size.width;
-    }
-
-    CGFloat height = 1.0f;
-
-    CGSize ratios = getAspectRatio(self.imageProperties.contentSize);
-    height = width * ratios.height;
-
-    // adjust intrinsic contentsize of superview
-    // substract the previous intrinsic content size from the view group
-    [_viewGroup decreaseIntrinsicContentSize:self];
-    // update it to the new value
-    self.imageProperties.contentSize = CGSizeMake(width, height);
-    // increase the view group's intrinsic content size by the new ICS
-    [_viewGroup increaseIntrinsicContentSize:self];
-}
-
-- (void)update:(ACRImageProperties *)imageProperties
-{
-    isImageSet = YES;
-    if (imageProperties) {
-        self.imageProperties = imageProperties;
-        [self invalidateIntrinsicContentSize];
-    }
-}
-
-- (void)setHeightConstraint
-{
-    [self updateIntrinsicContentSizeOfSelfAndViewGroup];
-    heightConstraint = [self setHeightConstraintUtil:self.heightAnchor];
-}
-
-- (void)setImageViewHeightConstraint
-{
-    // set new height anchor to the height of new intrinsic contentsize
-    imageViewHeightConstraint = [self setHeightConstraintUtil:_imageView.heightAnchor];
-}
-
-- (NSLayoutConstraint *)setHeightConstraintUtil:(NSLayoutDimension *)heightAnchor
-{
-    NSLayoutConstraint *constraint = [heightAnchor constraintEqualToConstant:self.imageProperties.contentSize.height];
-    constraint.priority = 999;
-    constraint.active = YES;
-    return constraint;
-}
 @end

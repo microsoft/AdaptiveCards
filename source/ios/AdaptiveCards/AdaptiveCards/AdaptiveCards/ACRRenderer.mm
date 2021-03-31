@@ -14,6 +14,7 @@
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
 #import "ACRImageRenderer.h"
+#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRegistration.h"
 #import "ACRRendererPrivate.h"
 #import "ACRSeparator.h"
@@ -79,8 +80,12 @@ using namespace AdaptiveCards;
 
     std::shared_ptr<BaseActionElement> selectAction = adaptiveCard->GetSelectAction();
     if (selectAction) {
-        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
-        [verticalView configureForSelectAction:acoSelectAction rootView:rootView];
+        // instantiate and add tap gesture recognizer
+        [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:verticalView
+                                                                           rootView:rootView
+                                                                      recipientView:verticalView
+                                                                      actionElement:selectAction
+                                                                         hostConfig:config];
     }
 
     if (adaptiveCard->GetMinHeight() > 0) {
@@ -112,17 +117,19 @@ using namespace AdaptiveCards;
         [rootView loadBackgroundImageAccordingToResourceResolverIF:backgroundImageProperties key:@"backgroundImage" observerAction:observerAction];
     }
 
-    ACRContainerStyle style = ([config getHostConfig]->GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
+    ACRContainerStyle style = ([config getHostConfig] -> GetAdaptiveCard().allowCustomStyle) ? (ACRContainerStyle)adaptiveCard->GetStyle() : ACRDefault;
     style = (style == ACRNone) ? ACRDefault : style;
     [verticalView setStyle:style];
 
-    [rootView addBaseCardElementListToConcurrentQueue:body registration:[ACRRegistration getInstance]];
+    [rootView addTasksToConcurrentQueue:body];
 
     std::vector<std::shared_ptr<BaseActionElement>> actions = adaptiveCard->GetActions();
 
     if (!actions.empty()) {
         [rootView loadImagesForActionsAndCheckIfAllActionsHaveIconImages:actions hostconfig:config];
     }
+
+    [rootView waitForAsyncTasksToFinish];
 
     UIView *leadingBlankSpace = nil;
     if (adaptiveCard->GetVerticalContentAlignment() == VerticalContentAlignment::Center ||
@@ -142,9 +149,6 @@ using namespace AdaptiveCards;
         [card setCard:adaptiveCard];
         [ACRRenderer renderActions:rootView inputs:inputs superview:verticalView card:card hostConfig:config];
     }
-
-    // renders background image for AdaptiveCard and an inner AdaptiveCard in a ShowCard
-    renderBackgroundImage(backgroundImageProperties, verticalView, rootView);
 
     return verticalView;
 }
@@ -172,14 +176,14 @@ using namespace AdaptiveCards;
     UIView *prevStretchableElem = nil, *curStretchableElem = nil;
 
     auto firstelem = elems.begin();
+    auto prevElem = elems.empty() ? nullptr : *firstelem;
 
     for (const auto &elem : elems) {
-        ACRSeparator *separator = nil;
         if (*firstelem != elem && curStretchableElem) {
-            separator = [ACRSeparator renderSeparation:elem
-                                          forSuperview:view
-                                        withHostConfig:[config getHostConfig]];
-            configSeparatorVisibility(separator, elem);
+            ACRSeparator *separator = [ACRSeparator renderSeparation:elem
+                                                        forSuperview:view
+                                                      withHostConfig:[config getHostConfig]];
+            configSeparatorVisibility(separator, prevElem);
         }
 
         ACRBaseCardElementRenderer *renderer =
@@ -196,12 +200,7 @@ using namespace AdaptiveCards;
             if ([acoElem meetsRequirements:featureReg] == NO) {
                 @throw [ACOFallbackException fallbackException];
             }
-
             curStretchableElem = [renderer render:view rootView:rootView inputs:inputs baseCardElement:acoElem hostConfig:config];
-
-            if (separator && !curStretchableElem) {
-                [(ACRContentStackView *)view removeViewFromContentStackView:separator];
-            }
 
             if (elem->GetHeight() == HeightType::Stretch && curStretchableElem) {
                 // vertical stretch works in the following way:
@@ -235,6 +234,8 @@ using namespace AdaptiveCards;
         } @catch (ACOFallbackException *e) {
             handleFallbackException(e, view, rootView, inputs, elem, config);
         }
+
+        prevElem = elem;
     }
 
     return view;

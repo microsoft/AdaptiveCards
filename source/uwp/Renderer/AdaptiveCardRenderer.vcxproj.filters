@@ -119,12 +119,6 @@
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
     <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
-    <ClCompile Include="lib\AdaptiveExecuteActionRenderer.cpp" />
-    <ClCompile Include="lib\AdaptiveRefresh.cpp" />
-    <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
-    <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
-    <ClCompile Include="lib\AdaptiveAuthentication.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -250,12 +244,6 @@
     <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
     <ClInclude Include="lib\AdaptiveInputsConfig.h" />
     <ClInclude Include="lib\AdaptiveLabelConfig.h" />
-    <ClInclude Include="lib\AdaptiveExecuteAction.h" />
-    <ClInclude Include="lib\AdaptiveExecuteActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveRefresh.h" />
-    <ClInclude Include="lib\AdaptiveAuthCardButton.h" />
-    <ClInclude Include="lib\AdaptiveTokenExchangeResource.h" />
-    <ClInclude Include="lib\AdaptiveAuthentication.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Rendering.Uwp.idl" />

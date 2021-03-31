@@ -3,45 +3,21 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    /// Encapsulates state necessary to correctly parse an AdaptiveCard.
-    /// </summary>
     public class ParseContext
     {
-        /// <summary>
-        /// Denotes what type of AdaptiveCard element this ParseContext represents.
-        /// </summary>
-        public enum ContextType
-        {
-            /// <summary>
-            /// Represents an Element (i.e. something that belongs in the body of a card).
-            /// </summary>
-            Element,
+        public enum ContextType { Element, Action };
 
-            /// <summary>
-            /// Represents an Action (i.e. something that belongs in an ActionSet or in the actions of a card).
-            /// </summary>
-            Action
-        };
-
-        /// <summary>
-        /// Tracks the most recently encountered element type.
-        /// </summary>
         public ContextType Type { get; set; }
 
         private IDictionary<string, List<AdaptiveInternalID>> elementIds = new Dictionary<string, List<AdaptiveInternalID>>();
 
         private Stack<Tuple<string, AdaptiveInternalID, bool>> idStack = new Stack<Tuple<string, AdaptiveInternalID, bool>>();
 
-        /// <summary>
-        /// Pushes the supplied element state on to the context stack.
-        /// </summary>
-        /// <remarks>Used by element converters to determine how to perform element fallback.</remarks>
-        /// <param name="idJsonProperty">The value of the current element's "id" property.</param>
-        /// <param name="internalId">The current element's <see cref="AdaptiveInternalID"/>.</param>
+        // Push the provided state on to our ID stack
         public void PushElement(string idJsonProperty, AdaptiveInternalID internalId)
         {
             if (internalId.Equals(AdaptiveInternalID.Invalid))
@@ -51,9 +27,7 @@ namespace AdaptiveCards
             idStack.Push(new Tuple<string, AdaptiveInternalID, bool>(idJsonProperty, internalId, AdaptiveFallbackConverter.IsInFallback));
         }
 
-        /// <summary>
-        /// Pops an element off of the context stack.
-        /// </summary>
+        // Pop the last id off our stack and perform validation 
         public void PopElement()
         {
             // about to pop an element off the stack. perform collision list maintenance and detection.
@@ -131,15 +105,8 @@ namespace AdaptiveCards
             idStack.Pop();
         }
 
-        /// <summary>
-        /// Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to
-        /// skip), then return its internal ID. If none, return an invalid ID.
-        /// </summary>
-        /// <param name="skipID"><see cref="AdaptiveInternalID"/> of the element to ignore.</param>
-        /// <returns>
-        /// The <see cref="AdaptiveInternalID"/> of the nearest element with fallback, or an invalid <see
-        /// cref="AdaptiveInternalID"/> if there is no element with fallback.
-        /// </returns>
+        // Walk stack looking for first element to be marked fallback (which isn't the ID we're supposed to skip), then
+        // return its internal ID. If none, return an invalid ID. (see comment above)
         public AdaptiveInternalID GetNearestFallbackID(AdaptiveInternalID skipID)
         {
             foreach (var curElement in idStack)
@@ -153,7 +120,6 @@ namespace AdaptiveCards
                     }
                 }
             }
-
             var invalidID = new AdaptiveInternalID();
             return invalidID;
         }

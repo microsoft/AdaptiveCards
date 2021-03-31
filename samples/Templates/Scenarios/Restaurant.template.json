@@ -13,32 +13,28 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": "${address.addressLocality}, ${address.addressRegion}",
-							"wrap": true
+							"text": "${address.addressLocality}, ${address.addressRegion}"
 						},
 						{
 							"type": "TextBlock",
 							"text": "${name}",
 							"weight": "bolder",
 							"size": "extraLarge",
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${aggregateRating.ratingValue <= 1}",
 							"text": "${aggregateRating.ratingValue} star (${aggregateRating.reviewCount} reviews) · ${priceRange}",
 							"isSubtle": true,
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
 							"$when": "${aggregateRating.ratingValue >= 2}",
 							"text": "${aggregateRating.ratingValue} stars (${aggregateRating.reviewCount} reviews) · ${priceRange}",
 							"isSubtle": true,
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						},
 						{
 							"type": "TextBlock",
@@ -56,7 +52,6 @@
 						{
 							"type": "Image",
 							"url": "${image}",
-							"altText": "${imageAlt}",
 							"size": "auto"
 						}
 					]

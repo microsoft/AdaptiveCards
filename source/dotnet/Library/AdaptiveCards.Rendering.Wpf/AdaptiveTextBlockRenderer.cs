@@ -17,11 +17,6 @@ namespace AdaptiveCards.Rendering.Wpf
     {
         public static FrameworkElement Render(AdaptiveTextBlock textBlock, AdaptiveRenderContext context)
         {
-            if (String.IsNullOrEmpty(textBlock.Text))
-            {
-                return null;
-            }
-
             var uiTextBlock = CreateControl(textBlock, context);
 
             uiTextBlock.SetColor(textBlock.Color, textBlock.IsSubtle, context);
@@ -80,12 +75,8 @@ namespace AdaptiveCards.Rendering.Wpf
             marked.Options.Sanitize = true;
 
             string text = RendererUtilities.ApplyTextFunctions(textBlock.Text, context.Lang);
-
-            text = marked.Parse(text);
-            text = RendererUtilities.HandleHtmlSpaces(text);
-            
-            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{text}</TextBlock>";
-
+            // uiTextBlock.Text = textBlock.Text;
+            string xaml = $"<TextBlock  xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\">{marked.Parse(text)}</TextBlock>";
             StringReader stringReader = new StringReader(xaml);
 
             XmlReader xmlReader = XmlReader.Create(stringReader);

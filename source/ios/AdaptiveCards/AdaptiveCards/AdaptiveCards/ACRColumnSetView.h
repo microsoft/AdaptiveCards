@@ -9,7 +9,6 @@
 @interface ACRColumnSetView : ACRContentStackView
 
 @property BOOL isLastColumn;
-@property BOOL hasMoreThanOneColumnWithRelatvieWidth;
 
 - (void)setAlignmentForColumnStretch;
 

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Constants } from "adaptivecards-controls";
 import { IPoint } from "./miscellaneous";
 
 export const DRAG_THRESHOLD = 10;
@@ -69,7 +68,7 @@ export abstract class DraggableElement {
 
     protected click(e: MouseEvent) {
         if (this.onClick) {
-            this.onClick(this);
+            this.onDoubleClick(this);
         }
     }
 
@@ -122,18 +121,6 @@ export abstract class DraggableElement {
 
         let dragSourceElement = this.getDragSourceElement();
         dragSourceElement.onclick = (e: MouseEvent) => { this.click(e); };
-        dragSourceElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
-                e.preventDefault();
-
-                if (this.onClick) {
-                    this.click(null);
-                }
-                else if (this.onDoubleClick) {
-                    this.doubleClick(null);
-                }
-            }
-        };
         dragSourceElement.ondblclick = (e: MouseEvent) => { this.doubleClick(e); };
 
         if (this.isDraggable()) {

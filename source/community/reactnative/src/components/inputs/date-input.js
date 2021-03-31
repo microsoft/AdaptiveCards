@@ -5,8 +5,11 @@
  */
 
 import React from 'react';
-import { Platform } from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker'
+import {
+	DatePickerAndroid,
+	Platform,
+} from 'react-native';
+
 import * as Constants from '../../utils/constants';
 import { HostConfigManager } from '../../utils/host-config';
 import { StyleManager } from '../../styles/style-config';
@@ -32,64 +35,80 @@ export class DateInput extends React.Component {
 			minDate: this.payload.min ? this.parseDateString(this.payload.min) : undefined,
 			maxDate: this.payload.max ? this.parseDateString(this.payload.max) : undefined,
 			modalVisible: false,
-			modalVisibleAndroid: false,
 			value: this.payload.value ? this.payload.value : Constants.EmptyString
 		}
 
 		this.state.setDate = this.setDate.bind(this);
 	}
 
-	/**
-	 * @description Updates the selected date
-	 * @param {Date} newDate 
-	 */
+    /**
+     * @description Updates the selected date
+     * @param {Date} newDate 
+     */
 	setDate(newDate) {
-		if (newDate !== undefined) {
-			this.setState({ chosenDate: newDate })
-			this.setState({
-				value: newDate.getFullYear() + "-" +
-					`${newDate.getMonth() + 1}`.padStart(2, '0') + "-" +
-					`${newDate.getDate()}`.padStart(2, '0')
-			})
-		}
-		this.setState({ modalVisibleAndroid: false })
+		this.setState({ chosenDate: newDate })
+		this.setState({
+			value: newDate.getFullYear() + "-" +
+				`${newDate.getMonth() + 1}`.padStart(2, '0') + "-" +
+				`${newDate.getDate()}`.padStart(2, '0')
+		})
 	}
 
-	/**
-	 * @description Toggles the DatePicker model visibility.
-	 * @param {Boolean} visible 
-	 */
+    /**
+     * @description Toggles the DatePicker model visibility.
+     * @param {Boolean} visible 
+     */
 	setModalVisible(visible) {
 		this.setState({ modalVisible: visible });
 	}
 
-	/**
-	 * @description Hides the DatePicker on close event
-	 */
+    /**
+     * @description Hides the DatePicker on close event
+     */
 	handleModalClose = () => {
 		this.setState({ modalVisible: false })
 	}
 
-	/**
-	 * @description Updates the selected date from date picker model.
-	 */
+    /**
+     * @description Updates the selected date from date picker model.
+     */
 	handleDateChange = date => this.setDate(date)
 
-	/**
-	 * @description Displays Date Picker based on the platform.
-	 */
+    /**
+     * @description Displays Android Date Picker
+     */
+	async androidPicker() {
+		try {
+			const { action, year, month, day } = await DatePickerAndroid.open({
+				// Use `new Date()` for current date.
+				date: this.state.chosenDate,
+				minDate: this.state.minDate,
+				maxDate: this.state.maxDate,
+			});
+			if (action !== DatePickerAndroid.dismissedAction) {
+				// Selected year, month (0-11), day
+				this.setDate(new Date(year, month, day))
+			}
+		} catch ({ code, message }) {
+			console.log('Cannot open date picker', message);
+		}
+	}
+
+    /**
+     * @description Displays Date Picker based on the platform.
+     */
 	showDatePicker = () => {
 		if (Platform.OS === Constants.PlatformIOS) {
 			this.setState({ modalVisible: true });
 		} else {
-			this.setState({ modalVisibleAndroid: true });
+			this.androidPicker()
 		}
 	}
 
-	/**
-	 * @description Return Date object from string.
-	 * @param {String} dateString 
-	 */
+    /**
+     * @description Return Date object from string.
+     * @param {String} dateString 
+     */
 	parseDateString(dateString) {
 		elements = dateString.split('-');
 		return new Date(elements[0], elements[1], elements[2])
@@ -102,31 +121,19 @@ export class DateInput extends React.Component {
 		}
 
 		return (
-			<>
-				<PickerInput
-					json={this.payload}
-					style={this.styleConfig.inputDate}
-					value={this.state.value}
-					showPicker={this.showDatePicker}
-					modalVisible={this.state.modalVisible}
-					handleModalClose={this.handleModalClose}
-					chosenDate={this.state.chosenDate || new Date()}
-					minDate={this.state.minDate}
-					maxDate={this.state.maxDate}
-					handleDateChange={this.handleDateChange}
-					mode='date'
-				/>
-				{
-					this.state.modalVisibleAndroid &&
-					<DateTimePicker
-						mode="date"
-						value={this.state.chosenDate}
-						minimumDate={this.state.minDate}
-						maximumDate={this.state.maxDate}
-						onChange={(event, date) => this.setDate(date)}
-					/>
-				}
-			</>
+			<PickerInput
+				json={this.payload}
+				style={this.styleConfig.inputDate}
+				value={this.state.value}
+				showPicker={this.showDatePicker}
+				modalVisible={this.state.modalVisible}
+				handleModalClose={this.handleModalClose}
+				chosenDate={this.state.chosenDate || new Date()}
+				minDate={this.state.minDate}
+				maxDate={this.state.maxDate}
+				handleDateChange={this.handleDateChange}
+				mode='date'
+			/>
 		);
 	}
 }

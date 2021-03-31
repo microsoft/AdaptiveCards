@@ -29,7 +29,6 @@ The array of `Action` elements to show.
 * **Type**: `Action[]`
 * **Required**: Yes
 * **Allowed values**:
-  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.ShowCard`
   * `Action.Submit`

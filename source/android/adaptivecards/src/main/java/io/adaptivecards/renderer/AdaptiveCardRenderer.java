@@ -14,6 +14,7 @@ import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.InternalId;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.layout.StretchableElementLayout;
 import io.adaptivecards.renderer.readonly.ContainerRenderer;
@@ -21,7 +22,7 @@ import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class AdaptiveCardRenderer
 {
-    public static final String VERSION = "1.4";
+    public static final String VERSION = "1.3";
 
     protected AdaptiveCardRenderer()
     {
@@ -51,20 +52,31 @@ public class AdaptiveCardRenderer
             HostConfig hostConfig)
     {
         RenderedAdaptiveCard result = new RenderedAdaptiveCard(adaptiveCard);
-        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, View.NO_ID);
+        View cardView = internalRender(result, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, false, new InternalId());
         result.setView(cardView);
         return result;
     }
 
-    private void renderCardElements(RenderedAdaptiveCard renderedCard,
-                                    Context context,
-                                    FragmentManager fragmentManager,
-                                    AdaptiveCard adaptiveCard,
-                                    ICardActionHandler cardActionHandler,
-                                    HostConfig hostConfig,
-                                    ViewGroup cardLayout,
-                                    RenderArgs renderArgs)
+    private ViewGroup renderCardElements(RenderedAdaptiveCard renderedCard,
+                                         Context context,
+                                         FragmentManager fragmentManager,
+                                         AdaptiveCard adaptiveCard,
+                                         ICardActionHandler cardActionHandler,
+                                         HostConfig hostConfig,
+                                         ViewGroup cardLayout,
+                                         RenderArgs renderArgs)
     {
+        LinearLayout layout = new LinearLayout(context);
+        layout.setTag(adaptiveCard);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        // Add this two for allowing children to bleed
+        layout.setClipChildren(false);
+        layout.setClipToPadding(false);
+
+        ContainerRenderer.setVerticalContentAlignment(layout, adaptiveCard.GetVerticalContentAlignment());
+
         try
         {
             CardRendererRegistration.getInstance().renderElements(renderedCard, context, fragmentManager, cardLayout, adaptiveCard.GetBody(), cardActionHandler, hostConfig, renderArgs);
@@ -76,6 +88,8 @@ public class AdaptiveCardRenderer
         {
             e.printStackTrace();
         }
+
+        return layout;
     }
 
     public View internalRender(RenderedAdaptiveCard renderedCard,
@@ -85,7 +99,7 @@ public class AdaptiveCardRenderer
                                ICardActionHandler cardActionHandler,
                                HostConfig hostConfig,
                                boolean isInlineShowCard,
-                               long containerCardId)
+                               InternalId containerCardId)
     {
         if (hostConfig == null)
         {
@@ -101,6 +115,8 @@ public class AdaptiveCardRenderer
         LinearLayout rootLayout = new LinearLayout(context);
         rootLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         rootLayout.setOrientation(LinearLayout.VERTICAL);
+        rootLayout.setFocusable(true);
+        rootLayout.setFocusableInTouchMode(true);
 
         // Add this two for allowing children to bleed
         rootLayout.setClipChildren(false);
@@ -115,8 +131,8 @@ public class AdaptiveCardRenderer
         cardLayout.setClipChildren(false);
         cardLayout.setClipToPadding(false);
 
-        BaseCardElementRenderer.setMinHeight(cardMinHeight, rootLayout, context);
-        ContainerRenderer.applyVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
+        ContainerRenderer.setMinHeight(cardMinHeight, rootLayout, context);
+        ContainerRenderer.setVerticalContentAlignment(cardLayout, adaptiveCard.GetVerticalContentAlignment());
 
         cardLayout.setOrientation(LinearLayout.VERTICAL);
         int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
@@ -138,15 +154,13 @@ public class AdaptiveCardRenderer
 
         RenderArgs renderArgs = new RenderArgs();
         renderArgs.setContainerStyle(style);
-
-        long cardId = Util.getViewId(rootLayout);
-        renderArgs.setContainerCardId(cardId);
-        renderedCard.setParentToCard(cardId, containerCardId);
+        renderArgs.setContainerCardId(adaptiveCard.GetInternalId());
+        renderedCard.setParentToCard(adaptiveCard.GetInternalId(), containerCardId);
 
         // Render the body section of the Adaptive Card
         String color = hostConfig.GetBackgroundColor(style);
         cardLayout.setBackgroundColor(Color.parseColor(color));
-        renderCardElements(renderedCard, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, cardLayout, renderArgs);
+        cardLayout.addView(renderCardElements(renderedCard, context, fragmentManager, adaptiveCard, cardActionHandler, hostConfig, cardLayout, renderArgs));
 
         if (hostConfig.GetSupportsInteractivity())
         {
@@ -178,7 +192,7 @@ public class AdaptiveCardRenderer
         }
 
         ContainerRenderer.setBackgroundImage(renderedCard, context, adaptiveCard.GetBackgroundImage(), hostConfig, cardLayout);
-        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler, renderArgs);
+        ContainerRenderer.setSelectAction(renderedCard, renderedCard.getAdaptiveCard().GetSelectAction(), rootLayout, cardActionHandler);
 
         return rootLayout;
     }

@@ -31,6 +31,7 @@
     }
 
     CGSize imageSize = CGSizeMake(imageHeight * widthToHeightRatio, imageHeight);
+    _iconView.frame = CGRectMake(0, 0, imageSize.width, imageSize.height);
     _iconView.translatesAutoresizingMaskIntoConstraints = NO;
 
     // scale the image using UIImageView
@@ -52,8 +53,6 @@
                                   constant:imageSize.height]
         .active = YES;
 
-    int iconPadding = [config getHostConfig] -> GetSpacing().defaultSpacing;
-
     if (_iconPlacement == ACRAboveTitle && config.allActionsHaveIcons) {
         // fix image view to top and center x of the button
         [NSLayoutConstraint constraintWithItem:_iconView
@@ -62,7 +61,7 @@
                                         toItem:self
                                      attribute:NSLayoutAttributeTop
                                     multiplier:1.0
-                                      constant:self.contentEdgeInsets.top]
+                                      constant:config.buttonPadding]
             .active = YES;
         [NSLayoutConstraint constraintWithItem:_iconView
                                      attribute:NSLayoutAttributeCenterX
@@ -73,19 +72,20 @@
                                       constant:0]
             .active = YES;
         // image can't be postion at the top of the title, so adjust title inset edges
-        [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, -imageHeight - iconPadding, 0)];
-        [self.heightAnchor constraintGreaterThanOrEqualToAnchor:self.titleLabel.heightAnchor constant:self.contentEdgeInsets.top + self.contentEdgeInsets.bottom + imageSize.height + iconPadding].active = YES;
+        [self setTitleEdgeInsets:UIEdgeInsetsMake(imageHeight, 0, -imageHeight, 0)];
+        // readjust content edge, so intrinsic content size can be accurately determined by system library, and give enough room for title and image icon
+        [self setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding + self.layer.cornerRadius, config.buttonPadding + imageHeight, config.buttonPadding + self.layer.cornerRadius)];
+        // configure button frame to correct size; in case translatesAutoresizingMaskIntoConstraints is used
+        self.frame = CGRectMake(0, 0, MAX(imageSize.width, contentSize.width), imageSize.height + config.buttonPadding);
     } else if (_iconPlacement != ACRNoTitle) {
-        CGFloat widthOffset = (imageSize.width + iconPadding);
-        [self setContentEdgeInsets:UIEdgeInsetsMake(self.contentEdgeInsets.top, self.contentEdgeInsets.left + widthOffset / 2, self.contentEdgeInsets.bottom, self.contentEdgeInsets.right + widthOffset / 2)];
-        [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 0, 0, -(widthOffset))];
-
-        [_iconView.trailingAnchor constraintEqualToAnchor:self.titleLabel.leadingAnchor constant:-iconPadding].active = YES;
-
+        int iconPadding = [config getHostConfig] -> GetSpacing().defaultSpacing;
+        [self setTitleEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, (imageSize.width) + iconPadding, config.buttonPadding, -(iconPadding + imageSize.width))];
+        [self setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding, config.buttonPadding, imageSize.width + iconPadding + self.layer.cornerRadius)];
+        [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1.0 constant:config.buttonPadding].active = YES;
         [NSLayoutConstraint constraintWithItem:_iconView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0].active = YES;
-        CGFloat offset = -(self.contentEdgeInsets.left + self.contentEdgeInsets.right);
-        [self.titleLabel.widthAnchor constraintLessThanOrEqualToAnchor:self.widthAnchor constant:offset].active = YES;
-        [self.heightAnchor constraintGreaterThanOrEqualToAnchor:self.titleLabel.heightAnchor constant:self.contentEdgeInsets.top + self.contentEdgeInsets.bottom].active = YES;
+        self.frame = CGRectMake(0, 0, imageSize.width + config.buttonPadding + contentSize.width, MAX(imageSize.height, contentSize.height));
+        // update action set view that hold buttons and buttons' layout view
+        [self.superview.superview setNeedsLayout];
     }
 }
 
@@ -99,8 +99,6 @@
     ACRButton *button = [bundle loadNibNamed:nibNameButton owner:rootView options:nil][0];
     [button setTitle:title forState:UIControlStateNormal];
     button.titleLabel.adjustsFontSizeToFitWidth = NO;
-    button.titleLabel.numberOfLines = 0;
-    button.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     button.isAccessibilityElement = YES;
     button.accessibilityLabel = title;
 
@@ -131,7 +129,6 @@
             if (view.image) {
                 button.iconView = view;
                 [button addSubview:view];
-                [rootView removeObserverOnImageView:@"image" onObject:view keyToImageView:key];
                 [button setImageView:view.image withConfig:config];
             } else {
                 button.iconView = view;
@@ -140,7 +137,9 @@
             }
         }
     } else {
-        [button.heightAnchor constraintGreaterThanOrEqualToAnchor:button.titleLabel.heightAnchor constant:button.contentEdgeInsets.top + button.contentEdgeInsets.bottom].active = YES;
+        // button's intrinsic content size is determined by title size and content edge
+        // add corner radius to content size by adding it to content edge inset
+        [button setContentEdgeInsets:UIEdgeInsetsMake(config.buttonPadding, config.buttonPadding + button.layer.cornerRadius, config.buttonPadding, config.buttonPadding + button.layer.cornerRadius)];
     }
 
     return button;

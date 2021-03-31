@@ -3,33 +3,34 @@
 package io.adaptivecards.renderer.input;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.nfc.Tag;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 
-import io.adaptivecards.R;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.ForegroundColor;
+import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.renderer.AdaptiveWarning;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.ToggleInput;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.input.customcontrols.ValidatedCheckBox;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
 import io.adaptivecards.renderer.inputhandler.ToggleInputHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
+
+import java.util.Vector;
 
 public class ToggleInputRenderer extends BaseCardElementRenderer
 {
@@ -65,13 +66,12 @@ public class ToggleInputRenderer extends BaseCardElementRenderer
         }
 
         ToggleInput toggleInput = Util.castTo(baseCardElement, ToggleInput.class);
-        final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
-        ValidatedCheckBox checkBox = new ValidatedCheckBox(context,
-                                                           getColor(hostConfig.GetForegroundColor(ContainerStyle.Default, ForegroundColor.Attention, false)));
 
+        final ToggleInputHandler toggleInputHandler = new ToggleInputHandler(toggleInput);
+        CheckBox checkBox = new CheckBox(context);
         if(!toggleInput.GetWrap())
         {
-            checkBox.setMaxLines(1);
+            checkBox.setLines(1);
             checkBox.setEllipsize(TextUtils.TruncateAt.END);
         }
 

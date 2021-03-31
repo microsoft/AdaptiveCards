@@ -6,8 +6,6 @@
 //
 #import "ACOAdaptiveCardParseResult.h"
 #import "ACOAdaptiveCardPrivate.h"
-#import "ACOAuthenticationPrivate.h"
-#import "ACORefreshPrivate.h"
 #import "ACORemoteResourceInformationPrivate.h"
 #import "ACRErrors.h"
 #import "ACRIBaseInputHandler.h"
@@ -16,7 +14,6 @@
 #import "AdaptiveCardParseWarning.h"
 #import "ParseResult.h"
 #import "SharedAdaptiveCard.h"
-#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -61,7 +58,7 @@ using namespace AdaptiveCards;
     if (payload) {
         try {
             ACOAdaptiveCard *card = [[ACOAdaptiveCard alloc] init];
-            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.4"));
+            std::shared_ptr<ParseResult> parseResult = AdaptiveCard::DeserializeFromString(std::string([payload UTF8String]), std::string("1.3"));
             NSMutableArray *acrParseWarnings;
             std::vector<std::shared_ptr<AdaptiveCardParseWarning>> parseWarnings = parseResult->GetWarnings();
             for (const auto &warning : parseWarnings) {
@@ -69,10 +66,6 @@ using namespace AdaptiveCards;
                 [acrParseWarnings addObject:acrParseWarning];
             }
             card->_adaptiveCard = parseResult->GetAdaptiveCard();
-            if (card && card->_adaptiveCard) {
-                card->_refresh = [[ACORefresh alloc] init:card->_adaptiveCard->GetRefresh()];
-                card->_authentication = [[ACOAuthentication alloc] init:card->_adaptiveCard->GetAuthentication()];
-            }
             result = [[ACOAdaptiveCardParseResult alloc] init:card errors:nil warnings:acrParseWarnings];
         } catch (const AdaptiveCardParseException &e) {
             // converts AdaptiveCardParseException to NSError
@@ -114,18 +107,6 @@ using namespace AdaptiveCards;
         }
         NSArray<ACORemoteResourceInformation *> *remoteResources = [NSArray arrayWithArray:mutableRemoteResources];
         return remoteResources;
-    }
-    return nil;
-}
-
-- (NSData *)additionalProperty
-{
-    if (_adaptiveCard) {
-        Json::Value blob = _adaptiveCard->GetAdditionalProperties();
-        if (blob.empty()) {
-            return nil;
-        }
-        return JsonToNSData(blob);
     }
     return nil;
 }

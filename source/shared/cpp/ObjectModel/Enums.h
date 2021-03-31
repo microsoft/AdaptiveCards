@@ -9,7 +9,6 @@ namespace AdaptiveSharedNamespace
     enum class AdaptiveCardSchemaKey
     {
         Accent = 0,
-        Action,
         ActionAlignment,
         ActionMode,
         ActionOrientation,
@@ -21,9 +20,7 @@ namespace AdaptiveSharedNamespace
         AllowCustomStyle,
         AllowInlinePlayback,
         AltText,
-        AssociatedInputs,
         Attention,
-        Authentication,
         BackgroundColor,
         BackgroundImage,
         BackgroundImageUrl,
@@ -35,7 +32,6 @@ namespace AdaptiveSharedNamespace
         BorderColor,
         BorderThickness,
         Bottom,
-        Buttons,
         ButtonSpacing,
         Card,
         Center,
@@ -46,7 +42,6 @@ namespace AdaptiveSharedNamespace
         Column,
         ColumnSet,
         Columns,
-        ConnectionName,
         Container,
         ContainerStyles,
         Dark,
@@ -80,6 +75,7 @@ namespace AdaptiveSharedNamespace
         IconSize,
         IconUrl,
         Id,
+        IgnoreInputValidation,
         Image,
         ImageBaseUrl,
         ImageSet,
@@ -126,8 +122,6 @@ namespace AdaptiveSharedNamespace
         Placeholder,
         PlayButton,
         Poster,
-        ProviderId,
-        Refresh,
         Regex,
         Repeat,
         RepeatHorizontally,
@@ -136,7 +130,6 @@ namespace AdaptiveSharedNamespace
         Requires,
         RichTextBlock,
         Right,
-        Schema,
         SelectAction,
         Separator,
         ShowActionMode,
@@ -164,17 +157,13 @@ namespace AdaptiveSharedNamespace
         TimeInput,
         Title,
         ToggleInput,
-        TokenExchangeResource,
         Top,
         Type,
         Underline,
         Url,
-        Uri,
-        UserIds,
         Value,
         ValueOff,
         ValueOn,
-        Verb,
         Version,
         VerticalAlignment,
         VerticalContentAlignment,
@@ -310,10 +299,9 @@ namespace AdaptiveSharedNamespace
     enum class ActionType
     {
         Unsupported = 0,
-        Execute,
-        OpenUrl,
         ShowCard,
         Submit,
+        OpenUrl,
         ToggleVisibility,
         Custom,
         UnknownAction,
@@ -328,13 +316,6 @@ namespace AdaptiveSharedNamespace
         Stretch,
     };
     DECLARE_ADAPTIVECARD_ENUM(ActionAlignment);
-
-    enum class AssociatedInputs
-    {
-        Auto = 0,
-        None
-    };
-    DECLARE_ADAPTIVECARD_ENUM(AssociatedInputs);
 
     enum class ChoiceSetStyle
     {
@@ -419,7 +400,6 @@ namespace AdaptiveSharedNamespace
         InvalidValue,
         CustomWarning,
         EmptyLabelInRequiredInput,
-        RequiredPropertyMissing,
     };
     // No mapping to string needed
 

@@ -8,24 +8,22 @@ using Newtonsoft.Json;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents the Media element.
+    ///     The Media element allows for the inclusion of medias (videos and audios) in an Adaptive Card.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = TypeName)]
 #endif
     public class AdaptiveMedia : AdaptiveElement
     {
-        /// <inheritdoc />
         public const string TypeName = "Media";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        /// A collection of source from which to retrieve the media.
+        ///     The media sources to try
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -34,7 +32,7 @@ namespace AdaptiveCards
         public List<AdaptiveMediaSource> Sources { get; set; } = new List<AdaptiveMediaSource>();
 
         /// <summary>
-        /// URL for the poster image to show for this media element.
+        ///     Poster URL for this media
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -44,7 +42,7 @@ namespace AdaptiveCards
         public string Poster { get; set; }
 
         /// <summary>
-        /// Alternate text to display for this media element.
+        ///     Alternate text to display for this media
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3

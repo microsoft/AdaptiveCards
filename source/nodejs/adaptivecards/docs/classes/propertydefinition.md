@@ -14,8 +14,6 @@
 
   ↳ [PixelSizeProperty](pixelsizeproperty.md)
 
-  ↳ [StringArrayProperty](stringarrayproperty.md)
-
   ↳ [ValueSetProperty](valuesetproperty.md)
 
   ↳ [EnumProperty](enumproperty.md)
@@ -28,10 +26,6 @@
 
   ↳ [ActionProperty](actionproperty.md)
 
-  ↳ [ImageDimensionProperty](imagedimensionproperty.md)
-
-  ↳ [StringWithSubstitutionProperty](stringwithsubstitutionproperty.md)
-
 ## Index
 
 ### Constructors
@@ -40,12 +34,12 @@
 
 ### Properties
 
-* [defaultValue](propertydefinition.md#optional-readonly-defaultvalue)
+* [defaultValue](propertydefinition.md#optional-defaultvalue)
 * [isSerializationEnabled](propertydefinition.md#isserializationenabled)
-* [name](propertydefinition.md#readonly-name)
-* [onGetInitialValue](propertydefinition.md#optional-readonly-ongetinitialvalue)
-* [sequentialNumber](propertydefinition.md#readonly-sequentialnumber)
-* [targetVersion](propertydefinition.md#readonly-targetversion)
+* [name](propertydefinition.md#name)
+* [onGetInitialValue](propertydefinition.md#optional-ongetinitialvalue)
+* [sequentialNumber](propertydefinition.md#sequentialnumber)
+* [targetVersion](propertydefinition.md#targetversion)
 
 ### Methods
 
@@ -72,7 +66,7 @@ Name | Type |
 
 ## Properties
 
-### `Optional` `Readonly` defaultValue
+### `Optional` defaultValue
 
 • **defaultValue**? : *any*
 
@@ -84,25 +78,25 @@ ___
 
 ___
 
-### `Readonly` name
+###  name
 
 • **name**: *string*
 
 ___
 
-### `Optional` `Readonly` onGetInitialValue
+### `Optional` onGetInitialValue
 
 • **onGetInitialValue**? : *undefined | function*
 
 ___
 
-### `Readonly` sequentialNumber
+###  sequentialNumber
 
 • **sequentialNumber**: *number*
 
 ___
 
-### `Readonly` targetVersion
+###  targetVersion
 
 • **targetVersion**: *[Version](version.md)*
 

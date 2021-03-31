@@ -99,22 +99,11 @@ export class ActionWrapper extends React.Component {
 		else return styles.actionAlignmentVertical
 	}
 
-	getActionAlignment() {
-		switch (this.hostConfig.actions.actionAlignment) {
-			case Enums.ActionAlignment.Center:
-				return styles.centerAlignment
-			case Enums.ActionAlignment.Right:
-				return styles.rightAlignment
-			default:
-				return styles.leftAlignment
-		}
-	}
-
 	render() {
 		return (<InputContextConsumer>
 			{({ onExecuteAction, onParseError }) =>
 				<View>
-					<View style={[styles.actionButtonContainer, this.getActionOrientation(), this.getActionAlignment()]}>
+					<View style={[styles.actionButtonContainer, this.getActionOrientation()]}>
 						{this.parseActionsArray(onParseError)}
 					</View>
 					{this.hasShowCard ? ((this.state.isShowCard) ?
@@ -130,22 +119,14 @@ export class ActionWrapper extends React.Component {
 const styles = StyleSheet.create({
 	actionButtonContainer: {
 		paddingTop: padding,
-		flexWrap: Constants.FlexWrap
+		flexWrap: Constants.FlexWrap,
+		justifyContent: Constants.CenterString
 	},
 	actionAlignmentHorizontal: {
 		flexDirection: Constants.FlexRow,
 	},
 	actionAlignmentVertical: {
 		flexDirection: Constants.FlexColumn,
-	},
-	leftAlignment: {
-		justifyContent: Constants.FlexStart,
-	},
-	centerAlignment: {
-		justifyContent: Constants.CenterString,
-	},
-	rightAlignment: {
-		justifyContent: Constants.FlexEnd,
 	}
 });
 

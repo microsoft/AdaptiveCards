@@ -5,27 +5,26 @@ using System.ComponentModel;
 using System.Xml.Serialization;
 using Newtonsoft.Json;
 
+
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents an ImageSet element.
+    ///     The ImageSet allows for the inclusion of a collection images like a photogallery.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveImageSet.TypeName)]
 #endif
     public class AdaptiveImageSet : AdaptiveElement
     {
-        /// <inheritdoc />
         public const string TypeName = "ImageSet";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        /// Collection of images to display.
+        ///     Collection of images to display together
         /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
@@ -34,9 +33,9 @@ namespace AdaptiveCards
         public List<AdaptiveImage> Images { get; set; } = new List<AdaptiveImage>();
 
         /// <summary>
-        /// Specifies the <see cref="AdaptiveImageSize"/> of each image in the set.
+        ///     Specifies the horizontal size of each image in the set
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

@@ -8,14 +8,12 @@
             "type": "TextBlock",
             "text": "${name}, WA",
             "size": "Large",
-            "isSubtle": true,
-            "wrap": true
+            "isSubtle": true
         },
         {
             "type": "TextBlock",
             "text": "{{DATE(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}} {{TIME(${formatEpoch(dt, 'yyyy-MM-ddTHH:mm:ssZ')})}}",
-            "spacing": "None",
-            "wrap": true
+            "spacing": "None"
         },
         {
             "type": "ColumnSet",
@@ -39,8 +37,7 @@
                             "type": "TextBlock",
                             "text": "${formatNumber((main.temp - 273) * 9 / 5 + 32, 0)}",
                             "size": "ExtraLarge",
-                            "spacing": "None",
-                            "wrap": true
+                            "spacing": "None"
                         }
                     ]
                 },
@@ -52,8 +49,7 @@
                             "type": "TextBlock",
                             "text": "°F",
                             "weight": "Bolder",
-                            "spacing": "Small",
-                            "wrap": true
+                            "spacing": "Small"
                         }
                     ]
                 },
@@ -64,15 +60,13 @@
                         {
                             "type": "TextBlock",
                             "text": "Hi ${formatNumber((main.temp_max - 273) * 9 / 5 + 32, 0)}",
-                            "horizontalAlignment": "Left",
-                            "wrap": true
+                            "horizontalAlignment": "Left"
                         },
                         {
                             "type": "TextBlock",
                             "text": "Lo ${formatNumber((main.temp_min - 273) * 9 / 5 + 32, 0)}",
                             "horizontalAlignment": "Left",
-                            "spacing": "None",
-                            "wrap": true
+                            "spacing": "None"
                         }
                     ]
                 }

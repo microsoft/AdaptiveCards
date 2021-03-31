@@ -36,8 +36,7 @@
     std::shared_ptr<BaseInputElement> timeInput = std::dynamic_pointer_cast<BaseInputElement>(elem);
     ACRDateTextField *field = [[ACRDateTextField alloc] initWithTimeDateInput:timeInput dateStyle:NSDateFormatterNoStyle];
 
-    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field accessibilityItem:field.inputView viewGroup:viewGroup dataSource:nil];
-    field.accessibilityTraits = UIAccessibilityTraitButton | UIAccessibilityTraitStaticText;    
+    ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:timeInput inputView:field viewGroup:viewGroup dataSource:nil];
     UIView *renderedview = inputLabelView;
 
     if (viewGroup) {

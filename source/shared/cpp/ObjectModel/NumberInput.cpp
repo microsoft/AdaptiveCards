@@ -49,32 +49,32 @@ void NumberInput::SetPlaceholder(const std::string& value)
     m_placeholder = value;
 }
 
-std::optional<double> NumberInput::GetValue() const
+std::optional<int> NumberInput::GetValue() const
 {
     return m_value;
 }
 
-void NumberInput::SetValue(const std::optional<double>& value)
+void NumberInput::SetValue(const std::optional<int>& value)
 {
     m_value = value;
 }
 
-std::optional<double> NumberInput::GetMax() const
+std::optional<int> NumberInput::GetMax() const
 {
     return m_max;
 }
 
-void NumberInput::SetMax(const std::optional<double>& value)
+void NumberInput::SetMax(const std::optional<int>& value)
 {
     m_max = value;
 }
 
-std::optional<double> NumberInput::GetMin() const
+std::optional<int> NumberInput::GetMin() const
 {
     return m_min;
 }
 
-void NumberInput::SetMin(const std::optional<double>& value)
+void NumberInput::SetMin(const std::optional<int>& value)
 {
     m_min = value;
 }
@@ -87,10 +87,10 @@ std::shared_ptr<BaseCardElement> NumberInputParser::Deserialize(ParseContext& co
 
     numberInput->SetPlaceholder(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Placeholder));
 
-    static const std::optional<double> emptyOptionalDouble;
-    numberInput->SetValue(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Value, emptyOptionalDouble));
-    numberInput->SetMax(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Max, emptyOptionalDouble));
-    numberInput->SetMin(ParseUtil::GetOptionalDouble(json, AdaptiveCardSchemaKey::Min, emptyOptionalDouble));
+    static const std::optional<int> emptyOptionalInt;
+    numberInput->SetValue(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Value, emptyOptionalInt));
+    numberInput->SetMax(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Max, emptyOptionalInt));
+    numberInput->SetMin(ParseUtil::GetOptionalInt(json, AdaptiveCardSchemaKey::Min, emptyOptionalInt));
 
     return numberInput;
 }

@@ -26,8 +26,7 @@
 							"type": "TextBlock",
 							"text": "Flight Status",
 							"horizontalAlignment": "right",
-							"isSubtle": true,
-							"wrap": true
+							"isSubtle": true
 						},
 						{
 							"type": "TextBlock",
@@ -35,8 +34,7 @@
 							"horizontalAlignment": "right",
 							"spacing": "none",
 							"size": "large",
-							"color": "attention",
-							"wrap": true
+							"color": "attention"
 						}
 					]
 				}
@@ -55,26 +53,22 @@
 							"type": "TextBlock",
 							"text": "Passengers",
 							"isSubtle": true,
-							"weight": "bolder",
-							"wrap": true
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Sarah Hum",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Jeremy Goldberg",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Evan Litvak",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				},
@@ -87,29 +81,25 @@
 							"text": "Seat",
 							"horizontalAlignment": "right",
 							"isSubtle": true,
-							"weight": "bolder",
-							"wrap": true
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14A",
 							"horizontalAlignment": "right",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14B",
 							"horizontalAlignment": "right",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						},
 						{
 							"type": "TextBlock",
 							"text": "14C",
 							"horizontalAlignment": "right",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				}
@@ -128,14 +118,12 @@
 							"type": "TextBlock",
 							"text": "Flight",
 							"isSubtle": true,
-							"weight": "bolder",
-							"wrap": true
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
 							"text": "KL605",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				},
@@ -148,8 +136,7 @@
 							"text": "Departs",
 							"isSubtle": true,
 							"horizontalAlignment": "center",
-							"weight": "bolder",
-							"wrap": true
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
@@ -157,8 +144,7 @@
 							"color": "attention",
 							"weight": "bolder",
 							"horizontalAlignment": "center",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				},
@@ -171,8 +157,7 @@
 							"text": "Arrives",
 							"isSubtle": true,
 							"horizontalAlignment": "right",
-							"weight": "bolder",
-							"wrap": true
+							"weight": "bolder"
 						},
 						{
 							"type": "TextBlock",
@@ -180,8 +165,7 @@
 							"color": "attention",
 							"horizontalAlignment": "right",
 							"weight": "bolder",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				}
@@ -199,16 +183,14 @@
 						{
 							"type": "TextBlock",
 							"text": "Amsterdam Airport",
-							"isSubtle": true,
-							"wrap": true
+							"isSubtle": true
 						},
 						{
 							"type": "TextBlock",
 							"text": "AMS",
 							"size": "extraLarge",
 							"color": "accent",
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						}
 					]
 				},
@@ -218,8 +200,7 @@
 					"items": [
 						{
 							"type": "TextBlock",
-							"text": " ",
-							"wrap": true
+							"text": " "
 						},
 						{
 							"type": "Image",
@@ -236,8 +217,7 @@
 							"type": "TextBlock",
 							"text": "San Francisco Airport",
 							"isSubtle": true,
-							"horizontalAlignment": "right",
-							"wrap": true
+							"horizontalAlignment": "right"
 						},
 						{
 							"type": "TextBlock",
@@ -245,8 +225,7 @@
 							"horizontalAlignment": "right",
 							"size": "extraLarge",
 							"color": "accent",
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						}
 					]
 				}

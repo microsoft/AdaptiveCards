@@ -8,14 +8,12 @@
 			"type": "TextBlock",
 			"text": "Redmond, WA",
 			"size": "large",
-			"isSubtle": true,
-			"wrap": true
+			"isSubtle": true
 		},
 		{
 			"type": "TextBlock",
 			"text": "Mon, Nov 4, 2019 6:21 PM",
-			"spacing": "none",
-			"wrap": true
+			"spacing": "none"
 		},
 		{
 			"type": "ColumnSet",
@@ -40,8 +38,7 @@
 							"type": "TextBlock",
 							"text": "46",
 							"size": "extraLarge",
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						}
 					]
 				},
@@ -53,8 +50,7 @@
 							"type": "TextBlock",
 							"text": "°F",
 							"weight": "bolder",
-							"spacing": "small",
-							"wrap": true
+							"spacing": "small"
 						}
 					]
 				},
@@ -65,15 +61,13 @@
 						{
 							"type": "TextBlock",
 							"text": "Hi 50",
-							"horizontalAlignment": "left",
-							"wrap": true
+							"horizontalAlignment": "left"
 						},
 						{
 							"type": "TextBlock",
 							"text": "Lo 41",
 							"horizontalAlignment": "left",
-							"spacing": "none",
-							"wrap": true
+							"spacing": "none"
 						}
 					]
 				}

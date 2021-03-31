@@ -141,7 +141,7 @@
             [txtview.layer setCornerRadius:5.0f];
             inputview = txtview;
         }
-        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview accessibilityItem:inputview viewGroup:viewGroup dataSource:nil];
+        ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:inputview viewGroup:viewGroup dataSource:nil];
         inputview = inputLabelView;
     } else {
         if (renderAction) {
@@ -149,13 +149,13 @@
             quickReplyView = [[ACRQuickReplyView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0)];
             button = quickReplyView.button;
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            [quickReplyView addTextField:txtInput];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
+            [quickReplyView addTextField:txtInput];            
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
 
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
-            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];
+            ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
         }
         txtInput.delegate = textInputHandler;
@@ -163,7 +163,7 @@
         [inputview setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     }
 
-    if (elem->GetHeight() == HeightType::Stretch && !inputBlck->GetIsMultiline()) {
+    if (elem->GetHeight() == HeightType::Stretch) {
         ACRColumnView *textInputContainer = [[ACRColumnView alloc] init];
         [textInputContainer addArrangedSubview:inputview];
 
@@ -223,11 +223,11 @@
         } else {
             [button setTitle:title forState:UIControlStateNormal];
         }
-
-        ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:action];
+        ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] init];
+        [acoAction setElem:action];
 
         NSObject *target;
-        if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], acoSelectAction, button, &target)) {
+        if (ACRRenderingStatus::ACROk == buildTargetForButton([rootView getQuickReplyTargetBuilderDirector], action, button, &target)) {
             if (action->GetElementType() == ActionType::Submit) {
                 quickReplyView.target = (ACRAggregateTarget *)target;
             }

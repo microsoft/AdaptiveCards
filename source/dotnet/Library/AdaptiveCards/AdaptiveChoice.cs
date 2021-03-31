@@ -41,7 +41,7 @@ namespace AdaptiveCards
         ///     Is this choice selected?
         /// </summary>
         [Obsolete("Choice.IsSelected has been deprecated.  Use AdaptiveChoiceSetInput.Value", false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
         public bool IsSelected { get; set; } = false;
 
         /// <summary>

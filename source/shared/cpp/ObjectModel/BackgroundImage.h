@@ -29,7 +29,6 @@ namespace AdaptiveSharedNamespace
         VerticalAlignment GetVerticalAlignment() const;
         void SetVerticalAlignment(const VerticalAlignment& value);
 
-        bool ShouldSerialize() const;
         std::string Serialize() const;
         Json::Value SerializeToJsonValue() const;
 

@@ -1,7 +1,7 @@
 export default payloads = [
   {
-    "title": "Accessibility.json",
-    "json": require('./Accessibility.json')
+    "title": "TextBlock.Markdown.json",
+    "json": require('./TextBlock.Markdown.json')
   },
   {
     "title": "Action.NoBody.json",
@@ -172,24 +172,8 @@ export default payloads = [
     "json": require('./ColumnSet_Container.VerticalStretch.json')
   },
   {
-    "title": "Custom.Actions.Rendering.json",
-    "json": require('./CustomActions.Rendering.json')
-  },
-  {
-    "title": "Custom.Element.Rendering.json",
+    "title": "CustomElement.Rendering.json",
     "json": require('./CustomElement.Rendering.json')
-  },
-  {
-    "title": "Custom.TextBlock.Rendering.json",
-    "json": require('./CustomTextBlock.Rendering.json')
-  },
-  {
-    "title": "Custom.Image.Rendering.json",
-    "json": require('./CustomImage.Rendering.json')
-  },
-  {
-    "title": "Custom.ActionButton.Rendering.json",
-    "json": require('./CustomActionButton.Rendering.json')
   },
   {
     "title": "CustomParsingTestUsingProgressBar.json",
@@ -264,10 +248,6 @@ export default payloads = [
     "json": require('./Image.Style.json')
   },
   {
-    "title": "Input.Label.json",
-    "json": require('./Input.Label.json')
-  },
-  {
     "title": "Input.ChoiceSet.json",
     "json": require('./Input.ChoiceSet.json')
   },
@@ -330,10 +310,6 @@ export default payloads = [
   {
     "title": "TextBlock.json",
     "json": require('./TextBlock.json')
-  },
-  {
-    "title": "TextBlock.Markdown.json",
-    "json": require('./TextBlock.Markdown.json')
   },
   {
     "title": "TextBlock.MaxLines.json",

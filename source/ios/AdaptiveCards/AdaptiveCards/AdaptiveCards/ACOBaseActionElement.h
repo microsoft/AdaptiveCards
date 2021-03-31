@@ -13,12 +13,11 @@
 @interface ACOBaseActionElement : NSObject
 
 typedef NS_ENUM(NSInteger, ACRActionType) {
-    ACRExecute = 1,
-    ACROpenUrl,
-    ACRShowCard,
+    ACRShowCard = 1,
     ACRSubmit,
+    ACROpenUrl,
     ACRToggleVisibility,
-    ACRUnknownAction = 7,
+    ACRUnknownAction = 6,
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {
@@ -34,12 +33,9 @@ typedef NS_ENUM(NSInteger, ACRIconPlacement) {
 - (NSString *)elementId;
 - (NSString *)url;
 - (NSString *)data;
-- (NSString *)verb;
 - (NSData *)additionalProperty;
 
 - (BOOL)meetsRequirements:(ACOFeatureRegistration *)featureReg;
-
-+ (NSNumber *)getKey:(ACRActionType)actionType;
 
 @end
 

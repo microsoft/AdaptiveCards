@@ -5,13 +5,12 @@
 	"body": [
 		{
 			"type": "Input.ChoiceSet",
-			"id": "requiredCompactId",
+			"id": "input1",
 			"style": "compact",
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (compact)",
 			"isRequired": true,
 			"errorMessage": "This is a required input",
-			"placeholder" : "Please make selection",
 			"choices": [
 				{
 					"title": "Option 1",
@@ -25,7 +24,7 @@
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "requiredExpandedId",
+			"id": "input2",
 			"style": "expanded",
 			"isMultiSelect": false,
 			"label": "Required Input.ChoiceSet label (expanded)",
@@ -44,7 +43,7 @@
 		},
 		{
 			"type": "Input.ChoiceSet",
-			"id": "requiredMultiselectId",
+			"id": "input3",
 			"style": "expanded",
 			"isMultiSelect": true,
 			"label": "Required Input.ChoiceSet label (expanded, multiselect)",

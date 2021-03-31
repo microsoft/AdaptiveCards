@@ -47,19 +47,13 @@
 
         [view setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:priority forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
         // if columnWidth is set to stretch or number, allow column to fill the available space
-    } else if ([self.columnWidth isEqualToString:@"stretch"] || (!self.hasMoreThanOneRelativeWidth && self.relativeWidth)) {
+    } else if ([self.columnWidth isEqualToString:@"stretch"]) {
         [view setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:ACRColumnWidthPriorityStretch forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
     } else {
         [view setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
         [view setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [self setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     }
 }
 
@@ -68,9 +62,7 @@
     if (view.isHidden) {
         return;
     }
-    [super increaseIntrinsicContentSize:view];
     CGSize size = [view intrinsicContentSize];
-
     if (size.width >= 0 and size.height >= 0) {
         self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
     }
@@ -79,7 +71,7 @@
 - (void)decreaseIntrinsicContentSize:(UIView *)view
 {
     CGFloat maxWidthExcludingTheView = [self getMaxWidthOfSubviewsAfterExcluding:view];
-    CGSize size = [self getIntrinsicContentSizeInArragedSubviews:view];
+    CGSize size = [view intrinsicContentSize];
     // there are three possible cases
     // 1. possibleMaxWidthExcludingTheView is equal to the height of the view
     // 2. possibleMaxWidthExcludingTheView is bigger than the the height of the view
@@ -90,17 +82,12 @@
     self.combinedContentSize = CGSizeMake(newWidth, self.combinedContentSize.height - size.height);
 }
 
-- (void)updateIntrinsicContentSize
+- (UIView *)addPaddingSpace
 {
-    self.combinedContentSize = CGSizeZero;
-    [super updateIntrinsicContentSize:^(UIView *view, NSUInteger idx, BOOL *stop) {
-        CGSize size = [view intrinsicContentSize];
-        if (!view.hidden) {
-            if (size.width >= 0 and size.height >= 0) {
-                self.combinedContentSize = CGSizeMake(MAX(self.combinedContentSize.width, size.width), self.combinedContentSize.height + size.height);
-            }
-        }
-    }];
+    UIView *blankTrailingSpace = [[UIView alloc] init];
+    [blankTrailingSpace setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
+    [self addArrangedSubview:blankTrailingSpace];
+    return blankTrailingSpace;
 }
 
 @end

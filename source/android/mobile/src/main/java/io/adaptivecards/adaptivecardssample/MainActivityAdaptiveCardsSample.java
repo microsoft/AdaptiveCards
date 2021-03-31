@@ -27,7 +27,6 @@ import io.adaptivecards.objectmodel.*;
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
 import io.adaptivecards.renderer.IOnlineImageLoader;
 import io.adaptivecards.renderer.IOnlineMediaLoader;
-import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.readonly.TextRendererUtil;
@@ -46,6 +45,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -217,14 +217,10 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
             elementParserRegistration = new ElementParserRegistration();
             elementParserRegistration.AddParser("blah", new CustomBlahParser());
             elementParserRegistration.AddParser(CustomInput.customInputTypeString, new CustomInput.CustomInputParser());
-        }
 
-        if (m_customActions.isChecked())
-        {
             actionParserRegistration = new ActionParserRegistration();
-            actionParserRegistration.AddParser(CustomRedAction.CustomActionId, new CustomRedAction.CustomRedActionParser());
-            actionParserRegistration.AddParser(CustomGreenAction.CustomActionId, new CustomGreenAction.CustomGreenActionParser());
-            actionParserRegistration.AddParser(CustomBlueAction.CustomActionId, new CustomBlueAction.CustomBlueActionParser());
+            actionParserRegistration.AddParser(CustomRedActionElement.CustomActionId, new CustomRedActionParser());
+            actionParserRegistration.AddParser(CustomGreenActionElement.CustomActionId, new CustomGreenActionParser());
         }
 
         return new ParseContext(elementParserRegistration, actionParserRegistration);
@@ -294,9 +290,8 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     {
         if (m_customActions.isChecked())
         {
-            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedAction.CustomActionId, new CustomRedAction.CustomRedActionRenderer(this));
-            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenAction.CustomActionId, new CustomGreenAction.CustomGreenActionRenderer(this));
-            CardRendererRegistration.getInstance().registerActionRenderer(CustomBlueAction.CustomActionId, new CustomBlueAction.CustomBlueActionRenderer());
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomRedActionElement.CustomActionId, new CustomRedActionRenderer(this));
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomGreenActionElement.CustomActionId, new CustomGreenActionRenderer(this));
 
             // Example on how to override the showcard renderer
             CardRendererRegistration.getInstance().registerActionRenderer(AdaptiveCardObjectModel.ActionTypeToString(ActionType.ShowCard), new ShowCardOverrideRenderer(this));
@@ -552,44 +547,17 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         return true;
     }
 
+    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard) {
+        SubmitAction submitAction = null;
 
-    private void onExecute(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
-    {
-        ExecuteAction executeAction = Util.tryCastTo(actionElement, ExecuteAction.class);
-
-        String verb = executeAction.GetVerb();
-        String data = executeAction.GetDataJson();
-        Map<String, String> keyValueMap = renderedAdaptiveCard.getInputs();
-        if (!data.isEmpty())
+        if (actionElement instanceof SubmitAction)
         {
-            try
-            {
-                JSONObject object = null;
-                if (!data.equals("null\n"))
-                {
-                    object = new JSONObject(data);
-                }
-                else
-                {
-                    object = new JSONObject();
-                }
-                showToast("Execute verb: " + verb + "\nData: " + object.toString() + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
-            }
-            catch (JSONException e)
-            {
-                showToast(e.toString(), Toast.LENGTH_LONG);
-            }
+            submitAction = (SubmitAction) actionElement;
         }
-        else
+        else if ((submitAction = SubmitAction.dynamic_cast(actionElement)) == null)
         {
-            showToast("Execute verb: " + verb + "\nInput: " + keyValueMap.toString(), Toast.LENGTH_LONG);
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
         }
-    }
-
-
-    private void onSubmit(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
-    {
-        SubmitAction submitAction = Util.tryCastTo(actionElement, SubmitAction.class);
 
         if (actionElement.GetId().equals("cardFileAction"))
         {
@@ -631,7 +599,15 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void onShowCard(BaseActionElement actionElement)
     {
-        ShowCardAction showCardAction = Util.tryCastTo(actionElement, ShowCardAction.class);
+        ShowCardAction showCardAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            showCardAction = (ShowCardAction) actionElement;
+        }
+        else if ((showCardAction = ShowCardAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
 
         ShowCardFragment showCardFragment = new ShowCardFragment();
         String hostConfigText = ((EditText) findViewById(R.id.hostConfig)).getText().toString();
@@ -656,7 +632,16 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
 
     private void onOpenUrl(BaseActionElement actionElement)
     {
-        OpenUrlAction openUrlAction = Util.tryCastTo(actionElement, OpenUrlAction.class);
+        OpenUrlAction openUrlAction = null;
+        if (actionElement instanceof ShowCardAction)
+        {
+            openUrlAction = (OpenUrlAction) actionElement;
+        }
+        else if ((openUrlAction = OpenUrlAction.dynamic_cast(actionElement)) == null)
+        {
+            throw new InternalError("Unable to convert BaseActionElement to ShowCardAction object model.");
+        }
+
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(openUrlAction.GetUrl()));
         this.startActivity(browserIntent);
     }
@@ -665,11 +650,7 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
     public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedCard)
     {
         ActionType actionType = actionElement.GetElementType();
-        if (actionType == ActionType.Execute)
-        {
-            onExecute(actionElement, renderedCard);
-        }
-        else if (actionType == ActionType.Submit)
+        if (actionType == ActionType.Submit)
         {
             onSubmit(actionElement, renderedCard);
         }
@@ -681,19 +662,9 @@ public class MainActivityAdaptiveCardsSample extends FragmentActivity
         {
             onOpenUrl(actionElement);
         }
-        else if (actionType == ActionType.Custom && actionElement.GetElementTypeString().equals(CustomRedAction.CustomActionId))
-        {
-            Map<String, String> something = renderedCard.getInputs();
-            showToast("Custom red action: " + something.toString() , Toast.LENGTH_LONG);
-        }
-        else if (actionType == ActionType.Custom && actionElement.GetElementTypeString().equals(CustomBlueAction.CustomActionId))
-        {
-            Map<String, String> something = renderedCard.getInputs();
-            showToast("Custom blue action: " + something.toString() , Toast.LENGTH_LONG);
-        }
         else
         {
-            showToast("Unknown Action!", Toast.LENGTH_LONG);
+            showToast("Unknown Action!" , Toast.LENGTH_LONG);
         }
     }
 

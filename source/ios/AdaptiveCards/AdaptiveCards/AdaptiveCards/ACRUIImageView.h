@@ -6,11 +6,9 @@
 //
 
 #import "ACOBaseCardElement.h"
-#import "ACREnums.h"
 #import <UIKit/UIKit.h>
 
 @interface ACRUIImageView : UIImageView
 @property BOOL isPersonStyle;
 @property CGSize desiredSize;
-@property ACRImageSize adaptiveImageSize;
 @end

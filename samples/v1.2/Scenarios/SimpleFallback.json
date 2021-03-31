@@ -5,8 +5,7 @@
 	"body": [
 		{
 			"type": "TextBlock",
-			"text": "Fallback test:",
-			"wrap": true
+			"text": "Fallback test:"
 		},
 		{
 			"type": "Steve Holt!",
@@ -18,8 +17,7 @@
 			"someProperty": "foo",
 			"fallback": {
 				"type": "TextBlock",
-				"text": "No graph support. Guess we'll just use this textblock instead.",
-				"wrap": true
+				"text": "No graph support. Guess we'll just use this textblock instead."
 			}
 		}
 	]

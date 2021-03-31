@@ -57,11 +57,7 @@
 
 - (void)setFocus:(BOOL)shouldBecomeFirstResponder view:(UIView *)view
 {
-    UIView *inputview = ([view isKindOfClass:[UITextField class]]) ? ((UITextField *)view).inputView : view;
-    if (shouldBecomeFirstResponder) {
-        UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, view);
-        [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:inputview];
-    }
+    [ACRInputLabelView commonSetFocus:shouldBecomeFirstResponder view:view];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -88,7 +84,6 @@
 @synthesize isRequired;
 @synthesize hasValidationProperties;
 @synthesize id;
-@synthesize hasVisibilityChanged;
 
 @end
 
@@ -104,9 +99,9 @@
     if (self) {
         self.isRequired = numberInputBlock->GetIsRequired();
         auto value = numberInputBlock->GetValue();
-        self.text = (value.has_value()) ? [[NSNumber numberWithDouble:value.value_or(0)] stringValue] : nil;
+        self.text = (value.has_value()) ? [NSString stringWithFormat:@"%d", value.value_or(0)] : nil;
         self.hasText = self.text != nil;
-
+        
         NSMutableCharacterSet *characterSets = [NSMutableCharacterSet characterSetWithCharactersInString:@"-."];
         [characterSets formUnionWithCharacterSet:[NSCharacterSet decimalDigitCharacterSet]];
         _notDigits = [characterSets invertedSet];
@@ -133,7 +128,7 @@
         if ([self.text rangeOfCharacterFromSet:_notDigits].location != NSNotFound) {
             return NO;
         }
-        double val = [self.text doubleValue];
+        int val = [self.text intValue];
         if (self.hasMin && val < self.min) {
             if (error) {
                 *error = [NSError errorWithDomain:ACRInputErrorDomain code:ACRInputErrorLessThanMin userInfo:nil];

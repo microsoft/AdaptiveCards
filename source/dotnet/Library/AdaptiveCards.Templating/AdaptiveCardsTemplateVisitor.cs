@@ -29,7 +29,7 @@ namespace AdaptiveCards.Templating
         private sealed class DataContext
         {
             public JToken token;
-            public AdaptiveCardsTemplateSimpleObjectMemory AELMemory;
+            public SimpleObjectMemory AELMemory;
             public bool IsArrayType = false;
 
             public JToken RootDataContext;
@@ -68,7 +68,7 @@ namespace AdaptiveCards.Templating
             /// <param name="rootDataContext">root data context</param>
             private void Init(JToken jtoken, JToken rootDataContext)
             {
-                AELMemory = (jtoken is JObject) ? new AdaptiveCardsTemplateSimpleObjectMemory(jtoken) : new AdaptiveCardsTemplateSimpleObjectMemory(new JObject());
+                AELMemory = (jtoken is JObject) ? new SimpleObjectMemory(jtoken) : new SimpleObjectMemory(new JObject());
 
                 token = jtoken;
                 RootDataContext = rootDataContext;
@@ -589,7 +589,7 @@ namespace AdaptiveCards.Templating
         /// <param name="data"></param>
         /// <param name="isTemplatedString"></param>
         /// <returns><c>string</c></returns>
-        public static string Expand(string unboundString, IMemory data, bool isTemplatedString = false)
+        public static string Expand(string unboundString, SimpleObjectMemory data, bool isTemplatedString = false)
         {
             if (unboundString == null)
             {
@@ -620,16 +620,17 @@ namespace AdaptiveCards.Templating
             var (value, error) = exp.TryEvaluate(data, options);
             if (error == null)
             {
-                // if isTemplatedString, it's a leaf node, and if it's string, the text should be wrapped with double quotes
-                if (isTemplatedString && value is string) 
+                // this can be little counterintuitive, but template expand() is
+                // modifying serialized json string, so we serialize what's deserialized
+                var serializedValue = JsonConvert.SerializeObject(value);
+                if (!isTemplatedString && value is string)
                 {
-                    result.Append('"');
-                    result.Append(value);
-                    result.Append('"');
-                } else
-                {
-                    result.Append(value);
+                    // length can not be less than 2 because template string will 
+                    // always have start and end token
+                    serializedValue = serializedValue.Substring(1, serializedValue.Length - 2);
                 }
+
+                result.Append(serializedValue);
             }
             else
             {

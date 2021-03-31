@@ -14,22 +14,14 @@ namespace AdaptiveCards.Rendering.Wpf
             if (context.Config.SupportsInteractivity)
             {
 
-                DoubleUpDown numberPicker = new DoubleUpDown();
+                IntegerUpDown numberPicker = new IntegerUpDown();
 
                 if (!Double.IsNaN(input.Value))
-                    numberPicker.Value = input.Value;
+                    numberPicker.Value = Convert.ToInt32(input.Value);
 
                 numberPicker.Watermark = input.Placeholder;
                 numberPicker.Style = context.GetStyle("Adaptive.Input.Number");
                 numberPicker.DataContext = input;
-
-                numberPicker.Maximum = input.Max;
-                numberPicker.Minimum = input.Min;
-
-                if (input.IsRequired && string.IsNullOrEmpty(input.ErrorMessage))
-                {
-                    context.Warnings.Add(new AdaptiveWarning((int)AdaptiveWarning.WarningStatusCode.NoErrorMessageForValidatedInput, "Inputs with validation should include an ErrorMessage"));
-                }
 
                 context.InputValues.Add(input.Id, new AdaptiveXceedNumberInputValue(input, numberPicker));
 

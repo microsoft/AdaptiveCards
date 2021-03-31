@@ -34,8 +34,6 @@
         newTypeAction.alertMessage = data[@"alertMessage"];
 
         newTypeAction.type = ACRUnknownAction;
-        // trait for the custom action
-        newTypeAction.accessibilityTraits = UIAccessibilityTraitButton;
 
         return newTypeAction;
     }

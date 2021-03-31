@@ -41,7 +41,7 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.msn.com"
+				"url": "ms-cortana:silver-star-mountain"
 			}
 		},
 		{
@@ -78,7 +78,7 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.AdaptiveCards.io"
+				"url": "ms-cortana:kitchen-remodel"
 			}
 		},
 		{
@@ -114,7 +114,7 @@
 			],
 			"selectAction": {
 				"type": "Action.OpenUrl",
-				"url": "https://www.outlook.com"
+				"url": "ms-cortana:the-witcher"
 			}
 		}
 	],

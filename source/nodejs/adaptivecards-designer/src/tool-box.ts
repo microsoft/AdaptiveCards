@@ -1,5 +1,5 @@
 import { SettingsManager } from "./settings-manager";
-import { Constants } from "adaptivecards-controls";
+import { KEY_ENTER, KEY_SPACE } from "adaptivecards-controls";
 
 export interface IToolboxCommand {
     title: string;
@@ -120,15 +120,8 @@ export class Toolbox {
         this._expandCollapseButtonElement.appendChild(this._headerIconElement);
 
         this._expandCollapseButtonElement.onkeydown = (e) => {
-            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
+            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
                 this.toggle();
-
-                e.preventDefault();
-                this._expandCollapseButtonElement.focus();
-            }
-
-            if (e.key === Constants.keys.escape) {
-                this.collapse();
 
                 e.preventDefault();
                 this._expandCollapseButtonElement.focus();
@@ -152,8 +145,7 @@ export class Toolbox {
         this._contentHost = document.createElement("div");
         this._contentHost.style.overflow = "auto";
 
-        this._renderedElement.appendChild(this._headerRootElement);
-        this._renderedElement.appendChild(this._contentHost);
+        this._renderedElement.append(this._headerRootElement, this._contentHost);
 
         this.updateContent();
     }

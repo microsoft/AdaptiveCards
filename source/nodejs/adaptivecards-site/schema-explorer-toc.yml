@@ -21,7 +21,6 @@
   - Action.ShowCard
   - Action.ToggleVisibility
   - TargetElement
-  - Action.Execute
 - Inputs:
   - Input.Text
   - Input.Number
@@ -32,7 +31,3 @@
   - Input.Choice
 - Types:
   - BackgroundImage
-  - Refresh
-  - Authentication
-  - TokenExchangeResource
-  - AuthCardButton

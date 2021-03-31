@@ -82,26 +82,9 @@ namespace AdaptiveCards.Rendering.Wpf
             }
             else if (args.Action is AdaptiveSubmitAction)
             {
-                var submitAction = (args.Action as AdaptiveSubmitAction);
-
-                if (submitAction.AssociatedInputs == AdaptiveAssociatedInputs.Auto)
+                if (!ValidateInputs(args.Action as AdaptiveSubmitAction))
                 {
-                    if (!ValidateInputs(submitAction))
-                    {
-                        return;
-                    }
-                }
-            }
-            else if (args.Action is AdaptiveExecuteAction)
-            {
-                var executeAction = (args.Action as AdaptiveExecuteAction);
-
-                if (executeAction.AssociatedInputs == AdaptiveAssociatedInputs.Auto)
-                {
-                    if (!ValidateInputs(executeAction))
-                    {
-                        return;
-                    }
+                    return;
                 }
             }
 
@@ -315,9 +298,9 @@ namespace AdaptiveCards.Rendering.Wpf
                 }
             }
 
-            // If a container failed to render any of the children elements perform fallback
-            if (frameworkElementOut == null && (element is AdaptiveCollectionElement))
+            if (frameworkElementOut == null)
             {
+                // Since no renderer exists for this element, add warning and render fallback (if available)
                 if (element.Fallback != null && element.Fallback.Type != AdaptiveFallbackElement.AdaptiveFallbackType.None)
                 {
                     if (element.Fallback.Type == AdaptiveFallbackElement.AdaptiveFallbackType.Drop)
@@ -510,7 +493,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        private bool ValidateInputs(AdaptiveAction submitAction)
+        private bool ValidateInputs(AdaptiveSubmitAction submitAction)
         {
             bool allInputsValid = true, firstInvalidInputFound = false;
             Dictionary<string, Func<string>> newInputBindings = new Dictionary<string, Func<string>>();
@@ -552,7 +535,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return allInputsValid;
         }
 
-        private List<string> RetrieveInputList(AdaptiveAction submitAction)
+        private List<string> RetrieveInputList(AdaptiveSubmitAction submitAction)
         {
             List<string> inputList = new List<string>();
             AdaptiveInternalID submitActionCardId = SubmitActionCardId[submitAction];
@@ -588,8 +571,8 @@ namespace AdaptiveCards.Rendering.Wpf
         // Dictionary where all the parent cards point to their parent cards, the parent for the main card must have ID = Invalid
         public Dictionary<AdaptiveInternalID, AdaptiveInternalID> ParentCards { get; set; }  = new Dictionary<AdaptiveInternalID, AdaptiveInternalID>();
 
-        // Dictionary where we tie every Action.Submit or Action.Exectute to the card where it is contained, this help us knowing where should we start validating from
-        public Dictionary<AdaptiveAction, AdaptiveInternalID> SubmitActionCardId { get; set; } = new Dictionary<AdaptiveAction, AdaptiveInternalID>();
+        // Dictionary where we tie every Action.Submit to the card where it is contained, this help us knowing where should we start validating from
+        public Dictionary<AdaptiveSubmitAction, AdaptiveInternalID> SubmitActionCardId { get; set; } = new Dictionary<AdaptiveSubmitAction, AdaptiveInternalID>();
 
         // Dictionary where we tie every input.Id (string) with the card internal Id 
         private Dictionary<AdaptiveInternalID, List<string>> InputsInCard = new Dictionary<AdaptiveInternalID, List<string>>();

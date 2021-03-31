@@ -5,12 +5,12 @@
 	"body": [
 		{
 			"type": "Input.Number",
-			"id": "numberLabelId",
+			"id": "input1",
 			"label": "Default Input.Number label"
 		},
 		{
 			"type": "Input.Number",
-			"id": "requiredNumberLabelId",
+			"id": "input2",
 			"label": "Require Input.Number label",
 			"isRequired": true,
 			"errorMessage": "Required input"

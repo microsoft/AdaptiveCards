@@ -7,95 +7,104 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents the TextBlock element.
+    ///     The TextBlock element allows for the inclusion of text, with various font sizes, weight and color, in Adaptive
+    ///     Cards.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextBlock.TypeName)]
 #endif
     public class AdaptiveTextBlock : AdaptiveElement, IAdaptiveTextElement
     {
-        /// <inheritdoc />
         public const string TypeName = "TextBlock";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
-        /// <summary>
-        /// Initializes an empty <see cref="AdaptiveTextBlock"/> instance.
-        /// </summary>
         public AdaptiveTextBlock()
         {
+
         }
 
-        /// <summary>
-        /// Initializes an <see cref="AdaptiveTextBlock"/> instance with the supplied text.
-        /// </summary>
-        /// <param name="text">The text of this TextBlock.</param>
         public AdaptiveTextBlock(string text)
         {
             Text = text;
         }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     The size of the text
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextSize), "normal")]
         public AdaptiveTextSize Size { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     The weight of the text
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextWeight), "normal")]
         public AdaptiveTextWeight Weight { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     The color of the text
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(typeof(AdaptiveTextColor), "default")]
         public AdaptiveTextColor Color { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     Make the text less prominent
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool IsSubtle { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     Make the text italic
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Italic { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     Make the struck through
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(false)]
         public bool Strikethrough { get; set; }
 
-        /// <inheritdoc />
+        /// <summary>
+        ///     The text to display
+        /// </summary>
         [JsonRequired]
 #if !NETSTANDARD1_3
         [XmlText]
 #endif
-        public string Text { get; set; } = "";
+        public string Text { get; set; } = " ";
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     Horizontal alignment for element
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -103,9 +112,9 @@ namespace AdaptiveCards
         public AdaptiveHorizontalAlignment HorizontalAlignment { get; set; }
 
         /// <summary>
-        /// Controls text wrapping behavior.
+        ///     Is it allowed for the text to wrap
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -113,9 +122,9 @@ namespace AdaptiveCards
         public bool Wrap { get; set; }
 
         /// <summary>
-        /// When <see cref="AdaptiveTextBlock.Wrap"/> is true, this controls the maximum number of lines of text to display.
+        ///     When Wrap is true, you can specify the maximum number of lines to allow the textBlock to use.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -123,17 +132,19 @@ namespace AdaptiveCards
         public int MaxLines { get; set; }
 
         /// <summary>
-        /// The maximum width of the TextBlock.
+        ///   The maximum width of the textblock
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
         [DefaultValue(0)]
         public int MaxWidth { get; set; }
 
-        /// <inheritdoc />
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        /// <summary>
+        ///     The font types of the TextBlock
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

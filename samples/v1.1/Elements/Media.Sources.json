@@ -19,7 +19,6 @@
 		{
 			"type": "Media",
 			"poster": "https://adaptivecards.io/content/poster-video.png",
-			"altText": "Adaptive Cards overview video",
 			"sources": [{
 				"mimeType": "video/mp4",
 				"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp4"
@@ -35,7 +34,6 @@
 		{
 			"type": "Media",
 			"poster": "https://adaptivecards.io/content/poster-audio.jpg",
-			"altText": "Adaptive Cards overview audio",
 			"sources": [{
 				"mimeType": "audio/mpeg",
 				"url": "https://adaptivecardsblob.blob.core.windows.net/assets/AdaptiveCardsOverviewVideo.mp3"

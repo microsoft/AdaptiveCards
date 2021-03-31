@@ -55,19 +55,15 @@ namespace AdaptiveNamespace
 
         RETURN_IF_FAILED(textBox->put_InputScope(inputScope.Get()));
 
-        ComPtr<ABI::Windows::Foundation::IReference<double>> value;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> value;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Value(&value));
 
         if (value.Get())
         {
-            double boxValue;
+            int boxValue;
             if (SUCCEEDED(value->get_Value(&boxValue)))
             {
-                std::wstringstream ss;
-                ss.precision(std::numeric_limits<double>::digits10);
-                ss << boxValue;
-                std::wstring stringValue = ss.str();
-                
+                std::wstring stringValue = std::to_wstring(boxValue);
                 RETURN_IF_FAILED(textBox->put_Text(HStringReference(stringValue.c_str()).Get()));
             }
         }
@@ -92,10 +88,10 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(textBox.As(&textBoxAsUIElement));
 
         // If there's any validation on this input, put the input inside a border
-        ComPtr<ABI::Windows::Foundation::IReference<double>> max;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> max;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Max(&max));
 
-        ComPtr<ABI::Windows::Foundation::IReference<double>> min;
+        ComPtr<ABI::Windows::Foundation::IReference<int32_t>> min;
         RETURN_IF_FAILED(adaptiveNumberInput->get_Min(&min));
 
         ComPtr<IUIElement> inputLayout;

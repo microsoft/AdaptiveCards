@@ -251,6 +251,13 @@ namespace AdaptiveNamespace
 
     HRESULT RenderedAdaptiveCard::SendActionEvent(_In_ IAdaptiveActionElement* actionElement)
     {
+        // get the inputElements in Json form.
+        ComPtr<IAdaptiveInputs> gatheredInputs;
+        RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
+
+        ComPtr<IAdaptiveActionEventArgs> eventArgs;
+        RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
+
         ABI::AdaptiveCards::Rendering::Uwp::ActionType actionType;
         RETURN_IF_FAILED(actionElement->get_ActionType(&actionType));
 
@@ -278,45 +285,17 @@ namespace AdaptiveNamespace
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, nullptr));
-
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit:
-        case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Execute:
         {
             ComPtr<IAdaptiveActionElement> localActionElement(actionElement);
-            ABI::AdaptiveNamespace::AssociatedInputs associatedInputs;
+            ComPtr<IAdaptiveSubmitAction> submitAction;
+            RETURN_IF_FAILED(localActionElement.As(&submitAction));
 
-            if (actionType == ABI::AdaptiveCards::Rendering::Uwp::ActionType_Submit)
-            {
-                ComPtr<IAdaptiveSubmitAction> submitAction;
-                RETURN_IF_FAILED(localActionElement.As(&submitAction));
-                RETURN_IF_FAILED(submitAction->get_AssociatedInputs(&associatedInputs));
-            }
-            else
-            {
-                ComPtr<IAdaptiveExecuteAction> executeAction;
-                RETURN_IF_FAILED(localActionElement.As(&executeAction));
-                RETURN_IF_FAILED(executeAction->get_AssociatedInputs(&associatedInputs));
-            }
-
-            ComPtr<IAdaptiveInputs> gatheredInputs;
             boolean inputsAreValid;
-            if (associatedInputs == ABI::AdaptiveNamespace::AssociatedInputs::None)
-            {
-                // Create an empty inputs object
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&gatheredInputs));
-                inputsAreValid = true;
-            }
-            else
-            {
-                // get the inputElements in Json form.
-                RETURN_IF_FAILED(get_UserInputs(&gatheredInputs));
-                RETURN_IF_FAILED(gatheredInputs->ValidateInputs(localActionElement.Get(), &inputsAreValid));
-            }
+            RETURN_IF_FAILED(gatheredInputs->ValidateInputs(submitAction.Get(), &inputsAreValid));
 
             if (!inputsAreValid)
             {
@@ -324,8 +303,6 @@ namespace AdaptiveNamespace
             }
             else
             {
-                ComPtr<IAdaptiveActionEventArgs> eventArgs;
-                RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, gatheredInputs.Get()));
                 return m_actionEvents->InvokeAll(this, eventArgs.Get());
             }
         }
@@ -333,13 +310,6 @@ namespace AdaptiveNamespace
         case ABI::AdaptiveCards::Rendering::Uwp::ActionType_Custom:
         default:
         {
-            ComPtr<IAdaptiveActionEventArgs> eventArgs;
-
-            // Create an empty inputs object
-            ComPtr<IAdaptiveInputs> inputs;
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveInputs>(&inputs));
-
-            RETURN_IF_FAILED(MakeAndInitialize<AdaptiveActionEventArgs>(&eventArgs, actionElement, inputs.Get()));
             return m_actionEvents->InvokeAll(this, eventArgs.Get());
         }
         }
@@ -428,10 +398,10 @@ namespace AdaptiveNamespace
         return m_inputs->AddInputValue(inputItem, renderArgs);
     }
 
-    HRESULT RenderedAdaptiveCard::LinkActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                                   _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT RenderedAdaptiveCard::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                                         _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
-        return m_inputs->LinkSubmitActionToCard(action, renderArgs);
+        return m_inputs->LinkSubmitActionToCard(submitAction, renderArgs);
     }
 
     InternalId GetInternalIdFromCard(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card)

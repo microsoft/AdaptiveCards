@@ -26,19 +26,3 @@ typedef NS_ENUM(NSUInteger, ACRWarningStatusCode) {
     ACRMissingInputErrorMessage,
     ACRCustomWarning,
 };
-
-typedef NS_ENUM(NSUInteger, ACRImageSize) {
-    ACRImageSizeNone = 0,
-    ACRImageSizeAuto,
-    ACRImageSizeStretch,
-    ACRImageSizeExplicit,
-    ACRImageSizeSmall,
-    ACRImageSizeMedium,
-    ACRImageSizeLarge
-};
-
-typedef NS_ENUM(NSUInteger, ACRHorizontalAlignment) {
-    ACRLeft = 0,
-    ACRCenter,
-    ACRRight
-};

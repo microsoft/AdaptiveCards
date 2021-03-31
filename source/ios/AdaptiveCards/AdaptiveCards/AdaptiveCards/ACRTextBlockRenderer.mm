@@ -84,6 +84,8 @@
         } else {
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+            [content deleteCharactersInRange:NSMakeRange(0, 3)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 4, 4)];
         }
         lab.editable = NO;
         lab.textContainer.lineFragmentPadding = 0;
@@ -107,9 +109,7 @@
 
         lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
         lab.attributedText = content;
-        if ([content.string stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet].length == 0) {
-            lab.accessibilityElementsHidden = YES;
-        }
+        lab.isAccessibilityElement = YES;
     }
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;

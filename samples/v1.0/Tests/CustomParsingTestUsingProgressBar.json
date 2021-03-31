@@ -18,9 +18,9 @@
 			"type": "ProgressBar",
 			"payload": [
 				{
-					"red":168,
-					"green":123,
-					"blue":180,
+					"red":187,
+					"green":160,
+					"blue":209,
 					"alpha":1,
 					"progress":0.95,
 					"thickness":1

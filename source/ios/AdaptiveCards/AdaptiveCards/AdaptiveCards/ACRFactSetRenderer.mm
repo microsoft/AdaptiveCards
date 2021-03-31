@@ -66,7 +66,10 @@
             // Drop newline char
             [content deleteCharactersInRange:NSMakeRange([content length] - 1, 1)];
         } else {
+            // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
+            [content deleteCharactersInRange:NSMakeRange(0, 3)];
+            [content deleteCharactersInRange:NSMakeRange([content length] - 4, 4)];
         }
         // Set paragraph style such as line break mode and alignment
         lab.textContainer.lineBreakMode = textConfig.wrap ? NSLineBreakByWordWrapping : NSLineBreakByTruncatingTail;
@@ -100,11 +103,7 @@
 {
     std::shared_ptr<HostConfig> config = [acoConfig getHostConfig];
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
-    std::shared_ptr<FactSet> factSet = std::dynamic_pointer_cast<FactSet>(elem);
-
-    if (factSet->GetFacts().empty()) {
-        return nil;
-    }
+    std::shared_ptr<FactSet> fctSet = std::dynamic_pointer_cast<FactSet>(elem);
 
     ACRContainerStyle style = [viewGroup style];
     NSString *key = [NSString stringWithCString:elem->GetId().c_str() encoding:[NSString defaultCStringEncoding]];
@@ -123,10 +122,11 @@
     [factSetWrapperView addArrangedSubview:valueStack];
     [ACRSeparator renderSeparationWithFrame:CGRectMake(0, 0, factSetConfig.spacing, factSetConfig.spacing) superview:factSetWrapperView axis:UILayoutConstraintAxisHorizontal];
 
-    NSMutableDictionary *textMap = [rootView getTextMap];
-    NSInteger nValidFacts = 0;
+    [factSetWrapperView adjustHuggingForLastElement];
 
-    for (auto fact : factSet->GetFacts()) {
+    NSMutableDictionary *textMap = [rootView getTextMap];
+
+    for (auto fact : fctSet->GetFacts()) {
         NSString *title = [NSString stringWithCString:fact->GetTitle().c_str() encoding:NSUTF8StringEncoding];
         NSString *titleElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
         if (![textMap objectForKey:titleElemId]) {
@@ -154,6 +154,7 @@
             constraintForTitleLab.active = YES;
             constraintForTitleLab.priority = UILayoutPriorityRequired;
         }
+
         NSString *value = [NSString stringWithCString:fact->GetValue().c_str() encoding:NSUTF8StringEncoding];
         NSString *valElemId = [key stringByAppendingString:[[NSNumber numberWithInt:rowFactId++] stringValue]];
         if (![textMap objectForKey:valElemId]) {
@@ -174,33 +175,12 @@
         [valueLab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         valueLab.isAccessibilityElement = YES;
 
-        if (title.length || value.length) {
-            [titleStack addArrangedSubview:titleLab];
-            [valueStack addArrangedSubview:valueLab];
-            [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
-            nValidFacts++;
-        }
-    }
-
-    if (!nValidFacts) {
-        return nil;
+        [titleStack addArrangedSubview:titleLab];
+        [valueStack addArrangedSubview:valueLab];
+        [NSLayoutConstraint constraintWithItem:valueLab attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:titleLab attribute:NSLayoutAttributeHeight multiplier:1.0 constant:0].active = YES;
     }
 
     [viewGroup addArrangedSubview:factSetWrapperView];
-
-    if (factSet->GetHeight() == HeightType::Stretch) {
-        UIView *blankTrailingSpace0 = [[UIView alloc] init];
-        blankTrailingSpace0.translatesAutoresizingMaskIntoConstraints = NO;
-        [titleStack addArrangedSubview:blankTrailingSpace0];
-        [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [blankTrailingSpace0 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-
-        UIView *blankTrailingSpace1 = [[UIView alloc] init];
-        blankTrailingSpace1.translatesAutoresizingMaskIntoConstraints = NO;
-        [valueStack addArrangedSubview:blankTrailingSpace1];
-        [blankTrailingSpace1 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisHorizontal];
-        [blankTrailingSpace1 setContentHuggingPriority:UILayoutPriorityDefaultLow forAxis:UILayoutConstraintAxisVertical];
-    }
 
     configVisibility(factSetWrapperView, elem);
 

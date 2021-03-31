@@ -1,18 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Base class for all elements that contain other elements.
+    ///     Base class for all elements that contain elements
     /// </summary>
     public abstract class AdaptiveCollectionElement : AdaptiveElement
     {
         /// <summary>
-        /// The style used to display this element. See <see cref="AdaptiveContainerStyle" />.
+        ///     The style in which the image is displayed.
         /// </summary>
         [JsonConverter(typeof(IgnoreNullEnumConverter<AdaptiveContainerStyle>), true)]
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
@@ -23,25 +28,18 @@ namespace AdaptiveCards
         public AdaptiveContainerStyle? Style { get; set; }
 
 #if !NETSTANDARD1_3
-        /// <summary>
-        /// Controls XML serialization of style.
-        /// </summary>
-        // The XML serializer doesn't handle nullable value types. This allows serialization if non-null.
+        // Xml Serializer doesn't handle nullable value types, but this trick allows us to serialize only if non-null
         [JsonIgnore]
         [XmlAttribute("Style")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public AdaptiveContainerStyle StyleXml { get { return (Style.HasValue) ? Style.Value : AdaptiveContainerStyle.Default; } set { Style = value; } }
-
-        /// <summary>
-        /// Determines whether to serialize the style for XML.
-        /// </summary>
         public bool ShouldSerializeStyleXml() => this.Style.HasValue;
 #endif
 
         /// <summary>
-        /// The content alignment for the element inside the container.
+        ///     The content alignment for the element inside the container.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -49,7 +47,7 @@ namespace AdaptiveCards
         public AdaptiveVerticalContentAlignment VerticalContentAlignment { get; set; }
 
         /// <summary>
-        /// Action for this container. This allows for setting a default action at the container level.
+        ///     Action for this container (this allows a default action at the container level)
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -59,9 +57,9 @@ namespace AdaptiveCards
         public AdaptiveAction SelectAction { get; set; }
 
         /// <summary>
-        /// Defines if the element can bleed through its parent's padding.
+        ///     Defines if the element can bleed through its parent's padding
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -69,10 +67,10 @@ namespace AdaptiveCards
         public bool Bleed { get; set; }
 
         /// <summary>
-        /// Explicit container element minimum height.
+        ///    Explicit container element minimum height
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), false)]
-        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty("minHeight", DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif

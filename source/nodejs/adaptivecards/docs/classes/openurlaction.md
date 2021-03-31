@@ -26,19 +26,21 @@
 * [style](openurlaction.md#style)
 * [title](openurlaction.md#optional-title)
 * [url](openurlaction.md#optional-url)
-* [JsonTypeName](openurlaction.md#static-readonly-jsontypename)
-* [iconUrlProperty](openurlaction.md#static-readonly-iconurlproperty)
-* [idProperty](openurlaction.md#static-readonly-idproperty)
+* [JsonTypeName](openurlaction.md#static-jsontypename)
+* [iconUrlProperty](openurlaction.md#static-iconurlproperty)
+* [idProperty](openurlaction.md#static-idproperty)
+* [ignoreInputValidationProperty](openurlaction.md#static-ignoreinputvalidationproperty)
 * [onRegisterCustomProperties](openurlaction.md#static-optional-onregistercustomproperties)
-* [requiresProperty](openurlaction.md#static-readonly-requiresproperty)
-* [styleProperty](openurlaction.md#static-readonly-styleproperty)
-* [titleProperty](openurlaction.md#static-readonly-titleproperty)
-* [typeNameProperty](openurlaction.md#static-readonly-typenameproperty)
-* [urlProperty](openurlaction.md#static-readonly-urlproperty)
+* [requiresProperty](openurlaction.md#static-requiresproperty)
+* [styleProperty](openurlaction.md#static-styleproperty)
+* [titleProperty](openurlaction.md#static-titleproperty)
+* [typeNameProperty](openurlaction.md#static-typenameproperty)
+* [urlProperty](openurlaction.md#static-urlproperty)
 
 ### Accessors
 
 * [hostConfig](openurlaction.md#hostconfig)
+* [ignoreInputValidation](openurlaction.md#ignoreinputvalidation)
 * [isPrimary](openurlaction.md#isprimary)
 * [parent](openurlaction.md#parent)
 * [renderedElement](openurlaction.md#renderedelement)
@@ -52,7 +54,6 @@
 * [getAllInputs](openurlaction.md#getallinputs)
 * [getAriaRole](openurlaction.md#getariarole)
 * [getCustomProperty](openurlaction.md#getcustomproperty)
-* [getDefaultSerializationContext](openurlaction.md#protected-getdefaultserializationcontext)
 * [getHref](openurlaction.md#gethref)
 * [getJsonTypeName](openurlaction.md#getjsontypename)
 * [getReferencedInputs](openurlaction.md#getreferencedinputs)
@@ -73,7 +74,6 @@
 * [populateSchema](openurlaction.md#protected-populateschema)
 * [preProcessPropertyValue](openurlaction.md#preprocesspropertyvalue)
 * [prepareForExecution](openurlaction.md#prepareforexecution)
-* [raiseExecuteActionEvent](openurlaction.md#protected-raiseexecuteactionevent)
 * [remove](openurlaction.md#remove)
 * [render](openurlaction.md#render)
 * [resetDefaultValues](openurlaction.md#resetdefaultvalues)
@@ -188,25 +188,33 @@ ___
 
 ___
 
-### `Static` `Readonly` JsonTypeName
+### `Static` JsonTypeName
 
 ▪ **JsonTypeName**: *"Action.OpenUrl"* = "Action.OpenUrl"
 
 ___
 
-### `Static` `Readonly` iconUrlProperty
+### `Static` iconUrlProperty
 
 ▪ **iconUrlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_1, "iconUrl")
 
-*Inherited from [Action](action.md).[iconUrlProperty](action.md#static-readonly-iconurlproperty)*
+*Inherited from [Action](action.md).[iconUrlProperty](action.md#static-iconurlproperty)*
 
 ___
 
-### `Static` `Readonly` idProperty
+### `Static` idProperty
 
 ▪ **idProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "id")
 
-*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-readonly-idproperty)*
+*Inherited from [CardObject](cardobject.md).[idProperty](cardobject.md#static-idproperty)*
+
+___
+
+### `Static` ignoreInputValidationProperty
+
+▪ **ignoreInputValidationProperty**: *[BoolProperty](boolproperty.md)‹›* = new BoolProperty(Versions.v1_3, "ignoreInputValidation", false)
+
+*Inherited from [Action](action.md).[ignoreInputValidationProperty](action.md#static-ignoreinputvalidationproperty)*
 
 ___
 
@@ -218,20 +226,19 @@ ___
 
 ___
 
-### `Static` `Readonly` requiresProperty
+### `Static` requiresProperty
 
 ▪ **requiresProperty**: *[SerializableObjectProperty](serializableobjectproperty.md)‹›* = new SerializableObjectProperty(
         Versions.v1_2,
         "requires",
         HostCapabilities,
-        false,
         new HostCapabilities())
 
-*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-readonly-requiresproperty)*
+*Inherited from [CardObject](cardobject.md).[requiresProperty](cardobject.md#static-requiresproperty)*
 
 ___
 
-### `Static` `Readonly` styleProperty
+### `Static` styleProperty
 
 ▪ **styleProperty**: *[ValueSetProperty](valuesetproperty.md)‹›* = new ValueSetProperty(
         Versions.v1_2,
@@ -243,19 +250,19 @@ ___
         ],
         Enums.ActionStyle.Default)
 
-*Inherited from [Action](action.md).[styleProperty](action.md#static-readonly-styleproperty)*
+*Inherited from [Action](action.md).[styleProperty](action.md#static-styleproperty)*
 
 ___
 
-### `Static` `Readonly` titleProperty
+### `Static` titleProperty
 
 ▪ **titleProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "title")
 
-*Inherited from [Action](action.md).[titleProperty](action.md#static-readonly-titleproperty)*
+*Inherited from [Action](action.md).[titleProperty](action.md#static-titleproperty)*
 
 ___
 
-### `Static` `Readonly` typeNameProperty
+### `Static` typeNameProperty
 
 ▪ **typeNameProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(
         Versions.v1_0,
@@ -267,11 +274,11 @@ ___
             return (<CardObject>sender).getJsonTypeName()
         })
 
-*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-readonly-typenameproperty)*
+*Inherited from [CardObject](cardobject.md).[typeNameProperty](cardobject.md#static-typenameproperty)*
 
 ___
 
-### `Static` `Readonly` urlProperty
+### `Static` urlProperty
 
 ▪ **urlProperty**: *[StringProperty](stringproperty.md)‹›* = new StringProperty(Versions.v1_0, "url")
 
@@ -286,6 +293,16 @@ ___
 *Overrides [CardObject](cardobject.md).[hostConfig](cardobject.md#hostconfig)*
 
 **Returns:** *[HostConfig](hostconfig.md)*
+
+___
+
+###  ignoreInputValidation
+
+• **get ignoreInputValidation**(): *boolean*
+
+*Inherited from [Action](action.md).[ignoreInputValidation](action.md#ignoreinputvalidation)*
+
+**Returns:** *boolean*
 
 ___
 
@@ -335,11 +352,11 @@ ___
 
 ###  requires
 
-• **get requires**(): *[HostCapabilities](hostcapabilities.md)*
+• **get requires**(): *HostCapabilities*
 
 *Inherited from [CardObject](cardobject.md).[requires](cardobject.md#requires)*
 
-**Returns:** *[HostCapabilities](hostcapabilities.md)*
+**Returns:** *HostCapabilities*
 
 ## Methods
 
@@ -424,18 +441,6 @@ Name | Type |
 `name` | string |
 
 **Returns:** *any*
-
-___
-
-### `Protected` getDefaultSerializationContext
-
-▸ **getDefaultSerializationContext**(): *[BaseSerializationContext](baseserializationcontext.md)*
-
-*Inherited from [Action](action.md).[getDefaultSerializationContext](action.md#protected-getdefaultserializationcontext)*
-
-*Overrides [SerializableObject](serializableobject.md).[getDefaultSerializationContext](serializableobject.md#protected-getdefaultserializationcontext)*
-
-**Returns:** *[BaseSerializationContext](baseserializationcontext.md)*
 
 ___
 
@@ -707,16 +712,6 @@ ___
 
 ___
 
-### `Protected` raiseExecuteActionEvent
-
-▸ **raiseExecuteActionEvent**(): *void*
-
-*Inherited from [Action](action.md).[raiseExecuteActionEvent](action.md#protected-raiseexecuteactionevent)*
-
-**Returns:** *void*
-
-___
-
 ###  remove
 
 ▸ **remove**(): *boolean*
@@ -831,15 +826,17 @@ ___
 
 ### `Protected` shouldSerialize
 
-▸ **shouldSerialize**(`context`: [BaseSerializationContext](baseserializationcontext.md)): *boolean*
+▸ **shouldSerialize**(`context`: [SerializationContext](serializationcontext.md)): *boolean*
 
-*Inherited from [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
+*Inherited from [Action](action.md).[shouldSerialize](action.md#protected-shouldserialize)*
+
+*Overrides [SerializableObject](serializableobject.md).[shouldSerialize](serializableobject.md#protected-shouldserialize)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context` | [BaseSerializationContext](baseserializationcontext.md) |
+`context` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *boolean*
 
@@ -847,15 +844,17 @@ ___
 
 ###  toJSON
 
-▸ **toJSON**(`context?`: [BaseSerializationContext](baseserializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
+▸ **toJSON**(`context?`: [SerializationContext](serializationcontext.md)): *[PropertyBag](../README.md#propertybag) | undefined*
 
-*Inherited from [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
+*Inherited from [Action](action.md).[toJSON](action.md#tojson)*
+
+*Overrides [SerializableObject](serializableobject.md).[toJSON](serializableobject.md#tojson)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`context?` | [BaseSerializationContext](baseserializationcontext.md) |
+`context?` | [SerializationContext](serializationcontext.md) |
 
 **Returns:** *[PropertyBag](../README.md#propertybag) | undefined*
 
@@ -863,7 +862,7 @@ ___
 
 ###  updateActionButtonCssStyle
 
-▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: [ActionButtonState](../enums/actionbuttonstate.md)): *void*
+▸ **updateActionButtonCssStyle**(`actionButtonElement`: HTMLElement, `buttonState`: ActionButtonState): *void*
 
 *Inherited from [Action](action.md).[updateActionButtonCssStyle](action.md#updateactionbuttoncssstyle)*
 
@@ -872,7 +871,7 @@ ___
 Name | Type | Default |
 ------ | ------ | ------ |
 `actionButtonElement` | HTMLElement | - |
-`buttonState` | [ActionButtonState](../enums/actionbuttonstate.md) | ActionButtonState.Normal |
+`buttonState` | ActionButtonState | ActionButtonState.Normal |
 
 **Returns:** *void*
 

@@ -144,17 +144,18 @@ namespace AdaptiveNamespace
         return renderResult->AddInputValue(inputValue, renderArgs);
     }
 
-    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement* action,
-                                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+    HRESULT AdaptiveRenderContext::LinkSubmitActionToCard(_In_ ABI::AdaptiveNamespace::IAdaptiveSubmitAction* submitAction,
+                                          _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
-        return renderResult->LinkActionToCard(action, renderArgs);
+        return renderResult->LinkSubmitActionToCard(submitAction, renderArgs);
     }
 
+
     HRESULT AdaptiveRenderContext::LinkCardToParent(_In_ ABI::AdaptiveNamespace::IAdaptiveCard* card,
-                                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
+                                    _In_ ABI::AdaptiveNamespace::IAdaptiveRenderArgs* renderArgs)
     {
         ComPtr<RenderedAdaptiveCard> renderResult;
         RETURN_IF_FAILED(GetRenderResult(renderResult.GetAddressOf()));
@@ -170,6 +171,7 @@ namespace AdaptiveNamespace
         RETURN_IF_FAILED(renderResult == nullptr ? E_NOINTERFACE : S_OK);
         return renderResult->GetInputValue(inputElement, inputValue);
     }
+  
 
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {

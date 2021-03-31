@@ -9,19 +9,13 @@ using Newtonsoft.Json.Linq;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    /// JSON converter that will drop empty element items.
-    /// </summary>
-    /// <typeparam name="T">Type of the objects to be converted.</typeparam>
-    public class IgnoreEmptyItemsConverter<T> : AdaptiveTypedBaseElementConverter
+    public class IgnoreEmptyItemsConverter<T> : AdaptiveTypedBaseElementConverter 
     {
-        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return typeof(List<T>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
-        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var array = JArray.Load(reader);
@@ -35,10 +29,8 @@ namespace AdaptiveCards
                 .Select(value => (T) value).ToList();
         }
 
-        /// <inheritdoc />
         public override bool CanWrite => false;
 
-        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();

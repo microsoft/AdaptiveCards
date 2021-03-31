@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-import { Constants } from "./constants";
+import * as Constants from "./constants";
 import { Collection } from "./collection";
 import { PopupControl } from "./inputwithpopup";
 import { DropDownItem } from "./dropdown";
@@ -40,13 +40,13 @@ export class PopupMenu extends PopupControl {
 
         var selectedItemIndex = this._selectedIndex;
 
-        switch (e.key) {
-            case Constants.keys.tab:
+        switch (e.keyCode) {
+            case Constants.KEY_TAB:
                 this.closePopup(true);
 
                 break;
             /*
-            case Constants.keys.enter:
+            case Constants.KEY_ENTER:
                 if (this.selectedIndex >= 0) {
                     this.selectedIndex = this.selectedIndex;
 
@@ -55,7 +55,7 @@ export class PopupMenu extends PopupControl {
 
                 break;
             */
-            case Constants.keys.up:
+            case Constants.KEY_UP:
                 if (selectedItemIndex <= 0) {
                     selectedItemIndex = this._renderedItems.length - 1;
                 }
@@ -72,7 +72,7 @@ export class PopupMenu extends PopupControl {
                 e.cancelBubble = true;
 
                 break;
-            case Constants.keys.down:
+            case Constants.KEY_DOWN:
                 if (selectedItemIndex < 0) {
                     selectedItemIndex = 0;
                 }

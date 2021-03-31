@@ -10,7 +10,6 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACRImageRenderer.h"
 #import "ACRRegistration.h"
-#import "UtiliOS.h"
 #import <Foundation/Foundation.h>
 
 using namespace AdaptiveCards;
@@ -41,9 +40,7 @@ using namespace AdaptiveCards;
         if (_imgSet->GetImageSize() == ImageSize::Auto || _imgSet->GetImageSize() == ImageSize::Stretch || _imgSet->GetImageSize() == ImageSize::None) {
             _imageSize = ImageSize::Medium;
         }
-
-        ACRImageSize acrImageSize = getACRImageSize(_imageSize, NO);
-        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSizeAsCGSize:acrImageSize width:0.0f height:0.0f];
+        ((UICollectionViewFlowLayout *)self.collectionViewLayout).itemSize = [_acoConfig getImageSize:_imageSize];
         self.scrollEnabled = NO;
         self.translatesAutoresizingMaskIntoConstraints = NO;
     }

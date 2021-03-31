@@ -18,8 +18,7 @@ module.exports = (env, argv) => {
 			path: path.resolve(__dirname, "./dist"),
 			filename: devMode ? "[name].js" : "[name].min.js",
 			libraryTarget: "umd",
-			library: "AdaptiveCards",
-			globalObject: "this"
+			library: "AdaptiveCards"
 		},
 		devtool: devMode ? "inline-source-map" : "source-map",
 		devServer: {
@@ -46,28 +45,10 @@ module.exports = (env, argv) => {
 			]
 		},
 		plugins: [
-			new CopyWebpackPlugin(
-				{
-					patterns: [
-						{
-							from: 'src/adaptivecards.css',
-							to: '../lib/',
-							flatten: true
-						},
-						{
-							from: 'src/adaptivecards.css',
-							to: '../dist/',
-							flatten: true
-						}
-					]
-				}
-			),
-			new HtmlWebpackPlugin(
-				{
-					title: "Adaptive Cards Example",
-					template: "./example.html"
-				}
-			)
+			new HtmlWebpackPlugin({
+				title: "Adaptive Cards Example",
+				template: "./example.html"
+			})
 		]
 	};
 }

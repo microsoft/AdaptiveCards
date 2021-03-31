@@ -6,24 +6,22 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents the Action.ShowCard element.
+    ///     ShowCard defines an inline AdaptiveCard which is shown to the user when it is clicked.
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveShowCardAction.TypeName)]
 #endif
     public class AdaptiveShowCardAction : AdaptiveAction
     {
-        /// <inheritdoc />
         public const string TypeName = "Action.ShowCard";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        /// <see cref="AdaptiveCard"/> to show when the action is invoked.
+        ///     Container card to show when the action is invoked
         /// </summary>
         [JsonProperty(Required = Required.Always)]
 #if !NETSTANDARD1_3

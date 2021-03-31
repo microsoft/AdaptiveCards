@@ -137,7 +137,7 @@ namespace AdaptiveNamespace::ActionHelpers
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(
                     Callback<IRoutedEventHandler>([buttonIconAsFrameworkElement,
-                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
+                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
                         RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
 
@@ -251,7 +251,8 @@ namespace AdaptiveNamespace::ActionHelpers
             RETURN_IF_FAILED(WindowsConcatString(HStringReference(L"Adaptive.Action.").Get(),
                                                  actionSentiment.Get(),
                                                  actionSentimentStyle.GetAddressOf()));
-            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
+            RETURN_IF_FAILED(XamlHelpers::SetStyleFromResourceDictionary(
+                renderContext, actionSentimentStyle.Get(), buttonFrameworkElement));
         }
         return S_OK;
     }
@@ -347,7 +348,7 @@ namespace AdaptiveNamespace::ActionHelpers
         RETURN_IF_FAILED(actionsConfig->get_ShowCard(&showCardActionConfig));
         ABI::AdaptiveNamespace::ActionMode showCardActionMode;
         RETURN_IF_FAILED(showCardActionConfig->get_ActionMode(&showCardActionMode));
-
+        
         // Add click handler which calls IAdaptiveActionInvoker::SendActionEvent
         ComPtr<IButtonBase> buttonBase;
         RETURN_IF_FAILED(button.As(&buttonBase));
@@ -355,7 +356,7 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                                      /*args*/) -> HRESULT {
                                                    return actionInvoker->SendActionEvent(action.Get());
                                                }).Get(),
@@ -442,9 +443,11 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
-        if ((actionType == ABI::AdaptiveNamespace::ActionType::Submit) || (actionType == ABI::AdaptiveNamespace::ActionType::Execute))
+        if (actionType == ABI::AdaptiveNamespace::ActionType::Submit)
         {
-            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
+            ComPtr<IAdaptiveSubmitAction> submitAction;
+            THROW_IF_FAILED(localInlineAction.As(&submitAction));
+            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(submitAction.Get(), renderArgs));
         }
 
         // Create a grid to hold the text box and the action button
@@ -558,8 +561,8 @@ namespace AdaptiveNamespace::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
-                                                                                                /*args*/) -> HRESULT {
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+                                                                                       /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
 
@@ -569,7 +572,7 @@ namespace AdaptiveNamespace::ActionHelpers
 
         // Wrap the action in a button
         ComPtr<IUIElement> touchTargetUIElement;
-        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", nullptr, &touchTargetUIElement);
+        WrapInTouchTarget(nullptr, actionUIElement.Get(), localInlineAction.Get(), renderContext, false, L"Adaptive.Input.Text.InlineAction", &touchTargetUIElement);
 
         ComPtr<IFrameworkElement> touchTargetFrameworkElement;
         THROW_IF_FAILED(touchTargetUIElement.As(&touchTargetFrameworkElement));
@@ -611,7 +614,6 @@ namespace AdaptiveNamespace::ActionHelpers
                            _In_ IAdaptiveRenderContext* renderContext,
                            bool fullWidth,
                            const std::wstring& style,
-                           HSTRING altText,
                            _COM_Outptr_ IUIElement** finalElement)
     {
         ComPtr<IAdaptiveHostConfig> hostConfig;
@@ -673,56 +675,22 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(
             XamlHelpers::SetStyleFromResourceDictionary(renderContext, style.c_str(), buttonAsFrameworkElement.Get()));
 
-        if ((action != nullptr) || (altText != nullptr))
-        {
-            // If we have an action, use the title for the AutomationProperties.Name and tooltip.
-            // Otherwise use the altText.
-            HString title;
-            if (action)
-            {
-                THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
-            }
-            else
-            {
-                THROW_IF_FAILED(title.Set(altText));
-            }
-
-            if (title.IsValid())
-            {
-                // Set the automation properties name
-                ComPtr<IDependencyObject> buttonAsDependencyObject;
-                THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
-
-                ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
-                THROW_IF_FAILED(
-                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
-                                         &automationPropertiesStatics));
-
-                THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
-
-                // Also use the title as the tooltip
-                ComPtr<IToolTip> toolTip =
-                    XamlHelpers::CreateXamlClass<IToolTip>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTip));
-                ComPtr<IContentControl> toolTipAsContentControl;
-                THROW_IF_FAILED(toolTip.As(&toolTipAsContentControl));
-
-                // Create a text box with the action title.
-                ComPtr<ITextBlock> titleTextBlock =
-                    XamlHelpers::CreateXamlClass<ITextBlock>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_TextBlock));
-                THROW_IF_FAILED(titleTextBlock->put_Text(title.Get()));
-                THROW_IF_FAILED(toolTipAsContentControl->put_Content(titleTextBlock.Get()));
-
-                // Set the tooltip
-                ComPtr<IToolTipServiceStatics> toolTipService;
-                THROW_IF_FAILED(
-                    GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ToolTipService).Get(), &toolTipService));
-
-                THROW_IF_FAILED(toolTipService->SetToolTip(buttonAsDependencyObject.Get(), toolTip.Get()));
-            }
-        }
-
         if (action != nullptr)
         {
+            // If we have an action, use the title for the AutomationProperties.Name
+            HString title;
+            THROW_IF_FAILED(action->get_Title(title.GetAddressOf()));
+
+            ComPtr<IDependencyObject> buttonAsDependencyObject;
+            THROW_IF_FAILED(button.As(&buttonAsDependencyObject));
+
+            ComPtr<IAutomationPropertiesStatics> automationPropertiesStatics;
+            THROW_IF_FAILED(
+                GetActivationFactory(HStringReference(RuntimeClass_Windows_UI_Xaml_Automation_AutomationProperties).Get(),
+                                     &automationPropertiesStatics));
+
+            THROW_IF_FAILED(automationPropertiesStatics->SetName(buttonAsDependencyObject.Get(), title.Get()));
+
             WireButtonClickToAction(button.Get(), action, renderContext);
         }
 
@@ -743,7 +711,7 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
                                                                                                           /*args*/) -> HRESULT {
                                                   THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                                                   return S_OK;
@@ -761,7 +729,7 @@ namespace AdaptiveNamespace::ActionHelpers
     {
         if (selectAction != nullptr && supportsInteractivity)
         {
-            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", nullptr, outUiElement);
+            WrapInTouchTarget(adaptiveCardElement, uiElement, selectAction, renderContext, fullWidthTouchTarget, L"Adaptive.SelectAction", outUiElement);
         }
         else
         {

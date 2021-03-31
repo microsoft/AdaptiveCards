@@ -7,24 +7,22 @@ using System.Xml.Serialization;
 namespace AdaptiveCards
 {
     /// <summary>
-    /// Represents an Input.Text element.
+    ///     Input which collects text from the user
     /// </summary>
 #if !NETSTANDARD1_3
     [XmlType(TypeName = AdaptiveTextInput.TypeName)]
 #endif
     public class AdaptiveTextInput : AdaptiveInput
     {
-        /// <inheritdoc />
         public const string TypeName = "Input.Text";
 
-        /// <inheritdoc />
 #if !NETSTANDARD1_3
         [XmlIgnore]
 #endif
         public override string Type { get; set; } = TypeName;
 
         /// <summary>
-        /// Placeholder text to display when the input is empty.
+        ///     Placeholder text for the input desired
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -34,7 +32,7 @@ namespace AdaptiveCards
         public string Placeholder { get; set; }
 
         /// <summary>
-        /// The initial value for the field.
+        ///     The initial value for the field
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3
@@ -44,9 +42,9 @@ namespace AdaptiveCards
         public string Value { get; set; }
 
         /// <summary>
-        /// Hint of style of input, if client doesn't support the style it will become simple text input.
+        ///     Hint of style of input, if client doesn't support the style it will become simple text input
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -54,9 +52,9 @@ namespace AdaptiveCards
         public AdaptiveTextInputStyle Style { get; set; }
 
         /// <summary>
-        /// Controls whether multiple lines of text are allowed.
+        ///     true to collect multiple lines of text(default is false)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -64,9 +62,9 @@ namespace AdaptiveCards
         public bool IsMultiline { get; set; }
 
         /// <summary>
-        /// Hint of maximum number of characters to collect (may be ignored by some clients).
+        ///     hint of maximum length characters to collect(may be ignored by some clients)
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -74,9 +72,9 @@ namespace AdaptiveCards
         public int MaxLength { get; set; }
 
         /// <summary>
-        /// <see cref="AdaptiveAction"/> to invoke inline.
+        /// The Body elements for this card
         /// </summary>
-        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty("inlineAction", DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlElement(typeof(AdaptiveOpenUrlAction))]
         [XmlElement(typeof(AdaptiveShowCardAction))]
@@ -86,14 +84,13 @@ namespace AdaptiveCards
 #endif
         public AdaptiveAction InlineAction { get; set; }
 
-        /// <inheritdoc />
         public override string GetNonInteractiveValue()
         {
             return Value ?? $"*[{Placeholder}]*";
         }
 
         /// <summary>
-        /// Regular expression used for validating the input.
+        /// Regular expression used for validating the input
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
 #if !NETSTANDARD1_3

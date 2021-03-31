@@ -43,8 +43,6 @@ namespace AdaptiveSharedNamespace
 
         std::optional<int> GetOptionalInt(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<int> defaultValue, bool isRequired = false);
 
-        std::optional<double> GetOptionalDouble(const Json::Value& json, AdaptiveCardSchemaKey key, std::optional<double> defaultValue, bool isRequired = false);
-
         CardElementType GetCardElementType(const Json::Value& json);
 
         CardElementType TryGetCardElementType(const Json::Value& json);
@@ -54,8 +52,6 @@ namespace AdaptiveSharedNamespace
         ActionType TryGetActionType(const Json::Value& json);
 
         Json::Value GetArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
-
-        std::vector<std::string> GetStringArray(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
 
         Json::Value GetJsonValueFromString(const std::string& jsonString);
 
@@ -67,19 +63,6 @@ namespace AdaptiveSharedNamespace
                        T defaultEnumValue,
                        Fn enumConverter,
                        bool isRequired = false);
-
-        template<typename T>
-        std::shared_ptr<T> DeserializeValue(const Json::Value& json,
-                                            AdaptiveCardSchemaKey key,
-                                            const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
-                                            bool isRequired = false);
-
-        template<typename T>
-        std::shared_ptr<T> DeserializeValue(ParseContext& context,
-                                            const Json::Value& json,
-                                            AdaptiveCardSchemaKey key,
-                                            const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
-                                            bool isRequired = false);
 
         template<typename T>
         std::shared_ptr<T> GetElementOfType(ParseContext& context,
@@ -171,27 +154,6 @@ namespace AdaptiveSharedNamespace
             // throw AdaptiveCardParseException("Enum type was out of range. Actual: " + propertyValueStr);
             return defaultEnumValue;
         }
-    }
-
-    // Deserialize value at the given key
-    template<typename T>
-    std::shared_ptr<T> ParseUtil::DeserializeValue(ParseContext& context,
-                                                   const Json::Value& json,
-                                                   AdaptiveCardSchemaKey key,
-                                                   const std::function<std::shared_ptr<T>(ParseContext& context, const Json::Value&)>& deserializer,
-                                                   bool isRequired)
-    {
-        return deserializer(context, ParseUtil::ExtractJsonValue(json, key, isRequired));
-    }
-
-    // Deserialize value at the given key
-    template<typename T>
-    std::shared_ptr<T> ParseUtil::DeserializeValue(const Json::Value& json,
-                                                   AdaptiveCardSchemaKey key,
-                                                   const std::function<std::shared_ptr<T>(const Json::Value&)>& deserializer,
-                                                   bool isRequired)
-    {
-        return deserializer(ParseUtil::ExtractJsonValue(json, key, isRequired));
     }
 
     template<typename T>

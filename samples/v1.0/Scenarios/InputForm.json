@@ -14,8 +14,7 @@
 							"type": "TextBlock",
 							"text": "Tell us about yourself",
 							"weight": "bolder",
-							"size": "medium",
-							"wrap": true
+							"size": "medium"
 						},
 						{
 							"type": "TextBlock",
@@ -53,8 +52,7 @@
 						},
 						{
 							"type": "TextBlock",
-							"text": "Phone Number",
-							"wrap": true
+							"text": "Phone Number"
 						},
 						{
 							"type": "Input.Text",

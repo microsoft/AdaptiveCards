@@ -9,7 +9,6 @@
 #include "AdaptiveError.h"
 #include "AdaptiveWarning.h"
 #include "AdaptiveRemoteResourceInformation.h"
-#include <BaseCardElement.h>
 
 #include <json.h>
 #include "Util.h"
@@ -102,7 +101,7 @@ namespace AdaptiveNamespace
         try
         {
             ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.4";
+            const std::string c_rendererVersion = "1.3";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
                 AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;
@@ -171,18 +170,6 @@ namespace AdaptiveNamespace
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
         {
             RETURN_IF_FAILED(MakeAndInitialize<AdaptiveBackgroundImage>(m_backgroundImage.GetAddressOf(), backgroundImage));
-        }
-
-        auto refresh = sharedAdaptiveCard->GetRefresh();
-        if (refresh != nullptr)
-        {
-            MakeAndInitialize<AdaptiveRefresh>(m_refresh.GetAddressOf(), refresh);
-        }
-
-        auto authentication = sharedAdaptiveCard->GetAuthentication();
-        if (authentication != nullptr)
-        {
-            MakeAndInitialize<AdaptiveAuthentication>(m_authentication.GetAddressOf(), authentication);
         }
 
         m_internalId = sharedAdaptiveCard->GetInternalId();
@@ -292,28 +279,6 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
-    HRESULT AdaptiveCard::get_Refresh(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveRefresh** refresh)
-    {
-        return m_refresh.CopyTo(refresh);
-    }
-
-    HRESULT AdaptiveCard::put_Refresh(_In_ ABI::AdaptiveNamespace::IAdaptiveRefresh* refresh)
-    {
-        m_refresh = refresh;
-        return S_OK;
-    }
-
-    HRESULT AdaptiveCard::get_Authentication(_COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveAuthentication** authentication)
-    {
-        return m_authentication.CopyTo(authentication);
-    }
-
-    HRESULT AdaptiveCard::put_Authentication(_In_ ABI::AdaptiveNamespace::IAdaptiveAuthentication* authentication)
-    {
-        m_authentication = authentication;
-        return S_OK;
-    }
-
     HRESULT AdaptiveCard::ToJson(_COM_Outptr_ IJsonObject** result)
     {
         std::shared_ptr<AdaptiveSharedNamespace::AdaptiveCard> sharedModel;
@@ -353,24 +318,6 @@ namespace AdaptiveNamespace
 
         GenerateSharedElements(m_body.Get(), adaptiveCard->GetBody());
         GenerateSharedActions(m_actions.Get(), adaptiveCard->GetActions());
-
-        if (m_refresh)
-        {
-            ComPtr<AdaptiveRefresh> refreshImpl = PeekInnards<AdaptiveRefresh>(m_refresh);
-
-            std::shared_ptr<AdaptiveSharedNamespace::Refresh> sharedModelRefresh;
-            RETURN_IF_FAILED(refreshImpl->GetSharedModel(sharedModelRefresh));
-            adaptiveCard->SetRefresh(sharedModelRefresh);
-        }
-
-        if (m_authentication)
-        {
-            ComPtr<AdaptiveAuthentication> authenticationImpl = PeekInnards<AdaptiveAuthentication>(m_authentication);
-
-            std::shared_ptr<AdaptiveSharedNamespace::Authentication> sharedModelAuthentication;
-            RETURN_IF_FAILED(authenticationImpl->GetSharedModel(sharedModelAuthentication));
-            adaptiveCard->SetAuthentication(sharedModelAuthentication);
-        }
 
         sharedModel = std::move(adaptiveCard);
         return S_OK;

@@ -125,27 +125,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="lib\ActionHelpers.cpp" />
-    <ClCompile Include="lib\AdaptiveAuthCardButton.cpp" />
-    <ClCompile Include="lib\AdaptiveAuthentication.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
-    </ClCompile>
     <ClCompile Include="lib\AdaptiveErrorMessageConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveExecuteAction.cpp" />
-    <ClCompile Include="lib\AdaptiveExecuteActionRenderer.cpp" />
     <ClCompile Include="lib\AdaptiveHighlightColorConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputLabelConfig.cpp" />
     <ClCompile Include="lib\AdaptiveLabelConfig.cpp" />
     <ClCompile Include="lib\AdaptiveInputsConfig.cpp" />
-    <ClCompile Include="lib\AdaptiveRefresh.cpp" />
     <ClCompile Include="lib\AdaptiveRequirement.cpp" />
-    <ClCompile Include="lib\AdaptiveTokenExchangeResource.cpp" />
     <ClCompile Include="lib\ElementTagContent.cpp" />
     <ClCompile Include="lib\LinkButton.cpp" />
     <ClCompile Include="lib\XamlHelpers.cpp" />
@@ -157,8 +142,6 @@
     <ClInclude Include="lib\AdaptiveActionsConfig.h" />
     <ClInclude Include="lib\AdaptiveActionSet.h" />
     <ClInclude Include="lib\AdaptiveActionSetRenderer.h" />
-    <ClInclude Include="lib\AdaptiveAuthCardButton.h" />
-    <ClInclude Include="lib\AdaptiveAuthentication.h" />
     <ClInclude Include="lib\AdaptiveBackgroundImage.h" />
     <ClInclude Include="lib\AdaptiveCardElement.h" />
     <ClInclude Include="lib\AdaptiveChoiceSetInputRenderer.h" />
@@ -170,8 +153,6 @@
     <ClInclude Include="lib\AdaptiveCardResourceResolvers.h" />
     <ClInclude Include="lib\AdaptiveError.h" />
     <ClInclude Include="lib\AdaptiveErrorMessageConfig.h" />
-    <ClInclude Include="lib\AdaptiveExecuteAction.h" />
-    <ClInclude Include="lib\AdaptiveExecuteActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveFeatureRegistration.h" />
     <ClInclude Include="lib\AdaptiveFontTypeDefinition.h" />
     <ClInclude Include="lib\AdaptiveFontTypesDefinition.h" />
@@ -203,7 +184,6 @@
     <ClInclude Include="lib\AdaptiveNumberInputRenderer.h" />
     <ClInclude Include="lib\AdaptiveMediaEventArgs.h" />
     <ClInclude Include="lib\AdaptiveOpenUrlActionRenderer.h" />
-    <ClInclude Include="lib\AdaptiveRefresh.h" />
     <ClInclude Include="lib\AdaptiveRemoteResourceInformation.h" />
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveRenderContext.h" />
@@ -222,7 +202,6 @@
     <ClInclude Include="lib\AdaptiveToggleVisibilityActionRenderer.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityTarget.h" />
     <ClInclude Include="lib\AdaptiveToggleVisibilityAction.h" />
-    <ClInclude Include="lib\AdaptiveTokenExchangeResource.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedAction.h" />
     <ClInclude Include="lib\AdaptiveUnsupportedElement.h" />
     <ClInclude Include="lib\AdaptiveWarning.h" />
@@ -282,16 +261,7 @@
     <ClCompile Include="lib\AdaptiveFeatureRegistration.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypeDefinition.cpp" />
     <ClCompile Include="lib\AdaptiveFontTypesDefinition.cpp" />
-    <ClCompile Include="lib\AdaptiveMedia.cpp">
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</PreprocessToFile>
-      <PreprocessToFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</PreprocessToFile>
-    </ClCompile>
+    <ClCompile Include="lib\AdaptiveMedia.cpp" />
     <ClCompile Include="lib\AdaptiveMediaConfig.cpp" />
     <ClCompile Include="lib\AdaptiveMediaEventInvoker.cpp" />
     <ClCompile Include="lib\AdaptiveMediaRenderer.cpp" />

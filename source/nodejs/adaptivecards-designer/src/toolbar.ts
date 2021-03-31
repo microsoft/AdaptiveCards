@@ -61,22 +61,14 @@ export class ToolbarButton extends ToolbarElement {
     private _isToggled: boolean = false;
 
     protected clicked() {
-        if (this.isEnabled && this.onClick) {
+        if (this.onClick) {
             this.onClick(this);
         }
     }
 
     protected internalUpdateLayout() {
         this.renderedElement.className = "acd-toolbar-button";
-
-        if(!this.isEnabled) {
-            this.renderedElement.classList.add("acd-toolbar-button-disabled");
-            this.renderedElement.setAttribute("aria-disabled", "true");
-        }
-        else {
-            this.renderedElement.classList.remove("acd-toolbar-button-disabled");
-            this.renderedElement.removeAttribute("aria-disabled");
-        }
+        (this.renderedElement as HTMLButtonElement).disabled = !this.isEnabled;
 
         if (this.isToggled) {
             this.renderedElement.classList.add("acd-toolbar-button-toggled");
@@ -85,9 +77,7 @@ export class ToolbarButton extends ToolbarElement {
             this.renderedElement.classList.remove("acd-toolbar-button-toggled");
         }
 
-        if (this.allowToggle) {
-            this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
-        }
+        this.renderedElement.setAttribute("aria-pressed", this.isToggled.toString());
 
         if (this.iconClass) {
             this.renderedElement.classList.add(this.iconClass);
@@ -106,13 +96,12 @@ export class ToolbarButton extends ToolbarElement {
 
     protected internalRender(): HTMLElement {
         let element = document.createElement("button");
-        element.type = "button";
 
         element.onclick = (e) => {
             if (this.allowToggle) {
                 this.isToggled = !this.isToggled;
             }
-
+            
             this.clicked();
         }
 
@@ -335,12 +324,10 @@ export class Toolbar {
         let leftContainer = document.createElement("div");
         leftContainer.style.display = "flex";
         leftContainer.style.alignItems = "center";
-        leftContainer.style.flexWrap = "wrap";
 
         let rightContainer = document.createElement("div");
         rightContainer.style.display = "flex";
         rightContainer.style.alignItems = "center";
-        rightContainer.style.flexWrap = "wrap";
 
         this.renderElementsInto(
             leftContainer,

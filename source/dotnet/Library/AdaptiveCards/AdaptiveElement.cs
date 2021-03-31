@@ -7,15 +7,13 @@ using System.Xml.Serialization;
 
 namespace AdaptiveCards
 {
-    /// <summary>
-    /// Represents an element in Adaptive Cards.
-    /// </summary>
+
     public abstract class AdaptiveElement : AdaptiveTypedElement
     {
         /// <summary>
         /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveSpacing.Default"/>.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -25,7 +23,7 @@ namespace AdaptiveCards
         /// <summary>
         /// Indicates whether there should be a visible separator (e.g. a line) between this element and the one before it.
         /// </summary>
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
 #if !NETSTANDARD1_3
         [XmlAttribute]
 #endif
@@ -33,14 +31,14 @@ namespace AdaptiveCards
         public bool Separator { get; set; }
 
         /// <summary>
-        /// SSML fragment for spoken interaction.
+        ///     SSML fragment for spoken interaction
         /// </summary>
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         [Obsolete("CardElement.Speak has been deprecated.  Use AdaptiveCard.Speak", false)]
         public string Speak { get; set; }
 
         /// <summary>
-        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Auto"/>.
+        /// The amount of space the element should be separated from the previous element. Default value is <see cref="AdaptiveHeight.Default"/>.
         /// </summary>
         [JsonConverter(typeof(StringSizeWithUnitConverter), true)]
         [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
@@ -49,9 +47,6 @@ namespace AdaptiveCards
 #endif
         public AdaptiveHeight Height { get; set; } = new AdaptiveHeight(AdaptiveHeightType.Auto);
 
-        /// <summary>
-        /// Determines whether the height property should be serialized or not.
-        /// </summary>
         public bool ShouldSerializeHeight() => this.Height?.ShouldSerializeAdaptiveHeight() == true;
 
         /// <summary>

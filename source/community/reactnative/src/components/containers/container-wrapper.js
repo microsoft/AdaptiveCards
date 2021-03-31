@@ -26,19 +26,11 @@ export class ContainerWrapper extends React.PureComponent {
     render() {
         const receivedStyles = this.props.style;
         const computedStyles = this.getComputedStyles();
-
         return (
-            Utils.isNullOrEmpty(this.payload.altText) ?
-                <View style={[computedStyles, receivedStyles]}>
-                    {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
-                </View> :
-                <View
-                    accessible={true}
-                    accessibilityLabel={this.payload.altText}
-                    style={[computedStyles, receivedStyles]}>
-                    {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
-                </View>
-        );
+            <View style={[computedStyles, receivedStyles]}>
+                {!Utils.isNullOrEmpty(this.payload.backgroundImage) ? this.getBackgroundImageContainer() : this.props.children}
+            </View>
+        )
     }
 
     /**
@@ -91,7 +83,7 @@ export class ContainerWrapper extends React.PureComponent {
         //we won't apply the background color for the container which has backgroundImage. Even we won't apply color if its parent container having backgroundImage
         const hasBackgroundImage = !Utils.isNullOrEmpty(this.payload.backgroundImage) || (this.payload.parent && !Utils.isNullOrEmpty(this.payload.parent.backgroundImage)) || (!Utils.isNullOrEmpty(this.props.hasBackgroundImage))
         if (!hasBackgroundImage && !Utils.isNullOrEmpty(styleDefinition.backgroundColor)) {
-            backgroundStyle = { backgroundColor: this.payload["style"] !== undefined ? Utils.hexToRGB(styleDefinition.backgroundColor) : "transparent"};
+            backgroundStyle = { backgroundColor: Utils.hexToRGB(styleDefinition.backgroundColor) };
         }
         computedStyles.push(backgroundStyle);
 

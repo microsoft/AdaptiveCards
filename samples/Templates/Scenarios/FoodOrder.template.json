@@ -7,8 +7,7 @@
             "type": "TextBlock",
             "text": "Your registration is almost complete",
             "size": "Medium",
-            "weight": "Bolder",
-            "wrap": true
+            "weight": "Bolder"
         },
         {
             "type": "TextBlock",
