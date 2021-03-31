@@ -289,17 +289,26 @@ CGFloat kAdaptiveCardsWidth = 0;
         NSURL *url = [NSURL URLWithString:[action url]];
         SFSafariViewController *svc = [[SFSafariViewController alloc] initWithURL:url];
         [self presentViewController:svc animated:YES completion:nil];
-    } else if (action.type == ACRSubmit) {
+    } else if (action.type == ACRSubmit || action.type == ACRExecute) {
+        NSMutableArray<NSString *> *fetchedInputList = [NSMutableArray array];
         NSData *userInputsAsJson = [card inputs];
-        NSString *actionDataField = [action data];
-
-        NSData *actionData = [actionDataField dataUsingEncoding:NSUTF8StringEncoding];
-        NSMutableData *combinedData = [actionData mutableCopy];
-        [combinedData appendData:userInputsAsJson];
-        NSString *str = [[NSString alloc] initWithData:combinedData
-                                              encoding:NSUTF8StringEncoding];
+        if (userInputsAsJson) {
+            [fetchedInputList addObject:[[NSString alloc] initWithData:userInputsAsJson
+                                                              encoding:NSUTF8StringEncoding]];
+        }
+        
+        NSString *data = [action data];
+        if (data && data.length) {
+            [fetchedInputList addObject:[NSString stringWithFormat:@"\"data\" : %@", data]];
+        }
+        
+        if (action.type == ACRExecute) {
+            if (action.verb && action.verb.length) {
+                [fetchedInputList addObject:[NSString stringWithFormat:@"\"verb\" : %@", action.verb]];
+            }
+        }
+        NSString *str = [NSString stringWithFormat:@"{\n%@\n}", [fetchedInputList componentsJoinedByString:@",\n"]];
         [self presentViewController:[self createAlertController:@"user response fetched" message:str] animated:YES completion:nil];
-
     } else if (action.type == ACRUnknownAction) {
         if ([action isKindOfClass:[CustomActionNewType class]]) {
             CustomActionNewType *newType = (CustomActionNewType *)action;

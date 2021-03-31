@@ -151,6 +151,7 @@ AdaptiveNamespaceStart
         Submit,
         OpenUrl,
         ToggleVisibility,
+        Execute,
         Custom
     } ActionType;
 
@@ -402,6 +403,15 @@ AdaptiveNamespaceStart
         None,
     } AssociatedInputs;
 
+    [version(NTDDI_WIN10_RS1)]
+#ifdef ADAPTIVE_CARDS_WINDOWS
+    [contract(InternalContract, 1)][internal]
+#endif
+    typedef[v1_enum] enum TextStyle {
+        Paragraph = 0,
+        Heading,
+    } TextStyle;
+
     declare
     {
         interface Windows.Foundation.Collections.IVector<IAdaptiveCardElement*>;
@@ -419,6 +429,7 @@ AdaptiveNamespaceStart
         interface Windows.Foundation.Collections.IVector<AdaptiveToggleVisibilityTarget*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveImage*>;
         interface Windows.Foundation.Collections.IVector<AdaptiveRequirement*>;
+        interface Windows.Foundation.Collections.IVector<AdaptiveAuthCardButton*>;
     }
 
     [
@@ -520,6 +531,7 @@ AdaptiveNamespaceStart
         Boolean Wrap;
         HAlignment HorizontalAlignment;
         UInt32 MaxLines;
+        TextStyle Style;
     };
 
     [
@@ -620,6 +632,64 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveAuthCardButton", 204F4833-05D2-4D4B-AA45-5306C569F965),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveAuthCardButton {
+        AdaptiveAuthCardButton();
+
+        String Type;
+        String Title;
+        String Image;
+        String Value;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveTokenExchangeResource", 5491E22F-7CBC-41ED-B923-05E803F8E9CD),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveTokenExchangeResource {
+        AdaptiveTokenExchangeResource();
+
+        String Id;
+        String Uri;
+        String ProviderId;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveAuthentication", FEDC8A5C-3384-48BD-B995-FF095319CDE9),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveAuthentication {
+        AdaptiveAuthentication();
+
+        String Text;
+        String ConnectionName;
+        AdaptiveTokenExchangeResource TokenExchangeResource;
+        Windows.Foundation.Collections.IVector<AdaptiveAuthCardButton> Buttons { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveRefesh", 4D353F0C-9944-4437-BE08-BB312A4AE53D),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveRefresh {
+        AdaptiveRefresh();
+
+        IAdaptiveActionElement Action;
+        Windows.Foundation.Collections.IVector<String> UserIds { get; };
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCard", 932119A6-266B-4AC9-8A19-DBED6261BA9F),
         static_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveCardStatics", 5a426551-3cfc-4688-87fb-7df80fcc9246),
         contract(InternalContract, 1),
@@ -643,6 +713,8 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         HeightType Height;
         UInt32 MinHeight;
+        AdaptiveRefresh Refresh;
+        AdaptiveAuthentication Authentication;
 
         Windows.Data.Json.JsonObject ToJson();
         Windows.Foundation.Collections.IVectorView<AdaptiveRemoteResourceInformation> GetResourceInformation();
@@ -1537,6 +1609,22 @@ AdaptiveNamespaceStart
 
     [
 #ifdef ADAPTIVE_CARDS_WINDOWS
+        interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveExecuteAction", EE4099BD-0452-484F-9F48-AFE1A7E927DC),
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] 
+    runtimeclass AdaptiveExecuteAction : IAdaptiveActionElement
+    {
+        AdaptiveExecuteAction();
+
+        Windows.Data.Json.JsonValue DataJson;
+        AssociatedInputs AssociatedInputs;
+        String Verb;
+    };
+
+    [
+#ifdef ADAPTIVE_CARDS_WINDOWS
         interface_name("Windows.Internal.AdaptiveCards.Rendering.Uwp.IAdaptiveToggleVisibilityTarget", 045FA1AE-A5CA-4359-AC35-16FC162F3BF0),
         contract(InternalContract, 1),
         internal
@@ -1645,7 +1733,7 @@ AdaptiveNamespaceStart
         Windows.Data.Json.JsonObject AsJson();
         Windows.Foundation.Collections.ValueSet AsValueSet();
 
-        Boolean ValidateInputs(AdaptiveSubmitAction submitAction);
+        Boolean ValidateInputs(IAdaptiveActionElement submitAction);
     };
 
     [
@@ -1871,7 +1959,7 @@ AdaptiveNamespaceStart
         AdaptiveInputs UserInputs { get; };
 
         void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
-        void LinkSubmitActionToCard(AdaptiveSubmitAction submitAction, AdaptiveRenderArgs renderArgs);
+        void LinkSubmitActionToCard(IAdaptiveActionElement submitAction, AdaptiveRenderArgs renderArgs);
         void LinkCardToParent(AdaptiveCard card, AdaptiveRenderArgs renderArgs);
         IAdaptiveInputValue GetInputValue(IAdaptiveInputElement inputElement);
 
@@ -2150,6 +2238,18 @@ AdaptiveNamespaceStart
     runtimeclass AdaptiveSubmitActionRenderer : IAdaptiveElementRenderer, IAdaptiveElementParser
     {
         AdaptiveSubmitActionRenderer();
+    };
+
+    [
+        default_interface,
+#ifdef ADAPTIVE_CARDS_WINDOWS
+        contract(InternalContract, 1),
+        internal
+#endif
+    ] runtimeclass AdaptiveExecuteActionRenderer : IAdaptiveElementRenderer,
+                                                  IAdaptiveElementParser
+    {
+        AdaptiveExecuteActionRenderer();
     };
 
     [

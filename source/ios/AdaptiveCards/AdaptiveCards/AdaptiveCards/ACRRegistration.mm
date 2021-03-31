@@ -9,6 +9,7 @@
 #import "ACOBaseActionElement.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACOParseContextPrivate.h"
+#import "ACRActionExecuteRenderer.h"
 #import "ACRActionOpenURLRenderer.h"
 #import "ACRActionSetRenderer.h"
 #import "ACRActionShowCardRenderer.h"
@@ -85,6 +86,7 @@ using namespace AdaptiveCards;
                                              [ACRActionOpenURLRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::OpenUrl],
                                              [ACRActionShowCardRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ShowCard],
                                              [ACRActionSubmitRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
+                                             [ACRActionExecuteRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::Execute],
                                              [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
                                              [ACRCustomActionRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
                                              nil];
@@ -381,6 +383,7 @@ using namespace AdaptiveCards;
     NSNumber *showcard = [ACOBaseActionElement getKey:ACRShowCard];
     NSNumber *toggle = [ACOBaseActionElement getKey:ACRToggleVisibility];
     NSNumber *unknown = [ACOBaseActionElement getKey:ACRUnknownAction];
+    NSNumber *execute = [ACOBaseActionElement getKey:ACRExecute];
 
     _overwrittenBuilders = [[NSMutableDictionary alloc] init];
 
@@ -390,6 +393,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 showcard : [ACRShowCardTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance]
             };
@@ -398,6 +402,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance],
                 unknown : [ACRUnknownActionTargetBuilder getInstance]
             };
@@ -406,6 +411,7 @@ using namespace AdaptiveCards;
             _builders = @{
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
+                execute : [ACRAggregateTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance]
             };
             break;

@@ -184,3 +184,15 @@ export enum ContainerFitStatus {
     Overflowing,
     FullyOutOfContainer
 }
+
+export enum RefreshMode {
+    Disabled,
+    Manual,
+    Automatic
+}
+
+export enum LogLevel {
+    Info,
+    Warning,
+    Error
+}

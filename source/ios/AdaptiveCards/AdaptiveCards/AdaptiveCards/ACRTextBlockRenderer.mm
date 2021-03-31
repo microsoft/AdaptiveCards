@@ -85,7 +85,7 @@
             // if html rendering is skipped, remove p tags from both ends (<p>, </p>)
             content = [[NSMutableAttributedString alloc] initWithString:text attributes:descriptor];
         }
-        lab.editable = NO;
+        
         lab.textContainer.lineFragmentPadding = 0;
         lab.textContainerInset = UIEdgeInsetsZero;
         lab.layoutManager.usesFontLeading = false;
@@ -119,6 +119,10 @@
     lab.textContainer.maximumNumberOfLines = int(txtBlck->GetMaxLines());
     if (!lab.textContainer.maximumNumberOfLines && !txtBlck->GetWrap()) {
         lab.textContainer.maximumNumberOfLines = 1;
+    }
+
+    if (txtBlck->GetStyle() == TextStyle::Heading) {
+        lab.accessibilityTraits |= UIAccessibilityTraitHeader;
     }
 
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];

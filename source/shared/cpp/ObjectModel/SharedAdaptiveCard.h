@@ -6,6 +6,8 @@
 #include "BaseCardElement.h"
 #include "BaseActionElement.h"
 #include "ParseResult.h"
+#include "Refresh.h"
+#include "Authentication.h"
 
 namespace AdaptiveSharedNamespace
 {
@@ -61,12 +63,30 @@ namespace AdaptiveSharedNamespace
                      std::vector<std::shared_ptr<BaseCardElement>>& body,
                      std::vector<std::shared_ptr<BaseActionElement>>& actions);
 
+        AdaptiveCard(std::string const& version,
+                     std::string const& fallbackText,
+                     std::shared_ptr<BackgroundImage> backgroundImage,
+                     std::shared_ptr<Refresh> refresh,
+                     std::shared_ptr<Authentication> authentication,
+                     ContainerStyle style,
+                     std::string const& speak,
+                     std::string const& language,
+                     VerticalContentAlignment verticalContentAlignment,
+                     HeightType height,
+                     unsigned int minHeight,
+                     std::vector<std::shared_ptr<BaseCardElement>>& body,
+                     std::vector<std::shared_ptr<BaseActionElement>>& actions);
+
         std::string GetVersion() const;
         void SetVersion(const std::string& value);
         std::string GetFallbackText() const;
         void SetFallbackText(const std::string& value);
         std::shared_ptr<BackgroundImage> GetBackgroundImage() const;
         void SetBackgroundImage(const std::shared_ptr<BackgroundImage> value);
+        std::shared_ptr<Refresh> GetRefresh() const;
+        void SetRefresh(const std::shared_ptr<Refresh> value);
+        std::shared_ptr<Authentication> GetAuthentication() const;
+        void SetAuthentication(const std::shared_ptr<Authentication> value);
         std::string GetSpeak() const;
         void SetSpeak(const std::string& value);
         ContainerStyle GetStyle() const;
@@ -146,6 +166,8 @@ namespace AdaptiveSharedNamespace
         std::string m_version;
         std::string m_fallbackText;
         std::shared_ptr<BackgroundImage> m_backgroundImage;
+        std::shared_ptr<Refresh> m_refresh;
+        std::shared_ptr<Authentication> m_authentication;
         std::string m_speak;
         ContainerStyle m_style;
         std::string m_language;

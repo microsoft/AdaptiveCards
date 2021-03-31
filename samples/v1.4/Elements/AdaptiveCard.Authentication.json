@@ -1,0 +1,25 @@
+{
+	"type": "AdaptiveCard",
+	"version": "1.4",
+	"authentication": {
+		"connectionName": "myConnection",
+		"text": "Please Authenticate your account",
+		"tokenExchangeResource": {
+			"id": "myTokenId",
+			"providerId": "myProviderId",
+			"uri": "https: //mytoken.exchange/resource"
+		},
+		"buttons": [
+			{
+				"type": "signin",
+				"title": "Click here to Sign In!"
+			}
+		]
+	},
+	"body": [
+		{
+			"type": "TextBlock",
+			"text": "This is a card that has authentication"
+		}
+	]
+}

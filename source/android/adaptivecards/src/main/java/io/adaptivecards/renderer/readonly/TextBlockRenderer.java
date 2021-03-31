@@ -5,14 +5,15 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.view.AccessibilityDelegateCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,24 +21,24 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
+import io.adaptivecards.objectmodel.HorizontalAlignment;
+import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.TextBlock;
+import io.adaptivecards.objectmodel.TextSize;
+import io.adaptivecards.objectmodel.TextStyle;
+import io.adaptivecards.objectmodel.TextWeight;
+import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
-import io.adaptivecards.objectmodel.HorizontalAlignment;
-import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.TextBlock;
-import io.adaptivecards.objectmodel.TextSize;
-import io.adaptivecards.objectmodel.TextWeight;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
-
-import java.util.HashMap;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -67,6 +68,24 @@ public class TextBlockRenderer extends BaseCardElementRenderer
     public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
     {
         textView.setTextSize(TextRendererUtil.getTextSize(type, textSize, hostConfig));
+    }
+
+    /**
+     * Applies given TextStyle to the given TextView
+     * @param textView TextView to apply style to
+     * @param style TextStyle to apply
+     */
+    private static void applyTextStyle(TextView textView, final TextStyle style)
+    {
+        // Indicate Heading to accessibility service
+        // TODO: Refactor to ViewCompat.setAccessibilityHeading after AndroidX upgrade
+        ViewCompat.setAccessibilityDelegate(textView, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                info.setHeading(style == TextStyle.Heading);
+            }
+        });
     }
 
     public void setTextFormat(TextView textView, HostConfig hostConfig, FontType type, TextWeight textWeight)
@@ -201,6 +220,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
         setTextSize(textView, textBlock.GetFontType(), textBlock.GetTextSize(), hostConfig);
         setTextColor(textView, textBlock.GetTextColor(), hostConfig, textBlock.GetIsSubtle(), renderArgs.getContainerStyle());
         setTextAlignment(textView, textBlock.GetHorizontalAlignment());
+        applyTextStyle(textView, textBlock.GetStyle());
 
         int maxLines = (int)textBlock.GetMaxLines();
         if (maxLines > 0 && textBlock.GetWrap())

@@ -9,4 +9,8 @@ export * from "./host-config";
 export * from "./shared";
 export * from "./utils";
 export * from "./strings";
+export * from "./channel-adapter";
+export * from "./activity-request";
+export * from "./adaptive-applet";
+
 export { IAdaptiveCard, ICardElement } from "./schema";

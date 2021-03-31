@@ -8,38 +8,37 @@
 
 package io.adaptivecards.objectmodel;
 
-public enum InputNecessityIndicators {
-  None,
-  RequiredInputs,
-  OptionalInputs;
+public enum TextStyle {
+  Paragraph(0),
+  Heading;
 
   public final int swigValue() {
     return swigValue;
   }
 
-  public static InputNecessityIndicators swigToEnum(int swigValue) {
-    InputNecessityIndicators[] swigValues = InputNecessityIndicators.class.getEnumConstants();
+  public static TextStyle swigToEnum(int swigValue) {
+    TextStyle[] swigValues = TextStyle.class.getEnumConstants();
     if (swigValue < swigValues.length && swigValue >= 0 && swigValues[swigValue].swigValue == swigValue)
       return swigValues[swigValue];
-    for (InputNecessityIndicators swigEnum : swigValues)
+    for (TextStyle swigEnum : swigValues)
       if (swigEnum.swigValue == swigValue)
         return swigEnum;
-    throw new IllegalArgumentException("No enum " + InputNecessityIndicators.class + " with value " + swigValue);
+    throw new IllegalArgumentException("No enum " + TextStyle.class + " with value " + swigValue);
   }
 
   @SuppressWarnings("unused")
-  private InputNecessityIndicators() {
+  private TextStyle() {
     this.swigValue = SwigNext.next++;
   }
 
   @SuppressWarnings("unused")
-  private InputNecessityIndicators(int swigValue) {
+  private TextStyle(int swigValue) {
     this.swigValue = swigValue;
     SwigNext.next = swigValue+1;
   }
 
   @SuppressWarnings("unused")
-  private InputNecessityIndicators(InputNecessityIndicators swigEnum) {
+  private TextStyle(TextStyle swigEnum) {
     this.swigValue = swigEnum.swigValue;
     SwigNext.next = this.swigValue+1;
   }
