@@ -3874,6 +3874,7 @@ export abstract class Action extends CardObject {
         raiseExecuteActionEvent(this);
     }
 
+    accessibleTitle?: string;
     expanded?: boolean;
 
     onExecute: (sender: Action) => void;
@@ -3914,7 +3915,11 @@ export abstract class Action extends CardObject {
 
         this.addCssClasses(buttonElement);
 
-        if (this.effectiveTooltip) {
+        if (this.accessibleTitle) {
+            buttonElement.setAttribute("aria-label", this.accessibleTitle);
+            buttonElement.title = this.accessibleTitle;
+        }
+        else if (this.effectiveTooltip) {
             buttonElement.setAttribute("aria-label", this.effectiveTooltip);
             buttonElement.title = this.effectiveTooltip;
         }
