@@ -51,6 +51,7 @@
         {
             "type": "Input.Text",
             "label": "Input w/ Inline Action",
+            "id": "0",
             "inlineAction": {
                 "type": "Action.Submit"
             }
@@ -116,6 +117,7 @@
                 {
                     "type": "Input.Text",
                     "label": "Input w/ Inline Action",
+                    "id": "1",
                     "inlineAction": {
                         "type": "Action.Submit"
                     }
@@ -184,6 +186,7 @@
                 {
                     "type": "Input.Text",
                     "label": "Input w/ Inline Action",
+                    "id": "2",
                     "inlineAction": {
                         "type": "Action.Submit"
                     }

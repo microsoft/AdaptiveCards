@@ -10,6 +10,7 @@
 #import "ACOHostConfig.h"
 #import "HostConfig.h"
 #import "TextBlock.h"
+#import "ACORenderContext.h"
 #import <UIKit/UIKit.h>
 
 using namespace AdaptiveCards;
@@ -38,7 +39,7 @@ using namespace AdaptiveCards;
                foregroundColor:(ForegroundColor)color
                   subtleOption:(bool)isSubtle;
 
-+ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment;
++ (NSTextAlignment)getTextBlockAlignment:(HorizontalAlignment)alignment context:(ACORenderContext *)context;
 
 - (CGSize)getImageSizeAsCGSize:(ACRImageSize)imageSize width:(CGFloat)width height:(CGFloat)height;
 
