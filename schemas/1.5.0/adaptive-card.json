@@ -17,7 +17,6 @@
           "description": "The URL to open."
         },
         "title": {},
-        "tooltip": {},
         "iconUrl": {},
         "style": {},
         "fallback": {},
@@ -48,7 +47,6 @@
           "description": "The Adaptive Card to show. Inputs in ShowCards will not be submitted if the submit button is located on a parent card. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more details."
         },
         "title": {},
-        "tooltip": {},
         "iconUrl": {},
         "style": {},
         "fallback": {},
@@ -89,7 +87,6 @@
           "version": "1.3"
         },
         "title": {},
-        "tooltip": {},
         "iconUrl": {},
         "style": {},
         "fallback": {},
@@ -121,7 +118,6 @@
           "description": "The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information."
         },
         "title": {},
-        "tooltip": {},
         "iconUrl": {},
         "style": {},
         "fallback": {},
@@ -2392,11 +2388,6 @@
         "title": {
           "type": "string",
           "description": "Label for button or link that represents this action."
-        },
-        "tooltip": {
-          "type": "string",
-          "description": "The tooltip associated with the action. If specified, tooltip is also used for accessibility purposes; otherwise, title is used instead. It is strongly recommended to specify a tooltip for all actions in a card to improve accessibility and more generally to provide useful information to the end user regarding what an action will do.",
-          "version": "1.5"
         },
         "iconUrl": {
           "type": "string",

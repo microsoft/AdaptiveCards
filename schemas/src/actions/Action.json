@@ -7,11 +7,6 @@
 			"type": "string",
 			"description": "Label for button or link that represents this action."
 		},
-		"tooltip": {
-			"type": "string",
-			"description": "The tooltip associated with the action. If specified, tooltip is also used for accessibility purposes; otherwise, title is used instead. It is strongly recommended to specify a tooltip for all actions in a card to improve accessibility and more generally to provide useful information to the end user regarding what an action will do.",
-			"version": "1.5"
-		},
 		"iconUrl": {
 			"type": "uri-reference",
 			"description": "Optional icon to be shown on the action in conjunction with the title. Supports data URI in version 1.2+",
