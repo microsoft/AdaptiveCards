@@ -6,18 +6,26 @@ using Newtonsoft.Json;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Helper class to validate and convert color strings.
+    /// </summary>
     public class HashColorConverter : JsonConverter, ILogWarnings
     {
+        /// <summary>
+        /// A list of warnings encountered during processing.
+        /// </summary>
         public List<AdaptiveWarning> Warnings { get; set; } = new List<AdaptiveWarning>();
 
         readonly JsonSerializer defaultSerializer = new JsonSerializer();
 
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             // Only use this converter for string types that match our format
             return (objectType == typeof(string));
         }
 
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             if (reader.TokenType == JsonToken.String)
@@ -27,7 +35,7 @@ namespace AdaptiveCards
                 if (ColorUtil.IsValidColor(colorString))
                 {
                     // We have the right format, and all the digits are hex, return the string
-                    if (colorString.Length == 7)
+                    if (colorString.Length == ColorUtil.colorStringLength)
                     {
                         return $"#FF{colorString.Substring(1).ToUpperInvariant()}";
                     }
@@ -42,16 +50,26 @@ namespace AdaptiveCards
             return null;
         }
 
+        /// <inheritdoc />
         public override bool CanWrite { get { return false; } }
 
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             throw new NotImplementedException();
         }
     }
 
+    /// <summary>
+    /// Helper class for color validation.
+    /// </summary>
     public static partial class JsonExtensions
     {
+        /// <summary>
+        /// Determines if a character is a valid hex digit.
+        /// </summary>
+        /// <param name="c">Character to check.</param>
+        /// <returns>true iff c is a valid hex digit.</returns>
         public static bool IsHexDigit(this char c)
         {
             return (c >= '0' && c <= '9') ||

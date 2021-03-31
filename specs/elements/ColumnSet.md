@@ -10,6 +10,7 @@
 | **style** | `ContainerStyle?` | No | Style hint for `ColumnSet`. | 1.2 |
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column set in pixels, like `"80px"`. | 1.2 |
+| **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal alignment of the ColumnSet. | 1.0 |
 
 **Inherited properties**
 
@@ -42,6 +43,7 @@ An Action that will be invoked when the `ColumnSet` is tapped or selected. `Acti
 * **Version** : 1.1
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`
@@ -61,6 +63,18 @@ Style hint for `ColumnSet`.
   * `"attention"`
   * `"warning"`
   * `"accent"`
+
+
+## horizontalAlignment
+
+Controls the horizontal alignment of the ColumnSet.
+
+* **Type**: `HorizontalAlignment`
+* **Required**: No
+* **Allowed values**:
+  * `"left"`
+  * `"center"`
+  * `"right"`
 
 
 ## fallback

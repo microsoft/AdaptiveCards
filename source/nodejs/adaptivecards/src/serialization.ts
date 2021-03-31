@@ -110,7 +110,8 @@ export class Versions {
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
-    static readonly latest = Versions.v1_3;
+    static readonly v1_4 = new Version(1, 4);
+    static readonly latest = Versions.v1_4;
 }
 
 export function isVersionLessOrEqual(version: TargetVersion, targetVersion: TargetVersion): boolean {
@@ -134,9 +135,11 @@ export abstract class BaseSerializationContext {
 
     toJSONOriginalParam: any;
 
-    serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined) {
+    constructor(public targetVersion: Version = Versions.latest) {}
+    
+    serializeValue(target: { [key: string]: any }, propertyName: string, propertyValue: any, defaultValue: any = undefined, forceDeleteIfNullOrDefault: boolean = false) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
-            if (!GlobalSettings.enableFullJsonRoundTrip) {
+            if (!GlobalSettings.enableFullJsonRoundTrip || forceDeleteIfNullOrDefault) {
                 delete target[propertyName];
             }
         }
@@ -145,7 +148,25 @@ export abstract class BaseSerializationContext {
         }
     }
 
-    serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue: number | undefined, defaultValue: number | undefined = undefined) {
+    serializeString(target: { [key: string]: any }, propertyName: string, propertyValue?: string, defaultValue?: string) {
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
+        }
+        else {
+            target[propertyName] = propertyValue;
+        }
+    }
+
+    serializeBool(target: { [key: string]: any }, propertyName: string, propertyValue?: boolean, defaultValue?: boolean) {
+        if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue) {
+            delete target[propertyName];
+        }
+        else {
+            target[propertyName] = propertyValue;
+        }
+    }
+
+    serializeNumber(target: { [key: string]: any }, propertyName: string, propertyValue?: number, defaultValue?: number) {
         if (propertyValue === null || propertyValue === undefined || propertyValue === defaultValue || isNaN(propertyValue)) {
             delete target[propertyName];
         }
@@ -241,8 +262,6 @@ export abstract class BaseSerializationContext {
         return this._validationEvents[index];
     }
 
-    constructor(public targetVersion: Version = Versions.latest) {}
-
     get eventCount(): number {
         return this._validationEvents.length;
     }
@@ -316,7 +335,7 @@ export class StringProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: string | undefined, context: BaseSerializationContext) {
-        context.serializeValue(
+        context.serializeString(
             target,
             this.name,
             value === "" && this.treatEmptyAsUndefined ? undefined : value,
@@ -340,7 +359,7 @@ export class BoolProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: object, value: boolean | undefined, context: BaseSerializationContext) {
-        context.serializeValue(
+        context.serializeBool(
             target,
             this.name,
             value,
@@ -426,6 +445,44 @@ export class PixelSizeProperty extends PropertyDefinition {
 export interface IVersionedValue<TValue> {
     value: TValue;
     targetVersion?: Version;
+}
+
+export class StringArrayProperty extends PropertyDefinition {
+    parse(sender: SerializableObject, source: PropertyBag, context: BaseSerializationContext): string[] | undefined {
+        let sourceValue = source[this.name];
+
+        if (sourceValue === undefined || !Array.isArray(sourceValue)) {
+            return this.defaultValue;
+        }
+
+        let result: string[] = [];
+
+        for (let value of sourceValue) {
+            if (typeof value === "string") {
+                result.push(value);
+            }
+            else {
+                context.logParseEvent(
+                    sender,
+                    Enums.ValidationEvent.InvalidPropertyValue,
+                    `Invalid array value "${value}" of type "${typeof value}" ignored for "${this.name}".`);
+            }
+        }
+
+        return result;
+    }
+
+    toJSON(sender: SerializableObject, target: PropertyBag, value: string[] | undefined, context: BaseSerializationContext) {
+        context.serializeArray(target, this.name, value);
+    }
+
+    constructor(
+        readonly targetVersion: Version,
+        readonly name: string,
+        readonly defaultValue?: string[],
+        readonly onGetInitialValue?: (sender: SerializableObject) => string[] | undefined) {
+        super(targetVersion, name, defaultValue, onGetInitialValue);
+    }
 }
 
 export class ValueSetProperty extends PropertyDefinition {
@@ -642,25 +699,30 @@ export class SerializableObjectProperty extends PropertyDefinition {
     }
 
     toJSON(sender: SerializableObject, target: PropertyBag, value: SerializableObject | undefined, context: BaseSerializationContext) {
-        let serializedValue = value !== undefined ? value.toJSON(context) : value;
+        let serializedValue: object | undefined = undefined;
+        
+        if (value !== undefined && !value.hasAllDefaultValues()) {
+            serializedValue = value.toJSON(context);
+        }
 
         if (typeof serializedValue === "object" && Object.keys(serializedValue).length === 0) {
             serializedValue = undefined;
         }
 
-        super.toJSON(sender, target, serializedValue, context);
+        context.serializeValue(target, this.name, serializedValue, this.defaultValue, true);
     }
 
     constructor(
         readonly targetVersion: Version,
         readonly name: string,
         readonly objectType: SerializableObjectType,
+        readonly nullable: boolean = false,
         defaultValue?: SerializableObject) {
         super(
             targetVersion,
             name,
             defaultValue,
-            (sender: SerializableObject) => { return new this.objectType(); });
+            (sender: SerializableObject) => { return this.nullable ? undefined : new this.objectType(); });
     }
 }
 
@@ -791,6 +853,7 @@ export function property(property: PropertyDefinition) {
 
 export abstract class SerializableObject {
     static onRegisterCustomProperties?: (sender: SerializableObject, schema: SerializableObjectSchema) => void;
+    static defaultMaxVersion: Version = Versions.v1_3;
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
@@ -947,7 +1010,7 @@ export abstract class SerializableObject {
         return true;
     }
 
-    maxVersion: Version = Versions.v1_3;
+    maxVersion: Version = SerializableObject.defaultMaxVersion;
 
     onPropertyChanged?: (sender: SerializableObject, property: PropertyDefinition) => void;
 

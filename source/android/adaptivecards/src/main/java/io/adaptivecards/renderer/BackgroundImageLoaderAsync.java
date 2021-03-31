@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
@@ -56,7 +57,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
             // A 1x1 bitmap is created to avoid the container to have a minimum width/height defined by the actual image
             // When the background is set with setBackground, the layout may grow if the original image is larger than the layout
             super(resources, Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888));
-            m_bitmap = bitmap;
+            m_bitmap = Bitmap.createScaledBitmap(bitmap, Util.dpToPixels(m_context, bitmap.getWidth()), Util.dpToPixels(m_context, bitmap.getHeight()), true);
             m_backgroundImageProperties = backgroundImageProperties;
         }
 

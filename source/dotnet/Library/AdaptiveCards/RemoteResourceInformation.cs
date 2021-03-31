@@ -1,18 +1,21 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// Contains information about a remote source.
+    /// </summary>
     public struct RemoteResourceInformation
     {
         readonly string url;
         readonly string mimeType;
 
+        /// <summary>
+        /// Initializes a <see cref="RemoteResourceInformation"/> with the given properties.
+        /// </summary>
+        /// <param name="url">The URL of the remote resource.</param>
+        /// <param name="mimeType">The mimetype of the remote resource.</param>
         public RemoteResourceInformation(string url, string mimeType)
         {
             this.url = url;

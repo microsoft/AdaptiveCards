@@ -1,0 +1,226 @@
+{
+	"spacing": {
+		"small": 4,
+		"default": 12,
+		"medium": 20,
+		"large": 30,
+		"extraLarge": 40,
+		"padding": 15
+	},
+	"separator": {
+		"lineThickness": 1,
+		"lineColor": "#EEEEEE"
+	},
+	"supportsInteractivity": false,
+	"fontTypes": {
+		"default": {
+			"fontFamily": "Segoe UI, Helvetica Neue, Helvetica, sans-serif",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 20,
+				"large": 20,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		},
+		"monospace": {
+			"fontFamily": "Segoe UI Mono",
+			"fontSizes": {
+				"small": 12,
+				"default": 14,
+				"medium": 20,
+				"large": 20,
+				"extraLarge": 26
+			},
+			"fontWeights": {
+				"lighter": 200,
+				"default": 400,
+				"bolder": 700
+			}
+		}
+	},
+	"containerStyles": {
+		"default": {
+			"backgroundColor": "#FF535454",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"emphasis": {
+			"backgroundColor": "#33000000",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"accent": {
+			"backgroundColor": "#882E89FC",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"attention": {
+			"backgroundColor": "#DDFF0000",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"good": {
+			"backgroundColor": "#DD00FF00",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		},
+		"warning": {
+			"backgroundColor": "#DDFFD800",
+			"foregroundColors": {
+				"default": {
+					"default": "#FFFFFFFF",
+					"subtle": "#FF9C9E9F"
+				},
+				"accent": {
+					"default": "#FF2E89FC",
+					"subtle": "#882E89FC"
+				},
+				"attention": {
+					"default": "#FFFF0000",
+					"subtle": "#DDFF0000"
+				},
+				"good": {
+					"default": "#FF00FF00",
+					"subtle": "#DD00FF00"
+				},
+				"warning": {
+					"default": "#FFFFD800",
+					"subtle": "#DDFFD800"
+				}
+			}
+		}
+	},
+	"imageSizes": {
+		"small": 40,
+		"medium": 80,
+		"large": 120
+	},
+	"imageSet": {
+		"imageSize": "medium",
+		"maxImageHeight": 100
+	},
+	"factSet": {
+		"title": {
+			"color": "default",
+			"size": "default",
+			"isSubtle": false,
+			"weight": "bolder",
+			"wrap": false,
+			"maxWidth": 150
+		},
+		"value": {
+			"color": "default",
+			"size": "default",
+			"isSubtle": false,
+			"weight": "default",
+			"wrap": true
+		},
+		"spacing": 10
+	}
+}

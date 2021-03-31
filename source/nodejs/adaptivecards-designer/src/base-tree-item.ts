@@ -1,5 +1,5 @@
 import { DraggableElement } from "./draggable-element";
-import { KEY_ENTER, KEY_SPACE } from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { v4 as uuidv4 } from "uuid";
 
 export abstract class BaseTreeItem extends DraggableElement {
@@ -92,7 +92,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         this._rootElement.setAttribute("role", "treeitem");
         this._rootElement.onclick = () => { this.click; };
         this._rootElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 this.setIsSelected(!this.isSelected, !this.isSelected);
                 this._rootElement.focus();
                 e.preventDefault();
@@ -129,7 +129,7 @@ export abstract class BaseTreeItem extends DraggableElement {
         }
 
         this._expandCollapseElement.onkeydown = (e: KeyboardEvent) => {
-            if (e.keyCode === KEY_ENTER || e.keyCode === KEY_SPACE) {
+            if (e.key === Constants.keys.enter || e.key === Constants.keys.space) {
                 this._isExpanded = !this._isExpanded;
 
                 this.updateLayout();

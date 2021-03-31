@@ -29,7 +29,7 @@ Have a look at the [Adaptive Card Feature Portal](https://aka.ms/ACFeatures) to 
 
 It takes less than a minute to vote and only requires an email address.
 
-![Screnshot of Product board](https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2019/10/Screenshot-of-product-board-feature-list-e1571173437175.png)
+![Screenshot of Product board](https://developer.microsoft.com/en-us/office/blogs/wp-content/uploads/2019/10/Screenshot-of-product-board-feature-list-e1571173437175.png)
 
 ### Refreshing the Adaptive Cards website
 

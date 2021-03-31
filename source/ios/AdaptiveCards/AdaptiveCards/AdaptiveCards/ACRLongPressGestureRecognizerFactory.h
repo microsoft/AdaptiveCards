@@ -17,7 +17,7 @@
 + (void)addLongPressGestureRecognizerToUIView:(UIView<ACRIContentHoldingView> *_Nonnull)viewGroup
                                      rootView:(ACRView *_Nonnull)rootView
                                 recipientView:(UIView *_Nonnull)receipientView
-                                actionElement:(std::shared_ptr<AdaptiveCards::BaseActionElement> const &)action
+                                actionElement:(ACOBaseActionElement * _Nonnull)action
                                    hostConfig:(ACOHostConfig *_Nonnull)config;
 
 + (UILongPressGestureRecognizer *_Nullable)getGestureRecognizer:(UIView<ACRIContentHoldingView> *_Nonnull)viewGroup

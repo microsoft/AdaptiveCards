@@ -2,17 +2,27 @@
 //  ADCIOSVisualizerTests.m
 //  ADCIOSVisualizerTests
 //
-//  Created by jwoo on 6/2/17.
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2020 Microsoft. All rights reserved.
 //
 
+#import "AdaptiveCards/ACOAdaptiveCardPrivate.h"
+#import "AdaptiveCards/ACOBaseActionElementPrivate.h"
+#import "AdaptiveCards/ACOBaseCardElementPrivate.h"
 #import "AdaptiveCards/ACOHostConfigPrivate.h"
 #import "AdaptiveCards/ACORemoteResourceInformationPrivate.h"
+#import "AdaptiveCards/ACRImageProperties.h"
 #import "AdaptiveCards/ACRShowCardTarget.h"
 #import "AdaptiveCards/ACRViewPrivate.h"
+#import "AdaptiveCards/Container.h"
+#import "AdaptiveCards/OpenUrlAction.h"
 #import "AdaptiveCards/ShowCardAction.h"
+#import "AdaptiveCards/SubmitAction.h"
 #import "AdaptiveCards/TextBlock.h"
 #import "AdaptiveCards/UtiliOS.h"
+#import "Adaptivecards/ACRRegistrationPrivate.h"
+#import "CustomActionNewType.h"
+#import "CustomActionOpenURLRenderer.h"
+#import "MockRenderer.h"
 #import <AdaptiveCards/ACFramework.h>
 #import <UIKit/UIKit.h>
 #import <XCTest/XCTest.h>
@@ -42,7 +52,7 @@
         }
     }
 
-    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json"]];
+    _setOfExpectedToFailFiles = [NSSet setWithArray:@[ @"TypeIsRequired.json", @"AdaptiveCard.MissingVersion.json", @"InvalidMediaMix.json", @"Action.DuplicateIds.json", @"Action.NestedDuplicateIds.json" ]];
 
     self.continueAfterFailure = NO;
 }
@@ -68,7 +78,64 @@
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRRichTextBlock];
     [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRFactSet];
+    [[ACRRegistration getInstance] setBaseCardElementRenderer:nil cardElementType:ACRCardElementType::ACRContainer];
+    [[ACRRegistration getInstance] setActionRenderer:nil actionElementType:ACROpenUrl];
     [super tearDown];
+}
+
+- (void)testACOBaseActionConversionFromAdaptiveElement
+{
+    ACOBaseActionElement *acoBaseActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:nil];
+    XCTAssertNil(acoBaseActionElement);
+
+    // Test that the accessibility trait for OpenUrl Action is correctly configured
+    std::shared_ptr<OpenUrlAction> openUrlAdaptiveAction = std::make_shared<OpenUrlAction>();
+    ACOBaseActionElement *acoOpenUrlActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:openUrlAdaptiveAction];
+    XCTAssertNotNil(acoOpenUrlActionElement);
+    XCTAssertTrue(acoOpenUrlActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertFalse(acoOpenUrlActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // Test that the accessibility trait for Submit Action is correctly configured
+    std::shared_ptr<SubmitAction> submitAdaptiveAction = std::make_shared<SubmitAction>();
+    ACOBaseActionElement *acoSubmitActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:submitAdaptiveAction];
+    XCTAssertNotNil(acoSubmitActionElement);
+    XCTAssertFalse(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertTrue(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // Test that the accessibility trait for Custom Action is correctly configured
+    // Image.SelectAction in the iOS test payload contains custom select action json
+    NSString *payloadForCustomAction = [NSString stringWithContentsOfFile:[_mainBundle pathForResource:@"Image.SelectAction" ofType:@"json"] encoding:NSUTF8StringEncoding error:nil];
+    ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payloadForCustomAction];
+    XCTAssertTrue(cardParseResult.isValid);
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [cardParseResult.card card];
+    std::shared_ptr<Image> adaptiveImage = std::dynamic_pointer_cast<Image>(adaptiveCard->GetBody()[1]);
+    XCTAssertTrue(adaptiveImage != nullptr);
+    auto adaptiveCustomSelectAction = adaptiveImage->GetSelectAction();
+
+    // register a parser for the custom action json payload
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    CustomActionNewType *customParser = [[CustomActionNewType alloc] init];
+    NSString *keyForNewTyype = @"NewStyle";
+    [registration setCustomActionElementParser:customParser key:keyForNewTyype];
+
+    // get the iOS custom action from the adaptive element
+    ACOBaseActionElement *acoCustomActionElement = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:adaptiveCustomSelectAction];
+    XCTAssertNotNil(acoCustomActionElement);
+
+    // test if the correct accessibility traits are set
+    XCTAssertFalse(acoCustomActionElement.accessibilityTraits & UIAccessibilityTraitLink);
+    XCTAssertTrue(acoSubmitActionElement.accessibilityTraits & UIAccessibilityTraitButton);
+
+    // render a card for an additonal testing
+    ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card
+                                                 config:nil
+                                        widthConstraint:300
+                                               delegate:nil];
+    XCTAssertTrue(renderResult.succeeded);
+    NSObject<ACRSelectActionDelegate> *target;
+
+    // Finally ensure that a target can be built with the custom action by the select action target builder.
+    XCTAssertTrue(ACRRenderingStatus::ACROk == buildTarget([renderResult.view getSelectActionsTargetBuilderDirector], acoCustomActionElement, &target));
 }
 
 - (void)testRemoteResouceInformation
@@ -122,18 +189,35 @@
                                          error:nil];
 
         NSString *fileName = [pathToFile lastPathComponent];
-        ACOAdaptiveCardParseResult *cardParseResult = [ACOAdaptiveCard fromJson:payload];
-
-        if ([_setOfExpectedToFailFiles containsObject:fileName]) {
-            XCTAssertFalse(cardParseResult.isValid);
-        } else {
-            XCTAssertTrue(cardParseResult.isValid);
-            ACRRenderResult *renderResult;
-            renderResult = [ACRRenderer render:cardParseResult.card
-                                        config:nil
-                               widthConstraint:300
-                                      delegate:nil];
-            XCTAssertTrue(renderResult.succeeded);
+        
+        ACOAdaptiveCardParseResult *cardParseResult = nil;
+        @try {
+            cardParseResult = [ACOAdaptiveCard fromJson:payload];
+            if ([_setOfExpectedToFailFiles containsObject:fileName]) {
+                XCTAssertFalse(cardParseResult.isValid);
+            } else {
+                if (!cardParseResult.isValid) {
+                    NSException *e = [NSException exceptionWithName:@"ParseFailed" reason:@"Parsing Failed" userInfo:nil];
+                    @throw e;
+                }
+                XCTAssertTrue(cardParseResult.isValid);
+                ACRRenderResult *renderResult;
+                @try {
+                    renderResult = [ACRRenderer render:cardParseResult.card
+                                                config:nil
+                                       widthConstraint:300
+                                              delegate:nil];
+                    XCTAssertTrue(renderResult.succeeded);
+                }
+                @catch (NSException *exception) {
+                    NSLog(@"Render Failed while rendering %@\n%@", fileName, exception);
+                    XCTAssertTrue(NO);
+                }
+            }
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Parsing Failed %@\n%@", fileName, exception);
+            XCTAssertTrue(NO);
         }
     }
 }
@@ -174,7 +258,7 @@
     ACRRenderResult *renderResult = [ACRRenderer render:cardParseResult.card config:_defaultHostConfig widthConstraint:335];
     NSString *hashkey = @"FeedbackText";
     ACRInputLabelView *acrInputLabelView = (ACRInputLabelView *)[renderResult.view viewWithTag:hashkey.hash];
-    
+
     XCTAssertNotNil(acrInputLabelView);
     ACRTextView *acrTextView = (ACRTextView *)acrInputLabelView.stack.arrangedSubviews[1];
     XCTAssertTrue([acrTextView.text length] == 0);
@@ -193,6 +277,18 @@
     XCTAssert([dictionary count] == 1);
 }
 
+- (void)testActionRegistration
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    // override default Action.OpenUrl renderer
+    [registration setActionRenderer:[CustomActionNewTypeRenderer getInstance] actionElementType:ACROpenUrl];
+    // make sure it's registered
+    XCTAssertEqual([CustomActionNewTypeRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+    // reset
+    [registration setActionRenderer:nil actionElementType:ACROpenUrl];
+    // check the renderer is reset to the default renderer
+    XCTAssertEqual([ACRActionOpenURLRenderer getInstance], [registration getActionRendererByType:ACROpenUrl]);
+}
 // this test ensure that extending text render doesn't crash
 // in use case where custom renderer uses default text renderer
 - (void)testExtendingTextRenderersDoesNotCrash
@@ -232,15 +328,16 @@
     action->SetCard(innerCard);
     NSObject *target;
     UIButton *button = [UIButton buttonWithType:UIButtonType::UIButtonTypeSystem];
+    ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:action];
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getSelectActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getQuickReplyTargetBuilderDirector], acoAction, &target));
 
     // show card target not supported without button
-    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], action, &target));
+    XCTAssert(ACRRenderingStatus::ACRFailed == buildTarget([testView getActionsTargetBuilderDirector], acoAction, &target));
 
-    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], action, button, &target));
+    XCTAssert(ACRRenderingStatus::ACROk == buildTargetForButton([testView getActionsTargetBuilderDirector], acoAction, button, &target));
 
     XCTAssertNotNil(target);
 
@@ -591,6 +688,111 @@
 {
     ACRToggleInputView *toggleView = [[ACRToggleInputView alloc] initWithFrame:CGRectMake(0, 0, 50.0f, 100.0f)];
     XCTAssertNotNil(toggleView);
+}
+
+- (void)testBackGroundImageNullCheck
+{
+    renderBackgroundImage(nil, nil, nil);
+    XCTAssertTrue(YES);
+
+    auto backgroundImage = BackgroundImage();
+    renderBackgroundImage(nil, &backgroundImage, nil, nil);
+    XCTAssertTrue(YES);
+
+    UIImageView *imageView = [[UIImageView alloc] init];
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    UIImage *image = [UIImage imageNamed:@"Adaptive1.0.png"];
+    renderBackgroundImage(nil, &backgroundImage, imageView, image);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(nil, &backgroundImage, imageView, nil);
+    XCTAssertTrue(YES);
+
+    renderBackgroundImage(nil, &backgroundImage, nil, image);
+    XCTAssertTrue(YES);
+}
+
+// Test that additional property at card level
+- (void)testAdditionalPropertiesParsingAtCardLevel
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    NSData *additionalProperty = iOSCard.additionalProperty;
+    XCTAssertTrue(additionalProperty != nullptr);
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+    NSNumber *radius = dictionary[@"card.cornerRadius"];
+    XCTAssertTrue([radius floatValue] == 50.0f);
+}
+
+// Test that additional property is returned as NSData
+- (void)testAdditionalPropertiesParsing
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    XCTAssertTrue(adaptiveElement != nullptr);
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveElement];
+    Json::Value blob = adaptiveElement->GetAdditionalProperties();
+    NSData *additionalProperty = acoElem.additionalProperty;
+    XCTAssertTrue(additionalProperty != nullptr);
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:additionalProperty options:NSJSONReadingMutableLeaves error:nil];
+    NSNumber *radius = dictionary[@"my.cornerRadius"];
+    XCTAssertTrue([radius floatValue] == 20.0f);
+}
+
+// Test that empty addtional property is returned as nil
+- (void)testAdditionalPropertiesParsingNilValue
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    std::shared_ptr<Container> container = std::dynamic_pointer_cast<Container>(adaptiveElement);
+    std::shared_ptr<BaseCardElement> adaptiveTextBlock = container->GetItems()[0];
+
+    ACOBaseCardElement *acoElem = [[ACOBaseCardElement alloc] initWithBaseCardElement:adaptiveTextBlock];
+    NSData *additionalProperty = acoElem.additionalProperty;
+    XCTAssertTrue(additionalProperty == nullptr);
+}
+
+// Test that additional property is accessible in the renderer context
+- (void)testAdditionalPropertiesRendering
+{
+    NSArray<NSString *> *payloadNames = @[ @"AdditionalProperties" ];
+    ACOAdaptiveCard *iOSCard = [self prepCards:payloadNames][0];
+    std::shared_ptr<AdaptiveCard> adaptiveCard = [iOSCard card];
+    std::shared_ptr<BaseCardElement> adaptiveElement = adaptiveCard->GetBody()[0];
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance]
+                             cardElementType:ACRContainer];
+    [ACRRenderer render:iOSCard
+                 config:nil
+        widthConstraint:300
+               delegate:nil];
+}
+
+// Test that overriden default renders can be chosen to use resource resolvers
+- (void)testResourceResolverSelectivelyWorksForElements
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance]
+                             cardElementType:ACRContainer];
+    XCTAssertFalse([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
+    [registration setBaseCardElementRenderer:[MockRenderer getInstance] cardElementType:ACRContainer useResourceResolver:YES];
+    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultElementRenderers:ACRContainer]);
+}
+
+// Test that overriden default renders can be chosen to use resource resolvers
+- (void)testResourceResolverSelectivelyWorksForActions
+{
+    ACRRegistration *registration = [ACRRegistration getInstance];
+    [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] cardElementType:@(ACROpenUrl)];
+    XCTAssertFalse([registration shouldUseResourceResolverForOverridenDefaultActionRenderers:ACROpenUrl]);
+    [registration setActionRenderer:[CustomActionOpenURLRenderer getInstance] actionElementType:ACROpenUrl useResourceResolver:YES];
+    XCTAssertTrue([registration shouldUseResourceResolverForOverridenDefaultActionRenderers:ACROpenUrl]);
 }
 
 @end

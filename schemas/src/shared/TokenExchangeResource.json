@@ -1,0 +1,22 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
+    "description": "Defines information required to enable on-behalf-of single sign-on user authentication. Maps to the TokenExchangeResource type defined by the Bot Framework (https://github.com/microsoft/botframework-obi/blob/jeffders/adaptiveCards2/protocols/botframework-activity/botframework-cards.md#TokenExchangeResource)",
+    "version": "1.4",
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "The unique identified of this token exchange instance.",
+            "required": true
+        },
+        "uri": {
+            "type": "string",
+            "description": "An application ID or resource identifier with which to exchange a token on behalf of. This property is identity provider- and application-specific.",
+            "required": true
+        },
+        "providerId": {
+            "type": "string",
+            "description": "An identifier for the identity provider with which to attempt a token exchange.",
+            "required": true
+        }
+    }
+}

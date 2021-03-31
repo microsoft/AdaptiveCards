@@ -7,6 +7,12 @@ os.environ["test_img_path"] = "./tests/test_images/test01.png"
 headers = {"Content-Type": "application/json"}
 payload_empty_dict_data = "{'image': null}"
 payload_data_some_string = "{'image': 'some string'}"
+api_dict = {
+            "GetCardTemplatesTestAPI": "/get_card_templates",
+            "PredictJsonTestAPI": "/predict_json",
+            "TestSampleImages": "/predict_json",
+            "PredictJsonDebugTestAPI": "/predict_json_debug"
+            }
 
 
 def img_to_base64(img_path):

@@ -184,7 +184,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         ConstraintLayout container = (ConstraintLayout) LayoutInflater.from(context).inflate(R.layout.image_constraint_layout, null);
 
         // Grow container layout if height is stretch (assumes the parent is a vertical LinearLayout)
-        if(image.GetHeight() == HeightType.Stretch)
+        if(image.GetPixelHeight() == 0 && image.GetHeight() == HeightType.Stretch)
         {
             container.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1));
         }
@@ -325,6 +325,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         }
 
         ImageView imageView = new ImageView(context);
+        imageView.setContentDescription(image.GetAltText());
 
         int backgroundColor = getBackgroundColorFromHexCode(image.GetBackgroundColor());
 
@@ -371,7 +372,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         imageView.setTag(tagContent);
         setVisibility(baseCardElement.GetIsVisible(), imageView);
 
-        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, image.GetSelectAction(), imageView, cardActionHandler, renderArgs);
 
         return imageView;
     }

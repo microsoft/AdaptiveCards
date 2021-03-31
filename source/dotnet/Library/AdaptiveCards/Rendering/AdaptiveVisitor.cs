@@ -55,6 +55,11 @@ namespace AdaptiveCards.Rendering
 
         public virtual void Visit(AdaptiveCard card)
         {
+            if (card == null)
+            {
+                return;
+            }
+
             foreach (var item in card.Body)
                 Visit(item);
 
@@ -141,6 +146,9 @@ namespace AdaptiveCards.Rendering
 
             if (action is AdaptiveToggleVisibilityAction toggleVisibilityAction)
                 Visit(toggleVisibilityAction);
+
+            if (action is AdaptiveExecuteAction executeAction)
+                Visit(executeAction);
         }
 
         public virtual void Visit(AdaptiveSubmitAction action)
@@ -154,6 +162,13 @@ namespace AdaptiveCards.Rendering
         public virtual void Visit(AdaptiveShowCardAction action)
         {
             Visit(action.Card);
+        }
+
+        public virtual void Visit(AdaptiveToggleVisibilityAction action)
+        {
+        }
+        public virtual void Visit(AdaptiveExecuteAction action)
+        {
         }
 
         public virtual void Visit(AdaptiveMedia media)

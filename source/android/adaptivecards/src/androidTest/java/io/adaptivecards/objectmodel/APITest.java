@@ -1,15 +1,32 @@
 package io.adaptivecards.objectmodel;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.test.InstrumentationRegistry;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Map;
 
 import io.adaptivecards.renderer.AdaptiveCardRenderer;
+import io.adaptivecards.renderer.AdaptiveFallbackException;
+import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.RenderArgs;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.action.ActionElementRenderer;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.inputhandler.IInputWatcher;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 public class APITest
 {
@@ -64,6 +81,157 @@ public class APITest
 
             Assert.assertEquals(expectedMimeTypes[index], resourceInformation.getMimeType());
             Assert.assertEquals(expectedUrls[index], resourceInformation.getUrl());
+        }
+    }
+
+    public static class CustomActionListener extends BaseActionElementRenderer.ActionOnClickListener
+    {
+        public CustomActionListener(RenderedAdaptiveCard renderedCard,
+                                    Context context,
+                                    FragmentManager fragmentManager,
+                                    ViewGroup viewGroup,
+                                    BaseActionElement baseActionElement,
+                                    ICardActionHandler cardActionHandler,
+                                    HostConfig hostConfig,
+                                    RenderArgs renderArgs)
+        {
+            super(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs);
+        }
+
+        public CustomActionListener(RenderedAdaptiveCard renderedCard,
+                                    BaseActionElement baseActionElement,
+                                    ICardActionHandler cardActionHandler)
+        {
+            super(renderedCard, baseActionElement, cardActionHandler);
+        }
+
+        @Override
+        public void onClick(View view)
+        {
+            super.onClick(view);
+
+            if (m_renderedAdaptiveCard.areInputsValid())
+            {
+            }
+        }
+    }
+
+    public static class CustomBlueAction extends BaseActionElement
+    {
+        public CustomBlueAction(ActionType type) {
+            super(type);
+        }
+        public static final String CustomActionId = "blueAction";
+
+        public static class CustomBlueActionParser extends ActionElementParser
+        {
+            @Override
+            public BaseActionElement Deserialize(ParseContext context, JsonValue value)
+            {
+                CustomBlueAction blueAction = new CustomBlueAction(ActionType.Custom);
+                Util.deserializeBaseActionProperties(context, value, blueAction);
+                blueAction.SetElementTypeString(CustomActionId);
+                return blueAction;
+            }
+
+            @Override
+            public BaseActionElement DeserializeFromString(ParseContext context, String jsonString)
+            {
+                CustomBlueAction blueAction = new CustomBlueAction(ActionType.Custom);
+                Util.deserializeBaseActionPropertiesFromString(context, jsonString, blueAction);
+                blueAction.SetElementTypeString(CustomActionId);
+                return blueAction;
+            }
+        }
+
+        public static class CustomBlueActionRenderer extends BaseActionElementRenderer
+        {
+            @Override
+            public Button render(RenderedAdaptiveCard renderedCard,
+                                 Context context,
+                                 FragmentManager fragmentManager,
+                                 ViewGroup viewGroup,
+                                 BaseActionElement baseActionElement,
+                                 ICardActionHandler cardActionHandler,
+                                 HostConfig hostConfig,
+                                 RenderArgs renderArgs) throws AdaptiveFallbackException
+            {
+                Button blueAction = ActionElementRenderer.getInstance().render(renderedCard,
+                                                                               context,
+                                                                               fragmentManager,
+                                                                               viewGroup,
+                                                                               baseActionElement,
+                                                                               cardActionHandler,
+                                                                               hostConfig,
+                                                                               renderArgs);
+
+                blueAction.setOnClickListener(new CustomActionListener(renderedCard, baseActionElement, cardActionHandler));
+                renderedCard.registerSubmitableAction(blueAction, renderArgs);
+
+                renderedButton = blueAction;
+
+                return blueAction;
+            }
+
+            public static Button renderedButton = null;
+        }
+
+    }
+
+    public static class ActionHandler implements ICardActionHandler
+    {
+
+        @Override
+        public void onAction(BaseActionElement actionElement, RenderedAdaptiveCard renderedAdaptiveCard)
+        {
+            Map<String, String> inputs = renderedAdaptiveCard.getInputs();
+            Assert.assertEquals(1, inputs.size());
+            Assert.assertTrue("Input list doesn't contain expected input id", inputs.keySet().contains("id1"));
+            Assert.assertEquals("A Value", inputs.get("id1"));
+        }
+
+        @Override
+        public void onMediaPlay(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+        {
+        }
+
+        @Override
+        public void onMediaStop(BaseCardElement mediaElement, RenderedAdaptiveCard renderedAdaptiveCard)
+        {
+        }
+    }
+
+    @Test
+    public void TestCustomActionWithSubmitFunctionality() throws Exception
+    {
+        // To run this test please comment this line in BaseActionElementRenderer Util.clearFocus(view);
+        // The aforementioned line produces an exception as this elements in theory don't exist in any view, so in turn
+        // it can't set focus or remove it, thus throwing an exception
+        try
+        {
+            String jsonText = "{\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\"," +
+                "\"type\": \"AdaptiveCard\", \"version\": \"1.2\", \"body\": [ {" +
+                "\"type\": \"Input.Text\", \"id\": \"id1\", \"value\": \"A Value\" } ]," +
+                "\"actions\": [ { \"type\": \"blueAction\", \"title\": \"Custom Blue\" } ] }";
+
+            ElementParserRegistration elementParserRegistration = new ElementParserRegistration();
+            ActionParserRegistration actionParserRegistration = new ActionParserRegistration();
+            actionParserRegistration.AddParser(CustomBlueAction.CustomActionId, new CustomBlueAction.CustomBlueActionParser());
+
+            ParseContext parseContext = new ParseContext(elementParserRegistration, actionParserRegistration);
+
+            ParseResult parseResult = AdaptiveCard.DeserializeFromString(jsonText, AdaptiveCardRenderer.VERSION, parseContext);
+
+            CardRendererRegistration.getInstance().registerActionRenderer(CustomBlueAction.CustomActionId, new CustomBlueAction.CustomBlueActionRenderer());
+
+            Context context = InstrumentationRegistry.getTargetContext();
+            RenderedAdaptiveCard renderedCard = AdaptiveCardRenderer.getInstance().render(context, null, parseResult.GetAdaptiveCard(), new ActionHandler(), new HostConfig());
+
+            CustomBlueAction.CustomBlueActionRenderer.renderedButton.performClick();
+        }
+        catch (Exception ex)
+        {
+            // Assert.fail();
         }
     }
 
