@@ -96,11 +96,6 @@
                 } else {
                     textRunContent = [[NSMutableAttributedString alloc] initWithString:text
                                                                             attributes:descriptor];
-                    // text is preprocessed by markdown parser, and will wrapped by <p></P>
-                    // lines below remove the p tags
-                    [textRunContent deleteCharactersInRange:NSMakeRange(0, 3)];
-                    [textRunContent
-                        deleteCharactersInRange:NSMakeRange([textRunContent length] - 4, 4)];
                 }
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
@@ -115,10 +110,11 @@
 
                 // Config and add Select Action
                 std::shared_ptr<BaseActionElement> baseAction = textRun->GetSelectAction();
+                ACOBaseActionElement *acoAction = [[ACOBaseActionElement alloc] initWithBaseActionElement:baseAction];
                 if (baseAction) {
                     NSObject *target;
                     if (ACRRenderingStatus::ACROk ==
-                        buildTarget([rootView getSelectActionsTargetBuilderDirector], baseAction,
+                        buildTarget([rootView getSelectActionsTargetBuilderDirector], acoAction,
                                     &target)) {
                         NSRange selectActionRange = NSMakeRange(0, textRunContent.length - 1);
 
@@ -179,6 +175,9 @@
     lab.textContainer.lineBreakMode = NSLineBreakByTruncatingTail;
     lab.attributedText = content;
     lab.isAccessibilityElement = YES;
+    if ([content.string stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet].length == 0) {
+        lab.accessibilityElementsHidden = YES;
+    }
     lab.area = lab.frame.size.width * lab.frame.size.height;
 
     lab.translatesAutoresizingMaskIntoConstraints = NO;

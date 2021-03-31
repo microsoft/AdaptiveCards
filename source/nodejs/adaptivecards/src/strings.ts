@@ -31,7 +31,27 @@ export class Strings {
         actionAlreadyParented: () => "The action already belongs to another element.",
         elementTypeNotStandalone: (typeName: string) => `Elements of type ${typeName} cannot be used as standalone elements.`
     };
+    static readonly magicCodeInputCard = {
+        tryAgain: () => "That didn't work... let's try again.",
+        pleaseLogin: () => "Please login in the popup. You will obtain a magic code. Paste that code below and select \"Submit\"",
+        enterMagicCode: () => "Enter magic code",
+        pleaseEnterMagicCodeYouReceived: () => "Please enter the magic code you received.",
+        submit: () => "Submit",
+        cancel: () => "Cancel",
+        somethingWentWrong: () => "Something went wrong. This action can't be handled.",
+        authenticationFailed: () => "Authentication failed."
+    };
+    static readonly runtime = {
+        automaticRefreshPaused: () => "Automatic refresh paused.",
+        clckToRestartAutomaticRefresh: () => "Click to restart.",
+        refreshThisCard: () => "Refresh this card"
+    };
     static readonly hints = {
         dontUseWeightedAndStrecthedColumnsInSameSet: () => "It is not recommended to use weighted and stretched columns in the same ColumnSet, because in such a situation stretched columns will always get the minimum amount of space."
-    }
+    };
+    static readonly defaults = {
+        inlineActionTitle: () => "Inline Action",
+        mediaPlayerAriaLabel: () => "Media content",
+        mediaPlayerPlayMedia: () => "Play media"
+    };
 }

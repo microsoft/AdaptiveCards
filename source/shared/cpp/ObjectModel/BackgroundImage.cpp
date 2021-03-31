@@ -23,6 +23,12 @@ VerticalAlignment BackgroundImage::GetVerticalAlignment() const { return m_vAlig
 
 void BackgroundImage::SetVerticalAlignment(const VerticalAlignment& value) { m_vAlignment = value; }
 
+// Indicates non-default values have been set. If false, serialization can be safely skipped.
+bool BackgroundImage::ShouldSerialize() const
+{
+    return !m_url.empty();
+}
+
 std::string BackgroundImage::Serialize() const
 {
     return ParseUtil::JsonToString(SerializeToJsonValue());
@@ -70,6 +76,21 @@ Json::Value BackgroundImage::SerializeToJsonValue() const
 
 std::shared_ptr<BackgroundImage> BackgroundImage::Deserialize(const Json::Value& json)
 {
+    if (json.empty())
+    {
+        return nullptr;
+    }
+
+    if (json.isString())
+    {
+        const std::string backgroundImageUrl = json.asString();
+
+        if (backgroundImageUrl != "")
+        {
+            return std::make_shared<BackgroundImage>(backgroundImageUrl);
+        }
+    }
+
     std::shared_ptr<BackgroundImage> image = std::make_shared<BackgroundImage>();
 
     image->SetUrl(ParseUtil::GetString(json, AdaptiveCardSchemaKey::Url, true));

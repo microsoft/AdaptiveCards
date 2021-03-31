@@ -1,0 +1,140 @@
+
+    .w-button--blue:hover {
+        background-color: #2f4fd3;
+        border-color: #2f4fd3;
+    }
+
+.w-button {
+display: block;
+width: 300px;
+position: relative;
+margin-left: auto;
+margin-right: auto;
+margin-top: 35px;
+height: 44px;
+text-align: center;
+white-space: nowrap;
+vertical-align: middle;
+-webkit-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+border: 1px solid #e3e8ef;
+background-color: transparent;
+box-shadow: none;
+padding: 0;
+border-radius: 4px;
+font-weight: 600;
+cursor: pointer;
+}
+
+.w-button--blue {
+background-color: #4461d7;
+border-color: #4461d7;
+color: #fff;
+}
+
+
+
+.app-loader {
+display: -ms-flexbox;
+display: flex;
+-ms-flex-direction: column;
+flex-direction: column;
+-ms-flex-align: center;
+align-items: center;
+-ms-flex-pack: center;
+justify-content: center;
+width: 100vw;
+height: 100vh;
+}
+
+.app-loader:before {
+content: '';
+display: block;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+
+}
+
+.app-loader__logo {
+width: 90px;
+height: 90px;
+margin-bottom: 1.5rem;
+}
+
+svg {
+fill: currentColor;
+}
+
+.app-loader__loading-bar {
+-ms-flex: 0 0 auto;
+flex: 0 0 auto;
+display: -ms-flexbox;
+display: flex;
+-ms-flex-align: center;
+align-items: center;
+width: 130px;
+height: 8px;
+border-radius: 20px;
+position: relative;
+background-color: #e6e7e8;
+overflow: hidden;
+}
+
+.app-loader__loading-bar:before {
+content: '';
+display: block;
+-ms-flex: 0 0 auto;
+flex: 0 0 auto;
+width: 80px;
+height: 8px;
+border-radius: 20px;
+background-color: #FF22B1;
+position: absolute;
+left: 0;
+animation: AppLoaderBar;
+animation-duration: 1s;
+animation-iteration-count: infinite;
+animation-direction: alternate;
+animation-timing-function: ease-in-out;
+}
+
+@keyframes AppLoaderBar {
+0% {
+transform: translateX(-30%);
+}
+
+50% {
+}
+
+100% {
+transform: translateX(95%);
+}
+}
+
+
+.select2-container--default .select2-selection--single {
+height: 38px !important;
+padding: 6px 10px;
+font-size: 18px;
+line-height: 1.33;
+border-radius: 6px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+top: 85% !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+line-height: 24px !important;
+}
+
+.select2-container--default .select2-selection--single {
+border: 1px solid #CCC !important;
+box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset;
+transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+}

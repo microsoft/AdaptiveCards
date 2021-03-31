@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+"use strict";
+
+var path = require('path');
+var argv = require('minimist')(process.argv.slice(2));
+var defined = require('../lib/defined');
+var defaultValue = require('../lib/defaultValue');
+var markedSchema = require('../lib/index');
+
+if (!defined(argv._[0]) || defined(argv.h) || defined(argv.help)) {
+    var help = 'Usage: node ' + path.basename(__filename) + ' [path-to-json-schema-file] [path-to-toc-yml] [OPTIONS]\n';
+    process.stdout.write(help);
+    return;
+}
+
+var schemaPath = argv._[0];
+var tocPath = argv._[1];
+var rootDefinition = defaultValue(argv.r, null);
+var examplesPath = defaultValue(argv.e, null)
+
+markedSchema.generateMarkdown.generateMarkdown({
+    schema: schemaPath,
+    toc: tocPath,
+    rootDefinition: rootDefinition,
+    examplesPath: examplesPath
+}).then(function (md) {
+    process.stdout.write(md);
+}).catch(function (err) {
+    console.error(err);
+});

@@ -27,6 +27,7 @@ import io.adaptivecards.objectmodel.ColumnSet;
 import io.adaptivecards.objectmodel.ColumnVector;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
+import io.adaptivecards.renderer.layout.SelectableFlexboxLayout;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 import io.adaptivecards.renderer.IBaseCardElementRenderer;
 
@@ -68,16 +69,12 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ColumnVector columnVector = columnSet.GetColumns();
         long columnVectorSize = columnVector.size();
 
-        FlexboxLayout columnSetLayout = new FlexboxLayout(context);
-
-        // Add this two for allowing children to bleed
-        columnSetLayout.setClipChildren(false);
-        columnSetLayout.setClipToPadding(false);
-
+        SelectableFlexboxLayout columnSetLayout = new SelectableFlexboxLayout(context);
         columnSetLayout.setFlexWrap(FlexWrap.NOWRAP);
         columnSetLayout.setFlexDirection(FlexDirection.ROW);
 
-        setMinHeight(columnSet.GetMinHeight(), columnSetLayout, context);
+        // TODO: Consistent column-width across platforms, which may need normalized weights:
+        // normalizeWeights(columnVector);
 
         ContainerStyle parentContainerStyle = renderArgs.getContainerStyle();
         ContainerStyle styleForThis = ContainerRenderer.GetLocalContainerStyle(columnSet, parentContainerStyle);
@@ -85,6 +82,11 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         for (int i = 0; i < columnVectorSize; i++)
         {
             Column column = columnVector.get(i);
+
+            if(columnSet.GetMinHeight() > column.GetMinHeight())
+            {
+                column.SetMinHeight(columnSet.GetMinHeight());
+            }
 
             RenderArgs columnRenderArgs = new RenderArgs(renderArgs);
             columnRenderArgs.setContainerStyle(styleForThis);
@@ -102,7 +104,7 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
                                                                                    featureRegistration);
         }
 
-        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler);
+        ContainerRenderer.setSelectAction(renderedCard, columnSet.GetSelectAction(), columnSetLayout, cardActionHandler, renderArgs);
 
         TagContent tagContent = new TagContent(columnSet);
         if (columnSet.GetHeight() == HeightType.Stretch)
@@ -129,6 +131,30 @@ public class ColumnSetRenderer extends BaseCardElementRenderer
         ContainerRenderer.ApplyBleed(columnSet, columnSetLayout, context, hostConfig);
 
         return columnSetLayout;
+    }
+
+    /**
+     * Normalize width of columns such that all relative weights, if any, sum to 1.
+     * @param columns Columns to normalize
+     */
+    private static void normalizeWeights(ColumnVector columns) {
+        float totalWeight = 0;
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null)
+            {
+                totalWeight += relativeWidth;
+            }
+        }
+        for(Column c : columns)
+        {
+            Float relativeWidth = ColumnRenderer.getRelativeWidth(c);
+            if(relativeWidth != null && totalWeight > 0)
+            {
+                c.SetWidth(String.valueOf(relativeWidth / totalWeight));
+            }
+        }
     }
 
     private static ColumnSetRenderer s_instance = null;

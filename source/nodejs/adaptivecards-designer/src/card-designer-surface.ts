@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 import * as Adaptive from "adaptivecards";
-import * as Controls from "adaptivecards-controls";
+import { Constants } from "adaptivecards-controls";
 import { DraggableElement } from "./draggable-element";
 import { IPoint } from "./miscellaneous";
 import * as DesignerPeers from "./designer-peers";
@@ -136,6 +136,7 @@ export class ActionPeerRegistry extends DesignerPeerRegistry<ActionType, ActionP
 
         this.registerPeer(Adaptive.HttpAction, DesignerPeers.HttpActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionHttp");
         this.registerPeer(Adaptive.SubmitAction, DesignerPeers.SubmitActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
+        this.registerPeer(Adaptive.ExecuteAction, DesignerPeers.ExecuteActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionSubmit");
         this.registerPeer(Adaptive.OpenUrlAction, DesignerPeers.OpenUrlActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionOpenUrl");
         this.registerPeer(Adaptive.ShowCardAction, DesignerPeers.ShowCardActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionShowCard");
         this.registerPeer(Adaptive.ToggleVisibilityAction, DesignerPeers.ToggleVisibilityActionPeer, DesignerPeerCategory.Actions, "acd-icon-actionToggleVisibility");
@@ -322,34 +323,7 @@ export class CardDesignerSurface {
 
         if (this.isPreviewMode) {
             cardToRender.onExecuteAction = (action: Adaptive.Action) => {
-                let message: string = "Action executed\n";
-                message += "    Title: " + action.title + "\n";
-
-                if (action instanceof Adaptive.OpenUrlAction) {
-                    message += "    Type: OpenUrl\n";
-                    message += "    Url: " + action.url + "\n";
-                }
-                else if (action instanceof Adaptive.SubmitAction) {
-                    message += "    Type: Submit";
-                    message += "    Data: " + JSON.stringify(action.data);
-                }
-                else if (action instanceof Adaptive.HttpAction) {
-                    message += "    Type: Http\n";
-                    message += "    Url: " + action.url + "\n";
-                    message += "    Method: " + action.method + "\n";
-                    message += "    Headers:\n";
-
-                    for (let header of action.headers) {
-                        message += "        " + header.name + ": " + header.value + "\n";
-                    }
-
-                    message += "    Body: " + action.body + "\n";
-                }
-                else {
-                    message += "    Type: <unknown>";
-                }
-
-                alert(message);
+                alert("Action executed\n" + JSON.stringify(action.toJSON(this._serializationContext), undefined, 4));
             };
         }
 
@@ -527,8 +501,8 @@ export class CardDesignerSurface {
 
         this._designerSurface.onkeyup = (e: KeyboardEvent) => {
             if (this._selectedPeer) {
-                switch (e.keyCode) {
-                    case Controls.KEY_ESCAPE:
+                switch (e.key) {
+                    case Constants.keys.escape:
                         if (this.draggedPeer) {
                             this.endDrag(true);
                         }
@@ -537,7 +511,7 @@ export class CardDesignerSurface {
                         }
 
                         break;
-                    case Controls.KEY_DELETE:
+                    case Constants.keys.delete:
                         if (!this.draggedPeer) {
                             this.removeSelected();
                         }
@@ -553,7 +527,7 @@ export class CardDesignerSurface {
             let clientRect = this._designerSurface.getBoundingClientRect();
 
             if (this.draggedPeer) {
-                if (!this._designerSurface.hasPointerCapture(e.pointerId)) {
+                if (this._designerSurface.hasPointerCapture && !this._designerSurface.hasPointerCapture(e.pointerId)) {
                     this._designerSurface.setPointerCapture(e.pointerId);
                 }
 
@@ -799,7 +773,7 @@ export class CardDesignerSurface {
 
             this._dropTarget.renderedElement.classList.remove("dragover");
 
-            this._dragVisual.remove();
+            this._dragVisual?.parentNode.removeChild(this._dragVisual);
             this._dragVisual = undefined;
 
             this.setDraggedPeer(null);
@@ -813,8 +787,6 @@ export class CardDesignerSurface {
     }
 
     tryDrop(pointerPosition: IPoint, peer: DesignerPeers.DesignerPeer): boolean {
-        var result = false;
-
         if (peer) {
             if (this._dropTarget) {
                 this._dropTarget.renderedElement.classList.remove("dragover");
@@ -826,11 +798,11 @@ export class CardDesignerSurface {
                 this._dropTarget = newDropTarget;
                 this._dropTarget.renderedElement.classList.add("dragover");
 
-                result = this._dropTarget.tryDrop(peer, pointerPosition);
+                return this._dropTarget.tryDrop(peer, pointerPosition);
             }
         }
 
-        return result;
+        return false;
     }
 
     isPointerOver(x: number, y: number) {

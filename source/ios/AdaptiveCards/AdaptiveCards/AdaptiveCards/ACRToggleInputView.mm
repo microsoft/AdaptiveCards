@@ -46,6 +46,9 @@
     [_contentview.centerYAnchor constraintEqualToAnchor:self.layoutMarginsGuide.centerYAnchor].active = YES;
     [_contentview.heightAnchor constraintEqualToAnchor:self.heightAnchor].active = YES;
     [_title setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    self.toggle.tintColor = self.switchOffStateColor;
+    self.toggle.backgroundColor = self.switchOffStateColor;
+    self.toggle.layer.cornerRadius = 16.0f;
      // we configure the margin to nil, and have users of SDK configure margins through xib interface's container view
     if (@available(iOS 11.0, *)) {
         NSDirectionalEdgeInsets insets = self.directionalLayoutMargins;

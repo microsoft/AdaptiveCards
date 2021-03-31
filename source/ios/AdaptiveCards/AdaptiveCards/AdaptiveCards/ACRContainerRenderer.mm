@@ -9,7 +9,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRColumnView.h"
-#import "ACRLongPressGestureRecognizerFactory.h"
 #import "ACRRendererPrivate.h"
 #import "ACRViewPrivate.h"
 #import "Container.h"
@@ -67,7 +66,7 @@
         trailingBlankSpace = [container addPaddingSpace];
     }
 
-    [container setClipsToBounds:TRUE];
+    [container setClipsToBounds:NO];
 
     if (containerElem->GetMinHeight() > 0) {
         [NSLayoutConstraint constraintWithItem:container
@@ -92,12 +91,8 @@
     }
 
     std::shared_ptr<BaseActionElement> selectAction = containerElem->GetSelectAction();
-    // instantiate and add tap gesture recognizer
-    [ACRLongPressGestureRecognizerFactory addLongPressGestureRecognizerToUIView:viewGroup
-                                                                       rootView:rootView
-                                                                  recipientView:container
-                                                                  actionElement:selectAction
-                                                                     hostConfig:acoConfig];
+    ACOBaseActionElement *acoSelectAction = [ACOBaseActionElement getACOActionElementFromAdaptiveElement:selectAction];
+    [container configureForSelectAction:acoSelectAction rootView:rootView];
 
     configVisibility(container, elem);
 
@@ -106,13 +101,13 @@
     return viewGroup;
 }
 
-- (void)configUpdateForUIImageView:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
+- (void)configUpdateForUIImageView:(ACRView *)rootView acoElem:(ACOBaseCardElement *)acoElem config:(ACOHostConfig *)acoConfig image:(UIImage *)image imageView:(UIImageView *)imageView
 {
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Container> containerElem = std::dynamic_pointer_cast<Container>(elem);
     auto backgroundImageProperties = containerElem->GetBackgroundImage();
 
-    renderBackgroundImage(backgroundImageProperties.get(), imageView, image);
+    renderBackgroundImage(rootView, backgroundImageProperties.get(), imageView, image);
 }
 
 @end

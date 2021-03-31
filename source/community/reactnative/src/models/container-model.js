@@ -13,6 +13,7 @@ class BaseContainerModel extends BaseModel {
         this.style = payload.style;
         this.bleed = payload.bleed;
         this.minHeight = payload.minHeight;
+        this.altText = payload.altText;
     }
 }
 
@@ -25,6 +26,7 @@ export class AdaptiveCardModel extends BaseContainerModel {
         this.speak = payload.speak;
         this.children = [];
         this.actions = [];
+        this.height = undefined;
         this.children.push(...ModelFactory.createGroup(payload.body, this));
         this.actions.push(...ModelFactory.createGroup(payload.actions, this));
         this.show = true;

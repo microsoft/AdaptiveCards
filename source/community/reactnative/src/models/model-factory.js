@@ -1,6 +1,8 @@
 import * as Models from './index'
+import { BaseModel } from './base-model'
 import { ElementType } from '../utils/enums'
 import * as Utils from '../utils/util'
+import { Registry } from '../components/registration/registry';
 import { HostConfigManager, HostCapabilities } from '../utils/host-config';
 
 export class ModelFactory {
@@ -8,18 +10,23 @@ export class ModelFactory {
         if (!payload) {
             return undefined;
         }
-        if(payload.requires) {
+        if (payload.requires) {
             let requirements = new HostCapabilities(payload.requires)
             let hostCapabilities = HostConfigManager.getHostConfig().getHostCapabilities()
-            if(requirements.satisfied(hostCapabilities)) {
-                return this.getElement(payload, parent)
+            const elementModel = this.getElement(payload, parent);
+            if (elementModel && requirements.satisfied(hostCapabilities)) {
+                return this.addCustomPropertyInModel(elementModel, payload)
             } else {
                 return ModelFactory.checkForFallBack(payload, parent);
             }
         } else {
-            return this.getElement(payload, parent)
+            const elementModel = this.getElement(payload, parent);
+            if (elementModel) {
+                return this.addCustomPropertyInModel(elementModel, payload)
+            } else {
+                return ModelFactory.checkForFallBack(payload, parent);
+            }
         }
-        
     }
 
     static getElement(payload, parent) {
@@ -70,9 +77,25 @@ export class ModelFactory {
             case ElementType.ActionSet:
                 return new Models.ActionSetModel(payload, parent);
             default:
-                return ModelFactory.checkForFallBack(payload, parent);
+                //Handling registered custom components
+                const Element = Registry.getManager().getComponentOfType(payload.type);
+                if (Element) {
+                    return new BaseModel(payload, parent);
+                } else {
+                    return null;
+                }
         }
     }
+
+    static addCustomPropertyInModel(elementModel, payload) {
+        for (let key in payload) {
+            if (!elementModel.hasOwnProperty(key)) {
+                elementModel[key] = payload[key];
+            }
+        }
+        return elementModel
+    }
+
     static createGroup(payload, parent) {
         let modelGroup = [];
         if (payload && payload.length > 0) {
@@ -86,16 +109,16 @@ export class ModelFactory {
         return modelGroup;
     }
 
-    static checkForFallBack (payload, parent) {
-        if (!Utils.isNullOrEmpty(payload.fallback)){
-            if (payload.fallback !== "drop"){
+    static checkForFallBack(payload, parent) {
+        if (!Utils.isNullOrEmpty(payload.fallback)) {
+            if (payload.fallback !== "drop") {
                 return ModelFactory.createElement(payload.fallback, parent);
             }
-            else{
+            else {
                 return undefined;
-            }  
+            }
         } else {
             return undefined;
-        }  
+        }
     }
 }

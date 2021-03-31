@@ -5,16 +5,19 @@ using Newtonsoft.Json.Converters;
 
 namespace AdaptiveCards
 {
+    /// <summary>
+    /// The style of ChoiceInput to display.
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter), true)]
     public enum AdaptiveChoiceInputStyle
     {
         /// <summary>
-        ///     choices are prefered to be compactly displayed. Example: ComboBox
+        /// Compact display similar to a ComboBox.
         /// </summary>
         Compact,
 
         /// <summary>
-        ///     choices are prefered to be displayed for easy input. Example: Checkbox or Radio buttons
+        /// Expanded display i.e. Checkbox or Radio buttons.
         /// </summary>
         Expanded
     }

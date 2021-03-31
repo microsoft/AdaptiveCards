@@ -107,6 +107,12 @@ namespace AdaptiveNamespace
             XamlHelpers::CreateXamlClass<IComboBox>(HStringReference(RuntimeClass_Windows_UI_Xaml_Controls_ComboBox));
 
         
+        HString placeHolderText;
+        ComPtr<IComboBox2> comboBox2;
+        RETURN_IF_FAILED(comboBox.As(&comboBox2));
+        RETURN_IF_FAILED(adaptiveChoiceSetInput->get_Placeholder(placeHolderText.GetAddressOf()));
+        RETURN_IF_FAILED(comboBox2->put_PlaceholderText(placeHolderText.Get()));
+
         // Set HorizontalAlignment to Stretch (defaults to Left for combo boxes)
         ComPtr<IFrameworkElement> comboBoxAsFrameworkElement;
         RETURN_IF_FAILED(comboBox.As(&comboBoxAsFrameworkElement));

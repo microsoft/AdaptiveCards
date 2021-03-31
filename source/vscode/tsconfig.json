@@ -1,16 +1,19 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es5",
+		"target": "es6",
 		"outDir": "out",
+		"resolveJsonModule": true,
 		"lib": [
-			"es2015"
+			"es6",
+			"es2016",
+            "dom"
 		],
 		"sourceMap": true,
-		"rootDir": ".",
-		"strictNullChecks": true
+		"rootDir": "src"
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		".vscode-test"
 	]
 }

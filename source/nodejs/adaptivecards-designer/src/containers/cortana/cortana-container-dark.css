@@ -73,7 +73,7 @@ a.ac-anchor:visited:active {
     text-overflow: ellipsis;
     text-align: center;
     vertical-align: middle;
-    cursor: default;
+    cursor: pointer;
     font-family: "Segoe UI", sans-serif;
     font-size: 14px;
     padding: 4px 10px 5px 10px;
@@ -100,10 +100,20 @@ a.ac-anchor:visited:active {
     color: black;
 }
 
-.ac-pushButton.expanded {
-    background-color: #6165A4;
-    border: 2px solid #A7A8DA;
-    color: black;
+@media (forced-colors: none) {
+    .ac-pushButton.expanded {
+        background-color: #6165A4;
+        border: 2px solid #A7A8DA;
+        color: black;
+    }
+}
+
+@media (forced-colors: active) {
+    .ac-pushButton.expanded {
+        background-color: highlight;
+        color: highlightText;
+        forced-color-adjust: none;
+    }
 }
 
 .ac-pushButton.style-emphasis {
