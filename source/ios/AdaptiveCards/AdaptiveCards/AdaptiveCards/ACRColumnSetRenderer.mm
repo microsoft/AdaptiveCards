@@ -46,6 +46,7 @@
                                                                   parentStyle:[viewGroup style]
                                                                    hostConfig:acoConfig
                                                                     superview:viewGroup];
+    columnSetView.rtl = rootView.context.rtl;
 
     [viewGroup addArrangedSubview:columnSetView];
 

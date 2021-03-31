@@ -133,7 +133,32 @@
             [rootView addWarnings:ACRMissingInputErrorMessage mesage:@"There exist required input, but there is no associated label with it, consider adding label to the input"];
         }
     }
+    [self setRtl:rootView.context.rtl];
     return self;
+}
+
+- (void)setRtl:(ACRRtl)rtl
+{
+    if (rtl == ACRRtlNone) {
+        return;
+    }
+    UISemanticContentAttribute semanticAttribute = (rtl == ACRRtlRTL) ? UISemanticContentAttributeForceRightToLeft : UISemanticContentAttributeForceLeftToRight;
+
+    if (self.errorMessage) {
+        self.errorMessage.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.label) {
+        self.label.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.stack) {
+        self.stack.semanticContentAttribute = semanticAttribute;
+    }
+
+    if (self.inputView) {
+        self.inputView.semanticContentAttribute = semanticAttribute;
+    }
 }
 
 - (BOOL)validate:(NSError **)error
