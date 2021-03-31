@@ -26,6 +26,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         valueStack.orientation = .vertical
         valueStack.alignment = .leading
         
+        var requiredWidth: CGFloat = 0
         // Main loop to iterate over Array of facts
         for fact in factArray {
             let markdownParserResult = BridgeTextUtils.processText(from: fact, hostConfig: hostConfig)
@@ -52,6 +53,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
             
             if !(titleView.isEmpty) || !(valueView.isEmpty) {
                 titleStack.addArrangedSubview(titleView)
+                requiredWidth = max(titleView.attributedTextValue?.size().width ?? 0, requiredWidth)
                 valueStack.addArrangedSubview(valueView)
             }
         }
@@ -66,7 +68,12 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         // Spacing between title and value in the horizontal Stack
         titleStack.trailingAnchor.constraint(equalTo: valueStack.leadingAnchor, constant: -10).isActive = true
         // Getting Max width from Host config if it exists
-        titleStack.widthAnchor.constraint(lessThanOrEqualToConstant: CGFloat(truncating: factsetConfig?.title.maxWidth ?? 150)).isActive = true
+        let maxAllowedWidth = CGFloat(truncating: factsetConfig?.title.maxWidth ?? 150)
+        if requiredWidth > maxAllowedWidth {
+            titleStack.widthAnchor.constraint(equalToConstant: maxAllowedWidth).isActive = true
+        } else {
+            titleStack.widthAnchor.constraint(equalToConstant: (requiredWidth + 1)).isActive = true
+        }
 
         valueStack.trailingAnchor.constraint(equalTo: mainFactView.trailingAnchor).isActive = true
         valueStack.topAnchor.constraint(equalTo: mainFactView.topAnchor).isActive = true
