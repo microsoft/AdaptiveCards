@@ -2,31 +2,6 @@ import { ThemeElement } from '../utils/enums';
 import * as Constants from '../utils/constants';
 
 
-export class ThemeConfigManager {
-
-    static themeConfig = null;
-
-	/**
-     * @description Return the theme config
-	 * @returns {ThemeConfigManager}
-	 */
-    static getThemeConfig() {
-        if (!ThemeConfigManager.themeConfig) {
-            ThemeConfigManager.themeConfig = new ThemeConfig(defaultThemeConfig);
-        }
-        return this.themeConfig;
-    }
-
-    /**
-     * @description Set the custom theme config property
-     * @param {object} value 
-     */
-    static setThemeConfig(value) {
-        let newThemeConfig = { ...defaultThemeConfig, ...value }
-        this.themeConfig = new ThemeConfig(newThemeConfig);
-    }
-}
-
 export class ThemeConfig {
     constructor(obj = {}) {
         this.button = new Config(ThemeElement.Button, obj);
