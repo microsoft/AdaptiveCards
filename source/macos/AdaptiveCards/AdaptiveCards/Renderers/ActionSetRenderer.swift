@@ -9,19 +9,22 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
             logError("Element is not of type ACSActionSet")
             return NSView()
         }
-        return renderView(actions: actionSet.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+        return renderView(actions: actionSet.getActions(), aligned: actionSet.getHorizontalAlignment(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
     }
     
     func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
-        return renderView(actions: actions, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+        // This renders Action in AdaptiveCards, as it has no
+        // horizontal alignment property, hardcode it to .left
+        return renderView(actions: actions, aligned: .left, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
     }
     
-    private func renderView(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    private func renderView(actions: [ACSBaseActionElement], aligned alignment: ACSHorizontalAlignment, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
         let actionSetView = ACRActionSetView()
         actionSetView.translatesAutoresizingMaskIntoConstraints = false
         let adaptiveActionHostConfig = hostConfig.getActions()
         
         if let orientation = adaptiveActionHostConfig?.actionsOrientation, orientation == .horizontal {
+            actionSetView.alignment = alignment == .center ? .centerY: (alignment == .right ? .trailing: .leading)
             actionSetView.orientation = .horizontal
         } else {
             actionSetView.orientation = .vertical

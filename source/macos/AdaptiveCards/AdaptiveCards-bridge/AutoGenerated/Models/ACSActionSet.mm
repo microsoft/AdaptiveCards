@@ -10,6 +10,7 @@
 
 #import "ACSActionSet.h"
 #import "../../../../../shared/cpp/ObjectModel/ActionSet.h"
+#import "ACSHorizontalAlignmentConvertor.h"
 
 
 @implementation  ACSActionSet {
@@ -36,6 +37,22 @@
     }
     return objList;
 
+
+}
+
+- (ACSHorizontalAlignment)getHorizontalAlignment
+{
+
+    auto getHorizontalAlignmentCpp = mCppObj->GetHorizontalAlignment();
+    return [ACSHorizontalAlignmentConvertor convertCpp:getHorizontalAlignmentCpp];
+
+}
+
+- (void)setHorizontalAlignment:(enum ACSHorizontalAlignment)value
+{
+    auto valueCpp = [ACSHorizontalAlignmentConvertor convertObj:value];
+
+    mCppObj->SetHorizontalAlignment(valueCpp);
 
 }
 

@@ -10,6 +10,7 @@ class ACRActionSetView: NSView {
     
     private var frameWidth: CGFloat = 0
     private var maxFrameWidth: CGFloat = 0
+    private var renderAction: Bool = true
     
     public var totalWidth: CGFloat = 0
     public var actions: [NSView] = []
@@ -30,6 +31,10 @@ class ACRActionSetView: NSView {
         frameWidth = frame.width
         if orientation == .horizontal, totalWidth > frameWidth, totalWidth > maxFrameWidth, frameWidth != 0 {
             maxFrameWidth = frameWidth
+            customLayout()
+        }
+        if orientation == .horizontal, frameWidth != 0, renderAction {
+            renderAction = false
             customLayout()
         }
     }
@@ -67,8 +72,7 @@ class ACRActionSetView: NSView {
         // adding new child stackview to parent stackview and the parent stackview will align child stackview vertically
         stackview.addArrangedSubview(curview)
         stackview.orientation = .vertical
-        stackview.alignment = .leading
-        
+        let gravityArea: NSStackView.Gravity = stackview.alignment == .centerY ? .center: (stackview.alignment == .trailing ? .trailing: .leading)
         totalWidth = 0
         for view in actions {
             accumulatedWidth += view.intrinsicContentSize.width
@@ -80,14 +84,15 @@ class ACRActionSetView: NSView {
                     return view
                 }()
                 curview = newStackView
-                curview.addArrangedSubview(view)
+                curview.orientation = .horizontal
+                curview.addView(view, in: gravityArea)
                 curview.spacing = elementSpacing
                 accumulatedWidth = 0
                 accumulatedWidth += view.intrinsicContentSize.width
                 accumulatedWidth += elementSpacing
-                stackview.addArrangedSubview(newStackView)
+                stackview.addArrangedSubview(curview)
             } else {
-                curview.addArrangedSubview(view)
+                curview.addView(view, in: gravityArea)
                 accumulatedWidth += elementSpacing
             }
         }
