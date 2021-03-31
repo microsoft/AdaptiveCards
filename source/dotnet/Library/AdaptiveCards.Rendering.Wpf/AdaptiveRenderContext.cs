@@ -92,6 +92,18 @@ namespace AdaptiveCards.Rendering.Wpf
                     }
                 }
             }
+            else if (args.Action is AdaptiveExecuteAction)
+            {
+                var executeAction = (args.Action as AdaptiveExecuteAction);
+
+                if (executeAction.AssociatedInputs == AdaptiveAssociatedInputs.Auto)
+                {
+                    if (!ValidateInputs(executeAction))
+                    {
+                        return;
+                    }
+                }
+            }
 
             OnAction?.Invoke(ui, args);
         }
@@ -498,7 +510,7 @@ namespace AdaptiveCards.Rendering.Wpf
             }
         }
 
-        private bool ValidateInputs(AdaptiveSubmitAction submitAction)
+        private bool ValidateInputs(AdaptiveAction submitAction)
         {
             bool allInputsValid = true, firstInvalidInputFound = false;
             Dictionary<string, Func<string>> newInputBindings = new Dictionary<string, Func<string>>();
@@ -540,7 +552,7 @@ namespace AdaptiveCards.Rendering.Wpf
             return allInputsValid;
         }
 
-        private List<string> RetrieveInputList(AdaptiveSubmitAction submitAction)
+        private List<string> RetrieveInputList(AdaptiveAction submitAction)
         {
             List<string> inputList = new List<string>();
             AdaptiveInternalID submitActionCardId = SubmitActionCardId[submitAction];
@@ -576,8 +588,8 @@ namespace AdaptiveCards.Rendering.Wpf
         // Dictionary where all the parent cards point to their parent cards, the parent for the main card must have ID = Invalid
         public Dictionary<AdaptiveInternalID, AdaptiveInternalID> ParentCards { get; set; }  = new Dictionary<AdaptiveInternalID, AdaptiveInternalID>();
 
-        // Dictionary where we tie every Action.Submit to the card where it is contained, this help us knowing where should we start validating from
-        public Dictionary<AdaptiveSubmitAction, AdaptiveInternalID> SubmitActionCardId { get; set; } = new Dictionary<AdaptiveSubmitAction, AdaptiveInternalID>();
+        // Dictionary where we tie every Action.Submit or Action.Exectute to the card where it is contained, this help us knowing where should we start validating from
+        public Dictionary<AdaptiveAction, AdaptiveInternalID> SubmitActionCardId { get; set; } = new Dictionary<AdaptiveAction, AdaptiveInternalID>();
 
         // Dictionary where we tie every input.Id (string) with the card internal Id 
         private Dictionary<AdaptiveInternalID, List<string>> InputsInCard = new Dictionary<AdaptiveInternalID, List<string>>();

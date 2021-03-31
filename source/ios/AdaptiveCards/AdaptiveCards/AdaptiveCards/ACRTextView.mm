@@ -9,6 +9,7 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACRInputLabelView.h"
 #import "TextInput.h"
+#import "UtiliOS.h"
 
 @implementation ACRTextView
 
@@ -45,18 +46,7 @@
                                  encoding:NSUTF8StringEncoding];
     [self registerForKeyboardNotifications];
 
-    BOOL bRemove = NO;
-    if (![self.text length]) {
-        self.text = @"placeholder text";
-        bRemove = YES;
-    }
-    CGRect boundingrect = [self.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
-    boundingrect.size.height *= 4;
-    self.frame = boundingrect;
-
-    if (bRemove) {
-        self.text = @"";
-    }
+    self.frame = [self computeBoundingRect];
 
     CGRect frame = CGRectMake(0, 0, self.frame.size.width, 30);
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:frame];
@@ -124,7 +114,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-    return self.frame.size;
+    return [self computeBoundingRect].size;
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text;
@@ -166,6 +156,24 @@
         }
     }
     [textView resignFirstResponder];
+}
+
+- (CGRect)computeBoundingRect
+{
+    BOOL bRemove = NO;
+
+    if (![self.text length]) {
+        self.text = @"placeholder text";
+        bRemove = YES;
+    }
+    CGRect boundingrect = [self.layoutManager lineFragmentRectForGlyphAtIndex:0 effectiveRange:nil];
+    boundingrect.size.height *= 4;
+    self.frame = boundingrect;
+    
+    if (bRemove) {
+        self.text = @"";
+    }
+    return boundingrect;
 }
 
 @synthesize hasValidationProperties;

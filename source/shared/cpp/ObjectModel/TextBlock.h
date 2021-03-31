@@ -29,6 +29,9 @@ namespace AdaptiveSharedNamespace
         void SetText(const std::string& value);
         DateTimePreparser GetTextForDateParsing() const;
 
+        TextStyle GetStyle() const;
+        void SetStyle(const TextStyle value);
+
         TextSize GetTextSize() const;
         void SetTextSize(const TextSize value);
 
@@ -60,6 +63,7 @@ namespace AdaptiveSharedNamespace
         bool m_wrap;
         unsigned int m_maxLines;
         HorizontalAlignment m_hAlignment;
+        TextStyle m_textStyle;
         std::shared_ptr<TextElementProperties> m_textElementProperties;
         void PopulateKnownPropertiesSet();
     };

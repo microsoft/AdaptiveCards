@@ -1,0 +1,29 @@
+ {
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.0",
+    "authentication" : {
+        "text" : "Please Authenticate",
+        "connectionName" : "myConnection",
+        "tokenExchangeResource" : {
+            "id" : "tokenExchangeId",
+            "uri" : "http:\\token.exchange.resource",
+            "providerId" : "myProvider"
+        },
+        "buttons" : [
+             {
+                 "type" : "signIn",
+                 "title" : "Click here to sign in",
+                 "image" : "http:\\image.uri",
+                 "value" : "buttonValue"
+             }
+         ]
+     },
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Test Card",
+            "wrap": true
+        }
+    ]
+}

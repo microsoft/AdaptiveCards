@@ -26,7 +26,35 @@ namespace UWPUnitTests
                 Style = ContainerStyle.Emphasis,
                 Version = "1.3",
                 VerticalContentAlignment = VerticalContentAlignment.Center,
+                Refresh = new AdaptiveRefresh
+                {
+                    Action = new AdaptiveExecuteAction()
+                },
+                Authentication = new AdaptiveAuthentication
+                {
+                    Text = "Please Authenticate your account",
+                    ConnectionName = "myConnection",
+                    TokenExchangeResource = new AdaptiveTokenExchangeResource
+                    {
+                        Id = "myTokenId",
+                        ProviderId = "myProviderId",
+                        Uri = "https://mytoken.exchange/resource"
+                    },
+                }
             };
+
+            card.Refresh.UserIds.Add("user1");
+            card.Refresh.UserIds.Add("user2");
+
+            AdaptiveAuthCardButton button = new AdaptiveAuthCardButton
+            {
+                Type = "signIn",
+                Value = "value",
+                Title = "Click here to sign in",
+                Image = "https://myauthbutton/image.jpg"
+            };
+
+            card.Authentication.Buttons.Add(button);
 
             Assert.AreEqual("https://www.stuff.com/background.jpg", card.BackgroundImage.Url);
             Assert.AreEqual("Fallback Text", card.FallbackText);
@@ -36,6 +64,30 @@ namespace UWPUnitTests
             Assert.AreEqual(ContainerStyle.Emphasis, card.Style);
             Assert.AreEqual("1.3", card.Version);
             Assert.AreEqual(VerticalContentAlignment.Center, card.VerticalContentAlignment);
+
+            Assert.IsNotNull(card.Refresh);
+            Assert.IsNotNull(card.Refresh.Action);
+            Assert.AreEqual(ActionType.Execute, card.Refresh.Action.ActionType);
+            Assert.IsNotNull(card.Refresh.UserIds);
+            Assert.AreEqual(2, card.Refresh.UserIds.Count);
+            Assert.AreEqual("user1", card.Refresh.UserIds[0]);
+            Assert.AreEqual("user2", card.Refresh.UserIds[1]);
+
+            Assert.IsNotNull(card.Authentication);
+            Assert.AreEqual("Please Authenticate your account", card.Authentication.Text);
+            Assert.AreEqual("myConnection", card.Authentication.ConnectionName);
+
+            Assert.IsNotNull(card.Authentication.TokenExchangeResource);
+            Assert.AreEqual("myTokenId", card.Authentication.TokenExchangeResource.Id);
+            Assert.AreEqual("myProviderId", card.Authentication.TokenExchangeResource.ProviderId);
+            Assert.AreEqual("https://mytoken.exchange/resource", card.Authentication.TokenExchangeResource.Uri);
+
+            Assert.IsNotNull(card.Authentication.Buttons);
+            Assert.AreEqual(1, card.Authentication.Buttons.Count);
+            Assert.AreEqual("signIn", card.Authentication.Buttons[0].Type);
+            Assert.AreEqual("value", card.Authentication.Buttons[0].Value);
+            Assert.AreEqual("Click here to sign in", card.Authentication.Buttons[0].Title);
+            Assert.AreEqual("https://myauthbutton/image.jpg", card.Authentication.Buttons[0].Image);
 
             card.SelectAction = new AdaptiveSubmitAction
             {
@@ -74,8 +126,13 @@ namespace UWPUnitTests
             Assert.AreEqual("Submit One", card.Actions[0].Title);
             Assert.AreEqual("Submit Two", card.Actions[1].Title);
 
+            string expectedSerialization = "{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"authentication\":{\"buttons\":[{\"image\":\"https://myauthbutton/image.jpg\",\"title\":\"Click here to sign in\",\"type\":\"signIn\",\"value\":\"value\"}],\"connectionName\":\"myConnection\",\"text\":\"Please Authenticate your account\",\"tokenExchangeResource\":{\"id\":\"myTokenId\",\"providerId\":\"myProviderId\",\"uri\":\"https://mytoken.exchange/resource\"}},\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"refresh\":{\"action\":{\"type\":\"Action.Execute\"},\"userIds\":[\"user1\",\"user2\"]},\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}";
+
             var jsonString = card.ToJson().ToString();
-            Assert.AreEqual("{\"actions\":[{\"title\":\"Submit One\",\"type\":\"Action.Submit\"},{\"title\":\"Submit Two\",\"type\":\"Action.Submit\"}],\"backgroundImage\":\"https://www.stuff.com/background.jpg\",\"body\":[{\"text\":\"This is a text block\",\"type\":\"TextBlock\"},{\"text\":\"This is another text block\",\"type\":\"TextBlock\"}],\"fallbackText\":\"Fallback Text\",\"height\":\"Stretch\",\"lang\":\"en\",\"speak\":\"This is a card\",\"style\":\"Emphasis\",\"type\":\"AdaptiveCard\",\"version\":\"1.3\",\"verticalContentAlignment\":\"Center\"}", jsonString);
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(card.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         public void ValidateBaseElementProperties(
@@ -118,6 +175,7 @@ namespace UWPUnitTests
                 Language = "en",
                 MaxLines = 3,
                 Size = TextSize.Large,
+                Style = TextStyle.Heading,
                 Text = "This is a text block",
                 Weight = TextWeight.Bolder,
                 Wrap = true,
@@ -139,12 +197,21 @@ namespace UWPUnitTests
             Assert.AreEqual("en", textBlock.Language);
             Assert.AreEqual<uint>(3, textBlock.MaxLines);
             Assert.AreEqual(TextSize.Large, textBlock.Size);
+            Assert.AreEqual(TextStyle.Heading, textBlock.Style);
             Assert.AreEqual("This is a text block", textBlock.Text);
             Assert.AreEqual(TextWeight.Bolder, textBlock.Weight);
             Assert.IsTrue(textBlock.Wrap);
 
-            var jsonString = textBlock.ToJson().ToString();
-            Assert.AreEqual("{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}", jsonString);
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Body.Add(textBlock);
+
+            string expectedSerialization = "{\"actions\":[],\"body\":[{\"color\":\"Accent\",\"fontType\":\"Monospace\",\"height\":\"Stretch\",\"horizontalAlignment\":\"center\",\"id\":\"TextBlockId\",\"isSubtle\":true,\"isVisible\":false,\"maxLines\":3,\"separator\":true,\"size\":\"Large\",\"spacing\":\"large\",\"style\":\"heading\",\"text\":\"This is a text block\",\"type\":\"TextBlock\",\"weight\":\"Bolder\",\"wrap\":true}],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]
@@ -789,6 +856,37 @@ namespace UWPUnitTests
 
             var jsonString = submitAction.ToJson().ToString();
             Assert.AreEqual("{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Submit\"}", jsonString);
+        }
+
+        [TestMethod]
+        public void ExecuteAction()
+        {
+            JsonValue dataJson = JsonValue.CreateStringValue("foo");
+            AdaptiveExecuteAction executeAction = new AdaptiveExecuteAction
+            {
+                DataJson = dataJson,
+                Verb = "doStuff",
+                IconUrl = "http://www.stuff.com/icon.jpg",
+                Id = "OpenUrlId",
+                Style = "Destructive",
+                Title = "Title",
+                AssociatedInputs = AssociatedInputs.None
+            };
+
+            ValidateBaseActionProperties(executeAction, "http://www.stuff.com/icon.jpg", "OpenUrlId", "Title", "Destructive");
+            Assert.AreEqual(dataJson, executeAction.DataJson);
+            Assert.AreEqual("doStuff", executeAction.Verb);
+
+            AdaptiveCard adaptiveCard = new AdaptiveCard();
+            adaptiveCard.Actions.Add(executeAction);
+
+            string expectedSerialization = "{\"actions\":[{\"associatedInputs\":\"None\",\"data\":\"foo\",\"iconUrl\":\"http://www.stuff.com/icon.jpg\",\"id\":\"OpenUrlId\",\"style\":\"Destructive\",\"title\":\"Title\",\"type\":\"Action.Execute\",\"verb\":\"doStuff\"}],\"body\":[],\"type\":\"AdaptiveCard\",\"version\":\"1.0\"}";
+
+            var jsonString = adaptiveCard.ToJson().ToString();
+            Assert.AreEqual(expectedSerialization, jsonString);
+
+            var parseResult = AdaptiveCard.FromJson(adaptiveCard.ToJson());
+            Assert.AreEqual(expectedSerialization, parseResult.AdaptiveCard.ToJson().ToString());
         }
 
         [TestMethod]

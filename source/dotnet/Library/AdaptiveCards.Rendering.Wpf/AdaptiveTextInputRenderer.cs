@@ -119,7 +119,8 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiButton.Content = uiTitle;
             }
 
-            if (input.InlineAction is AdaptiveSubmitAction)
+            if (input.InlineAction is AdaptiveSubmitAction ||
+                input.InlineAction is AdaptiveExecuteAction)
             {
                 context.SubmitActionCardId[input.InlineAction as AdaptiveSubmitAction] = context.RenderArgs.ContainerCardId;
             }

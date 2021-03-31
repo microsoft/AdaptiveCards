@@ -4,12 +4,15 @@
 #include "EverythingBagel.h"
 
 #include "ActionSet.h"
+#include "AuthCardButton.h"
+#include "Authentication.h"
 #include "ChoiceInput.h"
 #include "ChoiceSetInput.h"
 #include "Column.h"
 #include "ColumnSet.h"
 #include "Container.h"
 #include "DateInput.h"
+#include "ExecuteAction.h"
 #include "Fact.h"
 #include "FactSet.h"
 #include "Image.h"
@@ -24,6 +27,7 @@
 #include "TextRun.h"
 #include "TimeInput.h"
 #include "ToggleInput.h"
+#include "TokenExchangeResource.h"
 
 using namespace std::string_literals;
 
@@ -40,9 +44,36 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(vAlignment == backImage.GetVerticalAlignment());
     }
 
+    
+    void ValidateRefresh(const Refresh& refresh)
+    {
+        Assert::IsTrue(refresh.GetAction() != nullptr);
+        Assert::IsTrue(refresh.GetAction()->GetElementType() == ActionType::Execute);
+        Assert::AreEqual(refresh.GetAction()->GetId(), "refresh_action_id"s);
+        Assert::AreEqual(refresh.GetUserIds().size(), size_t(1) );
+        Assert::AreEqual(refresh.GetUserIds().at(0), "refresh_userIds_0"s);
+    }
+
+    void ValidateAuthentication(const Authentication& authentication)
+    {
+        Assert::AreEqual(authentication.GetText(), "authentication_text"s);
+        Assert::AreEqual(authentication.GetConnectionName(), "authentication_connectionName"s);
+        Assert::IsTrue(authentication.GetTokenExchangeResource() != nullptr);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetId(), "authentication_tokenExchangeResource_id"s);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetUri(), "authentication_tokenExchangeResource_uri"s);
+        Assert::AreEqual(authentication.GetTokenExchangeResource()->GetProviderId(), "authentication_tokenExchangeResource_providerId"s);
+        Assert::AreEqual(authentication.GetButtons().size(), size_t(1) );
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetType(), "authentication_buttons_0_type"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetTitle(), "authentication_buttons_0_title"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetImage(), "authentication_buttons_0_image"s);
+        Assert::AreEqual(authentication.GetButtons().at(0)->GetValue(), "authentication_buttons_0_value"s);
+    }
+
     void ValidateTopLevelProperties(const AdaptiveCard &everythingBagel)
     {
         ValidateBackgroundImage(*everythingBagel.GetBackgroundImage(), ImageFillMode::Cover, HorizontalAlignment::Left, VerticalAlignment::Top);
+        ValidateRefresh(*everythingBagel.GetRefresh());
+        ValidateAuthentication(*everythingBagel.GetAuthentication());
         Assert::IsTrue(CardElementType::AdaptiveCard == everythingBagel.GetElementType());
         Assert::AreEqual("fallbackText"s, everythingBagel.GetFallbackText());
         Assert::IsTrue(HeightType::Auto == everythingBagel.GetHeight());
@@ -54,12 +85,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
     }
 
-    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
+    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, TextStyle style, std::string id)
     {
         Assert::IsTrue(textBlock.GetElementType() == CardElementType::TextBlock);
         Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
         Assert::AreEqual(id, textBlock.GetId());
         Assert::AreEqual("TextBlock_text"s, textBlock.GetText());
+        Assert::IsTrue(style == textBlock.GetStyle());
         Assert::IsTrue(ForegroundColor::Default == textBlock.GetTextColor());
         Assert::IsTrue(HorizontalAlignment::Left == textBlock.GetHorizontalAlignment());
         Assert::IsTrue(Spacing::Default == textBlock.GetSpacing());
@@ -277,7 +309,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
-		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
+        Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -343,7 +375,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
 
-		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
+        Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)
@@ -438,15 +470,15 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         // validate textblock (no fontType)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Heading, "TextBlock_id");
 
         // validate textblock (monospace)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(1));
-        ValidateTextBlock(*textBlock, FontType::Monospace, "TextBlock_id_mono");
+        ValidateTextBlock(*textBlock, FontType::Monospace, TextStyle::Paragraph, "TextBlock_id_mono");
 
         // validate textblock (default)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(2));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id_def");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Paragraph, "TextBlock_id_def");
 
         // validate image
         auto image = std::static_pointer_cast<Image>(body.at(3));
@@ -479,7 +511,7 @@ namespace AdaptiveCardsSharedModelUnitTest
     void ValidateToplevelActions(const AdaptiveCard &everythingBagel)
     {
         auto actions = everythingBagel.GetActions();
-        Assert::AreEqual(size_t{ 2 }, actions.size());
+        Assert::AreEqual(size_t{ 3 }, actions.size());
 
         // validate submit action
         {
@@ -501,9 +533,29 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(size_t{ 0 }, resourceUris.size());
         }
 
+        // validate execute action
+        {
+            auto executeAction = std::static_pointer_cast<ExecuteAction>(actions.at(1));
+            Assert::IsTrue(executeAction->GetElementType() == ActionType::Execute);
+            Assert::AreEqual(ActionTypeToString(ActionType::Execute), executeAction->GetElementTypeString());
+            Assert::AreEqual(""s, executeAction->GetIconUrl());
+            Assert::AreEqual("Action.Execute_id"s, executeAction->GetId());
+            Assert::AreEqual("Action.Execute_title"s, executeAction->GetTitle());
+            Assert::AreEqual("Action.Execute_verb"s, executeAction->GetVerb());
+            Assert::AreEqual("{\"Action.Execute_data_keyA\":\"Action.Execute_data_valueA\"}\n"s, executeAction->GetDataJson());
+            Assert::IsTrue(executeAction->GetAssociatedInputs() == AssociatedInputs::None);
+
+            auto additionalProps = executeAction->GetAdditionalProperties();
+            Assert::IsTrue(additionalProps.empty());
+
+            std::vector<RemoteResourceInformation> resourceUris;
+            executeAction->GetResourceInformation(resourceUris);
+            Assert::AreEqual(size_t{ 0 }, resourceUris.size());
+        }
+
         // validate showcard action
         {
-            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(1));
+            auto showCardAction = std::static_pointer_cast<ShowCardAction>(actions.at(2));
             Assert::IsTrue(showCardAction->GetElementType() == ActionType::ShowCard);
             Assert::AreEqual(ActionTypeToString(ActionType::ShowCard), showCardAction->GetElementTypeString());
             Assert::AreEqual(""s, showCardAction->GetIconUrl());
