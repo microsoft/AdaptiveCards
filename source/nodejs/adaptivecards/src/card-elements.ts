@@ -3784,7 +3784,6 @@ export abstract class Action extends CardObject {
     //#region Schema
 
     static readonly titleProperty = new StringProperty(Versions.v1_0, "title");
-    static readonly tooltipProperty = new StringProperty(Versions.v1_5, "tooltip", true);
     static readonly iconUrlProperty = new StringProperty(Versions.v1_1, "iconUrl");
     static readonly styleProperty = new ValueSetProperty(
         Versions.v1_2,
@@ -3806,9 +3805,6 @@ export abstract class Action extends CardObject {
 
     @property(Action.titleProperty)
     title?: string;
-
-    @property(Action.tooltipProperty)
-    tooltip?: string;
 
     @property(Action.iconUrlProperty)
     iconUrl?: string;
@@ -4029,7 +4025,7 @@ export abstract class Action extends CardObject {
     }
 
     get effectiveTooltip(): string | undefined {
-        return this.tooltip ? this.tooltip : this.title;
+        return this.title;
     }
 
     get shouldPromoteAsPrimaryOnExecute(): boolean {
