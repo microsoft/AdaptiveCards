@@ -14,10 +14,9 @@ public interface IOverflowActionRenderer {
     /**
      * This implementation renders an Overflow action view.
      * @param actionElements secondary action elements list to be displayed on menu.
-     * @param parent view to be the parent of the rendered view if attachToRoot is true.
      * @return rendered view.
      */
-    View onRenderOverflowAction(@NonNull BaseActionElementVector actionElements, @NonNull ViewGroup parent);
+    View onRenderOverflowAction(@NonNull BaseActionElementVector actionElements);
 
     /**
      * This implementation displays menu for secondary actions.
