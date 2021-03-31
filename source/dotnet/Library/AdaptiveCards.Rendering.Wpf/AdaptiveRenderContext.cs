@@ -53,6 +53,8 @@ namespace AdaptiveCards.Rendering.Wpf
 
         public bool IsRenderingSelectAction { get; set; }
 
+        public bool? Rtl { get; set; }
+
         public IDictionary<Uri, MemoryStream> CardAssets { get; set; } = new Dictionary<Uri, MemoryStream>();
 
         public IDictionary<string, Func<string>> InputBindings = new Dictionary<string, Func<string>>();
