@@ -298,6 +298,9 @@ export class CardDesignerSurface {
 
             cardToRender.parse(outputPayload, this._serializationContext);
         }
+        else {
+            cardToRender.$data = this.context.sampleData;
+        }
 
         return cardToRender;
     }
@@ -356,8 +359,8 @@ export class CardDesignerSurface {
 
         if (this.fixedHeightCard) {
             renderedCard.style.height = "100%";
-
         }
+
         this._cardHost.appendChild(renderedCard);
     }
 
@@ -598,6 +601,7 @@ export class CardDesignerSurface {
 
         this._card = new Adaptive.AdaptiveCard();
         this._card.onInlineCardExpanded = (action: Adaptive.ShowCardAction, isExpanded: boolean) => { this.inlineCardExpanded(action, isExpanded); };
+        /*
         this._card.onPreProcessPropertyValue = (sender: Adaptive.CardObject, property: Adaptive.PropertyDefinition, value: any) => {
             if (Shared.GlobalSettings.enableDataBindingSupport && typeof value === "string" && this.context.sampleData && this.context.bindingPreviewMode !== BindingPreviewMode.NoPreview) {
                 let expression = Adaptive.Template.parseInterpolatedString(value);
@@ -623,6 +627,7 @@ export class CardDesignerSurface {
 
             return value;
         };
+        */
         this._card.version = this.context.targetVersion;
         this._card.hostConfig = this.context.hostContainer.getHostConfig();
         this._card.designMode = true;

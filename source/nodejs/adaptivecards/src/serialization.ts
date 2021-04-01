@@ -110,6 +110,7 @@ export class Versions {
     static readonly v1_1 = new Version(1, 1);
     static readonly v1_2 = new Version(1, 2);
     static readonly v1_3 = new Version(1, 3);
+    static readonly v1_4 = new Version(1, 4, "Experimental");
     static readonly latest = Versions.v1_3;
 }
 
@@ -794,6 +795,7 @@ export abstract class SerializableObject {
 
     private static readonly _schemaCache: { [typeName: string]: SerializableObjectSchema } = {};
 
+    private _$data: any;
     private _propertyBag: PropertyBag = {};
     private _rawProperties: PropertyBag = {};
     private _updateCount: number = 0;
@@ -855,9 +857,8 @@ export abstract class SerializableObject {
             let evaluationResult = Template.tryEvaluateExpression(
                 value,
                 {
-                    $root: {
-                        testProp: "It works!"
-                    }
+                    $root: this.$root,
+                    $data: this.$data
                 },
                 true);
 
@@ -1073,5 +1074,17 @@ export abstract class SerializableObject {
 
     getIsUpdating(): boolean {
         return this._updateCount > 0;
+    }
+
+    get $data(): any {
+        return this._$data;
+    }
+
+    set $data(value: any) {
+        this._$data = value;
+    }
+
+    get $root(): any {
+        return this.$data;
     }
 }

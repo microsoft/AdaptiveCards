@@ -176,6 +176,12 @@ export abstract class CardObject extends SerializableObject {
         }
     }
 
+    get $root(): any {
+        let rootObject = this.getRootObject();
+
+        return rootObject ? rootObject.$data : undefined;
+    }
+
     get parent(): CardObject | undefined {
         return this._parent;
     }
