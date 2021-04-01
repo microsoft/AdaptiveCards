@@ -42,5 +42,14 @@ namespace AdaptiveCards
         [DefaultValue(null)]
         public string Width { get; set; } // TODO: this should be a ColumnWidth type with implicit converter
 
+        /// <summary>
+        /// Sets the text flow direction
+        /// </summary>
+        [JsonProperty(DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate)]
+#if !NETSTANDARD1_3
+        [XmlElement]
+#endif
+        [DefaultValue(null)]
+        public bool? Rtl { get; set; } = null;
     }
 }
