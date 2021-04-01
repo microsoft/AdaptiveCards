@@ -152,8 +152,8 @@ public class ImageRenderer extends BaseCardElementRenderer
         int semanticWidth = getImageSizePixels(context, image.GetImageSize(), hostConfig.GetImageSizes());
 
         imageView.setAdjustViewBounds(true);
-        imageView.setScaleType(ImageView.ScaleType.FIT_START);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(semanticWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
+        imageView.setMinimumWidth(semanticWidth);
+        imageView.setMaxWidth(semanticWidth);
     }
 
     /**
@@ -322,7 +322,7 @@ public class ImageRenderer extends BaseCardElementRenderer
         boolean isInImageSet = viewGroup instanceof HorizontalFlowLayout;
         if (isInImageSet)
         {
-            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, isInImageSet);
+            separator = setSpacingAndSeparator(context, viewGroup, image.GetSpacing(), image.GetSeparator(), hostConfig, false /* horizontal line */, true);
         }
 
         ImageView imageView = new ImageView(context);
