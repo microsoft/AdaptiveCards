@@ -5,6 +5,7 @@
 
 #include "AdaptiveCardParseException.h"
 #include "BaseElement.h"
+#include "ExecuteAction.h"
 #include "OpenUrlAction.h"
 #include "ShowCardAction.h"
 #include "SubmitAction.h"
@@ -37,6 +38,7 @@ namespace AdaptiveSharedNamespace
     ActionParserRegistration::ActionParserRegistration()
     {
         m_knownElements.insert({
+            ActionTypeToString(ActionType::Execute),
             ActionTypeToString(ActionType::OpenUrl),
             ActionTypeToString(ActionType::ShowCard),
             ActionTypeToString(ActionType::Submit),
@@ -45,7 +47,8 @@ namespace AdaptiveSharedNamespace
         });
 
         m_cardElementParsers.insert(
-            {{ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
+            {{ActionTypeToString(ActionType::Execute), std::make_shared<ExecuteActionParser>()},
+             {ActionTypeToString(ActionType::OpenUrl), std::make_shared<OpenUrlActionParser>()},
              {ActionTypeToString(ActionType::ShowCard), std::make_shared<ShowCardActionParser>()},
              {ActionTypeToString(ActionType::Submit), std::make_shared<SubmitActionParser>()},
              {ActionTypeToString(ActionType::ToggleVisibility), std::make_shared<ToggleVisibilityActionParser>()},

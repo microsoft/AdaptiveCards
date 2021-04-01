@@ -9,6 +9,7 @@ export class BaseActionModel extends BaseModel{
         this.iconUrl = payload.iconUrl;
         this.sentiment = payload.style;
         this.ignoreInputValidation = payload.ignoreInputValidation;
+        this.altText = payload.altText;
     }
 }
 

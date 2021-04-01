@@ -38,8 +38,7 @@ class ContainerGroup:
                          object_type: str,
                          grouping_object: Union[ImageGrouping,
                                                 ChoicesetGrouping],
-                         grouping_condition: bool,
-                         order_key: int) -> List[Dict]:
+                         grouping_condition: bool) -> List[Dict]:
         """
         Returns the grouped layout structure for the given grouping object type
         @param design_items: list of design items to be grouped.
@@ -79,11 +78,6 @@ class ContainerGroup:
                 card_layout[-1][
                     "coordinates"] = ds_template.build_container_coordinates(
                         container_coords)
-                order_values = [c[order_key] for c in coordinates]
-                card_layout[-1][object_type][key] = [
-                    value for _, value in sorted(
-                        zip(order_values, card_layout[-1][object_type][key]),
-                        key=lambda value: value[0])]
 
                 card_layout = [item for item in
                                card_layout if item not in items]
@@ -116,6 +110,12 @@ class ContainerGroup:
                     items, remaining_items = self.collect_items_for_container(
                         column_item.get("column", {}).get("items", []),
                         object_class)
+                    # order the container elements based on the order_key
+                    order = [item.get("coordinates")[order_key] for item in
+                             items]
+                    items = [value for _, value in sorted(
+                        zip(order, items),
+                        key=lambda value: value[0])]
                     remaining_items = [remaining_item
                                        for remaining_item in remaining_items
                                        if design_object.get("object",
@@ -127,8 +127,7 @@ class ContainerGroup:
                             items,
                             row_columns[column_counter]["column"]["items"],
                             grouping_type, grouping_object,
-                            grouping_condition,
-                            order_key)
+                            grouping_condition)
                     column_y_minimums = [c.get("coordinates")[1]
                                          for c in row_columns[column_counter][
                                              "column"]["items"]]

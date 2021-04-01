@@ -102,6 +102,7 @@
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
     childview.spacing = spacing;
+    containingView.spacing = spacing;
     childview.translatesAutoresizingMaskIntoConstraints = NO;
 
     if (elems.empty()) {
@@ -174,7 +175,10 @@
     containingView.contentview = childview;
     containingView.contentWidth = contentWidth;
 
-    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor multiplier:1.0].active = YES;
+    [containingView.heightAnchor constraintEqualToAnchor:childview.heightAnchor].active = YES;
+    if (ActionsOrientation::Vertical == adaptiveActionConfig.actionsOrientation) {
+        [containingView.widthAnchor constraintEqualToAnchor:childview.widthAnchor].active = YES;
+    }
     containingView.translatesAutoresizingMaskIntoConstraints = NO;
 
     containingView.stretch = adaptiveActionConfig.actionAlignment == ActionAlignment::Stretch;

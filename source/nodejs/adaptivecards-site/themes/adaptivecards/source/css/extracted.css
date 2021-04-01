@@ -420,16 +420,8 @@ screen and (min-width:768px) {
 	padding: 4px 8px;
 }
 
-
-
 .action-bar .action-list>li .action-item-text {
-	display: none;
-}
-
-@media screen and (min-width:1088px) {
-	.action-bar .action-list>li .action-item-text {
-		display: inline-block;
-	}
+	display: inline-block;
 }
 
 .button.is-small {

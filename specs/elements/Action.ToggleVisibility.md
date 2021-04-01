@@ -2,14 +2,14 @@
 
 # Action.ToggleVisibility
 
-**Introduced in version 1.2**
+#### Introduced in version 1.2
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.ToggleVisibility"` | Yes | Must be `"Action.ToggleVisibility"`. | 1.2 |
-| **targetElements** | `TargetElement[]` | No | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
+| **targetElements** | `TargetElement[]` | Yes | The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information. | 1.2 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -25,7 +25,7 @@
 The array of TargetElements. It is not recommended to include Input elements with validation under Action.Toggle due to confusion that can arise from invalid inputs that are not currently visible. See https://docs.microsoft.com/en-us/adaptive-cards/authoring-cards/input-validation for more information.
 
 * **Type**: `TargetElement[]`
-* **Required**: No
+* **Required**: Yes
 * **Allowed values**:
   * `TargetElement`
   * `string`
@@ -50,6 +50,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Type**: `Action`, `FallbackOption`
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.ShowCard`
   * `Action.Submit`

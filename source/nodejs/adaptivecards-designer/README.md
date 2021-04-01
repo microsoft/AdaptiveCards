@@ -10,6 +10,12 @@ Try it out at [https://adaptivecards.io/designer](https://adaptivecards.io/desig
 
 This package allows you to easily integrate the adaptive cards designer into your own experiences. 
 
+> ## IMPORTANT: Breaking change in version 2.0 and later
+> 
+> Before version 2.0, the `adaptivecards-designer` package embedded the `adaptivecards`, `adaptivecards-templating` and `adaptive-expressions` packages. This model didn't allow an application to use, say, a more recent version of `adaptive-expressions` with the designer, and bug fixes in `adaptive-expressions` would always have to be accompanied with a new release of the `adaptivecards-designer` package.
+>
+> From version 2.0 on, `adaptivecards-designer` doesn't embed any of those packages anymore, and it is the responsibility of the consuming application to explicitly load these packages.
+
 ## Usage
 
 There are two simple ways to consume the designer: CDN script reference or importing the module and using webpack.
@@ -217,7 +223,13 @@ ACDesigner.Strings.toolboxes.propertySheet.title = "Custom property sheet title"
 ACDesigner.Strings.toolboxes.sampleDataEditor.title = "Custom sample data editor title";
 ACDesigner.Strings.toolboxes.toolPalette.title = "Custom tool palette title";
 
-/* Modify the Element toolbox (BEFORE calling attachTo) */ 
+/* To configure custom Pic2Card endpoint */
+ACDesigner.Pic2Card.pic2cardService = "https://<<your-pic2Card-service-endpoint>> ";
+
+/* To have a custom pic2card image usage policy provide new image policy url/path here*/
+ACDesigner.Pic2Card.privacyLink = "myPath/privacy";
+
+/* Modify the Element toolbox (BEFORE calling attachTo) */
 Adaptive.GlobalRegistry.elements.unregister("RichTextBlock");
 ACDesigner.CardDesignerSurface.cardElementPeerRegistry.unregisterPeer(Adaptive.RichTextBlock);
 
@@ -271,3 +283,14 @@ designer.sampleData = {
 	phone: "123-123-1234"
 };
 ```
+
+## Hosting Pic2Card Service
+
+Pic2Card is a ML based service which converts a graphical image (such as a PNG or JPEG) into an Adaptive Card JSON payload.
+
+To setup the pic2card ML service follow the instructions given in the below link.
+
+[pic2card service](https://github.com/microsoft/AdaptiveCards/tree/main/source/pic2card#run-the-pic2card-service-in-docker-container)
+
+Once your pic2card ML service is up and running, update the host configuration(PIC_TO_CARD_PREDICTION_API)
+in `.env` file in the adaptivecards-designer root directory and rebuild this project.

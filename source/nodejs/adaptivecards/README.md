@@ -20,8 +20,8 @@ In previous releases of this SDK (`1.x`), the package version would match an off
 
 | SDK Version | Can parse from schema versions | Can serialize to schema versions |
 | --- | --- | --- |
-| `2.4` | `1.0` ... `1.3` | `1.0` ... `1.3` |
-| `2.0`...`2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
+| `2.4` ... `2.6` | `1.0` ... `1.3` | `1.0` ... `1.3` |
+| `2.0` ... `2.3` | `1.0` ... `1.2` | `1.0` ... `1.2` |
 | `1.2` | `1.0` ... `1.2` | `1.2` |
 | `1.1` | `1.0` ... `1.1` | `1.1` | 
 | `1.0` | `1.0` | `1.0` |
@@ -34,6 +34,7 @@ Please be aware of the following **breaking changes** in particular versions.
 | In version | Change description |
 |---|---|
 | **vNext** | A new `protected CardElement.internalUpdateLayout(processChildren: boolean = true)` has been introduced. It is called internally by `CardElement.updateLayout()`. In previous versions, descendent classes could override `updateLayout()` to implement custom layout logic; with this change, descendent classes should override `internalUpdateLayout()` instead. Descendent classes that continue to override `updateLayout` will cause degraded rendering performance. |
+| **2.6** | A new `static SerializableObject.defaultMaxVersion` property is introduced to allow applications to constrain de-serialization to a specific Adaptive Card schema version globally. This new property complements the existing `SerializableObject.maxVersion` member property that does the same on a per-serializable object basis. |
 | **2.5** | The non-standard `ignoreInputValidation` property on `Action.Submit` has been **REMOVED**. Use the new `associatedInputs` property instead. |
 | **2.4** | When a card element is rendered, its `id` property is used as the `id` of the resulting HTML element. |
 | **2.0** | `ColumnSet.getCount()` has been **REMOVED**. Use `ColumnSet.getItemCount()` instead. |

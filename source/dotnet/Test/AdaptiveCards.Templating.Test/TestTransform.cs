@@ -5,6 +5,7 @@ using AdaptiveExpressions;
 using System.Diagnostics;
 using System;
 using AdaptiveExpressions.Memory;
+using System.Collections.Generic;
 
 namespace AdaptiveCards.Templating.Test
 {
@@ -10897,6 +10898,7 @@ namespace AdaptiveCards.Templating.Test
             var parseResult = AdaptiveCard.FromJson(cardJson);
             Assert.IsTrue(true);
         }
+
         [TestMethod]
         public void TestBasic()
         {
@@ -10945,6 +10947,64 @@ namespace AdaptiveCards.Templating.Test
         }
 
         [TestMethod]
+        public void TestComplexAELParsing()
+        {
+            string jsonTemplate = @"{
+  ""$schema"": ""http://adaptivecards.io/schemas/adaptive-card.json"",
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.0"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""spacing"": ""small"",
+      ""selectAction"": {
+        ""type"": ""Action.ToggleVisibility"",
+        ""title"": ""expand"",
+        ""targetElements"": ""${foreach(foreach(indicesAndValues(LineItems), x, concat('cardContent', x.index)), y, json(concat('{ \""elementId\"": \""', y, '\"", \""isVisible\"": true}')))}""
+      },
+      ""verticalContentAlignment"": ""center"",
+      ""items"": [
+        {
+          ""type"": ""Image"",
+          ""id"": ""chevronDown"",
+          ""url"": ""data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAhklEQVQ4T2NkoBAwUqifYXAYwMrAwLCQgYGhhIGB4RmRXpJiYGDoYWBgiId5oZix4krP/w4daSIMkWKsuPL0f4cOyMJe5DAgxhAUzSDXogciPkMwNGMzACSGzRCsmnEZgG4IA7Kf0QMZXzoAuwSkARZg2GKIUEIqhmrqxRW9hAwgmCyGgQEA0UY6FkSob0cAAAAASUVORK5CYII="",
+          ""width"": ""20px"",
+          ""altText"": ""Details collapsed""
+        }
+      ],
+      ""width"": ""auto""
+    }
+  ]
+}";
+
+            string jsonData = @"{
+  ""LineItems"": [
+    {
+      ""Name"": ""Leonardo DiCaprio""
+    },
+    {
+      ""Name"": ""Bradley Cooper""
+    }
+  ]
+}";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+            var context = new EvaluationContext
+            {
+                Root = jsonData
+            };
+
+            try
+            {
+                string cardJson = transformer.Expand(context);
+            }
+            catch
+            { 
+                // AEL is broken and will throw. Once AEL is fixed, this test case will be fixed
+            }
+        }
+
+        [TestMethod]
         public void TestDateConversion()
         {
             string jsonTemplate = @"{
@@ -10974,6 +11034,37 @@ namespace AdaptiveCards.Templating.Test
         }
     ]
 }", cardJson);
+        }
+
+        [TestMethod]
+        public void TestDateFormatTest()
+        {
+            string jsonTemplate = @"{
+            ""type"" : ""AdaptiveCard"",
+            ""$data"": {
+                ""date"" : ""03/15/2018 12:00:00""
+             },
+            ""body"" : [
+                {
+                ""type"" : ""TextBlock"",
+                ""text"" : ""**{{DATE(${formatDateTime(date, 'yyyy-MM-ddTHH:mm:ssZ')}, SHORT)}}**""
+                }
+            ]
+            }";
+
+            AdaptiveCardTemplate transformer = new AdaptiveCardTemplate(jsonTemplate);
+
+            string cardJson = transformer.Expand(null);
+
+            AssertJsonEqual(@"{
+    ""type"" : ""AdaptiveCard"",
+    ""body"" : [
+        {
+        ""type"" : ""TextBlock"",
+        ""text"" : ""**{{DATE(2018-03-15T12:00:00Z, SHORT)}}**""
+        }
+    ]
+    }", cardJson);
         }
 
         [TestMethod]
@@ -12867,6 +12958,7 @@ namespace AdaptiveCards.Templating.Test
         class Data
         { 
             public string title { get; set; }
+            public int IntTemplateProperty { get; internal set; }
         };
         [TestMethod]
         public void TestDoubleQuote()
@@ -12892,6 +12984,27 @@ namespace AdaptiveCards.Templating.Test
                 Console.Error.WriteLine(ex.Message);
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        public void TestWithUnicode()
+        {
+            string cardJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"text\": \"${if(IntTemplateProperty >= 0, IntTemplateProperty + ' % \u25b2', IntTemplateProperty + '%  \u25bc')}\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            string expectedJson = "{\"type\": \"AdaptiveCard\",\"body\": [{\"type\": \"TextBlock\"," +
+                "\"text\": \"5 % \u25b2\"}]," +
+                "\"$schema\": \"http://adaptivecards.io/schemas/adaptive-card.json\",\"version\": \"1.2\"}";
+
+            Data dt = new Data()
+            {
+                IntTemplateProperty = 5
+            };
+
+            var template = new AdaptiveCardTemplate(cardJson);
+            string st = template.Expand(dt);
+            AssertJsonEqual(expectedJson, st);
         }
     }
     [TestClass]
@@ -13349,6 +13462,46 @@ namespace AdaptiveCards.Templating.Test
             JToken token = JToken.Parse(jsonData);
             var (value, error) = new ValueExpression("${$index}").TryGetValue(token as JObject);
             Assert.AreEqual("0", value);
+        }
+
+        [TestMethod]
+        public void TestRegex()
+        {
+            string jsonData = @"{
+            ""numberPropertyValue"": ""20.12345""
+            }";
+
+            JToken token = JToken.Parse(jsonData);
+            
+            var (value, error) = new ValueExpression("${if(isMatch(numberPropertyValue, '[-+]?[0-9]*\\.?[0-9]+'), formatNumber(float(numberPropertyValue), 2), numberPropertyValue)}").TryGetValue(token as JObject);
+            Assert.AreEqual("20.12", value);
+        }
+
+        [TestMethod]
+        public void TestComplexExpression()
+        {
+            string jsonData = @"{
+  ""LineItems"": [
+    {
+      ""AName"": ""Leonardo DiCaprio""
+    },
+    {
+      ""Name"": ""Bradley Cooper""
+    }
+  ]
+}";
+            JToken token = JToken.Parse(jsonData);
+            string unboundString = "${foreach(foreach(indicesAndValues(LineItems), x, concat('cardContent', x.index)), y, json(concat('{ \"elementId\": \"', y, '\", \"isVisible\": true}')))}";
+            var exp = new ValueExpression(unboundString);
+            var (value, error) = exp.TryGetValue(token as JObject);
+            Expression exp2 = Expression.Parse(unboundString.Substring(2, unboundString.Length - 3));
+
+            var options = new Options
+            {
+                NullSubstitution = (path) => $"${{{path}}}"
+            };
+
+            var (value2, error2) = exp2.TryEvaluate(token, options);
         }
 
         [TestMethod]

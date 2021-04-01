@@ -12,7 +12,7 @@
 | **minHeight** | `string` | No | Specifies the minimum height of the column set in pixels, like `"80px"`. | 1.2 |
 | **horizontalAlignment** | `HorizontalAlignment` | No | Controls the horizontal alignment of the ColumnSet. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -43,6 +43,7 @@ An Action that will be invoked when the `ColumnSet` is tapped or selected. `Acti
 * **Version** : 1.1
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`

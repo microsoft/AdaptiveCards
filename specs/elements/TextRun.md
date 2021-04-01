@@ -2,7 +2,7 @@
 
 # TextRun
 
-**Introduced in version 1.2**
+#### Introduced in version 1.2
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -54,6 +54,7 @@ Action to invoke when this text run is clicked. Visually changes the text run in
 * **Type**: `ISelectAction`
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.Submit`
   * `Action.ToggleVisibility`

@@ -6,6 +6,8 @@
 
 * **BaseSerializationContext**
 
+  ↳ [SimpleSerializationContext](simpleserializationcontext.md)
+
   ↳ [SerializationContext](serializationcontext.md)
 
 ## Index
@@ -17,6 +19,7 @@
 ### Properties
 
 * [targetVersion](baseserializationcontext.md#targetversion)
+* [toJSONOriginalParam](baseserializationcontext.md#tojsonoriginalparam)
 
 ### Accessors
 
@@ -32,6 +35,7 @@
 * [serializeEnum](baseserializationcontext.md#serializeenum)
 * [serializeNumber](baseserializationcontext.md#serializenumber)
 * [serializeValue](baseserializationcontext.md#serializevalue)
+* [shouldSerialize](baseserializationcontext.md#shouldserialize)
 
 ## Constructors
 
@@ -52,6 +56,12 @@ Name | Type | Default |
 ###  targetVersion
 
 • **targetVersion**: *[Version](version.md)*
+
+___
+
+###  toJSONOriginalParam
+
+• **toJSONOriginalParam**: *any*
 
 ## Accessors
 
@@ -183,3 +193,17 @@ Name | Type | Default |
 `defaultValue` | any | undefined |
 
 **Returns:** *void*
+
+___
+
+###  shouldSerialize
+
+▸ **shouldSerialize**(`o`: [SerializableObject](serializableobject.md)): *boolean*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`o` | [SerializableObject](serializableobject.md) |
+
+**Returns:** *boolean*

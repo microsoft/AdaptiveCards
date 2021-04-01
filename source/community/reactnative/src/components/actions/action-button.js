@@ -36,6 +36,7 @@ export class ActionButton extends React.Component {
 
 		this.payload = props.json;
 		this.title = Constants.EmptyString;
+		this.altText = Constants.EmptyString;
 		this.type = Constants.EmptyString;
 		this.iconUrl = Constants.EmptyString;
 		this.inputArray = undefined;
@@ -54,14 +55,18 @@ export class ActionButton extends React.Component {
 		}
 	}
 
+	getActionAlignment() {
+		if (HostConfigManager.getHostConfig().actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+			return { flexGrow: 0 }
+		} else return { flexGrow: 1 }
+	}
+
 	render() {
 		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
 			return null;
 		}
 		this.parseHostConfig();
-
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
-
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
 				this.inputArray = inputArray;
@@ -70,7 +75,10 @@ export class ActionButton extends React.Component {
 				this.toggleVisibilityForElementWithID = toggleVisibilityForElementWithID;
 
 				return <ButtonComponent
-					style={{ flexGrow: 1 }}
+					style={this.getActionAlignment()}
+					accessible={true}
+					accessibilityLabel={this.altText}
+					accessibilityRole={Constants.Button}
 					onPress={this.onActionButtonTapped}>
 					{this.buttonContent()}
 				</ButtonComponent>
@@ -79,8 +87,8 @@ export class ActionButton extends React.Component {
 	}
 
 	/**
-     * @description Invoked for the any action button selected
-     */
+	 * @description Invoked for the any action button selected
+	 */
 	onActionButtonTapped = () => {
 		switch (this.payload.type) {
 			case Constants.ActionSubmit:
@@ -96,13 +104,15 @@ export class ActionButton extends React.Component {
 				this.onToggleActionCalled();
 				break;
 			default:
+				//Invoked for the custom action type.
+				this.onExecuteAction(this.payload);
 				break;
 		}
 	}
 
-    /**
-     * @description Invoked for the action type Constants.ActionSubmit
-     */
+	/**
+	 * @description Invoked for the action type Constants.ActionSubmit
+	 */
 	onSubmitActionCalled() {
 		let mergedObject = {};
 		for (const key in this.inputArray) {
@@ -114,13 +124,14 @@ export class ActionButton extends React.Component {
 			else
 				mergedObject["actionData"] = this.data;
 		}
-		let actionObject = { "type": this.payload.type, "data": mergedObject };
-		this.onExecuteAction(actionObject, this.payload.ignoreInputValidation === true);
+		const { type, title = "", ignoreInputValidation } = this.payload;
+		let actionObject = { "type": type, "title": title, "data": mergedObject };
+		this.onExecuteAction(actionObject, ignoreInputValidation);
 	}
 
 	/**
-     * @description Invoked for the action type Constants.ActionToggleVisibility
-     */
+	 * @description Invoked for the action type Constants.ActionToggleVisibility
+	 */
 	onToggleActionCalled() {
 		this.toggleVisibilityForElementWithID(this.payload.targetElements);
 	}
@@ -137,6 +148,7 @@ export class ActionButton extends React.Component {
 
 	parseHostConfig() {
 		this.title = this.payload.title;
+		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
 		let imageUrl = this.payload.iconUrl
 		this.iconUrl = Utils.getImageUrl(imageUrl)
@@ -149,10 +161,10 @@ export class ActionButton extends React.Component {
 		);
 	}
 
-    /**
-     * @description Return the button styles applicable
+	/**
+	 * @description Return the button styles applicable
 	 * @returns {Array} computedStyles - Styles based on the config
-     */
+	 */
 	getButtonStyles = () => {
 		let computedStyles = [this.styleConfig.button,
 		this.styleConfig.actionIconFlex, styles.button];
@@ -163,6 +175,7 @@ export class ActionButton extends React.Component {
 			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
+		computedStyles.push(this.props.style)
 		return computedStyles;
 	}
 
@@ -172,7 +185,7 @@ export class ActionButton extends React.Component {
 	*/
 	getButtonTitleStyles = () => {
 		var computedStyles = [this.styleConfig.defaultFontConfig,
-		this.styleConfig.buttonTitle];
+		this.styleConfig.buttonTitle, this.props.titleStyle];
 		return computedStyles;
 	}
 

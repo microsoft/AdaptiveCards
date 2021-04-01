@@ -7,7 +7,7 @@
 | **type** | `"Action.OpenUrl"` | Yes | Must be `"Action.OpenUrl"`. | 1.0 |
 | **url** | `uri` | Yes | The URL to open. | 1.0 |
 
-### Inherited properties
+**Inherited properties**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -39,6 +39,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Version** : 1.2
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.ShowCard`
   * `Action.Submit`

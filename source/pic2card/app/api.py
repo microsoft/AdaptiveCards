@@ -50,3 +50,4 @@ app.od_model = load_od_instance()
 
 # Include more debug points along with /predict_json api.
 api.add_resource(res.DebugEndpoint, "/predict_json_debug", methods=["POST"])
+api.add_resource(res.GetVersion, "/version", methods=["GET"])
