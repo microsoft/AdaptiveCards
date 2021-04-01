@@ -734,7 +734,7 @@ namespace RendererQml
 		uiNumberInput->Property("up.indicator", upIndicatorTag->ToString());
 		uiNumberInput->Property("down.indicator", downIndicatorTag->ToString());
 
-        context->addToInputElementList(origionalElementId, (contentItemTag->GetId() + ".text"));
+        context->addToInputElementList(origionalElementId, (inputId + ".value"));
 
 		return uiNumberInput;
 	}
@@ -1495,7 +1495,7 @@ namespace RendererQml
 		{
 			if (image->GetPixelWidth() != 0)
 			{
-				uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetPixelWidth() << ", parent.width)");
+				uiRectangle->Property("width", Formatter() << "parent.width != 0 ? Math.min(" << image->GetPixelWidth() << ", parent.width) : " << image->GetPixelWidth());
 
 				if (image->GetPixelHeight() == 0)
 				{
@@ -1508,7 +1508,8 @@ namespace RendererQml
 
 				if (image->GetPixelWidth() == 0)
 				{
-					uiRectangle->Property("width", Formatter() << "Math.min(" << image->GetId() << "_img.implicitWidth / " << image->GetId() << "_img.implicitHeight * height, parent.width)");
+					uiRectangle->Property("readonly property int aspectWidth", Formatter() << image->GetId() << "_img.implicitWidth / " << image->GetId() << "_img.implicitHeight * height");
+					uiRectangle->Property("width", Formatter() << "parent.width != 0 ? Math.min(aspectWidth, parent.width) : aspectWidth");
 				}
 			}
 
