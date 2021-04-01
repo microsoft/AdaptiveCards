@@ -3876,6 +3876,448 @@ namespace Samples
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json"
 })";
+
+	const std::string card_Bleed = R"({
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.2",
+    "body": [
+        {
+            "type": "TextBlock",
+            "text": "Container Bleed",
+            "wrap": true
+        },
+        {
+            "type": "Container",
+            "style": "warning",
+            "items": [
+                {
+                    "type": "Container",
+                    "style": "attention",
+                    "bleed": true,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Container with bleed",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Container",
+                    "style": "attention",
+  
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Container without bleed",
+                            "wrap": true
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "ColumnSet Bleed",
+            "wrap": true
+        },
+        {
+            "type": "TextBlock",
+            "text": "Bleed left"
+        },
+        {
+            "type": "ColumnSet",
+            "style": "emphasis",
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "good",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "attention",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "warning",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3"
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Bleed center"
+        },
+        {
+            "type": "ColumnSet",
+            "style": "emphasis",
+            "bleed": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "good",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "attention",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "warning",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3"
+                        }
+                    ],
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Bleed right"
+        },
+        {
+            "type": "ColumnSet",
+            "style": "emphasis",
+            "bleed": true,
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "good",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "attention",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2"
+                        }
+                    ],
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "warning",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Bleed all"
+        },
+        {
+            "type": "ColumnSet",
+            "style": "emphasis",
+            "columns": [
+                {
+                    "type": "Column",
+                    "style": "good",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 1"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "attention",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 2"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                },
+                {
+                    "type": "Column",
+                    "style": "warning",
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Column 3"
+                        }
+                    ],
+                    "bleed": true,
+                    "width": "stretch"
+                }
+            ]
+        },
+        {
+            "type": "TextBlock",
+            "text": "Sample Card with Bleed",
+            "wrap": true
+        },
+        {
+      "type": "ColumnSet",
+      "columns": [
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Container",
+              "backgroundImage": "https://messagecardplayground.azurewebsites.net/assets/TxP_Background.png",
+              "items": [
+                {
+                  "type": "Image",
+                  "horizontalAlignment": "center",
+                  "url": "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png",
+                  "altText": "Departing airplane"
+                }
+              ],
+              "bleed": true
+            },
+            {
+              "type": "Container",
+              "spacing": "None",
+              "style": "emphasis",
+              "items": [
+                {
+                  "type": "TextBlock",
+                  "size": "extraLarge",
+                  "weight": "lighter",
+                  "color": "accent",
+                  "text": "Flight to JFK",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "spacing": "small",
+                  "text": "Continental Air Lines flight UA110",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "spacing": "none",
+                  "text": "Confirmation code: RXJ34P",
+                  "wrap": true
+                },
+                {
+                  "type": "TextBlock",
+                  "spacing": "none",
+                  "text": "4 hours 15 minutes",
+                  "wrap": true
+                }
+              ],
+              "bleed": true,
+              "height": "stretch"
+            }
+          ],
+          "width": 45,
+          "height": "stretch"
+        },
+        {
+          "type": "Column",
+          "items": [
+            {
+              "type": "Container",
+              "height": "stretch",
+              "items": [
+                {
+                  "type": "ColumnSet",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "size": "extraLarge",
+                          "weight": "lighter",
+                          "text": "SFO",
+                          "wrap": true
+                        }
+                      ],
+                      "width": "auto"
+                    },
+                    {
+                      "type": "Column",
+                      "verticalContentAlignment": "center",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "https://messagecardplayground.azurewebsites.net/assets/graydot2x2.png",
+                          "width": "10000px",
+                          "height": "2px"
+                        }
+                      ],
+                      "width": "stretch"
+                    },
+                    {
+                      "type": "Column",
+                      "spacing": "small",
+                      "verticalContentAlignment": "center",
+                      "items": [
+                        {
+                          "type": "Image",
+                          "url": "https://messagecardplayground.azurewebsites.net/assets/smallairplane.png",
+                          "height": "16px",
+                          "altText": "Flight to"
+                        }
+                      ],
+                      "width": "auto"
+                    },
+                    {
+                      "type": "Column",
+                      "items": [
+                        {
+                          "type": "TextBlock",
+                          "horizontalAlignment": "right",
+                          "size": "extraLarge",
+                          "weight": "lighter",
+                          "text": "JFK",
+                          "wrap": true
+                        }
+                      ],
+                      "width": "auto"
+                    }
+                  ]
+                },
+                {
+                  "type": "ColumnSet",
+                  "columns": [
+                    {
+                      "type": "Column",
+                      "items": [
+                        {
+                          "type": "RichTextBlock",
+                          "inlines": [
+                            {
+                              "type": "TextRun",
+                              "size": "medium",
+                              "text": "8:15 PM\n"
+                            },
+                            {
+                              "type": "TextRun",
+                              "text": "Sat, Mar 4, 2017\n",
+                              "isSubtle": true,
+                              "wrap": true
+                            },
+                            {
+                              "type": "TextRun",
+                              "text": "San Francisco",
+                              "isSubtle": true
+                            }
+                          ]
+                        }
+                      ],
+                      "width": 1
+                    },
+                    {
+                      "type": "Column",
+                      "items": [
+                        {
+                          "type": "RichTextBlock",
+                          "horizontalAlignment": "right",
+                          "inlines": [
+                            {
+                              "type": "TextRun",
+                              "size": "medium",
+                              "text": "3:30 AM\n"
+                            },
+                            {
+                              "type": "TextRun",
+                              "text": "Sat, Mar 4, 2017\n",
+                              "isSubtle": true,
+                              "wrap": true
+                            },
+                            {
+                              "type": "TextRun",
+                              "text": "New York",
+                              "isSubtle": true
+                            }
+                          ]
+                        }
+                      ],
+                      "width": 1
+                    }
+                  ]
+                },
+                {
+                  "type": "ActionSet",
+                  "separator": true,
+                  "actions": [
+                    {
+                      "type": "Action.Submit",
+                      "title": "Check in",
+                      "style": "positive"
+                    },
+                    {
+                      "type": "Action.Submit",
+                      "title": "View"
+                    }
+                  ],
+                  "spacing": "medium"
+                }
+              ]
+            }
+          ],
+          "width": 55
+        }
+      ],
+      "height": "stretch"
+    }
+    ]
+}
+	)";
 }
 
     
