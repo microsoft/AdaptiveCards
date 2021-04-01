@@ -229,12 +229,12 @@ export class FactSetConfig {
     }
 }
 
-export class TextBlockConfig {
-    headingLevel?: number;
+export class HeadingsConfig {
+    level?: number;
 
     constructor(obj?: any) {
         if (obj) {
-            this.headingLevel = obj.headingLevel !== undefined && obj.headingLevel !== null && typeof obj.headingLevel === "number" ? obj.headingLevel : this.headingLevel;
+            this.level = obj.level !== undefined && obj.level !== null && typeof obj.level === "number" ? obj.level : this.level;
         }
     }
 }
@@ -596,7 +596,7 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
-    readonly textBlock: TextBlockConfig = new TextBlockConfig();
+    readonly headings: HeadingsConfig = new HeadingsConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;

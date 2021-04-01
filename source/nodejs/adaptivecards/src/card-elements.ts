@@ -918,7 +918,7 @@ export class TextBlock extends BaseTextBlock {
             if (this.style === "heading") {
                 element.setAttribute("role", "heading");
 
-                let headingLevel = this.hostConfig.textBlock.headingLevel;
+                let headingLevel = this.hostConfig.headings.level;
 
                 if (headingLevel !== undefined) {
                     element.setAttribute("aria-level", headingLevel.toString());
