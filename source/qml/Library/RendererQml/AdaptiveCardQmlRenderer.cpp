@@ -1970,6 +1970,12 @@ namespace RendererQml
         uiFrame->Property("readonly property string bgColor", "'transparent'");
 
 		uiFrame->Property("id", id);
+
+		if (!columnSet->GetIsVisible())
+		{
+			uiFrame->Property("visible", "false");
+		}
+
 		uiRowLayout->Property("id", "rlayout_" + id);
 		uiRow->Property("id", "row_" + id);
 
@@ -2129,6 +2135,7 @@ namespace RendererQml
 		}
 
 		std::shared_ptr<QmlTag> uiContainer = GetNewContainer(column, context);
+
 		if (!column->GetWidth().empty())
 		{
 			uiContainer->Property("property string widthProperty", Formatter() << "'" << column->GetWidth() << "'");
@@ -2136,6 +2143,11 @@ namespace RendererQml
 		else
 		{
 			uiContainer->Property("property string widthProperty", "'auto'");
+		}
+
+		if (!column->GetIsVisible())
+		{
+			uiContainer->Property("visible", "false");
 		}
 
 		return uiContainer;
@@ -2155,6 +2167,13 @@ namespace RendererQml
         }
 
         std::shared_ptr<QmlTag> uiContainer = GetNewContainer(container, context);
+
+		uiContainer->Property("id", container->GetId());
+
+		if (!container->GetIsVisible())
+		{
+			uiContainer->Property("visible", "false");
+		}
 
         if (container->GetBleed() && container->GetCanBleed())
         {
