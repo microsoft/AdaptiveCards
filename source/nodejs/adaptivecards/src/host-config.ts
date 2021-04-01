@@ -229,6 +229,16 @@ export class FactSetConfig {
     }
 }
 
+export class TextBlockConfig {
+    headingLevel?: number;
+
+    constructor(obj?: any) {
+        if (obj) {
+            this.headingLevel = obj.headingLevel !== undefined && obj.headingLevel !== null && typeof obj.headingLevel === "number" ? obj.headingLevel : this.headingLevel;
+        }
+    }
+}
+
 export class ShowCardActionConfig {
     actionMode: Enums.ShowCardActionMode = Enums.ShowCardActionMode.Inline;
     inlineTopMargin: number = 16;
@@ -586,6 +596,7 @@ export class HostConfig {
     readonly imageSet: ImageSetConfig = new ImageSetConfig();
     readonly media: MediaConfig = new MediaConfig();
     readonly factSet: FactSetConfig = new FactSetConfig();
+    readonly textBlock: TextBlockConfig = new TextBlockConfig();
 
     cssClassNamePrefix?: string;
     alwaysAllowBleed: boolean = false;
