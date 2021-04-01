@@ -40,10 +40,8 @@ namespace AdaptiveSharedNamespace
 
         ActionType GetElementType() const;
 
-        Mode GetElementMode() const;
-
-        void SetMode(Mode&& value);
-        void SetMode(const Mode& value);
+        Mode GetMode() const;
+        void SetMode(const Mode mode);
 
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceUris) override;
         Json::Value SerializeToJsonValue() const override;
