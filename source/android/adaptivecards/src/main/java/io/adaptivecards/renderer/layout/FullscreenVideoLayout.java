@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package io.adaptivecards.renderer.layout;
 
-
 /**
  * Copyright (C) 2016 Toshiro Sugii
  * <p/>
@@ -28,13 +27,12 @@ import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.MediaController;
 
-public class FullscreenVideoLayout extends FullscreenVideoView implements MediaPlayer.OnPreparedListener, View.OnTouchListener
+public class FullscreenVideoLayout extends FullscreenVideoView implements MediaPlayer.OnPreparedListener, View.OnClickListener
 {
     public FullscreenVideoLayout(Context context)
     {
@@ -77,7 +75,7 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
         super.initObjects();
 
         // We need to add it to show/hide the controls
-        super.setOnTouchListener(this);
+        super.setOnClickListener(this);
 
         if (m_mediaControlView == null)
         {
@@ -103,9 +101,9 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
     }
 
     @Override
-    public void setOnTouchListener(View.OnTouchListener l)
+    public void setOnClickListener(View.OnClickListener l)
     {
-        m_touchListener = l;
+        m_clickListener = l;
     }
 
     @Override
@@ -176,6 +174,8 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
     public void hideControls()
     {
         m_mediaControlView.hide();
+        // return focus to player after hiding control view
+        requestFocus();
     }
 
     public void showControls()
@@ -189,33 +189,39 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event)
+    public void onClick(View v)
     {
-        if (event.getAction() == MotionEvent.ACTION_DOWN)
+        if (m_mediaControlView != null)
         {
-            if (m_mediaControlView != null)
+            if(m_mediaControlView.isShowing())
             {
-                if(m_mediaControlView.isShowing())
-                {
-                    hideControls();
-                }
-                else
-                {
-                    showControls();
-                }
+                hideControls();
+            }
+            else
+            {
+                showControls();
             }
         }
 
-        if (m_touchListener != null)
+        if (m_clickListener != null)
         {
-            return m_touchListener.onTouch(FullscreenVideoLayout.this, event);
+            m_clickListener.onClick(v);
         }
-
-        return false;
     }
 
+    private void togglePlaying()
+    {
+        if (m_currentState == State.STARTED)
+        {
+            pause();
+        }
+        else
+        {
+            start();
+        }
+    }
 
-    protected OnTouchListener m_touchListener;
+    protected OnClickListener m_clickListener;
     private MediaController m_mediaControlView;
 
 }
