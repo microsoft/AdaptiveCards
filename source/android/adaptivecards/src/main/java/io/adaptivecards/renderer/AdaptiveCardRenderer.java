@@ -44,7 +44,7 @@ public class AdaptiveCardRenderer
     }
     public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler, @Nullable IOverflowActionRenderer overflowActionRenderer)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer,defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action

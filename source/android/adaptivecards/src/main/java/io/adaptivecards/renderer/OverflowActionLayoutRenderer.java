@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -299,7 +301,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     }
 
     /**
-     * Gest color for a given color attribute.
+     * Gets color for a given color attribute.
      *
      * @param context        context.
      * @param colorAttribute attribute name.
@@ -318,7 +320,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     private static OverflowActionLayoutRenderer s_instance = null;
 
     /**
-     * Responsible default Overflow rendering behavior.
+     * Responsible for default Overflow rendering behavior.
      */
     public static class OverflowActionRenderer implements IOverflowActionRenderer {
 
