@@ -292,7 +292,7 @@ export abstract class SingleInputPropertyEditor extends PropertySheetEntry {
                 let action = new Adaptive.SubmitAction();
                 action.id = command.id;
                 action.title = command.caption;
-                action.accessibleTitle = command.altText;
+                action.description = command.altText;
                 action.expanded = command.expanded;
                 action.onExecute = (sender: Adaptive.Action) => { command.onExecute(this, sender.renderedElement); };
 
@@ -822,7 +822,7 @@ class NameValuePairPropertyEditor extends PropertySheetEntry {
 
                 let removeAction = new Adaptive.SubmitAction();
                 removeAction.title = "X";
-                removeAction.accessibleTitle = "Remove";
+                removeAction.description = "Remove";
                 removeAction.onExecute = (sender) => {
                     nameValuePairs.splice(i, 1);
 
