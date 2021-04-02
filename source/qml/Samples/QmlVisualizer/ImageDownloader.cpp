@@ -20,13 +20,14 @@ char* ImageDownloader::Convert(const std::string& s) //Convert url from std::str
 	return pc;
 }
 
-bool ImageDownloader::download_jpeg(char* url)
+bool ImageDownloader::download_jpeg(const std::string& imgName, char* url)
 {
-	FILE* fp = fopen(Convert(SOLUTION_DIR + std::string("\\Samples\\QmlVisualizer\\Images\\out.jpg")), "wb");
+    const std::string imgSource = SolutionDir + imageFolder + imgName;
+	FILE* fp = fopen(Convert(imgSource), "wb");
 	if (!fp)
 	{
 		printf("!!! Failed to create file on the disk\n");
-		return false;
+        return false;
 	}
 
 	CURL* curlCtx = curl_easy_init();
@@ -39,7 +40,7 @@ bool ImageDownloader::download_jpeg(char* url)
 	if (rc)
 	{
 		printf("!!! Failed to download: %s\n", url);
-		return false;
+        return false;
 	}
 
 	long res_code = 0;
@@ -47,12 +48,20 @@ bool ImageDownloader::download_jpeg(char* url)
 	if (!((res_code == 200 || res_code == 201) && rc != CURLE_ABORTED_BY_CALLBACK))
 	{
 		printf("!!! Response code: %d\n", res_code);
-		return false;
+        return false;
 	}
 
 	curl_easy_cleanup(curlCtx);
 
 	fclose(fp);
 
-	return true;
+    return true;
+}
+
+void ImageDownloader::clearImageFolder()
+{
+    const auto dir_path = SolutionDir + imageFolder;
+    for (auto& path : fs::directory_iterator(dir_path)) {
+        fs::remove_all(path);
+    }
 }

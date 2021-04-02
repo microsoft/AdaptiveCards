@@ -294,3 +294,6 @@ twp.json
 
 # Android 
 **/.cxx/*
+
+# Image folder
+source/qml/Samples/QmlVisualizer/Images

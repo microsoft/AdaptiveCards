@@ -105,38 +105,96 @@ std::shared_ptr<AdaptiveCards::HostConfig> SampleCardModel::getHostConfig()
 
 QString SampleCardModel::generateQml(const QString& cardQml)
 {
-    std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
+    std::map<std::string, std::string> urls;
+    std::shared_ptr<int> imgCounter{ 0 };
 
+    std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
     std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard());
     const auto generatedQml = result->GetResult();
 
-	generatedQml->Transform([](QmlTag& genQml)
+    //Temp
+    ImageDownloader::clearImageFolder();
+
+	generatedQml->Transform([&urls](QmlTag& genQml)
 	{
 		if (genQml.GetElement() == "Frame" && genQml.HasProperty("readonly property bool hasBackgroundImage"))
 		{
-            std::string str = genQml.GetProperty("background");
-            genQml.Property("background", std::regex_replace(str, std::regex("source:.*\n"), "source:\"" + getImagePath("Frame") + "\"\n"));
+            auto url = genQml.GetProperty("property var imgSource");
+            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+
+            //Temp
+            char* imgUrl = ImageDownloader::Convert(url);
+            const std::string imageName = genQml.GetId() + ".jpg";
+
+            if (ImageDownloader::download_jpeg(imageName, imgUrl))
+            {
+                genQml.Property("property var imgSource", "\"" + getImagePath(imageName) + "\"");
+            }
+            else
+            {
+                printf("!! Failed to download file!");
+            }
+            //Temp            
 		}
 		else if (genQml.GetElement() == "Image" && genQml.HasProperty("readonly property bool isImage"))
 		{
-			genQml.Property("source", "\"" + getImagePath("Image") + "\"");
+            auto url = genQml.GetProperty("source");
+            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+
+            //Temp
+            char* imgUrl = ImageDownloader::Convert(url);
+            const std::string imageName = genQml.GetId() + ".jpg";
+
+            if (ImageDownloader::download_jpeg(imageName, imgUrl))
+            {
+                genQml.Property("source", "\"" + getImagePath(imageName) + "\"");
+            }
+            else
+            {
+                printf("!! Failed to download file!");
+            }
+            //Temp 
 		}
 		else if (genQml.GetElement() == "Button" && genQml.HasProperty("readonly property bool hasIconUrl"))
 		{
-			std::string str = genQml.GetProperty("contentItem");
-			genQml.Property("contentItem", std::regex_replace(str, std::regex("source:.*\n"), "source:\"" + getImagePath("Button") + "\"\n"));
+            auto url = genQml.GetProperty("property var imgSource");
+            urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+
+            //Temp
+            char* imgUrl = ImageDownloader::Convert(url);
+            const std::string imageName = genQml.GetId() + ".jpg";
+
+            if (ImageDownloader::download_jpeg(imageName, imgUrl))
+            {
+                genQml.Property("property var imgSource", "\"" + getImagePath(imageName) + "\"");
+            }
+            else
+            {
+                printf("!! Failed to download file!");
+            }
+            //Temp 
 		}
 	});
-	//Test code to download image using curl
-	std::string urlString = "https://adaptivecards.io/content/airplane.png";
-	char* url = ImageDownloader::Convert(urlString);
-	if (!ImageDownloader::download_jpeg(url))
-	{
-		printf("!! Failed to download file!");
-	}
 
+    //rehostImage(urls);
     const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
     return generatedQmlString;
+}
+
+void SampleCardModel::rehostImage(const std::map<std::string, std::string>& urls)
+{
+    ImageDownloader::clearImageFolder();
+
+    for (auto& url : urls)
+    {
+        char* imgUrl = ImageDownloader::Convert(url.second);
+        const std::string imageName = url.first + ".jpg";
+
+        if(!ImageDownloader::download_jpeg(imageName, imgUrl))
+        {
+            printf("!! Failed to download file!");
+        }
+    }
 }
 
 void SampleCardModel::setTheme(const QString& theme)
@@ -205,22 +263,11 @@ void SampleCardModel::actionSubmitButtonClicked(const QString& title, const QStr
     emit sendCardResponseToQml(output);
 }
 
-const std::string SampleCardModel::getImagePath(const std::string& m_element)
+const std::string SampleCardModel::getImagePath(const std::string& imageName)
 {
 	std::string file_path = __FILE__;
 	std::string dir_path = file_path.substr(0, file_path.rfind("\\"));
-	if (m_element == "Frame")
-	{
-		dir_path.append("\\Images\\sampleImage.jpg");
-	}
-    else if (m_element == "Button")
-    {
-        dir_path.append("\\Images\\buttonicon.png");
-    }
-	else
-	{
-		dir_path.append("\\Images\\Cat.png");
-	}
+    dir_path.append("\\Images\\" + imageName);
 	std::replace(dir_path.begin(), dir_path.end(), '\\', '/');
 	dir_path = std::string("file:/") + dir_path;
 
