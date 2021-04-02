@@ -24,7 +24,6 @@ package io.adaptivecards.renderer.layout;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -57,19 +56,6 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
     }
 
     @Override
-    protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
-        super.onVisibilityChanged(changedView, visibility);
-        if (visibility == VISIBLE)
-        {
-            updateControls();
-        }
-        else
-        {
-            hideControls();
-        }
-    }
-
-    @Override
     protected void initObjects()
     {
         super.initObjects();
@@ -80,11 +66,51 @@ public class FullscreenVideoLayout extends FullscreenVideoView implements MediaP
         if (m_mediaControlView == null)
         {
             // TODO: Switch to androidx.media2.widget.MediaControlView after AndroidX upgrade
-            m_mediaControlView = new MediaController(m_context);
-            FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.gravity = Gravity.BOTTOM;
-            m_mediaControlView.setLayoutParams(layoutParams);
+            // Existing "floating" MediaController doesn't scroll with anchorView, and creates a keyboard focus trap.
+            // So, we override to add the view as a child of the given anchorView instead.
+            m_mediaControlView = new MediaController(m_context)
+            {
+                private View m_anchorView;
+                private ViewGroup.LayoutParams m_layoutParams;
+
+                @Override
+                public void setAnchorView(View view) {
+                    m_anchorView = view;
+                    m_layoutParams = view.getLayoutParams();
+                    super.setAnchorView(view);
+
+                    if (view instanceof ViewGroup)
+                    {
+                        ((ViewGroup) getParent()).removeView(this);
+                        setLayoutDirection(LAYOUT_DIRECTION_LTR);
+                        ((ViewGroup) view).addView(this);
+                    }
+                }
+
+                @Override
+                public void show() {
+                    super.show();
+                    if(isShowing() && getVisibility() == INVISIBLE)
+                    {
+                        setVisibility(VISIBLE);
+                        requestFocus();
+                        requestFocusFromTouch();
+                    }
+                }
+
+                @Override
+                public void hide() {
+                    super.hide();
+                    if(!isShowing() && getVisibility() == VISIBLE)
+                    {
+                        setVisibility(INVISIBLE);
+                        m_anchorView.requestFocus();
+                        m_anchorView.requestFocusFromTouch();
+                    }
+                }
+            };
             m_mediaControlView.setMediaPlayer(this);
+            m_mediaControlView.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.BOTTOM));
             m_mediaControlView.setAnchorView(this);
         }
     }
