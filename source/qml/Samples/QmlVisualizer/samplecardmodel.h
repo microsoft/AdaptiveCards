@@ -5,6 +5,7 @@
 #include <RenderedQmlAdaptiveCard.h>
 
 #include <QAbstractListModel>
+#include <ImageDownloader.h>
 
 using namespace RendererQml;
 

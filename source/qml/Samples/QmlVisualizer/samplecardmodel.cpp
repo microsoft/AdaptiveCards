@@ -127,6 +127,13 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 			genQml.Property("contentItem", std::regex_replace(str, std::regex("source:.*\n"), "source:\"" + getImagePath("Button") + "\"\n"));
 		}
 	});
+	//Test code to download image using curl
+	std::string urlString = "https://adaptivecards.io/content/airplane.png";
+	char* url = ImageDownloader::Convert(urlString);
+	if (!ImageDownloader::download_jpeg(url))
+	{
+		printf("!! Failed to download file!");
+	}
 
     const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
     return generatedQmlString;
