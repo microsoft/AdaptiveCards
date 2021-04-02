@@ -80,7 +80,6 @@ public class MediaRenderer extends BaseCardElementRenderer
                     m_mediaView.setVisibility(View.VISIBLE);
                 }
                 m_posterLayout.setClickable(false);
-                m_mediaView.start();
                 m_cardActionHandler.onMediaPlay(m_cardMediaElement, m_renderedAdaptiveCard);
 
                 m_alreadyClicked = true;
@@ -153,6 +152,7 @@ public class MediaRenderer extends BaseCardElementRenderer
         {
             poster.SetUrl(hostConfig.GetMedia().getDefaultPoster());
         }
+        poster.SetAltText(media.GetAltText());
 
         if(!poster.GetUrl().isEmpty())
         {
@@ -260,6 +260,7 @@ public class MediaRenderer extends BaseCardElementRenderer
             }
         }
         mediaView.setShouldAutoplay(true);
+        mediaView.setContentDescription(media.GetAltText());
 
         RelativeLayout.LayoutParams videoViewLayoutParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         videoViewLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
