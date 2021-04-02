@@ -251,7 +251,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      *
      * @param context     context to be used for rendering
      * @param color       color of the border
-     * @param strokeWidth width of tjhe border
+     * @param strokeWidth width of the border
      * @return created {@link ShapeDrawable}
      */
     private ShapeDrawable getShapeDrawable(@NonNull Context context, int color, int strokeWidth)

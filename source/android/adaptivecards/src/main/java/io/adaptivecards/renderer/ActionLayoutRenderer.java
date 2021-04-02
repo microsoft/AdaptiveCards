@@ -5,7 +5,6 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.Mode;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
@@ -117,14 +117,13 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
 
         for (BaseActionElement actionElement : baseActionElementList)
         {
-            switch (actionElement.GetMode())
+            if (actionElement.GetMode() == Mode.Secondary)
             {
-                case Primary:
-                    primaryActionElementVector.add(actionElement);
-                    break;
-                case Secondary:
-                    secondaryActionElementVector.add(actionElement);
-                    break;
+                secondaryActionElementVector.add(actionElement);
+            }
+            else
+            {
+                primaryActionElementVector.add(actionElement);
             }
 
             if (actionElement.GetIconUrl().isEmpty())
