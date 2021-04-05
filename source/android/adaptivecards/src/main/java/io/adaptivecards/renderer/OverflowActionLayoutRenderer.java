@@ -62,14 +62,17 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     {
         final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
 
-        // customized rendering
+        // let the client to render Overflow action & display the menu option.
+        if(overflowActionRenderer.isRootLevelActions())
+        {
+            return overflowActionRenderer.onRenderOverflowAction(baseActionElementList);
+        }
+
+        // check customized rendering
         final View customOverflowActionView = overflowActionRenderer.onRenderOverflowAction(baseActionElementList);
         if (customOverflowActionView != null)
         {
-            if (!overflowActionRenderer.isRootLevelActions())
-            {
-                viewGroup.addView(customOverflowActionView);
-            }
+            viewGroup.addView(customOverflowActionView);
             renderBottomSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs, overflowActionRenderer, customOverflowActionView);
             actionForOverflowView(overflowActionRenderer, baseActionElementList, customOverflowActionView);
 
@@ -102,11 +105,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
             renderBottomSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs, overflowActionRenderer, overflowActionView);
             actionForOverflowView(overflowActionRenderer, baseActionElementList, overflowActionView);
             applyBackgroundDrawables(context, overflowActionView);
-
-            if (!overflowActionRenderer.isRootLevelActions())
-            {
-                viewGroup.addView(overflowActionView);
-            }
+            viewGroup.addView(overflowActionView);
 
             return overflowActionView;
         }
