@@ -16,12 +16,12 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             return NSView()
         }
         
-        let imageView: NSImageView
+        let imageView: ImageView
         if let dimensions = rootView.getImageDimensions(for: url) {
             let image = NSImage(size: dimensions)
-            imageView = NSImageView(image: image)
+            imageView = ImageView(image: image)
         } else {
-            imageView = NSImageView()
+            imageView = ImageView()
         }
         
         rootView.registerImageHandlingView(imageView, for: url)
@@ -136,7 +136,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
     }
 }
 
-extension NSImageView: ImageHoldingView {
+class ImageView: NSImageView, ImageHoldingView {
     func setImage(_ image: NSImage) {
         if self.image == nil {
             // update constraints only when image view does not contain an image

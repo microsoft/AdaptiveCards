@@ -8,7 +8,7 @@ enum ActionStyle: String {
     case inline
 }
 
-class ACRButton: FlatButton {
+class ACRButton: FlatButton, ImageHoldingView {
     struct Constants {
         static let blueColorCode = "#007EA8"
         static let darkBlueColorCode = "#0A5E7D"
@@ -64,10 +64,7 @@ class ACRButton: FlatButton {
         borderWidth = 1
         onAnimationDuration = 0.0
         offAnimationDuration = 0.0
-        iconColor = NSColor.white
-        activeIconColor = NSColor.white
         momentary = !showsChevron
-        iconColor = .white
         if showsIcon {
             image = BundleUtils.getImage(iconImageName, ofType: iconFileType)
             imagePosition = iconPositioned
@@ -84,6 +81,13 @@ class ACRButton: FlatButton {
         if buttonStyle != .inline {
             cornerRadius = bounds.height / 2
         }
+    }
+    
+    func setImage(_ image: NSImage) {
+        iconColor = NSColor(patternImage: image)
+        activeIconColor = iconColor
+        self.image = image
+        mouseExited(with: NSEvent()) // this is to force trigger the event for image updation
     }
 
     override open func mouseEntered(with event: NSEvent) {

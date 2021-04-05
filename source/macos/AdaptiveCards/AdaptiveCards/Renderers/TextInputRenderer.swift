@@ -90,13 +90,22 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         return textView
     }
-    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: NSView) {
+    
+    private func addInlineButton(parentview: NSStackView, view: NSView, element: ACSTextInput, style: ACSContainerStyle, with hostConfig: ACSHostConfig, rootview: ACRView) {
         let action = element.getInlineAction()
-        let button = ACRButton(style: .inline)
-        button.title = action?.getTitle() ?? ""
+        let button: ACRButton
+        if let iconUrl = action?.getIconUrl(), !iconUrl.isEmpty {
+            button = ACRButton(wantsIcon: true, style: .inline)
+            button.title = "" // no button title when iconUrl available
+            rootview.registerImageHandlingView(button, for: iconUrl)
+        } else {
+            button = ACRButton(wantsIcon: false, style: .inline)
+            button.title = action?.getTitle() ?? ""
+        }
+        
         button.cornerRadius = 0
         button.isBordered = false
-        
+
         let attributedString: NSMutableAttributedString
         attributedString = NSMutableAttributedString(string: button.title)
         if let colorHex = hostConfig.getForegroundColor(style, color: .default, isSubtle: true), let textColor = ColorUtils.color(from: colorHex) {
@@ -111,30 +120,6 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         button.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.5).isActive = true
         button.attributedTitle = attributedString
-        
-        // image icon
-        if let imageIcon = action?.getIconUrl(), !imageIcon.isEmpty {
-            guard let url = URL(string: imageIcon) else { return }
-            DispatchQueue.global().async {
-                guard let data = try? Data(contentsOf: url) else { return }
-                DispatchQueue.main.async {
-                    guard let image = NSImage(data: data) else {
-                        return
-                    }
-                    image.size = .init(width: button.bounds.width, height: button.bounds.height)
-                    button.showsIcon = true
-                    button.title = ""
-                    button.iconImageSize = NSSize(width: 25, height: 25)
-                    button.image = image
-                    // added this to maintain the color of the image
-                    button.iconColor = NSColor(patternImage: image)
-                    button.activeIconColor = button.iconColor
-                    // for icon added left and right contentInsets
-                    button.contentInsets.left = 10
-                    button.contentInsets.right = 10
-                }
-            }
-        }
         
         // adding target to the Buttons
         guard let acrView = rootview as? ACRView else {
