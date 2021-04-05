@@ -355,7 +355,7 @@ namespace RendererQml
 #ifdef _WIN32
 		localtime_s(&newtime, &now);
 #else
-		localtime_r(&newtime, &now);
+		localtime_r(&now, &newtime);
 #endif
 		
 		setlocale(LC_ALL, "");
