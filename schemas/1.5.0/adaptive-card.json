@@ -419,8 +419,15 @@
           ]
         },
         "rtl": {
-          "type": "boolean",
-          "description": "When `true` content in this column should be presented right to left.",
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
           "version": "vNext"
         },
         "separator": {
@@ -619,9 +626,16 @@
             2293
           ]
         },
-        "rtl": {
-          "type": "boolean",
-          "description": "When `true` content in this container should be presented right to left.",
+        "rtl?": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
           "version": "vNext"
         },
         "fallback": {},

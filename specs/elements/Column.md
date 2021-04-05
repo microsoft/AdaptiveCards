@@ -9,7 +9,7 @@
 | **bleed** | `boolean` | No | Determines whether the column should bleed through its parent's padding. | 1.2 |
 | **fallback** | `Column`, `FallbackOption` | No | Describes what to do when an unknown item is encountered or the requires of this or any children can't be met. | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the column in pixels, like `"80px"`. | 1.2 |
-| **rtl** | `boolean` | No | When `true` content in this column should be presented right to left. | vNext |
+| **rtl** | `boolean?` | No | When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply. | vNext |
 | **separator** | `boolean` | No | When `true`, draw a separating line between this column and the previous column. | 1.0 |
 | **spacing** | `Spacing` | No | Controls the amount of spacing between this column and the preceding column. | 1.0 |
 | **selectAction** | `ISelectAction` | No | An Action that will be invoked when the `Column` is tapped or selected. `Action.ShowCard` is not supported. | 1.1 |
