@@ -462,6 +462,38 @@ namespace AdaptiveCardsSharedModelUnitTest
             runWrapTest<ToggleInput>(body, 1, false);
         }
 
+        TEST_METHOD(ChoiceSetOptionalChoicesTest)
+        {
+            std::string testjson{ R"(
+                {
+                    "type": "AdaptiveCard",
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "version": "1.5",
+                    "body": [
+                        {
+                            "type": "Input.ChoiceSet",
+                            "id": "1",
+                            "placeholder": "Placeholder text"
+                        }
+                    ]
+                }
+            )"};
+
+            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.5");
+            auto card = parseResult->GetAdaptiveCard();
+            auto body = card->GetBody();
+
+            Assert::IsTrue(parseResult->GetWarnings().size() == 0);
+            Assert::IsTrue(body.size() == 1);
+            Assert::IsTrue(body.at(0)->GetElementType() == CardElementType::ChoiceSetInput); 
+            auto choiceSetElement = std::dynamic_pointer_cast<ChoiceSetInput>(body.at(0));
+            Assert::IsTrue(choiceSetElement->GetChoices().size() == 0);
+
+            const auto serializedCard = parseResult->GetAdaptiveCard()->SerializeToJsonValue();
+            auto serializedCardAsString = ParseUtil::JsonToString(serializedCard);
+            std::string expectedJson = "{\"actions\":[],\"body\":[{\"id\":\"1\",\"style\":\"Compact\",\"type\":\"Input.ChoiceSet\"}],\"type\":\"AdaptiveCard\",\"version\":\"1.5\"}\n";
+            Assert::AreEqual(expectedJson, serializedCardAsString);
+        }
         TEST_METHOD(ImplicitColumnTypeTest)
         {
             // Columns set to type "Column" or with type unset should parse correctly
