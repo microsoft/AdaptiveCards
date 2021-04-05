@@ -2,7 +2,7 @@
 
 # Media
 
-#### Introduced in version 1.1
+**Introduced in version 1.1**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
@@ -11,7 +11,7 @@
 | **poster** | `uri` | No | URL of an image to display before playing. Supports data URI in version 1.2+ | 1.1 |
 | **altText** | `string` | No | Alternate text describing the audio or video. | 1.1 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
