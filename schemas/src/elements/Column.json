@@ -45,7 +45,7 @@
 		"rtl": {
 			"type": "boolean",
 			"description": "When `true` content in this column should be presented right to left.",
-			"version": "1.5"
+			"version": "vNext"
 		},
 		"separator": {
 			"type": "boolean",
