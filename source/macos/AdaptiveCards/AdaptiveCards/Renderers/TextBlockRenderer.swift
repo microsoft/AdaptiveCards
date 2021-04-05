@@ -65,6 +65,9 @@ class ACRTextView: NSTextView, SelectActionHandlingProtocol {
         // Should look for better solution
         guard let superview = superview else { return }
         widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
+        let constraint = heightAnchor.constraint(equalTo: superview.heightAnchor)
+        constraint.priority = .defaultHigh
+        constraint.isActive = true
     }
     
     // This point onwards adds placeholder funcunality to TextView

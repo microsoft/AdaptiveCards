@@ -78,7 +78,7 @@ class BaseCardElementRenderer {
             backgroundView.translatesAutoresizingMaskIntoConstraints = false
             
             // adding this above parentView backgroundImage view
-            parentView.addSubview(backgroundView, positioned: .above, relativeTo: parentView.backgroundImageView)
+            parentView.addSubview(backgroundView, positioned: .below, relativeTo: parentView.stackView)
             backgroundView.wantsLayer = true
             backgroundView.layer?.backgroundColor = collectionView.layer?.backgroundColor
             

@@ -1,0 +1,51 @@
+{
+    "type": "AdaptiveCard",
+    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+    "version": "1.3",
+    "body": [
+        {
+            "type": "ColumnSet",
+            "columns": [
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "separator": true,
+                    "items": [
+                        {
+                            "type": "TextBlock",
+                            "text": "Hello world!\nThis left separator shouldn't be visible.\nRight one should be.",
+                            "wrap": true
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "separator": true,
+                    "items": [
+                        {
+                            "type": "Input.Date",
+                            "id": "date"
+                        },
+                        {
+                            "type": "Input.Number",
+                            "placeholder": "Placeholder text",
+                            "id": "number"
+                        }
+                    ]
+                },
+                {
+                    "type": "Column",
+                    "width": "stretch",
+                    "separator": true,
+                    "items": [
+                        {
+                            "type": "Image",
+                            "url": "https://picsum.photos/200/200"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

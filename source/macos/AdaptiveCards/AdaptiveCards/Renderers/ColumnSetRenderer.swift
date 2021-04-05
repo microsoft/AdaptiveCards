@@ -18,6 +18,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
         var numberOfStretchItems = 0
         var numberOfWeightedItems = 0
         let totalColumns = columnSet.getColumns().count
+        var columnViews: [NSView] = []
         for (index, column) in columnSet.getColumns().enumerated() {
             let width = ColumnWidth(columnWidth: column.getWidth(), pixelWidth: column.getPixelWidth())
             
@@ -28,7 +29,8 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             let columnView = ColumnRenderer.shared.render(element: column, with: hostConfig, style: columnSet.getStyle(), rootView: rootView, parentView: columnSetView, inputs: [])
             
             // Check if has extra properties else add column view
-            guard index > 0, column.getSpacing() != .none, !column.getSeparator() else {
+            columnViews.append(columnView)
+            guard index > 0, (column.getSpacing() != .none || column.getSeparator()) else {
                 columnSetView.addView(columnView, in: gravityArea)
                 BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
                 continue
@@ -48,18 +50,18 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
         // Add SelectAction
         columnSetView.setupSelectAction(columnSet.getSelectAction(), rootView: rootView)
         
-        // Only one is weighted and others are stretch
-        let isSpecialAllStretch = numberOfWeightedItems == 1 && numberOfStretchItems == totalColumns - 1
-        
-        if numberOfStretchItems == totalColumns || isSpecialAllStretch {
-            columnSetView.distribution = .fillEqually
+        if numberOfStretchItems == totalColumns && !columnViews.isEmpty {
+            let firstColumn = columnViews[0]
+            for index in (1..<columnViews.count) {
+                columnViews[index].widthAnchor.constraint(equalTo: firstColumn.widthAnchor).isActive = true
+            }
+            columnSetView.distribution = .fill
         } else if numberOfAutoItems == totalColumns {
             columnSetView.distribution = .gravityAreas
         } else if numberOfStretchItems == 0 && numberOfWeightedItems == 0 {
             columnSetView.distribution = .gravityAreas
         } else {
-            let arrangedSubviews = columnSetView.arrangedSubviews
-            guard arrangedSubviews.count == totalColumns else {
+            guard columnViews.count == totalColumns else {
                 logError("ArrangedSubViews count mismatch")
                 return columnSetView
             }
@@ -71,7 +73,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             
             for (index, column) in columnSet.getColumns().enumerated() {
                 guard let width = column.getWidth(), let weighted = Int(width) else { continue }
-                weightedColumnViews.append(arrangedSubviews[index])
+                weightedColumnViews.append(columnViews[index])
                 guard let baseWeight = firstWeightedValue else {
                     firstWeightedValue = CGFloat(weighted)
                     weightedValues.append(1)
@@ -94,7 +96,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
                 }
                 
                 for index in (1 ..< stretchColumnIndices.count) {
-                    arrangedSubviews[stretchColumnIndices[index]].widthAnchor.constraint(equalTo: arrangedSubviews[stretchColumnIndices[0]].widthAnchor).isActive = true
+                    columnViews[stretchColumnIndices[index]].widthAnchor.constraint(equalTo: columnViews[stretchColumnIndices[0]].widthAnchor).isActive = true
                 }
             }
         }

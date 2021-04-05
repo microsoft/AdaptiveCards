@@ -45,6 +45,7 @@ class FakeTextRun: ACSTextRun {
     var strikethrough: Bool?
     var highlight: Bool?
     var underline: Bool?
+    var selectAction: ACSBaseActionElement?
 
     override func setText(_ value: String) {
         text = value
@@ -134,6 +135,12 @@ class FakeTextRun: ACSTextRun {
         underline = value
     }
     
+    override func getSelectAction() -> ACSBaseActionElement? {
+        return selectAction
+    }
+}
+
+extension FakeTextRun {
     static func make(text: String? = "",
                      textSize: ACSTextSize? = ACSTextSize.default,
                      textWeight: ACSTextWeight = ACSTextWeight.default,
@@ -143,7 +150,8 @@ class FakeTextRun: ACSTextRun {
                      italic: Bool? = false,
                      strikethrough: Bool? = false,
                      highlight: Bool? = false,
-                     underline: Bool? = false) -> FakeTextRun {
+                     underline: Bool? = false,
+                     selectAction: ACSBaseActionElement? = nil) -> FakeTextRun {
         let fakeTextRun = FakeTextRun()
         fakeTextRun.text = text
         fakeTextRun.textSize = textSize
@@ -155,7 +163,7 @@ class FakeTextRun: ACSTextRun {
         fakeTextRun.strikethrough = strikethrough
         fakeTextRun.highlight = highlight
         fakeTextRun.underline = underline
+        fakeTextRun.selectAction = selectAction
         return fakeTextRun
     }
 }
-

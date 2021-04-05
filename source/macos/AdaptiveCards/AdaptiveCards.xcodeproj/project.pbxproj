@@ -303,6 +303,7 @@
 		0872608825E6AD420036061C /* ACRColumnView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872608725E6AD420036061C /* ACRColumnView.swift */; };
 		0872609025E6AF530036061C /* ColumnSetRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872608F25E6AF530036061C /* ColumnSetRenderer.swift */; };
 		0872609525E6AF5F0036061C /* ColumnRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0872609425E6AF5F0036061C /* ColumnRenderer.swift */; };
+		088C673C2615C2B00070186C /* ACRContentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088C673B2615C2B00070186C /* ACRContentStackView.swift */; };
 		089DC88025B6C8AE00626E8F /* libAdaptiveCards-shared.a in Embed Libraries */ = {isa = PBXBuildFile; fileRef = 08E403B125B46A2600C2092A /* libAdaptiveCards-shared.a */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		089DC8D725B856FA00626E8F /* BridgeConverter.mm in Sources */ = {isa = PBXBuildFile; fileRef = 089DC8D625B856FA00626E8F /* BridgeConverter.mm */; };
 		08B5F91125C924F400A7D37A /* TextBlockRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */; };
@@ -964,6 +965,7 @@
 		0872608725E6AD420036061C /* ACRColumnView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRColumnView.swift; sourceTree = "<group>"; };
 		0872608F25E6AF530036061C /* ColumnSetRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnSetRenderer.swift; sourceTree = "<group>"; };
 		0872609425E6AF5F0036061C /* ColumnRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnRenderer.swift; sourceTree = "<group>"; };
+		088C673B2615C2B00070186C /* ACRContentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ACRContentStackView.swift; sourceTree = "<group>"; };
 		089DC8D525B856DA00626E8F /* BridgeConverter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BridgeConverter.h; sourceTree = "<group>"; };
 		089DC8D625B856FA00626E8F /* BridgeConverter.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BridgeConverter.mm; sourceTree = "<group>"; };
 		08B5F91025C924F400A7D37A /* TextBlockRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBlockRenderer.swift; sourceTree = "<group>"; };
@@ -1735,6 +1737,7 @@
 				13C41B0C25F25D06008A1F2E /* ACRDateField.swift */,
 				81C0371A26047C1E00B33324 /* ACRBackgroundImageView.swift */,
 				2910CF002600A82A000910C8 /* ACRActionSetView.swift */,
+				088C673B2615C2B00070186C /* ACRContentStackView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2244,6 +2247,7 @@
 				A032271B25E9176D00E7172E /* ACRContentHoldingView.swift in Sources */,
 				A01CA38D25DFE85D00A07E21 /* BaseProtocol.swift in Sources */,
 				0872608825E6AD420036061C /* ACRColumnView.swift in Sources */,
+				088C673C2615C2B00070186C /* ACRContentStackView.swift in Sources */,
 				28D7A57725F1E7E800AEA09C /* ACRCollectionViewItem.swift in Sources */,
 				28BDFD5525D55AF3000C3795 /* TextInputRenderer.swift in Sources */,
 				28CE1A8225E7557400BFCFD9 /* ACRFactTextField.swift in Sources */,

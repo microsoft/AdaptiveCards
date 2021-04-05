@@ -9,6 +9,7 @@ class FakeImage: ACSImage {
     public var pixelWidth: NSNumber = 0
     public var pixelHeight: NSNumber = 0
     public var isVisible: Bool = true
+    public var selectAction: ACSBaseActionElement?
 
     override func getUrl() -> String? {
         return url
@@ -41,10 +42,14 @@ class FakeImage: ACSImage {
     override func getIsVisible() -> Bool {
         return isVisible
     }
+    
+    override func getSelectAction() -> ACSBaseActionElement? {
+        return selectAction
+    }
 }
 
 extension FakeImage {
-    static func make(url: String? = "sampleUrl", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0, isVisible: Bool = true) -> FakeImage {
+    static func make(url: String? = "sampleUrl", backgroundColor: String? = "#FFFFFF", imageStyle: ACSImageStyle = .default, imageSize: ACSImageSize = .auto, horizontalAlignment: ACSHorizontalAlignment = .left, pixelWidth: NSNumber = 0, pixelHeight: NSNumber = 0, isVisible: Bool = true, selectAction: ACSBaseActionElement? = nil) -> FakeImage {
         let fakeImageView = FakeImage()
         fakeImageView.url = url
         fakeImageView.backgroundColor = backgroundColor
@@ -54,6 +59,7 @@ extension FakeImage {
         fakeImageView.pixelWidth = pixelWidth
         fakeImageView.pixelHeight = pixelHeight
         fakeImageView.isVisible = isVisible
+        fakeImageView.selectAction = selectAction
         return fakeImageView
     }
 }

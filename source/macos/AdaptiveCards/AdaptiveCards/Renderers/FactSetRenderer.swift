@@ -68,7 +68,7 @@ class FactSetRenderer: NSObject, BaseCardElementRendererProtocol {
         // Spacing between title and value in the horizontal Stack
         titleStack.trailingAnchor.constraint(equalTo: valueStack.leadingAnchor, constant: -10).isActive = true
         
-        let constraint = titleStack.widthAnchor.constraint(lessThanOrEqualTo: mainFactView.widthAnchor, multiplier: 0.45)
+        let constraint = titleStack.widthAnchor.constraint(lessThanOrEqualTo: mainFactView.widthAnchor, multiplier: 0.48)
         constraint.priority = .defaultHigh
         constraint.isActive = true
 

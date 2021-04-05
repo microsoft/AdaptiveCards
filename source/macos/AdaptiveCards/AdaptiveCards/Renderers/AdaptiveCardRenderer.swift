@@ -61,6 +61,7 @@ class AdaptiveCardRenderer {
         
         // add selectAction
         rootView.setupSelectAction(card.getSelectAction(), rootView: rootView)
+        rootView.setMinimumHeight(card.getMinHeight())
         
         if let backgroundImage = card.getBackgroundImage(), let url = backgroundImage.getUrl() {
             rootView.setupBackgroundImageProperties(backgroundImage)

@@ -24,12 +24,34 @@ class ACRView: ACRColumnView {
     private (set) var currentShowCardItems: ShowCardItems?
 	private (set) var imageViewMap: [String: [ImageHoldingView]] = [:]
     
+    private (set) lazy var showCardStackView: NSStackView = {
+        let view = NSStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.orientation = .vertical
+        view.alignment = .leading
+        view.spacing = 0
+        return view
+    }()
+    
     init(style: ACSContainerStyle, hostConfig: ACSHostConfig) {
         super.init(style: style, parentStyle: nil, hostConfig: hostConfig, superview: nil)
     }
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
+    }
+    
+    override func setupViews() {
+        super.setupViews()
+        addSubview(showCardStackView)
+    }
+    
+    override func setupConstraints() {
+        super.setupConstraints()
+        anchorBottomConstraint(with: showCardStackView.topAnchor)
+        showCardStackView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+        showCardStackView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        showCardStackView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
     }
     
     func addTarget(_ target: TargetHandler) {

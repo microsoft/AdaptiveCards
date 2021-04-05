@@ -38,7 +38,7 @@ class FakeColumnSet: ACSColumnSet {
 
 extension FakeColumnSet {
     static func make(columns: [ACSColumn] = [], style: ACSContainerStyle = .default, selectAction: ACSBaseActionElement? = nil, horizontalAlignment: ACSHorizontalAlignment = .left) -> FakeColumnSet {
-        let fakeColumnSet = FakeColumnSet()
+       let fakeColumnSet = FakeColumnSet()
         fakeColumnSet.columns = columns
         fakeColumnSet.style = style
         fakeColumnSet.selectAction = selectAction

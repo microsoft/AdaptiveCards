@@ -38,9 +38,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             view.heightAnchor.constraint(equalTo: topView.heightAnchor).isActive = true
         }
         
-        if let height = column.getMinHeight(), let heightPt = CGFloat(exactly: height), heightPt > 0 {
-            columnView.heightAnchor.constraint(greaterThanOrEqualToConstant: heightPt).isActive = true
-        }
+        columnView.setMinimumHeight(column.getMinHeight())
         
         if let backgroundImage = column.getBackgroundImage(), let url = backgroundImage.getUrl() {
             columnView.setupBackgroundImageProperties(backgroundImage)

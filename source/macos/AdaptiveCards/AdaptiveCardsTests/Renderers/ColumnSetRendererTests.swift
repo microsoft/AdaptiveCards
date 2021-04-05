@@ -19,7 +19,7 @@ class ColumnSetRendererTests: XCTestCase {
         columnSet = .make(columns: columns)
         
         let columnSetView = renderColumnSetView()
-        XCTAssertEqual(columnSetView.distribution, .fillEqually)
+        XCTAssertEqual(columnSetView.distribution, .fill)
     }
     
     func testAllAutoColumns() {
