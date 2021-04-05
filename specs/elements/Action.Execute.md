@@ -2,15 +2,16 @@
 
 # Action.Execute
 
-#### Introduced in version 1.4
+**Introduced in version 1.4**
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
 | **type** | `"Action.Execute"` | Yes | Must be `"Action.Execute"`. | 1.4 |
+| **verb** | `string` | No | The card author-defined verb associated with this action. | 1.4 |
 | **data** | `string`, `object` | No | Initial data that input fields will be combined with. These are essentially ‘hidden’ properties. | 1.4 |
 | **associatedInputs** | `AssociatedInputs` | No, default: `"auto"` | Controls which inputs are associated with the action. | 1.4 |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
