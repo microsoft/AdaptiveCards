@@ -14,6 +14,7 @@ using namespace AdaptiveCards;
 
 #import "ACSColumn.h"
 #import "ACSParseContext.h"
+#import "ACSHorizontalAlignment.h"
 // #import "ACSRemoteResourceInformation.h"
 // #import "ACSValue.h"
 
@@ -26,7 +27,7 @@ using namespace AdaptiveCards;
 @class ACSParseContext;
 @class ACSRemoteResourceInformation;
 
-
+enum ACSHorizontalAlignment: NSUInteger;
 
 @interface ACSColumnSet : ACSCollectionTypeElement
 
@@ -36,6 +37,9 @@ using namespace AdaptiveCards;
 
 - (NSArray<ACSColumn *> * _Nonnull)getColumns;
 - (void)getResourceInformation:(NSArray<ACSRemoteResourceInformation *>* _Nonnull)resourceInfo;
+
+- (ACSHorizontalAlignment)getHorizontalAlignment;
+- (void)setHorizontalAlignment:(enum ACSHorizontalAlignment)value;
 
 
 

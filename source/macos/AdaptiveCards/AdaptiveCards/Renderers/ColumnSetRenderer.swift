@@ -12,7 +12,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
         let columnSetView = ACRContentStackView(style: columnSet.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: parentView)
         columnSetView.translatesAutoresizingMaskIntoConstraints = false
         columnSetView.orientation = .horizontal
-        columnSetView.distribution = .fillEqually
+        let gravityArea: NSStackView.Gravity = columnSet.getHorizontalAlignment() == .center ? .center: (columnSet.getHorizontalAlignment() == .right ? .trailing: .leading)
         
         var numberOfAutoItems = 0
         var numberOfStretchItems = 0
@@ -29,7 +29,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             
             // Check if has extra properties else add column view
             guard index > 0, column.getSpacing() != .none, !column.getSeparator() else {
-                columnSetView.addArrangedSubview(columnView)
+                columnSetView.addView(columnView, in: gravityArea)
                 BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
                 continue
             }
@@ -41,7 +41,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             
             wrappingView.addArrangedSubview(columnView)
             columnView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
-            columnSetView.addArrangedSubview(wrappingView)
+            columnSetView.addView(wrappingView, in: gravityArea)
             BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
         }
         
@@ -54,6 +54,8 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
         if numberOfStretchItems == totalColumns || isSpecialAllStretch {
             columnSetView.distribution = .fillEqually
         } else if numberOfAutoItems == totalColumns {
+            columnSetView.distribution = .gravityAreas
+        } else if numberOfStretchItems == 0 && numberOfWeightedItems == 0 {
             columnSetView.distribution = .gravityAreas
         } else {
             let arrangedSubviews = columnSetView.arrangedSubviews

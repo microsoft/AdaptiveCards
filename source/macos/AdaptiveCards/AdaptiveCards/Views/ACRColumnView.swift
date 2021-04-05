@@ -109,6 +109,10 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         stackView.addArrangedSubview(subview)
     }
     
+    func addView(_ view: NSView, in gravity: NSStackView.Gravity) {
+        stackView.addView(view, in: gravity)
+    }
+    
     func applyPadding(_ padding: CGFloat) {
         stackViewLeadingConstraint?.constant = padding
         stackViewTopConstraint?.constant = padding
@@ -217,13 +221,13 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     
     private var previousBackgroundColor: CGColor?
     override func mouseEntered(with event: NSEvent) {
-        guard let columnView = event.trackingArea?.owner as? ACRColumnView, target != nil else { return }
+        guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
         previousBackgroundColor = columnView.layer?.backgroundColor
         columnView.layer?.backgroundColor = ColorUtils.hoverColorOnMouseEnter().cgColor
     }
     
     override func mouseExited(with event: NSEvent) {
-        guard let columnView = event.trackingArea?.owner as? ACRColumnView, target != nil else { return }
+        guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
         columnView.layer?.backgroundColor = previousBackgroundColor ?? .clear
     }
 }

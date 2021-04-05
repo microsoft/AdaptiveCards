@@ -7,6 +7,7 @@
 #import "ACSColumn.h"
 #import "ACSParseContext.h"
 #import "ACSRemoteResourceInformationConvertor.h"
+#import "ACSHorizontalAlignmentConvertor.h"
 // #import "ACSValue.h"
 
 //cpp includes
@@ -60,6 +61,22 @@
  
     mCppObj->GetResourceInformation(resourceInfoVector);
     
+}
+
+- (ACSHorizontalAlignment)getHorizontalAlignment
+{
+
+    auto getHorizontalAlignmentCpp = mCppObj->GetHorizontalAlignment();
+    return [ACSHorizontalAlignmentConvertor convertCpp:getHorizontalAlignmentCpp];
+
+}
+
+- (void)setHorizontalAlignment:(enum ACSHorizontalAlignment)value
+{
+    auto valueCpp = [ACSHorizontalAlignmentConvertor convertObj:value];
+
+    mCppObj->SetHorizontalAlignment(valueCpp);
+
 }
 
 

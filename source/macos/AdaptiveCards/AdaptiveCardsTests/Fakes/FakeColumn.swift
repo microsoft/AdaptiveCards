@@ -11,6 +11,8 @@ class FakeColumn: ACSColumn {
     var spacing: ACSSpacing = .default
     var separator: Bool = false
     var id: String? = ""
+    var backgroundImage: ACSBackgroundImage?
+    var selectAction: ACSBaseActionElement?
     
     override func getWidth() -> String? {
         return width
@@ -83,10 +85,18 @@ class FakeColumn: ACSColumn {
     override func getId() -> String? {
         return id
     }
+    
+    override func getBackgroundImage() -> ACSBackgroundImage? {
+        return backgroundImage
+    }
+    
+    override func getSelectAction() -> ACSBaseActionElement? {
+        return selectAction
+    }
 }
 
 extension FakeColumn {
-    static func make(width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false) -> FakeColumn {
+    static func make(width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false, backgroundImage: ACSBackgroundImage? = nil, selectAction: ACSBaseActionElement? = nil) -> FakeColumn {
         let fakeColumn = FakeColumn()
         fakeColumn.width = width
         fakeColumn.pixelWidth = pixelWidth
@@ -97,6 +107,8 @@ extension FakeColumn {
         fakeColumn.bleed = bleed
         fakeColumn.spacing = spacing
         fakeColumn.separator = separator
+        fakeColumn.backgroundImage = backgroundImage
+        fakeColumn.selectAction = selectAction
         return fakeColumn
     }
 }
