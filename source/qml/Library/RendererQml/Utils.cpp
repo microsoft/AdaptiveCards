@@ -1,6 +1,5 @@
 #include "Utils.h"
 #include <time.h>
-#include <windows.h>
 
 namespace RendererQml
 {
