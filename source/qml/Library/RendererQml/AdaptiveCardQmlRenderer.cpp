@@ -678,7 +678,7 @@ namespace RendererQml
 		if (input->GetValue() != std::nullopt)
 		{
 			uiNumberInput->Property("readonly property bool hasDefaultValue", "true");
-			uiNumberInput->Property("readonly property int defaultValue", std::to_string(input->GetValue().value()));
+			uiNumberInput->Property("readonly property int defaultValue", Formatter() << input->GetValue());
 		}
 		else if(input->GetMin() == std::nullopt)
 		{
@@ -708,17 +708,17 @@ namespace RendererQml
 		if (input->GetValue() < input->GetMin())
 		{
 			input->SetValue(input->GetMin());
-			uiNumberInput->Property("readonly property int defaultValue", std::to_string(input->GetMin().value()));
+			uiNumberInput->Property("readonly property int defaultValue", Formatter() << input->GetMin());
 		}
 		if (input->GetValue() > input->GetMax())
 		{
 			input->SetValue(input->GetMax());
-			uiNumberInput->Property("readonly property int defaultValue", std::to_string(input->GetMax().value()));
+			uiNumberInput->Property("readonly property int defaultValue", Formatter() << input->GetMax());
 		}
 
-		uiNumberInput->Property("from", std::to_string(input->GetMin().value()));
-		uiNumberInput->Property("to", std::to_string(input->GetMax().value()));
-		uiNumberInput->Property("value", std::to_string(input->GetValue().value()));
+		uiNumberInput->Property("from", Formatter() << input->GetMin());
+		uiNumberInput->Property("to", Formatter() << input->GetMax());
+		uiNumberInput->Property("value", Formatter() << input->GetValue());
 
 		//TODO: Add stretch property
 

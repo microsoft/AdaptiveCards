@@ -18,6 +18,12 @@ namespace RendererQml
             return *this;
         }
 
+        Formatter& operator<<(const std::optional<int>& value)
+        {
+            m_stream << value.value_or(-1);
+            return *this;
+        }
+
         std::string Str() const;
 
         operator std::string() const;
