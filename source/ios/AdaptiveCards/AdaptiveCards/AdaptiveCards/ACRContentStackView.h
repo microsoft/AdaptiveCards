@@ -22,6 +22,8 @@
 @property BOOL isActionSet;
 // tells if a background image is set
 @property BOOL isBackgroundImageSet;
+// if true, RTL's set
+@property ACRRtl rtl;
 
 - (instancetype _Nonnull)initWithFrame:(CGRect)frame;
 

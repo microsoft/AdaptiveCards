@@ -37,10 +37,13 @@
     std::shared_ptr<BaseCardElement> elem = [acoElem element];
     std::shared_ptr<Column> columnElem = std::dynamic_pointer_cast<Column>(elem);
 
+    [rootView.context pushBaseCardElementContext:acoElem];
+
     ACRColumnView *column = [[ACRColumnView alloc] initWithStyle:(ACRContainerStyle)columnElem->GetStyle()
                                                      parentStyle:[viewGroup style]
                                                       hostConfig:acoConfig
                                                        superview:viewGroup];
+    column.rtl = rootView.context.rtl;
 
     renderBackgroundImage(columnElem->GetBackgroundImage(), column, rootView);
 
@@ -127,6 +130,8 @@
 
     // viewGroup and column has to be in view hierarchy before configBleed is called
     configBleed(rootView, elem, column, acoConfig, viewGroup);
+
+    [rootView.context popBaseCardElementContext:acoElem];
 
     return column;
 }

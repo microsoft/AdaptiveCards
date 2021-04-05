@@ -100,7 +100,8 @@
                 // Set paragraph style such as line break mode and alignment
                 NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
                 paragraphStyle.alignment =
-                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()];
+                    [ACOHostConfig getTextBlockAlignment:rTxtBlck->GetHorizontalAlignment()
+                                                 context:rootView.context];
 
                 // Obtain text color to apply to the attributed string
                 ACRContainerStyle style = lab.style;
@@ -214,7 +215,11 @@
                                          forAxis:UILayoutConstraintAxisHorizontal];
 
     [lab setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+
+    configRtl(lab, rootView.context);
+
     configVisibility(lab, elem);
+
     return lab;
 }
 

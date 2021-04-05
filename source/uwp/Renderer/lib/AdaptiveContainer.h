@@ -32,6 +32,9 @@ namespace AdaptiveNamespace
         IFACEMETHODIMP get_BackgroundImage(_Outptr_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage** backgroundImage);
         IFACEMETHODIMP put_BackgroundImage(_In_ ABI::AdaptiveNamespace::IAdaptiveBackgroundImage* backgroundImage);
 
+        IFACEMETHODIMP get_Rtl(_COM_Outptr_ ABI::Windows::Foundation::IReference<bool>** value);
+        IFACEMETHODIMP put_Rtl(_In_ ABI::Windows::Foundation::IReference<bool>* value);
+
         // IAdaptiveContainerBase
         IFACEMETHODIMP get_Style(_Out_ ABI::AdaptiveNamespace::ContainerStyle* style);
         IFACEMETHODIMP put_Style(ABI::AdaptiveNamespace::ContainerStyle style);
@@ -141,6 +144,7 @@ namespace AdaptiveNamespace
         UINT32 m_minHeight;
         boolean m_bleed;
         ABI::AdaptiveNamespace::BleedDirection m_bleedDirection;
+        Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IReference<bool>> m_rtl;
     };
 
     ActivatableClass(AdaptiveContainer);

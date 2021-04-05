@@ -324,7 +324,7 @@ Json::Value AdaptiveCard::SerializeToJsonValue() const
 
     if (m_rtl.has_value())
     {
-        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value();
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value_or("");
     }
 
     const HeightType height = GetHeight();

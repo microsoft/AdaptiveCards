@@ -85,6 +85,7 @@ typedef UIImage * (^ImageLoadBlock)(NSURL *url);
         _paddingMap = [[NSMutableDictionary alloc] init];
         _inputHandlerLookupTable = [[NSMapTable alloc] initWithKeyOptions:NSMapTableWeakMemory valueOptions:NSMapTableWeakMemory capacity:5];
         _showcards = [[NSMutableArray alloc] init];
+        _context = [[ACORenderContext alloc] init];
     }
     return self;
 }
