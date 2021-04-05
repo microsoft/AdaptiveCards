@@ -5,14 +5,12 @@ package io.adaptivecards.renderer.readonly;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,24 +18,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.HashMap;
+
+import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.objectmodel.FontType;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
-import io.adaptivecards.renderer.RenderArgs;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
-import io.adaptivecards.renderer.TagContent;
-import io.adaptivecards.renderer.Util;
-import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HorizontalAlignment;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextSize;
 import io.adaptivecards.objectmodel.TextWeight;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
-
-import java.util.HashMap;
+import io.adaptivecards.renderer.RenderArgs;
+import io.adaptivecards.renderer.RenderedAdaptiveCard;
+import io.adaptivecards.renderer.TagContent;
+import io.adaptivecards.renderer.Util;
+import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 
 public class TextBlockRenderer extends BaseCardElementRenderer
 {
@@ -61,7 +58,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
-        textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
+        textView.setTextAlignment(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
     public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)
