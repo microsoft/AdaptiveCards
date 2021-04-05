@@ -38,7 +38,7 @@
 			"type": "TextBlockStyle",
 			"description": "Determines the style of this text block",
 			"default": "paragraph",
-			"version": "1.5"
+			"version": "vNext"
 		},
 		"weight": {
 			"type": "FontWeight",

@@ -12,7 +12,7 @@
 | **isSubtle** | `boolean` | No | If `true`, displays text slightly toned down to appear less prominent. | 1.0 |
 | **maxLines** | `number` | No | Specifies the maximum number of lines to display. | 1.0 |
 | **size** | `FontSize` | No | Controls size of text. | 1.0 |
-| **style** | `TextBlockStyle` | No, default: `"paragraph"` | Determines the style of this text block | 1.5 |
+| **style** | `TextBlockStyle` | No, default: `"paragraph"` | Determines the style of this text block | vNext |
 | **weight** | `FontWeight` | No | Controls the weight of `TextBlock` elements. | 1.0 |
 | **wrap** | `boolean` | No | If `true`, allow text to wrap. Otherwise, text is clipped. | 1.0 |
 
@@ -88,7 +88,7 @@ Controls size of text.
 Determines the style of this text block
 
 * **Type**: `TextBlockStyle`
-* **Version** : 1.5
+* **Version** : vNext
 * **Required**: No, default: `"paragraph"`
 * **Allowed values**:
   * `"paragraph"`
