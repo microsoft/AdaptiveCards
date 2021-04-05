@@ -11,9 +11,9 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
         return view
     }()
     
-    public var isRadioGroup: Bool = false
+    public var isRadioGroup = false
     public var previousButton: ACRChoiceButton?
-    public var wrap: Bool = false
+    public var wrap = false
     public var idString: String?
     
     override init(frame frameRect: NSRect) {
@@ -87,7 +87,7 @@ extension ACRChoiceSetView: ACRChoiceButtonDelegate {
 // MARK: ACRChoiceSetFieldCompactView
 class ACRChoiceSetCompactView: NSPopUpButton, InputHandlingViewProtocol {
     public let type: ACSChoiceSetStyle = .compact
-    private var trackingAreaDefined: Bool = false
+    private var trackingAreaDefined = false
     public var idString: String?
     public var valueSelected: String?
     public var arrayValues: [String] = []

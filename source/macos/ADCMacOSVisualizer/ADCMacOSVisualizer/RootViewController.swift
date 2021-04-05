@@ -11,7 +11,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
     private var configs: [String] = []
     private var hostConfigString = sampleHostConfig // default config string
     private let webexConfig: String = "webex_light_config.json"
-    private var darkTheme: Bool = false
+    private var darkTheme = false
     
     override func viewDidLoad() {
         super.viewDidLoad()

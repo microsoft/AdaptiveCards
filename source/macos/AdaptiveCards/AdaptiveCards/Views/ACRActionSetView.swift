@@ -10,7 +10,7 @@ class ACRActionSetView: NSView {
     
     private var frameWidth: CGFloat = 0
     private var maxFrameWidth: CGFloat = 0
-    private var renderAction: Bool = true
+    private var renderAction = true
     
     public var totalWidth: CGFloat = 0
     public var actions: [NSView] = []

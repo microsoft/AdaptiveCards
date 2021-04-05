@@ -32,7 +32,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             columnViews.append(columnView)
             guard index > 0, (column.getSpacing() != .none || column.getSeparator()) else {
                 columnSetView.addView(columnView, in: gravityArea)
-                BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
+                BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column, parentElement: columnSet)
                 continue
             }
             let wrappingView = ACRContentStackView(style: column.getStyle(), hostConfig: hostConfig)
@@ -44,7 +44,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             wrappingView.addArrangedSubview(columnView)
             columnView.trailingAnchor.constraint(equalTo: wrappingView.trailingAnchor).isActive = true
             columnSetView.addView(wrappingView, in: gravityArea)
-            BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column)
+            BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column, parentElement: columnSet)
         }
         
         // Add SelectAction

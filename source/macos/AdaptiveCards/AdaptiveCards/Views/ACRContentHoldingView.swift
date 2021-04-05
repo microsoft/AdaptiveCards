@@ -7,11 +7,11 @@ class ACRContentHoldingView: NSView, SelectActionHandlingProtocol {
     private weak var _heightConstraint: NSLayoutConstraint?
     weak var imageView: NSImageView?
     var imageProperties: ACRImageProperties?
-    var isVisible: Bool = true
+    var isVisible = true
     var target: TargetHandler?
     
-    var isImageSet: Bool = false
-    var isPersonStyle: Bool = false
+    var isImageSet = false
+    var isPersonStyle = false
 
     override public init(frame frameRect: NSRect) {
         super.init(frame: frameRect)

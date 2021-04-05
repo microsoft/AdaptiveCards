@@ -44,7 +44,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private let datePickerCalendar = NSDatePicker()
     private let datePickerTextfield = NSDatePicker()
 
-    var isTimeMode: Bool = false
+    var isTimeMode = false
     var selectedDate: Date? = Date()
     var minDateValue: String?
     var maxDateValue: String?

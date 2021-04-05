@@ -15,6 +15,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     let style: ACSContainerStyle
     let hostConfig: ACSHostConfig
     var target: TargetHandler?
+    public var bleed = false
     
     public var orientation: NSUserInterfaceLayoutOrientation {
         get { return stackView.orientation }
@@ -87,6 +88,7 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     
     private func initialize() {
         wantsLayer = true
+        layer = NoClippingLayer()
         setupViews()
         setupConstraints()
         setupTrackingArea()
@@ -207,5 +209,13 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
     override func mouseExited(with event: NSEvent) {
         guard let columnView = event.trackingArea?.owner as? ACRContentStackView, target != nil else { return }
         columnView.layer?.backgroundColor = previousBackgroundColor ?? .clear
+    }
+}
+
+class NoClippingLayer: CALayer {
+    override var masksToBounds: Bool {
+        // swiftlint:disable unused_setter_value
+        get { return false }
+        set { }
     }
 }

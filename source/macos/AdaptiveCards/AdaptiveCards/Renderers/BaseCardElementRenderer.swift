@@ -54,7 +54,7 @@ class BaseCardElementRenderer {
         return updatedView
     }
     
-    func configBleed(collectionView: NSView, parentView: ACRContentStackView, with hostConfig: ACSHostConfig, element: ACSBaseCardElement) {
+    func configBleed(collectionView: NSView, parentView: ACRContentStackView, with hostConfig: ACSHostConfig, element: ACSBaseCardElement, parentElement: ACSBaseCardElement?) {
         guard let collection = element as? ACSCollectionTypeElement, collection.getBleed() else {
             return
         }
@@ -74,11 +74,15 @@ class BaseCardElementRenderer {
             // container view's stack view (csv) holds content views, and bv dislpays
             // container style we transpose them, and get the final result
             
+            if !collection.getCanBleed() {
+                return
+            }
+            
             let backgroundView = NSView()
             backgroundView.translatesAutoresizingMaskIntoConstraints = false
             
-            // adding this above parentView backgroundImage view
-            parentView.addSubview(backgroundView, positioned: .below, relativeTo: parentView.stackView)
+            // adding this above collectionView backgroundImage view
+            collectionView.addSubview(backgroundView, positioned: .below, relativeTo: collectionView.stackView)
             backgroundView.wantsLayer = true
             backgroundView.layer?.backgroundColor = collectionView.layer?.backgroundColor
             
@@ -87,12 +91,30 @@ class BaseCardElementRenderer {
             let trailing = ((direction.rawValue & ACRBleedDirection.ACRBleedToTrailingEdge.rawValue) != 0)
             let bottom = ((direction.rawValue & ACRBleedDirection.ACRBleedToBottomEdge.rawValue) != 0)
             
+            var padding: CGFloat = 0
+            if let paddingSpace = hostConfig.getSpacing()?.paddingSpacing {
+                padding = CGFloat(truncating: paddingSpace)
+            }
             collectionView.setBleedProp(top: top, bottom: bottom, trailing: trailing, leading: leading)
-
-            backgroundView.topAnchor.constraint(equalTo: top ? parentView.topAnchor : collectionView.topAnchor).isActive = true
-            backgroundView.leadingAnchor.constraint(equalTo: leading ? parentView.leadingAnchor : collectionView.leadingAnchor).isActive = true
-            backgroundView.trailingAnchor.constraint(equalTo: trailing ? parentView.trailingAnchor : collectionView.trailingAnchor).isActive = true
-            backgroundView.bottomAnchor.constraint(equalTo: bottom ? parentView.bottomAnchor : collectionView.bottomAnchor).isActive = true
+            
+            backgroundView.topAnchor.constraint(equalTo: collectionView.topAnchor, constant: top ? -padding : 0).isActive = true
+            backgroundView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor, constant: leading ? -padding : 0).isActive = true
+            backgroundView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor, constant: trailing ?  padding : 0).isActive = true
+            if bottom {
+                // case 1: when parent style == none,
+                // case 2: when parent is bleeding but, bottom bleed direction false
+                // case 3: when parent bleeds till end and has bottom bleed direction true
+                var parentBottomBleedDirection = false
+                if let parent = parentElement as? ACSCollectionTypeElement {
+                    let directionParent = parent.getBleedDirection()
+                    parentBottomBleedDirection = (directionParent.rawValue & ACRBleedDirection.ACRBleedToBottomEdge.rawValue) != 0
+                }
+                let paddingBottom = parentView.style == ACSContainerStyle.none || (parentView.bleed && parentBottomBleedDirection
+                ) ? padding : 0
+                backgroundView.bottomAnchor.constraint(equalTo: parentView.bottomAnchor, constant: paddingBottom).isActive = true
+            } else {
+                backgroundView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor).isActive = true
+            }
             
             if let borderWidth = collectionView.layer?.borderWidth {
                 backgroundView.layer?.borderWidth = borderWidth

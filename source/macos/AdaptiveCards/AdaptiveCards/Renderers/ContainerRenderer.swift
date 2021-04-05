@@ -13,6 +13,8 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
         let containerView = ACRColumnView(style: container.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: rootView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
+        containerView.bleed = container.getBleed()
+        
         // add selectAction
         containerView.setupSelectAction(container.getSelectAction(), rootView: rootView)
         
@@ -29,7 +31,7 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             let view = renderer.render(element: item, with: hostConfig, style: container.getStyle(), rootView: rootView, parentView: containerView, inputs: [])
             let viewWithInheritedProperties = BaseCardElementRenderer().updateView(view: view, element: item, rootView: rootView, style: container.getStyle(), hostConfig: hostConfig, isfirstElement: isFirstElement)
             containerView.addArrangedSubview(viewWithInheritedProperties)
-            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: containerView, with: hostConfig, element: item)
+            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: containerView, with: hostConfig, element: item, parentElement: container)
         }
         
         let verticalAlignment = container.getVerticalContentAlignment()

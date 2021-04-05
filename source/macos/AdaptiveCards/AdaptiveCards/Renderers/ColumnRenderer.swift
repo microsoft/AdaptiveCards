@@ -13,6 +13,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
         let columnView = ACRColumnView(style: column.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: parentView)
         columnView.translatesAutoresizingMaskIntoConstraints = false
         columnView.setWidth(ColumnWidth(columnWidth: column.getWidth(), pixelWidth: column.getPixelWidth()))
+        columnView.bleed = column.getBleed()
         
         var topSpacingView: NSView?
         if column.getVerticalContentAlignment() == .center || column.getVerticalContentAlignment() == .bottom {
@@ -27,7 +28,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
             columnView.configureColumnProperties(for: view)
             let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: item, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: index == 0)
             columnView.addArrangedSubview(viewWithInheritedProperties)
-            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: columnView, with: hostConfig, element: item)
+            BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: columnView, with: hostConfig, element: item, parentElement: column)
         }
         
         if column.getVerticalContentAlignment() == .center, let topView = topSpacingView {

@@ -27,7 +27,7 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
             textView.maxLen = Int(truncating: maxLen)
         }
         let action = inputBlock.getInlineAction()
-        var renderButton: Bool = false
+        var renderButton = false
         switch action {
         case is ACSOpenUrlAction:
             renderButton = true

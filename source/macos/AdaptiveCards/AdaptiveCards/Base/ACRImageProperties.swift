@@ -37,7 +37,9 @@ class ACRImageProperties: NSObject {
                                                       height: pixelHeight,
                                                       with: config,
                                                       explicitDimensions: hasExplicitDimensions)
-        updateContentSize(size: contentSize)
+        if image != nil {
+            updateContentSize(size: contentSize)
+        }
         acsHorizontalAlignment = imageElement.getHorizontalAlignment()
     }
     
