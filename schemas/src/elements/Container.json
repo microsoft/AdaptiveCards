@@ -2,56 +2,61 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/AdaptiveCards/6f39aedce45864ae1067ed44a5551dc973790bb5/source/nodejs/typed-schema/schema/lib/Type.json",
   "extends": "Element",
   "description": "Containers group items together.",
-  "properties": {
-    "items": {
-      "type": "Element[]",
-      "description": "The card elements to render inside the `Container`.",
-      "required": true
-    },
-    "selectAction": {
-      "type": "ISelectAction",
-      "description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
-      "version": "1.1"
-    },
-    "style": {
-      "type": "ContainerStyle?",
-      "description": "Style hint for `Container`."
-    },
-    "verticalContentAlignment": {
-      "type": "VerticalContentAlignment",
-      "description": "Defines how the content should be aligned vertically within the container.",
-      "default": "top",
-      "version": "1.1"
-    },
-    "bleed": {
-      "type": "boolean",
-      "description": "Determines whether the element should bleed through its parent's padding.",
-      "version": "1.2",
-      "features": [
-        2109
-      ]
-    },
-    "backgroundImage": {
-      "type": "BackgroundImage",
-      "description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
-      "version": "1.2",
-      "shorthands": [
-        {
-          "type": "uri-reference",
-          "description": "The URL (or data url) to use as the background image. Supports data URI."
-        }
-      ]
-    },
-    "minHeight": {
-      "type": "string",
-      "description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
-      "examples": [
-        "50px"
-      ],
-      "version": "1.2",
-      "features": [
-        2293
-      ]
-    }
-  }
+	"properties": {
+		"items": {
+			"type": "Element[]",
+			"description": "The card elements to render inside the `Container`.",
+			"required": true
+		},
+		"selectAction": {
+			"type": "ISelectAction",
+			"description": "An Action that will be invoked when the `Container` is tapped or selected. `Action.ShowCard` is not supported.",
+			"version": "1.1"
+		},
+		"style": {
+			"type": "ContainerStyle?",
+			"description": "Style hint for `Container`."
+		},
+		"verticalContentAlignment": {
+			"type": "VerticalContentAlignment",
+			"description": "Defines how the content should be aligned vertically within the container.",
+			"default": "top",
+			"version": "1.1"
+		},
+		"bleed": {
+			"type": "boolean",
+			"description": "Determines whether the element should bleed through its parent's padding.",
+			"version": "1.2",
+			"features": [
+				2109
+			]
+		},
+		"backgroundImage": {
+			"type": "BackgroundImage",
+			"description": "Specifies the background image. Acceptable formats are PNG, JPEG, and GIF",
+			"version": "1.2",
+			"shorthands": [
+				{
+					"type": "uri-reference",
+					"description": "The URL (or data url) to use as the background image. Supports data URI."
+				}
+			]
+		},
+		"minHeight": {
+			"type": "string",
+			"description": "Specifies the minimum height of the container in pixels, like `\"80px\"`.",
+			"examples": [
+				"50px"
+			],
+			"version": "1.2",
+			"features": [
+				2293
+			]
+		},
+		"rtl": {
+			"type": "boolean",
+			"description": "When `true` content in this container should be presented right to left.",
+			"version": "1.5"
+		}
+	}
 }
