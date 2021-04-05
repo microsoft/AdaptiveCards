@@ -102,7 +102,7 @@ namespace AdaptiveNamespace
         try
         {
             ParseContext context(sharedModelElementParserRegistration, sharedModelActionParserRegistration);
-            const std::string c_rendererVersion = "1.4";
+            const std::string c_rendererVersion = "1.5";
             std::shared_ptr<AdaptiveSharedNamespace::ParseResult> sharedParseResult =
                 AdaptiveSharedNamespace::AdaptiveCard::DeserializeFromString(jsonString, c_rendererVersion, context);
             ComPtr<IAdaptiveCard> adaptiveCard;
