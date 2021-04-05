@@ -93,9 +93,10 @@ export class Container extends React.Component {
 
 		// separator and spacing styles
 		const separatorStyles = [{ height: spacing }];
-
+		
+		const { isFirst } = this.props; //isFirst represent, it is first element
 		// separator styles
-		this.payload.separator && separatorStyles.push(this.styleConfig.separatorStyle);
+		this.payload.separator && !isFirst && separatorStyles.push(this.styleConfig.separatorStyle);
 
 		// spacing styles
 		this.payload.spacing && separatorStyles.push({ paddingTop: spacing / 2, marginTop: spacing / 2, height: 0 });
