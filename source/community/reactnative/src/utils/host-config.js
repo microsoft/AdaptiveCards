@@ -380,13 +380,13 @@ class FontConfig {
 			this.fontSizes = config["fontSizes"] ? { ...this.fontSizes, ...config["fontSizes"] } : this.fontSizes;
 			this.fontWeights = config["fontWeights"] ? { ...this.fontWeights, ...config["fontWeights"] } : this.fontWeights;
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontFamily"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontFamily"])) {
 			this.fontFamily = customConfig["fontFamily"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontWeights"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontWeights"])) {
 			this.fontWeights = customConfig["fontWeights"];
 		}
-		else if (!Utils.isNullOrEmpty(customConfig["fontSizes"])) {
+		if (!Utils.isNullOrEmpty(customConfig["fontSizes"])) {
 			this.fontSizes = customConfig["fontSizes"];
 		}
 	}
@@ -396,9 +396,6 @@ export class HostConfig {
 	choiceSetInputValueSeparator = ",";
 	supportsInteractivity = true;
 	lineHeights;
-
-	fontFamily = "Helvetica";
-
 	spacing = {
 		none: 0,
 		small: 3,
@@ -408,28 +405,15 @@ export class HostConfig {
 		extraLarge: 40,
 		padding: 5
 	};
-
 	separator = {
 		lineThickness: 1,
 		lineColor: "#A9A9A9"
 	};
-
-	fontSizes = {
-		small: 12,
-		default: 14,
-		medium: 17,
-		large: 21,
-		extraLarge: 26
-	};
+	
 	horizontalAlignment = {
 		left: "left",
 		center: "center",
 		right: "right"
-	};
-	fontWeights = {
-		lighter: 200,
-		default: 400,
-		bolder: 600
 	};
 	imageSizes = {
 		small: 40,
@@ -498,14 +482,6 @@ export class HostConfig {
 			}
 			this.choiceSetInputValueSeparator = (obj && typeof obj["choiceSetInputValueSeparator"] === "string") ? obj["choiceSetInputValueSeparator"] : this.choiceSetInputValueSeparator;
 			this.supportsInteractivity = (obj && typeof obj["supportsInteractivity"] === "boolean") ? obj["supportsInteractivity"] : this.supportsInteractivity;
-			this.fontFamily = obj["fontFamily"] || this.fontFamily;
-			this.fontSizes = {
-				small: obj.fontSizes && obj.fontSizes["small"] || this.fontSizes.small,
-				default: obj.fontSizes && obj.fontSizes["default"] || this.fontSizes.default,
-				medium: obj.fontSizes && obj.fontSizes["medium"] || this.fontSizes.medium,
-				large: obj.fontSizes && obj.fontSizes["large"] || this.fontSizes.large,
-				extraLarge: obj.fontSizes && obj.fontSizes["extraLarge"] || this.fontSizes.extraLarge
-			};
 
 			if (obj.lineHeights) {
 				this.lineHeights = {
@@ -515,12 +491,6 @@ export class HostConfig {
 					large: obj.lineHeights["large"],
 					extraLarge: obj.lineHeights["extraLarge"]
 				};
-			};
-
-			this.fontWeights = {
-				lighter: obj.fontWeights && obj.fontWeights["lighter"] || this.fontWeights.lighter,
-				default: obj.fontWeights && obj.fontWeights["default"] || this.fontWeights.default,
-				bolder: obj.fontWeights && obj.fontWeights["bolder"] || this.fontWeights.bolder
 			};
 
 			this.imageSizes = {
