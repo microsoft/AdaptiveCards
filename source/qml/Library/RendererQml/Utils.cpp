@@ -276,6 +276,22 @@ namespace RendererQml
 			return "Qt.AlignTop";
 	}
 
+	std::string Utils::GetHorizontalAnchors(std::string alignType)
+	{
+		if (alignType.compare("center") == 0)
+			return "horizontalCenter";
+
+		return alignType;
+	}
+
+	std::string Utils::GetVerticalAnchors(std::string alignType)
+	{
+		if (alignType.compare("center") == 0)
+			return "verticalCenter";
+
+		return alignType;
+	}
+
 	std::string Utils::GetWeight(AdaptiveCards::TextWeight weight)
 	{
 		switch (weight)

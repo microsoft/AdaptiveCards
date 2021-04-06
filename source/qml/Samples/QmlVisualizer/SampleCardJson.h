@@ -3010,38 +3010,51 @@ namespace Samples
 
 	const std::string card_BackgroundImage = R"({
     "type": "AdaptiveCard",
-    "version": "1.0",
     "body": [
         {
-            "type": "TextBlock",
-            "text": "TextBlock"
+            "type": "Container",
+            "minHeight": "150px",
+            "backgroundImage": "https://adaptivecards.io/content/AlkiBeach.jpg",
+            "items": [
+                {
+                    "type": "TextBlock",
+                    "text": "What a beautiful background"
+                }
+            ]
         },
         {
             "type": "TextBlock",
-            "text": "TextBlock"
+            "text": "They can even repeat a bunch of different ways..."
         },
         {
-            "type": "TextBlock",
-            "text": "TextBlock"
+            "type": "Container",
+            "minHeight": "100px",
+            "backgroundImage": {
+                "url": "https://adaptivecards.io/content/uparrow.png",
+                "fillMode": "Repeat"
+            }
         },
         {
-            "type": "Input.Text",
-            "placeholder": "Placeholder text",
-            "id": "textField1"
+            "type": "Container",
+            "minHeight": "10px",
+            "backgroundImage": {
+                "url": "https://adaptivecards.io/content/uparrow.png",
+                "fillMode": "RepeatHorizontally",
+                "verticalAlignment": "Center"
+            }
         },
         {
-            "type": "Input.Text",
-            "placeholder": "Placeholder text",
-            "id": "textField2"
+            "type": "Container",
+            "minHeight": "100px",
+            "backgroundImage": {
+                "url": "https://adaptivecards.io/content/uparrow.png",
+                "fillMode": "RepeatVertically",
+                "horizontalAlignment": "Center"
+            }
         }
     ],
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
-    "backgroundImage": {
-        "url": "https://adaptivecards.io/content/cats/1.png",
-        "horizontalAlignment": "Left",
-        "verticalAlignment": "Top",
-        "fillMode": "Cover"
-    }
+    "version": "1.2"
     })";
 
 	const std::string card_ToggleVisibilityWiz = R"({

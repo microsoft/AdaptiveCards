@@ -97,6 +97,8 @@ namespace RendererQml
 		//Element Helpers
 		static std::string GetHorizontalAlignment(std::string alignType);
 		static std::string GetVerticalAlignment(std::string alignType);
+		static std::string GetHorizontalAnchors(std::string alignType);
+		static std::string GetVerticalAnchors(std::string alignType);
 		static std::string GetWeight(AdaptiveCards::TextWeight weight);
 
 		static std::string GetDate(const std::string& date);
