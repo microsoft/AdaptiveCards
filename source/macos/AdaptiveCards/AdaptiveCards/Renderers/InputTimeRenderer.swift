@@ -12,11 +12,10 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
 
         // setting up basic properties for Input.Time Field
         let inputField: ACRDateField = {
-            let view = ACRDateField()
+            let view = ACRDateField(isTimeMode: true)
             let timeValue = valueByAppendingMissingSeconds(timeElement.getValue() ?? "")
             let timeMin = valueByAppendingMissingSeconds(timeElement.getMin() ?? "")
             let timeMax = valueByAppendingMissingSeconds(timeElement.getMax() ?? "")
-            view.isTimeMode = true
             view.translatesAutoresizingMaskIntoConstraints = false
             view.maxDateValue = timeMax
             view.minDateValue = timeMin

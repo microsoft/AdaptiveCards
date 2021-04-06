@@ -19,20 +19,23 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }()
     
     private lazy var textField: NSTextField = {
-           let view = NSTextField()
-           view.translatesAutoresizingMaskIntoConstraints = false
-           view.isEditable = true
-           view.isSelectable = false
-           view.isBordered = true
-           return view
-    }()
-
-    private lazy var iconButton: NSButton = {
-       let view = NSButton(image: NSImage(named: "NSTouchBarHistoryTemplate") ?? NSImage(), target: self, action: #selector(handleButtonAction))
-       view.translatesAutoresizingMaskIntoConstraints = false
+        let view = NSTextField()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isEditable = true
+        view.isSelectable = false
+        view.isBordered = true
        return view
     }()
 
+    private lazy var iconButton: NSButtonWithImageSpacing = {
+        let view = NSButtonWithImageSpacing(image: (isTimeMode ? NSImage(named: "NSTouchBarHistoryTemplate") : BundleUtils.getImage("calendar-month-light", ofType: "png")) ?? NSImage(), target: self, action: #selector(mouseDown(with:)))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor.clear.cgColor
+        view.isBordered = false
+        return view
+    }()
+    
     private lazy var stackview: NSStackView = {
        let view = NSStackView()
        view.orientation = .vertical
@@ -43,8 +46,8 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
        
     private let datePickerCalendar = NSDatePicker()
     private let datePickerTextfield = NSDatePicker()
-
-    var isTimeMode = false
+    private var popover = NSPopover()
+    let isTimeMode: Bool
     var selectedDate: Date? = Date()
     var minDateValue: String?
     var maxDateValue: String?
@@ -84,14 +87,15 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         return !isHidden && !(superview?.isHidden ?? false)
     }
     
-    override init(frame frameRect: NSRect) {
-        super.init(frame: frameRect)
+    init(isTimeMode: Bool) {
+        self.isTimeMode = isTimeMode
+        super.init(frame: .zero)
         setupViews()
         setupConstraints()
         setupTrackingArea()
     }
     
-    public required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -104,8 +108,7 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         textField.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
         textField.topAnchor.constraint(equalTo: topAnchor).isActive = true
         textField.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        textField.trailingAnchor.constraint(equalTo: iconButton.leadingAnchor, constant: -10).isActive = true
-        
+        textField.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         iconButton.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
         iconButton.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
     }
@@ -123,9 +126,8 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         guard let contentView = event.trackingArea?.owner as? ACRDateField else { return }
         contentView.textField.backgroundColor = ColorUtils.hoverColorOnMouseExit()
     }
-    
-    // MARK: Actions
-    @objc private func handleButtonAction() {
+    override func mouseDown(with event: NSEvent) {
+        popover.close()
         let frame = isTimeMode ? NSRect(x: 0, y: 0, width: 122, height: 122) : NSRect(x: 0, y: 0, width: 138, height: 147)
         if let dateValue = selectedDate {
             datePickerCalendar.dateValue = dateValue
@@ -140,20 +142,27 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
             datePickerTextfield.maxDate = date
         }
         datePickerCalendar.datePickerStyle = .clockAndCalendar
-        datePickerCalendar.datePickerElements = isTimeMode ? .hourMinuteSecond : .yearMonthDay
+        datePickerCalendar.datePickerElements = isTimeMode ? .hourMinute : .yearMonthDay
         datePickerCalendar.target = self
         datePickerCalendar.action = #selector(handleDateAction(_:))
 
-        datePickerTextfield.datePickerElements = .yearMonthDay
         datePickerTextfield.datePickerStyle = .textFieldAndStepper
+        datePickerTextfield.datePickerElements = isTimeMode ? .hourMinute : .yearMonthDay
         datePickerTextfield.target = self
         datePickerTextfield.action = #selector(handleDateAction(_:))
-        if !isTimeMode { stackview.addArrangedSubview(datePickerTextfield) }
+        stackview.addArrangedSubview(datePickerTextfield)
         stackview.addArrangedSubview(datePickerCalendar)
-        let popover = NSViewController()
-        popover.view = stackview
-        popover.view.frame = frame
-        _ = NSPopover(contentViewController: popover, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
+        let popoverView = NSViewController()
+        popoverView.view = stackview
+        popoverView.view.frame = frame
+        popover = NSPopover(contentViewController: popoverView, sender: iconButton, bounds: frame, preferredEdge: .maxY, behavior: .transient, animates: true, delegate: nil)
+    }
+    
+    override func viewDidMoveToSuperview() {
+        super.viewDidMoveToSuperview()
+        // Should look for better solution
+        guard let superview = superview else { return }
+        widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
     }
     
     @objc private func handleDateAction(_ datePicker: NSDatePicker) {
@@ -161,12 +170,6 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         selectedDate = datePicker.dateValue
         datePickerCalendar.dateValue = datePicker.dateValue
         datePickerTextfield.dateValue = datePicker.dateValue
-    }
-    override func viewDidMoveToSuperview() {
-        super.viewDidMoveToSuperview()
-        // Should look for better solution
-        guard let superview = superview else { return }
-        widthAnchor.constraint(equalTo: superview.widthAnchor).isActive = true
     }
 }
 
@@ -190,5 +193,25 @@ extension NSPopover {
                 self.show(relativeTo: bounds, of: sender, preferredEdge: preferredEdge)
             }
         } else { assert(false) }
+    }
+}
+
+@IBDesignable class NSButtonWithImageSpacing: NSButton {
+    @IBInspectable var verticalImagePadding: CGFloat = 2
+    @IBInspectable var horizontalImagePadding: CGFloat = 3
+    
+    override func draw(_ drawRect: NSRect) {
+        // Reset the bounds after drawing is complete
+        let originalBounds = self.bounds
+        defer { self.bounds = originalBounds }
+
+        // Inset bounds by the image padding
+        self.bounds = originalBounds.insetBy(
+            dx: horizontalImagePadding,
+            dy: verticalImagePadding
+        )
+
+        // Draw the button content with padding
+        super.draw(drawRect)
     }
 }

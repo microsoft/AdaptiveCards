@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="16096" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="16096"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -35,7 +35,7 @@
                                 <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                 <tableColumns>
-                                    <tableColumn width="277" minWidth="40" maxWidth="1000" id="GBC-rM-F9t">
+                                    <tableColumn width="315" minWidth="315" maxWidth="315" id="GBC-rM-F9t">
                                         <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="OPTIONS">
                                             <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                             <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -48,11 +48,11 @@
                                         <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                         <prototypeCellViews>
                                             <tableCellView id="gan-pg-c1A">
-                                                <rect key="frame" x="1" y="1" width="277" height="17"/>
+                                                <rect key="frame" x="1" y="1" width="315" height="17"/>
                                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                 <subviews>
                                                     <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="klT-k8-yk0">
-                                                        <rect key="frame" x="0.0" y="0.0" width="277" height="17"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="17"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="17" id="075-wZ-W9n"/>
                                                         </constraints>
@@ -149,17 +149,17 @@
                     </connections>
                 </button>
                 <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5E-cz-man">
-                    <rect key="frame" x="344" y="7" width="391" height="405"/>
+                    <rect key="frame" x="344" y="0.0" width="391" height="412"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="zbW-Jb-gxa">
-                        <rect key="frame" x="1" y="1" width="389" height="403"/>
+                        <rect key="frame" x="1" y="1" width="389" height="410"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view id="MdU-rn-yDx">
-                                <rect key="frame" x="0.0" y="0.0" width="389" height="1000"/>
+                                <rect key="frame" x="0.0" y="0.0" width="389" height="1007"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <subviews>
                                     <stackView distribution="fill" orientation="vertical" alignment="leading" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wOe-bU-DLU">
-                                        <rect key="frame" x="20" y="500" width="350" height="0.0"/>
+                                        <rect key="frame" x="20" y="504" width="350" height="0.0"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="350" id="kJn-4U-cPM"/>
                                         </constraints>
@@ -173,17 +173,17 @@
                         </subviews>
                     </clipView>
                     <scroller key="horizontalScroller" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="pL3-LP-bvj">
-                        <rect key="frame" x="1" y="388" width="389" height="16"/>
+                        <rect key="frame" x="1" y="395" width="389" height="16"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="l6W-JQ-Gkt">
-                        <rect key="frame" x="374" y="1" width="16" height="403"/>
+                        <rect key="frame" x="374" y="1" width="16" height="410"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>
             </subviews>
             <constraints>
-                <constraint firstItem="a5E-cz-man" firstAttribute="bottom" secondItem="O4M-uk-PGq" secondAttribute="bottom" id="7v2-qT-1y9"/>
+                <constraint firstItem="a5E-cz-man" firstAttribute="bottom" secondItem="Hz6-mo-xeY" secondAttribute="bottom" id="7v2-qT-1y9"/>
                 <constraint firstItem="DZe-UF-Cz8" firstAttribute="top" secondItem="m2h-No-qKR" secondAttribute="bottom" constant="8" id="Jvj-NL-9aV"/>
                 <constraint firstItem="a5E-cz-man" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="Ua2-TM-HCY"/>
                 <constraint firstItem="a5E-cz-man" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" constant="-10.5" id="V5Y-Jy-Jp7"/>

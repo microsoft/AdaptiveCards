@@ -446,6 +446,8 @@
 		08FFAC322608DBCA00296D62 /* FakeOpenURLAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */; };
 		13B13E4C25E750CB005D9380 /* FakeInputDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4B25E750CB005D9380 /* FakeInputDate.swift */; };
 		13B13E4E25E75239005D9380 /* InputDateRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */; };
+		13BE7603261C5F4600FC9636 /* calendar-month-light.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BE7602261C5F4600FC9636 /* calendar-month-light.png */; };
+		13BE7607261C7EDA00FC9636 /* calendar-month-dark.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */; };
 		13C1F7EE25FF0DFF00B59001 /* ActionShowCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C1F7ED25FF0DFF00B59001 /* ActionShowCardRenderer.swift */; };
 		13C41B0725F226C9008A1F2E /* InputTimeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */; };
 		13C41B0925F257C3008A1F2E /* FakeInputTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13C41B0825F257C2008A1F2E /* FakeInputTime.swift */; };
@@ -992,6 +994,8 @@
 		08FFAC312608DBCA00296D62 /* FakeOpenURLAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeOpenURLAction.swift; sourceTree = "<group>"; };
 		13B13E4B25E750CB005D9380 /* FakeInputDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputDate.swift; sourceTree = "<group>"; };
 		13B13E4D25E75239005D9380 /* InputDateRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputDateRendererTests.swift; sourceTree = "<group>"; };
+		13BE7602261C5F4600FC9636 /* calendar-month-light.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-month-light.png"; sourceTree = "<group>"; };
+		13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "calendar-month-dark.png"; sourceTree = "<group>"; };
 		13C1F7ED25FF0DFF00B59001 /* ActionShowCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionShowCardRenderer.swift; sourceTree = "<group>"; };
 		13C41B0625F226C9008A1F2E /* InputTimeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputTimeRenderer.swift; sourceTree = "<group>"; };
 		13C41B0825F257C2008A1F2E /* FakeInputTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeInputTime.swift; sourceTree = "<group>"; };
@@ -1786,6 +1790,8 @@
 		81A94A6E25FF80D60018213A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				13BE7602261C5F4600FC9636 /* calendar-month-light.png */,
+				13BE7606261C7EDA00FC9636 /* calendar-month-dark.png */,
 				81C037282604B1F700B33324 /* cisco.jpg */,
 				81A94A7825FF86E70018213A /* arrowup.png */,
 				81A94A7725FF86E70018213A /* attachment.png */,
@@ -2176,6 +2182,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				13BE7603261C5F4600FC9636 /* calendar-month-light.png in Resources */,
+				13BE7607261C7EDA00FC9636 /* calendar-month-dark.png in Resources */,
 				81A94A7025FF80D60018213A /* arrowdown.png in Resources */,
 				81C037292604B1F700B33324 /* cisco.jpg in Resources */,
 				08299F9E25AF279E00799C66 /* AdaptiveCards.xcconfig in Resources */,
