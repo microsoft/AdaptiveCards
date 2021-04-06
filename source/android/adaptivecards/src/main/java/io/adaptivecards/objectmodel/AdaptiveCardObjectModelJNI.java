@@ -284,6 +284,9 @@ public class AdaptiveCardObjectModelJNI {
   public final static native long getInlineElementTypeEnum();
   public final static native String InlineElementTypeToString(int jarg1);
   public final static native int InlineElementTypeFromString(String jarg1);
+  public final static native long getTextStyleEnum();
+  public final static native String TextStyleToString(int jarg1);
+  public final static native int TextStyleFromString(String jarg1);
   public final static native long getTextSizeEnum();
   public final static native String TextSizeToString(int jarg1);
   public final static native int TextSizeFromString(String jarg1);
@@ -1314,6 +1317,8 @@ public class AdaptiveCardObjectModelJNI {
   public final static native String TextBlock_GetText(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetText(long jarg1, TextBlock jarg1_, String jarg2);
   public final static native long TextBlock_GetTextForDateParsing(long jarg1, TextBlock jarg1_);
+  public final static native int TextBlock_GetStyle(long jarg1, TextBlock jarg1_);
+  public final static native void TextBlock_SetStyle(long jarg1, TextBlock jarg1_, int jarg2);
   public final static native int TextBlock_GetTextSize(long jarg1, TextBlock jarg1_);
   public final static native void TextBlock_SetTextSize(long jarg1, TextBlock jarg1_, int jarg2);
   public final static native int TextBlock_GetTextWeight(long jarg1, TextBlock jarg1_);

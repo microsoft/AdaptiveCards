@@ -85,12 +85,13 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::IsTrue(VerticalContentAlignment::Top == everythingBagel.GetVerticalContentAlignment());
     }
 
-    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, std::string id)
+    void ValidateTextBlock(const TextBlock &textBlock, FontType fontType, TextStyle style, std::string id)
     {
         Assert::IsTrue(textBlock.GetElementType() == CardElementType::TextBlock);
         Assert::AreEqual(CardElementTypeToString(CardElementType::TextBlock), textBlock.GetElementTypeString());
         Assert::AreEqual(id, textBlock.GetId());
         Assert::AreEqual("TextBlock_text"s, textBlock.GetText());
+        Assert::IsTrue(style == textBlock.GetStyle());
         Assert::IsTrue(ForegroundColor::Default == textBlock.GetTextColor());
         Assert::IsTrue(HorizontalAlignment::Left == textBlock.GetHorizontalAlignment());
         Assert::IsTrue(Spacing::Default == textBlock.GetSpacing());
@@ -308,7 +309,7 @@ namespace AdaptiveCardsSharedModelUnitTest
         Assert::AreEqual("Input.Date_placeholder"s, dateInput.GetPlaceholder());
         Assert::IsFalse(dateInput.GetIsRequired());
         Assert::IsTrue(dateInput.GetErrorMessage().empty());
-		Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
+        Assert::AreEqual("Input.Date_label"s, dateInput.GetLabel());
     }
 
     void ValidateInputTime(const TimeInput &timeInput)
@@ -374,7 +375,7 @@ namespace AdaptiveCardsSharedModelUnitTest
             Assert::AreEqual(expectedTitle, currChoice->GetTitle());
         }
 
-		Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
+        Assert::AreEqual("Input.ChoiceSet_label"s, choiceSet.GetLabel());
     }
 
     void ValidateInputContainer(const Container &container)
@@ -469,15 +470,15 @@ namespace AdaptiveCardsSharedModelUnitTest
 
         // validate textblock (no fontType)
         auto textBlock = std::static_pointer_cast<TextBlock>(body.at(0));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Heading, "TextBlock_id");
 
         // validate textblock (monospace)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(1));
-        ValidateTextBlock(*textBlock, FontType::Monospace, "TextBlock_id_mono");
+        ValidateTextBlock(*textBlock, FontType::Monospace, TextStyle::Paragraph, "TextBlock_id_mono");
 
         // validate textblock (default)
         textBlock = std::static_pointer_cast<TextBlock>(body.at(2));
-        ValidateTextBlock(*textBlock, FontType::Default, "TextBlock_id_def");
+        ValidateTextBlock(*textBlock, FontType::Default, TextStyle::Paragraph, "TextBlock_id_def");
 
         // validate image
         auto image = std::static_pointer_cast<Image>(body.at(3));

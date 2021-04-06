@@ -48,7 +48,8 @@
 			"id": "TextBlock_id",
 			"spacing": "default",
 			"separator": false,
-			"strikethrough": true
+			"strikethrough": true,
+			"style": "Heading"
 		},
 		{
 			"type": "TextBlock",
