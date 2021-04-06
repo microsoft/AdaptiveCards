@@ -175,15 +175,37 @@ extension RootViewController: AdaptiveCardActionDelegate {
 
 extension RootViewController: AdaptiveCardResourceResolver {
     func adaptiveCard(_ card: ImageResourceHandlerView, dimensionsForImageWith url: String) -> NSSize? {
-        return nil
+        guard let dimensions = TestUtils.imageDimensionsDict[url] else {
+            print("### ResourceResolver: returning nil for URL '\(url)'")
+            return nil
+        }
+        return dimensions
     }
     
     func adaptiveCard(_ card: ImageResourceHandlerView, requestImageFor url: String) {
         guard let imageURL = URL(string: url) else {
+            print("IMG ERR: URL '\(url)' not valid")
             return
         }
         DispatchQueue.global().async {
             if let data = try? Data(contentsOf: imageURL), let image = NSImage(data: data) {
+                if TestUtils.imageDimensionsDict[url] == nil {
+                    print("""
+                    #####
+                    ResourceResolver: Dimension for new image that's not in `imageDimensionsDict`
+                        URL       : \(url)
+                        DIMENSION : \(image.size)
+                    #####
+                    """)
+                } else if let size = TestUtils.imageDimensionsDict[url], size != image.size {
+                    print("""
+                    #####
+                    ResourceResolver: `imageDimensionsDict` Dimension mis-match!
+                        CACHED DIMEN : \(size)
+                        DIMENSION    : \(image.size)
+                    #####
+                    """)
+                }
                 DispatchQueue.main.async {
                     card.setImage(image, for: url)
                 }
