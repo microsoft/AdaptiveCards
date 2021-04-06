@@ -24,6 +24,10 @@ namespace AdaptiveNamespace
                                 _In_ ABI::AdaptiveNamespace::IAdaptiveActionParserRegistration* actionParsers,
                                 _In_ ABI::Windows::Foundation::Collections::IVector<ABI::AdaptiveNamespace::AdaptiveWarning*>* adaptiveWarnings,
                                 _COM_Outptr_ ABI::AdaptiveNamespace::IAdaptiveCardElement** element) noexcept override;
+
+    private:
+        HRESULT GetHeadingLevelFromContext(_In_ ABI::AdaptiveNamespace::IAdaptiveRenderContext* renderContext,
+                                           _Out_ ABI::Windows::UI::Xaml::Automation::Peers::AutomationHeadingLevel* headingLevel);
     };
 
     ActivatableClass(AdaptiveTextBlockRenderer);

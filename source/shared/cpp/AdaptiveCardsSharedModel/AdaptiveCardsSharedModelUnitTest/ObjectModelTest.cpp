@@ -610,5 +610,52 @@ namespace AdaptiveCardsSharedModelUnitTest
                 Assert::AreEqual("Unable to parse element of type Elephant", e.GetReason().c_str(), L"GetReason incorrect");
             }
         }
+
+        TEST_METHOD(TextBlockStyleParsingTest)
+        {
+            std::string testjson{ R"(
+                {
+                    "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                    "type": "AdaptiveCard",
+                    "version": "1.2",
+                    "body": [
+                        {
+                            "type": "TextBlock",
+                            "id": "heading",
+                            "style": "heading",
+                            "text" : "hello"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "id": "heading2",
+                            "style": "Heading",
+                            "text" : "hello"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "id": "invalid-heading",
+                            "style": "Footer",
+                            "text" : "hello"
+                        },
+                        {
+                            "type": "TextBlock",
+                            "id": "default style",
+                            "text" : "hello"
+                        }
+                    ]
+                }
+            )"};
+
+            auto parseResult = AdaptiveCard::DeserializeFromString(testjson, "1.2");
+            auto card = parseResult->GetAdaptiveCard();
+            auto body = card->GetBody();
+            std::vector<TextStyle> expectedStyles = { TextStyle::Heading, TextStyle::Heading, TextStyle::Paragraph, TextStyle::Paragraph };
+
+            auto i = 0;
+            for (const auto& elem : body) {
+                std::shared_ptr<TextBlock> textBlock = std::dynamic_pointer_cast<TextBlock>(elem);
+				Assert::IsTrue(textBlock->GetStyle() == expectedStyles[i++]);
+            }
+        }
     };
 }

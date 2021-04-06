@@ -69,6 +69,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::ForegroundColor, "foregroundColor"},
             {AdaptiveCardSchemaKey::ForegroundColors, "foregroundColors"},
             {AdaptiveCardSchemaKey::Good, "good"},
+            {AdaptiveCardSchemaKey::Headings, "headings"},
             {AdaptiveCardSchemaKey::Height, "height"},
             {AdaptiveCardSchemaKey::Highlight, "highlight"},
             {AdaptiveCardSchemaKey::HighlightColor, "highlightColor"},
@@ -97,10 +98,11 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::IsVisible, "isVisible"},
             {AdaptiveCardSchemaKey::Italic, "italic"},
             {AdaptiveCardSchemaKey::Items, "items"},
-			{AdaptiveCardSchemaKey::Label, "label"},
+            {AdaptiveCardSchemaKey::Label, "label"},
             {AdaptiveCardSchemaKey::Language, "lang"},
             {AdaptiveCardSchemaKey::Large, "large"},
             {AdaptiveCardSchemaKey::Left, "left"},
+            {AdaptiveCardSchemaKey::Level, "level"},
             {AdaptiveCardSchemaKey::Light, "light"},
             {AdaptiveCardSchemaKey::Lighter, "lighter"},
             {AdaptiveCardSchemaKey::LineColor, "lineColor"},
@@ -270,6 +272,10 @@ namespace AdaptiveSharedNamespace
             {ForegroundColor::Good, "Good"},
             {ForegroundColor::Light, "Light"},
             {ForegroundColor::Warning, "Warning"}});
+
+    DEFINE_ADAPTIVECARD_ENUM_DEFAULT(TextStyle , TextStyle::Paragraph, {
+            {TextStyle::Paragraph, "paragraph"},
+            {TextStyle::Heading, "heading"}});
 
     DEFINE_ADAPTIVECARD_ENUM(TextWeight, {
             {
