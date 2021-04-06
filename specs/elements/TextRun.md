@@ -2,7 +2,7 @@
 
 # TextRun
 
-**Introduced in version 1.2**
+#### Introduced in version 1.2
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |
