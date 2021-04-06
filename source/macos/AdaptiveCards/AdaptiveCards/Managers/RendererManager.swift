@@ -36,26 +36,3 @@ class RendererManager: RendererManagerProtocol {
         }
     }
 }
-
-class UnknownElementRenderer: BaseCardElementRendererProtocol, BaseActionElementRendererProtocol {
-    static let shared = UnknownElementRenderer()
-    
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
-        let view = NSView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.red.cgColor
-        view.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        view.widthAnchor.constraint(equalToConstant: 20).isActive = true
-        return view
-    }
-    
-    func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
-        let view = NSView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.red.cgColor
-        view.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        return view
-    }
-}
