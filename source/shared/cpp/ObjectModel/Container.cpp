@@ -24,6 +24,17 @@ std::vector<std::shared_ptr<BaseCardElement>>& Container::GetItems()
     return m_items;
 }
 
+// value is present if and only if "rtl" property is explicitly set
+std::optional<bool> Container::GetRtl() const
+{
+    return m_rtl;
+}
+
+void Container::SetRtl(const std::optional<bool>& value)
+{
+    m_rtl = value;
+}
+
 Json::Value Container::SerializeToJsonValue() const
 {
     Json::Value root = CollectionTypeElement::SerializeToJsonValue();
@@ -34,6 +45,11 @@ Json::Value Container::SerializeToJsonValue() const
         root[itemsPropertyName].append(cardElement->SerializeToJsonValue());
     }
 
+    if (m_rtl.has_value())
+    {
+        root[AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl)] = m_rtl.value_or("");
+    }
+
     return root;
 }
 
@@ -42,6 +58,8 @@ std::shared_ptr<BaseCardElement> ContainerParser::Deserialize(ParseContext& cont
     ParseUtil::ExpectTypeString(value, CardElementType::Container);
 
     auto container = CollectionTypeElement::Deserialize<Container>(context, value);
+
+    container->SetRtl(ParseUtil::GetOptionalBool(value, AdaptiveCardSchemaKey::Rtl));
 
     return container;
 }
@@ -65,6 +83,7 @@ std::shared_ptr<BaseCardElement> ContainerParser::DeserializeFromString(ParseCon
 void Container::PopulateKnownPropertiesSet()
 {
     m_knownProperties.insert({AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Bleed),
+                              AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Rtl),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::Style),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::VerticalContentAlignment),
                               AdaptiveCardSchemaKeyToString(AdaptiveCardSchemaKey::SelectAction),

@@ -54,7 +54,7 @@
                      card:(ACOAdaptiveCard *)card
                hostConfig:(ACOHostConfig *)config
 {
-    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card] -> GetActions();
+    std::vector<std::shared_ptr<BaseActionElement>> elems = [card card]->GetActions();
     return [self renderButtons:rootView
                         inputs:inputs
                      superview:superview
@@ -72,8 +72,11 @@
     ACOFeatureRegistration *featureReg = [ACOFeatureRegistration getInstance];
 
     UIStackView *childview = [[UIStackView alloc] init];
+
+    configRtl(childview, rootView.context);
+
     childview.distribution = UIStackViewDistributionFillProportionally;
-    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig] -> GetActions();
+    AdaptiveCards::ActionsConfig adaptiveActionConfig = [config getHostConfig]->GetActions();
 
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         childview.axis = UILayoutConstraintAxisHorizontal;
@@ -98,6 +101,8 @@
 
     // set width
     ACRContentHoldingUIScrollView *containingView = [[ACRContentHoldingUIScrollView alloc] init];
+
+    configRtl(containingView, rootView.context);
 
     float accumulatedWidth = 0, accumulatedHeight = 0, spacing = adaptiveActionConfig.buttonSpacing,
           maxWidth = 0, maxHeight = 0;
@@ -144,6 +149,9 @@
                                         superview:superview
                                 baseActionElement:acoElem
                                        hostConfig:config];
+
+            configRtl(button, rootView.context);
+
             [childview addArrangedSubview:button];
         } @catch (ACOFallbackException *exception) {
             handleActionFallbackException(exception, superview, rootView, inputs, acoElem, config,

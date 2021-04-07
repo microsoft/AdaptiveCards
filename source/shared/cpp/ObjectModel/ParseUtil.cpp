@@ -173,6 +173,12 @@ namespace AdaptiveSharedNamespace
 
     bool ParseUtil::GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired)
     {
+        return ParseUtil::GetOptionalBool(json, key, isRequired).value_or(defaultValue);
+    }
+
+    // Get optional boolean value at given key. Validates that value is bool type, if present.
+    std::optional<bool> ParseUtil::GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired)
+    {
         const std::string& propertyName = AdaptiveCardSchemaKeyToString(key);
         auto propertyValue = json.get(propertyName, Json::Value());
         if (propertyValue.empty())
@@ -184,7 +190,7 @@ namespace AdaptiveSharedNamespace
             }
             else
             {
-                return defaultValue;
+                return std::nullopt;
             }
         }
 

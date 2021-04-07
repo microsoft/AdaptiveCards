@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Vector.h"
 #include <windows.foundation.collections.h>
+#include <winrt/Windows.Foundation.h>
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -45,6 +46,12 @@ namespace AdaptiveNamespace
         m_minHeight = sharedContainer->GetMinHeight();
         m_bleed = sharedContainer->GetBleed();
         m_bleedDirection = static_cast<ABI::AdaptiveNamespace::BleedDirection>(sharedContainer->GetBleedDirection());
+
+        const auto sharedRtl= sharedContainer->GetRtl();
+        if (sharedRtl)
+        {
+            m_rtl = winrt::box_value(sharedRtl.value()).as<ABI::Windows::Foundation::IReference<bool>>().get();
+        }
 
         auto backgroundImage = sharedContainer->GetBackgroundImage();
         if (backgroundImage != nullptr && !backgroundImage->GetUrl().empty())
@@ -114,6 +121,17 @@ namespace AdaptiveNamespace
         return S_OK;
     }
 
+    HRESULT AdaptiveContainer::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    {
+        return m_rtl.CopyTo(rtl);
+    }
+
+    HRESULT AdaptiveContainer::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
+    {
+        m_rtl = rtl;
+        return S_OK;
+    }
+
     HRESULT AdaptiveContainer::get_MinHeight(_Out_ UINT32* minHeight)
     {
         *minHeight = m_minHeight;
@@ -171,6 +189,15 @@ namespace AdaptiveNamespace
         }
 
         container->SetBleed(m_bleed);
+
+        std::optional<bool> rtl;
+        if (m_rtl)
+        {
+            boolean rtlValue;
+            RETURN_IF_FAILED(m_rtl->get_Value(&rtlValue));
+            rtl = rtlValue;
+        }
+        container->SetRtl(rtl);
 
         GenerateSharedElements(m_items.Get(), container->GetItems());
 

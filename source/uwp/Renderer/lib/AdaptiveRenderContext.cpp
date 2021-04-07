@@ -171,6 +171,17 @@ namespace AdaptiveNamespace
         return renderResult->GetInputValue(inputElement, inputValue);
     }
 
+    HRESULT AdaptiveRenderContext::get_Rtl(_Out_ ABI::Windows::Foundation::IReference<bool>** rtl)
+    {
+        return m_rtl.CopyTo(rtl);
+    }
+
+    HRESULT AdaptiveRenderContext::put_Rtl(ABI::Windows::Foundation::IReference<bool>* rtl)
+    {
+        m_rtl = rtl;
+        return S_OK;
+    }
+
     Microsoft::WRL::ComPtr<ABI::Windows::UI::Xaml::IResourceDictionary> AdaptiveRenderContext::GetDefaultActionSentimentDictionary()
     {
         return m_actionSentimentDefaultDictionary;

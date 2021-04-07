@@ -82,6 +82,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         ContainerStyle styleForThis = GetLocalContainerStyle(container, containerStyle);
         ApplyPadding(styleForThis, containerStyle, containerView, context, hostConfig);
         ApplyBleed(container, containerView, context, hostConfig);
+        BaseCardElementRenderer.applyRtl(container.GetRtl(), containerView);
 
         RenderArgs containerRenderArgs = new RenderArgs(renderArgs);
         containerRenderArgs.setContainerStyle(styleForThis);
@@ -136,6 +137,7 @@ public class ContainerRenderer extends BaseCardElementRenderer
         {
             int padding = Util.dpToPixels(context, hostConfig.GetSpacing().getPaddingSpacing());
             ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) collectionElementView.getLayoutParams();
+            // TODO: Check RTL support
             int marginLeft = layoutParams.leftMargin, marginRight = layoutParams.rightMargin, marginTop = layoutParams.topMargin, marginBottom = layoutParams.bottomMargin;
 
             ContainerBleedDirection bleedDirection = collectionElement.GetBleedDirection();
