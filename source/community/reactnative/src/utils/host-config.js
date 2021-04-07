@@ -500,15 +500,17 @@ export class HostConfig {
 			};
 
 			this.containerStyles = new ContainerStyleSet(obj["containerStyles"]);
-			this.spacing = {
-				none: obj.spacing && obj.spacing["none"] || this.spacing.none,
-				small: obj.spacing && obj.spacing["small"] || this.spacing.small,
-				default: obj.spacing && obj.spacing["default"] || this.spacing.default,
-				medium: obj.spacing && obj.spacing["medium"] || this.spacing.medium,
-				large: obj.spacing && obj.spacing["large"] || this.spacing.large,
-				extraLarge: obj.spacing && obj.spacing["extraLarge"] || this.spacing.extraLarge,
-				padding: obj.spacing && obj.spacing["padding"] || this.spacing.padding
-			};
+			if(obj.spacing) {
+				this.spacing = {
+					none: Utils.isaNumber(obj.spacing["none"]) ? obj.spacing["none"] : this.spacing.none,
+					small: Utils.isaNumber(obj.spacing["small"]) ? obj.spacing["small"] : this.spacing.small,
+					default: Utils.isaNumber(obj.spacing["default"]) ? obj.spacing["default"] : this.spacing.default,
+					medium: Utils.isaNumber(obj.spacing["medium"]) ? obj.spacing["medium"] : this.spacing.medium,
+					large: Utils.isaNumber(obj.spacing["large"]) ? obj.spacing["large"] : this.spacing.large,
+					extraLarge: Utils.isaNumber(obj.spacing["extraLarge"]) ? obj.spacing["extraLarge"] : this.spacing.extraLarge,
+					padding: Utils.isaNumber(obj.spacing["padding"]) ? obj.spacing["padding"] : this.spacing.padding
+				};
+			}
 
 			this.separator = {
 				lineThickness: obj.separator && obj.separator["lineThickness"] || this.separator.lineThickness,
