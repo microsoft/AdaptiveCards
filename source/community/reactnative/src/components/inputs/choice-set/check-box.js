@@ -14,7 +14,6 @@ import {
 import { Label } from '../../elements'
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
-import { StyleManager } from '../../../styles/style-config';
 
 const styles = StyleSheet.create({
 	contentStyle: {
@@ -33,13 +32,12 @@ const UncheckedCheckBoxImage = "./assets/unchecked.png";
 
 class CheckBox extends React.PureComponent {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
 		this.state = {
 			checked: this.props.checked
 		}
+		this.styleConfig = props.configManager.styleConfig
 	}
 
 	static propTypes = {
@@ -97,6 +95,7 @@ class CheckBox extends React.PureComponent {
 					label ? <Label
 						text={label}
 						style={[this.styleConfig.choiceSetTitle, this.styleConfig.defaultFontConfig]}
+						configManager={this.props.configManager}
 						wrap={wrapText} />
 						: null
 				}

@@ -19,9 +19,6 @@ import Checkbox from './check-box';
 import { InputContextConsumer } from '../../../utils/context';
 import * as Utils from '../../../utils/util';
 import * as Constants from '../../../utils/constants';
-import * as Enums from '../../../utils/enums';
-import { StyleManager } from '../../../styles/style-config';
-import { HostConfigManager } from '../../../utils/host-config';
 import InputLabel from "../input-label";
 
 const DropDownImage = './assets/dropdown.png';
@@ -29,10 +26,12 @@ const CompactStyle = "compact";
 
 export class ChoiceSetInput extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
 
 	constructor(props) {
 		super(props);
+
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 
 		this.id = Constants.EmptyString;
 		this.isMultiSelect = Boolean;
@@ -217,6 +216,7 @@ export class ChoiceSetInput extends React.Component {
 						key={index}
 						isRadioButtonType={true}
 						index={index}
+						configManager={this.props.configManager}
 						wrapText={this.wrapText}
 						checked={this.state.activeIndex == undefined ?
 							index == this.getRadioButtonIndex(this.value,
@@ -243,6 +243,7 @@ export class ChoiceSetInput extends React.Component {
 						label={item.title}
 						key={index}
 						isRadioButtonType={false}
+						configManager={this.props.configManager}
 						index={index}
 						wrapText={this.wrapText}
 						checked={this.state.checkedValues == undefined ?
@@ -273,7 +274,7 @@ export class ChoiceSetInput extends React.Component {
 
 	render() {
 
-		if (HostConfigManager.supportsInteractivity() === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 
@@ -294,8 +295,8 @@ export class ChoiceSetInput extends React.Component {
 		return (
 			<InputContextConsumer>
 				{({ addInputItem }) => (
-					<ElementWrapper json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
-						<InputLabel isRequired={this.isRequired} label={label} />
+					<ElementWrapper configManager={this.props.configManager} json={this.payload} style={styles.containerView} isError={this.state.isError} isFirst={this.props.isFirst}>
+						<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 						<View
 							accessible={true}
 							accessibilityLabel={this.payload.altText}

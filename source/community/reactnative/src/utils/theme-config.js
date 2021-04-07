@@ -2,32 +2,7 @@ import { ThemeElement } from '../utils/enums';
 import * as Constants from '../utils/constants';
 
 
-export class ThemeConfigManager {
-
-    static themeConfig = null;
-
-	/**
-     * @description Return the theme config
-	 * @returns {ThemeConfigManager}
-	 */
-    static getThemeConfig() {
-        if (!ThemeConfigManager.themeConfig) {
-            ThemeConfigManager.themeConfig = new ThemeConfig(defaultThemeConfig);
-        }
-        return this.themeConfig;
-    }
-
-    /**
-     * @description Set the custom theme config property
-     * @param {object} value 
-     */
-    static setThemeConfig(value) {
-        let newThemeConfig = { ...defaultThemeConfig, ...value }
-        this.themeConfig = new ThemeConfig(newThemeConfig);
-    }
-}
-
-class ThemeConfig {
+export class ThemeConfig {
     constructor(obj = {}) {
         this.button = new Config(ThemeElement.Button, obj);
         this.input = new Config(ThemeElement.Input, obj);
@@ -63,7 +38,7 @@ class Config {
 
 // Open Issue : Setting `textTransform` style in android doesn't render the text itself.
 // Refer : https://github.com/facebook/react-native/issues/21966
-const defaultThemeConfig = {
+export const defaultThemeConfig = {
     button: {
         ios: {
             borderRadius: 15,

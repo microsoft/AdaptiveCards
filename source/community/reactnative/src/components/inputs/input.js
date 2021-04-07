@@ -16,9 +16,7 @@ import {
 
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
-import { StyleManager } from '../../styles/style-config';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import * as Utils from '../../utils/util';
 import * as Enums from '../../utils/enums';
 import InputLabel from "./input-label";
@@ -27,10 +25,10 @@ const ERROR_MESSAGE = "Inline ShowCard is not supported as of now";
 
 export class Input extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 
 		this.payload = props.json;
 		this.id = Constants.EmptyString;
@@ -52,7 +50,7 @@ export class Input extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 		this.parseHostConfig();
@@ -80,8 +78,8 @@ export class Input extends React.Component {
 						if (!inputArray[this.id])
 							addInputItem(this.id, { value: this.props.value, errorState: this.props.isError });
 						return (
-							<ElementWrapper style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
-								<InputLabel isRequired={this.isRequired} label={label} />
+							<ElementWrapper configManager={this.props.configManager} style={styles.elementWrapper} json={this.payload} isError={this.props.isError} isFirst={this.props.isFirst}>
+								<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 								<TextInput
 									style={this.getComputedStyles(showErrors)}
 									autoCapitalize={Constants.NoneString}
@@ -210,9 +208,9 @@ export class Input extends React.Component {
 		else {
 			return (
 				<View>
-					<ElementWrapper json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
+					<ElementWrapper configManager={this.props.configManager}  json={payload} style={wrapperStyle} isError={this.props.isError} isFirst={this.props.isFirst}>
 						<View style={styles.elementWrapper}>
-							<InputLabel isRequired={this.isRequired} label={label} />
+							<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} label={label} />
 							<TextInput
 								style={[styles.inlineActionTextInput, this.getComputedStyles(this.state.showInlineActionErrors)]}
 								autoCapitalize={Constants.NoneString}

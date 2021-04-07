@@ -12,7 +12,6 @@ import {
 } from '../../utils/context';
 import * as Constants from '../../utils/constants';
 import * as Utils from '../../utils/util';
-import { HostConfigManager } from '../../utils/host-config';
 
 export class SelectAction extends React.Component {
 
@@ -58,7 +57,7 @@ export class SelectAction extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.props.configManager.hostConfig.supportsInteractivity) {
 			return null;
 		}
 

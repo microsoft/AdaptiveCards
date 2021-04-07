@@ -11,8 +11,6 @@ import {
 	View
 } from 'react-native';
 
-import { StyleManager } from '../../styles/style-config';
-import { HostConfigManager } from '../../utils/host-config';
 import { InputContextConsumer } from '../../utils/context';
 import ElementWrapper from '../elements/element-wrapper';
 import * as Constants from '../../utils/constants';
@@ -20,10 +18,9 @@ import InputLabel from "./input-label";
 
 export class ToggleInput extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
-
 	constructor(props) {
 		super(props);
+		this.hostConfig = props.configManager.hostConfig;
 
 		this.title = props.json.title;
 		this.valueOn = props.json.valueOn || Constants.TrueString;
@@ -54,13 +51,13 @@ export class ToggleInput extends React.Component {
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
 		const { toggleValue } = this.state;
 
 		return (
-			<ElementWrapper json={this.props.json} style={styles.toggleContainer} isError={this.state.isError} isFirst={this.props.isFirst}>
+			<ElementWrapper configManager={this.props.configManager} json={this.props.json} style={styles.toggleContainer} isError={this.state.isError} isFirst={this.props.isFirst}>
 				<InputContextConsumer>
 					{({ addInputItem, inputArray }) => {
 						if (!inputArray[this.id]) {
@@ -73,7 +70,7 @@ export class ToggleInput extends React.Component {
 								accessible={true}
 								accessibilityLabel={this.altText}
 								style={styles.toggleView}>
-								<InputLabel isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
+								<InputLabel configManager={this.props.configManager} isRequired={this.isRequired} wrap={this.wrapText} style={styles.title} label={this.title} />
 								<Switch
 									style={styles.switch}
 									value={toggleValue}

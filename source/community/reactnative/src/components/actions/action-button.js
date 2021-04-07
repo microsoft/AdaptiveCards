@@ -15,20 +15,17 @@ import {
 	TouchableNativeFeedback
 } from 'react-native';
 
-import { StyleManager } from '../../styles/style-config';
 import * as Utils from '../../utils/util';
 import {
 	InputContext,
 	InputContextConsumer
 } from '../../utils/context';
 import * as Constants from '../../utils/constants';
-import { HostConfigManager } from '../../utils/host-config';
 import * as Enums from '../../utils/enums';
 
 
 export class ActionButton extends React.Component {
 
-	styleConfig = StyleManager.getManager().styles;
 	static contextType = InputContext;
 
 	constructor(props) {
@@ -48,6 +45,8 @@ export class ActionButton extends React.Component {
 		if (props.json.type === 'Action.ShowCard') {
 			this.showCardHandler = props.onShowCardTapped;
 		}
+		this.hostConfig = props.configManager.hostConfig;
+		this.styleConfig = props.configManager.styleConfig;
 	}
 
 	componentDidMount() {
@@ -57,16 +56,16 @@ export class ActionButton extends React.Component {
 	}
 
 	getActionAlignment() {
-		if (HostConfigManager.getHostConfig().actions.actionAlignment != Enums.ActionAlignment.Stretch) {
+		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
 			return { flexGrow: 0 }
 		} else return { flexGrow: 1 }
 	}
 
 	render() {
-		if (HostConfigManager.getHostConfig().supportsInteractivity === false) {
+		if (!this.hostConfig.supportsInteractivity) {
 			return null;
 		}
-		this.parseHostConfig();
+		this.parsePayload();
 		const ButtonComponent = Platform.OS === Constants.PlatformAndroid ? TouchableNativeFeedback : TouchableOpacity;
 		return (<InputContextConsumer>
 			{({ onExecuteAction, inputArray, addResourceInformation, toggleVisibilityForElementWithID }) => {
@@ -157,7 +156,7 @@ export class ActionButton extends React.Component {
 		this.showCardHandler(this.payload.children[0]);
 	}
 
-	parseHostConfig() {
+	parsePayload() {
 		this.title = this.payload.title;
 		this.altText = this.payload.altText || this.title;
 		this.type = this.payload.type;
