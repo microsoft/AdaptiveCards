@@ -62,7 +62,7 @@ public class TextBlockRenderer extends BaseCardElementRenderer
 
     public static void setTextAlignment(TextView textView, HorizontalAlignment textAlignment)
     {
-        textView.setGravity(TextRendererUtil.getTextAlignment(textAlignment));
+        textView.setTextAlignment(TextRendererUtil.getTextAlignment(textAlignment));
     }
 
     public static void setTextSize(TextView textView, FontType type, TextSize textSize, HostConfig hostConfig)

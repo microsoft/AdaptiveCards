@@ -1133,7 +1133,6 @@ namespace AdaptiveCards.Test
     },
   ]
 }";
-
             var card = new AdaptiveCard("1.5")
             {
                 Body =
@@ -1162,5 +1161,89 @@ namespace AdaptiveCards.Test
             Assert.AreEqual(expected: expected, actual: deserializedActual);
         }
 
+        [TestMethod]
+        public void RTL()
+        {
+            var card = new AdaptiveCard("1.5")
+            {
+                Body =
+                {
+                    new AdaptiveContainer()
+                    {
+                        Rtl = true
+                    },
+                    new AdaptiveContainer()
+                    {
+                        Rtl = false
+                    },
+                    new AdaptiveContainer()
+                    {
+                    },
+                    new AdaptiveColumnSet()
+                    {
+                        Columns =
+                        {
+                            new AdaptiveColumn()
+                            {
+                                Rtl = true
+                            },
+                            new AdaptiveColumn()
+                            {
+                                Rtl = false
+                            },
+                            new AdaptiveColumn()
+                            {                                
+                            }
+                        }
+                    }
+                }
+            };
+
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.5"",
+  ""body"": [
+    {
+      ""type"": ""Container"",
+      ""items"": [],
+      ""rtl"": true
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": [],
+      ""rtl"": false
+    },
+    {
+      ""type"": ""Container"",
+      ""items"": []
+    },
+    {
+      ""type"": ""ColumnSet"",
+      ""columns"": [
+        {
+          ""type"": ""Column"",
+          ""rtl"": true,
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""rtl"": false,
+          ""items"": []
+        },
+        {
+          ""type"": ""Column"",
+          ""items"": []
+        }
+      ]
+    }
+  ]
+}";
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected, actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected, deserializedActual);
+        }
     }
 }

@@ -229,4 +229,25 @@ public abstract class BaseCardElementRenderer implements IBaseCardElementRendere
             view.setMinimumHeight(Util.dpToPixels(context, (int)minHeight));
         }
     }
+
+    /**
+     * Applies the layout direction specified by rtl flag to the given layout
+     * @param rtl indicates right-to-left direction when true, left-to-right when false, otherwise inherit layout direction when null
+     * @param layout ViewGroup to apply the appropriate layout direction on
+     */
+    public static void applyRtl(Boolean rtl, ViewGroup layout)
+    {
+        if(rtl == null)
+        {
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_INHERIT);
+        }
+        else if(rtl)
+        {
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        }
+        else
+        {
+            layout.setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+        }
+    }
 }

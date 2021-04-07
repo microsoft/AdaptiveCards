@@ -27,12 +27,16 @@ namespace AdaptiveSharedNamespace
         std::vector<std::shared_ptr<BaseCardElement>>& GetItems();
         const std::vector<std::shared_ptr<BaseCardElement>>& GetItems() const;
 
+        std::optional<bool> GetRtl() const;
+        void SetRtl(const std::optional<bool>& value);
+
         void GetResourceInformation(std::vector<RemoteResourceInformation>& resourceInfo) override;
 
     private:
         void PopulateKnownPropertiesSet();
 
         std::vector<std::shared_ptr<AdaptiveSharedNamespace::BaseCardElement>> m_items;
+        std::optional<bool> m_rtl;
     };
 
     class ContainerParser : public BaseCardElementParser

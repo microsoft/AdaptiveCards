@@ -2,7 +2,7 @@
 //  ACFramework.h
 //  ACFramework
 //
-//  Copyright © 2020 Microsoft. All rights reserved.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -15,12 +15,14 @@ FOUNDATION_EXPORT const unsigned char AdaptiveCarsFrameworkVersionString[];
 #import <AdaptiveCards/ACOAdaptiveCard.h>
 #import <AdaptiveCards/ACOAdaptiveCardParseResult.h>
 #import <AdaptiveCards/ACOBaseCardElement.h>
+#import <AdaptiveCards/ACOEnums.h>
 #import <AdaptiveCards/ACOHostConfig.h>
 #import <AdaptiveCards/ACOHostConfigParseResult.h>
 #import <AdaptiveCards/ACOIResourceResolver.h>
 #import <AdaptiveCards/ACOInputResults.h>
 #import <AdaptiveCards/ACOMediaEvent.h>
 #import <AdaptiveCards/ACORemoteResourceInformation.h>
+#import <AdaptiveCards/ACORenderContext.h>
 #import <AdaptiveCards/ACOResourceResolvers.h>
 #import <AdaptiveCards/ACRActionDelegate.h>
 #import <AdaptiveCards/ACRActionOpenURLRenderer.h>

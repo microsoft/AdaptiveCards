@@ -418,6 +418,18 @@
             2293
           ]
         },
+        "rtl": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+          "version": "vNext"
+        },
         "separator": {
           "type": "boolean",
           "description": "When `true`, draw a separating line between this column and the previous column."
@@ -613,6 +625,18 @@
           "features": [
             2293
           ]
+        },
+        "rtl?": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply.",
+          "version": "vNext"
         },
         "fallback": {},
         "height": {},

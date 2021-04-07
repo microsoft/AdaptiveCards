@@ -136,6 +136,7 @@ namespace AdaptiveSharedNamespace
             {AdaptiveCardSchemaKey::Requires, "requires"},
             {AdaptiveCardSchemaKey::RichTextBlock, "richTextBlock"},
             {AdaptiveCardSchemaKey::Right, "right"},
+            {AdaptiveCardSchemaKey::Rtl, "rtl"},
             {AdaptiveCardSchemaKey::Schema, "$schema"},
             {AdaptiveCardSchemaKey::SelectAction, "selectAction"},
             {AdaptiveCardSchemaKey::Separator, "separator"},

@@ -943,6 +943,7 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
         AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
     };
 
     [
@@ -961,6 +962,7 @@ AdaptiveNamespaceStart
         VerticalContentAlignment VerticalContentAlignment;
         Windows.Foundation.Collections.IVector<IAdaptiveCardElement> Items { get; };
         AdaptiveBackgroundImage BackgroundImage;
+        Windows.Foundation.IReference<Boolean> Rtl;
     };
 
     [
@@ -1970,6 +1972,7 @@ AdaptiveNamespaceStart
         AdaptiveMediaEventInvoker MediaEventInvoker { get; };
         Windows.UI.Xaml.ResourceDictionary OverrideStyles { get; };
         AdaptiveInputs UserInputs { get; };
+        Windows.Foundation.IReference<Boolean> Rtl;
 
         void AddInputValue(IAdaptiveInputValue inputValue, AdaptiveRenderArgs renderArgs);
         void LinkSubmitActionToCard(IAdaptiveActionElement submitAction, AdaptiveRenderArgs renderArgs);
