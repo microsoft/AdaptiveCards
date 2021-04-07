@@ -74,13 +74,14 @@ export class ActionWrapper extends React.Component {
 							<Element
 								json={element}
 								isFirst={isFirstElement}
+								maxWidth={100 / actions.length + "%"}
 								configManager={this.props.configManager}
 								onShowCardTapped={this.onShowAdaptiveCard}
 								key={`${element.type}-${index}`}
 							/>);
 					}
 					else {
-						renderedElement.push(<Element json={element} configManager={this.props.configManager} isFirst={isFirstElement} key={`${element.type}-${index}`} />);
+						renderedElement.push(<Element json={element} configManager={this.props.configManager} isFirst={isFirstElement} maxWidth={100 / actions.length + "%"} key={`${element.type}-${index}`} />);
 					}
 				}
 			} else {

@@ -56,9 +56,14 @@ export class ActionButton extends React.Component {
 	}
 
 	getActionAlignment() {
+		let computedStyles = [];
 		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch) {
-			return { flexGrow: 0 }
-		} else return { flexGrow: 1 }
+			computedStyles.push({ flexGrow: 0})
+		} else computedStyles.push({ flexGrow: 1})
+		if(this.hostConfig.actions.actionsOrientation === Enums.Orientation.Horizontal) {
+			computedStyles.push({ maxWidth: this.props.maxWidth })
+		}
+		return computedStyles;
 	}
 
 	render() {
@@ -185,6 +190,19 @@ export class ActionButton extends React.Component {
 			computedStyles.push(this.styleConfig.defaultDestructiveButtonBackgroundColor);
 		}
 
+		if (this.hostConfig.actions.actionAlignment != Enums.ActionAlignment.Stretch && this.hostConfig.actions.actionsOrientation === Enums.Orientation.Vertical) {
+			switch (this.hostConfig.actions.actionAlignment) {
+				case Enums.ActionAlignment.Center:
+					computedStyles.push(styles.centerAlignment)
+					break
+				case Enums.ActionAlignment.Right:
+					computedStyles.push(styles.rightAlignment)
+					break
+				default:
+					computedStyles.push(styles.leftAlignment)
+			}
+		}
+
 		computedStyles.push(this.props.style)
 		return computedStyles;
 	}
@@ -210,7 +228,7 @@ export class ActionButton extends React.Component {
 							style={[styles.buttonIcon, this.styleConfig.actionIcon]} />
 						: null
 				}
-				<Text style={this.getButtonTitleStyles()}>
+				<Text numberOfLines={1} style={this.getButtonTitleStyles()}>
 					{this.title}
 				</Text>
 			</View>
@@ -230,6 +248,15 @@ const styles = StyleSheet.create({
 	buttonIcon: {
 		marginLeft: 5,
 		marginRight: 10,
+	},
+	leftAlignment: {
+		alignSelf: Constants.FlexStart,
+	},
+	centerAlignment: {
+		alignSelf: Constants.CenterString,
+	},
+	rightAlignment: {
+		alignSelf: Constants.FlexEnd,
 	}
 });
 
