@@ -31,9 +31,9 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
     }
     // if input time doesn't have seconds then this function appends seconds' value as 00
     private func valueByAppendingMissingSeconds(_ value: String) -> String {
-        var time = value.components(separatedBy: ":")
-        if time.count == 2 {
-            time.append("00")
+        let time = value.components(separatedBy: ":")
+        if time.count > 2 {
+            return("\(time[0]):\(time[1])")
         }
         return time.joined(separator: ":")
     }
