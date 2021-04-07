@@ -5,7 +5,6 @@ package io.adaptivecards.renderer;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
+import io.adaptivecards.objectmodel.Mode;
 import io.adaptivecards.objectmodel.Spacing;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
@@ -52,8 +52,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                 HostConfig hostConfig,
                 RenderArgs renderArgs) throws AdaptiveFallbackException
     {
-        long size;
-        if (baseActionElementList == null || (size = baseActionElementList.size()) <= 0)
+        if (baseActionElementList == null || baseActionElementList.size() <= 0)
         {
             return null;
         }
@@ -116,35 +115,42 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         BaseActionElementVector primaryActionElementVector = new BaseActionElementVector();
         BaseActionElementVector secondaryActionElementVector = new BaseActionElementVector();
 
-        for (BaseActionElement actionElement : baseActionElementList) {
-
-            switch (actionElement.GetElementMode()) {
-                case Primary:
-                    primaryActionElementVector.add(actionElement);
-                    break;
-                case Secondary:
-                    secondaryActionElementVector.add(actionElement);
-                    break;
+        for (BaseActionElement actionElement : baseActionElementList)
+        {
+            if (actionElement.GetMode() == Mode.Secondary)
+            {
+                secondaryActionElementVector.add(actionElement);
+            }
+            else
+            {
+                primaryActionElementVector.add(actionElement);
             }
 
-            if (actionElement.GetIconUrl().isEmpty()) {
+            if (actionElement.GetIconUrl().isEmpty())
+            {
                 renderArgs.setAllowAboveTitleIconPlacement(false);
             }
         }
 
         int primaryElementsSize = primaryActionElementVector.size();
-        if (primaryElementsSize > maxActions) {
+        if (primaryElementsSize > maxActions)
+        {
             List<BaseActionElement> excessElements = primaryActionElementVector.subList((int) maxActions, primaryElementsSize);
-            //Add excess elements to the secondary list.
-            if (hostConfig.GetActions().getAllowMoreThanMaxActionsInOverflowMenu()) {
+            //Add excess elements to the secondary list if flag is enabled.
+            if (hostConfig.GetActions().getAllowMoreThanMaxActionsInOverflowMenu())
+            {
                 secondaryActionElementVector.addAll(excessElements);
-            } else {
+            }
+            else
+            {
                 renderedCard.addWarning(new AdaptiveWarning(AdaptiveWarning.MAX_ACTIONS_EXCEEDED, "A maximum of " + maxActions + " actions are allowed"));
             }
             excessElements.clear();
         }
+
         renderPrimaryActionElements(primaryActionElementVector, renderedCard, context, fragmentManager, actionButtonsLayout, cardActionHandler, hostConfig, renderArgs);
-        if (!secondaryActionElementVector.isEmpty()) {
+        if (!secondaryActionElementVector.isEmpty())
+        {
             renderSecondaryActionElements(secondaryActionElementVector, renderedCard, context, fragmentManager, actionButtonsLayout, cardActionHandler, hostConfig, renderArgs);
         }
 
@@ -252,11 +258,10 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
                                                ViewGroup actionButtonsLayout,
                                                ICardActionHandler cardActionHandler,
                                                HostConfig hostConfig,
-                                               RenderArgs renderArgs) throws AdaptiveFallbackException {
-
+                                               RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         IActionLayoutRenderer overflowActionRenderer = OverflowActionLayoutRenderer.getInstance();
         overflowActionRenderer.renderActions(renderedCard, context, fragmentManager, actionButtonsLayout, secondaryActionElementVector, cardActionHandler, hostConfig, renderArgs);
-
     }
 
     private static ActionLayoutRenderer s_instance = null;

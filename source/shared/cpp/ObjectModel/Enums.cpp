@@ -337,6 +337,6 @@ namespace AdaptiveSharedNamespace
             {InlineElementType::TextRun, "TextRun"}});
 
     DEFINE_ADAPTIVECARD_ENUM_DEFAULT(Mode, Mode::Primary, {
-        {Mode::Primary, "primary"},
-        {Mode::Secondary, "secondary"}});
+            {Mode::Primary, "primary"},
+            {Mode::Secondary, "secondary"}});
 }

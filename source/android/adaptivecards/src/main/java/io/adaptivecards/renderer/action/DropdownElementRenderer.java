@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer.action;
 
 import android.content.Context;
@@ -35,18 +37,22 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
     private final static int HORIZONTAL_PADDING = 16;
     private final static int TEXT_SIZE = 12;
 
-    protected DropdownElementRenderer() {
+    protected DropdownElementRenderer()
+    {
     }
 
-    public static DropdownElementRenderer getInstance() {
+    public static DropdownElementRenderer getInstance()
+    {
         if (s_instance == null) {
             s_instance = new DropdownElementRenderer();
         }
+
         return s_instance;
     }
 
     @Override
-    public Button render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException {
+    public Button render(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElement baseActionElement, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         Button button = new Button(context);
         SubmitAction action = Util.tryCastTo(baseActionElement, SubmitAction.class);
         if (action != null)
@@ -64,22 +70,29 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
         button.setTextSize(TypedValue.COMPLEX_UNIT_SP,TEXT_SIZE);
         button.setTextColor(context.getResources().getColor(R.color.dropdown_text_color));
         button.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
-        ActionOnClickListener actionOnClickListener = new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs){
+
+        ActionOnClickListener actionOnClickListener = new BaseActionElementRenderer.ActionOnClickListener(renderedCard, context, fragmentManager, viewGroup, baseActionElement, cardActionHandler, hostConfig, renderArgs)
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 super.onClick(view);
-                try {
+                try
+                {
                     //Gets  BottomSheet's behavior with deefault content view.
                     ViewParent parent = view.getParent();
                     FrameLayout bottomSheetLayout = (FrameLayout) parent.getParent();
                     BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheetLayout);
                     behavior.setHideable(true);
                     behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-                } catch(Exception e) {
+                }
+                catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
         };
+
         button.setOnClickListener(actionOnClickListener);
         button.setTag(BOTTOM_SHEET_TAG,viewGroup);
         setIcon(button,renderedCard,baseActionElement,hostConfig,renderArgs);

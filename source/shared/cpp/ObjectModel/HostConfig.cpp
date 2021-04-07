@@ -300,7 +300,9 @@ ActionsConfig ActionsConfig::Deserialize(const Json::Value& json, const ActionsC
 
     result.iconSize = ParseUtil::GetUInt(json, AdaptiveCardSchemaKey::IconSize, defaultValue.iconSize);
 
-    result.allowMoreThanMaxActionsInOverflowMenu = ParseUtil::GetBool(json,AdaptiveCardSchemaKey::AllowMoreThanMaxActionsInOverflowMenu,defaultValue.allowMoreThanMaxActionsInOverflowMenu);
+    result.allowMoreThanMaxActionsInOverflowMenu = ParseUtil::GetBool(json,
+                                                                      AdaptiveCardSchemaKey::AllowMoreThanMaxActionsInOverflowMenu,
+                                                                      defaultValue.allowMoreThanMaxActionsInOverflowMenu);
 
     return result;
 }
@@ -316,7 +318,7 @@ InputLabelConfig InputLabelConfig::Deserialize(const Json::Value& json, const In
     result.size = ParseUtil::GetEnumValue<TextSize>(json, AdaptiveCardSchemaKey::Size, defaultValue.size, TextSizeFromString);
 
     result.suffix = ParseUtil::GetString(json, AdaptiveCardSchemaKey::Suffix, defaultValue.suffix);
-    
+
     result.weight = ParseUtil::GetEnumValue<TextWeight>(json, AdaptiveCardSchemaKey::Weight, defaultValue.weight, TextWeightFromString);
 
     return result;

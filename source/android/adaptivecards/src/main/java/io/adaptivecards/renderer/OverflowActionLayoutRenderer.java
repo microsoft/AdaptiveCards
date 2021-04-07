@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.content.Context;
@@ -41,10 +43,12 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     private static final int MARGIN = 7;
     private static final int HORIZONTAL_PADDING = 6;
 
-    protected OverflowActionLayoutRenderer() {
+    protected OverflowActionLayoutRenderer()
+    {
     }
 
-    public static OverflowActionLayoutRenderer getInstance() {
+    public static OverflowActionLayoutRenderer getInstance()
+    {
         if (s_instance == null) {
             s_instance = new OverflowActionLayoutRenderer();
         }
@@ -54,43 +58,45 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
 
 
     @Override
-    public View renderActions(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final HostConfig hostConfig, final RenderArgs renderArgs) throws AdaptiveFallbackException {
+    public View renderActions(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final HostConfig hostConfig, final RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
 
-        // customized rendering
-        final View customOverflowActionView = overflowActionRenderer.onRenderOverflowAction(baseActionElementList);
-        if (customOverflowActionView != null) {
-            if (!overflowActionRenderer.isRootLevelActions())
-                viewGroup.addView(customOverflowActionView);
-            renderBottomSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs, overflowActionRenderer, customOverflowActionView);
-            actionForOverflowView(overflowActionRenderer, baseActionElementList, customOverflowActionView);
-            return customOverflowActionView;
-        } else {
+        boolean isOverflowActionRendered = overflowActionRenderer.onRenderOverflowAction(baseActionElementList, viewGroup, renderArgs.isRootLevelActions());
+        if (!isOverflowActionRendered)
+        {
             final ImageButton overflowActionView = new ImageButton(context);
             LinearLayout.LayoutParams layoutParams;
             ActionsOrientation orientation = hostConfig.GetActions().getActionsOrientation();
-            if (orientation == ActionsOrientation.Horizontal) {
+
+            if (orientation == ActionsOrientation.Horizontal)
+            {
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                 long spacing = hostConfig.GetActions().getButtonSpacing();
                 layoutParams.rightMargin = Util.dpToPixels(context, spacing);
-            } else {
+            }
+            else
+            {
                 layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
             }
             layoutParams.topMargin = Util.dpToPixels(context, MARGIN);
             layoutParams.bottomMargin = Util.dpToPixels(context, MARGIN);
+
             overflowActionView.setPadding(Util.dpToPixels(context, HORIZONTAL_PADDING), 0, Util.dpToPixels(context, HORIZONTAL_PADDING), 0);
             overflowActionView.setImageResource(R.drawable.overlow_horizontal);
             overflowActionView.setLayoutParams(layoutParams);
             overflowActionView.setAdjustViewBounds(true);
             overflowActionView.setScaleType(ImageView.ScaleType.FIT_END);
+            applyBackgroundDrawables(context, overflowActionView);
+            viewGroup.addView(overflowActionView);
+
             renderBottomSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs, overflowActionRenderer, overflowActionView);
             actionForOverflowView(overflowActionRenderer, baseActionElementList, overflowActionView);
-            applyBackgroundDrawables(context, overflowActionView);
-            if (!overflowActionRenderer.isRootLevelActions())
-                viewGroup.addView(overflowActionView);
+
             return overflowActionView;
         }
 
+        return null;
     }
 
     /**
@@ -100,13 +106,16 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      * @param baseActionElementList  secondary action elements list
      * @param overflowActionView     rendered Overflow view
      */
-    private void actionForOverflowView(final IOverflowActionRenderer overflowActionRenderer, final BaseActionElementVector baseActionElementList, final View overflowActionView) {
-        overflowActionView.setOnClickListener(new View.OnClickListener() {
+    private void actionForOverflowView(final IOverflowActionRenderer overflowActionRenderer, final BaseActionElementVector baseActionElementList, final View overflowActionView)
+    {
+        overflowActionView.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View v) {
-                if (overflowActionRenderer.shouldDisplayCustomActionMenu()) {
-                    overflowActionRenderer.onDisplayOverflowActionMenu(baseActionElementList, overflowActionView);
-                } else if (v.getTag() instanceof BottomSheetDialog) {
+            public void onClick(View v)
+            {
+                boolean displayCustomMenu = overflowActionRenderer.onDisplayOverflowActionMenu(baseActionElementList, overflowActionView);
+                if (!displayCustomMenu && v.getTag() instanceof BottomSheetDialog)
+                {
                     ((BottomSheetDialog) v.getTag()).show();
                 }
             }
@@ -114,7 +123,7 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     }
 
     /**
-     * Creates {@link BottomSheetDialog} when {@link IOverflowActionRenderer#shouldDisplayCustomActionMenu()} returns false.
+     * Creates {@link BottomSheetDialog} when {@link IOverflowActionRenderer#onDisplayOverflowActionMenu(BaseActionElementVector, View)} ()} returns false.
      *
      * @param renderedCard           rendered card
      * @param context                context
@@ -127,47 +136,36 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      * @param overflowActionRenderer instance of IOverflowActionRenderer
      * @param overflowActionView     rendered Overflow view
      */
-    private void renderBottomSheet(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final HostConfig hostConfig, final RenderArgs renderArgs, final IOverflowActionRenderer overflowActionRenderer, final View overflowActionView) {
+    private void renderBottomSheet(final RenderedAdaptiveCard renderedCard, final Context context, final FragmentManager fragmentManager, final ViewGroup viewGroup, final BaseActionElementVector baseActionElementList, final ICardActionHandler cardActionHandler, final HostConfig hostConfig, final RenderArgs renderArgs, final IOverflowActionRenderer overflowActionRenderer, final View overflowActionView)
+    {
         //Make sure BottomSheet created on UI Thread.
-        viewGroup.post(new Runnable() {
+        viewGroup.post(new Runnable()
+        {
             @Override
-            public void run() {
-                try {
-                    if (!overflowActionRenderer.shouldDisplayCustomActionMenu()) {
-                        BottomSheetDialog bottomSheetDialog = renderActionSheet(renderedCard, context, fragmentManager, viewGroup, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
+            public void run()
+            {
+                try
+                {
+                    boolean displayCustomMenu = overflowActionRenderer.onDisplayOverflowActionMenu(baseActionElementList, overflowActionView);
+                    if (!displayCustomMenu)
+                    {
+                        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
+                        LinearLayout contentLayout = new LinearLayout(context);
+                        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                        contentLayout.setOrientation(LinearLayout.VERTICAL);
+                        contentLayout.setGravity(Gravity.START);
+                        addSeparator(contentLayout);
+                        renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, contentLayout, cardActionHandler, hostConfig, renderArgs);
+                        bottomSheetDialog.setContentView(contentLayout);
                         overflowActionView.setTag(bottomSheetDialog);
                     }
-                } catch (AdaptiveFallbackException e) {
+                }
+                catch (AdaptiveFallbackException e)
+                {
                     e.printStackTrace();
                 }
             }
         });
-    }
-
-    /**
-     * Creates {@link BottomSheetDialog}
-     *
-     * @param renderedCard          rendered card
-     * @param context               context
-     * @param fragmentManager       fragmentManger
-     * @param viewGroup             root view of the action set elements
-     * @param baseActionElementList secondary action elements list
-     * @param cardActionHandler     cardActionHandler
-     * @param hostConfig            client configuration
-     * @param renderArgs            renderArgs
-     * @return created {@link BottomSheetDialog}
-     * @throws AdaptiveFallbackException throws exception incase of error.
-     */
-    private BottomSheetDialog renderActionSheet(RenderedAdaptiveCard renderedCard, Context context, FragmentManager fragmentManager, ViewGroup viewGroup, BaseActionElementVector baseActionElementList, ICardActionHandler cardActionHandler, HostConfig hostConfig, RenderArgs renderArgs) throws AdaptiveFallbackException {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context, R.style.BottomSheetDialogTheme);
-        LinearLayout contentLayout = new LinearLayout(context);
-        contentLayout.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        contentLayout.setOrientation(LinearLayout.VERTICAL);
-        contentLayout.setGravity(Gravity.START);
-        addSeparator(contentLayout);
-        renderSecondaryActionElements(baseActionElementList, renderedCard, context, fragmentManager, viewGroup, contentLayout, cardActionHandler, hostConfig, renderArgs);
-        bottomSheetDialog.setContentView(contentLayout);
-        return bottomSheetDialog;
     }
 
     /**
@@ -176,15 +174,20 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      * @param context context
      * @param view    drawables to be applied on view.
      */
-    private void applyBackgroundDrawables(Context context, @NonNull ImageButton view) {
+    private void applyBackgroundDrawables(Context context, @NonNull ImageButton view)
+    {
         TypedValue colorValue = new TypedValue();
         //Apply colorButtonNormal for border tp match with existing action buttons;
         int color = context.getResources().getColor(android.R.color.darker_gray);
-        if (context.getTheme().resolveAttribute(android.R.attr.colorButtonNormal, colorValue, true)) {
+        if (context.getTheme().resolveAttribute(android.R.attr.colorButtonNormal, colorValue, true))
+        {
             color = getAttributeColor(context, R.attr.colorButtonNormal);
-        } else if (context.getTheme().resolveAttribute(android.R.attr.colorPrimary, colorValue, true)) {
+        }
+        else if (context.getTheme().resolveAttribute(android.R.attr.colorPrimary, colorValue, true))
+        {
             color = getAttributeColor(context, R.attr.colorPrimary);
         }
+
         ShapeDrawable shapedrawable = getShapeDrawable(context, color, 2);
         view.setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
         TypedValue outValue = new TypedValue();
@@ -200,7 +203,8 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      *
      * @param linearLayout BottomSheet's root layout
      */
-    private void addSeparator(@NonNull LinearLayout linearLayout) {
+    private void addSeparator(@NonNull LinearLayout linearLayout)
+    {
         ShapeDrawable shapedrawable = getShapeDrawable(linearLayout.getContext(), linearLayout.getContext().getResources().getColor(R.color.bottomSheet_divider_color), 1);
         linearLayout.setDividerDrawable(shapedrawable);
         linearLayout.setShowDividers(LinearLayout.SHOW_DIVIDER_MIDDLE);
@@ -214,7 +218,8 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
      * @param strokeWidth width of tjhe border
      * @return created {@link ShapeDrawable}
      */
-    private ShapeDrawable getShapeDrawable(@NonNull Context context, int color, int strokeWidth) {
+    private ShapeDrawable getShapeDrawable(@NonNull Context context, int color, int strokeWidth)
+    {
         ShapeDrawable shapedrawable = new ShapeDrawable();
         shapedrawable.setShape(new RectShape());
         shapedrawable.getPaint().setColor(color);
@@ -230,38 +235,45 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
                                                ViewGroup contentLayout,
                                                ICardActionHandler cardActionHandler,
                                                HostConfig hostConfig,
-                                               RenderArgs renderArgs) throws AdaptiveFallbackException {
+                                               RenderArgs renderArgs) throws AdaptiveFallbackException
+    {
         FeatureRegistration featureRegistration = CardRendererRegistration.getInstance().getFeatureRegistration();
 
-        for (BaseActionElement actionElement : elementVector) {
-
+        for (BaseActionElement actionElement : elementVector)
+        {
             IBaseActionElementRenderer actionRenderer = CardRendererRegistration.getInstance().getActionRenderer(AdaptiveCardObjectModel.ModeToString(Mode.Secondary));
 
-            try {
-                if (actionRenderer == null) {
+            try
+            {
+                if (actionRenderer == null)
+                {
                     throw new AdaptiveFallbackException(actionElement);
                 }
 
-                if ((featureRegistration != null) && (!actionElement.MeetsRequirements(featureRegistration))) {
+                if ((featureRegistration != null) && (!actionElement.MeetsRequirements(featureRegistration)))
+                {
                     throw new AdaptiveFallbackException(actionElement, featureRegistration);
                 }
 
                 contentLayout.addView(actionRenderer.render(renderedCard, context, fragmentManager, actionButtonsLayout, actionElement, cardActionHandler, hostConfig, renderArgs));
-            } catch (AdaptiveFallbackException e) {
+            }
+            catch (AdaptiveFallbackException e)
+            {
                 e.printStackTrace();
             }
         }
     }
 
     /**
-     * Gest color for a given color attribute.
+     * Gets color for a given color attribute.
      *
      * @param context        context.
      * @param colorAttribute attribute name.
      * @return Id of a color resource or -1 id resource not found.
      */
     @ColorInt
-    public static int getAttributeColor(Context context, @AttrRes int colorAttribute) {
+    public static int getAttributeColor(Context context, @AttrRes int colorAttribute)
+    {
         int[] attrs = {colorAttribute};
         TypedArray typedArray = context.obtainStyledAttributes(attrs);
         @ColorInt int color = ContextCompat.getColor(context, typedArray.getResourceId(0, -1));
@@ -272,38 +284,34 @@ public class OverflowActionLayoutRenderer implements IActionLayoutRenderer {
     private static OverflowActionLayoutRenderer s_instance = null;
 
     /**
-     * Responsible default Overflow rendering behavior.
+     * Responsible for default Overflow rendering behavior.
      */
     public static class OverflowActionRenderer implements IOverflowActionRenderer {
 
         private static OverflowActionRenderer m_innerInstance = null;
 
-        public static OverflowActionRenderer getInstance() {
-            if (m_innerInstance == null) {
+        public static OverflowActionRenderer getInstance()
+        {
+            if (m_innerInstance == null)
+            {
                 m_innerInstance = new OverflowActionRenderer();
             }
 
             return m_innerInstance;
         }
 
-        @Override
-        public View onRenderOverflowAction(@NonNull BaseActionElementVector actionElements) {
-            return null;
-        }
 
         @Override
-        public void onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view) {
-            //default implementation.
-        }
-
-        @Override
-        public boolean isRootLevelActions() {
+        public boolean onRenderOverflowAction(@NonNull BaseActionElementVector actionElements, @NonNull ViewGroup viewGroup, boolean isRootLevelActions)
+        {
             return false;
         }
 
         @Override
-        public boolean shouldDisplayCustomActionMenu() {
+        public boolean onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view)
+        {
             return false;
         }
+
     }
 }

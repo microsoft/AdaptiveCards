@@ -44,7 +44,7 @@ public class AdaptiveCardRenderer
     }
     public RenderedAdaptiveCard render(Context context, FragmentManager fragmentManager, AdaptiveCard adaptiveCard, ICardActionHandler cardActionHandler, @Nullable IOverflowActionRenderer overflowActionRenderer)
     {
-        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer,defaultHostConfig);
+        return render(context, fragmentManager, adaptiveCard, cardActionHandler, overflowActionRenderer, defaultHostConfig);
     }
 
     // AdaptiveCard ObjectModel is binded to the UI and Action
@@ -186,6 +186,7 @@ public class AdaptiveCardRenderer
                 {
                     try
                     {
+                        renderArgs.setRootLevelActions(true);
                         actionLayoutRenderer.renderActions(renderedCard, context, fragmentManager, cardLayout, baseActionElementList, cardActionHandler, hostConfig, renderArgs);
                     }
                     // Catches the exception as the method throws it for performing fallback with elements inside the card,

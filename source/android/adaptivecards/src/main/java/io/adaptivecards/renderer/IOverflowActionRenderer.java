@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package io.adaptivecards.renderer;
 
 import android.support.annotation.NonNull;
@@ -14,27 +16,18 @@ public interface IOverflowActionRenderer {
     /**
      * This implementation renders an Overflow action view.
      * @param actionElements secondary action elements list to be displayed on menu.
-     * @return rendered view.
+     * @param viewGroup container view for the rendered view to be attached (optional).
+     * @param isRootLevelActions indicates action is part of root level actions or action set elements in body.
+     * @return false to let the SDK render the "..." action, while true to render custom Overflow action..
      */
-    View onRenderOverflowAction(@NonNull BaseActionElementVector actionElements);
+    boolean onRenderOverflowAction(@NonNull BaseActionElementVector actionElements, @NonNull ViewGroup viewGroup, boolean isRootLevelActions);
 
     /**
      * This implementation displays menu for secondary actions.
      * @param actionElements secondary action elements list displayed on the menu
      * @param view Overflow action view.
+     * @return false to show the default {@link android.support.design.widget.BottomSheetDialog}, while true to display customized action menu.
      */
-    void onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view);
+    boolean onDisplayOverflowActionMenu(@NonNull BaseActionElementVector actionElements, @NonNull View view);
 
-    /**
-     * This implementation indicates if the current "..." overflow action belongs to root level actions array. If it's false then it indicates it's ActionSet as body elements.
-     * @return true for Root Level Action otherwise false.
-     */
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    boolean isRootLevelActions();
-
-    /**
-     * This implementation indicates whether to display custom action menu or not. if true then display the customized action menu otherwise display the default {@link android.support.design.widget.BottomSheetDialog}.
-     * @return true displays customized action menu otherwise default {@link android.support.design.widget.BottomSheetDialog}
-     */
-    boolean shouldDisplayCustomActionMenu();
 }
