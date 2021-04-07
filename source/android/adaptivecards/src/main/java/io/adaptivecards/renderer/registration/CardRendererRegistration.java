@@ -104,7 +104,7 @@ public class CardRendererRegistration
         registerActionRenderer(AdaptiveCardObjectModel.ModeToString(Mode.Secondary), DropdownElementRenderer.getInstance());
 
         m_actionLayoutRenderer = ActionLayoutRenderer.getInstance();
-        m_overflowActionRenderer = OverflowActionLayoutRenderer.OverflowActionRenderer.getInstance();
+        m_overflowActionLayoutRenderer = OverflowActionLayoutRenderer.getInstance();
     }
 
     public static CardRendererRegistration getInstance()
@@ -233,13 +233,19 @@ public class CardRendererRegistration
         return m_overflowActionRenderer;
     }
 
-    public void registerOverflowActionLoader(IOverflowActionRenderer overflowActionRenderer)
+    public void registerOverflowActionRenderer(IOverflowActionRenderer overflowActionRenderer)
     {
-        //takes default Overflow renderer if null.
-        if(overflowActionRenderer!=null)
-          m_overflowActionRenderer = overflowActionRenderer;
-        else
-           m_overflowActionRenderer = OverflowActionLayoutRenderer.OverflowActionRenderer.getInstance();
+        m_overflowActionRenderer = overflowActionRenderer;
+    }
+
+    public void registerOverflowActionLayoutRenderer(IActionLayoutRenderer actionLayoutRenderer)
+    {
+        m_overflowActionLayoutRenderer = actionLayoutRenderer;
+    }
+
+    public IActionLayoutRenderer getOverflowActionLayoutRenderer()
+    {
+        return m_overflowActionLayoutRenderer;
     }
 
 
@@ -611,4 +617,5 @@ public class CardRendererRegistration
     private IOnlineMediaLoader m_onlineMediaLoader = null;
     private FeatureRegistration m_featureRegistration = null;
     private IOverflowActionRenderer m_overflowActionRenderer =null;
+    private IActionLayoutRenderer m_overflowActionLayoutRenderer = null;
 }

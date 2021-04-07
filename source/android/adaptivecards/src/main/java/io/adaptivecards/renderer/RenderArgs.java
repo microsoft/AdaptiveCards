@@ -58,10 +58,18 @@ public class RenderArgs
         return m_containerCardId;
     }
 
+    /**
+     * @return true for root level action otherwise false.
+     */
     public boolean isRootLevelActions() {
         return m_isRootLevelActions;
     }
 
+    /**
+     * Set true to indicate action elements are present as root level actions or false to indicate it is part of {@link io.adaptivecards.objectmodel.ActionSet} elements.
+     *
+     * @param m_isRootLevelActions true for root level action otherwise false.
+     */
     public void setRootLevelActions(boolean m_isRootLevelActions) {
         this.m_isRootLevelActions = m_isRootLevelActions;
     }

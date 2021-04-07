@@ -23,10 +23,12 @@ import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveFallbackException;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
+import io.adaptivecards.renderer.IOverflowActionRenderer;
 import io.adaptivecards.renderer.RenderArgs;
 import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
+import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
 /**
  * Responsible for rendering dropdown element.
@@ -79,12 +81,16 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
                 super.onClick(view);
                 try
                 {
-                    //Gets  BottomSheet's behavior with deefault content view.
-                    ViewParent parent = view.getParent();
-                    FrameLayout bottomSheetLayout = (FrameLayout) parent.getParent();
-                    BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheetLayout);
-                    behavior.setHideable(true);
-                    behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    final IOverflowActionRenderer overflowActionRenderer = CardRendererRegistration.getInstance().getOverflowActionRenderer();
+                    if(overflowActionRenderer==null || !overflowActionRenderer.shouldDisplayCustomOverflowActionMenu())
+                    {
+                        //Gets  BottomSheet's behavior with default content view.
+                        ViewParent parent = view.getParent();
+                        FrameLayout bottomSheetLayout = (FrameLayout) parent.getParent();
+                        BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheetLayout);
+                        behavior.setHideable(true);
+                        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+                    }
                 }
                 catch(Exception e)
                 {
