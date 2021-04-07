@@ -76,3 +76,12 @@ class ACRImageProperties: NSObject {
         }
     }
 }
+extension NSImage {
+    var absoluteSize: NSSize {
+        guard !representations.isEmpty else {
+            return size
+        }
+        let info = representations[0]
+        return NSSize(width: info.pixelsWide, height: info.pixelsHigh)
+    }
+}

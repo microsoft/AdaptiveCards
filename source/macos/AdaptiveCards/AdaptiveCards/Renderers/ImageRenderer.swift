@@ -98,7 +98,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
     }
     
     func configUpdateForImage(image: NSImage?, imageView: NSImageView) {
-        guard let superView = imageView.superview as? ACRContentHoldingView, let imageSize = image?.size else {
+        guard let superView = imageView.superview as? ACRContentHoldingView, let imageSize = image?.absoluteSize else {
                 logError("superView or image is nil")
                 return
         }
@@ -137,6 +137,12 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
 }
 
 class ImageView: NSImageView, ImageHoldingView {
+    override var intrinsicContentSize: NSSize {
+        guard let image = image else {
+            return .zero
+        }
+        return image.absoluteSize
+    }
     func setImage(_ image: NSImage) {
         if self.image == nil {
             // update constraints only when image view does not contain an image

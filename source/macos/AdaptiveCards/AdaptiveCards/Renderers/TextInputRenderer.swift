@@ -122,27 +122,23 @@ class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
         button.attributedTitle = attributedString
         
         // adding target to the Buttons
-        guard let acrView = rootview as? ACRView else {
-            logError("rootView should be ACRView")
-            return
-        }
         switch action?.getType() {
         case .openUrl:
             guard let openURLAction = action as? ACSOpenUrlAction else {
                 logError("Element is not of type ACSOpenUrlAction")
                 return
             }
-            let target = ActionOpenURLTarget(element: openURLAction, delegate: acrView)
+            let target = ActionOpenURLTarget(element: openURLAction, delegate: rootview)
             target.configureAction(for: button)
-            acrView.addTarget(target)
+            rootview.addTarget(target)
         case .submit:
             guard let submitAction = action as? ACSSubmitAction else {
                 logError("Element is not of type ACSSubmitAction")
                 return
             }
-            let target = ActionSubmitTarget(element: submitAction, delegate: acrView)
+            let target = ActionSubmitTarget(element: submitAction, delegate: rootview)
             target.configureAction(for: button)
-            acrView.addTarget(target)
+            rootview.addTarget(target)
         default:
             break
         }

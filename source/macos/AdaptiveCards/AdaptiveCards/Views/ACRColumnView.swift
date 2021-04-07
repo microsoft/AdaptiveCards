@@ -49,6 +49,9 @@ class ACRColumnView: ACRContentStackView {
     
     private lazy var widthConstraint = widthAnchor.constraint(equalToConstant: Constants.minWidth)
     private lazy var backgroundImageViewBottomConstraint = backgroundImageView.bottomAnchor.constraint(equalTo: bottomAnchor)
+    private lazy var backgroundImageViewTopConstraint = backgroundImageView.topAnchor.constraint(equalTo: topAnchor)
+    private lazy var backgroundImageViewLeadingConstraint = backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor)
+    private lazy var backgroundImageViewTrailingConstraint = backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
     private (set) var columnWidth: ColumnWidth = .weighted(1)
     
     private (set) lazy var backgroundImageView: ACRBackgroundImageView = {
@@ -89,9 +92,9 @@ class ACRColumnView: ACRContentStackView {
     
     override func setupConstraints() {
         super.setupConstraints()
-        backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
-        backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        backgroundImageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        backgroundImageViewTopConstraint.isActive = true
+        backgroundImageViewLeadingConstraint.isActive = true
+        backgroundImageViewTrailingConstraint.isActive = true
         backgroundImageViewBottomConstraint.isActive = true
     }
     
@@ -143,5 +146,14 @@ class ACRColumnView: ACRContentStackView {
         case .weighted:
             widthConstraint.isActive = false
         }
+    }
+    
+    func bleedBackgroundImage(padding: CGFloat, top: Bool, bottom: Bool, leading: Bool, trailing: Bool, paddingBottom: CGFloat, with anchor: NSLayoutAnchor<NSLayoutYAxisAnchor>) {
+        backgroundImageViewTopConstraint.constant = top ? -padding : 0
+        backgroundImageViewTrailingConstraint.constant = trailing ? padding : 0
+        backgroundImageViewLeadingConstraint.constant = leading ? -padding : 0
+        backgroundImageViewBottomConstraint.isActive = false
+        backgroundImageViewBottomConstraint = backgroundImageView.bottomAnchor.constraint(equalTo: anchor, constant: bottom ?  padding : 0)
+        backgroundImageViewBottomConstraint.isActive = true
     }
 }

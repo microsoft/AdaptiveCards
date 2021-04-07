@@ -201,6 +201,7 @@ extension RootViewController: AdaptiveCardResourceResolver {
                     print("""
                     #####
                     ResourceResolver: `imageDimensionsDict` Dimension mis-match!
+                        URL          : \(url)
                         CACHED DIMEN : \(size)
                         DIMENSION    : \(image.size)
                     #####
