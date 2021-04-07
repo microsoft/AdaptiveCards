@@ -1610,7 +1610,7 @@ namespace RendererQml
 		uiTimeInput->Property("selectedTextColor", "'white'");
         uiTimeInput->Property("property string selectedTime", "\"""\"");
 		uiTimeInput->Property("width", "parent.width");
-		uiTimeInput->Property("placeholderText", !input->GetPlaceholder().empty() ? input->GetPlaceholder() : "\"Select time\"");
+		uiTimeInput->Property("placeholderText", Formatter() << "\"" << (!input->GetPlaceholder().empty() ? input->GetPlaceholder() : "Select time") << "\"");
         uiTimeInput->Property("color", context->GetColor(AdaptiveCards::ForegroundColor::Default, false, false));
 
 		uiTimeInput->Property("validator", "RegExpValidator { regExp: /^(--|[01][0-9|-]|2[0-3|-]):(--|[0-5][0-9|-])$/}");
@@ -1618,12 +1618,18 @@ namespace RendererQml
 		if (!input->GetValue().empty() && Utils::isValidTime(value))
 		{
 			std::string defaultTime = value;
+            std::string defaultSelectedTime = value;
 			if (is12hour == true)
 			{
 				defaultTime = Utils::defaultTimeto12hour(defaultTime);
+                defaultSelectedTime = Utils::defaultTimeto24hour(defaultSelectedTime);
 			}
+            else
+            {
+                defaultTime = defaultSelectedTime = Utils::defaultTimeto24hour(defaultTime);
+            }
 			uiTimeInput->Property("text", Formatter() << "\"" << defaultTime << "\"");
-            uiTimeInput->Property("property string selectedTime", Formatter() << "\"" << value << "\"");
+            uiTimeInput->Property("property string selectedTime", Formatter() << "\"" << defaultSelectedTime << "\"");
 		}
 
 		if (!input->GetIsVisible())

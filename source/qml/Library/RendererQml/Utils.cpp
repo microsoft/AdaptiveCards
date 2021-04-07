@@ -325,6 +325,10 @@ namespace RendererQml
 		try
 		{
 			std::vector<std::string> time_split = Utils::splitString(time, ':');
+            if (time_split.size() < 2)
+            {
+                return false;
+            }
 			if (stoi(time_split[0]) >= 0 && stoi(time_split[0]) <= 23)
 			{
 				if(stoi(time_split[1]) >= 0 && stoi(time_split[1]) <= 59)
@@ -340,19 +344,47 @@ namespace RendererQml
 
 	std::string Utils::defaultTimeto12hour(std::string& defaultTime)
 	{
-		std::vector<std::string> time_split=Utils::splitString(defaultTime,':');
+		std::vector<std::string> time_split = Utils::splitString(defaultTime,':');
+
+        if (time_split.size() < 2)
+        {
+            return "";
+        }
 
 		std::string tt = "AM";
 
-		if (stoi(time_split[0]) > 12)
+		if (stoi(time_split[0]) >= 12)
 		{
 			tt = "PM";
 		}
 
-		time_split[0] = std::to_string(stoi(time_split[0]) > 12 ? stoi(time_split[0]) - 12 : stoi(time_split[0]));
+        if (stoi(time_split[0]) > 12)
+        {
+            time_split[0] = std::to_string(stoi(time_split[0]) - 12);
+        }
+        else if (stoi(time_split[0]) == 0)
+        {
+            time_split[0] = std::to_string(12);
+        }
+        else
+        {
+            time_split[0] = std::to_string(stoi(time_split[0]));
+        }
 
 		return Formatter() << std::setfill('0') << std::setw(2) << time_split[0] << ":" << time_split[1] << " " << tt;
 	}
+
+    std::string Utils::defaultTimeto24hour(std::string& defaultTime)
+    {
+        std::vector<std::string> time_split = Utils::splitString(defaultTime, ':');
+
+        if (time_split.size() < 2)
+        {
+            return "";
+        }
+
+        return Formatter() << time_split[0] << ":" << time_split[1];
+    }
 
     std::string Utils::ConvertToLowerIdValue(const std::string& value)
     {

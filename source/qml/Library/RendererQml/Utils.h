@@ -104,6 +104,7 @@ namespace RendererQml
 		static std::string GetDate(const std::string& date);
 		static const bool isValidTime(const std::string& time);
 		static std::string defaultTimeto12hour(std::string& defaultTime);
+        static std::string defaultTimeto24hour(std::string& defaultTime);
 
         static std::string ConvertToLowerIdValue(const std::string& value);
 
