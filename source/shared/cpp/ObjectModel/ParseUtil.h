@@ -37,6 +37,8 @@ namespace AdaptiveSharedNamespace
 
         bool GetBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool defaultValue, bool isRequired = false);
 
+        std::optional<bool> GetOptionalBool(const Json::Value& json, AdaptiveCardSchemaKey key, bool isRequired = false);
+
         unsigned int GetUInt(const Json::Value& json, AdaptiveCardSchemaKey key, unsigned int defaultValue, bool isRequired = false);
 
         int GetInt(const Json::Value& json, AdaptiveCardSchemaKey key, int defaultValue, bool isRequired = false);

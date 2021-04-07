@@ -14,18 +14,11 @@ import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
-import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.BaseElement;
 import io.adaptivecards.objectmodel.FallbackType;
 import io.adaptivecards.objectmodel.FeatureRegistration;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.IconPlacement;
 import io.adaptivecards.objectmodel.Spacing;
-import io.adaptivecards.renderer.AdaptiveWarning;
-import io.adaptivecards.renderer.BaseCardElementRenderer;
-import io.adaptivecards.renderer.IActionLayoutRenderer;
-import io.adaptivecards.renderer.IBaseActionElementRenderer;
-import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
 import io.adaptivecards.renderer.registration.CardRendererRegistration;
 
@@ -68,7 +61,7 @@ public class ActionLayoutRenderer implements IActionLayoutRenderer {
         int actionButtonsAlignment = Gravity.START | Gravity.TOP; // default gravity
         if (alignment == ActionAlignment.Right.swigValue())
         {
-            actionButtonsAlignment = Gravity.RIGHT;
+            actionButtonsAlignment = Gravity.END;
         }
         else if (alignment == ActionAlignment.Center.swigValue())
         {

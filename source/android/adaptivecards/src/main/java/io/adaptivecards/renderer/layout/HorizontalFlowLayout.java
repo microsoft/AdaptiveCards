@@ -89,22 +89,21 @@ public class HorizontalFlowLayout extends RelativeLayout {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        // increment the x position as we progress through a line
-        int xpos = getPaddingLeft();
+        // increment the x position (as distance from the START end) as we progress through a line
+        int xpos = getPaddingStart();
         // increment the y position as we progress through the lines
         int ypos = getPaddingTop();
         // the height of the current line
         int line_height = 0;
-
-        View child;
-        MarginLayoutParams childMarginLayoutParams;
-        int childWidth, childHeight, childMarginLeft, childMarginRight, childMarginTop, childMarginBottom;
+        // available width
+        final int width = r - l;
 
         // note: considering "margins" here...
         // ... but don't need to consider "translations" as translations are done post-layout
 
         for (int i = 0; i < getChildCount(); i++) {
-            child = getChildAt(i);
+            final int childWidth, childHeight, childMarginStart, childMarginEnd, childMarginTop, childMarginBottom;
+            final View child = getChildAt(i);
 
             if (child.getVisibility() != GONE) {
                 childWidth = child.getMeasuredWidth();
@@ -112,23 +111,23 @@ public class HorizontalFlowLayout extends RelativeLayout {
 
                 if (child.getLayoutParams() != null
                         && child.getLayoutParams() instanceof MarginLayoutParams) {
-                    childMarginLayoutParams = (MarginLayoutParams) child.getLayoutParams();
+                    final MarginLayoutParams childMarginLayoutParams = (MarginLayoutParams) child.getLayoutParams();
 
-                    childMarginLeft = childMarginLayoutParams.leftMargin;
-                    childMarginRight = childMarginLayoutParams.rightMargin;
+                    childMarginStart = childMarginLayoutParams.getMarginStart();
+                    childMarginEnd = childMarginLayoutParams.getMarginEnd();
                     childMarginTop = childMarginLayoutParams.topMargin;
                     childMarginBottom = childMarginLayoutParams.bottomMargin;
                 } else {
-                    childMarginLeft = 0;
-                    childMarginRight = 0;
+                    childMarginStart = 0;
+                    childMarginEnd = 0;
                     childMarginTop = 0;
                     childMarginBottom = 0;
                 }
 
-                if (xpos + childMarginLeft + childWidth + childMarginRight + getPaddingRight() > r - l) {
+                if (xpos + childMarginStart + childWidth + childMarginEnd + getPaddingEnd() > width) {
                     // this child will need to go on a new line
 
-                    xpos = getPaddingLeft();
+                    xpos = getPaddingStart();
                     ypos += line_height;
 
                     line_height = childHeight + childMarginTop + childMarginBottom;
@@ -139,13 +138,18 @@ public class HorizontalFlowLayout extends RelativeLayout {
                             childMarginTop + childHeight + childMarginBottom);
                 }
 
-                child.layout(
-                        xpos + childMarginLeft,
-                        ypos + childMarginTop,
-                        xpos + childMarginLeft + childWidth,
-                        ypos + childMarginTop + childHeight);
+                xpos += childMarginStart;
 
-                xpos += childMarginLeft + childWidth + childMarginRight;
+                // Convert from RTL-aware xpos to explicit left/right for child.layout()
+                final int childLeft = (getLayoutDirection() == LAYOUT_DIRECTION_LTR) ? xpos : (width - xpos - childWidth);
+
+                child.layout(
+                    childLeft,
+                    ypos + childMarginTop,
+                    childLeft + childWidth,
+                    ypos + childMarginTop + childHeight);
+
+                xpos += childWidth + childMarginEnd;
             }
         }
     }
@@ -160,11 +164,12 @@ public class HorizontalFlowLayout extends RelativeLayout {
      * @param width the width available to this view.
      * @return the height required by this view.
      */
-    int measureRequiredHeight(int width,
-                              int paddingTop,
-                              int paddingBottom,
-                              int paddingLeft,
-                              int paddingRight) {
+    int measureRequiredHeight(final int width,
+                              final int paddingTop,
+                              final int paddingBottom,
+                              final int paddingLeft,
+                              final int paddingRight) {
+        // Note: This doesn't need to be RTL-aware, as the required height should be unaffected
         // increment the x position as we progress through a line
         int xpos = paddingLeft;
         // increment the y position as we progress through the lines

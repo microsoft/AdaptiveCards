@@ -12,8 +12,9 @@
 | **bleed** | `boolean` | No | Determines whether the element should bleed through its parent's padding. | 1.2 |
 | **backgroundImage** | `BackgroundImage`, `uri` | No | Specifies the background image. Acceptable formats are PNG, JPEG, and GIF | 1.2 |
 | **minHeight** | `string` | No | Specifies the minimum height of the container in pixels, like `"80px"`. | 1.2 |
+| **rtl?** | `boolean?` | No | When `true` content in this container should be presented right to left. When 'false' content in this container should be presented left to right. When unset layout direction will inherit from parent container or column. If unset in all ancestors, the default platform behavior will apply. | vNext |
 
-**Inherited properties**
+### Inherited properties
 
 | Property | Type | Required | Description | Version |
 | -------- | ---- | -------- | ----------- | ------- |

@@ -39,6 +39,7 @@ using namespace AdaptiveCards;
 
 - (void)setElem:(std::shared_ptr<BaseCardElement> const &)elem
 {
+    _type = (ACRCardElementType)elem->GetElementType();
     _elem = elem;
 }
 

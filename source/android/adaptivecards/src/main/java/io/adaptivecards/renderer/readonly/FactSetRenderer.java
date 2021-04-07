@@ -56,6 +56,7 @@ public class FactSetRenderer extends BaseCardElementRenderer
         textView.setSingleLine(!textConfig.getWrap());
         textView.setMaxWidth(Util.dpToPixels(context, textConfig.getMaxWidth()));
         textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
 
         textView.setPaddingRelative(0, 0, (int)spacing,0);
         return textView;

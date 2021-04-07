@@ -92,6 +92,7 @@ namespace std {
     return $jnicall;
   }
 
+#pragma region
 // Map C++ "std::optional<double>" and "std::optional<double>&" types to Java "Double" objects
 
 %template() std::optional<double>;
@@ -143,6 +144,61 @@ namespace std {
 %typemap(javaout) std::optional<double>& {
   return $jnicall;
 }
+#pragma endregion
+
+#pragma region
+// Map C++ "std::optional<bool>" and "std::optional<bool>&" types to Java "Boolean" objects
+
+%template() std::optional<bool>;
+
+%typemap(jni) std::optional<bool> "jobject"
+%typemap(jtype) std::optional<bool> "Boolean"
+%typemap(jstype) std::optional<bool> "Boolean"
+%typemap(in, noblock=1) std::optional<bool> {
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    $1 = (bool)val;
+  }
+}
+%typemap(out, noblock=1) std::optional<bool> {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<bool> "$javainput"
+%typemap(javaout) std::optional<bool> {
+  return $jnicall;
+}
+
+%typemap(jni) std::optional<bool>& "jobject"
+%typemap(jtype) std::optional<bool>& "Boolean"
+%typemap(jstype) std::optional<bool>& "Boolean"
+%typemap(in, noblock=1) std::optional<bool>& {
+  std::optional<bool> optVal = std::nullopt;
+  if ($input) {
+    jclass sbufClass = JCALL1(GetObjectClass, jenv, $input);
+    jmethodID mid = JCALL3(GetMethodID, jenv, sbufClass, "booleanValue", "()Z");
+    jboolean val = (jboolean)JCALL2(CallBooleanMethod, jenv, $input, mid);
+    if (JCALL0(ExceptionCheck, jenv)) return $null;
+    optVal = std::optional<bool>(val);
+  }
+  $1 = &optVal;
+}
+%typemap(out, noblock=1) std::optional<bool>& {
+  jclass clazz = JCALL1(FindClass, jenv, "java/lang/Boolean");
+  jmethodID mid = JCALL3(GetMethodID, jenv, clazz, "<init>", "(Z)V");
+  jobject obj = $1 ? JCALL3(NewObject, jenv, clazz, mid, *$1) : 0;
+  $result = obj;
+}
+%typemap(javain) std::optional<bool>& "$javainput"
+%typemap(javaout) std::optional<bool>& {
+  return $jnicall;
+}
+#pragma endregion
 
 %include <typemaps.i>
 %include <std_string.i>
