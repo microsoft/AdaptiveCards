@@ -3,79 +3,78 @@
   "type": "AdaptiveCard",
   "version": "1.2",
   "body": [
-	{
-	  "type": "Image",
-	  "url": "https://adaptivecards.io/content/adaptive-card-50.png"
-	},
-	{
-	  "type": "TextBlock",
-	  "text": "Hello **Adaptive Cards!**"
-	},
-	{
-	  "type": "ActionSet",
-	  "actions": [
-		{
-		  "type": "Action.Submit",
-		  "title": "Action Submit",
-		  "data": {
-			"key": "Submit from overflow menu"
-		  }
-		},
-		{
-		  "type": "Action.Submit",
-		  "title": "Edit",
-		  "data": {
-			"key": "Edit from overflow menu"
-		  },
-		  "mode": "secondary"
-		}
-	  ]
-	}
+    {
+      "type": "Image",
+      "url": "https://adaptivecards.io/content/adaptive-card-50.png"
+    },
+    {
+      "type": "TextBlock",
+      "text": "Hello **Adaptive Cards!**"
+    },
+    {
+      "type": "ActionSet",
+      "actions": [
+        {
+          "type": "Action.Submit",
+          "title": "Action Submit",
+          "data": {
+            "key": "Submit from overflow menu"
+          }
+        },
+        {
+          "type": "Action.Submit",
+          "title": "Edit",
+          "data": {
+            "key": "Edit from overflow menu"
+          },
+          "mode": "secondary"
+        }
+      ]
+    }
   ],
   "actions": [
-
-	{
-	  "type": "Action.Submit",
-	  "title": "Submit"
-	},
-	{
-	  "type": "Action.Submit",
-	  "title": "Edit"
-	},
-	{
-	  "type": "Action.Submit",
-	  "title": "Delete",
-	  "data": {
-		"key": "Submit from overflow menu"
-	  },
-	  "mode": "Secondary"
-	},
-	{
-	  "type": "Action.OpenUrl",
-	  "iconUrl": "https://adaptivecards.io/content/cats/2.png",
-	  "url": "https://adaptivecards.io",
-	  "title": "Open Url",
-	  "mode": "Secondary"
-	},{
-	  "type": "Action.ShowCard",
-	  "title": "Action.ShowCard",
-	  "card": {
-		"type": "AdaptiveCard",
-		"body": [
-		  {
-			"type": "TextBlock",
-			"text": "What do you think?"
-		  }
-		],
-		"actions": [
-		  {
-			"type": "Action.Submit",
-			"title": "Neat!"
-		  }
-		]
-	  },
-	  "mode": "Secondary"
-	}
-
+    {
+      "type": "Action.Submit",
+      "title": "Submit"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Edit"
+    },
+    {
+      "type": "Action.Submit",
+      "title": "Delete",
+      "data": {
+        "key": "Submit from overflow menu"
+      },
+      "mode": "Secondary"
+    },
+    {
+      "type": "Action.OpenUrl",
+      "iconUrl": "https://adaptivecards.io/content/cats/2.png",
+      "url": "https://adaptivecards.io",
+      "title": "Open Url",
+      "mode": "Secondary"
+    },
+    {
+      "type": "Action.ShowCard",
+      "title": "Action.ShowCard",
+      "card": {
+        "type": "AdaptiveCard",
+        "body": [
+          {
+            "type": "TextBlock",
+            "text": "What do you think?"
+          }
+        ],
+        "actions": [
+          {
+            "type": "Action.Submit",
+            "title": "Neat!"
+          }
+        ]
+      },
+      "mode": "Secondary"
+    }
   ]
 }

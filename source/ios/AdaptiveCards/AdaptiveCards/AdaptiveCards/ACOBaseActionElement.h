@@ -18,6 +18,7 @@ typedef NS_ENUM(NSInteger, ACRActionType) {
     ACROpenUrl,
     ACRToggleVisibility,
     ACRUnknownAction = 6,
+    ACROverflow
 };
 
 typedef NS_ENUM(NSInteger, ACRIconPlacement) {

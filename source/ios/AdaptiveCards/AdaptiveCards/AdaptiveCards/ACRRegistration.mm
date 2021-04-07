@@ -14,6 +14,7 @@
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
 #import "ACRActionToggleVisibilityRenderer.h"
+#import "ACRActionOverflowRenderer.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnSetView.h"
@@ -85,6 +86,7 @@ using namespace AdaptiveCards;
                                              [ACRActionSubmitRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::Submit],
                                              [ACRActionToggleVisibilityRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::ToggleVisibility],
                                              [ACRCustomActionRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::UnknownAction],
+                                             [ACRActionOverflowRenderer getInstance], [NSNumber numberWithInt:(int)ActionType::Overflow],
                                              nil];
 
         _elementParserDict = [[NSMutableDictionary alloc] init];
@@ -303,7 +305,8 @@ using namespace AdaptiveCards;
     NSNumber *showcard = [ACOBaseActionElement getKey:ACRShowCard];
     NSNumber *toggle = [ACOBaseActionElement getKey:ACRToggleVisibility];
     NSNumber *unknown = [ACOBaseActionElement getKey:ACRUnknownAction];
-
+    NSNumber *overflow = [ACOBaseActionElement getKey:ACROverflow];
+    
     _overwrittenBuilders = [[NSMutableDictionary alloc] init];
 
     // target capability lists supported events and corresponding target builders
@@ -313,7 +316,8 @@ using namespace AdaptiveCards;
                 openUrl : [ACRAggregateTargetBuilder getInstance],
                 submit : [ACRAggregateTargetBuilder getInstance],
                 showcard : [ACRShowCardTargetBuilder getInstance],
-                toggle : [ACRToggleVisibilityTargetBuilder getInstance]
+                toggle : [ACRToggleVisibilityTargetBuilder getInstance],
+                overflow: [ACROverflowActionTargetBuilder getInstance]
             };
             break;
         case ACRSelectAction:

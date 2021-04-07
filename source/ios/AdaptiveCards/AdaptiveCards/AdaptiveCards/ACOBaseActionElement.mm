@@ -153,6 +153,9 @@ using namespace AdaptiveCards;
         case ACRToggleVisibility:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::ToggleVisibility)];
             break;
+        case ACROverflow:
+            key = [NSNumber numberWithInt:static_cast<int>(ActionType::Overflow)];
+            break;
         case ACRUnknownAction:
         default:
             key = [NSNumber numberWithInt:static_cast<int>(ActionType::UnknownAction)];

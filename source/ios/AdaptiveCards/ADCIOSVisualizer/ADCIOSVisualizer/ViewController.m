@@ -9,6 +9,7 @@
 #import "ACRChatWindow.h"
 #import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
+#import "AdaptiveCards/ACROverflowTarget.h"
 #import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
 #import "AdaptiveFileBrowserSource.h"
@@ -265,10 +266,18 @@ CGFloat kAdaptiveCardsWidth = 360;
     if (@available(iOS 11.0, *)) {
         [self.chatWindow
             performBatchUpdates:^(void) {
+                NSInteger prevCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
                 [_dataSource insertCard:jsonStr];
+                NSInteger postCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
+                NSInteger rowsToAdd = postCount - prevCount;
                 NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-                NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:lastRowIndex inSection:0];
-                [self.chatWindow insertRowsAtIndexPaths:@[ pathToLastRow ] withRowAnimation:UITableViewRowAnimationNone];
+                NSMutableArray<NSIndexPath*>* indexPaths = [NSMutableArray arrayWithCapacity:rowsToAdd];
+                for (int i = 0; i < rowsToAdd; ++i) {
+                    NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:(lastRowIndex + i) inSection:0];
+                    [indexPaths addObject:pathToLastRow];
+                }
+                [self.chatWindow insertRowsAtIndexPaths:indexPaths
+                                       withRowAnimation:UITableViewRowAnimationNone];
             }
                      completion:nil];
     } else {
@@ -380,6 +389,65 @@ CGFloat kAdaptiveCardsWidth = 360;
 {
     [self addChildViewController:controller];
     [controller didMoveToParentViewController:self];
+}
+
+- (BOOL)shouldAllowMoreThanMaxActionsInOverflowMenu
+{
+    return YES;
+}
+
+- (BOOL)shouldRenderOverflowActionButton:(UIButton *)button
+                               forTarget:(ACROverflowTarget *)target
+                    isAtRootLevelActions:(BOOL)isAtRootLevelActions
+{
+    if (isAtRootLevelActions) {
+        UIButton* extOverflowBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        CGRect buttonFrame = extOverflowBtn.frame;
+        buttonFrame.size = CGSizeMake(250, 40);
+        extOverflowBtn.frame = buttonFrame;
+        extOverflowBtn.layer.cornerRadius = 10;
+        extOverflowBtn.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+        [extOverflowBtn setTitle:@"Root Overflow Actions (...)" forState:UIControlStateNormal];
+        [extOverflowBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [extOverflowBtn setBackgroundColor:[UIColor orangeColor]];
+        [extOverflowBtn addTarget:target
+                           action:@selector(doSelectAction)
+                 forControlEvents:UIControlEventTouchUpInside];
+        extOverflowBtn.contentEdgeInsets = UIEdgeInsetsMake(5, 8, 5, 8);
+        [_dataSource insertView:extOverflowBtn];
+        return NO;
+    }
+    return YES;
+}
+
+- (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
+                  alertController:(UIAlertController *)alert
+{
+    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle:nil
+                                                        message:nil
+                                                 preferredStyle:UIAlertControllerStyleAlert];
+//    for (UIAlertAction* action in alert.actions) {
+//        [myAlert addAction:action];
+//    }
+    for (ACROverflowMenuItem* item in menuItems) {
+        UIAlertAction* action = [UIAlertAction actionWithTitle:item.title
+                                                         style:UIAlertActionStyleDestructive
+                                                       handler:^(UIAlertAction * _Nonnull action) {
+            [item.target doSelectAction];
+        }];
+
+        UIImage* image = [item iconImageWithSize:CGSizeMake(40, 40)];
+        if (image) {
+            [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
+                      forKey:@"image"];
+        }
+
+        [myAlert addAction:action];
+    }
+    [myAlert addAction:[UIAlertAction actionWithTitle:@"Cancel"
+                                                style:UIAlertActionStyleCancel
+                                              handler:nil]];
+    [self presentViewController:myAlert animated:YES completion:nil];
 }
 
 - (UIView *)renderButtons:(ACRView *)rootView
