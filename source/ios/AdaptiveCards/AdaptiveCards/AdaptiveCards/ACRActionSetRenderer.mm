@@ -206,7 +206,7 @@
                         std::inserter(secondary, std::end(secondary)),
                         std::inserter(primary, std::end(primary)),
                         [](std::shared_ptr<BaseActionElement> elem) {
-                            return elem->GetElementMode() == Mode::Secondary;
+                            return elem->GetMode() == Mode::Secondary;
                         });
     
     unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
