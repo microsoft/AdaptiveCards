@@ -127,8 +127,8 @@ extension ACRNumericTextField: InputHandlingViewProtocol {
     var inputString: String {
         get { return String(inputValue) }
         set {
-            if !newValue.isEmpty {
-                inputValue = Double(newValue) ?? 0
+            if !newValue.isEmpty, let doubleVal = Double(newValue) {
+                inputValue = doubleVal
             }
         }
     }

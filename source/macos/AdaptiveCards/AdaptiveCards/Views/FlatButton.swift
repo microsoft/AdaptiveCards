@@ -225,12 +225,16 @@ open class FlatButton: NSButton, CALayerDelegate {
         titleLayer.string = title
         titleLayer.font = font
         titleLayer.fontSize = font.pointSize
+        titleLayer.truncationMode = .end
         positionTitleAndImage()
     }
     
     func positionTitleAndImage() {
         let attributes = [NSAttributedString.Key.font: font as Any]
-        let titleSize = title.size(withAttributes: attributes)
+        var titleSize = title.size(withAttributes: attributes)
+        var maxTitleWidth = bounds.width - (showsIcon && (imagePosition == .imageLeft || imagePosition == .imageRight) ? iconImageSize.width + horizontalInternalSpacing : 0) - ( contentInsets.left + contentInsets.right ) - (showsChevron ? chevronImageSize.width + horizontalInternalSpacing: 0)
+        maxTitleWidth += 1
+        titleSize.width = min(titleSize.width, maxTitleWidth)
         var titleRect = NSRect(x: 0, y: 0, width: titleSize.width, height: titleSize.height)
         var imageRect = iconLayer.frame
         var chevronRect = chevronLayer.frame
@@ -241,7 +245,7 @@ open class FlatButton: NSButton, CALayerDelegate {
         length += contentInsets.left + contentInsets.right
         var height : CGFloat = contentInsets.top + contentInsets.bottom + titleRect.height
         height += (imagePosition == .imageBelow || imagePosition == .imageAbove) ? iconImageSize.height + verticalInternalSpacing: 0
-        let calculatedWidth = max(bounds.width, length)
+        let calculatedWidth = max(bounds.width, length) - 1
         if let currentLayer = layer {
             currentLayer.frame = NSRect(x: currentLayer.frame.minX, y: currentLayer.frame.minY, width: calculatedWidth, height: bounds.height)
         }

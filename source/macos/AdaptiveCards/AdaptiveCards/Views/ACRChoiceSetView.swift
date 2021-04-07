@@ -74,7 +74,7 @@ class ACRChoiceSetView: NSView, InputHandlingViewProtocol {
     }
     
     var isValid: Bool {
-        return !isHidden && !(superview?.isHidden ?? false) && !value.isEmpty
+        return !isHidden && !(superview?.isHidden ?? false)
     }
 }
 // MARK: Extension
