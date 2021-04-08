@@ -137,7 +137,7 @@ namespace AdaptiveNamespace::ActionHelpers
                 EventRegistrationToken eventToken;
                 THROW_IF_FAILED(buttonIconAsImage->add_ImageOpened(
                     Callback<IRoutedEventHandler>([buttonIconAsFrameworkElement,
-                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs * /*args*/) -> HRESULT {
+                                                   buttonText](IInspectable* /*sender*/, IRoutedEventArgs* /*args*/) -> HRESULT {
                         ComPtr<IFrameworkElement> buttonTextAsFrameworkElement;
                         RETURN_IF_FAILED(buttonText.As(&buttonTextAsFrameworkElement));
 
@@ -355,7 +355,7 @@ namespace AdaptiveNamespace::ActionHelpers
         ComPtr<IAdaptiveActionInvoker> actionInvoker;
         RETURN_IF_FAILED(renderContext->get_ActionInvoker(&actionInvoker));
         EventRegistrationToken clickToken;
-        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        RETURN_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([action, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                      /*args*/) -> HRESULT {
                                                    return actionInvoker->SendActionEvent(action.Get());
                                                }).Get(),
@@ -442,11 +442,9 @@ namespace AdaptiveNamespace::ActionHelpers
             return;
         }
 
-        if (actionType == ABI::AdaptiveNamespace::ActionType::Submit)
+        if ((actionType == ABI::AdaptiveNamespace::ActionType::Submit) || (actionType == ABI::AdaptiveNamespace::ActionType::Execute))
         {
-            ComPtr<IAdaptiveSubmitAction> submitAction;
-            THROW_IF_FAILED(localInlineAction.As(&submitAction));
-            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(submitAction.Get(), renderArgs));
+            THROW_IF_FAILED(renderContext->LinkSubmitActionToCard(localInlineAction.Get(), renderArgs));
         }
 
         // Create a grid to hold the text box and the action button
@@ -560,7 +558,7 @@ namespace AdaptiveNamespace::ActionHelpers
         // Make the action the same size as the text box
         EventRegistrationToken eventToken;
         THROW_IF_FAILED(textBoxContainerAsFrameworkElement->add_Loaded(
-            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs *
+            Callback<IRoutedEventHandler>([actionUIElement, textBoxContainerAsFrameworkElement](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                 /*args*/) -> HRESULT {
                 ComPtr<IFrameworkElement> actionFrameworkElement;
                 RETURN_IF_FAILED(actionUIElement.As(&actionFrameworkElement));
@@ -745,7 +743,7 @@ namespace AdaptiveNamespace::ActionHelpers
         THROW_IF_FAILED(localButton.As(&buttonBase));
 
         EventRegistrationToken clickToken;
-        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs *
+        THROW_IF_FAILED(buttonBase->add_Click(Callback<IRoutedEventHandler>([strongAction, actionInvoker](IInspectable* /*sender*/, IRoutedEventArgs*
                                                                                                           /*args*/) -> HRESULT {
                                                   THROW_IF_FAILED(actionInvoker->SendActionEvent(strongAction.Get()));
                                                   return S_OK;

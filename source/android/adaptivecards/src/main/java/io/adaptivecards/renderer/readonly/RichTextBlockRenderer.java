@@ -21,19 +21,16 @@ import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ForegroundColor;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
 import io.adaptivecards.objectmodel.Inline;
 import io.adaptivecards.objectmodel.InlineElementType;
 import io.adaptivecards.objectmodel.InlineVector;
 import io.adaptivecards.objectmodel.RichTextBlock;
-import io.adaptivecards.objectmodel.TextBlock;
 import io.adaptivecards.objectmodel.TextRun;
 import io.adaptivecards.renderer.BaseActionElementRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
@@ -205,7 +202,7 @@ public class RichTextBlockRenderer extends BaseCardElementRenderer
         // HorizontalAlignment
         // Inlines
 
-        textView.setGravity(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
+        textView.setTextAlignment(TextRendererUtil.getTextAlignment(richTextBlock.GetHorizontalAlignment()));
 
         // This is the section for rendering the paragraphs
         // Every paragraph may contain contains any number of inlines

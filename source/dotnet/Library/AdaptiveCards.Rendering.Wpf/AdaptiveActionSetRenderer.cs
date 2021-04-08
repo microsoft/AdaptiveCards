@@ -91,9 +91,10 @@ namespace AdaptiveCards.Rendering.Wpf
                 {
                     var rendereableAction = context.GetRendereableElement(action);
 
-                    if (rendereableAction is AdaptiveSubmitAction)
+                    if ((rendereableAction is AdaptiveSubmitAction) ||
+                        (rendereableAction is AdaptiveExecuteAction))
                     {
-                        context.SubmitActionCardId[rendereableAction as AdaptiveSubmitAction] = context.RenderArgs.ContainerCardId;
+                        context.SubmitActionCardId[rendereableAction as AdaptiveAction] = context.RenderArgs.ContainerCardId;
                     }
 
                     // add actions

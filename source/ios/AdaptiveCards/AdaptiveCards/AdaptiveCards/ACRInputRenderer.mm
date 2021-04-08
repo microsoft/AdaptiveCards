@@ -98,9 +98,9 @@
     ACRQuickReplyView *quickReplyView = nil;
 
     BOOL renderAction = NO;
-    if (action != nullptr && [acoConfig getHostConfig] -> GetSupportsInteractivity()) {
+    if (action != nullptr && [acoConfig getHostConfig]->GetSupportsInteractivity()) {
         if (action->GetElementType() == ActionType::ShowCard) {
-            if ([acoConfig getHostConfig] -> GetActions().showCard.actionMode != ActionMode::Inline) {
+            if ([acoConfig getHostConfig]->GetActions().showCard.actionMode != ActionMode::Inline) {
                 renderAction = YES;
             }
         } else {
@@ -130,7 +130,9 @@
                                           constant:0]
                 .active = YES;
             inputview = multilineview;
-
+            configRtl(multilineview.contentView, rootView.context);
+            configRtl(txtview, rootView.context);
+            configRtl(button, rootView.context);
         } else {
             txtview = [[ACRTextView alloc] initWithFrame:CGRectMake(0, 0, viewGroup.frame.size.width, 0) element:acoElem];
             txtview.allowsEditingTextAttributes = YES;
@@ -152,7 +154,9 @@
             [quickReplyView addTextField:txtInput];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:quickReplyView accessibilityItem:quickReplyView viewGroup:viewGroup dataSource:textInputHandler];
             inputview = inputLabelView;
-
+            configRtl(quickReplyView.stack, rootView.context);
+            configRtl(txtInput, rootView.context);
+            configRtl(button, rootView.context);
         } else {
             txtInput = [ACRInputRenderer configTextFiled:inputBlck renderAction:renderAction rootView:rootView viewGroup:viewGroup];
             ACRInputLabelView *inputLabelView = [[ACRInputLabelView alloc] initInputLabelView:rootView acoConfig:acoConfig adptiveInputElement:inputBlck inputView:txtInput accessibilityItem:txtInput viewGroup:viewGroup dataSource:textInputHandler];

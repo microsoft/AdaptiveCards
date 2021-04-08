@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentManager;
 import android.text.Editable;
@@ -34,6 +33,7 @@ import io.adaptivecards.objectmodel.BaseActionElement;
 import io.adaptivecards.objectmodel.BaseInputElement;
 
 import io.adaptivecards.objectmodel.ContainerStyle;
+import io.adaptivecards.objectmodel.ExecuteAction;
 import io.adaptivecards.objectmodel.ForegroundColor;
 import io.adaptivecards.objectmodel.SubmitAction;
 import io.adaptivecards.renderer.AdaptiveWarning;
@@ -136,7 +136,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
         public boolean onKey(View view, int i, KeyEvent keyEvent) {
             if(view.getTag() == m_tag) {
                 if(keyEvent.getAction() == KeyEvent.ACTION_DOWN && i == KeyEvent.KEYCODE_ENTER &&
-                    m_action.GetElementType() == ActionType.Submit)
+                    m_action.GetElementType() == ActionType.Execute || m_action.GetElementType() == ActionType.Submit)
                 {
                     m_cardActionHandler.onAction(m_action, m_renderedAdaptiveCard);
                     return true;
@@ -290,7 +290,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
 
                         imageLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, url);
 
-                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        if (Util.isOfType(action, ExecuteAction.class) || Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
                         {
                             renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
                         }
@@ -316,7 +316,7 @@ public class TextInputRenderer extends BaseCardElementRenderer
                         }
                         inlineButton.setText(title);
 
-                        if (Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
+                        if (Util.isOfType(action, ExecuteAction.class) || Util.isOfType(action, SubmitAction.class) || action.GetElementType() == ActionType.Custom)
                         {
                             renderedCard.setCardForSubmitAction(Util.getViewId(inlineButton), renderArgs.getContainerCardId());
                         }

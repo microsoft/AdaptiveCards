@@ -10,7 +10,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 
 import io.adaptivecards.objectmodel.BackgroundImage;
@@ -190,6 +189,7 @@ public class BackgroundImageLoaderAsync extends GenericImageLoaderAsync
         {
             Bitmap bitmap = m_bitmap;
             float horizontalOffset;
+            // TODO: Check RTL Support
             switch (m_backgroundImageProperties.GetHorizontalAlignment())
             {
                 case Right:

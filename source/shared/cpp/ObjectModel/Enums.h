@@ -9,6 +9,7 @@ namespace AdaptiveSharedNamespace
     enum class AdaptiveCardSchemaKey
     {
         Accent = 0,
+        Action,
         ActionAlignment,
         ActionMode,
         ActionOrientation,
@@ -22,6 +23,7 @@ namespace AdaptiveSharedNamespace
         AltText,
         AssociatedInputs,
         Attention,
+        Authentication,
         BackgroundColor,
         BackgroundImage,
         BackgroundImageUrl,
@@ -33,6 +35,7 @@ namespace AdaptiveSharedNamespace
         BorderColor,
         BorderThickness,
         Bottom,
+        Buttons,
         ButtonSpacing,
         Card,
         Center,
@@ -43,6 +46,7 @@ namespace AdaptiveSharedNamespace
         Column,
         ColumnSet,
         Columns,
+        ConnectionName,
         Container,
         ContainerStyles,
         Dark,
@@ -67,6 +71,7 @@ namespace AdaptiveSharedNamespace
         ForegroundColor,
         ForegroundColors,
         Good,
+        Headings,
         Height,
         Highlight,
         HighlightColor,
@@ -99,6 +104,7 @@ namespace AdaptiveSharedNamespace
         Language,
         Large,
         Left,
+        Level,
         Light,
         Lighter,
         LineColor,
@@ -122,6 +128,8 @@ namespace AdaptiveSharedNamespace
         Placeholder,
         PlayButton,
         Poster,
+        ProviderId,
+        Refresh,
         Regex,
         Repeat,
         RepeatHorizontally,
@@ -130,6 +138,7 @@ namespace AdaptiveSharedNamespace
         Requires,
         RichTextBlock,
         Right,
+        Rtl,
         Schema,
         SelectAction,
         Separator,
@@ -158,13 +167,17 @@ namespace AdaptiveSharedNamespace
         TimeInput,
         Title,
         ToggleInput,
+        TokenExchangeResource,
         Top,
         Type,
         Underline,
         Url,
+        Uri,
+        UserIds,
         Value,
         ValueOff,
         ValueOn,
+        Verb,
         Version,
         VerticalAlignment,
         VerticalContentAlignment,
@@ -177,7 +190,7 @@ namespace AdaptiveSharedNamespace
 
     enum class CardElementType
     {
-        // When the order of existing enums are changed, coresponding changes are needed in iOS (ACOBaseCardElement.h)
+        // When the order of existing enums are changed, corresponding changes are needed in iOS (ACOBaseCardElement.h)
         ActionSet = 0,
         AdaptiveCard,
         ChoiceInput,
@@ -207,6 +220,13 @@ namespace AdaptiveSharedNamespace
         TextRun = 0
     };
     DECLARE_ADAPTIVECARD_ENUM(InlineElementType);
+
+    enum class TextStyle
+    {
+        Paragraph = 0,
+        Heading
+    };
+    DECLARE_ADAPTIVECARD_ENUM(TextStyle);
 
     enum class TextSize
     {
@@ -300,9 +320,10 @@ namespace AdaptiveSharedNamespace
     enum class ActionType
     {
         Unsupported = 0,
+        Execute,
+        OpenUrl,
         ShowCard,
         Submit,
-        OpenUrl,
         ToggleVisibility,
         Custom,
         UnknownAction,

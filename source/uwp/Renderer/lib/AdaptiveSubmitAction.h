@@ -86,7 +86,17 @@ namespace AdaptiveNamespace
         virtual HRESULT GetSharedModel(std::shared_ptr<AdaptiveSharedNamespace::BaseActionElement>& sharedModel) override;
 
         // ITypePeek method
-        void* PeekAt(REFIID riid) override { return PeekHelper(riid, this); }
+        void* PeekAt(REFIID riid) override
+        {
+            void* returnPointer;
+            returnPointer = PeekHelper(riid, this);
+            if (returnPointer == nullptr)
+            {
+                returnPointer = PeekHelper(riid, (AdaptiveActionElementBase*) this);
+            }
+
+            return returnPointer;
+        }
 
     private:
         Microsoft::WRL::ComPtr<ABI::Windows::Data::Json::IJsonValue> m_dataJson;

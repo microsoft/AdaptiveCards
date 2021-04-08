@@ -126,7 +126,7 @@ namespace WpfVisualizer
                 templateData = null;
             }
 
-            string expandedPayload = ""; 
+            string expandedPayload = "";
 
             try
             {
@@ -237,6 +237,15 @@ namespace WpfVisualizer
                 inputs.Merge(submitAction.Data);
 
                 MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented), "SubmitAction");
+            }
+            else if (e.Action is AdaptiveExecuteAction executeAction)
+            {
+                var inputs = sender.UserInputs.AsJson();
+
+                // Merge the Action.Execute Data property with the inputs
+                inputs.Merge(executeAction.Data);
+
+                MessageBox.Show(this, JsonConvert.SerializeObject(inputs, Formatting.Indented) + "\nverb: " + executeAction.Verb, "ExecuteAction");
             }
         }
 

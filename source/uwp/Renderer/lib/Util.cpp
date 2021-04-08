@@ -13,6 +13,7 @@
 #include "AdaptiveChoiceSetInput.h"
 #include "AdaptiveDateInput.h"
 #include "AdaptiveElementParserRegistration.h"
+#include "AdaptiveExecuteAction.h"
 #include "AdaptiveFact.h"
 #include "AdaptiveFactSet.h"
 #include "AdaptiveFeatureRegistration.h"
@@ -325,6 +326,11 @@ HRESULT GenerateSharedAction(_In_ ABI::AdaptiveNamespace::IAdaptiveActionElement
     case ABI::AdaptiveNamespace::ActionType::ToggleVisibility:
         sharedAction =
             GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveToggleVisibilityAction>(
+                action);
+        break;
+    case ABI::AdaptiveNamespace::ActionType::Execute:
+        sharedAction =
+            GetSharedModel<AdaptiveSharedNamespace::BaseActionElement, ABI::AdaptiveNamespace::IAdaptiveActionElement, AdaptiveNamespace::AdaptiveExecuteAction>(
                 action);
         break;
     case ABI::AdaptiveNamespace::ActionType::Custom:
@@ -701,6 +707,10 @@ try
     case ActionType::ToggleVisibility:
         RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveToggleVisibilityAction>(
             projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::ToggleVisibilityAction>(action)));
+        break;
+    case ActionType::Execute:
+        RETURN_IF_FAILED(MakeAndInitialize<::AdaptiveNamespace::AdaptiveExecuteAction>(
+            projectedAction, std::AdaptivePointerCast<AdaptiveSharedNamespace::ExecuteAction>(action)));
         break;
     case ActionType::Custom:
         RETURN_IF_FAILED(std::AdaptivePointerCast<CustomActionWrapper>(action)->GetWrappedElement(projectedAction));

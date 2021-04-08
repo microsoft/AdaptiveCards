@@ -50,6 +50,7 @@ Describes what to do when an unknown element is encountered or the requires of t
 * **Type**: `Action`, `FallbackOption`
 * **Required**: No
 * **Allowed values**:
+  * `Action.Execute`
   * `Action.OpenUrl`
   * `Action.ShowCard`
   * `Action.Submit`
