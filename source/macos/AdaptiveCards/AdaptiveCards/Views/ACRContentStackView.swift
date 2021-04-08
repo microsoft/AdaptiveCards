@@ -55,12 +55,12 @@ class ACRContentStackView: NSView, ACRContentHoldingViewProtocol, SelectActionHa
         initialize()
     }
     
-    init(style: ACSContainerStyle, parentStyle: ACSContainerStyle?, hostConfig: ACSHostConfig, superview: NSView?) {
+    init(style: ACSContainerStyle, parentStyle: ACSContainerStyle?, hostConfig: ACSHostConfig, superview: NSView?, needsPadding: Bool) {
         self.hostConfig = hostConfig
         self.style = style
         super.init(frame: .zero)
         initialize()
-        if style != .none && style != parentStyle {
+        if needsPadding {
             if let bgColor = hostConfig.getBackgroundColor(for: style) {
                 layer?.backgroundColor = bgColor.cgColor
             }

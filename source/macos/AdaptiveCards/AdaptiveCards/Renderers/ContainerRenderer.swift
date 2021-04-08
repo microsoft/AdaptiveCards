@@ -10,7 +10,7 @@ class ContainerRenderer: BaseCardElementRendererProtocol {
             return NSView()
         }
         
-        let containerView = ACRColumnView(style: container.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: rootView)
+        let containerView = ACRColumnView(style: container.getStyle(), parentStyle: style, hostConfig: hostConfig, superview: rootView, needsPadding: container.getPadding())
         containerView.translatesAutoresizingMaskIntoConstraints = false
         
         containerView.bleed = container.getBleed()
