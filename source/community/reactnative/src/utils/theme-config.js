@@ -10,7 +10,10 @@ export class ThemeConfig {
         this.inputTime = new Config(ThemeElement.InputTime, obj);
         this.radioButton = new Config(ThemeElement.RadioButton, obj);
         this.checkBox = new Config(ThemeElement.CheckBox, obj);
-        this.choiceSetTitle = new Config(ThemeElement.ChoiceSetTitle, obj);
+        this.radioButtonText = new Config(ThemeElement.RadioButtonText, obj);
+        this.checkBoxText = new Config(ThemeElement.CheckBoxText, obj);
+        this.dropdown = new Config(ThemeElement.Dropdown, obj);
+        this.dropdownText = new Config(ThemeElement.DropdownText, obj);
     }
 }
 
@@ -84,16 +87,44 @@ export const defaultThemeConfig = {
         borderRadius: 5,
     },
     radioButton: {
-        width: 28,
-        height: 28
+        width: 24,
+        height: 24,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
+    },
+    radioButtonText: {
+        marginLeft: 8,
+        flexShrink: 1,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
     checkBox: {
         width: 28,
-        height: 28
+        height: 28,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
-    choiceSetTitle: {
+    checkBoxText: {
         marginLeft: 8,
-        flexShrink: 1
+        flexShrink: 1,
+        activeColor: Constants.BlackColor,
+        inactiveColor: Constants.LightBlack,
     },
+    dropdown: {
+        flexDirection: Constants.FlexRow,
+        justifyContent: Constants.SpaceBetween,
+        alignItems: Constants.FlexEnd,
+        borderWidth: 1,
+        backgroundColor: Constants.WhiteColor,
+        borderColor: Constants.LightGreyColor,
+        borderRadius: 5,
+    },
+    dropdownText: {
+        color: Constants.BlackColor,
+        textAlign: Constants.LeftAlign,
+        marginTop: 10,
+        marginLeft: 8,
+        height: 30,
+    }
 
 }

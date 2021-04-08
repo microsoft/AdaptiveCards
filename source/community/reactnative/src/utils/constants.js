@@ -44,7 +44,8 @@ export const PlatformAndroid = 'android';
 export const LightGreyColor = 'lightgrey';
 export const EmphasisColor = '#dcdcdc';
 export const WhiteColor = 'white';
-export const BlackColor = 'black';
+export const BlackColor = '#000000';
+export const LightBlack = "#404040";
 export const buttonDefaultColor = "#1D9BF6";
 
 export const TrueString = "true";

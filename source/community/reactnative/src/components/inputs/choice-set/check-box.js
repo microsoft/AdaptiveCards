@@ -15,6 +15,8 @@ import { Label } from '../../elements'
 import PropTypes from 'prop-types';
 import * as Constants from '../../../utils/constants';
 
+const IMAGE_COLOR_PROPERTY = "tintColor";
+const TEXT_COLOR_PROPERTY = "color";
 const styles = StyleSheet.create({
 	contentStyle: {
 		alignItems: Constants.CenterString
@@ -37,7 +39,8 @@ class CheckBox extends React.PureComponent {
 		this.state = {
 			checked: this.props.checked
 		}
-		this.styleConfig = props.configManager.styleConfig
+		this.styleConfig = props.configManager.styleConfig;
+		this.hostConfig = props.configManager.hostConfig;
 	}
 
 	static propTypes = {
@@ -70,12 +73,22 @@ class CheckBox extends React.PureComponent {
 		})
 	}
 
+	getModifiedStyles = (style, property) => {
+		let modifiedStyles = { ...style };
+		modifiedStyles[property] = this.state.checked ? modifiedStyles.activeColor : modifiedStyles.inactiveColor;
+		delete modifiedStyles.inactiveColor;
+		delete modifiedStyles.activeColor;
+		if (property == TEXT_COLOR_PROPERTY && this.state.checked)
+			modifiedStyles.fontWeight = this.hostConfig.fontStyles.default.fontWeights.bolder.toString();
+		return modifiedStyles;
+	}
+
 	renderCheckBoxIcon = () => {
 		const { isRadioButtonType } = this.props;
-
+		const modifiedStyles = this.getModifiedStyles(isRadioButtonType ? this.styleConfig.radioButton : this.styleConfig.checkBox, IMAGE_COLOR_PROPERTY);
 		return (
 			<Image
-				style={isRadioButtonType ? this.styleConfig.radioButton : this.styleConfig.checkBox}
+				style={modifiedStyles}
 				source={isRadioButtonType ?
 					this.state.checked ? require(CheckedRadioImage) :
 						require(UncheckedRadioImage) :
@@ -86,15 +99,17 @@ class CheckBox extends React.PureComponent {
 	}
 
 	renderContent = () => {
-		const { label, wrapText } = this.props;
+		const { label, wrapText, isRadioButtonType, index } = this.props;
 		const flexDirection = Constants.FlexRow;
+		const modifiedStyles = this.getModifiedStyles(isRadioButtonType ? this.styleConfig.radioButtonText : this.styleConfig.checkBoxText, TEXT_COLOR_PROPERTY);
 		return (
 			<View style={[styles.contentStyle, { flexDirection }]}>
 				{this.renderCheckBoxIcon()}
 				{
 					label ? <Label
 						text={label}
-						style={[this.styleConfig.choiceSetTitle, this.styleConfig.defaultFontConfig]}
+						key={index + modifiedStyles.color}
+						style={[modifiedStyles, this.styleConfig.defaultFontConfig]}
 						configManager={this.props.configManager}
 						wrap={wrapText} />
 						: null

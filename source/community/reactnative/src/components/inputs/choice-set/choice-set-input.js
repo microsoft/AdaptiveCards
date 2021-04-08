@@ -163,9 +163,9 @@ export class ChoiceSetInput extends React.Component {
 				{(Platform.OS === Constants.PlatformIOS) && <TouchableOpacity
 					activeOpacity={1}
 					onPress={onPress}>
-					<View style={styles.touchView}>
+					<View style={this.styleConfig.dropdown}>
 						<Text
-							style={[styles.text, this.styleConfig.defaultFontConfig]}
+							style={[this.styleConfig.dropdownText, this.styleConfig.defaultFontConfig]}
 						>
 							{this.getPickerSelectedValue(this.state.selectedPickerValue,
 								addInputItem)
@@ -323,20 +323,11 @@ const styles = StyleSheet.create({
 		marginTop: 3
 	},
 	pickerContainer: {
-		backgroundColor: Constants.EmphasisColor,
-	},
-	touchView: {
-		flexDirection: Constants.FlexRow,
-		justifyContent: Constants.SpaceBetween,
-		alignItems: Constants.FlexEnd,
-		backgroundColor: Constants.EmphasisColor,
-	},
-	text: {
-		color: 'black',
-		textAlign: Constants.LeftAlign,
-		marginTop: 10,
-		marginLeft: 8,
-		height: 30,
+		borderWidth: 1,
+		backgroundColor: Constants.LightGreyColor,
+		borderColor: Constants.LightGreyColor,
+		borderRadius: 5,
+		marginHorizontal: 2
 	},
 	button: {
 		height: 30,
