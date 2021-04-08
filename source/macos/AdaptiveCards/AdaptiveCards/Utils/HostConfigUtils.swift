@@ -49,7 +49,7 @@ class FontUtils {
         
         let resolvedFontFamily: String?
         if let family = hostConfig.getFontFamily(textProperties.getFontType()) {
-            resolvedFontFamily = family
+            resolvedFontFamily = textProperties.getFontType() == .monospace ? "Courier New" : family
         } else {
             resolvedFontFamily = textProperties.getFontType() == .monospace ? "Courier New" : nil
         }

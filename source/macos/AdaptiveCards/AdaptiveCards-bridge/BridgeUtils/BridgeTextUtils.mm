@@ -19,27 +19,24 @@
     NSString *parsedString = [NSString stringWithCString:markDownParser->TransformToHtml().c_str() encoding:NSUTF8StringEncoding];
 
     // use Apple's html rendering only if the string has markdowns
-    if (markDownParser->HasHtmlTags() || markDownParser->IsEscaped()) {
-        NSString *fontFamilyName = nil;
+    NSString *fontFamilyName = nil;
 
-        if (![config getFontFamily:[textBlock getFontType]]) {
-            if ([textBlock getFontType] == ACSFontTypeMonospace) {
-                fontFamilyName = @"'Courier New'";
-            } else {
-                fontFamilyName = @"'-apple-system',  'San Francisco'";
-            }
+    if ([config getFontFamily:[textBlock getFontType]]) {
+        if ([textBlock getFontType] == ACSFontTypeMonospace) {
+            fontFamilyName = @"'Courier New'";
         } else {
-            fontFamilyName = [config getFontFamily:[textBlock getFontType]];
+            fontFamilyName = @"'-apple-system',  'San Francisco'";
         }
-
-        NSString *font_style = [textProperties getItalic] ? @"italic" : @"normal";
-        // Font and text size are applied as CSS style by appending it to the html string
-        parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%@px; font-weight: %@; font-style: %@;}</style>", fontFamilyName, [config getFontSize:[textBlock getFontType] size:[textBlock getTextSize]], [config getFontWeight:[textBlock getFontType] weight:[textBlock getTextWeight]], font_style]];
-
-        NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
-        return [[ACSMarkdownParserResult alloc] initWithParsedString:parsedString htmlData:htmlData];
+    } else {
+        fontFamilyName = [config getFontFamily:[textBlock getFontType]];
     }
-    return [[ACSMarkdownParserResult alloc] initWithParsedString:parsedString htmlData:nil];
+
+    NSString *font_style = [textProperties getItalic] ? @"italic" : @"normal";
+    // Font and text size are applied as CSS style by appending it to the html string
+    parsedString = [parsedString stringByAppendingString:[NSString stringWithFormat:@"<style>body{font-family: %@; font-size:%@px; font-weight: %@; font-style: %@;}</style>", fontFamilyName, [config getFontSize:[textBlock getFontType] size:[textBlock getTextSize]], [config getFontWeight:[textBlock getFontType] weight:[textBlock getTextWeight]], font_style]];
+
+    NSData *htmlData = [parsedString dataUsingEncoding:NSUTF16StringEncoding];
+    return [[ACSMarkdownParserResult alloc] initWithParsedString:parsedString htmlData:htmlData];
 }
 
 + (ACSMarkdownParserResult * _Nonnull)processTextFromRichTextBlock:(ACSTextRun * _Nullable)textRun hostConfig:(ACSHostConfig * _Nonnull)config

@@ -35,7 +35,6 @@ class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
         textView.textContainer?.maximumNumberOfLines = textBlock.getWrap() ? resolvedMaxLines : 1
     
         textView.textStorage?.setAttributedString(attributedString)
-        textView.font = FontUtils.getFont(for: hostConfig, with: BridgeTextUtils.convertTextBlock(toRichTextElementProperties: textBlock))
         textView.textContainer?.widthTracksTextView = true
         textView.backgroundColor = .clear
         
