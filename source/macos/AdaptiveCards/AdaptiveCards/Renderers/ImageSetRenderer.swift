@@ -11,7 +11,7 @@ class ImageSetRenderer: NSObject, BaseCardElementRendererProtocol {
         }
         
         var imageSize: ACSImageSize = imageSet.getImageSize()
-        if imageSize == .auto || imageSize == .stretch || imageSize == .none {
+        if imageSize == .stretch || imageSize == .none {
             imageSize = .medium
         }
         

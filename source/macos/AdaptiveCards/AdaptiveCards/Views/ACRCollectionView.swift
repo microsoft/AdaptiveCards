@@ -2,32 +2,36 @@ import AdaptiveCards_bridge
 import AppKit
 
 class ACRCollectionView: NSCollectionView {
-    var imageSet: ACSImageSet?
-    var imageSize: ACSImageSize = .medium
-    var hostConfig: ACSHostConfig?
+    let imageSet: ACSImageSet
+    let imageSize: ACSImageSize
+    let hostConfig: ACSHostConfig
+    var itemSize: CGSize
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     init(frame frameRect: NSRect, imageSet: ACSImageSet, hostConfig: ACSHostConfig) {
-        super.init(frame: frameRect)
-        
-        let spacing: CGFloat = 2
         self.imageSet = imageSet
         self.hostConfig = hostConfig
-        self.imageSize = imageSet.getImageSize()
-        
-        if imageSet.getImageSize() == .auto || imageSet.getImageSize() == .stretch || imageSet.getImageSize() == .none {
+        // Initialise to nonzero Value
+        self.itemSize = .init(width: 50, height: 50)
+        switch imageSet.getImageSize() {
+        case .stretch, .none:
             self.imageSize = .medium
+        default:
+            self.imageSize = imageSet.getImageSize()
         }
+        super.init(frame: frameRect)
         
+        let spacing: CGFloat = 0
         let layout = NSCollectionViewFlowLayout()
         layout.sectionInset = .init(top: spacing, left: spacing, bottom: spacing, right: spacing)
-        // TODO: Change minimumLineSpacing to 0 after adding images
         layout.minimumLineSpacing = spacing
         layout.minimumInteritemSpacing = spacing
-        layout.itemSize = ImageUtils.getImageSizeAsCGSize(imageSize: self.imageSize, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
+        if self.imageSize != .auto {
+            itemSize = ImageUtils.getImageSizeAsCGSize(imageSize: self.imageSize, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
+        }
         collectionViewLayout = layout
         
         self.backgroundColors = [.clear]
@@ -35,17 +39,24 @@ class ACRCollectionView: NSCollectionView {
         register(ACRCollectionViewItem.self, forItemWithIdentifier: ACRCollectionViewItem.identifier)
     }
     
+    // Calculate ContentSize for CollectionView
     func newIntrinsicContentSize() -> CGSize {
         guard let layout = collectionViewLayout as? NSCollectionViewFlowLayout else { return CGSize(width: 0, height: 0) }
-        let cellCounts = imageSet?.getImages().count ?? 0
-        let newImageSize = layout.itemSize
+        let cellCounts = imageSet.getImages().count
         let spacing = layout.minimumInteritemSpacing
         let lineSpacing = layout.minimumLineSpacing
         let frameWidth = frame.size.width
-        let imageSizeWithSpacing = newImageSize.width + spacing
+
+        if frameWidth > 0, imageSize == .auto {
+            let mediumImageSize = ImageUtils.getImageSizeAsCGSize(imageSize: .medium, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
+            let itemWidth = min(mediumImageSize.width, frameWidth)
+            itemSize = NSSize(width: itemWidth, height: itemWidth)
+        }
         
-        var numberOfItemsPerRow = Int(frameWidth / imageSizeWithSpacing)
-        if CGFloat(numberOfItemsPerRow) * imageSizeWithSpacing + newImageSize.width <= frameWidth {
+        let itemSizeWithSpacing = itemSize.width + spacing
+        
+        var numberOfItemsPerRow = Int(frameWidth / itemSizeWithSpacing)
+        if CGFloat(numberOfItemsPerRow) * itemSizeWithSpacing + itemSize.width <= frameWidth {
             numberOfItemsPerRow += 1
         }
         
@@ -53,7 +64,7 @@ class ACRCollectionView: NSCollectionView {
         
         let numberOfRows = Int(ceil(Float(cellCounts) / Float(numberOfItemsPerRow)))
     
-        return CGSize(width: frameWidth, height: (CGFloat(numberOfRows) * (newImageSize.height) + ((CGFloat(numberOfRows) - 1) * lineSpacing)))
+        return CGSize(width: frameWidth, height: (CGFloat(numberOfRows) * (itemSize.height) + ((CGFloat(numberOfRows) - 1) * lineSpacing)))
     }
     
     override var intrinsicContentSize: NSSize {
@@ -72,10 +83,12 @@ class ACRCollectionViewDatasource: NSObject, NSCollectionViewDataSource {
     let imageViews: [ImageSetImageView]
     let images: [ACSImage]
     let hostConfig: ACSHostConfig
+    let imageSize: ACSImageSize
     
     init(acsImages: [ACSImage], rootView: ACRView, size: ACSImageSize, hostConfig: ACSHostConfig) {
         self.images = acsImages
         self.hostConfig = hostConfig
+        self.imageSize = size
         var imageViews: [ImageSetImageView] = []
         for image in images {
             let imageView = ImageSetImageView()
@@ -89,9 +102,7 @@ class ACRCollectionViewDatasource: NSObject, NSCollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: NSCollectionView, itemForRepresentedObjectAt indexPath: IndexPath) -> NSCollectionViewItem {
-        guard let collectionView = collectionView as? ACRCollectionView,
-              let hostConfig = collectionView.hostConfig,
-              let item = collectionView.makeItem(withIdentifier: ACRCollectionViewItem.identifier, for: indexPath) as? ACRCollectionViewItem else { return NSCollectionViewItem() }
+        guard let item = collectionView.makeItem(withIdentifier: ACRCollectionViewItem.identifier, for: indexPath) as? ACRCollectionViewItem else { return NSCollectionViewItem() }
         
         item.setupBounds(with: imageViews[indexPath.item])
         return item
@@ -103,6 +114,25 @@ class ACRCollectionViewDatasource: NSObject, NSCollectionViewDataSource {
     
     func numberOfSections(in collectionView: NSCollectionView) -> Int {
         return 1
+    }
+    
+    func collectionView(_ collectionView: NSCollectionView, layout collectionViewLayout: NSCollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> NSSize {
+        let resolvedSize: ACSImageSize
+        let frameWidth = collectionView.bounds.width
+        var itemSize: NSSize
+        switch imageSize {
+        case .stretch, .none:
+            resolvedSize = .medium
+        default:
+            resolvedSize = imageSize
+        }
+        itemSize = ImageUtils.getImageSizeAsCGSize(imageSize: resolvedSize, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
+        if imageSize == .auto {
+            let mediumImageSize = ImageUtils.getImageSizeAsCGSize(imageSize: .medium, width: 0, height: 0, with: hostConfig, explicitDimensions: false)
+            let itemWidth = min(mediumImageSize.width, frameWidth)
+            itemSize = NSSize(width: itemWidth, height: itemWidth)
+        }
+        return itemSize
     }
 }
 
@@ -116,6 +146,7 @@ class ImageSetImageView: NSImageView, ImageHoldingView {
             return
         }
         
+        // If Image is smaller than cell, make image fit cell and maintain aspectRatio
         let imageRatio = ImageUtils.getAspectRatio(from: image.size)
         var maxImageSize = ImageUtils.getImageSizeAsCGSize(imageSize: imageSize, width: 0, height: 0, with: config, explicitDimensions: false)
         if imageRatio.height < 1 {

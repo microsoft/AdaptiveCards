@@ -19,7 +19,7 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(value: val)
 
         let inputTimeField = renderTimeInput()
-        XCTAssertEqual(inputTimeField.dateValue, val)
+        XCTAssertEqual(inputTimeField.dateValue, "15:30")
     }
 
     func testRendererSetsPlaceholder() {
@@ -35,7 +35,7 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(min: minVal)
 
         let inputTimeField = renderTimeInput()
-        XCTAssertEqual(inputTimeField.minDateValue, minVal)
+        XCTAssertEqual(inputTimeField.minDateValue, "09:30")
     }
 
     func testRendererForMaxValue() {
@@ -43,7 +43,7 @@ class InputTimeRendererTest: XCTestCase {
         inputTime = .make(max: maxValue)
 
         let inputTimeField = renderTimeInput()
-        XCTAssertEqual(inputTimeField.maxDateValue, maxValue)
+        XCTAssertEqual(inputTimeField.maxDateValue, "16:00")
     }
 
     private func renderTimeInput() -> ACRDateField {
