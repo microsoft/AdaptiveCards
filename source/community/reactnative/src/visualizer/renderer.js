@@ -172,6 +172,7 @@ export default class Renderer extends React.Component {
                         hostConfig={this.customHostConfig}
                         themeConfig={this.customThemeConfig}
                         onParseError={this.onParseError}
+                        // cardScrollEnabled={false} //we can also set the scrollEnabled for the adaptive card. Default value is true
                         // contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }} //we can also set the contentContainer Style for the adaptive card
                         // containerStyle={{width:100, height: 100, flexGrow:1, backgroundColor: 'lightblue'}} //we can also set the style for the adaptive card
                         // contentHeight={500} //we can also set the height of the adaptive card

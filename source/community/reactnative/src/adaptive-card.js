@@ -195,7 +195,8 @@ export default class AdaptiveCard extends React.Component {
 							showsHorizontalScrollIndicator={true}
 							showsVerticalScrollIndicator={true}
 							alwaysBounceVertical={false}
-							alwaysBounceHorizontal={false}>
+							alwaysBounceHorizontal={false}
+							scrollEnabled={this.props.cardScrollEnabled}>
 							{this.parsePayload()}
 							{!Utils.isNullOrEmpty(this.state.cardModel.actions) &&
 								<ActionWrapper configManager={this.configManager} actions={this.state.cardModel.actions} />}
@@ -303,7 +304,12 @@ AdaptiveCard.propTypes = {
 	onParseError: PropTypes.func,
 	contentHeight: PropTypes.number,
 	containerStyle: PropTypes.object,
-	contentContainerStyle: PropTypes.object
+	contentContainerStyle: PropTypes.object,
+	cardScrollEnabled: PropTypes.bool
+};
+
+AdaptiveCard.defaultProps = {
+	cardScrollEnabled: true
 };
 
 const styles = StyleSheet.create({
