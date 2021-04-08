@@ -4,7 +4,6 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Windows;
-using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
@@ -68,11 +67,6 @@ namespace AdaptiveCards.Rendering.Wpf
                 uiGrid.Children.Add(uiTextBlock);
                 return uiGrid;
 
-            }
-
-            if (textBlock.Style == AdaptiveTextBlockStyle.Heading)
-            {
-                AutomationProperties.SetIsColumnHeader(uiTextBlock, true);
             }
 
             return uiTextBlock;
