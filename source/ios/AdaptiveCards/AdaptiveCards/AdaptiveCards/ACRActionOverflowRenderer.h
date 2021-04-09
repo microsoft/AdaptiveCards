@@ -2,7 +2,7 @@
 //  ACRActionOverflowRenderer
 //  ACRActionOverflowRenderer.h
 //
-//  Copyright © 2017 Microsoft. All rights reserved.
+//  Copyright © 2021 Microsoft. All rights reserved.
 //
 
 #import "ACRBaseActionElementRenderer.h"

@@ -8,7 +8,6 @@
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseActionElementRenderer.h"
-#import "ACRActionOverflowRenderer.h"
 #import "ACOActionOverflowPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
@@ -148,7 +147,9 @@
         ACRBaseActionElementRenderer *actionRenderer =
             [reg getActionRenderer:[NSNumber numberWithInt:(int)ActionType::Overflow]];
 
-        ACOBaseActionElement *overflow = [[ACOActionOverflow alloc] initWithBaseActionElements:secondary];
+        ACOBaseActionElement *overflow =
+            [[ACOActionOverflow alloc] initWithBaseActionElements:secondary
+                                                           atCard:rootView.card];
 
         [self renderButtonForElem:overflow
                    actionRenderer:actionRenderer

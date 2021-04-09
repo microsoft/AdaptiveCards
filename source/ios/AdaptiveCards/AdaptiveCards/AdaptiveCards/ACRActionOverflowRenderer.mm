@@ -30,7 +30,7 @@
          baseActionElement:(ACOBaseActionElement *)acoElem
                 hostConfig:(ACOHostConfig *)acoConfig;
 {
-    if ([acoElem isKindOfClass:[ACOActionOverflow class]]) {
+    if (acoElem.type == ACRActionType::ACROverflow) {
         NSString *title = @"...";
         UIButton *button = [ACRButton rootView:rootView
                              baseActionElement:acoElem
@@ -42,6 +42,7 @@
         ACRRenderingStatus status = buildTargetForButton(director, acoElem, button, &target);
         if (ACRRenderingStatus::ACROk == status) {
             [superview addTarget:target];
+            // to support Action.ShowCard in menu item action, this line is required
             [target setInputs:inputs superview:superview];
         }
         
@@ -58,8 +59,9 @@
              respondsToSelector:@selector(shouldRenderOverflowActionButton:
                                           forTarget:
                                           isAtRootLevelActions:)]) {
-            BOOL isAtRootLevelActions = [self isAtRootLevelActions:(ACOActionOverflow*)acoElem
-                                                              card:rootView.card];
+
+            BOOL isAtRootLevelActions = ((ACOActionOverflow*)acoElem).isAtRootLevel;
+            
             shouldRender =
                 [rootView.acrActionDelegate shouldRenderOverflowActionButton:(ACRButton*)button
                                                                    forTarget:target
@@ -73,18 +75,4 @@
     return nil;
 }
 
-- (BOOL) isAtRootLevelActions:(ACOActionOverflow*) acoElem
-                         card:(ACOAdaptiveCard*) card
-{
-    auto& rootActions = card.card->GetActions();
-    for (ACOBaseActionElement* action in acoElem.menuActions) {
-        auto it = std::find(std::begin(rootActions),
-                            std::end(rootActions),
-                            action.element);
-        if (it != std::end(rootActions)) {
-            return YES;
-        }
-    }
-    return NO;
-}
 @end

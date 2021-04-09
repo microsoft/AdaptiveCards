@@ -423,12 +423,14 @@ CGFloat kAdaptiveCardsWidth = 360;
 - (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                   alertController:(UIAlertController *)alert
 {
+    // [Option 1] the easiest way is to just present the alert view. It's prepared and presentable ready.
+    //    [self presentViewController: alert];
+
+    // [Option 2] client can prepare its own presentation by direclty employing menuItems
     UIAlertController* myAlert = [UIAlertController alertControllerWithTitle:nil
                                                         message:nil
                                                  preferredStyle:UIAlertControllerStyleAlert];
-//    for (UIAlertAction* action in alert.actions) {
-//        [myAlert addAction:action];
-//    }
+
     for (ACROverflowMenuItem* item in menuItems) {
         UIAlertAction* action = [UIAlertAction actionWithTitle:item.title
                                                          style:UIAlertActionStyleDestructive
