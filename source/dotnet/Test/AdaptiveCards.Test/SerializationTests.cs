@@ -1112,6 +1112,56 @@ namespace AdaptiveCards.Test
         }
 
         [TestMethod]
+        public void TextBlockStyle()
+        {
+            var expected = @"{
+  ""type"": ""AdaptiveCard"",
+  ""version"": ""1.5"",
+  ""body"": [
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text1""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text2""
+    },
+    {
+      ""type"": ""TextBlock"",
+      ""text"": ""Text3"",
+      ""style"": ""heading""
+    },
+  ]
+}";
+            var card = new AdaptiveCard("1.5")
+            {
+                Body =
+                {
+                    new AdaptiveTextBlock()
+                    {
+                        Text = "Text1"
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Style = AdaptiveTextBlockStyle.Paragraph,
+                        Text = "Text2"
+                    },
+                    new AdaptiveTextBlock()
+                    {
+                        Style = AdaptiveTextBlockStyle.Heading,
+                        Text = "Text3"
+                    }
+                }
+            };
+
+            var actual = card.ToJson();
+            Assert.AreEqual(expected: expected, actual: actual);
+            var deserializedCard = AdaptiveCard.FromJson(expected).Card;
+            var deserializedActual = deserializedCard.ToJson();
+            Assert.AreEqual(expected: expected, actual: deserializedActual);
+        }
+
+        [TestMethod]
         public void RTL()
         {
             var card = new AdaptiveCard("1.5")
@@ -1148,7 +1198,6 @@ namespace AdaptiveCards.Test
                     }
                 }
             };
-
 
             var expected = @"{
   ""type"": ""AdaptiveCard"",
