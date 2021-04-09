@@ -1,10 +1,13 @@
+"""
+Common reusable components.
+"""
 import time
 import io
 import re
 import json
 import http.client
 import urllib
-from typing import Optional, Dict
+from typing import Optional, Dict, Tuple
 import glob
 import xml.etree.ElementTree as Et
 from contextlib import contextmanager
@@ -144,12 +147,11 @@ def get_property_method(prop_instance, design_object_name: str):
     method_name = p_split[-1]
     if class_name == prop_instance.__class__.__name__:
         property_method = getattr(prop_instance, method_name)
-        return property_method
     else:
         module = import_module(module_path)
         prop_obj = getattr(module, class_name)()
         property_method = getattr(prop_obj, method_name)
-        return property_method
+    return property_method
 
 
 def load_instance_with_class_path(class_path: str):
@@ -197,3 +199,14 @@ def send_json_payload(path: str, body: Dict, host_port: str,
     conn.request(method, path, json.dumps(body), headers)
     response = json.loads(conn.getresponse().read())
     return response
+
+
+def load_image(image_path: str) -> Tuple[Image.Image, np.array]:
+    """
+    Image preprocessing and convert to tensor.
+    """
+    image = Image.open(image_path)
+    # width, height = image.size
+    image = image.convert("RGB")
+    image_np = np.asarray(image)
+    return image, image_np

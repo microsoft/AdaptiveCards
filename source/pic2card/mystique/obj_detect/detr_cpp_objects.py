@@ -2,7 +2,6 @@
 Doing Detr inference using c++ binding, quick checks shows >3x improvements
 with the inference time.
 """
-import detr
 import numpy as np
 from typing import Dict, Tuple
 from PIL import Image
@@ -34,6 +33,7 @@ class DetrCppOD(AbstractObjectDetection):
     detr cpp python extension to do the inference.
     """
     def __init__(self, pt_path="./detr_trace.pt", threshold=0.8):
+        import detr
         self.model = detr.Detr(self.model_path)
         self.threshold = threshold
 

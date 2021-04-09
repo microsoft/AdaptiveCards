@@ -21,8 +21,8 @@ PRE_DEFINE_CATEGORIES = {
     "radiobutton": 2,
     "checkbox": 3,
     "actionset": 4,
-    "image": 5,
-    "rating": 6,
+    "image": 5
+#    "rating": 6,
 }
 
 
@@ -114,31 +114,34 @@ def convert(xml_files, json_file):
         #  assert segmented == '0'
         for obj in get(root, "object"):
             category = get_and_check(obj, "name", 1).text
-            if category not in categories:
-                new_id = len(categories)
-                categories[category] = new_id
-            category_id = categories[category]
-            bndbox = get_and_check(obj, "bndbox", 1)
-            xmin = int(get_and_check(bndbox, "xmin", 1).text) - 1
-            ymin = int(get_and_check(bndbox, "ymin", 1).text) - 1
-            xmax = int(get_and_check(bndbox, "xmax", 1).text)
-            ymax = int(get_and_check(bndbox, "ymax", 1).text)
-            assert xmax > xmin
-            assert ymax > ymin
-            o_width = abs(xmax - xmin)
-            o_height = abs(ymax - ymin)
-            ann = {
-                "area": o_width * o_height,
-                "iscrowd": 0,
-                "image_id": image_id,
-                "bbox": [xmin, ymin, o_width, o_height],
-                "category_id": category_id,
-                "id": bnd_id,
-                "ignore": 0,
-                "segmentation": [],
-            }
-            json_dict["annotations"].append(ann)
-            bnd_id = bnd_id + 1
+            # if category not in categories:
+            #     # Skip categories other than
+            #     new_id = len(categories)
+            #     categories[category] = new_id
+
+            if category in categories:
+                category_id = categories[category]
+                bndbox = get_and_check(obj, "bndbox", 1)
+                xmin = int(get_and_check(bndbox, "xmin", 1).text) - 1
+                ymin = int(get_and_check(bndbox, "ymin", 1).text) - 1
+                xmax = int(get_and_check(bndbox, "xmax", 1).text)
+                ymax = int(get_and_check(bndbox, "ymax", 1).text)
+                assert xmax > xmin
+                assert ymax > ymin
+                o_width = abs(xmax - xmin)
+                o_height = abs(ymax - ymin)
+                ann = {
+                    "area": o_width * o_height,
+                    "iscrowd": 0,
+                    "image_id": image_id,
+                    "bbox": [xmin, ymin, o_width, o_height],
+                    "category_id": category_id,
+                    "id": bnd_id,
+                    "ignore": 0,
+                    "segmentation": [],
+                }
+                json_dict["annotations"].append(ann)
+                bnd_id = bnd_id + 1
 
     for cate, cid in categories.items():
         cat = {"supercategory": "none", "id": cid, "name": cate}
