@@ -70,7 +70,7 @@ public class ActionModePropertiesTest
         ActionSet parsedActionSet = getActionSet(actions);
         final int total = 9;
         final int maxActions = 5; // default config
-        final int secondaryActionListSize = 4;
+        final int secondaryActionListSize = total - maxActions;
         List<BaseActionElement> primaryActionElementList = parsedActionSet.GetActions().subList(0, maxActions);
         List<BaseActionElement> secondaryActionElementList = parsedActionSet.GetActions().subList(maxActions, total);
 
