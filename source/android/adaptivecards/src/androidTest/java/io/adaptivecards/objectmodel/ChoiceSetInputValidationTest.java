@@ -1,6 +1,6 @@
 package io.adaptivecards.objectmodel;
 
-import android.support.test.InstrumentationRegistry;
+import androidx.test.InstrumentationRegistry;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.RadioButton;

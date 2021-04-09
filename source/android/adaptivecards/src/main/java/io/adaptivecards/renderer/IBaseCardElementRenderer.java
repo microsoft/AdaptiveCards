@@ -3,17 +3,13 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 
-import io.adaptivecards.objectmodel.ContainerStyle;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.inputhandler.IInputHandler;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.HostConfig;
-
-import java.util.Vector;
 
 public interface IBaseCardElementRenderer
 {
