@@ -143,8 +143,9 @@ class TextUtils {
             do {
                 content = try NSMutableAttributedString(data: htmlData, options: [.documentType: NSAttributedString.DocumentType.html], documentAttributes: nil)
                 // Delete trailing newline character
-                content.deleteCharacters(in: NSRange(location: content.length - 1, length: 1))
-//                    textView.isSelectable = true
+                if !parserResult.parsedString.contains("\n") {
+                    content.deleteCharacters(in: NSRange(location: content.length - 1, length: 1))
+                }
             } catch {
                 content = NSMutableAttributedString(string: parserResult.parsedString)
             }

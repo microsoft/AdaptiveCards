@@ -30,7 +30,7 @@ class ColumnSetRenderer: BaseCardElementRendererProtocol {
             
             // Check if has extra properties else add column view
             columnViews.append(columnView)
-            guard index > 0, (column.getSpacing() != .none || column.getSeparator()) else {
+            guard index > 0, (column.getSpacing() != .none || column.getSeparator()), !column.getItems().isEmpty else {
                 columnSetView.addView(columnView, in: gravityArea)
                 BaseCardElementRenderer.shared.configBleed(collectionView: columnView, parentView: columnSetView, with: hostConfig, element: column, parentElement: columnSet)
                 continue

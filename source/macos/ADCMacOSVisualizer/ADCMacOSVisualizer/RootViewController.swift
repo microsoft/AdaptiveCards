@@ -61,7 +61,7 @@ class RootViewController: NSViewController, NSTableViewDelegate, NSTableViewData
 
         switch AdaptiveCard.parseHostConfig(from: hostConfigString) {
         case .success(let config):
-            let cardView = AdaptiveCard.render(card: card, with: config, width: 335, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme))
+            let cardView = AdaptiveCard.render(card: card, with: config, width: 350, actionDelegate: self, resourceResolver: self, config: RenderConfig(isDarkMode: darkTheme))
             // This changes the appearance of the native components depending on the hostConfig
             if #available(OSX 10.14, *) {
                 cardView.appearance = NSAppearance(named: darkTheme ? .darkAqua : .aqua)

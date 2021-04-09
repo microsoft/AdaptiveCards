@@ -52,7 +52,13 @@ class ACRColumnView: ACRContentStackView {
     private lazy var backgroundImageViewTopConstraint = backgroundImageView.topAnchor.constraint(equalTo: topAnchor)
     private lazy var backgroundImageViewLeadingConstraint = backgroundImageView.leadingAnchor.constraint(equalTo: leadingAnchor)
     private lazy var backgroundImageViewTrailingConstraint = backgroundImageView.trailingAnchor.constraint(equalTo: trailingAnchor)
+    
     private (set) var columnWidth: ColumnWidth = .weighted(1)
+    private lazy var minWidthConstraint: NSLayoutConstraint = {
+        let constraint = widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minWidth)
+        constraint.priority = .defaultHigh
+        return constraint
+    }()
     
     private (set) lazy var backgroundImageView: ACRBackgroundImageView = {
         let view = ACRBackgroundImageView()
@@ -60,24 +66,15 @@ class ACRColumnView: ACRContentStackView {
         return view
     }()
     
-    override init(style: ACSContainerStyle, parentStyle: ACSContainerStyle?, hostConfig: ACSHostConfig, superview: NSView?, needsPadding: Bool) {
-        super.init(style: style, parentStyle: parentStyle, hostConfig: hostConfig, superview: superview, needsPadding: needsPadding)
-        initialize()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        initialize()
-    }
-    
-    private func initialize() {
-        // Always to have some minimum width
-        let minWidthConstraint = widthAnchor.constraint(greaterThanOrEqualToConstant: Constants.minWidth)
-        minWidthConstraint.priority = .defaultHigh
-        minWidthConstraint.isActive = true
-    }
-    
     override func addArrangedSubview(_ subview: NSView) {
+        // Activate min Width constraint only if column has a non-image subview
+        // Because - column can be empty                        -> should have zero content size
+        //         - image can have dimensions less than 30 pts -> should match image content size
+        let contentStackView = subview as? ACRContentStackView
+        if !(contentStackView?.arrangedSubviews.first is ACRContentHoldingView || subview is ACRContentHoldingView) {
+            minWidthConstraint.isActive = true
+        }
+        
         manageWidth(of: subview)
         super.addArrangedSubview(subview)
         if subview is ACRContentStackView {
