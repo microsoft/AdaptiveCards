@@ -4,7 +4,7 @@ import AppKit
 class ColumnRenderer: BaseCardElementRendererProtocol {
     static let shared = ColumnRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let column = element as? ACSColumn else {
             logError("Element is not of type ACSColumn")
             return NSView()
@@ -24,7 +24,7 @@ class ColumnRenderer: BaseCardElementRendererProtocol {
         
         for (index, item) in column.getItems().enumerated() {
             let renderer = RendererManager.shared.renderer(for: item.getType())
-            let view = renderer.render(element: item, with: hostConfig, style: style, rootView: rootView, parentView: columnView, inputs: [])
+            let view = renderer.render(element: item, with: hostConfig, style: style, rootView: rootView, parentView: columnView, inputs: [], config: config)
             columnView.configureColumnProperties(for: view)
             let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: item, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: index == 0)
             columnView.addArrangedSubview(viewWithInheritedProperties)

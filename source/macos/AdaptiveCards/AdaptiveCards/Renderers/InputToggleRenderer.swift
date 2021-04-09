@@ -4,7 +4,7 @@ import AppKit
 class InputToggleRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = InputToggleRenderer()
      
-     func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+     func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
          guard let inputToggle = element as? ACSToggleInput else {
              logError("Element is not of type ACSToggleInput")
              return NSView()

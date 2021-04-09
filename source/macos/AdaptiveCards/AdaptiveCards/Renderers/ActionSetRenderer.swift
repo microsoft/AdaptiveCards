@@ -4,21 +4,21 @@ import AppKit
 class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ActionSetRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let actionSet = element as? ACSActionSet else {
             logError("Element is not of type ACSActionSet")
             return NSView()
         }
-        return renderView(actions: actionSet.getActions(), aligned: actionSet.getHorizontalAlignment(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+        return renderView(actions: actionSet.getActions(), aligned: actionSet.getHorizontalAlignment(), with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs, config: config)
     }
     
-    func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func renderActionButtons(actions: [ACSBaseActionElement], with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         // This renders Action in AdaptiveCards, as it has no
         // horizontal alignment property, hardcode it to .left
-        return renderView(actions: actions, aligned: .left, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs)
+        return renderView(actions: actions, aligned: .left, with: hostConfig, style: style, rootView: rootView, parentView: parentView, inputs: inputs, config: config)
     }
     
-    private func renderView(actions: [ACSBaseActionElement], aligned alignment: ACSHorizontalAlignment, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    private func renderView(actions: [ACSBaseActionElement], aligned alignment: ACSHorizontalAlignment, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         let actionSetView = ACRActionSetView()
         actionSetView.translatesAutoresizingMaskIntoConstraints = false
         let adaptiveActionHostConfig = hostConfig.getActions()
@@ -61,7 +61,7 @@ class ActionSetRenderer: NSObject, BaseCardElementRendererProtocol {
             let action = actions[index]
             let renderer = RendererManager.shared.actionRenderer(for: action.getType())
             
-            let view = renderer.render(action: action, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+            let view = renderer.render(action: action, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [], config: config)
             
             actionSetView.addArrangedSubView(view)
             if actionSetView.orientation == .vertical {

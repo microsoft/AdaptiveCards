@@ -4,7 +4,7 @@ import AppKit
 class TextInputRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = TextInputRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let inputBlock = element as? ACSTextInput else {
             logError("Element is not of type ACSTextInput")
             return NSView()

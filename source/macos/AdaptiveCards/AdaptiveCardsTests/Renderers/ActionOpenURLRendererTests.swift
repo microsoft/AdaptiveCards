@@ -14,7 +14,7 @@ class ActionOpenURLRendererTests: XCTestCase {
         hostConfig = .make()
         actionOpenURL = .make()
         delegate = FakeACRViewOpenURLDelegate()
-        acrView = ACRView(style: .default, hostConfig: hostConfig)
+        acrView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
         actionOpenURLRenderer = ActionOpenURLRenderer()
     }
     
@@ -44,7 +44,7 @@ class ActionOpenURLRendererTests: XCTestCase {
     }
     
     private func renderButton() -> ACRButton {
-        let view = actionOpenURLRenderer.render(action: actionOpenURL, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [])
+        let view = actionOpenURLRenderer.render(action: actionOpenURL, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRButton)
         guard let button = view as? ACRButton else { fatalError() }

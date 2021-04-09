@@ -8,6 +8,7 @@ class FakeContainer: ACSContainer {
     public var minHeight: NSNumber?
     public var selectAction: ACSBaseActionElement?
     public var items: [ACSBaseCardElement] = []
+    public var padding: Bool = false
     
     open override func getStyle() -> ACSContainerStyle {
         return style
@@ -60,9 +61,13 @@ class FakeContainer: ACSContainer {
     open override func getItems() -> [ACSBaseCardElement] {
         return items
     }
+    
+    open override func getPadding() -> Bool {
+        return padding
+    }
 }
 extension FakeContainer {
-    static func make(style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, bleed: Bool = false, backgroundImage: ACSBackgroundImage? = nil, minHeight: NSNumber? = 0, selectAction: ACSBaseActionElement? = .none, items: [ACSBaseCardElement] = []) -> FakeContainer {
+    static func make(style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, bleed: Bool = false, backgroundImage: ACSBackgroundImage? = nil, minHeight: NSNumber? = 0, selectAction: ACSBaseActionElement? = .none, items: [ACSBaseCardElement] = [], padding: Bool = false) -> FakeContainer {
         let fakeContainer = FakeContainer()
         fakeContainer.style = style
         fakeContainer.verticalContentAlignment = verticalContentAlignment
@@ -71,6 +76,7 @@ extension FakeContainer {
         fakeContainer.minHeight = minHeight
         fakeContainer.selectAction = selectAction
         fakeContainer.items = items
+        fakeContainer.padding = padding
         return fakeContainer
     }
 }

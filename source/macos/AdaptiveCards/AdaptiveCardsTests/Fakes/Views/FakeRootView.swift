@@ -2,7 +2,7 @@
 
 class FakeRootView: ACRView {
     init() {
-        super.init(style: .default, hostConfig: FakeHostConfig.make())
+        super.init(style: .default, hostConfig: FakeHostConfig.make(), renderConfig: .default)
     }
     
     required init?(coder: NSCoder) {

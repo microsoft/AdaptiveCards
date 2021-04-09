@@ -14,7 +14,7 @@ class ImageRendererTests: XCTestCase {
         hostConfig = .make(imageSizes: ACSImageSizesConfig(smallSize: 30, mediumSize: 60, largeSize: 120))
         fakeImageView = .make()
         imageRenderer = ImageRenderer()
-        fakeACRView = ACRView(style: .default, hostConfig: hostConfig)
+        fakeACRView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
     }
     
     func testRendererSetsImage() {
@@ -87,7 +87,7 @@ class ImageRendererTests: XCTestCase {
     }
     
     private func renderImageView() -> ACRContentHoldingView {
-        let view = imageRenderer.render(element: fakeImageView, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [])
+        let view = imageRenderer.render(element: fakeImageView, with: hostConfig, style: .default, rootView: fakeACRView, parentView: fakeACRView, inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRContentHoldingView)
         guard let contentView = view as? ACRContentHoldingView else { fatalError() }

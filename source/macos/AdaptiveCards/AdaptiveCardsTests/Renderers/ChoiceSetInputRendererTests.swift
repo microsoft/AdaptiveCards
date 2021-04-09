@@ -55,7 +55,7 @@ class ChoiceSetInputRendererTests: XCTestCase {
     }
     
     private func renderChoiceSetView() -> ACRChoiceSetView {
-        let view = choiceSetInputRenderer.render(element: choiceSetInput, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = choiceSetInputRenderer.render(element: choiceSetInput, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRChoiceSetView)
         guard let choiceSetView = view as? ACRChoiceSetView else { fatalError() }
@@ -63,7 +63,7 @@ class ChoiceSetInputRendererTests: XCTestCase {
     }
     
     private func renderChoiceSetCompactView() -> ACRChoiceSetCompactView {
-        let view = choiceSetInputRenderer.render(element: choiceSetInput, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = choiceSetInputRenderer.render(element: choiceSetInput, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRChoiceSetCompactView)
         guard let choiceSetCompactView = view as? ACRChoiceSetCompactView else { fatalError() }

@@ -17,6 +17,8 @@ class ACRView: ACRColumnView {
     weak var delegate: ACRViewDelegate?
     weak var resolverDelegate: ACRViewResourceResolverDelegate?
     weak var parent: ACRView?
+    
+    let renderConfig: RenderConfig
 
     private (set) var targets: [TargetHandler] = []
     private (set) var inputHandlers: [InputHandlingViewProtocol] = []
@@ -34,11 +36,13 @@ class ACRView: ACRColumnView {
         return view
     }()
     
-    init(style: ACSContainerStyle, hostConfig: ACSHostConfig) {
+    init(style: ACSContainerStyle, hostConfig: ACSHostConfig, renderConfig: RenderConfig) {
+        self.renderConfig = renderConfig
         super.init(style: style, parentStyle: nil, hostConfig: hostConfig, superview: nil, needsPadding: true)
     }
     
     required init?(coder: NSCoder) {
+        renderConfig = .default
         super.init(coder: coder)
     }
     
@@ -99,7 +103,7 @@ extension ACRView: TargetHandlerDelegate {
         }
         
         func manageShowCard(with id: NSNumber) {
-            let cardView = showCardsMap[id] ?? AdaptiveCardRenderer.shared.renderShowCard(showCard, with: hostConfig, parent: self)
+            let cardView = showCardsMap[id] ?? AdaptiveCardRenderer.shared.renderShowCard(showCard, with: hostConfig, parent: self, config: renderConfig)
             showCardsMap[cardId] = cardView
             currentShowCardItems = (cardId, button, cardView)
             cardView.isHidden = false

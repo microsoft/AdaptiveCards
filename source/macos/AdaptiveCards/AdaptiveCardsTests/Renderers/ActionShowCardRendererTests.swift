@@ -12,7 +12,7 @@ class ActionShowCardRendererTests: XCTestCase {
         try super.setUpWithError()
         hostConfig = .make()
         actionShowCard = .make()
-        acrView = ACRView(style: .default, hostConfig: hostConfig)
+        acrView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
         actionShowCardRenderer = ActionShowCardRenderer()
     }
     
@@ -36,7 +36,7 @@ class ActionShowCardRendererTests: XCTestCase {
     }
     
     private func renderButton() -> ACRButton {
-        let view = actionShowCardRenderer.render(action: actionShowCard, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [])
+        let view = actionShowCardRenderer.render(action: actionShowCard, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRButton)
         guard let button = view as? ACRButton else { fatalError() }

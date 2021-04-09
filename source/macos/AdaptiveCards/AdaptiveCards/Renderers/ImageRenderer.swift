@@ -3,9 +3,8 @@ import AppKit
 
 class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ImageRenderer()
-    let sample = "https://messagecardplayground.azurewebsites.net/assets/TxP_Flight.png"
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let imageElement = element as? ACSImage else {
             logError("Element is not of type ACSImage")
             return NSView()
@@ -108,7 +107,7 @@ class ImageRenderer: NSObject, BaseCardElementRendererProtocol {
             return
         }
         imageProperties.updateContentSize(size: imageSize)
-        let cgSize = imageProperties.contentSize ?? CGSize.zero
+        let cgSize = imageProperties.contentSize
         superView.isImageSet = true
         
         let priority = NSLayoutConstraint.Priority.defaultHigh // TODO Need to revisit this for a more generalised logic

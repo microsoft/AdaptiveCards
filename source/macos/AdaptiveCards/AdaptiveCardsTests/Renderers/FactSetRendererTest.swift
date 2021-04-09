@@ -141,7 +141,7 @@ class FactSetRendererTest: XCTestCase {
     }
     
     private func renderFactSet() -> NSView {
-        let view = factSetRenderer.render(element: factSet, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = factSetRenderer.render(element: factSet, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         
         return view
     }

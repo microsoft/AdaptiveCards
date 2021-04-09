@@ -79,7 +79,7 @@ class InputNumberRendererTest: XCTestCase {
     }
        
     private func renderNumberInput() -> ACRNumericTextField {
-        let view = inputNumberRenderer.render(element: inputNumber, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = inputNumberRenderer.render(element: inputNumber, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRNumericTextField)
         guard let inputNumber = view as? ACRNumericTextField else { fatalError() }

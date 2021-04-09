@@ -4,7 +4,7 @@ import AppKit
 open class InputNumberRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = InputNumberRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let inputElement = element as? ACSNumberInput else {
             logError("Element is not of type ACSNumberInput")
             return NSView()

@@ -4,7 +4,7 @@ import AppKit
 open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = InputTimeRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let timeElement = element as? ACSTimeInput else {
             logError("Element is not of type ACSDateInput")
             return NSView()
@@ -12,7 +12,7 @@ open class InputTimeRenderer: NSObject, BaseCardElementRendererProtocol {
 
         // setting up basic properties for Input.Time Field
         let inputField: ACRDateField = {
-            let view = ACRDateField(isTimeMode: true)
+            let view = ACRDateField(isTimeMode: true, isDarkMode: config.isDarkMode)
             let timeValue = valueByAppendingMissingSeconds(timeElement.getValue() ?? "")
             let timeMin = valueByAppendingMissingSeconds(timeElement.getMin() ?? "")
             let timeMax = valueByAppendingMissingSeconds(timeElement.getMax() ?? "")

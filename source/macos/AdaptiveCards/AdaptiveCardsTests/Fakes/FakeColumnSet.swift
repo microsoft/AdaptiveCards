@@ -6,6 +6,7 @@ class FakeColumnSet: ACSColumnSet {
     var id: String? = ""
     var selectAction: ACSBaseActionElement?
     var horizontalAlignment: ACSHorizontalAlignment = .left
+    var padding: Bool = false
     
     override func getColumns() -> [ACSColumn] {
         return columns
@@ -34,15 +35,20 @@ class FakeColumnSet: ACSColumnSet {
     override func setHorizontalAlignment(_ value: ACSHorizontalAlignment) {
         horizontalAlignment = value
     }
+    
+    override func getPadding() -> Bool {
+        return padding
+    }
 }
 
 extension FakeColumnSet {
-    static func make(columns: [ACSColumn] = [], style: ACSContainerStyle = .default, selectAction: ACSBaseActionElement? = nil, horizontalAlignment: ACSHorizontalAlignment = .left) -> FakeColumnSet {
+    static func make(columns: [ACSColumn] = [], style: ACSContainerStyle = .default, selectAction: ACSBaseActionElement? = nil, horizontalAlignment: ACSHorizontalAlignment = .left, padding: Bool = false) -> FakeColumnSet {
        let fakeColumnSet = FakeColumnSet()
         fakeColumnSet.columns = columns
         fakeColumnSet.style = style
         fakeColumnSet.selectAction = selectAction
         fakeColumnSet.horizontalAlignment = horizontalAlignment
+        fakeColumnSet.padding = padding
         return fakeColumnSet
     }
 }

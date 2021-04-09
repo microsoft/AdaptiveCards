@@ -4,7 +4,7 @@ import AppKit
 class ChoiceSetInputRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = ChoiceSetInputRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let choiceSetInput = element as? ACSChoiceSetInput else {
             logError("Element is not of type ACSChoiceSetInput")
             return NSView()

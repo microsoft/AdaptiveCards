@@ -47,7 +47,7 @@ class InputTimeRendererTest: XCTestCase {
     }
 
     private func renderTimeInput() -> ACRDateField {
-        let view = inputTimeRenderer.render(element: inputTime, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = inputTimeRenderer.render(element: inputTime, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
 
         XCTAssertTrue(view is ACRDateField)
         guard let inputTime = view as? ACRDateField else { fatalError() }

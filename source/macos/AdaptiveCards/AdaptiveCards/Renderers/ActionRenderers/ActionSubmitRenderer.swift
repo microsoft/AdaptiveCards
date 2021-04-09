@@ -4,7 +4,7 @@ import AppKit
 class ActionSubmitRenderer: BaseActionElementRendererProtocol {
     static let shared = ActionSubmitRenderer()
     
-    func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(action: ACSBaseActionElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let submitAction = action as? ACSSubmitAction else {
             logError("Element is not of type ACSSubmitAction")
             return NSView()

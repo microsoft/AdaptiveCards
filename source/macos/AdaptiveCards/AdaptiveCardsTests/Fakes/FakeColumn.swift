@@ -13,6 +13,7 @@ class FakeColumn: ACSColumn {
     var id: String? = ""
     var backgroundImage: ACSBackgroundImage?
     var selectAction: ACSBaseActionElement?
+    var padding: Bool = false
     
     override func getWidth() -> String? {
         return width
@@ -93,10 +94,14 @@ class FakeColumn: ACSColumn {
     override func getId() -> String? {
         return id
     }
+    
+    override func getPadding() -> Bool {
+        return padding
+    }
 }
 
 extension FakeColumn {
-    static func make(width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false, backgroundImage: ACSBackgroundImage? = nil, selectAction: ACSBaseActionElement? = nil) -> FakeColumn {
+    static func make(width: String? = "", pixelWidth: NSNumber? = 0, items: [ACSBaseCardElement] = [], style: ACSContainerStyle = .default, verticalContentAlignment: ACSVerticalContentAlignment = .top, minHeight: NSNumber? = nil, bleed: Bool = false, spacing: ACSSpacing = .default, separator: Bool = false, backgroundImage: ACSBackgroundImage? = nil, selectAction: ACSBaseActionElement? = nil, padding: Bool = false) -> FakeColumn {
         let fakeColumn = FakeColumn()
         fakeColumn.width = width
         fakeColumn.pixelWidth = pixelWidth

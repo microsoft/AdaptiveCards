@@ -13,7 +13,7 @@ class ActionSubmitRendererTests: XCTestCase {
         try super.setUpWithError()
         hostConfig = .make()
         actionSubmit = .make()
-        acrView = ACRView(style: .default, hostConfig: hostConfig)
+        acrView = ACRView(style: .default, hostConfig: hostConfig, renderConfig: .default)
         delegate = FakeACRViewDelegate()
         actionSubmitRenderer = ActionSubmitRenderer()
     }
@@ -96,7 +96,7 @@ class ActionSubmitRendererTests: XCTestCase {
     
     
     private func renderButton() -> ACRButton {
-        let view = actionSubmitRenderer.render(action: actionSubmit, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [])
+        let view = actionSubmitRenderer.render(action: actionSubmit, with: hostConfig, style: .default, rootView: acrView, parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRButton)
         guard let button = view as? ACRButton else { fatalError() }

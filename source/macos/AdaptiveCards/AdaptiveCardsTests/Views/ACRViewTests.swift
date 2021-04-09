@@ -9,7 +9,7 @@ class ACRViewTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        view = ACRView(style: .default, hostConfig: FakeHostConfig.make())
+        view = ACRView(style: .default, hostConfig: FakeHostConfig.make(), renderConfig: .default)
         fakeResourceResolver = FakeResourceResolver()
         view.resolverDelegate = fakeResourceResolver
         fakeACRViewDelegate = FakeACRViewDelegate()
@@ -78,7 +78,7 @@ class ACRViewTests: XCTestCase {
     
     // Test when ShowCard's Submit Action is Clicked
     func testSubmitActionCountWithAShowCard() {
-        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         fakeShowCard.delegate = fakeACRViewDelegate
         
         view.addShowCard(fakeShowCard)
@@ -89,8 +89,8 @@ class ACRViewTests: XCTestCase {
     
     // Test when ShowCard's Submit Action is clicked in nested setup
     func testSubmitActionCountWithNestedShowCard() {
-        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
-        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig())
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
+        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         
         fakeShowCard.addInputHandler(fakeInputHandlingView())
         fakeShowCard.addInputHandler(fakeInputHandlingView())
@@ -109,8 +109,8 @@ class ACRViewTests: XCTestCase {
     
     // Test when ShowCard's Submit Action is clicked with sibling showcard
     func testSubmitActionCountWithSiblingShowCard() {
-        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig())
-        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig())
+        let fakeShowCard = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
+        let fakeShowCard2 = ACRView(style: .default, hostConfig: FakeHostConfig(), renderConfig: .default)
         
         fakeShowCard.addInputHandler(fakeInputHandlingView())
         fakeShowCard2.addInputHandler(fakeInputHandlingView())

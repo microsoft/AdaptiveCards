@@ -4,7 +4,7 @@ import AppKit
 class TextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = TextBlockRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let textBlock = element as? ACSTextBlock else {
             logError("Element is not of type ACSTextBlock")
             return NSView()

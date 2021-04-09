@@ -77,7 +77,7 @@ class TextBlockRendererTests: XCTestCase {
     }
     
     private func renderTextView() -> ACRTextView {
-        let view = textBlockRenderer.render(element: textBlock, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [])
+        let view = textBlockRenderer.render(element: textBlock, with: hostConfig, style: .default, rootView: FakeRootView(), parentView: NSView(), inputs: [], config: .default)
         
         XCTAssertTrue(view is ACRTextView)
         guard let textView = view as? ACRTextView else { fatalError() }

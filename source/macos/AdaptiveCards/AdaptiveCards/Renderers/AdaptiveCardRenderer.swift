@@ -6,21 +6,21 @@ class AdaptiveCardRenderer {
     weak var actionDelegate: AdaptiveCardActionDelegate?
     weak var resolverDelegate: AdaptiveCardResourceResolver?
     
-    func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat) -> NSView {
+    func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, width: CGFloat, config: RenderConfig) -> NSView {
         var style: ACSContainerStyle = .default
         if let colorConfig = hostConfig.getAdaptiveCard() {
             style = (colorConfig.allowCustomStyle && card.getStyle() != .none) ? card.getStyle() : .default
         }
-        return renderAdaptiveCard(card, with: hostConfig, style: style, width: width)
+        return renderAdaptiveCard(card, with: hostConfig, style: style, width: width, config: config)
     }
     
-    func renderShowCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, parent: ACRView) -> NSView {
+    func renderShowCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, parent: ACRView, config: RenderConfig) -> NSView {
         var style: ACSContainerStyle = .default
         if let colorConfig = hostConfig.getAdaptiveCard() {
             let showCardStyle = hostConfig.getActions()?.showCard.style ?? .default
             style = colorConfig.allowCustomStyle ? card.getStyle() : showCardStyle
         }
-        guard let cardView = renderAdaptiveCard(card, with: hostConfig, style: style) as? ACRView else {
+        guard let cardView = renderAdaptiveCard(card, with: hostConfig, style: style, config: config) as? ACRView else {
             logError("renderAdaptiveCard should return ACRView")
             return NSView()
         }
@@ -28,8 +28,8 @@ class AdaptiveCardRenderer {
         return cardView
     }
     
-    private func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, style: ACSContainerStyle, width: CGFloat? = nil) -> NSView {
-        let rootView = ACRView(style: style, hostConfig: hostConfig)
+    private func renderAdaptiveCard(_ card: ACSAdaptiveCard, with hostConfig: ACSHostConfig, style: ACSContainerStyle, width: CGFloat? = nil, config: RenderConfig) -> NSView {
+        let rootView = ACRView(style: style, hostConfig: hostConfig, renderConfig: config)
         rootView.translatesAutoresizingMaskIntoConstraints = false
         if let width = width {
             rootView.widthAnchor.constraint(equalToConstant: width).isActive = true
@@ -40,14 +40,14 @@ class AdaptiveCardRenderer {
         for (index, element) in card.getBody().enumerated() {
             let isFirstElement = index == 0
             let renderer = RendererManager.shared.renderer(for: element.getType())
-            let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+            let view = renderer.render(element: element, with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [], config: config)
             let viewWithInheritedProperties = BaseCardElementRenderer.shared.updateView(view: view, element: element, rootView: rootView, style: style, hostConfig: hostConfig, isfirstElement: isFirstElement)
             rootView.addArrangedSubview(viewWithInheritedProperties)
             BaseCardElementRenderer.shared.configBleed(collectionView: view, parentView: rootView, with: hostConfig, element: element, parentElement: nil)
         }
         
         if !card.getActions().isEmpty {
-            let view = ActionSetRenderer.shared.renderActionButtons(actions: card.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [])
+            let view = ActionSetRenderer.shared.renderActionButtons(actions: card.getActions(), with: hostConfig, style: style, rootView: rootView, parentView: rootView, inputs: [], config: config)
             // getting spacing from hostConfig
             if let verticalSpacing = hostConfig.getActions()?.spacing {
                 let spacing = HostConfigUtils.getSpacing(verticalSpacing, with: hostConfig)

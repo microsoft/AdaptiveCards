@@ -28,7 +28,8 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     }()
 
     private lazy var iconButton: NSButtonWithImageSpacing = {
-        let view = NSButtonWithImageSpacing(image: (isTimeMode ? NSImage(named: "NSTouchBarHistoryTemplate") : BundleUtils.getImage("calendar-month-light", ofType: "png")) ?? NSImage(), target: self, action: #selector(mouseDown(with:)))
+        let resourceName = isDarkMode ? "calendar-month-dark" : "calendar-month-light"
+        let view = NSButtonWithImageSpacing(image: (isTimeMode ? NSImage(named: "NSTouchBarHistoryTemplate") : BundleUtils.getImage(resourceName, ofType: "png")) ?? NSImage(), target: self, action: #selector(mouseDown(with:)))
         view.translatesAutoresizingMaskIntoConstraints = false
         view.wantsLayer = true
         view.layer?.backgroundColor = NSColor.clear.cgColor
@@ -48,6 +49,8 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
     private let datePickerTextfield = NSDatePicker()
     private var popover = NSPopover()
     let isTimeMode: Bool
+    let isDarkMode: Bool
+    
     var selectedDate: Date? = Date()
     var minDateValue: String?
     var maxDateValue: String?
@@ -87,8 +90,9 @@ class ACRDateField: NSView, InputHandlingViewProtocol {
         return !isHidden && !(superview?.isHidden ?? false)
     }
     
-    init(isTimeMode: Bool) {
+    init(isTimeMode: Bool, isDarkMode: Bool) {
         self.isTimeMode = isTimeMode
+        self.isDarkMode = isDarkMode
         super.init(frame: .zero)
         setupViews()
         setupConstraints()

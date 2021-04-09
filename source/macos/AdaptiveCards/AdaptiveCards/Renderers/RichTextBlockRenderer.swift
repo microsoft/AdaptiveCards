@@ -4,7 +4,7 @@ import AppKit
 class RichTextBlockRenderer: NSObject, BaseCardElementRendererProtocol {
     static let shared = RichTextBlockRenderer()
     
-    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler]) -> NSView {
+    func render(element: ACSBaseCardElement, with hostConfig: ACSHostConfig, style: ACSContainerStyle, rootView: ACRView, parentView: NSView, inputs: [BaseInputHandler], config: RenderConfig) -> NSView {
         guard let richTextBlock = element as? ACSRichTextBlock else {
             logError("Element is not of type ACSRichTextBlock")
             return NSView()
