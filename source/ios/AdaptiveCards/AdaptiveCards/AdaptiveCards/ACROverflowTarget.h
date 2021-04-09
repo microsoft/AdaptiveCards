@@ -23,8 +23,7 @@
 @interface ACROverflowTarget : NSObject <ACRSelectActionDelegate>
 
 - (instancetype)initWithActionElement:(ACOActionOverflow *)actionElement
-                             rootView:(ACRView *)rootView
-                               button:(UIButton *) button;
+                             rootView:(ACRView *)rootView;
 
 - (void)setInputs: (NSMutableArray *)inputs
         superview: (UIView<ACRIContentHoldingView> *)superview;

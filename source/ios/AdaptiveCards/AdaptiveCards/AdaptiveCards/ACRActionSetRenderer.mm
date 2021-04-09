@@ -112,11 +112,7 @@
     }
 
     std::vector<std::shared_ptr<BaseActionElement>> primary, secondary;
-    [self partitionActions:elems
-            primaryActions:primary
-          secondaryActions:secondary
-                maxActions:adaptiveActionConfig.maxActions
-                  rootView:rootView];
+    partitionActions(elems, primary, secondary, adaptiveActionConfig.maxActions, rootView);
 
     NSUInteger stackIndex = [superview arrangedSubviewsCounts];
     std::size_t renderedBtnNum = primary.size();
@@ -193,44 +189,6 @@
     [superview insertArrangedSubview:containingView atIndex:stackIndex];
 
     return containingView;
-}
-
-- (void)partitionActions:(const std::vector<std::shared_ptr<BaseActionElement>> &)elems
-          primaryActions:(std::vector<std::shared_ptr<BaseActionElement>>&) primary
-        secondaryActions:(std::vector<std::shared_ptr<BaseActionElement>>&) secondary
-              maxActions:(unsigned int) maxActions
-                rootView:(ACRView*)rootView
-{
-    std::partition_copy(std::begin(elems),
-                        std::end(elems),
-                        std::inserter(secondary, std::end(secondary)),
-                        std::inserter(primary, std::end(primary)),
-                        [](std::shared_ptr<BaseActionElement> elem) {
-                            return elem->GetMode() == Mode::Secondary;
-                        });
-    
-    unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
-
-    BOOL allowMoreThanMaxActionsInOverflowMenu = NO;
-    if ([rootView.acrActionDelegate respondsToSelector:@selector(shouldAllowMoreThanMaxActionsInOverflowMenu)]) {
-        allowMoreThanMaxActionsInOverflowMenu =
-            [rootView.acrActionDelegate shouldAllowMoreThanMaxActionsInOverflowMenu];
-    }
-
-    if (uMaxActionsToRender < primary.size()) {
-        auto start = std::begin(primary) + uMaxActionsToRender;
-        auto end = std::end(primary);
-
-        if (allowMoreThanMaxActionsInOverflowMenu) {
-            std::copy(start, end, std::back_inserter(secondary));
-        } else {
-            [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded
-                           mesage:@"Some actions were not rendered due to exceeding the maximum number "
-                                  @"of actions allowed"];
-        }
-
-        primary.erase(start, end);
-    }
 }
 
 - (void) renderButtonForElem:(ACOBaseActionElement*) acoElem

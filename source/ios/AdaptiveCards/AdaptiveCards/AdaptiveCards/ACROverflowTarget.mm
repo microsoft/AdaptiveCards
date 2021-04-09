@@ -71,7 +71,6 @@
 
 - (instancetype)initWithActionElement:(ACOActionOverflow *)actionElement
                              rootView:(ACRView *)rootView
-                               button:(UIButton *)button
 {
     self = [super init];
     if (self) {

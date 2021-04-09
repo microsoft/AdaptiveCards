@@ -848,3 +848,41 @@ void printSize(NSString *msg, CGSize size)
     NSLog(@"%@, size = %f x %f", msg, size.width, size.height);
 }
 
+void partitionActions(
+    const std::vector<std::shared_ptr<BaseActionElement>>& elems,
+    std::vector<std::shared_ptr<BaseActionElement>>& primary,
+    std::vector<std::shared_ptr<BaseActionElement>>& secondary,
+    unsigned int maxActions,
+    ACRView* rootView)
+{
+    std::partition_copy(std::begin(elems),
+                        std::end(elems),
+                        std::inserter(secondary, std::end(secondary)),
+                        std::inserter(primary, std::end(primary)),
+                        [](std::shared_ptr<BaseActionElement> elem) {
+                            return elem->GetMode() == Mode::Secondary;
+                        });
+    
+    unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
+
+    BOOL allowMoreThanMaxActionsInOverflowMenu = NO;
+    if ([rootView.acrActionDelegate respondsToSelector:@selector(shouldAllowMoreThanMaxActionsInOverflowMenu)]) {
+        allowMoreThanMaxActionsInOverflowMenu =
+            [rootView.acrActionDelegate shouldAllowMoreThanMaxActionsInOverflowMenu];
+    }
+
+    if (uMaxActionsToRender < primary.size()) {
+        auto start = std::begin(primary) + uMaxActionsToRender;
+        auto end = std::end(primary);
+
+        if (allowMoreThanMaxActionsInOverflowMenu) {
+            std::copy(start, end, std::back_inserter(secondary));
+        } else {
+            [rootView addWarnings:ACRWarningStatusCode::ACRMaxActionsExceeded
+                           mesage:@"Some actions were not rendered due to exceeding the maximum number "
+                                  @"of actions allowed"];
+        }
+
+        primary.erase(start, end);
+    }
+}

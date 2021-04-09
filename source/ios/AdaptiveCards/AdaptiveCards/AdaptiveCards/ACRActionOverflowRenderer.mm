@@ -45,6 +45,14 @@
             [target setInputs:inputs superview:superview];
         }
         
+        button.accessibilityTraits |= UIAccessibilityTraitLink;
+
+        [button setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                forAxis:UILayoutConstraintAxisVertical];
+
+        [button setContentCompressionResistancePriority:UILayoutPriorityRequired
+                                                forAxis:UILayoutConstraintAxisHorizontal];
+
         BOOL shouldRender = YES;
         if ([rootView.acrActionDelegate
              respondsToSelector:@selector(shouldRenderOverflowActionButton:
@@ -59,14 +67,6 @@
         }
 
         if (shouldRender) {
-            button.accessibilityTraits |= UIAccessibilityTraitLink;
-
-            [button setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                                    forAxis:UILayoutConstraintAxisVertical];
-
-            [button setContentCompressionResistancePriority:UILayoutPriorityRequired
-                                                    forAxis:UILayoutConstraintAxisHorizontal];
-
             return button;
         }
     }

@@ -173,8 +173,7 @@
     if (director.rootView && [action isKindOfClass:[ACOActionOverflow class]]) {
         NSObject* target = [[ACROverflowTarget alloc]
                             initWithActionElement:(ACOActionOverflow*)action
-                            rootView:director.rootView
-                            button:button];
+                            rootView:director.rootView];
         if (target) {
             [button addTarget:target
                        action:@selector(doSelectAction)
