@@ -1,10 +1,10 @@
 #ifndef SAMPLECARDMODEL_H
 #define SAMPLECARDMODEL_H
 
-#include <AdaptiveCardQmlRenderer.h>
-#include <RenderedQmlAdaptiveCard.h>
-#include <ImageDownloader.h>
-#include <Utils.h>
+#include "AdaptiveCardQmlRenderer.h"
+#include "RenderedQmlAdaptiveCard.h"
+#include "ImageDownloader.h"
+#include "Utils.h"
 
 #include <QAbstractListModel>
 
@@ -25,7 +25,7 @@ public:
         CardJsonString
     };
 
-    // Basic functionality:
+	// Basic functionality:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
@@ -52,9 +52,10 @@ private:
     static std::wstring toWString(const std::string& input);
     void actionOpenUrlButtonClicked(const QString& title, const QString& type, const QString& data);
     void actionSubmitButtonClicked(const QString& title, const QString& type, const QString& data);
-    void rehostImage(const std::map<std::string, std::string>& urls);
+	static const std::map<std::string, std::string> rehostImage(const std::map<std::string, std::string>& urls);
 
 	static const std::string getImagePath(const std::string& imageName);
+
 };
 
 #endif // SAMPLECARDMODEL_H

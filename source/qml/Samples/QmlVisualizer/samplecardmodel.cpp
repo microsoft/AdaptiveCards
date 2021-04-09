@@ -5,8 +5,11 @@
 
 #include <windows.h>
 #include <shellapi.h>
+#include <mutex>
 
 using namespace RendererQml;
+
+std::mutex images_mutex;
 
 SampleCardModel::SampleCardModel(QObject *parent)
     : QAbstractListModel(parent)
@@ -106,15 +109,16 @@ std::shared_ptr<AdaptiveCards::HostConfig> SampleCardModel::getHostConfig()
 QString SampleCardModel::generateQml(const QString& cardQml)
 {
     std::map<std::string, std::string> urls;
+
     std::shared_ptr<int> imgCounter{ 0 };
 
     std::shared_ptr<AdaptiveCards::ParseResult> mainCard = AdaptiveCards::AdaptiveCard::DeserializeFromString(cardQml.toStdString(), "2.0");
     std::shared_ptr<RenderedQmlAdaptiveCard> result = renderer_ptr->RenderCard(mainCard->GetAdaptiveCard());
     const auto generatedQml = result->GetResult();
 
-    //Temp
+    //SYNCHRONOUS
     ImageDownloader::clearImageFolder();
-
+	
 	generatedQml->Transform([&urls](QmlTag& genQml)
 	{
 		if (genQml.GetElement() == "Frame" && genQml.HasProperty("readonly property bool hasBackgroundImage"))
@@ -176,25 +180,45 @@ QString SampleCardModel::generateQml(const QString& cardQml)
 		}
 	});
 
-    //rehostImage(urls);
-    const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
+	//ASYNCHRONOUS
+	/*generatedQml->Transform([&urls](QmlTag& genQml)
+	{
+		if (genQml.GetElement() == "Frame" && genQml.HasProperty("readonly property bool hasBackgroundImage"))
+		{
+			auto url = genQml.GetProperty("property var imgSource");
+			urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+		}
+		else if (genQml.GetElement() == "Image" && genQml.HasProperty("readonly property bool isImage"))
+		{
+			auto url = genQml.GetProperty("source");
+			urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+		}
+		else if (genQml.GetElement() == "Button" && genQml.HasProperty("readonly property bool hasIconUrl"))
+		{
+			auto url = genQml.GetProperty("property var imgSource");
+			urls[genQml.GetId()] = Utils::Replace(url, "\"", "");
+		}
+	});
+
+	std::thread thread_object([urls]() {
+		images_mutex.lock();
+		const std::map<std::string, std::string> paths = rehostImage(urls);
+		printf("Number of Images downloaded: %d\n", paths.size());
+		images_mutex.unlock();
+		});
+
+	//Detaching the thread to make it asynchronous
+	thread_object.detach();*/
+
+	const QString generatedQmlString = QString::fromStdString(generatedQml->ToString());
     return generatedQmlString;
 }
 
-void SampleCardModel::rehostImage(const std::map<std::string, std::string>& urls)
+const std::map<std::string, std::string> SampleCardModel::rehostImage(const std::map<std::string, std::string>& urls)
 {
-    ImageDownloader::clearImageFolder();
-
-    for (auto& url : urls)
-    {
-        char* imgUrl = ImageDownloader::Convert(url.second);
-        const std::string imageName = url.first + ".jpg";
-
-        if(!ImageDownloader::download_jpeg(imageName, imgUrl))
-        {
-            printf("!! Failed to download file!");
-        }
-    }
+	ImageDownloader::clearImageFolder();
+	const std::map<std::string, std::string> file_paths = ImageDownloader::download_multiple_jpeg(urls);
+	return file_paths;
 }
 
 void SampleCardModel::setTheme(const QString& theme)
