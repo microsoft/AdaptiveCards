@@ -10,7 +10,7 @@
 
 @interface ACOActionOverflow : ACOBaseActionElement
 
-@property NSArray<ACOBaseActionElement*>* menuActions;
+@property NSArray<ACOBaseActionElement *> *menuActions;
 @property (readonly) BOOL isAtRootLevel;
 
 @end

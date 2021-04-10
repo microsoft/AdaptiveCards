@@ -6,14 +6,14 @@
 //
 
 #import "ACRActionOverflowRenderer.h"
-#import "ACOHostConfigPrivate.h"
-#import "ACOBaseActionElementPrivate.h"
-#import "ACRView.h"
-#import "ACRIContentHoldingView.h"
 #import "ACOActionOverflow.h"
-#import "ACRButton.h"
-#import "ACROverflowTarget.h"
 #import "ACOAdaptiveCardPrivate.h"
+#import "ACOBaseActionElementPrivate.h"
+#import "ACOHostConfigPrivate.h"
+#import "ACRButton.h"
+#import "ACRIContentHoldingView.h"
+#import "ACROverflowTarget.h"
+#import "ACRView.h"
 #import "UtiliOS.h"
 
 @implementation ACRActionOverflowRenderer
@@ -45,7 +45,7 @@
             // to support Action.ShowCard in menu item action, this line is required
             [target setInputs:inputs superview:superview];
         }
-        
+
         button.accessibilityTraits |= UIAccessibilityTraitLink;
 
         [button setContentCompressionResistancePriority:UILayoutPriorityRequired
@@ -56,14 +56,14 @@
 
         BOOL shouldRender = YES;
         if ([rootView.acrActionDelegate
-             respondsToSelector:@selector(shouldRenderOverflowActionButton:
-                                          forTarget:
-                                          isAtRootLevelActions:)]) {
+                respondsToSelector:@selector(shouldRenderOverflowActionButton:
+                                                                    forTarget:
+                                                                    isAtRootLevelActions:)]) {
 
-            BOOL isAtRootLevelActions = ((ACOActionOverflow*)acoElem).isAtRootLevel;
-            
+            BOOL isAtRootLevelActions = ((ACOActionOverflow *)acoElem).isAtRootLevel;
+
             shouldRender =
-                [rootView.acrActionDelegate shouldRenderOverflowActionButton:(ACRButton*)button
+                [rootView.acrActionDelegate shouldRenderOverflowActionButton:(ACRButton *)button
                                                                    forTarget:target
                                                         isAtRootLevelActions:isAtRootLevelActions];
         }

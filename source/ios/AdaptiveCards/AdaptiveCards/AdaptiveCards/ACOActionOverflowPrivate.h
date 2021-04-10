@@ -11,6 +11,6 @@
 @interface ACOActionOverflow : ACOBaseActionElement
 
 - (instancetype)initWithBaseActionElements:(const std::vector<std::shared_ptr<BaseActionElement>> &)elements
-                                    atCard:(ACOAdaptiveCard*)card;
+                                    atCard:(ACOAdaptiveCard *)card;
 
 @end
