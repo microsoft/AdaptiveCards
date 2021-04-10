@@ -849,11 +849,11 @@ void printSize(NSString *msg, CGSize size)
 }
 
 void partitionActions(
-    const std::vector<std::shared_ptr<BaseActionElement>>& elems,
-    std::vector<std::shared_ptr<BaseActionElement>>& primary,
-    std::vector<std::shared_ptr<BaseActionElement>>& secondary,
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
     unsigned int maxActions,
-    ACRView* rootView)
+    ACRView *rootView)
 {
     std::partition_copy(std::begin(elems),
                         std::end(elems),
@@ -862,7 +862,7 @@ void partitionActions(
                         [](std::shared_ptr<BaseActionElement> elem) {
                             return elem->GetMode() == Mode::Secondary;
                         });
-    
+
     unsigned long uMaxActionsToRender = MIN(maxActions, primary.size());
 
     BOOL allowMoreThanMaxActionsInOverflowMenu = NO;

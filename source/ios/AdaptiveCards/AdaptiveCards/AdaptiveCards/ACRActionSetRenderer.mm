@@ -3,12 +3,12 @@
 //
 
 #import "ACRActionSetRenderer.h"
+#import "ACOActionOverflowPrivate.h"
 #import "ACOAdaptiveCardPrivate.h"
 #import "ACOBaseActionElementPrivate.h"
 #import "ACOBaseCardElementPrivate.h"
 #import "ACOHostConfigPrivate.h"
 #import "ACRBaseActionElementRenderer.h"
-#import "ACOActionOverflowPrivate.h"
 #import "ACRColumnSetView.h"
 #import "ACRColumnView.h"
 #import "ACRContentHoldingUIScrollView.h"
@@ -166,7 +166,7 @@
     }
 
     float contentWidth = accumulatedWidth;
-    
+
     if (ActionsOrientation::Horizontal == adaptiveActionConfig.actionsOrientation) {
         contentWidth += (renderedBtnNum - 1) * spacing;
     } else {
@@ -192,18 +192,18 @@
     return containingView;
 }
 
-- (void) renderButtonForElem:(ACOBaseActionElement*) acoElem
-              actionRenderer: (ACRBaseActionElementRenderer*) actionRenderer
-                   childview: (UIStackView*) childview
-                  featureReg: (ACOFeatureRegistration*) featureReg
-                    rootView:(ACRView*)rootView
-                      inputs:(NSMutableArray *)inputs
-                   superview:(UIView<ACRIContentHoldingView> *)superview
-                  hostConfig:(ACOHostConfig *)config
-            accumulatedWidth: (float&) accumulatedWidth
-           accumulatedHeight: (float&) accumulatedHeight
-                    maxWidth: (float&) maxWidth
-                   maxHeight: (float&) maxHeight
+- (void)renderButtonForElem:(ACOBaseActionElement *)acoElem
+             actionRenderer:(ACRBaseActionElementRenderer *)actionRenderer
+                  childview:(UIStackView *)childview
+                 featureReg:(ACOFeatureRegistration *)featureReg
+                   rootView:(ACRView *)rootView
+                     inputs:(NSMutableArray *)inputs
+                  superview:(UIView<ACRIContentHoldingView> *)superview
+                 hostConfig:(ACOHostConfig *)config
+           accumulatedWidth:(float &)accumulatedWidth
+          accumulatedHeight:(float &)accumulatedHeight
+                   maxWidth:(float &)maxWidth
+                  maxHeight:(float &)maxHeight
 {
     NSUInteger numElem = [[childview arrangedSubviews] count];
 

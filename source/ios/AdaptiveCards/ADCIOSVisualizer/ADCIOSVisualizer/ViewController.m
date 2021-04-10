@@ -9,9 +9,9 @@
 #import "ACRChatWindow.h"
 #import "ACRCustomSubmitTargetBuilder.h"
 #import "ADCResolver.h"
-#import "AdaptiveCards/ACROverflowTarget.h"
 #import "AdaptiveCards/ACRAggregateTarget.h"
 #import "AdaptiveCards/ACRButton.h"
+#import "AdaptiveCards/ACROverflowTarget.h"
 #import "AdaptiveFileBrowserSource.h"
 #import "CustomActionNewType.h"
 #import "CustomActionOpenURLRenderer.h"
@@ -271,7 +271,7 @@ CGFloat kAdaptiveCardsWidth = 360;
                 NSInteger postCount = [_dataSource tableView:self.chatWindow numberOfRowsInSection:0];
                 NSInteger rowsToAdd = postCount - prevCount;
                 NSInteger lastRowIndex = [self.chatWindow numberOfRowsInSection:0];
-                NSMutableArray<NSIndexPath*>* indexPaths = [NSMutableArray arrayWithCapacity:rowsToAdd];
+                NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray arrayWithCapacity:rowsToAdd];
                 for (int i = 0; i < rowsToAdd; ++i) {
                     NSIndexPath *pathToLastRow = [NSIndexPath indexPathForRow:(lastRowIndex + i) inSection:0];
                     [indexPaths addObject:pathToLastRow];
@@ -401,7 +401,7 @@ CGFloat kAdaptiveCardsWidth = 360;
                     isAtRootLevelActions:(BOOL)isAtRootLevelActions
 {
     if (isAtRootLevelActions) {
-        UIButton* extOverflowBtn = [UIButton buttonWithType:UIButtonTypeSystem];
+        UIButton *extOverflowBtn = [UIButton buttonWithType:UIButtonTypeSystem];
         CGRect buttonFrame = extOverflowBtn.frame;
         buttonFrame.size = CGSizeMake(250, 40);
         extOverflowBtn.frame = buttonFrame;
@@ -427,18 +427,18 @@ CGFloat kAdaptiveCardsWidth = 360;
     //    [self presentViewController: alert];
 
     // [Option 2] client can prepare its own presentation by direclty employing menuItems
-    UIAlertController* myAlert = [UIAlertController alertControllerWithTitle:nil
-                                                        message:nil
-                                                 preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *myAlert = [UIAlertController alertControllerWithTitle:nil
+                                                                     message:nil
+                                                              preferredStyle:UIAlertControllerStyleAlert];
 
-    for (ACROverflowMenuItem* item in menuItems) {
-        UIAlertAction* action = [UIAlertAction actionWithTitle:item.title
+    for (ACROverflowMenuItem *item in menuItems) {
+        UIAlertAction *action = [UIAlertAction actionWithTitle:item.title
                                                          style:UIAlertActionStyleDestructive
-                                                       handler:^(UIAlertAction * _Nonnull action) {
-            [item.target doSelectAction];
-        }];
+                                                       handler:^(UIAlertAction *_Nonnull action) {
+                                                           [item.target doSelectAction];
+                                                       }];
 
-        UIImage* image = [item iconImageWithSize:CGSizeMake(40, 40)];
+        UIImage *image = [item iconImageWithSize:CGSizeMake(40, 40)];
         if (image) {
             [action setValue:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
                       forKey:@"image"];

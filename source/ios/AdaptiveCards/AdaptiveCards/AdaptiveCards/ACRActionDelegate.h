@@ -46,6 +46,6 @@
     - "menuItems": the action items on the overflow menu associated with the current triggered overflow "..." button
     - "alert": presentable-ready alert controller. Client can just use its view controller to present this. Or client can grab "menuItems" to prepare its own overflow menu
  */
-- (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem*> *)menuItems
+- (void)displayOverflowActionMenu:(NSArray<ACROverflowMenuItem *> *)menuItems
                   alertController:(UIAlertController *)alert;
 @end

@@ -100,9 +100,8 @@ ACRHorizontalAlignment getACRHorizontalAlignment(HorizontalAlignment horizontalA
 void printSize(NSString *msg, CGSize size);
 
 void partitionActions(
-    const std::vector<std::shared_ptr<BaseActionElement>>& elems,
-    std::vector<std::shared_ptr<BaseActionElement>>& primary,
-    std::vector<std::shared_ptr<BaseActionElement>>& secondary,
+    const std::vector<std::shared_ptr<BaseActionElement>> &elems,
+    std::vector<std::shared_ptr<BaseActionElement>> &primary,
+    std::vector<std::shared_ptr<BaseActionElement>> &secondary,
     unsigned int maxActions,
-    ACRView* rootView
-);
+    ACRView *rootView);

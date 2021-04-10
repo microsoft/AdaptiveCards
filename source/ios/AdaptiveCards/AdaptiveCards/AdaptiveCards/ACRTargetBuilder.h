@@ -50,5 +50,3 @@ typedef NS_ENUM(NSInteger, ACRTargetCapability) {
 // build target for unknown actions
 @interface ACRUnknownActionTargetBuilder : ACRTargetBuilder
 @end
-
-

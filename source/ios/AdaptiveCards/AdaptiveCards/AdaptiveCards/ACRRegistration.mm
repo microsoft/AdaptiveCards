@@ -10,11 +10,11 @@
 #import "ACOHostConfigPrivate.h"
 #import "ACOParseContextPrivate.h"
 #import "ACRActionOpenURLRenderer.h"
+#import "ACRActionOverflowRenderer.h"
 #import "ACRActionSetRenderer.h"
 #import "ACRActionShowCardRenderer.h"
 #import "ACRActionSubmitRenderer.h"
 #import "ACRActionToggleVisibilityRenderer.h"
-#import "ACRActionOverflowRenderer.h"
 #import "ACRColumnRenderer.h"
 #import "ACRColumnSetRenderer.h"
 #import "ACRColumnSetView.h"
@@ -306,7 +306,7 @@ using namespace AdaptiveCards;
     NSNumber *toggle = [ACOBaseActionElement getKey:ACRToggleVisibility];
     NSNumber *unknown = [ACOBaseActionElement getKey:ACRUnknownAction];
     NSNumber *overflow = [ACOBaseActionElement getKey:ACROverflow];
-    
+
     _overwrittenBuilders = [[NSMutableDictionary alloc] init];
 
     // target capability lists supported events and corresponding target builders
@@ -317,7 +317,7 @@ using namespace AdaptiveCards;
                 submit : [ACRAggregateTargetBuilder getInstance],
                 showcard : [ACRShowCardTargetBuilder getInstance],
                 toggle : [ACRToggleVisibilityTargetBuilder getInstance],
-                overflow: [ACROverflowActionTargetBuilder getInstance]
+                overflow : [ACROverflowActionTargetBuilder getInstance]
             };
             break;
         case ACRSelectAction:

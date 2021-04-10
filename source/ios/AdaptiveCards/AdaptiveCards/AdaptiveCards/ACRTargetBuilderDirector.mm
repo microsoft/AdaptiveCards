@@ -33,10 +33,10 @@
 #import "ACOBaseActionElementPrivate.h"
 #import "ACRAggregateTarget.h"
 #import "ACRErrors.h"
+#import "ACROverflowTarget.h"
 #import "ACRRegistration.h"
 #import "ACRShowCardTarget.h"
 #import "ACRToggleVisibilityTarget.h"
-#import "ACROverflowTarget.h"
 #import "UtiliOS.h"
 
 @implementation ACRTargetBuilder
@@ -171,13 +171,13 @@
           ForButton:(UIButton *)button
 {
     if (director.rootView && [action isKindOfClass:[ACOActionOverflow class]]) {
-        NSObject* target = [[ACROverflowTarget alloc]
-                            initWithActionElement:(ACOActionOverflow*)action
-                            rootView:director.rootView];
+        NSObject *target = [[ACROverflowTarget alloc]
+            initWithActionElement:(ACOActionOverflow *)action
+                         rootView:director.rootView];
         if (target) {
             [button addTarget:target
-                       action:@selector(doSelectAction)
-             forControlEvents:UIControlEventTouchUpInside];
+                          action:@selector(doSelectAction)
+                forControlEvents:UIControlEventTouchUpInside];
         }
         return target;
     }
