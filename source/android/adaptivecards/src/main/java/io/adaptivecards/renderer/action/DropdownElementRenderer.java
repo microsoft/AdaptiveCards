@@ -30,7 +30,9 @@ import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
  */
 public class DropdownElementRenderer extends BaseActionElementRenderer {
 
-    private final static int HORIZONTAL_MARGIN = 12;
+    private final static int HORIZONTAL_MARGIN = 8;
+    private final static int VERTICAL_MARGIN = 6;
+
 
     protected DropdownElementRenderer()
     {
@@ -59,7 +61,8 @@ public class DropdownElementRenderer extends BaseActionElementRenderer {
         button.setText(baseActionElement.GetTitle());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         int hMargin = Util.dpToPixels(context, HORIZONTAL_MARGIN);
-        layoutParams.setMargins(hMargin, 0, hMargin, 0);
+        int vMargin = Util.dpToPixels(context, VERTICAL_MARGIN);
+        layoutParams.setMargins(hMargin, vMargin, hMargin, vMargin);
         layoutParams.gravity = Gravity.CENTER;
         button.setGravity(Gravity.CENTER);
         button.setTextColor(context.getResources().getColor(R.color.dropdown_text_color));
