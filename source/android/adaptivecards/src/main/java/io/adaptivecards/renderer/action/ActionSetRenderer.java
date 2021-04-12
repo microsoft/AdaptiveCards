@@ -4,7 +4,7 @@ package io.adaptivecards.renderer.action;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -13,9 +13,7 @@ import io.adaptivecards.objectmodel.ActionSet;
 import io.adaptivecards.objectmodel.BaseActionElementVector;
 import io.adaptivecards.objectmodel.BaseCardElement;
 import io.adaptivecards.objectmodel.ContainerStyle;
-import io.adaptivecards.objectmodel.HeightType;
 import io.adaptivecards.objectmodel.HostConfig;
-import io.adaptivecards.objectmodel.NumberInput;
 import io.adaptivecards.renderer.ActionLayoutRenderer;
 import io.adaptivecards.renderer.BaseCardElementRenderer;
 import io.adaptivecards.renderer.RenderArgs;
@@ -23,7 +21,6 @@ import io.adaptivecards.renderer.RenderedAdaptiveCard;
 import io.adaptivecards.renderer.TagContent;
 import io.adaptivecards.renderer.Util;
 import io.adaptivecards.renderer.actionhandler.ICardActionHandler;
-import io.adaptivecards.renderer.readonly.RichTextBlockRenderer;
 
 public class ActionSetRenderer extends BaseCardElementRenderer
 {
