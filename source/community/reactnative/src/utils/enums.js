@@ -81,7 +81,7 @@ export const Orientation = Object.freeze({
 
 export const BackgroundImageMode = Object.freeze({
 	Stretch: 0,
-	Cover: 1, 
+	Cover: 1,
 	RepeatHorizontally: 2,
 	RepeatVertically: 3,
 	Repeat: 4
@@ -182,5 +182,8 @@ export const ThemeElement = Object.freeze({
 	InputTime: "inputTime",
 	RadioButton: "radioButton",
 	CheckBox: "checkBox",
-	ChoiceSetTitle: "choiceSetTitle",
+	RadioButtonText: "radioButtonText",
+	CheckBoxText: "checkBoxText",
+	Dropdown: "dropdown",
+	DropdownText: "dropdownText",
 });

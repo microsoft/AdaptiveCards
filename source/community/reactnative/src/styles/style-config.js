@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import * as Constants from '../utils/constants';
 import {
 	Platform,
@@ -15,8 +14,8 @@ export class StyleConfig {
 	 * Create the styles based on hostConfig and themeConfig
 	 * @returns StyleConfig
 	 */
-	getStyleConfig(){
-		const styles = StyleSheet.create({
+	getStyleConfig() {
+		const styles = {
 			defaultFontFamilyName: {
 				fontFamily: this.hostConfig.fontStyles.default.fontFamily
 			},
@@ -71,10 +70,19 @@ export class StyleConfig {
 			checkBox: {
 				...this.themeConfig.checkBox[Platform.OS]
 			},
-			choiceSetTitle: {
-				...this.themeConfig.choiceSetTitle[Platform.OS]
+			radioButtonText: {
+				...this.themeConfig.radioButtonText[Platform.OS]
 			},
-		});
+			checkBoxText: {
+				...this.themeConfig.checkBoxText[Platform.OS]
+			},
+			dropdown: {
+				...this.themeConfig.dropdown[Platform.OS]
+			},
+			dropdownText: {
+				...this.themeConfig.dropdownText[Platform.OS]
+			}
+		};
 		return styles;
 	}
 }
