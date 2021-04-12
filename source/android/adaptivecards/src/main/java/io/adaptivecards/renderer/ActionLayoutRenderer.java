@@ -3,12 +3,13 @@
 package io.adaptivecards.renderer;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+
+import androidx.fragment.app.FragmentManager;
 
 import io.adaptivecards.objectmodel.ActionAlignment;
 import io.adaptivecards.objectmodel.ActionsOrientation;
